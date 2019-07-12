@@ -14,7 +14,8 @@
   "types": "dist/mdc.menuSurface.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-components/material-components-web.git"
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-menu-surface"
   },
   "dependencies": {
     "@material/animation": "^3.0.0",

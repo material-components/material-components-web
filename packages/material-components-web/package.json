@@ -13,7 +13,8 @@
   "types": "dist/material-components-web.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-components/material-components-web"
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/material-components-web"
   },
   "dependencies": {
     "@material/animation": "^3.0.0",
