@@ -1,82 +1,82 @@
 {
   "spec/mdc-button/classes/baseline-button-with-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-with-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-with-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-with-icons.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-with-icons.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-with-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-with-icons.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-with-icons.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-with-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/classes/baseline-button-with-trailing-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-with-trailing-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-with-trailing-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-with-trailing-icons.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-with-trailing-icons.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-with-trailing-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-with-trailing-icons.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-with-trailing-icons.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-with-trailing-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/classes/baseline-button-without-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-without-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-without-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-without-icons.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-without-icons.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-button-without-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-without-icons.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-without-icons.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-button-without-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/classes/baseline-link-with-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-link-with-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-link-with-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-link-with-icons.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-link-with-icons.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-link-with-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-link-with-icons.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-link-with-icons.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-link-with-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/classes/baseline-link-without-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-link-without-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-link-without-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-link-without-icons.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-link-without-icons.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/baseline-link-without-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-link-without-icons.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-link-without-icons.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/baseline-link-without-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/classes/dense-button-with-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-with-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-with-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-with-icons.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-with-icons.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-with-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-with-icons.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-with-icons.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-with-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/classes/dense-button-with-trailing-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-with-trailing-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-with-trailing-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-with-trailing-icons.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-with-trailing-icons.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-with-trailing-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-with-trailing-icons.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-with-trailing-icons.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-with-trailing-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/classes/dense-button-without-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-without-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-without-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-without-icons.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-without-icons.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-button-without-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-without-icons.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-without-icons.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-button-without-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/classes/dense-link-with-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-link-with-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-link-with-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-link-with-icons.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-link-with-icons.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-link-with-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-link-with-icons.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-link-with-icons.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-link-with-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/classes/dense-link-without-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-link-without-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-link-without-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-link-without-icons.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-link-without-icons.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/classes/dense-link-without-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-link-without-icons.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-link-without-icons.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/classes/dense-link-without-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/mixins/container-fill-color.html": {
@@ -128,27 +128,27 @@
     }
   },
   "spec/mdc-button/mixins/shape-radius.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/shape-radius.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/shape-radius.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/shape-radius.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/shape-radius.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/shape-radius.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/shape-radius.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/shape-radius.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/shape-radius.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/mixins/stroke-color.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/stroke-color.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/stroke-color.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/stroke-color.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/stroke-color.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/stroke-color.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/stroke-color.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/stroke-color.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/stroke-color.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/mixins/stroke-width.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/stroke-width.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/stroke-width.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/stroke-width.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/stroke-width.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_09_11_731/spec/mdc-button/mixins/stroke-width.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/stroke-width.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/stroke-width.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/16_55_31_009/spec/mdc-button/mixins/stroke-width.html.windows_ie_11.png"
     }
   },
   "spec/mdc-card/classes/baseline.html": {
