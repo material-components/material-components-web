@@ -29,6 +29,7 @@
 const cpFile = require('cp-file');
 const dts = require('dts-bundle');
 const fs = require('fs');
+const ncp = require('ncp');
 const path = require('path');
 const toSlugCase = require('to-slug-case');
 const {spawnSync} = require('child_process');
@@ -69,6 +70,16 @@ function cleanPkgDistDirs() {
 
   if (statuses.find((status) => status > 0)) {
     console.error('Failed to clean package dist folders prior to copying');
+    process.exit(1);
+  }
+}
+
+function cleanPkgDistEs6Dirs() {
+  const statuses = globSync('packages/*/es6').map(
+    (distPath) => spawnSync('rm', ['-r', distPath], {stdio: 'inherit'}).status);
+
+  if (statuses.find((status) => status > 0)) {
+    console.error('Failed to clean package es6 folders prior to copying');
     process.exit(1);
   }
 }
@@ -133,22 +144,31 @@ function dtsBundler() {
   });
 }
 
+/**
+ * Copies es6 directories from build to corresponding packages/ directory
+ */
 function copyEs6Modules() {
   const ES6_DIRECTORY = path.resolve(__dirname, '../build/es6');
   const distEs6Directories = fs.readdirSync(ES6_DIRECTORY);
   distEs6Directories.forEach((packageDirectory) => {
-    globSync(`build/es6/${packageDirectory}/*.{css,js,map}`).forEach((asset) => );
+    ncp(`build/es6/${packageDirectory}`, `packages/${packageDirectory}/es6`, (err) => {
+      if (err) {
+        console.error(err);
+      }
+      console.log(`copied ES6 directories to ${packageDirectory}`);
+    });
   });
 
 }
 
 /*
- * 1. Cleans all /dist directories in each package
+ * 1. Cleans all /dist & /es6 directories in each package
  * 2. Copies generated css, js, and map files to the respective packages
  * 3. Bundles the declaration files into one file for the UMD index.js file
  * 4. Copies the generated declaration file from step 3, into the respective pacakge
  */
 cleanPkgDistDirs();
+// cleanPkgDistEs6Dirs();
 
 Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
   console.error('Error encountered copying assets:', err);

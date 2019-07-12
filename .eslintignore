@@ -1,4 +1,5 @@
 **/node_modules
 packages/*/dist
+packages/*/es6
 **/out
 *.pb.js
