@@ -59,7 +59,8 @@ export interface MDCDataTableAdapter {
   getRowIdAtIndex(rowIndex: number): string | null;
 
   /**
-   * Returns index of row element that contains give child element.
+   * Returns index of row element that contains give child element. Returns -1 if element is not child of any row
+   * element.
    *
    * @param el Child element of row element.
    * @return Index of row element.

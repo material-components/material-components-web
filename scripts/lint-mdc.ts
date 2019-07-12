@@ -386,6 +386,8 @@ function checkAllIdentifierNames(inputFilePath: string, inputCode: string) {
       (nodePath: NodePath) => checkOneIdentifierName(nodePath, inputFilePath);
   const checkAccessibility =
       (nodePath: ClassMemberNodePath) => checkOneClassMemberAccessibility(nodePath, inputFilePath);
+  const checkReadme =
+      (nodePath: ClassMemberNodePath) => checkOneClassMemberIsInReadme(nodePath, inputFilePath);
 
   babelTraverse(ast, {
     Function: checkName,
@@ -396,6 +398,12 @@ function checkAllIdentifierNames(inputFilePath: string, inputCode: string) {
   babelTraverse(ast, {
     ClassMethod: checkAccessibility,
     ClassProperty: checkAccessibility,
+  });
+
+  babelTraverse(ast, {
+    ClassMethod: checkReadme,
+    ClassProperty: checkReadme,
+    TSMethodSignature: checkReadme,
   });
 }
 
@@ -461,7 +469,7 @@ function checkOneClassMemberAccessibility(
   }
 }
 
-export function checkOneClassMemberIsInReadme(
+function checkOneClassMemberIsInReadme(
     nodePath: ClassMemberNodePath,
     inputFilePath: string,
 ) {

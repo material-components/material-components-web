@@ -232,6 +232,7 @@ Method Signature | Description
 `getRowIdAtIndex(rowIndex: number) => string \| null` | Returns row id of row element at given row index based on `data-row-id` attribute on row element `tr`.
 `getRowIndexByChildElement(el: Element) => number` | Returns index of row element that contains give child element.
 `getSelectedRowCount() => number` | Returns selected row count.
+`isCheckboxAtRowIndexChecked(rowIndex: number) => boolean;` | Returns True if row checkbox at given row index is checked.
 `isHeaderRowCheckboxChecked() => boolean` | Returns true if header row checkbox is checked.
 `isRowsSelectable() => boolean` | Returns true if table rows are selectable.
 `notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail) => void` | Notifies when row selection is changed.

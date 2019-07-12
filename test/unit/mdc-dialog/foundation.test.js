@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -440,7 +440,7 @@ test(`#handleClick: Click closes dialog when ${strings.SCRIM_SELECTOR} selector 
   td.verify(foundation.close(foundation.getScrimClickAction()));
 });
 
-test(`#handleClick: Click does nothing when ${strings.SCRIM_SELECTOR} class is present but scrimClickAction is 
+test(`#handleClick: Click does nothing when ${strings.SCRIM_SELECTOR} class is present but scrimClickAction is
     empty string`, () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {type: 'click', target: {}};
