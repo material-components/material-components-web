@@ -32,8 +32,6 @@
 @import "@material/shape/functions";
 @import "./variables";
 
-$mdc-density-interval: 4px;
-
 @mixin mdc-button-core-styles($query: mdc-feature-all()) {
   @include mdc-button-without-ripple($query);
   @include mdc-button-ripple($query);
@@ -196,7 +194,13 @@ $mdc-density-interval: 4px;
 $shape-radius: null,
 $shape-rtl-reflexive: false,
 $query: mdc-feature-all()) {
-  $height: $mdc-button-height + $density-scale * $mdc-density-interval;
+  $height: null;
+
+  @if map-has-key($mdc-button-density-scale-map, $density-scale) {
+    $height: map-get($mdc-button-density-scale-map, $density-scale);
+  } @else {
+    $height: $mdc-button-height + $density-scale * $mdc-button-density-interval;
+  }
 
   @if $shape-radius {
     @include mdc-button-shape-radius($shape-radius,
@@ -205,7 +209,20 @@ $query: mdc-feature-all()) {
     $query: $query);
   }
 
-  height: $height;
+  @include mdc-button-height($height, $query: $query);
+}
+
+@mixin mdc-button-height($height, $query: $query) {
+  @if ($height < $mdc-button-minimum-height or
+  $height > $mdc-button-maximum-height) {
+    @error "Height must be between #{$mdc-button-minimum-height} and #{$mdc-button-maximum-height}, but received #{$height}";
+  }
+
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    height: $height;
+  }
 }
 
 @mixin mdc-button-shape-radius($radius, $mdc-button-height: $mdc-button-height, $rtl-reflexive: false, $query: mdc-feature-all()) {
@@ -394,7 +411,7 @@ $query: mdc-feature-all()) {
 @mixin mdc-button-theme-baseline($query: mdc-feature-all()) {
   .mdc-button {
     @include mdc-button-density(
-      $density-scale: $mdc-button-density-scale,
+      $density-scale: default,
       $shape-radius: $mdc-button-shape-radius,
       $query: $query);
   }
