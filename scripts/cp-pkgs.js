@@ -158,7 +158,6 @@ function copyEs6Modules() {
       console.log(`copied ES6 directories to ${packageDirectory}`);
     });
   });
-
 }
 
 /*
@@ -168,7 +167,7 @@ function copyEs6Modules() {
  * 4. Copies the generated declaration file from step 3, into the respective pacakge
  */
 cleanPkgDistDirs();
-// cleanPkgDistEs6Dirs();
+cleanPkgDistEs6Dirs();
 
 Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
   console.error('Error encountered copying assets:', err);
