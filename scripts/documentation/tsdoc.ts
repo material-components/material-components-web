@@ -236,7 +236,7 @@ class TypeScriptDocumentationGenerator {
        */
       const allowList = [
         'mdc-drawer',
-        // 'mdc-textfield',
+        'mdc-textfield',
       ];
 
       if (allowList.some((allowed) => readmeDirectoryPath.includes(allowed))) {

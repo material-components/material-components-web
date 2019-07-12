@@ -59,24 +59,44 @@ Mixin | Description
 `mdc-text-field-character-counter-color($color)` | Customizes the color of the character counter associated with text field.
 `mdc-text-field-character-counter-position($xOffset, $yOffset)` | Positions the character counter element inside text field. Used only for textarea variant.
 
-## `MDCTextFieldCharacterCounter` Properties and Methods
-
-Property | Value Type | Description
---- | --- | ---
-`foundation` | `MDCTextFieldCharacterCounterFoundation` | Returns the character counter's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldCharacterCounterFoundation` class.
-
 ## Usage Within Frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Character Counter for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
 
-### `MDCTextFieldCharacterCounterAdapter`
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCTextFieldCharacterCounter
 
-Method Signature | Description
+#### Methods
+
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+
+#### Properties
+
+Name | Type | Description
+--- | --- | ---
+foundation | MDCTextFieldCharacterCounterFoundation | Returns the character counter's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldCharacterCounterFoundation` class.
+
+### MDCTextFieldCharacterCounterAdapter
+
+#### Methods
+
+Signature | Description
 --- | ---
 `setContent(content: string) => void` | Sets the text content of character counter element.
 
-### `MDCTextFieldCharacterCounterFoundation`
 
-Method Signature | Description
+### MDCTextFieldCharacterCounterFoundation
+
+#### Methods
+
+Signature | Description
 --- | ---
 `setCounterValue(currentLength: number, maxLength: number) => void` | Sets the character counter values including characters used and total character limit.
+
+
+
+<!-- docgen-tsdoc-replacer:end -->
