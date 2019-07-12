@@ -42,13 +42,11 @@ const ADAPTER = 'adapter';
 const README_FILE = 'README.md';
 
 class TypeScriptDocumentationGenerator {
-  markdownBuffer: {[s: string]: ModuleMarkdown[]};
   docData?: {}; // Documentalist representation of methods/properties/events
   templateFunction: Handlebars.TemplateDelegate<{}>;
 
   constructor() {
     this.docData = {};
-    this.markdownBuffer = {};
     fs.readFile('./scripts/documentation/api-markdown-table-template.hbs', 'utf8', (error, template) => {
       if (error) {
         console.error(error); // tslint:disable-line
@@ -84,20 +82,30 @@ class TypeScriptDocumentationGenerator {
     if (!docData) {
       console.error('FAILURE: Documentation generation did not compile correctly.');
     }
+    const markdownBuffer: {[s: string]: ModuleMarkdown[]} = {};
+
     this.docData = docData.typescript;
     Object.keys(this.docData).forEach((module) => {
       console.log(`-- generating docs for ${module}`); // tslint:disable-line
-      this.generateDocsForModule(module);
+      const docs = this.generateDocsForModule(module);
+      if (docs) {
+        const markdownComponentBuffer = markdownBuffer[docs.readmeDirectoryPath];
+        if (markdownComponentBuffer) {
+          markdownComponentBuffer.push(docs);
+        } else {
+          markdownBuffer[docs.readmeDirectoryPath] = [docs];
+        }
+      }
     });
 
-    this.generateMarkdownFileFromBuffer();
+    this.generateMarkdownFileFromBuffer(markdownBuffer);
   }
 
   /**
    * Creates documentation for a specified `esmodule`.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  generateDocsForModule(esmodule: string) {
+  generateDocsForModule(esmodule: string): ModuleMarkdown | undefined {
     const {kind, fileName} = this.docData[esmodule];
     const readmeDirectoryPath = this.getFilePathName(fileName);
 
@@ -105,14 +113,13 @@ class TypeScriptDocumentationGenerator {
       // ignore types and interfaces
       return;
     }
-    const markdownObject: ModuleMarkdown = {
+    return {
       events: this.getDocumentationForModule(esmodule).events,
       methods: this.getDocumentationForMethods(esmodule),
       moduleName: esmodule,
       properties: this.getDocumentationProperties(esmodule),
       readmeDirectoryPath,
     };
-    this.addToMarkdownBuffer(readmeDirectoryPath, markdownObject);
   }
 
   /**
@@ -215,25 +222,14 @@ class TypeScriptDocumentationGenerator {
   }
 
   /**
-   * Sets Markdown Documentation into markdownBuffer under the `component` name.
-   * @param component Component that the `markdownString` describes.
-   * @param moduleMarkdown List of methods and properties with documentation from esmodule source.
-   */
-  private addToMarkdownBuffer(readmeDirectoryPath: string, moduleMarkdown: ModuleMarkdown) {
-    const markdownComponentBuffer = this.markdownBuffer[readmeDirectoryPath];
-    if (markdownComponentBuffer) {
-      markdownComponentBuffer.push(moduleMarkdown);
-    } else {
-      this.markdownBuffer[readmeDirectoryPath] = [moduleMarkdown];
-    }
-  }
-
-  /**
    * Generates Markdown file for each entry in `this.markdownBuffer`,
    * which is populated from `this.generateDocsForModule()`.
+   * @param markdownBuffer object where keys are the module name, and
+   * value is the module documentation in json format, ready to be
+   * formatted into markdown.
    */
-  async generateMarkdownFileFromBuffer() {
-    for (const readmeDirectoryPath in this.markdownBuffer) {
+  async generateMarkdownFileFromBuffer(markdownBuffer: {[s: string]: ModuleMarkdown[]}) {
+    for (const readmeDirectoryPath in markdownBuffer) {
       /**
        * This currently only has been tested on mdc-drawer.
        * TODO: remove this if condition once all READMEs are generated
@@ -245,7 +241,7 @@ class TypeScriptDocumentationGenerator {
 
       if (allowList.some((allowed) => readmeDirectoryPath.includes(allowed))) {
         const readmeDestinationPath = `./packages/${readmeDirectoryPath}/${README_FILE}`;
-        const finalReadmeMarkdown = await this.insertMethodDescriptionTable(readmeDirectoryPath);
+        const finalReadmeMarkdown = await this.insertMethodDescriptionTable(markdownBuffer, readmeDirectoryPath);
         fs.writeFile(readmeDestinationPath, finalReadmeMarkdown, (error) => {
           console.log(`~~ generated ${readmeDestinationPath}`); // tslint:disable-line
           if (error) {
@@ -259,31 +255,35 @@ class TypeScriptDocumentationGenerator {
   /**
    * Returns a promise, that resolves with the finalized markdown with
    * inserted documentation in markdown table format.
+   * @param markdownBuffer object where keys are the module name, and
+   * value is the module documentation in json format, ready to be
+   * formatted into markdown.
    * @param readmeDirectoryPath directory path to readme file
    * (ie. mdc-textfield/character-counter or mdc-drawer)
    * @return Promise<{string}>
    */
-  private insertMethodDescriptionTable(readmeDirectoryPath: string) {
+  private async insertMethodDescriptionTable(
+    markdownBuffer: {[s: string]: ModuleMarkdown[]},
+    readmeDirectoryPath: string
+  ) {
     const readmeMarkdownPath = `./packages/${readmeDirectoryPath}/${README_FILE}`;
-    return new Promise(async (resolve) => {
-      const readmeMd = await readFile(readmeMarkdownPath, 'utf8');
-      const modules = this.markdownBuffer[readmeDirectoryPath]
-        .filter((module) => module.methods.length || module.properties.length || module.events.length)
-        .sort(this.sortByModuleType);
-      const apiMarkdownTable = this.templateFunction({modules});
+    const readmeMd = await readFile(readmeMarkdownPath, 'utf8');
+    const modules = markdownBuffer[readmeDirectoryPath]
+      .filter((module) => module.methods.length || module.properties.length || module.events.length)
+      .sort(this.sortByModuleType);
+    const apiMarkdownTable = this.templateFunction({modules});
 
-      const startReplacerToken
-        = '<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->';
-      const endReplacerToken = '<!-- docgen-tsdoc-replacer:end -->';
-      const regexString = `^${startReplacerToken}\\n(.|\\n)*${endReplacerToken}$`;
-      const regex = new RegExp(regexString, 'gm');
-      const insertedData = readmeMd.replace(
-        regex,
-        `${startReplacerToken}\n${apiMarkdownTable}\n${endReplacerToken}`,
-      );
+    const startReplacerToken
+      = '<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->';
+    const endReplacerToken = '<!-- docgen-tsdoc-replacer:end -->';
+    const regexString = `^${startReplacerToken}\\n(.|\\n)*${endReplacerToken}$`;
+    const regex = new RegExp(regexString, 'gm');
+    const insertedData = readmeMd.replace(
+      regex,
+      `${startReplacerToken}\n${apiMarkdownTable}\n${endReplacerToken}`,
+    );
 
-      resolve(insertedData);
-    });
+    return insertedData;
   }
 
   /** Sorts modules by the following rules:
