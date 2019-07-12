@@ -136,11 +136,11 @@
     }
   },
   "spec/mdc-button/mixins/stroke-color.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/10/14_25_41_111/spec/mdc-button/mixins/stroke-color.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/00_51_55_764/spec/mdc-button/mixins/stroke-color.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/10/14_25_41_111/spec/mdc-button/mixins/stroke-color.html.windows_chrome_74.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/04/16/15_32_13_143/spec/mdc-button/mixins/stroke-color.html.windows_firefox_65.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/04/16/15_32_13_143/spec/mdc-button/mixins/stroke-color.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/12/00_51_55_764/spec/mdc-button/mixins/stroke-color.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/mixins/stroke-width.html": {
