@@ -185,8 +185,10 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   $feat-color: mdc-feature-create-target($query, color);
 
   &:not(:disabled) {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $color);
+    #{$mdc-button-ripple-target} {
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(border-color, $color);
+      }
     }
   }
 }
@@ -355,8 +357,10 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   }
 
   &:disabled {
-    @include mdc-feature-targets($feat-color) {
-      border-color: $mdc-button-disabled-ink-color;
+    #{$mdc-button-ripple-target} {
+      @include mdc-feature-targets($feat-color) {
+        border-color: $mdc-button-disabled-ink-color;
+      }
     }
   }
 }
