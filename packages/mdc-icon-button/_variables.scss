@@ -21,3 +21,11 @@
 //
 
 $mdc-icon-button-height: 48px !default;
+$mdc-icon-button-minimum-height: 24px !default;
+$mdc-icon-button-maximum-height: $mdc-icon-button-height !default;
+$mdc-icon-button-density-interval: 4px !default;
+$mdc-icon-button-density-scale-map: (
+  default: $mdc-icon-button-height,
+  comfortable: 40px,
+  compact: 36px,
+) !default;
