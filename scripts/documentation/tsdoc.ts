@@ -61,16 +61,13 @@ class TypeScriptDocumentationGenerator {
    * @returns Promise<{}>
    */
   async generateJSONFromFiles() {
-    let _docs;
-    await new Documentalist()
+    return await new Documentalist()
       .use(/\.ts$/, new TypescriptPlugin({
         excludePaths: ['node_modules'],
         includeDeclarations: true,
       }))
       .documentGlobs('packages/**/*')
-      .then((docs) => _docs = docs)
       .catch((error) => console.error(error)); // tslint:disable-line
-    return _docs;
   }
 
   /**
@@ -80,7 +77,7 @@ class TypeScriptDocumentationGenerator {
    */
   generateDocs(docData) {
     if (!docData) {
-      console.error('FAILURE: Documentation generation did not compile correctly.');
+      console.error('FAILURE: Documentation generation did not compile correctly.'); // tslint:disable-line
     }
     const markdownBuffer: {[s: string]: ModuleMarkdown[]} = {};
 
@@ -236,7 +233,6 @@ class TypeScriptDocumentationGenerator {
        */
       const allowList = [
         'mdc-drawer',
-        // 'mdc-textfield',
       ];
 
       if (allowList.some((allowed) => readmeDirectoryPath.includes(allowed))) {
@@ -264,7 +260,7 @@ class TypeScriptDocumentationGenerator {
    */
   private async insertMethodDescriptionTable(
     markdownBuffer: {[s: string]: ModuleMarkdown[]},
-    readmeDirectoryPath: string
+    readmeDirectoryPath: string,
   ) {
     const readmeMarkdownPath = `./packages/${readmeDirectoryPath}/${README_FILE}`;
     const readmeMd = await readFile(readmeMarkdownPath, 'utf8');

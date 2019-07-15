@@ -1,6 +1,5 @@
 {{#each modules as |module|}}
 ### {{module.moduleName}}
-
 {{#if module.moduleName.length}}
 #### Methods
 
@@ -9,8 +8,8 @@ Signature | Description
 {{#each module.methods}}
 `{{methodSignature}}` | {{documentation}}
 {{/each}}
-{{/if}}
 
+{{/if}}
 {{#if module.properties.length}}
 #### Properties
 
@@ -19,13 +18,19 @@ Name | Type | Description
 {{#each module.properties}}
 {{name}} | {{type}} | {{documentation}}
 {{/each}}
-{{/if}}
 
+{{/if}}
 {{#if module.events.length}}
 #### Events
 {{#each module.events}}
 - {{documentation}}
 {{/each}}
+
+{{/if}}
+{{#if @first}}
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 {{/if}}
 {{/each}}
