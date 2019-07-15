@@ -36,24 +36,35 @@
 @import "@material/shape/functions";
 @import "./variables";
 
-$mdc-density-range: 4px;
+@mixin mdc-chip-density($density-scale,
+$shape-radius: null,
+$shape-rtl-reflexive: false,
+$query: mdc-feature-all()) {
+  $height: null;
 
-@mixin mdc-chip-density(
-  $density-scale,
-  $shape-radius: null,
-  $rtl-reflexive: false) {
-  $height: $mdc-chip-height-default + $density-scale * $mdc-density-range;
+  @if map-has-key($mdc-chip-density-scale-map, $density-scale) {
+    $height: map-get($mdc-chip-density-scale-map, $density-scale);
+  } @else {
+    $height: $mdc-chip-height-default + $density-scale * $mdc-chip-density-interval;
+  }
 
-  height: $height;
+  @include mdc-chip-height($height, $query: $query);
 
   @if $shape-radius {
-    @include mdc-chip-shape-radius($shape-radius, $mdc-chip-height: $height, $rtl-reflexive: $rtl-reflexive);
+    @include mdc-chip-shape-radius($shape-radius, $mdc-chip-height: $height, $rtl-reflexive: $shape-rtl-reflexive);
   }
 }
 
 @mixin mdc-chip-core-styles($query: mdc-feature-all()) {
   @include mdc-chip-without-ripple($query: $query);
   @include mdc-chip-ripple($query: $query);
+  @include mdc-chip-theme-baseline($query: $query);
+}
+
+@mixin mdc-chip-theme-baseline($query: mdc-feature-all()) {
+  .mdc-chip {
+    @include mdc-chip-density(default, $shape-radius: 50%, $query: $query);
+  }
 }
 
 @mixin mdc-chip-without-ripple($query: mdc-feature-all()) {
@@ -68,11 +79,9 @@ $mdc-density-range: 4px;
   @include mdc-chip-trailing-icon-margin($query: $query);
 
   .mdc-chip {
-    @include mdc-chip-shape-radius(50%, $query: $query);
     @include mdc-chip-fill-color($mdc-chip-fill-color-default, $query: $query);
     @include mdc-chip-ink-color-without-ripple_($mdc-chip-ink-color-default, $query: $query);
     @include mdc-typography(body2, $query: $query);
-    @include mdc-chip-height($mdc-chip-height-default, $query: $query);
     @include mdc-chip-leading-icon-margin($query: $query);
 
     @include mdc-feature-targets($feat-structure) {

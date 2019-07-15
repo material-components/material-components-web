@@ -29,6 +29,13 @@
 @mixin mdc-icon-button-core-styles($query: mdc-feature-all()) {
   @include mdc-icon-button-without-ripple($query);
   @include mdc-icon-button-ripple($query);
+  @include mdc-icon-button-theme-baseline($query);
+}
+
+@mixin mdc-icon-button-theme-baseline($query: mdc-feature-all()) {
+  .mdc-icon-button {
+    @include mdc-icon-button-density(default);
+  }
 }
 
 @mixin mdc-icon-button-without-ripple($query: mdc-feature-all()) {
@@ -76,7 +83,6 @@
     @include mdc-ripple-surface($query: $query);
     @include mdc-ripple-radius-unbounded($query: $query);
     @include mdc-states($query: $query);
-    @include mdc-icon-button-density(0);
   }
 }
 

@@ -23,6 +23,7 @@
 $mdc-button-height: 36px !default;
 $mdc-button-horizontal-padding: 8px !default;
 $mdc-button-contained-horizontal-padding: 16px !default;
+
 $mdc-dense-button-height: 32px !default;
 $mdc-button-minimum-height: 24px !default;
 $mdc-button-maximum-height: $mdc-button-height !default;
@@ -30,8 +31,9 @@ $mdc-button-density-interval: 4px !default;
 $mdc-button-density-scale-map: (
   default: $mdc-button-height,
   comfortable: 28px,
-  compact: 24px,
+  compact: $mdc-button-minimum-height,
 ) !default;
+
 $mdc-button-outlined-border-width: 1px !default;
 $mdc-button-shape-radius: small !default;
 

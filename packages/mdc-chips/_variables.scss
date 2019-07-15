@@ -28,6 +28,15 @@ $mdc-chip-ink-color-default: rgba(mdc-theme-prop-value(on-surface), .87) !defaul
 $mdc-chip-horizontal-padding: 12px !default;
 $mdc-chip-height-default: 32px !default;
 
+$mdc-chip-minimum-height: 24px !default;
+$mdc-chip-maximum-height: $mdc-chip-height-default !default;
+$mdc-chip-density-interval: 4px !default;
+$mdc-chip-density-scale-map: (
+  default: $mdc-chip-height-default,
+  comfortable: 28px,
+  compact: $mdc-chip-minimum-height,
+) !default;
+
 $mdc-chip-icon-color: mdc-theme-prop-value(on-surface) !default;
 $mdc-chip-icon-opacity: .54 !default;
 $mdc-chip-trailing-icon-hover-opacity: .62 !default;

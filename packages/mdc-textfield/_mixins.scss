@@ -34,18 +34,20 @@
 @import "./variables";
 @import "./functions";
 
-$mdc-text-field-shape-radius: small;
-$mdc-text-field-outline-shape-radius: small;
-$mdc-text-field-density-scale: 0;
-
 @mixin mdc-text-field-density(
   $density-scale,
   $shape-radius: null,
   $shape-rtl-reflexive: false) {
 
-  $height: $mdc-text-field-height + $density-scale * $mdc-density-range;
+  $height: null;
 
-  height: $height;
+  @if map-has-key($mdc-text-field-density-scale-map, $density-scale) {
+    $height: map-get($mdc-text-field-density-scale-map, $density-scale);
+  } @else {
+    $height: $mdc-text-field-height + $density-scale * $mdc-text-field-density-interval;
+  }
+
+  @include mdc-text-field-height($height);
 
   .mdc-floating-label {
     // line-height: $height;
@@ -69,12 +71,18 @@ $mdc-text-field-density-scale: 0;
   $shape-radius: null,
   $shape-rtl-reflexive: false) {
 
-  $height: $mdc-text-field-height + $density-scale * $mdc-density-range;
+  $height: null;
+
+  @if map-has-key($mdc-text-field-density-scale-map, $density-scale) {
+    $height: map-get($mdc-text-field-density-scale-map, $density-scale);
+  } @else {
+    $height: $mdc-text-field-height + $density-scale * $mdc-text-field-density-interval;
+  }
+
   $position-y: $height / 2;
 
   @include mdc-notched-outline-floating-label-float-position($position-y);
-
-  height: $height;
+  @include mdc-text-field-height($height);
 
   .mdc-floating-label {
     // top: (17px / 56px) * $height;
@@ -88,26 +96,8 @@ $mdc-text-field-density-scale: 0;
   }
 }
 
-@mixin mdc-text-field-theme-override(
-  $density-scale: null,
-  $shape-radius: null,
-  $shape-radius-outline: null) {
-
-  $height: $mdc-text-field-height;
-
-  @if $density-scale {
-    $height: $mdc-text-field-height + $density-scale * $mdc-density-range;
-
-    height: $height;
-  }
-
-  @if $shape-radius {
-    @include mdc-text-field-shape-radius($shape-radius, $mdc-text-field-height: $height);
-  }
-
-  @if $shape-radius-outline {
-    @include mdc-text-field-outline-shape-radius($shape-radius-outline, $mdc-text-field-height: $height);
-  }
+@mixin mdc-text-field-height($height) {
+  height: $height;
 }
 
 @mixin mdc-text-field-shape-radius($radius, $mdc-text-field-height: $mdc-text-field-height, $rtl-reflexive: false) {

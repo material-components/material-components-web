@@ -53,6 +53,16 @@ $mdc-textarea-disabled-border-color: rgba(mdc-theme-prop-value(on-surface), .26)
 $mdc-textarea-disabled-background: rgba(249, 249, 249, 1) !default;
 
 $mdc-text-field-height: 56px !default;
+$mdc-text-field-minimum-height: 40px !default;
+$mdc-text-field-maximum-height: $mdc-text-field-height !default;
+$mdc-text-field-density-interval: 4px !default;
+$mdc-text-field-density-scale-map: (
+  default: $mdc-text-field-height,
+  comfortable: 48px,
+  compact: $mdc-text-field-minimum-height,
+) !default;
+$mdc-text-field-shape-radius: small;
+
 $mdc-text-field-label-position-y: 50% !default;
 $mdc-text-field-label-offset: 16px !default;
 $mdc-text-field-dense-label-position-y: 70% !default;
@@ -65,5 +75,3 @@ $mdc-text-field-textarea-label-position-y: 130% !default;
 $mdc-text-field-helper-line-padding: 16px !default;
 $mdc-text-field-input-padding: 16px !default;
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.
-
-$mdc-density-range: 4px;
