@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,27 +21,32 @@
  * THE SOFTWARE.
  */
 
-export const cssClasses = {
-  FIXED: 'mdc-toolbar--fixed',
-  FIXED_AT_LAST_ROW: 'mdc-toolbar--fixed-at-last-row',
-  FIXED_LASTROW: 'mdc-toolbar--fixed-lastrow-only',
-  FLEXIBLE_DEFAULT_BEHAVIOR: 'mdc-toolbar--flexible-default-behavior',
-  FLEXIBLE_MAX: 'mdc-toolbar--flexible-space-maximized',
-  FLEXIBLE_MIN: 'mdc-toolbar--flexible-space-minimized',
-  TOOLBAR_ROW_FLEXIBLE: 'mdc-toolbar--flexible',
-};
+/**
+ * Stores result from applyPassive to avoid redundant processing to detect
+ * passive event listener support.
+ */
+let supportsPassive_: boolean | undefined;
 
-export const strings = {
-  CHANGE_EVENT: 'MDCToolbar:change',
-  FIRST_ROW_SELECTOR: '.mdc-toolbar__row:first-child',
-  ICON_SELECTOR: '.mdc-toolbar__icon',
-  TITLE_SELECTOR: '.mdc-toolbar__title',
-};
+/**
+ * Determine whether the current browser supports passive event listeners, and
+ * if so, use them.
+ */
+export function applyPassive(globalObj: Window = window, forceRefresh = false):
+    boolean | EventListenerOptions {
+  if (supportsPassive_ === undefined || forceRefresh) {
+    let isSupported = false;
+    try {
+      globalObj.document.addEventListener('test', () => undefined, {
+        get passive() {
+          isSupported = true;
+          return isSupported;
+        },
+      });
+    } catch (e) {
+    } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
 
-export const numbers = {
-  MAX_TITLE_SIZE: 2.125,
-  MIN_TITLE_SIZE: 1.25,
-  TOOLBAR_MOBILE_BREAKPOINT: 600,
-  TOOLBAR_ROW_HEIGHT: 64,
-  TOOLBAR_ROW_MOBILE_HEIGHT: 56,
-};
+    supportsPassive_ = isSupported;
+  }
+
+  return supportsPassive_ ? {passive: true} as EventListenerOptions : false;
+}

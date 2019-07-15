@@ -1,6 +1,6 @@
 {
   "name": "@material/slider",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "The Material Components for the web slider component",
   "main": "dist/mdc.slider.js",
   "module": "index.js",
@@ -20,11 +20,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@material/animation": "^1.0.0",
-    "@material/base": "^1.0.0",
-    "@material/rtl": "^0.42.0",
-    "@material/theme": "^1.1.0",
-    "@material/typography": "^2.3.0",
+    "@material/animation": "^3.0.0",
+    "@material/base": "^3.0.0",
+    "@material/dom": "^3.0.0",
+    "@material/rtl": "^3.0.0",
+    "@material/theme": "^3.0.0",
+    "@material/typography": "^3.0.0",
     "tslib": "^1.9.3"
   }
 }

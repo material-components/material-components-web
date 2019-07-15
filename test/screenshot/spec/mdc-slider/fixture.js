@@ -21,8 +21,11 @@
  * THE SOFTWARE.
  */
 
-export * from './adapter';
-export * from './component';
-export * from './foundation';
-export * from './types';
-export {cssClasses as tabBarCssClasses, strings as tabBarStrings} from './constants';
+window.mdc.testFixture.fontsLoaded.then(() => {
+  [].forEach.call(document.querySelectorAll('.mdc-slider'), (el) => {
+    const slider = mdc.slider.MDCSlider.attachTo(el);
+    slider.listen('MDCSlider:change', () => console.log(`Value changed to ${slider.value}`));
+  });
+
+  window.mdc.testFixture.notifyDomReady();
+});

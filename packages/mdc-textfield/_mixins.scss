@@ -225,8 +225,10 @@
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
   @include mdc-text-field-caret-color($mdc-text-field-error);
 
-  @include mdc-required-text-field-label-asterisk_ {
-    @include mdc-theme-prop(color, $mdc-text-field-error);
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-required-text-field-label-asterisk_ {
+      @include mdc-theme-prop(color, $mdc-text-field-error);
+    }
   }
 
   &.mdc-text-field--with-trailing-icon {

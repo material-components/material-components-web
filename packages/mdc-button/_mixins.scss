@@ -32,6 +32,8 @@
 @import "@material/shape/functions";
 @import "./variables";
 
+$mdc-button-ripple-target: ".mdc-button__ripple";
+
 @mixin mdc-button-core-styles($query: mdc-feature-all()) {
   @include mdc-button-without-ripple($query);
   @include mdc-button-ripple($query);
@@ -120,17 +122,40 @@
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // button styles. It is recommended that most users use `mdc-button-core-styles` instead.
 @mixin mdc-button-ripple($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
   @include mdc-ripple-common($query);
 
   .mdc-button {
-    @include mdc-ripple-surface($query);
-    @include mdc-ripple-radius-bounded($query: $query);
-    @include mdc-states(primary, false, $query);
+    @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-button-ripple-target);
+    @include mdc-ripple-radius-bounded(
+      $query: $query, $ripple-target: $mdc-button-ripple-target);
+    @include mdc-states(
+      $color: primary, $query: $query, $ripple-target: $mdc-button-ripple-target);
+
+    #{$mdc-button-ripple-target} {
+      @include mdc-feature-targets($feat-structure) {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    }
+
+    // Ripple targets inside outlined buttons set their own `top`/`left`,
+    // depending on the border width.
+    &:not(.mdc-button--outlined) #{$mdc-button-ripple-target} {
+      @include mdc-feature-targets($feat-structure) {
+        top: 0;
+        left: 0;
+      }
+    }
   }
 
   .mdc-button--raised,
   .mdc-button--unelevated {
-    @include mdc-states(on-primary, false, $query);
+    @include mdc-states(
+      $color: on-primary, $query: $query, $ripple-target: $mdc-button-ripple-target);
   }
 }
 
@@ -141,10 +166,12 @@
 
   @if ($fill-tone == "dark") {
     @include mdc-button-ink-color(text-primary-on-dark, $query);
-    @include mdc-states(text-primary-on-dark, $query: $query);
+    @include mdc-states(
+      $color: text-primary-on-dark, $query: $query, $ripple-target: $mdc-button-ripple-target);
   } @else {
     @include mdc-button-ink-color(text-primary-on-light, $query);
-    @include mdc-states(text-primary-on-light, $query: $query);
+    @include mdc-states(
+      $color: text-primary-on-light, $query: $query, $ripple-target: $mdc-button-ripple-target);
   }
 }
 
@@ -232,6 +259,14 @@ $query: mdc-feature-all()) {
     $query: $query
   );
 
+  #{$mdc-button-ripple-target} {
+    @include mdc-shape-radius(
+      mdc-shape-resolve-percentage-radius($mdc-button-height, $radius),
+      $rtl-reflexive,
+      $query: $query
+    );
+  }
+
   &.mdc-button--dense {
     @include mdc-shape-radius(
       mdc-shape-resolve-percentage-radius($mdc-dense-button-height, $radius),
@@ -264,6 +299,14 @@ $query: mdc-feature-all()) {
   @include mdc-feature-targets($feat-structure) {
     border-width: $outline-width;
   }
+
+  #{$mdc-button-ripple-target} {
+    @include mdc-feature-targets($feat-structure) {
+      top: -$outline-width;
+      left: -$outline-width;
+      border: $outline-width solid transparent;
+    }
+  }
 }
 
 @mixin mdc-button-base_($query) {
@@ -286,7 +329,6 @@ $query: mdc-feature-all()) {
     line-height: inherit;
     user-select: none;
     -webkit-appearance: none;
-    overflow: hidden;
     vertical-align: middle;
   }
 
