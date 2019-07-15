@@ -87,6 +87,7 @@
 
     // Data Table
     @include mdc-data-table-core-styles($query: $query);
+    @include mdc-data-table-theme-baseline($query: $query);
     @include mdc-data-table-fill-color(red, $query: $query);
     @include mdc-data-table-header-row-fill-color(red, $query: $query);
     @include mdc-data-table-row-fill-color(red, $query: $query);

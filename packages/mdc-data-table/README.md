@@ -9,7 +9,8 @@ path: /catalog/data-tables/
 
 # Data Table
 
-Data tables display sets of data.
+Data tables display information in a grid-like format of rows and columns. They organize information in a way that's
+easy to scan, so that users can look for patterns and insights.
 
 ## Design & API Documentation
 
@@ -111,7 +112,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
       </tr>
     </thead>
     <tbody class="mdc-data-table__content">
-      <tr class="mdc-data-table__row">
+      <tr class="mdc-data-table__row" data-row-id="u0">
         <td class="mdc-data-table__cell mdc-data-table__cell--checkbox">
           <div class="mdc-checkbox mdc-data-table__row-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" aria-labelledby="r0" />
@@ -124,10 +125,10 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
           </div>
         </td>
         <td class="mdc-data-table__cell" id="r0">Frozen yogurt</td>
-        <td class="mdc-data-table__cell">24</td>
-        <td class="mdc-data-table__cell">4.0</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.0</td>
       </tr>
-      <tr class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
+      <tr class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true" data-row-id="u1">
         <td class="mdc-data-table__cell mdc-data-table__cell--checkbox">
           <div class="mdc-checkbox mdc-data-table__row-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" checked aria-labelledby="r1" />
@@ -140,8 +141,8 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
           </div>
         </td>
         <td class="mdc-data-table__cell" id="r1">Ice cream sandwich</td>
-        <td class="mdc-data-table__cell">37</td>
-        <td class="mdc-data-table__cell">4.3</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">37</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.3</td>
       </tr>
     </tbody>
   </table>
