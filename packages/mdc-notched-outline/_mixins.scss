@@ -72,7 +72,13 @@
 }
 
 @mixin mdc-notched-outline-floating-label-float-position($positionY, $positionX: 0%, $scale: .75) {
-  @include mdc-floating-label-float-position($positionY - 3px, $positionX, 1);
+  $offset: 0;
+
+  @if unit($positionY) != "%" {
+    $offset: 3px;
+  }
+
+  @include mdc-floating-label-float-position($positionY - $offset, $positionX, 1);
   // @include mdc-floating-label-float-position($positionY + $mdc-notched-outline-label-adjust, $positionX, 1);
 
   .mdc-floating-label--float-above {
@@ -82,7 +88,7 @@
   // Two selectors to ensure we select the appropriate class when applied from this component or a parent component.
   &.mdc-notched-outline--upgraded,
   .mdc-notched-outline--upgraded {
-    @include mdc-floating-label-float-position($positionY - 3px, $positionX, $scale);
+    @include mdc-floating-label-float-position($positionY - $offset, $positionX, $scale);
 
     // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {

@@ -80,6 +80,7 @@
     .mdc-floating-label {
       display: inline-block;
       position: relative;
+      flex-shrink: 0;
       // bottom: auto;
       max-width: 100%;
     }
@@ -97,7 +98,7 @@
   .mdc-notched-outline--notched .mdc-notched-outline__notch {
     // @include mdc-rtl-reflexive-box(padding, right, 8px);
 
-    border-top: 1px solid transparent !important; // TODO: fix this
+    border-top: none;
   }
 
   .mdc-notched-outline--no-label {
