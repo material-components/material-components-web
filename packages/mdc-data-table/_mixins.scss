@@ -52,7 +52,6 @@
       @include mdc-data-table-row-fill-color($mdc-data-table-row-fill-color, $query: $query);
       @include mdc-data-table-header-row-fill-color($mdc-data-table-header-row-fill-color, $query: $query);
       @include mdc-data-table-selected-row-fill-color($mdc-data-table-selected-row-fill-color, $query: $query);
-      @include mdc-data-table-checked-icon-color($mdc-data-table-checked-icon-color, $query: $query);
       @include mdc-data-table-divider-color($mdc-data-table-divider-color, $query: $query);
       @include mdc-data-table-divider-size($mdc-data-table-divider-size, $query: $query);
       @include mdc-data-table-row-hover-fill-color($mdc-data-table-row-hover-fill-color, $query: $query);
@@ -276,4 +275,8 @@
       }
     }
   }
+}
+
+@mixin mdc-data-table-theme-baseline($query: mdc-feature-all()) {
+  @include mdc-data-table-checked-icon-color($mdc-data-table-checked-icon-color, $query: $query);
 }
