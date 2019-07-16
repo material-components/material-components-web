@@ -105,7 +105,7 @@
     "karma-webpack": "^3.0.0",
     "lerna": "^3.6.0",
     "lolex": "3.1.0",
-    "mini-css-extract-plugin": "^0.7.0",
+    "mini-css-extract-plugin": "^0.8.0",
     "mkdirp": "^0.5.1",
     "mocha": "^6.0.0",
     "mz": "^2.7.0",
