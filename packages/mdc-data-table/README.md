@@ -32,10 +32,11 @@ npm install @material/data-table
 ### Styles
 
 ```scss
+@import "@material/checkbox/mdc-checkbox"; // Required only for data table with row selection.
 @import "@material/data-table/mdc-data-table";
 ```
 
-> *NOTE*: Styles for any components you intend to include within data-table (e.g. Checkboxes, etc.) must also be
+> *NOTE*: Styles for any components you intend to include within data-table (e.g. Checkboxes, Buttons etc.) must be
 > imported.
 
 ### JavaScript Instantiation
@@ -99,7 +100,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
     <thead>
       <tr class="mdc-data-table__header-row">
         <th class="mdc-data-table__header-cell mdc-data-table__header-cell--checkbox" role="columnheader" scope="col">
-          <div class="mdc-checkbox mdc-data-table__header-row-checkbox">
+          <div class="mdc-checkbox mdc-checkbox--selected mdc-data-table__header-row-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" aria-label="Toggle all rows" />
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
@@ -133,7 +134,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
       </tr>
       <tr class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true" data-row-id="u1">
         <td class="mdc-data-table__cell mdc-data-table__cell--checkbox">
-          <div class="mdc-checkbox mdc-data-table__row-checkbox">
+          <div class="mdc-checkbox mdc-checkbox--selected mdc-data-table__row-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" checked aria-labelledby="r1" />
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
