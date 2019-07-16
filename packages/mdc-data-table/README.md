@@ -18,6 +18,9 @@ easy to scan, so that users can look for patterns and insights.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/go/design-data-tables">Material Design guidelines: Data tables</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/data-table">Demo</a>
+  </li>
 </ul>
 
 ## Installation
