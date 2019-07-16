@@ -5,6 +5,10 @@ import * as path from 'path';
 import * as util from 'util';
 const readFile = util.promisify(fs.readFile);
 
+interface MarkdownBuffer {[s: string]: {
+  [c: string]: ModuleMarkdown[]};
+}
+
 interface ModuleMarkdown {
   methods?: ModuleMethod[];
   events?: ModuleEvent[];
@@ -43,7 +47,10 @@ const README_FILE = 'README.md';
 
 class TypeScriptDocumentationGenerator {
   docData?: {}; // Documentalist representation of methods/properties/events
-  templateFunction: Handlebars.TemplateDelegate<{}>;
+  templateFunction: Handlebars.TemplateDelegate<{
+    modules: ModuleMarkdown[],
+    showFrameworkUsage?: boolean,
+  }>;
 
   constructor() {
     this.docData = {};
@@ -79,18 +86,33 @@ class TypeScriptDocumentationGenerator {
     if (!docData) {
       console.error('FAILURE: Documentation generation did not compile correctly.'); // tslint:disable-line
     }
-    const markdownBuffer: {[s: string]: ModuleMarkdown[]} = {};
+    const markdownBuffer: MarkdownBuffer = {};
 
     this.docData = docData.typescript;
     Object.keys(this.docData).forEach((module) => {
       console.log(`-- generating docs for ${module}`); // tslint:disable-line
       const docs = this.generateDocsForModule(module);
       if (docs) {
-        const markdownComponentBuffer = markdownBuffer[docs.readmeDirectoryPath];
+        const {readmeDirectoryPath, moduleName} = docs;
+        if (!readmeDirectoryPath.includes('drawer')) {
+          return;
+        }
+        const markdownComponentBuffer = markdownBuffer[readmeDirectoryPath];
+        const isComponent =
+          !moduleName.toLowerCase().includes(FOUNDATION) && !moduleName.toLowerCase().includes(ADAPTER);
+
         if (markdownComponentBuffer) {
-          markdownComponentBuffer.push(docs);
+          if (isComponent) {
+            markdownComponentBuffer.component.push(docs);
+          } else {
+            markdownComponentBuffer.nonComponent.push(docs);
+          }
         } else {
-          markdownBuffer[docs.readmeDirectoryPath] = [docs];
+          if (isComponent) {
+            markdownBuffer[readmeDirectoryPath] = {component: [docs], nonComponent: []};
+          } else {
+            markdownBuffer[readmeDirectoryPath] = {component: [], nonComponent: [docs]};
+          }
         }
       }
     });
@@ -225,7 +247,7 @@ class TypeScriptDocumentationGenerator {
    * value is the module documentation in json format, ready to be
    * formatted into markdown.
    */
-  async generateMarkdownFileFromBuffer(markdownBuffer: {[s: string]: ModuleMarkdown[]}) {
+  async generateMarkdownFileFromBuffer(markdownBuffer: MarkdownBuffer) {
     for (const readmeDirectoryPath in markdownBuffer) {
       /**
        * This currently only has been tested on mdc-drawer.
@@ -259,15 +281,20 @@ class TypeScriptDocumentationGenerator {
    * @return Promise<{string}>
    */
   private async insertMethodDescriptionTable(
-    markdownBuffer: {[s: string]: ModuleMarkdown[]},
+    markdownBuffer: MarkdownBuffer,
     readmeDirectoryPath: string,
   ) {
     const readmeMarkdownPath = `./packages/${readmeDirectoryPath}/${README_FILE}`;
     const readmeMd = await readFile(readmeMarkdownPath, 'utf8');
-    const modules = markdownBuffer[readmeDirectoryPath]
+    const componentModules = markdownBuffer[readmeDirectoryPath].component
       .filter((module) => module.methods.length || module.properties.length || module.events.length)
       .sort(this.sortByModuleType);
-    const apiMarkdownTable = this.templateFunction({modules});
+    const nonComponentModules = markdownBuffer[readmeDirectoryPath].nonComponent
+      .filter((module) => module.methods.length || module.properties.length || module.events.length)
+      .sort(this.sortByModuleType);
+    const apiMarkdownTable =
+      this.templateFunction({modules: componentModules, showFrameworkUsage: true}) +
+      this.templateFunction({modules: nonComponentModules});
 
     const startReplacerToken
       = '<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->';
