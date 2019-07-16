@@ -1,6 +1,6 @@
 {
   "name": "@material/slider",
-  "version": "3.0.0",
+  "version": "3.1.0-alpha.0",
   "description": "The Material Components for the web slider component",
   "main": "dist/mdc.slider.js",
   "module": "index.js",
@@ -25,7 +25,7 @@
     "@material/dom": "^3.0.0",
     "@material/feature-targeting": "^3.0.0",
     "@material/rtl": "^3.0.0",
-    "@material/theme": "^3.0.0",
+    "@material/theme": "^3.1.0-alpha.0",
     "@material/typography": "^3.0.0",
     "tslib": "^1.9.3"
   }

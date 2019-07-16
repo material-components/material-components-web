@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.0](https://github.com/material-components/material-components-web/compare/v3.0.0...v3.1.0-alpha.0) (2019-07-16)
+
+
+### Bug Fixes
+
+* update TypeScript version to 3.5.x and fix typing errors ([#4853](https://github.com/material-components/material-components-web/issues/4853)) ([0657504](https://github.com/material-components/material-components-web/commit/0657504))
+* **checkbox:** Fixed checkbox container fill color when animati… ([#4879](https://github.com/material-components/material-components-web/issues/4879)) ([d393fb5](https://github.com/material-components/material-components-web/commit/d393fb5))
+* **checkbox:** Fixed hover focus colors for unchecked checkbox ([#4868](https://github.com/material-components/material-components-web/issues/4868)) ([1d8fbf5](https://github.com/material-components/material-components-web/commit/1d8fbf5))
+* **fab:** clear text decoration ([#4865](https://github.com/material-components/material-components-web/issues/4865)) ([b524a12](https://github.com/material-components/material-components-web/commit/b524a12))
+* **infrastructure:** support ssr by removing the reference from window ([#4864](https://github.com/material-components/material-components-web/issues/4864)) ([e5c5ea5](https://github.com/material-components/material-components-web/commit/e5c5ea5))
+* **menu:** Vertically center the group icon ([#4862](https://github.com/material-components/material-components-web/issues/4862)) ([d551dfd](https://github.com/material-components/material-components-web/commit/d551dfd))
+
+
+### Features
+
+* **data-table:** Added data table component ([#4889](https://github.com/material-components/material-components-web/issues/4889)) ([7d3380a](https://github.com/material-components/material-components-web/commit/7d3380a))
+* **drawer:** add feature targeting for styles ([#4877](https://github.com/material-components/material-components-web/issues/4877)) ([4d65d29](https://github.com/material-components/material-components-web/commit/4d65d29))
+* **slider:** add feature targeting for styles ([#4871](https://github.com/material-components/material-components-web/issues/4871)) ([3ee2675](https://github.com/material-components/material-components-web/commit/3ee2675))
+* **snackbar:** add feature targeting for styles ([#4876](https://github.com/material-components/material-components-web/issues/4876)) ([1b7aea1](https://github.com/material-components/material-components-web/commit/1b7aea1))
+
+
+
+
+
 # [3.0.0](https://github.com/material-components/material-components-web/compare/v2.3.1...v3.0.0) (2019-06-25)
 
 
