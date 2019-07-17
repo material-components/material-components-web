@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as Handlebars from 'handlebars';
 import * as path from 'path';
 import * as util from 'util';
+import { tsConstructorType } from '@babel/types';
 const readFile = util.promisify(fs.readFile);
 
 interface MarkdownBuffer {[s: string]: {
@@ -235,6 +236,9 @@ class TypeScriptDocumentationGenerator {
        * TODO: remove this if condition once all READMEs are generated
        */
       const allowList = [
+        'mdc-base',
+        'mdc-checkbox',
+        'mdc-chips',
         'mdc-drawer',
       ];
 

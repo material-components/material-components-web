@@ -30,6 +30,7 @@
  */
 export interface MDCChipSetAdapter {
   /**
+   * Returns whether the chip set element has the given class.
    * @return true if the root element contains the given class name.
    */
   hasClass(className: string): boolean;
