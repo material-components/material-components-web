@@ -62,6 +62,7 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
   }
 
   /**
+   * Sets the helper text as persistent.
    * @param isPersistent Sets the persistency of the helper text.
    */
   setPersistent(isPersistent: boolean) {
@@ -73,6 +74,7 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
   }
 
   /**
+   * Sets the helper text as a validation message.
    * @param isValidation True to make the helper text act as an error validation message.
    */
   setValidation(isValidation: boolean) {

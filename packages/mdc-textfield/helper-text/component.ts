@@ -33,6 +33,10 @@ export class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextF
     return new MDCTextFieldHelperText(root);
   }
 
+  /**
+   * Returns the helper text's foundation. This allows the parent `MDCTextField` component to
+   * access the public methods on the `MDCTextFieldHelperTextFoundation` class.
+   */
   get foundation(): MDCTextFieldHelperTextFoundation {
     return this.foundation_;
   }

@@ -31,6 +31,9 @@ import {MDCTopAppBarBaseFoundation} from './foundation';
 import {MDCShortTopAppBarFoundation} from './short/foundation';
 import {MDCTopAppBarFoundation} from './standard/foundation';
 
+/**
+ * @fires `MDCTopAppBar:nav {}` Emits when the navigation icon is clicked.
+ */
 export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   static attachTo(root: Element): MDCTopAppBar {
     return new MDCTopAppBar(root);
@@ -93,6 +96,9 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     super.destroy();
   }
 
+  /**
+   * Sets scroll target to different DOM node (default is window).
+   */
   setScrollTarget(target: EventTarget) {
     // Remove scroll handler from the previous scroll target
     this.scrollTarget_.removeEventListener('scroll', this.handleTargetScroll_ as EventListener);

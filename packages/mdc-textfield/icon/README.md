@@ -162,33 +162,48 @@ Mixin | Description
 --- | ---
 `mdc-text-field-icon-color($color, $styleSecondIcon: false)` | Customizes the color for the leading/trailing icons. If the `$styleSecondIcon` is `true` it will output the color to only apply to a trailing icon when used with a leading icon.
 
-## `MDCTextFieldIcon` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCTextFieldIcon
+#### Methods
 
-Property | Value Type | Description
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`foundation` | `MDCTextFieldIconFoundation` | Returns the icon's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldIconFoundation` class.
+foundation | `MDCTextFieldIconFoundation` | Returns the icon's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldIconFoundation` class.
 
-## Usage Within Frameworks
+## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Text Field Icon for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCTextFieldIconAdapter`
+### MDCTextFieldIconAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`getAttr(attr: string) => string` | Gets the value of an attribute on the icon element.
-`setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the icon element.
+`deregisterInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Deregisters an event listener on the icon element for a given event.
+`getAttr(attr: string) => string | null` | Gets the value of an attribute on the icon element.
+`notifyIconAction() => void` | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
+`registerInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Registers an event listener on the icon element for a given event.
 `removeAttr(attr: string) => void` | Removes an attribute from the icon element.
+`setAttr(attr: string, value: string) => void` | Sets an attribute on the icon element.
 `setContent(content: string) => void` | Sets the text content of the icon element.
-`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener for a given event.
-`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener for a given event.
-`notifyIconAction() => void` | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon, which bubbles to the top-level text field element.
 
-### `MDCTextFieldIconFoundation`
+### MDCTextFieldIconFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`setDisabled(disabled: boolean) => void` | Updates the icon's disabled state.
+`handleInteraction(evt: MouseEvent | KeyboardEvent) => void` | Handles a text field interaction event.
 `setAriaLabel(label: string) => void` | Updates the icon's aria-label.
 `setContent(content: string) => void` | Updates the icon's text content.
-`handleInteraction(evt: Event) => void` | Handles a text field interaction event.
+`setDisabled(disabled: boolean) => void` | Updates the icon's disabled state.
+
+
+<!-- docgen-tsdoc-replacer:end -->

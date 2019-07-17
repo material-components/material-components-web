@@ -33,6 +33,10 @@ export class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldChara
     return new MDCTextFieldCharacterCounter(root);
   }
 
+  /**
+   * Returns the character counter's foundation. This allows the parent `MDCTextField` component
+   * to access the public methods on the `MDCTextFieldCharacterCounterFoundation` class.
+   */
   get foundation(): MDCTextFieldCharacterCounterFoundation {
     return this.foundation_;
   }

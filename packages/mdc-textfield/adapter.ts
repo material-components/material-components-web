@@ -50,6 +50,7 @@ export interface MDCTextFieldRootAdapter {
   removeClass(className: string): void;
 
   /**
+   * Returns true if the root element contains the given class name.
    * @return true if the root element contains the given class name.
    */
   hasClass(className: string): boolean;
@@ -78,12 +79,19 @@ export interface MDCTextFieldRootAdapter {
 
 export interface MDCTextFieldInputAdapter {
   /**
+   * Returns an object representing the native text input element,
+   * with a similar API shape. We _never_ alter the value within our code,
+   * however we _do_ update the disabled property, so if you choose to duck-type
+   * the return value for this method in your implementation it's important
+   * to keep this in mind. Also note that this method can return null, which
+   * the foundation will handle gracefully. See [types.ts](types.ts).
    * @return The native `<input>` element, or an object with the same shape.
    * Note that this method can return null, which the foundation will handle gracefully.
    */
   getNativeInput(): MDCTextFieldNativeInputElement | null;
 
   /**
+   * Returns whether the input is focused.
    * @return true if the textfield is focused. We achieve this via `document.activeElement === this.root_`.
    */
   isFocused(): boolean;
@@ -113,11 +121,13 @@ export interface MDCTextFieldLabelAdapter {
   floatLabel(shouldFloat: boolean): void;
 
   /**
+   * Determines whether the text field has a label element.
    * @return true if label element exists, false if it doesn't.
    */
   hasLabel(): boolean;
 
   /**
+   * Returns the width of the label element in px.
    * Only implement if label exists.
    * @return width of label in pixels.
    */
@@ -126,35 +136,38 @@ export interface MDCTextFieldLabelAdapter {
 
 export interface MDCTextFieldLineRippleAdapter {
   /**
-   * Activates the line ripple.
+   * Activates the text field's line ripple sub-element.
    */
   activateLineRipple(): void;
 
   /**
-   * Deactivates the line ripple.
+   * Deactivate the text field's line ripple sub-element.
    */
   deactivateLineRipple(): void;
 
   /**
-   * Sets the transform origin of the line ripple.
+   * Sets the CSS `transform-origin` property to the given
+   * value on the text field's line ripple sub-element (if present).
    */
   setLineRippleTransformOrigin(normalizedX: number): void;
 }
 
 export interface MDCTextFieldOutlineAdapter {
   /**
+   * Determines whether the text field has an outline sub-element.
    * @return true if outline element exists, false if it doesn't.
    */
   hasOutline(): boolean;
 
   /**
+   * Sets the width of the text field's notched outline sub-element.
    * Only implement if outline element exists.
    */
   notchOutline(labelWidth: number): void;
 
   /**
+   * Closes the text field's notched outline sub-element.
    * Only implement if outline element exists.
-   * Closes notch in outline element.
    */
   closeOutline(): void;
 }
