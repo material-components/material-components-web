@@ -205,6 +205,9 @@ Signature | Description
 `setScrollTarget(target: EventTarget) => void` | Sets scroll target to different DOM node (default is window).
 `unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
+#### Events
+- `MDCTopAppBar:nav {}` Emits when the navigation icon is clicked.
+
 ## Usage within Web Frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
