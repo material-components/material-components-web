@@ -339,8 +339,8 @@ class TypeScriptDocumentationGenerator {
    */
   private shouldIgnoreDocumentationItem(item, opts = {hasDocumentation: true}) {
     // isState ignores cssClasses, defaultAdapter, strings
-    const {isProtected, isStatic} = item.flags;
-    return !isProtected && !isStatic && opts.hasDocumentation;
+    const {isPrivate, isStatic} = item.flags;
+    return !isPrivate && !isStatic && opts.hasDocumentation;
   }
 
   /**

@@ -486,10 +486,12 @@ Signature | Description
 `close() => void` | Closes the drawer from the open state.
 `handleKeydown(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
 `handleTransitionEnd(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
+`closed_() => void` | Extension point for when drawer finishes close animation.
 `isClosing() => boolean` | Returns true if the drawer is animating closed.
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
 `isOpening() => boolean` | Returns true if the drawer is animating open.
 `open() => void` | Opens the drawer from the closed state.
+`opened_() => void` | Extension point for when drawer finishes open animation.
 
 ### MDCModalDrawerFoundation
 #### Methods
@@ -500,10 +502,12 @@ Signature | Description
 `handleKeydown(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
 `handleScrimClick() => void` | Handles click event on scrim.
 `handleTransitionEnd(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
+`closed_() => void` | Called when drawer finishes close animation.
 `isClosing() => boolean` | Returns true if the drawer is animating closed.
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
 `isOpening() => boolean` | Returns true if the drawer is animating open.
 `open() => void` | Opens the drawer from the closed state.
+`opened_() => void` | Called when drawer finishes open animation.
 
 
 <!-- docgen-tsdoc-replacer:end -->
