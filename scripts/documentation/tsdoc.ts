@@ -94,9 +94,6 @@ class TypeScriptDocumentationGenerator {
       const docs = this.generateDocsForModule(module);
       if (docs) {
         const {readmeDirectoryPath, moduleName} = docs;
-        if (!readmeDirectoryPath.includes('drawer')) {
-          return;
-        }
         const markdownComponentBuffer = markdownBuffer[readmeDirectoryPath];
         const isComponent =
           !moduleName.toLowerCase().includes(FOUNDATION) && !moduleName.toLowerCase().includes(ADAPTER);
