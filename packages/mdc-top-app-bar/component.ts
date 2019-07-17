@@ -32,7 +32,7 @@ import {MDCShortTopAppBarFoundation} from './short/foundation';
 import {MDCTopAppBarFoundation} from './standard/foundation';
 
 /**
- * @fires `MDCTopAppBar:nav {}` Emits when the navigation icon is clicked.
+ * @events `MDCTopAppBar:nav {}` Emits when the navigation icon is clicked.
  */
 export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   static attachTo(root: Element): MDCTopAppBar {
