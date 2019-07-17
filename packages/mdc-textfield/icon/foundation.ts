@@ -79,6 +79,10 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
     });
   }
 
+  /**
+   * Updates the icon's disabled state.
+   * @param disabled state of the icon
+   */
   setDisabled(disabled: boolean) {
     if (!this.savedTabIndex_) {
       return;
@@ -93,14 +97,25 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
     }
   }
 
+  /**
+   * Updates the icon's aria-label.
+   * @param label aria label of the icon
+   */
   setAriaLabel(label: string) {
     this.adapter_.setAttr('aria-label', label);
   }
 
+  /**
+   * Updates the icon's text content.
+   * @param content text content of the icon
+   */
   setContent(content: string) {
     this.adapter_.setContent(content);
   }
 
+  /**
+   * Handles a text field interaction event.
+   */
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
     const isEnterKey = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
     if (evt.type === 'click' || isEnterKey) {

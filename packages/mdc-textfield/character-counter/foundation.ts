@@ -47,6 +47,11 @@ export class MDCTextFieldCharacterCounterFoundation extends MDCFoundation<MDCTex
     super({...MDCTextFieldCharacterCounterFoundation.defaultAdapter, ...adapter});
   }
 
+  /**
+   * Sets the character counter values including characters used and total character limit.
+   * @param currentLength current length of input value
+   * @param maxLength maximum length of the input value
+   */
   setCounterValue(currentLength: number, maxLength: number) {
     currentLength = Math.min(currentLength, maxLength);
     this.adapter_.setContent(`${currentLength} / ${maxLength}`);

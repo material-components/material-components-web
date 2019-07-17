@@ -27,6 +27,9 @@ import {MDCTopAppBarBaseFoundation} from '../foundation';
 
 export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   // Public visibility for backward compatibility.
+  /**
+   * Indicates whether the short top app bar is in the collapsed state.
+   */
   get isCollapsed(): boolean {
     return this.isCollapsed_;
   }

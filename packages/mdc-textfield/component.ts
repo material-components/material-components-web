@@ -62,6 +62,10 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
 
+  /**
+   * The `MDCRipple` instance for the root element that `MDCTextField` initializes;
+   * this only applies to the default Text Field, and is `null` for other variants.
+   */
   ripple!: MDCRipple | null; // assigned in initialize()
 
   // The only required sub-element.
@@ -173,6 +177,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   /**
+   * Proxies to the foundation's `getValue`/`setValue` methods.
    * @param value The value to set on the input.
    */
   set value(value: string) {
@@ -184,6 +189,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   /**
+   * Proxies to the foundation's `isDisabled`/`setDisabled` methods.
    * @param disabled Sets the Text Field disabled or enabled.
    */
   set disabled(disabled: boolean) {
@@ -195,6 +201,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   /**
+   * Proxies to the foundation's `isValid`/`setValid` methods.
    * @param valid Sets the Text Field valid or invalid.
    */
   set valid(valid: boolean) {
@@ -285,6 +292,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
 
   /**
    * Sets the helper text element content.
+   * Proxies to the foundation's `setHelperTextContent` method when set.
    */
   set helperTextContent(content: string) {
     this.foundation_.setHelperTextContent(content);
@@ -292,6 +300,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
 
   /**
    * Sets the aria label of the leading icon.
+   * Proxies to the foundation's `setLeadingIconAriaLabel` method.
    */
   set leadingIconAriaLabel(label: string) {
     this.foundation_.setLeadingIconAriaLabel(label);
@@ -299,6 +308,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
 
   /**
    * Sets the text content of the leading icon.
+   * Proxies to the foundation's `setLeadingIconContent` method.
    */
   set leadingIconContent(content: string) {
     this.foundation_.setLeadingIconContent(content);
@@ -306,6 +316,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
 
   /**
    * Sets the aria label of the trailing icon.
+   * Proxies to the foundation's `setTrailingIconAriaLabel` method.
    */
   set trailingIconAriaLabel(label: string) {
     this.foundation_.setTrailingIconAriaLabel(label);
@@ -313,6 +324,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
 
   /**
    * Sets the text content of the trailing icon.
+   * Proxies to the foundation's `setTrailingIconContent` method.
    */
   set trailingIconContent(content: string) {
     this.foundation_.setTrailingIconContent(content);
@@ -320,6 +332,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
 
   /**
    * Enables or disables the use of native validation. Use this for custom validation.
+   * Proxies to the foundation's `setUseNativeValidation` method.
    * @param useNativeValidation Set this to false to ignore native input validation.
    */
   set useNativeValidation(useNativeValidation: boolean) {
@@ -327,14 +340,14 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   /**
-   * Focuses the input element.
+   * Focuses the `input` or `textarea` element.
    */
   focus() {
     this.input_.focus();
   }
 
   /**
-   * Recomputes the outline SVG path for the outline element.
+   * Adjusts the dimensions and positions for all sub-elements.
    */
   layout() {
     const openNotch = this.foundation_.shouldFloat;

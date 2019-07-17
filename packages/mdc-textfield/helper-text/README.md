@@ -83,33 +83,48 @@ Mixin | Description
 `mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
 `mdc-text-field-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
 
-## `MDCTextFieldHelperText` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCTextFieldHelperText
+#### Methods
 
-Property | Value Type | Description
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`foundation` | `MDCTextFieldHelperTextFoundation` | Returns the helper text's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldHelperTextFoundation` class.
+foundation | `MDCTextFieldHelperTextFoundation` | Returns the helper text's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldHelperTextFoundation` class.
 
-## Usage Within Frameworks
+## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Helper Text for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCTextFieldHelperTextAdapter`
+### MDCTextFieldHelperTextAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the helper text element.
+`hasClass(className: string) => boolean` | Returns whether or not the helper text element contains the given class.
+`removeAttr(attr: string) => void` | Removes an attribute from the helper text element.
 `removeClass(className: string) => void` | Removes a class from the helper text element.
-`hasClass(className: string) => boolean` | Returns true if classname exists for the helper text element.
 `setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the helper text element.
-`removeAttr(attr: string) => void` | Removes an attribute on the helper text element.
-`setContent(attr: string) => void` | Sets the text content for the helper text element.
+`setContent(content: string) => void` | Sets the text content for the helper text element.
 
-### `MDCTextFieldHelperTextFoundation`
+### MDCTextFieldHelperTextFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`setContent(content: string) => void` | Sets the content of the helper text.
+`setContent(content: string) => void` | Sets the content of the helper text field.
 `setPersistent(isPersistent: boolean) => void` | Sets the helper text as persistent.
 `setValidation(isValidation: boolean) => void` | Sets the helper text as a validation message.
-`showToScreenReader() => void` | Makes the helper text visible to the screen reader.
 `setValidity(inputIsValid: boolean) => void` | Sets the validity of the helper text based on the input validity.
+`showToScreenReader() => void` | Makes the helper text visible to the screen reader.
+
+
+<!-- docgen-tsdoc-replacer:end -->

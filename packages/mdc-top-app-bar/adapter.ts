@@ -54,8 +54,14 @@ export interface MDCTopAppBarAdapter {
    */
   getTopAppBarHeight(): number;
 
+  /**
+   * Gets the number of pixels that the content of body is scrolled from the top of the page.
+   */
   getViewportScrollY(): number;
 
+  /**
+   * Gets the number of action items in the top app bar.
+   */
   getTotalActionItems(): number;
 
   /**

@@ -194,51 +194,76 @@ Mixin | Description
 `mdc-top-app-bar-fill-color-accessible($color)` | Sets the fill color of the top app bar and automatically sets a high-contrast ink color.
 `mdc-top-app-bar-short-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to short top app bar variant (when it is collapsed) with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to true.
 
-## `MDCTopAppBar` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCTopAppBar
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`setScrollTarget(target: element) => void` | Sets scroll target to different DOM node (default is window).
-
-### Events
-
-Event Name | Event Data Structure | Description
---- | --- | ---
-`MDCTopAppBar:nav` | None | Emits when the navigation icon is clicked.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`setScrollTarget(target: EventTarget) => void` | Sets scroll target to different DOM node (default is window).
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Top App Bar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCTopAppBarAdapter`
+### MDCTopAppBarAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element of the component.
-`removeClass(className: string) => void` | Removes a class from the root element of the component.
-`hasClass(className: string) => boolean` | Checks if the root element of the component has the given className.
-`setStyle(property: string, value: string) => void` | Sets the specified CSS property to the given value on the root element.
-`getTopAppBarHeight() => number` | Gets the height in px of the top app bar.
-`getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.
+`addClass(className: string) => void` | Adds a class to the root Element.
+`getTopAppBarHeight() => number` | Gets the height of the top app bar.
 `getTotalActionItems() => number` | Gets the number of action items in the top app bar.
-`notifyNavigationIconClicked() => void` | Emits a custom event `MDCTopAppBar:nav` when the navigation icon is clicked.
+`getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.
+`hasClass(className: string) => boolean` | Returns true if the root Element contains the given class.
+`notifyNavigationIconClicked() => void` | Emits an event when the navigation icon is clicked.
+`removeClass(className: string) => void` | Removes a class from the root Element.
+`setStyle(property: string, value: string) => void` | Sets the specified inline style property on the root Element to the given value.
 
-### Foundations
+### MDCFixedTopAppBarFoundation
+#### Methods
 
-#### `MDCTopAppBarBaseFoundation`, `MDCTopAppBarFoundation`, `MDCFixedTopAppBarFoundation` and `MDCShortTopAppBarFoundation`
-
-All foundations provide the following methods:
-
-Method Signature | Description
+Signature | Description
 --- | ---
-`handleTargetScroll() => void` | Handles `scroll` event on specified scrollTarget (defaults to `window`).
-`handleWindowResize() => void` | Handles `resize` event on window.
 `handleNavigationClick() => void` | Handles `click` event on navigation icon.
+`handleTargetScroll() => void` | Scroll handler for applying/removing the modifier class on the fixed top app bar.  @override
+`handleWindowResize() => void` | Top app bar resize handler that throttle/debounce functions that execute updates.  @override
 
-#### `MDCShortTopAppBarFoundation`
+### MDCShortTopAppBarFoundation
+#### Methods
 
-In addition to the methods above, the short variant provides the following public properties:
+Signature | Description
+--- | ---
+`handleNavigationClick() => void` | Handles `click` event on navigation icon.
+`handleTargetScroll() => void` | Scroll handler for applying/removing the collapsed modifier class on the short top app bar.  @override
+`handleWindowResize() => void` | Handles `resize` event on window. Other variants of TopAppBar foundation overrides this method
 
-Property | Value Type | Description
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`isCollapsed` | `boolean` (read-only) | Indicates whether the short top app bar is in the collapsed state.
+isCollapsed | `boolean` | Indicates whether the short top app bar is in the collapsed state.
+
+### MDCTopAppBarBaseFoundation
+#### Methods
+
+Signature | Description
+--- | ---
+`handleNavigationClick() => void` | Handles `click` event on navigation icon.
+`handleTargetScroll() => void` | Handles `scroll` event on specified scrollTarget (defaults to `window`). Other variants of TopAppBar foundation overrides this method
+`handleWindowResize() => void` | Handles `resize` event on window. Other variants of TopAppBar foundation overrides this method
+
+### MDCTopAppBarFoundation
+#### Methods
+
+Signature | Description
+--- | ---
+`handleNavigationClick() => void` | Handles `click` event on navigation icon.
+`handleTargetScroll() => void` | Scroll handler for the default scroll behavior of the top app bar.  @override
+`handleWindowResize() => void` | Top app bar resize handler that throttle/debounce functions that execute updates.  @override
+
+
+<!-- docgen-tsdoc-replacer:end -->

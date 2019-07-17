@@ -36,6 +36,11 @@ type InteractionEventType = 'click' | 'keydown';
 const POINTERDOWN_EVENTS: PointerDownEventType[] = ['mousedown', 'touchstart'];
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
+/**
+ * `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon.
+ * The foundations of these sub-elements must be passed in as constructor arguments to
+ * `MDCTextFieldFoundation`.
+ */
 export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   static get cssClasses() {
     return cssClasses;
@@ -54,10 +59,16 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     return ALWAYS_FLOAT_TYPES.indexOf(type) >= 0;
   }
 
+  /**
+   * Determines whether the label should float.
+   */
   get shouldFloat(): boolean {
     return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_();
   }
 
+  /**
+   * Determines whether the label should shake.
+   */
   get shouldShake(): boolean {
     return !this.isFocused_ && !this.isValid() && Boolean(this.getValue());
   }
@@ -167,7 +178,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * Handles user interactions with the Text Field.
+   * Handles click and keydown events originating from inside the Text Field component.
    */
   handleTextFieldInteraction() {
     const nativeInput = this.adapter_.getNativeInput();
@@ -213,7 +224,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * Activates the text field focus state.
+   * Activates the focus state of the Text Field. Normally called in response to the input focus event.
    */
   activateFocus() {
     this.isFocused_ = true;
@@ -242,7 +253,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * Handles input change of text input and text area.
+   * Handles text input and textarea input event.
    */
   handleInput() {
     this.autoCompleteFocus();
@@ -251,7 +262,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
 
   /**
    * Activates the Text Field's focus state in cases when the input value
-   * changes without user input (e.g. programmatically).
+   * is changed programmatically (i.e., without user action).
    */
   autoCompleteFocus() {
     if (!this.receivedUserInput_) {
@@ -260,7 +271,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * Deactivates the Text Field's focus state.
+   * Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
    */
   deactivateFocus() {
     this.isFocused_ = false;
@@ -278,11 +289,15 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     }
   }
 
+  /**
+   * Returns the input's value.
+   */
   getValue(): string {
     return this.getNativeInput_().value;
   }
 
   /**
+   * Sets the input's value.
    * @param value The value to set on the input Element.
    */
   setValue(value: string): void {
@@ -301,6 +316,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
+   * Returns the component's current validity state (either native or custom,
+   * depending on how `setUseNativeValidation()` was configured).
    * @return The custom validity state, if set; otherwise, the result of a native validity check.
    */
   isValid(): boolean {
@@ -309,6 +326,9 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
+   * Sets custom validity and updates styles accordingly. Note that native
+   * validation will still be honored subsequently unless `setUseNativeValidation(false)`
+   * is also called.
    * @param isValid Sets the custom validity state of the Text Field.
    */
   setValid(isValid: boolean): void {
@@ -322,18 +342,24 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * Enables or disables the use of native validation. Use this for custom validation.
+   * Sets whether to check native HTML validity state (`true`, default)
+   * or custom validity state when updating styles (`false`).
+   * Enables or disables the use of native validation.
    * @param useNativeValidation Set this to false to ignore native input validation.
    */
   setUseNativeValidation(useNativeValidation: boolean): void {
     this.useNativeValidation_ = useNativeValidation;
   }
 
+  /**
+   * Returns whether or not the input is disabled.
+   */
   isDisabled(): boolean {
     return this.getNativeInput_().disabled;
   }
 
   /**
+   * Updates the input's disabled state.
    * @param disabled Sets the text-field disabled or enabled.
    */
   setDisabled(disabled: boolean): void {
@@ -342,6 +368,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
+   * Sets the content of the helper text.
    * @param content Sets the content of the helper text.
    */
   setHelperTextContent(content: string): void {

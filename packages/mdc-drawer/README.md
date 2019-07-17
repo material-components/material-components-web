@@ -451,7 +451,7 @@ Signature | Description
 
 Name | Type | Description
 --- | --- | ---
-open | boolean | Toggles the drawer open and closed.
+open | `boolean` | Toggles the drawer open and closed.
 
 #### Events
 - `MDCDrawer:closed {}` Emits when the navigation drawer has closed.
