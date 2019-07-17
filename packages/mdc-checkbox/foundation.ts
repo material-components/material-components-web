@@ -72,6 +72,10 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     clearTimeout(this.animEndLatchTimer_);
   }
 
+  /**
+   * Updates the `disabled` property on the underlying input. Does nothing when the underlying input is not present.
+   * @param disabled
+   */
   setDisabled(disabled: boolean) {
     this.adapter_.setNativeControlDisabled(disabled);
     if (disabled) {
@@ -82,7 +86,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 
   /**
-   * Handles the animationend event for the checkbox
+   * Event handler that should be applied to the root element.
    */
   handleAnimationEnd() {
     if (!this.enableAnimationEndHandler_) {
@@ -98,7 +102,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 
   /**
-   * Handles the change event for the checkbox
+   * Event handler that should be applied to the checkbox element.
    */
   handleChange() {
     this.transitionCheckState_();

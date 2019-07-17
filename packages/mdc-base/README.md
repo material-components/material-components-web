@@ -150,29 +150,33 @@ export class MyComponent extends MDCComponent {
   }
 }
 ```
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCComponent
+#### Methods
+
+Signature | Description
+--- | ---
+`destroy() => void` | Subclasses may override this method if they wish to perform any additional cleanup work when a component is destroyed. For example, a component may want to deregister a window resize listener.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Dispatches a custom event of type `type` with detail `data` from the component's root node. It also takes an optional shouldBubble argument to specify if the event should bubble. This is the preferred way of dispatching events within our vanilla components.
+`getDefaultFoundation() => FoundationType` | Returns an instance of a foundation class properly configured for the component. Called when no foundation instance is given within the constructor. Subclasses **must** implement this method.
+`initialSyncWithDOM() => void` | Called within the constructor. Subclasses may override this method if they wish to perform initial synchronization of state with the host DOM element. For example, a slider may want to check if its host element contains a pre-set value, and adjust its internal state accordingly. Note that the same caveats apply to this method as to foundation class lifecycle methods. Defaults to a no-op.
+`initialize(..._args: Array<unknown>) => void` | Called after the root element is attached to the component, but _before_ the foundation is instantiated. Any positional arguments passed to the component constructor after the root element, along with the optional foundation 2nd argument, will be provided to this method. This is a good place to do any setup work normally done within a constructor function.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events. Note that this is simply a proxy to `this.root_.removeEventListener`.
 
 #### Properties
 
-`MDCComponent` provides the following "private" properties to subclasses:
+Name | Type | Description
+--- | --- | ---
+foundation_ | `FoundationType` | The foundation class for this component. This is either passed in as an optional second argument to the constructor, or assigned the result of calling `getDefaultFoundation()`
+root_ | `Element` | The root element passed into the constructor as the first argument.
 
-| property | description |
-| --- | --- |
-| `root_` | The root element passed into the constructor as the first argument. |
-| `foundation_` | The foundation class for this component. This is either passed in as an optional second argument to the constructor, or assigned the result of calling `getDefaultFoundation()` |
+## Usage within Web Frameworks
 
-#### Methods
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-`MDCComponent` provides the following methods to subclasses:
 
-| method | description |
-| --- | --- |
-| `initialize(...args)` | Called after the root element is attached to the component, but _before_ the foundation is instantiated. Any positional arguments passed to the component constructor after the root element, along with the optional foundation 2nd argument, will be provided to this method. This is a good place to do any setup work normally done within a constructor function. |
-| `getDefaultFoundation()` | Returns an instance of a foundation class properly configured for the component. Called when no foundation instance is given within the constructor. Subclasses **must** implement this method. |
-| `initialSyncWithDOM()` | Called within the constructor. Subclasses may override this method if they wish to perform initial synchronization of state with the host DOM element. For example, a slider may want to check if its host element contains a pre-set value, and adjust its internal state accordingly. Note that the same caveats apply to this method as to foundation class lifecycle methods. Defaults to a no-op. |
-| `destroy()` | Subclasses may override this method if they wish to perform any additional cleanup work when a component is destroyed. For example, a component may want to deregister a window resize listener. |
-| `listen(type: string, handler: EventListener)` | Adds an event listener to the component's root node for the given `type`. Note that this is simply a proxy to `this.root_.addEventListener`. |
-| `unlisten(type: string, handler: EventListener)` | Removes an event listener from the component's root node. Note that this is simply a proxy to `this.root_.removeEventListener`. |
-| `emit(type: string, data: Object, shouldBubble: boolean = false)` | Dispatches a custom event of type `type` with detail `data` from the component's root node. It also takes an optional shouldBubble argument to specify if the event should bubble. This is the preferred way of dispatching events within our vanilla components. |
+<!-- docgen-tsdoc-replacer:end -->
 
 #### Static Methods
 

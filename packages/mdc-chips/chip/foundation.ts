@@ -73,10 +73,17 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     super({...MDCChipFoundation.defaultAdapter, ...adapter});
   }
 
+  /**
+   * Returns true if the chip is selected.
+   */
   isSelected() {
     return this.adapter_.hasClass(cssClasses.SELECTED);
   }
 
+  /**
+   * Sets the chip's selected state.
+   * @param selected
+   */
   setSelected(selected: boolean) {
     if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
@@ -88,14 +95,24 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.adapter_.notifySelection(selected);
   }
 
+  /**
+   * Returns whether a trailing icon click should trigger exit/removal of the chip.
+   */
   getShouldRemoveOnTrailingIconClick() {
     return this.shouldRemoveOnTrailingIconClick_;
   }
 
+  /**
+   * Sets whether a trailing icon click should trigger exit/removal of the chip
+   * @param shouldRemove
+   */
   setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) {
     this.shouldRemoveOnTrailingIconClick_ = shouldRemove;
   }
 
+  /**
+   * Returns the dimensions of the chip. This is used for applying ripple to the chip.
+   */
   getDimensions(): ClientRect {
     const getRootRect = () => this.adapter_.getRootBoundingClientRect();
     const getCheckmarkRect = () => this.adapter_.getCheckmarkBoundingClientRect();

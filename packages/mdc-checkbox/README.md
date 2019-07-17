@@ -140,38 +140,55 @@ In browsers that fully support CSS variables, MDC Checkbox references CSS variab
 However, due to Edge's buggy CSS variable support, the `background-color` for `.mdc-checkbox__background::before` will not honor CSS variables in Edge.
 This means you will need to override this style manually for Edge if you alter the CSS variable for the primary color.
 
-## `MDCCheckbox` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCCheckbox
+#### Methods
 
-Property Name | Type | Description
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Dispatches a custom event of type `type` with detail `data` from the component's root node. It also takes an optional shouldBubble argument to specify if the event should bubble. This is the preferred way of dispatching events within our vanilla components.
+`initialize(..._args: Array<unknown>) => void` | Called after the root element is attached to the component, but _before_ the foundation is instantiated. Any positional arguments passed to the component constructor after the root element, along with the optional foundation 2nd argument, will be provided to this method. This is a good place to do any setup work normally done within a constructor function.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events. Note that this is simply a proxy to `this.root_.removeEventListener`.
+
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`checked` | `boolean` | Setter/getter for the checkbox's checked state
-`indeterminate` | `boolean` | Setter/getter for the checkbox's indeterminate state
-`disabled` | `boolean` | Setter/getter for the checkbox's disabled state
-`value` | `string` | Setter/getter for the checkbox's
+checked | `boolean` | Setter/getter for the checkbox's checked state.
+disabled | `boolean` | Setter/getter for the checkbox's disabled state.
+foundation_ | `MDCCheckboxFoundation` | The foundation class for this component. This is either passed in as an optional second argument to the constructor, or assigned the result of calling `getDefaultFoundation()`
+indeterminate | `boolean` | Setter/getter for the checkbox's indeterminate state.
+value | `string` | Setter/getter for the checkbox.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Checkbox for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCCheckboxAdapter`
+### MDCCheckboxAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
-`removeClass(className: string) => void` | Removes a class from the root element.
-`forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op.
+`forceLayout() => void` | Removes a class from the root element.
+`hasNativeControl() => boolean` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op.
 `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise.
-`isIndeterminate() => boolean` | Returns true if the component is in the indeterminate state.
-`isChecked() => boolean` | Returns true if the component is checked.
-`hasNativeControl() => boolean` | Returns true if the input is present in the component.
-`setNativeControlDisabled(disabled: boolean) => void` | Sets the input to disabled.
+`isChecked() => boolean` | Returns true if the component is in the indeterminate state.
+`isIndeterminate() => boolean` | Returns true if the component is checked.
+`removeClass(className: string) => void` | Returns true if the input is present in the component.
+`removeNativeControlAttr(attr: string) => void` | Sets the input to disabled.
 `setNativeControlAttr(attr: string, value: string) => void` | Sets an HTML attribute to the given value on the native input element.
-`removeNativeControlAttr(attr: string) => void` | Removes an attribute from the native input element.
+`setNativeControlDisabled(disabled: boolean) => void` | Removes an attribute from the native input element.
 
-### `MDCCheckboxFoundation`
+### MDCCheckboxFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
+`handleAnimationEnd() => void` | Event handler that should be applied to the root element.
+`handleChange() => void` | Event handler that should be applied to the checkbox element.
 `setDisabled(disabled: boolean) => void` | Updates the `disabled` property on the underlying input. Does nothing when the underlying input is not present.
-`handleAnimationEnd() => void` | `animationend` event handler that should be applied to the root element.
-`handleChange() => void` | `change` event handler that should be applied to the checkbox element.
+
+
+<!-- docgen-tsdoc-replacer:end -->

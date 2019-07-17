@@ -443,15 +443,17 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 
 Signature | Description
 --- | ---
-`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Dispatches a custom event of type `type` with detail `data` from the component's root node. It also takes an optional shouldBubble argument to specify if the event should bubble. This is the preferred way of dispatching events within our vanilla components.
 `listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
-`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events. Note that this is simply a proxy to `this.root_.removeEventListener`.
 
 #### Properties
 
 Name | Type | Description
 --- | --- | ---
+foundation_ | `MDCDismissibleDrawerFoundation` | The foundation class for this component. This is either passed in as an optional second argument to the constructor, or assigned the result of calling `getDefaultFoundation()`
 open | `boolean` | Toggles the drawer open and closed.
+root_ | `Element` | The root element passed into the constructor as the first argument.
 
 #### Events
 - `MDCDrawer:closed {}` Emits when the navigation drawer has closed.

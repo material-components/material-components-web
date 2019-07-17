@@ -29,14 +29,55 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCCheckboxAdapter {
+  /**
+   * Adds a class to the root element.
+   */
   addClass(className: string): void;
+
+  /**
+   * Removes a class from the root element.
+   */
   forceLayout(): void;
+
+  /**
+   * Force-trigger a layout on the root element. This is needed to
+   * restart animations correctly. If you find that you do not need to do this, you can
+   * simply make it a no-op.
+   */
   hasNativeControl(): boolean;
+
+  /**
+   * Returns true if the component is currently attached to the DOM, false otherwise.
+   */
   isAttachedToDOM(): boolean;
+
+  /**
+   * Returns true if the component is in the indeterminate state.
+   */
   isChecked(): boolean;
+
+  /**
+   * Returns true if the component is checked.
+   */
   isIndeterminate(): boolean;
+
+  /**
+   * Returns true if the input is present in the component.
+   */
   removeClass(className: string): void;
+
+  /**
+   * Sets the input to disabled.
+   */
   removeNativeControlAttr(attr: string): void;
+
+  /**
+   * Sets an HTML attribute to the given value on the native input element.
+   */
   setNativeControlAttr(attr: string, value: string): void;
+
+  /**
+   * Removes an attribute from the native input element.
+   */
   setNativeControlDisabled(disabled: boolean): void;
 }

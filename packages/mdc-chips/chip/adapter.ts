@@ -40,6 +40,7 @@ export interface MDCChipAdapter {
   removeClass(className: string): void;
 
   /**
+   * Returns true if the root element contains the given class.
    * @return true if the root element contains the given class.
    */
   hasClass(className: string): boolean;
@@ -55,6 +56,7 @@ export interface MDCChipAdapter {
   removeClassFromLeadingIcon(className: string): void;
 
   /**
+   * Returns true if target has className, false otherwise.
    * @return true if target has className, false otherwise.
    */
   eventTargetHasClass(target: EventTarget | null, className: string): boolean;
@@ -62,26 +64,38 @@ export interface MDCChipAdapter {
   /**
    * Emits a custom "MDCChip:interaction" event denoting the chip has been
    * interacted with (typically on click or keydown).
+   * Notifies the Chip Set that the chip has been interacted with.
+   * \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target
+   * chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
    */
   notifyInteraction(): void;
 
   /**
    * Emits a custom "MDCChip:selection" event denoting the chip has been selected or deselected.
+   * Notifies the Chip Set that the chip has been selected or deselected.
+   * \*_NOTE_: `notifySelection` must pass along the target chip's ID and selected state, and must be observable
+   * by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
    */
   notifySelection(selected: boolean): void;
 
   /**
    * Emits a custom "MDCChip:trailingIconInteraction" event denoting the trailing icon has been
-   * interacted with (typically on click or keydown).
+   * interacted with (typically on click or keydown). Notifies the Chip Set that the chip's trailing
+   * icon has been interacted with.
+   * \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID,
+   * and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
    */
   notifyTrailingIconInteraction(): void;
 
   /**
    * Emits a custom event "MDCChip:removal" denoting the chip will be removed.
+   * \*_NOTE_: `notifyRemoval` must pass along the target chip's ID and its root element,
+   * and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
    */
   notifyRemoval(): void;
 
   /**
+   * Returns the computed property value of the given style property on the root element.
    * @return The computed property value of the given style property on the root element.
    */
   getComputedStyleValue(propertyName: string): string;
@@ -92,6 +106,7 @@ export interface MDCChipAdapter {
   setStyleProperty(propertyName: string, value: string): void;
 
   /**
+   * Returns whether the chip has a leading icon.
    * @return Whether the chip has a leading icon.
    */
   hasLeadingIcon(): boolean;
@@ -102,6 +117,7 @@ export interface MDCChipAdapter {
   getRootBoundingClientRect(): ClientRect;
 
   /**
+   * Returns the bounding client rect of the root element.
    * @return The bounding client rect of the checkmark element or null if it doesn't exist.
    */
   getCheckmarkBoundingClientRect(): ClientRect | null;

@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as Handlebars from 'handlebars';
 import * as path from 'path';
 import * as util from 'util';
+import { tsConstructorType } from '@babel/types';
 const readFile = util.promisify(fs.readFile);
 
 interface MarkdownBuffer {[s: string]: {
@@ -162,6 +163,7 @@ class TypeScriptDocumentationGenerator {
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
   getDocumentationForEvents(esmodule: string): ModuleEvent[] {
+    console.log(this.docData[esmodule].documentation.contents)
     return (this.docData[esmodule].documentation.contents as DocumentationContent[])
       .filter((content) => content.tag && content.tag === 'events')
       .map((content) => ({documentation: content.value}));
@@ -251,6 +253,9 @@ class TypeScriptDocumentationGenerator {
        * TODO: remove this if condition once all READMEs are generated
        */
       const allowList = [
+        'mdc-base',
+        'mdc-checkbox',
+        'mdc-chips',
         'mdc-drawer',
       ];
 
