@@ -76,6 +76,12 @@ export interface MDCListAdapter {
   isRootFocused(): boolean;
 
   /**
+   * @param index list item index.
+   * @return true if root element is disabled.
+   */
+  isListItemDisabled(index: number): boolean;
+
+  /**
    * Sets the checked status of checkbox or radio at given list item index.
    */
   setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean): void;

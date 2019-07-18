@@ -158,13 +158,14 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       },
       isCheckboxCheckedAtIndex: (index) => {
         const listItem = this.listElements[index];
-        const toggleEl = listItem.querySelector<HTMLInputElement>(strings.CHECKBOX_SELECTOR);
+        const toggleEl = listItem.querySelector<HTMLInputElement>(strings.ENABLED_CHECKBOX_SELECTOR);
         return toggleEl!.checked;
       },
       isFocusInsideList: () => {
         return this.root_.contains(document.activeElement);
       },
       isRootFocused: () => document.activeElement === this.root_,
+      isListItemDisabled: (index) => this.listElements[index].classList.contains(cssClasses.LIST_ITEM_DISABLED_CLASS),
       notifyAction: (index) => {
         this.emit<MDCListActionEventDetail>(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },
@@ -182,7 +183,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       },
       setCheckedCheckboxOrRadioAtIndex: (index, isChecked) => {
         const listItem = this.listElements[index];
-        const toggleEl = listItem.querySelector<HTMLInputElement>(strings.CHECKBOX_RADIO_SELECTOR);
+        const toggleEl = listItem.querySelector<HTMLInputElement>(strings.ENABLED_CHECKBOX_RADIO_SELECTOR);
         toggleEl!.checked = isChecked;
 
         const event = document.createEvent('Event');

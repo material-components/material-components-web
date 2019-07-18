@@ -484,3 +484,19 @@ test('adapter#isRootFocused returns true if list root is on focus', () => {
   assert.isTrue(component.getDefaultFoundation().adapter_.isRootFocused());
   document.body.removeChild(root);
 });
+
+test('adapter#isListItemDisabled returns true list item has disabled class', () => {
+  const {root, component} = setupTest();
+  root.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`)[0]
+    .classList.add(cssClasses.LIST_ITEM_DISABLED_CLASS);
+  document.body.appendChild(root);
+  assert.isTrue(component.getDefaultFoundation().adapter_.isListItemDisabled(0));
+  document.body.removeChild(root);
+});
+
+test('adapter#isListItemDisabled returns false list item does not have disabled class', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  assert.isFalse(component.getDefaultFoundation().adapter_.isListItemDisabled(0));
+  document.body.removeChild(root);
+});

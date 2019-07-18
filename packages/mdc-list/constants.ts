@@ -40,7 +40,9 @@ const strings = {
   ARIA_ROLE_CHECKBOX_SELECTOR: '[role="checkbox"]',
   ARIA_SELECTED: 'aria-selected',
   CHECKBOX_RADIO_SELECTOR: 'input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled)',
+  ENABLED_CHECKBOX_RADIO_SELECTOR: 'input[type="checkbox"], input[type="radio"]',
   CHECKBOX_SELECTOR: 'input[type="checkbox"]:not(:disabled)',
+  ENABLED_CHECKBOX_SELECTOR: 'input[type="checkbox"]',
   CHILD_ELEMENTS_TO_TOGGLE_TABINDEX: `
     .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
     .${cssClasses.LIST_ITEM_CLASS} a
