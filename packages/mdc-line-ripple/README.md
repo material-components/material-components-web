@@ -65,34 +65,44 @@ Mixin | Description
 --- | ---
 `mdc-line-ripple-color($color)` | Customizes the color of the line ripple when active.
 
-## `MDCLineRipple` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCLineRipple
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`activate() => void` | Proxies to the foundation's `activate()` method.
-`deactivate() => void` | Proxies to the foundation's `deactivate()` method.
-`setRippleCenter(xCoordinate: number) => void` | Proxies to the foundation's `setRippleCenter(xCoordinate: number)` method.
+`activate() => void` | Activates the line ripple. Proxies to the foundation's `activate()` method.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`deactivate() => void` | Deactivates the line ripple. Proxies to the foundation's `deactivate()` method.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`setRippleCenter(xCoordinate: number) => void` | Sets the transform origin given a user's click location. The `rippleCenter` is the x-coordinate of the middle of the ripple. Proxies to the foundation's `setRippleCenter(xCoordinate: number)` method.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
-## Usage Within Frameworks
+## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Line Ripple for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCLineRippleAdapter`
+### MDCLineRippleAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element.
-`removeClass(className: string) => void` | Removes a class from the root element.
+`addClass(className: string) => void` | Adds a class to the line ripple element.
+`deregisterEventHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Deregisters an event listener on the line ripple element for a given event.
 `hasClass(className: string) => boolean` | Determines whether the root element has the given CSS class name.
+`registerEventHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Registers an event listener on the line ripple element for a given event.
+`removeClass(className: string) => void` | Removes a class from the line ripple element.
 `setStyle(propertyName: string, value: string) => void` | Sets the style property with `propertyName` to `value` on the root element.
-`registerEventHandler(evtType: EventType, handler: EventListener) => void` | Registers an event listener on the root element for a given event.
-`deregisterEventHandler(evtType: EventType, handler: EventListener) => void` | Deregisters an event listener on the root element for a given event.
 
-### `MDCLineRippleFoundation`
+### MDCLineRippleFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
 `activate() => void` | Activates the line ripple.
-`deactivate() => void` |  Deactivates the line ripple.
+`deactivate() => void` | Deactivates the line ripple.
+`handleTransitionEnd(evt: TransitionEvent) => void` | Handles a `transitionend` event.
 `setRippleCenter(xCoordinate: number) => void` | Sets the center of the ripple to the `xCoordinate` given.
-`handleTransitionEnd(evt: Event) => void` | Handles a `transitionend` event.
+
+
+<!-- docgen-tsdoc-replacer:end -->
