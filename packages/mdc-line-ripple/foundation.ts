@@ -63,19 +63,33 @@ export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter>
     this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
   }
 
+  /**
+   * Activates the line ripple.
+   */
   activate() {
     this.adapter_.removeClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
     this.adapter_.addClass(cssClasses.LINE_RIPPLE_ACTIVE);
   }
 
+  /**
+   * Sets the center of the ripple to the `xCoordinate` given.
+   * @param xCoordinate x-coordinate of where ripple should originate.
+   */
   setRippleCenter(xCoordinate: number) {
     this.adapter_.setStyle('transform-origin', `${xCoordinate}px center`);
   }
 
+  /**
+   * Deactivates the line ripple.
+   */
   deactivate() {
     this.adapter_.addClass(cssClasses.LINE_RIPPLE_DEACTIVATING);
   }
 
+  /**
+   * Handles a `transitionend` event.
+   * @param evt transition event object.
+   */
   handleTransitionEnd(evt: TransitionEvent) {
     // Wait for the line ripple to be either transparent or opaque
     // before emitting the animation end event

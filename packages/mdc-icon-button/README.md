@@ -165,34 +165,48 @@ Mixin | Description
 `mdc-icon-button-size($width, $height, $padding)` | Sets the width, height, font-size and padding for the icon and ripple. `$height` is optional and defaults to `$width`. `$padding` is optional and defaults to `max($width, $height)/2`. `font-size` is set to `max($width, $height)`.
 `mdc-icon-button-ink-color($color)` | Sets the font color and the ripple color to the provided color value.
 
-## `MDCIconButtonToggle` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCIconButtonToggle
+#### Methods
 
-Property | Value Type | Description
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`on` | Boolean | Sets the toggle state to the provided `isOn` value.
+on | `boolean` | Sets the toggle state to the provided `isOn` value.
 
-### Events
-
-Event Name | Event Data Structure | Description
---- | --- | ---
-`MDCIconButtonToggle:change` | `{"detail": {"isOn": boolean}}` | Emits when the icon is toggled.
+#### Events
+- `MDCIconButtonToggle:change {"detail": {"isOn": boolean}}` Emits when the icon is toggled.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create an Icon Button Toggle for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCIconButtonToggleAdapter`
+### MDCIconButtonToggleAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
-`removeClass(className: string) => void` | Removes a class from the root element.
 `hasClass(className: string) => boolean` | Determines whether the root element has the given CSS class name.
-`setAttr(name: string, value: string) => void` | Sets the attribute `name` to `value` on the root element.
-`notifyChange(evtData: {isOn: boolean}) => void` | Broadcasts a change notification, passing along the `evtData` to the environment's event handling system. In our vanilla implementation, Custom Events are used for this.
+`notifyChange(evtData: MDCIconButtonToggleEventDetail) => void` | Broadcasts a change notification, passing along the `evtData` to the environment's event handling system. In our vanilla implementation, Custom Events are used for this.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`setAttr(attrName: string, attrValue: string) => void` | Sets the attribute `name` to `value` on the root element.
 
-### Foundation: `MDCIconButtonToggleFoundation`
+### MDCIconButtonToggleFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`handleClick()` | Event handler triggered on the click event. It will toggle the icon from on/off and update aria attributes.
+`handleClick() => void` | Event handler triggered on the click event. It will toggle the icon from on/off and update aria attributes.
+`isOn() => boolean` | Returns true if the root element has the on-class
+`toggle(isOn?: undefined | false | true) => void` | Toggles the icon button to the on/off state.
+
+
+<!-- docgen-tsdoc-replacer:end -->

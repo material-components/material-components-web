@@ -60,6 +60,9 @@ export class MDCGridListFoundation extends MDCFoundation<MDCGridListAdapter> {
     this.adapter_.deregisterResizeHandler(this.resizeHandler_);
   }
 
+  /**
+   * Centers tiles horizontally within their parent container.
+   */
   alignCenter() {
     cancelAnimationFrame(this.resizeFrame_);
     this.resizeFrame_ = requestAnimationFrame(() => {
