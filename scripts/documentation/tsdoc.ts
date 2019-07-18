@@ -48,18 +48,13 @@ const README_FILE = 'README.md';
 class TypeScriptDocumentationGenerator {
   docData?: {}; // Documentalist representation of methods/properties/events
   templateFunction: Handlebars.TemplateDelegate<{
-    modules: ModuleMarkdown[],
-    showFrameworkUsage?: boolean,
+    componentModules: ModuleMarkdown[],
+    nonComponentModules: ModuleMarkdown[],
   }>;
 
   constructor() {
     this.docData = {};
-    fs.readFile('./scripts/documentation/api-markdown-table-template.hbs', 'utf8', (error, template) => {
-      if (error) {
-        console.error(error); // tslint:disable-line
-      }
-      this.templateFunction = Handlebars.compile(template, {noEscape: true});
-    });
+    this.setupTemplates();
   }
 
   /**
@@ -68,6 +63,7 @@ class TypeScriptDocumentationGenerator {
    * @returns Promise<{}>
    */
   async generateJSONFromFiles() {
+    if (!this.templateFunction) console.log('AHHHHHH MEOW')
     return await new Documentalist()
       .use(/\.ts$/, new TypescriptPlugin({
         excludePaths: ['node_modules'],
@@ -269,6 +265,13 @@ class TypeScriptDocumentationGenerator {
     }
   }
 
+  private setupTemplates() {
+    const tablesTemplate = fs.readFileSync('./scripts/documentation/ts-api-tables.hbs', 'utf8');
+    const tableTemplate = fs.readFileSync('./scripts/documentation/ts-api-table.hbs', 'utf8');
+    Handlebars.registerPartial('tsApiTable', tableTemplate);
+    this.templateFunction = Handlebars.compile(tablesTemplate, {noEscape: true});
+  }
+
   /**
    * Returns a promise, that resolves with the finalized markdown with
    * inserted documentation in markdown table format.
@@ -292,8 +295,10 @@ class TypeScriptDocumentationGenerator {
       .filter((module) => module.methods.length || module.properties.length || module.events.length)
       .sort(this.sortByModuleType);
     const apiMarkdownTable =
-      this.templateFunction({modules: componentModules, showFrameworkUsage: true}) +
-      this.templateFunction({modules: nonComponentModules});
+      this.templateFunction({
+        componentModules,
+        nonComponentModules
+      });
 
     const startReplacerToken
       = '<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->';
