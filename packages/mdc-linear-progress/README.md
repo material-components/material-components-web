@@ -84,11 +84,7 @@ Mixin | Description
 `mdc-linear-progress-bar-color($color)` | Sets the color of the progress bar
 `mdc-linear-progress-buffer-color($color)` | Sets the color of the buffer bar and dots
 
-### Using the Foundation Class
-
-MDC Linear Progress ships with an `MDCLinearProgressFoundation` class that external frameworks and libraries can
-use to integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for linear progress must provide the following functions, with correct signatures:
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
 
 | Method Signature | Description |
 | --- | --- |
@@ -124,3 +120,4 @@ MDC Linear Progress exposes the following methods:
 | `set reverse(value: boolean) => void` | Reverses the direction of the linear progress indicator. |
 | `open() => void` | Puts the component in the open state. |
 | `close() => void` | Puts the component in the closed state. |
+<!-- docgen-tsdoc-replacer:end -->

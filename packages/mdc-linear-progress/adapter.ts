@@ -29,10 +29,34 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCLinearProgressAdapter {
+  /**
+   * Adds a class to the root element.
+   * @param className 
+   */
   addClass(className: string): void;
+  /**
+   * Returns the buffer element.
+   */
   getBuffer(): HTMLElement | null;
+  /**
+   * Returns the primary bar element.
+   */
   getPrimaryBar(): HTMLElement | null;
+  /**
+   * Returns boolean indicating whether the root element has a given class.
+   * @param className
+   */
   hasClass(className: string): boolean;
+  /**
+   * Removes a class from the root element.
+   * @param className
+   */
   removeClass(className: string): void;
+  /**
+   * Sets the inline style on the given element.
+   * @param el
+   * @param styleProperty
+   * @param value
+   */
   setStyle(el: HTMLElement, styleProperty: string, value: string): void;
 }

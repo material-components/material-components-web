@@ -60,6 +60,10 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
     this.progress_ = 0;
   }
 
+  /**
+   * Toggles the component between the determinate and indeterminate state.
+   * @param isDeterminate 
+   */
   setDeterminate(isDeterminate: boolean) {
     this.isDeterminate_ = isDeterminate;
     if (this.isDeterminate_) {
@@ -72,6 +76,10 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
     }
   }
 
+  /**
+   * Sets the progress bar to this value. Value should be between [0, 1].
+   * @param value 
+   */
   setProgress(value: number) {
     this.progress_ = value;
     if (this.isDeterminate_) {
@@ -79,12 +87,20 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
     }
   }
 
+  /**
+   * Sets the buffer bar to this value. Value should be between [0, 1].
+   * @param value 
+   */
   setBuffer(value: number) {
     if (this.isDeterminate_) {
       this.setScale_(this.adapter_.getBuffer(), value);
     }
   }
 
+  /**
+   * Reverses the direction of the linear progress indicator.
+   * @param isReversed 
+   */
   setReverse(isReversed: boolean) {
     this.isReversed_ = isReversed;
     if (this.isReversed_) {
@@ -94,10 +110,16 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
     }
   }
 
+  /**
+   * Puts the component in the open state.
+   */
   open() {
     this.adapter_.removeClass(cssClasses.CLOSED_CLASS);
   }
 
+  /**
+   * Puts the component in the closed state.
+   */
   close() {
     this.adapter_.addClass(cssClasses.CLOSED_CLASS);
   }

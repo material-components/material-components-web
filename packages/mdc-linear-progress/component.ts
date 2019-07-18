@@ -30,26 +30,44 @@ export class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation>
     return new MDCLinearProgress(root);
   }
 
+  /**
+   * Toggles the component between the determinate and indeterminate state.
+   */
   set determinate(value: boolean) {
     this.foundation_.setDeterminate(value);
   }
 
+  /**
+   * Sets the progress bar to this value. Value should be between [0, 1].
+   */
   set progress(value: number) {
     this.foundation_.setProgress(value);
   }
 
+  /**
+   * Sets the buffer bar to this value. Value should be between [0, 1].
+   */
   set buffer(value: number) {
     this.foundation_.setBuffer(value);
   }
 
+  /**
+   * Reverses the direction of the linear progress indicator.
+   */
   set reverse(value: boolean) {
     this.foundation_.setReverse(value);
   }
 
+  /**
+   * Puts the component in the open state.
+   */
   open() {
     this.foundation_.open();
   }
 
+  /**
+   * Puts the component in the closed state.
+   */
   close() {
     this.foundation_.close();
   }
