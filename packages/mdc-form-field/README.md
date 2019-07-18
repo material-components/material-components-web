@@ -75,35 +75,24 @@ By default, the input will be positioned before the label. You can position the 
   <label for="my-checkbox">This is my checkbox</label>
 </div>
 ```
-<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
-### MDCFormField
-#### Methods
 
-Signature | Description
---- | ---
-`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
-`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
-`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+## `MDCFormField` Properties and Methods
 
-#### Properties
-
-Name | Type | Description
+Property | Value Type | Description
 --- | --- | ---
-input | `MDCFormFieldInput | undefined` | Gets and sets the form field input. In order for the label ripple integration to work correctly, the `input` property needs to be set to a valid instance of an MDC Web input element which exposes a `ripple` getter. No action is taken if the `input` property is not set or the input instance doesn't expose a `ripple` getter.
+`input` | String | Gets and sets the form field input. 
+
+In order for the label ripple integration to work correctly, the `input` property needs to be set to a valid instance of an MDC Web input element which exposes a `ripple` getter. No action is taken if the `input` property is not set or the input instance doesn't expose a `ripple` getter.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Form Field for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### MDCFormFieldAdapter
-#### Methods
+### `MDCFormFieldAdapter`
 
-Signature | Description
---- | ---
-`activateInputRipple() => void` | Activates the ripple on the input element. Should call `activate` on the input element's `ripple` property.
-`deactivateInputRipple() => void` | Deactivates the ripple on the input element. Should call `deactivate` on the input element's `ripple` property.
-`deregisterInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Removes an event listener `handler` for event type `type` to the label.
-`registerInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Adds an event listener `handler` for event type `type` to the label.
-
-
-<!-- docgen-tsdoc-replacer:end -->
+| Method Signature | Description |
+| --- | --- |
+| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the label. |
+| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` to the label. |
+| `activateInputRipple() => void` | Activates the ripple on the input element. Should call `activate` on the input element's `ripple` property. |
+| `deactivateInputRipple() => void` | Deactivates the ripple on the input element. Should call `deactivate` on the input element's `ripple` property. |

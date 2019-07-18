@@ -261,38 +261,19 @@ it, or its ancestors, have a `dir="rtl"` attribute.
 color for its background color. `mdc-grid-tile__secondary` uses the theme's primary
 color for its background color, and the theme's `on-primary` color for its text color.
 
-<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
-### MDCGridList
-#### Methods
+### `MDCGridListFoundation`
 
-Signature | Description
---- | ---
-`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
-`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
-`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
-
-## Usage within Web Frameworks
-
-If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
-
-### MDCGridListAdapter
-#### Methods
-
-Signature | Description
---- | ---
-`deregisterResizeHandler(handler: EventListener) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize()` event.
-`getNumberOfTiles() => number` | Get the number of mdc-grid-tile elements contained within the grid list.
-`getOffsetWidth() => number` | Get root element `mdc-grid-list` offsetWidth.
-`getOffsetWidthForTileAtIndex(index: number) => number` | Get offsetWidth of `mdc-grid-tile` at specified index.
-`registerResizeHandler(handler: EventListener) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize()` event.
-`setStyleForTilesElement(property: Exclude<keyof CSSStyleDeclaration, "length" | "parentRule">, value: string | null) => void` | Set `mdc-grid-list__tiles` style property to provided value.
-
-### MDCGridListFoundation
-#### Methods
-
-Signature | Description
+Method Signature | Description
 --- | ---
 `alignCenter() => void` | Centers tiles horizontally within their parent container.
 
+### `MDCGridListAdapter`
 
-<!-- docgen-tsdoc-replacer:end -->
+Method Signature | Description
+--- | ---
+`getOffsetWidth() => number` | Get root element `mdc-grid-list` offsetWidth.
+`getNumberOfTiles() => number` | Get the number of mdc-grid-tile elements contained within the grid list.
+`getOffsetWidthForTileAtIndex(index: number) => number` | Get offsetWidth of `mdc-grid-tile` at specified index.
+`setStyleForTilesElement(property: string, value: number) => void` | Set `mdc-grid-list__tiles` style property to provided value.
+`registerResizeHandler(handler: EventListener) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize()` event.
+`deregisterResizeHandler(handler: EventListener) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize()` event.

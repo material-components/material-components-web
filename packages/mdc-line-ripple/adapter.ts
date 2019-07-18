@@ -41,14 +41,10 @@ export interface MDCLineRippleAdapter {
    */
   removeClass(className: string): void;
 
-  /**
-   * Determines whether the root element has the given CSS class name.
-   * @param className
-   */
   hasClass(className: string): boolean;
 
   /**
-   * Sets the style property with `propertyName` to `value` on the root element.
+   * Sets the style property with propertyName to value on the root element.
    */
   setStyle(propertyName: string, value: string): void;
 

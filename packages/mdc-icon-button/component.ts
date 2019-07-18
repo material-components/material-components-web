@@ -30,9 +30,6 @@ import {MDCIconButtonToggleEventDetail} from './types';
 
 const {strings} = MDCIconButtonToggleFoundation;
 
-/**
- * @events `MDCIconButtonToggle:change {"detail": {"isOn": boolean}}` Emits when the icon is toggled.
- */
 export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   static attachTo(root: HTMLElement) {
     return new MDCIconButtonToggle(root);
@@ -75,9 +72,6 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     return this.foundation_.isOn();
   }
 
-  /**
-   * Sets the toggle state to the provided `isOn` value.
-   */
   set on(isOn: boolean) {
     this.foundation_.toggle(isOn);
   }

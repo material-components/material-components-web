@@ -29,36 +29,11 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCGridListAdapter {
-  /**
-   * Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation
-   * removes the handler as a listener to the window's `resize()` event.
-   * @param handler callback function on resize event.
-   */
   deregisterResizeHandler(handler: EventListener): void;
-  /**
-   * Get the number of mdc-grid-tile elements contained within the grid list.
-   */
   getNumberOfTiles(): number;
-  /**
-   * Get root element `mdc-grid-list` offsetWidth.
-   */
   getOffsetWidth(): number;
-  /**
-   * Get offsetWidth of `mdc-grid-tile` at specified index.
-   * @param index grid list item index
-   */
   getOffsetWidthForTileAtIndex(index: number): number;
-  /**
-   * Registers a handler to be called when the surface (or its viewport)
-   * resizes. Our default implementation adds the handler as a listener to the window's `resize()` event.
-   * @param handler callback function on resize event.
-   */
   registerResizeHandler(handler: EventListener): void;
-  /**
-   * Set `mdc-grid-list__tiles` style property to provided value.
-   * @param property css property name
-   * @param value value to be set on css property
-   */
   setStyleForTilesElement(
       property: Exclude<keyof CSSStyleDeclaration, ('length' | 'parentRule')>, value: string | null,
   ): void;

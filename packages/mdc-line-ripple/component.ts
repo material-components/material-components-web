@@ -33,16 +33,14 @@ export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
   }
 
   /**
-   * Activates the line ripple.
-   * Proxies to the foundation's `activate()` method.
+   * Activates the line ripple
    */
   activate() {
     this.foundation_.activate();
   }
 
   /**
-   * Deactivates the line ripple.
-   * Proxies to the foundation's `deactivate()` method.
+   * Deactivates the line ripple
    */
   deactivate() {
     this.foundation_.deactivate();
@@ -51,7 +49,6 @@ export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
   /**
    * Sets the transform origin given a user's click location.
    * The `rippleCenter` is the x-coordinate of the middle of the ripple.
-   * Proxies to the foundation's `setRippleCenter(xCoordinate: number)` method.
    */
   setRippleCenter(xCoordinate: number) {
     this.foundation_.setRippleCenter(xCoordinate);

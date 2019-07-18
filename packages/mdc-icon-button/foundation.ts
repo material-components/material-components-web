@@ -52,25 +52,15 @@ export class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonTo
     this.adapter_.setAttr(strings.ARIA_PRESSED, `${this.isOn()}`);
   }
 
-  /**
-   * Event handler triggered on the click event. It will toggle the icon from on/off and update aria attributes.
-   */
   handleClick() {
     this.toggle();
     this.adapter_.notifyChange({isOn: this.isOn()});
   }
 
-  /**
-   * Returns true if the root element has the on-class
-   */
   isOn(): boolean {
     return this.adapter_.hasClass(cssClasses.ICON_BUTTON_ON);
   }
 
-  /**
-   * Toggles the icon button to the on/off state.
-   * @param isOn boolean to toggle on/off.
-   */
   toggle(isOn: boolean = !this.isOn()) {
     if (isOn) {
       this.adapter_.addClass(cssClasses.ICON_BUTTON_ON);

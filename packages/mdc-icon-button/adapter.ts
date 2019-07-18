@@ -31,36 +31,13 @@ import {MDCIconButtonToggleEventDetail} from './types';
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCIconButtonToggleAdapter {
-  /**
-   * Adds a class to the root element.
-   * @param className class name to add to the root element.
-   */
   addClass(className: string): void;
 
-  /**
-   * Removes a class from the root element.
-   * @param className class name to remove from the root element.
-   */
   removeClass(className: string): void;
 
-  /**
-   * Determines whether the root element has the given CSS class name.
-   * @param className
-   */
   hasClass(className: string): boolean;
 
-  /**
-   * Sets the attribute `name` to `value` on the root element.
-   * @param attrName DOM node attribute to set value.
-   * @param attrValue value of the attribute to be set.
-   */
   setAttr(attrName: string, attrValue: string): void;
 
-  /**
-   * Broadcasts a change notification, passing along the `evtData` to
-   * the environment's event handling system. In our vanilla
-   * implementation, Custom Events are used for this.
-   * @param evtData {isOn: boolean}
-   */
   notifyChange(evtData: MDCIconButtonToggleEventDetail): void;
 }

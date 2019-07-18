@@ -31,24 +31,8 @@ import {EventType, SpecificEventListener} from '@material/base/types';
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCFormFieldAdapter {
-  /**
-   * Activates the ripple on the input element. Should call `activate` on the input element's `ripple` property.
-   */
   activateInputRipple(): void;
-  /**
-   * Deactivates the ripple on the input element. Should call `deactivate` on the input element's `ripple` property.
-   */
   deactivateInputRipple(): void;
-  /**
-   * Removes an event listener `handler` for event type `type` to the label.
-   * @param evtType type of event handler for deregistration.
-   * @param handler callback function after event is triggered.
-   */
   deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
-  /**
-   * Adds an event listener `handler` for event type `type` to the label.
-   * @param evtType type of event handler for registration.
-   * @param handler callback function after event is triggered.
-   */
   registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 }

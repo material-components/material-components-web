@@ -37,13 +37,6 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
 
   private input_?: MDCFormFieldInput;
 
-  /**
-   * Gets and sets the form field input. In order for the label ripple
-   * integration to work correctly, the `input` property needs to be set
-   * to a valid instance of an MDC Web input element which exposes a
-   * `ripple` getter. No action is taken if the `input` property is not
-   * set or the input instance doesn't expose a `ripple` getter.
-   */
   set input(input: MDCFormFieldInput | undefined) {
     this.input_ = input;
   }
