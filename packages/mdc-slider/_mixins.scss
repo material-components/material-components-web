@@ -113,9 +113,8 @@
 }
 
 @mixin mdc-slider-rail-tick-mark-color_($color) {
-  .mdc-slider__track-marker::after,
-  .mdc-slider__track-marker-container::after {
-    @include mdc-theme-prop(background-color, $color);
+  .mdc-slider__track-marker-container {
+    @include mdc-theme-prop(color, $color);
   }
 }
 

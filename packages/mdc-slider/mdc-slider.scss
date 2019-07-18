@@ -75,38 +75,8 @@
   }
 
   &__track-marker-container {
-    display: flex;
-    margin-right: 0;
-    margin-left: -1px;
+    height: 100%;
     visibility: hidden;
-
-    @include mdc-rtl(".mdc-slider") {
-      margin-right: -1px;
-      margin-left: 0;
-    }
-
-    // Last marker at the very end of the slider (right-most in LTR, left-most in RTL)
-    &::after {
-      display: block;
-      width: 2px;
-      height: 2px;
-      content: "";
-    }
-  }
-
-  &__track-marker {
-    flex: 1;
-
-    &::after {
-      display: block;
-      width: 2px;
-      height: 2px;
-      content: "";
-    }
-
-    &:first-child::after {
-      width: 3px;
-    }
   }
 
   &__thumb-container {
