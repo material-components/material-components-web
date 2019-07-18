@@ -66,17 +66,6 @@
       }
     }
 
-    // Target Windows high-contrast mode.
-    @media screen and (-ms-high-contrast: active) {
-      .mdc-list-item--disabled {
-        @include mdc-feature-targets($feat-structure) {
-          // Decrease opacity of the list item, not just the text color,
-          // or disabled items won't be differentiated in high contrast mode.
-          opacity: mdc-theme-text-emphasis(disabled);
-        }
-      }
-    }
-
     //stylelint-disable selector-no-qualifying-type
     a.mdc-list-item .mdc-list-item__text,
     a.mdc-list-item .mdc-list-item__graphic {
@@ -107,6 +96,9 @@
 
         display: none;
         position: absolute;
+        // IE11 requires the icon to be vertically centered due to its absolute positioning
+        top: 50%;
+        transform: translateY(-50%);
       }
     }
   }

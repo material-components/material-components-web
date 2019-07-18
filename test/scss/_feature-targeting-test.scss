@@ -3,6 +3,7 @@
 @import "@material/checkbox/mixins";
 @import "@material/chips/mixins";
 @import "@material/dialog/mixins";
+@import "@material/drawer/mixins";
 @import "@material/elevation/mixins";
 @import "@material/fab/mixins";
 @import "@material/form-field/mixins";
@@ -15,7 +16,12 @@
 @import "@material/radio/mixins";
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
+@import "@material/snackbar/mixins";
 @import "@material/switch/mixins";
+@import "@material/tab-bar/mixins";
+@import "@material/tab-scroller/mixins";
+@import "@material/tab-indicator/mixins";
+@import "@material/tab/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
@@ -88,6 +94,27 @@
     @include mdc-dialog-min-width(0, $query: $query);
     @include mdc-dialog-max-width(0, 0, $query: $query);
     @include mdc-dialog-max-height(0, 0, $query: $query);
+
+    // Drawer
+    @include mdc-drawer-core-styles($query: $query);
+    @include mdc-drawer-dismissible-core-styles($query: $query);
+    @include mdc-drawer-modal-core-styles($query: $query);
+    @include mdc-drawer-activated-overlay-color(red, $query: $query);
+    @include mdc-drawer-border-color(red, $query: $query);
+    @include mdc-drawer-item-shape-radius(42, $query: $query);
+    @include mdc-drawer-shape-radius(42, $query: $query);
+    @include mdc-drawer-divider-color(red, $query: $query);
+    @include mdc-drawer-title-ink-color(red, $query: $query);
+    @include mdc-drawer-subtitle-ink-color(red, $query: $query);
+    @include mdc-drawer-fill-color-accessible(red, $query: $query);
+    @include mdc-drawer-item-icon-ink-color(red, $query: $query);
+    @include mdc-drawer-item-activated-icon-ink-color(red, $query: $query);
+    @include mdc-drawer-item-activated-text-ink-color(red, $query: $query);
+    @include mdc-drawer-item-text-ink-color(red, $query: $query);
+    @include mdc-drawer-surface-fill-color(red, $query: $query);
+    @include mdc-drawer-scrim-fill-color(red, $query: $query);
+    @include mdc-drawer-z-index(1337, $query: $query);
+    @include mdc-drawer-width(1337px, $query: $query);
 
     // Elevation
     @include mdc-elevation-core-styles($query: $query);
@@ -176,6 +203,20 @@
     // Shape
     @include mdc-shape-radius(1px 2px, true, $query: $query);
 
+
+    // Snackbar
+    @include mdc-snackbar-core-styles($query: $query);
+    @include mdc-snackbar-fill-color(red, $query: $query);
+    @include mdc-snackbar-label-ink-color(red, $query: $query);
+    @include mdc-snackbar-shape-radius(1337, $query: $query);
+    @include mdc-snackbar-min-width(1337, $query: $query);
+    @include mdc-snackbar-max-width(1337, $query: $query);
+    @include mdc-snackbar-elevation(13, $query: $query);
+    @include mdc-snackbar-viewport-margin(1337, $query: $query);
+    @include mdc-snackbar-z-index(1337, $query: $query);
+    @include mdc-snackbar-position-leading($query: $query);
+    @include mdc-snackbar-layout-stacked($query: $query);
+
     // Switch
     @include mdc-switch-core-styles($query: $query);
     @include mdc-switch-toggled-on-color(on-surface, $query: $query);
@@ -188,6 +229,14 @@
     @include mdc-switch-toggled-off-thumb-color(on-surface, $query: $query);
     @include mdc-switch-ripple($query: $query);
     @include mdc-switch-without-ripple($query: $query);
+
+    // Tabs
+    @include mdc-tab-bar-core-styles($query: $query);
+    @include mdc-tab-scroller-core-styles($query: $query);
+    @include mdc-tab-indicator-core-styles($query: $query);
+    @include mdc-tab-core-styles($query: $query);
+    @include mdc-tab-without-ripple($query: $query);
+    @include mdc-tab-ripple($query: $query);
 
     // Theme
     @include mdc-theme-core-styles($query: $query);

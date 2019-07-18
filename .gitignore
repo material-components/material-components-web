@@ -23,3 +23,6 @@ packages/**/*.map
 
 # Used by internal sync & rewrite scripts
 .rewrite-tmp/
+
+# Individual CHANGELOG files
+packages/**/CHANGELOG.md

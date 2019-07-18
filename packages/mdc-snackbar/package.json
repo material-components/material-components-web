@@ -1,7 +1,7 @@
 {
   "name": "@material/snackbar",
   "description": "The Material Components for the web snackbar component",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -17,16 +17,17 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^1.0.0",
-    "@material/base": "^1.0.0",
-    "@material/button": "^2.3.0",
-    "@material/dom": "^1.1.0",
-    "@material/icon-button": "^2.3.0",
-    "@material/ripple": "^2.3.0",
-    "@material/rtl": "^0.42.0",
-    "@material/shape": "^1.1.1",
-    "@material/theme": "^1.1.0",
-    "@material/typography": "^2.3.0",
+    "@material/animation": "^3.0.0",
+    "@material/base": "^3.0.0",
+    "@material/button": "^3.0.0",
+    "@material/dom": "^3.0.0",
+    "@material/feature-targeting": "^3.0.0",
+    "@material/icon-button": "^3.0.0",
+    "@material/ripple": "^3.0.0",
+    "@material/rtl": "^3.0.0",
+    "@material/shape": "^3.0.0",
+    "@material/theme": "^3.0.0",
+    "@material/typography": "^3.0.0",
     "tslib": "^1.9.3"
   }
 }

@@ -1,3 +1,75 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [3.0.0](https://github.com/material-components/material-components-web/compare/v2.3.1...v3.0.0) (2019-06-25)
+
+
+### Bug Fixes
+
+* **checkbox:** screenshot test golden update ([#4735](https://github.com/material-components/material-components-web/issues/4735)) ([0b44494](https://github.com/material-components/material-components-web/commit/0b44494))
+* **chips:** Add box-sizing back to chip root ([#4807](https://github.com/material-components/material-components-web/issues/4807)) ([19a19b3](https://github.com/material-components/material-components-web/commit/19a19b3))
+* **chips:** Fix chips trailing icon margin ([#4720](https://github.com/material-components/material-components-web/issues/4720)) ([5de76bc](https://github.com/material-components/material-components-web/commit/5de76bc))
+* **dialog:** Add noflip annotations for GSS compiler. ([#4769](https://github.com/material-components/material-components-web/issues/4769)) ([d644e78](https://github.com/material-components/material-components-web/commit/d644e78))
+* **dialog:** Fix scrolling content overflowing on Chrome/Android. ([#4746](https://github.com/material-components/material-components-web/issues/4746)) ([3e9abda](https://github.com/material-components/material-components-web/commit/3e9abda))
+* **dialog:** Use 100vw for dialog max-width calculation. ([#4766](https://github.com/material-components/material-components-web/issues/4766)) ([d0b8c89](https://github.com/material-components/material-components-web/commit/d0b8c89)), closes [#4746](https://github.com/material-components/material-components-web/issues/4746)
+* **infrastructure:** Fix failing screenshot tests ([#4800](https://github.com/material-components/material-components-web/issues/4800)) ([a9a41cb](https://github.com/material-components/material-components-web/commit/a9a41cb))
+* **infrastructure:** update check-pkg-for-release.js ([#4857](https://github.com/material-components/material-components-web/issues/4857)) ([0cd775c](https://github.com/material-components/material-components-web/commit/0cd775c))
+* **menu:** Fix bug where TAB does not respect the default browser tab order. ([#4789](https://github.com/material-components/material-components-web/issues/4789)) ([22237cd](https://github.com/material-components/material-components-web/commit/22237cd))
+* **menu:** In Windows high contrast mode, decrease opacity of disabled menu items. ([#4777](https://github.com/material-components/material-components-web/issues/4777)) ([898e53e](https://github.com/material-components/material-components-web/commit/898e53e))
+* **menu:** Remove code to focus on first/last element on TAB/SHIFT+TAB. ([#4786](https://github.com/material-components/material-components-web/issues/4786)) ([99af567](https://github.com/material-components/material-components-web/commit/99af567))
+* **menu:** Switch from aria-selected to aria-checked for selected menu item. ([#4779](https://github.com/material-components/material-components-web/issues/4779)) ([f4b0bf5](https://github.com/material-components/material-components-web/commit/f4b0bf5))
+* **select:** Update screenshots for FF/Windows update. ([#4790](https://github.com/material-components/material-components-web/issues/4790)) ([6ea503c](https://github.com/material-components/material-components-web/commit/6ea503c))
+* move applyPassive to dom package for use in text-field ([#4747](https://github.com/material-components/material-components-web/issues/4747)) ([ce0b1c5](https://github.com/material-components/material-components-web/commit/ce0b1c5))
+* **tab-indicator:** Center content ([#4837](https://github.com/material-components/material-components-web/issues/4837)) ([102d778](https://github.com/material-components/material-components-web/commit/102d778))
+* **tabs:** Remove deprecated package mdc-tabs ([#4784](https://github.com/material-components/material-components-web/issues/4784)) ([4f366a5](https://github.com/material-components/material-components-web/commit/4f366a5))
+* **text-field:** Fix asterisk color of text field when input is invalid and disabled ([#4806](https://github.com/material-components/material-components-web/issues/4806)) ([24054ed](https://github.com/material-components/material-components-web/commit/24054ed))
+* remove icontoggle ([#4783](https://github.com/material-components/material-components-web/issues/4783)) ([a13089d](https://github.com/material-components/material-components-web/commit/a13089d))
+* remove icontoggle ([#4783](https://github.com/material-components/material-components-web/issues/4783)) ([5079213](https://github.com/material-components/material-components-web/commit/5079213))
+
+
+### Code Refactoring
+
+* **dialog:** Split dialog Foundation#handleInteraction into #handleClick/#handleKeydown. ([#4655](https://github.com/material-components/material-components-web/issues/4655)) ([d650390](https://github.com/material-components/material-components-web/commit/d650390))
+* **top-app-bar:** Remove [de]registerEventHandler methods from adapters ([#4701](https://github.com/material-components/material-components-web/issues/4701)) ([34bba89](https://github.com/material-components/material-components-web/commit/34bba89))
+* **top-app-bar:** Remove [de]registerEventHandler methods from adapters ([#4701](https://github.com/material-components/material-components-web/issues/4701)) ([d8fe135](https://github.com/material-components/material-components-web/commit/d8fe135))
+
+
+### Features
+
+* **checkbox:** Added mixin to customize checkbox touch dimension. ([#4697](https://github.com/material-components/material-components-web/issues/4697)) ([ff2873e](https://github.com/material-components/material-components-web/commit/ff2873e))
+* **chips:** Add setAttr adapter method ([#4736](https://github.com/material-components/material-components-web/issues/4736)) ([1e21acf](https://github.com/material-components/material-components-web/commit/1e21acf))
+* **chips:** Use semantic button elements ([#4627](https://github.com/material-components/material-components-web/issues/4627)) ([741124d](https://github.com/material-components/material-components-web/commit/741124d))
+* add feature targeting for styles to tab-related packages ([#4838](https://github.com/material-components/material-components-web/issues/4838)) ([c7efc10](https://github.com/material-components/material-components-web/commit/c7efc10))
+* **dialog:** Add Adapter#getInitialFocusEl. ([#4719](https://github.com/material-components/material-components-web/issues/4719)) ([1108307](https://github.com/material-components/material-components-web/commit/1108307))
+* **menu:** add setSelectedIndex to set selected item in menu selection group ([#4620](https://github.com/material-components/material-components-web/issues/4620)) ([3a280c6](https://github.com/material-components/material-components-web/commit/3a280c6))
+* **top-app-bar:** use mdc-icon-button styles instead of top app bar ([#4745](https://github.com/material-components/material-components-web/issues/4745)) ([f8c561c](https://github.com/material-components/material-components-web/commit/f8c561c))
+
+
+### BREAKING CHANGES
+
+* **tabs:** removed deprecated mdc-tabs package.
+* **chips:** Update mdc-chip-leading-icon-margin and mdc-chip-trailing-icon-margin mixins signatures to take only left and right margin values.
+* **chips:** Add the setAttr method to the chip adapter.
+* **top-app-bar:** Replaced adapter methods getParentElement, getSelectedElementIndex with getSelectedSiblingOfItemAtIndex, isSelectableItemAtIndex.
+* **dialog:** Dialog Adapter#getInitialFocusEl has been added and Adapter#trapFocus first argument is now the initialFocusEl.
+* **checkbox:** Removed `$mdc-checkbox-ui-pct` sass variable from `MDCCheckbox`
+* **menu:** Replaced adapter methods getParentElement, getSelectedElementIndex with getSelectedSiblingOfItemAtIndex, isSelectableItemAtIndex.
+* **dialog:** Dialog `Foundation#handleInteraction` has been split into two methods: `#handleClick` and `#handleKeydown`.
+* **menu:** The following adapter methods were removed: isFirstElementFocused, isLastElementFocused, focusFirstElement, focusLastElement. The following functionality to handle TAB on menusurface has been removed: "If TAB and last element is focused => Focus on first element", "If SHIFT + TAB and first element is focused => Focus on last element"
+* **chips:** Add the setAttr method to the chip adapter.
+* **top-app-bar:** Replaced adapter methods getParentElement, getSelectedElementIndex with getSelectedSiblingOfItemAtIndex, isSelectableItemAtIndex.
+* **dialog:** Dialog Adapter#getInitialFocusEl has been added and Adapter#trapFocus first argument is now the initialFocusEl.
+* **checkbox:** Removed `$mdc-checkbox-ui-pct` sass variable from `MDCCheckbox`
+* **menu:** Replaced adapter methods getParentElement, getSelectedElementIndex with getSelectedSiblingOfItemAtIndex, isSelectableItemAtIndex.
+* **dialog:** Dialog `Foundation#handleInteraction` has been split into two methods: `#handleClick` and `#handleKeydown`.
+* **chips:** Update mdc-chip-leading-icon-margin and mdc-chip-trailing-icon-margin mixins signatures to take only left and right margin values.
+
+
+
+
+
 <a name="2.3.1"></a>
 ## [2.3.1](https://github.com/material-components/material-components-web/compare/v2.3.0...v2.3.1) (2019-06-11)
 

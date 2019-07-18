@@ -23,6 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
+import {applyPassive} from '@material/dom/events';
 import {matches} from '@material/dom/ponyfill';
 import {MDCTabScrollerAdapter} from './adapter';
 import {MDCTabScrollerFoundation} from './foundation';
@@ -51,22 +52,22 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
     this.handleInteraction_ = () => this.foundation_.handleInteraction();
     this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
 
-    this.area_.addEventListener('wheel', this.handleInteraction_);
-    this.area_.addEventListener('touchstart', this.handleInteraction_);
-    this.area_.addEventListener('pointerdown', this.handleInteraction_);
-    this.area_.addEventListener('mousedown', this.handleInteraction_);
-    this.area_.addEventListener('keydown', this.handleInteraction_);
+    this.area_.addEventListener('wheel', this.handleInteraction_, applyPassive());
+    this.area_.addEventListener('touchstart', this.handleInteraction_, applyPassive());
+    this.area_.addEventListener('pointerdown', this.handleInteraction_, applyPassive());
+    this.area_.addEventListener('mousedown', this.handleInteraction_, applyPassive());
+    this.area_.addEventListener('keydown', this.handleInteraction_, applyPassive());
     this.content_.addEventListener('transitionend', this.handleTransitionEnd_);
   }
 
   destroy() {
     super.destroy();
 
-    this.area_.removeEventListener('wheel', this.handleInteraction_);
-    this.area_.removeEventListener('touchstart', this.handleInteraction_);
-    this.area_.removeEventListener('pointerdown', this.handleInteraction_);
-    this.area_.removeEventListener('mousedown', this.handleInteraction_);
-    this.area_.removeEventListener('keydown', this.handleInteraction_);
+    this.area_.removeEventListener('wheel', this.handleInteraction_, applyPassive());
+    this.area_.removeEventListener('touchstart', this.handleInteraction_, applyPassive());
+    this.area_.removeEventListener('pointerdown', this.handleInteraction_, applyPassive());
+    this.area_.removeEventListener('mousedown', this.handleInteraction_, applyPassive());
+    this.area_.removeEventListener('keydown', this.handleInteraction_, applyPassive());
     this.content_.removeEventListener('transitionend', this.handleTransitionEnd_);
   }
 
