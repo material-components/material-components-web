@@ -12,6 +12,7 @@ interface MarkdownBuffer {[s: string]: {
 interface ModuleMarkdown {
   methods?: ModuleMethod[];
   events?: ModuleEvent[];
+  examples?: ModuleExample[];
   properties?: ModuleProperty[];
   moduleName: string;
   readmeDirectoryPath: string;
@@ -19,9 +20,14 @@ interface ModuleMarkdown {
 
 interface ModuleDocumentation {
   events: ModuleEvent[];
+  examples: ModuleExample[];
 }
 
 interface ModuleEvent {
+  documentation: string;
+}
+
+interface ModuleExample {
   documentation: string;
 }
 
@@ -131,6 +137,7 @@ class TypeScriptDocumentationGenerator {
     }
     return {
       events: this.getDocumentationForModule(esmodule).events,
+      examples: this.getDocumentationForModule(esmodule).examples,
       methods: this.getDocumentationForMethods(esmodule),
       moduleName: esmodule,
       properties: this.getDocumentationProperties(esmodule),
@@ -148,23 +155,38 @@ class TypeScriptDocumentationGenerator {
     if (!this.docData
       || !this.docData[esmodule].documentation
       || !this.docData[esmodule].documentation.contents) {
-      return {events: []};
+      return {events: [], examples: []};
     }
     // this only returns event data
     return {
       events: this.getDocumentationForEvents(esmodule),
+      examples: this.getDocumentationForExamples(esmodule),
     };
   }
 
   /**
    * Iterates through all events documented in the specified `esmodule`.
-   * @returns list of events in the esmodule.
+   * @return list of events in the esmodule.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
   getDocumentationForEvents(esmodule: string): ModuleEvent[] {
     return (this.docData[esmodule].documentation.contents as DocumentationContent[])
       .filter((content) => content.tag && content.tag === 'events')
       .map((content) => ({documentation: content.value}));
+  }
+
+  /**
+   * Iterates through all examples documented in the specified `esmodule`.
+   * @return list of events in the esmodule.
+   * @param esmodule module name (ie. MDCSelectIconFoundation)
+   */
+  getDocumentationForExamples(esmodule: string): ModuleExample[] {
+    console.log(this.docData[esmodule].documentation)
+    const x = (this.docData[esmodule].documentation.contents as DocumentationContent[])
+      .filter((content) => content.tag && content.tag === 'example')
+      .map((content) => ({documentation: content.value}));
+    // x.forEach((content) => console.log(content));
+    return x;
   }
 
   /**
@@ -252,6 +274,9 @@ class TypeScriptDocumentationGenerator {
        */
       const allowList = [
         'mdc-drawer',
+        'mdc-data-table',
+        'mdc-dialog',
+        'mdc-floating-label',
       ];
 
       if (allowList.some((allowed) => readmeDirectoryPath.includes(allowed))) {

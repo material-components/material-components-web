@@ -439,6 +439,7 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 
 <!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
 ### MDCDrawer
+
 #### Methods
 
 Signature | Description
@@ -462,6 +463,7 @@ open | `boolean` | Toggles the drawer open and closed.
 If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### MDCDrawerAdapter
+
 #### Methods
 
 Signature | Description
@@ -479,6 +481,7 @@ Signature | Description
 `trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
 
 ### MDCDismissibleDrawerFoundation
+
 #### Methods
 
 Signature | Description
@@ -494,6 +497,7 @@ Signature | Description
 `opened_() => void` | Extension point for when drawer finishes open animation.
 
 ### MDCModalDrawerFoundation
+
 #### Methods
 
 Signature | Description

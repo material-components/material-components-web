@@ -1,5 +1,11 @@
 {{#each modules as |module|}}
 ### {{module.moduleName}}
+{{#if module.examples.length}}
+{{#each module.examples}}
+- {{documentation}}
+{{/each}}
+{{/if}}
+
 {{#if module.moduleName.length}}
 #### Methods
 

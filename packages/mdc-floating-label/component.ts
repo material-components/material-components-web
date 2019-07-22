@@ -33,7 +33,7 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
   }
 
   /**
-   * Styles the label to produce the label shake for errors.
+   * Styles the label to produce the label shake for errors. Proxies to the foundation's `shake()` method.
    * @param shouldShake If true, shakes the label by adding a CSS class; otherwise, stops shaking by removing the class.
    */
   shake(shouldShake: boolean) {
@@ -41,13 +41,16 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
   }
 
   /**
-   * Styles the label to float/dock.
+   * Styles the label to float/dock. Proxies to the foundation's `float()` method.
    * @param shouldFloat If true, floats the label by adding a CSS class; otherwise, docks it by removing the class.
    */
   float(shouldFloat: boolean) {
     this.foundation_.float(shouldFloat);
   }
 
+  /**
+   * Proxies to the foundation's `getWidth()` method.
+   */
   getWidth(): number {
     return this.foundation_.getWidth();
   }

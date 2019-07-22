@@ -34,7 +34,18 @@ import {MDCDialogFocusTrapFactory} from './util';
 
 const {strings} = MDCDialogFoundation;
 
+// tslint:disable:max-line-length
+/**
+ * @events `MDCDialog:opening {}` Indicates when the dialog begins its opening animation.
+ * @events `MDCDialog:opened {}` Indicates when the dialog finishes its opening animation.
+ * @events `MDCDialog:closing {action: string?}` Indicates when the dialog begins its closing animation. `action` represents the action which closed the dialog.
+ * @events `MDCDialog:closed {action: string?}` Indicates when the dialog finishes its closing animation. `action` represents the action which closed the dialog.
+ */
+// tslint:enable:max-line-length
 export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
+  /**
+   * Proxies to the foundation's `isOpen` method.
+   */
   get isOpen() {
     return this.foundation_.isOpen();
   }
@@ -43,6 +54,9 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     return this.foundation_.getEscapeKeyAction();
   }
 
+  /**
+   * Proxies to the foundation's `getEscapeKeyAction` and `setEscapeKeyAction` methods.
+   */
   set escapeKeyAction(action) {
     this.foundation_.setEscapeKeyAction(action);
   }
@@ -51,6 +65,9 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     return this.foundation_.getScrimClickAction();
   }
 
+  /**
+   * Proxies to the foundation's `getScrimClickAction` and `setScrimClickAction` methods.
+   */
   set scrimClickAction(action) {
     this.foundation_.setScrimClickAction(action);
   }
@@ -59,6 +76,9 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     return this.foundation_.getAutoStackButtons();
   }
 
+  /**
+   * Proxies to the foundation's `getAutoStackButtons` and `setAutoStackButtons` methods.
+   */
   set autoStackButtons(autoStack) {
     this.foundation_.setAutoStackButtons(autoStack);
   }
@@ -138,14 +158,24 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     super.destroy();
   }
 
+  /**
+   * Recalculates layout and automatically adds/removes modifier classes like `--scrollable`.
+   */
   layout() {
     this.foundation_.layout();
   }
 
+  /**
+   * Opens the dialog.
+   */
   open() {
     this.foundation_.open();
   }
 
+  /**
+   * Closes the dialog, optionally with the specified action indicating why it was closed.
+   * @param action Type of action that identifies that closes the diaglog component.
+   */
   close(action = '') {
     this.foundation_.close(action);
   }

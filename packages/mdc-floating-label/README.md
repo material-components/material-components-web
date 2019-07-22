@@ -87,32 +87,45 @@ Mixin | Description
 `mdc-floating-label-float-position($positionY, $positionX, $scale)` | Sets position of label when floating.
 `mdc-floating-label-max-width($max-width)` | Sets the max width of the label.
 
-## `MDCFloatingLabel` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCFloatingLabel
 
-Method Signature | Description
+#### Methods
+
+Signature | Description
 --- | ---
-`shake(shouldShake: boolean) => void` | Proxies to the foundation's `shake()` method.
-`float(shouldFloat: boolean) => void` | Proxies to the foundation's `float()` method.
+`float(shouldFloat: boolean) => void` | Styles the label to float/dock. Proxies to the foundation's `float()` method.
 `getWidth() => number` | Proxies to the foundation's `getWidth()` method.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`shake(shouldShake: boolean) => void` | Styles the label to produce the label shake for errors. Proxies to the foundation's `shake()` method.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
-## Usage Within Frameworks
+## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Floating Label for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCFloatingLabelAdapter`
+### MDCFloatingLabelAdapter
 
-Method Signature | Description
+#### Methods
+
+Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the label element.
+`deregisterInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Deregisters an event listener on the root element for a given event.
+`getWidth() => number` | Returns the width of the label element.
+`registerInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Registers an event listener on the root element for a given event.
 `removeClass(className: string) => void` | Removes a class from the label element.
-`getWidth() => number` | Returns the width of the label element.
-`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener for a given event.
-`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener for a given event.
 
-### `MDCFloatingLabelFoundation`
+### MDCFloatingLabelFoundation
 
-Method Signature | Description
+#### Methods
+
+Signature | Description
 --- | ---
-`shake(shouldShake: boolean)` | Shakes or stops shaking the label, depending on the value of `shouldShake`.
-`float(shouldFloat: boolean)` | Floats or docks the label, depending on the value of `shouldFloat`.
+`float(shouldFloat: boolean) => void` | Floats or docks the label, depending on the value of `shouldFloat`.
 `getWidth() => number` | Returns the width of the label element.
+`shake(shouldShake: boolean) => void` | Shakes or stops shaking the label to indicate an error, depending on the value of `shouldShake`.
+
+
+<!-- docgen-tsdoc-replacer:end -->

@@ -30,6 +30,16 @@ import {cssClasses, events, strings} from './constants';
 import {MDCDataTableFoundation} from './foundation';
 import {MDCDataTableRowSelectionChangedEventDetail} from './types';
 
+/**
+ * @example Please use MDCDataTable's constants file to access these event constants.
+ * ```ts
+ * const {events} from '@material/data-table/constants';
+ * // `events.ROW_SELECTION_CHANGED` to access event constant.
+ * ```
+ * @events `ROW_SELECTION_CHANGED MDCDataTable:changed`  Event emitted when row checkbox is checked or unchecked.
+ * @events `SELECTED_ALL MDCDataTable:selectedAll`  Event emitted when header row checkbox is checked.
+ * @events `UNSELECTED_ALL MDCDataTable:unselectedAll`  Event emitted when header row checkbox is unchecked.
+ */
 export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   static attachTo(root: Element): MDCDataTable {
     return new MDCDataTable(root);
@@ -60,6 +70,8 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   }
 
   /**
+   * Registers new row checkboxes, header row checkbox and updates the state of header row checkbox.
+   * Use this when rows are added / removed from data table.
    * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
    */
   layout() {
@@ -67,6 +79,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   }
 
   /**
+   * Returns array of row elements.
    * @return Returns array of row elements.
    */
   getRows(): Element[] {
@@ -74,6 +87,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   }
 
   /**
+   * Returns array of selected row ids.
    * @return Returns array of selected row ids.
    */
   getSelectedRowIds(): Array<string|null> {

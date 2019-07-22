@@ -34,25 +34,25 @@ import {MDCDataTableRowSelectionChangedEventDetail} from './types';
 export interface MDCDataTableAdapter {
   /**
    * Adds a class name to row element at given row index excluding header row.
-   *
    * @param rowIndex Index of row element excluding header row.
    * @param cssClasses CSS Class string to add.
    */
   addClassAtRowIndex(rowIndex: number, cssClasses: string): void;
 
   /**
+   * Returns row count excluding header row.
    * @return Row count excluding header row.
    */
   getRowCount(): number;
 
   /**
+   * Returns array of row elements excluding header row.
    * @return Array of row elements excluding header row.
    */
   getRowElements(): Element[];
 
   /**
    * Returns row id of row element at given row index based on `data-row-id` attribute on row element `tr`.
-   *
    * @param rowIndex Index of row element.
    * @return Row id of row element, returns `null` in absence of `data-row-id` attribute on row element.
    */
@@ -61,36 +61,38 @@ export interface MDCDataTableAdapter {
   /**
    * Returns index of row element that contains give child element. Returns -1 if element is not child of any row
    * element.
-   *
    * @param el Child element of row element.
    * @return Index of row element.
    */
   getRowIndexByChildElement(el: Element): number;
 
   /**
+   * Returns selected row count.
    * @return Selected row count.
    */
   getSelectedRowCount(): number;
 
   /**
+   * Returns True if row checkbox at given row index is checked.
    * @param rowIndex Index of row element.
    * @return True if row checkbox at given row index is checked.
    */
   isCheckboxAtRowIndexChecked(rowIndex: number): boolean;
 
   /**
+   * Returns true if header row checkbox is checked.
    * @return True if header row checkbox is checked.
    */
   isHeaderRowCheckboxChecked(): boolean;
 
   /**
+   * Returns true if table rows are selectable.
    * @return True if table rows are selectable.
    */
   isRowsSelectable(): boolean;
 
   /**
    * Notifies when row selection is changed.
-   *
    * @param data Event detail data for row selection changed event.
    */
   notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail): void;
@@ -107,20 +109,20 @@ export interface MDCDataTableAdapter {
 
   /**
    * Initializes header row checkbox. Destroys previous header row checkbox instance if any.
+   * Can return Promise only if registering checkbox is asynchronous.
    * @return Can return Promise only if registering checkbox is asynchronous.
    */
   registerHeaderRowCheckbox(): Promise<void> | void;
 
   /**
    * Initializes all row checkboxes. Destroys previous row checkbox instances if any. This is usually called when row
-   * checkboxes are added or removed from table.
+   * checkboxes are added or removed from table. Can return Promise only if registering checkbox is asynchronous.
    * @return Can return Promise only if registering checkbox is asynchronous.
    */
   registerRowCheckboxes(): Promise<void> | void;
 
   /**
    * Removes class name from row element at give row index.
-   *
    * @param rowIndex Index of row element excluding header row element.
    * @param cssClasses Class name string.
    */
@@ -128,7 +130,6 @@ export interface MDCDataTableAdapter {
 
   /**
    * Sets attribute to row element at given row index.
-   *
    * @param rowIndex Index of row element excluding header row element.
    * @param attr Name of attribute.
    * @param value Value of attribute.
@@ -137,21 +138,18 @@ export interface MDCDataTableAdapter {
 
   /**
    * Sets header row checkbox checked or unchecked.
-   *
    * @param checked True to set header row checkbox checked.
    */
   setHeaderRowCheckboxChecked(checked: boolean): void;
 
   /**
    * Sets header row checkbox to indeterminate.
-   *
    * @param indeterminate True to set header row checkbox indeterminate.
    */
   setHeaderRowCheckboxIndeterminate(indeterminate: boolean): void;
 
   /**
    * Sets row checkbox to checked or unchecked at given row index.
-   *
    * @param rowIndex Index of row element excluding header row element.
    * @param checked True to set checked.
    */

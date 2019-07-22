@@ -28,6 +28,12 @@ export type MDCDialogFocusTrapFactory = (
     userOptions?: Options,
 ) => FocusTrap;
 
+/**
+ * Creates a properly configured [focus-trap][] instance.
+ * @param surfaceEl
+ * @param focusTrapFactory
+ * @param initialFocusEl
+ */
 export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
     focusTrapFactory: MDCDialogFocusTrapFactory = createFocusTrap as unknown as MDCDialogFocusTrapFactory,
@@ -40,10 +46,18 @@ export function createFocusTrapInstance(
   });
 }
 
+/**
+ * Determines if the given element is scrollable.
+ * @param el
+ */
 export function isScrollable(el: HTMLElement | null): boolean {
   return el ? el.scrollHeight > el.offsetHeight : false;
 }
 
+/**
+ * Determines if two or more of the given elements have different `offsetTop` values.
+ * @param els
+ */
 export function areTopsMisaligned(els: HTMLElement[]): boolean {
   const tops = new Set();
   [].forEach.call(els, (el: HTMLElement) => tops.add(el.offsetTop));
