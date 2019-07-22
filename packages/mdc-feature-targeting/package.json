@@ -1,7 +1,7 @@
 {
   "name": "@material/feature-targeting",
   "description": "Material Components for the web Feature Targeting Scss helpers",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
