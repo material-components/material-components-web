@@ -130,7 +130,7 @@ class TypeScriptDocumentationGenerator {
       return;
     }
     return {
-      events: this.getDocumentationForModule(esmodule).events,
+      events: this.getDocumentationForEvents(esmodule).events,
       methods: this.getDocumentationForMethods(esmodule),
       moduleName: esmodule,
       properties: this.getDocumentationProperties(esmodule),
@@ -139,32 +139,21 @@ class TypeScriptDocumentationGenerator {
   }
 
   /**
-   * This is higher level documentation from the class.
-   * Currently this should only include events documentation.
-   * @returns documentation of the esmodule.
+   * Iterates through all events documented in the specified `esmodule`.
+   * @returns list of events in the esmodule.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  getDocumentationForModule(esmodule: string): ModuleDocumentation {
+  getDocumentationForEvents(esmodule: string): ModuleDocumentation {
     if (!this.docData
       || !this.docData[esmodule].documentation
       || !this.docData[esmodule].documentation.contents) {
       return {events: []};
     }
-    // this only returns event data
-    return {
-      events: this.getDocumentationForEvents(esmodule),
-    };
-  }
 
-  /**
-   * Iterates through all events documented in the specified `esmodule`.
-   * @returns list of events in the esmodule.
-   * @param esmodule module name (ie. MDCSelectIconFoundation)
-   */
-  getDocumentationForEvents(esmodule: string): ModuleEvent[] {
-    return (this.docData[esmodule].documentation.contents as DocumentationContent[])
-      .filter((content) => content.tag && content.tag === 'events')
-      .map((content) => ({documentation: content.value}));
+    const events = (this.docData[esmodule].documentation.contents as DocumentationContent[])
+    .filter((content) => content.tag && content.tag === 'events')
+    .map((content) => ({documentation: content.value}));
+    return {events};
   }
 
   /**
