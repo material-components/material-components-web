@@ -15,7 +15,8 @@
   "types": "dist/mdc.notchedOutline.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/material-components/material-components-web.git"
+    "url": "git+https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-notched-outline"
   },
   "publishConfig": {
     "access": "public"

@@ -15,7 +15,8 @@
   "types": "dist/mdc.tabBar.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-components/material-components-web.git"
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-tab-bar"
   },
   "dependencies": {
     "@material/base": "^3.0.0",

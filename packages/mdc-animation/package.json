@@ -14,7 +14,8 @@
   "types": "dist/mdc.animation.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-components/material-components-web.git"
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-animation"
   },
   "dependencies": {
     "tslib": "^1.9.3"
