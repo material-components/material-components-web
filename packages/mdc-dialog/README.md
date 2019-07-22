@@ -341,86 +341,86 @@ Data Attributes | Description
 `data-mdc-dialog-button-default` | Optional. Add to a button to indicate that it is the default action button (see Default Action Button section above).
 `data-mdc-dialog-initial-focus` | Optional. Add to an element to indicate that it is the element to initially focus on after the dialog has opened.
 
-## `MDCDialog` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCDialog
 
-Property | Value Type | Description
---- | --- | ---
-`isOpen` | `boolean` (read-only) | Proxies to the foundation's `isOpen` method.
-`escapeKeyAction` | `string` | Proxies to the foundation's `getEscapeKeyAction` and `setEscapeKeyAction` methods.
-`scrimClickAction` | `string` | Proxies to the foundation's `getScrimClickAction` and `setScrimClickAction` methods.
-`autoStackButtons` | `boolean` | Proxies to the foundation's `getAutoStackButtons` and `setAutoStackButtons` methods.
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
+`close(action?: undefined | string) => void` | Closes the dialog, optionally with the specified action indicating why it was closed.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
 `layout() => void` | Recalculates layout and automatically adds/removes modifier classes like `--scrollable`.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
 `open() => void` | Opens the dialog.
-`close(action: string?) => void` | Closes the dialog, optionally with the specified action indicating why it was closed.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
-### Events
+#### Properties
 
-Event Name | `event.detail` | Description
+Name | Type | Description
 --- | --- | ---
-`MDCDialog:opening` | `{}` | Indicates when the dialog begins its opening animation.
-`MDCDialog:opened` | `{}` | Indicates when the dialog finishes its opening animation.
-`MDCDialog:closing` | `{action: string?}` | Indicates when the dialog begins its closing animation. `action` represents the action which closed the dialog.
-`MDCDialog:closed` | `{action: string?}` | Indicates when the dialog finishes its closing animation. `action` represents the action which closed the dialog.
+autoStackButtons | `boolean` | Proxies to the foundation's `getAutoStackButtons` and `setAutoStackButtons` methods.
+escapeKeyAction | `string` | Proxies to the foundation's `getEscapeKeyAction` and `setEscapeKeyAction` methods.
+isOpen | `boolean` | Proxies to the foundation's `isOpen` method.
+scrimClickAction | `string` | Proxies to the foundation's `getScrimClickAction` and `setScrimClickAction` methods.
+
+#### Events
+- `MDCDialog:opening {}` Indicates when the dialog begins its opening animation.
+- `MDCDialog:opened {}` Indicates when the dialog finishes its opening animation.
+- `MDCDialog:closing {action: string?}` Indicates when the dialog begins its closing animation. `action` represents the action which closed the dialog.
+- `MDCDialog:closed {action: string?}` Indicates when the dialog finishes its closing animation. `action` represents the action which closed the dialog.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Dialog for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCDialogAdapter`
+### MDCDialogAdapter
 
-Method Signature | Description
+#### Methods
+
+Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element.
-`removeClass(className: string) => void` | Removes a class from the root element.
-`hasClass(className: string) => boolean` | Returns whether the given class exists on the root element.
+`notifyClosed(action: string) => void` | Broadcasts an event denoting that the dialog has finished closing. If a non-empty `action` is passed, the event's `detail` object should include its value in the `action` property.
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
-`removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
-`eventTargetMatches(target: EventTarget | null, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
-`trapFocus(initialFocusEl: HTMLElement|null) => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). Moves focus to `initialFocusEl`, if set.
-`releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
-`getInitialFocusEl() => HTMLElement|null` | Returns the `data-mdc-dialog-initial-focus` element to add focus to after the dialog has opened.
-`isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
 `areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
-`getActionFromEvent(event: Event) => string \| null` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target, or an ancestor of the target.
 `clickDefaultButton() => void` | Invokes `click()` on the `data-mdc-dialog-button-default` element, if one exists in the dialog.
-`reverseButtons() => void` | Reverses the order of action buttons in the `mdc-dialog__actions` element. Used when switching between stacked and unstacked button layouts.
-`notifyOpening() => void` | Broadcasts an event denoting that the dialog has just started to open.
+`eventTargetMatches(target: EventTarget | null, selector: string) => boolean` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
+`getActionFromEvent(evt: Event) => string | null` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target, or an ancestor of the target.
+`getInitialFocusEl() => HTMLElement | null` | Returns the `data-mdc-dialog-initial-focus` element to add focus to after the dialog has opened. Element to focus on after dialog has opened.
+`hasClass(className: string) => boolean` | Returns whether the given class exists on the root element.
+`isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
+`addClass(className: string) => void` | Adds a class to the root element.
+`notifyClosing(action: string) => void` | Broadcasts an event denoting that the dialog has just started closing. If a non-empty `action` is passed, the event's `detail` object should include its value in the `action` property.
 `notifyOpened() => void` | Broadcasts an event denoting that the dialog has finished opening.
-`notifyClosing(action: string) {}` | Broadcasts an event denoting that the dialog has just started closing. If a non-empty `action` is passed, the event's `detail` object should include its value in the `action` property.
-`notifyClosed(action: string) {}` | Broadcasts an event denoting that the dialog has finished closing. If a non-empty `action` is passed, the event's `detail` object should include its value in the `action` property.
+`notifyOpening() => void` | Broadcasts an event denoting that the dialog has just started to open.
+`releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
+`removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`reverseButtons() => void` | Reverses the order of action buttons in the `mdc-dialog__actions` element. Used when switching between stacked and unstacked button layouts.
+`trapFocus(focusElement: HTMLElement | null) => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). Moves focus to `initialFocusEl`, if set.
 
-### `MDCDialogFoundation`
+### MDCDialogFoundation
 
-Method Signature | Description
+#### Methods
+
+Signature | Description
 --- | ---
-`open()` | Opens the dialog.
-`close(action: string)` | Closes the dialog, optionally with the specified action indicating why it was closed.
-`isOpen() => boolean` | Returns whether the dialog is open.
-`layout()` | Recalculates layout and automatically adds/removes modifier classes e.g. `--scrollable`.
-`getEscapeKeyAction() => string` | Returns the action reflected when the Escape key is pressed.
-`setEscapeKeyAction(action: string)` | Sets the action reflected when the Escape key is pressed. Setting to `''` disables closing the dialog via Escape key.
-`getScrimClickAction() => string` | Returns the action reflected when the scrim is clicked.
-`setScrimClickAction(action: string)` | Sets the action reflected when the scrim is clicked. Setting to `''` disables closing the dialog via scrim click.
+`handleKeydown(evt: KeyboardEvent) => void` | Handles `keydown` events on or within the dialog's root element.
+`close(action?: undefined | string) => void` | Closes the dialog, optionally with the specified action indicating why it was closed.
 `getAutoStackButtons() => boolean` | Returns whether stacked/unstacked action button layout is automatically handled during layout logic.
+`getEscapeKeyAction() => string` | Returns the action reflected when the Escape key is pressed.
+`getScrimClickAction() => string` | Returns the action reflected when the scrim is clicked.
+`handleClick(evt: MouseEvent) => void` | Handles `click` events on or within the dialog's root element.
+`handleDocumentKeydown(evt: KeyboardEvent) => void` | Handles `keydown` events on or within the document while the dialog is open.
+`isOpen() => boolean` | Returns whether the dialog is open.
+`layout() => void` | Recalculates layout and automatically adds/removes modifier classes e.g. `--scrollable`.
+`open() => void` | Opens the dialog.
 `setAutoStackButtons(autoStack: boolean) => void` | Sets whether stacked/unstacked action button layout is automatically handled during layout logic.
-`handleClick(event: MouseEvent)` | Handles `click` events on or within the dialog's root element.
-`handleKeydown(event: KeyboardEvent)` | Handles `keydown` events on or within the dialog's root element.
-`handleDocumentKeydown(event: Event)` | Handles `keydown` events on or within the document while the dialog is open.
+`setEscapeKeyAction(action: string) => void` | Sets the action reflected when the Escape key is pressed. Setting to `''` disables closing the dialog via Escape key.
+`setScrimClickAction(action: string) => void` | Sets the action reflected when the scrim is clicked. Setting to `''` disables closing the dialog via scrim click.
 
-#### Event Handlers
 
-When wrapping the Dialog foundation, the following events must be bound to the indicated foundation methods:
-
-Event | Target | Foundation Handler | Register | Deregister
---- | --- | --- | --- | ---
-`click` | `.mdc-dialog` (root) | `handleClick` | During initialization | During destruction
-`keydown` | `.mdc-dialog` (root) | `handleKeydown` | During initialization | During destruction
-`keydown` | `document` | `handleDocumentKeydown` | On `MDCDialog:opening` | On `MDCDialog:closing`
-`resize` | `window` | `layout` | On `MDCDialog:opening` | On `MDCDialog:closing`
-`orientationchange` | `window` | `layout` | On `MDCDialog:opening` | On `MDCDialog:closing`
+<!-- docgen-tsdoc-replacer:end -->
 
 ### The Util API
 

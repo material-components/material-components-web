@@ -96,6 +96,9 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     }
   }
 
+  /**
+   * Opens the dialog.
+   */
   open() {
     this.isOpen_ = true;
     this.adapter_.notifyOpening();
@@ -116,6 +119,10 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     });
   }
 
+  /**
+   * Closes the dialog, optionally with the specified action indicating why it was closed.
+   * @param action
+   */
   close(action = '') {
     if (!this.isOpen_) {
       // Avoid redundant close calls (and events), e.g. from keydown on elements that inherently emit click
@@ -139,34 +146,64 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     }, numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
   }
 
+  /**
+   * Returns whether the dialog is open.
+   */
   isOpen() {
     return this.isOpen_;
   }
 
+  /**
+   * Returns the action reflected when the Escape key is pressed.
+   */
   getEscapeKeyAction(): string {
     return this.escapeKeyAction_;
   }
 
+  /**
+   * Sets the action reflected when the Escape key is pressed.
+   * Setting to `''` disables closing the dialog via Escape key.
+   * @param action
+   */
   setEscapeKeyAction(action: string) {
     this.escapeKeyAction_ = action;
   }
 
+  /**
+   * Returns the action reflected when the scrim is clicked.
+   */
   getScrimClickAction(): string {
     return this.scrimClickAction_;
   }
 
+  /**
+   * Sets the action reflected when the scrim is clicked. Setting
+   * to `''` disables closing the dialog via scrim click.
+   * @param action
+   */
   setScrimClickAction(action: string) {
     this.scrimClickAction_ = action;
   }
 
+  /**
+   * Returns whether stacked/unstacked action button layout is automatically
+   * handled during layout logic.
+   */
   getAutoStackButtons(): boolean {
     return this.autoStackButtons_;
   }
 
+  /**
+   * Sets whether stacked/unstacked action button layout is automatically handled during layout logic.
+   * @param autoStack
+   */
   setAutoStackButtons(autoStack: boolean) {
     this.autoStackButtons_ = autoStack;
   }
 
+  /**
+   * Recalculates layout and automatically adds/removes modifier classes e.g. `--scrollable`.
+   */
   layout() {
     if (this.layoutFrame_) {
       cancelAnimationFrame(this.layoutFrame_);
@@ -177,7 +214,10 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     });
   }
 
-  /** Handles click on the dialog root element. */
+  /**
+   * Handles `click` events on or within the dialog's root element.
+   * @param evt Keyboard event object.
+   */
   handleClick(evt: MouseEvent) {
     const isScrim = this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR);
     // Check for scrim click first since it doesn't require querying ancestors.
@@ -191,7 +231,10 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     }
   }
 
-  /** Handles keydown on the dialog root element. */
+  /**
+   * Handles `keydown` events on or within the dialog's root element.
+   * @param evt Keyboard event object.
+   */
   handleKeydown(evt: KeyboardEvent) {
     const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
     if (!isEnter) {
@@ -211,7 +254,10 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     }
   }
 
-  /** Handles keydown on the document. */
+  /**
+   * Handles `keydown` events on or within the document while the dialog is open.
+   * @param evt Keyboard event object.
+   */
   handleDocumentKeydown(evt: KeyboardEvent) {
     const isEscape = evt.key === 'Escape' || evt.keyCode === 27;
     if (isEscape && this.escapeKeyAction_ !== '') {

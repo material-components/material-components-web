@@ -70,7 +70,7 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
   }
 
   /**
-   * Styles the label to produce a shake animation to indicate an error.
+   * Shakes or stops shaking the label to indicate an error, depending on the value of `shouldShake`.
    * @param shouldShake If true, adds the shake CSS class; otherwise, removes shake class.
    */
   shake(shouldShake: boolean) {
@@ -83,7 +83,7 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
   }
 
   /**
-   * Styles the label to float or dock.
+   * Floats or docks the label, depending on the value of `shouldFloat`.
    * @param shouldFloat If true, adds the float CSS class; otherwise, removes float and shake classes to dock the label.
    */
   float(shouldFloat: boolean) {
