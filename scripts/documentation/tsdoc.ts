@@ -283,7 +283,7 @@ class TypeScriptDocumentationGenerator {
     const apiMarkdownTable =
       this.templateFunction({
         componentModules,
-        nonComponentModules
+        nonComponentModules,
       });
 
     const startReplacerToken
