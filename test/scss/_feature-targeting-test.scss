@@ -16,6 +16,7 @@
 @import "@material/radio/mixins";
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
+@import "@material/slider/mixins";
 @import "@material/snackbar/mixins";
 @import "@material/switch/mixins";
 @import "@material/tab-bar/mixins";
@@ -24,6 +25,7 @@
 @import "@material/tab/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
+@import "@material/data-table/mixins";
 
 @mixin mdc-feature-targeting-test($query) {
   .mdc-test {
@@ -82,6 +84,27 @@
     @include mdc-chip-trailing-icon-margin($query: $query);
     @include mdc-chip-trailing-icon-size(0, $query: $query);
     @include mdc-chip-without-ripple($query: $query);
+
+    // Data Table
+    @include mdc-data-table-core-styles($query: $query);
+    @include mdc-data-table-theme-baseline($query: $query);
+    @include mdc-data-table-fill-color(red, $query: $query);
+    @include mdc-data-table-header-row-fill-color(red, $query: $query);
+    @include mdc-data-table-row-fill-color(red, $query: $query);
+    @include mdc-data-table-selected-row-fill-color(red, $query: $query);
+    @include mdc-data-table-checked-icon-color(red, $query: $query);
+    @include mdc-data-table-divider-color(red, $query: $query);
+    @include mdc-data-table-divider-size(0, $query: $query);
+    @include mdc-data-table-row-hover-fill-color(red, $query: $query);
+    @include mdc-data-table-header-row-text-color(red, $query: $query);
+    @include mdc-data-table-row-text-color(red, $query: $query);
+    @include mdc-data-table-shape-radius(0, $query: $query);
+    @include mdc-data-table-stroke-size(0, $query: $query);
+    @include mdc-data-table-stroke-color(red, $query: $query);
+    @include mdc-data-table-header-row-height(0, $query: $query);
+    @include mdc-data-table-row-height(0, $query: $query);
+    @include mdc-data-table-cell-padding(0, $query: $query);
+    @include mdc-data-table-column-widths(0, $query: $query);
 
     // Dialog
     @include mdc-dialog-core-styles($query: $query);
@@ -203,6 +226,17 @@
     // Shape
     @include mdc-shape-radius(1px 2px, true, $query: $query);
 
+    // Slider
+    @include mdc-slider-core-styles($query: $query);
+    @include mdc-slider-highlight-color(red, $query: $query);
+    @include mdc-slider-rail-color(red, $query: $query);
+    @include mdc-slider-rail-tick-mark-color(red, $query: $query);
+    @include mdc-slider-thumb-color(red, $query: $query);
+    @include mdc-slider-focus-halo-color(red, $query: $query);
+    @include mdc-slider-value-pin-ink-color(red, $query: $query);
+    @include mdc-slider-value-pin-fill-color(red, $query: $query);
+    @include mdc-slider-value-pin-fill-color-accessible(red, $query: $query);
+    @include mdc-slider-color-accessible(red, $query: $query);
 
     // Snackbar
     @include mdc-snackbar-core-styles($query: $query);
