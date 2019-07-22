@@ -63,7 +63,6 @@ class TypeScriptDocumentationGenerator {
    * @returns Promise<{}>
    */
   async generateJSONFromFiles() {
-    if (!this.templateFunction) 
     return await new Documentalist()
       .use(/\.ts$/, new TypescriptPlugin({
         excludePaths: ['node_modules'],
