@@ -125,6 +125,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   }
 
   /**
+   * Sets the corner that the menu surface will be anchored to. See [constants.ts](./constants.ts)
    * @param corner Default anchor corner alignment of top-left menu surface corner.
    */
   setAnchorCorner(corner: Corner) {
@@ -132,6 +133,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   }
 
   /**
+   * Sets the distance from the anchor point that the menu surface should be shown.
    * @param margin Set of margin values from anchor.
    */
   setAnchorMargin(margin: Partial<MDCMenuDistance>) {
@@ -141,32 +143,48 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     this.anchorMargin_.left = margin.left || 0;
   }
 
-  /** Used to indicate if the menu-surface is hoisted to the body. */
+  /**
+   * Sets whether the menu surface has been hoisted to the body so that the
+   * offsets are calculated relative to the page and not the anchor.
+   * Used to indicate if the menu-surface is hoisted to the body.
+   */
   setIsHoisted(isHoisted: boolean) {
     this.isHoistedElement_ = isHoisted;
   }
 
-  /** Used to set the menu-surface calculations based on a fixed position menu. */
+  /**
+   * Sets whether the menu surface is using fixed positioning.
+   * Used to set the menu-surface calculations based on a fixed position menu.
+   */
   setFixedPosition(isFixedPosition: boolean) {
     this.isFixedPosition_ = isFixedPosition;
   }
 
-  /** Sets the menu-surface position on the page. */
+  /** Sets the absolute x/y position of the menu.
+   * Should only be used when the menu is hoisted or using fixed positioning.
+   */
   setAbsolutePosition(x: number, y: number) {
     this.position_.x = this.isFinite_(x) ? x : 0;
     this.position_.y = this.isFinite_(y) ? y : 0;
   }
 
+  /**
+   * Sets whether the menu surface should open and close without animation when the `open`/`close` methods are called.
+   * @param quickOpen
+   */
   setQuickOpen(quickOpen: boolean) {
     this.isQuickOpen_ = quickOpen;
   }
 
+  /**
+   * Returns a boolean indicating whether the menu surface is open.
+   */
   isOpen() {
     return this.isOpen_;
   }
 
   /**
-   * Open the menu surface.
+   * Opens the menu surface.
    */
   open() {
     this.adapter_.saveFocus();
@@ -220,7 +238,10 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     }
   }
 
-  /** Handle clicks and close if not within menu-surface element. */
+  /**
+   * Handle clicks and close if not within menu-surface element.
+   * Method used as the callback function for the `click` event.
+   */
   handleBodyClick(evt: MouseEvent) {
     const el = evt.target as Element;
     if (this.adapter_.isElementInContainer(el)) {
@@ -229,7 +250,10 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     this.close();
   }
 
-  /** Handle keys that close the surface. */
+  /**
+   * Method used as the callback function for the `keydown` events.
+   * Handle keys that close the surface.
+   */
   handleKeydown(evt: KeyboardEvent) {
     const {keyCode, key} = evt;
 

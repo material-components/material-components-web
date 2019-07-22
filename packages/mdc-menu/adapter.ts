@@ -51,28 +51,35 @@ export interface MDCMenuAdapter {
   removeAttributeFromElementAtIndex(index: number, attr: string): void;
 
   /**
+   * Returns true if the `element` contains the `className` class.
    * @return true if the element contains the className.
    */
   elementContainsClass(element: Element, className: string): boolean;
 
   /**
-   * Closes the menu-surface.
+   * Closes the menu surface, skipping restoring focus to the previously focused
+   * element if `skipRestoreFocus` is true.
    * @param skipRestoreFocus Whether to skip restoring focus to the previously
    *    focused element after the surface has been closed.
    */
   closeSurface(skipRestoreFocus?: boolean): void;
 
   /**
+   * Returns the `index` value of the `element`.
    * @return Index of the element in the list or -1 if it is not in the list.
    */
   getElementIndex(element: Element): number;
 
   /**
+   * Emits a `MDCMenu:selected` event for the element at the `index` specified.
    * Emit an event when a menu item is selected.
    */
   notifySelected(evtData: MDCMenuItemEventDetail): void;
 
-  /** @return Returns the menu item count. */
+  /**
+   * Returns the menu item count.
+   * @return Returns the menu item count.
+   */
   getMenuItemCount(): number;
 
   /**
@@ -85,6 +92,8 @@ export interface MDCMenuAdapter {
   focusListRoot(): void;
 
   /**
+   * Returns selected list item index within the same selection group which is
+   * a sibling of item at given `index`.
    * @return Returns selected list item index within the same selection group which is
    * a sibling of item at given `index`.
    * @param index Index of the menu item with possible selected sibling.
@@ -92,6 +101,7 @@ export interface MDCMenuAdapter {
   getSelectedSiblingOfItemAtIndex(index: number): number;
 
   /**
+   * Returns true if menu item at specified index is contained within an `.mdc-menu__selection-group` element.
    * @return Returns true if item at specified index is contained within an `.mdc-menu__selection-group` element.
    * @param index Index of the selectable menu item.
    */

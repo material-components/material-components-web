@@ -38,6 +38,11 @@ import {MDCMenuItemComponentEventDetail} from './types';
 
 export type MDCMenuFactory = (el: Element, foundation?: MDCMenuFoundation) => MDCMenu;
 
+// tslint:disable:max-line-length
+/**
+ * @events `MDCMenu:selected {detail: {item: Element, index: number}}` Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.
+ */
+// tslint:enable:max-line-length
 export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   static attachTo(root: Element) {
     return new MDCMenu(root);
@@ -96,6 +101,9 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     return this.menuSurface_.isOpen();
   }
 
+  /**
+   * Proxies to the menu surface's `open` property.
+   */
   set open(value: boolean) {
     if (value) {
       this.menuSurface_.open();
@@ -108,6 +116,9 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     return this.list_ ? this.list_.wrapFocus : false;
   }
 
+  /**
+   * Proxies to list's `wrapFocus` property.
+   */
   set wrapFocus(value: boolean) {
     if (this.list_) {
       this.list_.wrapFocus = value;
@@ -117,12 +128,15 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   /**
    * Return the items within the menu. Note that this only contains the set of elements within
    * the items container that are proper list items, and not supplemental / presentational DOM
-   * elements.
+   * elements. Proxies to the list to query for all `.mdc-list-item` elements.
    */
   get items(): Element[] {
     return this.list_ ? this.list_.listElements : [];
   }
 
+  /**
+   * Proxies to the menu surface `quickOpen` property.
+   */
   set quickOpen(quickOpen: boolean) {
     this.menuSurface_.quickOpen = quickOpen;
   }
@@ -138,12 +152,17 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   /**
+   * Proxies to the menu surface's `setAnchorCorner(Corner)` method.
    * @param corner Default anchor corner alignment of top-left menu corner.
    */
   setAnchorCorner(corner: Corner) {
     this.menuSurface_.setAnchorCorner(corner);
   }
 
+  /**
+   * Proxies to the menu surface's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
+   * @param margin
+   */
   setAnchorMargin(margin: Partial<MDCMenuDistance>) {
     this.menuSurface_.setAnchorMargin(margin);
   }
@@ -157,6 +176,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   /**
+   * Returns the list item at the `index` specified.
    * @return The item within the menu at the index specified.
    */
   getOptionByIndex(index: number): Element | null {
@@ -169,6 +189,10 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     }
   }
 
+  /**
+   * Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
+   * @param isFixed
+   */
   setFixedPosition(isFixed: boolean) {
     this.menuSurface_.setFixedPosition(isFixed);
   }
@@ -177,16 +201,26 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.menuSurface_.hoistMenuToBody();
   }
 
+  /**
+   * Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
+   * @param isHoisted
+   */
   setIsHoisted(isHoisted: boolean) {
     this.menuSurface_.setIsHoisted(isHoisted);
   }
 
+  /**
+   * Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
+   * @param x
+   * @param y
+   */
   setAbsolutePosition(x: number, y: number) {
     this.menuSurface_.setAbsolutePosition(x, y);
   }
 
   /**
-   * Sets the element that the menu-surface is anchored to.
+   * Sets the element that the menu-surface is anchored to. Proxies to
+   * the menu surface's `setAnchorElement(element)` method.
    */
   setAnchorElement(element: Element) {
     this.menuSurface_.anchorElement = element;

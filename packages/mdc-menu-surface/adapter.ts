@@ -31,33 +31,84 @@ import {MDCMenuDimensions, MDCMenuDistance, MDCMenuPoint} from './types';
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCMenuSurfaceAdapter {
+  /**
+   * Adds a class to the root element.
+   * @param className
+   */
   addClass(className: string): void;
+  /**
+   * Removes a class from the root element.
+   * @param className
+   */
   removeClass(className: string): void;
+  /**
+   * Returns a boolean indicating whether the root element has a given class.
+   * @param className
+   */
   hasClass(className: string): boolean;
+  /**
+   * Returns whether the menu surface has an anchor for positioning.
+   */
   hasAnchor(): boolean;
 
+  /**
+   * Returns true if the `el` Element is inside the `mdc-menu-surface` container.
+   * @param el
+   */
   isElementInContainer(el: Element): boolean;
+  /**
+   * Returns a boolean value indicating whether the root element of the menu surface is focused.
+   */
   isFocused(): boolean;
+  /**
+   * Returns boolean indicating whether the current environment is RTL.
+   */
   isRtl(): boolean;
 
+  /**
+   * Returns an object with the items container width and height.
+   */
   getInnerDimensions(): MDCMenuDimensions;
+  /**
+   * Returns an object with the dimensions and position of the anchor.
+   */
   getAnchorDimensions(): ClientRect | null;
+  /**
+   * Returns an object with width and height of the viewport, in pixels.
+   */
   getWindowDimensions(): MDCMenuDimensions;
+  /**
+   * Returns an object with width and height of the body, in pixels.
+   */
   getBodyDimensions(): MDCMenuDimensions;
+  /**
+   * Returns an object with the amount the body has been scrolled on the `x` and `y` axis.
+   */
   getWindowScroll(): MDCMenuPoint;
+  /**
+   * Sets the position of the menu surface element.
+   * @param position
+   */
   setPosition(position: Partial<MDCMenuDistance>): void;
+  /**
+   * Sets `max-height` style for the menu surface element.
+   * @param height
+   */
   setMaxHeight(height: string): void;
+  /**
+   * Sets the transform origin for the menu surface element.
+   */
   setTransformOrigin(origin: string): void;
 
-  /** Saves the element that was focused before the menu surface was opened. */
+  /** Stores the currently focused element on the document, for restoring with `restoreFocus`. */
   saveFocus(): void;
 
-  /** Restores focus to the element that was focused before the menu surface was opened. */
+  /** Restores the previously saved focus state, by making the previously focused element the active focus again. */
   restoreFocus(): void;
 
-  /** Emits an event when the menu surface is closed. */
+  /** Dispatches an event notifying listeners that the menu surface has been closed. */
   notifyClose(): void;
 
-  /** Emits an event when the menu surface is opened. */
+  /** Dispatches an event notifying listeners that the menu surface has been opened. */
   notifyOpen(): void;
 }

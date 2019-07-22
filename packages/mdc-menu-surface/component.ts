@@ -33,11 +33,19 @@ type RegisterFunction = () => void;
 
 export type MDCMenuSurfaceFactory = (el: Element, foundation?: MDCMenuSurfaceFoundation) => MDCMenuSurface;
 
+/**
+ * @events `MDCMenuSurface:closed {}` Event emitted after the menu surface is closed.
+ * @events `MDCMenuSurface:opened {}` Event emitted after the menu surface is opened.
+ */
 export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   static attachTo(root: Element): MDCMenuSurface {
     return new MDCMenuSurface(root);
   }
 
+  /**
+   * Gets or sets the element that the surface is anchored to, or `null` if the surface is not anchored.
+   * Defaults to the root element's parent `mdc-menu-surface--anchor` element if present.
+   */
   anchorElement!: Element | null; // assigned in initialSyncWithDOM()
 
   protected root_!: HTMLElement; // assigned in MDCComponent constructor
@@ -80,6 +88,9 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     return this.foundation_.isOpen();
   }
 
+  /**
+   * Proxies to the foundation's `isOpen`/(`open`, `close`) methods.
+   */
   open() {
     this.foundation_.open();
   }
@@ -88,30 +99,42 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.foundation_.close(skipRestoreFocus);
   }
 
+  /**
+   * Proxies to the foundation's `setQuickOpen()` method.
+   */
   set quickOpen(quickOpen: boolean) {
     this.foundation_.setQuickOpen(quickOpen);
   }
 
   /**
-   * Removes the menu-surface from it's current location and appends it to the
-   * body to overcome any overflow:hidden issues.
+   * Removes the `menu-surface` element from the DOM and appends it to the `body` element.
+   * Should be used to overcome `overflow: hidden` issues.
    */
   hoistMenuToBody() {
     document.body.appendChild(this.root_);
     this.setIsHoisted(true);
   }
 
-  /** Sets the foundation to use page offsets for an positioning when the menu is hoisted to the body. */
+  /**
+   * Sets the foundation to use page offsets for an positioning when the menu is hoisted to the body.
+   * Proxies to the foundation's `setIsHoisted` method.
+   */
   setIsHoisted(isHoisted: boolean) {
     this.foundation_.setIsHoisted(isHoisted);
   }
 
-  /** Sets the element that the menu-surface is anchored to. */
+  /**
+   * Changes the element used as an anchor for `menu-surface`
+   * positioning logic. Should be used with conjunction with `hoistMenuToBody()`.
+   */
   setMenuSurfaceAnchorElement(element: Element) {
     this.anchorElement = element;
   }
 
-  /** Sets the menu-surface to position: fixed. */
+  /**
+   * Adds the `mdc-menu-surface--fixed` class to the `mdc-menu-surface`
+   * element. Proxies to the foundation's `setIsHoisted()` and `setFixedPosition()` methods.
+   */
   setFixedPosition(isFixed: boolean) {
     if (isFixed) {
       this.root_.classList.add(cssClasses.FIXED);
@@ -122,19 +145,27 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.foundation_.setFixedPosition(isFixed);
   }
 
-  /** Sets the absolute x/y position to position based on. Requires the menu to be hoisted. */
+  /**
+   * Proxies to the foundation's `setAbsolutePosition(x, y)` method. Used to set the absolute x/y
+   * position of the menu on the page. Should only be used when the menu is hoisted to the body.
+   */
   setAbsolutePosition(x: number, y: number) {
     this.foundation_.setAbsolutePosition(x, y);
     this.setIsHoisted(true);
   }
 
   /**
+   * Proxies to the foundation's `setAnchorCorner(Corner)` method.
    * @param corner Default anchor corner alignment of top-left surface corner.
    */
   setAnchorCorner(corner: Corner) {
     this.foundation_.setAnchorCorner(corner);
   }
 
+  /**
+   * Proxies to the foundation's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
+   * @param margin
+   */
   setAnchorMargin(margin: Partial<MDCMenuDistance>) {
     this.foundation_.setAnchorMargin(margin);
   }

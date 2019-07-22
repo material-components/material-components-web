@@ -160,6 +160,8 @@ Type Name | Description
 `MDCMenuDistance` | Margin values representing the distance from anchor point that the menu surface should be shown. See [types.ts](./types.ts).
 `MDCMenuPoint` | X/Y coordinates. See [types.ts](./types.ts).
 
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+
 ## `MDCMenuSurface` Properties and Methods
 
 Property | Value Type | Description
@@ -229,3 +231,4 @@ Method Signature | Description
 `close() => void` | Closes the menu.
 `isOpen() => boolean` | Returns a boolean indicating whether the menu surface is open.
 `setQuickOpen(quickOpen: boolean) => void` | Sets whether the menu surface should open and close without animation when the `open`/`close` methods are called.
+<!-- docgen-tsdoc-replacer:end -->

@@ -85,39 +85,53 @@ Mixin | Description
 `mdc-linear-progress-buffer-color($color)` | Sets the color of the buffer bar and dots
 
 <!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCLinearProgress
+#### Methods
 
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `hasClass(className: string) => boolean` | Returns boolean indicating whether the root element has a given class. |
-| `getPrimaryBar() => Element` | Returns the primary bar element. |
-| `getBuffer() => Element` | Returns the buffer element. |
-| `setStyle(el: Element, styleProperty: string, value: string) => void` | Sets the inline style on the given element. |
+Signature | Description
+--- | ---
+`close() => void` | Puts the component in the closed state.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`open() => void` | Puts the component in the open state.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
-### MDCLinearProgressFoundation API
+#### Properties
 
-MDC Linear Progress Foundation exposes the following methods:
+Name | Type | Description
+--- | --- | ---
+buffer | `number` | Sets the buffer bar to this value. Value should be between [0, 1].
+determinate | `boolean` | Toggles the component between the determinate and indeterminate state.
+progress | `number` | Sets the progress bar to this value. Value should be between [0, 1].
+reverse | `boolean` | Reverses the direction of the linear progress indicator.
 
-| Method Signature | Description |
-| --- | --- |
-| `setDeterminate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state. |
-| `setProgress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
-| `setBuffer(value: number) => void` | Sets the buffer bar to this value. Value should be between [0, 1]. |
-| `setReverse(value: boolean) => void` | Reverses the direction of the linear progress indicator. |
-| `open() => void` | Puts the component in the open state. |
-| `close() => void` | Puts the component in the closed state. |
+## Usage within Web Frameworks
 
-### MDCLinearProgress API
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-MDC Linear Progress exposes the following methods:
+### MDCLinearProgressAdapter
+#### Methods
 
-| Method Signature | Description |
-| --- | --- |
-| `set determinate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state. |
-| `set progress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
-| `set buffer(value: number) => void` | Sets the buffer bar to this value. Value should be between [0, 1]. |
-| `set reverse(value: boolean) => void` | Reverses the direction of the linear progress indicator. |
-| `open() => void` | Puts the component in the open state. |
-| `close() => void` | Puts the component in the closed state. |
+Signature | Description
+--- | ---
+`addClass(className: string) => void` | Adds a class to the root element.
+`getBuffer() => HTMLElement | null` | Returns the buffer element.
+`getPrimaryBar() => HTMLElement | null` | Returns the primary bar element.
+`hasClass(className: string) => boolean` | Returns boolean indicating whether the root element has a given class.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`setStyle(el: HTMLElement, styleProperty: string, value: string) => void` | Sets the inline style on the given element.
+
+### MDCLinearProgressFoundation
+#### Methods
+
+Signature | Description
+--- | ---
+`close() => void` | Puts the component in the closed state.
+`open() => void` | Puts the component in the open state.
+`setBuffer(value: number) => void` | Sets the buffer bar to this value.
+`setDeterminate(isDeterminate: boolean) => void` | Toggles the component between the determinate and indeterminate state.
+`setProgress(value: number) => void` | Sets the progress bar to this value.
+`setReverse(isReversed: boolean) => void` | Reverses the direction of the linear progress indicator.
+
+
 <!-- docgen-tsdoc-replacer:end -->

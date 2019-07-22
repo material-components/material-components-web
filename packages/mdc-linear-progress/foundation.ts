@@ -62,7 +62,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
 
   /**
    * Toggles the component between the determinate and indeterminate state.
-   * @param isDeterminate 
+   * @param isDeterminate
    */
   setDeterminate(isDeterminate: boolean) {
     this.isDeterminate_ = isDeterminate;
@@ -77,8 +77,8 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
   }
 
   /**
-   * Sets the progress bar to this value. Value should be between [0, 1].
-   * @param value 
+   * Sets the progress bar to this value.
+   * @param value Between [0, 1]
    */
   setProgress(value: number) {
     this.progress_ = value;
@@ -88,8 +88,8 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
   }
 
   /**
-   * Sets the buffer bar to this value. Value should be between [0, 1].
-   * @param value 
+   * Sets the buffer bar to this value.
+   * @param value Between [0, 1]
    */
   setBuffer(value: number) {
     if (this.isDeterminate_) {
@@ -99,7 +99,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
 
   /**
    * Reverses the direction of the linear progress indicator.
-   * @param isReversed 
+   * @param isReversed Boolean to switch direction of component in reverse.
    */
   setReverse(isReversed: boolean) {
     this.isReversed_ = isReversed;

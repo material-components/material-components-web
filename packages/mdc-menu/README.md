@@ -209,67 +209,69 @@ Focus state | Description
 `DefaultFocusState.LIST_ROOT` | Focuses the list root. Set this when menu button Clicked or Touched.
 `DefaultFocusState.NONE` | Does not change the focus. Set this if you do not want the menu to grab focus on open. (Autocomplete dropdown menu, for example).
 
-## `MDCMenu` Properties and Methods
-
-See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
-
-Property | Value Type | Description
---- | --- | ---
-`open` | Boolean | Proxies to the menu surface's `open` property.
-`items` | Array<Element> | Proxies to the list to query for all `.mdc-list-item` elements.
-`quickOpen` | Boolean | Proxies to the menu surface `quickOpen` property.
-`wrapFocus` | Boolean | Proxies to list's `wrapFocus` property.
-
-Method Signature | Description
---- | ---
-`setAnchorCorner(Corner) => void` | Proxies to the menu surface's `setAnchorCorner(Corner)` method.
-`setAnchorMargin(Partial<MDCMenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
-`setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
-`setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
-`setSelectedIndex(index: number) => void | Sets the list item to the selected state at the specified index.
-`hoistMenuToBody() => void` | Proxies to the menu surface's `hoistMenuToBody()` method.
-`setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
-`setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
-`getOptionByIndex(index: number) => Element \| null` | Returns the list item at the `index` specified.
-`getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
-`setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
-
 > See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.
+
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCMenu
+#### Methods
+
+Signature | Description
+--- | ---
+`getOptionByIndex(index: number) => Element | null` | Returns the list item at the `index` specified.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`setAnchorElement(element: Element) => void` | Sets the element that the menu-surface is anchored to. Proxies to the menu surface's `setAnchorElement(element)` method.
+`setAnchorMargin(margin: Partial<MDCMenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
+`setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
+`setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
+`setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
+`setSelectedIndex(index: number) => void` | Sets the list item as the selected row at the specified index.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+`setAnchorCorner(corner: Corner) => void` | Proxies to the menu surface's `setAnchorCorner(Corner)` method.
+
+#### Properties
+
+Name | Type | Description
+--- | --- | ---
+items | `Element[]` | Return the items within the menu. Note that this only contains the set of elements within the items container that are proper list items, and not supplemental / presentational DOM elements. Proxies to the list to query for all `.mdc-list-item` elements.
+open | `boolean` | Proxies to the menu surface's `open` property.
+quickOpen | `boolean` | Proxies to the menu surface `quickOpen` property.
+wrapFocus | `boolean` | Proxies to list's `wrapFocus` property.
+
+#### Events
+- `MDCMenu:selected {detail: {item: Element, index: number}}` Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Menu for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCMenuAdapter`
+### MDCMenuAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`addClassToElementAtIndex(index: number, className: string) => void` | Adds the `className` class to the element at the `index` specified.
-`removeClassFromElementAtIndex(index: number, className: string) => void` | Removes the `className` class from the element at the `index` specified.
-`addAttributeToElementAtIndex(index: number, attr: string, value: string) => void` | Adds the `attr` attribute with value `value` to the element at the `index` specified.
-`removeAttributeFromElementAtIndex(index: number, attr: string) => void` | Removes the `attr` attribute from the element at the `index` specified.
-`elementContainsClass(element: Element, className: string) => boolean` | Returns true if the `element` contains the `className` class.
-`closeSurface(skipRestoreFocus?: boolean) => void` | Closes the menu surface, skipping restoring focus to the previously focused element if `skipRestoreFocus` is true.
 `getElementIndex(element: Element) => number` | Returns the `index` value of the `element`.
-`notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
-`getMenuItemCount() => number` | Returns the menu item count.
-`focusItemAtIndex(index: number)` | Focuses the menu item at given index.
+`addAttributeToElementAtIndex(index: number, attr: string, value: string) => void` | Adds an attribute, with value, to the element at the index provided.
+`closeSurface(skipRestoreFocus?: undefined | false | true) => void` | Closes the menu surface, skipping restoring focus to the previously focused element if `skipRestoreFocus` is true.
+`elementContainsClass(element: Element, className: string) => boolean` | Returns true if the `element` contains the `className` class.
+`focusItemAtIndex(index: number) => void` | Focuses the menu item at given index.
 `focusListRoot() => void` | Focuses the list root element.
+`addClassToElementAtIndex(index: number, className: string) => void` | Adds a class to the element at the index provided.
+`getMenuItemCount() => number` | Returns the menu item count.
 `getSelectedSiblingOfItemAtIndex(index: number) => number` | Returns selected list item index within the same selection group which is a sibling of item at given `index`.
 `isSelectableItemAtIndex(index: number) => boolean` | Returns true if menu item at specified index is contained within an `.mdc-menu__selection-group` element.
+`notifySelected(evtData: MDCMenuItemEventDetail) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified. Emit an event when a menu item is selected.
+`removeAttributeFromElementAtIndex(index: number, attr: string) => void` | Removes an attribute from an element at the index provided.
+`removeClassFromElementAtIndex(index: number, className: string) => void` | Removes a class from the element at the index provided
 
-### `MDCMenuFoundation`
+### MDCMenuFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
-`handleItemAction(listItem: Element) => void` | Event handler for list's action event.
-`handleMenuSurfaceOpened() => void` | Event handler for menu surface's opened event.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
-`setSelectedIndex(index: number) => void` | Selects the list item at given `index`.
+`setSelectedIndex(index: number) => void` | Selects the list item at `index` within the menu.
 
-### Events
 
-Event Name | Data | Description
---- | --- | ---
-`MDCMenu:selected` | `{detail: {item: Element, index: number}}` | Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.
+<!-- docgen-tsdoc-replacer:end -->

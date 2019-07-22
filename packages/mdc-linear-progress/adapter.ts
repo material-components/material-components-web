@@ -31,7 +31,7 @@
 export interface MDCLinearProgressAdapter {
   /**
    * Adds a class to the root element.
-   * @param className 
+   * @param className The class name to add.
    */
   addClass(className: string): void;
   /**
@@ -44,19 +44,19 @@ export interface MDCLinearProgressAdapter {
   getPrimaryBar(): HTMLElement | null;
   /**
    * Returns boolean indicating whether the root element has a given class.
-   * @param className
+   * @param className The class name to check if the root element contains it.
    */
   hasClass(className: string): boolean;
   /**
    * Removes a class from the root element.
-   * @param className
+   * @param className The class name to remove.
    */
   removeClass(className: string): void;
   /**
    * Sets the inline style on the given element.
-   * @param el
-   * @param styleProperty
-   * @param value
+   * @param el The element to set the style property on.
+   * @param styleProperty The style property to be set.
+   * @param value The style property value.
    */
   setStyle(el: HTMLElement, styleProperty: string, value: string): void;
 }
