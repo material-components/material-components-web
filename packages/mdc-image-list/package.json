@@ -1,11 +1,12 @@
 {
   "name": "@material/image-list",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "The Material Components for the web image list component",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-components/material-components-web.git"
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-image-list"
   },
   "keywords": [
     "material components",
@@ -13,10 +14,10 @@
     "image list"
   ],
   "dependencies": {
-    "@material/feature-targeting": "^3.0.0",
-    "@material/shape": "^3.0.0",
-    "@material/theme": "^3.0.0",
-    "@material/typography": "^3.0.0"
+    "@material/feature-targeting": "^3.1.0",
+    "@material/shape": "^3.1.0",
+    "@material/theme": "^3.1.0",
+    "@material/typography": "^3.1.0"
   },
   "publishConfig": {
     "access": "public"

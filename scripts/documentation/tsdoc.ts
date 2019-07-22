@@ -54,18 +54,13 @@ const README_FILE = 'README.md';
 class TypeScriptDocumentationGenerator {
   docData?: {}; // Documentalist representation of methods/properties/events
   templateFunction: Handlebars.TemplateDelegate<{
-    modules: ModuleMarkdown[],
-    showFrameworkUsage?: boolean,
+    componentModules: ModuleMarkdown[],
+    nonComponentModules: ModuleMarkdown[],
   }>;
 
   constructor() {
     this.docData = {};
-    fs.readFile('./scripts/documentation/api-markdown-table-template.hbs', 'utf8', (error, template) => {
-      if (error) {
-        console.error(error); // tslint:disable-line
-      }
-      this.templateFunction = Handlebars.compile(template, {noEscape: true});
-    });
+    this.setupTemplates();
   }
 
   /**
@@ -136,31 +131,12 @@ class TypeScriptDocumentationGenerator {
       return;
     }
     return {
-      events: this.getDocumentationForModule(esmodule).events,
-      examples: this.getDocumentationForModule(esmodule).examples,
+      events: this.getDocumentationForEvents(esmodule),
+      examples: this.getDocumentationForExamples(esmodule),
       methods: this.getDocumentationForMethods(esmodule),
       moduleName: esmodule,
       properties: this.getDocumentationProperties(esmodule),
       readmeDirectoryPath,
-    };
-  }
-
-  /**
-   * This is higher level documentation from the class.
-   * Currently this should only include events documentation.
-   * @returns documentation of the esmodule.
-   * @param esmodule module name (ie. MDCSelectIconFoundation)
-   */
-  getDocumentationForModule(esmodule: string): ModuleDocumentation {
-    if (!this.docData
-      || !this.docData[esmodule].documentation
-      || !this.docData[esmodule].documentation.contents) {
-      return {events: [], examples: []};
-    }
-    // this only returns event data
-    return {
-      events: this.getDocumentationForEvents(esmodule),
-      examples: this.getDocumentationForExamples(esmodule),
     };
   }
 
@@ -170,6 +146,11 @@ class TypeScriptDocumentationGenerator {
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
   getDocumentationForEvents(esmodule: string): ModuleEvent[] {
+    if (!this.docData
+      || !this.docData[esmodule].documentation
+      || !this.docData[esmodule].documentation.contents) {
+      return [];
+    }
     return (this.docData[esmodule].documentation.contents as DocumentationContent[])
       .filter((content) => content.tag && content.tag === 'events')
       .map((content) => ({documentation: content.value}));
@@ -181,12 +162,14 @@ class TypeScriptDocumentationGenerator {
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
   getDocumentationForExamples(esmodule: string): ModuleExample[] {
-    console.log(this.docData[esmodule].documentation)
-    const x = (this.docData[esmodule].documentation.contents as DocumentationContent[])
+    if (!this.docData
+      || !this.docData[esmodule].documentation
+      || !this.docData[esmodule].documentation.contents) {
+      return [];
+    }
+    return (this.docData[esmodule].documentation.contents as DocumentationContent[])
       .filter((content) => content.tag && content.tag === 'example')
       .map((content) => ({documentation: content.value}));
-    // x.forEach((content) => console.log(content));
-    return x;
   }
 
   /**
@@ -292,6 +275,13 @@ class TypeScriptDocumentationGenerator {
     }
   }
 
+  private setupTemplates() {
+    const tablesTemplate = fs.readFileSync('./scripts/documentation/ts-api-tables.hbs', 'utf8');
+    const tableTemplate = fs.readFileSync('./scripts/documentation/ts-api-table.hbs', 'utf8');
+    Handlebars.registerPartial('tsApiTable', tableTemplate);
+    this.templateFunction = Handlebars.compile(tablesTemplate, {noEscape: true});
+  }
+
   /**
    * Returns a promise, that resolves with the finalized markdown with
    * inserted documentation in markdown table format.
@@ -315,8 +305,10 @@ class TypeScriptDocumentationGenerator {
       .filter((module) => module.methods.length || module.properties.length || module.events.length)
       .sort(this.sortByModuleType);
     const apiMarkdownTable =
-      this.templateFunction({modules: componentModules, showFrameworkUsage: true}) +
-      this.templateFunction({modules: nonComponentModules});
+      this.templateFunction({
+        componentModules,
+        nonComponentModules,
+      });
 
     const startReplacerToken
       = '<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->';
