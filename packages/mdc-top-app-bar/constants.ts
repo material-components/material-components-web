@@ -22,10 +22,18 @@
  */
 
 const cssClasses = {
+  DENSE: 'mdc-top-app-bar--dense',
+  DENSE_FIXED_ADJUST: 'mdc-top-app-bar--dense-fixed-adjust',
+  DENSE_PROMINENT_FIXED_ADJUST: 'mdc-top-app-bar--dense-prominent-fixed-adjust',
+  FIXED_ADJUST: 'mdc-top-app-bar--fixed-adjust',
   FIXED_CLASS: 'mdc-top-app-bar--fixed',
   FIXED_SCROLLED_CLASS: 'mdc-top-app-bar--fixed-scrolled',
+  PROMINENT: 'mdc-top-app-bar--prominent',
+  PROMINENT_FIXED_ADJUST: 'mdc-top-app-bar--prominent-fixed-adjust',
+  ROOT: 'mdc-top-app-bar',
   SHORT_CLASS: 'mdc-top-app-bar--short',
   SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
+  SHORT_FIXED_ADJUST: 'mdc-top-app-bar--short-fixed-adjust',
   SHORT_HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item',
 };
 
