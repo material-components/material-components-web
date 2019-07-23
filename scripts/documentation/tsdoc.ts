@@ -131,8 +131,8 @@ class TypeScriptDocumentationGenerator {
       return;
     }
     return {
-      events: this.getDocumentationForModule(esmodule).events,
-      examples: this.getDocumentationForModule(esmodule).examples,
+      events: this.getDocumentationForEvents(esmodule),
+      examples: this.getDocumentationForExamples(esmodule),
       methods: this.getDocumentationForMethods(esmodule),
       moduleName: esmodule,
       properties: this.getDocumentationProperties(esmodule),
@@ -145,17 +145,16 @@ class TypeScriptDocumentationGenerator {
    * @returns list of events in the esmodule.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  getDocumentationForEvents(esmodule: string): ModuleDocumentation {
+  getDocumentationForEvents(esmodule: string): ModuleEvent[] {
     if (!this.docData
       || !this.docData[esmodule].documentation
       || !this.docData[esmodule].documentation.contents) {
-      return {events: [], examples: []};
+      return [];
     }
 
-    const events = (this.docData[esmodule].documentation.contents as DocumentationContent[])
+    return (this.docData[esmodule].documentation.contents as DocumentationContent[])
     .filter((content) => content.tag && content.tag === 'events')
     .map((content) => ({documentation: content.value}));
-    return {events};
   }
 
   /**
@@ -164,12 +163,14 @@ class TypeScriptDocumentationGenerator {
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
   getDocumentationForExamples(esmodule: string): ModuleExample[] {
-    console.log(this.docData[esmodule].documentation)
-    const x = (this.docData[esmodule].documentation.contents as DocumentationContent[])
+    if (!this.docData
+      || !this.docData[esmodule].documentation
+      || !this.docData[esmodule].documentation.contents) {
+      return [];
+    }
+    return (this.docData[esmodule].documentation.contents as DocumentationContent[])
       .filter((content) => content.tag && content.tag === 'example')
       .map((content) => ({documentation: content.value}));
-    // x.forEach((content) => console.log(content));
-    return x;
   }
 
   /**
