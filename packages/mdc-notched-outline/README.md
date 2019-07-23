@@ -87,6 +87,8 @@ Mixin | Description
 `mdc-notched-outline-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-notched-outline-floating-label-float-position($positionY, $positionX, $scale)` | Sets the position and scale of the floating label inside the notched outline.
 
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+
 ## `MDCNotchedOutline` Properties and Methods
 
 Method Signature | Description
@@ -113,3 +115,4 @@ Method Signature | Description
 --- | ---
 `notch(notchWidth: number) => void` | Adds the `mdc-notched-outline--notched` class and updates the notch element's style based on `notchWidth`.
 `closeNotch() => void` | Removes the `mdc-notched-outline--notched` class.
+<!-- docgen-tsdoc-replacer:end -->

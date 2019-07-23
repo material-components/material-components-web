@@ -39,6 +39,9 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
     return this.nativeControl_.checked;
   }
 
+  /**
+   * Setter/getter for the radio's checked state.
+   */
   set checked(checked: boolean) {
     this.nativeControl_.checked = checked;
   }
@@ -47,6 +50,10 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
     return this.nativeControl_.disabled;
   }
 
+  /**
+   * Setter/getter for the radio's disabled state. Setter proxies
+   * to foundation's `setDisabled` method
+   */
   set disabled(disabled: boolean) {
     this.foundation_.setDisabled(disabled);
   }
@@ -55,6 +62,9 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
     return this.nativeControl_.value;
   }
 
+  /**
+   * Setter/getter for the radio's value.
+   */
   set value(value: string) {
     this.nativeControl_.value = value;
   }

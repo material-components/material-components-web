@@ -32,35 +32,97 @@ import {MDCRipplePoint} from './types';
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCRippleAdapter {
+  /**
+   * Whether or not the given browser supports CSS Variables.
+   */
   browserSupportsCssVars(): boolean;
 
+  /**
+   * Whether or not the ripple should be considered unbounded.
+   */
   isUnbounded(): boolean;
 
+  /**
+   * Whether or not the surface the ripple is acting upon is
+   * [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos).
+   */
   isSurfaceActive(): boolean;
 
+  /**
+   * Whether or not the ripple is attached to a disabled component.
+   */
   isSurfaceDisabled(): boolean;
 
+  /**
+   * Adds a class to the ripple surface.
+   */
   addClass(className: string): void;
 
+  /**
+   * Removes a class from the ripple surface.
+   */
   removeClass(className: string): void;
 
+  /**
+   * Whether or not the ripple surface contains the given event target.
+   * @param target
+   */
   containsEventTarget(target: EventTarget | null): boolean;
 
+  /**
+   * Registers an event handler on the ripple surface.
+   * @param evtType
+   * @param handler
+   */
   registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
+  /**
+   * Unregisters an event handler on the ripple surface.
+   * @param evtType
+   * @param handler
+   */
   deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
+  /**
+   * Registers an event handler on the documentElement.
+   * @param evtType
+   * @param handler
+   */
   registerDocumentInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
+  /**
+   * Unregisters an event handler on the documentElement.
+   * @param evtType
+   * @param handler
+   */
   deregisterDocumentInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
+  /**
+   * Registers a handler to be called when the ripple surface (or its viewport) resizes.
+   * @param handler
+   */
   registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
+  /**
+   * Unregisters a handler to be called when the ripple surface (or its viewport) resizes.
+   * @param handler
+   */
   deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
+  /**
+   * Sets the CSS property `varName` on the ripple surface to the value specified.
+   * @param varName
+   * @param value
+   */
   updateCssVariable(varName: string, value: string | null): void;
 
+  /**
+   * Returns the ClientRect for the surface.
+   */
   computeBoundingRect(): ClientRect;
 
+  /**
+   * Returns the `page{X,Y}Offset` values for the window object.
+   */
   getWindowPageOffset(): MDCRipplePoint;
 }

@@ -46,6 +46,10 @@ export class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
     super({...MDCRadioFoundation.defaultAdapter, ...adapter});
   }
 
+  /**
+   * Sets the disabled value of the native control.
+   * @param disabled
+   */
   setDisabled(disabled: boolean) {
     const {DISABLED} = MDCRadioFoundation.cssClasses;
     this.adapter_.setNativeControlDisabled(disabled);

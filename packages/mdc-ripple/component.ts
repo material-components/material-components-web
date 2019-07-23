@@ -77,19 +77,34 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
     return Boolean(this.unbounded_);
   }
 
+  /**
+   * Whether or not the ripple is unbounded
+   * > _NOTE_: Surfaces for bounded ripples should have the `overflow`
+   * property set to `hidden`, while surfaces for unbounded ripples should
+   * have it set to `visible`.
+   */
   set unbounded(unbounded: boolean) {
     this.unbounded_ = Boolean(unbounded);
     this.setUnbounded_();
   }
 
+  /**
+   * Proxies to the foundation's `activate` method.
+   */
   activate() {
     this.foundation_.activate();
   }
 
+  /**
+   * Proxies to the foundation's `deactivate` method.
+   */
   deactivate() {
     this.foundation_.deactivate();
   }
 
+  /**
+   * Proxies to the foundation's `layout` method.
+   */
   layout() {
     this.foundation_.layout();
   }

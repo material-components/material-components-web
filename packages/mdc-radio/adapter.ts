@@ -29,7 +29,20 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCRadioAdapter {
+  /**
+   * Adds a class to the root element.
+   * @param className
+   */
   addClass(className: string): void;
+  /**
+   * Removes a class from the root element.
+   * @param className
+   */
   removeClass(className: string): void;
+
+  /**
+   * Sets the input's `disabled` property to the given value.
+   * @param disabled
+   */
   setNativeControlDisabled(disabled: boolean): void;
 }

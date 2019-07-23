@@ -112,6 +112,8 @@ Mixin | Description
 
 In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](../mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using any of the Sass mixins, you must pass in an actual color value for support in Edge.
 
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+
 ## `MDCRadio` Properties and Methods
 
 Property | Value Type | Description
@@ -137,3 +139,4 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control
+<!-- docgen-tsdoc-replacer:end -->

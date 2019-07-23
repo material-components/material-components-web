@@ -140,6 +140,8 @@ ripple.
 MDCRipple.attachTo(document.querySelector('.my-surface'));
 ```
 
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+
 Property | Value Type | Description
 --- | --- | ---
 `unbounded` | Boolean | Whether or not the ripple is unbounded
@@ -184,6 +186,8 @@ Method Signature | Description
 `deactivate() => void` | Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
 `layout() => void` | Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's position or dimension is changed programmatically.
 `setUnbounded(unbounded: boolean) => void` | Sets the ripple to be unbounded or not, based on the given boolean.
+
+<!-- docgen-tsdoc-replacer:end -->
 
 ## Tips/Tricks
 

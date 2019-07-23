@@ -57,7 +57,7 @@ export class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutline
   }
 
   /**
-   * Adds the outline notched selector and updates the notch width calculated based off of notchWidth.
+   * Adds the `mdc-notched-outline--notched` class and updates the notch element's style based on `notchWidth`.
    */
   notch(notchWidth: number) {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
@@ -71,7 +71,7 @@ export class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutline
   }
 
   /**
-   * Removes notched outline selector to close the notch in the outline.
+   * Removes the `mdc-notched-outline--notched` class.
    */
   closeNotch() {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
