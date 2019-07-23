@@ -236,6 +236,10 @@ class TypeScriptDocumentationGenerator {
        */
       const allowList = [
         'mdc-drawer',
+        'mdc-notched-outline',
+        'mdc-radio',
+        'mdc-ripple',
+        'mdc-select',
       ];
 
       if (allowList.some((allowed) => readmeDirectoryPath.includes(allowed))) {

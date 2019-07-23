@@ -43,6 +43,11 @@ import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
 const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
 
+// tslint:disable:max-line-length
+/**
+ * @events `MDCSelect:change {value: string, index: number}` Used to indicate when an element has been selected. This event also includes the value of the item and the index.
+ */
+// tslint:enable:max-line-length
 export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: Element): MDCSelect {
     return new MDCSelect(root);
@@ -51,6 +56,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
 
+  /**
+   * Ripple instance attached to outlined select variant, or `null` for all other variants.
+   */
   ripple!: MDCRipple | null;
 
   private menu_!: MDCMenu | null; // assigned in enhancedSelectSetup_()
@@ -250,6 +258,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     return this.foundation_.getValue();
   }
 
+  /**
+   * The `value`/`data-value` of the currently selected option.
+   */
   set value(value: string) {
     this.foundation_.setValue(value);
   }
@@ -265,6 +276,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     return selectedIndex;
   }
 
+  /**
+   * The index of the currently selected option. Set to -1 if no option is currently selected.
+   * Changing this property will update the select element.
+   */
   set selectedIndex(selectedIndex: number) {
     this.foundation_.setSelectedIndex(selectedIndex);
   }
@@ -274,30 +289,37 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
         (this.nativeControl_ ? this.nativeControl_.disabled : false);
   }
 
+  /**
+   * Whether or not the component is disabled. Setting this sets the disabled state on the component.
+   */
   set disabled(disabled: boolean) {
     this.foundation_.setDisabled(disabled);
   }
 
+  /**
+   * Proxies to the foundation's `setLeadingIconAriaLabel` method.
+   */
   set leadingIconAriaLabel(label: string) {
     this.foundation_.setLeadingIconAriaLabel(label);
   }
 
   /**
-   * Sets the text content of the leading icon.
+   * Sets the text content of the leading icon. Proxies to the foundation's `setLeadingIconContent` method.
    */
   set leadingIconContent(content: string) {
     this.foundation_.setLeadingIconContent(content);
   }
 
   /**
-   * Sets the text content of the helper text.
+   * Sets the text content of the helper text. Proxies to the foundation's `setHelperTextContent` method when set.
    */
   set helperTextContent(content: string) {
     this.foundation_.setHelperTextContent(content);
   }
 
   /**
-   * Sets the current invalid state of the select.
+   * Sets the current invalid state of the select. Whether or not the component is in a valid state.
+   * Setting this updates styles on the component, but does not affect the native validity state.
    */
   set valid(isValid: boolean) {
     this.foundation_.setValid(isValid);
@@ -311,7 +333,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   /**
-   * Sets the control to the required state.
+   * Sets the control to the required state. Whether or not the component is required. Setting this
+   * updates the `required` or `aria-required` attribute on the component and enables validation.
    */
   set required(isRequired: boolean) {
     if (this.nativeControl_) {

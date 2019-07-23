@@ -55,12 +55,13 @@ export interface MDCSelectAdapter {
   deactivateBottomLine(): void;
 
   /**
-   * Sets the value of the select.
+   * Sets the value of the select or text content of the selected-text element.
    */
   setValue(value: string): void;
 
   /**
-   * Returns the selected value of the select element.
+   * Returns the value selected `option` on the `select` element and
+   * the `data-value` of the selected list item on the enhanced select.
    */
   getValue(): string;
 
@@ -80,7 +81,7 @@ export interface MDCSelectAdapter {
   hasOutline(): boolean;
 
   /**
-   * Only implement if outline element exists.
+   * Switches the notched outline element to its "notched state". Only implement if outline element exists.
    */
   notchOutline(labelWidth: number): void;
 
@@ -90,42 +91,43 @@ export interface MDCSelectAdapter {
   closeOutline(): void;
 
   /**
-   * Opens the menu.
+   * Causes the menu element in the enhanced select to open.
    */
   openMenu(): void;
 
   /**
-   * Closes the menu.
+   * Causes the menu element in the enhanced select to close.
    */
   closeMenu(): void;
 
   /**
-   * Returns true if the menu is currently open.
+   * Returns true if the menu is currently opened in the enhanced select.
    */
   isMenuOpen(): boolean;
 
   /**
-   * Sets the selected index of the select to the index provided.
+   * Selects the option or list item at the specified index.
    */
   setSelectedIndex(index: number): void;
 
   /**
-   * Sets the select to disabled.
+   * Enables or disables the native or enhanced select.
    */
   setDisabled(isDisabled: boolean): void;
 
   /**
-   * Sets the line ripple transform origin center.
+   * Sets the line ripple center to the provided normalizedX value.
    */
   setRippleCenter(normalizedX: number): void;
 
   /**
-   * Emits a change event when an element is selected.
+   * Emits the `MDCSelect:change` event when an element is selected.
    */
   notifyChange(value: string): void;
 
   /**
-   * Checks if the select is currently valid.
+   * Returns whether the component is currently valid, using the
+   * native select's `checkValidity` or equivalent logic for the enhanced select.
    */
   checkValidity(): boolean;
 

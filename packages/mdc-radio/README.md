@@ -113,30 +113,42 @@ Mixin | Description
 In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](../mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using any of the Sass mixins, you must pass in an actual color value for support in Edge.
 
 <!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCRadio
+#### Methods
 
-## `MDCRadio` Properties and Methods
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
-Property | Value Type | Description
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`checked` | Boolean | Setter/getter for the radio's checked state
-`disabled` | Boolean | Setter/getter for the radio's disabled state. Setter proxies to foundation's `setDisabled` method
-`value` | String | Setter/getter for the radio's value
+checked | `boolean` | Setter/getter for the radio's checked state.
+disabled | `boolean` | Setter/getter for the radio's disabled state. Setter proxies to foundation's `setDisabled` method
+value | `string` | Setter/getter for the radio's value.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Radio button for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCRadioAdapter`
+### MDCRadioAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`setNativeControlDisabled(disabled: boolean) => void` | Sets the input's `disabled` property to the given value
-`addClass(className: string) => void` | Adds a class to the root element
-`removeClass(className: string) => void` | Removes a class from the root element
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`setNativeControlDisabled(disabled: boolean) => void` | Sets the input's `disabled` property to the given value.
 
-### `MDCRadioFoundation`
+### MDCRadioFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control
+`setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control.
+
+
 <!-- docgen-tsdoc-replacer:end -->

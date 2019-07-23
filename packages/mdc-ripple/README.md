@@ -141,51 +141,57 @@ MDCRipple.attachTo(document.querySelector('.my-surface'));
 ```
 
 <!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCRipple
+#### Methods
 
-Property | Value Type | Description
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`deactivate() => void` | Proxies to the foundation's `deactivate` method.
+`layout() => void` | Proxies to the foundation's `layout` method.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+`activate() => void` | Proxies to the foundation's `activate` method.
+
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`unbounded` | Boolean | Whether or not the ripple is unbounded
-> _NOTE_: Surfaces for bounded ripples should have the `overflow` property set to `hidden`, while surfaces for unbounded ripples should have it set to `visible`.
+unbounded | `boolean` | Whether or not the ripple is unbounded > _NOTE_: Surfaces for bounded ripples should have the `overflow` property set to `hidden`, while surfaces for unbounded ripples should have it set to `visible`.
 
-Method Signature | Description
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+
+### MDCRippleAdapter
+#### Methods
+
+Signature | Description
 --- | ---
-`activate() => void` | Proxies to the foundation's `activate` method
-`deactivate() => void` | Proxies to the foundation's `deactivate` method
-`layout() => void` | Proxies to the foundation's `layout` method
-`handleFocus() => void` | Handles focus event on the ripple surface
-`handleBlur() => void` | Handles blur event on the ripple surface
+`isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos).
+`addClass(className: string) => void` | Adds a class to the ripple surface.
+`computeBoundingRect() => ClientRect` | Returns the ClientRect for the surface.
+`containsEventTarget(target: EventTarget | null) => boolean` | Whether or not the ripple surface contains the given event target.
+`deregisterDocumentInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Unregisters an event handler on the documentElement.
+`deregisterInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Unregisters an event handler on the ripple surface.
+`deregisterResizeHandler(handler: SpecificEventListener<"resize">) => void` | Unregisters a handler to be called when the ripple surface (or its viewport) resizes.
+`getWindowPageOffset() => MDCRipplePoint` | Returns the `page{X,Y}Offset` values for the window object.
+`browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables.
+`isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component.
+`isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded.
+`registerDocumentInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Registers an event handler on the documentElement.
+`registerInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Registers an event handler on the ripple surface.
+`registerResizeHandler(handler: SpecificEventListener<"resize">) => void` | Registers a handler to be called when the ripple surface (or its viewport) resizes.
+`removeClass(className: string) => void` | Removes a class from the ripple surface.
+`updateCssVariable(varName: string, value: string | null) => void` | Sets the CSS property `varName` on the ripple surface to the value specified.
 
-### `MDCRippleAdapter`
+### MDCRippleFoundation
+#### Methods
 
-| Method Signature | Description |
-| --- | --- |
-| `browserSupportsCssVars() => boolean` | Whether or not the given browser supports CSS Variables. |
-| `isUnbounded() => boolean` | Whether or not the ripple should be considered unbounded. |
-| `isSurfaceActive() => boolean` | Whether or not the surface the ripple is acting upon is [active](https://www.w3.org/TR/css3-selectors/#useraction-pseudos) |
-| `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component |
-| `addClass(className: string) => void` | Adds a class to the ripple surface |
-| `removeClass(className: string) => void` | Removes a class from the ripple surface |
-| `containsEventTarget(target: EventTarget) => boolean` | Whether or not the ripple surface contains the given event target |
-| `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the ripple surface |
-| `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler on the ripple surface |
-| `registerDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the documentElement |
-| `deregisterDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler on the documentElement |
-| `registerResizeHandler(handler: Function) => void` | Registers a handler to be called when the ripple surface (or its viewport) resizes |
-| `deregisterResizeHandler(handler: Function) => void` | Unregisters a handler to be called when the ripple surface (or its viewport) resizes |
-| `updateCssVariable(varName: string, value: (string or null)) => void` | Sets the CSS property `varName` on the ripple surface to the value specified |
-| `computeBoundingRect() => ClientRect` | Returns the ClientRect for the surface |
-| `getWindowPageOffset() => {x: number, y: number}` | Returns the `page{X,Y}Offset` values for the window object |
-
-> _NOTE_: When implementing `browserSupportsCssVars`, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you.
-
-### `MDCRippleFoundation`
-
-Method Signature | Description
+Signature | Description
 --- | ---
-`activate() => void` | Triggers an activation of the ripple (the first stage, which happens when the ripple surface is engaged via interaction, such as a `mousedown` or a `pointerdown` event). It expands from the center.
-`deactivate() => void` | Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
-`layout() => void` | Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's position or dimension is changed programmatically.
-`setUnbounded(unbounded: boolean) => void` | Sets the ripple to be unbounded or not, based on the given boolean.
+`activate(evt?: Event) => void` | 
+
 
 <!-- docgen-tsdoc-replacer:end -->
 

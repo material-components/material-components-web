@@ -87,6 +87,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.helperText_ = foundationMap.helperText;
   }
 
+  /**
+   * Handles setting the `mdc-select__selected-text` element and closing the menu
+   * (enhanced select only). Also causes the label to float and outline to notch if needed.
+   * @param index
+   */
   setSelectedIndex(index: number) {
     this.adapter_.setSelectedIndex(index);
     this.adapter_.closeMenu();
@@ -94,16 +99,27 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.handleChange(didChange);
   }
 
+  /**
+   * Handles setting the value through the adapter and causes the label to float and outline to notch if needed.
+   * @param value
+   */
   setValue(value: string) {
     this.adapter_.setValue(value);
     const didChange = true;
     this.handleChange(didChange);
   }
 
+  /**
+   * Handles getting the value through the adapter.
+   */
   getValue() {
     return this.adapter_.getValue();
   }
 
+  /**
+   * Updates appearance based on disabled state. This must be called whenever the `disabled` state changes.
+   * @param isDisabled
+   */
   setDisabled(isDisabled: boolean) {
     if (isDisabled) {
       this.adapter_.addClass(cssClasses.DISABLED);
@@ -119,6 +135,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   /**
+   * Sets the content of the helper text.
    * @param content Sets the content of the helper text.
    */
   setHelperTextContent(content: string) {
@@ -127,21 +144,31 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
   }
 
+  /**
+   * Handles determining if the notched outline should be notched.
+   */
   layout() {
     const openNotch = this.getValue().length > 0;
     this.notchOutline(openNotch);
   }
 
+  /**
+   * Handles menu or menu surface opened event.
+   */
   handleMenuOpened() {
     this.adapter_.addClass(cssClasses.ACTIVATED);
   }
 
+  /**
+   * Handles menu or menu surface closed event.
+   */
   handleMenuClosed() {
     this.adapter_.removeClass(cssClasses.ACTIVATED);
   }
 
   /**
-   * Handles value changes, via change event or programmatic updates.
+   * Handles a change to the `select` element's value. This must be called both for `change`
+   * events and programmatic changes requested via the component API.
    */
   handleChange(didChange = true) {
     const value = this.getValue();
@@ -167,7 +194,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   /**
-   * Handles focus events from select element.
+   * Handles a focus event on the `select` element.
    */
   handleFocus() {
     this.adapter_.addClass(cssClasses.FOCUSED);
@@ -180,7 +207,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   /**
-   * Handles blur events from select element.
+   * Handles a blur event on the `select` element.
    */
   handleBlur() {
     if (this.adapter_.isMenuOpen()) {
@@ -200,6 +227,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
   }
 
+  /**
+   * Sets the line ripple center to the normalizedX for the line ripple.
+   * @param normalizedX
+   */
   handleClick(normalizedX: number) {
     if (this.adapter_.isMenuOpen()) {
       return;
@@ -209,6 +240,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter_.openMenu();
   }
 
+  /**
+   * Handles opening the menu (enhanced select) when the `mdc-select__selected-text`
+   * element is focused and the user presses the `Enter` or `Space` key.
+   * @param event
+   */
   handleKeydown(event: KeyboardEvent) {
     if (this.adapter_.isMenuOpen()) {
       return;
@@ -261,10 +297,17 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
   }
 
+  /**
+   * Sets the valid state through the adapter.
+   * @param isValid
+   */
   setValid(isValid: boolean) {
     this.adapter_.setValid(isValid);
   }
 
+  /**
+   * Gets the valid state through the adapter's `checkValidity` API.
+   */
   isValid() {
     return this.adapter_.checkValidity();
   }

@@ -402,79 +402,91 @@ Mixin | Description
 
 > NOTE: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 
-## `MDCSelect` API
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCSelect
+#### Methods
 
-The `MDCSelect` component API is modeled after a subset of the `HTMLSelectElement` functionality.
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`initialSyncWithDOM() => void` | Initializes the select's event listeners and internal state based on the environment's state.
+`layout() => void` | Recomputes the outline SVG path for the outline element.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
-Property | Type | Description
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`value` | `string` | The `value`/`data-value` of the currently selected option.
-`selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element.
-`disabled` | `boolean` | Whether or not the component is disabled. Setting this sets the disabled state on the component.
-`valid` | `boolean` | Whether or not the component is in a valid state. Setting this updates styles on the component, but does not affect the native validity state.
-`required` | `boolean` | Whether or not the component is required. Setting this updates the `required` or `aria-required` attribute on the component and enables validation.
-`leadingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
-`leadingIconContent` | `string` (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
-`helperTextContent` | `string` (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
-`ripple` | `MDCRipple` | Ripple instance attached to outlined select variant, or `null` for all other variants.
+required | `boolean` | Returns whether the select is required.
+disabled | `boolean` | Whether or not the component is disabled. Setting this sets the disabled state on the component.
+helperTextContent | `string` | Sets the text content of the helper text. Proxies to the foundation's `setHelperTextContent` method when set.
+leadingIconAriaLabel | `string` | Proxies to the foundation's `setLeadingIconAriaLabel` method.
+leadingIconContent | `string` | Sets the text content of the leading icon. Proxies to the foundation's `setLeadingIconContent` method.
+ripple | `MDCRipple | null` | Ripple instance attached to outlined select variant, or `null` for all other variants.
+selectedIndex | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element.
+valid | `boolean` | Checks if the select is in a valid state.
+value | `string` | The `value`/`data-value` of the currently selected option.
 
-### Events
-
-Event Name | Data | Description
---- | --- | ---
-`MDCSelect:change` | `{value: string, index: number}` | Used to indicate when an element has been selected. This event also includes the value of the item and the index.
+#### Events
+- `MDCSelect:change {value: string, index: number}` Used to indicate when an element has been selected. This event also includes the value of the item and the index.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Select for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCSelectAdapter`
+### MDCSelectAdapter
+#### Methods
 
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `hasClass(className: string) => boolean` | Returns true if the root element has the className in its classList. |
-| `activateBottomLine() => void` | Activates the bottom line component. |
-| `deactivateBottomLine() => void` | Deactivates the bottom line component. |
-| `getValue() => string` | Returns the value selected `option` on the `select` element and the `data-value` of the selected list item on the enhanced select. |
-| `floatLabel(value: boolean) => void` | Floats or defloats label. |
-| `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
-| `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |
-| `notchOutline(labelWidth: number) => void` | Switches the notched outline element to its "notched state." |
-| `closeOutline() => void` | Switches the notched outline element to its closed state. |
-| `openMenu() => void` | Causes the menu element in the enhanced select to open. |
-| `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
-| `setValue(value: string) => void` | Sets the value of the select or text content of the selected-text element. |
-| `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
-| `setSelectedIndex(index: number) => void` | Selects the option or list item at the specified index. |
-| `setDisabled(isDisabled: boolean) => void` | Enables or disables the native or enhanced select. |
-| `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
-| `notifyChange(value: string) => void` | Emits the `MDCSelect:change` event when an element is selected. |
-| `checkValidity() => boolean` | Returns whether the component is currently valid, using the native select's `checkValidity` or equivalent logic for the enhanced select. |
-| `setValid(isValid: boolean) => void` | Adds or removes invalid styles. |
+Signature | Description
+--- | ---
+`hasOutline() => boolean` | Returns true if outline element exists, false if it doesn't.
+`activateBottomLine() => void` | Activates the bottom line, showing a focused state.
+`checkValidity() => boolean` | Returns whether the component is currently valid, using the native select's `checkValidity` or equivalent logic for the enhanced select.
+`closeMenu() => void` | Causes the menu element in the enhanced select to close.
+`closeOutline() => void` | Closes notch in outline element, if the outline exists.
+`deactivateBottomLine() => void` | Deactivates the bottom line.
+`floatLabel(shouldFloat: boolean) => void` | Floats label determined based off of the shouldFloat argument.
+`getLabelWidth() => number` | Returns width of label in pixels, if the label exists.
+`getValue() => string` | Returns the value selected `option` on the `select` element and the `data-value` of the selected list item on the enhanced select.
+`hasClass(className: string) => boolean` | Returns true if the root element contains the given class name.
+`addClass(className: string) => void` | Adds class to root element.
+`isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select.
+`notchOutline(labelWidth: number) => void` | Switches the notched outline element to its "notched state". Only implement if outline element exists.
+`notifyChange(value: string) => void` | Emits the `MDCSelect:change` event when an element is selected.
+`openMenu() => void` | Causes the menu element in the enhanced select to open.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`setDisabled(isDisabled: boolean) => void` | Enables or disables the native or enhanced select.
+`setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value.
+`setSelectedIndex(index: number) => void` | Selects the option or list item at the specified index.
+`setValid(isValid: boolean) => void` | Adds/Removes the invalid class.
+`setValue(value: string) => void` | Sets the value of the select or text content of the selected-text element.
 
-### `MDCSelectFoundation`
+### MDCSelectFoundation
+#### Methods
 
-| Method Signature | Description |
-| --- | --- |
-| `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline. |
-| `setDisabled(isDisabled: boolean) => void` | Updates appearance based on disabled state. This must be called whenever the `disabled` state changes. |
-| `handleFocus() => void` | Handles a focus event on the `select` element. |
-| `handleBlur() => void` | Handles a blur event on the `select` element. |
-| `handleClick(normalizedX: number) => void` | Sets the line ripple center to the normalizedX for the line ripple. |
-| `handleMenuOpened() => void` | Handles menu or menu surface opened event.
-| `handleMenuClosed() => void` | Handles menu or menu surface closed event.
-| `handleChange() => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API. |
-| `handleKeydown(event: KeyboardEvent) => void` | Handles opening the menu (enhanced select) when the `mdc-select__selected-text` element is focused and the user presses the `Enter` or `Space` key. |
-| `setSelectedIndex(index: number) => void` | Handles setting the `mdc-select__selected-text` element and closing the menu (enhanced select only). Also causes the label to float and outline to notch if needed. |
-| `setValue(value: string) => void` | Handles setting the value through the adapter and causes the label to float and outline to notch if needed. |
-| `getValue() => string` | Handles getting the value through the adapter. |
-| `setValid(isValid: boolean) => void` | Sets the valid state through the adapter. |
-| `isValid() => boolean` | Gets the valid state through the adapter's `checkValidity` API. |
-| `layout() => void` | Handles determining if the notched outline should be notched. |
-| `setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon. |
-| `setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon. |
-| `setHelperTextContent(content: string) => void` | Sets the content of the helper text. |
+Signature | Description
+--- | ---
+`isValid() => boolean` | Gets the valid state through the adapter's `checkValidity` API.
+`handleBlur() => void` | Handles a blur event on the `select` element.
+`handleChange(didChange?: undefined | false | true) => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API.
+`handleClick(normalizedX: number) => void` | Sets the line ripple center to the normalizedX for the line ripple.
+`handleFocus() => void` | Handles a focus event on the `select` element.
+`handleKeydown(event: KeyboardEvent) => void` | Handles opening the menu (enhanced select) when the `mdc-select__selected-text` element is focused and the user presses the `Enter` or `Space` key.
+`handleMenuClosed() => void` | Handles menu or menu surface closed event.
+`handleMenuOpened() => void` | Handles menu or menu surface opened event.
+`getValue() => string` | Handles getting the value through the adapter.
+`layout() => void` | Handles determining if the notched outline should be notched.
+`notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
+`setDisabled(isDisabled: boolean) => void` | Updates appearance based on disabled state. This must be called whenever the `disabled` state changes.
+`setHelperTextContent(content: string) => void` | Sets the content of the helper text.
+`setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon.
+`setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon.
+`setSelectedIndex(index: number) => void` | Handles setting the `mdc-select__selected-text` element and closing the menu (enhanced select only). Also causes the label to float and outline to notch if needed.
+`setValid(isValid: boolean) => void` | Sets the valid state through the adapter.
+`setValue(value: string) => void` | Handles setting the value through the adapter and causes the label to float and outline to notch if needed.
+
+
+<!-- docgen-tsdoc-replacer:end -->
 
 `MDCSelectFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCSelectFoundation`.

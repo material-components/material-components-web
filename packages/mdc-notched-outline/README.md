@@ -88,31 +88,38 @@ Mixin | Description
 `mdc-notched-outline-floating-label-float-position($positionY, $positionX, $scale)` | Sets the position and scale of the floating label inside the notched outline.
 
 <!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCNotchedOutline
+#### Methods
 
-## `MDCNotchedOutline` Properties and Methods
-
-Method Signature | Description
+Signature | Description
 --- | ---
-`notch(notchWidth: number) => void` | Opens the notch with the specified width.
-`closeNotch() => void` | Closes the notch, rendering a full outline.
+`closeNotch() => void` | Updates classes and styles to close the notch.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`notch(notchWidth: number) => void` | Updates classes and styles to open the notch to the specified width.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
-## Usage Within Frameworks
+## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Notched Outline for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCNotchedOutlineAdapter`
+### MDCNotchedOutlineAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the notched outline element.
-`removeClass(className: string) => void` | Removes a class from the notched outline element.
-`setNotchWidthProperty(width: number) => void` | Sets the width of the notch in pixels.
-`removeNotchWidthProperty() => void` | Removes the width property from the notch element.
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`removeNotchWidthProperty() => void` | Removes the width style property from the notch element.
+`setNotchWidthProperty(width: number) => void` | Sets the width style property of the notch element.
 
-### `MDCNotchedOutlineFoundation`
+### MDCNotchedOutlineFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`notch(notchWidth: number) => void` | Adds the `mdc-notched-outline--notched` class and updates the notch element's style based on `notchWidth`.
 `closeNotch() => void` | Removes the `mdc-notched-outline--notched` class.
+`notch(notchWidth: number) => void` | Adds the `mdc-notched-outline--notched` class and updates the notch element's style based on `notchWidth`.
+
+
 <!-- docgen-tsdoc-replacer:end -->
