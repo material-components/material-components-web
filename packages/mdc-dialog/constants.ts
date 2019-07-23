@@ -22,12 +22,20 @@
  */
 
 export const cssClasses = {
+  ACTIONS: 'mdc-dialog__actions',
+  BUTTON: 'mdc-dialog__button',
   CLOSING: 'mdc-dialog--closing',
+  CONTAINER: 'mdc-dialog__container',
+  CONTENT: 'mdc-dialog__content',
   OPEN: 'mdc-dialog--open',
   OPENING: 'mdc-dialog--opening',
+  ROOT: 'mdc-dialog',
+  SCRIM: 'mdc-dialog__scrim',
   SCROLLABLE: 'mdc-dialog--scrollable',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
   STACKED: 'mdc-dialog--stacked',
+  SURFACE: 'mdc-dialog__surface',
+  TITLE: 'mdc-dialog__title',
 };
 
 export const strings = {
