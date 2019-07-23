@@ -25,6 +25,7 @@ const cssClasses = {
   MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
   MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
   ROOT: 'mdc-menu',
+  SELECTION_GROUP_ICON: 'mdc-menu__selection-group-icon',
 };
 
 const strings = {
