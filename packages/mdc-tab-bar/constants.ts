@@ -21,6 +21,10 @@
  * THE SOFTWARE.
  */
 
+const cssClasses = {
+  ROOT: 'mdc-tab-bar',
+};
+
 const strings = {
   ARROW_LEFT_KEY: 'ArrowLeft',
   ARROW_RIGHT_KEY: 'ArrowRight',
@@ -43,4 +47,8 @@ const numbers = {
   SPACE_KEYCODE: 32,
 };
 
-export {numbers, strings};
+export {
+  cssClasses,
+  numbers,
+  strings,
+};
