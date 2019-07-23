@@ -56,8 +56,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       hasRadioAtIndex: () => false,
       isCheckboxCheckedAtIndex: () => false,
       isFocusInsideList: () => false,
-      isRootFocused: () => false,
       isListItemDisabled: () => false,
+      isRootFocused: () => false,
       notifyAction: () => undefined,
       removeClassForElementIndex: () => undefined,
       setAttributeForElementIndex: () => undefined,
@@ -446,14 +446,14 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   /**
-   * 1) Toggles checkbox, 2) toggles radio, 3) sets selectedIndex
-   * of list item(s) on **user interaction**. User interaction should not toggle
-   * list item(s) when disabled.
+   * Sets selected index on user action, toggles checkbox / radio based on toggleCheckbox value.
+   * User interaction should not toggle list item(s) when disabled.
    */
   private setSelectedIndexOnAction_(index: number, toggleCheckbox = true) {
     if (this.adapter_.isListItemDisabled(index)) {
       return;
     }
+
     if (this.isCheckboxList_) {
       this.toggleCheckboxAtIndex_(index, toggleCheckbox);
     } else {
