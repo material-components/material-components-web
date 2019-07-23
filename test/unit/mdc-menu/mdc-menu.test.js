@@ -99,7 +99,6 @@ class FakeMenuSurface {
     this.quickOpen = false;
     this.setFixedPosition = td.func('.setFixedPosition');
     this.setAbsolutePosition = td.func('.setAbsolutePosition');
-    this.hoistMenuToBody = td.func('.hoistMenuToBody');
     this.setIsHoisted = td.func('.setIsHoisted');
     this.anchorElement = null;
   }
@@ -285,12 +284,6 @@ test('setFixedPosition', () => {
 
   component.setFixedPosition(false);
   td.verify(menuSurface.setFixedPosition(false));
-});
-
-test('hoistMenuToBody', () => {
-  const {component, menuSurface} = setupTestWithFakes();
-  component.hoistMenuToBody();
-  td.verify(menuSurface.hoistMenuToBody());
 });
 
 test('setIsHoisted', () => {
