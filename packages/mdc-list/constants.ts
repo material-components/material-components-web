@@ -22,11 +22,25 @@
  */
 
 const cssClasses = {
+  AVATAR_LIST: 'mdc-list--avatar-list',
+  DENSE: 'mdc-list--dense',
+  DIVIDER: 'mdc-list-divider',
+  DIVIDER_INSET: 'mdc-list-divider--inset',
+  DIVIDER_PADDED: 'mdc-list-divider--padded',
+  GROUP: 'mdc-list-group',
+  GROUP_SUBHEADER: 'mdc-list-group__subheader',
+  ITEM_GRAPHIC: 'mdc-list-item__graphic',
+  ITEM_META: 'mdc-list-item__meta',
+  ITEM_PRIMARY_TEXT: 'mdc-list-item__primary-text',
+  ITEM_SECONDARY_TEXT: 'mdc-list-item__secondary-text',
+  ITEM_TEXT: 'mdc-list-item__text',
   LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated',
   LIST_ITEM_CLASS: 'mdc-list-item',
   LIST_ITEM_DISABLED_CLASS: 'mdc-list-item--disabled',
   LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
+  NON_INTERACTIVE: 'mdc-list--non-interactive',
   ROOT: 'mdc-list',
+  TWO_LINE: 'mdc-list--two-line',
 };
 
 const strings = {
