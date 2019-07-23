@@ -76,7 +76,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   }
 
   /**
-   *  Handles a custom `MDCChip:interaction` event on the root element.
+   * Handles a custom `MDCChip:interaction` event on the root element.
    */
   handleChipInteraction(chipId: string) {
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
