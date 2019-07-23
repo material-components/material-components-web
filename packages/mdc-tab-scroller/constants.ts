@@ -22,8 +22,14 @@
  */
 
 const cssClasses = {
+  ALIGN_CENTER: 'mdc-tab-scroller--align-center',
+  ALIGN_END: 'mdc-tab-scroller--align-end',
+  ALIGN_START: 'mdc-tab-scroller--align-start',
   ANIMATING: 'mdc-tab-scroller--animating',
+  ROOT: 'mdc-tab-scroller',
+  SCROLL_AREA: 'mdc-tab-scroller__scroll-area',
   SCROLL_AREA_SCROLL: 'mdc-tab-scroller__scroll-area--scroll',
+  SCROLL_CONTENT: 'mdc-tab-scroller__scroll-content',
   SCROLL_TEST: 'mdc-tab-scroller__test',
 };
 
