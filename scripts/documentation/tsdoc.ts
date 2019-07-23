@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as Handlebars from 'handlebars';
 import * as path from 'path';
 import * as util from 'util';
-import { tsConstructorType } from '@babel/types';
 const readFile = util.promisify(fs.readFile);
 
 interface MarkdownBuffer {[s: string]: {
