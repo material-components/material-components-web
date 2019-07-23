@@ -97,7 +97,7 @@ Signature | Description
 
 Name | Type | Description
 --- | --- | ---
-foundation | `MDCTextFieldHelperTextFoundation` | Returns the helper text's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldHelperTextFoundation` class.
+`foundation` | `MDCTextFieldHelperTextFoundation` | Returns the helper text's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldHelperTextFoundation` class.
 
 ## Usage within Web Frameworks
 

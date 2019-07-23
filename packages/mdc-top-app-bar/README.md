@@ -245,7 +245,7 @@ Signature | Description
 
 Name | Type | Description
 --- | --- | ---
-isCollapsed | `boolean` | Indicates whether the short top app bar is in the collapsed state.
+`isCollapsed` | `boolean` | Indicates whether the short top app bar is in the collapsed state.
 
 ### MDCTopAppBarBaseFoundation
 #### Methods

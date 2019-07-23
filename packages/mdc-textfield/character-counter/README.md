@@ -73,7 +73,7 @@ Signature | Description
 
 Name | Type | Description
 --- | --- | ---
-foundation | `MDCTextFieldCharacterCounterFoundation` | Returns the character counter's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldCharacterCounterFoundation` class.
+`foundation` | `MDCTextFieldCharacterCounterFoundation` | Returns the character counter's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldCharacterCounterFoundation` class.
 
 ## Usage within Web Frameworks
 

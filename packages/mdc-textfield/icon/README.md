@@ -176,7 +176,7 @@ Signature | Description
 
 Name | Type | Description
 --- | --- | ---
-foundation | `MDCTextFieldIconFoundation` | Returns the icon's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldIconFoundation` class.
+`foundation` | `MDCTextFieldIconFoundation` | Returns the icon's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldIconFoundation` class.
 
 ## Usage within Web Frameworks
 

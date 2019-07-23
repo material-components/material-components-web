@@ -346,23 +346,23 @@ Signature | Description
 
 Name | Type | Description
 --- | --- | ---
-pattern | `string` | @param Sets the input element's validation pattern.
-disabled | `boolean` | Proxies to the foundation's `isDisabled`/`setDisabled` methods.  @param Sets the Text Field disabled or enabled.
-helperTextContent | `string` | Sets the helper text element content. Proxies to the foundation's `setHelperTextContent` method when set.
-leadingIconAriaLabel | `string` | Sets the aria label of the leading icon. Proxies to the foundation's `setLeadingIconAriaLabel` method.
-leadingIconContent | `string` | Sets the text content of the leading icon. Proxies to the foundation's `setLeadingIconContent` method.
-max | `string` | @param Sets the input element's max.
-maxLength | `number` | @param Sets the input element's maxLength.
-min | `string` | @param Sets the input element's min.
-minLength | `number` | @param Sets the input element's minLength.
-required | `boolean` | @param Sets the Text Field to required.
-ripple | `MDCRipple | null` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
-step | `string` | @param Sets the input element's step.
-trailingIconAriaLabel | `string` | Sets the aria label of the trailing icon. Proxies to the foundation's `setTrailingIconAriaLabel` method.
-trailingIconContent | `string` | Sets the text content of the trailing icon. Proxies to the foundation's `setTrailingIconContent` method.
-useNativeValidation | `boolean` | Enables or disables the use of native validation. Use this for custom validation. Proxies to the foundation's `setUseNativeValidation` method.  @param Set this to false to ignore native input validation.
-valid | `boolean` | Proxies to the foundation's `isValid`/`setValid` methods.  @param Sets the Text Field valid or invalid.
-value | `string` | Proxies to the foundation's `getValue`/`setValue` methods.  @param The value to set on the input.
+`pattern` | `string` | @param Sets the input element's validation pattern.
+`disabled` | `boolean` | Proxies to the foundation's `isDisabled`/`setDisabled` methods.  @param Sets the Text Field disabled or enabled.
+`helperTextContent` | `string` | Sets the helper text element content. Proxies to the foundation's `setHelperTextContent` method when set.
+`leadingIconAriaLabel` | `string` | Sets the aria label of the leading icon. Proxies to the foundation's `setLeadingIconAriaLabel` method.
+`leadingIconContent` | `string` | Sets the text content of the leading icon. Proxies to the foundation's `setLeadingIconContent` method.
+`max` | `string` | @param Sets the input element's max.
+`maxLength` | `number` | @param Sets the input element's maxLength.
+`min` | `string` | @param Sets the input element's min.
+`minLength` | `number` | @param Sets the input element's minLength.
+`required` | `boolean` | @param Sets the Text Field to required.
+`ripple` | `MDCRipple | null` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
+`step` | `string` | @param Sets the input element's step.
+`trailingIconAriaLabel` | `string` | Sets the aria label of the trailing icon. Proxies to the foundation's `setTrailingIconAriaLabel` method.
+`trailingIconContent` | `string` | Sets the text content of the trailing icon. Proxies to the foundation's `setTrailingIconContent` method.
+`useNativeValidation` | `boolean` | Enables or disables the use of native validation. Use this for custom validation. Proxies to the foundation's `setUseNativeValidation` method.  @param Set this to false to ignore native input validation.
+`valid` | `boolean` | Proxies to the foundation's `isValid`/`setValid` methods.  @param Sets the Text Field valid or invalid.
+`value` | `string` | Proxies to the foundation's `getValue`/`setValue` methods.  @param The value to set on the input.
 
 ## Usage within Web Frameworks
 
@@ -476,8 +476,8 @@ Signature | Description
 
 Name | Type | Description
 --- | --- | ---
-shouldFloat | `boolean` | Determines whether the label should float.
-shouldShake | `boolean` | Determines whether the label should shake.
+`shouldFloat` | `boolean` | Determines whether the label should float.
+`shouldShake` | `boolean` | Determines whether the label should shake.
 
 
 <!-- docgen-tsdoc-replacer:end -->
