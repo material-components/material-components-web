@@ -23,8 +23,12 @@
 
 const cssClasses = {
   ACTIVE: 'mdc-tab-indicator--active',
+  CONTENT: 'mdc-tab-indicator__content',
+  CONTENT_ICON: 'mdc-tab-indicator__content--icon',
+  CONTENT_UNDERLINE: 'mdc-tab-indicator__content--underline',
   FADE: 'mdc-tab-indicator--fade',
   NO_TRANSITION: 'mdc-tab-indicator--no-transition',
+  ROOT: 'mdc-tab-indicator',
 };
 
 const strings = {
