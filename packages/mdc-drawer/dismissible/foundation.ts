@@ -68,6 +68,9 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
     }
   }
 
+  /**
+   * Opens the drawer from the closed state.
+   */
   open() {
     if (this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
@@ -84,6 +87,9 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
     this.adapter_.saveFocus();
   }
 
+  /**
+   * Closes the drawer from the open state.
+   */
   close() {
     if (!this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
@@ -93,6 +99,7 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   }
 
   /**
+   * Returns true if the drawer is in the open position.
    * @return true if drawer is in open state.
    */
   isOpen(): boolean {
@@ -100,6 +107,7 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   }
 
   /**
+   * Returns true if the drawer is animating open.
    * @return true if drawer is animating open.
    */
   isOpening(): boolean {
@@ -107,6 +115,7 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   }
 
   /**
+   * Returns true if the drawer is animating closed.
    * @return true if drawer is animating closed.
    */
   isClosing(): boolean {
@@ -125,7 +134,7 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   }
 
   /**
-   * Handles a transition end event on the root element.
+   * Handles the `transitionend` event when the drawer finishes opening/closing.
    */
   handleTransitionEnd(evt: TransitionEvent) {
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
