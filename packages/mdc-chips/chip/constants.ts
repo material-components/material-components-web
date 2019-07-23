@@ -35,9 +35,14 @@ export const strings = {
 
 export const cssClasses = {
   CHECKMARK: 'mdc-chip__checkmark',
+  CHECKMARK_PATH: 'mdc-chip__checkmark-path',
+  CHECKMARK_SVG: 'mdc-chip__checkmark-svg',
   CHIP_EXIT: 'mdc-chip--exit',
   HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
+  ICON: 'mdc-chip__icon',
   LEADING_ICON: 'mdc-chip__icon--leading',
+  ROOT: 'mdc-chip',
   SELECTED: 'mdc-chip--selected',
+  TEXT: 'mdc-chip__text',
   TRAILING_ICON: 'mdc-chip__icon--trailing',
 };
