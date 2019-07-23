@@ -23,6 +23,13 @@
 
 const cssClasses = {
   ACTIVE: 'mdc-tab--active',
+  CONTENT: 'mdc-tab__content',
+  ICON: 'mdc-tab__icon',
+  MIN_WIDTH: 'mdc-tab--min-width',
+  RIPPLE: 'mdc-tab__ripple',
+  ROOT: 'mdc-tab',
+  STACKED: 'mdc-tab--stacked',
+  TEXT_LABEL: 'mdc-tab__text-label',
 };
 
 const strings = {
