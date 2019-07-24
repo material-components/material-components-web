@@ -58,7 +58,7 @@ You would add an increased touch target as follows:
 </span>
 ```
 
-Note that the wrapper <span> element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+Note that the wrapper `<span>` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
 
 ### Styles
 
