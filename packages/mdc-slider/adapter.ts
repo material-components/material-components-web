@@ -32,127 +32,132 @@ import {EventType, SpecificEventListener} from '@material/base/types';
  */
 export interface MDCSliderAdapter {
   /**
-   * Returns true if className exists for the slider Element
+   * Checks if `className` exists on the root element.
    */
   hasClass(className: string): boolean;
 
   /**
-   * Adds a class to the slider Element
+   * Adds a class `className` to the root element.
    */
   addClass(className: string): void;
 
   /**
-   * Removes a class from the slider Element
+   * Removes a class `className` from the root element.
    */
   removeClass(className: string): void;
 
   /**
-   * Returns a string if attribute name exists on the slider Element, otherwise returns null
+   * Returns the value of the attribute `name` on the root element, or
+   * null` if that attribute is not present on the root element.
    */
   getAttribute(name: string): string | null;
 
   /**
-   * Sets attribute name on slider Element to value
+   * Sets an attribute `name` to the value `value` on the root element.
    */
   setAttribute(name: string, value: string): void;
 
   /**
-   * Removes attribute name from slider Element
+   * Removes an attribute `name` from the root element.
    */
   removeAttribute(name: string): void;
 
   /**
-   * Returns the bounding client rect for the slider Element
+   * Computes and returns the bounding client rect for the root element.
+   * Our implementations calls `getBoundingClientRect()` for this.
    */
   computeBoundingRect(): ClientRect;
 
   /**
-   * Returns the tab index of the slider Element
+   * Returns the value of the `tabIndex` property on the root element.
    */
   getTabIndex(): number;
 
   /**
-   * Registers an event handler on the root element for a given event.
+   * Adds an event listener `handler` for event type `type` to the slider's root element.
    */
   registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
-   * Deregisters an event handler on the root element for a given event.
+   * Removes an event listener `handler` for event type `type` from the slider's root element.
    */
   deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
-   * Registers an event handler on the thumb container element for a given event.
+   * Adds an event listener `handler` for event type `type` to the slider's thumb container element.
    */
   registerThumbContainerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
-   * Deregisters an event handler on the thumb container element for a given event.
+   * Removes an event listener `handler` for event type `type` from the slider's thumb container element.
    */
   deregisterThumbContainerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
-   * Registers an event handler on the body for a given event.
+   * Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document.
    */
   registerBodyInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
-   * Deregisters an event handler on the body for a given event.
+   * Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document.
    */
   deregisterBodyInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
-   * Registers an event handler for the window resize event
+   * Adds an event listener `handler` that is called when the component's viewport resizes, e.g. `window.onresize`.
    */
   registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
   /**
-   * Deregisters an event handler for the window resize event
+   * Removes an event listener `handler` that was attached via `registerResizeHandler`.
    */
   deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
   /**
-   * Emits a custom event MDCSlider:input from the root
+   * Broadcasts an "input" event notifying clients that the slider's value is currently being changed.
+   * The implementation should choose to pass along any relevant information pertaining to this event.
+   * In our case we pass along the instance of the component for which the event is triggered for.
    */
   notifyInput(): void;
 
   /**
-   * Emits a custom event MDCSlider:change from the root
+   * Broadcasts a "change" event notifying clients that a change to the slider's value has been committed
+   * by the user. Similar guidance applies here as for `notifyInput()`.
    */
   notifyChange(): void;
 
   /**
-   * Sets a style property of the thumb container element to the passed value
+   * Sets a dash-cased style property `propertyName` to the given `value` on the thumb container element.
    */
   setThumbContainerStyleProperty(propertyName: string, value: string): void;
 
   /**
-   * Sets a style property of the track element to the passed value
+   * Sets a dash-cased style property `propertyName` to the given `value` on the track element.
    */
   setTrackStyleProperty(propertyName: string, value: string): void;
 
   /**
-   * Sets the inner text of the pin marker to the passed value
+   * Sets pin value marker's value when discrete slider thumb moves.
    */
   setMarkerValue(value: number): void;
 
   /**
-   * Appends the passed number of track markers to the track mark container element
+   * Appends track marker element to track container.
    */
   appendTrackMarkers(numMarkers: number): void;
 
   /**
-   * Removes all track markers fromt he track mark container element
+   * Removes existing marker elements to track container.
    */
   removeTrackMarkers(): void;
 
   /**
-   * Sets a style property of the last track marker to the passed value
+   * Sets a dash-cased style property `propertyName` to the given `value` on the last element of the track markers.
    */
   setLastTrackMarkersStyleProperty(propertyName: string, value: string): void;
 
   /**
-   * Returns true if the root element is RTL, otherwise false
+   * True if the slider is within an RTL context, false otherwise.
    */
   isRTL(): boolean;
 }

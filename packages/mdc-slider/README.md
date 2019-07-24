@@ -191,87 +191,88 @@ The `MDCSlider` API is modeled after the `<input type="range">` element and supp
 properties that element supports. It also emits events equivalent to a range input's `input` and
 `change` events.
 
-#### Properties
-
-| Property Name | Type | Description |
-| --- | --- | --- |
-| `value` | `number` | The current value of the slider. Changing this will update the slider's value. |
-| `min` | `number` | The minimum value a slider can have. Values set programmatically will be clamped to this minimum value. Changing this property will update the slider's value if it is lower than the new minimum |
-| `max` | `number` | The maximum value a slider can have. Values set programmatically will be clamped to this maximum value. Changing this property will update the slider's value if it is greater than the new maximum |
-| `step` | `number` | Specifies the increments at which a slider value can be set. Can be any positive number, or `0` for no step. Changing this property will update the slider's value to be quantized along the new step increments |
-| `disabled` | `boolean` | Whether or not the slider is disabled |
-
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCSlider
 #### Methods
 
-| Method Signature | Description |
-| --- | --- |
-| `layout() => void` | Recomputes the dimensions and re-lays out the component. This should be called if the dimensions of the slider itself or any of its parent elements change programmatically (it is called automatically on resize). |
-| `stepUp(amount = 1) => void` | Increases the slider value by the given `amount`, or `1` if no amount is given |
-| `stepDown(amount = 1) => void` | Decrease the slider value by the given `amount`, or `1` if no amount is given |
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`stepDown(amount?: undefined | number) => void` | Decrease the slider value by the given `amount`, or `1` if no amount is given.
+`stepUp(amount?: undefined | number) => void` | Increases the slider value by the given `amount`, or `1` if no amount is given.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+`layout() => void` | Recomputes the dimensions and re-lays out the component. This should be called if the dimensions of the slider itself or any of its parent elements change programmatically (it is called automatically on resize).
+
+#### Properties
+
+Name | Type | Description
+--- | --- | ---
+disabled | `boolean` | Whether or not the slider is disabled.
+max | `number` | The maximum value a slider can have. Values set programmatically will be clamped to this maximum value. Changing this property will update the slider's value if it is greater than the new maximum.
+min | `number` | The minimum value a slider can have. Values set programmatically will be clamped to this minimum value. Changing this property will update the slider's value if it is lower than the new minimum.
+step | `number` | Specifies the increments at which a slider value can be set. Can be any positive number, or `0` for no step. Changing this property will update the slider's value to be quantized along the new step increments.
+value | `number` | The current value of the slider. Changing this will update the slider's value.
 
 #### Events
+- `MDCSlider:input` custom event from its root element whenever the slider value is changed by way of a user event, e.g. when a user is dragging the slider or changing the value using the arrow keys. The `detail` property of the event is set to the slider instance that was affected.
+- `MDCSlider:change` custom event from its root element whenever the slider value is changed _and committed_ by way of a user event, e.g. when a user stops dragging the slider or changes the value using the arrow keys. The `detail` property of the event is set to the slider instance that was affected.
 
-`MDCSlider` emits a `MDCSlider:input` custom event from its root element whenever the slider value
-is changed by way of a user event, e.g. when a user is dragging the slider or changing the value
-using the arrow keys. The `detail` property of the event is set to the slider instance that was
-affected.
+## Usage within Web Frameworks
 
-`MDCSlider` emits a `MDCSlider:change` custom event from its root element whenever the slider value
-is changed _and committed_ by way of a user event, e.g. when a user stops dragging the slider or
-changes the value using the arrow keys. The `detail` property of the event is set to the slider
-instance that was affected.
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### Using the foundation class
+### MDCSliderAdapter
+#### Methods
 
-The `@material/slider` package ships with an `MDCSliderFoundation` class that framework authors can
-use to build a custom MDCSlider component for their framework.
+Signature | Description
+--- | ---
+`notifyInput() => void` | Broadcasts an "input" event notifying clients that the slider's value is currently being changed. The implementation should choose to pass along any relevant information pertaining to this event. In our case we pass along the instance of the component for which the event is triggered for.
+`addClass(className: string) => void` | Adds a class `className` to the root element.
+`computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this.
+`deregisterBodyInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document.
+`deregisterInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Removes an event listener `handler` for event type `type` from the slider's root element.
+`deregisterResizeHandler(handler: SpecificEventListener<"resize">) => void` | Removes an event listener `handler` that was attached via `registerResizeHandler`.
+`deregisterThumbContainerInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Removes an event listener `handler` for event type `type` from the slider's thumb container element.
+`getAttribute(name: string) => string | null` | Returns the value of the attribute `name` on the root element, or null` if that attribute is not present on the root element.
+`getTabIndex() => number` | Returns the value of the `tabIndex` property on the root element.
+`hasClass(className: string) => boolean` | Checks if `className` exists on the root element.
+`isRTL() => boolean` | True if the slider is within an RTL context, false otherwise.
+`notifyChange() => void` | Broadcasts a "change" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyInput()`.
+`appendTrackMarkers(numMarkers: number) => void` | Appends track marker element to track container.
+`registerBodyInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document.
+`registerInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Adds an event listener `handler` for event type `type` to the slider's root element.
+`registerResizeHandler(handler: SpecificEventListener<"resize">) => void` | Adds an event listener `handler` that is called when the component's viewport resizes, e.g. `window.onresize`.
+`registerThumbContainerInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Adds an event listener `handler` for event type `type` to the slider's thumb container element.
+`removeAttribute(name: string) => void` | Removes an attribute `name` from the root element.
+`removeClass(className: string) => void` | Removes a class `className` from the root element.
+`removeTrackMarkers() => void` | Removes existing marker elements to track container.
+`setAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the root element.
+`setLastTrackMarkersStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the last element of the track markers.
+`setMarkerValue(value: number) => void` | Sets pin value marker's value when discrete slider thumb moves.
+`setThumbContainerStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb container element.
+`setTrackStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track element.
 
-#### Adapter API
+### MDCSliderFoundation
+#### Methods
 
-| Method Signature | Description |
-| --- | --- |
-| `hasClass(className: string) => boolean` | Checks if `className` exists on the root element |
-| `addClass(className: string) => void` | Adds a class `className` to the root element |
-| `removeClass(className: string) => void` | Removes a class `className` from the root element |
-| `getAttribute(name: string) => string?` | Returns the value of the attribute `name` on the root element, or `null` if that attribute is not present on the root element. |
-| `setAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the root element. |
-| `removeAttribute(name: string) => void` | Removes an attribute `name` from the root element |
-| `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
-| `getTabIndex() => number` | Returns the value of the `tabIndex` property on the root element |
-| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
-| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |
-| `registerThumbContainerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's thumb container element |
-| `deregisterThumbContainerInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's thumb container element |
-| `registerBodyInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document |
-| `deregisterBodyInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document |
-| `registerResizeHandler(handler: EventListener) => void` | Adds an event listener `handler` that is called when the component's viewport resizes, e.g. `window.onresize`. |
-| `deregisterResizeHandler(handler: EventListener) => void` | Removes an event listener `handler` that was attached via `registerResizeHandler`. |
-| `notifyInput() => void` | Broadcasts an "input" event notifying clients that the slider's value is currently being changed. The implementation should choose to pass along any relevant information pertaining to this event. In our case we pass along the instance of the component for which the event is triggered for. |
-| `notifyChange() => void` | Broadcasts a "change" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyInput()`. |
-| `setThumbContainerStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb container element. |
-| `setTrackStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track element. |
-| `setMarkerValue(value: number) => void` | Sets pin value marker's value when discrete slider thumb moves. |
-| `appendTrackMarkers(numMarkers: number) => void` | Appends track marker element to track container. |
-| `removeTrackMarkers() => void` | Removes existing marker elements to track container. |
-| `setLastTrackMarkersStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the last element of the track markers. |
-| `isRTL() => boolean` | True if the slider is within an RTL context, false otherwise. |
+Signature | Description
+--- | ---
+`layout() => void` | Same as layout() detailed within the component methods table. Does the majority of the work; the component's layout method simply proxies to this.
+`getMin() => number` | Returns the min value the slider can have.
+`getStep() => number` | Returns the step value of the slider.
+`getValue() => number` | Returns the current value of the slider.
+`isDisabled() => boolean` | Returns whether or not the slider is disabled.
+`getMax() => number` | Returns the max value the slider can have.
+`setDisabled(disabled: boolean) => void` | Disables the slider when given true, enables it otherwise.
+`setMax(max: number) => void` | Sets the max value the slider can have.
+`setMin(min: number) => void` | Sets the min value the slider can have.
+`setStep(step: number) => void` | Sets the step value of the slider.
+`setValue(value: number) => void` | Sets the current value of the slider.
+`setupTrackMarker() => void` | Put correct number of markers in track for discrete slider that display track markers. No-op if it doesn't meet those criteria.
 
-#### MDCSliderFoundation API
 
-| Method Signature | Description |
-| --- | --- |
-| `layout() => void` | Same as layout() detailed within the component methods table. Does the majority of the work; the component's layout method simply proxies to this. |
-| `getValue() => number` | Returns the current value of the slider |
-| `setValue(value: number) => void` | Sets the current value of the slider |
-| `getMax() => number` | Returns the max value the slider can have |
-| `setMax(max: number) => void` | Sets the max value the slider can have |
-| `getMin() => number` | Returns the min value the slider can have |
-| `setMin(min: number) => number` | Sets the min value the slider can have |
-| `getStep() => number` | Returns the step value of the slider |
-| `setStep(step: number) => void` | Sets the step value of the slider |
-| `isDisabled() => boolean` | Returns whether or not the slider is disabled |
-| `setDisabled(disabled: boolean) => void` | Disables the slider when given true, enables it otherwise. |
-| `setupTrackMarker() => void` | Put correct number of markers in track for discrete slider that display track markers. No-op if it doesn't meet those criteria. |
+<!-- docgen-tsdoc-replacer:end -->
 
 ### Theming
 

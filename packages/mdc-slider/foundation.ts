@@ -173,6 +173,10 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.adapter_.deregisterResizeHandler(this.resizeHandler_);
   }
 
+  /**
+   * Put correct number of markers in track for discrete slider that display track markers.
+   * No-op if it doesn't meet those criteria.
+   */
   setupTrackMarker() {
     if (this.isDiscrete_ && this.hasTrackMarker_ && this.getStep() !== 0) {
       const min = this.getMin();
@@ -198,23 +202,41 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     }
   }
 
+  /**
+   *  Same as layout() detailed within the component methods table.
+   * Does the majority of the work; the component's layout method simply proxies to this.
+   */
   layout() {
     this.rect_ = this.adapter_.computeBoundingRect();
     this.updateUIForCurrentValue_();
   }
 
+  /**
+   * Returns the current value of the slider.
+   */
   getValue(): number {
     return this.value_;
   }
 
+  /**
+   * Sets the current value of the slider.
+   * @param value
+   */
   setValue(value: number) {
     this.setValue_(value, false);
   }
 
+  /**
+   * Returns the max value the slider can have.
+   */
   getMax(): number {
     return this.max_;
   }
 
+  /**
+   * Sets the max value the slider can have.
+   * @param max
+   */
   setMax(max: number) {
     if (max < this.min_) {
       throw new Error('Cannot set max to be less than the slider\'s minimum value');
@@ -225,10 +247,17 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.setupTrackMarker();
   }
 
+  /**
+   * Returns the min value the slider can have.
+   */
   getMin(): number {
     return this.min_;
   }
 
+  /**
+   * Sets the min value the slider can have.
+   * @param min
+   */
   setMin(min: number) {
     if (min > this.max_) {
       throw new Error('Cannot set min to be greater than the slider\'s maximum value');
@@ -239,10 +268,17 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.setupTrackMarker();
   }
 
+  /**
+   * Returns the step value of the slider.
+   */
   getStep(): number {
     return this.step_;
   }
 
+  /**
+   * Sets the step value of the slider.
+   * @param step
+   */
   setStep(step: number) {
     if (step < 0) {
       throw new Error('Step cannot be set to a negative number');
@@ -255,10 +291,17 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.setupTrackMarker();
   }
 
+  /**
+   * Returns whether or not the slider is disabled.
+   */
   isDisabled(): boolean {
     return this.disabled_;
   }
 
+  /**
+   * Disables the slider when given true, enables it otherwise.
+   * @param disabled
+   */
   setDisabled(disabled: boolean) {
     this.disabled_ = disabled;
     this.toggleClass_(cssClasses.DISABLED, this.disabled_);

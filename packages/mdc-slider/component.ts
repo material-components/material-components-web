@@ -27,6 +27,12 @@ import {MDCSliderAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCSliderFoundation} from './foundation';
 
+// tslint:disable:max-line-length
+/**
+ * @events `MDCSlider:input` custom event from its root element whenever the slider value is changed by way of a user event, e.g. when a user is dragging the slider or changing the value using the arrow keys. The `detail` property of the event is set to the slider instance that was affected.
+ * @events `MDCSlider:change` custom event from its root element whenever the slider value is changed _and committed_ by way of a user event, e.g. when a user stops dragging the slider or changes the value using the arrow keys. The `detail` property of the event is set to the slider instance that was affected.
+ */
+// tslint:enable:max-line-length
 export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   static attachTo(root: Element) {
     return new MDCSlider(root);
@@ -43,6 +49,9 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     return this.foundation_.getValue();
   }
 
+  /**
+   * The current value of the slider. Changing this will update the slider's value.
+   */
   set value(value: number) {
     this.foundation_.setValue(value);
   }
@@ -51,6 +60,10 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     return this.foundation_.getMin();
   }
 
+  /**
+   * The minimum value a slider can have. Values set programmatically will be clamped to this minimum value.
+   * Changing this property will update the slider's value if it is lower than the new minimum.
+   */
   set min(min: number) {
     this.foundation_.setMin(min);
   }
@@ -59,6 +72,10 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     return this.foundation_.getMax();
   }
 
+  /**
+   * The maximum value a slider can have. Values set programmatically will be clamped to this maximum value.
+   * Changing this property will update the slider's value if it is greater than the new maximum.
+   */
   set max(max: number) {
     this.foundation_.setMax(max);
   }
@@ -67,6 +84,10 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     return this.foundation_.getStep();
   }
 
+  /**
+   * Specifies the increments at which a slider value can be set. Can be any positive number, or `0` for no step.
+   * Changing this property will update the slider's value to be quantized along the new step increments.
+   */
   set step(step: number) {
     this.foundation_.setStep(step);
   }
@@ -75,6 +96,9 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     return this.foundation_.isDisabled();
   }
 
+  /**
+   * Whether or not the slider is disabled.
+   */
   set disabled(disabled: boolean) {
     this.foundation_.setDisabled(disabled);
   }
@@ -167,14 +191,26 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     this.foundation_.setupTrackMarker();
   }
 
+  /**
+   * Recomputes the dimensions and re-lays out the component. This should be called if the dimensions of
+   * the slider itself or any of its parent elements change programmatically (it is called automatically on resize).
+   */
   layout() {
     this.foundation_.layout();
   }
 
+  /**
+   * Increases the slider value by the given `amount`, or `1` if no amount is given.
+   * @param amount
+   */
   stepUp(amount = (this.step || 1)) {
     this.value += amount;
   }
 
+  /**
+   * Decrease the slider value by the given `amount`, or `1` if no amount is given.
+   * @param amount
+   */
   stepDown(amount = (this.step || 1)) {
     this.value -= amount;
   }
