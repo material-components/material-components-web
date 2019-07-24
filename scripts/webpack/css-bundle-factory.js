@@ -180,7 +180,6 @@ class CssBundleFactory {
         'mdc.textfield': getAbsolutePath('/packages/mdc-textfield/mdc-text-field.scss'),
         'mdc.theme': getAbsolutePath('/packages/mdc-theme/mdc-theme.scss'),
         'mdc.top-app-bar': getAbsolutePath('/packages/mdc-top-app-bar/mdc-top-app-bar.scss'),
-        'mdc.touch-target': getAbsolutePath('/packages/mdc-touch-target/mdc-touch-target.scss'),
         'mdc.typography': getAbsolutePath('/packages/mdc-typography/mdc-typography.scss'),
       },
       output: {

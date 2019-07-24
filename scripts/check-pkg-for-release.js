@@ -71,6 +71,7 @@ const CSS_WHITELIST = [
   'feature-targeting',
   'rtl',
   'shape',
+  'touch-target',
 ];
 
 const NOT_AUTOINIT = [
