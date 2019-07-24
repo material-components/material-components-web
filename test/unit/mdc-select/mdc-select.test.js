@@ -117,8 +117,8 @@ function getFixture() {
 
 function getOutlineFixture() {
   return bel`
-    <div class="mdc-select">
-      <div class="mdc-select__anchor mdc-select--outlined">
+    <div class="mdc-select mdc-select--outlined">
+      <div class="mdc-select__anchor">
         <input type="hidden" name="enhanced-select">
         <i class="mdc-select__icon material-icons">code</i>
         <div class="mdc-select__selected-text"></div>
@@ -421,8 +421,8 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
 
 test('#initialSyncWithDOM disables the select if the disabled class is found', () => {
   const fixture = bel`
-    <div class="mdc-select">
-      <div class="mdc-select__anchor mdc-select--disabled">
+    <div class="mdc-select mdc-select--disabled">
+      <div class="mdc-select__anchor">
         <div class="mdc-select__selected-text"></div>
         <label class="mdc-floating-label">Pick a Food Group</label>
         <div class="mdc-line-ripple"></div>
@@ -524,22 +524,22 @@ test(`does not instantiate ripple when ${cssClasses.OUTLINED} class is present`,
     () => component.destroy());
 });
 
-test('adapter#addClass adds a class to the anchor element', () => {
-  const {component, anchor} = setupTest();
+test('adapter#addClass adds a class to the root element', () => {
+  const {component, fixture} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isTrue(anchor.classList.contains('foo'));
+  assert.isTrue(fixture.classList.contains('foo'));
 });
 
 test('adapter#removeClass removes a class from the root element', () => {
-  const {component, anchor} = setupTest();
-  anchor.classList.add('foo');
+  const {component, fixture} = setupTest();
+  fixture.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isFalse(anchor.classList.contains('foo'));
+  assert.isFalse(fixture.classList.contains('foo'));
 });
 
 test('adapter#hasClass returns true if a class exists on the root element', () => {
-  const {component, anchor} = setupTest();
-  anchor.classList.add('foo');
+  const {component, fixture} = setupTest();
+  fixture.classList.add('foo');
   assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
@@ -842,11 +842,11 @@ test('adapter#checkValidity returns false when required class is present and sel
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, anchor, mockFoundation} =
+  const {component, fixture, mockFoundation} =
     setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
-  anchor.classList.add(cssClasses.REQUIRED);
+  fixture.classList.add(cssClasses.REQUIRED);
   component.selectedIndex = -1;
   td.when(mockFoundation.getSelectedIndex()).thenReturn(-1);
   expect(adapter.checkValidity()).to.be.false;
@@ -857,11 +857,11 @@ test('adapter#checkValidity returns false when required class is present and pla
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, anchor, mockFoundation} =
+  const {component, fixture, mockFoundation} =
     setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
-  anchor.classList.add(cssClasses.REQUIRED);
+  fixture.classList.add(cssClasses.REQUIRED);
   component.selectedIndex = 0;
   td.when(mockFoundation.getSelectedIndex()).thenReturn(0);
   expect(adapter.checkValidity()).to.be.false;
@@ -886,11 +886,11 @@ test('adapter#checkValidity returns true regardless if disabled class is present
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, anchor} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
-  anchor.classList.add(cssClasses.REQUIRED);
-  anchor.classList.add(cssClasses.DISABLED);
+  fixture.classList.add(cssClasses.REQUIRED);
+  fixture.classList.add(cssClasses.DISABLED);
   component.selectedIndex = -1;
   assert.equal(adapter.checkValidity(), true);
   component.selectedIndex = 0;
@@ -916,14 +916,14 @@ test(`adapter#setValid applies ${cssClasses.INVALID} properly`, () => {
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, anchor} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
   adapter.setValid(false);
-  assert.isTrue(anchor.classList.contains(cssClasses.INVALID));
+  assert.isTrue(fixture.classList.contains(cssClasses.INVALID));
 
   adapter.setValid(true);
-  assert.isFalse(anchor.classList.contains(cssClasses.INVALID));
+  assert.isFalse(fixture.classList.contains(cssClasses.INVALID));
 });
 
 test('focus event triggers foundation.handleFocus()', () => {
@@ -1169,12 +1169,11 @@ test('menu surface selected event causes the select to update', () => {
 
 test('#constructor instantiates a leading icon if an icon element is present', () => {
   const root = getFixture();
-  const anchor = root.querySelector(strings.SELECT_ANCHOR_SELECTOR);
   const menu = root.querySelector(strings.MENU_SELECTOR);
   const component = new MDCSelect(root);
   assert.instanceOf(component.leadingIcon_, MDCSelectIcon);
   assert.isTrue(menu.classList.contains(cssClasses.WITH_LEADING_ICON));
-  assert.isTrue(anchor.classList.contains(cssClasses.WITH_LEADING_ICON));
+  assert.isTrue(root.classList.contains(cssClasses.WITH_LEADING_ICON));
 });
 
 test('#constructor instantiates the helper text if present', () => {
@@ -1215,35 +1214,35 @@ test('#destroy destroys the helper text if it exists', () => {
   document.body.removeChild(container);
 });
 
-test(`MutationObserver adds ${cssClasses.REQUIRED} class to anchor when aria-required attr is added`, (done) => {
+test(`MutationObserver adds ${cssClasses.REQUIRED} class to root element when aria-required attr is added`, (done) => {
   const hasLabel = true;
   const hasOutline = false;
   const hasHelperText = false;
-  const {anchor, selectedText} = setupTest(hasLabel, hasOutline, hasHelperText);
-  assert.isFalse(anchor.classList.contains(cssClasses.REQUIRED));
+  const {fixture, selectedText} = setupTest(hasLabel, hasOutline, hasHelperText);
+  assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
 
   selectedText.setAttribute('aria-required', 'true');
 
   // MutationObservers are queued as microtasks and fire asynchronously
   setTimeout(() => {
-    assert.isTrue(anchor.classList.contains(cssClasses.REQUIRED));
+    assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
     done();
   }, 0);
 });
 
-test(`MutationObserver removes ${cssClasses.REQUIRED} class from anchor when aria-required attr is removed`, (done) => {
+test(`MutationObserver removes ${cssClasses.REQUIRED} class from root element when aria-required attr is removed`, (done) => {
   const hasLabel = true;
   const hasOutline = false;
   const hasHelperText = false;
-  const {anchor, selectedText} = setupTest(hasLabel, hasOutline, hasHelperText);
+  const {fixture, selectedText} = setupTest(hasLabel, hasOutline, hasHelperText);
 
   selectedText.setAttribute('aria-required', 'true');
   setTimeout(() => {
-    assert.isTrue(anchor.classList.contains(cssClasses.REQUIRED));
+    assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
 
     selectedText.removeAttribute('aria-required');
     setTimeout(() => {
-      assert.isFalse(anchor.classList.contains(cssClasses.REQUIRED));
+      assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
       done();
     }, 0);
   }, 0);
