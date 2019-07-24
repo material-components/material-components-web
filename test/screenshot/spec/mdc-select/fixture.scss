@@ -57,5 +57,7 @@
 }
 
 .custom-enhanced-select-width {
-  width: 300px;
+  .mdc-select__anchor {
+    width: 300px;
+  }
 }

@@ -101,8 +101,7 @@
 
   $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
 
-  &,
-  &__native-control {
+  .mdc-select__anchor {
     @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $masked-radius), $rtl-reflexive);
   }
 }
@@ -119,12 +118,12 @@
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  .mdc-select__native-control {
+  .mdc-select__anchor {
     @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
   @if ($resolved-radius > $mdc-notched-outline-leading-width) {
-    .mdc-select__native-control {
+    .mdc-select__anchor {
       @include mdc-rtl-reflexive-property(
         padding,
         $resolved-radius + $mdc-notched-outline-padding,
@@ -163,18 +162,18 @@
 }
 
 @mixin mdc-select-ink-color_($color) {
-  .mdc-select__native-control,
   .mdc-select__selected-text {
     @include mdc-theme-prop(color, $color);
   }
 }
 
 @mixin mdc-select-container-fill-color_($color) {
-  @include mdc-theme-prop(background-color, $color);
+  .mdc-select__anchor {
+    @include mdc-theme-prop(background-color, $color);
+  }
 }
 
 @mixin mdc-select-bottom-line-color_($color) {
-  .mdc-select__native-control,
   .mdc-select__selected-text {
     @include mdc-select-native-control-bottom-line-color_($color);
   }
@@ -207,7 +206,6 @@
 
 @mixin mdc-select-hover-outline-color_($color) {
   // stylelint-disable-next-line selector-combinator-space-after
-  &:not(.mdc-select--focused) .mdc-select__native-control:hover ~,
   &:not(.mdc-select--focused) .mdc-select__selected-text:hover ~ {
     .mdc-notched-outline {
       @include mdc-notched-outline-color($color);
@@ -280,7 +278,6 @@
     padding-top: 22px;
   }
 
-  .mdc-select__native-control,
   .mdc-select__selected-text {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
     @include mdc-typography(subtitle1);
@@ -334,26 +331,20 @@
     @include mdc-theme-prop(color, $mdc-select-disabled-icon-color);
   }
 
-  .mdc-select__native-control,
   .mdc-select__selected-text {
     @include mdc-theme-prop(color, $mdc-select-disabled-ink-color);
 
     border-bottom-style: dotted;
-  }
-
-  .mdc-select__selected-text {
     pointer-events: none;
   }
 
   &.mdc-select--outlined {
     @include mdc-select-container-fill-color_(transparent);
+    @include mdc-select-outline-color_($mdc-select-outlined-disabled-border);
 
-    .mdc-select__native-control,
     .mdc-select__selected-text {
       border-bottom-style: none;
     }
-
-    @include mdc-select-outline-color_($mdc-select-outlined-disabled-border);
   }
 
   cursor: default;
@@ -365,16 +356,18 @@
   @include mdc-select-outline-color($mdc-select-outlined-idle-border);
   @include mdc-select-hover-outline-color($mdc-select-outlined-hover-border);
   @include mdc-select-focused-outline-color(primary);
-  @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-select-outline-shape-radius(small);
-  @include mdc-states-base-color(transparent);
   @include mdc-select-container-fill-color(transparent);
-  @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, 0);
 
   border: none;
-  overflow: visible;
 
-  .mdc-select__native-control,
+  .mdc-select__anchor {
+    @include mdc-states-base-color(transparent);
+    @include mdc-floating-label-shake-animation(text-field-outlined);
+    @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, 0);
+    overflow: visible;
+  }
+
   .mdc-select__selected-text {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
 
