@@ -408,7 +408,7 @@
     // stylelint-enable plugin/selector-bem-pattern
   }
 
-  .mdc-select--focused + .mdc-select-helper-text:not(.mdc-select-helper-text--validation-msg) {
+  .mdc-select--focused .mdc-select__anchor + .mdc-select-helper-text:not(.mdc-select-helper-text--validation-msg) {
     opacity: 1;
   }
 }

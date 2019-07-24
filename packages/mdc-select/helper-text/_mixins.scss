@@ -36,13 +36,13 @@
 // Private mixins
 
 @mixin mdc-select-helper-text-color_($color) {
-  + .mdc-select-helper-text {
+  .mdc-select__anchor + .mdc-select-helper-text {
     @include mdc-theme-prop(color, $color);
   }
 }
 
 @mixin mdc-select-helper-text-validation-color_($color) {
-  &.mdc-select--invalid + .mdc-select-helper-text--validation-msg {
+  &.mdc-select--invalid .mdc-select__anchor + .mdc-select-helper-text--validation-msg {
     @include mdc-theme-prop(color, $color);
   }
 }
