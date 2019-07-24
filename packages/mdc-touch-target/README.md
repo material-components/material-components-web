@@ -30,7 +30,7 @@ The MDC Web library provides mixins and guidance on adding an increased touch ta
 ## Installation
 
 ```
-npm install @material/touchtarget
+npm install @material/touch-target
 ```
 
 ## Basic Usage
@@ -39,22 +39,26 @@ npm install @material/touchtarget
 
 For a given button component:
 
+```html
 <button class="mdc-button">
-  <div class="mdc-button__ripple">
+  <div class="mdc-button__ripple"></div>
   <span class="mdc-button__label">My Inaccessible Button</span>
 </button>
+```
 
 You would add an increased touch target as follows:
 
-<div class="mdc-touch-target-wrapper">
+```html
+<span>
   <button class="mdc-button mdc-button--touch">
-    <div class="mdc-button__ripple">
-    <span class="mdc-button__label">My Inaccessible Button</span>
+    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__label">My Accessible Button</span>
     <div class="mdc-button__touch"></div>
   </button>
-</div>
+</span>
+```
 
-Note that the `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+Note that the wrapper <span> element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
 
 ### Styles
 
@@ -64,16 +68,9 @@ Note that the `mdc-touch-target-wrapper` element is only necessary if you want t
 
 ## Style Customization
 
-### CSS Classes
-
-CSS Class | Description
---- | ---
-`mdc-touch-target-wrapper` | Class on the component touch target wrapper element.
-
 ### Sass Mixins
 
 Mixin | Description
 --- | ---
 `mdc-touch-target` | Applied to the inner touch target element.
 `mdc-touch-target-component` | Applied to the component root element. Adds margin to compensate for the increased touch target.
-`mdc-touch-target-wrapper` | Applied to the component wrapper, if applicable.

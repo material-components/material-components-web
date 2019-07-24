@@ -24,13 +24,7 @@
 @import "@material/feature-targeting/mixins";
 @import "./variables";
 
-@mixin mdc-touch-target-core-styles($query: mdc-feature-all()) {
-  .mdc-touch-target-wrapper {
-    @include mdc-touch-target-wrapper($query: $query);
-  }
-}
-
-/** Styles to apply to the component's inner touch target element. */
+/** Styles applied to the component's inner touch target element. */
 @mixin mdc-touch-target($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -44,24 +38,11 @@
   }
 }
 
-/** Styles to apply to the component with the increased touch target. */
+/** Styles applied to the component with the increased touch target. */
 @mixin mdc-touch-target-component($component-height, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
     margin: ($mdc-touch-target-height - $component-height) / 2 0;
-  }
-}
-
-/**
- * Styles to apply to the wrapper around the component with the increased
- * touch target. Add a wrapper if you want to avoid overlapping touch
- * targets due to collapsing margin.
- */
-@mixin mdc-touch-target-wrapper($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-feature-targets($feat-structure) {
-    display: inline;
   }
 }
