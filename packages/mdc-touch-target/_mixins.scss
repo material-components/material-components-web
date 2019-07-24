@@ -24,6 +24,12 @@
 @import "@material/feature-targeting/mixins";
 @import "./variables";
 
+@mixin mdc-touch-target-core-styles($query: mdc-feature-all()) {
+  .mdc-touch-target-wrapper {
+    @include mdc-touch-target-wrapper($query: $query);
+  }
+}
+
 /** Styles to apply to the component's inner touch target element. */
 @mixin mdc-touch-target($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
