@@ -60,25 +60,31 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
     super({...MDCTabFoundation.defaultAdapter, ...adapter});
   }
 
+  /**
+   * Handles the logic for the `"click"` event.
+   */
   handleClick() {
     // It's up to the parent component to keep track of the active Tab and
     // ensure we don't activate a Tab that's already active.
     this.adapter_.notifyInteracted();
   }
 
+  /**
+   * Returns whether the tab is active.
+   */
   isActive(): boolean {
     return this.adapter_.hasClass(cssClasses.ACTIVE);
   }
 
   /**
-   * Sets whether the tab should focus itself when activated
+   * Sets whether the tab should focus itself when activated.
    */
   setFocusOnActivate(focusOnActivate: boolean) {
     this.focusOnActivate_ = focusOnActivate;
   }
 
   /**
-   * Activates the Tab
+   * Activates the tab. `previousIndicatorClientRect` is an optional argument.
    */
   activate(previousIndicatorClientRect?: ClientRect) {
     this.adapter_.addClass(cssClasses.ACTIVE);
@@ -91,7 +97,7 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
   }
 
   /**
-   * Deactivates the Tab
+   * Deactivates the Tab.
    */
   deactivate() {
     // Early exit
@@ -106,7 +112,7 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
   }
 
   /**
-   * Returns the dimensions of the Tab
+   * Returns the dimensions of the Tab.
    */
   computeDimensions(): MDCTabDimensions {
     const rootWidth = this.adapter_.getOffsetWidth();

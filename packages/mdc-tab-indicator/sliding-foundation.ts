@@ -25,6 +25,10 @@ import {MDCTabIndicatorFoundation} from './foundation';
 
 /* istanbul ignore next: subclass is not a branch statement */
 export class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
+  /**
+   * Activates the tab indicator.
+   * @param previousIndicatorClientRect
+   */
   activate(previousIndicatorClientRect?: ClientRect) {
     // Early exit if no indicator is present to handle cases where an indicator
     // may be activated without a prior indicator state
@@ -51,6 +55,9 @@ export class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation 
     this.adapter_.setContentStyleProperty('transform', '');
   }
 
+  /**
+   * Deactivates the tab indicator.
+   */
   deactivate() {
     this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }

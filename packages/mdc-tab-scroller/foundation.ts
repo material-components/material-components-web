@@ -84,7 +84,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   /**
-   * Computes the current visual scroll position
+   * Returns the current visual scroll position.
    */
   getScrollPosition(): number {
     if (this.isRTL_()) {
@@ -97,7 +97,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   /**
-   * Handles interaction events that occur during transition
+   * Responds to mouse, pointer, touch, and keyboard events.
    */
   handleInteraction() {
     // Early exit if we aren't animating
@@ -110,7 +110,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   /**
-   * Handles the transitionend event
+   * Responds to a `transitionend` event on the `mdc-tab-scroller__scroll-content` element.
    */
   handleTransitionEnd(evt: Event) {
     // Early exit if we aren't animating or the event was triggered by a different element.
@@ -125,7 +125,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   /**
-   * Increment the scroll value by the scrollXIncrement
+   * Increment the scroll value by the `scrollXIncrement` value.
    * @param scrollXIncrement The value by which to increment the scroll position
    */
   incrementScroll(scrollXIncrement: number) {
@@ -142,7 +142,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   /**
-   * Scrolls to the given scrollX value
+   * Scrolls to the `scrollX` value.
    */
   scrollTo(scrollX: number) {
     if (this.isRTL_()) {
@@ -153,6 +153,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   /**
+   * Creates an RTL Scroller instance for the current browser.
    * @return Browser-specific {@link MDCTabScrollerRTL} instance.
    */
   getRTLScroller(): MDCTabScrollerRTL {

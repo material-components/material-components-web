@@ -96,21 +96,21 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
   }
 
   /**
-   * Returns the current visual scroll position
+   * Returns the current visual scroll position.
    */
   getScrollPosition(): number {
     return this.foundation_.getScrollPosition();
   }
 
   /**
-   * Returns the width of the scroll content
+   * Returns the width of the scroll content.
    */
   getScrollContentWidth(): number {
     return this.content_.offsetWidth;
   }
 
   /**
-   * Increments the scroll value by the given amount
+   * Increments the scroll value by the given `scrollXIncrement` amount.
    * @param scrollXIncrement The pixel value by which to increment the scroll value
    */
   incrementScroll(scrollXIncrement: number) {
@@ -118,7 +118,7 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
   }
 
   /**
-   * Scrolls to the given pixel position
+   * Scrolls to the given `scrollX` pixel position.
    * @param scrollX The pixel value to scroll to
    */
   scrollTo(scrollX: number) {

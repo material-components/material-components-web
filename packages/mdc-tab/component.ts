@@ -33,11 +33,19 @@ import {MDCTabDimensions, MDCTabInteractionEventDetail} from './types';
 
 export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) => MDCTab;
 
+// tslint:disable:max-line-length
+/**
+ * @events `MDCTab:interacted {"detail": {"tabId": string}}` Emitted when the Tab is interacted with, regardless of its active state. Used by parent components to know which Tab to activate.
+ */
+// tslint:enable:max-line-length
 export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: Element): MDCTab {
     return new MDCTab(root);
   }
 
+  /**
+   * Value of the root tab element's `id` attribute.
+   */
   id!: string; // assigned in initialize();
 
   // Public visibility for this property is required by MDCRippleCapableSurface.
@@ -103,43 +111,49 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
   }
 
   /**
-   * Getter for the active state of the tab
+   * Getter for the active state of the tab. Allows getting the active state of the tab.
    */
   get active(): boolean {
     return this.foundation_.isActive();
   }
 
+  /**
+   * Sets whether the tab should focus itself when activated. Defaults to `true`.
+   */
   set focusOnActivate(focusOnActivate: boolean) {
     this.foundation_.setFocusOnActivate(focusOnActivate);
   }
 
   /**
-   * Activates the tab
+   * Activates the indicator. `previousIndicatorClientRect` is an optional argument.
    */
   activate(computeIndicatorClientRect?: ClientRect) {
     this.foundation_.activate(computeIndicatorClientRect);
   }
 
   /**
-   * Deactivates the tab
+   * Deactivates the indicator.
    */
   deactivate() {
     this.foundation_.deactivate();
   }
 
   /**
-   * Returns the indicator's client rect
+   * Returns the bounding client rect of the indicator.
    */
   computeIndicatorClientRect(): ClientRect {
     return this.tabIndicator_.computeContentClientRect();
   }
 
+  /**
+   * Returns the dimensions of the Tab.
+   */
   computeDimensions(): MDCTabDimensions {
     return this.foundation_.computeDimensions();
   }
 
   /**
-   * Focuses the tab
+   * Focuses the tab.
    */
   focus() {
     this.root_.focus();

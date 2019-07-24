@@ -41,6 +41,9 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     this.content_ = this.root_.querySelector<HTMLElement>(MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
   }
 
+  /**
+   * Returns the content element bounding client rect.
+   */
   computeContentClientRect(): ClientRect {
     return this.foundation_.computeContentClientRect();
   }
@@ -65,10 +68,16 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     return new MDCSlidingTabIndicatorFoundation(adapter);
   }
 
+  /**
+   * Activates the tab indicator.
+   */
   activate(previousIndicatorClientRect?: ClientRect) {
     this.foundation_.activate(previousIndicatorClientRect);
   }
 
+  /**
+   * Deactivates the tab indicator.
+   */
   deactivate() {
     this.foundation_.deactivate();
   }

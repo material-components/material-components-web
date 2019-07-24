@@ -24,6 +24,9 @@
 import {MDCTabScrollerAdapter} from './adapter';
 import {MDCTabScrollerAnimation} from './types';
 
+/**
+ * @ignore
+ */
 export abstract class MDCTabScrollerRTL {
   protected readonly adapter_: MDCTabScrollerAdapter;
 

@@ -35,6 +35,11 @@ const {strings} = MDCTabBarFoundation;
 
 let tabIdCounter = 0;
 
+// tslint:disable:max-line-length
+/**
+ * @events `MDCTabBar:activated {"detail": {"index": number}}` Emitted when a Tab is activated with the index of the activated Tab. Listen for this to update content when a Tab becomes active.
+ */
+// tslint:enable:max-line-length
 export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   static attachTo(root: Element): MDCTabBar {
     return new MDCTabBar(root);
@@ -45,10 +50,18 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   private handleTabInteraction_!: CustomEventListener<MDCTabInteractionEvent>; // assigned in initialSyncWithDOM()
   private handleKeyDown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
 
+  /**
+   * Sets whether tabs focus themselves when activated. Defaults to `true`.
+   */
   set focusOnActivate(focusOnActivate: boolean) {
     this.tabList_.forEach((tab) => tab.focusOnActivate = focusOnActivate);
   }
 
+  /**
+   * Sets how tabs activate in response to keyboard interaction. Automatic (`true`) activates as soon as
+   * a tab is focused with arrow keys; manual (`false`) activates only when the user presses space/enter.
+   * The default is automatic (`true`).
+   */
   set useAutomaticActivation(useAutomaticActivation: boolean) {
     this.foundation_.setUseAutomaticActivation(useAutomaticActivation);
   }
@@ -134,7 +147,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   }
 
   /**
-   * Activates the tab at the given index
+   * Activates the tab at the given index.
    * @param index The index of the tab
    */
   activateTab(index: number) {
@@ -142,7 +155,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   }
 
   /**
-   * Scrolls the tab at the given index into view
+   * Scrolls the tab at the given index into view.
    * @param index THe index of the tab
    */
   scrollIntoView(index: number) {

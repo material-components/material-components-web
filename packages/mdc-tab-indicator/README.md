@@ -141,32 +141,57 @@ Mixin | Description
 `mdc-tab-indicator-icon-height($height)` | Customizes the height of the icon subelement.
 `mdc-tab-indicator-underline-top-corner-radius($radius)` | Customizes the top left and top right border radius of the underline child element.
 
-## `MDCTabIndicator` Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCTabIndicator
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
 `activate(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab indicator.
 `deactivate() => void` | Deactivates the tab indicator.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
 `computeContentClientRect() => ClientRect` | Returns the content element bounding client rect.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Tab Indicator for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCTabIndicatorAdapter`
+### MDCTabIndicatorAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element.
-`removeClass(className: string) => void` | Removes a class from the root element.
-`setContentStyleProperty(property: string, value: string) => void` | Sets the style property of the content element.
+`addClass(className: string) => void` | Adds the given className to the root element.
+`computeContentClientRect() => ClientRect` | Returns the client rect of the content element.
+`removeClass(className: string) => void` | Removes the given className from the root element.
+`setContentStyleProperty(propName: string, value: string) => void` | Sets a style property of the content element to the passed value
+
+### MDCFadingTabIndicatorFoundation
+#### Methods
+
+Signature | Description
+--- | ---
+`activate() => void` | Activates the tab indicator.
 `computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect.
-
-### `MDCTabIndicatorFoundation`
-
-Method Signature | Description
---- | ---
-`handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event on the root element.
-`activate(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab indicator.
 `deactivate() => void` | Deactivates the tab indicator.
+
+### MDCSlidingTabIndicatorFoundation
+#### Methods
+
+Signature | Description
+--- | ---
+`activate(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab indicator.
 `computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect.
+`deactivate() => void` | Deactivates the tab indicator.
+
+### MDCTabIndicatorFoundation
+#### Methods
+
+Signature | Description
+--- | ---
+`computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect.
+
+
+<!-- docgen-tsdoc-replacer:end -->

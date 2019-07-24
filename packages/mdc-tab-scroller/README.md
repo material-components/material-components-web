@@ -71,37 +71,58 @@ CSS Class | Description
 
 > _NOTE_: The `align` modifier classes are only applicable when the contents do not meet or exceed the width of the Tab Scroller and Tab Bar (i.e., most commonly, when `mdc-tab--min-width` is used on each tab).
 
-## `MDCTabScroller` Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCTabScroller
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`scrollTo(scrollX: number) => void` | Scrolls to the scrollX value.
-`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value.
+`getScrollContentWidth() => number` | Returns the width of the scroll content.
 `getScrollPosition() => number` | Returns the current visual scroll position.
-`getScrollContentWidth() => number` | Returns the width of the scroll content element.
+`incrementScroll(scrollXIncrement: number) => void` | Increments the scroll value by the given `scrollXIncrement` amount.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`scrollTo(scrollX: number) => void` | Scrolls to the given `scrollX` pixel position.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Tab Scroller for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCTabScrollerAdapter`
+### MDCTabScrollerAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`eventTargetMatchesSelector(eventTarget: EventTarget, selector: string) => boolean` | Returns `true` if the given event target satisfies the given CSS selector.
-`addClass(className: string) => void` | Adds a class to the root element.
-`addScrollAreaClass(className: string) => void` | Adds a class to the scroll area element.
-`removeClass(className: string) => void` | Removes a class from the root element.
-`setScrollAreaStyleProperty(property: string, value: string) => void` | Sets the given style property on the scroll area element.
-`setScrollContentStyleProperty(property: string, value: string) => void` | Sets the given style property on the scroll content element.
-`getScrollContentStyleValue(property: string) => string` | Returns the given style property value on the scroll content element.
-`setScrollAreaScrollLeft(scrollLeft: number) => void` | Sets the scroll area element's `scrollLeft`.
-`getScrollAreaScrollLeft() => number` | Returns the scroll area element's `scrollLeft`.
-`getScrollContentOffsetWidth() => number` | Returns the scroll content element's `offsetWidth`.
-`getScrollAreaOffsetWidth() => number` | Returns the scroll area element's `offsetWidth`.
+`getScrollAreaScrollLeft() => number` | Returns the `scrollLeft` value of the scroll area element.
+`addClass(className: string) => void` | Adds the given className to the root element.
+`computeHorizontalScrollbarHeight() => number` | Returns the height of the browser's horizontal scrollbars (in px).
 `computeScrollAreaClientRect() => ClientRect` | Returns the bounding client rect of the scroll area element.
 `computeScrollContentClientRect() => ClientRect` | Returns the bounding client rect of the scroll content element.
-`computeHorizontalScrollbarHeight() => number` | Returns the height of the browser's horizontal scrollbars (in px).
+`eventTargetMatchesSelector(evtTarget: EventTarget, selector: string) => boolean` | Returns `true` if the given event target satisfies the given CSS selector.
+`getScrollAreaOffsetWidth() => number` | Returns the `offsetWitdth` of the scroll area element.
+`addScrollAreaClass(className: string) => void` | Adds the given className to the scroll area element.
+`getScrollContentOffsetWidth() => number` | Returns the `offsetWidth` of the scroll content element.
+`getScrollContentStyleValue(propertyName: string) => string` | Returns the scroll content element's computed style value of the given css property `propertyName`. We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
+`removeClass(className: string) => void` | Removes the given className from the root element.
+`setScrollAreaScrollLeft(scrollLeft: number) => void` | Sets the `scrollLeft` value of the scroll area element to the passed value.
+`setScrollAreaStyleProperty(propName: string, value: string) => void` | Sets a style property of the area element to the passed value.
+`setScrollContentStyleProperty(propName: string, value: string) => void` | Sets a style property of the content element to the passed value.
+
+### MDCTabScrollerFoundation
+#### Methods
+
+Signature | Description
+--- | ---
+`getRTLScroller() => MDCTabScrollerRTL` | Creates an RTL Scroller instance for the current browser.
+`getScrollPosition() => number` | Returns the current visual scroll position.
+`handleInteraction() => void` | Responds to mouse, pointer, touch, and keyboard events.
+`handleTransitionEnd(evt: Event) => void` | Responds to a `transitionend` event on the `mdc-tab-scroller__scroll-content` element.
+`incrementScroll(scrollXIncrement: number) => void` | Increment the scroll value by the `scrollXIncrement` value.
+`scrollTo(scrollX: number) => void` | Scrolls to the `scrollX` value.
+
+
+<!-- docgen-tsdoc-replacer:end -->
 
 #### `util` Functions
 
@@ -110,17 +131,6 @@ MDC Tab Scroller provides a `util` module with functions to help implement adapt
 Function Signature | Description
 --- | ---
 `computeHorizontalScrollbarHeight(document: Document) => number` | Returns the height of the browser's horizontal scrollbars (in px).
-
-### `MDCTabScrollerFoundation`
-
-Method Signature | Description
---- | ---
-`getRTLScroller() => MDCTabScrollerRTL` | Creates an RTL Scroller instance for the current browser.
-`getScrollPosition() => number` | Returns the current visual scroll position.
-`handleInteraction() => void` | Responds to mouse, pointer, touch, and keyboard events.
-`handleTransitionEnd(evt: Event) => void` | Responds to a `transitionend` event on the `mdc-tab-scroller__scroll-content` element.
-`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the `scrollX` value.
-`scrollTo(scrollX: number) => void` | Scrolls to the `scrollX` value.
 
 ### `MDCTabScrollerRTL`
 

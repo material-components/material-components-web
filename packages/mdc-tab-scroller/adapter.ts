@@ -48,7 +48,7 @@ export interface MDCTabScrollerAdapter {
   addScrollAreaClass(className: string): void;
 
   /**
-   * Returns whether the event target matches given className.
+   * Returns `true` if the given event target satisfies the given CSS selector.
    * @param evtTarget The event target
    * @param selector The selector to check
    */
@@ -75,23 +75,23 @@ export interface MDCTabScrollerAdapter {
   getScrollContentStyleValue(propertyName: string): string;
 
   /**
-   * Sets the scrollLeft value of the scroll area element to the passed value.
+   * Sets the `scrollLeft` value of the scroll area element to the passed value.
    * @param scrollLeft The new scrollLeft value
    */
   setScrollAreaScrollLeft(scrollLeft: number): void;
 
   /**
-   * Returns the scrollLeft value of the scroll area element.
+   * Returns the `scrollLeft` value of the scroll area element.
    */
   getScrollAreaScrollLeft(): number;
 
   /**
-   * Returns the offsetWidth of the scroll content element.
+   * Returns the `offsetWidth` of the scroll content element.
    */
   getScrollContentOffsetWidth(): number;
 
   /**
-   * Returns the offsetWitdth of the scroll area element.
+   * Returns the `offsetWitdth` of the scroll area element.
    */
   getScrollAreaOffsetWidth(): number;
 

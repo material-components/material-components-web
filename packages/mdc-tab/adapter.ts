@@ -55,41 +55,41 @@ export interface MDCTabAdapter {
   setAttr(attr: string, value: string): void;
 
   /**
-   * Activates the indicator element.
+   * Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument.
    * @param previousIndicatorClientRect The client rect of the previously activated indicator
    */
   activateIndicator(previousIndicatorClientRect?: ClientRect): void;
 
-  /** Deactivates the indicator. */
+  /** Deactivates the tab indicator subcomponent.. */
   deactivateIndicator(): void;
 
   /**
-   * Emits the MDCTab:interacted event for use by parent components
+   * Emits the `MDCTab:interacted` event for use by parent components
    */
   notifyInteracted(): void;
 
   /**
-   * Returns the offsetLeft value of the root element.
+   * Returns the `offsetLeft` value of the root element.
    */
   getOffsetLeft(): number;
 
   /**
-   * Returns the offsetWidth value of the root element.
+   * Returns the `offsetWidth` value of the root element.
    */
   getOffsetWidth(): number;
 
   /**
-   * Returns the offsetLeft of the content element.
+   * Returns the `offsetLeft` value of the content element.
    */
   getContentOffsetLeft(): number;
 
   /**
-   * Returns the offsetWidth of the content element.
+   * Returns the `offsetWidth` value of the content element.
    */
   getContentOffsetWidth(): number;
 
   /**
-   * Applies focus to the root element
+   * Applies focus to the root element.
    */
   focus(): void;
 }

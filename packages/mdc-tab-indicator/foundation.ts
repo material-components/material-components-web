@@ -49,6 +49,9 @@ export abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndi
     super({...MDCTabIndicatorFoundation.defaultAdapter, ...adapter});
   }
 
+  /**
+   * Returns the content element's bounding client rect.
+   */
   computeContentClientRect(): ClientRect {
     return this.adapter_.computeContentClientRect();
   }

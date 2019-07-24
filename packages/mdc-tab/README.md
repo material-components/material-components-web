@@ -143,57 +143,68 @@ Mixin | Description
 `mdc-tab-fixed-width($width)` | Sets the fixed width of the tab. The tab will never be smaller than the given width.
 `mdc-tab-horizontal-padding($padding)` | Sets the horizontal padding of the tab.
 
-## `MDCTab` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCTab
+#### Methods
 
-Property | Value Type | Description
---- | --- | ---
-`id` | `string` | Value of the root tab element's `id` attribute.
-`active` | `boolean` (read-only) | Allows getting the active state of the tab.
-`focusOnActivate` | `boolean` (write-only) | Sets whether the tab should focus itself when activated. Defaults to `true`.
-
-Method Signature | Description
+Signature | Description
 --- | ---
-`activate(previousIndicatorClientRect?: ClientRect) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument.
-`deactivate() => void` | Deactivates the indicator.
-`focus() => void` | Focuses the tab.
+`activate(computeIndicatorClientRect?: ClientRect) => void` | Activates the indicator. `previousIndicatorClientRect` is an optional argument.
 `computeIndicatorClientRect() => ClientRect` | Returns the bounding client rect of the indicator.
+`deactivate() => void` | Deactivates the indicator.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
 `computeDimensions() => MDCTabDimensions` | Returns the dimensions of the Tab.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+`focus() => void` | Focuses the tab.
 
-Event Name | Event Data Structure | Description
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`MDCTab:interacted` | `{"detail": {"tabId": string}}` | Emitted when the Tab is interacted with, regardless of its active state. Used by parent components to know which Tab to activate.
+active | `boolean` | Getter for the active state of the tab. Allows getting the active state of the tab.
+focusOnActivate | `boolean` | Sets whether the tab should focus itself when activated. Defaults to `true`.
+id | `string` | Value of the root tab element's `id` attribute.
+
+#### Events
+- `MDCTab:interacted {"detail": {"tabId": string}}` Emitted when the Tab is interacted with, regardless of its active state. Used by parent components to know which Tab to activate.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Tab for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCTabAdapter`
+### MDCTabAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element.
-`removeClass(className: string) => void` | Removes a class from the root element.
-`hasClass(className: string) => boolean` | Returns true if the root element contains the given class.
-`setAttr(attr: string, value: string) => void` | Sets the given attribute on the root element to the given value.
-`activateIndicator(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument.
-`deactivateIndicator() => void` | Deactivates the tab indicator subcomponent.
 `getOffsetLeft() => number` | Returns the `offsetLeft` value of the root element.
-`getOffsetWidth() => number` | Returns the `offsetWidth` value of the root element.
+`activateIndicator(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument.
+`deactivateIndicator() => void` | Deactivates the tab indicator subcomponent..
+`focus() => void` | Applies focus to the root element.
 `getContentOffsetLeft() => number` | Returns the `offsetLeft` value of the content element.
 `getContentOffsetWidth() => number` | Returns the `offsetWidth` value of the content element.
-`notifyInteracted() => void` | Emits the `MDCTab:interacted` event.
-`focus() => void` | Applies focus to the root element.
+`addClass(className: string) => void` | Adds the given className to the root element.
+`getOffsetWidth() => number` | Returns the `offsetWidth` value of the root element.
+`hasClass(className: string) => boolean` | Returns whether the root element has the given className.
+`notifyInteracted() => void` | Emits the `MDCTab:interacted` event for use by parent components
+`removeClass(className: string) => void` | Removes the given className from the root element.
+`setAttr(attr: string, value: string) => void` | Sets the given attrName of the root element to the given value.
 
-### `MDCTabFoundation`
+### MDCTabFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
+`activate(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
+`computeDimensions() => MDCTabDimensions` | Returns the dimensions of the Tab.
+`deactivate() => void` | Deactivates the Tab.
 `handleClick() => void` | Handles the logic for the `"click"` event.
 `isActive() => boolean` | Returns whether the tab is active.
 `setFocusOnActivate(focusOnActivate: boolean) => void` | Sets whether the tab should focus itself when activated.
-`activate(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
-`deactivate() => void` | Deactivates the tab.
-`computeDimensions() => MDCTabDimensions` | Returns the dimensions of the tab.
+
+
+<!-- docgen-tsdoc-replacer:end -->
 
 ### `MDCTabFoundation` Event Handlers
 

@@ -32,7 +32,7 @@ import {MDCTabDimensions} from '@material/tab/types';
  */
 export interface MDCTabBarAdapter {
   /**
-   * Scrolls to the given position
+   * Scrolls the Tab Scroller to the given position.
    * @param scrollX The position to scroll to
    */
   scrollTo(scrollX: number): void;
@@ -44,85 +44,85 @@ export interface MDCTabBarAdapter {
   incrementScroll(scrollXIncrement: number): void;
 
   /**
-   * Returns the current scroll position
+   * Returns the scroll position of the Tab Scroller.
    */
   getScrollPosition(): number;
 
   /**
-   * Returns the width of the scroll content
+   * Returns the width of the Tab Scroller's scroll content element.
    */
   getScrollContentWidth(): number;
 
   /**
-   * Returns the root element's offsetWidth
+   * Returns the offsetWidth of the root element.
    */
   getOffsetWidth(): number;
 
   /**
-   * Returns if the Tab Bar language direction is RTL
+   * Returns if the text direction is RTL.
    */
   isRTL(): boolean;
 
   /**
-   * Sets the tab at the given index to be activated
+   * Sets the tab at the given index to be activated.
    * @param index The index of the tab to activate
    */
   setActiveTab(index: number): void;
 
   /**
-   * Activates the tab at the given index with the given client rect
+   * Activates the tab at the given index with the given client rect.
    * @param index The index of the tab to activate
    * @param clientRect The client rect of the previously active Tab Indicator
    */
   activateTabAtIndex(index: number, clientRect?: ClientRect): void;
 
   /**
-   * Deactivates the tab at the given index
+   * Deactivates the tab at the given index.
    * @param index The index of the tab to deactivate
    */
   deactivateTabAtIndex(index: number): void;
 
   /**
-   * Focuses the tab at the given index
+   * Focuses the tab at the given index.
    * @param index The index of the tab to focus
    */
   focusTabAtIndex(index: number): void;
 
   /**
-   * Returns the client rect of the tab's indicator
+   * Returns the client rect of the tab's indicator.
    * @param index The index of the tab
    */
   getTabIndicatorClientRectAtIndex(index: number): ClientRect;
 
   /**
-   * Returns the tab dimensions of the tab at the given index
+   * Returns the dimensions of the Tab at the given index.
    * @param index The index of the tab
    */
   getTabDimensionsAtIndex(index: number): MDCTabDimensions;
 
   /**
-   * Returns the length of the tab list
+   * Returns the number of child Tab components.
    */
   getTabListLength(): number;
 
   /**
-   * Returns the index of the previously active tab
+   * Returns the index of the previously active Tab.
    */
   getPreviousActiveTabIndex(): number;
 
   /**
-   * Returns the index of the focused tab
+   * Returns the index of the focused Tab.
    */
   getFocusedTabIndex(): number;
 
   /**
-   * Returns the index of the given tab
+   * Returns the index of the focused Tab.
    * @param id The ID of the tab whose index to determine
    */
   getIndexOfTabById(id: string): number;
 
   /**
-   * Emits the MDCTabBar:activated event
+   * Emits the `MDCTabBar:activated` event.
    * @param index The index of the activated tab
    */
   notifyTabActivated(index: number): void;

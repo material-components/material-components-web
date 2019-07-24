@@ -106,54 +106,65 @@ Mixin | Description
 --- | ---
 `mdc-tab-bar-width($width)` | Customizes the width of the tab bar.
 
-## `MDCTabBar` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCTabBar
+#### Methods
 
-Property | Value Type | Description
---- | --- | ---
-`focusOnActivate` | `boolean` (write-only) | Sets whether tabs focus themselves when activated. Defaults to `true`.
-`useAutomaticActivation` | `boolean` (write-only) | Sets how tabs activate in response to keyboard interaction. Automatic (`true`) activates as soon as a tab is focused with arrow keys; manual (`false`) activates only when the user presses space/enter. The default is automatic (`true`).
-
-Method Signature | Description
+Signature | Description
 --- | ---
 `activateTab(index: number) => void` | Activates the tab at the given index.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
 `scrollIntoView(index: number) => void` | Scrolls the tab at the given index into view.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
-Event Name | Event Data Structure | Description
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`MDCTabBar:activated` | `{"detail": {"index": number}}` | Emitted when a Tab is activated with the index of the activated Tab. Listen for this to update content when a Tab becomes active.
+focusOnActivate | `boolean` | Sets whether tabs focus themselves when activated. Defaults to `true`.
+useAutomaticActivation | `boolean` | Sets how tabs activate in response to keyboard interaction. Automatic (`true`) activates as soon as a tab is focused with arrow keys; manual (`false`) activates only when the user presses space/enter. The default is automatic (`true`).
+
+#### Events
+- `MDCTabBar:activated {"detail": {"index": number}}` Emitted when a Tab is activated with the index of the activated Tab. Listen for this to update content when a Tab becomes active.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Tab Bar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCTabBarAdapter`
+### MDCTabBarAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`scrollTo(scrollX: number) => void` | Scrolls the Tab Scroller to the given position.
-`incrementScroll(scrollXIncrement: number) => void` | Increments the Tab Scroller by the given value.
 `getScrollPosition() => number` | Returns the scroll position of the Tab Scroller.
-`getScrollContentWidth() => number` | Returns the width of the Tab Scroller's scroll content element.
-`getOffsetWidth() => number` | Returns the offsetWidth of the root element.
-`isRTL() => boolean` | Returns if the text direction is RTL.
-`setActiveTab(index: number) => void` | Sets the tab at the given index to be activated.
-`activateTabAtIndex(index: number, clientRect: ClientRect) => void` | Activates the Tab at the given index with the given clientRect.
-`deactivateTabAtIndex(index) => void` | Deactivates the Tab at the given index.
-`focusTabAtIndex(index: number) => void` | Focuses the Tab at the given index.
-`getTabIndicatorClientRectAtIndex(index: number) => ClientRect` | Returns the client rect of the Tab at the given index.
-`getTabDimensionsAtIndex(index) => MDCTabDimensions` | Returns the dimensions of the Tab at the given index.
-`getTabListLength() => number` | Returns the number of child Tab components.
-`getPreviousActiveTabIndex() => number` | Returns the index of the previously active Tab.
+`activateTabAtIndex(index: number, clientRect?: ClientRect) => void` | Activates the tab at the given index with the given client rect.
+`focusTabAtIndex(index: number) => void` | Focuses the tab at the given index.
 `getFocusedTabIndex() => number` | Returns the index of the focused Tab.
-`getIndexOfTabById(id: string) => number` | Returns the index of the given Tab ID.
+`getIndexOfTabById(id: string) => number` | Returns the index of the focused Tab.
+`getOffsetWidth() => number` | Returns the offsetWidth of the root element.
+`getPreviousActiveTabIndex() => number` | Returns the index of the previously active Tab.
+`getScrollContentWidth() => number` | Returns the width of the Tab Scroller's scroll content element.
+`deactivateTabAtIndex(index: number) => void` | Deactivates the tab at the given index.
+`getTabDimensionsAtIndex(index: number) => MDCTabDimensions` | Returns the dimensions of the Tab at the given index.
+`getTabIndicatorClientRectAtIndex(index: number) => ClientRect` | Returns the client rect of the tab's indicator.
+`getTabListLength() => number` | Returns the number of child Tab components.
+`incrementScroll(scrollXIncrement: number) => void` | Increments the current scroll position by the given amount
+`isRTL() => boolean` | Returns if the text direction is RTL.
 `notifyTabActivated(index: number) => void` | Emits the `MDCTabBar:activated` event.
+`scrollTo(scrollX: number) => void` | Scrolls the Tab Scroller to the given position.
+`setActiveTab(index: number) => void` | Sets the tab at the given index to be activated.
 
-### `MDCTabBarFoundation`
+### MDCTabBarFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
 `activateTab(index: number) => void` | Activates the tab at the given index.
-`setUseAutomaticActivation(useAutomaticActivation: boolean) => void` | Sets how tabs activate in response to keyboard interaction. Automatic (`true`) activates as soon as a tab is focused with arrow keys; manual (`false`) activates only when the user presses space/enter.
-`handleKeyDown(evt: Event) => void` | Handles the logic for the `"keydown"` event.
-`handleTabInteraction(evt: Event) => void` | Handles the logic for the `"MDCTab:interacted"` event.
+`handleKeyDown(evt: KeyboardEvent) => void` | Handles the logic for the `"keydown"` event.
+`handleTabInteraction(evt: MDCTabInteractionEvent) => void` | Handles the logic for the `"MDCTab:interacted"` event.
 `scrollIntoView(index: number) => void` | Scrolls the Tab at the given index into view.
+`setUseAutomaticActivation(useAutomaticActivation: boolean) => void` | Sets how tabs activate in response to keyboard interaction. Automatic (`true`) activates as soon as a tab is focused with arrow keys; manual (`false`) activates only when the user presses space/enter. See https://www.w3.org/TR/wai-aria-practices/#tabpanel for examples.
+
+
+<!-- docgen-tsdoc-replacer:end -->

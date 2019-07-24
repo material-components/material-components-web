@@ -84,13 +84,18 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   }
 
   /**
-   * Switches between automatic and manual activation modes.
+   * Sets how tabs activate in response to keyboard interaction. Automatic (`true`) activates as soon as a tab is
+   * focused with arrow keys; manual (`false`) activates only when the user presses space/enter.
    * See https://www.w3.org/TR/wai-aria-practices/#tabpanel for examples.
    */
   setUseAutomaticActivation(useAutomaticActivation: boolean) {
     this.useAutomaticActivation_ = useAutomaticActivation;
   }
 
+  /**
+   * Activates the tab at the given index.
+   * @param index
+   */
   activateTab(index: number) {
     const previousActiveIndex = this.adapter_.getPreviousActiveTabIndex();
     if (!this.indexIsInRange_(index) || index === previousActiveIndex) {
@@ -109,6 +114,10 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
     this.adapter_.notifyTabActivated(index);
   }
 
+  /**
+   * Handles the logic for the `"keydown"` event.
+   * @param evt
+   */
   handleKeyDown(evt: KeyboardEvent) {
     // Get the key from the event
     const key = this.getKeyFromEvent_(evt);
@@ -144,14 +153,14 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   }
 
   /**
-   * Handles the MDCTab:interacted event
+   * Handles the logic for the `"MDCTab:interacted"` event.
    */
   handleTabInteraction(evt: MDCTabInteractionEvent) {
     this.adapter_.setActiveTab(this.adapter_.getIndexOfTabById(evt.detail.tabId));
   }
 
   /**
-   * Scrolls the tab at the given index into view
+   * Scrolls the Tab at the given index into view.
    * @param index The tab index to make visible
    */
   scrollIntoView(index: number) {
