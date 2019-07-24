@@ -81,6 +81,9 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
     return this.nativeControl_.checked;
   }
 
+  /**
+   * Setter/getter for the switch's checked state.
+   */
   set checked(checked) {
     this.foundation_.setChecked(checked);
   }
@@ -89,6 +92,9 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
     return this.nativeControl_.disabled;
   }
 
+  /**
+   * Setter/getter for the switch's disabled state.
+   */
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }

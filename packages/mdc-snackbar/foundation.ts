@@ -75,6 +75,9 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     this.adapter_.removeClass(CLOSING);
   }
 
+  /**
+   * Opens the snackbar.
+   */
   open() {
     this.clearAutoDismissTimer_();
     this.isOpen_ = true;
@@ -98,6 +101,7 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   }
 
   /**
+   * Closes the snackbar, optionally with the specified action indicating why it was closed.
    * @param reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
    *     `event.detail.reason` property. Standard values are REASON_ACTION and REASON_DISMISS, but custom
    *     client-specific values may also be used if desired.
@@ -125,14 +129,25 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     }, numbers.SNACKBAR_ANIMATION_CLOSE_TIME_MS);
   }
 
+  /**
+   * Returns whether the snackbar is open.
+   */
   isOpen(): boolean {
     return this.isOpen_;
   }
 
+  /**
+   * Returns the automatic dismiss timeout in milliseconds.
+   */
   getTimeoutMs(): number {
     return this.autoDismissTimeoutMs_;
   }
 
+  /**
+   * Sets the automatic dismiss timeout in milliseconds. Value must be between `4000`
+   * and `10000` or an error will be thrown.
+   * @param timeoutMs
+   */
   setTimeoutMs(timeoutMs: number) {
     // Use shorter variable names to make the code more readable
     const minValue = numbers.MIN_AUTO_DISMISS_TIMEOUT_MS;
@@ -145,14 +160,25 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     }
   }
 
+  /**
+   * Returns whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key.
+   */
   getCloseOnEscape(): boolean {
     return this.closeOnEscape_;
   }
 
+  /**
+   * Sets whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key.
+   * @param closeOnEscape
+   */
   setCloseOnEscape(closeOnEscape: boolean) {
     this.closeOnEscape_ = closeOnEscape;
   }
 
+  /**
+   * Handles `keydown` events on or within the snackbar's root element.
+   * @param evt
+   */
   handleKeyDown(evt: KeyboardEvent) {
     const isEscapeKey = evt.key === 'Escape' || evt.keyCode === 27;
     if (isEscapeKey && this.getCloseOnEscape()) {
@@ -160,10 +186,18 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     }
   }
 
+  /**
+   * Handles `click` events on or within the action button.
+   * @param _evt
+   */
   handleActionButtonClick(_evt: MouseEvent) {
     this.close(REASON_ACTION);
   }
 
+  /**
+   * Handles `click` events on or within the dismiss icon.
+   * @param _evt
+   */
   handleActionIconClick(_evt: MouseEvent) {
     this.close(REASON_DISMISS);
   }

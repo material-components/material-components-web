@@ -133,33 +133,48 @@ Mixin | Description
 `mdc-switch-toggled-on-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled on.
 `mdc-switch-toggled-off-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled off.
 
-## `MDCSwitch` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCSwitch
+#### Methods
 
-Property | Value Type | Description
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`checked` | Boolean | Setter/getter for the switch's checked state
-`disabled` | Boolean | Setter/getter for the switch's disabled state
+checked | `boolean` | Setter/getter for the switch's checked state.
+disabled | `boolean` | Setter/getter for the switch's disabled state.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Switch for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCSwitchAdapter`
+### MDCSwitchAdapter
+#### Methods
 
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `setNativeControlChecked(checked: boolean)` | Sets the checked state of the native control. |
-| `setNativeControlDisabled(disabled: boolean)` | Sets the disabled state of the native control. |
+Signature | Description
+--- | ---
+`addClass(className: string) => void` | Adds a CSS class to the root element.
+`removeClass(className: string) => void` | Removes a CSS class from the root element.
+`setNativeControlChecked(checked: boolean) => void` | Sets checked state of the native HTML control underlying the switch.
+`setNativeControlDisabled(disabled: boolean) => void` | Sets the disabled state of the native HTML control underlying the switch.
 
-### `MDCSwitchFoundation`
+### MDCSwitchFoundation
+#### Methods
 
-| Method Signature | Description |
-| --- | --- |
-| `setChecked(checked: boolean) => void` | Sets the checked value of the native control and updates styling to reflect the checked state. |
-| `setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control and updates styling to reflect the disabled state. |
-| `handleChange(evt: Event) => void` | Handles a change event from the native control. |
+Signature | Description
+--- | ---
+`handleChange(evt: Event) => void` | Handles the change event for the switch native control.
+`setChecked(checked: boolean) => void` | Sets the checked value of the native control and updates styling to reflect the checked state.
+`setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control and updates styling to reflect the disabled state.
+
+
+<!-- docgen-tsdoc-replacer:end -->
 
 ### `MDCSwitchFoundation` Event Handlers
 If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [`MDCSwitch`](component.ts) component's `initialSyncWithDOM` method.

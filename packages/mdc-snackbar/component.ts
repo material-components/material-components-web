@@ -35,6 +35,15 @@ const {
   OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT,
 } = strings;
 
+// tslint:disable:max-line-length
+/**
+ * `MDCSnackbar:opening {}` Indicates when the snackbar begins its opening animation.
+ * `MDCSnackbar:opened {}` Indicates when the snackbar finishes its opening animation.
+ * `MDCSnackbar:closing {reason?: string}` Indicates when the snackbar begins its closing animation. `reason` contains the reason why the snackbar closed (`'dismiss'`, `'action'`, or `undefined`).
+ * `MDCSnackbar:closed {reason?: string}` Indicates when the snackbar finishes its closing animation. `reason` contains the reason why the snackbar closed (`'dismiss'`, `'action'`, or `undefined`).
+ */
+// tslint:enable:max-line-length
+
 export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   static attachTo(root: Element) {
     return new MDCSnackbar(root);
@@ -78,11 +87,15 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     this.deregisterSurfaceClickHandler_(this.handleSurfaceClick_);
   }
 
+  /**
+   * Opens the snackbar.
+   */
   open() {
     this.foundation_.open();
   }
 
   /**
+   * Closes the snackbar, optionally with the specified reason indicating why it was closed.
    * @param reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
    *     `event.detail.reason` property. Standard values are REASON_ACTION and REASON_DISMISS, but custom
    *     client-specific values may also be used if desired.
@@ -110,6 +123,10 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     return this.foundation_.getTimeoutMs();
   }
 
+  /**
+   * Gets/sets the automatic dismiss timeout in milliseconds. Value must be between
+   * `4000` and `10000` or an error will be thrown. Defaults to `5000` (5 seconds).
+   */
   set timeoutMs(timeoutMs: number) {
     this.foundation_.setTimeoutMs(timeoutMs);
   }
@@ -118,10 +135,17 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     return this.foundation_.getCloseOnEscape();
   }
 
+  /**
+   * Gets/sets whether the snackbar closes when it is focused and the
+   * user presses the <kbd>ESC</kbd> key. Defaults to `true`.
+   */
   set closeOnEscape(closeOnEscape: boolean) {
     this.foundation_.setCloseOnEscape(closeOnEscape);
   }
 
+  /**
+   * Gets whether the snackbar is currently open.
+   */
   get isOpen(): boolean {
     return this.foundation_.isOpen();
   }
@@ -132,6 +156,11 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     return this.labelEl_.textContent!;
   }
 
+  /**
+   * Gets/sets the `textContent` of the label element.
+   * > **NOTE**: Setting `labelText` while the snackbar is open will cause screen readers to
+   * announce the new label. See [Screen Readers](#screen-readers) below for more information.
+   */
   set labelText(labelText: string) {
     this.labelEl_.textContent = labelText;
   }
@@ -140,6 +169,9 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     return this.actionEl_.textContent!;
   }
 
+  /**
+   * Gets/sets the `textContent` of the action button element.
+   */
   set actionButtonText(actionButtonText: string) {
     this.actionEl_.textContent = actionButtonText;
   }

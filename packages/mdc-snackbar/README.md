@@ -159,66 +159,63 @@ Mixin | Description
 
 > **NOTE**: The `mdc-snackbar__action` and `mdc-snackbar__dismiss` elements can be further customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
 
-## JavaScript API
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCSnackbar
+#### Methods
 
-### `MDCSnackbar` Properties
-
-Property | Value Type | Description
---- | --- | ---
-`isOpen` | `boolean` (read-only) | Gets whether the snackbar is currently open.
-`timeoutMs` | `number` | Gets/sets the automatic dismiss timeout in milliseconds. Value must be between `4000` and `10000` or an error will be thrown. Defaults to `5000` (5 seconds).
-`closeOnEscape` | `boolean` | Gets/sets whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key. Defaults to `true`.
-`labelText` | `string` | Gets/sets the `textContent` of the label element.
-`actionButtonText` | `string` | Gets/sets the `textContent` of the action button element.
-
-> **NOTE**: Setting `labelText` while the snackbar is open will cause screen readers to announce the new label. See [Screen Readers](#screen-readers) below for more information.
-
-### `MDCSnackbar` Methods
-
-Method Signature | Description
+Signature | Description
 --- | ---
+`close(reason?: undefined | string) => void` | Closes the snackbar, optionally with the specified reason indicating why it was closed.
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
 `open() => void` | Opens the snackbar.
-`close(reason: string=) => void` | Closes the snackbar, optionally with the specified reason indicating why it was closed.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
-### Events
+#### Properties
 
-Event Name | `event.detail` | Description
+Name | Type | Description
 --- | --- | ---
-`MDCSnackbar:opening` | `{}` | Indicates when the snackbar begins its opening animation.
-`MDCSnackbar:opened` | `{}` | Indicates when the snackbar finishes its opening animation.
-`MDCSnackbar:closing` | `{reason?: string}` | Indicates when the snackbar begins its closing animation. `reason` contains the reason why the snackbar closed (`'dismiss'`, `'action'`, or `undefined`).
-`MDCSnackbar:closed` | `{reason?: string}` | Indicates when the snackbar finishes its closing animation. `reason` contains the reason why the snackbar closed (`'dismiss'`, `'action'`, or `undefined`).
+actionButtonText | `string` | Gets/sets the `textContent` of the action button element.
+closeOnEscape | `boolean` | Gets/sets whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key. Defaults to `true`.
+isOpen | `boolean` | Gets whether the snackbar is currently open.
+labelText | `string` | Gets/sets the `textContent` of the label element. > **NOTE**: Setting `labelText` while the snackbar is open will cause screen readers to announce the new label. See [Screen Readers](#screen-readers) below for more information.
+timeoutMs | `number` | Gets/sets the automatic dismiss timeout in milliseconds. Value must be between `4000` and `10000` or an error will be thrown. Defaults to `5000` (5 seconds).
 
-### Usage Within Frameworks
+## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Snackbar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-#### `MDCSnackbarAdapter` Methods
+### MDCSnackbarAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
-`removeClass(className: string) => void` | Removes a class from the root element.
 `announce() => void` | Announces the snackbar's label text to screen reader users.
-`notifyOpening() => void` | Broadcasts an event denoting that the snackbar has just started opening.
+`notifyClosed(reason: string) => void` | Broadcasts an event denoting that the snackbar has just started closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
+`notifyClosing(reason: string) => void` | Broadcasts an event denoting that the snackbar has finished closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
 `notifyOpened() => void` | Broadcasts an event denoting that the snackbar has finished opening.
-`notifyClosing(reason: string) => void` | Broadcasts an event denoting that the snackbar has just started closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
-`notifyClosed(reason: string) => void` | Broadcasts an event denoting that the snackbar has finished closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
+`notifyOpening() => void` | Broadcasts an event denoting that the snackbar has just started opening.
+`removeClass(className: string) => void` | Removes a class from the root element.
 
-#### `MDCSnackbarFoundation` Methods
+### MDCSnackbarFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`open()` | Opens the snackbar.
-`close(action: string)` | Closes the snackbar, optionally with the specified action indicating why it was closed.
-`isOpen() => boolean` | Returns whether the snackbar is open.
-`getTimeoutMs() => number` | Returns the automatic dismiss timeout in milliseconds.
-`setTimeoutMs(timeoutMs: number)` | Sets the automatic dismiss timeout in milliseconds. Value must be between `4000` and `10000` or an error will be thrown.
+`handleKeyDown(evt: KeyboardEvent) => void` | Handles `keydown` events on or within the snackbar's root element.
+`close(reason?: undefined | string) => void` | Closes the snackbar, optionally with the specified action indicating why it was closed.
 `getCloseOnEscape() => boolean` | Returns whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key.
+`getTimeoutMs() => number` | Returns the automatic dismiss timeout in milliseconds.
+`handleActionButtonClick(_evt: MouseEvent) => void` | Handles `click` events on or within the action button.
+`handleActionIconClick(_evt: MouseEvent) => void` | Handles `click` events on or within the dismiss icon.
+`isOpen() => boolean` | Returns whether the snackbar is open.
+`open() => void` | Opens the snackbar.
 `setCloseOnEscape(closeOnEscape: boolean) => void` | Sets whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key.
-`handleKeyDown(event: KeyEvent)` | Handles `keydown` events on or within the snackbar's root element.
-`handleActionButtonClick(event: MouseEvent)` | Handles `click` events on or within the action button.
-`handleActionIconClick(event: MouseEvent)` | Handles `click` events on or within the dismiss icon.
+`setTimeoutMs(timeoutMs: number) => void` | Sets the automatic dismiss timeout in milliseconds. Value must be between `4000` and `10000` or an error will be thrown.
+
+
+<!-- docgen-tsdoc-replacer:end -->
 
 #### Event Handlers
 

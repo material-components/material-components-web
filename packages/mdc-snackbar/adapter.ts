@@ -29,11 +29,36 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCSnackbarAdapter {
+  /**
+   * Adds a class to the root element.
+   */
   addClass(className: string): void;
-  announce(): void;
-  notifyClosed(reason: string): void;
-  notifyClosing(reason: string): void;
-  notifyOpened(): void;
-  notifyOpening(): void;
+  /**
+   * Removes a class from the root element.
+   */
   removeClass(className: string): void;
+  /**
+   * Announces the snackbar's label text to screen reader users.
+   */
+  announce(): void;
+  /**
+   * Broadcasts an event denoting that the snackbar has just started closing.
+   * If a non-empty `reason` is passed, the event's `detail` object should include
+   * its value in the `reason` property.
+   */
+  notifyClosed(reason: string): void;
+  /**
+   * Broadcasts an event denoting that the snackbar has finished closing. If a non-empty
+   * `reason` is passed, the event's `detail` object should include its value in the
+   * `reason` property.
+   */
+  notifyClosing(reason: string): void;
+  /**
+   * Broadcasts an event denoting that the snackbar has just started opening.
+   */
+  notifyOpening(): void;
+  /**
+   * Broadcasts an event denoting that the snackbar has finished opening.
+   */
+  notifyOpened(): void;
 }

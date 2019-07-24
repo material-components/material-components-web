@@ -50,13 +50,13 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
     super({...MDCSwitchFoundation.defaultAdapter, ...adapter});
   }
 
-  /** Sets the checked state of the switch. */
+  /** Sets the checked value of the native control and updates styling to reflect the checked state. */
   setChecked(checked: boolean) {
     this.adapter_.setNativeControlChecked(checked);
     this.updateCheckedStyling_(checked);
   }
 
-  /** Sets the disabled state of the switch. */
+  /** Sets the disabled value of the native control and updates styling to reflect the disabled state. */
   setDisabled(disabled: boolean) {
     this.adapter_.setNativeControlDisabled(disabled);
     if (disabled) {
