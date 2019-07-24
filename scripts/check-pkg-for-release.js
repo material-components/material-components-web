@@ -71,6 +71,7 @@ const CSS_WHITELIST = [
   'feature-targeting',
   'rtl',
   'shape',
+  'touch-target',
 ];
 
 const NOT_AUTOINIT = [
@@ -157,7 +158,7 @@ function checkDependencyAddedInMDCPackage() {
 
 function checkPkgDependencyAddedInMDCPackage() {
   assert.notEqual(typeof MASTER_PACKAGE_JSON.dependencies[CLI_PACKAGE_JSON.name], 'undefined',
-    'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not a denpendency for MDC Web. ' +
+    'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not a dependency for MDC Web. ' +
     'Please add ' + CLI_PACKAGE_JSON.name +' to ' + MASTER_PACKAGE_JSON_RELATIVE_PATH +
     '\' dependencies before commit.');
 }
