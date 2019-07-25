@@ -27,6 +27,7 @@
 @import "@material/rtl/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/touch-target/mixins";
 @import "@material/typography/mixins";
 @import "@material/shape/mixins";
 @import "@material/shape/functions";
@@ -59,6 +60,10 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
       @include mdc-feature-targets($feat-structure) {
         @include mdc-button__icon_;
       }
+    }
+
+    .mdc-button__touch {
+      @include mdc-touch-target($query);
     }
 
     @include mdc-button-ink-color(primary, $query);
@@ -115,6 +120,11 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     @include mdc-feature-targets($feat-structure) {
       @include mdc-button--dense_;
     }
+  }
+
+  .mdc-button--touch {
+    @include mdc-touch-target-component(
+      $component-height: $mdc-button-height, $query: $query);
   }
   // postcss-bem-linter: end
 }

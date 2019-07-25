@@ -24,7 +24,7 @@
 @import "@material/feature-targeting/mixins";
 @import "./variables";
 
-/** Styles applied to the component's inner touch target element. */
+// Styles applied to the component's inner touch target element.
 @mixin mdc-touch-target($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -38,7 +38,7 @@
   }
 }
 
-/** Styles applied to the component with the increased touch target. */
+// Styles applied to the component with the increased touch target.
 @mixin mdc-touch-target-component($component-height, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 

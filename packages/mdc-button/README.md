@@ -137,6 +137,25 @@ Disabled buttons cannot be interacted with and have no visual interaction effect
 </button>
 ```
 
+## Additional Information
+
+### Accessibility
+
+Material Design spec advises that touch targets should be at least 48 x 48 px.
+To meet this requirement, add the following to your button:
+
+```html
+<span>
+  <button class="mdc-button mdc-button--touch">
+    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__label">My Accessible Button</span>
+    <div class="mdc-button__touch"></div>
+  </button>
+</span>
+```
+
+Note that the wrapper `<span>` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+
 ## Style Customization
 
 ### CSS Classes
