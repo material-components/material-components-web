@@ -1,0 +1,36 @@
+{
+  "name": "@material/data-table",
+  "version": "3.1.0",
+  "description": "The Material Components Web data table component",
+  "license": "MIT",
+  "keywords": [
+    "material components",
+    "material design",
+    "data table"
+  ],
+  "main": "dist/mdc.dataTable.js",
+  "module": "index.js",
+  "sideEffects": false,
+  "types": "dist/mdc.dataTable.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "dependencies": {
+    "@material/animation": "^3.1.0",
+    "@material/base": "^3.1.0",
+    "@material/checkbox": "^3.1.0",
+    "@material/dom": "^3.1.0",
+    "@material/elevation": "^3.1.0",
+    "@material/feature-targeting": "^3.1.0",
+    "@material/ripple": "^3.1.0",
+    "@material/rtl": "^3.1.0",
+    "@material/shape": "^3.1.0",
+    "@material/theme": "^3.1.0",
+    "@material/typography": "^3.1.0",
+    "tslib": "^1.10.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

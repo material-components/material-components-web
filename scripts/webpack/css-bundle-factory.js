@@ -28,6 +28,7 @@
 'use strict';
 
 const autoprefixer = require('autoprefixer');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 class CssBundleFactory {
   constructor({
@@ -95,6 +96,9 @@ class CssBundleFactory {
           use: this.createCssLoader_(cssExtractorPlugin),
         }],
       },
+      optimization: {
+        minimize: this.env_.isProd(),
+      },
       plugins: [
         cssExtractorPlugin,
         ...fsCleanupPlugins,
@@ -146,6 +150,7 @@ class CssBundleFactory {
         'mdc.card': getAbsolutePath('/packages/mdc-card/mdc-card.scss'),
         'mdc.checkbox': getAbsolutePath('/packages/mdc-checkbox/mdc-checkbox.scss'),
         'mdc.chips': getAbsolutePath('/packages/mdc-chips/mdc-chips.scss'),
+        'mdc.data-table': getAbsolutePath('/packages/mdc-data-table/mdc-data-table.scss'),
         'mdc.dialog': getAbsolutePath('/packages/mdc-dialog/mdc-dialog.scss'),
         'mdc.drawer': getAbsolutePath('/packages/mdc-drawer/mdc-drawer.scss'),
         'mdc.elevation': getAbsolutePath('/packages/mdc-elevation/mdc-elevation.scss'),
@@ -172,7 +177,6 @@ class CssBundleFactory {
         'mdc.tab-bar': getAbsolutePath('/packages/mdc-tab-bar/mdc-tab-bar.scss'),
         'mdc.tab-indicator': getAbsolutePath('/packages/mdc-tab-indicator/mdc-tab-indicator.scss'),
         'mdc.tab-scroller': getAbsolutePath('/packages/mdc-tab-scroller/mdc-tab-scroller.scss'),
-        'mdc.tabs': getAbsolutePath('/packages/mdc-tabs/mdc-tabs.scss'),
         'mdc.textfield': getAbsolutePath('/packages/mdc-textfield/mdc-text-field.scss'),
         'mdc.theme': getAbsolutePath('/packages/mdc-theme/mdc-theme.scss'),
         'mdc.top-app-bar': getAbsolutePath('/packages/mdc-top-app-bar/mdc-top-app-bar.scss'),
@@ -189,35 +193,34 @@ class CssBundleFactory {
     });
   }
 
-  createCssLoader_(extractTextPlugin) {
+  createCssLoader_() {
     const getAbsolutePath = (...args) => this.pathResolver_.getAbsolutePath(...args);
 
-    return extractTextPlugin.extract({
-      use: [
-        {
-          loader: 'css-loader',
-          options: {
-            sourceMap: true,
-          },
+    return [
+      MiniCssExtractPlugin.loader,
+      {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
         },
-        {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: true,
-            plugins: () => [this.autoprefixerLib_()],
-          },
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true,
+          plugins: () => [this.autoprefixerLib_()],
         },
-        {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
-            includePaths: [getAbsolutePath('/packages/material-components-web/node_modules')],
-            implementation: require('dart-sass'),
-            fiber: require('fibers'),
-          },
+      },
+      {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true,
+          includePaths: [getAbsolutePath('/packages/material-components-web/node_modules')],
+          implementation: require('dart-sass'),
+          fiber: require('fibers'),
         },
-      ],
-    });
+      },
+    ];
   }
 }
 

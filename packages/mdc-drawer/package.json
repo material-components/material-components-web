@@ -1,6 +1,6 @@
 {
   "name": "@material/drawer",
-  "version": "2.3.0",
+  "version": "3.1.0",
   "description": "The Material Components Web drawer component",
   "license": "MIT",
   "keywords": [
@@ -15,18 +15,20 @@
   "types": "dist/mdc.drawer.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-components/material-components-web.git"
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-drawer"
   },
   "dependencies": {
-    "@material/animation": "^1.0.0",
-    "@material/base": "^1.0.0",
-    "@material/elevation": "^1.1.0",
-    "@material/list": "^2.3.0",
-    "@material/ripple": "^2.3.0",
-    "@material/rtl": "^0.42.0",
-    "@material/shape": "^1.1.1",
-    "@material/theme": "^1.1.0",
-    "@material/typography": "^2.3.0",
+    "@material/animation": "^3.1.0",
+    "@material/base": "^3.1.0",
+    "@material/elevation": "^3.1.0",
+    "@material/feature-targeting": "^3.1.0",
+    "@material/list": "^3.1.0",
+    "@material/ripple": "^3.1.0",
+    "@material/rtl": "^3.1.0",
+    "@material/shape": "^3.1.0",
+    "@material/theme": "^3.1.0",
+    "@material/typography": "^3.1.0",
     "focus-trap": "^5.0.0",
     "tslib": "^1.9.3"
   }

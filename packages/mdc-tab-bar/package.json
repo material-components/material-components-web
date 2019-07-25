@@ -1,7 +1,7 @@
 {
   "name": "@material/tab-bar",
   "description": "The Material Components for the web tab bar component",
-  "version": "2.3.0",
+  "version": "3.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,13 +15,15 @@
   "types": "dist/mdc.tabBar.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-components/material-components-web.git"
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-tab-bar"
   },
   "dependencies": {
-    "@material/base": "^1.0.0",
-    "@material/elevation": "^1.1.0",
-    "@material/tab": "^2.3.0",
-    "@material/tab-scroller": "^2.3.0",
+    "@material/base": "^3.1.0",
+    "@material/elevation": "^3.1.0",
+    "@material/feature-targeting": "^3.1.0",
+    "@material/tab": "^3.1.0",
+    "@material/tab-scroller": "^3.1.0",
     "tslib": "^1.9.3"
   },
   "publishConfig": {

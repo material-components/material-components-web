@@ -66,8 +66,11 @@ const istanbulInstrumenterLoader = {
 module.exports = function(config) {
   config.set({
     basePath: '',
+    // Refer https://github.com/karma-runner/karma-mocha
     frameworks: ['mocha'],
     files: [
+      // Refer https://github.com/babel/karma-babel-preprocessor
+      'node_modules/@babel/polyfill/dist/polyfill.js',
       'test/unit/index.js',
     ],
     preprocessors: {
@@ -112,7 +115,9 @@ module.exports = function(config) {
       },
     },
 
+    // Refer https://github.com/webpack-contrib/karma-webpack
     webpack: Object.assign({}, webpackConfig, {
+      plugins: [], // Exclude UglifyJs plugin from test build.
       module: Object.assign({}, webpackConfig.module, {
         // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
         // uncluttered source maps.

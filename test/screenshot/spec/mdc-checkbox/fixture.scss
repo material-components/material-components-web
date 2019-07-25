@@ -21,18 +21,17 @@
 //
 
 @import "../../../../packages/mdc-checkbox/mixins";
-@import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-checkbox-color: $material-color-red-300;
+$custom-checkbox-color: crimson;
 
 .test-cell--checkbox {
   @include test-cell-size(91);
 }
 
 .custom-checkbox--container-colors {
+  @include mdc-checkbox-focus-indicator-color($custom-checkbox-color);
   @include mdc-checkbox-container-colors(
-    $unmarked-stroke-color: $custom-checkbox-color,
     $marked-stroke-color: $custom-checkbox-color,
     $marked-fill-color: $custom-checkbox-color
   );
