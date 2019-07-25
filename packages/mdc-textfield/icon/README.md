@@ -169,8 +169,8 @@ Mixin | Description
 Signature | Description
 --- | ---
 `emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
-`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
-`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions \| boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions \| boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
 #### Properties
 
@@ -188,7 +188,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 Signature | Description
 --- | ---
 `deregisterInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Deregisters an event listener on the icon element for a given event.
-`getAttr(attr: string) => string | null` | Gets the value of an attribute on the icon element.
+`getAttr(attr: string) => string \| null` | Gets the value of an attribute on the icon element.
 `notifyIconAction() => void` | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
 `registerInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Registers an event listener on the icon element for a given event.
 `removeAttr(attr: string) => void` | Removes an attribute from the icon element.
@@ -200,7 +200,7 @@ Signature | Description
 
 Signature | Description
 --- | ---
-`handleInteraction(evt: MouseEvent | KeyboardEvent) => void` | Handles a text field interaction event.
+`handleInteraction(evt: MouseEvent \| KeyboardEvent) => void` | Handles a text field interaction event.
 `setAriaLabel(label: string) => void` | Updates the icon's aria-label.
 `setContent(content: string) => void` | Updates the icon's text content.
 `setDisabled(disabled: boolean) => void` | Updates the icon's disabled state.

@@ -170,7 +170,7 @@ class TypeScriptDocumentationGenerator {
         const documentation = signatures[0].documentation.contentsRaw;
         return {
           documentation: this.cleanComment(documentation),
-          methodSignature: `${name}${methodSignature}`,
+          methodSignature: this.cleanComment(`${name}${methodSignature}`),
         };
       });
   }
@@ -193,8 +193,8 @@ class TypeScriptDocumentationGenerator {
         const documentation = this.cleanComment(property.documentation.contentsRaw);
         return {
           documentation,
-          name,
-          type,
+          name: this.cleanComment(name),
+          type: this.cleanComment(type),
         };
       });
   }
@@ -341,8 +341,9 @@ class TypeScriptDocumentationGenerator {
    * @param comment raw comment string
    */
   private cleanComment(comment) {
-    const r = new RegExp(/\n/gm);
-    return comment.replace(r, ' ');
+    const newLineRegex = new RegExp(/\n/gm);
+    const tablePipeRegex = new RegExp(/\|/gm);
+    return comment.replace(newLineRegex, ' ').replace(tablePipeRegex, '\\|');
   }
 }
 

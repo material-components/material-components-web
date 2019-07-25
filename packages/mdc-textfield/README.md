@@ -339,8 +339,8 @@ Signature | Description
 `focus() => void` | Focuses the `input` or `textarea` element.
 `initialSyncWithDOM() => void` | Initializes the Text Field's internal state based on the environment's state.
 `layout() => void` | Adjusts the dimensions and positions for all sub-elements.
-`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
-`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions \| boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions \| boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
 #### Properties
 
@@ -356,7 +356,7 @@ Name | Type | Description
 `min` | `string` | @param Sets the input element's min.
 `minLength` | `number` | @param Sets the input element's minLength.
 `required` | `boolean` | @param Sets the Text Field to required.
-`ripple` | `MDCRipple | null` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
+`ripple` | `MDCRipple \| null` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
 `step` | `string` | @param Sets the input element's step.
 `trailingIconAriaLabel` | `string` | Sets the aria label of the trailing icon. Proxies to the foundation's `setTrailingIconAriaLabel` method.
 `trailingIconContent` | `string` | Sets the text content of the trailing icon. Proxies to the foundation's `setTrailingIconContent` method.
@@ -382,7 +382,7 @@ Signature | Description
 `deregisterValidationAttributeChangeHandler(observer: MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
 `floatLabel(shouldFloat: boolean) => void` | Only implement if label exists. Floats the label above the input element if shouldFloat is true.
 `getLabelWidth() => number` | Returns the width of the label element in px. Only implement if label exists.
-`getNativeInput() => MDCTextFieldNativeInputElement | null` | Returns an object representing the native text input element, with a similar API shape. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. See [types.ts](./types.ts).
+`getNativeInput() => MDCTextFieldNativeInputElement \| null` | Returns an object representing the native text input element, with a similar API shape. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. See [types.ts](./types.ts).
 `addClass(className: string) => void` | Adds a class to the root Element.
 `hasLabel() => boolean` | Determines whether the text field has a label element.
 `hasOutline() => boolean` | Determines whether the text field has an outline sub-element.
@@ -401,7 +401,7 @@ Signature | Description
 Signature | Description
 --- | ---
 `deregisterInputInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Deregisters an event listener on the native input element for a given event.
-`getNativeInput() => MDCTextFieldNativeInputElement | null` | Returns an object representing the native text input element, with a similar API shape. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. See [types.ts](./types.ts).
+`getNativeInput() => MDCTextFieldNativeInputElement \| null` | Returns an object representing the native text input element, with a similar API shape. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. See [types.ts](./types.ts).
 `isFocused() => boolean` | Returns whether the input is focused.
 `registerInputInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Registers an event listener on the native input element for a given event.
 
@@ -467,7 +467,7 @@ Signature | Description
 `setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon.
 `setTrailingIconAriaLabel(label: string) => void` | Sets the aria label of the trailing icon.
 `setTrailingIconContent(content: string) => void` | Sets the text content of the trailing icon.
-`setTransformOrigin(evt: TouchEvent | MouseEvent) => void` | Sets the line ripple's transform origin, so that the line ripple activate animation will animate out from the user's click location.
+`setTransformOrigin(evt: TouchEvent \| MouseEvent) => void` | Sets the line ripple's transform origin, so that the line ripple activate animation will animate out from the user's click location.
 `setUseNativeValidation(useNativeValidation: boolean) => void` | Sets whether to check native HTML validity state (`true`, default) or custom validity state when updating styles (`false`). Enables or disables the use of native validation.
 `setValid(isValid: boolean) => void` | Sets custom validity and updates styles accordingly. Note that native validation will still be honored subsequently unless `setUseNativeValidation(false)` is also called.
 `setValue(value: string) => void` | Sets the input's value.
