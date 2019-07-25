@@ -382,7 +382,7 @@ Signature | Description
 `deregisterValidationAttributeChangeHandler(observer: MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
 `floatLabel(shouldFloat: boolean) => void` | Only implement if label exists. Floats the label above the input element if shouldFloat is true.
 `getLabelWidth() => number` | Returns the width of the label element in px. Only implement if label exists.
-`getNativeInput() => MDCTextFieldNativeInputElement | null` | Returns an object representing the native text input element, with a similar API shape. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. See [types.ts](types.ts).
+`getNativeInput() => MDCTextFieldNativeInputElement | null` | Returns an object representing the native text input element, with a similar API shape. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. See [types.ts](./types.ts).
 `addClass(className: string) => void` | Adds a class to the root Element.
 `hasLabel() => boolean` | Determines whether the text field has a label element.
 `hasOutline() => boolean` | Determines whether the text field has an outline sub-element.
@@ -401,7 +401,7 @@ Signature | Description
 Signature | Description
 --- | ---
 `deregisterInputInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Deregisters an event listener on the native input element for a given event.
-`getNativeInput() => MDCTextFieldNativeInputElement | null` | Returns an object representing the native text input element, with a similar API shape. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. See [types.ts](types.ts).
+`getNativeInput() => MDCTextFieldNativeInputElement | null` | Returns an object representing the native text input element, with a similar API shape. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully. See [types.ts](./types.ts).
 `isFocused() => boolean` | Returns whether the input is focused.
 `registerInputInteractionHandler(evtType: K, handler: SpecificEventListener<K>) => void` | Registers an event listener on the native input element for a given event.
 

@@ -84,7 +84,7 @@ export interface MDCTextFieldInputAdapter {
    * however we _do_ update the disabled property, so if you choose to duck-type
    * the return value for this method in your implementation it's important
    * to keep this in mind. Also note that this method can return null, which
-   * the foundation will handle gracefully. See [types.ts](types.ts).
+   * the foundation will handle gracefully. See [types.ts](./types.ts).
    * @return The native `<input>` element, or an object with the same shape.
    * Note that this method can return null, which the foundation will handle gracefully.
    */
