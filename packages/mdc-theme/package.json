@@ -1,7 +1,7 @@
 {
   "name": "@material/theme",
   "description": "The Material Components for the web theming system",
-  "version": "1.1.0",
+  "version": "3.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -10,9 +10,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-components/material-components-web.git"
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-theme"
   },
   "dependencies": {
-    "@material/feature-targeting": "^0.44.1"
+    "@material/feature-targeting": "^3.1.0"
   }
 }

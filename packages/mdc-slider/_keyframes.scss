@@ -20,17 +20,19 @@
 // THE SOFTWARE.
 //
 
-@keyframes mdc-slider-emphasize {
-  0% {
-    animation-timing-function: ease-out;
-  }
+@mixin mdc-slider-emphasize-keyframes_ {
+  @keyframes mdc-slider-emphasize {
+    0% {
+      animation-timing-function: ease-out;
+    }
 
-  50% {
-    animation-timing-function: ease-in;
-    transform: scale(.85);
-  }
+    50% {
+      animation-timing-function: ease-in;
+      transform: scale(.85);
+    }
 
-  100% {
-    transform: scale(.571);
+    100% {
+      transform: scale(.571);
+    }
   }
 }

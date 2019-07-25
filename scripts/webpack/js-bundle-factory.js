@@ -64,6 +64,7 @@ class JsBundleFactory {
         httpDirAbsolutePath = undefined, // Required for running the demo server
         filenamePattern = this.env_.isProd() ? '[name].min.js' : '[name].js',
         library,
+        globalObject = 'this',
       },
       plugins = [],
       tsConfigFilePath = path.resolve(__dirname, '../../tsconfig.json'),
@@ -77,24 +78,14 @@ class JsBundleFactory {
       },
     };
 
-    let uglifyJSPluginOptions = {
+    const uglifyOptions = {
       output: {
         comments: false, // Removes repeated @license comments and other code comments.
       },
       sourceMap: true,
     };
 
-    if (!this.env_.isProd()) {
-      // Skip minify if it is not 'production'
-      uglifyJSPluginOptions = Object.assign({}, uglifyJSPluginOptions, {
-        compress: false,
-        mangle: false,
-        beautify: true,
-      });
-    }
-
     const commonPlugins = [
-      new UglifyJSPlugin(uglifyJSPluginOptions),
       this.pluginFactory_.createCopyrightBannerPlugin(),
     ];
 
@@ -107,6 +98,7 @@ class JsBundleFactory {
         filename: filenamePattern,
         libraryTarget: 'umd',
         library,
+        globalObject,
       },
       resolve: {extensions},
       devtool: 'source-map',
@@ -126,6 +118,10 @@ class JsBundleFactory {
           exclude: /node_modules/,
           use: [babelLoader],
         }],
+      },
+      optimization: {
+        minimize: this.env_.isProd(),
+        minimizer: [new UglifyJSPlugin({uglifyOptions})],
       },
       plugins: [
         ...commonPlugins,
@@ -175,6 +171,7 @@ class JsBundleFactory {
         base: getAbsolutePath('/packages/mdc-base/index.ts'),
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.ts'),
         chips: getAbsolutePath('/packages/mdc-chips/index.ts'),
+        dataTable: getAbsolutePath('/packages/mdc-data-table/index.ts'),
         dialog: getAbsolutePath('/packages/mdc-dialog/index.ts'),
         dom: getAbsolutePath('/packages/mdc-dom/index.ts'),
         drawer: getAbsolutePath('/packages/mdc-drawer/index.ts'),
@@ -198,7 +195,6 @@ class JsBundleFactory {
         tabBar: getAbsolutePath('/packages/mdc-tab-bar/index.ts'),
         tabIndicator: getAbsolutePath('/packages/mdc-tab-indicator/index.ts'),
         tabScroller: getAbsolutePath('/packages/mdc-tab-scroller/index.ts'),
-        tabs: getAbsolutePath('/packages/mdc-tabs/index.ts'),
         textfield: getAbsolutePath('/packages/mdc-textfield/index.ts'),
         topAppBar: getAbsolutePath('/packages/mdc-top-app-bar/index.ts'),
       },

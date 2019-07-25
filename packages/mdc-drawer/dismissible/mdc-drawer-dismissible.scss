@@ -20,24 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/functions";
-@import "@material/rtl/mixins";
-@import "../variables";
 @import "../mixins";
-
-.mdc-drawer--dismissible {
-  @include mdc-rtl-reflexive-position(left, 0);
-
-  display: none;
-  position: absolute;
-
-  &.mdc-drawer--open {
-    display: flex;
-  }
-}
-
-.mdc-drawer-app-content {
-  @include mdc-rtl-reflexive-box(margin, left, 0);
-
-  position: relative;
-}
+@include mdc-drawer-dismissible-core-styles;
