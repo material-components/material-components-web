@@ -55,8 +55,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerThumbContainerInteractionHandler', 'deregisterThumbContainerInteractionHandler',
     'registerBodyInteractionHandler', 'deregisterBodyInteractionHandler', 'registerResizeHandler',
     'deregisterResizeHandler', 'notifyInput', 'notifyChange', 'setThumbContainerStyleProperty',
-    'setTrackStyleProperty', 'setMarkerValue', 'appendTrackMarkers', 'removeTrackMarkers',
-    'setLastTrackMarkersStyleProperty', 'isRTL',
+    'setTrackStyleProperty', 'setMarkerValue', 'setTrackMarkers', 'isRTL',
   ]);
 });
 
@@ -164,7 +163,7 @@ test('#destroy deregisters all component event handlers registered during init()
   td.verify(mockAdapter.deregisterResizeHandler(isA(Function)));
 });
 
-test('#setupTrackMarker appends correct number of markers to discrete slider with markers', () => {
+test('#setupTrackMarker sets correct number of markers to discrete slider with markers', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = installClock();
 
@@ -174,34 +173,12 @@ test('#setupTrackMarker appends correct number of markers to discrete slider wit
   foundation.init();
   clock.runToFrame();
 
-  const numMarkers = 10;
   foundation.setMax(100);
   foundation.setMin(0);
   foundation.setStep(10);
   foundation.setupTrackMarker();
 
-  td.verify(mockAdapter.removeTrackMarkers());
-  td.verify(mockAdapter.appendTrackMarkers(numMarkers));
-});
-
-test('#setupTrackMarker append one excessive marker if distance is indivisible to step', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = installClock();
-
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
-  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
-  td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
-  foundation.init();
-  clock.runToFrame();
-
-  const numMarkers = 12;
-  foundation.setMax(100);
-  foundation.setMin(0);
-  foundation.setStep(9);
-  foundation.setupTrackMarker();
-
-  td.verify(mockAdapter.removeTrackMarkers());
-  td.verify(mockAdapter.appendTrackMarkers(numMarkers));
+  td.verify(mockAdapter.setTrackMarkers(10, 100, 0));
 });
 
 test('#setupTrackMarker does execute if it is continuous slider', () => {
@@ -220,8 +197,7 @@ test('#setupTrackMarker does execute if it is continuous slider', () => {
   foundation.setStep(10);
   foundation.setupTrackMarker();
 
-  td.verify(mockAdapter.removeTrackMarkers(), {times: 0});
-  td.verify(mockAdapter.appendTrackMarkers(isA(Number)), {times: 0});
+  td.verify(mockAdapter.setTrackMarkers(isA(Number), isA(Number), isA(Number)), {times: 0});
 });
 
 test('#setupTrackMarker does execute if discrete slider does not display markers', () => {
@@ -240,8 +216,7 @@ test('#setupTrackMarker does execute if discrete slider does not display markers
   foundation.setStep(10);
   foundation.setupTrackMarker();
 
-  td.verify(mockAdapter.removeTrackMarkers(), {times: 0});
-  td.verify(mockAdapter.appendTrackMarkers(isA(Number)), {times: 0});
+  td.verify(mockAdapter.setTrackMarkers(isA(Number), isA(Number), isA(Number)), {times: 0});
 });
 
 test('#layout re-computes the bounding rect for the component on each call', () => {
@@ -561,8 +536,7 @@ test('#setMax re-renders track markers if slider is discrete and displays marker
 
   foundation.setMax(50);
 
-  td.verify(mockAdapter.removeTrackMarkers());
-  td.verify(mockAdapter.appendTrackMarkers(isA(Number)));
+  td.verify(mockAdapter.setTrackMarkers(isA(Number), isA(Number), isA(Number)));
 });
 
 
@@ -651,8 +625,7 @@ test('#setMin re-renders track markers if slider is discrete and displays marker
 
   foundation.setMin(10);
 
-  td.verify(mockAdapter.removeTrackMarkers());
-  td.verify(mockAdapter.appendTrackMarkers(isA(Number)));
+  td.verify(mockAdapter.setTrackMarkers(isA(Number), isA(Number), isA(Number)));
 });
 
 test('#getStep/#setStep retrieves / sets the step value, respectively', () => {
@@ -742,8 +715,7 @@ test('#setStep re-renders track markers if slider is discrete and displays marke
 
   foundation.setStep(10);
 
-  td.verify(mockAdapter.removeTrackMarkers());
-  td.verify(mockAdapter.appendTrackMarkers(isA(Number)));
+  td.verify(mockAdapter.setTrackMarkers(isA(Number), isA(Number), isA(Number)));
 });
 
 test('#isDisabled/#setDisabled retrieves / sets the disabled state, respectively', () => {

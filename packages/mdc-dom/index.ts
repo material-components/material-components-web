@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import * as events from './events';
 import * as ponyfill from './ponyfill';
 
-export {ponyfill};
+export {events, ponyfill};

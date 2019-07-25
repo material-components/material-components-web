@@ -1,7 +1,7 @@
 {
   "name": "@material/select",
   "description": "The Material Components web select (text field drop-down) component",
-  "version": "2.3.1",
+  "version": "3.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,21 +15,22 @@
   "types": "dist/mdc.select.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-components/material-components-web.git"
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-select"
   },
   "dependencies": {
-    "@material/animation": "^1.0.0",
-    "@material/base": "^1.0.0",
-    "@material/floating-label": "^2.3.0",
-    "@material/line-ripple": "^2.3.0",
-    "@material/menu": "^2.3.0",
-    "@material/menu-surface": "^2.3.0",
-    "@material/notched-outline": "^2.3.0",
-    "@material/ripple": "^2.3.0",
-    "@material/rtl": "^0.42.0",
-    "@material/shape": "^1.1.1",
-    "@material/theme": "^1.1.0",
-    "@material/typography": "^2.3.0",
+    "@material/animation": "^3.1.0",
+    "@material/base": "^3.1.0",
+    "@material/floating-label": "^3.1.0",
+    "@material/line-ripple": "^3.1.0",
+    "@material/menu": "^3.1.0",
+    "@material/menu-surface": "^3.1.0",
+    "@material/notched-outline": "^3.1.0",
+    "@material/ripple": "^3.1.0",
+    "@material/rtl": "^3.1.0",
+    "@material/shape": "^3.1.0",
+    "@material/theme": "^3.1.0",
+    "@material/typography": "^3.1.0",
     "tslib": "^1.9.3"
   }
 }

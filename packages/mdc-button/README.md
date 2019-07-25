@@ -41,6 +41,7 @@ npm install @material/button
 
 ```html
 <button class="mdc-button">
+  <div class="mdc-button__ripple"></div>
   <span class="mdc-button__label">Button</span>
 </button>
 ```
@@ -91,6 +92,7 @@ To add an icon, add an element with the `mdc-button__icon` class inside the butt
 
 ```html
 <button class="mdc-button">
+  <div class="mdc-button__ripple"></div>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
   <span class="mdc-button__label">Button</span>
 </button>
@@ -100,6 +102,7 @@ It's also possible to use an SVG icon:
 
 ```html
 <button class="mdc-button">
+  <div class="mdc-button__ripple"></div>
   <svg class="mdc-button__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="...">
   ...
   </svg>
@@ -114,6 +117,7 @@ putting the icon markup _after_ the `mdc-button__label` element.
 
 ```html
 <button class="mdc-button">
+  <div class="mdc-button__ripple"></div>
   <span class="mdc-button__label">Button</span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
 </button>
@@ -128,6 +132,7 @@ Disabled buttons cannot be interacted with and have no visual interaction effect
 
 ```html
 <button class="mdc-button" disabled>
+  <div class="mdc-button__ripple"></div>
   <span class="mdc-button__label">Button</span>
 </button>
 ```
@@ -139,6 +144,7 @@ Disabled buttons cannot be interacted with and have no visual interaction effect
 CSS Class | Description
 --- | ---
 `mdc-button` | Mandatory. Defaults to a text button that is flush with the surface.
+`mdc-button__ripple` | Mandatory. Indicates the element which shows the ripple styling.
 `mdc-button--raised` | Optional. Styles a contained button that is elevated above the surface.
 `mdc-button--unelevated` | Optional. Styles a contained button that is flush with the surface.
 `mdc-button--outlined` | Optional. Styles an outlined button that is flush with the surface.

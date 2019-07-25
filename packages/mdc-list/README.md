@@ -411,6 +411,8 @@ Mixin | Description
 `mdc-list-item-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-list-divider-color($color)` | Sets divider ink color.
 `mdc-list-group-subheader-ink-color($color)` | Sets ink color of subheader text within list group.
+`mdc-list-item-disabled-text-color($color`) | Sets the color of the text when the list item is disabled.
+`mdc-list-item-disabled-text-opacity($opacity`) | Sets the opacity of the text when the list item is disabled.
 
 ### Accessibility
 

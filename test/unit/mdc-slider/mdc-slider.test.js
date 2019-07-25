@@ -466,42 +466,6 @@ test('adapter#setMarkerValue changes the value on pin value markers', () => {
   assert.equal(pinValueMarker.innerHTML, 10);
 });
 
-test('adapter#appendTrackMarkers appends correct number of markers to track', () => {
-  const {root, component} = setupTest();
-  const markerContainer = root.querySelector(strings.TRACK_MARKER_CONTAINER_SELECTOR);
-
-  component.getDefaultFoundation().adapter_.appendTrackMarkers(1);
-
-  assert.equal(markerContainer.firstChild.className, 'mdc-slider__track-marker');
-  assert.equal(markerContainer.childNodes.length, 1);
-});
-
-test('adapter#removeTrackMarkers all markers from track', () => {
-  const {root, component} = setupTest();
-  const markerContainer = root.querySelector(strings.TRACK_MARKER_CONTAINER_SELECTOR);
-
-  component.getDefaultFoundation().adapter_.appendTrackMarkers(1);
-  assert.equal(markerContainer.childNodes.length, 1);
-
-  component.getDefaultFoundation().adapter_.removeTrackMarkers();
-  assert.equal(markerContainer.childNodes.length, 0);
-});
-
-test('adapter#setLastTrackMarkersStyleProperty all markers from track', () => {
-  const {root, component} = setupTest();
-
-  // We need to first append one marker to the container
-  component.getDefaultFoundation().adapter_.appendTrackMarkers(1);
-  const lastMarker = root.querySelector(strings.LAST_TRACK_MARKER_SELECTOR);
-
-  const div = bel`<div></div>`;
-  div.style.flex = 0.5;
-
-  component.getDefaultFoundation().adapter_.setLastTrackMarkersStyleProperty('flex', 0.5);
-
-  assert.equal(lastMarker.style.flex, div.style.flex);
-});
-
 test('adapter#isRTL returns true when component is in an RTL context', () => {
   const wrapper = bel`<div dir="rtl"></div>`;
   const {root, component} = setupTest();
