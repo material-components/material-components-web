@@ -143,10 +143,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   setDisabled(isDisabled: boolean) {
     if (isDisabled) {
       this.adapter_.addClass(cssClasses.DISABLED);
+      this.adapter_.closeMenu();
     } else {
       this.adapter_.removeClass(cssClasses.DISABLED);
     }
-    this.adapter_.closeMenu();
 
     if (this.leadingIcon_) {
       this.leadingIcon_.setDisabled(isDisabled);
