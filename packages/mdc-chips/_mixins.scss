@@ -36,6 +36,8 @@
 @import "@material/shape/functions";
 @import "./variables";
 
+$mdc-chip-ripple-target: ".mdc-chip__ripple";
+
 @mixin mdc-chip-core-styles($query: mdc-feature-all()) {
   @include mdc-chip-without-ripple($query: $query);
   @include mdc-chip-ripple($query: $query);
@@ -251,8 +253,8 @@
   @include mdc-ripple-common($query);
 
   .mdc-chip {
-    @include mdc-ripple-surface($query: $query);
-    @include mdc-ripple-radius-bounded($query: $query);
+    @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-chip-ripple-target);
+    @include mdc-ripple-radius-bounded($query: $query, $ripple-target: $mdc-chip-ripple-target);
     @include mdc-chip-ink-color-ripple_($mdc-chip-ink-color-default, $query: $query);
   }
 
@@ -351,7 +353,7 @@
 }
 
 @mixin mdc-chip-ink-color-ripple_($color, $query) {
-  @include mdc-states($color, true, $query: $query);
+  @include mdc-states($color, true, $query: $query, $ripple-target: $mdc-chip-ripple-target);
 }
 
 @mixin mdc-chip-selected-ink-color($color, $query: mdc-feature-all()) {
@@ -385,7 +387,8 @@
 
 @mixin mdc-chip-selected-ink-color-ripple_($color, $query) {
   &.mdc-chip {
-    @include mdc-states-selected($color, $has-nested-focusable-element: true, $query: $query);
+    @include mdc-states-selected(
+      $color, $has-nested-focusable-element: true, $query: $query, $ripple-target: $mdc-chip-ripple-target);
   }
 }
 
