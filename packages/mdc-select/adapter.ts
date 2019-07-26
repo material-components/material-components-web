@@ -114,6 +114,11 @@ export interface MDCSelectAdapter {
    */
   setSelectedText(text: string): void;
 
+  /**
+   * Sets the given attribute on the selected text element.
+   */
+  setSelectedTextAttr(attr: string, value: string): void;
+
   // Menu-related methods ======================================================
   /**
    * Opens the menu.

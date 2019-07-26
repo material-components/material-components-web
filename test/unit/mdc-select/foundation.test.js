@@ -49,7 +49,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass',
     'floatLabel', 'activateBottomLine', 'deactivateBottomLine', 'getValue',
     'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpen', 'openMenu',
-    'closeMenu', 'setDisabled', 'setSelectedText',
+    'closeMenu', 'setDisabled', 'setSelectedText', 'setSelectedTextAttr',
     'setAttributeAtIndex', 'removeAttributeAtIndex', 'getMenuItemValues', 'getMenuItemTextAtIndex',
     'toggleClassAtIndex', 'setRippleCenter', 'notifyChange',
     'checkValidity', 'setValid',

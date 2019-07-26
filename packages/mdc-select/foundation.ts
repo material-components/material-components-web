@@ -64,6 +64,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       checkValidity: () => false,
       setValid: () => undefined,
       setSelectedText: () => undefined,
+      setSelectedTextAttr: () => undefined,
       openMenu: () => undefined,
       closeMenu: () => undefined,
       isMenuOpen: () => false,
@@ -96,6 +97,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.helperText_ = foundationMap.helperText;
 
     this.menuItemValues_ = this.adapter_.getMenuItemValues();
+    this.selectSetup_();
   }
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
@@ -303,6 +305,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   isValid() {
     return this.adapter_.checkValidity();
+  }
+
+  /**
+   * Handles setup for the select.
+   */
+  private selectSetup_() {
+    const isDisabled = this.adapter_.hasClass(cssClasses.DISABLED);
+    this.adapter_.setSelectedTextAttr('tabindex', isDisabled ? '-1' : '0');
   }
 }
 
