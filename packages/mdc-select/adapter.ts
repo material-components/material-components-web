@@ -85,11 +85,6 @@ export interface MDCSelectAdapter {
   closeOutline(): void;
 
   /**
-   * Sets the select to disabled.
-   */
-  setDisabled(isDisabled: boolean): void;
-
-  /**
    * Sets the line ripple transform origin center.
    */
   setRippleCenter(normalizedX: number): void;

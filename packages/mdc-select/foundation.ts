@@ -58,7 +58,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       hasOutline: () => false,
       notchOutline: () => undefined,
       closeOutline: () => undefined,
-      setDisabled: () => undefined,
       setRippleCenter: () => undefined,
       notifyChange: () => undefined,
       checkValidity: () => false,
@@ -97,7 +96,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.helperText_ = foundationMap.helperText;
 
     this.menuItemValues_ = this.adapter_.getMenuItemValues();
-    this.selectSetup_();
   }
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
@@ -148,12 +146,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     } else {
       this.adapter_.removeClass(cssClasses.DISABLED);
     }
-    this.adapter_.setDisabled(isDisabled);
     this.adapter_.closeMenu();
 
     if (this.leadingIcon_) {
       this.leadingIcon_.setDisabled(isDisabled);
     }
+
+    this.adapter_.setSelectedTextAttr('tabindex', isDisabled ? '-1' : '0');
+    this.adapter_.setSelectedTextAttr('aria-disabled', isDisabled.toString());
   }
 
   /**
@@ -305,14 +305,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   isValid() {
     return this.adapter_.checkValidity();
-  }
-
-  /**
-   * Handles setup for the select.
-   */
-  private selectSetup_() {
-    const isDisabled = this.adapter_.hasClass(cssClasses.DISABLED);
-    this.adapter_.setSelectedTextAttr('tabindex', isDisabled ? '-1' : '0');
   }
 }
 

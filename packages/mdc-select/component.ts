@@ -349,10 +349,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         }
         return '';
       },
-      setDisabled: (isDisabled: boolean) => {
-        this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-        this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
-      },
       checkValidity: () => {
         const classList = this.selectAnchor_.classList;
         if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
