@@ -186,6 +186,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     // Initially sync floating label
     this.foundation_.handleChange(/* didChange */ false);
 
+    // Sets disabled state in foundation
     this.disabled = this.selectAnchor_.classList.contains(cssClasses.DISABLED);
   }
 
