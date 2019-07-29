@@ -92,15 +92,6 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.foundation_.setQuickOpen(quickOpen);
   }
 
-  /**
-   * Removes the menu-surface from its current location and appends it to the
-   * body to overcome any overflow:hidden issues.
-   */
-  hoistMenuToBody() {
-    document.body.appendChild(this.root_);
-    this.setIsHoisted(true);
-  }
-
   /** Sets the foundation to use page offsets for an positioning when the menu is hoisted to the body. */
   setIsHoisted(isHoisted: boolean) {
     this.foundation_.setIsHoisted(isHoisted);

@@ -92,7 +92,7 @@ function getFixture() {
   return bel`
     <div class="mdc-select">
       <div class="mdc-select__anchor">
-        <input type="hidden" name="enhanced-select">
+        <input type="hidden" name="select">
         <i class="mdc-select__icon material-icons">code</i>
         <div class="mdc-select__selected-text"></div>
         <i class="mdc-select__dropdown-icon"></i>
@@ -119,7 +119,7 @@ function getOutlineFixture() {
   return bel`
     <div class="mdc-select">
       <div class="mdc-select__anchor mdc-select--outlined">
-        <input type="hidden" name="enhanced-select">
+        <input type="hidden" name="select">
         <i class="mdc-select__icon material-icons">code</i>
         <div class="mdc-select__selected-text"></div>
         <i class="mdc-select__dropdown-icon"></i>
@@ -203,7 +203,7 @@ function setupWithMockFoundation() {
   return setupTest(false, true, true);
 }
 
-suite('MDCSelect-Enhanced');
+suite('MDCSelect');
 
 test('attachTo returns a component instance', () => {
   assert.isOk(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
