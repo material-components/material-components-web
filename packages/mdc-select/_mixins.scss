@@ -53,7 +53,7 @@
 }
 
 @mixin mdc-select-hover-bottom-line-color($color) {
-  &:not(.mdc-select--disabled) .mdc-select__native-control:hover {
+  &:not(.mdc-select--disabled) .mdc-select__selected-text:hover {
     @include mdc-select-native-control-bottom-line-color_($color);
   }
 }
