@@ -262,9 +262,9 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
         position: absolute;
         width: 100%;
         height: 100%;
-        overflow: hidden;
         // Needed for ie11 to position ripple correctly at the top of container
         top: 0;
+        overflow: hidden;
       }
     }
   }
@@ -317,7 +317,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     $rtl-reflexive,
     $query: $query);
 
-    #{$mdc-chip-ripple-target} {
+  #{$mdc-chip-ripple-target} {
     @include mdc-shape-radius(
       mdc-shape-resolve-percentage-radius($mdc-chip-height-default, $radius),
       $rtl-reflexive,
@@ -454,10 +454,10 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 
   #{$mdc-chip-ripple-target} {
     @include mdc-feature-targets($feat-structure) {
-      border: $width solid transparent;
-      margin-left: $horizontal-margin;
-      margin-right: $horizontal-margin;
       top: $vertical-margin;
+      margin-right: $horizontal-margin;
+      margin-left: $horizontal-margin;
+      border: $width solid transparent;
     }
   }
 }
@@ -473,8 +473,8 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   $margin: 0 - $padding;
 
   #{$mdc-chip-ripple-target} {
-    margin-left: $margin;
     margin-right: $margin;
+    margin-left: $margin;
   }
 }
 
