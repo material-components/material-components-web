@@ -365,6 +365,7 @@
     @include mdc-states-base-color(transparent);
     @include mdc-floating-label-shake-animation(text-field-outlined);
     @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, 0);
+
     overflow: visible;
   }
 
@@ -372,15 +373,11 @@
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
 
     display: flex;
-    padding-top: 12px;
+    padding-top: 14px;
     padding-bottom: 12px;
     border: none;
     background-color: transparent;
     z-index: 1;
-  }
-
-  .mdc-select__selected-text {
-    padding-top: 14px;
   }
 
   .mdc-select__icon {
