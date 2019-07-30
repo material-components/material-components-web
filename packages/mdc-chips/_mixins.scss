@@ -260,8 +260,8 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     #{$mdc-chip-ripple-target} {
       @include mdc-feature-targets($feat-structure) {
         position: absolute;
-        // Needed for ie11 to position ripple correctly at the top of container
         top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         overflow: hidden;
@@ -449,14 +449,10 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     border-width: $width;
   }
 
-  $horizontal-margin: 0 - $horizontal-padding-value - $width;
-  $vertical-margin: 0 - $width;
-
   #{$mdc-chip-ripple-target} {
     @include mdc-feature-targets($feat-structure) {
-      top: $vertical-margin;
-      margin-right: $horizontal-margin;
-      margin-left: $horizontal-margin;
+      top: -$width;
+      left: -$width;
       border: $width solid transparent;
     }
   }
