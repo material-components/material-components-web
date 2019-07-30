@@ -118,12 +118,12 @@
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  .mdc-select__anchor {
+  .mdc-select__selected-text {
     @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
   @if ($resolved-radius > $mdc-notched-outline-leading-width) {
-    .mdc-select__anchor {
+    .mdc-select__selected-text {
       @include mdc-rtl-reflexive-property(
         padding,
         $resolved-radius + $mdc-notched-outline-padding,
