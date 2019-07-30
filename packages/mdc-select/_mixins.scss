@@ -272,12 +272,7 @@
   }
 }
 
-@mixin mdc-select-text-and-control_ {
-  .mdc-select__selected-text {
-    min-width: 200px;
-    padding-top: 22px;
-  }
-
+@mixin mdc-select-text_ {
   .mdc-select__selected-text {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
     @include mdc-typography(subtitle1);
@@ -298,8 +293,9 @@
 
     box-sizing: border-box;
     width: 100%;
+    min-width: 200px;
     height: $mdc-select-height;
-    padding-top: 20px;
+    padding-top: 22px;
     padding-bottom: 4px;
     border: none;
     border-bottom: 1px solid;

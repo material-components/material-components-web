@@ -117,8 +117,8 @@ function getFixture() {
 
 function getOutlineFixture() {
   return bel`
-    <div class="mdc-select">
-      <div class="mdc-select__anchor mdc-select--outlined">
+    <div class="mdc-select mdc-select--outlined">
+      <div class="mdc-select__anchor">
         <input type="hidden" name="select">
         <i class="mdc-select__icon material-icons">code</i>
         <div class="mdc-select__selected-text"></div>
@@ -1230,7 +1230,8 @@ test(`MutationObserver adds ${cssClasses.REQUIRED} class to root element when ar
   }, 0);
 });
 
-test(`MutationObserver removes ${cssClasses.REQUIRED} class from root element when aria-required attr is removed`, (done) => {
+test(`MutationObserver removes ${cssClasses.REQUIRED} class from root element when aria-required attr ` +
+'is removed', (done) => {
   const hasLabel = true;
   const hasOutline = false;
   const hasHelperText = false;

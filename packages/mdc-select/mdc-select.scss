@@ -50,7 +50,8 @@
 
   // Hover state colors
   @include mdc-select-hover-bottom-line-color($mdc-select-bottom-line-hover-color);
-  
+
+  // Floating label private mixin
   @include mdc-select-floating-label_;
 
   position: relative; // Menu is absolutely positioned relative to this.
@@ -103,7 +104,7 @@
 }
 
 @include mdc-select-helper-text_;
-@include mdc-select-text-and-control_();
+@include mdc-select-text_();
 
 .mdc-select--outlined {
   @include mdc-select-outlined_;
