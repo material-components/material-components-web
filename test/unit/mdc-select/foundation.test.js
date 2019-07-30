@@ -49,7 +49,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass',
     'floatLabel', 'activateBottomLine', 'deactivateBottomLine', 'getValue',
     'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpen', 'openMenu',
-    'closeMenu', 'setDisabled', 'setSelectedText',
+    'closeMenu', 'setSelectedText', 'setSelectedTextAttr',
     'setAttributeAtIndex', 'removeAttributeAtIndex', 'getMenuItemValues', 'getMenuItemTextAtIndex',
     'toggleClassAtIndex', 'setRippleCenter', 'notifyChange',
     'checkValidity', 'setValid',
@@ -84,17 +84,27 @@ function setupTest(hasLeadingIcon = true, hasHelperText = false) {
   return {foundation, mockAdapter, leadingIcon, helperText};
 }
 
+test('#getDisabled() returns true if disabled', () => {
+  const {foundation} = setupTest();
+  foundation.setDisabled(true);
+  assert.equal(foundation.getDisabled(), true);
+});
+
+test('#getDisabled() returns false if not disabled', () => {
+  const {foundation} = setupTest();
+  foundation.setDisabled(false);
+  assert.equal(foundation.getDisabled(), false);
+});
+
 test('#setDisabled(true) calls adapter.addClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setDisabled(true);
-  td.verify(mockAdapter.setDisabled(true));
   td.verify(mockAdapter.addClass(cssClasses.DISABLED));
 });
 
 test('#setDisabled(false) calls adapter.removeClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setDisabled(false);
-  td.verify(mockAdapter.setDisabled(false));
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
 });
 

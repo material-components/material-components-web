@@ -244,7 +244,7 @@ test('#get/set disabled', () => {
   component.disabled = true;
   td.verify(mockFoundation.setDisabled(true), {times: 1});
   component.disabled = false;
-  td.verify(mockFoundation.setDisabled(false), {times: 1});
+  td.verify(mockFoundation.setDisabled(false), {times: 2}); // called once at initialization, once when setting to false
 });
 
 test('#get/set required', () => {
@@ -735,6 +735,21 @@ test('adapter#setSelectedText sets the select text content correctly', () => {
   document.body.removeChild(fixture);
 });
 
+test('adapter#setSelectedTextAttr sets the select text content correctly', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, component, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  assert.isFalse(selectedText.hasAttribute('foo'));
+  adapter.setSelectedTextAttr('foo', '1');
+  assert.equal(selectedText.getAttribute('foo'), '1');
+  document.body.removeChild(fixture);
+});
+
 test('adapter#openMenu causes the menu to open', () => {
   const hasMockFoundation = true;
   const hasMockMenu = true;
@@ -810,29 +825,6 @@ test('adapter#toggleClassAtIndex toggles class correctly', () => {
   assert.isTrue(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS));
   adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, false);
   assert.isFalse(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS));
-
-  document.body.removeChild(fixture);
-});
-
-test('adapter#setDisabled adds the --disabled class to the root element', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = true;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {fixture, component, selectedText} =
-      setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  document.body.appendChild(fixture);
-  const adapter = component.getDefaultFoundation().adapter_;
-
-  assert.equal(selectedText.tabIndex, 0);
-
-  adapter.setDisabled(true);
-  assert.equal(selectedText.getAttribute('aria-disabled'), 'true');
-  assert.equal(selectedText.tabIndex, -1);
-
-  adapter.setDisabled(false);
-  expect(selectedText.getAttribute('aria-disabled')).to.equal('false');
-  expect(selectedText.tabIndex).to.equal(0);
 
   document.body.removeChild(fixture);
 });
@@ -1083,6 +1075,7 @@ test('menu surface closed event does not call foundation.handleBlur if selected-
   const {fixture, menuSurface, mockFoundation, selectedText} = setupTest(hasOutline, hasLabel,
     hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
+  fixture.querySelector('.mdc-select__selected-text').tabIndex = 0;
   fixture.querySelector('.mdc-select__selected-text').focus();
   const event = document.createEvent('Event');
   event.initEvent(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, false, true);
@@ -1102,21 +1095,6 @@ test('menu surface closed event calls foundation.handleBlur if selected-text is 
   const {fixture, menuSurface, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
   document.body.focus();
-  const event = document.createEvent('Event');
-  event.initEvent(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, false, true);
-  menuSurface.dispatchEvent(event);
-
-  td.verify(mockFoundation.handleBlur(), {times: 1});
-  document.body.removeChild(fixture);
-});
-
-test('menu surface closed event does not call foundation blur if selected-text is not focused', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {fixture, menuSurface, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  document.body.appendChild(fixture);
   const event = document.createEvent('Event');
   event.initEvent(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, false, true);
   menuSurface.dispatchEvent(event);

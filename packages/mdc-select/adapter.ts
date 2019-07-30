@@ -85,11 +85,6 @@ export interface MDCSelectAdapter {
   closeOutline(): void;
 
   /**
-   * Sets the select to disabled.
-   */
-  setDisabled(isDisabled: boolean): void;
-
-  /**
    * Sets the line ripple transform origin center.
    */
   setRippleCenter(normalizedX: number): void;
@@ -113,6 +108,11 @@ export interface MDCSelectAdapter {
    * Sets the text content of the selectedText element to the given string.
    */
   setSelectedText(text: string): void;
+
+  /**
+   * Sets the given attribute on the selected text element.
+   */
+  setSelectedTextAttr(attr: string, value: string): void;
 
   // Menu-related methods ======================================================
   /**
