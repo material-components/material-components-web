@@ -238,7 +238,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   get disabled(): boolean {
-    return this.selectAnchor_.classList.contains(cssClasses.DISABLED);
+    return this.foundation_.getDisabled();
   }
 
   set disabled(disabled: boolean) {

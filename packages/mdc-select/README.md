@@ -353,6 +353,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `checkValidity() => boolean` | Returns whether the component is currently valid, using the select's `checkValidity`. |
 | `setValid(isValid: boolean) => void` | Adds or removes invalid styles. |
 | `setSelectedText(text: string): void` | Sets the text content of the selectedText element to the given string. |
+| `setSelectedTextAttr(attr: string, value: string): void` | Sets the given attribute on the selected text element. |
 | `openMenu() => void` | Causes the menu element in the enhanced select to open. |
 | `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
 | `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
@@ -367,7 +368,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | Method Signature | Description |
 | --- | --- |
 | `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline. |
-| `setDisabled(isDisabled: boolean) => void` | Updates appearance based on disabled state. This must be called whenever the `disabled` state changes. |
+| `getDisabled() => boolean` | Gets the disabled state. |
+| `setDisabled(isDisabled: boolean) => void` | Updates the disabled state. |
 | `handleFocus() => void` | Handles a focus event on the `select` element. |
 | `handleBlur() => void` | Handles a blur event on the `select` element. |
 | `handleClick(normalizedX: number) => void` | Sets the line ripple center to the normalizedX for the line ripple. |

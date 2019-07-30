@@ -84,6 +84,18 @@ function setupTest(hasLeadingIcon = true, hasHelperText = false) {
   return {foundation, mockAdapter, leadingIcon, helperText};
 }
 
+test('#getDisabled() returns true if disabled', () => {
+  const {foundation} = setupTest();
+  foundation.setDisabled(true);
+  assert.equal(foundation.getDisabled(), true);
+});
+
+test('#getDisabled() returns false if not disabled', () => {
+  const {foundation} = setupTest();
+  foundation.setDisabled(false);
+  assert.equal(foundation.getDisabled(), false);
+});
+
 test('#setDisabled(true) calls adapter.addClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setDisabled(true);
