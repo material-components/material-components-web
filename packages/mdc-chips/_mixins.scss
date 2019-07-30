@@ -469,8 +469,10 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   $margin: 0 - $padding;
 
   #{$mdc-chip-ripple-target} {
-    margin-right: $margin;
-    margin-left: $margin;
+    @include mdc-feature-targets($feat-structure) {
+      margin-right: $margin;
+      margin-left: $margin;
+    }
   }
 }
 

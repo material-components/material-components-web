@@ -44,11 +44,13 @@ npm install @material/chips
 ```html
 <div class="mdc-chip-set" role="grid">
   <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
       <span role="button" tabindex="0" class="mdc-chip__text">Chip One</span>
     </span>
   </div>
   <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
       <span role="button" tabindex="-1" class="mdc-chip__text">Chip Two</span>
     </span>
@@ -93,6 +95,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 
 ```html
 <div class="mdc-chip" role="row">
+  <div class="mdc-chip__ripple"></div>
   <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
   <span role="gridcell">
     <span role="button" tabindex="0" class="mdc-chip__text">Add to calendar</span>
@@ -106,6 +109,7 @@ A trailing icon comes with the functionality to remove the chip from the set. If
 
 ```html
 <div class="mdc-chip" role="row">
+  <div class="mdc-chip__ripple"></div>
   <span role="gridcell">
     <span role="button" tabindex="0" class="mdc-chip__text">Jane Smith</span>
   </span>
@@ -132,6 +136,7 @@ Filter chips are a variant of chips which allow multiple selection from a set of
 ```html
 <div class="mdc-chip-set mdc-chip-set--filter" role="grid">
   <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
     <span class="mdc-chip__checkmark" >
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
         <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
@@ -151,6 +156,7 @@ To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` elemen
 ```html
 <div class="mdc-chip-set mdc-chip-set--filter" role="grid">
   <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
     <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
     <span class="mdc-chip__checkmark" >
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
@@ -215,6 +221,7 @@ To display a pre-selected filter or choice chip, add the class `mdc-chip--select
 ```html
 <div class="mdc-chip-set mdc-chip-set--choice" role="grid">
   <div class="mdc-chip mdc-chip--selected" role="row">
+    <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
       <span role="radio" tabindex="0" aria-checked="true" class="mdc-chip__text">Add to calendar</span>
     </span>
@@ -227,6 +234,7 @@ To pre-select filter chips that have a leading icon, also add the class `mdc-chi
 ```html
 <div class="mdc-chip-set mdc-chip-set--filter" role="grid">
   <div class="mdc-chip mdc-chip--selected" role="row">
+    <div class="mdc-chip__ripple"></div>
     <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
     <span class="mdc-chip__checkmark">
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
@@ -252,6 +260,7 @@ CSS Class | Description
 `mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips, which allow a single selection from a set of options.
 `mdc-chip-set--filter` | Optional. Indicates that the chips in the set are filter chips, which allow multiple selection from a set of options.
 `mdc-chip` | Mandatory.
+`mdc-chip__ripple` | Mandatory. Indicates the element which shows the ripple styling.
 `mdc-chip--selected` | Optional. Indicates that the chip is selected.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
 `mdc-chip__icon` | Optional. Indicates an icon in the chip. We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts.
