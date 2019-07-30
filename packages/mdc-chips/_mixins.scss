@@ -72,7 +72,6 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
       outline: none;
       cursor: pointer;
       -webkit-appearance: none;
-      overflow: hidden;
 
       &::-moz-focus-inner {
         padding: 0;
@@ -251,11 +250,23 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 
 @mixin mdc-chip-ripple($query: mdc-feature-all()) {
   @include mdc-ripple-common($query);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
   .mdc-chip {
     @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-chip-ripple-target);
     @include mdc-ripple-radius-bounded($query: $query, $ripple-target: $mdc-chip-ripple-target);
     @include mdc-chip-ink-color-ripple_($mdc-chip-ink-color-default, $query: $query);
+
+    #{$mdc-chip-ripple-target} {
+      @include mdc-feature-targets($feat-structure) {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        // Needed for ie11 to position ripple correctly at the top of container
+        top: 0;
+      }
+    }
   }
 
   .mdc-chip-set--choice {
@@ -305,6 +316,14 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     mdc-shape-resolve-percentage-radius($mdc-chip-height-default, $radius),
     $rtl-reflexive,
     $query: $query);
+
+    #{$mdc-chip-ripple-target} {
+    @include mdc-shape-radius(
+      mdc-shape-resolve-percentage-radius($mdc-chip-height-default, $radius),
+      $rtl-reflexive,
+      $query: $query
+    );
+  }
 }
 
 @mixin mdc-chip-fill-color-accessible($color, $query: mdc-feature-all()) {
@@ -429,6 +448,18 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     padding-left: $horizontal-padding-value;
     border-width: $width;
   }
+
+  $horizontal-margin: 0 - $horizontal-padding-value - $width;
+  $vertical-margin: 0 - $width;
+
+  #{$mdc-chip-ripple-target} {
+    @include mdc-feature-targets($feat-structure) {
+      border: $width solid transparent;
+      margin-left: $horizontal-margin;
+      margin-right: $horizontal-margin;
+      top: $vertical-margin;
+    }
+  }
 }
 
 @mixin mdc-chip-horizontal-padding($padding, $query: mdc-feature-all()) {
@@ -437,6 +468,13 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   @include mdc-feature-targets($feat-structure) {
     padding-right: $padding;
     padding-left: $padding;
+  }
+
+  $margin: 0 - $padding;
+
+  #{$mdc-chip-ripple-target} {
+    margin-left: $margin;
+    margin-right: $margin;
   }
 }
 
