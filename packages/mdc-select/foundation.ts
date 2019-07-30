@@ -84,7 +84,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   // VALUE_ATTR values of the menu items.
   private readonly menuItemValues_: string[];
   // Disabled state
-  private disabled_: boolean;
+  private disabled_ = false;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
@@ -98,7 +98,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.helperText_ = foundationMap.helperText;
 
     this.menuItemValues_ = this.adapter_.getMenuItemValues();
-    this.disabled_ = false;
   }
 
   /** Returns the index of the currently selected menu item, or -1 if none. */

@@ -352,8 +352,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `notifyChange(value: string) => void` | Emits the `MDCSelect:change` event when an element is selected. |
 | `checkValidity() => boolean` | Returns whether the component is currently valid, using the select's `checkValidity`. |
 | `setValid(isValid: boolean) => void` | Adds or removes invalid styles. |
-| `setSelectedText(text: string): void` | Sets the text content of the selectedText element to the given string. |
-| `setSelectedTextAttr(attr: string, value: string): void` | Sets the given attribute on the selected text element. |
+| `setSelectedText(text: string) => void` | Sets the text content of the selectedText element to the given string. |
+| `setSelectedTextAttr(attr: string, value: string) => void` | Sets the given attribute on the selected text element. |
 | `openMenu() => void` | Causes the menu element in the enhanced select to open. |
 | `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
 | `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
