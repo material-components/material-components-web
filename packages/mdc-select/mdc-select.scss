@@ -37,6 +37,23 @@
 
 // postcss-bem-linter: define select
 .mdc-select {
+  @include mdc-select-container-fill-color($mdc-select-fill-color);
+  @include mdc-select-ink-color($mdc-select-ink-color);
+  @include mdc-select-label-color($mdc-select-label-color);
+  @include mdc-select-bottom-line-color($mdc-select-bottom-line-idle-color);
+  @include mdc-select-helper-text-color($mdc-select-helper-text-color);
+  @include mdc-select-shape-radius(small);
+
+  // Focused state colors
+  @include mdc-select-focused-bottom-line-color(primary);
+  @include mdc-select-focused-label-color($mdc-select-focused-label-color);
+
+  // Hover state colors
+  @include mdc-select-hover-bottom-line-color($mdc-select-bottom-line-hover-color);
+
+  // Floating label private mixin
+  @include mdc-select-floating-label_;
+
   position: relative; // Menu is absolutely positioned relative to this.
 
   &__dropdown-icon {
@@ -59,34 +76,16 @@
       transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
     }
   }
-
-  &__native-control {
-    padding-top: 20px;
-  }
 }
 
 .mdc-select__anchor {
-  @include mdc-select-container-fill-color($mdc-select-fill-color);
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   // Select intentionally omits press ripple, so each state needs to be specified individually.
   @include mdc-states-base-color($mdc-select-ink-color);
   @include mdc-states-hover-opacity(mdc-states-opacity($mdc-select-ink-color, hover));
   @include mdc-states-focus-opacity(mdc-states-opacity($mdc-select-ink-color, focus));
-  @include mdc-select-ink-color($mdc-select-ink-color);
-  @include mdc-select-label-color($mdc-select-label-color);
-  @include mdc-select-bottom-line-color($mdc-select-bottom-line-idle-color);
-  @include mdc-select-helper-text-color($mdc-select-helper-text-color);
-  @include mdc-select-shape-radius(small);
-
-  // Focused state colors
-  @include mdc-select-focused-bottom-line-color(primary);
-  @include mdc-select-focused-label-color($mdc-select-focused-label-color);
-
-  // Hover state colors
-  @include mdc-select-hover-bottom-line-color($mdc-select-bottom-line-hover-color);
   @include mdc-floating-label-float-position($mdc-select-label-position-y);
-  @include mdc-select-floating-label_;
 
   display: inline-flex;
   position: relative;
@@ -105,7 +104,7 @@
 }
 
 @include mdc-select-helper-text_;
-@include mdc-select-text-and-control_();
+@include mdc-select-text_();
 
 .mdc-select--outlined {
   @include mdc-select-outlined_;

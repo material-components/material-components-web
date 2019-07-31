@@ -113,13 +113,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
     const leadingIcon = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     if (leadingIcon) {
-      this.selectAnchor_.classList.add(cssClasses.WITH_LEADING_ICON);
+      this.root_.classList.add(cssClasses.WITH_LEADING_ICON);
       this.leadingIcon_ = iconFactory(leadingIcon);
 
       this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
     }
 
-    if (!this.selectAnchor_.classList.contains(cssClasses.OUTLINED)) {
+    if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
       this.ripple_ = this.createRipple_();
     }
 
@@ -187,7 +187,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.foundation_.handleChange(/* didChange */ false);
 
     // Sets disabled state in foundation
-    this.disabled = this.selectAnchor_.classList.contains(cssClasses.DISABLED);
+    this.disabled = this.root_.classList.contains(cssClasses.DISABLED);
   }
 
   destroy() {
@@ -349,7 +349,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         return '';
       },
       checkValidity: () => {
-        const classList = this.selectAnchor_.classList;
+        const classList = this.root_.classList;
         if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
           // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
           // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
@@ -360,9 +360,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       setValid: (isValid: boolean) => {
         this.selectedText_.setAttribute('aria-invalid', (!isValid).toString());
         if (isValid) {
-          this.selectAnchor_.classList.remove(cssClasses.INVALID);
+          this.root_.classList.remove(cssClasses.INVALID);
         } else {
-          this.selectAnchor_.classList.add(cssClasses.INVALID);
+          this.root_.classList.add(cssClasses.INVALID);
         }
       },
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
@@ -418,9 +418,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private getCommonAdapterMethods_() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
-      addClass: (className: string) => this.selectAnchor_.classList.add(className),
-      removeClass: (className: string) => this.selectAnchor_.classList.remove(className),
-      hasClass: (className: string) => this.selectAnchor_.classList.contains(className),
+      addClass: (className: string) => this.root_.classList.add(className),
+      removeClass: (className: string) => this.root_.classList.remove(className),
+      hasClass: (className: string) => this.root_.classList.contains(className),
       setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
       setRippleCenter: (normalizedX: number) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
@@ -481,10 +481,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     const isRequired =
         (this.selectedText_ as HTMLSelectElement).required
         || this.selectedText_.getAttribute('aria-required') === 'true'
-        || this.selectAnchor_.classList.contains(cssClasses.REQUIRED);
+        || this.root_.classList.contains(cssClasses.REQUIRED);
     if (isRequired) {
       this.selectedText_.setAttribute('aria-required', 'true');
-      this.selectAnchor_.classList.add(cssClasses.REQUIRED);
+      this.root_.classList.add(cssClasses.REQUIRED);
     }
   }
 
@@ -496,9 +496,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         }
 
         if (this.selectedText_.getAttribute('aria-required') === 'true') {
-          this.selectAnchor_.classList.add(cssClasses.REQUIRED);
+          this.root_.classList.add(cssClasses.REQUIRED);
         } else {
-          this.selectAnchor_.classList.remove(cssClasses.REQUIRED);
+          this.root_.classList.remove(cssClasses.REQUIRED);
         }
 
         return true;
