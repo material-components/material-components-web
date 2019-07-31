@@ -71,7 +71,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       removeAttributeAtIndex: () => undefined,
       getMenuItemValues: () => [],
       getMenuItemTextAtIndex: () => '',
-      toggleClassAtIndex: () => undefined,
+      addClassAtIndex: () => undefined,
+      removeClassAtIndex: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -105,6 +106,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     return this.selectedIndex_;
   }
 
+  toggleClassAtIndex_(index: number, className: string, toggle: boolean) {
+    if (toggle) {
+      this.adapter_.addClassAtIndex(index, className);
+    } else {
+      this.adapter_.removeClassAtIndex(index, className);
+    }
+  }
+
   setSelectedIndex(index: number, closeMenu = false) {
     const previouslySelectedIndex = this.selectedIndex_;
     this.selectedIndex_ = index;
@@ -114,11 +123,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
             '' : this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_).trim());
 
     if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
-      this.adapter_.toggleClassAtIndex(previouslySelectedIndex, cssClasses.SELECTED_ITEM_CLASS, false);
+      this.toggleClassAtIndex_(previouslySelectedIndex, cssClasses.SELECTED_ITEM_CLASS, false);
       this.adapter_.removeAttributeAtIndex(previouslySelectedIndex, strings.ARIA_SELECTED_ATTR);
     }
     if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
-      this.adapter_.toggleClassAtIndex(this.selectedIndex_, cssClasses.SELECTED_ITEM_CLASS, true);
+      this.toggleClassAtIndex_(this.selectedIndex_, cssClasses.SELECTED_ITEM_CLASS, true);
       this.adapter_.setAttributeAtIndex(this.selectedIndex_, strings.ARIA_SELECTED_ATTR, 'true');
     }
     this.layout();

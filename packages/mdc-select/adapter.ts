@@ -151,7 +151,12 @@ export interface MDCSelectAdapter {
   getMenuItemTextAtIndex(index: number): string;
 
   /**
-   * Toggles the class name on the menu item at the given index.
+   * Adds the class name on the menu item at the given index.
    */
-  toggleClassAtIndex(index: number, className: string, toggle: boolean): void;
+  addClassAtIndex(index: number, className: string): void;
+
+  /**
+   * Removes the class name on the menu item at the given index.
+   */
+  removeClassAtIndex(index: number, className: string): void;
 }
