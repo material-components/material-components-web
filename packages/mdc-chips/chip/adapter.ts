@@ -70,7 +70,7 @@ export interface MDCChipAdapter {
   /**
    * Emits a custom "MDCChip:selection" event denoting the chip has been selected or deselected.
    */
-  notifySelection(selected: boolean): void;
+  notifySelection(selected: boolean, chipSetShouldIgnore: boolean): void;
 
   /**
    * Emits a custom "MDCChip:trailingIconInteraction" event denoting the trailing icon has been
@@ -129,7 +129,7 @@ export interface MDCChipAdapter {
   hasTrailingAction(): boolean;
 
   /**
-   * Sets the the attribute on the trailing action if it exists.
+   * Sets the attribute on the trailing action if it exists.
    */
   setTrailingActionAttr(attr: string, value: string): void;
 
