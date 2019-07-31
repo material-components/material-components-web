@@ -52,13 +52,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
   private ripple_!: MDCRipple | null;
 
-  private menu_!: MDCMenu; // assigned in selectSetup_()
+  private menu_!: MDCMenu; // assigned in menuSetup_()
   private isMenuOpen_!: boolean; // assigned in initialize()
 
   private selectAnchor_!: HTMLElement; // assigned in initialize()
   private selectedText_!: HTMLElement; // assigned in initialize()
 
-  private menuElement_!: Element; // assigned in selectSetup_()
+  private menuElement_!: Element; // assigned in menuSetup_()
   private leadingIcon_?: MDCSelectIcon; // assigned in initialize()
   private helperText_!: MDCSelectHelperText | null; // assigned in initialize()
   private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
@@ -100,7 +100,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       }
     }
 
-    this.selectSetup_(menuFactory);
+    this.menuSetup_(menuFactory);
 
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.label_ = labelElement ? labelFactory(labelElement) : null;
@@ -186,9 +186,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     // Initially sync floating label
     this.foundation_.handleChange(/* didChange */ false);
 
-    if (this.root_.classList.contains(cssClasses.DISABLED)) {
-      this.disabled = true;
-    }
+    // Sets disabled state in foundation
+    this.disabled = this.root_.classList.contains(cssClasses.DISABLED);
   }
 
   destroy() {
@@ -239,7 +238,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   get disabled(): boolean {
-    return this.root_.classList.contains(cssClasses.DISABLED);
+    return this.foundation_.getDisabled();
   }
 
   set disabled(disabled: boolean) {
@@ -318,9 +317,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   /**
    * Handles setup for the menu.
    */
-  private selectSetup_(menuFactory: MDCMenuFactory) {
-    const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
-    this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
+  private menuSetup_(menuFactory: MDCMenuFactory) {
     this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR)!;
     this.menu_ = menuFactory(this.menuElement_);
     this.menu_.setAnchorElement(this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!);
@@ -350,10 +347,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
           return listItem.getAttribute(strings.VALUE_ATTR) || '';
         }
         return '';
-      },
-      setDisabled: (isDisabled: boolean) => {
-        this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-        this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
       },
       checkValidity: () => {
         const classList = this.root_.classList;
@@ -428,6 +421,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       addClass: (className: string) => this.root_.classList.add(className),
       removeClass: (className: string) => this.root_.classList.remove(className),
       hasClass: (className: string) => this.root_.classList.contains(className),
+      setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
       setRippleCenter: (normalizedX: number) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),

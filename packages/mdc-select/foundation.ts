@@ -58,12 +58,12 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       hasOutline: () => false,
       notchOutline: () => undefined,
       closeOutline: () => undefined,
-      setDisabled: () => undefined,
       setRippleCenter: () => undefined,
       notifyChange: () => undefined,
       checkValidity: () => false,
       setValid: () => undefined,
       setSelectedText: () => undefined,
+      setSelectedTextAttr: () => undefined,
       openMenu: () => undefined,
       closeMenu: () => undefined,
       isMenuOpen: () => false,
@@ -83,6 +83,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   private selectedIndex_: number = numbers.UNSET_INDEX;
   // VALUE_ATTR values of the menu items.
   private readonly menuItemValues_: string[];
+  // Disabled state
+  private disabled_ = false;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
@@ -140,18 +142,25 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     return this.adapter_.getValue();
   }
 
+  getDisabled() {
+    return this.disabled_;
+  }
+
   setDisabled(isDisabled: boolean) {
-    if (isDisabled) {
+    this.disabled_ = isDisabled;
+    if (this.disabled_) {
       this.adapter_.addClass(cssClasses.DISABLED);
+      this.adapter_.closeMenu();
     } else {
       this.adapter_.removeClass(cssClasses.DISABLED);
     }
-    this.adapter_.setDisabled(isDisabled);
-    this.adapter_.closeMenu();
 
     if (this.leadingIcon_) {
-      this.leadingIcon_.setDisabled(isDisabled);
+      this.leadingIcon_.setDisabled(this.disabled_);
     }
+
+    this.adapter_.setSelectedTextAttr('tabindex', this.disabled_ ? '-1' : '0');
+    this.adapter_.setSelectedTextAttr('aria-disabled', this.disabled_.toString());
   }
 
   /**
