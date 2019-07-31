@@ -251,9 +251,7 @@ use to build a custom MDCSlider component for their framework.
 | `setThumbContainerStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb container element. |
 | `setTrackStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track element. |
 | `setMarkerValue(value: number) => void` | Sets pin value marker's value when discrete slider thumb moves. |
-| `appendTrackMarkers(numMarkers: number) => void` | Appends track marker element to track container. |
-| `removeTrackMarkers() => void` | Removes existing marker elements to track container. |
-| `setLastTrackMarkersStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the last element of the track markers. |
+| `setTrackMarkers(step: number, max: number, min: number) => void` | Sets track markers background style on track container. |
 | `isRTL() => boolean` | True if the slider is within an RTL context, false otherwise. |
 
 #### MDCSliderFoundation API

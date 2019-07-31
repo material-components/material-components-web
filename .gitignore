@@ -26,3 +26,8 @@ packages/**/*.map
 
 # Individual CHANGELOG files
 packages/**/CHANGELOG.md
+
+#documentation
+docs.json
+methodDescriptionTable.md
+scripts/documentation/tsdoc.js

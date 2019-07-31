@@ -437,55 +437,77 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 });
 ```
 
-## `MDCDrawer` Properties and Methods
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
+### MDCDrawer
+#### Methods
 
-Property | Value Type | Description
+Signature | Description
+--- | ---
+`emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+
+#### Properties
+
+Name | Type | Description
 --- | --- | ---
-`open` | Boolean | Proxies to the foundation's `open`/`close` methods. Also returns true if drawer is in the open position.
+open | `boolean` | Toggles the drawer open and closed.
 
-### Events
-
-Event Name | Event Data Structure | Description
---- | --- | ---
-`MDCDrawer:opened` | None | Emits when the navigation drawer has opened.
-`MDCDrawer:closed` | None | Emits when the navigation drawer has closed.
+#### Events
+- `MDCDrawer:closed {}` Emits when the navigation drawer has closed.
+- `MDCDrawer:opened {}` Emits when the navigation drawer has opened.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Navigation Drawer for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCDrawerAdapter`
+### MDCDrawerAdapter
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element.
-`hasClass(className: string) => boolean` | Returns true if the root element contains the given `className`.
-`removeClass(className: string) => void` | Removes a class from the root element.
-`elementHasClass(element: !Element, className: string) => boolean` | Returns true if the an element contains the given class.
-`saveFocus() => void` | Saves the focus of currently active element.
-`restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.
+`notifyOpen() => void` | Emits a custom event "MDCDrawer:opened" denoting the drawer has opened.
+`addClass(className: string) => void` | Adds a class to the root Element.
 `focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.
-`notifyClose() => void` | Emits the `MDCDrawer:closed` event.
-`notifyOpen() => void` | Emits the `MDCDrawer:opened` event.
-`trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
+`hasClass(className: string) => boolean` | Returns true if the root Element contains the given class.
+`notifyClose() => void` | Emits a custom event "MDCDrawer:closed" denoting the drawer has closed.
+`elementHasClass(element: Element, className: string) => boolean` | Returns true if the element contains the given class.
 `releaseFocus() => void` | Releases focus trap from root element which was set by `trapFocus` and restores focus to where it was prior to calling `trapFocus`.
+`removeClass(className: string) => void` | Removes a class from the root Element.
+`restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.
+`saveFocus() => void` | Saves the focus of currently active element.
+`trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
 
-### Foundations
+### MDCDismissibleDrawerFoundation
+#### Methods
 
-#### `MDCDismissibleDrawerFoundation`
-
-Method Signature | Description
+Signature | Description
 --- | ---
-`open() => void` | Opens the drawer from the closed state.
 `close() => void` | Closes the drawer from the open state.
+`handleKeydown(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
+`handleTransitionEnd(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
+`closed_() => void` | Extension point for when drawer finishes close animation.
+`isClosing() => boolean` | Returns true if the drawer is animating closed.
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
 `isOpening() => boolean` | Returns true if the drawer is animating open.
-`isClosing() => boolean` | Returns true if the drawer is animating closed.
-`handleKeydown(evt: Event) => void` | Handles the `keydown` event.
-`handleTransitionEnd(evt: Event) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
+`open() => void` | Opens the drawer from the closed state.
+`opened_() => void` | Extension point for when drawer finishes open animation.
 
-#### `MDCModalDrawerFoundation` (extends `MDCDismissibleDrawerFoundation`)
+### MDCModalDrawerFoundation
+#### Methods
 
-Method Signature | Description
+Signature | Description
 --- | ---
+`close() => void` | Closes the drawer from the open state.
+`handleKeydown(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
 `handleScrimClick() => void` | Handles click event on scrim.
+`handleTransitionEnd(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
+`closed_() => void` | Called when drawer finishes close animation.
+`isClosing() => boolean` | Returns true if the drawer is animating closed.
+`isOpen() => boolean` | Returns true if the drawer is in the open position.
+`isOpening() => boolean` | Returns true if the drawer is animating open.
+`open() => void` | Opens the drawer from the closed state.
+`opened_() => void` | Called when drawer finishes open animation.
+
+
+<!-- docgen-tsdoc-replacer:end -->
