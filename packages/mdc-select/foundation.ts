@@ -60,10 +60,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       closeOutline: () => undefined,
       setRippleCenter: () => undefined,
       notifyChange: () => undefined,
-      checkValidity: () => false,
-      setValid: () => undefined,
       setSelectedText: () => undefined,
+      getSelectedTextAttr: () => '',
       setSelectedTextAttr: () => undefined,
+      removeSelectedTextAttr: () => undefined,
       openMenu: () => undefined,
       closeMenu: () => undefined,
       isMenuOpen: () => false,
@@ -252,6 +252,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter_.setRippleCenter(normalizedX);
 
     this.adapter_.openMenu();
+    this.adapter_.setSelectedTextAttr('aria-expanded', 'true');
   }
 
   handleKeydown(event: KeyboardEvent) {
@@ -266,6 +267,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
     if (this.adapter_.hasClass(cssClasses.FOCUSED) && (isEnter || isSpace || arrowUp || arrowDown)) {
       this.adapter_.openMenu();
+      this.adapter_.setSelectedTextAttr('aria-expanded', 'true');
       event.preventDefault();
     }
   }
@@ -307,11 +309,33 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   setValid(isValid: boolean) {
-    this.adapter_.setValid(isValid);
+    this.adapter_.setSelectedTextAttr('aria-invalid', (!isValid).toString());
+    if (isValid) {
+      this.adapter_.removeClass(cssClasses.INVALID);
+    } else {
+      this.adapter_.addClass(cssClasses.INVALID);
+    }
   }
 
   isValid() {
-    return this.adapter_.checkValidity();
+    if (this.adapter_.hasClass(cssClasses.REQUIRED) && !this.adapter_.hasClass(cssClasses.DISABLED)) {
+      // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
+      // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
+      return this.selectedIndex_ !== -1 && (this.selectedIndex_ !== 0 || Boolean(this.adapter_.getValue()));
+    }
+    return true;
+  }
+
+  setRequired(isRequired: boolean) {
+    if (isRequired) {
+      this.adapter_.setSelectedTextAttr('aria-required', isRequired.toString());
+    } else {
+      this.adapter_.removeSelectedTextAttr('aria-required');
+    }
+  }
+
+  getRequired() {
+    return this.adapter_.getSelectedTextAttr('aria-required') === 'true';
   }
 }
 

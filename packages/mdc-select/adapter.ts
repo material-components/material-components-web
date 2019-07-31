@@ -95,24 +95,24 @@ export interface MDCSelectAdapter {
   notifyChange(value: string): void;
 
   /**
-   * Checks if the select is currently valid.
-   */
-  checkValidity(): boolean;
-
-  /**
-   * Adds/Removes the invalid class.
-   */
-  setValid(isValid: boolean): void;
-
-  /**
    * Sets the text content of the selectedText element to the given string.
    */
   setSelectedText(text: string): void;
 
   /**
+   * Gets the given attribute on the selected text element.
+   */
+  getSelectedTextAttr(attr: string): string | null;
+
+  /**
    * Sets the given attribute on the selected text element.
    */
   setSelectedTextAttr(attr: string, value: string): void;
+
+  /**
+   * Removes the given attribute on the selected text element.
+   */
+  removeSelectedTextAttr(attr: string): void;
 
   // Menu-related methods ======================================================
   /**

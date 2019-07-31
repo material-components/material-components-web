@@ -281,18 +281,14 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
    * Sets the control to the required state.
    */
   set required(isRequired: boolean) {
-    if (isRequired) {
-      this.selectedText_.setAttribute('aria-required', isRequired.toString());
-    } else {
-      this.selectedText_.removeAttribute('aria-required');
-    }
+    this.foundation_.setRequired(isRequired);
   }
 
   /**
    * Returns whether the select is required.
    */
   get required(): boolean {
-    return this.selectedText_.getAttribute('aria-required') === 'true';
+    return this.foundation_.getRequired();
   }
 
   /**
@@ -348,29 +344,14 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         }
         return '';
       },
-      checkValidity: () => {
-        const classList = this.root_.classList;
-        if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
-          // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
-          // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
-          return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || Boolean(this.value));
-        }
-        return true;
-      },
-      setValid: (isValid: boolean) => {
-        this.selectedText_.setAttribute('aria-invalid', (!isValid).toString());
-        if (isValid) {
-          this.root_.classList.remove(cssClasses.INVALID);
-        } else {
-          this.root_.classList.add(cssClasses.INVALID);
-        }
-      },
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
+      getSelectedTextAttr: (attr: string) => this.selectedText_.getAttribute(attr),
+      setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
+      removeSelectedTextAttr: (attr: string) => this.selectedText_.removeAttribute(attr),
       openMenu: () => {
         if (!this.menu_.open) {
           this.menu_.open = true;
           this.isMenuOpen_ = true;
-          this.selectedText_.setAttribute('aria-expanded', 'true');
         }
       },
       closeMenu: () => {
@@ -379,7 +360,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         }
       },
       isMenuOpen: () => this.isMenuOpen_,
-      getSelectedMenuItem: () => this.getSelectedMenuItem_(),
       setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) => {
         const menuItem = this.menu_.items[index];
         if (menuItem) {
@@ -421,7 +401,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       addClass: (className: string) => this.root_.classList.add(className),
       removeClass: (className: string) => this.root_.classList.remove(className),
       hasClass: (className: string) => this.root_.classList.contains(className),
-      setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
       setRippleCenter: (normalizedX: number) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
