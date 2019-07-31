@@ -465,15 +465,6 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     padding-right: $padding;
     padding-left: $padding;
   }
-
-  $margin: 0 - $padding;
-
-  #{$mdc-chip-ripple-target} {
-    @include mdc-feature-targets($feat-structure) {
-      margin-right: $margin;
-      margin-left: $margin;
-    }
-  }
 }
 
 @mixin mdc-chip-height($height, $query: mdc-feature-all()) {
