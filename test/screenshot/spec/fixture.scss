@@ -29,15 +29,20 @@
 $test-viewport-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
 $test-viewport-mobile-width: 350px;
 $test-layout-cell-grid-color: #ddd;
+$test-layout-cell-grid-color-light: #f9f9f9;
 
-@mixin test-fixture-grid-bg {
+@mixin test-fixture-grid-bg($grid-color: $test-layout-cell-grid-color) {
   // Ruler grid pattern
   // https://stackoverflow.com/a/32861765/467582
   background-image:
-    linear-gradient(to right, #{$test-layout-cell-grid-color} 1px, transparent 1.01px),
-    linear-gradient(to bottom, #{$test-layout-cell-grid-color} 1px, transparent 1.01px); // fraction for IE 11
+    linear-gradient(to right, #{$grid-color} 1px, transparent 1.01px),
+    linear-gradient(to bottom, #{$grid-color} 1px, transparent 1.01px); // fraction for IE 11
 
   background-size: 10px 10px;
+}
+
+@mixin test-fixture-grid-bg-light {
+  @include test-fixture-grid-bg($grid-color: $test-layout-cell-grid-color-light);
 }
 
 @mixin test-fixture-no-bg {
@@ -100,6 +105,10 @@ $test-layout-cell-grid-color: #ddd;
   min-height: 100vh;
 }
 
+.test-viewport--light {
+  @include test-fixture-grid-bg-light;
+}
+
 .test-viewport--mobile {
   @include test-fixture-no-bg;
 
@@ -152,6 +161,10 @@ $test-layout-cell-grid-color: #ddd;
 
   // Ensure that shadows from adjacent components don't overlap
   padding: 10px;
+}
+
+.test-cell--light {
+  @include test-fixture-grid-bg-light;
 }
 
 .test-cell__heading {
