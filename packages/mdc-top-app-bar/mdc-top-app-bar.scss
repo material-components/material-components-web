@@ -34,6 +34,9 @@
 
   display: flex;
   position: fixed;
+  top: 0;
+  left: 0;
+  will-change: transform;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
