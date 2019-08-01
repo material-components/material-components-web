@@ -169,7 +169,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
         offset = -numbers.MAX_TOP_APP_BAR_HEIGHT;
       }
 
-      this.adapter_.setStyle('top', offset + 'px');
+      this.adapter_.setStyle('transform', `translateY(${offset}px)`);
     }
   }
 
