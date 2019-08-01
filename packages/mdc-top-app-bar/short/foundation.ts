@@ -55,9 +55,6 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * @override
    */
   handleTargetScroll() {
-    if (this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS)) {
-      return;
-    }
     const currentScroll = this.adapter_.getViewportScrollY();
 
     if (currentScroll <= 0) {
