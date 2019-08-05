@@ -52,7 +52,7 @@ test('short top app bar: scrollHandler does not call getViewportScrollY method '
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(true);
   foundation.init();
-  td.verify(mockAdapter.getViewportScrollY(), {times: 0});
+  td.verify(mockAdapter.getViewportScrollY(), {times: 1});
 });
 
 test('short top app bar: #adapter.addClass called when page is scrolled from the top', () => {
