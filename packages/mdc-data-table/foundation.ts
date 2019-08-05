@@ -54,10 +54,6 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
     super({...MDCDataTableFoundation.defaultAdapter, ...adapter});
   }
 
-  init() {
-    this.layout();
-  }
-
   /**
    * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
    * Use this if registering checkbox is synchronous.
@@ -167,14 +163,14 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
    */
   private setHeaderRowCheckboxState_() {
     if (this.adapter_.getSelectedRowCount() === this.adapter_.getRowCount()) {
-      this.adapter_.setHeaderRowCheckboxIndeterminate(false);
       this.adapter_.setHeaderRowCheckboxChecked(true);
+      this.adapter_.setHeaderRowCheckboxIndeterminate(false);
     } else if (this.adapter_.getSelectedRowCount() === 0) {
       this.adapter_.setHeaderRowCheckboxIndeterminate(false);
       this.adapter_.setHeaderRowCheckboxChecked(false);
     } else {
-      this.adapter_.setHeaderRowCheckboxChecked(false);
       this.adapter_.setHeaderRowCheckboxIndeterminate(true);
+      this.adapter_.setHeaderRowCheckboxChecked(false);
     }
   }
 
