@@ -36,11 +36,11 @@
   position: fixed;
   top: 0;
   left: 0;
-  will-change: transform;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
   width: 100%;
+  will-change: transform;
   z-index: 4;
 
   &__row {
