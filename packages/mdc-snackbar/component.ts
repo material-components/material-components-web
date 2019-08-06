@@ -68,13 +68,13 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
       }
     };
 
-    this.registerKeyDownHandler_(this.handleKeyDown_);
+    this.registerWindowKeyDownHandler_(this.handleKeyDown_);
     this.registerSurfaceClickHandler_(this.handleSurfaceClick_);
   }
 
   destroy() {
     super.destroy();
-    this.deregisterKeyDownHandler_(this.handleKeyDown_);
+    this.deregisterWindowKeyDownHandler_(this.handleKeyDown_);
     this.deregisterSurfaceClickHandler_(this.handleSurfaceClick_);
   }
 
@@ -144,11 +144,12 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     this.actionEl_.textContent = actionButtonText;
   }
 
-  private registerKeyDownHandler_(handler: SpecificEventListener<'keydown'>) {
-    this.listen('keydown', handler);
+  private registerWindowKeyDownHandler_(handler: SpecificEventListener<'keydown'>) {
+    window.addEventListener('keydown', handler);
   }
 
-  private deregisterKeyDownHandler_(handler: SpecificEventListener<'keydown'>) {
+  private deregisterWindowKeyDownHandler_(handler: SpecificEventListener<'keydown'>) {
+    window.removeEventListener('keydown', handler);
     this.unlisten('keydown', handler);
   }
 
