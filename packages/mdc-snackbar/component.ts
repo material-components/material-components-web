@@ -150,7 +150,6 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
 
   private deregisterWindowKeyDownHandler_(handler: SpecificEventListener<'keydown'>) {
     window.removeEventListener('keydown', handler);
-    this.unlisten('keydown', handler);
   }
 
   private registerSurfaceClickHandler_(handler: SpecificEventListener<'click'>) {
