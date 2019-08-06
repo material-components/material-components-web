@@ -116,10 +116,10 @@ test('#initialSyncWithDOM registers click handlers for action button and action 
   component.destroy();
 });
 
-test('#initialSyncWithDOM registers keydown handler on the root element', () => {
-  const {component, mockFoundation, root} = setupTestWithMocks();
+test('#initialSyncWithDOM registers keydown handler on the window', () => {
+  const {component, mockFoundation} = setupTestWithMocks();
   component.open();
-  domEvents.emit(root, 'keydown');
+  domEvents.emit(window, 'keydown');
   td.verify(mockFoundation.handleKeyDown(td.matchers.isA(Event)), {times: 1});
   component.destroy();
 });
