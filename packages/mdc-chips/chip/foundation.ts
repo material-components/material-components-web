@@ -321,7 +321,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
 
     const keyEvt = evt as KeyboardEvent;
-    return keyEvt.keyCode === 13 || keyEvt.key === strings.ENTER_KEY || keyEvt.key === strings.SPACEBAR_KEY;
+    return keyEvt.key === strings.ENTER_KEY || keyEvt.key === strings.SPACEBAR_KEY;
   }
 
   private shouldRemoveChip_(evt: KeyboardEvent): boolean {
