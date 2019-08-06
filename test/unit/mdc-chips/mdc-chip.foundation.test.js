@@ -327,7 +327,7 @@ test('#handleTrailingIconInteraction emits custom event on click or enter key in
   td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 1});
   td.verify(mockEvt.stopPropagation(), {times: 1});
 
-  foundation.handleTrailingIconInteraction(Object.assign(mockEvt, {type: 'keydown', key: ''}));
+  foundation.handleTrailingIconInteraction(Object.assign(mockEvt, {type: 'keydown', key: ' '}));
   td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 2});
   td.verify(mockEvt.stopPropagation(), {times: 2});
 
