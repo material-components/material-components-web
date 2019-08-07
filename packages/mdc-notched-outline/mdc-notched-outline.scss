@@ -20,7 +20,6 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/variables";
 @import "@material/base/mixins";
 @import "@material/rtl/mixins";
 @import "./mixins";
@@ -51,20 +50,19 @@
     &__trailing {
       box-sizing: border-box;
       height: 100%;
-      transition: border $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
-      border-top: 1px solid;
-      border-bottom: 1px solid;
+      border-top: $mdc-notched-outline-border-width solid;
+      border-bottom: $mdc-notched-outline-border-width solid;
       pointer-events: none;
     }
 
     &__leading {
-      @include mdc-rtl-reflexive-property(border, 1px solid, none);
+      @include mdc-rtl-reflexive-property(border, $mdc-notched-outline-border-width solid, none);
 
       width: $mdc-notched-outline-leading-width;
     }
 
     &__trailing {
-      @include mdc-rtl-reflexive-property(border, none, 1px solid);
+      @include mdc-rtl-reflexive-property(border, none, $mdc-notched-outline-border-width solid);
 
       flex-grow: 1;
     }
@@ -78,8 +76,6 @@
     .mdc-floating-label {
       display: inline-block;
       position: relative;
-      top: 17px;
-      bottom: auto;
       max-width: 100%;
     }
 
