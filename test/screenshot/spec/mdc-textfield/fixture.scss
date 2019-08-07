@@ -61,3 +61,11 @@
     transform: translateX(.1px);
   }
 }
+
+.custom-height-text-field--default {
+  @include mdc-text-field-height(40px);
+}
+
+.custom-height-text-field--outlined {
+  @include mdc-text-field-outlined-height(40px);
+}

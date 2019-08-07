@@ -23,74 +23,58 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Textarea Text Field - MDC Web Screenshot Test</title>
+    <title>Invalid Text Field Element with Custom Height - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.textfield.css">
     <link rel="stylesheet" href="../../../out/mdc.typography.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
     <link rel="stylesheet" href="../../../out/spec/mdc-textfield/fixture.css">
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-118996389-2');
-    </script>
   </head>
 
+  <!-- This screenshot test is used to check the error state of the text field. -->
   <body class="test-container">
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
 
-        <div class="test-cell test-cell--textarea">
-          <div class="mdc-text-field mdc-text-field--textarea mdc-text-field--invalid" data-native-input-validation="false">
-            <textarea id="full-width-textarea"
-                      class="mdc-text-field__input test-text-field__input"
-                      rows="2"
-                      required></textarea>
+        <div class="test-cell test-cell--textfield">
+          <div class="mdc-text-field custom-height-text-field--default mdc-text-field--invalid">
+            <input type="text" id="filled-text-field" class="mdc-text-field__input test-text-field__input" required pattern=".{4,8}">
+            <label class="mdc-floating-label" for="filled-text-field">Label</label>
+            <div class="mdc-line-ripple"></div>
+          </div>
+        </div>
+
+        <div class="test-cell test-cell--textfield">
+          <div class="mdc-text-field mdc-text-field--outlined custom-height-text-field--outlined mdc-text-field--invalid">
+            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input" required pattern=".{4,8}">
             <div class="mdc-notched-outline">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__notch">
-                <label for="full-width-textarea" class="mdc-floating-label">Textarea Label</label>
+                <label for="outlined-text-field" class="mdc-floating-label">Label</label>
               </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
           </div>
         </div>
 
-        <div class="test-cell test-cell--textarea">
-          <div class="mdc-text-field mdc-text-field--textarea mdc-text-field--invalid" data-native-input-validation="false">
-            <textarea id="full-width-textarea-filled"
-                      class="mdc-text-field__input test-text-field__input"
-                      rows="2"
-                      required>Xyz</textarea>
-            <div class="mdc-notched-outline mdc-notched-outline--notched">
-              <div class="mdc-notched-outline__leading"></div>
-              <div class="mdc-notched-outline__notch">
-                <label for="full-width-textarea-filled" class="mdc-floating-label mdc-floating-label--float-above">Textarea Label</label>
-              </div>
-              <div class="mdc-notched-outline__trailing"></div>
-            </div>
+        <div class="test-cell test-cell--textfield">
+          <div class="mdc-text-field custom-height-text-field--default mdc-text-field--invalid">
+            <input type="text" id="filled-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value" required pattern=".{4,8}">
+            <label for="filled-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+            <div class="mdc-line-ripple"></div>
           </div>
         </div>
 
-        <div class="test-cell test-cell--textarea">
-          <div class="mdc-text-field mdc-text-field--textarea mdc-text-field--invalid" data-native-input-validation="false">
-            <!-- htmllint-disable -->
-            <textarea id="full-width-textarea-long-filled"
-                      class="mdc-text-field__input test-text-field__input"
-                      rows="2"
-                      required>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur rhoncus ac risus a eleifend. Phasellus dictum luctus leo quis ultricies. Vivamus fringilla vehicula turpis eu eleifend. Donec ultricies, est a scelerisque laoreet, arcu eros commodo nunc, sit amet hendrerit diam nisi id velit. Suspendisse porta nibh orci. Donec velit nisl, accumsan vitae eros a, consectetur interdum eros. Aenean dapibus vulputate semper. Aliquam finibus nec leo sed ultricies. Integer luctus convallis risus. Etiam suscipit suscipit ante vel volutpat. Ut venenatis dapibus elit dictum fringilla.</textarea>
+        <div class="test-cell test-cell--textfield">
+          <div class="mdc-text-field mdc-text-field--outlined custom-height-text-field--outlined mdc-text-field--invalid">
+            <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value" required pattern=".{4,8}">
             <div class="mdc-notched-outline mdc-notched-outline--notched">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__notch">
-                <label for="full-width-textarea-long-filled" class="mdc-floating-label mdc-floating-label--float-above">Textarea Label</label>
+                <label for="outlined-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
               </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
-            <!-- htmllint-enable -->
           </div>
         </div>
 
