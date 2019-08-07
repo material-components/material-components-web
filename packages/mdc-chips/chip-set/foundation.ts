@@ -183,7 +183,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Deselects the chip with the given id and optionally notifies clients.
    */
-  private deselect_(chipId: string, shouldNotifyClients=false) {
+  private deselect_(chipId: string, shouldNotifyClients = false) {
     const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
       this.selectedChipIds_.splice(index, 1);
