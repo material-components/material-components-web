@@ -249,6 +249,27 @@ To pre-select filter chips that have a leading icon, also add the class `mdc-chi
 </div>
 ```
 
+## Additional Information
+
+### Accessibility
+
+Material Design spec advises that touch targets should be at least 48 x 48 px.
+To meet this requirement, add the following to your chip:
+
+```html
+<span>
+  <button class="mdc-chip mdc-chip--touch">
+    <div class="mdc-chip__ripple"></div>
+    <span role="gridcell">
+      <span role="button" tabindex="0" class="mdc-chip__text">Chip One</span>
+    </span>
+    <div class="mdc-chip__touch"></div>
+  </button>
+</span>
+```
+
+Note that the wrapper `<span>` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+
 ## Style Customization
 
 ### CSS Classes

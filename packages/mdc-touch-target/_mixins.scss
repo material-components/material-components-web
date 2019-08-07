@@ -42,7 +42,10 @@
 @mixin mdc-touch-target-component($component-height, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
+  $vertical-margin-value: ($mdc-touch-target-height - $component-height) / 2;
+
   @include mdc-feature-targets($feat-structure) {
-    margin: ($mdc-touch-target-height - $component-height) / 2 0;
+    margin-top: $vertical-margin-value;
+    margin-bottom: $vertical-margin-value;
   }
 }
