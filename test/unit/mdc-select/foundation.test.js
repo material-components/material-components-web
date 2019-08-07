@@ -51,8 +51,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpen', 'openMenu',
     'closeMenu', 'setSelectedText', 'setSelectedTextAttr',
     'setAttributeAtIndex', 'removeAttributeAtIndex', 'getMenuItemValues', 'getMenuItemTextAtIndex',
-    'toggleClassAtIndex', 'setRippleCenter', 'notifyChange',
-    'checkValidity', 'setValid',
+    'addClassAtIndex', 'removeClassAtIndex', 'setRippleCenter', 'notifyChange',
   ]);
 });
 

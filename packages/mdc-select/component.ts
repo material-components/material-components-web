@@ -347,12 +347,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
       getSelectedTextAttr: (attr: string) => this.selectedText_.getAttribute(attr),
       setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
-      removeSelectedTextAttr: (attr: string) => this.selectedText_.removeAttribute(attr),
       openMenu: () => {
-        if (!this.menu_.open) {
-          this.menu_.open = true;
-          this.isMenuOpen_ = true;
-        }
+        this.menu_.open = true;
+        this.isMenuOpen_ = true;
       },
       closeMenu: () => {
         if (this.menu_.open) {

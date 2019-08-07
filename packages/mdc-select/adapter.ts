@@ -109,11 +109,6 @@ export interface MDCSelectAdapter {
    */
   setSelectedTextAttr(attr: string, value: string): void;
 
-  /**
-   * Removes the given attribute on the selected text element.
-   */
-  removeSelectedTextAttr(attr: string): void;
-
   // Menu-related methods ======================================================
   /**
    * Opens the menu.

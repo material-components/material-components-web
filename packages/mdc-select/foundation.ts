@@ -63,7 +63,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       setSelectedText: () => undefined,
       getSelectedTextAttr: () => '',
       setSelectedTextAttr: () => undefined,
-      removeSelectedTextAttr: () => undefined,
       openMenu: () => undefined,
       closeMenu: () => undefined,
       isMenuOpen: () => false,
@@ -339,7 +338,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     if (isRequired) {
       this.adapter_.setSelectedTextAttr('aria-required', isRequired.toString());
     } else {
-      this.adapter_.removeSelectedTextAttr('aria-required');
+      this.adapter_.setSelectedTextAttr('aria-required', 'false');
     }
   }
 
