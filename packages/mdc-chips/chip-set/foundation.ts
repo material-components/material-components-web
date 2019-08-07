@@ -97,7 +97,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     if (selected && !chipIsSelected) {
       this.select(chipId);
     } else if (!selected && chipIsSelected) {
-      this.deselectAndNotifyClients_(chipId);
+      this.deselect_(chipId);
     }
   }
 
@@ -181,15 +181,22 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   }
 
   /**
-   * Deselects the chip with the given id.
+   * Deselects the chip with the given id and optionally notifies clients.
    */
-  private deselectAndNotifyClients_(chipId: string) {
+  private deselect_(chipId: string, shouldNotifyClients = false) {
     const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
       this.selectedChipIds_.splice(index, 1);
       const chipIndex = this.adapter_.getIndexOfChipById(chipId);
-      this.adapter_.selectChipAtIndex(chipIndex, /** isSelected */ false, /** shouldNotifyClients */ true);
+      this.adapter_.selectChipAtIndex(chipIndex, /** isSelected */ false, shouldNotifyClients);
     }
+  }
+
+  /**
+   * Deselects the chip with the given id and notifies clients.
+   */
+  private deselectAndNotifyClients_(chipId: string) {
+    this.deselect_(chipId, true);
   }
 
   /**

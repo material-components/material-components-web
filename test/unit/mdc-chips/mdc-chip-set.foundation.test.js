@@ -206,6 +206,18 @@ test('#handleChipSelection does nothing if shouldIgnore is true', () => {
   td.verify(foundation.select('chipA'), {times: 0});
 });
 
+test('#handleChipSelection emits no events', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.selectedChipIds_ = [];
+  td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(0);
+
+  foundation.handleChipSelection('chipA', true, /** shouldIgnore */ false);
+  td.verify(mockAdapter.selectChipAtIndex(0, true, /** shouldNotify */ false));
+  foundation.handleChipSelection('chipA', false, /** shouldIgnore */ false);
+  td.verify(mockAdapter.selectChipAtIndex(0, false, /** shouldNotify */ false));
+});
+
 test('#handleChipRemoval removes chip', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(1);
