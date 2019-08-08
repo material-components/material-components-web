@@ -1,0 +1,16 @@
+{
+  "name": "@material/divider",
+  "description": "The Material Components for the web divider component",
+  "version": "3.1.0",
+  "license": "MIT",
+  "keywords": [
+    "material components",
+    "material design",
+    "divider"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-divider"
+  }
+}
