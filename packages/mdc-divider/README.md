@@ -7,7 +7,7 @@ iconId: button
 path: /catalog/dividers/
 -->
 
-# Buttons
+# Dividers
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
