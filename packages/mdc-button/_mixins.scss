@@ -305,6 +305,9 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     line-height: inherit;
     user-select: none;
     -webkit-appearance: none;
+    // Even though `visible` is the default, IE 11 computes the property as
+    // `hidden` in some cases, unless it's explicitly defined here.
+    overflow: visible;
     vertical-align: middle;
   }
 
