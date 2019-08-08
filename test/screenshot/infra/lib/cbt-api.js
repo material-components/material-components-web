@@ -203,6 +203,7 @@ https://crossbrowsertesting.com/account
       // TODO(acdvorak): Expose these as CLI flags
       record_video: true,
       record_network: true,
+      max_duration: 3600, // in seconds
     };
 
     /** @type {!selenium.proto.RawCapabilities} */
