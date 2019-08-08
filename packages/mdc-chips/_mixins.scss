@@ -264,6 +264,8 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
         left: 0;
         width: 100%;
         height: 100%;
+        // Necessary for clicks on e.g. the close icon to go through.
+        pointer-events: none;
         overflow: hidden;
       }
     }
