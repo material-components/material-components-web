@@ -69,6 +69,8 @@
     @include mdc-feature-targets($feat-structure) {
       display: inline-flex;
       flex-direction: column;
+      box-sizing: border-box;
+      overflow-x: auto;
     }
   }
 
@@ -89,12 +91,12 @@
     @include mdc-feature-targets($feat-structure) {
       text-align: right;
     }
-  }
 
-  .mdc-data-table__header-cell--checkbox,
-  .mdc-data-table__cell--checkbox {
     @include mdc-feature-targets($feat-structure) {
-      padding-right: 0;
+      @include mdc-rtl {
+        /* @noflip */
+        text-align: left;
+      }
     }
   }
 
@@ -103,10 +105,25 @@
 
     @include mdc-feature-targets($feat-structure) {
       text-align: left;
+    }
 
+    @include mdc-feature-targets($feat-structure) {
       @include mdc-rtl {
         /* @noflip */
         text-align: right;
+      }
+    }
+  }
+
+  .mdc-data-table__header-cell--numeric {
+    @include mdc-feature-targets($feat-structure) {
+      text-align: right;
+    }
+
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-rtl {
+        /* @noflip */
+        text-align: left;
       }
     }
   }
@@ -261,6 +278,13 @@
     @include mdc-feature-targets($feat-structure) {
       padding-right: $trailing-padding;
       padding-left: $leading-padding;
+    }
+  }
+
+  .mdc-data-table__header-cell--checkbox,
+  .mdc-data-table__cell--checkbox {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-rtl-reflexive-property(padding, $leading-padding, 0);
     }
   }
 }
