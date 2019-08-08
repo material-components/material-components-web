@@ -85,7 +85,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
         @include mdc-theme-prop(color, on-surface);
       }
     }
-    
+
     .mdc-chip__touch {
       @include mdc-touch-target($query);
     }
