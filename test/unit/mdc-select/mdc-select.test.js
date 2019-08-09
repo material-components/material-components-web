@@ -776,7 +776,7 @@ test('adapter#openMenu causes the menu to open', () => {
   const hasMockMenu = true;
   const hasOutline = false;
   const hasLabel = true;
-  const {fixture, component, mockMenu, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {fixture, component, mockMenu} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.openMenu();

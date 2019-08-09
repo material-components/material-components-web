@@ -47,10 +47,10 @@ test('exports strings', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'hasClass',
-    'activateBottomLine', 'deactivateBottomLine', 'getValue', 'floatLabel', 
-    'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'setRippleCenter', 'notifyChange', 
+    'activateBottomLine', 'deactivateBottomLine', 'getValue', 'floatLabel',
+    'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'setRippleCenter', 'notifyChange',
     'setSelectedText', 'getSelectedTextAttr', 'setSelectedTextAttr',
-    'isMenuOpen', 'openMenu', 'closeMenu', 'setMenuWrapFocus', 
+    'isMenuOpen', 'openMenu', 'closeMenu', 'setMenuWrapFocus',
     'setAttributeAtIndex', 'removeAttributeAtIndex', 'getMenuItemValues', 'getMenuItemTextAtIndex',
     'addClassAtIndex', 'removeClassAtIndex',
   ]);
@@ -458,7 +458,7 @@ test('#setSelectedIndex', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getMenuItemTextAtIndex(0)).thenReturn('foo');
   td.when(mockAdapter.getMenuItemTextAtIndex(1)).thenReturn('bar');
-  
+
   foundation.setSelectedIndex(1);
   td.verify(mockAdapter.addClassAtIndex(1, cssClasses.SELECTED_ITEM_CLASS));
   td.verify(mockAdapter.setAttributeAtIndex(1, strings.ARIA_SELECTED_ATTR, 'true'));
