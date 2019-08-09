@@ -55,6 +55,7 @@ We recommend using MDC Checkbox with [MDC Form Field](../mdc-form-field) for enh
       </svg>
       <div class="mdc-checkbox__mixedmark"></div>
     </div>
+    <div class="mdc-checkbox__ripple"></div>
   </div>
   <label for="checkbox-1">Checkbox 1</label>
 </div>
@@ -105,6 +106,7 @@ Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only 
     </svg>
     <div class="mdc-checkbox__mixedmark"></div>
   </div>
+  <div class="mdc-checkbox__ripple"></div>
 </div>
 <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
 ```
