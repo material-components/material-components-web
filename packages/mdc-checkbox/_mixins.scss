@@ -33,6 +33,8 @@
 // Public
 //
 
+$mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
+
 @mixin mdc-checkbox-core-styles($query: mdc-feature-all()) {
   @include mdc-checkbox-without-ripple($query);
   @include mdc-checkbox-ripple($query);
@@ -184,10 +186,19 @@
   @include mdc-ripple-common($query);
 
   .mdc-checkbox {
-    @include mdc-ripple-surface($query);
-    @include mdc-states(on-surface, $query: $query);
-    @include mdc-ripple-radius-unbounded($query: $query);
+    @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-checkbox-ripple-target);
+    @include mdc-states($color: on-surface, $query: $query, $ripple-target: $mdc-checkbox-ripple-target);
+    @include mdc-ripple-radius-unbounded($query: $query, $ripple-target: $mdc-checkbox-ripple-target);
     @include mdc-checkbox-touch-dimension($mdc-checkbox-touch-area, $query: $query);
+  }
+
+  #{$mdc-checkbox-ripple-target} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
   }
 
   .mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {
@@ -315,11 +326,11 @@
   }
 
   &.mdc-checkbox--selected {
-    @include mdc-states($color, $query: $query);
+    @include mdc-states($color: $color, $query: $query, $ripple-target: $mdc-checkbox-ripple-target);
   }
 
   &.mdc-ripple-upgraded--background-focused.mdc-checkbox--selected {
-    @include mdc-states-base-color($color, $query: $query);
+    @include mdc-states-base-color($color: $color, $query: $query, $ripple-target: $mdc-checkbox-ripple-target);
   }
 }
 
