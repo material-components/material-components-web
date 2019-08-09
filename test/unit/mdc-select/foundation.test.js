@@ -47,11 +47,12 @@ test('exports strings', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'hasClass',
-    'floatLabel', 'activateBottomLine', 'deactivateBottomLine', 'getValue',
-    'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpen', 'openMenu',
-    'closeMenu', 'setSelectedText', 'setSelectedTextAttr',
+    'activateBottomLine', 'deactivateBottomLine', 'getValue', 'floatLabel', 
+    'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'setRippleCenter', 'notifyChange', 
+    'setSelectedText', 'getSelectedTextAttr', 'setSelectedTextAttr',
+    'isMenuOpen', 'openMenu', 'closeMenu', 'setMenuWrapFocus', 
     'setAttributeAtIndex', 'removeAttributeAtIndex', 'getMenuItemValues', 'getMenuItemTextAtIndex',
-    'addClassAtIndex', 'removeClassAtIndex', 'setRippleCenter', 'notifyChange',
+    'addClassAtIndex', 'removeClassAtIndex',
   ]);
 });
 
@@ -442,4 +443,24 @@ test('#setHelperTextContent does not throw an error if there is no helperText el
   const hasHelperText = false;
   const {foundation} = setupTest(hasIcon, hasHelperText);
   assert.doesNotThrow(() => foundation.setHelperTextContent('foo'));
+});
+
+test('#setSelectedIndex', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getMenuItemTextAtIndex(0)).thenReturn('foo');
+  td.when(mockAdapter.getMenuItemTextAtIndex(1)).thenReturn('bar');
+  
+  foundation.setSelectedIndex(1);
+  td.verify(mockAdapter.addClassAtIndex(1, cssClasses.SELECTED_ITEM_CLASS));
+  td.verify(mockAdapter.setAttributeAtIndex(1, strings.ARIA_SELECTED_ATTR, 'true'));
+
+  foundation.setSelectedIndex(0);
+  td.verify(mockAdapter.removeClassAtIndex(1, cssClasses.SELECTED_ITEM_CLASS));
+  td.verify(mockAdapter.removeAttributeAtIndex(1, strings.ARIA_SELECTED_ATTR));
+  td.verify(mockAdapter.addClassAtIndex(0, cssClasses.SELECTED_ITEM_CLASS));
+  td.verify(mockAdapter.setAttributeAtIndex(0, strings.ARIA_SELECTED_ATTR, 'true'));
+
+  foundation.setSelectedIndex(-1);
+  td.verify(mockAdapter.removeClassAtIndex(0, cssClasses.SELECTED_ITEM_CLASS));
+  td.verify(mockAdapter.removeAttributeAtIndex(0, strings.ARIA_SELECTED_ATTR));
 });

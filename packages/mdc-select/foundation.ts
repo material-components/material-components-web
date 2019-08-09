@@ -106,17 +106,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     return this.selectedIndex_;
   }
 
-  toggleClassAtIndex_(index: number, className: string, toggle: boolean) {
-    if (index < 0) {
-      return;
-    }
-    if (toggle) {
-      this.adapter_.addClassAtIndex(index, className);
-    } else {
-      this.adapter_.removeClassAtIndex(index, className);
-    }
-  }
-
   setSelectedIndex(index: number, closeMenu = false) {
     const previouslySelectedIndex = this.selectedIndex_;
     this.selectedIndex_ = index;
@@ -126,11 +115,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
             '' : this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_).trim());
 
     if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
-      this.toggleClassAtIndex_(previouslySelectedIndex, cssClasses.SELECTED_ITEM_CLASS, false);
+      this.adapter_.removeClassAtIndex(previouslySelectedIndex, cssClasses.SELECTED_ITEM_CLASS);
       this.adapter_.removeAttributeAtIndex(previouslySelectedIndex, strings.ARIA_SELECTED_ATTR);
     }
     if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
-      this.toggleClassAtIndex_(this.selectedIndex_, cssClasses.SELECTED_ITEM_CLASS, true);
+      this.adapter_.addClassAtIndex(this.selectedIndex_, cssClasses.SELECTED_ITEM_CLASS);
       this.adapter_.setAttributeAtIndex(this.selectedIndex_, strings.ARIA_SELECTED_ATTR, 'true');
     }
     this.layout();
@@ -333,7 +322,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     if (this.adapter_.hasClass(cssClasses.REQUIRED) && !this.adapter_.hasClass(cssClasses.DISABLED)) {
       // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
       // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
-      return this.selectedIndex_ !== -1 && (this.selectedIndex_ !== 0 || Boolean(this.adapter_.getValue()));
+      return this.selectedIndex_ !== numbers.UNSET_INDEX && (this.selectedIndex_ !== 0 || Boolean(this.adapter_.getValue()));
     }
     return true;
   }

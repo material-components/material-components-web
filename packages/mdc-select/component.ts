@@ -176,6 +176,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_!.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
     this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
     this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+    this.foundation_.setupMenu();
 
     if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
       // If an element is selected, the select should set the initial selected text.
@@ -318,7 +319,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_ = menuFactory(this.menuElement_);
     this.menu_.setAnchorElement(this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!);
     this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
-    this.foundation_.setupMenu();
   }
 
   private createRipple_(): MDCRipple {
