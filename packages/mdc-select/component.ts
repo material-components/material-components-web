@@ -318,7 +318,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_ = menuFactory(this.menuElement_);
     this.menu_.setAnchorElement(this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!);
     this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
-    this.menu_.wrapFocus = false;
+    this.foundation_.setupMenu();
   }
 
   private createRipple_(): MDCRipple {
@@ -357,6 +357,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         }
       },
       isMenuOpen: () => this.isMenuOpen_,
+      setMenuWrapFocus: (wrapFocus: boolean) => this.menu_.wrapFocus = wrapFocus,
       setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) => {
         const menuItem = this.menu_.items[index];
         if (menuItem) {

@@ -126,6 +126,11 @@ export interface MDCSelectAdapter {
   isMenuOpen(): boolean;
 
   /**
+   * Sets whether the menu should wrap focus.
+   */
+  setMenuWrapFocus(wrapFocus: boolean): void;
+
+  /**
    * Sets the attribute on the menu item at the given index.
    */
   setAttributeAtIndex(index: number, attributeName: string, attributeValue: string): void;
