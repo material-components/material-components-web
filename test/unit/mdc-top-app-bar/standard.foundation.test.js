@@ -61,7 +61,7 @@ test('top app bar : moveTopAppBar_ update required transition from fully shown t
   foundation.currentAppBarOffsetTop_ = -1; // Indicates 1px scrolled up
   foundation.checkForUpdate_ = () => true;
   foundation.moveTopAppBar_();
-  td.verify(mockAdapter.setStyle('top', '-1px'), {times: 1});
+  td.verify(mockAdapter.setStyle('transform', `translateY(${foundation.currentAppBarOffsetTop_}px)`), {times: 1});
 });
 
 test('top app bar : moveTopAppBar_ update required transition from 1px shown to fullyHidden ', () => {
@@ -69,7 +69,7 @@ test('top app bar : moveTopAppBar_ update required transition from 1px shown to 
   foundation.currentAppBarOffsetTop_ = -64; // Indicates 64px scrolled
   foundation.checkForUpdate_ = () => true;
   foundation.moveTopAppBar_();
-  td.verify(mockAdapter.setStyle('top', '-' + numbers.MAX_TOP_APP_BAR_HEIGHT + 'px'));
+  td.verify(mockAdapter.setStyle('transform', `translateY(-${numbers.MAX_TOP_APP_BAR_HEIGHT}px)`));
 });
 
 test('top app bar : moveTopAppBar_ update is not required results in no top app bar style change', () => {
@@ -196,5 +196,5 @@ test('top app bar : resize events debounce changing isCurrentlyBeingResized_ to 
 test('#destroy calls #adapter.setStyle(top, "")', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
-  td.verify(mockAdapter.setStyle('top', ''), {times: 1});
+  td.verify(mockAdapter.setStyle('transform', ''), {times: 1});
 });
