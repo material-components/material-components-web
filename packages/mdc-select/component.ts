@@ -376,20 +376,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         const menuItem = this.menu_.items[index];
         return menuItem && menuItem.textContent ? menuItem.textContent : '';
       },
-      addClassAtIndex: (index: number, className: string) => {
-        const menuItem = this.menu_.items[index];
-        if (!menuItem || !menuItem.textContent) {
-          return;
-        }
-        menuItem.classList.add(className);
-      },
-      removeClassAtIndex: (index: number, className: string) => {
-        const menuItem = this.menu_.items[index];
-        if (!menuItem || !menuItem.textContent) {
-          return;
-        }
-        menuItem.classList.add(className);
-      },
+      addClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.add(className),
+      removeClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.remove(className),
     };
     // tslint:enable:object-literal-sort-keys
   }

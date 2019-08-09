@@ -106,6 +106,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   toggleClassAtIndex_(index: number, className: string, toggle: boolean) {
+    if (index < 0) {
+      return;
+    }
     if (toggle) {
       this.adapter_.addClassAtIndex(index, className);
     } else {
