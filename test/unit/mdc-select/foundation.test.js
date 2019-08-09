@@ -284,7 +284,8 @@ test('#handleBlur calls helperText.setValidity(true) if menu is not open', () =>
   const {foundation, mockAdapter, helperText} = setupTest(hasIcon, hasHelperText);
   td.when(mockAdapter.hasClass(cssClasses.REQUIRED)).thenReturn(true);
   td.when(mockAdapter.isMenuOpen()).thenReturn(false);
-  td.when(mockAdapter.checkValidity()).thenReturn(true);
+  td.when(mockAdapter.getValue()).thenReturn('foo');
+  foundation.selectedIndex_ = 0;
   foundation.handleBlur();
   td.verify(helperText.setValidity(true), {times: 1});
 });
@@ -311,6 +312,13 @@ test('#handleClick opens the menu if the select is focused and isMenuOpen=false'
   td.verify(mockAdapter.openMenu(), {times: 1});
 });
 
+test('#handleClick sets the aria-expanded', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isMenuOpen()).thenReturn(false);
+  foundation.handleClick(0);
+  td.verify(mockAdapter.setSelectedTextAttr('aria-expanded', 'true'), {times: 1});
+});
+
 test('#handleKeydown calls adapter.openMenu if valid keys are pressed, menu is not open and select is focused',
   () => {
     const {foundation, mockAdapter} = setupTest();
@@ -335,6 +343,7 @@ test('#handleKeydown calls adapter.openMenu if valid keys are pressed, menu is n
     event.keyCode = 40; // Down
     foundation.handleKeydown(event);
     td.verify(mockAdapter.openMenu(), {times: 8});
+    td.verify(mockAdapter.setSelectedTextAttr('aria-expanded', 'true'), {times: 8});
     td.verify(preventDefault(), {times: 8});
   });
 
@@ -463,4 +472,73 @@ test('#setSelectedIndex', () => {
   foundation.setSelectedIndex(-1);
   td.verify(mockAdapter.removeClassAtIndex(0, cssClasses.SELECTED_ITEM_CLASS));
   td.verify(mockAdapter.removeAttributeAtIndex(0, strings.ARIA_SELECTED_ATTR));
+});
+
+test('#setValid true sets aria-invalid to false and removes invalid class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setValid(true);
+  td.verify(mockAdapter.setSelectedTextAttr('aria-invalid', 'false'));
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+});
+
+test('#setValid false sets aria-invalid to true and adds invalid class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setValid(false);
+  td.verify(mockAdapter.setSelectedTextAttr('aria-invalid', 'true'));
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+});
+
+test('#isValid returns false if no index is selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.REQUIRED)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.DISABLED)).thenReturn(false);
+  foundation.selectedIndex_ = -1;
+
+  assert.isFalse(foundation.isValid());
+});
+
+test('#isValid returns false if first index is selected and has an empty value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.REQUIRED)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.DISABLED)).thenReturn(false);
+  td.when(mockAdapter.getValue()).thenReturn('');
+  foundation.selectedIndex_ = 0;
+
+  assert.isFalse(foundation.isValid());
+});
+
+test('#isValid returns true if index is selected and has value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.REQUIRED)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.DISABLED)).thenReturn(false);
+  td.when(mockAdapter.getValue()).thenReturn('foo');
+  foundation.selectedIndex_ = 0;
+
+  assert.isTrue(foundation.isValid());
+});
+
+test('#setRequired sets aria-required through adapter', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setRequired(true);
+  td.verify(mockAdapter.setSelectedTextAttr('aria-required', 'true'), {times: 1});
+  foundation.setRequired(false);
+  td.verify(mockAdapter.setSelectedTextAttr('aria-required', 'false'), {times: 1});
+});
+
+test('#getRequired returns true if aria-required is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getSelectedTextAttr('aria-required')).thenReturn('true');
+  assert.isTrue(foundation.getRequired());
+});
+
+test('#getRequired returns false if aria-required is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getSelectedTextAttr('aria-required')).thenReturn('false');
+  assert.isFalse(foundation.getRequired());
+});
+
+test('#setupMenu calls adapter#setMenuWrapFocus', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setupMenu();
+  td.verify(mockAdapter.setMenuWrapFocus(false));
 });
