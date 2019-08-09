@@ -248,7 +248,8 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   .mdc-radio {
     @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-radio-ripple-target);
     @include mdc-ripple-radius-unbounded($query: $query, $ripple-target: $mdc-radio-ripple-target);
-    @include mdc-states($color: $mdc-radio-baseline-theme-color, $query: $query, $ripple-target: $mdc-radio-ripple-target);
+    @include mdc-states(
+      $color: $mdc-radio-baseline-theme-color, $query: $query, $ripple-target: $mdc-radio-ripple-target);
 
     &.mdc-ripple-upgraded--background-focused {
       .mdc-radio__background::before {
