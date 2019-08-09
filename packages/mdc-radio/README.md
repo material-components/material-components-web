@@ -48,6 +48,7 @@ We recommend using MDC Radio with [MDC Form Field](../mdc-form-field) for enhanc
       <div class="mdc-radio__outer-circle"></div>
       <div class="mdc-radio__inner-circle"></div>
     </div>
+    <div class="mdc-radio__ripple"></div>
   </div>
   <label for="radio-1">Radio 1</label>
 </div>
@@ -90,6 +91,7 @@ Disabled radio buttons cannot be interacted with and have no visual interaction 
       <div class="mdc-radio__outer-circle"></div>
       <div class="mdc-radio__inner-circle"></div>
     </div>
+    <div class="mdc-radio__ripple"></div>
   </div>
   <label for="radio-1">Radio 1</label>
 </div>
