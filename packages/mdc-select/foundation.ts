@@ -322,7 +322,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     if (this.adapter_.hasClass(cssClasses.REQUIRED) && !this.adapter_.hasClass(cssClasses.DISABLED)) {
       // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
       // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
-      return this.selectedIndex_ !== numbers.UNSET_INDEX && (this.selectedIndex_ !== 0 || Boolean(this.adapter_.getValue()));
+      return this.selectedIndex_ !== numbers.UNSET_INDEX &&
+        (this.selectedIndex_ !== 0 || Boolean(this.adapter_.getValue()));
     }
     return true;
   }

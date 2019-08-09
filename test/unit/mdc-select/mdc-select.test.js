@@ -247,16 +247,22 @@ test('#get/set disabled', () => {
   td.verify(mockFoundation.setDisabled(false), {times: 2}); // called once at initialization, once when setting to false
 });
 
-test('#get/set required', () => {
+test('#get/set required true', () => {
   const {component, selectedText} = setupTest();
   assert.isFalse(component.required);
 
   component.required = true;
   assert.isTrue(component.required);
   assert.strictEqual(selectedText.getAttribute('aria-required'), 'true');
+});
+
+test('#get/set required false', () => {
+  const {component, selectedText} = setupTest();
+  assert.isFalse(component.required);
+
   component.required = false;
   assert.isFalse(component.required);
-  assert.isFalse(selectedText.hasAttribute('aria-required'));
+  assert.strictEqual(selectedText.getAttribute('aria-required'), 'false');
 });
 
 test('#get value', () => {
@@ -677,7 +683,7 @@ test('adapter#getValue returns the selected element value', () => {
   const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
   const textValue = menuItem.getAttribute('data-value');
   const adapter = component.getDefaultFoundation().adapter_;
-  adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, true);
+  adapter.addClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
 
   expect(adapter.getValue()).to.equal(textValue);
 });
@@ -735,6 +741,21 @@ test('adapter#setSelectedText sets the select text content correctly', () => {
   document.body.removeChild(fixture);
 });
 
+test('adapter#getSelectedTextAttr sets the select text content correctly', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, component, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  assert.isFalse(selectedText.hasAttribute('foo'));
+  selectedText.setAttribute('foo', '1');
+  assert.equal(adapter.getSelectedTextAttr('foo'), '1');
+  document.body.removeChild(fixture);
+});
+
 test('adapter#setSelectedTextAttr sets the select text content correctly', () => {
   const hasMockFoundation = true;
   const hasMockMenu = true;
@@ -760,9 +781,6 @@ test('adapter#openMenu causes the menu to open', () => {
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.openMenu();
   assert.isTrue(mockMenu.open);
-  assert.isTrue(selectedText.hasAttribute('aria-expanded'));
-  assert.isTrue(selectedText.getAttribute('aria-expanded') === 'true');
-  adapter.openMenu();
   document.body.removeChild(fixture);
 });
 
@@ -794,6 +812,22 @@ test('adapter#isMenuOpen returns true if the menu is opened, and false if not', 
   document.body.removeChild(fixture);
 });
 
+test('adapter#setMenuWrapFocus', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, component, mockMenu} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  adapter.setMenuWrapFocus(false);
+  assert.isFalse(mockMenu.wrapFocus);
+  adapter.setMenuWrapFocus(true);
+  assert.isTrue(mockMenu.wrapFocus);
+  document.body.removeChild(fixture);
+});
+
 test('adapter#getMenuItemValues returns the correct menu item values', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
@@ -808,7 +842,7 @@ test('adapter#getMenuItemValues returns the correct menu item values', () => {
   document.body.removeChild(fixture);
 });
 
-test('adapter#toggleClassAtIndex toggles class correctly', () => {
+test('adapter#addClassAtIndex adds class correctly', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
@@ -821,101 +855,27 @@ test('adapter#toggleClassAtIndex toggles class correctly', () => {
   const index = 1;
   const menuItem = document.querySelectorAll('.mdc-list-item')[index];
 
-  adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, true);
+  adapter.addClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
   assert.isTrue(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS));
-  adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, false);
-  assert.isFalse(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS));
-
   document.body.removeChild(fixture);
 });
 
-test('adapter#checkValidity returns false when required class is present and selectedIndex is -1', () => {
+test('adapter#removeClassAtIndex removes class correctly', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, fixture, mockFoundation} =
+  const {fixture, component} =
     setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+
   const adapter = component.getDefaultFoundation().adapter_;
+  const index = 1;
+  const menuItem = document.querySelectorAll('.mdc-list-item')[index];
 
-  fixture.classList.add(cssClasses.REQUIRED);
-  component.selectedIndex = -1;
-  td.when(mockFoundation.getSelectedIndex()).thenReturn(-1);
-  expect(adapter.checkValidity()).to.be.false;
-});
-
-test('adapter#checkValidity returns false when required class is present and placeholder option is selected', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {component, fixture, mockFoundation} =
-    setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const adapter = component.getDefaultFoundation().adapter_;
-
-  fixture.classList.add(cssClasses.REQUIRED);
-  component.selectedIndex = 0;
-  td.when(mockFoundation.getSelectedIndex()).thenReturn(0);
-  expect(adapter.checkValidity()).to.be.false;
-});
-
-test('adapter#checkValidity returns true regardless if required class is not present', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {component} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const adapter = component.getDefaultFoundation().adapter_;
-
-  component.selectedIndex = -1;
-  assert.equal(adapter.checkValidity(), true);
-  component.selectedIndex = 0;
-  assert.equal(adapter.checkValidity(), true);
-});
-
-test('adapter#checkValidity returns true regardless if disabled class is present', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {component, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const adapter = component.getDefaultFoundation().adapter_;
-
-  fixture.classList.add(cssClasses.REQUIRED);
-  fixture.classList.add(cssClasses.DISABLED);
-  component.selectedIndex = -1;
-  assert.equal(adapter.checkValidity(), true);
-  component.selectedIndex = 0;
-  assert.equal(adapter.checkValidity(), true);
-});
-
-test('adapter#setValid updates aria-invalid attribute properly', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {component, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const adapter = component.getDefaultFoundation().adapter_;
-
-  adapter.setValid(false);
-  assert.strictEqual(selectedText.getAttribute('aria-invalid'), 'true');
-  adapter.setValid(true);
-  assert.strictEqual(selectedText.getAttribute('aria-invalid'), 'false');
-});
-
-test(`adapter#setValid applies ${cssClasses.INVALID} properly`, () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {component, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const adapter = component.getDefaultFoundation().adapter_;
-
-  adapter.setValid(false);
-  assert.isTrue(fixture.classList.contains(cssClasses.INVALID));
-
-  adapter.setValid(true);
-  assert.isFalse(fixture.classList.contains(cssClasses.INVALID));
+  adapter.removeClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
+  assert.isFalse(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS));
+  document.body.removeChild(fixture);
 });
 
 test('focus event triggers foundation.handleFocus()', () => {
