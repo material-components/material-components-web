@@ -113,7 +113,7 @@
 
   .mdc-list-item__meta {
     // stylelint-disable selector-class-pattern
-    &:not(.material-icons) {
+    &:not(.material-icons):not(.material-icons-outlined):not(.material-icons-round):not(.material-icons-two-tone):not(.material-icons-sharp) {
       @include mdc-typography(caption, $query);
     }
     // stylelint-enable selector-class-pattern
