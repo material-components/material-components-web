@@ -204,6 +204,7 @@ https://crossbrowsertesting.com/account
       record_video: true,
       record_network: true,
       max_duration: 3600, // in seconds
+      idle_timeout: 600, // in seconds
     };
 
     /** @type {!selenium.proto.RawCapabilities} */
