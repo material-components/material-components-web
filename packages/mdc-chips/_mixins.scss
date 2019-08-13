@@ -265,7 +265,9 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     #{$mdc-chip-ripple-target} {
       @include mdc-ripple-target-properties($query: $query);
 
-      overflow: hidden;
+      @include mdc-feature-targets($feat-structure) {
+        overflow: hidden;
+      }
     }
   }
 
