@@ -481,7 +481,7 @@
 
 // Common styles for a ripple target element.
 // Used for components which have an inner ripple target element.
-@mixin mdc-ripple-target-properties($query: mdc-feature-all()) {
+@mixin mdc-ripple-target-common($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {

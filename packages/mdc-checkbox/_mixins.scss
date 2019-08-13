@@ -193,7 +193,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 
   #{$mdc-checkbox-ripple-target} {
-    @include mdc-ripple-target-properties($query: $query);
+    @include mdc-ripple-target-common($query: $query);
   }
 
   .mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {

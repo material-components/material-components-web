@@ -213,6 +213,7 @@
     @include mdc-ripple-core-styles($query: $query);
     @include mdc-ripple-common($query: $query);
     @include mdc-ripple-surface($query: $query);
+    @include mdc-ripple-target-common($query: $query);
     @include mdc-states-base-color(red, $query: $query);
     @include mdc-states-hover-opacity(1, $query: $query);
     @include mdc-states-focus-opacity(1, $query: $query);

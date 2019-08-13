@@ -263,7 +263,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     @include mdc-chip-ink-color-ripple_($mdc-chip-ink-color-default, $query: $query);
 
     #{$mdc-chip-ripple-target} {
-      @include mdc-ripple-target-properties($query: $query);
+      @include mdc-ripple-target-common($query: $query);
 
       @include mdc-feature-targets($feat-structure) {
         overflow: hidden;
