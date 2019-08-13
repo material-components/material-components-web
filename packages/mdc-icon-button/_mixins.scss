@@ -129,7 +129,7 @@
     user-select: none;
   }
 
-  &:disabled {
+  &[disabled] {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(color, text-disabled-on-light);
     }

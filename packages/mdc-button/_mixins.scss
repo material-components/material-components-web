@@ -151,9 +151,7 @@
 @mixin mdc-button-container-fill-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  // :not(:disabled) is used to support link styled as button
-  // as link does not support :enabled style
-  &:not(:disabled) {
+  &:not([disabled]) {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
     }
@@ -163,7 +161,7 @@
 @mixin mdc-button-outline-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  &:not(:disabled) {
+  &:not([disabled]) {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(border-color, $color);
     }
@@ -173,7 +171,7 @@
 @mixin mdc-button-icon-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  &:not(:disabled) .mdc-button__icon {
+  &:not([disabled]) .mdc-button__icon {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(color, $color);
     }
@@ -183,7 +181,7 @@
 @mixin mdc-button-ink-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  &:not(:disabled) {
+  &:not([disabled]) {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(color, $color);
     }
@@ -276,7 +274,7 @@
     }
   }
 
-  &:disabled {
+  &[disabled] {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, transparent);
 
@@ -324,7 +322,7 @@
     border-style: solid;
   }
 
-  &:disabled {
+  &[disabled] {
     @include mdc-feature-targets($feat-color) {
       border-color: $mdc-button-disabled-ink-color;
     }
@@ -337,7 +335,7 @@
 
   @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding, $query);
 
-  &:disabled {
+  &[disabled] {
     @include mdc-feature-targets($feat-color) {
       background-color: rgba(mdc-theme-prop-value(on-surface), .12);
       color: $mdc-button-disabled-ink-color;
@@ -360,7 +358,7 @@
     @include mdc-elevation(8, $query: $query);
   }
 
-  &:disabled {
+  &[disabled] {
     @include mdc-elevation(0, $query: $query);
   }
 
