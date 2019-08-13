@@ -261,14 +261,7 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   }
 
   #{$mdc-radio-ripple-target} {
-    @include mdc-feature-targets($feat-structure) {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
+    @include mdc-ripple-target-common($query: $query);
   }
 }
 
