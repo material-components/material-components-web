@@ -263,16 +263,9 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     @include mdc-chip-ink-color-ripple_($mdc-chip-ink-color-default, $query: $query);
 
     #{$mdc-chip-ripple-target} {
-      @include mdc-feature-targets($feat-structure) {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        // Necessary for clicks on e.g. the close icon to go through.
-        pointer-events: none;
-        overflow: hidden;
-      }
+      @include mdc-ripple-target-properties($query: $query);
+
+      overflow: hidden;
     }
   }
 
