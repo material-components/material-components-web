@@ -91,7 +91,7 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
         const timeoutMs = this.getTimeoutMs();
         this.handleAnimationTimerEnd_();
         this.adapter_.notifyOpened();
-        if (timeoutMs !== -1) {
+        if (timeoutMs !== numbers.INDETERMINATE) {
           this.autoDismissTimer_ = setTimeout(() => {
             this.close(REASON_DISMISS);
           }, timeoutMs);
@@ -140,11 +140,12 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     // Use shorter variable names to make the code more readable
     const minValue = numbers.MIN_AUTO_DISMISS_TIMEOUT_MS;
     const maxValue = numbers.MAX_AUTO_DISMISS_TIMEOUT_MS;
+    const indeterminateValue = numbers.INDETERMINATE
 
-    if (timeoutMs === -1 || (timeoutMs <= maxValue && timeoutMs >= minValue)) {
+    if (timeoutMs === numbers.INDETERMINATE || (timeoutMs <= maxValue && timeoutMs >= minValue)) {
       this.autoDismissTimeoutMs_ = timeoutMs;
     } else {
-      throw new Error(`timeoutMs must be an integer in the range ${minValue}–${maxValue}, but got '${timeoutMs}'`);
+      throw new Error(`timeoutMs must be an integer in the range ${minValue}–${maxValue} (or ${indeterminateValue} to disable), but got '${timeoutMs}'`);
     }
   }
 
