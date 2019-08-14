@@ -54,7 +54,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ```html
 <button class="mdc-fab" aria-label="Favorite">
   <span class="mdc-fab__icon material-icons">favorite</span>
-	<div class="mdc-fab__ripple"></div>
+  <div class="mdc-fab__ripple"></div>
 </button>
 ```
 
@@ -88,7 +88,7 @@ const fabRipple = new MDCRipple(document.querySelector('.mdc-fab'));
 <button class="mdc-fab mdc-fab--extended">
   <span class="material-icons mdc-fab__icon">add</span>
   <span class="mdc-fab__label">Create</span>
-	<div class="mdc-fab__ripple"></div>
+  <div class="mdc-fab__ripple"></div>
 </button>
 ```
 
