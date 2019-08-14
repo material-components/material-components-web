@@ -54,6 +54,9 @@ export function createMockWindowForCssVariables() {
   const getComputedStyle = td.func('window.getComputedStyle');
   const remove = () => mockWindow.appendedNodes--;
   const mockDoc = {
+    head: {
+      appendChild: () => mockWindow.appendedNodes++,
+    },
     body: {
       appendChild: () => mockWindow.appendedNodes++,
     },
