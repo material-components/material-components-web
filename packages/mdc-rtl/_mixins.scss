@@ -20,6 +20,8 @@
 // THE SOFTWARE.
 //
 
+@import "./variables";
+
 // Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.
 //
 // Usage Example:
@@ -67,17 +69,19 @@
 //
 // In the future, selectors such as the `:dir` pseudo-class (http://mdn.io/css/:dir) will help us mitigate this.
 @mixin mdc-rtl($root-selector: null) {
-  @if ($root-selector) {
-    @at-root {
-      #{$root-selector}[dir="rtl"] &,
-      [dir="rtl"] #{$root-selector} & {
+  @if ($mdc-rtl-include) {
+    @if ($root-selector) {
+      @at-root {
+        #{$root-selector}[dir="rtl"] &,
+        [dir="rtl"] #{$root-selector} & {
+          @content;
+        }
+      }
+    } @else {
+      [dir="rtl"] &,
+      &[dir="rtl"] {
         @content;
       }
-    }
-  } @else {
-    [dir="rtl"] &,
-    &[dir="rtl"] {
-      @content;
     }
   }
 }
@@ -256,15 +260,17 @@
   $right-value,
   $root-selector: null
 ) {
-  /* @noflip */
-  #{$left-property}: $left-value;
-  /* @noflip */
-  #{$right-property}: $right-value;
+  @if ($mdc-rtl-include) {
+    /* @noflip */
+    #{$left-property}: $left-value;
+    /* @noflip */
+    #{$right-property}: $right-value;
 
-  @include mdc-rtl($root-selector) {
-    /* @noflip */
-    #{$left-property}: $right-value;
-    /* @noflip */
-    #{$right-property}: $left-value;
+    @include mdc-rtl($root-selector) {
+      /* @noflip */
+      #{$left-property}: $right-value;
+      /* @noflip */
+      #{$right-property}: $left-value;
+    }
   }
 }
