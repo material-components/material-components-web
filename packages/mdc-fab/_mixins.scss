@@ -33,6 +33,8 @@
 @import "@material/typography/mixins";
 @import "./variables";
 
+$mdc-fab-ripple-target: ".mdc-fab__ripple";
+
 @mixin mdc-fab-core-styles($query: mdc-feature-all()) {
   @include mdc-fab-without-ripple($query);
   @include mdc-fab-ripple($query);
@@ -78,15 +80,29 @@
 }
 
 @mixin mdc-fab-ripple($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
   @include mdc-ripple-common($query);
 
   // postcss-bem-linter: define fab
 
   .mdc-fab {
-    @include mdc-ripple-surface($query: $query);
-    @include mdc-ripple-radius-bounded($query: $query);
-    @include mdc-states(on-secondary, $query: $query);
-  }
+    @include mdc-ripple-surface(
+      $query: $query, $ripple-target: $mdc-fab-ripple-target);
+    @include mdc-ripple-radius-bounded(
+      $query: $query, $ripple-target: $mdc-fab-ripple-target);
+    @include mdc-states(
+      on-secondary, $query: $query, $ripple-target: $mdc-fab-ripple-target);
+
+    #{$mdc-fab-ripple-target} {
+      @include mdc-feature-targets($feat-structure) {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    }
+	}
 
   // postcss-bem-linter: end
 }
@@ -98,10 +114,16 @@
 
   @if ($fill-tone == "dark") {
     @include mdc-fab-ink-color(text-primary-on-dark, $query: $query);
-    @include mdc-states(text-primary-on-dark, $query: $query);
+    @include mdc-states(
+      text-primary-on-dark,
+      $query: $query,
+      $ripple-target: $mdc-button-ripple-target);
   } @else {
     @include mdc-fab-ink-color(text-primary-on-light, $query: $query);
-    @include mdc-states(text-primary-on-light, $query: $query);
+    @include mdc-states(
+      text-primary-on-light,
+      $query: $query,
+      $ripple-target: $mdc-button-ripple-target);
   }
 }
 
@@ -172,6 +194,10 @@
 @mixin mdc-fab-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
   &:not(.mdc-fab--extended) {
     @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
+
+    #{$mdc-fab-ripple-target} {
+      @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
+    }
   }
 }
 
@@ -181,6 +207,14 @@
     $rtl-reflexive,
     $query: $query
   );
+
+  #{$mdc-fab-ripple-target} {
+    @include mdc-shape-radius(
+      mdc-shape-resolve-percentage-radius($mdc-fab-extended-height, $radius),
+      $rtl-reflexive,
+      $query: $query
+    );
+  }
 }
 
 $mdc-fab-icon-enter-delay_: 90ms;
@@ -209,7 +243,6 @@ $mdc-fab-icon-enter-duration_: 180ms;
     user-select: none;
     -moz-appearance: none;
     -webkit-appearance: none;
-    overflow: hidden;
   }
 
   @include mdc-feature-targets($feat-animation) {
