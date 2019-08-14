@@ -43,9 +43,9 @@ const strings = {
 
 const numbers = {
   DEFAULT_AUTO_DISMISS_TIMEOUT_MS: 5000,
+  INDETERMINATE: -1,
   MAX_AUTO_DISMISS_TIMEOUT_MS: 10000,
   MIN_AUTO_DISMISS_TIMEOUT_MS: 4000,
-  INDETERMINATE: -1,
 
   // These variables need to be kept in sync with the values in _variables.scss.
   SNACKBAR_ANIMATION_CLOSE_TIME_MS: 75,

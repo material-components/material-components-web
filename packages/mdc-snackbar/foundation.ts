@@ -140,12 +140,14 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     // Use shorter variable names to make the code more readable
     const minValue = numbers.MIN_AUTO_DISMISS_TIMEOUT_MS;
     const maxValue = numbers.MAX_AUTO_DISMISS_TIMEOUT_MS;
-    const indeterminateValue = numbers.INDETERMINATE
+    const indeterminateValue = numbers.INDETERMINATE;
 
     if (timeoutMs === numbers.INDETERMINATE || (timeoutMs <= maxValue && timeoutMs >= minValue)) {
       this.autoDismissTimeoutMs_ = timeoutMs;
     } else {
-      throw new Error(`timeoutMs must be an integer in the range ${minValue}–${maxValue} (or ${indeterminateValue} to disable), but got '${timeoutMs}'`);
+      throw new Error(`
+        timeoutMs must be an integer in the range ${minValue}–${maxValue}
+        (or ${indeterminateValue} to disable), but got '${timeoutMs}'`);
     }
   }
 
