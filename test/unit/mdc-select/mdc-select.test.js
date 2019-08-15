@@ -1122,38 +1122,3 @@ test('#destroy destroys the helper text if it exists', () => {
   td.verify(helperText.destroy(), {times: 1});
   document.body.removeChild(container);
 });
-
-test(`MutationObserver adds ${cssClasses.REQUIRED} class to root element when aria-required attr is added`, (done) => {
-  const hasLabel = true;
-  const hasOutline = false;
-  const hasHelperText = false;
-  const {fixture, selectedText} = setupTest(hasLabel, hasOutline, hasHelperText);
-  assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
-
-  selectedText.setAttribute('aria-required', 'true');
-
-  // MutationObservers are queued as microtasks and fire asynchronously
-  setTimeout(() => {
-    assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
-    done();
-  }, 0);
-});
-
-test(`MutationObserver removes ${cssClasses.REQUIRED} class from root element when aria-required attr ` +
-'is removed', (done) => {
-  const hasLabel = true;
-  const hasOutline = false;
-  const hasHelperText = false;
-  const {fixture, selectedText} = setupTest(hasLabel, hasOutline, hasHelperText);
-
-  selectedText.setAttribute('aria-required', 'true');
-  setTimeout(() => {
-    assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
-
-    selectedText.removeAttribute('aria-required');
-    setTimeout(() => {
-      assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
-      done();
-    }, 0);
-  }, 0);
-});

@@ -40,7 +40,7 @@ npm install @material/select
 The select uses an [`MDCMenu`](../mdc-menu) component instance to contain the list of options, but uses the
 `data-value` attribute instead of `value` to represent the options' values.
 
-> Note: The `data-value` attribute _must_ be present on each option.
+> _NOTE_: The `data-value` attribute _must_ be present on each option.
 
 The select requires that you set the `width` of the `mdc-select__anchor` element as well as setting the width of the `mdc-select__menu` element to match. This is best done through the use of another class (e.g. `demo-width-class` in the example HTML and CSS below).
 
@@ -222,6 +222,8 @@ and set the `aria-required` attribute on the `mdc-select__selected-text` element
 </div>
 ```
 
+> _NOTE_: To programmatically set a select as required, use the `required` property in the `MDCSelect` API.
+
 #### Disabled select
 
 Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
@@ -241,6 +243,8 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
   </div>
 </div>
 ```
+
+> _NOTE_: To programmatically set a select as disabled, use the `disabled` property in the `MDCSelect` API.
 
 #### Disabled options
 
@@ -299,7 +303,7 @@ well as interaction targets. See [here](icon/) for more information on using ico
 | `mdc-select--outlined` | Optional. Styles the select as outlined select. |
 | `mdc-select--with-leading-icon` | Styles the select as a select with a leading icon. |
 
-> Note: To further customize the [MDCMenu](./../mdc-menu) or the [MDCList](./../mdc-list) component contained within the select, please refer to their respective documentation.
+> _NOTE_: To further customize the [MDCMenu](./../mdc-menu) or the [MDCList](./../mdc-list) component contained within the select, please refer to their respective documentation.
 
 ### Sass Mixins
 
@@ -320,7 +324,7 @@ Mixin | Description
 `mdc-select-focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
 `mdc-select-hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
 
-> NOTE: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
+> _NOTE_: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 
 ## `MDCSelect` API
 

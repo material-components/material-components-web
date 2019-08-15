@@ -40,8 +40,6 @@ import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/com
 import {MDCSelectIcon, MDCSelectIconFactory} from './icon/component';
 import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
-const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
-
 export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   static attachTo(root: Element): MDCSelect {
     return new MDCSelect(root);
@@ -72,7 +70,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private handleMenuOpened_!: EventListener; // assigned in initialize()
   private handleMenuClosed_!: EventListener; // assigned in initialize()
   private handleMenuSelected_!: CustomEventListener<MDCMenuItemEvent>; // assigned in initialize()
-  private validationObserver_!: MutationObserver; // assigned in initialize()
 
   initialize(
       labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
@@ -119,9 +116,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
       this.ripple_ = this.createRipple_();
     }
-
-    // The required state needs to be sync'd before the mutation observer is added.
-    this.addMutationObserverForRequired_();
   }
 
   /**
@@ -210,9 +204,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     }
     if (this.helperText_) {
       this.helperText_.destroy();
-    }
-    if (this.validationObserver_) {
-      this.validationObserver_.disconnect();
     }
 
     super.destroy();
@@ -438,32 +429,5 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
     };
-  }
-
-  private addMutationObserverForRequired_() {
-    const observerHandler = (attributesList: string[]) => {
-      attributesList.some((attributeName) => {
-        if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) === -1) {
-          return false;
-        }
-
-        if (this.selectedText_.getAttribute('aria-required') === 'true') {
-          this.root_.classList.add(cssClasses.REQUIRED);
-        } else {
-          this.root_.classList.remove(cssClasses.REQUIRED);
-        }
-
-        return true;
-      });
-    };
-
-    const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
-      return mutationsList
-          .map((mutation) => mutation.attributeName)
-          .filter((attributeName) => attributeName) as string[];
-    };
-    const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
-    observer.observe(this.selectedText_, {attributes: true});
-    this.validationObserver_ = observer;
   }
 }
