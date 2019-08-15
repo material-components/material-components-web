@@ -248,20 +248,22 @@ test('#get/set disabled', () => {
 });
 
 test('#get/set required true', () => {
-  const {component, selectedText} = setupTest();
+  const {fixture, component, selectedText} = setupTest();
   assert.isFalse(component.required);
 
   component.required = true;
   assert.isTrue(component.required);
+  assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
   assert.strictEqual(selectedText.getAttribute('aria-required'), 'true');
 });
 
 test('#get/set required false', () => {
-  const {component, selectedText} = setupTest();
+  const {fixture, component, selectedText} = setupTest();
   assert.isFalse(component.required);
 
   component.required = false;
   assert.isFalse(component.required);
+  assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
   assert.strictEqual(selectedText.getAttribute('aria-required'), 'false');
 });
 

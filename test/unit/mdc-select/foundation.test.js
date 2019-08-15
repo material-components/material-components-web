@@ -517,6 +517,14 @@ test('#isValid returns true if index is selected and has value', () => {
   assert.isTrue(foundation.isValid());
 });
 
+test('#setRequired adds/removes ${cssClasses.REQUIRED} class name', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setRequired(true);
+  td.verify(mockAdapter.addClass(cssClasses.REQUIRED), {times: 1});
+  foundation.setRequired(false);
+  td.verify(mockAdapter.removeClass(cssClasses.REQUIRED), {times: 1});
+});
+
 test('#setRequired sets aria-required through adapter', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setRequired(true);
