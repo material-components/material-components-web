@@ -169,7 +169,6 @@ to set the selected item. The select also needs the text from the selected eleme
 ```html
 <div class="mdc-select">
   <div class="mdc-select__anchor demo-width-class">
-    <input type="hidden" name="my-select">
     <i class="mdc-select__dropdown-icon"></i>
     <div class="mdc-select__selected-text">Vegetables</div>
     <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
@@ -203,16 +202,36 @@ the list with an empty `data-value` attribute.
 <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" role="option" data-value=""></li>
 ```
 
+#### Required select
+
+To style a select menu as required and enable validation, add the `mdc-select--required` class to the `mdc-select` element
+and set the `aria-required` attribute on the `mdc-select__selected-text` element to be `"true"`.
+
+```html
+<div class="mdc-select mdc-select--required">
+  <div class="mdc-select__anchor">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div class="mdc-select__selected-text" aria-required="true"></div>
+    <span class="mdc-floating-label">Pick a Food Group</span>
+    <div class="mdc-line-ripple"></div>
+  </div>
+
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+    ...
+  </div>
+</div>
+```
+
 #### Disabled select
 
-Add the `mdc-select--disabled` class to the `mdc-select` element.
+Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
+`aria-disabled` attribute on the `mdc-select__selected-text` element to be `"true"`.
 
 ```html
 <div class="mdc-select mdc-select--disabled">
   <div class="mdc-select__anchor">
-    <input type="hidden" name="my-select" disabled>
     <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text"></div>
+    <div class="mdc-select__selected-text" aria-disabled="true"></div>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <div class="mdc-line-ripple"></div>
   </div>
@@ -232,11 +251,7 @@ programmatically select a disabled list item.
 ```html
 <div class="mdc-select">
   <div class="mdc-select__anchor">
-    <input type="hidden" name="my-select">
-    <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text">Vegetables</div>
-    <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-    <div class="mdc-line-ripple"></div>
+    ...
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">

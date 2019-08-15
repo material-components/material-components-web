@@ -329,6 +329,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   setRequired(isRequired: boolean) {
+    if (isRequired) {
+      this.adapter_.addClass(cssClasses.REQUIRED);
+    } else {
+      this.adapter_.removeClass(cssClasses.REQUIRED);
+    }
     this.adapter_.setSelectedTextAttr('aria-required', isRequired.toString());
   }
 

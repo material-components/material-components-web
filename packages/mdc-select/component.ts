@@ -121,7 +121,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     }
 
     // The required state needs to be sync'd before the mutation observer is added.
-    this.initialSyncRequiredState_();
     this.addMutationObserverForRequired_();
   }
 
@@ -439,17 +438,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
     };
-  }
-
-  private initialSyncRequiredState_() {
-    const isRequired =
-        (this.selectedText_ as HTMLSelectElement).required
-        || this.selectedText_.getAttribute('aria-required') === 'true'
-        || this.root_.classList.contains(cssClasses.REQUIRED);
-    if (isRequired) {
-      this.selectedText_.setAttribute('aria-required', 'true');
-      this.root_.classList.add(cssClasses.REQUIRED);
-    }
   }
 
   private addMutationObserverForRequired_() {
