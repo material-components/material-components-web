@@ -1,7 +1,5 @@
-@mixin mdc-divider-core-styles {
-  @include mdc-divider-line-color(rgba(0, 0, 0, .117));
-}
+@import "./variables";
 
-@mixin mdc-divider-line-color($color) {
-  border-color: $color;
+@mixin mdc-divider-core-styles {
+  border-color: $mdc-divider-color;
 }
