@@ -90,7 +90,7 @@ class FakeHelperText {
 
 function getFixture() {
   return bel`
-    <div class="mdc-select">
+    <div class="mdc-select mdc-select--with-leading-icon">
       <div class="mdc-select__anchor">
         <input type="hidden" name="select">
         <i class="mdc-select__icon material-icons">code</i>
@@ -117,7 +117,7 @@ function getFixture() {
 
 function getOutlineFixture() {
   return bel`
-    <div class="mdc-select mdc-select--outlined">
+    <div class="mdc-select mdc-select--outlined mdc-select--with-leading-icon">
       <div class="mdc-select__anchor">
         <input type="hidden" name="select">
         <i class="mdc-select__icon material-icons">code</i>
@@ -368,35 +368,6 @@ test('#set helperTextContent calls foundation.setHelperTextContent', () => {
   component.foundation_.setHelperTextContent = td.func();
   component.helperTextContent = 'hello_world';
   td.verify(component.foundation_.setHelperTextContent('hello_world'), {times: 1});
-});
-
-test(`#initialize does not add the ${cssClasses.WITH_LEADING_ICON} class if there is no leading icon`, () => {
-  const fixture = bel`
-    <div class="mdc-select">
-      <div class="mdc-select__anchor">
-        <div class="mdc-select__selected-text"></div>
-        <label class="mdc-floating-label">Pick a Food Group</label>
-        <div class="mdc-line-ripple"></div>
-      </div>
-
-      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-        <ul class="mdc-list">
-          <li class="mdc-list-item" data-value=""></li>
-          <li class="mdc-list-item mdc-list-item--selected" data-value="orange">
-            Orange
-          </li>
-          <li class="mdc-list-item" data-value="apple">
-            Apple
-          </li>
-        </ul>
-      </div>
-    </div>
-  `;
-  const menuSurface = fixture.querySelector('.mdc-select__menu');
-  const component = new MDCSelect(fixture, /* foundation */ undefined);
-  assert.isFalse(fixture.classList.contains(cssClasses.WITH_LEADING_ICON));
-  assert.isFalse(menuSurface.classList.contains(cssClasses.WITH_LEADING_ICON));
-  component.destroy();
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected class', () => {
@@ -1107,10 +1078,8 @@ test('menu surface selected event causes the select to update', () => {
 
 test('#constructor instantiates a leading icon if an icon element is present', () => {
   const root = getFixture();
-  const menu = root.querySelector(strings.MENU_SELECTOR);
   const component = new MDCSelect(root);
   assert.instanceOf(component.leadingIcon_, MDCSelectIcon);
-  assert.isTrue(menu.classList.contains(cssClasses.WITH_LEADING_ICON));
   assert.isTrue(root.classList.contains(cssClasses.WITH_LEADING_ICON));
 });
 

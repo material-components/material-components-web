@@ -113,10 +113,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
     const leadingIcon = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     if (leadingIcon) {
-      this.root_.classList.add(cssClasses.WITH_LEADING_ICON);
       this.leadingIcon_ = iconFactory(leadingIcon);
-
-      this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
     }
 
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
