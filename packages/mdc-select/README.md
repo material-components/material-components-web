@@ -351,18 +351,19 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setDisabled(isDisabled: boolean) => void` | Enables or disables the select. |
 | `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
 | `notifyChange(value: string) => void` | Emits the `MDCSelect:change` event when an element is selected. |
-| `checkValidity() => boolean` | Returns whether the component is currently valid, using the select's `checkValidity`. |
-| `setValid(isValid: boolean) => void` | Adds or removes invalid styles. |
 | `setSelectedText(text: string) => void` | Sets the text content of the selectedText element to the given string. |
+| `getSelectedTextAttr(attr: string) => string` | Gets the given attribute on the selected text element. |
 | `setSelectedTextAttr(attr: string, value: string) => void` | Sets the given attribute on the selected text element. |
 | `openMenu() => void` | Causes the menu element in the select to open. |
 | `closeMenu() => void` | Causes the menu element in the select to close. |
 | `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the select. |
+| `setMenuWrapFocus(wrapFocus: boolean) => void` | Sets whether the menu should wrap focus. |
 | `setAttributeAtIndex(index: number, attributeName: string, attributeValue: string) => void;` | Sets the attribute on the menu item at the given index. |
 | `removeAttributeAtIndex(index: number, attributeName: string) => void;` | Removes the attribute on the menu item at the given index. |
 | `getMenuItemValues() => string[]` | Returns an array representing the VALUE_ATTR attributes of each menu item. |
 | `getMenuItemTextAtIndex(index: number) => string` | Gets the text content of the menu item element at the given index. |
-| `toggleClassAtIndex(menuItem: Element, className: string, toggle: boolean) => void` | Toggles the class name on the menu item at the given index. |
+| `addClassAtIndex(menuItem: Element, className: string) => void` | Adds the class name on the menu item at the given index. |
+| `removeClassAtIndex(menuItem: Element, className: string) => void` | Removes the class name on the menu item at the given index. |
 
 ### `MDCSelectFoundation`
 
@@ -384,6 +385,9 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setValue() => string` | Sets the selected index to the index of the menu item with the given value. |
 | `setValid(isValid: boolean) => void` | Sets the valid state through the adapter. |
 | `isValid() => boolean` | Gets the valid state through the adapter's `checkValidity` API. |
+| `setRequired(isRequired: boolean) => void` | Sets the required state through the adapter. |
+| `getRequired() => boolean` | Gets the required state through the adapter. |
+| `setupMenu() => void` | Handles menu setup. |
 | `layout() => void` | Handles determining if the notched outline should be notched. |
 | `setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon. |
 | `setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon. |

@@ -95,19 +95,14 @@ export interface MDCSelectAdapter {
   notifyChange(value: string): void;
 
   /**
-   * Checks if the select is currently valid.
-   */
-  checkValidity(): boolean;
-
-  /**
-   * Adds/Removes the invalid class.
-   */
-  setValid(isValid: boolean): void;
-
-  /**
    * Sets the text content of the selectedText element to the given string.
    */
   setSelectedText(text: string): void;
+
+  /**
+   * Gets the given attribute on the selected text element.
+   */
+  getSelectedTextAttr(attr: string): string | null;
 
   /**
    * Sets the given attribute on the selected text element.
@@ -131,6 +126,11 @@ export interface MDCSelectAdapter {
   isMenuOpen(): boolean;
 
   /**
+   * Sets whether the menu should wrap focus.
+   */
+  setMenuWrapFocus(wrapFocus: boolean): void;
+
+  /**
    * Sets the attribute on the menu item at the given index.
    */
   setAttributeAtIndex(index: number, attributeName: string, attributeValue: string): void;
@@ -151,7 +151,12 @@ export interface MDCSelectAdapter {
   getMenuItemTextAtIndex(index: number): string;
 
   /**
-   * Toggles the class name on the menu item at the given index.
+   * Adds the class name on the menu item at the given index.
    */
-  toggleClassAtIndex(index: number, className: string, toggle: boolean): void;
+  addClassAtIndex(index: number, className: string): void;
+
+  /**
+   * Removes the class name on the menu item at the given index.
+   */
+  removeClassAtIndex(index: number, className: string): void;
 }

@@ -176,6 +176,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_!.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
     this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
     this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+    this.foundation_.setupMenu();
 
     if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
       // If an element is selected, the select should set the initial selected text.
@@ -281,18 +282,14 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
    * Sets the control to the required state.
    */
   set required(isRequired: boolean) {
-    if (isRequired) {
-      this.selectedText_.setAttribute('aria-required', isRequired.toString());
-    } else {
-      this.selectedText_.removeAttribute('aria-required');
-    }
+    this.foundation_.setRequired(isRequired);
   }
 
   /**
    * Returns whether the select is required.
    */
   get required(): boolean {
-    return this.selectedText_.getAttribute('aria-required') === 'true';
+    return this.foundation_.getRequired();
   }
 
   /**
@@ -322,7 +319,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_ = menuFactory(this.menuElement_);
     this.menu_.setAnchorElement(this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!);
     this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
-    this.menu_.wrapFocus = false;
   }
 
   private createRipple_(): MDCRipple {
@@ -348,30 +344,12 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         }
         return '';
       },
-      checkValidity: () => {
-        const classList = this.root_.classList;
-        if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
-          // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
-          // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
-          return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || Boolean(this.value));
-        }
-        return true;
-      },
-      setValid: (isValid: boolean) => {
-        this.selectedText_.setAttribute('aria-invalid', (!isValid).toString());
-        if (isValid) {
-          this.root_.classList.remove(cssClasses.INVALID);
-        } else {
-          this.root_.classList.add(cssClasses.INVALID);
-        }
-      },
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
+      getSelectedTextAttr: (attr: string) => this.selectedText_.getAttribute(attr),
+      setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
       openMenu: () => {
-        if (!this.menu_.open) {
-          this.menu_.open = true;
-          this.isMenuOpen_ = true;
-          this.selectedText_.setAttribute('aria-expanded', 'true');
-        }
+        this.menu_.open = true;
+        this.isMenuOpen_ = true;
       },
       closeMenu: () => {
         if (this.menu_.open) {
@@ -379,7 +357,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         }
       },
       isMenuOpen: () => this.isMenuOpen_,
-      getSelectedMenuItem: () => this.getSelectedMenuItem_(),
+      setMenuWrapFocus: (wrapFocus: boolean) => this.menu_.wrapFocus = wrapFocus,
       setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) => {
         const menuItem = this.menu_.items[index];
         if (menuItem) {
@@ -399,18 +377,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         const menuItem = this.menu_.items[index];
         return menuItem && menuItem.textContent ? menuItem.textContent : '';
       },
-      toggleClassAtIndex: (index: number, className: string, toggle: boolean) => {
-        const menuItem = this.menu_.items[index];
-        if (!menuItem) {
-          return;
-        }
-
-        if (toggle) {
-          menuItem.classList.add(className);
-        } else {
-          menuItem.classList.remove(className);
-        }
-      },
+      addClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.add(className),
+      removeClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.remove(className),
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -421,7 +389,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       addClass: (className: string) => this.root_.classList.add(className),
       removeClass: (className: string) => this.root_.classList.remove(className),
       hasClass: (className: string) => this.root_.classList.contains(className),
-      setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
       setRippleCenter: (normalizedX: number) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
