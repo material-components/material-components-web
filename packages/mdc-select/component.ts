@@ -168,12 +168,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
     this.foundation_.setupMenu();
 
-    if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
-      // If an element is selected, the select should set the initial selected text.
-      const adapterMethods = this.getSelectAdapterMethods_();
-      this.foundation_.setValue(adapterMethods.getValue());
-    }
-
     // Initially sync floating label
     this.foundation_.handleChange(/* didChange */ false);
 
@@ -324,13 +318,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private getSelectAdapterMethods_() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
-      getValue: () => {
-        const listItem = this.getSelectedMenuItem_();
-        if (listItem && listItem.hasAttribute(strings.VALUE_ATTR)) {
-          return listItem.getAttribute(strings.VALUE_ATTR) || '';
-        }
-        return '';
-      },
+      getSelectedMenuItem: () => this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR),
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
       getSelectedTextAttr: (attr: string) => this.selectedText_.getAttribute(attr),
       setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
@@ -402,10 +390,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       floatLabel: (shouldFloat: boolean) => this.label_ && this.label_.float(shouldFloat),
       getLabelWidth: () => this.label_ ? this.label_.getWidth() : 0,
     };
-  }
-
-  private getSelectedMenuItem_(): Element|null {
-    return this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
   }
 
   /**

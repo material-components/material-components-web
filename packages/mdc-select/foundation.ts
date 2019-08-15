@@ -52,7 +52,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       hasClass: () => false,
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
-      getValue: () => '',
+      getSelectedMenuItem: () => null,
       floatLabel: () => undefined,
       getLabelWidth: () => 0,
       hasOutline: () => false,
@@ -140,7 +140,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   getValue() {
-    return this.adapter_.getValue();
+    const listItem = this.adapter_.getSelectedMenuItem();
+    if (listItem && listItem.hasAttribute(strings.VALUE_ATTR)) {
+      return listItem.getAttribute(strings.VALUE_ATTR) || '';
+    }
+    return '';
   }
 
   getDisabled() {
@@ -323,7 +327,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
       // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
       return this.selectedIndex_ !== numbers.UNSET_INDEX &&
-        (this.selectedIndex_ !== 0 || Boolean(this.adapter_.getValue()));
+        (this.selectedIndex_ !== 0 || Boolean(this.getValue()));
     }
     return true;
   }
@@ -343,6 +347,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   setupMenu() {
     this.adapter_.setMenuWrapFocus(false);
+    
+    const value = this.getValue();
+    if (value) this.setValue(value);
   }
 }
 

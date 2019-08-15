@@ -55,9 +55,9 @@ export interface MDCSelectAdapter {
   deactivateBottomLine(): void;
 
   /**
-   * Returns the selected value of the select element.
+   * Returns the selected menu item element.
    */
-  getValue(): string;
+  getSelectedMenuItem(): Element | null;
 
   /**
    * Floats label determined based off of the shouldFloat argument.
