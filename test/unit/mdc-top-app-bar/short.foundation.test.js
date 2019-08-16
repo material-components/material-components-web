@@ -47,12 +47,12 @@ test('short top app bar: scrollHandler calls #adapter.getViewportScrollY', () =>
   td.verify(mockAdapter.getViewportScrollY(), {times: 2});
 });
 
-test('short top app bar: scrollHandler does not call getViewportScrollY method ' +
+test('short top app bar: scrollHandler calls getViewportScrollY method one time ' +
 'if short collapsed class is on the component', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(true);
   foundation.init();
-  td.verify(mockAdapter.getViewportScrollY(), {times: 0});
+  td.verify(mockAdapter.getViewportScrollY(), {times: 1});
 });
 
 test('short top app bar: #adapter.addClass called when page is scrolled from the top', () => {
