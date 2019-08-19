@@ -140,25 +140,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     };
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
     this.handleMenuSelected_ = (evtData) => this.selectedIndex = evtData.detail.index;
-    this.handleMenuOpened_ = () => {
-      this.foundation_.handleMenuOpened();
-
-      if (this.menu_.items.length === 0) {
-        return;
-      }
-
-      // Menu should open to the last selected element, should open to first menu item otherwise.
-      const focusItemIndex = this.selectedIndex >= 0 ? this.selectedIndex : 0;
-      const focusItemEl = this.menu_.items[focusItemIndex] as HTMLElement;
-      focusItemEl.focus();
-    };
-    this.handleMenuClosed_ = () => {
-      this.foundation_.handleMenuClosed();
-      this.selectedText_!.removeAttribute('aria-expanded');
-      if (document.activeElement !== this.selectedText_) {
-        this.foundation_.handleBlur();
-      }
-    };
+    this.handleMenuOpened_ = () => this.foundation_.handleMenuOpened();
+    this.handleMenuClosed_ = () => this.foundation_.handleMenuClosed();
 
     this.selectedText_.addEventListener('focus', this.handleFocus_);
     this.selectedText_.addEventListener('blur', this.handleBlur_);
@@ -338,6 +321,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         return '';
       },
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
+      isSelectedTextFocused: () => document.activeElement === this.selectedText_,
       getSelectedTextAttr: (attr: string) => this.selectedText_.getAttribute(attr),
       setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
       openMenu: () => this.menu_.open = true,
@@ -354,6 +338,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         if (menuItem) {
           menuItem.removeAttribute(attributeName);
         }
+      },
+      focusMenuItemAtIndex: (index: number) => {
+        const menuItemEl = this.menu_.items[index] as HTMLElement;
+        menuItemEl.focus();
       },
       getMenuItemValues: () => {
         return this.menu_.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || '');

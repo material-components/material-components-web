@@ -100,6 +100,11 @@ export interface MDCSelectAdapter {
   setSelectedText(text: string): void;
 
   /**
+   * Returns whether the selected text element is focused.
+   */
+  isSelectedTextFocused(): boolean;
+
+  /**
    * Gets the given attribute on the selected text element.
    */
   getSelectedTextAttr(attr: string): string | null;
@@ -134,6 +139,11 @@ export interface MDCSelectAdapter {
    * Removes the attribute on the menu item at the given index.
    */
   removeAttributeAtIndex(index: number, attributeName: string): void;
+
+  /**
+   * Focuses the menu item element at the given index.
+   */
+  focusMenuItemAtIndex(index: number): void;
 
   /**
    * Returns an array representing the VALUE_ATTR attributes of each menu item.

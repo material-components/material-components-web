@@ -61,6 +61,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       setRippleCenter: () => undefined,
       notifyChange: () => undefined,
       setSelectedText: () => undefined,
+      isSelectedTextFocused: () => false,
       getSelectedTextAttr: () => '',
       setSelectedTextAttr: () => undefined,
       openMenu: () => undefined,
@@ -68,6 +69,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       setMenuWrapFocus: () => undefined,
       setAttributeAtIndex: () => undefined,
       removeAttributeAtIndex: () => undefined,
+      focusMenuItemAtIndex: () => undefined,
       getMenuItemValues: () => [],
       getMenuItemTextAtIndex: () => '',
       addClassAtIndex: () => undefined,
@@ -183,11 +185,24 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   handleMenuOpened() {
     this.adapter_.addClass(cssClasses.ACTIVATED);
+
+    if (this.adapter_.getMenuItemValues().length === 0) {
+      return;
+    }
+
+    // Menu should open to the last selected element, should open to first menu item otherwise.
+    const focusItemIndex = this.selectedIndex_ >= 0 ? this.selectedIndex_ : 0;
+    this.adapter_.focusMenuItemAtIndex(focusItemIndex);
   }
 
   handleMenuClosed() {
     this.adapter_.removeClass(cssClasses.ACTIVATED);
     this.isMenuOpen_ = false;
+
+    this.adapter_.setSelectedTextAttr('aria-expanded', 'false');
+    if (!this.adapter_.isSelectedTextFocused()) {
+      this.handleBlur();
+    }
   }
 
   /**
