@@ -102,7 +102,7 @@ CSS Class | Description
 --- | ---
 `mdc-fab` | Mandatory, for the button element
 `mdc-fab__icon` | Mandatory, for the icon element
-`mdc-fab__ripple` | Mandatory, for the Element which shows the ripple.
+`mdc-fab__ripple` | Mandatory, for the element which shows the ripple.
 `mdc-fab__label` | Optional, for the text label. Applicable only for Extended FAB.
 `mdc-fab--mini` | Optional, modifies the FAB to a smaller size
 `mdc-fab--extended` | Optional, modifies the FAB to wider size which includes a text label.

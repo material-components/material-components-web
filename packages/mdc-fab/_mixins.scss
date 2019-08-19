@@ -95,12 +95,7 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
       on-secondary, $query: $query, $ripple-target: $mdc-fab-ripple-target);
 
     #{$mdc-fab-ripple-target} {
-      @include mdc-feature-targets($feat-structure) {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
+			@include mdc-ripple-target-common($query: $query);
     }
   }
 
