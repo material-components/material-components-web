@@ -71,6 +71,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       removeAttributeAtIndex: () => undefined,
       getMenuItemValues: () => [],
       getMenuItemTextAtIndex: () => '',
+      getMenuItemAttr: () => '',
       addClassAtIndex: () => undefined,
       removeClassAtIndex: () => undefined,
     };
@@ -141,8 +142,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   getValue() {
     const listItem = this.adapter_.getSelectedMenuItem();
-    if (listItem && listItem.hasAttribute(strings.VALUE_ATTR)) {
-      return listItem.getAttribute(strings.VALUE_ATTR) || '';
+    if (listItem) {
+      return this.adapter_.getMenuItemAttr(listItem, strings.VALUE_ATTR) || '';
     }
     return '';
   }
@@ -347,9 +348,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   setupMenu() {
     this.adapter_.setMenuWrapFocus(false);
-    
+
     const value = this.getValue();
-    if (value) this.setValue(value);
+    if (value) {
+      this.setValue(value);
+    }
   }
 }
 

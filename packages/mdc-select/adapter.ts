@@ -151,6 +151,11 @@ export interface MDCSelectAdapter {
   getMenuItemTextAtIndex(index: number): string;
 
   /**
+   * Returns the given attribute on the the menu item element.
+   */
+  getMenuItemAttr(menuItem: Element, attr: string): string | null;
+
+  /**
    * Adds the class name on the menu item at the given index.
    */
   addClassAtIndex(index: number, className: string): void;

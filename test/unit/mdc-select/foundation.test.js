@@ -47,12 +47,12 @@ test('exports strings', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'hasClass',
-    'activateBottomLine', 'deactivateBottomLine', 'getValue', 'floatLabel',
+    'activateBottomLine', 'deactivateBottomLine', 'getSelectedMenuItem', 'floatLabel',
     'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'setRippleCenter', 'notifyChange',
     'setSelectedText', 'getSelectedTextAttr', 'setSelectedTextAttr',
     'isMenuOpen', 'openMenu', 'closeMenu', 'setMenuWrapFocus',
     'setAttributeAtIndex', 'removeAttributeAtIndex', 'getMenuItemValues', 'getMenuItemTextAtIndex',
-    'addClassAtIndex', 'removeClassAtIndex',
+    'getMenuItemAttr', 'addClassAtIndex', 'removeClassAtIndex',
   ]);
 });
 
@@ -73,12 +73,13 @@ function setupTest(hasLeadingIcon = true, hasHelperText = false) {
     showToScreenReader: () => {},
     setValidity: () => {},
   });
+  const listItem = td.object();
   const foundationMap = {
     leadingIcon: hasLeadingIcon ? leadingIcon : undefined,
     helperText: hasHelperText ? helperText : undefined,
   };
 
-  td.when(mockAdapter.getValue()).thenReturn('');
+  td.when(mockAdapter.getSelectedMenuItem()).thenReturn(listItem);
 
   const foundation = new MDCSelectFoundation(mockAdapter, foundationMap);
   return {foundation, mockAdapter, leadingIcon, helperText};
@@ -174,7 +175,7 @@ test(`#handleMenuClosed removes ${cssClasses.ACTIVATED} class name`, () => {
 
 test('#handleChange calls adapter.floatLabel(true) when there is a value', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getValue()).thenReturn('value');
+  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('value');
 
   foundation.handleChange();
   td.verify(mockAdapter.floatLabel(true), {times: 1});
@@ -182,7 +183,7 @@ test('#handleChange calls adapter.floatLabel(true) when there is a value', () =>
 
 test('#handleChange calls adapter.floatLabel(false) when there is no value and the select is not focused', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getValue()).thenReturn('');
+  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('');
 
   foundation.handleChange();
   td.verify(mockAdapter.floatLabel(false), {times: 1});
@@ -190,7 +191,7 @@ test('#handleChange calls adapter.floatLabel(false) when there is no value and t
 
 test('#handleChange does not call adapter.floatLabel(false) when there is no value if the select is focused', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getValue()).thenReturn('');
+  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('');
   td.when(mockAdapter.hasClass(cssClasses.FOCUSED)).thenReturn(true);
 
   foundation.handleChange();
@@ -200,7 +201,7 @@ test('#handleChange does not call adapter.floatLabel(false) when there is no val
 test('#handleChange calls foundation.notchOutline(true) when there is a value', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.notchOutline = td.func();
-  td.when(mockAdapter.getValue()).thenReturn('value');
+  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('value');
 
   foundation.handleChange();
   td.verify(foundation.notchOutline(true), {times: 1});
@@ -209,7 +210,7 @@ test('#handleChange calls foundation.notchOutline(true) when there is a value', 
 test('#handleChange calls foundation.notchOutline(false) when there is no value', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.notchOutline = td.func();
-  td.when(mockAdapter.getValue()).thenReturn('');
+  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('');
 
   foundation.handleChange();
   td.verify(foundation.notchOutline(false), {times: 1});
@@ -217,7 +218,7 @@ test('#handleChange calls foundation.notchOutline(false) when there is no value'
 
 test('#handleChange calls adapter.notifyChange() if didChange is true', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getValue()).thenReturn('value');
+  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('value');
 
   foundation.handleChange(/* didChange */ true);
   td.verify(mockAdapter.notifyChange(td.matchers.anything()), {times: 1});
@@ -284,7 +285,7 @@ test('#handleBlur calls helperText.setValidity(true) if menu is not open', () =>
   const {foundation, mockAdapter, helperText} = setupTest(hasIcon, hasHelperText);
   td.when(mockAdapter.hasClass(cssClasses.REQUIRED)).thenReturn(true);
   td.when(mockAdapter.isMenuOpen()).thenReturn(false);
-  td.when(mockAdapter.getValue()).thenReturn('foo');
+  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('foo');
   foundation.selectedIndex_ = 0;
   foundation.handleBlur();
   td.verify(helperText.setValidity(true), {times: 1});
@@ -401,7 +402,7 @@ test('#handleKeydown does not call adapter.openMenu if menu is opened', () => {
 test('#layout calls notchOutline(true) if value is not an empty string', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.notchOutline = td.func();
-  td.when(mockAdapter.getValue()).thenReturn(' ');
+  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn(' ');
   foundation.layout();
   td.verify(foundation.notchOutline(true), {times: 1});
 });
@@ -501,7 +502,7 @@ test('#isValid returns false if first index is selected and has an empty value',
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.REQUIRED)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.DISABLED)).thenReturn(false);
-  td.when(mockAdapter.getValue()).thenReturn('');
+  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('');
   foundation.selectedIndex_ = 0;
 
   assert.isFalse(foundation.isValid());
@@ -511,7 +512,7 @@ test('#isValid returns true if index is selected and has value', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.REQUIRED)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.DISABLED)).thenReturn(false);
-  td.when(mockAdapter.getValue()).thenReturn('foo');
+  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('foo');
   foundation.selectedIndex_ = 0;
 
   assert.isTrue(foundation.isValid());

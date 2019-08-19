@@ -319,6 +319,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getSelectedMenuItem: () => this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR),
+      getMenuItemAttr: (menuItem: Element, attr: string) => menuItem.getAttribute(attr),
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
       getSelectedTextAttr: (attr: string) => this.selectedText_.getAttribute(attr),
       setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),

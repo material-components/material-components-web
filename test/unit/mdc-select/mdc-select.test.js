@@ -645,7 +645,7 @@ test('adapter#getLabelWidth returns 0 if the label does not exist', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), 0);
 });
 
-test('adapter#getValue returns the selected element value', () => {
+test('adapter#getSelectedMenuItem returns the selected element', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
@@ -654,11 +654,10 @@ test('adapter#getValue returns the selected element value', () => {
 
   const index = 1;
   const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-  const textValue = menuItem.getAttribute('data-value');
   const adapter = component.getDefaultFoundation().adapter_;
-  adapter.addClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
+  menuItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
 
-  expect(adapter.getValue()).to.equal(textValue);
+  expect(adapter.getSelectedMenuItem()).to.equal(menuItem);
 });
 
 test('adapter#setAttributeAtIndex sets attribute value correctly', () => {
@@ -813,6 +812,20 @@ test('adapter#getMenuItemValues returns the correct menu item values', () => {
   expect(adapter.getMenuItemValues()).to.eql(['', 'orange', 'apple']);
 
   document.body.removeChild(fixture);
+});
+
+test('adapter#getMenuItemAttr returns the menu item attribute', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+
+  const index = 1;
+  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  expect(adapter.getMenuItemAttr(menuItem, strings.VALUE_ATTR)).to.equal('orange');
 });
 
 test('adapter#addClassAtIndex adds class correctly', () => {
