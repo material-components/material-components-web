@@ -121,11 +121,6 @@ export interface MDCSelectAdapter {
   closeMenu(): void;
 
   /**
-   * Returns true if the menu is currently open.
-   */
-  isMenuOpen(): boolean;
-
-  /**
    * Sets whether the menu should wrap focus.
    */
   setMenuWrapFocus(wrapFocus: boolean): void;

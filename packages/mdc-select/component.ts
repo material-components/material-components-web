@@ -53,7 +53,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private ripple_!: MDCRipple | null;
 
   private menu_!: MDCMenu; // assigned in menuSetup_()
-  private isMenuOpen_!: boolean; // assigned in initialize()
 
   private selectAnchor_!: HTMLElement; // assigned in initialize()
   private selectedText_!: HTMLElement; // assigned in initialize()
@@ -82,7 +81,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       iconFactory: MDCSelectIconFactory = (el) => new MDCSelectIcon(el),
       helperTextFactory: MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
   ) {
-    this.isMenuOpen_ = false;
     this.selectAnchor_ = this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
 
@@ -156,11 +154,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     };
     this.handleMenuClosed_ = () => {
       this.foundation_.handleMenuClosed();
-
-      // isMenuOpen_ is used to track the state of the menu opening or closing since the menu.open function
-      // will return false if the menu is still closing and this method listens to the closed event which
-      // occurs after the menu is already closed.
-      this.isMenuOpen_ = false;
       this.selectedText_!.removeAttribute('aria-expanded');
       if (document.activeElement !== this.selectedText_) {
         this.foundation_.handleBlur();
@@ -347,16 +340,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
       getSelectedTextAttr: (attr: string) => this.selectedText_.getAttribute(attr),
       setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
-      openMenu: () => {
-        this.menu_.open = true;
-        this.isMenuOpen_ = true;
-      },
-      closeMenu: () => {
-        if (this.menu_.open) {
-          this.menu_.open = false;
-        }
-      },
-      isMenuOpen: () => this.isMenuOpen_,
+      openMenu: () => this.menu_.open = true,
+      closeMenu: () => this.menu_.open = false,
       setMenuWrapFocus: (wrapFocus: boolean) => this.menu_.wrapFocus = wrapFocus,
       setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) => {
         const menuItem = this.menu_.items[index];

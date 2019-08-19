@@ -65,7 +65,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       setSelectedTextAttr: () => undefined,
       openMenu: () => undefined,
       closeMenu: () => undefined,
-      isMenuOpen: () => false,
       setMenuWrapFocus: () => undefined,
       setAttributeAtIndex: () => undefined,
       removeAttributeAtIndex: () => undefined,
@@ -86,6 +85,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   private readonly menuItemValues_: string[];
   // Disabled state
   private disabled_ = false;
+  // isMenuOpen_ is used to track the state of the menu by listening to the MDCMenuSurface:closed event
+  // For reference, menu.open will return false if the menu is still closing, but isMenuOpen_ returns false only after
+  // the menu has closed
+  private isMenuOpen_ = false;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
@@ -184,6 +187,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   handleMenuClosed() {
     this.adapter_.removeClass(cssClasses.ACTIVATED);
+    this.isMenuOpen_ = false;
   }
 
   /**
@@ -229,7 +233,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * Handles blur events from select element.
    */
   handleBlur() {
-    if (this.adapter_.isMenuOpen()) {
+    if (this.isMenuOpen_) {
       return;
     }
     this.adapter_.removeClass(cssClasses.FOCUSED);
@@ -247,17 +251,18 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   handleClick(normalizedX: number) {
-    if (this.adapter_.isMenuOpen()) {
+    if (this.isMenuOpen_) {
       return;
     }
     this.adapter_.setRippleCenter(normalizedX);
 
     this.adapter_.openMenu();
+    this.isMenuOpen_ = true;
     this.adapter_.setSelectedTextAttr('aria-expanded', 'true');
   }
 
   handleKeydown(event: KeyboardEvent) {
-    if (this.adapter_.isMenuOpen()) {
+    if (this.isMenuOpen_) {
       return;
     }
 
@@ -268,6 +273,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
     if (this.adapter_.hasClass(cssClasses.FOCUSED) && (isEnter || isSpace || arrowUp || arrowDown)) {
       this.adapter_.openMenu();
+      this.isMenuOpen_ = true;
       this.adapter_.setSelectedTextAttr('aria-expanded', 'true');
       event.preventDefault();
     }
