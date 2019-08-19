@@ -73,7 +73,7 @@ function setupTest(hasLeadingIcon = true, hasHelperText = false) {
     showToScreenReader: () => {},
     setValidity: () => {},
   });
-  const listItem = td.object();
+  const listItem = td.object({});
   const foundationMap = {
     leadingIcon: hasLeadingIcon ? leadingIcon : undefined,
     helperText: hasHelperText ? helperText : undefined,
