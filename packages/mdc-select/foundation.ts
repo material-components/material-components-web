@@ -22,6 +22,8 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import * as menuSurfaceConstants from '@material/menu-surface/constants';
+
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 import {MDCSelectHelperTextFoundation} from './helper-text/foundation';
@@ -66,6 +68,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       setSelectedTextAttr: () => undefined,
       openMenu: () => undefined,
       closeMenu: () => undefined,
+      getAnchorElement: () => null,
+      setMenuAnchorElement: () => undefined,
+      setMenuAnchorCorner: () => undefined,
       setMenuWrapFocus: () => undefined,
       setAttributeAtIndex: () => undefined,
       removeAttributeAtIndex: () => undefined,
@@ -357,7 +362,12 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     return this.adapter_.getSelectedTextAttr('aria-required') === 'true';
   }
 
-  setupMenu() {
+  init() {
+    const anchorEl = this.adapter_.getAnchorElement();
+    if (anchorEl) {
+      this.adapter_.setMenuAnchorElement(anchorEl);
+      this.adapter_.setMenuAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
+    }
     this.adapter_.setMenuWrapFocus(false);
   }
 }

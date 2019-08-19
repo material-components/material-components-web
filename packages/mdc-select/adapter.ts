@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import * as menuSurfaceConstants from '@material/menu-surface/constants';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -124,6 +126,21 @@ export interface MDCSelectAdapter {
    * Closes the menu.
    */
   closeMenu(): void;
+
+  /**
+   * Returns the select anchor element.
+   */
+  getAnchorElement(): Element | null;
+
+  /**
+   * Sets the menu anchor element.
+   */
+  setMenuAnchorElement(anchorEl: Element): void;
+  
+  /**
+   * Sets the menu anchor corner.
+   */
+  setMenuAnchorCorner(anchorCorner: menuSurfaceConstants.Corner): void;
 
   /**
    * Sets whether the menu should wrap focus.

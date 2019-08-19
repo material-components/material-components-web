@@ -152,7 +152,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_!.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
     this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
     this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
-    this.foundation_.setupMenu();
+    this.foundation_.init();
 
     if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
       // If an element is selected, the select should set the initial selected text.
@@ -293,8 +293,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private menuSetup_(menuFactory: MDCMenuFactory) {
     this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR)!;
     this.menu_ = menuFactory(this.menuElement_);
-    this.menu_.setAnchorElement(this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!);
-    this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
   }
 
   private createRipple_(): MDCRipple {
@@ -326,6 +324,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
       openMenu: () => this.menu_.open = true,
       closeMenu: () => this.menu_.open = false,
+      getAnchorElement: () => this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!,
+      setMenuAnchorElement: (anchorEl: Element) => this.menu_.setAnchorElement(anchorEl),
+      setMenuAnchorCorner: (anchorCorner: menuSurfaceConstants.Corner) => this.menu_.setAnchorCorner(anchorCorner),
       setMenuWrapFocus: (wrapFocus: boolean) => this.menu_.wrapFocus = wrapFocus,
       setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) => {
         const menuItem = this.menu_.items[index];
