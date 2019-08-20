@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import * as menuSurfaceConstants from '@material/menu-surface/constants';
+import {Corner} from '@material/menu-surface/constants';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -136,11 +136,11 @@ export interface MDCSelectAdapter {
    * Sets the menu anchor element.
    */
   setMenuAnchorElement(anchorEl: Element): void;
-  
+
   /**
    * Sets the menu anchor corner.
    */
-  setMenuAnchorCorner(anchorCorner: menuSurfaceConstants.Corner): void;
+  setMenuAnchorCorner(anchorCorner: Corner): void;
 
   /**
    * Sets whether the menu should wrap focus.
@@ -170,7 +170,7 @@ export interface MDCSelectAdapter {
   /**
    * Gets the text content of the menu item element at the given index.
    */
-  getMenuItemTextAtIndex(index: number): string;
+  getMenuItemTextAtIndex(index: number): string | null;
 
   /**
    * Adds the class name on the menu item at the given index.

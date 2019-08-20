@@ -22,7 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import * as menuSurfaceConstants from '@material/menu-surface/constants';
+import {Corner} from '@material/menu-surface/constants';
 
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
@@ -120,9 +120,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const previouslySelectedIndex = this.selectedIndex_;
     this.selectedIndex_ = index;
 
-    this.adapter_.setSelectedText(
-        this.selectedIndex_ === numbers.UNSET_INDEX ?
-            '' : this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_).trim());
+    if (this.selectedIndex_ === numbers.UNSET_INDEX || !this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)) {
+      this.adapter_.setSelectedText('');
+    } else {
+      this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)!.trim();
+    }
 
     if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
       this.adapter_.removeClassAtIndex(previouslySelectedIndex, cssClasses.SELECTED_ITEM_CLASS);
@@ -366,7 +368,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const anchorEl = this.adapter_.getAnchorElement();
     if (anchorEl) {
       this.adapter_.setMenuAnchorElement(anchorEl);
-      this.adapter_.setMenuAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
+      this.adapter_.setMenuAnchorCorner(Corner.BOTTOM_START);
     }
     this.adapter_.setMenuWrapFocus(false);
   }

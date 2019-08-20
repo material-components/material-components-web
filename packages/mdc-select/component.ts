@@ -328,12 +328,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       setMenuAnchorElement: (anchorEl: HTMLElement) => this.menu_.setAnchorElement(anchorEl),
       setMenuAnchorCorner: (anchorCorner: menuSurfaceConstants.Corner) => this.menu_.setAnchorCorner(anchorCorner),
       setMenuWrapFocus: (wrapFocus: boolean) => this.menu_.wrapFocus = wrapFocus,
-      setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) => 
+      setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) =>
         this.menu_.items[index].setAttribute(attributeName, attributeValue),
-      removeAttributeAtIndex: (index: number, attributeName: string) => this.menu_.items[index].removeAttribute(attributeName),
+      removeAttributeAtIndex: (index: number, attributeName: string) =>
+        this.menu_.items[index].removeAttribute(attributeName),
       focusMenuItemAtIndex: (index: number) => (this.menu_.items[index] as HTMLElement).focus(),
       getMenuItemValues: () => this.menu_.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || ''),
-      getMenuItemTextAtIndex: (index: number) => this.menu_.items[index].textContent ,
+      getMenuItemTextAtIndex: (index: number) => this.menu_.items[index].textContent,
       addClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.add(className),
       removeClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.remove(className),
     };

@@ -29,6 +29,7 @@ import {install as installClock} from '../helpers/clock';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index';
+import {Corner} from '../../../packages/mdc-menu-surface/constants';
 import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses, strings} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
@@ -725,6 +726,22 @@ test('adapter#removeAttributeAtIndex removes attribute value correctly', () => {
   expect(menuItem.hasAttribute(attrToRemove)).to.be.false;
 });
 
+test('adapter#focusMenuItemAtIndex', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, menuSurface, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+  const index = 1;
+  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  adapter.focusMenuItemAtIndex(index);
+  assert.equal(document.activeElement, menuItem);
+  document.body.removeChild(fixture);
+});
+
 test('adapter#setSelectedText sets the select text content correctly', () => {
   const hasMockFoundation = true;
   const hasMockMenu = true;
@@ -738,6 +755,21 @@ test('adapter#setSelectedText sets the select text content correctly', () => {
   assert.notEqual(textToSet, selectedText.textContent);
   adapter.setSelectedText(textToSet);
   assert.equal(textToSet, selectedText.textContent);
+  document.body.removeChild(fixture);
+});
+
+test('adapter#isSelectedTextFocused', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, component, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+  selectedText.tabIndex = 0;
+  selectedText.focus();
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  assert.isTrue(adapter.isSelectedTextFocused());
   document.body.removeChild(fixture);
 });
 
@@ -798,17 +830,44 @@ test('adapter#closeMenu causes the menu to close', () => {
   document.body.removeChild(fixture);
 });
 
-test('adapter#isMenuOpen returns true if the menu is opened, and false if not', () => {
+test('adapter#getAnchorElement', () => {
   const hasMockFoundation = true;
   const hasMockMenu = true;
   const hasOutline = false;
   const hasLabel = true;
-  const {fixture, component} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {fixture, component, anchor} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
   const adapter = component.getDefaultFoundation().adapter_;
-  assert.isFalse(adapter.isMenuOpen());
-  adapter.openMenu();
-  assert.isTrue(adapter.isMenuOpen());
+
+  assert.equal(adapter.getAnchorElement(), anchor);
+  document.body.removeChild(fixture);
+});
+
+test('adapter#setMenuAnchorElement', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, component, mockMenu, anchor} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  adapter.setMenuAnchorElement(anchor);
+  td.verify(mockMenu.setAnchorElement(anchor));
+  document.body.removeChild(fixture);
+});
+
+test('adapter#setMenuAnchorCorner', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, component, mockMenu} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  adapter.setMenuAnchorCorner(Corner.BOTTOM_START);
+  td.verify(mockMenu.setAnchorCorner(Corner.BOTTOM_START));
   document.body.removeChild(fixture);
 });
 
@@ -1024,42 +1083,6 @@ test('menu surface opened event causes selected element to be focused', () => {
 
   assert.equal(document.activeElement, menuSurface.querySelector('.mdc-list-item--selected'));
   assert.equal(component.selectedIndex, 1);
-  document.body.removeChild(fixture);
-});
-
-test('menu surface closed event does not call foundation.handleBlur if selected-text is focused', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {fixture, menuSurface, mockFoundation, selectedText} = setupTest(hasOutline, hasLabel,
-    hasMockFoundation, hasMockMenu);
-  document.body.appendChild(fixture);
-  fixture.querySelector('.mdc-select__selected-text').tabIndex = 0;
-  fixture.querySelector('.mdc-select__selected-text').focus();
-  const event = document.createEvent('Event');
-  event.initEvent(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, false, true);
-  menuSurface.dispatchEvent(event);
-  td.verify(mockFoundation.handleMenuClosed(), {times: 1});
-
-  td.verify(mockFoundation.handleBlur(), {times: 0});
-  assert.isFalse(selectedText.hasAttribute('aria-expanded'));
-  document.body.removeChild(fixture);
-});
-
-test('menu surface closed event calls foundation.handleBlur if selected-text is not focused', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {fixture, menuSurface, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  document.body.appendChild(fixture);
-  document.body.focus();
-  const event = document.createEvent('Event');
-  event.initEvent(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, false, true);
-  menuSurface.dispatchEvent(event);
-
-  td.verify(mockFoundation.handleBlur(), {times: 1});
   document.body.removeChild(fixture);
 });
 
