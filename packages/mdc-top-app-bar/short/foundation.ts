@@ -55,8 +55,7 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   /**
    * Set if the short top app bar should always be collapsed.
    *
-   * When set to `true`, the bar collapses.
-   * When set to `false`, the bar will determine if it should collapse based on scroll position.
+   * @param value When `true`, bar will always be collapsed. When `false`, bar may collapse or expand based on scroll.
    */
   setAlwaysCollapsed(value: boolean) {
     this.isAlwaysCollapsed_ = !!value;
