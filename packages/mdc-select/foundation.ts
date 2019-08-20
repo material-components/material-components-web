@@ -52,7 +52,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       hasClass: () => false,
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
-      getValue: () => '',
+      getSelectedMenuItem: () => null,
       floatLabel: () => undefined,
       getLabelWidth: () => 0,
       hasOutline: () => false,
@@ -71,6 +71,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       removeAttributeAtIndex: () => undefined,
       getMenuItemValues: () => [],
       getMenuItemTextAtIndex: () => '',
+      getMenuItemAttr: () => '',
       addClassAtIndex: () => undefined,
       removeClassAtIndex: () => undefined,
     };
@@ -140,7 +141,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   getValue() {
-    return this.adapter_.getValue();
+    const listItem = this.adapter_.getSelectedMenuItem();
+    if (listItem) {
+      return this.adapter_.getMenuItemAttr(listItem, strings.VALUE_ATTR) || '';
+    }
+    return '';
   }
 
   getDisabled() {
@@ -323,12 +328,17 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
       // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
       return this.selectedIndex_ !== numbers.UNSET_INDEX &&
-        (this.selectedIndex_ !== 0 || Boolean(this.adapter_.getValue()));
+        (this.selectedIndex_ !== 0 || Boolean(this.getValue()));
     }
     return true;
   }
 
   setRequired(isRequired: boolean) {
+    if (isRequired) {
+      this.adapter_.addClass(cssClasses.REQUIRED);
+    } else {
+      this.adapter_.removeClass(cssClasses.REQUIRED);
+    }
     this.adapter_.setSelectedTextAttr('aria-required', isRequired.toString());
   }
 
@@ -338,6 +348,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   setupMenu() {
     this.adapter_.setMenuWrapFocus(false);
+
+    const value = this.getValue();
+    if (value) {
+      this.setValue(value);
+    }
   }
 }
 
