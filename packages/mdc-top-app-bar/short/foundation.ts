@@ -63,8 +63,8 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
     if (this.isAlwaysCollapsed_) {
       this.collapse_();
     } else {
-      // let handleTargetScroll determine if the bar should be collapsed
-      this.handleTargetScroll();
+      // let maybeCollapseBar_ determine if the bar should be collapsed
+      this.maybeCollapseBar_();
     }
   }
 
@@ -77,6 +77,10 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * @override
    */
   handleTargetScroll() {
+    this.maybeCollapseBar_();
+  }
+
+  private maybeCollapseBar_() {
     if (this.isAlwaysCollapsed_) {
       return;
     }
