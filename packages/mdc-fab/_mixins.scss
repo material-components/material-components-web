@@ -95,7 +95,7 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
       on-secondary, $query: $query, $ripple-target: $mdc-fab-ripple-target);
 
     #{$mdc-fab-ripple-target} {
-			@include mdc-ripple-target-common($query: $query);
+      @include mdc-ripple-target-common($query: $query);
     }
   }
 
