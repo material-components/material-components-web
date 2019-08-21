@@ -21,8 +21,8 @@
 //
 
 $mdc-density-interval: 4px !default;
-$mdc-density-minimum-scale: compact !default;
-$mdc-density-maximum-scale: default !default;
-$mdc-density-supported-scales: (default, comfortable, compact) !default;
-$mdc-density-supported-properties: (height) !default;
+$mdc-density-minimum-scale: minimum !default;
+$mdc-density-maximum-scale: maximum !default;
+$mdc-density-supported-scales: (default, minimum, maximum) !default;
+$mdc-density-supported-properties: (height, size) !default;
 $mdc-density-default-scale: default !default;

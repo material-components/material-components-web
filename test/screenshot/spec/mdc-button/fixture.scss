@@ -77,9 +77,9 @@ $custom-button-custom-horizontal-padding: 24px;
 }
 
 .custom-button--density-compact {
-  @include mdc-button-density(compact);
+  @include mdc-button-density(-3);
 }
 
 .custom-button--density-comfortable {
-  @include mdc-button-density(comfortable);
+  @include mdc-button-density(-1);
 }
