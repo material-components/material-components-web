@@ -189,7 +189,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
     @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-checkbox-ripple-target);
     @include mdc-states($color: on-surface, $query: $query, $ripple-target: $mdc-checkbox-ripple-target);
     @include mdc-ripple-radius-unbounded($query: $query, $ripple-target: $mdc-checkbox-ripple-target);
-    @include mdc-checkbox-touch-dimension($mdc-checkbox-touch-area, $query: $query);
+    @include mdc-checkbox-ripple-size($mdc-checkbox-ripple-size, $query: $query);
   }
 
   #{$mdc-checkbox-ripple-target} {
@@ -203,9 +203,9 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin mdc-checkbox-touch-dimension($touch-dimension, $query: mdc-feature-all()) {
+@mixin mdc-checkbox-ripple-size($ripple-size, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
-  $checkbox-padding: ($touch-dimension - $mdc-checkbox-size) / 2;
+  $checkbox-padding: ($ripple-size - $mdc-checkbox-icon-size) / 2;
 
   @include mdc-feature-targets($feat-structure) {
     padding: $checkbox-padding;
@@ -223,8 +223,8 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
     @include mdc-feature-targets($feat-structure) {
       top: -$mdc-checkbox-border-width - $checkbox-padding;
       left: -$mdc-checkbox-border-width - $checkbox-padding;
-      width: $touch-dimension;
-      height: $touch-dimension;
+      width: $ripple-size;
+      height: $ripple-size;
     }
   }
 }
@@ -336,10 +336,10 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 @mixin mdc-checkbox-base_ {
   display: inline-block;
   position: relative;
-  flex: 0 0 $mdc-checkbox-size;
+  flex: 0 0 $mdc-checkbox-icon-size;
   box-sizing: content-box;
-  width: $mdc-checkbox-size;
-  height: $mdc-checkbox-size;
+  width: $mdc-checkbox-icon-size;
+  height: $mdc-checkbox-icon-size;
   line-height: 0;
   white-space: nowrap;
   cursor: pointer;
@@ -494,8 +494,8 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    width: $mdc-checkbox-size;
-    height: $mdc-checkbox-size;
+    width: $mdc-checkbox-icon-size;
+    height: $mdc-checkbox-icon-size;
     // border-color is overridden by the mdc-checkbox-unmarked-stroke-color() mixin
     border: $mdc-checkbox-border-width solid currentColor;
     border-radius: 2px;
