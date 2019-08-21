@@ -276,7 +276,8 @@
     }
   }
 
-  &:disabled {
+  &:disabled,
+  &[disabled][href=""] {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, transparent);
 
@@ -324,7 +325,8 @@
     border-style: solid;
   }
 
-  &:disabled {
+  &:disabled,
+  &[disabled][href=""] {
     @include mdc-feature-targets($feat-color) {
       border-color: $mdc-button-disabled-ink-color;
     }
@@ -337,7 +339,8 @@
 
   @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding, $query);
 
-  &:disabled {
+  &:disabled,
+  &[disabled][href=""] {
     @include mdc-feature-targets($feat-color) {
       background-color: rgba(mdc-theme-prop-value(on-surface), .12);
       color: $mdc-button-disabled-ink-color;
@@ -360,7 +363,8 @@
     @include mdc-elevation(8, $query: $query);
   }
 
-  &:disabled {
+  &:disabled,
+  &[disabled][href=""] {
     @include mdc-elevation(0, $query: $query);
   }
 
