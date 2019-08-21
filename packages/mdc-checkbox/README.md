@@ -125,6 +125,7 @@ Mixin | Description
 `mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
 `mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator (ripple) when checkbox is selected or is in indeterminate state.
 `mdc-checkbox-ripple-size($ripple-size)` | Sets the ripple size of the checkbox.
+`mdc-checkbox-density($density-scale)` | Sets density scale for checkbox, e.g. `$density-scale: -3`.
 
 The ripple effect for the Checkbox component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
