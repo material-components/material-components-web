@@ -40,8 +40,6 @@ import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/com
 import {MDCSelectIcon, MDCSelectIconFactory} from './icon/component';
 import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
-const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
-
 export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   static attachTo(root: Element): MDCSelect {
     return new MDCSelect(root);
@@ -71,7 +69,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private handleMenuOpened_!: EventListener; // assigned in initialize()
   private handleMenuClosed_!: EventListener; // assigned in initialize()
   private handleMenuSelected_!: CustomEventListener<MDCMenuItemEvent>; // assigned in initialize()
-  private validationObserver_!: MutationObserver; // assigned in initialize()
 
   initialize(
       labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
@@ -111,19 +108,12 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
     const leadingIcon = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     if (leadingIcon) {
-      this.root_.classList.add(cssClasses.WITH_LEADING_ICON);
       this.leadingIcon_ = iconFactory(leadingIcon);
-
-      this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
     }
 
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
       this.ripple_ = this.createRipple_();
     }
-
-    // The required state needs to be sync'd before the mutation observer is added.
-    this.initialSyncRequiredState_();
-    this.addMutationObserverForRequired_();
   }
 
   /**
@@ -153,12 +143,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
     this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
     this.foundation_.init();
-
-    if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
-      // If an element is selected, the select should set the initial selected text.
-      const adapterMethods = this.getSelectAdapterMethods_();
-      this.foundation_.setValue(adapterMethods.getValue());
-    }
 
     // Initially sync floating label
     this.foundation_.handleChange(/* didChange */ false);
@@ -190,9 +174,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     }
     if (this.helperText_) {
       this.helperText_.destroy();
-    }
-    if (this.validationObserver_) {
-      this.validationObserver_.disconnect();
     }
 
     super.destroy();
@@ -311,13 +292,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private getSelectAdapterMethods_() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
-      getValue: () => {
-        const listItem = this.getSelectedMenuItem_();
-        if (listItem && listItem.hasAttribute(strings.VALUE_ATTR)) {
-          return listItem.getAttribute(strings.VALUE_ATTR) || '';
-        }
-        return '';
-      },
+      getSelectedMenuItem: () => this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR),
+      getMenuItemAttr: (menuItem: Element, attr: string) => menuItem.getAttribute(attr),
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
       isSelectedTextFocused: () => document.activeElement === this.selectedText_,
       getSelectedTextAttr: (attr: string) => this.selectedText_.getAttribute(attr),
@@ -375,10 +351,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     };
   }
 
-  private getSelectedMenuItem_(): Element|null {
-    return this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
-  }
-
   /**
    * Calculates where the line ripple should start based on the x coordinate within the component.
    */
@@ -400,43 +372,5 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
     };
-  }
-
-  private initialSyncRequiredState_() {
-    const isRequired =
-        (this.selectedText_ as HTMLSelectElement).required
-        || this.selectedText_.getAttribute('aria-required') === 'true'
-        || this.root_.classList.contains(cssClasses.REQUIRED);
-    if (isRequired) {
-      this.selectedText_.setAttribute('aria-required', 'true');
-      this.root_.classList.add(cssClasses.REQUIRED);
-    }
-  }
-
-  private addMutationObserverForRequired_() {
-    const observerHandler = (attributesList: string[]) => {
-      attributesList.some((attributeName) => {
-        if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) === -1) {
-          return false;
-        }
-
-        if (this.selectedText_.getAttribute('aria-required') === 'true') {
-          this.root_.classList.add(cssClasses.REQUIRED);
-        } else {
-          this.root_.classList.remove(cssClasses.REQUIRED);
-        }
-
-        return true;
-      });
-    };
-
-    const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
-      return mutationsList
-          .map((mutation) => mutation.attributeName)
-          .filter((attributeName) => attributeName) as string[];
-    };
-    const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
-    observer.observe(this.selectedText_, {attributes: true});
-    this.validationObserver_ = observer;
   }
 }

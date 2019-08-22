@@ -40,7 +40,7 @@ npm install @material/select
 The select uses an [`MDCMenu`](../mdc-menu) component instance to contain the list of options, but uses the
 `data-value` attribute instead of `value` to represent the options' values.
 
-> Note: The `data-value` attribute _must_ be present on each option.
+> _NOTE_: The `data-value` attribute _must_ be present on each option.
 
 The select requires that you set the `width` of the `mdc-select__anchor` element as well as setting the width of the `mdc-select__menu` element to match. This is best done through the use of another class (e.g. `demo-width-class` in the example HTML and CSS below).
 
@@ -169,7 +169,6 @@ to set the selected item. The select also needs the text from the selected eleme
 ```html
 <div class="mdc-select">
   <div class="mdc-select__anchor demo-width-class">
-    <input type="hidden" name="my-select">
     <i class="mdc-select__dropdown-icon"></i>
     <div class="mdc-select__selected-text">Vegetables</div>
     <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
@@ -203,16 +202,16 @@ the list with an empty `data-value` attribute.
 <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" role="option" data-value=""></li>
 ```
 
-#### Disabled select
+#### Required select
 
-Add the `mdc-select--disabled` class to the `mdc-select` element.
+To style a select menu as required and enable validation, add the `mdc-select--required` class to the `mdc-select` element
+and set the `aria-required` attribute on the `mdc-select__selected-text` element to be `"true"`.
 
 ```html
-<div class="mdc-select mdc-select--disabled">
+<div class="mdc-select mdc-select--required">
   <div class="mdc-select__anchor">
-    <input type="hidden" name="my-select" disabled>
     <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text"></div>
+    <div class="mdc-select__selected-text" aria-required="true"></div>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <div class="mdc-line-ripple"></div>
   </div>
@@ -223,6 +222,30 @@ Add the `mdc-select--disabled` class to the `mdc-select` element.
 </div>
 ```
 
+> _NOTE_: To programmatically set a select as required, use the `required` property in the `MDCSelect` API.
+
+#### Disabled select
+
+Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
+`aria-disabled` attribute on the `mdc-select__selected-text` element to be `"true"`.
+
+```html
+<div class="mdc-select mdc-select--disabled">
+  <div class="mdc-select__anchor">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div class="mdc-select__selected-text" aria-disabled="true"></div>
+    <span class="mdc-floating-label">Pick a Food Group</span>
+    <div class="mdc-line-ripple"></div>
+  </div>
+
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+    ...
+  </div>
+</div>
+```
+
+> _NOTE_: To programmatically set a select as disabled, use the `disabled` property in the `MDCSelect` API.
+
 #### Disabled options
 
 Add the `mdc-list-item--disabled` class to list items that are disabled.
@@ -232,11 +255,7 @@ programmatically select a disabled list item.
 ```html
 <div class="mdc-select">
   <div class="mdc-select__anchor">
-    <input type="hidden" name="my-select">
-    <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text">Vegetables</div>
-    <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-    <div class="mdc-line-ripple"></div>
+    ...
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -284,7 +303,7 @@ well as interaction targets. See [here](icon/) for more information on using ico
 | `mdc-select--outlined` | Optional. Styles the select as outlined select. |
 | `mdc-select--with-leading-icon` | Styles the select as a select with a leading icon. |
 
-> Note: To further customize the [MDCMenu](./../mdc-menu) or the [MDCList](./../mdc-list) component contained within the select, please refer to their respective documentation.
+> _NOTE_: To further customize the [MDCMenu](./../mdc-menu) or the [MDCList](./../mdc-list) component contained within the select, please refer to their respective documentation.
 
 ### Sass Mixins
 
@@ -305,7 +324,7 @@ Mixin | Description
 `mdc-select-focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
 `mdc-select-hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
 
-> NOTE: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
+> _NOTE_: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 
 ## `MDCSelect` API
 
@@ -342,7 +361,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `hasClass(className: string) => boolean` | Returns true if the select element has the className in its classList. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
-| `getValue() => string` | Returns the value selected `option` on the `select` element and the `data-value` of the selected list item on the select. |
+| `getSelectedMenuItem() => Element` | Returns the selected menu item element. |
 | `floatLabel(value: boolean) => void` | Floats or defloats label. |
 | `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
 | `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |
@@ -365,6 +384,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `removeAttributeAtIndex(index: number, attributeName: string) => void` | Removes the attribute on the menu item at the given index. |
 | `focusMenuItemAtIndex(index: number) => void` | Focuses the menu item at the given index. |
 | `getMenuItemValues() => string[]` | Returns an array representing the VALUE_ATTR attributes of each menu item. |
+| `getMenuItemAttr(menuItem: Element, attr: string) => string` | Returns the given attribute on the the menu item element. |
 | `getMenuItemTextAtIndex(index: number) => string` | Gets the text content of the menu item element at the given index. |
 | `addClassAtIndex(menuItem: Element, className: string) => void` | Adds the class name on the menu item at the given index. |
 | `removeClassAtIndex(menuItem: Element, className: string) => void` | Removes the class name on the menu item at the given index. |

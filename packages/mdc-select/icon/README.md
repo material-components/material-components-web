@@ -58,7 +58,7 @@ const icon = new MDCSelectIcon(document.querySelector('.mdc-select__icon'));
 
 ## Variants
 
-Leading icons can be applied to default or `mdc-select--outlined` Selects. To add an icon, add the relevant class (`mdc-select--with-leading-icon` and/or `mdc-select--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-select__icon`.
+Leading icons can be applied to default or `mdc-select--outlined` Selects. To add a leading icon, add the class `mdc-select--with-leading-icon` to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-select__icon`.
 
 > **NOTE:** if you would like to display un-clickable icons, simply omit `tabindex="0"` and `role="button"`, and the CSS will ensure the cursor is set to default, and that interacting with an icon doesn't do anything unexpected.
 

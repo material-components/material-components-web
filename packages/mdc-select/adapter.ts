@@ -57,9 +57,9 @@ export interface MDCSelectAdapter {
   deactivateBottomLine(): void;
 
   /**
-   * Returns the selected value of the select element.
+   * Returns the selected menu item element.
    */
-  getValue(): string;
+  getSelectedMenuItem(): Element | null;
 
   /**
    * Floats label determined based off of the shouldFloat argument.
@@ -171,6 +171,11 @@ export interface MDCSelectAdapter {
    * Gets the text content of the menu item element at the given index.
    */
   getMenuItemTextAtIndex(index: number): string | null;
+
+  /**
+   * Returns the given attribute on the the menu item element.
+   */
+  getMenuItemAttr(menuItem: Element, attr: string): string | null;
 
   /**
    * Adds the class name on the menu item at the given index.

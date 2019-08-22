@@ -91,7 +91,7 @@ class FakeHelperText {
 
 function getFixture() {
   return bel`
-    <div class="mdc-select">
+    <div class="mdc-select mdc-select--with-leading-icon">
       <div class="mdc-select__anchor">
         <input type="hidden" name="select">
         <i class="mdc-select__icon material-icons">code</i>
@@ -118,7 +118,7 @@ function getFixture() {
 
 function getOutlineFixture() {
   return bel`
-    <div class="mdc-select mdc-select--outlined">
+    <div class="mdc-select mdc-select--outlined mdc-select--with-leading-icon">
       <div class="mdc-select__anchor">
         <input type="hidden" name="select">
         <i class="mdc-select__icon material-icons">code</i>
@@ -249,20 +249,22 @@ test('#get/set disabled', () => {
 });
 
 test('#get/set required true', () => {
-  const {component, selectedText} = setupTest();
+  const {fixture, component, selectedText} = setupTest();
   assert.isFalse(component.required);
 
   component.required = true;
   assert.isTrue(component.required);
+  assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
   assert.strictEqual(selectedText.getAttribute('aria-required'), 'true');
 });
 
 test('#get/set required false', () => {
-  const {component, selectedText} = setupTest();
+  const {fixture, component, selectedText} = setupTest();
   assert.isFalse(component.required);
 
   component.required = false;
   assert.isFalse(component.required);
+  assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
   assert.strictEqual(selectedText.getAttribute('aria-required'), 'false');
 });
 
@@ -369,35 +371,6 @@ test('#set helperTextContent calls foundation.setHelperTextContent', () => {
   component.foundation_.setHelperTextContent = td.func();
   component.helperTextContent = 'hello_world';
   td.verify(component.foundation_.setHelperTextContent('hello_world'), {times: 1});
-});
-
-test(`#initialize does not add the ${cssClasses.WITH_LEADING_ICON} class if there is no leading icon`, () => {
-  const fixture = bel`
-    <div class="mdc-select">
-      <div class="mdc-select__anchor">
-        <div class="mdc-select__selected-text"></div>
-        <label class="mdc-floating-label">Pick a Food Group</label>
-        <div class="mdc-line-ripple"></div>
-      </div>
-
-      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-        <ul class="mdc-list">
-          <li class="mdc-list-item" data-value=""></li>
-          <li class="mdc-list-item mdc-list-item--selected" data-value="orange">
-            Orange
-          </li>
-          <li class="mdc-list-item" data-value="apple">
-            Apple
-          </li>
-        </ul>
-      </div>
-    </div>
-  `;
-  const menuSurface = fixture.querySelector('.mdc-select__menu');
-  const component = new MDCSelect(fixture, /* foundation */ undefined);
-  assert.isFalse(fixture.classList.contains(cssClasses.WITH_LEADING_ICON));
-  assert.isFalse(menuSurface.classList.contains(cssClasses.WITH_LEADING_ICON));
-  component.destroy();
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected class', () => {
@@ -673,7 +646,7 @@ test('adapter#getLabelWidth returns 0 if the label does not exist', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), 0);
 });
 
-test('adapter#getValue returns the selected element value', () => {
+test('adapter#getSelectedMenuItem returns the selected element', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
@@ -682,11 +655,10 @@ test('adapter#getValue returns the selected element value', () => {
 
   const index = 1;
   const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-  const textValue = menuItem.getAttribute('data-value');
   const adapter = component.getDefaultFoundation().adapter_;
-  adapter.addClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
+  menuItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
 
-  expect(adapter.getValue()).to.equal(textValue);
+  expect(adapter.getSelectedMenuItem()).to.equal(menuItem);
 });
 
 test('adapter#setAttributeAtIndex sets attribute value correctly', () => {
@@ -899,6 +871,20 @@ test('adapter#getMenuItemValues returns the correct menu item values', () => {
   expect(adapter.getMenuItemValues()).to.eql(['', 'orange', 'apple']);
 
   document.body.removeChild(fixture);
+});
+
+test('adapter#getMenuItemAttr returns the menu item attribute', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+
+  const index = 1;
+  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  expect(adapter.getMenuItemAttr(menuItem, strings.VALUE_ATTR)).to.equal('orange');
 });
 
 test('adapter#addClassAtIndex adds class correctly', () => {
@@ -1130,10 +1116,8 @@ test('menu surface selected event causes the select to update', () => {
 
 test('#constructor instantiates a leading icon if an icon element is present', () => {
   const root = getFixture();
-  const menu = root.querySelector(strings.MENU_SELECTOR);
   const component = new MDCSelect(root);
   assert.instanceOf(component.leadingIcon_, MDCSelectIcon);
-  assert.isTrue(menu.classList.contains(cssClasses.WITH_LEADING_ICON));
   assert.isTrue(root.classList.contains(cssClasses.WITH_LEADING_ICON));
 });
 
@@ -1173,39 +1157,4 @@ test('#destroy destroys the helper text if it exists', () => {
   component.destroy();
   td.verify(helperText.destroy(), {times: 1});
   document.body.removeChild(container);
-});
-
-test(`MutationObserver adds ${cssClasses.REQUIRED} class to root element when aria-required attr is added`, (done) => {
-  const hasLabel = true;
-  const hasOutline = false;
-  const hasHelperText = false;
-  const {fixture, selectedText} = setupTest(hasLabel, hasOutline, hasHelperText);
-  assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
-
-  selectedText.setAttribute('aria-required', 'true');
-
-  // MutationObservers are queued as microtasks and fire asynchronously
-  setTimeout(() => {
-    assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
-    done();
-  }, 0);
-});
-
-test(`MutationObserver removes ${cssClasses.REQUIRED} class from root element when aria-required attr ` +
-'is removed', (done) => {
-  const hasLabel = true;
-  const hasOutline = false;
-  const hasHelperText = false;
-  const {fixture, selectedText} = setupTest(hasLabel, hasOutline, hasHelperText);
-
-  selectedText.setAttribute('aria-required', 'true');
-  setTimeout(() => {
-    assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
-
-    selectedText.removeAttribute('aria-required');
-    setTimeout(() => {
-      assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
-      done();
-    }, 0);
-  }, 0);
 });
