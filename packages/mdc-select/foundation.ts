@@ -124,7 +124,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     if (this.selectedIndex_ === numbers.UNSET_INDEX || !this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)) {
       this.adapter_.setSelectedText('');
     } else {
-      this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)!.trim();
+      this.adapter_.setSelectedText(this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)!.trim());
     }
 
     if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
