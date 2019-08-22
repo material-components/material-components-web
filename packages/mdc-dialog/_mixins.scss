@@ -106,7 +106,6 @@
       max-width: 100%; // IE 11
       max-height: 100%; // IE 11
       pointer-events: auto; // Override from `.mdc-dialog__container`.
-      overflow-y: auto;
 
       @include mdc-rtl(".mdc-dialog") {
         /* @noflip */
@@ -152,7 +151,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 20px 24px; // Note: the top padding is only 20px for dialogs without titles; see below for override
-      overflow: auto;
+      overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
 
