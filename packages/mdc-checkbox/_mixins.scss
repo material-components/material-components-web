@@ -25,6 +25,7 @@
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
+@import "@material/touch-target/mixins";
 @import "./functions";
 @import "./keyframes";
 @import "./variables";
@@ -346,8 +347,8 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    height: $size;
     width: $size;
+    height: $size;
   }
 }
 
@@ -593,9 +594,9 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   left: 50%;
   margin: 0;
   padding: 0;
+  transform: translate(-50%, -50%);
   opacity: 0;
   cursor: inherit;
-  transform: translate(-50%, -50%);
 }
 
 // Check mark
