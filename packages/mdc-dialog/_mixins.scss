@@ -106,6 +106,7 @@
       max-width: 100%; // IE 11
       max-height: 100%; // IE 11
       pointer-events: auto; // Override from `.mdc-dialog__container`.
+      // IE 11: Otherwise, scrolling content in `mdc-dialog__content` overflows.
       overflow-y: auto;
 
       @include mdc-rtl(".mdc-dialog") {
