@@ -144,10 +144,23 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
       @include mdc-checkbox__native-control_;
     }
 
+    @include mdc-checkbox-touch-target($mdc-checkbox-ripple-size, $query);
+
     &:disabled {
       @include mdc-feature-targets($feat-structure) {
         @include mdc-checkbox--disabled_;
       }
+    }
+  }
+
+  .mdc-checkbox--touch {
+    @include mdc-touch-target-component(
+      $component-height: $mdc-checkbox-ripple-size,
+      $component-width: $mdc-checkbox-ripple-size,
+      $query: $query);
+
+    .mdc-checkbox__native-control {
+      @include mdc-checkbox-touch-target($mdc-touch-target-height, $query);
     }
   }
 
@@ -326,6 +339,15 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
   &.mdc-ripple-upgraded--background-focused.mdc-checkbox--selected {
     @include mdc-states-base-color($color: $color, $query: $query, $ripple-target: $mdc-checkbox-ripple-target);
+  }
+}
+
+@mixin mdc-checkbox-touch-target($size: $mdc-checkbox-ripple-size, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    height: $size;
+    width: $size;
   }
 }
 
@@ -566,14 +588,14 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
 @mixin mdc-checkbox__native-control_ {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  /* @noflip */
+  left: 50%;
   margin: 0;
   padding: 0;
   opacity: 0;
   cursor: inherit;
+  transform: translate(-50%, -50%);
 }
 
 // Check mark
