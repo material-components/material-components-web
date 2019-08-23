@@ -117,6 +117,7 @@
     @include mdc-dialog-min-width(0, $query: $query);
     @include mdc-dialog-max-width(0, 0, $query: $query);
     @include mdc-dialog-max-height(0, 0, $query: $query);
+    @include mdc-dialog-with-touch-target($query: $query);
 
     // Drawer
     @include mdc-drawer-core-styles($query: $query);
