@@ -22,45 +22,54 @@
 
 @import "./mixins";
 @import "./variables";
+@include mdc-bottom-navigation-menu-ripple;
 
 .mdc-bottom-navigation {
   @include mdc-bottom-navigation-fill-color(primary);
 
   display: flex;
   position: fixed;
-  justify-content: center;
-  left: 0;
   bottom: 0;
+  left: 0;
+  justify-content: center;
   width: 100%;
   height: $mdc-bottom-navigation-height;
   z-index: 4;
 }
 
 .mdc-bottom-navigation__menu {
-  align-items: center;
-  cursor: pointer;
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-width: 80px;
+  align-items: center;
   height: 100%;
   margin: 0;
   padding: $mdc-bottom-navigation-menu-horizontal-padding $mdc-bottom-navigation-menu-vertical-padding;
   border: none;
   outline: none;
   background: none;
+  cursor: pointer;
+  &:not(.active) {
+    > .mdc-bottom-navigation__menu__icon,
+    > .mdc-bottom-navigation__menu__label {
+      opacity: 0.7;
+    }
+  }
 }
 
 .mdc-bottom-navigation__menu__icon {
-  @include mdc-bottom-navigation-icon-color(on-primary);
+  @include mdc-bottom-navigation-menu-icon-color(on-primary);
 
 }
 
 .mdc-bottom-navigation__menu__label {
-  @include mdc-bottom-navigation-label-color(on-primary);
+  @include mdc-bottom-navigation-menu-label-color(on-primary);
 
+  min-width: 80px;
   max-width: 168px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   font-size: $mdc-bottom-navigation-label-font-size;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

@@ -20,6 +20,9 @@
 // THE SOFTWARE.
 //
 
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
+@import "@material/ripple/mixins";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
 @import "./variables";
@@ -32,10 +35,20 @@
   @include mdc-theme-prop(background-color, $color);
 }
 
-@mixin mdc-bottom-navigation-icon-color($color) {
+@mixin mdc-bottom-navigation-menu-ripple($query: mdc-feature-all()) {
+  @include mdc-ripple-common($query);
+
+  .mdc-bottom-navigation__menu {
+    @include mdc-ripple-surface($query);
+    @include mdc-ripple-radius-bounded($query: $query);
+    @include mdc-states(on-primary, false, $query);
+  }
+}
+
+@mixin mdc-bottom-navigation-menu-icon-color($color) {
   @include mdc-theme-prop(color, $color);
 }
 
-@mixin mdc-bottom-navigation-label-color($color) {
+@mixin mdc-bottom-navigation-menu-label-color($color) {
   @include mdc-theme-prop(color, $color);
 }
