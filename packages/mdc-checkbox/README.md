@@ -116,7 +116,7 @@ Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only 
 ### Accessibility
 
 Material Design spec advises that touch targets should be at least 48 x 48 px.
-To meet this requirement, add the following to your checkbox:
+To meet this requirement, add the `mdc-checkbox--touch` class to your checkbox as follows:
 
 ```html
 <span>
