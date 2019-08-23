@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@material/theme": "^3.1.0",
+    "tslib": "^1.10.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

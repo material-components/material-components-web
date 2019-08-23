@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,7 @@
 //
 
 // Default styles
-$mdc-top-app-bar-row-height: 64px !default;
-$mdc-top-app-bar-title-left-padding: 20px !default;
-$mdc-top-app-bar-section-vertical-padding: 8px !default;
-$mdc-top-app-bar-section-horizontal-padding: 12px !default;
-
-$mdc-top-app-bar-mobile-breakpoint: 599px !default;
-
-// Default mobile styles
-$mdc-top-app-bar-mobile-row-height: 56px !default;
-$mdc-top-app-bar-mobile-section-padding: 4px !default;
+$mdc-bottom-navigation-height: 56px !default;
+$mdc-bottom-navigation-menu-vertical-padding: 12px !default;
+$mdc-bottom-navigation-menu-horizontal-padding: 8px !default;
+$mdc-bottom-navigation-label-font-size: 12px !default;

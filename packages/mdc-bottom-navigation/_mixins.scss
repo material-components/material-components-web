@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,4 +20,22 @@
 // THE SOFTWARE.
 //
 
+@import "@material/theme/variables";
+@import "@material/theme/mixins";
 @import "./variables";
+
+//
+// Public
+//
+
+@mixin mdc-bottom-navigation-fill-color($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
+
+@mixin mdc-bottom-navigation-icon-color($color) {
+  @include mdc-theme-prop(color, $color);
+}
+
+@mixin mdc-bottom-navigation-label-color($color) {
+  @include mdc-theme-prop(color, $color);
+}

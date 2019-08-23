@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2018 Google Inc.
+  Copyright 2019 Google Inc.
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -42,9 +42,18 @@
   <body class="test-container">
     <div class="test-layout">
       <nav class="mdc-bottom-navigation">
-        <button>menu1</button>
-        <button>menu2</button>
-        <button>menu3</button>
+        <button class="mdc-bottom-navigation__menu">
+          <i class="material-icons mdc-bottom-navigation__menu__icon">favorite</i>
+          <span class="mdc-bottom-navigation__menu__label">menu1</span>
+        </button>
+        <button class="mdc-bottom-navigation__menu">
+          <i class="material-icons mdc-bottom-navigation__menu__icon">favorite</i>
+          <span class="mdc-bottom-navigation__menu__label">very very very very very long menu</span>
+        </button>
+        <button class="mdc-bottom-navigation__menu">
+          <i class="material-icons mdc-bottom-navigation__menu__icon">favorite</i>
+          <span class="mdc-bottom-navigation__menu__label">menu3</span>
+        </button>
       </nav>
     </div>
 
