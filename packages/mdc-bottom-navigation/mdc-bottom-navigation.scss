@@ -27,21 +27,34 @@
 .mdc-bottom-navigation {
   @include mdc-bottom-navigation-fill-color(primary);
 
-  display: flex;
   position: fixed;
   bottom: 0;
   left: 0;
-  justify-content: center;
   width: 100%;
   height: $mdc-bottom-navigation-height;
+  text-align: center;
   z-index: 4;
 }
 
+.mdc-bottom-navigation__icon {
+  @include mdc-bottom-navigation-menu-icon-color(on-primary);
+
+  vertical-align: middle;
+}
+
+.mdc-bottom-navigation__label {
+  @include mdc-bottom-navigation-menu-label-color(on-primary);
+
+  display: inline-block;
+  font-size: $mdc-bottom-navigation-label-font-size;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
 .mdc-bottom-navigation__menu {
-  display: flex;
   position: relative;
-  flex-direction: column;
-  align-items: center;
   height: 100%;
   margin: 0;
   padding: $mdc-bottom-navigation-menu-horizontal-padding $mdc-bottom-navigation-menu-vertical-padding;
@@ -50,27 +63,33 @@
   background: none;
   cursor: pointer;
   overflow: hidden;
+  vertical-align: top;
 
-  &:not(.active) {
-    > .mdc-bottom-navigation__menu__icon,
-    > .mdc-bottom-navigation__menu__label {
+  &:not(.mdc-bottom-navigation__menu--active) {
+    > .mdc-bottom-navigation__icon,
+    > .mdc-bottom-navigation__label {
       opacity: .7;
     }
   }
-}
 
-.mdc-bottom-navigation__menu__icon {
-  @include mdc-bottom-navigation-menu-icon-color(on-primary);
+  &:not(.mdc-bottom-navigation__label--inline) {
+    min-width: 80px;
+    max-width: 168px;
 
-}
+    > .mdc-bottom-navigation__label {
+      width: 100%;
+    }
 
-.mdc-bottom-navigation__menu__label {
-  @include mdc-bottom-navigation-menu-label-color(on-primary);
+    > .mdc-bottom-navigation__icon,
+    > .mdc-bottom-navigation__label {
+      vertical-align: top;
+    }
+  }
 
-  min-width: 80px;
-  max-width: 168px;
-  font-size: $mdc-bottom-navigation-label-font-size;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  &.mdc-bottom-navigation__label--inline {
+    > .mdc-bottom-navigation__label {
+      min-width: 56px;
+      max-width: 120px;
+    }
+  }
 }
