@@ -73,8 +73,8 @@
   }
 
   &:not(.mdc-bottom-navigation__label--inline) {
-    min-width: 80px;
-    max-width: 168px;
+    min-width: $mdc-bottom-navigation-menu-min-width;
+    max-width: $mdc-bottom-navigation-menu-max-width;
 
     > .mdc-bottom-navigation__label {
       width: 100%;
@@ -88,8 +88,18 @@
 
   &.mdc-bottom-navigation__label--inline {
     > .mdc-bottom-navigation__label {
-      min-width: 56px;
-      max-width: 120px;
+      /* stylelint-disable */
+      min-width: (
+        $mdc-bottom-navigation-menu-min-width -
+        $mdc-bottom-navigation-icon-width-height -
+        $mdc-bottom-navigation-menu-vertical-padding * 2
+      );
+      max-width: (
+        $mdc-bottom-navigation-menu-max-width -
+        $mdc-bottom-navigation-icon-width-height -
+        $mdc-bottom-navigation-menu-vertical-padding * 2
+      );
+      /* stylelint-enable */
     }
   }
 }
