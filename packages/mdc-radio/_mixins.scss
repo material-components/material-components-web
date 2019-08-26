@@ -320,8 +320,8 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 
 @mixin mdc-radio-touch-target($size: $mdc-radio-touch-area, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
-
   $offset: ($mdc-radio-touch-area - $size) / 2;
+
   @include mdc-feature-targets($feat-structure) {
     .mdc-radio__native-control {
       top: $offset;

@@ -39,7 +39,7 @@
 }
 
 // Styles applied to the component with the increased touch target.
-@mixin mdc-touch-target-component($component-height, $query: mdc-feature-all()) {
+@mixin mdc-touch-target-component($component-height, $component-width: null, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   $vertical-margin-value: ($mdc-touch-target-height - $component-height) / 2;
@@ -47,5 +47,14 @@
   @include mdc-feature-targets($feat-structure) {
     margin-top: $vertical-margin-value;
     margin-bottom: $vertical-margin-value;
+  }
+
+  @if $component-width {
+    $horizontal-margin-value: ($mdc-touch-target-width - $component-width) / 2;
+
+    @include mdc-feature-targets($feat-structure) {
+      margin-left: $horizontal-margin-value;
+      margin-right: $horizontal-margin-value;
+    }
   }
 }
