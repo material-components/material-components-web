@@ -343,6 +343,14 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/08/19_49_36_975/spec/mdc-data-table/classes/baseline.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-data-table/mixins/density.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/28/20_18_10_663/spec/mdc-data-table/mixins/density.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/28/20_10_39_077/spec/mdc-data-table/mixins/density.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/28/20_10_39_077/spec/mdc-data-table/mixins/density.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/28/20_18_10_663/spec/mdc-data-table/mixins/density.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-data-table/mixins/fill-color.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/08/15_23_45_666/spec/mdc-data-table/mixins/fill-color.html?utm_source=golden_json",
     "screenshots": {
