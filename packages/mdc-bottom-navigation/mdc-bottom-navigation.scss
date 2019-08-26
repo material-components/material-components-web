@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/elevation/mixins";
 @import "./mixins";
 @import "./variables";
 @include mdc-bottom-navigation-menu-ripple;
@@ -33,6 +34,12 @@
   width: 100%;
   text-align: center;
   z-index: 4;
+
+  &--scrolled {
+    @include mdc-elevation(4);
+
+    transition: box-shadow 200ms linear;
+  }
 
   &__icon {
     @include mdc-bottom-navigation-menu-icon-color(on-primary);
