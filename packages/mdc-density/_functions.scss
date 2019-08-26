@@ -100,8 +100,8 @@
   $max-value: map-get($property-scale-map, $mdc-density-maximum-scale);
 
   @if ($value < $min-value or $value > $max-value) {
-    @error "mdc-density: Height must be between #{$min-height} and " +
-      "#{$max-height}, but received #{$height}.";
+    @error "mdc-density: #{$property-name} must be between #{$min-value} and " +
+      "#{$max-value} (inclusive), but received #{$value}.";
   }
 
   @return $value;
