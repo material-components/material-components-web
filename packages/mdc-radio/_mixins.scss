@@ -27,6 +27,8 @@
 @import "@material/ripple/variables";
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
+@import "@material/touch-target/mixins";
+@import "@material/touch-target/variables";
 @import "./functions";
 @import "./variables";
 
@@ -45,6 +47,8 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-radio-touch-target($size: $mdc-radio-touch-area, $query: $query);
 
   .mdc-radio {
     @include mdc-radio-unchecked-stroke-color($mdc-radio-unchecked-color, $query);
@@ -138,8 +142,6 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
     &__native-control {
       @include mdc-feature-targets($feat-structure) {
         position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
         margin: 0;
@@ -148,6 +150,14 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
         cursor: inherit;
         z-index: 1;
       }
+    }
+
+    &--touch {
+      @include mdc-touch-target-component(
+        $component-height: $mdc-touch-target-height,
+        $component-width: $mdc-touch-target-height,
+        $query: $query);
+      @include mdc-radio-touch-target($size: $mdc-touch-target-height, $query: $query);
     }
   }
 
@@ -304,6 +314,21 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   .mdc-radio__background::before {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    }
+  }
+}
+
+@mixin mdc-radio-touch-target($size: $mdc-radio-touch-area, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  $offset: ($mdc-radio-touch-area - $size) / 2;
+  @include mdc-feature-targets($feat-structure) {
+    .mdc-radio__native-control {
+      top: $offset;
+      right: $offset;
+      left: $offset;
+      width: $size;
+      height: $size;
     }
   }
 }
