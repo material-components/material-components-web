@@ -21,10 +21,11 @@
 //
 
 // Default styles
-$mdc-bottom-navigation-height: 56px !default;
+$mdc-bottom-navigation-menu-height: 56px !default;
 $mdc-bottom-navigation-menu-min-width: 80px !default;
 $mdc-bottom-navigation-menu-max-width: 168px !default;
 $mdc-bottom-navigation-menu-vertical-padding: 12px !default;
 $mdc-bottom-navigation-menu-horizontal-padding: 8px !default;
 $mdc-bottom-navigation-label-font-size: 12px !default;
 $mdc-bottom-navigation-icon-width-height: 24px !default;
+$mdc-bottom-navigation-inactive-icon-opacity: 0.7 !default;
