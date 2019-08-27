@@ -20,6 +20,8 @@
 // THE SOFTWARE.
 //
 
+@import "@material/theme/variables"; // for mdc-theme-prop-value
+
 $mdc-button-height: 36px !default;
 $mdc-button-horizontal-padding: 8px !default;
 $mdc-button-contained-horizontal-padding: 16px !default;
