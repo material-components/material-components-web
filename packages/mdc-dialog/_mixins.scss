@@ -21,6 +21,7 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/button/variables";
 @import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
@@ -28,6 +29,7 @@
 @import "@material/shape/mixins";
 @import "@material/theme/mixins";
 @import "@material/theme/variables"; // for mdc-theme-prop-value
+@import "@material/touch-target/variables";
 @import "@material/typography/mixins";
 @import "./variables";
 
