@@ -65,6 +65,18 @@
         "custom_config": {
           "skip_all": true
         }
+      },
+      {
+        "description": "IE11 has flaky behavior with scrollbars",
+        "browser_regex_patterns": [
+          "desktop_windows_ie@11"
+        ],
+        "url_regex_patterns": [
+          "mdc-dialog/mixins/max-width",
+        ],
+        "custom_config": {
+          "skip_all": true
+        }
       }
     ]
   }
