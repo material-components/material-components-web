@@ -477,10 +477,10 @@
     ($mdc-touch-target-height - $mdc-button-height) / 2;
   $vertical-padding: max(0, $mdc-dialog-actions-padding - $touch-target-margin);
 
-  @include mdc-feature-targets($feat-structure) {
-    // Buttons with an increased touch target have added vertical margin, so
-    // decrease the actions element padding to compensate.
-    .mdc-dialog__actions {
+  // Buttons with an increased touch target have added vertical margin, so
+  // decrease the actions element padding to compensate.
+  .mdc-dialog__actions {
+    @include mdc-feature-targets($feat-structure) {
       padding-top: $vertical-padding;
       padding-bottom: $vertical-padding;
 
