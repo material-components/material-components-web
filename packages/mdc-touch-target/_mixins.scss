@@ -53,8 +53,8 @@
     $horizontal-margin-value: ($mdc-touch-target-width - $component-width) / 2;
 
     @include mdc-feature-targets($feat-structure) {
-      margin-left: $horizontal-margin-value;
       margin-right: $horizontal-margin-value;
+      margin-left: $horizontal-margin-value;
     }
   }
 }
