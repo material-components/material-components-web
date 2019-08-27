@@ -488,11 +488,11 @@
     }
   },
   "spec/mdc-dialog/mixins/max-width.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/27/21_32_50_597/spec/mdc-dialog/mixins/max-width.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/08/15_23_45_666/spec/mdc-dialog/mixins/max-width.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/08/15_23_45_666/spec/mdc-dialog/mixins/max-width.html.windows_chrome_76.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/11/17_41_29_408/spec/mdc-dialog/mixins/max-width.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/27/21_32_50_597/spec/mdc-dialog/mixins/max-width.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/08/15_23_45_666/spec/mdc-dialog/mixins/max-width.html.windows_ie_11.png"
     }
   },
   "spec/mdc-dialog/mixins/min-width.html": {
