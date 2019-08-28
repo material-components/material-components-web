@@ -40,6 +40,8 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
       removeClass: () => undefined,
       hasClass: () => false,
       setStyle: () => undefined,
+      getHeight: () => 0,
+      getViewportScrollY: () => 0,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -47,6 +49,14 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
   /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCBottomNavigationAdapter>) {
     super({...MDCBottomNavigationFoundation.defaultAdapter, ...adapter});
+  }
+
+  /**
+   * Scroll handler for the default scroll behavior of the bottom navigation.
+   * @override
+   */
+  handleTargetScroll() {
+    // need to write code
   }
 }
 

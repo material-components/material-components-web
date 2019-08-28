@@ -48,4 +48,14 @@ export interface MDCBottomNavigationAdapter {
    * Sets the specified inline style property on the root Element to the given value.
    */
   setStyle(property: string, value: string): void;
+
+  /**
+   * Gets the height of the root Element.
+   */
+  getHeight(): number;
+
+  /**
+   * Gets the scroll height of the viewport.
+   */
+  getViewportScrollY(): number;
 }
