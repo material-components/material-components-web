@@ -21,5 +21,31 @@
  * THE SOFTWARE.
  */
 
-export * from './adapter';
-export * from './constants';
+/**
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ */
+export interface MDCTopAppBarAdapter {
+  /**
+   * Adds a class to the root Element.
+   */
+  addClass(className: string): void;
+
+  /**
+   * Removes a class from the root Element.
+   */
+  removeClass(className: string): void;
+
+  /**
+   * Returns true if the root Element contains the given class.
+   */
+  hasClass(className: string): boolean;
+
+  /**
+   * Sets the specified inline style property on the root Element to the given value.
+   */
+  setStyle(property: string, value: string): void;
+}
