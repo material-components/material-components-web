@@ -210,6 +210,7 @@
     @include mdc-radio-focus-indicator-color(red, $query: $query);
     @include mdc-radio-ripple($query: $query);
     @include mdc-radio-without-ripple($query: $query);
+    @include mdc-radio-touch-target(900px, $query: $query);
 
     // Ripple
     @include mdc-ripple-core-styles($query: $query);
