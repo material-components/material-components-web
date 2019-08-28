@@ -38,6 +38,10 @@
   @include test-cell-size(301, 121);
 }
 
+.test-cell--textfield-compact {
+  @include test-cell-size(301, 101);
+}
+
 .test-cell--textarea {
   @include test-cell-size(301, 181);
 }

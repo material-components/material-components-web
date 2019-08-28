@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+ import {cssClasses} from '@material/floating-label/constants';
+
 window.mdc.testFixture.fontsLoaded.then(() => {
   [].forEach.call(document.querySelectorAll('.mdc-text-field:not([data-no-init="true"])'), (el) => {
     const textField = mdc.textField.MDCTextField.attachTo(el);
@@ -28,6 +30,14 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     if (el.getAttribute('data-native-input-validation') === 'false') {
       textField.useNativeValidation = false;
       textField.valid = false;
+    }
+
+    if (el.getAttribute('data-text-field-shake-leading') === 'true') {
+      const floatingLabelEl = el.querySelector(cssClasses.ROOT);
+      floatingLabelEl.classList.add(cssClasses.SHAKE);
+      setTimeout(() => {
+        floatingLabelEl.style.animationPlayState = 'paused';
+      }, 164); // 164 (Stop at when label wiggles to leading / left.
     }
   });
 
