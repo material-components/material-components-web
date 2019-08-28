@@ -33,6 +33,8 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
 
   private isCollapsed_ = false;
 
+  private isAlwaysCollapsed_ = false;
+
   /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
     super(adapter);
@@ -45,9 +47,28 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
       this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
     }
 
-    // this is intended as the short variant must calculate if the
-    // page starts off from the top of the page.
-    this.handleTargetScroll();
+    // If initialized with SHORT_COLLAPSED_CLASS, the bar should always be collapsed
+    this.setAlwaysCollapsed(
+      this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS));
+  }
+
+  /**
+   * Set if the short top app bar should always be collapsed.
+   *
+   * @param value When `true`, bar will always be collapsed. When `false`, bar may collapse or expand based on scroll.
+   */
+  setAlwaysCollapsed(value: boolean) {
+    this.isAlwaysCollapsed_ = !!value;
+    if (this.isAlwaysCollapsed_) {
+      this.collapse_();
+    } else {
+      // let maybeCollapseBar_ determine if the bar should be collapsed
+      this.maybeCollapseBar_();
+    }
+  }
+
+  getAlwaysCollapsed() {
+    return this.isAlwaysCollapsed_;
   }
 
   /**
@@ -55,22 +76,34 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * @override
    */
   handleTargetScroll() {
-    if (this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS)) {
+    this.maybeCollapseBar_();
+  }
+
+  private maybeCollapseBar_() {
+    if (this.isAlwaysCollapsed_) {
       return;
     }
     const currentScroll = this.adapter_.getViewportScrollY();
 
     if (currentScroll <= 0) {
       if (this.isCollapsed_) {
-        this.adapter_.removeClass(cssClasses.SHORT_COLLAPSED_CLASS);
-        this.isCollapsed_ = false;
+        this.uncollapse_();
       }
     } else {
       if (!this.isCollapsed_) {
-        this.adapter_.addClass(cssClasses.SHORT_COLLAPSED_CLASS);
-        this.isCollapsed_ = true;
+        this.collapse_();
       }
     }
+  }
+
+  private uncollapse_() {
+    this.adapter_.removeClass(cssClasses.SHORT_COLLAPSED_CLASS);
+    this.isCollapsed_ = false;
+  }
+
+  private collapse_() {
+    this.adapter_.addClass(cssClasses.SHORT_COLLAPSED_CLASS);
+    this.isCollapsed_ = true;
   }
 }
 
