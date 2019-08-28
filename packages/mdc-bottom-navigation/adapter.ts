@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-export interface MDCTopAppBarAdapter {
+export interface MDCBottomNavigationAdapter {
   /**
    * Adds a class to the root Element.
    */

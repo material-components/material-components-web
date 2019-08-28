@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@material/base": "^3.1.0",
     "@material/elevation": "^3.1.0",
     "@material/feature-targeting": "^3.1.0",
     "@material/ripple": "^3.1.0",
