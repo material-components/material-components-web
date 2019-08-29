@@ -62,6 +62,7 @@
     @include mdc-checkbox-ripple($query: $query);
     @include mdc-checkbox-without-ripple($query: $query);
     @include mdc-checkbox-ripple-size(40px, $query: $query);
+    @include mdc-checkbox-touch-target(48px, $query: $query);
 
     // Chips
     @include mdc-chip-core-styles($query: $query);
@@ -120,6 +121,7 @@
     @include mdc-dialog-min-width(0, $query: $query);
     @include mdc-dialog-max-width(0, 0, $query: $query);
     @include mdc-dialog-max-height(0, 0, $query: $query);
+    @include mdc-dialog-with-touch-target($query: $query);
 
     // Drawer
     @include mdc-drawer-core-styles($query: $query);
@@ -211,6 +213,7 @@
     @include mdc-radio-focus-indicator-color(red, $query: $query);
     @include mdc-radio-ripple($query: $query);
     @include mdc-radio-without-ripple($query: $query);
+    @include mdc-radio-touch-target(900px, $query: $query);
 
     // Ripple
     @include mdc-ripple-core-styles($query: $query);

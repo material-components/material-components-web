@@ -25,6 +25,7 @@
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
+@import "@material/touch-target/mixins";
 @import "./functions";
 @import "./keyframes";
 @import "./variables";
@@ -63,6 +64,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
   @include mdc-checkbox-container-colors($query: $query);
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color, $query);
+  @include mdc-checkbox-touch-target($mdc-checkbox-ripple-size, $query);
 
   @include mdc-feature-targets($feat-color) {
     @include mdc-checkbox-disabled-container-color_;
@@ -144,11 +146,21 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
       @include mdc-checkbox__native-control_;
     }
 
+    @include mdc-checkbox-touch-target($mdc-checkbox-ripple-size, $query);
+
     &:disabled {
       @include mdc-feature-targets($feat-structure) {
         @include mdc-checkbox--disabled_;
       }
     }
+  }
+
+  .mdc-checkbox--touch {
+    @include mdc-touch-target-component(
+      $component-height: $mdc-checkbox-ripple-size,
+      $component-width: $mdc-checkbox-ripple-size,
+      $query: $query);
+    @include mdc-checkbox-touch-target($mdc-touch-target-height, $query);
   }
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
@@ -326,6 +338,21 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
   &.mdc-ripple-upgraded--background-focused.mdc-checkbox--selected {
     @include mdc-states-base-color($color: $color, $query: $query, $ripple-target: $mdc-checkbox-ripple-target);
+  }
+}
+
+@mixin mdc-checkbox-touch-target($size: $mdc-checkbox-ripple-size, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $offset: ($mdc-checkbox-ripple-size - $size) / 2;
+
+  @include mdc-feature-targets($feat-structure) {
+    .mdc-checkbox__native-control {
+      top: $offset;
+      right: $offset;
+      left: $offset;
+      width: $size;
+      height: $size;
+    }
   }
 }
 
@@ -566,10 +593,6 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
 @mixin mdc-checkbox__native-control_ {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   margin: 0;
   padding: 0;
   opacity: 0;

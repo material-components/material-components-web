@@ -1,7 +1,7 @@
 {
   "name": "material-components-web",
   "description": "Modular and customizable Material Design UI components for the web",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -24,11 +24,11 @@
     "@material/card": "^3.1.0",
     "@material/checkbox": "^3.1.0",
     "@material/chips": "^3.1.0",
-    "@material/data-table": "^3.1.0",
+    "@material/data-table": "^3.1.1",
     "@material/density": "^0.0.0",
     "@material/dialog": "^3.1.0",
     "@material/dom": "^3.1.0",
-    "@material/drawer": "^3.1.0",
+    "@material/drawer": "^3.1.1",
     "@material/elevation": "^3.1.0",
     "@material/fab": "^3.1.0",
     "@material/feature-targeting": "^3.1.0",

@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,20 +20,9 @@
 // THE SOFTWARE.
 //
 
-$mdc-dialog-scrim-color: on-surface !default;
-$mdc-dialog-title-ink-color: on-surface !default;
-$mdc-dialog-content-ink-color: on-surface !default;
-$mdc-dialog-scroll-divider-color: on-surface !default;
+// stylelint-disable scss/dollar-variable-pattern
+$mdc-rtl-include: false;
 
-$mdc-dialog-scrim-opacity: .32 !default;
-$mdc-dialog-title-ink-opacity: .87 !default;
-$mdc-dialog-content-ink-opacity: .6 !default;
-$mdc-dialog-scroll-divider-opacity: .12 !default;
-
-$mdc-dialog-min-width: 280px !default;
-$mdc-dialog-max-width: 560px !default;
-$mdc-dialog-margin: 16px !default;
-$mdc-dialog-title-bottom-padding: 9px !default;
-$mdc-dialog-actions-padding: 8px !default;
-
-$mdc-dialog-z-index: 7 !default;
+@import "../../../../packages/mdc-button/mdc-button";
+@import "../../../../packages/mdc-textfield/mdc-text-field";
+@import "../../../../packages/mdc-typography/mdc-typography";
