@@ -150,6 +150,16 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     }
   }
 
+  .mdc-chip__icon--leading,
+  .mdc-chip__icon--trailing {
+    @include mdc-feature-targets($feat-structure) {
+      // Make these positioned elements, such that they're stacked above the
+      // touch target element (`mdc-chip__touch`), so that clicks reach the
+      // icons (e.g. for removable input chips).
+      position: relative;
+    }
+  }
+
   // Change color of selected choice chips
 
   .mdc-chip-set--choice {
