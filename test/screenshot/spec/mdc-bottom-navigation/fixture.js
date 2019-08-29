@@ -25,7 +25,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
   Array.prototype.slice
     .call(document.querySelectorAll('.mdc-bottom-navigation'))
     .forEach((el) => {
-      console.log(el, mdc.bottomNavigation);
+      mdc.bottomNavigation.MDCBottomNavigation.attachTo(el);
     });
 
   window.mdc.testFixture.notifyDomReady();

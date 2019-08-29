@@ -21,13 +21,22 @@
  * THE SOFTWARE.
  */
 
-enum CssClasses {
-  ICON = 'mdc-bottom-navigation__icon',
-  LABEL = 'mdc-bottom-navigation__label',
-  LABEL_INLINE = 'mdc-bottom-navigation__label--inline',
-  MENU = 'mdc-bottom-navigation__menu',
-  MENU_ACTIVE = 'mdc-bottom-navigation__menu--active',
-  ROOT = 'mdc-bottom-navigation',
-}
+const cssClasses = {
+  ICON: 'mdc-bottom-navigation__icon',
+  LABEL: 'mdc-bottom-navigation__label',
+  LABEL_INLINE: 'mdc-bottom-navigation__label--inline',
+  MENU: 'mdc-bottom-navigation__menu',
+  MENU_ACTIVE: 'mdc-bottom-navigation__menu--active',
+  ROOT: 'mdc-bottom-navigation',
+};
 
-export {CssClasses};
+const strings = {
+  ICON_SELECTOR: `.${cssClasses.ICON}`,
+  LABEL_INLINE_SELECTOR: `.${cssClasses.LABEL_INLINE}`,
+  LABEL_SELECTOR: `.${cssClasses.LABEL}`,
+  MENU_ACTIVE_SELECTOR: `.${cssClasses.MENU_ACTIVE}`,
+  MENU_SELECTOR: `.${cssClasses.MENU}`,
+  ROOT_SELECTOR: `.${cssClasses.ROOT}`,
+};
+
+export {cssClasses, strings};

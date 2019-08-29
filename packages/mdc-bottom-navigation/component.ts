@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCBottomNavigationAdapter} from './adapter';
-import {CssClasses} from './constants';
+import {strings} from './constants';
 import {MDCBottomNavigationFoundation} from './foundation';
 
 export class MDCBottomNavigation extends MDCComponent<MDCBottomNavigationFoundation> {
@@ -39,7 +39,7 @@ export class MDCBottomNavigation extends MDCComponent<MDCBottomNavigationFoundat
 
   initialize(rippleFactory: MDCRippleFactory = (el) => MDCRipple.attachTo(el)) {
     this.ripples_ = Array.prototype.slice
-      .call(this.root_.querySelectorAll(`.${CssClasses.MENU}`))
+      .call(this.root_.querySelectorAll(strings.MENU_SELECTOR))
       .map((icon) => {
         const ripple = rippleFactory(icon);
         ripple.unbounded = true;

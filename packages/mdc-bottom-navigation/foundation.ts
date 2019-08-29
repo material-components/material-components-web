@@ -23,11 +23,11 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCBottomNavigationAdapter} from './adapter';
-import {CssClasses} from './constants';
+import {cssClasses} from './constants';
 
 export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNavigationAdapter> {
-  static get CssClasses() {
-    return CssClasses;
+  static get cssClasses() {
+    return cssClasses;
   }
 
   /**
@@ -56,7 +56,7 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
    * @override
    */
   handleTargetScroll() {
-    // need to write code
+    console.log('scrolling');
   }
 }
 
