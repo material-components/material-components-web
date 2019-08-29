@@ -159,6 +159,14 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/07/08/19_30_20_273/spec/mdc-checkbox/mixins/container-colors.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-checkbox/mixins/density.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/21/18_28_05_666/spec/mdc-checkbox/mixins/density.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/21/18_28_05_666/spec/mdc-checkbox/mixins/density.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/21/18_28_05_666/spec/mdc-checkbox/mixins/density.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/21/18_28_05_666/spec/mdc-checkbox/mixins/density.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-checkbox/mixins/ripple-size.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/21/14_59_28_084/spec/mdc-checkbox/mixins/ripple-size.html?utm_source=golden_json",
     "screenshots": {
@@ -333,6 +341,14 @@
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/08/19_49_36_975/spec/mdc-data-table/classes/baseline.html.windows_chrome_76.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/08/19_49_36_975/spec/mdc-data-table/classes/baseline.html.windows_firefox_67.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/08/19_49_36_975/spec/mdc-data-table/classes/baseline.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-data-table/mixins/density.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/28/20_18_10_663/spec/mdc-data-table/mixins/density.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/28/20_10_39_077/spec/mdc-data-table/mixins/density.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/28/20_10_39_077/spec/mdc-data-table/mixins/density.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/08/28/20_18_10_663/spec/mdc-data-table/mixins/density.html.windows_ie_11.png"
     }
   },
   "spec/mdc-data-table/mixins/fill-color.html": {

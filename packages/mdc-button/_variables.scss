@@ -33,8 +33,8 @@ $mdc-button-density-default-scale: $mdc-density-default-scale !default;
 $mdc-button-density-config: (
   height: (
     default: $mdc-button-height,
-    comfortable: 32px,
-    compact: $mdc-button-minimum-height,
+    maximum: $mdc-button-height,
+    minimum: $mdc-button-minimum-height,
   ),
 ) !default;
 

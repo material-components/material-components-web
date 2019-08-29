@@ -29,11 +29,11 @@ The styles for applying density to button component instance looks like this:
 @import "@material/button/mixins";
 
 .my-custom-button {
-  @include mdc-button-density(compact);
+  @include mdc-button-density(-3);
 }
 ```
 
-This would apply `compact` (highest density) to button component instance.
+This would apply `-3` (high density) to button component instance.
 
 > You would indirectly use the Density API through respective component's mixin which takes care of setting appropriate
 > component height.
@@ -47,7 +47,7 @@ Variable | Description
 `$mdc-density-interval` | Density interval between each dense scale. This interval is used for numbered density scale to calculate dense height based on baseline component height.
 `$mdc-density-minimum-scale` | Minimum scale supported by density subsystem. This scale always maps to highest dense scale.
 `$mdc-density-maximum-scale` | Maximum scale supported by density subsystem. This scale always maps to lowest dense scale.
-`$mdc-density-supported-scales` | Supported density scale when density token or literal is used (For example, `compact`).
+`$mdc-density-supported-scales` | Supported density scale when density literal is used (For example, `minimum`).
 
 ### Sass Functions
 

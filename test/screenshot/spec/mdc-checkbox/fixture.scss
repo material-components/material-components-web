@@ -44,3 +44,7 @@ $custom-checkbox-color: crimson;
 .test-checkbox-ripple-size {
   @include mdc-checkbox-ripple-size(48px);
 }
+
+.test-checkbox-density {
+  @include mdc-checkbox-density(-3);
+}

@@ -43,7 +43,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 
 @mixin mdc-button-theme-baseline($query: mdc-feature-all()) {
   .mdc-button {
-    @include mdc-button-density($density-scale: default, $query: $query);
+    @include mdc-button-density($density-scale: 0, $query: $query);
   }
 }
 
@@ -232,7 +232,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 /// Sets density scale for button.
 ///
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-3`,
-///     `-2`, `-1`, `0`, `compact`, `comfortable` and `default`.
+///     `-2`, `-1`, `0`.
 /// @param {Boolean} $shape-rtl-reflexive - Set this to true to reflect the shape border radius in RTL context.
 ///
 @mixin mdc-button-density($density-scale, $query: mdc-feature-all()) {

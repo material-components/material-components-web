@@ -63,6 +63,7 @@
     @include mdc-checkbox-without-ripple($query: $query);
     @include mdc-checkbox-ripple-size(40px, $query: $query);
     @include mdc-checkbox-touch-target(48px, $query: $query);
+    @include mdc-checkbox-density(0, $query: $query);
 
     // Chips
     @include mdc-chip-core-styles($query: $query);
@@ -105,10 +106,11 @@
     @include mdc-data-table-shape-radius(0, $query: $query);
     @include mdc-data-table-stroke-size(0, $query: $query);
     @include mdc-data-table-stroke-color(red, $query: $query);
-    @include mdc-data-table-header-row-height(0, $query: $query);
-    @include mdc-data-table-row-height(0, $query: $query);
+    @include mdc-data-table-header-cell-height(0, $query: $query);
+    @include mdc-data-table-cell-height(0, $query: $query);
     @include mdc-data-table-cell-padding(0, $query: $query);
     @include mdc-data-table-column-widths(0, $query: $query);
+    @include mdc-data-table-density(0, $query: $query);
 
     // Dialog
     @include mdc-dialog-core-styles($query: $query);

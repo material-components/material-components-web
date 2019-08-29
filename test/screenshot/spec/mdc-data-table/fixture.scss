@@ -21,6 +21,7 @@
 //
 
 @import "../../../../packages/mdc-data-table/mixins";
+@import "../../../../packages/mdc-checkbox/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
@@ -31,4 +32,12 @@
   @include mdc-data-table-row-text-color(white);
   @include mdc-data-table-divider-color(rgba(white, .12));
   @include mdc-data-table-stroke-size(0);
+}
+
+.test-data-table-density {
+  @include mdc-data-table-density(-4);
+}
+
+.test-data-table-checkbox-density {
+  @include mdc-checkbox-density(-4);
 }
