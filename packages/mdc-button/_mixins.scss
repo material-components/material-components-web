@@ -243,6 +243,11 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     $property-name: height,
   );
 
+  // Explicitly disable touch target when custom density is applied.
+  @if ($height != $mdc-button-height) {
+    @include mdc-button-touch-target-reset;
+  }
+
   @include mdc-button-height($height, $query: $query);
 }
 
@@ -251,6 +256,17 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 
   @include mdc-feature-targets($feat-structure) {
     height: $height;
+  }
+}
+
+@mixin mdc-button-touch-target-reset {
+  &.mdc-button--touch {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .mdc-button__touch {
+    display: none;
   }
 }
 
