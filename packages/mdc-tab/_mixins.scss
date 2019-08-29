@@ -58,18 +58,11 @@
     @include mdc-tab__content_($query);
   }
 
-  .mdc-tab__text-label,
-  .mdc-tab__icon {
+  .mdc-tab__text-label {
     @include mdc-feature-targets($feat-animation) {
       transition: 150ms color linear;
     }
 
-    @include mdc-feature-targets($feat-structure) {
-      z-index: 2;
-    }
-  }
-
-  .mdc-tab__text-label {
     @include mdc-feature-targets($feat-structure) {
       display: inline-block;
       // Setting line-height here overrides the line-height from the typography
@@ -77,14 +70,20 @@
       // between the text label and the icon as well as the text label and the
       // bottom of the tab remain the same.
       line-height: 1;
+      z-index: 2;
     }
   }
 
   .mdc-tab__icon {
+    @include mdc-feature-targets($feat-animation) {
+      transition: 150ms color linear;
+    }
+
     @include mdc-feature-targets($feat-structure) {
       width: $mdc-tab-icon-size;
       height: $mdc-tab-icon-size;
       font-size: $mdc-tab-icon-size;
+      z-index: 2;
     }
   }
 
