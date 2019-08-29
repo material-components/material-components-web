@@ -81,9 +81,11 @@
   }
 
   .mdc-tab__icon {
-    width: $mdc-tab-icon-size;
-    height: $mdc-tab-icon-size;
-    font-size: $mdc-tab-icon-size;
+    @include mdc-feature-targets($feat-structure) {
+      width: $mdc-tab-icon-size;
+      height: $mdc-tab-icon-size;
+      font-size: $mdc-tab-icon-size;
+    }
   }
 
   .mdc-tab--stacked {
