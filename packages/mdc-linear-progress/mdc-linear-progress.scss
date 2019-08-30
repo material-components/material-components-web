@@ -119,6 +119,7 @@
   }
 
   &--closed {
+    animation: none;
     opacity: 0;
   }
 }
