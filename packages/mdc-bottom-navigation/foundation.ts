@@ -26,6 +26,13 @@ import {MDCBottomNavigationAdapter} from './adapter';
 import {cssClasses} from './constants';
 
 export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNavigationAdapter> {
+
+  private isAnimating_ = false;
+
+  private lastScrollY_ = this.adapter_.getViewportScrollY();
+
+  private currentPositionY_ = 0;
+
   static get cssClasses() {
     return cssClasses;
   }
@@ -53,10 +60,28 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
 
   /**
    * Scroll handler for the default scroll behavior of the bottom navigation.
-   * @override
    */
   handleTargetScroll() {
-    console.log('scrolling');
+    const currentY = this.currentPositionY_;
+    const height = this.adapter_.getHeight();
+    const scrollY = this.adapter_.getViewportScrollY();
+
+    if (0 <= currentY || currentY <= height) {
+      this.setCurrentPositionY(currentY + (scrollY - this.lastScrollY_));
+      this.adapter_.setStyle('transform', `translateY(${this.currentPositionY_}px)`);
+    }
+    this.lastScrollY_ = scrollY;
+  }
+
+  setCurrentPositionY(y: number) {
+    const height = this.adapter_.getHeight();
+    if (y < 0) {
+      this.currentPositionY_ = 0;
+    } else if (height < y) {
+      this.currentPositionY_ = height;
+    } else {
+      this.currentPositionY_ = y;
+    }
   }
 }
 
