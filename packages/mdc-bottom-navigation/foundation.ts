@@ -27,11 +27,13 @@ import {cssClasses} from './constants';
 
 export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNavigationAdapter> {
 
-  private isAnimating_ = false;
-
   private lastScrollY_ = this.adapter_.getViewportScrollY();
 
   private currentPositionY_ = 0;
+
+  private animatingPositionY_ = 0;
+
+  private animationKey_: number | null = null;
 
   static get cssClasses() {
     return cssClasses;
@@ -63,17 +65,16 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
    */
   handleTargetScroll() {
     const currentY = this.currentPositionY_;
-    const height = this.adapter_.getHeight();
     const scrollY = this.adapter_.getViewportScrollY();
 
-    if (0 <= currentY || currentY <= height) {
-      this.setCurrentPositionY(currentY + (scrollY - this.lastScrollY_));
-      this.adapter_.setStyle('transform', `translateY(${this.currentPositionY_}px)`);
+    this.setCurrentPositionY(currentY + (scrollY - this.lastScrollY_));
+    if (this.animationKey_ === null) {
+      this.moveBottomNavigation();
     }
     this.lastScrollY_ = scrollY;
   }
 
-  setCurrentPositionY(y: number) {
+  private setCurrentPositionY(y: number) {
     const height = this.adapter_.getHeight();
     if (y < 0) {
       this.currentPositionY_ = 0;
@@ -81,6 +82,41 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
       this.currentPositionY_ = height;
     } else {
       this.currentPositionY_ = y;
+    }
+  }
+
+  private setAnimatingPositionY(y: number, isUpDirection: boolean) {
+    const currentY = this.currentPositionY_;
+    if (y < 0) {
+      this.animatingPositionY_ = 0;
+    } else if (
+        (isUpDirection && y < currentY) ||
+        (!isUpDirection && currentY < y)
+    ) {
+      this.animatingPositionY_ = currentY;
+    } else {
+      this.animatingPositionY_ = y;
+    }
+  }
+
+  private moveBottomNavigation() {
+    const currentY = this.currentPositionY_;
+    const animatingY = this.animatingPositionY_;
+    if (animatingY === currentY) {
+      this.animationKey_ = null;
+    } else {
+      const isUpDirection = currentY < animatingY;
+      this.setAnimatingPositionY(
+          animatingY + 4 * (isUpDirection ? -1 : 1),
+          isUpDirection,
+      );
+      this.adapter_.setStyle(
+          'transform',
+          `translateY(${this.animatingPositionY_}px)`,
+      );
+      this.animationKey_ = requestAnimationFrame(() => {
+        this.moveBottomNavigation();
+      });
     }
   }
 }
