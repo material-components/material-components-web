@@ -22,11 +22,11 @@
  */
 
 window.mdc.testFixture.fontsLoaded.then(() => {
-  Array.prototype.slice
-    .call(document.querySelectorAll('.mdc-bottom-navigation'))
-    .forEach((el) => {
-      mdc.bottomNavigation.MDCBottomNavigation.attachTo(el);
-    });
+  // Array.prototype.slice
+  //   .call(document.querySelectorAll('.mdc-bottom-navigation'))
+  //   .forEach((el) => {
+  //     mdc.bottomNavigation.MDCBottomNavigation.attachTo(el);
+  //   });
 
   window.mdc.testFixture.notifyDomReady();
 });

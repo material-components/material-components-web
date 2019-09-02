@@ -51,10 +51,8 @@ import * as tabScroller from '@material/tab-scroller/index';
 import * as tab from '@material/tab/index';
 import * as textField from '@material/textfield/index';
 import * as topAppBar from '@material/top-app-bar/index';
-import * as bottomNavigation from '../mdc-bottom-navigation/index';
 
 // Register all components
-autoInit.register('MDCBottomNavigation', bottomNavigation.MDCBottomNavigation);
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCChip', chips.MDCChip);
 autoInit.register('MDCChipSet', chips.MDCChipSet);
