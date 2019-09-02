@@ -67,14 +67,14 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
     const currentY = this.currentPositionY_;
     const scrollY = this.adapter_.getViewportScrollY();
 
-    this.setCurrentPositionY(currentY + (scrollY - this.lastScrollY_));
+    this.setCurrentPositionY_(currentY + (scrollY - this.lastScrollY_));
     if (this.animationKey_ === null) {
-      this.moveBottomNavigation();
+      this.moveBottomNavigation_();
     }
     this.lastScrollY_ = scrollY;
   }
 
-  private setCurrentPositionY(y: number) {
+  private setCurrentPositionY_(y: number) {
     const height = this.adapter_.getHeight();
     if (y < 0) {
       this.currentPositionY_ = 0;
@@ -85,7 +85,7 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
     }
   }
 
-  private setAnimatingPositionY(y: number, isUpDirection: boolean) {
+  private setAnimatingPositionY_(y: number, isUpDirection: boolean) {
     const currentY = this.currentPositionY_;
     if (y < 0) {
       this.animatingPositionY_ = 0;
@@ -99,14 +99,14 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
     }
   }
 
-  private moveBottomNavigation() {
+  private moveBottomNavigation_() {
     const currentY = this.currentPositionY_;
     const animatingY = this.animatingPositionY_;
     if (animatingY === currentY) {
       this.animationKey_ = null;
     } else {
       const isUpDirection = currentY < animatingY;
-      this.setAnimatingPositionY(
+      this.setAnimatingPositionY_(
           animatingY + 4 * (isUpDirection ? -1 : 1),
           isUpDirection,
       );
@@ -115,7 +115,7 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
           `translateY(${this.animatingPositionY_}px)`,
       );
       this.animationKey_ = requestAnimationFrame(() => {
-        this.moveBottomNavigation();
+        this.moveBottomNavigation_();
       });
     }
   }

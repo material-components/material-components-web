@@ -83,7 +83,6 @@ autoInit.register('MDCTopAppBar', topAppBar.MDCTopAppBar);
 export {
   autoInit,
   base,
-  bottomNavigation,
   checkbox,
   chips,
   dataTable,
