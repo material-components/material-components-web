@@ -564,3 +564,4 @@ Method Signature | Description
 `focusPrevElement(index: number) => number` | Handles focusing the previous element using the current `index`. Returns focused element index.
 `focusFirstElement() => number` | Handles focusing the first element in a list. Returns focused element index.
 `focusLastElement() => number` | Handles focusing the last element in a list. Returns focused element index.
+`setEnabled(itemIndex: number, isEnabled: Boolean) => void` | Updates the list item's disabled state.
