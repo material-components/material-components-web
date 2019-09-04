@@ -999,8 +999,6 @@ test('#getSelectedIndex should be in-sync with setter method for multi-select ch
 
 test('#setEnabled should remove class name mdc-list-item--disabled', () => {
   const {foundation, mockAdapter} = setupTest();
-
-  td.when(mockAdapter.getListItemCount()).thenReturn(4);
   foundation.layout();
 
   foundation.setEnabled(3, true);
@@ -1009,8 +1007,6 @@ test('#setEnabled should remove class name mdc-list-item--disabled', () => {
 
 test('#setEnabled should add class name mdc-list-item--disabled', () => {
   const {foundation, mockAdapter} = setupTest();
-
-  td.when(mockAdapter.getListItemCount()).thenReturn(4);
   foundation.layout();
 
   foundation.setEnabled(3, false);
