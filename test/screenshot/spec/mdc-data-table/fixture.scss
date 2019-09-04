@@ -32,3 +32,15 @@
   @include mdc-data-table-divider-color(rgba(white, .12));
   @include mdc-data-table-stroke-size(0);
 }
+
+.test-data-table-baseline-full-width-viewport {
+  padding: 48px;
+}
+
+.test-data-table-baseline-full-width {
+  width: 100%;
+}
+
+.test-data-table-with-buttons-cell-too-long {
+  max-width: 1px;
+}
