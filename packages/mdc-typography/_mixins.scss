@@ -46,7 +46,7 @@
   }
 }
 
-@mixin mdc-typography($style, $query: mdc-feature-all()) {
+@mixin mdc-typography($style, $query: mdc-feature-all(), $exclude-props: ()) {
   $feat-typography: mdc-feature-create-target($query, typography);
   $style-props: map-get($mdc-typography-styles, $style);
 
@@ -56,7 +56,9 @@
 
   @include mdc-feature-targets($feat-typography) {
     @each $key, $value in $style-props {
-      #{$key}: $value;
+      @if index($exclude-props, $key) == null {
+        #{$key}: $value;
+      }
     }
   }
 }

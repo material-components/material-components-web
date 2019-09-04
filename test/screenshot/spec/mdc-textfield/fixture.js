@@ -23,7 +23,12 @@
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   [].forEach.call(document.querySelectorAll('.mdc-text-field:not([data-no-init="true"])'), (el) => {
-    mdc.textField.MDCTextField.attachTo(el);
+    const textField = mdc.textField.MDCTextField.attachTo(el);
+
+    if (el.getAttribute('data-native-input-validation') === 'false') {
+      textField.useNativeValidation = false;
+      textField.valid = false;
+    }
   });
 
   // Fixes the wide notched outline issue.
