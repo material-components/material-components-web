@@ -311,8 +311,10 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   setEnabled(itemIndex: number, isEnabled: boolean): void {
     if (isEnabled) {
       this.adapter_.removeClassForElementIndex(itemIndex, cssClasses.LIST_ITEM_DISABLED_CLASS);
+      this.adapter_.setAttributeForElementIndex(itemIndex, strings.ARIA_DISABLED, 'false');
     } else {
       this.adapter_.addClassForElementIndex(itemIndex, cssClasses.LIST_ITEM_DISABLED_CLASS);
+      this.adapter_.setAttributeForElementIndex(itemIndex, strings.ARIA_DISABLED, 'true');
     }
   }
 
