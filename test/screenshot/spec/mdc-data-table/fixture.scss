@@ -41,3 +41,15 @@
 .test-data-table-checkbox-density {
   @include mdc-checkbox-density(-4);
 }
+
+.test-data-table-baseline-full-width-viewport {
+  padding: 48px;
+}
+
+.test-data-table-baseline-full-width {
+  width: 100%;
+}
+
+.test-data-table-with-buttons-cell-too-long {
+  max-width: 1px;
+}
