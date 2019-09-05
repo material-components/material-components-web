@@ -35,6 +35,10 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
 
   private animationKey_: number | null = null;
 
+  private get animationAcceleration() {
+    return 5;
+  }
+
   static get cssClasses() {
     return cssClasses;
   }
@@ -64,16 +68,20 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
    * Scroll handler for the default scroll behavior of the bottom navigation.
    */
   handleTargetScroll() {
-    const currentY = this.currentPositionY_;
     const scrollY = this.adapter_.getViewportScrollY();
+    const scrollDistance = scrollY - this.lastScrollY_;
 
-    this.setCurrentPositionY_(currentY + (scrollY - this.lastScrollY_));
+    this.setCurrentPositionY_(this.currentPositionY_ + scrollDistance);
+    this.lastScrollY_ = scrollY;
+
     if (this.animationKey_ === null) {
       this.moveBottomNavigation_();
     }
-    this.lastScrollY_ = scrollY;
   }
 
+  /**
+   * Set currentPositionY_ between 0 to [height].
+   */
   private setCurrentPositionY_(y: number) {
     const height = this.adapter_.getHeight();
     if (y < 0) {
@@ -85,31 +93,41 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
     }
   }
 
-  private setAnimatingPositionY_(y: number, isUpDirection: boolean) {
-    const currentY = this.currentPositionY_;
+  /**
+   * Set animatingPositionY_ between 0 to [height].
+   */
+  private setAnimatingPositionY_(y: number) {
+    const height = this.adapter_.getHeight();
     if (y < 0) {
       this.animatingPositionY_ = 0;
-    } else if (
-        (isUpDirection && y < currentY) ||
-        (!isUpDirection && currentY < y)
-    ) {
-      this.animatingPositionY_ = currentY;
+    } else if (height < y) {
+      this.animatingPositionY_ = height;
     } else {
       this.animatingPositionY_ = y;
     }
   }
 
-  private moveBottomNavigation_() {
+  /**
+   * Get animatingY applying acceleration.
+   */
+  private getAccelerationAnimatingY_() {
     const currentY = this.currentPositionY_;
     const animatingY = this.animatingPositionY_;
-    if (animatingY === currentY) {
+    const acceleration = this.animationAcceleration;
+    const accelerationAnimatingY = animatingY + (currentY - animatingY) / acceleration;
+
+    return Math.abs(currentY - accelerationAnimatingY) < 1 ? currentY : accelerationAnimatingY;
+  }
+
+  /**
+   * Move bottom navigation to currentY with animation.
+   */
+  private moveBottomNavigation_() {
+    if (this.animatingPositionY_ === this.currentPositionY_) {
       this.animationKey_ = null;
     } else {
-      const isUpDirection = currentY < animatingY;
-      this.setAnimatingPositionY_(
-          animatingY + (currentY - animatingY) / 5,
-          isUpDirection,
-      );
+      const moveY = this.getAccelerationAnimatingY_();
+      this.setAnimatingPositionY_(moveY);
       this.adapter_.setStyle(
           'transform',
           `translateY(${this.animatingPositionY_}px)`,
