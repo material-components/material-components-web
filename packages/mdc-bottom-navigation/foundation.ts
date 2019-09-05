@@ -31,11 +31,11 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
 
   private currentPositionY_ = 0;
 
-  private animatingPositionY_ = 0;
-
   private animationKey_: number | null = null;
 
-  private get animationAcceleration() {
+  private animatingPositionY_ = 0;
+
+  private get animationAcceleration_() {
     return 5;
   }
 
@@ -113,7 +113,7 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
   private getAccelerationAnimatingY_() {
     const currentY = this.currentPositionY_;
     const animatingY = this.animatingPositionY_;
-    const acceleration = this.animationAcceleration;
+    const acceleration = this.animationAcceleration_;
     const accelerationAnimatingY = animatingY + (currentY - animatingY) / acceleration;
 
     return Math.abs(currentY - accelerationAnimatingY) < 1 ? currentY : accelerationAnimatingY;
