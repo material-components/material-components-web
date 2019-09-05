@@ -107,7 +107,7 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
     } else {
       const isUpDirection = currentY < animatingY;
       this.setAnimatingPositionY_(
-          animatingY + 4 * (isUpDirection ? -1 : 1),
+          animatingY + (currentY - animatingY) / 5,
           isUpDirection,
       );
       this.adapter_.setStyle(
