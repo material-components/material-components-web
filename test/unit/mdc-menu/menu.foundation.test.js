@@ -309,6 +309,32 @@ test('setSelectedIndex throws error if index is not in range', () => {
   }
 });
 
+test('setDisabled calls addClass and addAttribute', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const listItemEl = document.createElement('div');
+  td.when(mockAdapter.isSelectableItemAtIndex(0)).thenReturn(true);
+  td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
+  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(0)).thenReturn(-1);
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
+
+  foundation.setDisabled(0, true);
+  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_DISABLED_LIST_ITEM), {times: 1});
+  td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_DISABLED_ATTR, 'true'), {times: 1});
+});
+
+test('setSelectedIndex calls removeClass and removeAttribute', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const listItemEl = document.createElement('div');
+  td.when(mockAdapter.isSelectableItemAtIndex(0)).thenReturn(true);
+  td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
+  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(0)).thenReturn(-1);
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
+
+  foundation.setDisabled(0, false);
+  td.verify(mockAdapter.removeClassFromElementAtIndex(0, cssClasses.MENU_DISABLED_LIST_ITEM), {times: 1});
+  td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_DISABLED_ATTR, 'false'), {times: 1});
+});
+
 // Item Action
 
 test('Item action event causes the menu to close', () => {

@@ -22,6 +22,7 @@
  */
 
 const cssClasses = {
+  MENU_DISABLED_LIST_ITEM: 'mdc-list-item--disabled',
   MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
   MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
   ROOT: 'mdc-menu',
@@ -29,6 +30,7 @@ const cssClasses = {
 
 const strings = {
   ARIA_CHECKED_ATTR: 'aria-checked',
+  ARIA_DISABLED_ATTR: 'aria-disabled',
   CHECKBOX_SELECTOR: 'input[type="checkbox"]',
   LIST_SELECTOR: '.mdc-list',
   SELECTED_EVENT: 'MDCMenu:selected',

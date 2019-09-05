@@ -150,6 +150,20 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_CHECKED_ATTR, 'true');
   }
 
+  /**
+   * @param index Index of the menu item
+   * @param isDisabled The desired disabled state of the menu item.
+   */
+  setDisabled(index: number, isDisabled: boolean): void {
+    if (isDisabled) {
+      this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_DISABLED_LIST_ITEM);
+      this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_DISABLED_ATTR, 'true');
+    } else {
+      this.adapter_.removeClassFromElementAtIndex(index, cssClasses.MENU_DISABLED_LIST_ITEM);
+      this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_DISABLED_ATTR, 'false');
+    }
+  }
+
   private validatedIndex_(index: number): void {
     const menuSize = this.adapter_.getMenuItemCount();
     const isIndexInRange = index >= 0 && index < menuSize;

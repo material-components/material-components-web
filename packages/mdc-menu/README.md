@@ -267,6 +267,7 @@ Method Signature | Description
 `handleMenuSurfaceOpened() => void` | Event handler for menu surface's opened event.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 `setSelectedIndex(index: number) => void` | Selects the list item at given `index`.
+`setDisabled(index: number, isDisabled: boolean) => void` | Sets the disabled state of the menu item at given `index`.
 
 ### Events
 
