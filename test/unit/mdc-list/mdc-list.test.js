@@ -156,6 +156,12 @@ test('#initializeListType does not populate selectedIndex when no item is select
   td.verify(mockFoundation.setSelectedIndex(td.matchers.anything()), {times: 0});
 });
 
+test('#setEnabled when true adds disabled class and aria-disabled to true', () => {
+  const {component, mockFoundation} = setupTest();
+  component.setEnabled(1, true);
+  td.verify(mockFoundation.setEnabled(1, true), {times: 1});
+});
+
 test('adapter#getListItemCount returns correct number of list items', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);

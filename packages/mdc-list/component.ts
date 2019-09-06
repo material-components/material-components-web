@@ -129,6 +129,11 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     }
   }
 
+  /**
+   * Updates the list item at itemIndex to the desired isEnabled state.
+   * @param itemIndex Index of the list item
+   * @param isEnabled Sets the list item to enabled or disabled.
+   */
   setEnabled(itemIndex: number, isEnabled: boolean) {
     this.foundation_.setEnabled(itemIndex, isEnabled);
   }

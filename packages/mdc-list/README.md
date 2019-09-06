@@ -463,6 +463,7 @@ Method Signature | Description
 --- | ---
 `layout() => void` | Recalculates layout and orientation.
 `initializeListType() => void` | Initialize `selectedIndex` value based on pre-selected checkbox list items, single selection or radio.
+`setEnabled(itemIndex: number, isEnabled: boolean) => void` | Updates the list item at `itemIndex` to the desired `isEnabled` state.
 
 ### Events
 
