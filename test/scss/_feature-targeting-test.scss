@@ -10,6 +10,7 @@
 @import "@material/grid-list/mixins";
 @import "@material/icon-button/mixins";
 @import "@material/image-list/mixins";
+@import "@material/linear-progress/mixins";
 @import "@material/list/mixins";
 @import "@material/menu-surface/mixins";
 @import "@material/menu/mixins";
@@ -178,6 +179,11 @@
     @include mdc-image-list-shape-radius(0, $query: $query);
     @include mdc-image-list-standard-columns(4, 4px, $query: $query);
     @include mdc-image-list-masonry-columns(4, 4px, $query: $query);
+
+    // Linear progress
+    @include mdc-linear-progress-core-styles($query: $query);
+    @include mdc-linear-progress-bar-color(red, $query: $query);
+    @include mdc-linear-progress-buffer-color(red, $query: $query);
 
     // List
     @include mdc-list-core-styles($query: $query);
