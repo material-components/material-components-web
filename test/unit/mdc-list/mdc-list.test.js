@@ -156,7 +156,7 @@ test('#initializeListType does not populate selectedIndex when no item is select
   td.verify(mockFoundation.setSelectedIndex(td.matchers.anything()), {times: 0});
 });
 
-test('#setEnabled when true adds disabled class and aria-disabled to true', () => {
+test('#setEnabled calls foundation method setEnabled with given index and enabled state.', () => {
   const {component, mockFoundation} = setupTest();
   component.setEnabled(1, true);
   td.verify(mockFoundation.setEnabled(1, true), {times: 1});
