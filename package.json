@@ -92,7 +92,7 @@
     "htmllint-cli": "0.0.7",
     "is-online": "^8.0.0",
     "istanbul-instrumenter-loader": "^3.0.0",
-    "jimp": "^0.6.1",
+    "jimp": "^0.7.0",
     "jsdom": "^13.1.0",
     "json-stable-stringify": "^1.0.1",
     "karma": "^4.0.0",
