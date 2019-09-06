@@ -244,6 +244,12 @@ test('setSelectedIndex calls foundation method setSelectedIndex with given index
   td.verify(mockFoundation.setSelectedIndex(1));
 });
 
+test('setDisabled calls foundation method setDisabled with given index and disabled state.', () => {
+  const {component, mockFoundation} = setupTestWithMock({fixture: getFixtureWithMultipleSelectionGroups});
+  component.setDisabled(1, true);
+  td.verify(mockFoundation.setDisabled(1, true));
+});
+
 test('setQuickOpen', () => {
   const {component, menuSurface} = setupTestWithFakes();
   component.quickOpen = true;

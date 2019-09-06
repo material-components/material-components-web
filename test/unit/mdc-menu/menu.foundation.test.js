@@ -311,10 +311,6 @@ test('setSelectedIndex throws error if index is not in range', () => {
 
 test('setDisabled calls addClass and addAttribute', () => {
   const {foundation, mockAdapter} = setupTest();
-  const listItemEl = document.createElement('div');
-  td.when(mockAdapter.isSelectableItemAtIndex(0)).thenReturn(true);
-  td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
-  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(0)).thenReturn(-1);
   td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
 
   foundation.setDisabled(0, true);
@@ -322,12 +318,8 @@ test('setDisabled calls addClass and addAttribute', () => {
   td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_DISABLED_ATTR, 'true'), {times: 1});
 });
 
-test('setSelectedIndex calls removeClass and removeAttribute', () => {
+test('setDisabled calls removeClass and removeAttribute', () => {
   const {foundation, mockAdapter} = setupTest();
-  const listItemEl = document.createElement('div');
-  td.when(mockAdapter.isSelectableItemAtIndex(0)).thenReturn(true);
-  td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
-  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(0)).thenReturn(-1);
   td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
 
   foundation.setDisabled(0, false);
