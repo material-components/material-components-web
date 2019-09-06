@@ -129,6 +129,10 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     }
   }
 
+  setEnabled(itemIndex: number, isEnabled: boolean) {
+    this.foundation_.setEnabled(itemIndex, isEnabled);
+  }
+
   getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.

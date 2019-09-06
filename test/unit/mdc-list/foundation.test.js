@@ -997,34 +997,22 @@ test('#getSelectedIndex should be in-sync with setter method for multi-select ch
   assert.deepEqual([0, 2, 3], foundation.getSelectedIndex());
 });
 
-test('#setEnabled should remove class name mdc-list-item--disabled', () => {
+test('#setEnabled should remove disabled class and set aria-disabled to false', () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getListItemCount()).thenReturn(5);
   foundation.layout();
 
   foundation.setEnabled(3, true);
   td.verify(mockAdapter.removeClassForElementIndex(3, cssClasses.LIST_ITEM_DISABLED_CLASS), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_DISABLED, 'false'), {times: 1});
 });
 
-test('#setEnabled should add class name mdc-list-item--disabled', () => {
+test('#setEnabled should add disabled class and set aria-disabled to true', () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getListItemCount()).thenReturn(5);
   foundation.layout();
 
   foundation.setEnabled(3, false);
   td.verify(mockAdapter.addClassForElementIndex(3, cssClasses.LIST_ITEM_DISABLED_CLASS), {times: 1});
-});
-
-test('#setEnabled should set aria-disabled to false when enabled is true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.layout();
-
-  foundation.setEnabled(3, true);
-  td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_DISABLED, 'false'), {times: 1});
-});
-
-test('#setEnabled should set aria-disabled to true when enabled is false', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.layout();
-
-  foundation.setEnabled(3, false);
   td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_DISABLED, 'true'), {times: 1});
 });

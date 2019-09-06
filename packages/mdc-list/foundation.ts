@@ -309,6 +309,10 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * @param isEnabled Sets the list item to enabled or disabled.
    */
   setEnabled(itemIndex: number, isEnabled: boolean): void {
+    if (!this.isIndexValid_(itemIndex)) {
+      return;
+    }
+
     if (isEnabled) {
       this.adapter_.removeClassForElementIndex(itemIndex, cssClasses.LIST_ITEM_DISABLED_CLASS);
       this.adapter_.setAttributeForElementIndex(itemIndex, strings.ARIA_DISABLED, 'false');
