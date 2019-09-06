@@ -67,6 +67,7 @@ const CSS_WHITELIST = [
   'base',
   'animation',
   'auto-init',
+  'density',
   'dom',
   'feature-targeting',
   'rtl',
