@@ -193,8 +193,8 @@ OR
 
 ### Single Selection List
 
-MDC List can handle selecting/deselecting list elements based on click or keyboard action. When enabled, the `space` and `enter` keys (or `click` event) will trigger an
-single list item to become selected and any other previous selected element to become deselected.
+MDC List can handle selecting/deselecting list elements based on click or keyboard actions. When enabled, the `space` and `enter` keys (or `click` event) will trigger a
+single list item to become selected and any other previously selected element to become deselected.
 
 ```html
 <ul id="my-list" class="mdc-list" role="listbox">
