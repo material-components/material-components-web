@@ -233,7 +233,7 @@ Method Signature | Description
 `getOptionByIndex(index: number) => Element \| null` | Returns the list item at the `index` specified.
 `getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
-`setDisabled(index: number, isDisabled: boolean) => void` | Sets the disabled state to `isDisabled` for the menu item at given `index`.
+`setEnabled(index: number, isEnabled: boolean) => void` | Sets the enabled state to `isEnabled` for the menu item at given `index`.
 
 > See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.
 
@@ -268,7 +268,7 @@ Method Signature | Description
 `handleMenuSurfaceOpened() => void` | Event handler for menu surface's opened event.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 `setSelectedIndex(index: number) => void` | Selects the list item at given `index`.
-`setDisabled(index: number, isDisabled: boolean) => void` | Sets the disabled state of the menu item at given `index`.
+`setEnabled(index: number, isEnabled: boolean) => void` | Sets the enabled state of the menu item at given `index`.
 
 ### Events
 

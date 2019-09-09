@@ -29,6 +29,7 @@ import {install as installClock} from '../helpers/clock';
 import {MDCMenuFoundation} from '../../../packages/mdc-menu/foundation';
 import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
 import {cssClasses, DefaultFocusState, strings} from '../../../packages/mdc-menu/constants';
+import {cssClasses as listCssClasses} from '../../../packages/list/constants';
 import {numbers as menuNumbers} from '../../../packages/mdc-menu/constants';
 import {numbers} from '../../../packages/mdc-menu-surface/constants';
 
@@ -309,21 +310,21 @@ test('setSelectedIndex throws error if index is not in range', () => {
   }
 });
 
-test('setDisabled calls addClass and addAttribute', () => {
+test('setEnabled calls addClass and addAttribute', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
 
-  foundation.setDisabled(0, true);
-  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_DISABLED_LIST_ITEM), {times: 1});
+  foundation.setEnabled(0, true);
+  td.verify(mockAdapter.addClassToElementAtIndex(0, listCssClasses.LIST_ITEM_DISABLED_CLASS), {times: 1});
   td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_DISABLED_ATTR, 'true'), {times: 1});
 });
 
-test('setDisabled calls removeClass and removeAttribute', () => {
+test('setEnabled calls removeClass and removeAttribute', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
 
-  foundation.setDisabled(0, false);
-  td.verify(mockAdapter.removeClassFromElementAtIndex(0, cssClasses.MENU_DISABLED_LIST_ITEM), {times: 1});
+  foundation.setEnabled(0, false);
+  td.verify(mockAdapter.removeClassFromElementAtIndex(0, listCssClasses.LIST_ITEM_DISABLED_CLASS), {times: 1});
   td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_DISABLED_ATTR, 'false'), {times: 1});
 });
 

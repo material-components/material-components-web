@@ -157,12 +157,12 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   /**
-   * Sets the disabled state to isDisabled for the menu item at the given index.
+   * Sets the enabled state to isEnabled for the menu item at the given index.
    * @param index Index of the menu item
-   * @param isDisabled The desired disabled state of the menu item.
+   * @param isEnabled The desired enabled state of the menu item.
    */
-  setDisabled(index: number, isDisabled: boolean): void {
-    this.foundation_.setDisabled(index, isDisabled);
+  setEnabled(index: number, isEnabled: boolean): void {
+    this.foundation_.setEnabled(index, isEnabled);
   }
 
   /**
