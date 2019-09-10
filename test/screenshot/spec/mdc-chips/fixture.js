@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+// dummy commit
 window.mdc.testFixture.fontsLoaded.then(() => {
   [].slice.call(document.querySelectorAll('.mdc-chip-set')).forEach((el) => {
     mdc.chips.MDCChipSet.attachTo(el);
