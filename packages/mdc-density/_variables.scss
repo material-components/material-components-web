@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,31 +20,9 @@
 // THE SOFTWARE.
 //
 
-@import "../../../../packages/mdc-checkbox/mixins";
-@import "../mixins";
-
-$custom-checkbox-color: crimson;
-
-.test-cell--checkbox {
-  @include test-cell-size(91);
-}
-
-.custom-checkbox--container-colors {
-  @include mdc-checkbox-focus-indicator-color($custom-checkbox-color);
-  @include mdc-checkbox-container-colors(
-    $marked-stroke-color: $custom-checkbox-color,
-    $marked-fill-color: $custom-checkbox-color
-  );
-}
-
-.custom-checkbox--ink-color {
-  @include mdc-checkbox-ink-color($custom-checkbox-color);
-}
-
-.test-checkbox-ripple-size {
-  @include mdc-checkbox-ripple-size(48px);
-}
-
-.test-checkbox-density {
-  @include mdc-checkbox-density(-3);
-}
+$mdc-density-interval: 4px !default;
+$mdc-density-minimum-scale: minimum !default;
+$mdc-density-maximum-scale: maximum !default;
+$mdc-density-supported-scales: (default, minimum, maximum) !default;
+$mdc-density-supported-properties: (height, size) !default;
+$mdc-density-default-scale: default !default;

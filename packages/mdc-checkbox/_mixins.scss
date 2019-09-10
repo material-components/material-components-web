@@ -21,6 +21,7 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/density/functions";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
@@ -60,11 +61,11 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
     }
 
     @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color, $query: $query);
+    @include mdc-checkbox-density($mdc-checkbox-density-default-scale, $query: $query);
   }
 
   @include mdc-checkbox-container-colors($query: $query);
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color, $query);
-  @include mdc-checkbox-touch-target($mdc-checkbox-ripple-size, $query);
 
   @include mdc-feature-targets($feat-color) {
     @include mdc-checkbox-disabled-container-color_;
@@ -146,8 +147,6 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
       @include mdc-checkbox__native-control_;
     }
 
-    @include mdc-checkbox-touch-target($mdc-checkbox-ripple-size, $query);
-
     &:disabled {
       @include mdc-feature-targets($feat-structure) {
         @include mdc-checkbox--disabled_;
@@ -160,7 +159,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
       $component-height: $mdc-checkbox-ripple-size,
       $component-width: $mdc-checkbox-ripple-size,
       $query: $query);
-    @include mdc-checkbox-touch-target($mdc-touch-target-height, $query);
+    @include mdc-checkbox-touch-target($mdc-touch-target-height, $query: $query);
   }
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
@@ -201,7 +200,6 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
     @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-checkbox-ripple-target);
     @include mdc-states($color: on-surface, $query: $query, $ripple-target: $mdc-checkbox-ripple-target);
     @include mdc-ripple-radius-unbounded($query: $query, $ripple-target: $mdc-checkbox-ripple-target);
-    @include mdc-checkbox-ripple-size($mdc-checkbox-ripple-size, $query: $query);
   }
 
   #{$mdc-checkbox-ripple-target} {
@@ -213,6 +211,22 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
       content: none;
     }
   }
+}
+
+///
+/// Sets density scale for checkbox.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values
+///     `-3`, `-2`, `-1`, `0`.
+///
+@mixin mdc-checkbox-density($density-scale, $query: mdc-feature-all()) {
+  $size: mdc-density-prop-value(
+    $density-config: $mdc-checkbox-density-config,
+    $density-scale: $density-scale,
+    $property-name: size,
+  );
+
+  @include mdc-checkbox-ripple-size($size, $query: $query);
 }
 
 @mixin mdc-checkbox-ripple-size($ripple-size, $query: mdc-feature-all()) {
@@ -239,6 +253,8 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
       height: $ripple-size;
     }
   }
+
+  @include mdc-checkbox-touch-target($ripple-size, $ripple-size: $ripple-size, $query: $query);
 }
 
 @mixin mdc-checkbox-container-colors(
@@ -341,9 +357,19 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin mdc-checkbox-touch-target($size: $mdc-checkbox-ripple-size, $query: mdc-feature-all()) {
+///
+/// Sets checkbox touch target size which can be more than the ripple size. Param `$ripple-size` is required for custom
+/// ripple size.
+///
+/// @param {Number} $size Size of touch target (Native input) in `px`.
+/// @param {Number} $ripple-size Size of ripple in `px`. Required only for custom ripple size.
+///
+@mixin mdc-checkbox-touch-target(
+  $size: $mdc-checkbox-ripple-size,
+  $ripple-size: $mdc-checkbox-ripple-size,
+  $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
-  $offset: ($mdc-checkbox-ripple-size - $size) / 2;
+  $offset: ($ripple-size - $size) / 2;
 
   @include mdc-feature-targets($feat-structure) {
     .mdc-checkbox__native-control {

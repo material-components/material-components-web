@@ -20,12 +20,25 @@
 // THE SOFTWARE.
 //
 
+@import "@material/density/variables";
 @import "@material/theme/variables"; // for mdc-theme-prop-value
 
 $mdc-button-height: 36px !default;
 $mdc-button-horizontal-padding: 8px !default;
 $mdc-button-contained-horizontal-padding: 16px !default;
-$mdc-dense-button-height: 32px !default;
+
+$mdc-button-minimum-height: 24px !default;
+$mdc-button-maximum-height: $mdc-button-height !default;
+$mdc-button-density-default-scale: $mdc-density-default-scale !default;
+$mdc-button-density-config: (
+  height: (
+    default: $mdc-button-height,
+    maximum: $mdc-button-maximum-height,
+    minimum: $mdc-button-minimum-height,
+  ),
+) !default;
+
 $mdc-button-outlined-border-width: 1px !default;
+$mdc-button-shape-radius: small !default;
 
 $mdc-button-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;

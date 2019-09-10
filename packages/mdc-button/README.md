@@ -167,7 +167,6 @@ CSS Class | Description
 `mdc-button--raised` | Optional. Styles a contained button that is elevated above the surface.
 `mdc-button--unelevated` | Optional. Styles a contained button that is flush with the surface.
 `mdc-button--outlined` | Optional. Styles an outlined button that is flush with the surface.
-`mdc-button--dense` | Optional. Makes the button text and container slightly smaller.
 `mdc-button__label` | Recommended.\* Indicates the element containing the button's text label.
 `mdc-button__icon` | Optional. Indicates the element containing the button's icon.
 
@@ -198,7 +197,9 @@ Mixin | Description
 `mdc-button-container-fill-color($color)` | Sets the container fill color to the given color.
 `mdc-button-icon-color($color)` | Sets the icon color to the given color.
 `mdc-button-ink-color($color)` | Sets the ink color to the given color, and sets the icon color to the given color unless `mdc-button-icon-color` is also used.
-`mdc-button-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to button with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-button-density($density-scale)` | Sets density scale for button. Supported density scale values (`-3`, `-2`, `-1`, `0`).
+`mdc-button-height($height)` | Sets custom height of button.
+`mdc-button-shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets rounded shape to button with given radius size. `$density-scale` is only required when `$radius` value is in percentage unit, defaults to `$mdc-button-density-default-scale`. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-button-horizontal-padding($padding)` | Sets horizontal padding to the given number.
 `mdc-button-outline-color($color)` | Sets the outline color to the given color.
 `mdc-button-outline-width($width, $padding)` | Sets the outline width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `mdc-button-horizontal-padding` is also included with a custom value.
