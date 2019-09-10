@@ -21,12 +21,12 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/density/functions";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/touch-target/mixins";
-@import "@material/density/functions";
 @import "./functions";
 @import "./keyframes";
 @import "./variables";
