@@ -197,7 +197,7 @@ Mixin | Description
 `mdc-button-container-fill-color($color)` | Sets the container fill color to the given color.
 `mdc-button-icon-color($color)` | Sets the icon color to the given color.
 `mdc-button-ink-color($color)` | Sets the ink color to the given color, and sets the icon color to the given color unless `mdc-button-icon-color` is also used.
-`mdc-button-density($density-scale)` | Sets density scale for button. Supported density scale values (`-3` or `compact`), `-2`, (`-1` or `comfortable`), (`0` or `default`).
+`mdc-button-density($density-scale)` | Sets density scale for button. Supported density scale values (`-3`, `-2`, `-1`, `0`).
 `mdc-button-height($height)` | Sets custom height of button.
 `mdc-button-shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets rounded shape to button with given radius size. `$density-scale` is only required when `$radius` value is in percentage unit, defaults to `$mdc-button-density-default-scale`. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-button-horizontal-padding($padding)` | Sets horizontal padding to the given number.
