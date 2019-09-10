@@ -663,6 +663,22 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/shape-radius.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-form-field/classes/baseline-radio-rtl.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/10/20_51_43_383/spec/mdc-form-field/classes/baseline-radio-rtl.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/10/20_51_43_383/spec/mdc-form-field/classes/baseline-radio-rtl.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/10/20_51_43_383/spec/mdc-form-field/classes/baseline-radio-rtl.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/10/20_51_43_383/spec/mdc-form-field/classes/baseline-radio-rtl.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-form-field/classes/baseline-radio.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/10/20_51_43_383/spec/mdc-form-field/classes/baseline-radio.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/10/20_51_43_383/spec/mdc-form-field/classes/baseline-radio.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/10/20_51_43_383/spec/mdc-form-field/classes/baseline-radio.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/10/20_51_43_383/spec/mdc-form-field/classes/baseline-radio.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-icon-button/classes/baseline-icon-button-toggle.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/27/16_53_20_055/spec/mdc-icon-button/classes/baseline-icon-button-toggle.html?utm_source=golden_json",
     "screenshots": {
