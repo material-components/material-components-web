@@ -1791,20 +1791,36 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/18_06_17_850/spec/mdc-textfield/issues/4170.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-textfield/mixins/height-invalid.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/height-invalid.html?utm_source=golden_json",
+  "spec/mdc-textfield/mixins/density-invalid.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density-invalid.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/height-invalid.html.windows_chrome_76.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/height-invalid.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/height-invalid.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density-invalid.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density-invalid.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density-invalid.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-textfield/mixins/height.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/height.html?utm_source=golden_json",
+  "spec/mdc-textfield/mixins/density-leading-icon-invalid.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon-invalid.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/height.html.windows_chrome_76.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/height.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/height.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon-invalid.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon-invalid.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon-invalid.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/density-leading-icon.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/density.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/mixins/outline-shape-radius.html": {
