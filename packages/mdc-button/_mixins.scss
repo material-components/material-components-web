@@ -43,7 +43,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 
 @mixin mdc-button-theme-baseline($query: mdc-feature-all()) {
   .mdc-button {
-    @include mdc-button-density($density-scale: 0, $query: $query);
+    @include mdc-button-density($mdc-button-density-default-scale, $query: $query);
   }
 }
 

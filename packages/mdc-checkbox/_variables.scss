@@ -43,7 +43,7 @@ $mdc-checkbox-density-default-scale: $mdc-density-default-scale !default;
 $mdc-checkbox-density-config: (
   size: (
     minimum: $mdc-checkbox-minimum-size,
-    default: $mdc-checkbox-maximum-size,
+    default: $mdc-checkbox-ripple-size,
     maximum: $mdc-checkbox-maximum-size,
   ),
 ) !default;
