@@ -233,7 +233,6 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 ///
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-3`,
 ///     `-2`, `-1`, `0`.
-/// @param {Boolean} $shape-rtl-reflexive - Set this to true to reflect the shape border radius in RTL context.
 ///
 @mixin mdc-button-density($density-scale, $query: mdc-feature-all()) {
 
