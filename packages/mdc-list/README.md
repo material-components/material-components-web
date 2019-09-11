@@ -463,6 +463,7 @@ Method Signature | Description
 --- | ---
 `layout() => void` | Recalculates layout and orientation.
 `initializeListType() => void` | Initialize `selectedIndex` value based on pre-selected checkbox list items, single selection or radio.
+`setEnabled(itemIndex: number, isEnabled: boolean) => void` | Updates the list item at `itemIndex` to the desired `isEnabled` state.
 
 ### Events
 
@@ -564,3 +565,4 @@ Method Signature | Description
 `focusPrevElement(index: number) => number` | Handles focusing the previous element using the current `index`. Returns focused element index.
 `focusFirstElement() => number` | Handles focusing the first element in a list. Returns focused element index.
 `focusLastElement() => number` | Handles focusing the last element in a list. Returns focused element index.
+`setEnabled(itemIndex: number, isEnabled: Boolean) => void` | Updates the list item's disabled state.
