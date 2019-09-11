@@ -22,10 +22,10 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {cssClasses as listCssClasses} from '@material/list/constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, DefaultFocusState, numbers, strings} from './constants';
-import {cssClasses as listCssClasses} from '@material/list/constants';
 
 export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   static get cssClasses() {
