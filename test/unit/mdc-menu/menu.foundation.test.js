@@ -226,6 +226,30 @@ test('handleItemAction item action event inside of a child element of a selectio
     {times: 0});
 });
 
+test('handleItemAction adds class to the correct child element of a selection group when menu has mutated', () => {
+  const {foundation, mockAdapter, clock} = setupTest();
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(1);
+  td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
+
+  td.when(mockAdapter.isSelectableItemAtIndex(1)).thenReturn(true);
+  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(1)).thenReturn(-1);
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
+
+  foundation.handleItemAction(itemEl);
+
+  // Element at index 1 is now at index 0
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.isSelectableItemAtIndex(0)).thenReturn(true);
+  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(0)).thenReturn(-1);
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(1);
+
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+
+  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
+});
+
 test('handleMenuSurfaceOpened menu focuses the list root element by default on menu surface opened', () => {
   const {foundation, mockAdapter} = setupTest();
 

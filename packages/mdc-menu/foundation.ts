@@ -98,8 +98,10 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {
-      if (this.adapter_.isSelectableItemAtIndex(index)) {
-        this.setSelectedIndex(index);
+      // Recompute the index in case the menu contents have changed.
+      const recomputedIndex = this.adapter_.getElementIndex(listItem);
+      if (this.adapter_.isSelectableItemAtIndex(recomputedIndex)) {
+        this.setSelectedIndex(recomputedIndex);
       }
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
   }
