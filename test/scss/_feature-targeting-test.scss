@@ -197,7 +197,9 @@
     @include mdc-list-item-graphic-fill-color(red, $query: $query);
     @include mdc-list-item-graphic-ink-color(red, $query: $query);
     @include mdc-list-item-meta-ink-color(red, $query: $query);
-    @include mdc-list-item-shape-radius(42, $rtl-reflexive: false, $query: $query);
+    @include mdc-list-single-line-shape-radius(42, $rtl-reflexive: false, $density-scale: 0, $query: $query);
+    @include mdc-list-single-line-height(0, $query: $query);
+    @include mdc-list-single-line-density(0, $query: $query);
     @include mdc-list-divider-color(red, $query: $query);
     @include mdc-list-group-subheader-ink-color(red, $query: $query);
     @include mdc-list-ripple($query: $query);
