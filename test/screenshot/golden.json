@@ -1264,11 +1264,19 @@
     }
   },
   "spec/mdc-tab-bar/classes/baseline.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/02/23_48_38_484/spec/mdc-tab-bar/classes/baseline.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/11/22_26_22_973/spec/mdc-tab-bar/classes/baseline.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/02/23_48_38_484/spec/mdc-tab-bar/classes/baseline.html.windows_chrome_73.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/02/23_48_38_484/spec/mdc-tab-bar/classes/baseline.html.windows_firefox_65.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/02/23_48_38_484/spec/mdc-tab-bar/classes/baseline.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/11/22_26_22_973/spec/mdc-tab-bar/classes/baseline.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-tab-bar/mixins/density.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/11/22_05_28_655/spec/mdc-tab-bar/mixins/density.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/11/22_05_28_655/spec/mdc-tab-bar/mixins/density.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/11/22_05_28_655/spec/mdc-tab-bar/mixins/density.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/11/22_05_28_655/spec/mdc-tab-bar/mixins/density.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/classes/baseline-character-counter.html": {

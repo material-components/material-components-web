@@ -191,6 +191,19 @@
   }
 }
 
+///
+/// Sets tab height
+///
+/// @param {Number} $height Height value in `px`.
+///
+@mixin mdc-tab-height($height, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    height: $height;
+  }
+}
+
 //
 // Private
 //
@@ -209,7 +222,6 @@
     flex: 1 0 auto;
     justify-content: center;
     box-sizing: border-box;
-    height: $mdc-tab-height;
     // Explicitly setting margin to 0 is to override safari default margin for button elements.
     margin: 0;
     padding-top: 0;
@@ -266,20 +278,15 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    height: $mdc-tab-stacked-height;
-
     .mdc-tab__content {
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-    }
-
-    .mdc-tab__icon {
-      padding-top: 12px;
+      justify-content: center;
     }
 
     .mdc-tab__text-label {
-      padding-bottom: 16px;
+      padding-top: 6px;
+      padding-bottom: 4px;
     }
   }
 }
