@@ -1,7 +1,7 @@
 {
   "name": "@material/fab",
   "description": "The Material Components for the web floating action button component",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -18,8 +18,8 @@
     "@material/animation": "^3.1.0",
     "@material/elevation": "^3.1.0",
     "@material/feature-targeting": "^3.1.0",
-    "@material/ripple": "^3.1.0",
-    "@material/rtl": "^3.1.0",
+    "@material/ripple": "^3.2.0",
+    "@material/rtl": "^3.2.0",
     "@material/shape": "^3.1.0",
     "@material/theme": "^3.1.0",
     "@material/typography": "^3.1.0"
