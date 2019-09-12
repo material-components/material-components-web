@@ -78,7 +78,9 @@ However, it is highly recommended to install Material Components for the web via
     {
       loader: 'sass-loader',
       options: {
-        includePaths: ['./node_modules']
+        sassOptions: {
+          includePaths: ['./node_modules']
+        }
       }
     }
     ```
