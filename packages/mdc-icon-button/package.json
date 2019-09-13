@@ -1,7 +1,7 @@
 {
   "name": "@material/icon-button",
   "description": "The Material Components for the web icon button component",
-  "version": "3.2.0",
+  "version": "4.0.0-canary.e851d4f40.0",
   "license": "MIT",
   "main": "dist/mdc.iconButton.js",
   "module": "index.js",
@@ -20,10 +20,10 @@
     "directory": "packages/mdc-icon-button"
   },
   "dependencies": {
-    "@material/base": "^3.1.0",
-    "@material/feature-targeting": "^3.1.0",
-    "@material/ripple": "^3.2.0",
-    "@material/theme": "^3.1.0",
+    "@material/base": "^4.0.0-canary.e851d4f40.0",
+    "@material/feature-targeting": "^4.0.0-canary.e851d4f40.0",
+    "@material/ripple": "^4.0.0-canary.e851d4f40.0",
+    "@material/theme": "^4.0.0-canary.e851d4f40.0",
     "tslib": "^1.9.3"
   },
   "publishConfig": {

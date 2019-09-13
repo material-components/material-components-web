@@ -1,6 +1,6 @@
 {
   "name": "@material/card",
-  "version": "3.2.0",
+  "version": "4.0.0-canary.e851d4f40.0",
   "description": "The Material Components for the web card component",
   "license": "MIT",
   "keywords": [
@@ -14,11 +14,11 @@
     "directory": "packages/mdc-card"
   },
   "dependencies": {
-    "@material/elevation": "^3.1.0",
-    "@material/feature-targeting": "^3.1.0",
-    "@material/ripple": "^3.2.0",
-    "@material/rtl": "^3.2.0",
-    "@material/shape": "^3.1.0",
-    "@material/theme": "^3.1.0"
+    "@material/elevation": "^4.0.0-canary.e851d4f40.0",
+    "@material/feature-targeting": "^4.0.0-canary.e851d4f40.0",
+    "@material/ripple": "^4.0.0-canary.e851d4f40.0",
+    "@material/rtl": "^4.0.0-canary.e851d4f40.0",
+    "@material/shape": "^4.0.0-canary.e851d4f40.0",
+    "@material/theme": "^4.0.0-canary.e851d4f40.0"
   }
 }
