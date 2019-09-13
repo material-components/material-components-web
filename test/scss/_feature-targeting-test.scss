@@ -286,6 +286,9 @@
     @include mdc-tab-core-styles($query: $query);
     @include mdc-tab-without-ripple($query: $query);
     @include mdc-tab-ripple($query: $query);
+    @include mdc-tab-height(0, $query: $query);
+    @include mdc-tab-bar-density(0, $query: $query);
+    @include mdc-tab-bar-stacked-density(0, $query: $query);
 
     // Theme
     @include mdc-theme-core-styles($query: $query);

@@ -20,18 +20,28 @@
 // THE SOFTWARE.
 //
 
-@import "../../../../packages/mdc-tab-bar/mixins";
-@import "../../../../packages/mdc-theme/color-palette";
-@import "../mixins";
+@import "@material/density/variables";
+@import "@material/tab/variables";
 
-.test-cell--tab-bar {
-  @include test-cell-size(400, 100);
-}
-
-.custom-tab-bar-density {
-  @include mdc-tab-bar-density(-4);
-}
-
-.custom-tab-bar-stacked-density {
-  @include mdc-tab-bar-stacked-density(-4);
-}
+$mdc-tab-bar-height: $mdc-tab-height !default;
+$mdc-tab-bar-minimum-height: 30px !default;
+$mdc-tab-bar-maximum-height: $mdc-tab-bar-height !default;
+$mdc-tab-bar-density-scale: $mdc-density-default-scale !default;
+$mdc-tab-bar-density-config: (
+  height: (
+    default: $mdc-tab-bar-height,
+    maximum: $mdc-tab-bar-maximum-height,
+    minimum: $mdc-tab-bar-minimum-height,
+  ),
+) !default;
+$mdc-tab-bar-stacked-height: $mdc-tab-stacked-height !default;
+$mdc-tab-bar-stacked-minimum-height: 56px !default;
+$mdc-tab-bar-stacked-maximum-height: $mdc-tab-bar-stacked-height !default;
+$mdc-tab-bar-stacked-density-scale: $mdc-density-default-scale !default;
+$mdc-tab-bar-stacked-density-config: (
+  height: (
+    default: $mdc-tab-bar-stacked-height,
+    maximum: $mdc-tab-bar-stacked-maximum-height,
+    minimum: $mdc-tab-bar-stacked-minimum-height,
+  ),
+) !default;
