@@ -110,3 +110,69 @@ test('isCollapsed returns true if top-app-bar is collapsed', () => {
   foundation.handleTargetScroll();
   assert.isTrue(foundation.isCollapsed);
 });
+
+test('isCollapsed returns false when page is scrolled to the top', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
+  foundation.init();
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
+  foundation.handleTargetScroll();
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
+  foundation.handleTargetScroll();
+  assert.isFalse(foundation.isCollapsed);
+});
+
+test('setAlwaysCollapsed(true) sets bar to be collapsed', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(false);
+  foundation.init();
+  foundation.setAlwaysCollapsed(true);
+  assert.isTrue(foundation.isCollapsed);
+});
+
+test('setAlwaysCollapsed(true) will keep bar collapsed', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(false);
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
+  foundation.init();
+  foundation.setAlwaysCollapsed(true);
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
+  foundation.handleTargetScroll();
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
+  foundation.handleTargetScroll();
+  td.verify(mockAdapter.removeClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS), {times: 0});
+});
+
+test('setAlwaysCollapsed(false) will keep bar collapsed when scrolled', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(false);
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
+  foundation.init();
+  foundation.setAlwaysCollapsed(true);
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
+  foundation.handleTargetScroll();
+  assert.isTrue(foundation.isCollapsed);
+  foundation.setAlwaysCollapsed(false);
+  assert.isTrue(foundation.isCollapsed);
+  foundation.handleTargetScroll();
+  assert.isTrue(foundation.isCollapsed);
+});
+
+test('setAlwaysCollapsed is called on init', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  td.verify(mockAdapter.getViewportScrollY(), {times: 1});
+});
+
+test('getAlwaysCollapsed returns false by default', () => {
+  const {foundation} = setupTest();
+  assert.isFalse(foundation.getAlwaysCollapsed());
+});
+
+test('getAlwaysCollapsed matches value of setAlwaysCollapsed', () => {
+  const {foundation} = setupTest();
+  foundation.setAlwaysCollapsed(false);
+  assert.isFalse(foundation.getAlwaysCollapsed());
+  foundation.setAlwaysCollapsed(true);
+  assert.isTrue(foundation.getAlwaysCollapsed());
+});

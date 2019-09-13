@@ -89,6 +89,6 @@ are working as hard as we can to make writing adapters as easy and predictable a
 - We plan on creating Type Definitions for our adapters in the future so that TypeScript users can
   validate that their interface conforms correctly to the adapter's specification.
 
-> Please file an issue with us if there are certain snags you've ran into trying to implement an
+> Please [file an issue](https://github.com/material-components/material-components-web/issues/new/choose) with us if there are certain snags you've ran into trying to implement an
   adapter, or if you feel that we can provide better guidance on a particular problem. This is
   definitely something we want to know about.
