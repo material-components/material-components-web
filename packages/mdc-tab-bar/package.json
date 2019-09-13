@@ -1,7 +1,7 @@
 {
   "name": "@material/tab-bar",
   "description": "The Material Components for the web tab bar component",
-  "version": "3.2.0",
+  "version": "4.0.0-canary.0c808fb33.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -19,11 +19,11 @@
     "directory": "packages/mdc-tab-bar"
   },
   "dependencies": {
-    "@material/base": "^3.1.0",
-    "@material/elevation": "^3.1.0",
-    "@material/feature-targeting": "^3.1.0",
-    "@material/tab": "^3.2.0",
-    "@material/tab-scroller": "^3.2.0",
+    "@material/base": "^4.0.0-canary.0c808fb33.0",
+    "@material/elevation": "^4.0.0-canary.0c808fb33.0",
+    "@material/feature-targeting": "^4.0.0-canary.0c808fb33.0",
+    "@material/tab": "^4.0.0-canary.0c808fb33.0",
+    "@material/tab-scroller": "^4.0.0-canary.0c808fb33.0",
     "tslib": "^1.9.3"
   },
   "publishConfig": {

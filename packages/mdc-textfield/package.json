@@ -1,7 +1,7 @@
 {
   "name": "@material/textfield",
   "description": "The Material Components for the web text field component",
-  "version": "3.2.0",
+  "version": "4.0.0-canary.0c808fb33.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -19,17 +19,17 @@
     "directory": "packages/mdc-textfield"
   },
   "dependencies": {
-    "@material/animation": "^3.1.0",
-    "@material/base": "^3.1.0",
-    "@material/dom": "^3.1.0",
-    "@material/floating-label": "^3.2.0",
-    "@material/line-ripple": "^3.1.0",
-    "@material/notched-outline": "^3.2.0",
-    "@material/ripple": "^3.2.0",
-    "@material/rtl": "^3.2.0",
-    "@material/shape": "^3.1.0",
-    "@material/theme": "^3.1.0",
-    "@material/typography": "^3.1.0",
+    "@material/animation": "^4.0.0-canary.0c808fb33.0",
+    "@material/base": "^4.0.0-canary.0c808fb33.0",
+    "@material/dom": "^4.0.0-canary.0c808fb33.0",
+    "@material/floating-label": "^4.0.0-canary.0c808fb33.0",
+    "@material/line-ripple": "^4.0.0-canary.0c808fb33.0",
+    "@material/notched-outline": "^4.0.0-canary.0c808fb33.0",
+    "@material/ripple": "^4.0.0-canary.0c808fb33.0",
+    "@material/rtl": "^4.0.0-canary.0c808fb33.0",
+    "@material/shape": "^4.0.0-canary.0c808fb33.0",
+    "@material/theme": "^4.0.0-canary.0c808fb33.0",
+    "@material/typography": "^4.0.0-canary.0c808fb33.0",
     "tslib": "^1.9.3"
   }
 }

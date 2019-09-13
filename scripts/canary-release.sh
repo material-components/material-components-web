@@ -47,6 +47,7 @@ log "Publishing packages to NPM..."
 if ! npx lerna publish from-git --dist-tag canary; then
   fail "NPM Publish was not successful"
   exit 1
+fi
 echo ""
 
 log "Cleaning up..."

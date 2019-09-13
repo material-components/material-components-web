@@ -1,7 +1,7 @@
 {
   "name": "@material/ripple",
   "description": "The Material Components for the web Ink Ripple effect for web element interactions",
-  "version": "3.2.0",
+  "version": "4.0.0-canary.0c808fb33.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -18,11 +18,11 @@
     "directory": "packages/mdc-ripple"
   },
   "dependencies": {
-    "@material/animation": "^3.1.0",
-    "@material/base": "^3.1.0",
-    "@material/dom": "^3.1.0",
-    "@material/feature-targeting": "^3.1.0",
-    "@material/theme": "^3.1.0",
+    "@material/animation": "^4.0.0-canary.0c808fb33.0",
+    "@material/base": "^4.0.0-canary.0c808fb33.0",
+    "@material/dom": "^4.0.0-canary.0c808fb33.0",
+    "@material/feature-targeting": "^4.0.0-canary.0c808fb33.0",
+    "@material/theme": "^4.0.0-canary.0c808fb33.0",
     "tslib": "^1.9.3"
   }
 }
