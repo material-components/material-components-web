@@ -38,7 +38,8 @@
     "test:unit": "karma start --single-run",
     "test:dependency": "./scripts/dependency-test.sh",
     "test:feature-targeting": "node test/scss/verify-feature-targeting.js",
-    "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
+    "test:site": "npm run clean:site && ./scripts/site-generator-test.sh",
+    "version": "cat lerna.json | grep -e '^  \"version\": ' | awk '{print $2}' | sed 's/[\",]//g'"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
