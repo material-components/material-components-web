@@ -277,7 +277,7 @@
 }
 
 @mixin mdc-drawer-item-shape-radius($radius, $rtl-reflexive: true, $query: mdc-feature-all()) {
-  @include mdc-list-item-shape-radius($radius, $rtl-reflexive, $query: $query);
+  @include mdc-list-single-line-shape-radius($radius, $rtl-reflexive, $query: $query);
 }
 
 @mixin mdc-drawer-shape-radius($radius, $query: mdc-feature-all()) {
