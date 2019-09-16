@@ -68,7 +68,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialize()
   private handleMenuOpened_!: EventListener; // assigned in initialize()
   private handleMenuClosed_!: EventListener; // assigned in initialize()
-  private handleMenuSelected_!: CustomEventListener<MDCMenuItemEvent>; // assigned in initialize()
+  private handleMenuItemAction_!: CustomEventListener<MDCMenuItemEvent>; // assigned in initialize()
 
   initialize(
       labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
@@ -129,7 +129,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
     };
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
-    this.handleMenuSelected_ = (evtData) => this.selectedIndex = evtData.detail.index;
+    this.handleMenuItemAction_ = (evt) => this.foundation_.handleMenuItemAction(evt.detail.index);
     this.handleMenuOpened_ = () => this.foundation_.handleMenuOpened();
     this.handleMenuClosed_ = () => this.foundation_.handleMenuClosed();
 
@@ -141,7 +141,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
     this.menu_!.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
     this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-    this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+    this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuItemAction_);
     this.foundation_.init();
 
     // Initially sync floating label
@@ -160,7 +160,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
     this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
     this.menu_.unlisten(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-    this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+    this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuItemAction_);
     this.menu_.destroy();
 
     if (this.ripple_) {

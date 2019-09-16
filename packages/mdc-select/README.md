@@ -411,7 +411,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `isValid() => boolean` | Gets the valid state through the adapter's `checkValidity` API. |
 | `setRequired(isRequired: boolean) => void` | Sets the required state through the adapter. |
 | `getRequired() => boolean` | Gets the required state through the adapter. |
-| `init() => void` | Handles menu setup. |
+| `init() => void` | Initializes the foundation. |
 | `layout() => void` | Handles determining if the notched outline should be notched. |
 | `setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon. |
 | `setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon. |

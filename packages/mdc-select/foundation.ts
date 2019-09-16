@@ -121,10 +121,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const previouslySelectedIndex = this.selectedIndex_;
     this.selectedIndex_ = index;
 
-    if (this.selectedIndex_ === numbers.UNSET_INDEX || !this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)) {
+    const textAtIndex = this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_);
+    if (this.selectedIndex_ === numbers.UNSET_INDEX || !textAtIndex) {
       this.adapter_.setSelectedText('');
     } else {
-      this.adapter_.setSelectedText(this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)!.trim());
+      this.adapter_.setSelectedText(textAtIndex!.trim());
     }
 
     if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
@@ -196,11 +197,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   handleMenuOpened() {
-    this.adapter_.addClass(cssClasses.ACTIVATED);
-
     if (this.adapter_.getMenuItemValues().length === 0) {
       return;
     }
+
+    this.adapter_.addClass(cssClasses.ACTIVATED);
 
     // Menu should open to the last selected element, should open to first menu item otherwise.
     const focusItemIndex = this.selectedIndex_ >= 0 ? this.selectedIndex_ : 0;
@@ -241,6 +242,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
         }
       }
     }
+  }
+
+  handleMenuItemAction(index: number) {
+    this.setSelectedIndex(index);
   }
 
   /**
