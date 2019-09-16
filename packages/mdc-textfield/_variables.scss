@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/density/variables";
 @import "@material/floating-label/variables";
 @import "@material/notched-outline/variables";
 
@@ -68,6 +69,16 @@ $mdc-textarea-disabled-background: rgba(249, 249, 249, 1) !default;
 
 $mdc-text-field-outlined-stroke-width: 2px !default;
 $mdc-text-field-height: 56px !default;
+$mdc-text-field-minimum-height: 40px !default;
+$mdc-text-field-maximum-height: $mdc-text-field-height !default;
+$mdc-text-field-density-default-scale: $mdc-density-default-scale !default;
+$mdc-text-field-density-config: (
+  height: (
+    default: $mdc-text-field-height,
+    maximum: $mdc-text-field-maximum-height,
+    minimum: $mdc-text-field-minimum-height,
+  ),
+) !default;
 $mdc-text-field-label-position-y: $mdc-floating-label-position-y !default;
 $mdc-text-field-label-offset: 16px !default;
 $mdc-text-field-dense-label-position-y: 70% !default;

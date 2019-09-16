@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/density/functions";
 @import "@material/floating-label/mixins";
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
@@ -35,6 +36,54 @@
 @import "./functions";
 
 ///
+/// Sets density scale for default text field variant.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+///
+@mixin mdc-text-field-density($density-scale) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-text-field-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-text-field-height($height);
+}
+
+///
+/// Sets density scale for outlined text field (Excluding outlined text field with leading icon).
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+///
+@mixin mdc-text-field-outlined-density($density-scale) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-text-field-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-text-field-outlined-height($height);
+}
+
+///
+/// Sets density scale for outlined text field with leading icon.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+///
+@mixin mdc-text-field-outlined-with-leading-icon-density($density-scale) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-text-field-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-text-field-outlined-with-leading-icon-height($height);
+}
+
+///
 /// Sets height of default text field variant.
 ///
 /// @param {Number} $height
@@ -45,18 +94,64 @@
 }
 
 ///
-/// Sets height of outlined text field variant.
+/// Sets height of outlined text field variant (Excluding outlined text field with leading icon).
 ///
 /// @param {Number} $height
 /// @access public
 ///
 @mixin mdc-text-field-outlined-height($height) {
-  $keyframe-name: text-field-outlined-#{$height};
+  $keyframe-suffix: text-field-outlined-#{$height};
   $positionY: mdc-text-field-get-outlined-label-position-y($height);
 
   @include mdc-notched-outline-floating-label-float-position-absolute($positionY);
-  @include mdc-floating-label-shake-keyframes($keyframe-name, $positionY);
-  @include mdc-floating-label-shake-animation($keyframe-name);
+
+  @at-root {
+    @include mdc-floating-label-shake-keyframes($keyframe-suffix, $positionY);
+  }
+
+  @include mdc-floating-label-shake-animation($keyframe-suffix);
+  @include mdc-text-field-height($height);
+}
+
+///
+/// Sets height of outlined text field with leading icon variant.
+///
+/// @param {Number} $height
+/// @access public
+///
+@mixin mdc-text-field-outlined-with-leading-icon-height($height) {
+  $keyframe-suffix: text-field-outlined-with-leading-icon-#{$height};
+  $positionY: mdc-text-field-get-outlined-label-position-y($height);
+
+  // For specificity
+  &.mdc-text-field--outlined {
+    @include mdc-notched-outline-floating-label-float-position-absolute($positionY, 32px);
+  }
+
+  @at-root {
+    @include mdc-floating-label-shake-keyframes(
+      $keyframe-suffix,
+      $positionY,
+      $mdc-text-field-outlined-with-leading-icon-label-position-x
+    );
+  }
+
+  @include mdc-floating-label-shake-animation($keyframe-suffix);
+
+  $keyframe-suffix-rtl: #{$keyframe-suffix}-rtl;
+
+  @at-root {
+    @include mdc-floating-label-shake-keyframes(
+      $keyframe-suffix-rtl,
+      $positionY,
+      -$mdc-text-field-outlined-with-leading-icon-label-position-x
+    );
+  }
+
+  @include mdc-rtl {
+    @include mdc-floating-label-shake-animation($keyframe-suffix);
+  }
+
   @include mdc-text-field-height($height);
 }
 
