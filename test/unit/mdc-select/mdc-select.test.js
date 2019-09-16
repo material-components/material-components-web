@@ -1022,7 +1022,7 @@ test('click on the selectedText focuses on the selectedText element', () => {
   td.verify(selectedText.focus(), {times: 1});
 });
 
-test('menu surface opened event causes the first element (if not element is selected) to be focused', () => {
+test('menu surface opened event causes the first element (if no element is selected) to be focused', () => {
   const hasMockFoundation = false;
   const hasMockMenu = false;
   const hasOutline = false;
@@ -1109,7 +1109,7 @@ test('menu surface selected event causes the select to update', () => {
     evt.initCustomEvent(evtType, false, false, detail);
   }
   menuSurface.dispatchEvent(evt);
-  td.verify(mockFoundation.setSelectedIndex(1, /** closeMenu */ true), {times: 1});
+  td.verify(mockFoundation.handleMenuItemAction(1), {times: 1});
 
   document.body.removeChild(fixture);
 });

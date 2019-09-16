@@ -306,7 +306,6 @@ test('#handleBlur calls helperText.setValidity(true) if menu is not open', () =>
   const hasHelperText = true;
   const {foundation, mockAdapter, helperText} = setupTest(hasIcon, hasHelperText);
   td.when(mockAdapter.hasClass(cssClasses.REQUIRED)).thenReturn(true);
-  td.when(mockAdapter.isMenuOpen()).thenReturn(false);
   td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('foo');
   foundation.selectedIndex_ = 0;
   foundation.handleBlur();

@@ -121,11 +121,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const previouslySelectedIndex = this.selectedIndex_;
     this.selectedIndex_ = index;
 
-    const textAtIndex = this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_);
-    if (this.selectedIndex_ === numbers.UNSET_INDEX || !textAtIndex) {
+    if (this.selectedIndex_ === numbers.UNSET_INDEX || !this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)) {
       this.adapter_.setSelectedText('');
     } else {
-      this.adapter_.setSelectedText(textAtIndex!.trim());
+      this.adapter_.setSelectedText(this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)!.trim());
     }
 
     if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
@@ -245,7 +244,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   handleMenuItemAction(index: number) {
-    this.setSelectedIndex(index);
+    this.setSelectedIndex(index, /** closeMenu */ true);
   }
 
   /**
