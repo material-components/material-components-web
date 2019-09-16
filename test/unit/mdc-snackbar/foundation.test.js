@@ -234,6 +234,25 @@ test('#open automatically dismisses snackbar after timeout', () => {
   td.verify(foundation.close(strings.REASON_DISMISS), {times: 1});
 });
 
+test('#snackbar remains open for indefinite timeout', () => {
+  const {foundation} = setupTest();
+  const clock = installClock();
+  foundation.close = td.func('close');
+  foundation.setTimeoutMs(-1);
+
+  foundation.open();
+
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
+  clock.runToFrame();
+  clock.runToFrame();
+
+  // Wait for max timeout and ensure that close has not been called
+  clock.tick(numbers.SNACKBAR_ANIMATION_OPEN_TIME_MS);
+  clock.tick(numbers.MAX_AUTO_DISMISS_TIMEOUT_MS);
+
+  td.verify(foundation.close(strings.REASON_DISMISS), {times: 0});
+});
+
 test('#isOpen returns false when the snackbar has never been opened', () => {
   const {foundation} = setupTest();
   assert.isFalse(foundation.isOpen());
