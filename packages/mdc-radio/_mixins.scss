@@ -154,8 +154,8 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 
     &--touch {
       @include mdc-touch-target-component(
-        $component-height: $mdc-touch-target-height,
-        $component-width: $mdc-touch-target-height,
+        $component-height: $mdc-radio-touch-area,
+        $component-width: $mdc-radio-touch-area,
         $query: $query);
       @include mdc-radio-touch-target($size: $mdc-touch-target-height, $query: $query);
     }
