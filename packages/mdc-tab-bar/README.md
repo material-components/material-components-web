@@ -105,6 +105,9 @@ To customize the width of the tab bar, use the following mixin.
 Mixin | Description
 --- | ---
 `mdc-tab-bar-width($width)` | Customizes the width of the tab bar.
+`mdc-tab-bar-density($density-scale)` | Sets density scale to default tab bar variant. Use `mdc-tab-bar-stacked-density` mixin for stacked variant. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
+`mdc-tab-bar-stacked-density($density-scale)` | Sets density scale to stacked tab bar variant. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
+
 
 ## `MDCTabBar` Properties and Methods
 

@@ -29,6 +29,7 @@ export interface MDCChipInteractionEventDetail {
 
 export interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail {
   selected: boolean;
+  shouldIgnore: boolean;
 }
 
 export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {

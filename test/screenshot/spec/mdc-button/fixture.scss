@@ -29,8 +29,19 @@ $custom-button-custom-shape-radius: 50%;
 $custom-button-custom-outline-width: 4px;
 $custom-button-custom-horizontal-padding: 24px;
 
-.test-cell--button {
+@mixin test-button-cell {
   @include test-cell-size(171, 71);
+}
+
+.test-cell--button {
+  @include test-button-cell;
+}
+
+.test-cell--density-button {
+  @include test-button-cell;
+
+  display: inline-flex;
+  align-items: center;
 }
 
 .custom-button--ink-color {
@@ -63,4 +74,12 @@ $custom-button-custom-horizontal-padding: 24px;
 
 .custom-button--horizontal-padding {
   @include mdc-button-horizontal-padding($custom-button-custom-horizontal-padding);
+}
+
+.custom-button--density-compact {
+  @include mdc-button-density(-3);
+}
+
+.custom-button--density-comfortable {
+  @include mdc-button-density(-1);
 }

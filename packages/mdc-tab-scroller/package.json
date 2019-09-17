@@ -1,7 +1,7 @@
 {
   "name": "@material/tab-scroller",
   "description": "The Material Components for the web tab scroller component",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -23,7 +23,7 @@
     "@material/base": "^3.1.0",
     "@material/dom": "^3.1.0",
     "@material/feature-targeting": "^3.1.0",
-    "@material/tab": "^3.1.0",
+    "@material/tab": "^3.2.0",
     "tslib": "^1.9.3"
   },
   "publishConfig": {

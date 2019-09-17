@@ -41,6 +41,10 @@ $custom-checkbox-color: crimson;
   @include mdc-checkbox-ink-color($custom-checkbox-color);
 }
 
-.test-checkbox-touch-dimension {
-  @include mdc-checkbox-touch-dimension(48px);
+.test-checkbox-ripple-size {
+  @include mdc-checkbox-ripple-size(48px);
+}
+
+.test-checkbox-density {
+  @include mdc-checkbox-density(-3);
 }

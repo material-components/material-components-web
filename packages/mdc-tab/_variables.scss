@@ -20,6 +20,8 @@
 // THE SOFTWARE.
 //
 
+@import "@material/theme/variables"; // for mdc-theme-prop-value()
+
 $mdc-tab-icon-size: 24px !default;
 $mdc-tab-height: 48px !default;
 $mdc-tab-stacked-height: 72px !default;

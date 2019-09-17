@@ -21,6 +21,7 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/button/variables";
 @import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
@@ -28,6 +29,7 @@
 @import "@material/shape/mixins";
 @import "@material/theme/mixins";
 @import "@material/theme/variables"; // for mdc-theme-prop-value
+@import "@material/touch-target/variables";
 @import "@material/typography/mixins";
 @import "./variables";
 
@@ -106,6 +108,7 @@
       max-width: 100%; // IE 11
       max-height: 100%; // IE 11
       pointer-events: auto; // Override from `.mdc-dialog__container`.
+      // IE 11: Otherwise, scrolling content in `mdc-dialog__content` overflows.
       overflow-y: auto;
 
       @include mdc-rtl(".mdc-dialog") {
@@ -217,7 +220,7 @@
       box-sizing: border-box;
       min-height: 52px;
       margin: 0;
-      padding: 8px;
+      padding: $mdc-dialog-actions-padding;
       border-top: 1px solid transparent;
     }
 
@@ -462,6 +465,31 @@
           }
         }
         /* stylelint-enable*/
+      }
+    }
+  }
+}
+
+// Applied to dialogs that have buttons with an increased touch target.
+@mixin mdc-dialog-with-touch-target($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $touch-target-margin:
+    ($mdc-touch-target-height - $mdc-button-height) / 2;
+  $vertical-padding: max(0, $mdc-dialog-actions-padding - $touch-target-margin);
+
+  // Buttons with an increased touch target have added vertical margin, so
+  // decrease the actions element padding to compensate.
+  .mdc-dialog__actions {
+    @include mdc-feature-targets($feat-structure) {
+      padding-top: $vertical-padding;
+      padding-bottom: $vertical-padding;
+
+      // The below styles override the default button touch target values,
+      // which otherwise cause `mdc-dialog__surface` to scroll unnnecessarily
+      // in IE 11.
+      .mdc-button__touch {
+        top: -$touch-target-margin; // IE 11
+        transform: none; // IE 11
       }
     }
   }

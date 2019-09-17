@@ -10,6 +10,7 @@
 @import "@material/grid-list/mixins";
 @import "@material/icon-button/mixins";
 @import "@material/image-list/mixins";
+@import "@material/linear-progress/mixins";
 @import "@material/list/mixins";
 @import "@material/menu-surface/mixins";
 @import "@material/menu/mixins";
@@ -41,6 +42,9 @@
     @include mdc-button-outline-width(0, $query: $query);
     @include mdc-button-ripple($query: $query);
     @include mdc-button-without-ripple($query: $query);
+    @include mdc-button-theme-baseline($query: $query);
+    @include mdc-button-density(0, $query: $query);
+    @include mdc-button-height(0, $query: $query);
 
     // Card
     @include mdc-card-core-styles($query: $query);
@@ -58,7 +62,9 @@
     @include mdc-checkbox-focus-indicator-color(red, $query: $query);
     @include mdc-checkbox-ripple($query: $query);
     @include mdc-checkbox-without-ripple($query: $query);
-    @include mdc-checkbox-touch-dimension(40px, $query: $query);
+    @include mdc-checkbox-ripple-size(0, $query: $query);
+    @include mdc-checkbox-touch-target(0, 0, $query: $query);
+    @include mdc-checkbox-density(0, $query: $query);
 
     // Chips
     @include mdc-chip-core-styles($query: $query);
@@ -101,10 +107,11 @@
     @include mdc-data-table-shape-radius(0, $query: $query);
     @include mdc-data-table-stroke-size(0, $query: $query);
     @include mdc-data-table-stroke-color(red, $query: $query);
-    @include mdc-data-table-header-row-height(0, $query: $query);
-    @include mdc-data-table-row-height(0, $query: $query);
+    @include mdc-data-table-header-cell-height(0, $query: $query);
+    @include mdc-data-table-cell-height(0, $query: $query);
     @include mdc-data-table-cell-padding(0, $query: $query);
     @include mdc-data-table-column-widths(0, $query: $query);
+    @include mdc-data-table-density(0, $query: $query);
 
     // Dialog
     @include mdc-dialog-core-styles($query: $query);
@@ -117,6 +124,7 @@
     @include mdc-dialog-min-width(0, $query: $query);
     @include mdc-dialog-max-width(0, 0, $query: $query);
     @include mdc-dialog-max-height(0, 0, $query: $query);
+    @include mdc-dialog-with-touch-target($query: $query);
 
     // Drawer
     @include mdc-drawer-core-styles($query: $query);
@@ -177,6 +185,11 @@
     @include mdc-image-list-standard-columns(4, 4px, $query: $query);
     @include mdc-image-list-masonry-columns(4, 4px, $query: $query);
 
+    // Linear progress
+    @include mdc-linear-progress-core-styles($query: $query);
+    @include mdc-linear-progress-bar-color(red, $query: $query);
+    @include mdc-linear-progress-buffer-color(red, $query: $query);
+
     // List
     @include mdc-list-core-styles($query: $query);
     @include mdc-list-item-primary-text-ink-color(red, $query: $query);
@@ -184,7 +197,9 @@
     @include mdc-list-item-graphic-fill-color(red, $query: $query);
     @include mdc-list-item-graphic-ink-color(red, $query: $query);
     @include mdc-list-item-meta-ink-color(red, $query: $query);
-    @include mdc-list-item-shape-radius(42, $rtl-reflexive: false, $query: $query);
+    @include mdc-list-single-line-shape-radius(42, $rtl-reflexive: false, $density-scale: 0, $query: $query);
+    @include mdc-list-single-line-height(0, $query: $query);
+    @include mdc-list-single-line-density(0, $query: $query);
     @include mdc-list-divider-color(red, $query: $query);
     @include mdc-list-group-subheader-ink-color(red, $query: $query);
     @include mdc-list-ripple($query: $query);
@@ -208,11 +223,13 @@
     @include mdc-radio-focus-indicator-color(red, $query: $query);
     @include mdc-radio-ripple($query: $query);
     @include mdc-radio-without-ripple($query: $query);
+    @include mdc-radio-touch-target(900px, $query: $query);
 
     // Ripple
     @include mdc-ripple-core-styles($query: $query);
     @include mdc-ripple-common($query: $query);
     @include mdc-ripple-surface($query: $query);
+    @include mdc-ripple-target-common($query: $query);
     @include mdc-states-base-color(red, $query: $query);
     @include mdc-states-hover-opacity(1, $query: $query);
     @include mdc-states-focus-opacity(1, $query: $query);
@@ -271,6 +288,9 @@
     @include mdc-tab-core-styles($query: $query);
     @include mdc-tab-without-ripple($query: $query);
     @include mdc-tab-ripple($query: $query);
+    @include mdc-tab-height(0, $query: $query);
+    @include mdc-tab-bar-density(0, $query: $query);
+    @include mdc-tab-bar-stacked-density(0, $query: $query);
 
     // Theme
     @include mdc-theme-core-styles($query: $query);

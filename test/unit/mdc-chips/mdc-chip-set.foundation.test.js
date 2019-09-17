@@ -60,7 +60,7 @@ test('in choice chips, #select does nothing if chip is already selected', () => 
   td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
   foundation.select('chipA');
   foundation.select('chipA');
-  td.verify(mockAdapter.selectChipAtIndex(0, true), {times: 1});
+  td.verify(mockAdapter.selectChipAtIndex(0, true, false), {times: 1});
   assert.equal(foundation.getSelectedChipIds().length, 1);
 });
 
@@ -70,7 +70,7 @@ test('in choice chips, #select selects chip if no chips are selected', () => {
   assert.equal(foundation.getSelectedChipIds().length, 0);
 
   foundation.select('chipA');
-  td.verify(mockAdapter.selectChipAtIndex(0, true));
+  td.verify(mockAdapter.selectChipAtIndex(0, true, false));
   assert.equal(foundation.getSelectedChipIds().length, 1);
 });
 
@@ -81,8 +81,8 @@ test('in choice chips, #select deselects chip if another chip is selected', () =
   assert.equal(foundation.getSelectedChipIds().length, 1);
 
   foundation.select('chipA');
-  td.verify(mockAdapter.selectChipAtIndex(1, false));
-  td.verify(mockAdapter.selectChipAtIndex(0, true));
+  td.verify(mockAdapter.selectChipAtIndex(1, false, false));
+  td.verify(mockAdapter.selectChipAtIndex(0, true, false));
   assert.equal(foundation.getSelectedChipIds().length, 1);
 });
 
@@ -92,11 +92,11 @@ test('in filter chips, #select selects multiple chips', () => {
   assert.equal(foundation.getSelectedChipIds().length, 0);
 
   foundation.select('chipA');
-  td.verify(mockAdapter.selectChipAtIndex(0, true));
+  td.verify(mockAdapter.selectChipAtIndex(0, true, false));
   assert.equal(foundation.getSelectedChipIds().length, 1);
 
   foundation.select('chipB');
-  td.verify(mockAdapter.selectChipAtIndex(1, true));
+  td.verify(mockAdapter.selectChipAtIndex(1, true, false));
   assert.equal(foundation.getSelectedChipIds().length, 2);
 });
 
@@ -106,7 +106,7 @@ test('in filter chips, #select does nothing if chip is already selected', () => 
   td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
   foundation.select('chipA');
   foundation.select('chipA');
-  td.verify(mockAdapter.selectChipAtIndex(0, true), {times: 1});
+  td.verify(mockAdapter.selectChipAtIndex(0, true, false), {times: 1});
   assert.equal(foundation.getSelectedChipIds().length, 1);
 });
 
@@ -118,30 +118,30 @@ test('in filter chips, #handleChipInteraction deselects chip if in selectedChipI
   assert.equal(foundation.getSelectedChipIds().length, 2);
 
   foundation.handleChipInteraction('chipB');
-  td.verify(mockAdapter.selectChipAtIndex(1, false));
+  td.verify(mockAdapter.selectChipAtIndex(1, false, true));
   assert.equal(foundation.getSelectedChipIds().length, 1);
 
   foundation.handleChipInteraction('chipA');
-  td.verify(mockAdapter.selectChipAtIndex(0, false));
+  td.verify(mockAdapter.selectChipAtIndex(0, false, true));
   assert.equal(foundation.getSelectedChipIds().length, 0);
 });
 
-test('#handleChipInteraction selects chip if the chip set is a filter chip set', () => {
+test('#handleChipInteraction selects chip if the chip set is a filter chip set and notifies clients', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chipA', 'chipB']);
   td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
 
   foundation.handleChipInteraction('chipA');
-  td.verify(mockAdapter.selectChipAtIndex(0, true));
+  td.verify(mockAdapter.selectChipAtIndex(0, true, /** notifies clients */ true));
 });
 
-test('#handleChipInteraction selects chip if the chip set is a choice chip set', () => {
+test('#handleChipInteraction selects chip if the chip set is a choice chip set and notifies clients', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chipA', 'chipB']);
   td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(false);
 
   foundation.handleChipInteraction('chipA');
-  td.verify(mockAdapter.selectChipAtIndex(0, true));
+  td.verify(mockAdapter.selectChipAtIndex(0, true, /** notifies clients */ true));
 });
 
 test('#handleChipInteraction removes focus from all chips except the selected one', () => {
@@ -169,7 +169,7 @@ test('#handleChipSelection selects an unselected chip if selected is true', () =
 
   foundation.selectedChipIds_ = [];
   foundation.select = td.func();
-  foundation.handleChipSelection('chipA', true);
+  foundation.handleChipSelection('chipA', true, false);
   td.verify(foundation.select('chipA'));
 });
 
@@ -178,7 +178,7 @@ test('#handleChipSelection does nothing if selected is true and the chip is alre
 
   foundation.selectedChipIds_ = ['chipA'];
   foundation.select = td.func();
-  foundation.handleChipSelection('chipA', true);
+  foundation.handleChipSelection('chipA', true, false);
   td.verify(foundation.select('chipA'), {times: 0});
 });
 
@@ -186,7 +186,7 @@ test('#handleChipSelection deselects a selected chip if selected is false', () =
   const {foundation} = setupTest();
 
   foundation.selectedChipIds_ = ['chipA'];
-  foundation.handleChipSelection('chipA', false);
+  foundation.handleChipSelection('chipA', false, false);
   assert.equal(foundation.selectedChipIds_.length, 0);
 });
 
@@ -194,8 +194,28 @@ test('#handleChipSelection does nothing if selected is false and the chip is not
   const {foundation} = setupTest();
 
   foundation.selectedChipIds_ = ['chipB'];
-  foundation.handleChipSelection('chipA', false);
+  foundation.handleChipSelection('chipA', false, false);
   assert.equal(foundation.selectedChipIds_.length, 1);
+});
+
+test('#handleChipSelection does nothing if shouldIgnore is true', () => {
+  const {foundation} = setupTest();
+
+  foundation.selectedChipIds_ = ['chipB'];
+  foundation.handleChipSelection('chipA', true, true);
+  td.verify(foundation.select('chipA'), {times: 0});
+});
+
+test('#handleChipSelection emits no events', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.selectedChipIds_ = [];
+  td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(0);
+
+  foundation.handleChipSelection('chipA', true, /** shouldIgnore */ false);
+  td.verify(mockAdapter.selectChipAtIndex(0, true, /** shouldNotify */ false));
+  foundation.handleChipSelection('chipA', false, /** shouldIgnore */ false);
+  td.verify(mockAdapter.selectChipAtIndex(0, false, /** shouldNotify */ false));
 });
 
 test('#handleChipRemoval removes chip', () => {
