@@ -387,10 +387,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   private getLabelAdapterMethods_() {
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
+      hasLabel: () => Boolean(this.label_),
       floatLabel: (shouldFloat: boolean) => this.label_ && this.label_.float(shouldFloat),
       getLabelWidth: () => this.label_ ? this.label_.getWidth() : 0,
     };
+    // tslint:enable:object-literal-sort-keys
   }
 
   /**

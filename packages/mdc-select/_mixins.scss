@@ -347,6 +347,14 @@
   pointer-events: none;
 }
 
+@mixin mdc-select-no-label_ {
+  &:not(.mdc-select--outlined) {
+    .mdc-select__anchor .mdc-select__selected-text {
+      padding-top: 14px;
+    }
+  }
+}
+
 @mixin mdc-select-outlined_ {
   @include mdc-select-container-fill-color(transparent);
   @include mdc-select-outline-color($mdc-select-outlined-idle-border);
