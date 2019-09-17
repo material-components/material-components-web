@@ -384,6 +384,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `removeAttributeAtIndex(index: number, attributeName: string) => void` | Removes the attribute on the menu item at the given index. |
 | `focusMenuItemAtIndex(index: number) => void` | Focuses the menu item at the given index. |
 | `getMenuItemValues() => string[]` | Returns an array representing the VALUE_ATTR attributes of each menu item. |
+| `getMenuItemCount() => number` | Returns the number of menu items. |
 | `getMenuItemAttr(menuItem: Element, attr: string) => string` | Returns the given attribute on the the menu item element. |
 | `getMenuItemTextAtIndex(index: number) => string` | Gets the text content of the menu item element at the given index. |
 | `addClassAtIndex(menuItem: Element, className: string) => void` | Adds the class name on the menu item at the given index. |

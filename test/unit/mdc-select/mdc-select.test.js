@@ -859,6 +859,20 @@ test('adapter#setMenuWrapFocus', () => {
   document.body.removeChild(fixture);
 });
 
+test('adapter#getMenuItemCount returns the correct number of menu items', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, component} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+
+  const adapter = component.getDefaultFoundation().adapter_;
+  expect(adapter.getMenuItemCount()).to.eql(3);
+
+  document.body.removeChild(fixture);
+});
+
 test('adapter#getMenuItemValues returns the correct menu item values', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;

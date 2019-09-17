@@ -52,8 +52,8 @@ test('default adapter returns a complete adapter implementation', () => {
     'setSelectedText', 'isSelectedTextFocused', 'getSelectedTextAttr', 'setSelectedTextAttr',
     'openMenu', 'closeMenu', 'getAnchorElement', 'setMenuAnchorElement', 'setMenuAnchorCorner', 'setMenuWrapFocus',
     'setAttributeAtIndex', 'removeAttributeAtIndex',
-    'focusMenuItemAtIndex', 'getMenuItemValues', 'getMenuItemTextAtIndex', 'getMenuItemAttr',
-    'addClassAtIndex', 'removeClassAtIndex',
+    'focusMenuItemAtIndex', 'getMenuItemCount', 'getMenuItemValues',
+    'getMenuItemTextAtIndex', 'getMenuItemAttr', 'addClassAtIndex', 'removeClassAtIndex',
   ]);
 });
 
