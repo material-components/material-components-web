@@ -55,11 +55,11 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   get shouldFloat(): boolean {
-    return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_();
+    return this.shouldAlwaysFloat_ || this.isFocused_ || !!this.getValue() || this.isBadInput_();
   }
 
   get shouldShake(): boolean {
-    return !this.isFocused_ && !this.isValid() && Boolean(this.getValue());
+    return !this.isFocused_ && !this.isValid() && !!this.getValue();
   }
 
   /**
@@ -315,7 +315,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.isValid_ = isValid;
     this.styleValidity_(isValid);
 
-    const shouldShake = !isValid && !this.isFocused_;
+    const shouldShake = !isValid && !this.isFocused_ && !!this.getValue();
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(shouldShake);
     }
