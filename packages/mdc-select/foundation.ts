@@ -75,6 +75,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       setAttributeAtIndex: () => undefined,
       removeAttributeAtIndex: () => undefined,
       focusMenuItemAtIndex: () => undefined,
+      getMenuItemCount: () => 0,
       getMenuItemValues: () => [],
       getMenuItemTextAtIndex: () => '',
       getMenuItemAttr: () => '',
@@ -118,10 +119,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   setSelectedIndex(index: number, closeMenu = false) {
+    if (index >= this.adapter_.getMenuItemCount()) {
+      return;
+    }
+
     const previouslySelectedIndex = this.selectedIndex_;
     this.selectedIndex_ = index;
 
-    if (this.selectedIndex_ === numbers.UNSET_INDEX || !this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)) {
+    if (this.selectedIndex_ === numbers.UNSET_INDEX) {
       this.adapter_.setSelectedText('');
     } else {
       this.adapter_.setSelectedText(this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)!.trim());

@@ -163,6 +163,11 @@ export interface MDCSelectAdapter {
   focusMenuItemAtIndex(index: number): void;
 
   /**
+   * Returns the number of menu items.
+   */
+  getMenuItemCount(): number;
+
+  /**
    * Returns an array representing the VALUE_ATTR attributes of each menu item.
    */
   getMenuItemValues(): string[];
