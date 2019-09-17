@@ -45,6 +45,7 @@ export interface MDCDrawerAdapter {
   hasClass(className: string): boolean;
 
   /**
+   * Returns true if the element contains the given class.
    * @param element target element to verify class name
    * @param className class name
    */

@@ -237,7 +237,12 @@ Method Signature | Description
 
 #### `MDCShortTopAppBarFoundation`
 
-In addition to the methods above, the short variant provides the following public properties:
+In addition to the methods above, the short variant provides the following public methods and properties:
+
+Method Signature | Description
+--- | ---
+`setAlwaysCollapsed(value: boolean) => void` | When `value` is `true`, sets the short top app bar to always be collapsed.
+`getAlwaysCollapsed() => boolean` | Gets if the short top app bar is in the "always collapsed" state.
 
 Property | Value Type | Description
 --- | --- | ---

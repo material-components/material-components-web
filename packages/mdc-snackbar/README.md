@@ -166,7 +166,7 @@ Mixin | Description
 Property | Value Type | Description
 --- | --- | ---
 `isOpen` | `boolean` (read-only) | Gets whether the snackbar is currently open.
-`timeoutMs` | `number` | Gets/sets the automatic dismiss timeout in milliseconds. Value must be between `4000` and `10000` or an error will be thrown. Defaults to `5000` (5 seconds).
+`timeoutMs` | `number` | Gets/sets the automatic dismiss timeout in milliseconds. Value must be between `4000` and `10000` (or `-1` to disable the timeout completely) or an error will be thrown. Defaults to `5000` (5 seconds).
 `closeOnEscape` | `boolean` | Gets/sets whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key. Defaults to `true`.
 `labelText` | `string` | Gets/sets the `textContent` of the label element.
 `actionButtonText` | `string` | Gets/sets the `textContent` of the action button element.

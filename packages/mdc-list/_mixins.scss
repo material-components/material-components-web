@@ -18,8 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+@import "@material/density/functions";
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
+@import "@material/shape/functions";
 @import "@material/shape/mixins";
 @import "@material/ripple/mixins";
 @import "@material/theme/functions";
@@ -58,6 +60,7 @@
     @include mdc-list-base_($query);
   }
 
+  @include mdc-list-single-line-density($mdc-list-single-line-density-scale, $query: $query);
   @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background, $query);
   @include mdc-list-item-graphic-fill-color(transparent, $query);
   @include mdc-list-item-graphic-ink-color(text-icon-on-background, $query);
@@ -365,9 +368,33 @@
   }
 }
 
-@mixin mdc-list-item-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+///
+/// Sets shape radius (rounded) to single line list variant.
+///
+/// @param {Number | List<Number>} $radius Radius size in `px` or percentage. It can be 4 value corner or single radius.
+///     Set to `50%` for rounded shape.
+/// @param {Boolean} $rtl-reflexive Set to true to flip border radius in RTL context. Defaults to `false`.
+/// @param {Number} $density-scale Density scale of single line list. Set this only when custom density is applied.
+///     Defaults to `$mdc-list-single-line-density-scale`.
+///
+/// @access public
+///
+@mixin mdc-list-single-line-shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: $mdc-list-single-line-density-scale,
+  $query: mdc-feature-all()) {
+
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-list-single-line-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  $resolved-radius: mdc-shape-resolve-percentage-radius($height, $radius);
+
   .mdc-list-item {
-    @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
+    @include mdc-shape-radius($resolved-radius, $rtl-reflexive, $query: $query);
   }
 }
 
@@ -411,6 +438,40 @@
   }
 }
 
+///
+/// Sets density scale to single line list variant.
+///
+/// @param {Number} $density-scale Density scale for list. Supported density scales are `-4`, `-3`, `-2`, `-1` and  `0`.
+///
+/// @access public
+///
+@mixin mdc-list-single-line-density($density-scale, $query: mdc-feature-all()) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-list-single-line-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  .mdc-list-item {
+    @include mdc-list-single-line-height($height, $query: $query);
+  }
+}
+
+///
+/// Sets height to single line list variant.
+///
+/// @param {Number} $height Height value in `px`.
+///
+/// @access public
+///
+@mixin mdc-list-single-line-height($height, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    height: $height;
+  }
+}
+
 //
 // Private
 //
@@ -447,7 +508,6 @@
   position: relative;
   align-items: center;
   justify-content: flex-start;
-  height: 48px;
   padding: 0 $mdc-list-side-padding;
   overflow: hidden;
 

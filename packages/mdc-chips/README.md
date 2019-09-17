@@ -44,11 +44,13 @@ npm install @material/chips
 ```html
 <div class="mdc-chip-set" role="grid">
   <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
       <span role="button" tabindex="0" class="mdc-chip__text">Chip One</span>
     </span>
   </div>
   <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
       <span role="button" tabindex="-1" class="mdc-chip__text">Chip Two</span>
     </span>
@@ -93,6 +95,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 
 ```html
 <div class="mdc-chip" role="row">
+  <div class="mdc-chip__ripple"></div>
   <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
   <span role="gridcell">
     <span role="button" tabindex="0" class="mdc-chip__text">Add to calendar</span>
@@ -106,6 +109,7 @@ A trailing icon comes with the functionality to remove the chip from the set. If
 
 ```html
 <div class="mdc-chip" role="row">
+  <div class="mdc-chip__ripple"></div>
   <span role="gridcell">
     <span role="button" tabindex="0" class="mdc-chip__text">Jane Smith</span>
   </span>
@@ -132,6 +136,7 @@ Filter chips are a variant of chips which allow multiple selection from a set of
 ```html
 <div class="mdc-chip-set mdc-chip-set--filter" role="grid">
   <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
     <span class="mdc-chip__checkmark" >
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
         <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
@@ -151,6 +156,7 @@ To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` elemen
 ```html
 <div class="mdc-chip-set mdc-chip-set--filter" role="grid">
   <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
     <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
     <span class="mdc-chip__checkmark" >
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
@@ -215,6 +221,7 @@ To display a pre-selected filter or choice chip, add the class `mdc-chip--select
 ```html
 <div class="mdc-chip-set mdc-chip-set--choice" role="grid">
   <div class="mdc-chip mdc-chip--selected" role="row">
+    <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
       <span role="radio" tabindex="0" aria-checked="true" class="mdc-chip__text">Add to calendar</span>
     </span>
@@ -227,6 +234,7 @@ To pre-select filter chips that have a leading icon, also add the class `mdc-chi
 ```html
 <div class="mdc-chip-set mdc-chip-set--filter" role="grid">
   <div class="mdc-chip mdc-chip--selected" role="row">
+    <div class="mdc-chip__ripple"></div>
     <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
     <span class="mdc-chip__checkmark">
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
@@ -241,6 +249,27 @@ To pre-select filter chips that have a leading icon, also add the class `mdc-chi
 </div>
 ```
 
+## Additional Information
+
+### Accessibility
+
+Material Design spec advises that touch targets should be at least 48 x 48 px.
+To meet this requirement, add the following to your chip:
+
+```html
+<span>
+  <button class="mdc-chip mdc-chip--touch">
+    <div class="mdc-chip__ripple"></div>
+    <span role="gridcell">
+      <span role="button" tabindex="0" class="mdc-chip__text">Chip One</span>
+    </span>
+    <div class="mdc-chip__touch"></div>
+  </button>
+</span>
+```
+
+Note that the wrapper `<span>` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+
 ## Style Customization
 
 ### CSS Classes
@@ -252,6 +281,7 @@ CSS Class | Description
 `mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips, which allow a single selection from a set of options.
 `mdc-chip-set--filter` | Optional. Indicates that the chips in the set are filter chips, which allow multiple selection from a set of options.
 `mdc-chip` | Mandatory.
+`mdc-chip__ripple` | Mandatory. Indicates the element which shows the ripple styling.
 `mdc-chip--selected` | Optional. Indicates that the chip is selected.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
 `mdc-chip__icon` | Optional. Indicates an icon in the chip. We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts.
@@ -365,7 +395,7 @@ Method Signature | Description
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
 `notifyInteraction() => void` | Notifies the Chip Set that the chip has been interacted with\*
-`notifySelection(selected) => void` | Notifies the Chip Set that the chip has been selected or deselected\*\*
+`notifySelection(selected: boolean, chipSetShouldIgnore: boolean) => void` | Notifies the Chip Set that the chip has been selected or deselected\*\*. When `chipSetShouldIgnore` is `true`, the chip set does not process the event.
 `notifyTrailingIconInteraction() => void` | Notifies the Chip Set that the chip's trailing icon has been interacted with\*
 `notifyRemoval() => void` | Notifies the Chip Set that the chip will be removed\*\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
@@ -393,7 +423,7 @@ Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
 `removeChipAtIndex(index: number) => void` | Removes the chip with the given `index` from the chip set
-`selectChipAtIndex(index: string, selected: boolean) => void` | Calls `MDCChip#setSelectedFromChipSet(selected)` on the chip at the given `index`
+`selectChipAtIndex(index: string, selected: boolean, shouldNotifyClients: boolean) => void` | Calls `MDCChip#setSelectedFromChipSet(selected)` on the chip at the given `index`. Will emit a selection event if called with `shouldNotifyClients` set to `true`. The emitted selection event will be ignored by the `MDCChipSetFoundation`.
 `getIndexOfChipById(id: string) => number` | Returns the index of the chip with the matching `id` or -1
 `focusChipPrimaryActionAtIndex(index: number) => void` | Calls `MDCChip#focusPrimaryAction()` on the chip at the given `index`
 `focusChipTrailingActionAtIndex(index: number) => void` | Calls `MDCChip#focusTrailingAction()` on the chip at the given `index`
@@ -409,7 +439,7 @@ Method Signature | Description
 --- | ---
 `isSelected() => boolean` | Returns true if the chip is selected
 `setSelected(selected: boolean) => void` | Sets the chip's selected state
-`setSelectedFromChipSet(selected: boolean) => void` | Sets the chip's selected state (called from the chip set)
+`setSelectedFromChipSet(selected: boolean, shouldNotifyClients: boolean) => void` | Sets the chip's selected state (called from the chip set) to the `selected` param. Will emit a selection event if called with `shouldNotifyClients` set to `true`. The emitted selection event will be ignored by the `MDCChipSetFoundation`.
 `getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
 `getDimensions() => ClientRect` | Returns the dimensions of the chip. This is used for applying ripple to the chip.
@@ -438,7 +468,7 @@ Method Signature | Description
 `getSelectedChipIds() => ReadonlyArray<string>` | Returns an array of the IDs of all selected chips
 `select(chipId: string) => void` | Selects the chip with the given id
 `handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
-`handleChipSelection(chipId: string, selected: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element
+`handleChipSelection(chipId: string, selected: boolean, chipSetShouldIgnore: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element. When `chipSetShouldIgnore` is true, the chip set does not process the event.
 `handleChipRemoval(chipId: string) => void` | Handles a custom `MDCChip:removal` event on the root element
 `handleChipNavigation(chipId: string, key: string) => void` | Handles a custom `MDCChip:navigation` event on the root element
 

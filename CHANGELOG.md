@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/material-components/material-components-web/compare/v3.1.1...v3.2.0) (2019-09-12)
+
+
+### Bug Fixes
+
+* Use head instead of body to detect edge pseudo var bug ([#4982](https://github.com/material-components/material-components-web/issues/4982)) ([9e87478](https://github.com/material-components/material-components-web/commit/9e87478))
+* **data-table:** Add .npmignore to ignore typescript files when… ([#4992](https://github.com/material-components/material-components-web/issues/4992)) ([dd422d1](https://github.com/material-components/material-components-web/commit/dd422d1))
+* **linear-progress:** stop animation when closed ([#5006](https://github.com/material-components/material-components-web/issues/5006)) ([4c4342d](https://github.com/material-components/material-components-web/commit/4c4342d))
+* **menu:** recompute index before marking selection ([#5047](https://github.com/material-components/material-components-web/issues/5047)) ([90f6247](https://github.com/material-components/material-components-web/commit/90f6247))
+* **rtl:** Removed mdc-rtl-include check from mdc-rtl-reflexive mixin ([#5001](https://github.com/material-components/material-components-web/issues/5001)) ([6e7b191](https://github.com/material-components/material-components-web/commit/6e7b191))
+* **top-app-bar:** "always collapsed" variant semantics in Short TopAppBar Foundation ([#5009](https://github.com/material-components/material-components-web/issues/5009)) ([805d098](https://github.com/material-components/material-components-web/commit/805d098))
+
+
+### Features
+
+* **linear-progress:** add feature targeting for styles ([#4898](https://github.com/material-components/material-components-web/issues/4898)) ([7ec18c6](https://github.com/material-components/material-components-web/commit/7ec18c6))
+* **list:** Add setEnabled to foundation ([#5049](https://github.com/material-components/material-components-web/issues/5049)) ([c2b4407](https://github.com/material-components/material-components-web/commit/c2b4407))
+* **menu:** add setEnabled to allow dynamic enabling or disabling menu item ([#5054](https://github.com/material-components/material-components-web/issues/5054)) ([4751d64](https://github.com/material-components/material-components-web/commit/4751d64))
+* **rtl:** Added a flag to turn-off mdc-rtl CSS ([#4996](https://github.com/material-components/material-components-web/issues/4996)) ([eb87f06](https://github.com/material-components/material-components-web/commit/eb87f06))
+
+
+
+
+
+## [3.1.1](https://github.com/material-components/material-components-web/compare/v3.1.0...v3.1.1) (2019-08-14)
+
+
+### Bug Fixes
+
+* **data-table:** Fixed alignment of header cell title for numer… ([#4963](https://github.com/material-components/material-components-web/issues/4963)) ([b6274a7](https://github.com/material-components/material-components-web/commit/b6274a7))
+
+
+
+
+
 # [3.1.0](https://github.com/material-components/material-components-web/compare/v3.0.0...v3.1.0) (2019-07-22)
 
 

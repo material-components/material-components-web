@@ -1,0 +1,20 @@
+{
+  "name": "@material/density",
+  "description": "Density utilities for Material Components for the web",
+  "version": "0.0.0",
+  "license": "MIT",
+  "keywords": [
+    "material components",
+    "material design",
+    "density",
+    "adaptive layout"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-density"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

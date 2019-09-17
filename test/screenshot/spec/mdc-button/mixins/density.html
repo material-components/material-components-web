@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2018 Google Inc.
+  Copyright 2019 Google Inc.
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Dense Button Element Without Icons - MDC Web Screenshot Test</title>
+    <title>Density Mixin for Button - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.button.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
@@ -40,82 +40,69 @@
   </head>
 
   <body class="test-container">
-    <main class="test-viewport test-viewport--mobile">
+    <main class="test-viewport test-viewport--light test-viewport--mobile">
       <div class="test-layout">
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense">
+        <div class="test-cell test-cell--light test-cell--density-button">
+          <button class="mdc-button custom-button--density-comfortable">
             <div class="mdc-button__ripple"></div>
-            <span class="mdc-button__label">Button</span>
-          </button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--raised">
-            <div class="mdc-button__ripple"></div>
-            <span class="mdc-button__label">Button</span>
-          </button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--unelevated">
-            <div class="mdc-button__ripple"></div>
-            <span class="mdc-button__label">Button</span>
-          </button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--outlined">
-            <div class="mdc-button__ripple"></div>
+            <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
             <span class="mdc-button__label">Button</span>
           </button>
         </div>
 
-        <!-- Short labels to test min-width -->
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense">
+        <div class="test-cell test-cell--light test-cell--density-button">
+          <button class="mdc-button custom-button--density-compact">
             <div class="mdc-button__ripple"></div>
-            <span class="mdc-button__label">+</span>
-          </button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--raised">
-            <div class="mdc-button__ripple"></div>
-            <span class="mdc-button__label">+</span>
-          </button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--unelevated">
-            <div class="mdc-button__ripple"></div>
-            <span class="mdc-button__label">+</span>
-          </button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--outlined">
-            <div class="mdc-button__ripple"></div>
-            <span class="mdc-button__label">+</span>
+            <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
+            <span class="mdc-button__label">Button</span>
           </button>
         </div>
 
-        <!-- Disabled variants intentionally have no mdc-button__label span to verify that leading icon works with or without it -->
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense" disabled>
+        <div class="test-cell test-cell--light test-cell--density-button">
+          <button class="mdc-button mdc-button--raised custom-button--density-comfortable">
             <div class="mdc-button__ripple"></div>
-            Button
+            <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
+            <span class="mdc-button__label">Button</span>
           </button>
         </div>
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--raised" disabled>
+
+        <div class="test-cell test-cell--light test-cell--density-button">
+          <button class="mdc-button mdc-button--raised custom-button--density-compact">
             <div class="mdc-button__ripple"></div>
-            Button
+            <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
+            <span class="mdc-button__label">Button</span>
           </button>
         </div>
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--unelevated" disabled>
+
+        <div class="test-cell test-cell--light test-cell--density-button">
+          <button class="mdc-button mdc-button--unelevated custom-button--density-comfortable">
             <div class="mdc-button__ripple"></div>
-            Button
+            <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
+            <span class="mdc-button__label">Button</span>
           </button>
         </div>
-        <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--outlined" disabled>
+
+        <div class="test-cell test-cell--light test-cell--density-button">
+          <button class="mdc-button mdc-button--unelevated custom-button--density-compact">
             <div class="mdc-button__ripple"></div>
-            Button
+            <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
+            <span class="mdc-button__label">Button</span>
+          </button>
+        </div>
+
+        <div class="test-cell test-cell--light test-cell--density-button">
+          <button class="mdc-button mdc-button--outlined custom-button--density-comfortable">
+            <div class="mdc-button__ripple"></div>
+            <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
+            <span class="mdc-button__label">Button</span>
+          </button>
+        </div>
+
+        <div class="test-cell test-cell--light test-cell--density-button">
+          <button class="mdc-button mdc-button--outlined custom-button--density-compact">
+            <div class="mdc-button__ripple"></div>
+            <i class="material-icons mdc-button__icon" aria-hidden="true">add</i>
+            <span class="mdc-button__label">Button</span>
           </button>
         </div>
       </div>
