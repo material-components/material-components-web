@@ -215,10 +215,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   handleMenuClosed() {
     this.adapter_.removeClass(cssClasses.ACTIVATED);
     this.isMenuOpen_ = false;
-
     this.adapter_.setSelectedTextAttr('aria-expanded', 'false');
+
+    // Unfocus the select if menu is closed without a selection
     if (!this.adapter_.isSelectedTextFocused()) {
-      this.handleBlur();
+      this.blur_();
     }
   }
 
@@ -272,18 +273,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     if (this.isMenuOpen_) {
       return;
     }
-    this.adapter_.removeClass(cssClasses.FOCUSED);
-    this.handleChange(false);
-    this.adapter_.deactivateBottomLine();
-
-    const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
-
-    if (isRequired) {
-      this.setValid(this.isValid());
-      if (this.helperText_) {
-        this.helperText_.setValidity(this.isValid());
-      }
-    }
+    this.blur_();
   }
 
   handleClick(normalizedX: number) {
@@ -394,6 +384,23 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const value = this.getValue();
     if (value) {
       this.setValue(value);
+    }
+  }
+
+  /**
+   * Unfocuses the select component.
+   */
+  private blur_() {
+    this.adapter_.removeClass(cssClasses.FOCUSED);
+    this.handleChange(false);
+    this.adapter_.deactivateBottomLine();
+
+    const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
+    if (isRequired) {
+      this.setValid(this.isValid());
+      if (this.helperText_) {
+        this.helperText_.setValidity(this.isValid());
+      }
     }
   }
 }
