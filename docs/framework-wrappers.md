@@ -17,7 +17,7 @@ Material Components for the web are architected to be adaptable to various major
     - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc) (using [foundations/adapters](./integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
     - [Angular MDC](https://github.com/trimox/angular-mdc-web)
     - [Blox Material](https://blox.src.zone/material): Angular Integration Library.
-    - [Vue MDC Adapter](https://github.com/stasson/vue-mdc-adapter): MDC Web Integration for Vue.js (using [foundations/adapters](./integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
+    - [Vue MDC Adapter](https://github.com/pgbross/vue-material-adapter): MDC Web Integration for Vue.js (using [foundations/adapters](./integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
     - [Material Components Vue](https://github.com/matsp/material-components-vue): MDC Web Integration for Vue.js (using [vanilla components](./integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
     - [BalmUI](https://material.balmjs.com/): Next Generation Material UI for Vue.js
     - [Ember Material Components](https://github.com/onehilltech/ember-cli-mdc): MDC Web integration for Ember (using [vanilla components](./integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))

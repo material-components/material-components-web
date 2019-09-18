@@ -1,0 +1,55 @@
+//
+// Copyright 2019 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@import "../../../../packages/mdc-data-table/mixins";
+@import "../../../../packages/mdc-checkbox/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
+
+.test-data-table-fill-color {
+  @include mdc-data-table-fill-color(#3C3C46);
+  @include mdc-data-table-row-fill-color(#474752);
+  @include mdc-data-table-header-row-text-color(rgba(white, .6));
+  @include mdc-data-table-row-text-color(white);
+  @include mdc-data-table-divider-color(rgba(white, .12));
+  @include mdc-data-table-stroke-size(0);
+}
+
+.test-data-table-density {
+  @include mdc-data-table-density(-4);
+}
+
+.test-data-table-checkbox-density {
+  @include mdc-checkbox-density(-3);
+}
+
+.test-data-table-baseline-full-width-viewport {
+  padding: 48px;
+}
+
+.test-data-table-baseline-full-width {
+  width: 100%;
+}
+
+.test-data-table-with-buttons-cell-too-long {
+  max-width: 1px;
+}

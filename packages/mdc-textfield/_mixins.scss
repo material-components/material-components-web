@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/density/functions";
 @import "@material/floating-label/mixins";
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
@@ -34,7 +35,135 @@
 @import "./variables";
 @import "./functions";
 
-@mixin mdc-text-field-shape-radius($radius, $rtl-reflexive: false) {
+///
+/// Sets density scale for default text field variant.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+///
+@mixin mdc-text-field-density($density-scale) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-text-field-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-text-field-height($height);
+}
+
+///
+/// Sets density scale for outlined text field (Excluding outlined text field with leading icon).
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+///
+@mixin mdc-text-field-outlined-density($density-scale) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-text-field-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-text-field-outlined-height($height);
+}
+
+///
+/// Sets density scale for outlined text field with leading icon.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+///
+@mixin mdc-text-field-outlined-with-leading-icon-density($density-scale) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-text-field-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-text-field-outlined-with-leading-icon-height($height);
+}
+
+///
+/// Sets height of default text field variant.
+///
+/// @param {Number} $height
+/// @access public
+///
+@mixin mdc-text-field-height($height) {
+  height: $height;
+}
+
+///
+/// Sets height of outlined text field variant (Excluding outlined text field with leading icon).
+///
+/// @param {Number} $height
+/// @access public
+///
+@mixin mdc-text-field-outlined-height($height) {
+  $keyframe-suffix: text-field-outlined-#{$height};
+  $positionY: mdc-text-field-get-outlined-label-position-y($height);
+
+  @include mdc-notched-outline-floating-label-float-position-absolute($positionY);
+
+  @at-root {
+    @include mdc-floating-label-shake-keyframes($keyframe-suffix, $positionY);
+  }
+
+  @include mdc-floating-label-shake-animation($keyframe-suffix);
+  @include mdc-text-field-height($height);
+}
+
+///
+/// Sets height of outlined text field with leading icon variant.
+///
+/// @param {Number} $height
+/// @access public
+///
+@mixin mdc-text-field-outlined-with-leading-icon-height($height) {
+  $keyframe-suffix: text-field-outlined-with-leading-icon-#{$height};
+  $positionY: mdc-text-field-get-outlined-label-position-y($height);
+
+  // For specificity
+  &.mdc-text-field--outlined {
+    @include mdc-notched-outline-floating-label-float-position-absolute($positionY, 32px);
+  }
+
+  @at-root {
+    @include mdc-floating-label-shake-keyframes(
+      $keyframe-suffix,
+      $positionY,
+      $mdc-text-field-outlined-with-leading-icon-label-position-x
+    );
+  }
+
+  @include mdc-floating-label-shake-animation($keyframe-suffix);
+
+  $keyframe-suffix-rtl: #{$keyframe-suffix}-rtl;
+
+  @at-root {
+    @include mdc-floating-label-shake-keyframes(
+      $keyframe-suffix-rtl,
+      $positionY,
+      -$mdc-text-field-outlined-with-leading-icon-label-position-x
+    );
+  }
+
+  @include mdc-rtl {
+    @include mdc-floating-label-shake-animation($keyframe-suffix);
+  }
+
+  @include mdc-text-field-height($height);
+}
+
+///
+/// Sets shape radius of default text field variant.
+///
+/// @param {Number} $radius Shape radius value in `px` or in percentage.
+/// @param {Number} $text-field-height Height of default text field variant. Required only when `$radius` is in
+///     percentage unit and if text field has custom height. Defaults to `$mdc-text-field-height`.
+/// @param {Boolean} $rtl-reflexive Set to true to flip shape radius in RTL context. Defaults to `false`.
+///
+@mixin mdc-text-field-shape-radius($radius, $text-field-height: $mdc-text-field-height, $rtl-reflexive: false) {
   @if length($radius) > 2 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   }
@@ -42,7 +171,7 @@
   $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
 
   @include mdc-shape-radius(
-    mdc-shape-resolve-percentage-radius($mdc-text-field-height, $masked-radius),
+    mdc-shape-resolve-percentage-radius($text-field-height, $masked-radius),
     $rtl-reflexive
   );
 }
@@ -222,8 +351,16 @@
   }
 }
 
-@mixin mdc-text-field-outline-shape-radius($radius, $rtl-reflexive: false) {
-  $resolved-radius: nth(mdc-shape-resolve-percentage-radius($mdc-text-field-height, mdc-shape-prop-value($radius)), 1);
+///
+/// Sets shape radius of outlined text field variant.
+///
+/// @param {Number} $radius Shape radius value in `px` or in percentage.
+/// @param {Number} $text-field-height Height of outlined text field variant. Required only when `$radius` is in
+///     percentage unit and if text field has custom height. Defaults to `$mdc-text-field-height`.
+/// @param {Boolean} $rtl-reflexive Set to true to flip shape radius in RTL context. Defaults to `false`.
+///
+@mixin mdc-text-field-outline-shape-radius($radius, $text-field-height: $mdc-text-field-height, $rtl-reflexive: false) {
+  $resolved-radius: nth(mdc-shape-resolve-percentage-radius($text-field-height, mdc-shape-prop-value($radius)), 1);
 
   @if (length(mdc-shape-prop-value($radius)) > 1) {
     // stylelint-disable-next-line max-line-length
@@ -249,9 +386,14 @@
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-label-offset);
 
-    top: 18px;
+    top: 50%;
+    transform: translateY(-50%);
     pointer-events: none;
   }
+
+  // Include these mixins to override above `transform` property.
+  //TODO: Remove these from here when floating label is center aligned in all position - this lowers specificity.
+  @include mdc-floating-label-float-position($mdc-text-field-label-position-y);
 
   &--textarea {
     .mdc-floating-label {
@@ -262,8 +404,6 @@
   &--outlined {
     .mdc-floating-label {
       @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
-
-      top: 17px;
     }
 
     &--with-leading-icon {
@@ -299,7 +439,7 @@
 }
 
 @mixin mdc-text-field-outlined-focused_ {
-  @include mdc-notched-outline-stroke-width(2px);
+  @include mdc-notched-outline-stroke-width($mdc-text-field-outlined-stroke-width);
 }
 
 @mixin mdc-text-field-outlined-dense_ {
@@ -331,7 +471,8 @@
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-text-field-outline-shape-radius(small);
-  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y);
+  @include mdc-notched-outline-floating-label-float-position-absolute($mdc-text-field-outlined-label-position-y);
+  @include mdc-notched-outline-notch-offset($mdc-notched-outline-border-width);
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
 
@@ -348,6 +489,10 @@
 
   .mdc-text-field__icon {
     z-index: 2;
+  }
+
+  &.mdc-text-field--focused {
+    @include mdc-notched-outline-notch-offset($mdc-text-field-outlined-stroke-width);
   }
 }
 
@@ -404,7 +549,7 @@
     $mdc-text-field-icon-padding,
     $mdc-text-field-input-padding
   );
-  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y, 32px);
+  @include mdc-notched-outline-floating-label-float-position-absolute($mdc-text-field-outlined-label-position-y, 32px);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
 
   @include mdc-rtl {
@@ -522,11 +667,11 @@
   @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
   @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
   @include mdc-text-field-focused-outline-color(primary);
-  @include mdc-floating-label-shake-animation(text-field-outlined);
+  @include mdc-floating-label-shake-animation(textarea);
   @include mdc-text-field-outline-shape-radius(small);
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
-  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y, 0%);
+  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-textarea-label-position-y);
   @include mdc-text-field-character-counter-position(16px, 13px);
 
   $padding-inset: 16px;
@@ -544,6 +689,7 @@
     margin: $padding-inset/2 1px 1px 0;
     padding: 0 $padding-inset $padding-inset;
     border: none;
+    line-height: 1.75rem; // 28sp
   }
 
   .mdc-text-field-character-counter + .mdc-text-field__input {
@@ -553,9 +699,13 @@
 
   .mdc-floating-label {
     top: 17px;
-    bottom: auto;
     width: auto;
     pointer-events: none;
+
+    // Resets center aligning the floating label.
+    &:not(.mdc-floating-label--float-above) {
+      transform: none;
+    }
   }
 
   &.mdc-text-field--focused {

@@ -10,12 +10,14 @@
 @import "@material/grid-list/mixins";
 @import "@material/icon-button/mixins";
 @import "@material/image-list/mixins";
+@import "@material/linear-progress/mixins";
 @import "@material/list/mixins";
 @import "@material/menu-surface/mixins";
 @import "@material/menu/mixins";
 @import "@material/radio/mixins";
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
+@import "@material/slider/mixins";
 @import "@material/snackbar/mixins";
 @import "@material/switch/mixins";
 @import "@material/tab-bar/mixins";
@@ -24,6 +26,7 @@
 @import "@material/tab/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
+@import "@material/data-table/mixins";
 
 @mixin mdc-feature-targeting-test($query) {
   .mdc-test {
@@ -39,6 +42,9 @@
     @include mdc-button-outline-width(0, $query: $query);
     @include mdc-button-ripple($query: $query);
     @include mdc-button-without-ripple($query: $query);
+    @include mdc-button-theme-baseline($query: $query);
+    @include mdc-button-density(0, $query: $query);
+    @include mdc-button-height(0, $query: $query);
 
     // Card
     @include mdc-card-core-styles($query: $query);
@@ -56,7 +62,9 @@
     @include mdc-checkbox-focus-indicator-color(red, $query: $query);
     @include mdc-checkbox-ripple($query: $query);
     @include mdc-checkbox-without-ripple($query: $query);
-    @include mdc-checkbox-touch-dimension(40px, $query: $query);
+    @include mdc-checkbox-ripple-size(0, $query: $query);
+    @include mdc-checkbox-touch-target(0, 0, $query: $query);
+    @include mdc-checkbox-density(0, $query: $query);
 
     // Chips
     @include mdc-chip-core-styles($query: $query);
@@ -83,6 +91,28 @@
     @include mdc-chip-trailing-icon-size(0, $query: $query);
     @include mdc-chip-without-ripple($query: $query);
 
+    // Data Table
+    @include mdc-data-table-core-styles($query: $query);
+    @include mdc-data-table-theme-baseline($query: $query);
+    @include mdc-data-table-fill-color(red, $query: $query);
+    @include mdc-data-table-header-row-fill-color(red, $query: $query);
+    @include mdc-data-table-row-fill-color(red, $query: $query);
+    @include mdc-data-table-selected-row-fill-color(red, $query: $query);
+    @include mdc-data-table-checked-icon-color(red, $query: $query);
+    @include mdc-data-table-divider-color(red, $query: $query);
+    @include mdc-data-table-divider-size(0, $query: $query);
+    @include mdc-data-table-row-hover-fill-color(red, $query: $query);
+    @include mdc-data-table-header-row-text-color(red, $query: $query);
+    @include mdc-data-table-row-text-color(red, $query: $query);
+    @include mdc-data-table-shape-radius(0, $query: $query);
+    @include mdc-data-table-stroke-size(0, $query: $query);
+    @include mdc-data-table-stroke-color(red, $query: $query);
+    @include mdc-data-table-header-cell-height(0, $query: $query);
+    @include mdc-data-table-cell-height(0, $query: $query);
+    @include mdc-data-table-cell-padding(0, $query: $query);
+    @include mdc-data-table-column-widths(0, $query: $query);
+    @include mdc-data-table-density(0, $query: $query);
+
     // Dialog
     @include mdc-dialog-core-styles($query: $query);
     @include mdc-dialog-container-fill-color(red, $query: $query);
@@ -94,6 +124,7 @@
     @include mdc-dialog-min-width(0, $query: $query);
     @include mdc-dialog-max-width(0, 0, $query: $query);
     @include mdc-dialog-max-height(0, 0, $query: $query);
+    @include mdc-dialog-with-touch-target($query: $query);
 
     // Drawer
     @include mdc-drawer-core-styles($query: $query);
@@ -154,6 +185,11 @@
     @include mdc-image-list-standard-columns(4, 4px, $query: $query);
     @include mdc-image-list-masonry-columns(4, 4px, $query: $query);
 
+    // Linear progress
+    @include mdc-linear-progress-core-styles($query: $query);
+    @include mdc-linear-progress-bar-color(red, $query: $query);
+    @include mdc-linear-progress-buffer-color(red, $query: $query);
+
     // List
     @include mdc-list-core-styles($query: $query);
     @include mdc-list-item-primary-text-ink-color(red, $query: $query);
@@ -161,7 +197,9 @@
     @include mdc-list-item-graphic-fill-color(red, $query: $query);
     @include mdc-list-item-graphic-ink-color(red, $query: $query);
     @include mdc-list-item-meta-ink-color(red, $query: $query);
-    @include mdc-list-item-shape-radius(42, $rtl-reflexive: false, $query: $query);
+    @include mdc-list-single-line-shape-radius(42, $rtl-reflexive: false, $density-scale: 0, $query: $query);
+    @include mdc-list-single-line-height(0, $query: $query);
+    @include mdc-list-single-line-density(0, $query: $query);
     @include mdc-list-divider-color(red, $query: $query);
     @include mdc-list-group-subheader-ink-color(red, $query: $query);
     @include mdc-list-ripple($query: $query);
@@ -185,11 +223,13 @@
     @include mdc-radio-focus-indicator-color(red, $query: $query);
     @include mdc-radio-ripple($query: $query);
     @include mdc-radio-without-ripple($query: $query);
+    @include mdc-radio-touch-target(900px, $query: $query);
 
     // Ripple
     @include mdc-ripple-core-styles($query: $query);
     @include mdc-ripple-common($query: $query);
     @include mdc-ripple-surface($query: $query);
+    @include mdc-ripple-target-common($query: $query);
     @include mdc-states-base-color(red, $query: $query);
     @include mdc-states-hover-opacity(1, $query: $query);
     @include mdc-states-focus-opacity(1, $query: $query);
@@ -203,6 +243,17 @@
     // Shape
     @include mdc-shape-radius(1px 2px, true, $query: $query);
 
+    // Slider
+    @include mdc-slider-core-styles($query: $query);
+    @include mdc-slider-highlight-color(red, $query: $query);
+    @include mdc-slider-rail-color(red, $query: $query);
+    @include mdc-slider-rail-tick-mark-color(red, $query: $query);
+    @include mdc-slider-thumb-color(red, $query: $query);
+    @include mdc-slider-focus-halo-color(red, $query: $query);
+    @include mdc-slider-value-pin-ink-color(red, $query: $query);
+    @include mdc-slider-value-pin-fill-color(red, $query: $query);
+    @include mdc-slider-value-pin-fill-color-accessible(red, $query: $query);
+    @include mdc-slider-color-accessible(red, $query: $query);
 
     // Snackbar
     @include mdc-snackbar-core-styles($query: $query);
@@ -237,6 +288,9 @@
     @include mdc-tab-core-styles($query: $query);
     @include mdc-tab-without-ripple($query: $query);
     @include mdc-tab-ripple($query: $query);
+    @include mdc-tab-height(0, $query: $query);
+    @include mdc-tab-bar-density(0, $query: $query);
+    @include mdc-tab-bar-stacked-density(0, $query: $query);
 
     // Theme
     @include mdc-theme-core-styles($query: $query);

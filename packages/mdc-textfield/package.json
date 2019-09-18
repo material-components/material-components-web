@@ -1,7 +1,7 @@
 {
   "name": "@material/textfield",
   "description": "The Material Components for the web text field component",
-  "version": "3.0.0",
+  "version": "3.2.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,20 +15,22 @@
   "types": "dist/mdc.textfield.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-components/material-components-web.git"
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-textfield"
   },
   "dependencies": {
-    "@material/animation": "^3.0.0",
-    "@material/base": "^3.0.0",
-    "@material/dom": "^3.0.0",
-    "@material/floating-label": "^3.0.0",
-    "@material/line-ripple": "^3.0.0",
-    "@material/notched-outline": "^3.0.0",
-    "@material/ripple": "^3.0.0",
-    "@material/rtl": "^3.0.0",
-    "@material/shape": "^3.0.0",
-    "@material/theme": "^3.0.0",
-    "@material/typography": "^3.0.0",
+    "@material/animation": "^3.1.0",
+    "@material/base": "^3.1.0",
+    "@material/density": "^0.0.0",
+    "@material/dom": "^3.1.0",
+    "@material/floating-label": "^3.2.0",
+    "@material/line-ripple": "^3.1.0",
+    "@material/notched-outline": "^3.2.0",
+    "@material/ripple": "^3.2.0",
+    "@material/rtl": "^3.2.0",
+    "@material/shape": "^3.1.0",
+    "@material/theme": "^3.1.0",
+    "@material/typography": "^3.1.0",
     "tslib": "^1.9.3"
   }
 }

@@ -118,24 +118,17 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       },
       setTrackStyleProperty: (propertyName, value) => this.track_.style.setProperty(propertyName, value),
       setMarkerValue: (value) => this.pinValueMarker_.innerText = value.toLocaleString(),
-      appendTrackMarkers: (numMarkers) => {
-        const frag = document.createDocumentFragment();
-        for (let i = 0; i < numMarkers; i++) {
-          const marker = document.createElement('div');
-          marker.classList.add('mdc-slider__track-marker');
-          frag.appendChild(marker);
-        }
-        this.trackMarkerContainer_.appendChild(frag);
-      },
-      removeTrackMarkers: () => {
-        while (this.trackMarkerContainer_.firstChild) {
-          this.trackMarkerContainer_.removeChild(this.trackMarkerContainer_.firstChild);
-        }
-      },
-      setLastTrackMarkersStyleProperty: (propertyName, value) => {
-        // We remove and append new nodes, thus, the last track marker must be dynamically found.
-        const lastTrackMarker = this.root_.querySelector<HTMLElement>(strings.LAST_TRACK_MARKER_SELECTOR)!;
-        lastTrackMarker.style.setProperty(propertyName, value);
+      setTrackMarkers: (step, max, min) => {
+        const stepStr = step.toLocaleString();
+        const maxStr = max.toLocaleString();
+        const minStr = min.toLocaleString();
+        // keep calculation in css for better rounding/subpixel behavior
+        const markerAmount = `((${maxStr} - ${minStr}) / ${stepStr})`;
+        const markerWidth = `2px`;
+        const markerBkgdImage = `linear-gradient(to right, currentColor ${markerWidth}, transparent 0)`;
+        const markerBkgdLayout = `0 center / calc((100% - ${markerWidth}) / ${markerAmount}) 100% repeat-x`;
+        const markerBkgdShorthand = `${markerBkgdImage} ${markerBkgdLayout}`;
+        this.trackMarkerContainer_.style.setProperty('background', markerBkgdShorthand);
       },
       isRTL: () => getComputedStyle(this.root_).direction === 'rtl',
     };

@@ -1,7 +1,7 @@
 {
   "name": "@material/line-ripple",
   "description": "The Material Components for the web line-ripple component",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,15 +15,16 @@
   "types": "dist/mdc.lineRipple.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/material-components/material-components-web.git"
+    "url": "git+https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-line-ripple"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@material/animation": "^3.0.0",
-    "@material/base": "^3.0.0",
-    "@material/theme": "^3.0.0",
+    "@material/animation": "^3.1.0",
+    "@material/base": "^3.1.0",
+    "@material/theme": "^3.1.0",
     "tslib": "^1.9.3"
   }
 }

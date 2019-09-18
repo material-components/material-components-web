@@ -29,6 +29,7 @@ import {install as installClock} from '../helpers/clock';
 import {MDCMenuFoundation} from '../../../packages/mdc-menu/foundation';
 import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
 import {cssClasses, DefaultFocusState, strings} from '../../../packages/mdc-menu/constants';
+import {cssClasses as listCssClasses} from '../../../packages/mdc-list/constants';
 import {numbers as menuNumbers} from '../../../packages/mdc-menu/constants';
 import {numbers} from '../../../packages/mdc-menu-surface/constants';
 
@@ -225,6 +226,30 @@ test('handleItemAction item action event inside of a child element of a selectio
     {times: 0});
 });
 
+test('handleItemAction adds class to the correct child element of a selection group when menu has mutated', () => {
+  const {foundation, mockAdapter, clock} = setupTest();
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(1);
+  td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
+
+  td.when(mockAdapter.isSelectableItemAtIndex(1)).thenReturn(true);
+  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(1)).thenReturn(-1);
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
+
+  foundation.handleItemAction(itemEl);
+
+  // Element at index 1 is now at index 0
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.isSelectableItemAtIndex(0)).thenReturn(true);
+  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(0)).thenReturn(-1);
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(1);
+
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+
+  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
+});
+
 test('handleMenuSurfaceOpened menu focuses the list root element by default on menu surface opened', () => {
   const {foundation, mockAdapter} = setupTest();
 
@@ -307,6 +332,24 @@ test('setSelectedIndex throws error if index is not in range', () => {
   } catch (e) {
     assert.equal(e.message, 'MDCMenuFoundation: No list item at specified index.');
   }
+});
+
+test('setEnabled calls addClass and addAttribute', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
+
+  foundation.setEnabled(0, false);
+  td.verify(mockAdapter.addClassToElementAtIndex(0, listCssClasses.LIST_ITEM_DISABLED_CLASS), {times: 1});
+  td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_DISABLED_ATTR, 'true'), {times: 1});
+});
+
+test('setEnabled calls removeClass and removeAttribute', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
+
+  foundation.setEnabled(0, true);
+  td.verify(mockAdapter.removeClassFromElementAtIndex(0, listCssClasses.LIST_ITEM_DISABLED_CLASS), {times: 1});
+  td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_DISABLED_ATTR, 'false'), {times: 1});
 });
 
 // Item Action

@@ -27,9 +27,11 @@
 @import "@material/rtl/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/touch-target/mixins";
 @import "@material/typography/mixins";
 @import "@material/shape/mixins";
 @import "@material/shape/functions";
+@import "@material/density/functions";
 @import "./variables";
 
 $mdc-button-ripple-target: ".mdc-button__ripple";
@@ -37,6 +39,12 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 @mixin mdc-button-core-styles($query: mdc-feature-all()) {
   @include mdc-button-without-ripple($query);
   @include mdc-button-ripple($query);
+}
+
+@mixin mdc-button-theme-baseline($query: mdc-feature-all()) {
+  .mdc-button {
+    @include mdc-button-density($mdc-button-density-default-scale, $query: $query);
+  }
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
@@ -59,6 +67,10 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
       @include mdc-feature-targets($feat-structure) {
         @include mdc-button__icon_;
       }
+    }
+
+    .mdc-button__touch {
+      @include mdc-touch-target($query);
     }
 
     @include mdc-button-ink-color(primary, $query);
@@ -111,10 +123,9 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     @include mdc-button-outline-color(primary, $query);
   }
 
-  .mdc-button--dense {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-button--dense_;
-    }
+  .mdc-button--touch {
+    @include mdc-touch-target-component(
+      $component-height: $mdc-button-height, $query: $query);
   }
   // postcss-bem-linter: end
 }
@@ -217,27 +228,47 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   }
 }
 
-@mixin mdc-button-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
-  @include mdc-shape-radius(
-    mdc-shape-resolve-percentage-radius($mdc-button-height, $radius),
-    $rtl-reflexive,
-    $query: $query
+///
+/// Sets density scale for button.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-3`,
+///     `-2`, `-1`, `0`.
+///
+@mixin mdc-button-density($density-scale, $query: mdc-feature-all()) {
+
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-button-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
   );
 
-  #{$mdc-button-ripple-target} {
-    @include mdc-shape-radius(
-      mdc-shape-resolve-percentage-radius($mdc-button-height, $radius),
-      $rtl-reflexive,
-      $query: $query
-    );
-  }
+  @include mdc-button-height($height, $query: $query);
+}
 
-  &.mdc-button--dense {
-    @include mdc-shape-radius(
-      mdc-shape-resolve-percentage-radius($mdc-dense-button-height, $radius),
-      $rtl-reflexive,
-      $query: $query
-    );
+@mixin mdc-button-height($height, $query: $query) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    height: $height;
+  }
+}
+
+@mixin mdc-button-shape-radius($radius,
+$rtl-reflexive: false,
+$density-scale: $mdc-button-density-default-scale,
+$query: mdc-feature-all()) {
+
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-button-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+  $resolved-radius: mdc-shape-resolve-percentage-radius($height, $radius);
+
+  @include mdc-shape-radius($resolved-radius, $rtl-reflexive, $query: $query);
+
+  #{$mdc-button-ripple-target} {
+    @include mdc-shape-radius($resolved-radius, $rtl-reflexive, $query: $query);
   }
 }
 
@@ -288,13 +319,15 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     justify-content: center;
     box-sizing: border-box;
     min-width: 64px;
-    height: $mdc-button-height;
     border: none;
     outline: none;
     /* @alternate */
     line-height: inherit;
     user-select: none;
     -webkit-appearance: none;
+    // Even though `visible` is the default, IE 11 computes the property as
+    // `hidden` in some cases, unless it's explicitly defined here.
+    overflow: visible;
     vertical-align: middle;
   }
 
@@ -409,9 +442,4 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   @include mdc-feature-targets($feat-animation) {
     transition: mdc-elevation-transition-value();
   }
-}
-
-@mixin mdc-button--dense_() {
-  height: $mdc-dense-button-height;
-  font-size: .8125rem; // 13sp
 }

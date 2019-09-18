@@ -260,6 +260,9 @@ test('#setValid overrides native validation when useNativeValidation set to fals
 test('#setValid updates classes', () => {
   const {foundation, mockAdapter, helperText} = setupTest({useHelperText: true});
   td.when(mockAdapter.hasLabel()).thenReturn(true);
+  td.when(mockAdapter.getNativeInput()).thenReturn({
+    value: 'test',
+  });
 
   foundation.setValid(false);
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
@@ -365,6 +368,16 @@ test('#setValid removes mdc-textfied--invalid when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setValid(true);
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+});
+
+test('#setValid should not trigger shake animation when text field is empty', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
+  td.when(mockAdapter.getNativeInput()).thenReturn({
+    value: '',
+  });
+  foundation.setValid(false);
+  td.verify(mockAdapter.shakeLabel(false));
 });
 
 test('#init focuses on input if adapter.isFocused is true', () => {
