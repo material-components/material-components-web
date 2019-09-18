@@ -292,6 +292,8 @@ A label is not required if a separate, adjacent label is provided elsewhere. To 
 MDC Select without a label, add the class `mdc-select--no-label` and remove the label from the
 structure.
 
+#### Filled
+
 ```html
 <div class="mdc-select mdc-select--no-label">
   <div class="mdc-select__anchor demo-width-class">
@@ -316,6 +318,25 @@ structure.
   </div>
 </div>
 ```
+
+#### Outlined
+
+```html
+<div class="mdc-select mdc-select--outlined mdc-select--no-label">
+  <div class="mdc-select__anchor demo-width-class">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div class="mdc-select__selected-text"></div>
+    <div class="mdc-notched-outline">
+      <div class="mdc-notched-outline__leading"></div>
+      <div class="mdc-notched-outline__trailing"></div>
+    </div>
+  </div>
+
+  <!-- Other elements from the select remain. -->
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">...</div>
+</div>
+```
+
 ## Style Customization
 
 #### CSS Classes
