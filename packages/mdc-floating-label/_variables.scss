@@ -20,5 +20,9 @@
 // THE SOFTWARE.
 //
 
-$mdc-floating-label-position-y: 50% !default;
+///
+/// Y-axis position of label when it is afloat.
+/// 100% of the length of label and additional 6% for scaledown.
+///
+$mdc-floating-label-position-y: 106% !default;
 $mdc-floating-label-transition-duration: 150ms !default;

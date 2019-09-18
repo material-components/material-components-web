@@ -27,3 +27,11 @@
 .test-cell--tab-bar {
   @include test-cell-size(400, 100);
 }
+
+.custom-tab-bar-density {
+  @include mdc-tab-bar-density(-4);
+}
+
+.custom-tab-bar-stacked-density {
+  @include mdc-tab-bar-stacked-density(-4);
+}

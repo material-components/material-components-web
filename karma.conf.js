@@ -22,7 +22,7 @@
  */
 
 const path = require('path');
-const webpackConfig = require('./webpack.config')[0];
+const webpackConfig = require('./webpack.config')[1];
 
 const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
@@ -76,7 +76,7 @@ module.exports = function(config) {
     preprocessors: {
       'test/unit/index.js': ['webpack', 'sourcemap'],
     },
-    reporters: ['dots', 'coverage-istanbul'],
+    reporters: ['progress', 'coverage-istanbul'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -118,6 +118,7 @@ module.exports = function(config) {
     // Refer https://github.com/webpack-contrib/karma-webpack
     webpack: Object.assign({}, webpackConfig, {
       plugins: [], // Exclude UglifyJs plugin from test build.
+      mode: 'development',
       module: Object.assign({}, webpackConfig.module, {
         // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
         // uncluttered source maps.
@@ -132,6 +133,7 @@ module.exports = function(config) {
 
     webpackMiddleware: {
       noInfo: true,
+      stats: 'minimal',
     },
   });
 

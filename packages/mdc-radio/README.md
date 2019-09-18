@@ -48,6 +48,7 @@ We recommend using MDC Radio with [MDC Form Field](../mdc-form-field) for enhanc
       <div class="mdc-radio__outer-circle"></div>
       <div class="mdc-radio__inner-circle"></div>
     </div>
+    <div class="mdc-radio__ripple"></div>
   </div>
   <label for="radio-1">Radio 1</label>
 </div>
@@ -90,10 +91,33 @@ Disabled radio buttons cannot be interacted with and have no visual interaction 
       <div class="mdc-radio__outer-circle"></div>
       <div class="mdc-radio__inner-circle"></div>
     </div>
+    <div class="mdc-radio__ripple"></div>
   </div>
   <label for="radio-1">Radio 1</label>
 </div>
 ```
+
+## Additional Information
+
+### Accessibility
+
+Material Design spec advises that touch targets should be at least 48 x 48 px.
+To meet this requirement, add the `mdc-radio--touch` class to your radio as follows:
+
+```html
+<span>
+  <div class="mdc-radio mdc-radio--touch">
+    <input class="mdc-radio__native-control" type="radio" id="radio-1" name="radios" checked>
+    <div class="mdc-radio__background">
+      <div class="mdc-radio__outer-circle"></div>
+      <div class="mdc-radio__inner-circle"></div>
+    </div>
+    <div class="mdc-radio__ripple"></div>
+  </div>
+</span>
+```
+
+Note that the wrapper `<span>` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
 
 ## Style Customization
 

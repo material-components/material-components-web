@@ -2,3 +2,4 @@
 packages/*/dist
 **/out
 *.pb.js
+scripts/documentation/*.js

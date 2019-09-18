@@ -50,7 +50,7 @@ test('attachTo returns an MDCChipSet instance', () => {
 });
 
 class FakeChip {
-  constructor(el) {
+  constructor(el, isSelected=false) {
     this.id = el.id;
     this.destroy = td.func('.destroy');
     this.focusPrimaryAction = td.func('.focusPrimaryAction');
@@ -58,7 +58,7 @@ class FakeChip {
     this.remove = td.func('.remove');
     this.removeFocus = td.func('.removeFocus');
     this.setSelectedFromChipSet = td.func('.setSelectedFromChipSet');
-    this.selected = false;
+    this.selected = isSelected;
   }
 }
 
@@ -73,6 +73,14 @@ function setupMockFoundationTest() {
   const MockFoundationConstructor = td.constructor(MDCChipSetFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCChipSet(root, mockFoundation);
+  return {root, component, mockFoundation};
+}
+
+function setupMockFoundationWithSelection() {
+  const root = getFixture();
+  const MockFoundationConstructor = td.constructor(MDCChipSetFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCChipSet(root, mockFoundation, (el) => new FakeChip(el, true));
   return {root, component, mockFoundation};
 }
 
@@ -97,7 +105,7 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   const {
     INTERACTION_EVENT, ARROW_LEFT_KEY, NAVIGATION_EVENT, REMOVAL_EVENT, SELECTION_EVENT} = MDCChipFoundation.strings;
   const evtData = {
-    chipId: 'chipA', selected: true, key: ARROW_LEFT_KEY, source: 1,
+    chipId: 'chipA', selected: true, key: ARROW_LEFT_KEY, source: 1, shouldIgnore: false,
   };
   const evt1 = document.createEvent('CustomEvent');
   const evt2 = document.createEvent('CustomEvent');
@@ -114,9 +122,16 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   root.dispatchEvent(evt4);
 
   td.verify(mockFoundation.handleChipInteraction('chipA'), {times: 1});
-  td.verify(mockFoundation.handleChipSelection('chipA', true), {times: 1});
+  td.verify(mockFoundation.handleChipSelection('chipA', true, false), {times: 1});
   td.verify(mockFoundation.handleChipRemoval('chipA'), {times: 1});
   td.verify(mockFoundation.handleChipNavigation('chipA', ARROW_LEFT_KEY, 1), {times: 1});
+});
+
+test('#initialSyncWithDOM calls MDCChipSetFoundation#select on the selected chips', () => {
+  const {mockFoundation} = setupMockFoundationWithSelection();
+  td.verify(mockFoundation.select('chip1'));
+  td.verify(mockFoundation.select('chip2'));
+  td.verify(mockFoundation.select('chip3'));
 });
 
 test('#destroy removes event handlers', () => {
@@ -181,8 +196,8 @@ test('#adapter.removeChipAtIndex does nothing if the given object is not in the 
 test('#adapter.selectChipAtIndex calls setSelectedFromChipSet on chip object', () => {
   const {component} = setupTest();
   const chip = component.chips[0];
-  component.getDefaultFoundation().adapter_.selectChipAtIndex(0, true);
-  td.verify(chip.setSelectedFromChipSet(true));
+  component.getDefaultFoundation().adapter_.selectChipAtIndex(0, true, true);
+  td.verify(chip.setSelectedFromChipSet(true, true));
 });
 
 test('#adapter.getChipListCount returns the number of chips', () => {

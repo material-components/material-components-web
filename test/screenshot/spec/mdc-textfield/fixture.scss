@@ -38,6 +38,10 @@
   @include test-cell-size(301, 121);
 }
 
+.test-cell--textfield-small {
+  @include test-cell-size(301, 81);
+}
+
 .test-cell--textarea {
   @include test-cell-size(301, 181);
 }
@@ -60,4 +64,20 @@
   .test-text-field__input {
     transform: translateX(.1px);
   }
+}
+
+.custom-density-text-field--default {
+  @include mdc-text-field-density(-4);
+}
+
+.custom-density-text-field--outlined {
+  @include mdc-text-field-outlined-density(-4);
+}
+
+.custom-density-text-field-leading-icon--default {
+  @include mdc-text-field-density(-4);
+}
+
+.custom-density-text-field-leading-icon--outlined {
+  @include mdc-text-field-outlined-with-leading-icon-density(-4);
 }

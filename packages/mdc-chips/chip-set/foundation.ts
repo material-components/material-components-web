@@ -67,21 +67,10 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   /**
    * Selects the chip with the given id. Deselects all other chips if the chip set is of the choice variant.
+   * Does not notify clients of the updated selection state.
    */
   select(chipId: string) {
-    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
-      return;
-    }
-
-    if (this.adapter_.hasClass(cssClasses.CHOICE) && this.selectedChipIds_.length > 0) {
-      const previouslySelectedChip = this.selectedChipIds_[0];
-      const previouslySelectedIndex = this.adapter_.getIndexOfChipById(previouslySelectedChip);
-      this.selectedChipIds_.length = 0;
-      this.adapter_.selectChipAtIndex(previouslySelectedIndex, false);
-    }
-    this.selectedChipIds_.push(chipId);
-    const index = this.adapter_.getIndexOfChipById(chipId);
-    this.adapter_.selectChipAtIndex(index, true);
+    this.select_(chipId, false);
   }
 
   /**
@@ -98,7 +87,12 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Handles a chip selection event, used to handle discrepancy when selection state is set directly on the Chip.
    */
-  handleChipSelection(chipId: string, selected: boolean) {
+  handleChipSelection(chipId: string, selected: boolean, shouldIgnore: boolean) {
+    // Early exit if we should ignore the event
+    if (shouldIgnore) {
+      return;
+    }
+
     const chipIsSelected = this.selectedChipIds_.indexOf(chipId) >= 0;
     if (selected && !chipIsSelected) {
       this.select(chipId);
@@ -112,7 +106,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    */
   handleChipRemoval(chipId: string) {
     const index = this.adapter_.getIndexOfChipById(chipId);
-    this.deselect_(chipId);
+    this.deselectAndNotifyClients_(chipId);
     this.adapter_.removeChipAtIndex(index);
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
@@ -187,15 +181,22 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   }
 
   /**
-   * Deselects the chip with the given id.
+   * Deselects the chip with the given id and optionally notifies clients.
    */
-  private deselect_(chipId: string) {
+  private deselect_(chipId: string, shouldNotifyClients = false) {
     const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
       this.selectedChipIds_.splice(index, 1);
       const chipIndex = this.adapter_.getIndexOfChipById(chipId);
-      this.adapter_.selectChipAtIndex(chipIndex, false);
+      this.adapter_.selectChipAtIndex(chipIndex, /** isSelected */ false, shouldNotifyClients);
     }
+  }
+
+  /**
+   * Deselects the chip with the given id and notifies clients.
+   */
+  private deselectAndNotifyClients_(chipId: string) {
+    this.deselect_(chipId, true);
   }
 
   /**
@@ -203,9 +204,9 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    */
   private toggleSelect_(chipId: string) {
     if (this.selectedChipIds_.indexOf(chipId) >= 0) {
-      this.deselect_(chipId);
+      this.deselectAndNotifyClients_(chipId);
     } else {
-      this.select(chipId);
+      this.selectAndNotifyClients_(chipId);
     }
   }
 
@@ -216,6 +217,26 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
         this.adapter_.removeFocusFromChipAtIndex(i);
       }
     }
+  }
+
+  private selectAndNotifyClients_(chipId: string) {
+    this.select_(chipId, true);
+  }
+
+  private select_(chipId: string, shouldNotifyClients: boolean) {
+    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
+      return;
+    }
+
+    if (this.adapter_.hasClass(cssClasses.CHOICE) && this.selectedChipIds_.length > 0) {
+      const previouslySelectedChip = this.selectedChipIds_[0];
+      const previouslySelectedIndex = this.adapter_.getIndexOfChipById(previouslySelectedChip);
+      this.selectedChipIds_ = [];
+      this.adapter_.selectChipAtIndex(previouslySelectedIndex, /** isSelected */ false, shouldNotifyClients);
+    }
+    this.selectedChipIds_.push(chipId);
+    const index = this.adapter_.getIndexOfChipById(chipId);
+    this.adapter_.selectChipAtIndex(index, /** isSelected */ true, shouldNotifyClients);
   }
 }
 

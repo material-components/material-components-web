@@ -40,6 +40,7 @@
 // from the other tah styles. It is recommended that most users use `mdc-tab-core-styles` instead.
 @mixin mdc-tab-without-ripple($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-animation: mdc-feature-create-target($query, animation);
 
   // postcss-bem-linter: define tab
 
@@ -57,9 +58,33 @@
     @include mdc-tab__content_($query);
   }
 
-  .mdc-tab__text-label,
+  .mdc-tab__text-label {
+    @include mdc-feature-targets($feat-animation) {
+      transition: 150ms color linear;
+    }
+
+    @include mdc-feature-targets($feat-structure) {
+      display: inline-block;
+      // Setting line-height here overrides the line-height from the typography
+      // mixin above. The line-height needs to be overridden so that the spacing
+      // between the text label and the icon as well as the text label and the
+      // bottom of the tab remain the same.
+      line-height: 1;
+      z-index: 2;
+    }
+  }
+
   .mdc-tab__icon {
-    @include mdc-tab__content-child_($query);
+    @include mdc-feature-targets($feat-animation) {
+      transition: 150ms color linear;
+    }
+
+    @include mdc-feature-targets($feat-structure) {
+      width: $mdc-tab-icon-size;
+      height: $mdc-tab-icon-size;
+      font-size: $mdc-tab-icon-size;
+      z-index: 2;
+    }
   }
 
   .mdc-tab--stacked {
@@ -166,6 +191,19 @@
   }
 }
 
+///
+/// Sets tab height
+///
+/// @param {Number} $height Height value in `px`.
+///
+@mixin mdc-tab-height($height, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    height: $height;
+  }
+}
+
 //
 // Private
 //
@@ -184,7 +222,6 @@
     flex: 1 0 auto;
     justify-content: center;
     box-sizing: border-box;
-    height: $mdc-tab-height;
     // Explicitly setting margin to 0 is to override safari default margin for button elements.
     margin: 0;
     padding-top: 0;
@@ -237,43 +274,19 @@
   }
 }
 
-@mixin mdc-tab__content-child_($query: mdc-feature-all()) {
-  $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-feature-targets($feat-animation) {
-    transition: 150ms color linear;
-  }
-
-  @include mdc-feature-targets($feat-structure) {
-    display: inline-block;
-    // Setting line-height here overrides the line-height from the typography
-    // mixin above. The line-height needs to be overridden so that the spacing
-    // between the text label and the icon as well as the text label and the
-    // bottom of the tab remain the same.
-    line-height: 1;
-    z-index: 2;
-  }
-}
-
 @mixin mdc-tab--stacked_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    height: $mdc-tab-stacked-height;
-
     .mdc-tab__content {
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-    }
-
-    .mdc-tab__icon {
-      padding-top: 12px;
+      justify-content: center;
     }
 
     .mdc-tab__text-label {
-      padding-bottom: 16px;
+      padding-top: 6px;
+      padding-bottom: 4px;
     }
   }
 }

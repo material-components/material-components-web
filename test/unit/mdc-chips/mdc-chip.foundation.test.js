@@ -95,20 +95,19 @@ test('#setSelected sets aria-checked="false" if false', () => {
 test('#setSelected notifies of selection when selected is true', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setSelected(true);
-  td.verify(mockAdapter.notifySelection(true));
+  td.verify(mockAdapter.notifySelection(true, false));
 });
 
 test('#setSelected notifies of unselection when selected is false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setSelected(false);
-  td.verify(mockAdapter.notifySelection(false));
+  td.verify(mockAdapter.notifySelection(false, false));
 });
 
-test('#setSelectedFromChipSet does not notify', () => {
+test('#setSelectedFromChipSet notifies of selection with shouldIgnore set to true', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.setSelectedFromChipSet(false);
-  foundation.setSelectedFromChipSet(true);
-  td.verify(mockAdapter.notifySelection(td.matchers.isA(Boolean)), {times: 0});
+  foundation.setSelectedFromChipSet(true, true);
+  td.verify(mockAdapter.notifySelection(true, true));
 });
 
 test('#getDimensions returns adapter.getRootBoundingClientRect when there is no checkmark bounding rect', () => {
@@ -328,7 +327,7 @@ test('#handleTrailingIconInteraction emits custom event on click or enter key in
   td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 1});
   td.verify(mockEvt.stopPropagation(), {times: 1});
 
-  foundation.handleTrailingIconInteraction(Object.assign(mockEvt, {type: 'keydown', keyCode: 13}));
+  foundation.handleTrailingIconInteraction(Object.assign(mockEvt, {type: 'keydown', key: ' '}));
   td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 2});
   td.verify(mockEvt.stopPropagation(), {times: 2});
 

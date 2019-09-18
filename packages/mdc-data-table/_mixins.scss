@@ -25,6 +25,7 @@
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "@material/checkbox/mixins";
+@import "@material/density/functions";
 @import "@material/rtl/mixins";
 @import "@material/shape/mixins";
 @import "@material/theme/mixins";
@@ -57,8 +58,7 @@
       @include mdc-data-table-row-hover-fill-color($mdc-data-table-row-hover-fill-color, $query: $query);
       @include mdc-data-table-header-row-text-color($mdc-data-table-header-row-text-color, $query: $query);
       @include mdc-data-table-row-text-color($mdc-data-table-row-text-color, $query: $query);
-      @include mdc-data-table-header-row-height($mdc-data-table-header-row-height, $query: $query);
-      @include mdc-data-table-row-height($mdc-data-table-row-height, $query: $query);
+      @include mdc-data-table-density($mdc-data-table-default-density-scale, $query: $query);
       @include mdc-data-table-cell-padding(
         $leading-padding: $mdc-data-table-cell-leading-padding,
         $trailing-padding: $mdc-data-table-cell-trailing-padding,
@@ -67,34 +67,50 @@
     }
 
     @include mdc-feature-targets($feat-structure) {
+      -webkit-overflow-scrolling: touch; // Lets it scroll lazy (iOS)
       display: inline-flex;
       flex-direction: column;
+      box-sizing: border-box;
+      overflow-x: auto;
     }
   }
 
   .mdc-data-table__table {
     @include mdc-feature-targets($feat-structure) {
-      width: 100%;
+      min-width: 100%; // Makes table full-width of its container (Firefox / IE11)
       border: 0;
       white-space: nowrap;
       border-collapse: collapse;
+      /**
+       * With table-layout:fixed, table and column widths are defined by the width
+       * of the first row of cells. Cells in subsequent rows do not affect column
+       * widths. This results in a predictable table layout and may also speed up
+       * rendering.
+       */
+      table-layout: fixed;
     }
   }
 
   .mdc-data-table__cell {
     @include mdc-typography(body2, $query: $query);
+
+    @include mdc-feature-targets($feat-structure) {
+      box-sizing: border-box;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 
   .mdc-data-table__cell--numeric {
     @include mdc-feature-targets($feat-structure) {
       text-align: right;
     }
-  }
 
-  .mdc-data-table__header-cell--checkbox,
-  .mdc-data-table__cell--checkbox {
     @include mdc-feature-targets($feat-structure) {
-      padding-right: 0;
+      @include mdc-rtl {
+        /* @noflip */
+        text-align: left;
+      }
     }
   }
 
@@ -102,11 +118,27 @@
     @include mdc-typography(subtitle2, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
+      box-sizing: border-box;
       text-align: left;
+      text-overflow: ellipsis;
+      overflow: hidden;
 
       @include mdc-rtl {
         /* @noflip */
         text-align: right;
+      }
+    }
+  }
+
+  .mdc-data-table__header-cell--numeric {
+    @include mdc-feature-targets($feat-structure) {
+      text-align: right;
+    }
+
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-rtl {
+        /* @noflip */
+        text-align: left;
       }
     }
   }
@@ -230,20 +262,20 @@
   }
 }
 
-@mixin mdc-data-table-header-row-height($height, $query: mdc-feature-all()) {
+@mixin mdc-data-table-header-cell-height($height, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  .mdc-data-table__header-row {
+  .mdc-data-table__header-cell {
     @include mdc-feature-targets($feat-structure) {
       height: $height;
     }
   }
 }
 
-@mixin mdc-data-table-row-height($height, $query: mdc-feature-all()) {
+@mixin mdc-data-table-cell-height($height, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  .mdc-data-table__row {
+  .mdc-data-table__cell {
     @include mdc-feature-targets($feat-structure) {
       height: $height;
     }
@@ -263,6 +295,13 @@
       padding-left: $leading-padding;
     }
   }
+
+  .mdc-data-table__header-cell--checkbox,
+  .mdc-data-table__cell--checkbox {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-rtl-reflexive-property(padding, $leading-padding, 0);
+    }
+  }
 }
 
 @mixin mdc-data-table-column-widths($width-list, $query: mdc-feature-all()) {
@@ -275,6 +314,25 @@
       }
     }
   }
+}
+
+///
+/// Sets density scale for data table. Use corresponding density mixins of child components (such as Checkbox) to apply
+/// density scales which will be rendered inside data table.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`.
+///
+@mixin mdc-data-table-density($density-scale, $query: mdc-feature-all()) {
+
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-data-table-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-data-table-cell-height($height, $query: $query);
+  @include mdc-data-table-header-cell-height(mdc-data-table-get-header-cell-height($height), $query: $query);
 }
 
 @mixin mdc-data-table-theme-baseline($query: mdc-feature-all()) {

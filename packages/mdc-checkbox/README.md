@@ -55,6 +55,7 @@ We recommend using MDC Checkbox with [MDC Form Field](../mdc-form-field) for enh
       </svg>
       <div class="mdc-checkbox__mixedmark"></div>
     </div>
+    <div class="mdc-checkbox__ripple"></div>
   </div>
   <label for="checkbox-1">Checkbox 1</label>
 </div>
@@ -105,9 +106,39 @@ Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only 
     </svg>
     <div class="mdc-checkbox__mixedmark"></div>
   </div>
+  <div class="mdc-checkbox__ripple"></div>
 </div>
 <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
 ```
+
+## Additional Information
+
+### Accessibility
+
+Material Design spec advises that touch targets should be at least 48 x 48 px.
+To meet this requirement, add the `mdc-checkbox--touch` class to your checkbox as follows:
+
+```html
+<span>
+  <div class="mdc-checkbox mdc-checkbox--touch">
+    <input type="checkbox"
+           class="mdc-checkbox__native-control"
+           id="checkbox-1"/>
+    <div class="mdc-checkbox__background">
+      <svg class="mdc-checkbox__checkmark"
+           viewBox="0 0 24 24">
+        <path class="mdc-checkbox__checkmark-path"
+              fill="none"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+      </svg>
+      <div class="mdc-checkbox__mixedmark"></div>
+    </div>
+    <div class="mdc-checkbox__ripple"></div>
+  </div>
+</span>
+```
+
+Note that the wrapper `<span>` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
 
 ## Style Customization
 
@@ -122,7 +153,8 @@ Mixin | Description
 `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
 `mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
 `mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator (ripple) when checkbox is selected or is in indeterminate state.
-`mdc-checkbox-touch-dimension($touch-dimension)` | Sets the touch dimension of the checkbox.
+`mdc-checkbox-ripple-size($ripple-size)` | Sets the ripple size of the checkbox.
+`mdc-checkbox-density($density-scale)` | Sets density scale for checkbox, e.g. `$density-scale: -3`.
 
 The ripple effect for the Checkbox component is styled using [MDC Ripple](../mdc-ripple) mixins.
 

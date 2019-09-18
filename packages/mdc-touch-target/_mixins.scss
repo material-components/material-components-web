@@ -1,0 +1,60 @@
+//
+// Copyright 2019 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
+@import "./variables";
+
+// Styles applied to the component's inner touch target element.
+@mixin mdc-touch-target($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: $mdc-touch-target-height;
+    transform: translateY(-50%);
+  }
+}
+
+// Styles applied to the component with the increased touch target.
+@mixin mdc-touch-target-component($component-height, $component-width: null, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  $vertical-margin-value: ($mdc-touch-target-height - $component-height) / 2;
+
+  @include mdc-feature-targets($feat-structure) {
+    margin-top: $vertical-margin-value;
+    margin-bottom: $vertical-margin-value;
+  }
+
+  @if $component-width {
+    $horizontal-margin-value: ($mdc-touch-target-width - $component-width) / 2;
+
+    @include mdc-feature-targets($feat-structure) {
+      margin-right: $horizontal-margin-value;
+      margin-left: $horizontal-margin-value;
+    }
+  }
+}
