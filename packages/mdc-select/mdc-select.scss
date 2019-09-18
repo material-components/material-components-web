@@ -147,6 +147,10 @@
   @include mdc-select-disabled_;
 }
 
+.mdc-select--no-label {
+  @include mdc-select-no-label_;
+}
+
 .mdc-select--with-leading-icon {
   @include mdc-select-with-leading-icon_;
 }
