@@ -180,7 +180,7 @@ export interface MDCSelectAdapter {
   /**
    * Gets the text content of the menu item element at the given index.
    */
-  getMenuItemTextAtIndex(index: number): string | null;
+  getMenuItemTextAtIndex(index: number): string;
 
   /**
    * Returns the given attribute on the the menu item element.

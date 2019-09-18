@@ -311,7 +311,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       focusMenuItemAtIndex: (index: number) => (this.menu_.items[index] as HTMLElement).focus(),
       getMenuItemCount: () => this.menu_.items.length,
       getMenuItemValues: () => this.menu_.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || ''),
-      getMenuItemTextAtIndex: (index: number) => this.menu_.items[index].textContent,
+      getMenuItemTextAtIndex: (index: number) => this.menu_.items[index].textContent as string,
       addClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.add(className),
       removeClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.remove(className),
     };
