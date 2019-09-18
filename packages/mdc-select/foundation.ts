@@ -55,6 +55,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
       getSelectedMenuItem: () => null,
+      hasLabel: () => false,
       floatLabel: () => undefined,
       getLabelWidth: () => 0,
       hasOutline: () => false,
@@ -196,8 +197,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   layout() {
-    const openNotch = this.getValue().length > 0;
-    this.notchOutline(openNotch);
+    if (this.adapter_.hasLabel()) {
+      const openNotch = this.getValue().length > 0;
+      this.notchOutline(openNotch);
+    }
   }
 
   handleMenuOpened() {
@@ -231,10 +234,12 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const optionHasValue = value.length > 0;
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
 
-    this.notchOutline(optionHasValue);
+    if (this.adapter_.hasLabel()) {
+      this.notchOutline(optionHasValue);
 
-    if (!this.adapter_.hasClass(cssClasses.FOCUSED)) {
-      this.adapter_.floatLabel(optionHasValue);
+      if (!this.adapter_.hasClass(cssClasses.FOCUSED)) {
+        this.adapter_.floatLabel(optionHasValue);
+      }
     }
 
     if (didChange) {
@@ -258,8 +263,12 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    */
   handleFocus() {
     this.adapter_.addClass(cssClasses.FOCUSED);
-    this.adapter_.floatLabel(true);
-    this.notchOutline(true);
+
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.floatLabel(true);
+      this.notchOutline(true);
+    }
+
     this.adapter_.activateBottomLine();
     if (this.helperText_) {
       this.helperText_.showToScreenReader();

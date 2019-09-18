@@ -47,7 +47,7 @@ test('exports strings', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'hasClass',
-    'activateBottomLine', 'deactivateBottomLine', 'getSelectedMenuItem', 'floatLabel',
+    'activateBottomLine', 'deactivateBottomLine', 'getSelectedMenuItem', 'hasLabel', 'floatLabel',
     'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'setRippleCenter', 'notifyChange',
     'setSelectedText', 'isSelectedTextFocused', 'getSelectedTextAttr', 'setSelectedTextAttr',
     'openMenu', 'closeMenu', 'getAnchorElement', 'setMenuAnchorElement', 'setMenuAnchorCorner', 'setMenuWrapFocus',
@@ -81,6 +81,7 @@ function setupTest(hasLeadingIcon = true, hasHelperText = false) {
   };
 
   td.when(mockAdapter.getSelectedMenuItem()).thenReturn(listItem);
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
 
   const foundation = new MDCSelectFoundation(mockAdapter, foundationMap);
   return {foundation, mockAdapter, leadingIcon, helperText};
@@ -220,6 +221,14 @@ test('#handleChange does not call adapter.floatLabel(false) when there is no val
   td.verify(mockAdapter.floatLabel(false), {times: 0});
 });
 
+test('#handleChange does not call adapter.floatLabel() when no label is present', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(false);
+
+  foundation.handleChange();
+  td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+});
+
 test('#handleChange calls foundation.notchOutline(true) when there is a value', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.notchOutline = td.func();
@@ -238,6 +247,15 @@ test('#handleChange calls foundation.notchOutline(false) when there is no value'
   td.verify(foundation.notchOutline(false), {times: 1});
 });
 
+test('#handleChange does not call foundation.notchOutline() when there is no label', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.notchOutline = td.func();
+  td.when(mockAdapter.hasLabel()).thenReturn(false);
+
+  foundation.handleChange();
+  td.verify(foundation.notchOutline(td.matchers.anything()), {times: 0});
+});
+
 test('#handleChange calls adapter.notifyChange() if didChange is true', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('value');
@@ -253,11 +271,28 @@ test('#handleFocus calls adapter.floatLabel(true)', () => {
   td.verify(mockAdapter.floatLabel(true), {times: 1});
 });
 
+test('#handleFocus does not call adapter.floatLabel() if no label is present', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(false);
+
+  foundation.handleFocus();
+  td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+});
+
 test('#handleFocus calls foundation.notchOutline(true)', () => {
   const {foundation} = setupTest();
   foundation.notchOutline = td.func();
   foundation.handleFocus();
   td.verify(foundation.notchOutline(true), {times: 1});
+});
+
+test('#handleFocus does not call foundation.notchOutline() if no label is present', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.notchOutline = td.func();
+  td.when(mockAdapter.hasLabel()).thenReturn(false);
+
+  foundation.handleFocus();
+  td.verify(foundation.notchOutline(td.matchers.anything()), {times: 0});
 });
 
 test('#handleFocus calls adapter.activateBottomLine()', () => {
@@ -437,6 +472,14 @@ test('#layout calls notchOutline(false) if value is an empty string', () => {
   foundation.notchOutline = td.func();
   foundation.layout();
   td.verify(foundation.notchOutline(false), {times: 1});
+});
+
+test('#layout does not call notchOutline() if label does not exist', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.notchOutline = td.func();
+  td.when(mockAdapter.hasLabel()).thenReturn(false);
+  foundation.layout();
+  td.verify(foundation.notchOutline(td.matchers.anything()), {times: 0});
 });
 
 test('#setLeadingIconAriaLabel sets the aria-label of the leading icon element', () => {

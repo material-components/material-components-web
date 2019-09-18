@@ -286,6 +286,57 @@ See [here](helper-text/) for more information on using helper text.
 Leading icons can be added within the default or outlined variant of MDC Select as visual indicators as
 well as interaction targets. See [here](icon/) for more information on using icons.
 
+### Select with No Label
+
+A label is not required if a separate, adjacent label is provided elsewhere. To correctly style
+MDC Select without a label, add the class `mdc-select--no-label` and remove the label from the
+structure.
+
+#### Filled
+
+```html
+<div class="mdc-select mdc-select--no-label">
+  <div class="mdc-select__anchor demo-width-class">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div class="mdc-select__selected-text"></div>
+    <div class="mdc-line-ripple"></div>
+  </div>
+
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
+    <ul class="mdc-list">
+      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
+      <li class="mdc-list-item" data-value="grains">
+        Bread, Cereal, Rice, and Pasta
+      </li>
+      <li class="mdc-list-item" data-value="vegetables">
+        Vegetables
+      </li>
+      <li class="mdc-list-item" data-value="fruit">
+        Fruit
+      </li>
+    </ul>
+  </div>
+</div>
+```
+
+#### Outlined
+
+```html
+<div class="mdc-select mdc-select--outlined mdc-select--no-label">
+  <div class="mdc-select__anchor demo-width-class">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div class="mdc-select__selected-text"></div>
+    <div class="mdc-notched-outline">
+      <div class="mdc-notched-outline__leading"></div>
+      <div class="mdc-notched-outline__trailing"></div>
+    </div>
+  </div>
+
+  <!-- Other elements from the select remain. -->
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">...</div>
+</div>
+```
+
 ## Style Customization
 
 #### CSS Classes
@@ -302,7 +353,7 @@ well as interaction targets. See [here](icon/) for more information on using ico
 | `mdc-select--disabled` | Optional. Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
 | `mdc-select--outlined` | Optional. Styles the select as outlined select. |
 | `mdc-select--with-leading-icon` | Styles the select as a select with a leading icon. |
-
+| `mdc-select--no-label` | Styles the select as a select without a label. |
 > _NOTE_: To further customize the [MDCMenu](./../mdc-menu) or the [MDCList](./../mdc-list) component contained within the select, please refer to their respective documentation.
 
 ### Sass Mixins
@@ -362,6 +413,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
 | `getSelectedMenuItem() => Element` | Returns the selected menu item element. |
+| `hasLabel() => boolean` | Returns true if the select contains a label. |
 | `floatLabel(value: boolean) => void` | Floats or defloats label. |
 | `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
 | `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |

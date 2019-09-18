@@ -62,6 +62,11 @@ export interface MDCSelectAdapter {
   getSelectedMenuItem(): Element | null;
 
   /**
+   * Returns true if label exists, false if it doesn't.
+   */
+  hasLabel(): boolean;
+
+  /**
    * Floats label determined based off of the shouldFloat argument.
    */
   floatLabel(shouldFloat: boolean): void;
