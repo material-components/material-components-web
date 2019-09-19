@@ -144,9 +144,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuItemAction_);
     this.foundation_.init();
 
-    // Initially sync floating label
-    this.foundation_.updateLabel();
-
     // Sets disabled state in foundation
     this.disabled = this.root_.classList.contains(cssClasses.DISABLED);
   }

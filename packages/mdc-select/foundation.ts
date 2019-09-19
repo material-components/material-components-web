@@ -228,7 +228,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * Handles value changes, via change event or programmatic updates.
    */
   handleChange() {
-    this.updateLabel();
+    this.updateLabel_();
     this.adapter_.notifyChange(this.getValue());
 
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
@@ -380,12 +380,15 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     if (value) {
       this.setValue(value);
     }
+
+    // Initially sync floating label
+    this.updateLabel_();
   }
 
   /**
    * Notches the outline and floats the label when appropriate.
    */
-  updateLabel() {
+  private updateLabel_() {
     const value = this.getValue();
     const optionHasValue = value.length > 0;
 
@@ -403,7 +406,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    */
   private blur_() {
     this.adapter_.removeClass(cssClasses.FOCUSED);
-    this.updateLabel();
+    this.updateLabel_();
     this.adapter_.deactivateBottomLine();
 
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);

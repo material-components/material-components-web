@@ -316,11 +316,11 @@ test('#handleFocus calls adapter.activateBottomLine() if isMenuOpen_=true', () =
   td.verify(mockAdapter.activateBottomLine(), {times: 1});
 });
 
-test('#handleBlur calls foundation.updateLabel()', () => {
+test('#handleBlur calls foundation.updateLabel_()', () => {
   const {foundation} = setupTest();
-  foundation.updateLabel = td.func();
+  foundation.updateLabel_ = td.func();
   foundation.handleBlur();
-  td.verify(foundation.updateLabel(), {times: 1});
+  td.verify(foundation.updateLabel_(), {times: 1});
 });
 
 test('#handleBlur calls adapter.deactivateBottomLine()', () => {
@@ -621,16 +621,4 @@ test('#init calls adapter methods', () => {
   td.verify(mockAdapter.setMenuWrapFocus(false));
   td.verify(mockAdapter.setMenuAnchorElement(td.matchers.anything()));
   td.verify(mockAdapter.setMenuAnchorCorner(td.matchers.anything()));
-});
-
-test('#updateLabel calls #notchOutline and adapter#floatLabel', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getSelectedMenuItem()).thenReturn(true);
-  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('foo');
-  td.when(mockAdapter.hasClass(cssClasses.FOCUSED)).thenReturn(false);
-  td.when(mockAdapter.hasLabel()).thenReturn(true);
-  foundation.notchOutline = td.func();
-  foundation.updateLabel();
-  td.verify(foundation.notchOutline(true), {times: 1});
-  td.verify(mockAdapter.floatLabel(true), {times: 1});
 });

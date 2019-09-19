@@ -470,6 +470,5 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon. |
 | `setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon. |
 | `setHelperTextContent(content: string) => void` | Sets the content of the helper text. |
-| `updateLabel() => void` | Notches the outline and floats the label when appropriate. |
 
 `MDCSelectFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCSelectFoundation`.
