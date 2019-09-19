@@ -324,15 +324,26 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   }
 }
 
-@mixin mdc-chip-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+@mixin mdc-chip-shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: $mdc-chip-density-scale,
+  $query: mdc-feature-all()) {
+
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-chip-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
   @include mdc-shape-radius(
-    mdc-shape-resolve-percentage-radius($mdc-chip-height, $radius),
+    mdc-shape-resolve-percentage-radius($height, $radius),
     $rtl-reflexive,
     $query: $query);
 
   #{$mdc-chip-ripple-target} {
     @include mdc-shape-radius(
-      mdc-shape-resolve-percentage-radius($mdc-chip-height, $radius),
+      mdc-shape-resolve-percentage-radius($height, $radius),
       $rtl-reflexive,
       $query: $query
     );

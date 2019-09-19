@@ -31,11 +31,11 @@ $mdc-chip-height: 32px !default;
 
 $mdc-chip-minimum-height: 24px !default;
 $mdc-chip-maximum-height: $mdc-chip-height !default;
-$mdc-chip-density-default-scale: $mdc-density-default-scale !default;
+$mdc-chip-density-scale: $mdc-density-default-scale !default;
 $mdc-chip-density-config: (
   height: (
     default: $mdc-chip-height,
-    maximum: $mdc-chip-height,
+    maximum: $mdc-chip-maximum-height,
     minimum: $mdc-chip-minimum-height,
   ),
 ) !default;

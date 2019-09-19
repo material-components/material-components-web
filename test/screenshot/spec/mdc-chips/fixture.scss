@@ -74,7 +74,12 @@ $custom-chip-ink-color: $material-color-blue-500;
 }
 
 .custom-chip--density {
+  @include mdc-chip-density($density-scale: -1);
+}
+
+.custom-chip--density-radius {
   @include mdc-chip-density($density-scale: -2);
+  @include mdc-chip-shape-radius(10%, $density-scale: -2);
 }
 
 .custom-chip--leading-icon-color {
