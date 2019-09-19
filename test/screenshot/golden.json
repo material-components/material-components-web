@@ -759,12 +759,28 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/28/20_57_26_802/spec/mdc-list/classes/checkbox.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-list/classes/disabled-checkbox.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/09/19/18_00_58_703/spec/mdc-list/classes/disabled-checkbox.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/09/19/18_00_58_703/spec/mdc-list/classes/disabled-checkbox.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/09/19/18_00_58_703/spec/mdc-list/classes/disabled-checkbox.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/09/19/18_00_58_703/spec/mdc-list/classes/disabled-checkbox.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-list/classes/disabled-items.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/10/14_25_41_111/spec/mdc-list/classes/disabled-items.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/10/14_25_41_111/spec/mdc-list/classes/disabled-items.html.windows_chrome_74.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/04/08/21_52_36_805/spec/mdc-list/classes/disabled-items.html.windows_firefox_65.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/04/08/21_52_36_805/spec/mdc-list/classes/disabled-items.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-list/classes/disabled-radio.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/09/19/18_00_58_703/spec/mdc-list/classes/disabled-radio.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/09/19/18_00_58_703/spec/mdc-list/classes/disabled-radio.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/09/19/18_00_58_703/spec/mdc-list/classes/disabled-radio.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/09/19/18_00_58_703/spec/mdc-list/classes/disabled-radio.html.windows_ie_11.png"
     }
   },
   "spec/mdc-list/classes/list-group.html": {
