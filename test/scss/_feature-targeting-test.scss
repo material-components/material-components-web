@@ -69,6 +69,7 @@
     // Chips
     @include mdc-chip-core-styles($query: $query);
     @include mdc-chip-elevation-transition($query: $query);
+    @include mdc-chip-density(0, $query: $query);
     @include mdc-chip-fill-color(red, $query: $query);
     @include mdc-chip-fill-color-accessible(red, $query: $query);
     @include mdc-chip-height(0, $query: $query);

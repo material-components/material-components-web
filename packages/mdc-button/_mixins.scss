@@ -43,7 +43,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 
 @mixin mdc-button-theme-baseline($query: mdc-feature-all()) {
   .mdc-button {
-    @include mdc-button-density($mdc-button-density-default-scale, $query: $query);
+    @include mdc-button-density($mdc-button-density-scale, $query: $query);
   }
 }
 
@@ -255,7 +255,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 
 @mixin mdc-button-shape-radius($radius,
 $rtl-reflexive: false,
-$density-scale: $mdc-button-density-default-scale,
+$density-scale: $mdc-button-density-scale,
 $query: mdc-feature-all()) {
 
   $height: mdc-density-prop-value(
