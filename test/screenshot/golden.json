@@ -216,11 +216,11 @@
     }
   },
   "spec/mdc-chips/mixins/density.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/19/15_33_22_291/spec/mdc-chips/mixins/density.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/19/17_59_21_146/spec/mdc-chips/mixins/density.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/19/15_33_22_291/spec/mdc-chips/mixins/density.html.windows_chrome_76.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/19/15_33_22_291/spec/mdc-chips/mixins/density.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/19/15_33_22_291/spec/mdc-chips/mixins/density.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/19/17_59_21_146/spec/mdc-chips/mixins/density.html.windows_chrome_76.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/19/17_59_21_146/spec/mdc-chips/mixins/density.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/19/17_59_21_146/spec/mdc-chips/mixins/density.html.windows_ie_11.png"
     }
   },
   "spec/mdc-chips/mixins/fill-color-accessible.html": {
