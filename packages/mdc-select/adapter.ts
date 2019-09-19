@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {Corner} from '@material/menu-surface/constants';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -105,6 +107,11 @@ export interface MDCSelectAdapter {
   setSelectedText(text: string): void;
 
   /**
+   * Returns whether the selected text element is focused.
+   */
+  isSelectedTextFocused(): boolean;
+
+  /**
    * Gets the given attribute on the selected text element.
    */
   getSelectedTextAttr(attr: string): string | null;
@@ -126,9 +133,19 @@ export interface MDCSelectAdapter {
   closeMenu(): void;
 
   /**
-   * Returns true if the menu is currently open.
+   * Returns the select anchor element.
    */
-  isMenuOpen(): boolean;
+  getAnchorElement(): Element | null;
+
+  /**
+   * Sets the menu anchor element.
+   */
+  setMenuAnchorElement(anchorEl: Element): void;
+
+  /**
+   * Sets the menu anchor corner.
+   */
+  setMenuAnchorCorner(anchorCorner: Corner): void;
 
   /**
    * Sets whether the menu should wrap focus.
@@ -144,6 +161,16 @@ export interface MDCSelectAdapter {
    * Removes the attribute on the menu item at the given index.
    */
   removeAttributeAtIndex(index: number, attributeName: string): void;
+
+  /**
+   * Focuses the menu item element at the given index.
+   */
+  focusMenuItemAtIndex(index: number): void;
+
+  /**
+   * Returns the number of menu items.
+   */
+  getMenuItemCount(): number;
 
   /**
    * Returns an array representing the VALUE_ATTR attributes of each menu item.

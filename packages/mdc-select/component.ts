@@ -51,7 +51,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private ripple_!: MDCRipple | null;
 
   private menu_!: MDCMenu; // assigned in menuSetup_()
-  private isMenuOpen_!: boolean; // assigned in initialize()
 
   private selectAnchor_!: HTMLElement; // assigned in initialize()
   private selectedText_!: HTMLElement; // assigned in initialize()
@@ -69,7 +68,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialize()
   private handleMenuOpened_!: EventListener; // assigned in initialize()
   private handleMenuClosed_!: EventListener; // assigned in initialize()
-  private handleMenuSelected_!: CustomEventListener<MDCMenuItemEvent>; // assigned in initialize()
+  private handleMenuItemAction_!: CustomEventListener<MDCMenuItemEvent>; // assigned in initialize()
 
   initialize(
       labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
@@ -79,7 +78,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       iconFactory: MDCSelectIconFactory = (el) => new MDCSelectIcon(el),
       helperTextFactory: MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
   ) {
-    this.isMenuOpen_ = false;
     this.selectAnchor_ = this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
 
@@ -123,7 +121,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
    * on the environment's state.
    */
   initialSyncWithDOM() {
-    this.handleChange_ = () => this.foundation_.handleChange(/* didChange */ true);
+    this.handleChange_ = () => this.foundation_.handleChange();
     this.handleFocus_ = () => this.foundation_.handleFocus();
     this.handleBlur_ = () => this.foundation_.handleBlur();
     this.handleClick_ = (evt) => {
@@ -131,31 +129,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
     };
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
-    this.handleMenuSelected_ = (evtData) => this.selectedIndex = evtData.detail.index;
-    this.handleMenuOpened_ = () => {
-      this.foundation_.handleMenuOpened();
-
-      if (this.menu_.items.length === 0) {
-        return;
-      }
-
-      // Menu should open to the last selected element, should open to first menu item otherwise.
-      const focusItemIndex = this.selectedIndex >= 0 ? this.selectedIndex : 0;
-      const focusItemEl = this.menu_.items[focusItemIndex] as HTMLElement;
-      focusItemEl.focus();
-    };
-    this.handleMenuClosed_ = () => {
-      this.foundation_.handleMenuClosed();
-
-      // isMenuOpen_ is used to track the state of the menu opening or closing since the menu.open function
-      // will return false if the menu is still closing and this method listens to the closed event which
-      // occurs after the menu is already closed.
-      this.isMenuOpen_ = false;
-      this.selectedText_!.removeAttribute('aria-expanded');
-      if (document.activeElement !== this.selectedText_) {
-        this.foundation_.handleBlur();
-      }
-    };
+    this.handleMenuItemAction_ = (evt) => this.foundation_.handleMenuItemAction(evt.detail.index);
+    this.handleMenuOpened_ = () => this.foundation_.handleMenuOpened();
+    this.handleMenuClosed_ = () => this.foundation_.handleMenuClosed();
 
     this.selectedText_.addEventListener('focus', this.handleFocus_);
     this.selectedText_.addEventListener('blur', this.handleBlur_);
@@ -165,11 +141,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
     this.menu_!.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
     this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-    this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
-    this.foundation_.setupMenu();
-
-    // Initially sync floating label
-    this.foundation_.handleChange(/* didChange */ false);
+    this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuItemAction_);
+    this.foundation_.init();
 
     // Sets disabled state in foundation
     this.disabled = this.root_.classList.contains(cssClasses.DISABLED);
@@ -184,7 +157,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
     this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
     this.menu_.unlisten(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-    this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+    this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuItemAction_);
     this.menu_.destroy();
 
     if (this.ripple_) {
@@ -298,8 +271,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private menuSetup_(menuFactory: MDCMenuFactory) {
     this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR)!;
     this.menu_ = menuFactory(this.menuElement_);
-    this.menu_.setAnchorElement(this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!);
-    this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
   }
 
   private createRipple_(): MDCRipple {
@@ -321,38 +292,23 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       getSelectedMenuItem: () => this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR),
       getMenuItemAttr: (menuItem: Element, attr: string) => menuItem.getAttribute(attr),
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
+      isSelectedTextFocused: () => document.activeElement === this.selectedText_,
       getSelectedTextAttr: (attr: string) => this.selectedText_.getAttribute(attr),
       setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
-      openMenu: () => {
-        this.menu_.open = true;
-        this.isMenuOpen_ = true;
-      },
-      closeMenu: () => {
-        if (this.menu_.open) {
-          this.menu_.open = false;
-        }
-      },
-      isMenuOpen: () => this.isMenuOpen_,
+      openMenu: () => this.menu_.open = true,
+      closeMenu: () => this.menu_.open = false,
+      getAnchorElement: () => this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!,
+      setMenuAnchorElement: (anchorEl: HTMLElement) => this.menu_.setAnchorElement(anchorEl),
+      setMenuAnchorCorner: (anchorCorner: menuSurfaceConstants.Corner) => this.menu_.setAnchorCorner(anchorCorner),
       setMenuWrapFocus: (wrapFocus: boolean) => this.menu_.wrapFocus = wrapFocus,
-      setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) => {
-        const menuItem = this.menu_.items[index];
-        if (menuItem) {
-          menuItem.setAttribute(attributeName, attributeValue);
-        }
-      },
-      removeAttributeAtIndex: (index: number, attributeName: string) => {
-        const menuItem = this.menu_.items[index];
-        if (menuItem) {
-          menuItem.removeAttribute(attributeName);
-        }
-      },
-      getMenuItemValues: () => {
-        return this.menu_.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || '');
-      },
-      getMenuItemTextAtIndex: (index: number) => {
-        const menuItem = this.menu_.items[index];
-        return menuItem && menuItem.textContent ? menuItem.textContent : '';
-      },
+      setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) =>
+        this.menu_.items[index].setAttribute(attributeName, attributeValue),
+      removeAttributeAtIndex: (index: number, attributeName: string) =>
+        this.menu_.items[index].removeAttribute(attributeName),
+      focusMenuItemAtIndex: (index: number) => (this.menu_.items[index] as HTMLElement).focus(),
+      getMenuItemCount: () => this.menu_.items.length,
+      getMenuItemValues: () => this.menu_.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || ''),
+      getMenuItemTextAtIndex: (index: number) => this.menu_.items[index].textContent as string,
       addClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.add(className),
       removeClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.remove(className),
     };
