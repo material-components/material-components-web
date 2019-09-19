@@ -167,7 +167,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       },
       isCheckboxCheckedAtIndex: (index) => {
         const listItem = this.listElements[index];
-        const toggleEl = listItem.querySelector<HTMLInputElement>(strings.ENABLED_CHECKBOX_SELECTOR);
+        const toggleEl = listItem.querySelector<HTMLInputElement>(strings.CHECKBOX_SELECTOR);
         return toggleEl!.checked;
       },
       isFocusInsideList: () => {
