@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/density/functions";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
@@ -37,6 +38,7 @@
   // postcss-bem-linter: define icon-button
   .mdc-icon-button {
     @include mdc-icon-button-base_($query: $query);
+    @include mdc-icon-button-density($density-scale: 0, $query: $query);
   }
 
   .mdc-icon-button__icon {
@@ -139,4 +141,20 @@
       pointer-events: none;
     }
   }
+}
+
+///
+/// Sets the density scale for icon button.
+///
+/// @param {Number | String} $density-scale - Density scale value for component.
+///     Supported density scale values are `-2`, `-1`, `0`.
+///
+@mixin mdc-icon-button-density($density-scale, $query: mdc-feature-all()) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-icon-button-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-icon-button-size($height, $query: $query);
 }

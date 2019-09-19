@@ -176,6 +176,7 @@
 
     // Icon Button
     @include mdc-icon-button-core-styles($query: $query);
+    @include mdc-icon-button-density(0, $query: $query);
     @include mdc-icon-button-size(0, $query: $query);
     @include mdc-icon-button-ink-color(red, $query: $query);
 

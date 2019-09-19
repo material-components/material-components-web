@@ -39,3 +39,7 @@ $custom-icon-button-size: 36px;
 .custom-icon-button--icon-size {
   @include mdc-icon-button-size($custom-icon-button-size);
 }
+
+.custom-icon-button--density {
+  @include mdc-icon-button-density($density-scale: -1);
+}
