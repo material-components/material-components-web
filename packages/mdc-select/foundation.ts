@@ -147,15 +147,13 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       this.adapter_.closeMenu();
     }
 
-    const didChange = true;
-    this.handleChange(didChange);
+    this.handleChange();
   }
 
   setValue(value: string) {
     const index = this.menuItemValues_.indexOf(value);
     this.setSelectedIndex(index);
-    const didChange = true;
-    this.handleChange(didChange);
+    this.handleChange();
   }
 
   getValue() {
@@ -229,27 +227,15 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   /**
    * Handles value changes, via change event or programmatic updates.
    */
-  handleChange(didChange = true) {
-    const value = this.getValue();
-    const optionHasValue = value.length > 0;
+  handleChange() {
+    this.updateLabel();
+    this.adapter_.notifyChange(this.getValue());
+
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
-
-    if (this.adapter_.hasLabel()) {
-      this.notchOutline(optionHasValue);
-
-      if (!this.adapter_.hasClass(cssClasses.FOCUSED)) {
-        this.adapter_.floatLabel(optionHasValue);
-      }
-    }
-
-    if (didChange) {
-      this.adapter_.notifyChange(value);
-
-      if (isRequired) {
-        this.setValid(this.isValid());
-        if (this.helperText_) {
-          this.helperText_.setValidity(this.isValid());
-        }
+    if (isRequired) {
+      this.setValid(this.isValid());
+      if (this.helperText_) {
+        this.helperText_.setValidity(this.isValid());
       }
     }
   }
@@ -397,11 +383,27 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   /**
+   * Notches the outline and floats the label when appropriate.
+   */
+  updateLabel() {
+    const value = this.getValue();
+    const optionHasValue = value.length > 0;
+
+    if (this.adapter_.hasLabel()) {
+      this.notchOutline(optionHasValue);
+
+      if (!this.adapter_.hasClass(cssClasses.FOCUSED)) {
+        this.adapter_.floatLabel(optionHasValue);
+      }
+    }
+  }
+
+  /**
    * Unfocuses the select component.
    */
   private blur_() {
     this.adapter_.removeClass(cssClasses.FOCUSED);
-    this.handleChange(false);
+    this.updateLabel();
     this.adapter_.deactivateBottomLine();
 
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
