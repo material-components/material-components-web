@@ -46,8 +46,6 @@ const strings = {
     .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
     .${cssClasses.LIST_ITEM_CLASS} a
   `,
-  ENABLED_CHECKBOX_RADIO_SELECTOR: 'input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled)',
-  ENABLED_CHECKBOX_SELECTOR: 'input[type="checkbox"]:not(:disabled)',
   FOCUSABLE_CHILD_ELEMENTS: `
     .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
     .${cssClasses.LIST_ITEM_CLASS} a,
