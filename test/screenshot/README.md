@@ -12,6 +12,19 @@ Install the `gcloud` SDK and command line tools (including `gsutil`):
 curl https://sdk.cloud.google.com | bash
 ```
 
+Create GCP service account key:
+
+- Go to the [Create Service Account Key Page](https://console.cloud.google.com/apis/credentials/serviceaccountkey).
+- Make sure you're logged into `material-components-web` project.
+- Choose Service account: Screenshot uploader, select JSON radio button and click 'Create' to download JSON file.
+- Add the following to your `~/.bash_profile` or `~/.bashrc` file:
+
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/[FILE_NAME].json"
+```
+
+Where `/home/user/Downloads/[FILE_NAME].json` is full path of downloaded JSON file.
+
 Restart your shell:
 
 ```bash
@@ -58,7 +71,7 @@ Modify a Sass file:
 ```bash
 echo -e '\n.mdc-button:not(:disabled) {\n  color: red;\n}' >> packages/mdc-button/mdc-button.scss
 ```
- 
+
 Run the tests:
 
 ```bash
@@ -156,7 +169,7 @@ npm run screenshot:test -- --help
 
 ### Creating new screenshot tests
 
-The easiest way to create new screenshot tests is to copy an existing test page or directory, and modify it for your 
+The easiest way to create new screenshot tests is to copy an existing test page or directory, and modify it for your
 component.
 
 For example, to create tests for `mdc-radio`, start by copying and renaming the `mdc-checkbox` tests:
@@ -190,7 +203,7 @@ Test pages for **large** components, however, must _not_ use the `test-viewport-
 <main class="test-viewport">
 ```
 
-For **small** components, you also need to specify the dimensions of the `test-cell--FOO` class in your component's 
+For **small** components, you also need to specify the dimensions of the `test-cell--FOO` class in your component's
 `fixture.scss` file:
 
 ```css
@@ -213,7 +226,7 @@ CSS Class | Description
 `custom-<FOO>--<MIXIN>` | Mandatory (mixin test pages only). Calls a single Sass theme mixin.
 
 \* _`<FOO>` is the name of the component, minus the `mdc-` prefix. E.g.: `radio`, `top-app-bar`._ \
-\* _`<MIXIN>` is the name of the Sass mixin, minus the `mdc-<FOO>-` prefix. E.g.: `container-fill-color`._ 
+\* _`<MIXIN>` is the name of the Sass mixin, minus the `mdc-<FOO>-` prefix. E.g.: `container-fill-color`._
 
 ### Public demos
 
@@ -272,7 +285,7 @@ npm run screenshot:test -- --diff-base=https://storage.googleapis.com/mdc-web-sc
 By default, screenshot tests run remotely on CrossBrowserTesting.com's Selenium VMs.
 
 However, it's also possible to run the tests on your own machine using the `--offline` CLI flag, which disables all
-external network requests. Local tests typically take about 1/4 as long to run as remote tests, which makes them useful 
+external network requests. Local tests typically take about 1/4 as long to run as remote tests, which makes them useful
 for rapid iterative development.
 
 You should expect to see a large number of rendering differences between your machine and CBT's VMs. The idea is to run

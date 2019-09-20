@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2019 Google Inc.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Baseline data-table - MDC Web Screenshot Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../../out/mdc.checkbox.css">
+    <link rel="stylesheet" href="../../../out/mdc.data-table.css">
+    <link rel="stylesheet" href="../../../out/spec/fixture.css">
+    <link rel="stylesheet" href="../../../out/spec/mdc-data-table/fixture.css">
+  </head>
+
+  <body class="test-container">
+    <main class="test-viewport test-viewport--center test-viewport--light">
+      <div class="mdc-data-table">
+        <table class="mdc-data-table__table" aria-label="Dessert calories">
+          <thead>
+            <tr class="mdc-data-table__header-row">
+              <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Dessert</th>
+              <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Carbs (g)</th>
+              <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Protein (g)</th>
+              <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
+            </tr>
+          </thead>
+          <tbody class="mdc-data-table__content">
+            <tr class="mdc-data-table__row">
+              <td class="mdc-data-table__cell">Frozen yogurt</td>
+              <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+              <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.0</td>
+              <td class="mdc-data-table__cell">Super tasty</td>
+            </tr>
+            <tr class="mdc-data-table__row">
+              <td class="mdc-data-table__cell">Ice cream sandwich</td>
+              <td class="mdc-data-table__cell mdc-data-table__cell--numeric">37</td>
+              <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.33333333333</td>
+              <td class="mdc-data-table__cell">I like ice cream more</td>
+            </tr>
+            <tr class="mdc-data-table__row">
+              <td class="mdc-data-table__cell">Eclair</td>
+              <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+              <td class="mdc-data-table__cell mdc-data-table__cell--numeric">6.0</td>
+              <td class="mdc-data-table__cell">New filing flavor</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- Automatically provides/replaces `Promise` if missing or broken. -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+    <script src="../../../out/material-components-web.js"></script>
+    <script src="../../../out/spec/fixture.js"></script>
+  </body>
+</html>

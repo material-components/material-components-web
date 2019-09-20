@@ -39,6 +39,8 @@ type PropertyDescriptorGetter = (() => unknown) | undefined;
 
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
+export type MDCCheckboxFactory = (el: Element, foundation?: MDCCheckboxFoundation) => MDCCheckbox;
+
 export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: Element) {
     return new MDCCheckbox(root);

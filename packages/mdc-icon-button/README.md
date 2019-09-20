@@ -87,7 +87,9 @@ Then instantiate an `MDCIconButtonToggle` on the root element.
 ```
 
 ```js
-var toggleButton = new mdc.iconButton.MDCIconButtonToggle(document.getElementById('add-to-favorites'));
+import {MDCIconButtonToggle} from '@material/icon-button';
+const iconToggle = new MDCIconButtonToggle(document.querySelector('.mdc-icon-button'));
+iconToggle.unbounded = true;
 ```
 
 #### Icon Button Toggle with SVG

@@ -177,7 +177,9 @@ We also need to configure sass-loader to understand the `@material` imports used
 {
   loader: 'sass-loader',
   options: {
-    includePaths: ['./node_modules']
+    sassOptions: {
+      includePaths: ['./node_modules']
+    }
   }
 }
 ```
@@ -219,7 +221,9 @@ Then add `postcss-loader`, using `autoprefixer` as a plugin:
 {
   loader: 'sass-loader',
   options: {
-    includePaths: ['./node_modules']
+    sassOptions: {
+      includePaths: ['./node_modules']
+    }
   }
 },
 ```
@@ -319,7 +323,9 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              includePaths: ['./node_modules'],
+              sassOptions: {
+                includePaths: ['./node_modules'],
+              }
             },
           }
         ],
