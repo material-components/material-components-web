@@ -47,23 +47,10 @@
     // stylelint-disable-next-line selector-max-type
     > label {
       @include mdc-feature-targets($feat-structure) {
-        order: 0;
-        /* @noflip */
-        margin-right: auto;
-        /* @noflip */
-        padding-left: $mdc-form-field-item-spacing;
-      }
-    }
+        @include mdc-rtl-reflexive-property(margin, 0, auto);
+        @include mdc-rtl-reflexive-property(padding, $mdc-form-field-item-spacing, 0);
 
-    @include mdc-rtl {
-      // stylelint-disable-next-line selector-max-type
-      > label {
-        @include mdc-feature-targets($feat-structure) {
-          /* @noflip */
-          margin-left: auto;
-          /* @noflip */
-          padding-right: $mdc-form-field-item-spacing;
-        }
+        order: 0;
       }
     }
   }
@@ -72,23 +59,10 @@
     // stylelint-disable-next-line selector-max-type
     > label {
       @include mdc-feature-targets($feat-structure) {
-        order: -1;
-        /* @noflip */
-        margin-left: auto;
-        /* @noflip */
-        padding-right: $mdc-form-field-item-spacing;
-      }
-    }
+        @include mdc-rtl-reflexive-property(margin, auto, 0);
+        @include mdc-rtl-reflexive-property(padding, 0, $mdc-form-field-item-spacing);
 
-    @include mdc-rtl {
-      // stylelint-disable-next-line selector-max-type
-      > label {
-        @include mdc-feature-targets($feat-structure) {
-          /* @noflip */
-          margin-right: auto;
-          /* @noflip */
-          padding-left: $mdc-form-field-item-spacing;
-        }
+        order: -1;
       }
     }
   }
