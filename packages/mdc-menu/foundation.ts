@@ -22,6 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {cssClasses as listCssClasses} from '@material/list/constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, DefaultFocusState, numbers, strings} from './constants';
@@ -150,6 +151,23 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
     this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_SELECTED_LIST_ITEM);
     this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_CHECKED_ATTR, 'true');
+  }
+
+  /**
+   * Sets the enabled state to isEnabled for the menu item at the given index.
+   * @param index Index of the menu item
+   * @param isEnabled The desired enabled state of the menu item.
+   */
+  setEnabled(index: number, isEnabled: boolean): void {
+    this.validatedIndex_(index);
+
+    if (isEnabled) {
+      this.adapter_.removeClassFromElementAtIndex(index, listCssClasses.LIST_ITEM_DISABLED_CLASS);
+      this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_DISABLED_ATTR, 'false');
+    } else {
+      this.adapter_.addClassToElementAtIndex(index, listCssClasses.LIST_ITEM_DISABLED_CLASS);
+      this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_DISABLED_ATTR, 'true');
+    }
   }
 
   private validatedIndex_(index: number): void {

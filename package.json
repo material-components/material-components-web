@@ -3,9 +3,9 @@
   "description": "Material Components Web",
   "license": "MIT",
   "scripts": {
-    "build": "npm run clean && mkdirp build && webpack --mode=development --progress --colors",
+    "build": "npm run clean && mkdirp build && webpack --mode=development --progress --colors --display=minimal",
     "build:esmodules": "tsc --project ./tsconfig.json --module esnext --outDir ./packages --importHelpers",
-    "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --mode=production --progress --colors",
+    "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --mode=production --progress --colors --display=minimal",
     "clean": "node ./scripts/build/clean",
     "clean:site": "node ./scripts/build/clean --site-generator-tmp",
     "dist": "npm run build && npm run build:min && npm run build:esmodules",
@@ -32,13 +32,14 @@
     "screenshot:serve": "node test/screenshot/run.js serve",
     "screenshot:test": "node test/screenshot/run.js test",
     "screenshot:watch": "node test/screenshot/run.js build --watch",
-    "screenshot:webpack": "webpack --config=test/screenshot/webpack.config.js --progress",
+    "screenshot:webpack": "webpack --config=test/screenshot/webpack.config.js --progress --display=minimal",
     "start": "npm-run-all --parallel screenshot:serve screenshot:watch",
     "test:watch": "karma start --auto-watch",
     "test:unit": "karma start --single-run",
     "test:dependency": "./scripts/dependency-test.sh",
     "test:feature-targeting": "node test/scss/verify-feature-targeting.js",
-    "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
+    "test:site": "npm run clean:site && ./scripts/site-generator-test.sh",
+    "version": "cat lerna.json | grep -e '^  \"version\": ' | awk '{print $2}' | sed 's/[\",]//g'"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
@@ -140,9 +141,9 @@
     "url-search-params-polyfill": "^7.0.0",
     "useragent": "^2.3.0",
     "verror": "^1.10.0",
+    "vhtml": "^2.1.0",
     "webpack": "^4.34.0",
-    "webpack-cli": "^3.3.4",
-    "vhtml": "^2.1.0"
+    "webpack-cli": "^3.3.4"
   },
   "babel": {
     "presets": [
