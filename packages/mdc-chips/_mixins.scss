@@ -650,13 +650,20 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 /// don't have the same default a11y requirements.
 /// @access private
 ///
-@mixin mdc-chip-touch-target-reset_ {
+@mixin mdc-chip-touch-target-reset_($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  // Selector is necessary here to override original specificity.
   &.mdc-chip--touch {
-    margin-top: 0;
-    margin-bottom: 0;
+    @include mdc-feature-targets($feat-structure) {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
   }
 
   .mdc-chip__touch {
-    display: none;
+    @include mdc-feature-targets($feat-structure) {
+      display: none;
+    }
   }
 }

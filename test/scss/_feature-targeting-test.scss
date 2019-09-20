@@ -90,6 +90,7 @@
     @include mdc-chip-trailing-icon-color(red, $query: $query);
     @include mdc-chip-trailing-icon-margin($query: $query);
     @include mdc-chip-trailing-icon-size(0, $query: $query);
+    @include mdc-chip-touch-target-reset_($query: $query);
     @include mdc-chip-without-ripple($query: $query);
 
     // Data Table
