@@ -638,4 +638,32 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   );
 
   @include mdc-chip-height($height, $query: $query);
+
+  @if $density-scale != 0 {
+    @include mdc-chip-touch-target-reset_;
+  }
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin mdc-chip-touch-target-reset_($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  // Selector is necessary here to override original specificity.
+  &.mdc-chip--touch {
+    @include mdc-feature-targets($feat-structure) {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .mdc-chip__touch {
+    @include mdc-feature-targets($feat-structure) {
+      display: none;
+    }
+  }
 }
