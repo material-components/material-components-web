@@ -243,6 +243,31 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   );
 
   @include mdc-button-height($height, $query: $query);
+
+  @if $density-scale != 0 {
+    @include mdc-button-touch-target-reset_($query: $query);
+  }
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin mdc-button-touch-target-reset_($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .mdc-button__touch {
+    @include mdc-feature-targets($feat-structure) {
+      display: none;
+    }
+  }
 }
 
 @mixin mdc-button-height($height, $query: $query) {
