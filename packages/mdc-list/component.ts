@@ -174,6 +174,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
         return this.root_.contains(document.activeElement);
       },
       isRootFocused: () => document.activeElement === this.root_,
+      listItemAtIndexHasClass: (index, className) => this.listElements[index].classList.contains(className),
       notifyAction: (index) => {
         this.emit<MDCListActionEventDetail>(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },
