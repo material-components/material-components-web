@@ -77,9 +77,10 @@ export interface MDCListAdapter {
 
   /**
    * @param index list item index.
-   * @return true if root element is disabled.
+   * @param className the name of the class whose presence is to be checked.
+   * @return true if list item at `index` has class `className`.
    */
-  isListItemDisabled(index: number): boolean;
+  listItemAtIndexHasClass(index: number, className: string): boolean;
 
   /**
    * Sets the checked status of checkbox or radio at given list item index.

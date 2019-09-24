@@ -491,18 +491,20 @@ test('adapter#isRootFocused returns true if list root is on focus', () => {
   document.body.removeChild(root);
 });
 
-test('adapter#isListItemDisabled returns true list item has disabled class', () => {
+test('adapter#listItemAtIndexHasClass returns true if list item has disabled class', () => {
   const {root, component} = setupTest();
   root.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`)[0]
     .classList.add(cssClasses.LIST_ITEM_DISABLED_CLASS);
   document.body.appendChild(root);
-  assert.isTrue(component.getDefaultFoundation().adapter_.isListItemDisabled(0));
+  assert.isTrue(
+    component.getDefaultFoundation().adapter_.listItemAtIndexHasClass(0, cssClasses.LIST_ITEM_DISABLED_CLASS));
   document.body.removeChild(root);
 });
 
-test('adapter#isListItemDisabled returns false list item does not have disabled class', () => {
+test('adapter#listItemAtIndexHasClass returns false if list item does not have disabled class', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
-  assert.isFalse(component.getDefaultFoundation().adapter_.isListItemDisabled(0));
+  assert.isFalse(
+    component.getDefaultFoundation().adapter_.listItemAtIndexHasClass(0, cssClasses.LIST_ITEM_DISABLED_CLASS));
   document.body.removeChild(root);
 });

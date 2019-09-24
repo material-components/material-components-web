@@ -50,8 +50,9 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getListItemCount', 'getFocusedElementIndex', 'setAttributeForElementIndex',
     'addClassForElementIndex', 'removeClassForElementIndex',
     'focusItemAtIndex', 'setTabIndexForListItemChildren', 'hasRadioAtIndex',
-    'hasCheckboxAtIndex', 'isListItemDisabled', 'isCheckboxCheckedAtIndex', 'setCheckedCheckboxOrRadioAtIndex',
-    'notifyAction', 'isFocusInsideList', 'getAttributeForElementIndex', 'isRootFocused',
+    'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'listItemAtIndexHasClass',
+    'setCheckedCheckboxOrRadioAtIndex', 'notifyAction', 'isFocusInsideList',
+    'getAttributeForElementIndex', 'isRootFocused',
   ]);
 });
 
@@ -599,7 +600,7 @@ test('#handleKeydown does not select the list item when' +
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
-  td.when(mockAdapter.isListItemDisabled(0)).thenReturn(true);
+  td.when(mockAdapter.listItemAtIndexHasClass(0, cssClasses.LIST_ITEM_DISABLED_CLASS)).thenReturn(true);
   td.when(mockAdapter.getAttributeForElementIndex(0, strings.ARIA_CURRENT)).thenReturn(null);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event, true, 0);
@@ -648,7 +649,7 @@ test('#handleKeydown does not select list item when' +
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
-  td.when(mockAdapter.isListItemDisabled(0)).thenReturn(true);
+  td.when(mockAdapter.listItemAtIndexHasClass(0, cssClasses.LIST_ITEM_DISABLED_CLASS)).thenReturn(true);
   td.when(mockAdapter.getAttributeForElementIndex(0, strings.ARIA_CURRENT)).thenReturn(null);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event, true, 0);
@@ -853,7 +854,7 @@ test('#handleClick does not proxy to the adapter#setCheckedCheckboxOrRadioAtInde
 
   td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
-  td.when(mockAdapter.isListItemDisabled(0)).thenReturn(true);
+  td.when(mockAdapter.listItemAtIndexHasClass(0, cssClasses.LIST_ITEM_DISABLED_CLASS)).thenReturn(true);
   foundation.layout();
   foundation.handleClick(0, true);
 

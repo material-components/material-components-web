@@ -550,7 +550,7 @@ Method Signature | Description
 `notifyAction(index: number) => void` | Notifies user action on list item including keyboard and mouse actions.
 `isFocusInsideList() => boolean` | Returns true if the current focused element is inside list root.
 `isRootFocused() => boolean` | Returns true if root element is focused.
-`isListItemDisabled(index: number) => boolean` | Returns true if list item at `index` is disabled.
+`listItemAtIndexHasClass(index: number, className: string) => boolean` | Returns true if list item at `index` has class `className`.
 
 ### `MDCListFoundation`
 
