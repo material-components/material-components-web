@@ -22,9 +22,10 @@
 
 @import "@material/density/variables";
 
-$mdc-icon-button-size: 24px !default;
+$mdc-icon-size: 24px !default;
 
-$mdc-icon-button-minimum-height: 20px !default;
+$mdc-icon-button-size: 48px !default;
+$mdc-icon-button-minimum-height: 24px !default;
 $mdc-icon-button-maximum-height: $mdc-icon-button-size !default;
 $mdc-icon-button-density-scale: $mdc-density-default-scale !default;
 $mdc-icon-button-density-config: (

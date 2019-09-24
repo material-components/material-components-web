@@ -115,7 +115,7 @@
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-icon-button-size($mdc-icon-button-size, $query: $query);
+  @include mdc-icon-button-size($mdc-icon-size, $query: $query);
 
   @include mdc-feature-targets($feat-structure) {
     display: inline-block;
@@ -147,7 +147,7 @@
 /// Sets the density scale for icon button.
 ///
 /// @param {Number | String} $density-scale - Density scale value for component.
-///     Supported density scale values are `-2`, `-1`, `0`.
+///     Supported density scale values range from `-6` to `0`, with `0` being the default.
 ///
 @mixin mdc-icon-button-density($density-scale, $query: mdc-feature-all()) {
   $height: mdc-density-prop-value(
@@ -156,5 +156,5 @@
     $property-name: height,
   );
 
-  @include mdc-icon-button-size($height, $query: $query);
+  @include mdc-icon-button-size($height / 2, $query: $query);
 }
