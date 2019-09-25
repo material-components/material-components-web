@@ -132,6 +132,9 @@ Mixin | Description
 `mdc-switch-toggled-off-thumb-color($color)` | Sets color of the thumb when the switch is toggled off.
 `mdc-switch-toggled-on-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled on.
 `mdc-switch-toggled-off-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled off.
+`mdc-switch-ripple-hover-opacity($opacity)` | Sets the opacity of the ripple surrounding the thumb when hovered.
+`mdc-switch-ripple-focus-opacity($opacity)` | Sets the opacity of the ripple surrounding the thumb when focused.
+`mdc-switch-ripple-press-opacity($opacity)` | Sets the opacity of the ripple surrounding the thumb when pressed.
 
 ## `MDCSwitch` Properties and Methods
 
