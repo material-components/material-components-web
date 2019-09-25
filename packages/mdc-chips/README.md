@@ -291,7 +291,6 @@ CSS Class | Description
 `mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
 `mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.
 `mdc-chip__checkmark-path` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG path in a filter chip.
-`mdc-chip-density($density-scale)` | Sets density scale for chip. Supported density scales  are `-2`, `-1` and `0` (default).
 
 > _NOTE_: Every element that has an `mdc-chip__icon` class must also have either the `mdc-chip__icon--leading` or `mdc-chip__icon--trailing` class.
 
@@ -322,6 +321,7 @@ Mixin | Description
 `mdc-chip-leading-icon-margin($left-margin, $right-margin)` | Customizes the margin of a leading icon in a chip
 `mdc-chip-trailing-icon-margin($left-margin, $right-margin)` | Customizes the margin of a trailing icon in a chip
 `mdc-chip-elevation-transition()` | Adds a MDC elevation transition to the chip. This should be used instead of setting transition with `mdc-elevation-transition-value()` directly when a box shadow transition is desired for a chip
+`mdc-chip-density($density-scale)` | Sets density scale for chip. Supported density scales  are `-2`, `-1` and `0` (default).
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 

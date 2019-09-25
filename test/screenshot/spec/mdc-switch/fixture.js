@@ -24,6 +24,10 @@
 window.mdc.testFixture.fontsLoaded.then(() => {
   [].forEach.call(document.querySelectorAll('.mdc-switch'), (el) => {
     mdc.switchControl.MDCSwitch.attachTo(el);
+    const autoFocusEl = el.querySelector('input[data-autofocus]');
+    if (autoFocusEl) {
+      autoFocusEl.focus();
+    }
   });
 
   window.mdc.testFixture.notifyDomReady();

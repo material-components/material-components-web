@@ -50,8 +50,9 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getListItemCount', 'getFocusedElementIndex', 'setAttributeForElementIndex',
     'addClassForElementIndex', 'removeClassForElementIndex',
     'focusItemAtIndex', 'setTabIndexForListItemChildren', 'hasRadioAtIndex',
-    'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'setCheckedCheckboxOrRadioAtIndex',
-    'notifyAction', 'isFocusInsideList', 'getAttributeForElementIndex', 'isRootFocused',
+    'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'listItemAtIndexHasClass',
+    'setCheckedCheckboxOrRadioAtIndex', 'notifyAction', 'isFocusInsideList',
+    'getAttributeForElementIndex', 'isRootFocused',
   ]);
 });
 
@@ -574,6 +575,39 @@ test('#handleKeydown notifies of action when enter key pressed on list item ', (
   td.verify(mockAdapter.notifyAction(0), {times: 1});
 });
 
+test('#handleKeydown selects the list item when enter key is triggered, singleSelection=true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Enter', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.getAttributeForElementIndex(0, strings.ARIA_CURRENT)).thenReturn(null);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event, true, 0);
+
+  td.verify(preventDefault(), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, 'true'), {times: 1});
+});
+
+test('#handleKeydown does not select the list item when' +
+'enter key is triggered, singleSelection=true, #adapter.isListItemDisabled=true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Enter', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.listItemAtIndexHasClass(0, cssClasses.LIST_ITEM_DISABLED_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getAttributeForElementIndex(0, strings.ARIA_CURRENT)).thenReturn(null);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event, true, 0);
+
+  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, 'true'), {times: 0});
+});
+
 test('#handleKeydown space key is triggered when singleSelection is true selects the list item', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func('preventDefault');
@@ -603,6 +637,23 @@ test('#handleKeydown space key when singleSelection=true does not select an elem
   foundation.handleKeydown(event, false, 0);
 
   td.verify(preventDefault(), {times: 0});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, 'true'), {times: 0});
+});
+
+test('#handleKeydown does not select list item when' +
+'space key is triggered, singleSelection=true, #adapter.isListItemDisabled=true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Space', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.listItemAtIndexHasClass(0, cssClasses.LIST_ITEM_DISABLED_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getAttributeForElementIndex(0, strings.ARIA_CURRENT)).thenReturn(null);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event, true, 0);
+
   td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, 'true'), {times: 0});
 });
 
@@ -795,6 +846,19 @@ test('#handleClick proxies to the adapter#setCheckedCheckboxOrRadioAtIndex if to
   foundation.handleClick(0, true);
 
   td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(0, true), {times: 1});
+});
+
+test('#handleClick does not proxy to the adapter#setCheckedCheckboxOrRadioAtIndex' +
+'if toggleCheckbox=true, adapter.isListItemDisabled=true', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.listItemAtIndexHasClass(0, cssClasses.LIST_ITEM_DISABLED_CLASS)).thenReturn(true);
+  foundation.layout();
+  foundation.handleClick(0, true);
+
+  td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(0, true), {times: 0});
 });
 
 test('#handleClick checks the checkbox at index if it is present on list item', () => {

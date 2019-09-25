@@ -43,7 +43,7 @@
     @include mdc-button-ripple($query: $query);
     @include mdc-button-without-ripple($query: $query);
     @include mdc-button-theme-baseline($query: $query);
-    @include mdc-button-density(0, $query: $query);
+    @include mdc-button-density(-1, $query: $query);
     @include mdc-button-height(0, $query: $query);
 
     // Card
@@ -69,7 +69,7 @@
     // Chips
     @include mdc-chip-core-styles($query: $query);
     @include mdc-chip-elevation-transition($query: $query);
-    @include mdc-chip-density(0, $query: $query);
+    @include mdc-chip-density(-1, $query: $query);
     @include mdc-chip-fill-color(red, $query: $query);
     @include mdc-chip-fill-color-accessible(red, $query: $query);
     @include mdc-chip-height(0, $query: $query);
@@ -272,6 +272,7 @@
 
     // Switch
     @include mdc-switch-core-styles($query: $query);
+    @include mdc-switch-density(-1, $query: $query);
     @include mdc-switch-toggled-on-color(on-surface, $query: $query);
     @include mdc-switch-toggled-off-color(on-surface, $query: $query);
     @include mdc-switch-toggled-on-ripple-color(on-surface, $query: $query);
@@ -281,6 +282,7 @@
     @include mdc-switch-toggled-off-track-color(on-surface, $query: $query);
     @include mdc-switch-toggled-off-thumb-color(on-surface, $query: $query);
     @include mdc-switch-ripple($query: $query);
+    @include mdc-switch-ripple-size(0, $query: $query);
     @include mdc-switch-without-ripple($query: $query);
 
     // Tabs
