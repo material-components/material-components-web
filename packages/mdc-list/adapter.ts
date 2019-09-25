@@ -76,6 +76,13 @@ export interface MDCListAdapter {
   isRootFocused(): boolean;
 
   /**
+   * @param index list item index.
+   * @param className the name of the class whose presence is to be checked.
+   * @return true if list item at `index` has class `className`.
+   */
+  listItemAtIndexHasClass(index: number, className: string): boolean;
+
+  /**
    * Sets the checked status of checkbox or radio at given list item index.
    */
   setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean): void;
