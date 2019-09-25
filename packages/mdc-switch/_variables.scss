@@ -20,26 +20,27 @@
 // THE SOFTWARE.
 //
 
+@import "@material/density/variables";
 @import "@material/theme/variables";
 
 $mdc-switch-track-width: 32px !default;
 $mdc-switch-track-height: 14px !default;
 $mdc-switch-thumb-diameter: 20px !default;
-$mdc-switch-tap-target-size: 48px !default;
+$mdc-switch-ripple-size: 48px !default;
+
+$mdc-switch-minimum-size: 24px !default;
+$mdc-switch-maximum-size: $mdc-switch-ripple-size !default;
+$mdc-switch-density-scale: $mdc-density-default-scale !default;
+$mdc-switch-density-config: (
+  size: (
+    minimum: $mdc-switch-minimum-size,
+    default: $mdc-switch-maximum-size,
+    maximum: $mdc-switch-maximum-size,
+  ),
+) !default;
 
 // Amount the edge of the thumb should be offset from the edge of the track.
 $mdc-switch-thumb-offset: 4px !default;
-
-// Position for the tap target that contains the thumb to align the thumb correctly offset from the track.
-$mdc-switch-tap-target-initial-position:
-  -$mdc-switch-tap-target-size / 2 + $mdc-switch-thumb-diameter / 2 -
-  $mdc-switch-thumb-offset !default;
-
-// Value to cover the whole switch area (including the ripple) with the native control.
-$mdc-switch-native-control-width:
-  $mdc-switch-track-width +
-  ($mdc-switch-tap-target-size - $mdc-switch-thumb-diameter) +
-  $mdc-switch-thumb-offset * 2 !default;
 
 $mdc-switch-thumb-active-margin:
   $mdc-switch-track-width - $mdc-switch-thumb-diameter + $mdc-switch-thumb-offset * 2 !default;

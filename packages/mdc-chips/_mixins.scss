@@ -640,7 +640,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   @include mdc-chip-height($height, $query: $query);
 
   @if $density-scale != 0 {
-    @include mdc-chip-touch-target-reset_;
+    @include mdc-chip-touch-target-reset_($query: $query);
   }
 }
 
