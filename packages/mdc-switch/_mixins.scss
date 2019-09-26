@@ -158,9 +158,9 @@
   }
 }
 
-@mixin mdc-switch-toggled-on-ripple-color($color, $opacity-map: (), $query: mdc-feature-all()) {
+@mixin mdc-switch-toggled-on-ripple-color($color, $query: mdc-feature-all()) {
   &.mdc-switch--checked .mdc-switch__thumb-underlay {
-    @include mdc-states($color, false, $opacity-map, $query);
+    @include mdc-states($color, false, $query);
   }
 }
 
@@ -186,9 +186,29 @@
   }
 }
 
-@mixin mdc-switch-toggled-off-ripple-color($color, $opacity-map: (), $query: mdc-feature-all()) {
+@mixin mdc-switch-toggled-off-ripple-color($color, $query: mdc-feature-all()) {
   &:not(.mdc-switch--checked) .mdc-switch__thumb-underlay {
-    @include mdc-states($color, false, $opacity-map, $query);
+    @include mdc-states($color, false, $query);
+  }
+}
+
+// Opacity customizations apply to both on and off states to ensure symmetry.
+@mixin mdc-switch-ripple-hover-opacity($opacity, $query: mdc-feature-all()) {
+  // Ensure sufficient specificity to override base state opacities
+  &.mdc-switch .mdc-switch__thumb-underlay {
+    @include mdc-states-hover-opacity($opacity, $query);
+  }
+}
+
+@mixin mdc-switch-ripple-focus-opacity($opacity, $query: mdc-feature-all()) {
+  &.mdc-switch .mdc-switch__thumb-underlay {
+    @include mdc-states-focus-opacity($opacity, $query);
+  }
+}
+
+@mixin mdc-switch-ripple-press-opacity($opacity, $query: mdc-feature-all()) {
+  &.mdc-switch .mdc-switch__thumb-underlay {
+    @include mdc-states-press-opacity($opacity, $query);
   }
 }
 

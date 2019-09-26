@@ -275,27 +275,19 @@
   }
 }
 
-// Simple mixin for base states; custom opacity values can be provided; for those
-// not provided, opacity values are automatically selected based on whether the ink color is
+// Simple mixin for base states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin mdc-states(
   $color: mdc-theme-prop-value(on-surface),
   $has-nested-focusable-element: false,
-  $custom-opacity-map: (),
   $query: mdc-feature-all()
 ) {
-  @include mdc-states-interactions_($color, $has-nested-focusable-element, $custom-opacity-map, 0, $query);
+  @include mdc-states-interactions_($color, $has-nested-focusable-element, 0, $query);
 }
 
-// Simple mixin for activated states; custom opacity values can be provided; for those
-// not provided, opacity values are automatically selected based on whether the ink color is
+// Simple mixin for activated states which automatically selects opacity values based on whether the ink color is
 // light or dark.
-@mixin mdc-states-activated(
-  $color,
-  $has-nested-focusable-element: false,
-  $custom-opacity-map: (),
-  $query: mdc-feature-all()
-) {
+@mixin mdc-states-activated($color, $has-nested-focusable-element: false, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $activated-opacity: mdc-states-opacity($color, activated);
 
@@ -309,20 +301,13 @@
       }
     }
 
-    @include mdc-states-interactions_(
-      $color, $has-nested-focusable-element, $custom-opacity-map, $activated-opacity, $query);
+    @include mdc-states-interactions_($color, $has-nested-focusable-element, $activated-opacity, $query);
   }
 }
 
-// Simple mixin for selected states; custom opacity values can be provided; for those
-// not provided, opacity values are automatically selected based on whether the ink color is
+// Simple mixin for selected states which automatically selects opacity values based on whether the ink color is
 // light or dark.
-@mixin mdc-states-selected(
-  $color,
-  $has-nested-focusable-element: false,
-  $custom-opacity-map: (),
-  $query: mdc-feature-all()
-) {
+@mixin mdc-states-selected($color, $has-nested-focusable-element: false, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $selected-opacity: mdc-states-opacity($color, selected);
 
@@ -335,8 +320,7 @@
       }
     }
 
-    @include mdc-states-interactions_(
-      $color, $has-nested-focusable-element, $custom-opacity-map, $selected-opacity, $query);
+    @include mdc-states-interactions_($color, $has-nested-focusable-element, $selected-opacity, $query);
   }
 }
 
@@ -398,23 +382,15 @@
 @mixin mdc-states-interactions_(
   $color,
   $has-nested-focusable-element,
-  $custom-opacity-map: (),
   $opacity-modifier: 0,
   $query: mdc-feature-all()
 ) {
-  $default-opacity-map: (
-    hover: mdc-states-opacity($color, hover),
-    focus: mdc-states-opacity($color, focus),
-    press: mdc-states-opacity($color, press)
-  );
-  $applied-opacity-map: map-merge($default-opacity-map, $custom-opacity-map);
-
   @include mdc-states-base-color($color, $query);
-  @include mdc-states-hover-opacity(map-get($applied-opacity-map, hover) + $opacity-modifier, $query);
+  @include mdc-states-hover-opacity(mdc-states-opacity($color, hover) + $opacity-modifier, $query);
   @include mdc-states-focus-opacity(
-    map-get($applied-opacity-map, focus) + $opacity-modifier,
+    mdc-states-opacity($color, focus) + $opacity-modifier,
     $has-nested-focusable-element,
     $query
   );
-  @include mdc-states-press-opacity(map-get($applied-opacity-map, press) + $opacity-modifier, $query);
+  @include mdc-states-press-opacity(mdc-states-opacity($color, press) + $opacity-modifier, $query);
 }
