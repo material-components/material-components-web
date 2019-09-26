@@ -436,7 +436,14 @@
 
   .mdc-slider__track-container {
     @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $opacity));
+      &::after {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        opacity: $opacity;
+        @include mdc-theme-prop(background-color, $color);
+      }
     }
   }
 }
