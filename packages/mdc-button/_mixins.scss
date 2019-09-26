@@ -147,6 +147,9 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     #{$mdc-button-ripple-target} {
       @include mdc-feature-targets($feat-structure) {
         position: absolute;
+        // Ripple needs content-box as the box sizing and box-sizing: border-box
+        // is often set as a default, so we override that here. 
+        box-sizing: content-box;
         width: 100%;
         height: 100%;
         overflow: hidden;
