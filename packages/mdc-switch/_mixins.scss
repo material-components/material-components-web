@@ -193,22 +193,20 @@
 }
 
 // Opacity customizations apply to both on and off states to ensure symmetry.
-@mixin mdc-switch-ripple-hover-opacity($opacity, $query: mdc-feature-all()) {
+@mixin mdc-switch-ripple-states-opacity($opacity-map, $query: mdc-feature-all()) {
   // Ensure sufficient specificity to override base state opacities
   &.mdc-switch .mdc-switch__thumb-underlay {
-    @include mdc-states-hover-opacity($opacity, $query);
-  }
-}
+    @if map-has-key($opacity-map, "hover") {
+      @include mdc-states-hover-opacity(map-get($opacity-map, "hover"), $query);
+    }
 
-@mixin mdc-switch-ripple-focus-opacity($opacity, $query: mdc-feature-all()) {
-  &.mdc-switch .mdc-switch__thumb-underlay {
-    @include mdc-states-focus-opacity($opacity, $query);
-  }
-}
+    @if map-has-key($opacity-map, "focus") {
+      @include mdc-states-focus-opacity(map-get($opacity-map, "focus"), $query);
+    }
 
-@mixin mdc-switch-ripple-press-opacity($opacity, $query: mdc-feature-all()) {
-  &.mdc-switch .mdc-switch__thumb-underlay {
-    @include mdc-states-press-opacity($opacity, $query);
+    @if map-has-key($opacity-map, "press") {
+      @include mdc-states-press-opacity(map-get($opacity-map, "press"), $query);
+    }
   }
 }
 
