@@ -87,17 +87,6 @@
   @include mdc-feature-targets($feat-structure) {
     width: $size;
     height: $size;
-    padding: $size / 4;
-    font-size: $size / 2;
-  }
-
-  // stylelint-disable-next-line selector-max-type
-  svg,
-  img {
-    @include mdc-feature-targets($feat-structure) {
-      width: $size / 2;
-      height: $size / 2;
-    }
   }
 }
 
@@ -137,17 +126,38 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    display: inline-block;
+    display: flex;
     position: relative;
+    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
     border: none;
     outline: none;
     background-color: transparent;
     fill: currentColor;
     color: inherit;
+    font-size: $mdc-icon-button-icon-size;
     text-decoration: none;
     cursor: pointer;
     user-select: none;
+  }
+
+  // For customizing icon-button display, we need to increase specifity to ensure
+  // overrides apply. Styles defined in the .material-icons CSS class are
+  // loaded separately, so the order of CSS definitions is not guaranteed.
+  &:not(:disabled) {
+    @include mdc-feature-targets($feat-structure) {
+      display: flex;
+    }
+  }
+
+  // stylelint-disable-next-line selector-max-type  
+  svg,
+  img {
+    @include mdc-feature-targets($feat-structure) {
+      width: $mdc-icon-button-icon-size;
+      height: $mdc-icon-button-icon-size;
+    }
   }
 
   &:disabled {
