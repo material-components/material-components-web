@@ -193,24 +193,21 @@
 }
 
 // Opacity customizations apply to both on and off states to ensure symmetry.
-// Both checked and unchecked selectors are included to preserve specificity.
 @mixin mdc-switch-ripple-hover-opacity($opacity, $query: mdc-feature-all()) {
-  &:not(.mdc-switch--checked) .mdc-switch__thumb-underlay,
-  &.mdc-switch--checked .mdc-switch__thumb-underlay {
+  // Ensure sufficient specificity to override base state opacities
+  &.mdc-switch .mdc-switch__thumb-underlay {
     @include mdc-states-hover-opacity($opacity, $query);
   }
 }
 
 @mixin mdc-switch-ripple-focus-opacity($opacity, $query: mdc-feature-all()) {
-  &:not(.mdc-switch--checked) .mdc-switch__thumb-underlay,
-  &.mdc-switch--checked .mdc-switch__thumb-underlay {
+  &.mdc-switch .mdc-switch__thumb-underlay {
     @include mdc-states-focus-opacity($opacity, $query);
   }
 }
 
 @mixin mdc-switch-ripple-press-opacity($opacity, $query: mdc-feature-all()) {
-  &:not(.mdc-switch--checked) .mdc-switch__thumb-underlay,
-  &.mdc-switch--checked .mdc-switch__thumb-underlay {
+  &.mdc-switch .mdc-switch__thumb-underlay {
     @include mdc-states-press-opacity($opacity, $query);
   }
 }
