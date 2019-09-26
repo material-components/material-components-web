@@ -84,22 +84,19 @@
 @mixin mdc-icon-button-size($size, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  $padding: $size / 4;
-  $icon-size: $size - $padding * 2;
-
   @include mdc-feature-targets($feat-structure) {
     width: $size;
     height: $size;
-    padding: $padding;
-    font-size: $icon-size;
+    padding: $size / 4;
+    font-size: $size / 2;
   }
 
   // stylelint-disable-next-line selector-max-type
   svg,
   img {
     @include mdc-feature-targets($feat-structure) {
-      width: $icon-size;
-      height: $icon-size;
+      width: $size / 2;
+      height: $size / 2;
     }
   }
 }
@@ -138,8 +135,6 @@
 @mixin mdc-icon-button-base_($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-icon-button-density($density-scale: 0);
 
   @include mdc-feature-targets($feat-structure) {
     display: inline-block;
