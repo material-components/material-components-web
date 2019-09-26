@@ -26,7 +26,7 @@
 @import "../mixins";
 
 $custom-icon-button-icon-ink-color: $material-color-red-500;
-$custom-icon-button-size: 36px;
+$custom-icon-button-size: 72px;
 
 .test-cell--icon-button {
   @include test-cell-size(91);

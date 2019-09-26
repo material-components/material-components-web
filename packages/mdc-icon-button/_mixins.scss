@@ -81,7 +81,31 @@
   }
 }
 
-@mixin mdc-icon-button-size($width, $height: $width, $padding: max($width, $height)/2, $query: mdc-feature-all()) {
+@mixin mdc-icon-button-size($size, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  $padding: $size / 4;
+  $icon-size: $size - $padding * 2;
+
+  @include mdc-feature-targets($feat-structure) {
+    width: $size;
+    height: $size;
+    padding: $padding;
+    font-size: $icon-size;
+  }
+
+  // stylelint-disable-next-line selector-max-type
+  svg,
+  img {
+    @include mdc-feature-targets($feat-structure) {
+      width: $icon-size;
+      height: $icon-size;
+    }
+  }
+}
+
+// Sets the size of the icon-button based on the icon width, height, and padding.
+@mixin mdc-icon-button-icon-size($width, $height: $width, $padding: max($width, $height)/2, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
@@ -115,7 +139,7 @@
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-icon-button-size($mdc-icon-size, $query: $query);
+  @include mdc-icon-button-density($density-scale: 0);
 
   @include mdc-feature-targets($feat-structure) {
     display: inline-block;
@@ -156,5 +180,5 @@
     $property-name: height,
   );
 
-  @include mdc-icon-button-size($height / 2, $query: $query);
+  @include mdc-icon-button-size($height, $query: $query);
 }

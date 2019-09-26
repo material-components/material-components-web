@@ -164,9 +164,10 @@ To customize an icon button's color and properties, you can use the following mi
 
 Mixin | Description
 --- | ---
-`mdc-icon-button-size($width, $height, $padding)` | Sets the width, height, font-size and padding for the icon and ripple. `$height` is optional and defaults to `$width`. `$padding` is optional and defaults to `max($width, $height)/2`. `font-size` is set to `max($width, $height)`.
+`mdc-icon-button-size($size)` | Sets the width, height, font-size and padding for the icon button and ripple based on the overall size.
 `mdc-icon-button-ink-color($color)` | Sets the font color and the ripple color to the provided color value.
 `mdc-icon-button-density($density-scale)` | Sets density scale for icon button. Supported density scales range from `-6` to `0`, (`0` being the default).
+`mdc-icon-button-icon-size($width, $height, $padding)` | Sets the width, height, font-size and padding for the icon and ripple. `$height` is optional and defaults to `$width`. `$padding` is optional and defaults to `max($width, $height)/2`. `font-size` is set to `max($width, $height)`.
 
 ## `MDCIconButtonToggle` Properties and Methods
 
