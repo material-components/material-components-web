@@ -225,6 +225,8 @@
     @include mdc-radio-ripple($query: $query);
     @include mdc-radio-without-ripple($query: $query);
     @include mdc-radio-touch-target(900px, $query: $query);
+    @include mdc-radio-density(-1, $query: $query);
+    @include mdc-radio-ripple-size(0, $query: $query);
 
     // Ripple
     @include mdc-ripple-core-styles($query: $query);

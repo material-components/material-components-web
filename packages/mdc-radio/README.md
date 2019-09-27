@@ -131,6 +131,9 @@ Mixin | Description
 `mdc-radio-checked-stroke-color($color)` | Sets the stroke color of a checked radio button
 `mdc-radio-ink-color($color)` | Sets the ink color of a radio button
 `mdc-radio-focus-indicator-color($color)` | Sets the color of the focus indicator
+`mdc-radio-touch-target($size, $ripple-size)` | Sets radio touch target size which can be more than the ripple size. Param `$ripple-size` is required for custom ripple size, defaults to `$mdc-radio-ripple-size`.
+`mdc-radio-ripple-size($size)` | Sets custom ripple size of radio.
+`mdc-radio-density($density-scale)` | Sets density scale for radio. Supported density scale values are `-3`, `-2`, `-1` and `0` (default).
 
 #### Caveat: Edge and CSS Custom Properties
 

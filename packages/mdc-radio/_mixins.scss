@@ -21,6 +21,7 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/density/functions";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
@@ -48,22 +49,20 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-radio-touch-target($size: $mdc-radio-touch-area, $query: $query);
-
   .mdc-radio {
     @include mdc-radio-unchecked-stroke-color($mdc-radio-unchecked-color, $query);
     @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color, $query);
     @include mdc-radio-ink-color($mdc-radio-baseline-theme-color, $query);
     @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color, $query);
+    @include mdc-radio-density($mdc-radio-density-scale, $query);
 
     @include mdc-feature-targets($feat-structure) {
       display: inline-block;
       position: relative;
       flex: 0 0 auto;
-      box-sizing: border-box;
-      width: $mdc-radio-touch-area;
-      height: $mdc-radio-touch-area;
-      padding: ($mdc-radio-touch-area - $mdc-radio-ui-size) / 2;
+      box-sizing: content-box;
+      width: $mdc-radio-icon-size;
+      height: $mdc-radio-icon-size;
       cursor: pointer;
       /* @alternate */
       will-change: opacity, transform, border-color, color;
@@ -73,20 +72,15 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
     &__background {
       @include mdc-feature-targets($feat-structure) {
         display: inline-block;
-        position: absolute;
-        left: ($mdc-radio-touch-area - $mdc-radio-ui-size) / 2;
+        position: relative;
         box-sizing: border-box;
-        width: $mdc-radio-ui-pct;
-        height: $mdc-radio-ui-pct;
+        width: $mdc-radio-icon-size;
+        height: $mdc-radio-icon-size;
       }
 
       &::before {
         @include mdc-feature-targets($feat-structure) {
           position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
           transform: scale(0, 0);
           border-radius: 50%;
           opacity: 0;
@@ -142,8 +136,6 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
     &__native-control {
       @include mdc-feature-targets($feat-structure) {
         position: absolute;
-        width: 100%;
-        height: 100%;
         margin: 0;
         padding: 0;
         opacity: 0;
@@ -154,8 +146,8 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 
     &--touch {
       @include mdc-touch-target-component(
-        $component-height: $mdc-radio-touch-area,
-        $component-width: $mdc-radio-touch-area,
+        $component-height: $mdc-radio-ripple-size,
+        $component-width: $mdc-radio-ripple-size,
         $query: $query);
       @include mdc-radio-touch-target($size: $mdc-touch-target-height, $query: $query);
     }
@@ -233,7 +225,7 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   .mdc-radio__native-control:focus {
     + .mdc-radio__background::before {
       @include mdc-feature-targets($feat-structure) {
-        transform: scale(2, 2);
+        transform: scale(1);
         opacity: map-get($mdc-ripple-dark-ink-opacities, focus);
       }
 
@@ -318,9 +310,19 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   }
 }
 
-@mixin mdc-radio-touch-target($size: $mdc-radio-touch-area, $query: mdc-feature-all()) {
+///
+/// Sets radio touch target size which can be more than the ripple size. Param `$ripple-size` is required for custom
+/// ripple size.
+///
+/// @param {Number} $size Size of touch target (Native input) in `px`.
+/// @param {Number} $ripple-size Size of ripple in `px`. Required only for custom ripple size.
+///
+@mixin mdc-radio-touch-target(
+  $size: $mdc-radio-ripple-size,
+  $ripple-size: $mdc-radio-ripple-size,
+  $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
-  $offset: ($mdc-radio-touch-area - $size) / 2;
+  $offset: ($ripple-size - $size) / 2;
 
   .mdc-radio__native-control {
     @include mdc-feature-targets($feat-structure) {
@@ -330,5 +332,64 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
       width: $size;
       height: $size;
     }
+  }
+}
+
+///
+/// Sets density scale for radio.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values
+///     `-3`, `-2`, `-1`, `0`.
+///
+@mixin mdc-radio-density($density-scale, $query: mdc-feature-all()) {
+  $size: mdc-density-prop-value(
+    $density-config: $mdc-radio-density-config,
+    $density-scale: $density-scale,
+    $property-name: size,
+  );
+
+  @include mdc-radio-ripple-size($size, $query: $query);
+  // Sets touch target size same as ripple size.
+  @include mdc-radio-touch-target($size: $size, $ripple-size: $size, $query: $query);
+
+  @if $density-scale != 0 {
+    @include mdc-radio-touch-target-reset_($query: $query);
+  }
+}
+
+///
+/// Sets radio ripple size.
+///
+/// @param {Number} $size - Ripple size in `px`.
+///
+@mixin mdc-radio-ripple-size($size, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $padding: ($size - $mdc-radio-icon-size) / 2;
+
+  @include mdc-feature-targets($feat-structure) {
+    padding: $padding;
+  }
+
+  .mdc-radio__background::before {
+    @include mdc-feature-targets($feat-structure) {
+      top: -$padding;
+      left: -$padding;
+      width: $size;
+      height: $size;
+    }
+  }
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin mdc-radio-touch-target-reset_($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    margin: 0;
   }
 }

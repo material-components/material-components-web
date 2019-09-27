@@ -22,5 +22,13 @@
  */
 
 window.mdc.testFixture.fontsLoaded.then(() => {
+  [].slice.call(document.querySelectorAll('.mdc-radio')).forEach((el) => {
+    mdc.radio.MDCRadio.attachTo(el);
+    const autoFocusEl = el.querySelector('input[data-autofocus]');
+    if (autoFocusEl) {
+      autoFocusEl.focus();
+    }
+  });
+
   window.mdc.testFixture.notifyDomReady();
 });
