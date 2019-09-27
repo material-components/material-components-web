@@ -21,12 +21,24 @@
 //
 
 @import "@material/animation/variables";
+@import "@material/density/variables";
 @import "@material/theme/variables";
 
 $mdc-chip-fill-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%) !default;
 $mdc-chip-ink-color-default: rgba(mdc-theme-prop-value(on-surface), .87) !default;
 $mdc-chip-horizontal-padding: 12px !default;
-$mdc-chip-height-default: 32px !default;
+$mdc-chip-height: 32px !default;
+
+$mdc-chip-minimum-height: 24px !default;
+$mdc-chip-maximum-height: $mdc-chip-height !default;
+$mdc-chip-density-scale: $mdc-density-default-scale !default;
+$mdc-chip-density-config: (
+  height: (
+    default: $mdc-chip-height,
+    maximum: $mdc-chip-maximum-height,
+    minimum: $mdc-chip-minimum-height,
+  ),
+) !default;
 
 $mdc-chip-icon-color: mdc-theme-prop-value(on-surface) !default;
 $mdc-chip-icon-opacity: .54 !default;

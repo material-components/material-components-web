@@ -29,7 +29,7 @@ $mdc-button-contained-horizontal-padding: 16px !default;
 
 $mdc-button-minimum-height: 24px !default;
 $mdc-button-maximum-height: $mdc-button-height !default;
-$mdc-button-density-default-scale: $mdc-density-default-scale !default;
+$mdc-button-density-scale: $mdc-density-default-scale !default;
 $mdc-button-density-config: (
   height: (
     default: $mdc-button-height,

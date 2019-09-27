@@ -25,6 +25,7 @@
 @import "@material/checkbox/functions";
 @import "@material/checkbox/variables";
 @import "@material/elevation/mixins";
+@import "@material/density/functions";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
@@ -60,7 +61,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     @include mdc-chip-fill-color($mdc-chip-fill-color-default, $query: $query);
     @include mdc-chip-ink-color-without-ripple_($mdc-chip-ink-color-default, $query: $query);
     @include mdc-typography(body2, $query: $query);
-    @include mdc-chip-height($mdc-chip-height-default, $query: $query);
+    @include mdc-chip-density($density-scale: 0, $query: $query);
     @include mdc-chip-leading-icon-margin($query: $query);
 
     @include mdc-feature-targets($feat-structure) {
@@ -323,15 +324,26 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   }
 }
 
-@mixin mdc-chip-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+@mixin mdc-chip-shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: $mdc-chip-density-scale,
+  $query: mdc-feature-all()) {
+
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-chip-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
   @include mdc-shape-radius(
-    mdc-shape-resolve-percentage-radius($mdc-chip-height-default, $radius),
+    mdc-shape-resolve-percentage-radius($height, $radius),
     $rtl-reflexive,
     $query: $query);
 
   #{$mdc-chip-ripple-target} {
     @include mdc-shape-radius(
-      mdc-shape-resolve-percentage-radius($mdc-chip-height-default, $radius),
+      mdc-shape-resolve-percentage-radius($height, $radius),
       $rtl-reflexive,
       $query: $query
     );
@@ -502,7 +514,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 
   .mdc-chip--touch {
     @include mdc-touch-target-component(
-      $component-height: $mdc-chip-height-default, $query: $query);
+      $component-height: $mdc-chip-height, $query: $query);
   }
 }
 
@@ -610,4 +622,20 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
         $mdc-chip-exit-transition;
     }
   }
+}
+
+///
+/// Sets the density scale for chips.
+///
+/// @param {Number | String} $density-scale - Density scale value for component.
+///     Supported density scale values are `-2`, `-1`, `0`.
+///
+@mixin mdc-chip-density($density-scale, $query: mdc-feature-all()) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-chip-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-chip-height($height, $query: $query);
 }
