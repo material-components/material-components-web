@@ -435,15 +435,15 @@
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-slider__track-container {
-    &::after {
-      display: block;
-      width: 100%;
-      height: 100%;
-      opacity: $opacity;
-      content: "";
-
-	  @include feature-targeting-mixins.targets($feat-color) {
+	@include feature-targeting-mixins.targets($feat-color) {
+      &::after {
         @include theme-mixins.prop(background-color, rgba(theme-variables.prop-value($color), $opacity));
+
+        display: block;
+        width: 100%;
+        height: 100%;
+        opacity: $opacity;
+        content: "";
       }
     }
   }
