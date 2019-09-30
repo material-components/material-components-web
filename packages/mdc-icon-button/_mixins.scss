@@ -43,7 +43,7 @@
 
   .mdc-icon-button__icon {
     @include mdc-feature-targets($feat-structure) {
-      display: inline-block;
+      display: inline-flex;
     }
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
@@ -63,7 +63,7 @@
       // stylelint-disable-next-line plugin/selector-bem-pattern
       &.mdc-icon-button__icon--on {
         @include mdc-feature-targets($feat-structure) {
-          display: inline-block;
+          display: inline-flex;
         }
       }
     }
@@ -81,6 +81,7 @@
   }
 }
 
+// Sets the size of the icon-button based on the overall button size provided.
 @mixin mdc-icon-button-size($size, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -90,6 +91,8 @@
   }
 }
 
+// @deprecated This mixin provides too much of low level customization. 
+//     Please use mdc-icon-button-size instead.
 // Sets the size of the icon-button based on the icon width, height, and padding.
 @mixin mdc-icon-button-icon-size($width, $height: $width, $padding: max($width, $height)/2, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
@@ -126,17 +129,18 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    display: flex;
     position: relative;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    padding: 0;
     border: none;
     outline: none;
     background-color: transparent;
     fill: currentColor;
     color: inherit;
     font-size: $mdc-icon-button-icon-size;
+    line-height: 0;
     text-decoration: none;
     cursor: pointer;
     user-select: none;
@@ -145,9 +149,9 @@
   // For customizing icon-button display, we need to increase specifity to ensure
   // overrides apply. Styles defined in the .material-icons CSS class are
   // loaded separately, so the order of CSS definitions is not guaranteed.
-  &:not(:disabled) {
+  &.mdc-icon-button {
     @include mdc-feature-targets($feat-structure) {
-      display: flex;
+      display: inline-flex;
     }
   }
 
