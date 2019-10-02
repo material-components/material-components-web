@@ -43,7 +43,7 @@
 
   .mdc-icon-button__icon {
     @include mdc-feature-targets($feat-structure) {
-      display: inline-flex;
+      display: inline-block;
     }
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
@@ -63,7 +63,7 @@
       // stylelint-disable-next-line plugin/selector-bem-pattern
       &.mdc-icon-button__icon--on {
         @include mdc-feature-targets($feat-structure) {
-          display: inline-flex;
+          display: inline-block;
         }
       }
     }
@@ -88,6 +88,17 @@
   @include mdc-feature-targets($feat-structure) {
     width: $size;
     height: $size;
+    padding: ($size - $mdc-icon-button-icon-size) / 2;
+    font-size: $mdc-icon-button-icon-size;
+  }
+
+  // stylelint-disable-next-line selector-max-type  
+  svg,
+  img {
+    @include mdc-feature-targets($feat-structure) {
+      width: $mdc-icon-button-icon-size;
+      height: $mdc-icon-button-icon-size;
+    }
   }
 }
 
@@ -129,39 +140,17 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
+    display: inline-block;
     position: relative;
-    align-items: center;
-    justify-content: center;
     box-sizing: border-box;
-    padding: 0;
     border: none;
     outline: none;
     background-color: transparent;
     fill: currentColor;
     color: inherit;
-    font-size: $mdc-icon-button-icon-size;
-    line-height: 0;
     text-decoration: none;
     cursor: pointer;
     user-select: none;
-  }
-
-  // For customizing icon-button display, we need to increase specifity to ensure
-  // overrides apply. Styles defined in the .material-icons CSS class are
-  // loaded separately, so the order of CSS definitions is not guaranteed.
-  &.mdc-icon-button {
-    @include mdc-feature-targets($feat-structure) {
-      display: inline-flex;
-    }
-  }
-
-  // stylelint-disable-next-line selector-max-type  
-  svg,
-  img {
-    @include mdc-feature-targets($feat-structure) {
-      width: $mdc-icon-button-icon-size;
-      height: $mdc-icon-button-icon-size;
-    }
   }
 
   &:disabled {
@@ -180,7 +169,7 @@
 /// Sets the density scale for icon button.
 ///
 /// @param {Number | String} $density-scale - Density scale value for component.
-///     Supported density scale values range from `-6` to `0`, with `0` being the default.
+///     Supported density scale values range from `-5` to `0`, with `0` being the default.
 ///
 @mixin mdc-icon-button-density($density-scale, $query: mdc-feature-all()) {
   $height: mdc-density-prop-value(
