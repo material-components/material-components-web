@@ -296,6 +296,7 @@
     @include mdc-tab-height(0, $query: $query);
     @include mdc-tab-bar-density(0, $query: $query);
     @include mdc-tab-bar-stacked-density(0, $query: $query);
+    @include mdc-tab-text-transform(uppercase, $query: $query);
 
     // Theme
     @include mdc-theme-core-styles($query: $query);
