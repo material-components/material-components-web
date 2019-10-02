@@ -304,3 +304,11 @@
     }
   }
 }
+
+@mixin mdc-tab-text-transform($transform, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    text-transform: $transform;
+  }
+}
