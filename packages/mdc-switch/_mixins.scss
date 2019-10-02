@@ -199,7 +199,7 @@
 /// Sets density scale for switch.
 ///
 /// @param {Number | String} $density-scale - Density scale value for component.
-///     Supported density scale values are `-6`, `-5`, `-4`, `-3`, `-2`, `-1`,
+///     Supported density scale values are `-5`, `-4`, `-3`, `-2`, `-1`,
 ///     `0` (default).
 ///
 @mixin mdc-switch-density($density-scale, $query: mdc-feature-all()) {
