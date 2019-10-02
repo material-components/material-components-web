@@ -112,13 +112,13 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
     @include mdc-states(
       text-primary-on-dark,
       $query: $query,
-      $ripple-target: $mdc-button-ripple-target);
+      $ripple-target: $mdc-fab-ripple-target);
   } @else {
     @include mdc-fab-ink-color(text-primary-on-light, $query: $query);
     @include mdc-states(
       text-primary-on-light,
       $query: $query,
-      $ripple-target: $mdc-button-ripple-target);
+      $ripple-target: $mdc-fab-ripple-target);
   }
 }
 
