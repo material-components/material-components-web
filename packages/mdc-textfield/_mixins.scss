@@ -91,6 +91,22 @@
 ///
 @mixin mdc-text-field-height($height) {
   height: $height;
+
+  // Target only dense text field.
+  @if $height <= 40px {
+    // Target only IE 11
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      .mdc-text-field__input {
+        // Set line-height to the height of input element excluding padding & border.
+        line-height:
+          $height
+          - $mdc-text-field-input-padding
+          - $mdc-text-field-input-padding-top
+          - $mdc-text-field-input-padding-bottom
+          - $mdc-text-field-input-border-bottom;
+      }
+    }
+  }
 }
 
 ///
@@ -363,8 +379,9 @@
   $resolved-radius: nth(mdc-shape-resolve-percentage-radius($text-field-height, mdc-shape-prop-value($radius)), 1);
 
   @if (length(mdc-shape-prop-value($radius)) > 1) {
-    // stylelint-disable-next-line max-line-length
+    // stylelint-disable max-line-length
     @warn "mdc-text-field-outline-shape-radius only supports a single radius; see https://github.com/material-components/material-components-web/issues/4140";
+    // stylelint-enable
   }
 
   .mdc-notched-outline {
