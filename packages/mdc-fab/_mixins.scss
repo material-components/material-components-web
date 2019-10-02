@@ -118,7 +118,7 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
     @include mdc-states(
       text-primary-on-light,
       $query: $query,
-      $ripple-target: $mdc-button-ripple-target);
+      $ripple-target: $mdc-fab-ripple-target);
   }
 }
 
