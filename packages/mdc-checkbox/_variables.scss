@@ -39,7 +39,7 @@ $mdc-checkbox-focus-indicator-opacity: map-get($mdc-ripple-dark-ink-opacities, f
 
 $mdc-checkbox-minimum-size: 28px !default;
 $mdc-checkbox-maximum-size: $mdc-checkbox-ripple-size !default;
-$mdc-checkbox-density-default-scale: $mdc-density-default-scale !default;
+$mdc-checkbox-density-scale: $mdc-density-default-scale !default;
 $mdc-checkbox-density-config: (
   size: (
     minimum: $mdc-checkbox-minimum-size,
