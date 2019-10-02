@@ -81,6 +81,22 @@
   }
 }
 
+///
+/// Sets the density scale for icon button.
+///
+/// @param {Number | String} $density-scale - Density scale value for component.
+///     Supported density scale values range from `-5` to `0`, with `0` being the default.
+///
+@mixin mdc-icon-button-density($density-scale, $query: mdc-feature-all()) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-icon-button-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-icon-button-size($height, $query: $query);
+}
+
 // Sets the size of the icon-button based on the overall button size provided.
 @mixin mdc-icon-button-size($size, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
@@ -133,22 +149,6 @@
   }
 
   @include mdc-states($color, $query: $query);
-}
-
-///
-/// Sets the density scale for icon button.
-///
-/// @param {Number | String} $density-scale - Density scale value for component.
-///     Supported density scale values range from `-5` to `0`, with `0` being the default.
-///
-@mixin mdc-icon-button-density($density-scale, $query: mdc-feature-all()) {
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-icon-button-density-config,
-    $density-scale: $density-scale,
-    $property-name: height,
-  );
-
-  @include mdc-icon-button-size($height, $query: $query);
 }
 
 @mixin mdc-icon-button-base_($query: mdc-feature-all()) {
