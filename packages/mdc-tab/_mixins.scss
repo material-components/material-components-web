@@ -204,6 +204,20 @@
   }
 }
 
+///
+/// Sets tab text transform
+///
+/// @param {TextTransform} $transform The text-transform property to apply.
+///
+@mixin mdc-tab-text-transform($transform, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    text-transform: $transform;
+  }
+}
+
+
 //
 // Private
 //
@@ -302,13 +316,5 @@
     @include mdc-feature-targets($feat-animation) {
       transition-delay: 100ms;
     }
-  }
-}
-
-@mixin mdc-tab-text-transform($transform, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-feature-targets($feat-structure) {
-    text-transform: $transform;
   }
 }
