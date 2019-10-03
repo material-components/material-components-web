@@ -65,7 +65,7 @@ require(['path/to/mdc-foo'], mdcFoo => {
 });
 ```
 
-### Global
+### Global / CDN
 
 ```js
 const MDCFoo = mdc.foo.MDCFoo;
