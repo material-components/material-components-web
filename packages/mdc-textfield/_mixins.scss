@@ -100,7 +100,6 @@
         // Set line-height to the height of input element excluding padding & border.
         line-height:
           $height
-          - $mdc-text-field-input-padding
           - $mdc-text-field-input-padding-top
           - $mdc-text-field-input-padding-bottom
           - $mdc-text-field-input-border-bottom;
@@ -304,12 +303,6 @@
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
   @include mdc-text-field-caret-color($mdc-text-field-error);
 
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-required-text-field-label-asterisk_ {
-      @include mdc-theme-prop(color, $mdc-text-field-error);
-    }
-  }
-
   &.mdc-text-field--with-trailing-icon {
     &:not(.mdc-text-field--with-leading-icon) {
       @include mdc-text-field-icon-color($mdc-text-field-error);
@@ -327,10 +320,6 @@
 
 @mixin mdc-text-field-focused_ {
   @include mdc-text-field-label-color($mdc-text-field-focused-label-color);
-
-  @include mdc-required-text-field-label-asterisk_ {
-    @include mdc-theme-prop(color, $mdc-text-field-focused-label-color);
-  }
 
   + .mdc-text-field-helper-line .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
     opacity: 1;
