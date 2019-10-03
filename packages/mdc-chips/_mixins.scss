@@ -57,7 +57,6 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   @include mdc-chip-trailing-icon-margin($query: $query);
 
   .mdc-chip {
-    @include mdc-chip-shape-radius(50%, $query: $query);
     @include mdc-chip-fill-color($mdc-chip-fill-color-default, $query: $query);
     @include mdc-chip-ink-color-without-ripple_($mdc-chip-ink-color-default, $query: $query);
     @include mdc-typography(body2, $query: $query);
@@ -638,6 +637,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   );
 
   @include mdc-chip-height($height, $query: $query);
+  @include mdc-chip-shape-radius(50%, $density-scale: $density-scale, $query: $query);
 
   @if $density-scale != 0 {
     @include mdc-chip-touch-target-reset_($query: $query);
