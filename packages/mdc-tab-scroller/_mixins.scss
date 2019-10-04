@@ -24,6 +24,7 @@
 @import "@material/tab/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
+@import "./variables";
 
 @mixin mdc-tab-scroller-core-styles($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
@@ -102,7 +103,7 @@
 
     .mdc-tab-scroller__scroll-content {
       @include mdc-feature-targets($feat-animation) {
-        transition: 250ms transform $mdc-animation-standard-curve-timing-function;
+        transition: $mdc-tab-scroller-transition-duration transform $mdc-animation-standard-curve-timing-function;
       }
     }
   }
