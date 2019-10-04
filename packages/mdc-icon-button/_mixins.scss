@@ -38,7 +38,7 @@
   // postcss-bem-linter: define icon-button
   .mdc-icon-button {
     @include mdc-icon-button-base_($query: $query);
-    @include mdc-icon-button-density($density-scale: 0, $query: $query);
+    @include mdc-icon-button-density(0, $query: $query);
   }
 
   .mdc-icon-button__icon {
@@ -88,16 +88,21 @@
 ///     Supported density scale values range from `-5` to `0`, with `0` being the default.
 ///
 @mixin mdc-icon-button-density($density-scale, $query: mdc-feature-all()) {
-  $height: mdc-density-prop-value(
+  $size: mdc-density-prop-value(
     $density-config: $mdc-icon-button-density-config,
     $density-scale: $density-scale,
-    $property-name: height,
+    $property-name: size,
   );
 
-  @include mdc-icon-button-size($height, $query: $query);
+  @include mdc-icon-button-size($size, $query: $query);
 }
 
-// Sets the size of the icon-button based on the overall button size provided.
+///
+/// Sets the size of the icon-button.
+///
+/// @param {Number} $size - Size value for icon-button.
+///     Size will set the width, height, and padding for the overall component.
+///
 @mixin mdc-icon-button-size($size, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -105,10 +110,9 @@
     width: $size;
     height: $size;
     padding: ($size - $mdc-icon-button-icon-size) / 2;
-    font-size: $mdc-icon-button-icon-size;
   }
 
-  // stylelint-disable-next-line selector-max-type  
+  // stylelint-disable-next-line selector-max-type
   svg,
   img {
     @include mdc-feature-targets($feat-structure) {
@@ -118,10 +122,18 @@
   }
 }
 
-// @deprecated This mixin provides too much of low level customization. 
-//     Please use mdc-icon-button-size instead.
-// Sets the size of the icon-button based on the icon width, height, and padding.
-@mixin mdc-icon-button-icon-size($width, $height: $width, $padding: max($width, $height)/2, $query: mdc-feature-all()) {
+///
+/// Sets the width, height and padding of icon button. Also changes the size of
+/// the icon itself based on button size.
+///
+/// @param {Number} $width - Width value for icon-button.
+/// @param {Number} $height - Height value for icon-button. (default: $width)
+/// @param {Number} $padding - Padding value for icon-button. (default: max($width, $height) / 2)
+/// @deprecated
+///     This mixin provides too much of low level customization.
+///     Please use mdc-icon-button-size instead.
+///
+@mixin mdc-icon-button-icon-size($width, $height: $width, $padding: max($width,$height)/2, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
@@ -164,6 +176,7 @@
     background-color: transparent;
     fill: currentColor;
     color: inherit;
+    font-size: $mdc-icon-button-icon-size;
     text-decoration: none;
     cursor: pointer;
     user-select: none;

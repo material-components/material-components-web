@@ -29,7 +29,7 @@ $mdc-icon-button-minimum-height: 28px !default;
 $mdc-icon-button-maximum-height: $mdc-icon-button-size !default;
 $mdc-icon-button-density-scale: $mdc-density-default-scale !default;
 $mdc-icon-button-density-config: (
-  height: (
+  size: (
     default: $mdc-icon-button-size,
     maximum: $mdc-icon-button-maximum-height,
     minimum: $mdc-icon-button-minimum-height,
