@@ -49,7 +49,7 @@
 ///
 @mixin mdc-notched-outline-notch-offset($stroke-width) {
   .mdc-notched-outline--notched .mdc-notched-outline__notch {
-    padding-top: $stroke-width - $mdc-notched-outline-border-width;
+    padding-top: $stroke-width;
   }
 }
 

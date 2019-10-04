@@ -1848,35 +1848,35 @@
     }
   },
   "spec/mdc-textfield/mixins/density-invalid.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density-invalid.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/10/02/19_16_46_900/spec/mdc-textfield/mixins/density-invalid.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density-invalid.html.windows_chrome_76.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density-invalid.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density-invalid.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/10/02/19_16_46_900/spec/mdc-textfield/mixins/density-invalid.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/mixins/density-leading-icon-invalid.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon-invalid.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/10/02/19_16_46_900/spec/mdc-textfield/mixins/density-leading-icon-invalid.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon-invalid.html.windows_chrome_76.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon-invalid.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon-invalid.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/10/02/19_16_46_900/spec/mdc-textfield/mixins/density-leading-icon-invalid.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/mixins/density-leading-icon.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/10/02/19_16_46_900/spec/mdc-textfield/mixins/density-leading-icon.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon.html.windows_chrome_76.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/13/19_39_26_994/spec/mdc-textfield/mixins/density-leading-icon.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/10/02/19_16_46_900/spec/mdc-textfield/mixins/density-leading-icon.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/mixins/density.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/10/02/19_16_46_900/spec/mdc-textfield/mixins/density.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density.html.windows_chrome_76.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/09/10/22_11_48_498/spec/mdc-textfield/mixins/density.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/10/02/19_16_46_900/spec/mdc-textfield/mixins/density.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/mixins/outline-shape-radius.html": {
