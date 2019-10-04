@@ -324,30 +324,30 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 
   /**
-   * Returns the pageX of the event
+   * Returns the clientX of the event
    */
-  private getPageX_(evt: MouseLikeEvent): number {
+  private getClientX_(evt: MouseLikeEvent): number {
     if ((evt as TouchEvent).targetTouches && (evt as TouchEvent).targetTouches.length > 0) {
-      return (evt as TouchEvent).targetTouches[0].pageX;
+      return (evt as TouchEvent).targetTouches[0].clientX;
     }
-    return (evt as MouseEvent).pageX;
+    return (evt as MouseEvent).clientX;
   }
 
   /**
    * Sets the slider value from an event
    */
   private setValueFromEvt_(evt: MouseLikeEvent) {
-    const pageX = this.getPageX_(evt);
-    const value = this.computeValueFromPageX_(pageX);
+    const clientX = this.getClientX_(evt);
+    const value = this.computeValueFromClientX_(clientX);
     this.setValue_(value, true);
   }
 
   /**
-   * Computes the new value from the pageX position
+   * Computes the new value from the clientX position
    */
-  private computeValueFromPageX_(pageX: number): number {
+  private computeValueFromClientX_(clientX: number): number {
     const {max_: max, min_: min} = this;
-    const xPos = pageX - this.rect_.left;
+    const xPos = clientX - this.rect_.left;
     let pctComplete = xPos / this.rect_.width;
     if (this.adapter_.isRTL()) {
       pctComplete = 1 - pctComplete;
