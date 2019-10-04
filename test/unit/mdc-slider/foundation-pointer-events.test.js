@@ -35,9 +35,9 @@ const TRANSITION_END_EVT = getCorrectEventName(window, 'transitionend');
 
 createTestSuiteForPointerEvents('mousedown', 'mousemove', 'mouseup');
 createTestSuiteForPointerEvents('pointerdown', 'pointermove', 'pointerup');
-createTestSuiteForPointerEvents('touchstart', 'touchmove', 'touchend', (pageX) => ({targetTouches: [{pageX}]}));
+createTestSuiteForPointerEvents('touchstart', 'touchmove', 'touchend', (clientX) => ({targetTouches: [{clientX}]}));
 
-function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pageX) => ({pageX})) {
+function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, clientXObj = (clientX) => ({clientX})) {
   test(`on ${downEvt} sets the value of the slider using the X coordinate of the event`, () => {
     const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
@@ -45,7 +45,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
 
     assert.equal(foundation.getValue(), 50);
@@ -60,7 +60,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
 
     assert.equal(foundation.getValue(), 40);
@@ -77,7 +77,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(25));
+    rootHandlers[downEvt](clientXObj(25));
     clock.runToFrame();
 
     assert.equal(foundation.getValue(), 75);
@@ -92,7 +92,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
 
     td.verify(mockAdapter.addClass(cssClasses.ACTIVE));
@@ -106,7 +106,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
 
     td.verify(mockAdapter.addClass(cssClasses.IN_TRANSIT));
@@ -120,7 +120,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    thumbContainerHandlers[downEvt](pageXObj(2));
+    thumbContainerHandlers[downEvt](clientXObj(2));
     clock.runToFrame();
 
     td.verify(mockAdapter.addClass(cssClasses.IN_TRANSIT), {times: 0});
@@ -133,7 +133,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(2));
+    rootHandlers[downEvt](clientXObj(2));
     clock.runToFrame();
 
     // Sanity check
@@ -150,7 +150,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
 
     td.verify(mockAdapter.notifyInput());
@@ -165,7 +165,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
 
     td.verify(mockAdapter.setMarkerValue(isA(Number)));
@@ -179,7 +179,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
 
     td.verify(mockAdapter.registerBodyInteractionHandler(moveEvt, isA(Function)));
@@ -199,7 +199,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     const valueBeforeEvent = foundation.getValue();
     foundation.setDisabled(true);
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
 
     assert.equal(foundation.getValue(), valueBeforeEvent);
@@ -217,9 +217,9 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(49));
+    rootHandlers[downEvt](clientXObj(49));
     bodyHandlers[moveEvt](
-      Object.assign({preventDefault}, pageXObj(50))
+      Object.assign({preventDefault}, clientXObj(50))
     );
     clock.runToFrame();
 
@@ -233,10 +233,10 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(49));
+    rootHandlers[downEvt](clientXObj(49));
     bodyHandlers[moveEvt](Object.assign({
       preventDefault: () => {},
-    }, pageXObj(50)));
+    }, clientXObj(50)));
     clock.runToFrame();
 
     assert.equal(foundation.getValue(), 50);
@@ -251,10 +251,10 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(49));
+    rootHandlers[downEvt](clientXObj(49));
     bodyHandlers[moveEvt](Object.assign({
       preventDefault: () => {},
-    }, pageXObj(50)));
+    }, clientXObj(50)));
     clock.runToFrame();
 
     // Once on mousedown, once on mousemove
@@ -270,10 +270,10 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(49));
+    rootHandlers[downEvt](clientXObj(49));
     bodyHandlers[moveEvt](Object.assign({
       preventDefault: () => {},
-    }, pageXObj(50)));
+    }, clientXObj(50)));
     clock.runToFrame();
 
     // Once on mousedown, once on mousemove
@@ -287,7 +287,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
     bodyHandlers[upEvt]();
 
@@ -302,7 +302,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
     bodyHandlers[upEvt]();
 
@@ -319,7 +319,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     foundation.init();
     clock.runToFrame();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](clientXObj(50));
     clock.runToFrame();
     bodyHandlers[upEvt]();
 
