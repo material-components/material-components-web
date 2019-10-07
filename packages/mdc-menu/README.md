@@ -165,7 +165,6 @@ The menu can use absolutely positioned when being displayed.
 
 ```js
 // ...
-menu.hoistMenuToBody(); // Not required if the menu is already positioned on the body.
 menu.setAbsolutePosition(100, 100);
 ```
 
@@ -226,8 +225,7 @@ Method Signature | Description
 `setAnchorMargin(Partial<MDCMenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
 `setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
-`setSelectedIndex(index: number) => void` | Sets the list item to the selected state at the specified index.
-`hoistMenuToBody() => void` | Proxies to the menu surface's `hoistMenuToBody()` method.
+`setSelectedIndex(index: number) => void | Sets the list item to the selected state at the specified index.
 `setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
 `setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
 `getOptionByIndex(index: number) => Element \| null` | Returns the list item at the `index` specified.

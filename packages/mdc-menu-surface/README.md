@@ -113,7 +113,7 @@ menuSurface.setFixedPosition(true);
 #### Absolute Position
 
 The menu surface can use absolute positioning when being displayed. This requires that the element containing the
-menu (`body` if using `hoistMenuToBody()`) has the `position: relative` style.
+menu has the `position: relative` style.
 
 ```html
 <div class="mdc-menu-surface">
@@ -123,7 +123,6 @@ menu (`body` if using `hoistMenuToBody()`) has the `position: relative` style.
 
 ```js
 // ...
-menuSurface.hoistMenuToBody(); // Not required if the menu-surface is already positioned on the body.
 menuSurface.setAbsolutePosition(100, 100);
 ```
 
@@ -174,8 +173,7 @@ Method Signature | Description
 `setAnchorMargin(Partial<MDCMenuDistance>) => void` | Proxies to the foundation's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
 `setFixedPosition(isFixed: boolean) => void` | Adds the `mdc-menu-surface--fixed` class to the `mdc-menu-surface` element. Proxies to the foundation's `setIsHoisted()` and `setFixedPosition()` methods.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the foundation's `setAbsolutePosition(x, y)` method. Used to set the absolute x/y position of the menu on the page. Should only be used when the menu is hoisted to the body.
-`setMenuSurfaceAnchorElement(element: Element) => void` | Changes the element used as an anchor for `menu-surface` positioning logic. Should be used with conjunction with `hoistMenuToBody()`.
-`hoistMenuToBody() => void` | Removes the `menu-surface` element from the DOM and appends it to the `body` element. Should be used to overcome `overflow: hidden` issues.
+`setMenuSurfaceAnchorElement(element: Element) => void` | Changes the element used as an anchor for `menu-surface` positioning logic.
 `setIsHoisted() => void` | Proxies to the foundation's `setIsHoisted` method.
 `getDefaultFoundation() => MDCMenuSurfaceFoundation` | Returns the foundation.
 
