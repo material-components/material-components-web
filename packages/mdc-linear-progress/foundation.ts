@@ -49,6 +49,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
   private isDeterminate_!: boolean;
   private isReversed_!: boolean;
   private progress_!: number;
+  private buffer_!: number;
 
   constructor(adapter?: Partial<MDCLinearProgressAdapter>) {
     super({...MDCLinearProgressFoundation.defaultAdapter, ...adapter});
@@ -58,6 +59,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
     this.isDeterminate_ = !this.adapter_.hasClass(cssClasses.INDETERMINATE_CLASS);
     this.isReversed_ = this.adapter_.hasClass(cssClasses.REVERSED_CLASS);
     this.progress_ = 0;
+    this.buffer_ = 1;
   }
 
   setDeterminate(isDeterminate: boolean) {
@@ -65,6 +67,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
     if (this.isDeterminate_) {
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.setScale_(this.adapter_.getPrimaryBar(), this.progress_);
+      this.setScale_(this.adapter_.getBuffer(), this.buffer_);
     } else {
       this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
       this.setScale_(this.adapter_.getPrimaryBar(), 1);
@@ -80,6 +83,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
   }
 
   setBuffer(value: number) {
+    this.buffer_ = value;
     if (this.isDeterminate_) {
       this.setScale_(this.adapter_.getBuffer(), value);
     }
