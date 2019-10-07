@@ -201,6 +201,24 @@
   }
 }
 
+/// Customizes ripple opacities in `hover`, `focus`, or `press` states
+/// @param {map} $opacity-map - map specifying custom opacity of zero or more states
+/// @param {bool} $has-nested-focusable-element - whether the component contains a focusable element in the root
+@mixin mdc-states-opacities($opacity-map: (), $has-nested-focusable-element: false, $query: mdc-feature-all()) {
+  // Ensure sufficient specificity to override base state opacities
+  @if map-has-key($opacity-map, "hover") {
+    @include mdc-states-hover-opacity(map-get($opacity-map, "hover"), $query: $query);
+  }
+
+  @if map-has-key($opacity-map, "focus") {
+    @include mdc-states-focus-opacity(map-get($opacity-map, "focus"), $has-nested-focusable-element, $query: $query);
+  }
+
+  @if map-has-key($opacity-map, "press") {
+    @include mdc-states-press-opacity(map-get($opacity-map, "press"), $query: $query);
+  }
+}
+
 @mixin mdc-states-hover-opacity($opacity, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
