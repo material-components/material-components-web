@@ -679,6 +679,14 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/05/20_29_19_047/spec/mdc-icon-button/classes/baseline.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-icon-button/mixins/density.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/esgonzalez/2019/10/02/00_03_25_810/spec/mdc-icon-button/mixins/density.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/esgonzalez/2019/10/02/00_03_25_810/spec/mdc-icon-button/mixins/density.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/esgonzalez/2019/10/02/00_03_25_810/spec/mdc-icon-button/mixins/density.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/esgonzalez/2019/10/02/00_03_25_810/spec/mdc-icon-button/mixins/density.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-icon-button/mixins/icon-size.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/10/14_25_41_111/spec/mdc-icon-button/mixins/icon-size.html?utm_source=golden_json",
     "screenshots": {
