@@ -111,15 +111,6 @@
     height: $size;
     padding: ($size - $mdc-icon-button-icon-size) / 2;
   }
-
-  // stylelint-disable-next-line selector-max-type
-  svg,
-  img {
-    @include mdc-feature-targets($feat-structure) {
-      width: $mdc-icon-button-icon-size;
-      height: $mdc-icon-button-icon-size;
-    }
-  }
 }
 
 ///
@@ -180,6 +171,15 @@
     text-decoration: none;
     cursor: pointer;
     user-select: none;
+  }
+
+  // stylelint-disable-next-line selector-max-type
+  svg,
+  img {
+    @include mdc-feature-targets($feat-structure) {
+      width: $mdc-icon-button-icon-size;
+      height: $mdc-icon-button-icon-size;
+    }
   }
 
   &:disabled {
