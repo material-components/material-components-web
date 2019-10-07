@@ -113,7 +113,7 @@ Mixin | Description
 
 > _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
 
-> _DEPRECATED_: The individual mixins `mdc-states-hover-opacity($opacity)`, `mdc-states-focus-opacity($opacity, $has-nested-focusable-element)`, and `mdc-states-press-opacity($opacity)` are are deprecated in favor of the unified `mdc-states-opacities($opacity-map, $has-nested-focusable-element)` mixin above.
+> _DEPRECATED_: The individual mixins `mdc-states-hover-opacity($opacity)`, `mdc-states-focus-opacity($opacity, $has-nested-focusable-element)`, and `mdc-states-press-opacity($opacity)` are deprecated in favor of the unified `mdc-states-opacities($opacity-map, $has-nested-focusable-element)` mixin above.
 
 #### Sass Functions
 
