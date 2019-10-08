@@ -542,6 +542,7 @@
     box-sizing: border-box;
     height: auto;
     margin: $padding-inset/2 1px 1px 0;
+    overflow: hidden;
     padding: 0 $padding-inset $padding-inset;
     border: none;
   }
