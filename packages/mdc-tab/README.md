@@ -118,12 +118,12 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 CSS Class | Description
 --- | ---
 `mdc-tab` | Mandatory.
-`mdc-tab__content` | Mandatory. Indicates the text label of the tab.
+`mdc-tab__content` | Mandatory. Container of tab icon, text label and tab indicator.
 `mdc-tab__ripple` | Mandatory. Denotes the ripple surface for the tab.
 `mdc-tab--active` | Optional. Indicates that the tab is active.
 `mdc-tab--stacked` | Optional. Indicates that the tab icon and label should flow vertically instead of horizontally.
 `mdc-tab--min-width` | Optional. Indicates that the tab should shrink in size to be as narrow as possible without causing text to wrap.
-`mdc-tab__text-label` | Optional. Indicates an icon in the tab.
+`mdc-tab__text-label` | Optional. Indicates the text label of the tab.
 `mdc-tab__icon` | Optional. Indicates a leading icon in the tab.
 
 ### Sass Mixins

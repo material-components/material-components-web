@@ -134,6 +134,7 @@ Mixin | Description
 `mdc-switch-toggled-off-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled off.
 `mdc-switch-ripple-size($ripple-size)` | Sets the ripple size of the switch.
 `mdc-switch-density($density-scale)` | Sets density scale for switch. Supported density scales are `-5`, `-4`, `-3`, `-2`, `-1`, and `0` (default).
+`mdc-switch-ripple-states-opacity($opacity-map)` | Sets the opacity of the ripple surrounding the thumb in any of the `hover`, `focus`, or `press` states. The `opacity-map` can specify any of these states as keys. States not specified in the map resort to default opacity values.
 
 ## `MDCSwitch` Properties and Methods
 

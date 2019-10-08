@@ -59,8 +59,8 @@ $mdc-typography-styles: mdc-typography-set-styles_(
       text-transform: inherit
     ),
     headline3: (
-      font-size: 3rem, // 48px
-      line-height: 3.125rem, // 50px
+      font-size: 3rem, // 48sp
+      line-height: 3.125rem, // 50sp
       font-weight: map-get($mdc-typography-font-weight-values, regular),
       letter-spacing: normal,
       text-decoration: inherit,
