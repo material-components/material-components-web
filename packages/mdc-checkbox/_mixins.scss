@@ -64,11 +64,8 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 
   @include mdc-checkbox-container-colors($query: $query);
+  @include mdc-checkbox-disabled-container-colors($query: $query);
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color, $query);
-
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-checkbox-disabled-container-color_;
-  }
 
   @media screen and (-ms-high-contrast: active) {
     .mdc-checkbox__mixedmark {
@@ -324,6 +321,35 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
+/// Customizes disabled state stroke and fill colors
+/// @param {Color} $unmarked-stroke-color - The desired stroke color for the unmarked state
+/// @param {Color} $unmarked-fill-color - The desired fill color for the unmarked state
+/// @param {Color} $marked-stroke-color - The desired stroke color for the marked state
+/// @param {Color} $marked-fill-color - The desired fill color for the marked state
+@mixin mdc-checkbox-disabled-container-colors(
+  $unmarked-stroke-color: $mdc-checkbox-disabled-color,
+  $unmarked-fill-color: transparent,
+  $marked-stroke-color: transparent,
+  $marked-fill-color: $mdc-checkbox-disabled-color,
+  $query: mdc-feature-all()
+) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-checkbox-unmarked-background-selector-disabled_ {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(border-color, $unmarked-stroke-color);
+      @include mdc-theme-prop(background-color, $unmarked-fill-color);
+    }
+  }
+
+  @include mdc-checkbox-marked-background-selector-disabled_ {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(border-color, $marked-stroke-color);
+      @include mdc-theme-prop(background-color, $marked-fill-color);
+    }
+  }
+}
+
 @mixin mdc-checkbox-ink-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
@@ -399,17 +425,6 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   white-space: nowrap;
   cursor: pointer;
   vertical-align: bottom;
-}
-
-@mixin mdc-checkbox-disabled-container-color_ {
-  @include mdc-checkbox-unmarked-background-selector-disabled_ {
-    @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color);
-  }
-
-  @include mdc-checkbox-marked-background-selector-disabled_ {
-    @include mdc-theme-prop(border-color, transparent);
-    @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color);
-  }
 }
 
 @mixin mdc-checkbox--disabled_ {
