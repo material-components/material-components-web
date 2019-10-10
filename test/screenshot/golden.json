@@ -952,11 +952,11 @@
     }
   },
   "spec/mdc-radio/mixins/mixins.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/20/22_06_30_583/spec/mdc-radio/mixins/mixins.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/10/22_20_16_416/spec/mdc-radio/mixins/mixins.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/20/22_06_30_583/spec/mdc-radio/mixins/mixins.html.windows_chrome_76.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/20/22_06_30_583/spec/mdc-radio/mixins/mixins.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/09/20/22_06_30_583/spec/mdc-radio/mixins/mixins.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/10/22_20_16_416/spec/mdc-radio/mixins/mixins.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/10/22_20_16_416/spec/mdc-radio/mixins/mixins.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/10/22_20_16_416/spec/mdc-radio/mixins/mixins.html.windows_ie_11.png"
     }
   },
   "spec/mdc-rtl/variables/include.html": {

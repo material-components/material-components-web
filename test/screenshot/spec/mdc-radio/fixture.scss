@@ -25,6 +25,7 @@
 @import "../mixins";
 
 $custom-radio-color: $material-color-red-300;
+$custom-disabled-radio-color: rgba(purple, .4);
 
 .test-cell--radio {
   @include test-cell-size(71, 91);
@@ -53,14 +54,17 @@ $custom-radio-color: $material-color-red-300;
 
 .custom-radio--unchecked-stroke-color {
   @include mdc-radio-unchecked-stroke-color($custom-radio-color);
+  @include mdc-radio-disabled-unchecked-stroke-color($custom-disabled-radio-color);
 }
 
 .custom-radio--checked-stroke-color {
   @include mdc-radio-checked-stroke-color($custom-radio-color);
+  @include mdc-radio-disabled-checked-stroke-color($custom-disabled-radio-color);
 }
 
 .custom-radio--ink-color {
   @include mdc-radio-ink-color($custom-radio-color);
+  @include mdc-radio-disabled-ink-color($custom-disabled-radio-color);
 }
 
 .custom-radio-density {

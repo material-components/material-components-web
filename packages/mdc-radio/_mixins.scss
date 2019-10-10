@@ -53,6 +53,9 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
     @include mdc-radio-unchecked-stroke-color($mdc-radio-unchecked-color, $query);
     @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color, $query);
     @include mdc-radio-ink-color($mdc-radio-baseline-theme-color, $query);
+    @include mdc-radio-disabled-unchecked-stroke-color($mdc-radio-circle-color, $query);
+    @include mdc-radio-disabled-checked-stroke-color($mdc-radio-circle-color, $query);
+    @include mdc-radio-disabled-ink-color($mdc-radio-circle-color, $query);
     @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color, $query);
     @include mdc-radio-density($mdc-radio-density-scale, $query);
 
@@ -207,18 +210,6 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
       @include mdc-feature-targets($feat-structure) {
         cursor: default;
       }
-
-      .mdc-radio__outer-circle {
-        @include mdc-feature-targets($feat-color) {
-          border-color: $mdc-radio-circle-color;
-        }
-      }
-
-      .mdc-radio__inner-circle {
-        @include mdc-feature-targets($feat-color) {
-          border-color: $mdc-radio-circle-color;
-        }
-      }
     }
   }
 
@@ -296,6 +287,63 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   .mdc-radio__native-control:enabled + .mdc-radio__background .mdc-radio__inner-circle {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(border-color, $color);
+    }
+  }
+}
+
+///
+/// Customizes the stroke color of radio when unchecked and disabled
+/// @param {Color} $color - The desired stroke color
+///
+@mixin mdc-radio-disabled-unchecked-stroke-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  // stylelint-disable selector-max-specificity
+  [aria-disabled="true"] .mdc-radio__native-control,
+  .mdc-radio__native-control:disabled {
+    &:not(:checked) + .mdc-radio__background .mdc-radio__outer-circle {
+      // stylelint-enable
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(border-color, $color);
+      }
+    }
+  }
+}
+
+///
+/// Customizes the stroke color of radio when checked and disabled
+/// @param {Color} $color - The desired stroke color
+///
+@mixin mdc-radio-disabled-checked-stroke-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  // stylelint-disable selector-max-specificity
+  [aria-disabled="true"] .mdc-radio__native-control,
+  .mdc-radio__native-control:disabled {
+    &:checked + .mdc-radio__background .mdc-radio__outer-circle {
+      // stylelint-enable
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(border-color, $color);
+      }
+    }
+  }
+}
+
+///
+/// Customizes the ink color of radio when disabled
+/// @param {Color} $color - The desired ink color
+///
+@mixin mdc-radio-disabled-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  // stylelint-disable selector-max-specificity
+  [aria-disabled="true"] .mdc-radio__native-control,
+  .mdc-radio__native-control:disabled {
+    + .mdc-radio__background .mdc-radio__inner-circle {
+      // stylelint-enable
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(border-color, $color);
+      }
     }
   }
 }
