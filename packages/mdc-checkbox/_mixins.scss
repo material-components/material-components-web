@@ -557,7 +557,6 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 }
 
 @mixin mdc-checkbox-background-selector-disabled_ {
-  // stylelint-disable-next-line selector-max-specificity
   .mdc-checkbox__native-control:disabled ~ .mdc-checkbox__background {
     @content;
   }
