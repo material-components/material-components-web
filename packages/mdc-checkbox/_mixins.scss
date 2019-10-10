@@ -65,7 +65,8 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
   @include mdc-checkbox-container-colors($query: $query);
   @include mdc-checkbox-disabled-container-colors($query: $query);
-  @include mdc-checkbox-ink-color($mdc-checkbox-mark-color, $query);
+  @include mdc-checkbox-ink-color($query: $query);
+  @include mdc-checkbox-disabled-ink-color($query: $query);
 
   @media screen and (-ms-high-contrast: active) {
     .mdc-checkbox__mixedmark {
@@ -321,11 +322,13 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
+///
 /// Customizes disabled state stroke and fill colors
 /// @param {Color} $unmarked-stroke-color - The desired stroke color for the unmarked state
 /// @param {Color} $unmarked-fill-color - The desired fill color for the unmarked state
 /// @param {Color} $marked-stroke-color - The desired stroke color for the marked state
 /// @param {Color} $marked-fill-color - The desired fill color for the marked state
+///
 @mixin mdc-checkbox-disabled-container-colors(
   $unmarked-stroke-color: $mdc-checkbox-disabled-color,
   $unmarked-fill-color: transparent,
@@ -350,18 +353,46 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin mdc-checkbox-ink-color($color, $query: mdc-feature-all()) {
+///
+/// Customizes ink color for an enabled checkbox
+/// @param {Color} $color - The desired ink color in enabled state
+///
+@mixin mdc-checkbox-ink-color($color: $mdc-checkbox-mark-color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  .mdc-checkbox__checkmark {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
+  @include mdc-checkbox-background-selector-enabled_ {
+    .mdc-checkbox__checkmark {
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(color, $color);
+      }
+    }
+
+    .mdc-checkbox__mixedmark {
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(border-color, $color);
+      }
     }
   }
+}
 
-  .mdc-checkbox__mixedmark {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $color);
+///
+/// Customizes ink color for a disabled checkbox
+/// @param {Color} $color - The desired ink color in disabled state
+///
+@mixin mdc-checkbox-disabled-ink-color($color: $mdc-checkbox-mark-color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-checkbox-background-selector-disabled_ {
+    .mdc-checkbox__checkmark {
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(color, $color);
+      }
+    }
+
+    .mdc-checkbox__mixedmark {
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(border-color, $color);
+      }
     }
   }
 }
@@ -518,6 +549,19 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 }
 
 // Background
+
+@mixin mdc-checkbox-background-selector-enabled_ {
+  .mdc-checkbox__native-control:enabled ~ .mdc-checkbox__background {
+    @content;
+  }
+}
+
+@mixin mdc-checkbox-background-selector-disabled_ {
+  // stylelint-disable-next-line selector-max-specificity
+  .mdc-checkbox__native-control:disabled ~ .mdc-checkbox__background {
+    @content;
+  }
+}
 
 @mixin mdc-checkbox-unmarked-background-selector-enabled_ {
   // stylelint-disable-next-line selector-max-specificity

@@ -152,7 +152,8 @@ Mixin | Description
 --- | ---
 `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of an enabled checkbox
 `mdc-checkbox-disabled-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color)` | Generates CSS classes to set the stroke color and/or container fill color of a disabled checkbox
-`mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
+`mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons for an enabled checkbox
+`mdc-checkbox-disabled-ink-color($color)` | Sets the ink color of the checked and indeterminate icons for a disabled checkbox
 `mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator (ripple) when checkbox is selected or is in indeterminate state.
 `mdc-checkbox-ripple-size($ripple-size)` | Sets the ripple size of the checkbox.
 `mdc-checkbox-density($density-scale)` | Sets density scale for checkbox, Supported density scales are `-3`, `-2`, `-1`, and `0` (default).
