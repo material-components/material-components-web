@@ -298,11 +298,10 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 @mixin mdc-radio-disabled-unchecked-stroke-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  // stylelint-disable selector-max-specificity
   [aria-disabled="true"] .mdc-radio__native-control,
   .mdc-radio__native-control:disabled {
+    // stylelint-disable-next-line selector-max-specificity
     &:not(:checked) + .mdc-radio__background .mdc-radio__outer-circle {
-      // stylelint-enable
       @include mdc-feature-targets($feat-color) {
         @include mdc-theme-prop(border-color, $color);
       }
@@ -317,11 +316,10 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 @mixin mdc-radio-disabled-checked-stroke-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  // stylelint-disable selector-max-specificity
   [aria-disabled="true"] .mdc-radio__native-control,
   .mdc-radio__native-control:disabled {
+    // stylelint-disable-next-line selector-max-specificity
     &:checked + .mdc-radio__background .mdc-radio__outer-circle {
-      // stylelint-enable
       @include mdc-feature-targets($feat-color) {
         @include mdc-theme-prop(border-color, $color);
       }
@@ -336,11 +334,10 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 @mixin mdc-radio-disabled-ink-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  // stylelint-disable selector-max-specificity
   [aria-disabled="true"] .mdc-radio__native-control,
   .mdc-radio__native-control:disabled {
+    // stylelint-disable-next-line selector-max-specificity
     + .mdc-radio__background .mdc-radio__inner-circle {
-      // stylelint-enable
       @include mdc-feature-targets($feat-color) {
         @include mdc-theme-prop(border-color, $color);
       }
