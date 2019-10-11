@@ -26,12 +26,36 @@
 @import "@material/feature-targeting/mixins";
 @import "./variables";
 
+///
+/// Sets the CSS transition for the tab scrolling animation.
+///
+/// @param {Number | String} $duration-ms - Duration (in ms) of the animation.
+/// @param {String} $timing-function - Optionally overrides the default animation timing function.
+///
+@mixin mdc-tab-scroller-transition(
+  $duration-ms,
+  $timing-function: $mdc-animation-standard-curve-timing-function,
+  $query: mdc-feature-all()
+) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+
+  &.mdc-tab-scroller--animating .mdc-tab-scroller__scroll-content {
+    @include mdc-feature-targets($feat-animation) {
+      transition: $duration-ms transform $timing-function;
+    }
+  }
+}
+
 @mixin mdc-tab-scroller-core-styles($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-animation: mdc-feature-create-target($query, animation);
 
   // postcss-bem-linter: define tab-scroller
   .mdc-tab-scroller {
+    @include mdc-tab-scroller-transition(
+      $duration-ms: $mdc-tab-scroller-transition-duration,
+      $query: $query);
+
     @include mdc-feature-targets($feat-structure) {
       overflow-y: hidden;
     }
@@ -98,12 +122,6 @@
     .mdc-tab-scroller__scroll-area {
       @include mdc-feature-targets($feat-animation) {
         -webkit-overflow-scrolling: auto;
-      }
-    }
-
-    .mdc-tab-scroller__scroll-content {
-      @include mdc-feature-targets($feat-animation) {
-        transition: $mdc-tab-scroller-transition-duration transform $mdc-animation-standard-curve-timing-function;
       }
     }
   }

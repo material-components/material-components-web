@@ -71,6 +71,12 @@ CSS Class | Description
 
 > _NOTE_: The `align` modifier classes are only applicable when the contents do not meet or exceed the width of the Tab Scroller and Tab Bar (i.e., most commonly, when `mdc-tab--min-width` is used on each tab).
 
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-tab-scroller-transition($duration-ms, $timing-function)` | Sets the scroll animation duration and, optionally, the timing function.
+
 ## `MDCTabScroller` Methods
 
 Method Signature | Description
