@@ -257,7 +257,7 @@ Material Design spec advises that touch targets should be at least 48 x 48 px.
 To meet this requirement, add the following to your chip:
 
 ```html
-<span>
+<div class="mdc-touch-target-wrapper">
   <button class="mdc-chip mdc-chip--touch">
     <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
@@ -265,10 +265,10 @@ To meet this requirement, add the following to your chip:
     </span>
     <div class="mdc-chip__touch"></div>
   </button>
-</span>
+</div>
 ```
 
-Note that the wrapper `<span>` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+Note that the outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
 
 ## Style Customization
 
