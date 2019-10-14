@@ -20,9 +20,11 @@
 // THE SOFTWARE.
 //
 
+@import "@material/animation/variables";
 @import "@material/density/functions";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
+@import "@material/tab-scroller/mixins";
 @import "@material/tab/mixins";
 @import "./variables";
 
@@ -77,5 +79,22 @@
 
   .mdc-tab--stacked {
     @include mdc-tab-height($height, $query: $query);
+  }
+}
+
+///
+/// Sets the CSS transition for the tab scrolling animation. This mixin is a proxy to `mdc-tab-scroller-transition`
+/// mixin.
+///
+/// @param {Number | String} $duration-ms - Duration (in ms) of the animation.
+/// @param {String} $timing-function - Optionally overrides the default animation timing function.
+///
+@mixin mdc-tab-bar-tab-scroller-transition(
+  $duration-ms,
+  $timing-function: $mdc-animation-standard-curve-timing-function,
+  $query: mdc-feature-all()
+) {
+  .mdc-tab-scroller {
+    @include mdc-tab-scroller-transition($duration-ms, $timing-function: $timing-function, $query: $query);
   }
 }
