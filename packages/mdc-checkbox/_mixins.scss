@@ -50,6 +50,8 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
+  @include mdc-touch-target-wrapper($query);
+
   @include mdc-feature-targets($feat-animation) {
     @include mdc-checkbox-mark-keyframes_;
   }

@@ -25,6 +25,7 @@
 @import "@material/tab-indicator/mixins";
 @import "@material/tab/mixins";
 @import "@material/theme/mixins";
+@import "@material/touch-target/mixins";
 @import "@material/typography/mixins";
 @import "@material/data-table/mixins";
 
@@ -302,6 +303,11 @@
 
     // Theme
     @include mdc-theme-core-styles($query: $query);
+
+    // Touch Target
+    @include mdc-touch-target-wrapper($query: $query);
+    @include mdc-touch-target($query: $query);
+    @include mdc-touch-target-component(0, $query: $query);
 
     // Typography
     @include mdc-typography-core-styles($query: $query);

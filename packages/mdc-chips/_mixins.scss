@@ -55,6 +55,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size, $query: $query);
   @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size, $query: $query);
   @include mdc-chip-trailing-icon-margin($query: $query);
+  @include mdc-touch-target-wrapper($query);
 
   .mdc-chip {
     @include mdc-chip-shape-radius(50%, $query: $query);
