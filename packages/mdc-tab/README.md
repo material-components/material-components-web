@@ -143,6 +143,7 @@ Mixin | Description
 `mdc-tab-fixed-width($width)` | Sets the fixed width of the tab. The tab will never be smaller than the given width.
 `mdc-tab-horizontal-padding($padding)` | Sets the horizontal padding of the tab.
 `mdc-tab-height($height)` | Sets custom height to tab bar.
+`mdc-tab-text-transform($transform)` | Sets tab `text-transform` property
 
 ## `MDCTab` Properties and Methods
 
