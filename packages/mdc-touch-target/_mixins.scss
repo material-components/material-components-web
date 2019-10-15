@@ -25,7 +25,7 @@
 @import "@material/feature-targeting/mixins";
 @import "./variables";
 
-// Styles applied to the component's touch target wrapper element.
+/// Styles applied to the component's touch target wrapper element.
 @mixin mdc-touch-target-wrapper($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
