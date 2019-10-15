@@ -261,33 +261,20 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 @mixin mdc-radio-unchecked-stroke-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-radio__native-control:enabled:not(:checked) + .mdc-radio__background .mdc-radio__outer-circle {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $color);
-    }
+  .mdc-radio__native-control:enabled:not(:checked) {
+    @include mdc-radio-stroke-color_($color, $query: $query);
   }
 }
 
 @mixin mdc-radio-checked-stroke-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $color);
-    }
+  .mdc-radio__native-control:enabled:checked {
+    @include mdc-radio-stroke-color_($color, $query:$query);
   }
 }
 
 @mixin mdc-radio-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-radio__native-control:enabled + .mdc-radio__background .mdc-radio__inner-circle {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $color);
-    }
+  .mdc-radio__native-control:enabled {
+    @include mdc-radio-ink-color_($color, $query: $query);
   }
 }
 
@@ -296,16 +283,9 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// @param {Color} $color - The desired stroke color
 ///
 @mixin mdc-radio-disabled-unchecked-stroke-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
   [aria-disabled="true"] .mdc-radio__native-control,
-  .mdc-radio__native-control:disabled {
-    // stylelint-disable-next-line selector-max-specificity
-    &:not(:checked) + .mdc-radio__background .mdc-radio__outer-circle {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(border-color, $color);
-      }
-    }
+  .mdc-radio__native-control:disabled:not(:checked) {
+    @include mdc-radio-stroke-color_($color, $query: $query);
   }
 }
 
@@ -314,16 +294,9 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// @param {Color} $color - The desired stroke color
 ///
 @mixin mdc-radio-disabled-checked-stroke-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
   [aria-disabled="true"] .mdc-radio__native-control,
-  .mdc-radio__native-control:disabled {
-    // stylelint-disable-next-line selector-max-specificity
-    &:checked + .mdc-radio__background .mdc-radio__outer-circle {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(border-color, $color);
-      }
-    }
+  .mdc-radio__native-control:disabled:checked {
+    @include mdc-radio-stroke-color_($color, $query: $query);
   }
 }
 
@@ -332,16 +305,9 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// @param {Color} $color - The desired ink color
 ///
 @mixin mdc-radio-disabled-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
   [aria-disabled="true"] .mdc-radio__native-control,
   .mdc-radio__native-control:disabled {
-    // stylelint-disable-next-line selector-max-specificity
-    + .mdc-radio__background .mdc-radio__inner-circle {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(border-color, $color);
-      }
-    }
+    @include mdc-radio-ink-color_($color, $query: $query);
   }
 }
 
@@ -436,5 +402,27 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 
   @include mdc-feature-targets($feat-structure) {
     margin: 0;
+  }
+}
+
+// Private
+
+@mixin mdc-radio-ink-color_($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  + .mdc-radio__background .mdc-radio__inner-circle {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(border-color, $color);
+    }
+  }
+}
+
+@mixin mdc-radio-stroke-color_($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  + .mdc-radio__background .mdc-radio__outer-circle {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(border-color, $color);
+    }
   }
 }
