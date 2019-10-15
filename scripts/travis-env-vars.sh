@@ -81,11 +81,6 @@ if [[ "$TEST_SUITE" == 'unit' ]]; then
   check_for_testable_files '^karma\.conf\.js$' '^packages/.+\.(js|ts)$' '^test/unit/.+\.(js|ts)$'
 fi
 
-if [[ "$TEST_SUITE" == 'lint' ]]; then
-  # Only run linter if JS/Sass files changed
-  check_for_testable_files '\.(js|ts|css|scss)$'
-fi
-
 if [[ "$TEST_SUITE" == 'build' ]]; then
   # Only run build if package JS/Sass files changed
   check_for_testable_files '^packages/.+\.(js|ts|css|scss)$'
