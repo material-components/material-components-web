@@ -34,12 +34,6 @@ matrix:
 
   - node_js: 10
     env:
-      - TEST_SUITE=lint
-    script:
-      - if has_testable_files; then npm run lint && npm run test:feature-targeting; else log_untestable_files; fi
-
-  - node_js: 10
-    env:
       - TEST_SUITE=build
     script:
       - if has_testable_files; then npm run dist; else log_untestable_files; fi
