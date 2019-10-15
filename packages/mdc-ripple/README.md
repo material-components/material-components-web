@@ -67,9 +67,7 @@ In order to fully style the ripple effect for different states (hover/focus/pres
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-states-base-color(black);
-  @include mdc-states-hover-opacity(.1);
-  @include mdc-states-focus-opacity(.3);
-  @include mdc-states-press-opacity(.4);
+  @include mdc-states-opacities((hover: .1, focus: .3, press: .4));
 }
 ```
 
@@ -109,11 +107,11 @@ These mixins can also be used to emit activated or selected styles, by applying 
 Mixin | Description
 --- | ---
 `mdc-states-base-color($color)` | Mandatory. Sets up base state styles using the provided color
-`mdc-states-hover-opacity($opacity)` | Mandatory. Adds styles for hover state using the provided opacity
-`mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Mandatory. Adds styles for focus state using the provided opacity
-`mdc-states-press-opacity($opacity)` | Mandatory. Adds styles for press state using the provided opacity
+`mdc-states-opacities($opacity-map, $has-nested-focusable-element)` | Sets the opacity of the ripple in any of the `hover`, `focus`, or `press` states. The `opacity-map` can specify one or more of these states as keys. States not specified in the map resort to default opacity values.
 
 > _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
+
+> _DEPRECATED_: The individual mixins `mdc-states-hover-opacity($opacity)`, `mdc-states-focus-opacity($opacity, $has-nested-focusable-element)`, and `mdc-states-press-opacity($opacity)` are deprecated in favor of the unified `mdc-states-opacities($opacity-map, $has-nested-focusable-element)` mixin above.
 
 #### Sass Functions
 
