@@ -269,17 +269,11 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-checkbox-unmarked-background-selector-enabled_ {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $unmarked-stroke-color);
-      @include mdc-theme-prop(background-color, $unmarked-fill-color);
-    }
+    @include mdc-checkbox-container-colors_($unmarked-stroke-color, $unmarked-fill-color, $query: $query);
   }
 
   @include mdc-checkbox-marked-background-selector-enabled_ {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $marked-stroke-color);
-      @include mdc-theme-prop(background-color, $marked-fill-color);
-    }
+    @include mdc-checkbox-container-colors_($marked-stroke-color, $marked-fill-color, $query: $query);
   }
 
   @if $generate-keyframes {
@@ -336,20 +330,12 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   $marked-fill-color: $mdc-checkbox-disabled-color,
   $query: mdc-feature-all()
 ) {
-  $feat-color: mdc-feature-create-target($query, color);
-
   @include mdc-checkbox-unmarked-background-selector-disabled_ {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $unmarked-stroke-color);
-      @include mdc-theme-prop(background-color, $unmarked-fill-color);
-    }
+    @include mdc-checkbox-container-colors_($unmarked-stroke-color, $unmarked-fill-color, $query: $query);
   }
 
   @include mdc-checkbox-marked-background-selector-disabled_ {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $marked-stroke-color);
-      @include mdc-theme-prop(background-color, $marked-fill-color);
-    }
+    @include mdc-checkbox-container-colors_($marked-stroke-color, $marked-fill-color, $query: $query);
   }
 }
 
@@ -358,20 +344,8 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 /// @param {Color} $color - The desired ink color in enabled state
 ///
 @mixin mdc-checkbox-ink-color($color: $mdc-checkbox-mark-color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
   @include mdc-checkbox-background-selector-enabled_ {
-    .mdc-checkbox__checkmark {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(color, $color);
-      }
-    }
-
-    .mdc-checkbox__mixedmark {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(border-color, $color);
-      }
-    }
+    @include mdc-checkbox-ink-color_($color, $query: $query);
   }
 }
 
@@ -383,17 +357,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-checkbox-background-selector-disabled_ {
-    .mdc-checkbox__checkmark {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(color, $color);
-      }
-    }
-
-    .mdc-checkbox__mixedmark {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(border-color, $color);
-      }
-    }
+    @include mdc-checkbox-ink-color_($color, $query: $query);
   }
 }
 
@@ -636,6 +600,15 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
     mdc-checkbox-transition-enter(background-color);
 }
 
+@mixin mdc-checkbox-container-colors_($stroke-color, $fill-color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(border-color, $stroke-color);
+    @include mdc-theme-prop(background-color, $fill-color);
+  }
+}
+
 // Focus indicator
 
 @mixin mdc-checkbox__focus-indicator_($query: mdc-feature-all()) {
@@ -740,6 +713,22 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
     transition:
       mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration),
       mdc-checkbox-transition-exit(transform, 0ms, $mdc-checkbox-transition-duration);
+  }
+}
+
+@mixin mdc-checkbox-ink-color_($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-checkbox__checkmark {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(color, $color);
+    }
+  }
+
+  .mdc-checkbox__mixedmark {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(border-color, $color);
+    }
   }
 }
 
