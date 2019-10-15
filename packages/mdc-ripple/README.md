@@ -67,7 +67,7 @@ In order to fully style the ripple effect for different states (hover/focus/pres
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-states-base-color(black);
-  @include mdc-states-opacities(("hover": .1, "focus": .3, "press": .4));
+  @include mdc-states-opacities((hover: .1, focus: .3, press: .4));
 }
 ```
 

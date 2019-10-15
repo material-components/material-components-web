@@ -192,9 +192,11 @@
   }
 }
 
+///
 /// Customizes ripple opacities surrounding the thumb in `hover`, `focus`, or `press` states
 /// The customizations apply to both on and off switches to ensure symmetry
 /// @param {map} $opacity-map - map specifying custom opacity of zero or more states
+///
 @mixin mdc-switch-ripple-states-opacity($opacity-map: (), $query: mdc-feature-all()) {
   // Ensure sufficient specificity to override base state opacities
   &.mdc-switch .mdc-switch__thumb-underlay {
