@@ -204,6 +204,20 @@
   }
 }
 
+///
+/// Sets tab text transform
+///
+/// @param {String} $transform The text-transform property to apply.
+///
+@mixin mdc-tab-text-transform($transform, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    text-transform: $transform;
+  }
+}
+
+
 //
 // Private
 //
