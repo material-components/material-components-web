@@ -356,6 +356,10 @@ Modal drawers are elevated above most of the app's UI and don't affect the scree
 
 > The `mdc-drawer-scrim` next sibling element is **required**, to protect the app's UI from interactions while the modal drawer is open.
 
+### Responsive Drawer
+
+ There is currently no dedicated material component for responsive drawers.  This [responsive drawer example](https://glitch.com/~material-responsive-drawer) demonstrates a suggested solution for a drawer that dynamically switches between the permanent variant and the modal variant based on screen width.
+
 ## Style Customization
 
 ### CSS Classes
