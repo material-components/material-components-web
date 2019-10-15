@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,18 +20,4 @@
 // THE SOFTWARE.
 //
 
-@import "@material/density/variables";
-
-$mdc-icon-button-icon-size: 24px !default;
-
-$mdc-icon-button-size: 48px !default;
-$mdc-icon-button-minimum-height: 28px !default;
-$mdc-icon-button-maximum-height: $mdc-icon-button-size !default;
-$mdc-icon-button-density-scale: $mdc-density-default-scale !default;
-$mdc-icon-button-density-config: (
-  size: (
-    default: $mdc-icon-button-size,
-    maximum: $mdc-icon-button-maximum-height,
-    minimum: $mdc-icon-button-minimum-height,
-  ),
-) !default;
+$mdc-tab-scroller-transition-duration: 250ms !default;

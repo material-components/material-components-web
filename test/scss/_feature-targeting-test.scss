@@ -176,7 +176,9 @@
 
     // Icon Button
     @include mdc-icon-button-core-styles($query: $query);
+    @include mdc-icon-button-density(0, $query: $query);
     @include mdc-icon-button-size(0, $query: $query);
+    @include mdc-icon-button-icon-size(0, $query: $query);
     @include mdc-icon-button-ink-color(red, $query: $query);
 
     // Image List
@@ -294,9 +296,10 @@
     @include mdc-tab-without-ripple($query: $query);
     @include mdc-tab-ripple($query: $query);
     @include mdc-tab-height(0, $query: $query);
+    @include mdc-tab-text-transform(uppercase, $query: $query);
     @include mdc-tab-bar-density(0, $query: $query);
     @include mdc-tab-bar-stacked-density(0, $query: $query);
-    @include mdc-tab-text-transform(uppercase, $query: $query);
+    @include mdc-tab-bar-tab-scroller-transition(0, $query: $query);
 
     // Theme
     @include mdc-theme-core-styles($query: $query);

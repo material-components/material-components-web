@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,36 +21,6 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
-  ACTIVATED: 'mdc-select--activated',
-  DISABLED: 'mdc-select--disabled',
-  FOCUSED: 'mdc-select--focused',
-  INVALID: 'mdc-select--invalid',
-  OUTLINED: 'mdc-select--outlined',
-  REQUIRED: 'mdc-select--required',
-  ROOT: 'mdc-select',
-  SELECTED_ITEM_CLASS: 'mdc-list-item--selected',
-  WITH_LEADING_ICON: 'mdc-select--with-leading-icon',
-};
-
-const strings = {
-  ARIA_CONTROLS: 'aria-controls',
-  ARIA_SELECTED_ATTR: 'aria-selected',
-  CHANGE_EVENT: 'MDCSelect:change',
-  LABEL_SELECTOR: '.mdc-floating-label',
-  LEADING_ICON_SELECTOR: '.mdc-select__icon',
-  LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
-  MENU_SELECTOR: '.mdc-select__menu',
-  OUTLINE_SELECTOR: '.mdc-notched-outline',
-  SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED_ITEM_CLASS}`,
-  SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
-  SELECT_ANCHOR_SELECTOR: '.mdc-select__anchor',
-  VALUE_ATTR: 'data-value',
-};
-
-const numbers = {
-  LABEL_SCALE: 0.75,
-  UNSET_INDEX: -1,
-};
-
-export {cssClasses, strings, numbers};
+window.mdc.testFixture.fontsLoaded.then(() => {
+  window.mdc.testFixture.notifyDomReady();
+});

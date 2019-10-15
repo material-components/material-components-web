@@ -107,6 +107,7 @@ Mixin | Description
 `mdc-tab-bar-width($width)` | Customizes the width of the tab bar.
 `mdc-tab-bar-density($density-scale)` | Sets density scale to default tab bar variant. Use `mdc-tab-bar-stacked-density` mixin for stacked variant. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
 `mdc-tab-bar-stacked-density($density-scale)` | Sets density scale to stacked tab bar variant. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
+`mdc-tab-bar-tab-scroller-transition($duration-ms, $timing-function)` | Sets the CSS transition for the tab scrolling animation. This mixin is a proxy to `mdc-tab-scroller-transition` mixin.
 
 
 ## `MDCTabBar` Properties and Methods

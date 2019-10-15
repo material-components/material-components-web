@@ -233,6 +233,20 @@ testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle
     td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
   });
 
+testFoundation(`#layout always sets ${strings.VAR_FG_SIZE} to even number`,
+  ({foundation, adapter, clock}) => {
+    const width = 36;
+    const height = 36;
+
+    td.when(adapter.computeBoundingRect()).thenReturn({width, height});
+    td.when(adapter.isUnbounded()).thenReturn(true);
+    foundation.layout();
+    clock.runToFrame();
+
+    const isEvenNumber = (pixel) => (parseInt(pixel, 10) % 2 === 0);
+    td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, td.matchers.argThat(isEvenNumber)));
+  });
+
 testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference between the ` +
                'proportion of the max radius and the initial size', ({foundation, adapter, clock}) => {
   const width = 200;

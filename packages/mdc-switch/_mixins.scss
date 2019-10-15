@@ -199,7 +199,7 @@
 /// Sets density scale for switch.
 ///
 /// @param {Number | String} $density-scale - Density scale value for component.
-///     Supported density scale values are `-6`, `-5`, `-4`, `-3`, `-2`, `-1`,
+///     Supported density scale values are `-5`, `-4`, `-3`, `-2`, `-1`,
 ///     `0` (default).
 ///
 @mixin mdc-switch-density($density-scale, $query: mdc-feature-all()) {
@@ -240,6 +240,28 @@
     @include mdc-feature-targets($feat-structure) {
       width: $native-control-width;
       height: $ripple-size;
+    }
+  }
+}
+
+///
+/// Customizes ripple opacities surrounding the thumb in `hover`, `focus`, or `press` states
+/// The customizations apply to both on and off switches to ensure symmetry
+/// @param {map} $opacity-map - map specifying custom opacity of zero or more states
+///
+@mixin mdc-switch-ripple-states-opacity($opacity-map: (), $query: mdc-feature-all()) {
+  // Ensure sufficient specificity to override base state opacities
+  &.mdc-switch .mdc-switch__thumb-underlay {
+    @if map-has-key($opacity-map, "hover") {
+      @include mdc-states-hover-opacity(map-get($opacity-map, "hover"), $query);
+    }
+
+    @if map-has-key($opacity-map, "focus") {
+      @include mdc-states-focus-opacity(map-get($opacity-map, "focus"), $query);
+    }
+
+    @if map-has-key($opacity-map, "press") {
+      @include mdc-states-press-opacity(map-get($opacity-map, "press"), $query);
     }
   }
 }

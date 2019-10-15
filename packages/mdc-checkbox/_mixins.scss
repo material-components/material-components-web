@@ -216,7 +216,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 /// Sets density scale for checkbox.
 ///
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values
-///     `-4`, `-3`, `-2`, `-1`, `0`.
+///     `-3`, `-2`, `-1`, `0`.
 ///
 @mixin mdc-checkbox-density($density-scale, $query: mdc-feature-all()) {
   $size: mdc-density-prop-value(
@@ -226,6 +226,10 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   );
 
   @include mdc-checkbox-ripple-size($size, $query: $query);
+
+  @if $density-scale != 0 {
+    @include mdc-checkbox-touch-target-reset_($query: $query);
+  }
 }
 
 @mixin mdc-checkbox-ripple-size($ripple-size, $query: mdc-feature-all()) {
@@ -732,4 +736,18 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 @mixin mdc-checkbox__mixedmark--indeterminate_ {
   transform: scaleX(1) rotate(0deg);
   opacity: 1;
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin mdc-checkbox-touch-target-reset_($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    margin: 0;
+  }
 }

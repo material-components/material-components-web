@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2018 Google Inc.
+  Copyright 2019 Google Inc.
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -23,41 +23,50 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Issue 3230 - MDC Web Screenshot Test</title>
+    <title>Baseline Radio - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../../out/mdc.select.css">
-    <link rel="stylesheet" href="../../../out/mdc.typography.css">
+    <link rel="stylesheet" href="../../../out/mdc.form-field.css">
+    <link rel="stylesheet" href="../../../out/mdc.radio.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
-    <link rel="stylesheet" href="../../../out/spec/mdc-select/fixture.css">
+    <link rel="stylesheet" href="../../../out/spec/mdc-form-field/fixture.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-118996389-2');
+    </script>
   </head>
 
-  <body class="test-container">
+  <body class="test-container" dir="rtl">
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
 
-        <!--
-          This page tests the following regressions:
-          1.  Outlined select should still turn the primary color when it does not have a floating label.
-              https://github.com/material-components/material-components-web/issues/3230
-          2.  IE's default blue background should be hidden on focus.
-              https://github.com/material-components/material-components-web/issues/3496
-        -->
-        <div class="test-cell test-cell--select">
-          <div class="mdc-select mdc-select--outlined mdc-select--focused">
-            <select class="mdc-select__native-control" id="my-select" aria-label="No label" title="No label" autofocus>
-              <option value="grains" selected>
-                Bread, Cereal, Rice, and Pasta
-              </option>
-              <option value="vegetables" disabled>
-                Vegetables
-              </option>
-            </select>
-            <i class="mdc-select__dropdown-icon"></i>
-            <div class="mdc-notched-outline mdc-notched-outline--notched mdc-notched-outline--no-label">
-              <div class="mdc-notched-outline__leading"></div>
-              <div class="mdc-notched-outline__notch"></div>
-              <div class="mdc-notched-outline__trailing"></div>
+        <div class="test-cell">
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="radio-1" name="radios">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
             </div>
+            <label for="radio-1">Radio 1</label>
+          </div>
+        </div>
+
+        <div class="test-cell">
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="radio-2" name="radios" checked>
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="radio-2">Radio 2</label>
           </div>
         </div>
 
@@ -70,6 +79,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
     <script src="../../../out/material-components-web.js"></script>
     <script src="../../../out/spec/fixture.js"></script>
-    <script src="../../../out/spec/mdc-select/fixture.js"></script>
+    <script src="../../../out/spec/mdc-form-field/fixture.js"></script>
   </body>
 </html>

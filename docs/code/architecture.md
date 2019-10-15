@@ -12,7 +12,7 @@ are static, but most are dynamic and include some JavaScript.
 ## Sass
 
 All of MDC Web's CSS is generated using [Sass](http://sass-lang.com/). Sass
-mixins lets us make groups of CSS declarations that we want to reuse on
+mixins let us make groups of CSS declarations that we want to reuse on
 multiple components. Subsystems provide a Sass mixin, which the component
 imports in its Sass file. Each package compiles its Sass files into a single CSS
 file.

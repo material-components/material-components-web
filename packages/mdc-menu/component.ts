@@ -182,10 +182,6 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.menuSurface_.setFixedPosition(isFixed);
   }
 
-  hoistMenuToBody() {
-    this.menuSurface_.hoistMenuToBody();
-  }
-
   setIsHoisted(isHoisted: boolean) {
     this.menuSurface_.setIsHoisted(isHoisted);
   }

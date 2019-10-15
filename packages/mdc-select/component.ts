@@ -33,7 +33,6 @@ import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-out
 import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
-import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
@@ -41,29 +40,22 @@ import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/com
 import {MDCSelectIcon, MDCSelectIconFactory} from './icon/component';
 import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
-const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
-
-export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCRippleCapableSurface {
+export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   static attachTo(root: Element): MDCSelect {
     return new MDCSelect(root);
   }
 
-  // Public visibility for this property is required by MDCRippleCapableSurface.
-  root_!: HTMLElement; // assigned in MDCComponent constructor
+  // Root container for select (anchor) element and menu.
+  protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  ripple!: MDCRipple | null;
+  private ripple_!: MDCRipple | null;
 
-  private menu_!: MDCMenu | null; // assigned in enhancedSelectSetup_()
-  private isMenuOpen_!: boolean; // assigned in initialize()
+  private menu_!: MDCMenu; // assigned in menuSetup_()
 
-  // Exactly one of these fields must be non-null.
-  private nativeControl_!: HTMLSelectElement | null; // assigned in initialize()
-  private selectedText_!: HTMLElement | null; // assigned in initialize()
+  private selectAnchor_!: HTMLElement; // assigned in initialize()
+  private selectedText_!: HTMLElement; // assigned in initialize()
 
-  private targetElement_!: HTMLElement; // assigned in initialize()
-
-  private hiddenInput_!: HTMLInputElement | null; // assigned in enhancedSelectSetup_()
-  private menuElement_!: Element | null; // assigned in enhancedSelectSetup_()
+  private menuElement_!: Element; // assigned in menuSetup_()
   private leadingIcon_?: MDCSelectIcon; // assigned in initialize()
   private helperText_!: MDCSelectHelperText | null; // assigned in initialize()
   private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
@@ -76,8 +68,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialize()
   private handleMenuOpened_!: EventListener; // assigned in initialize()
   private handleMenuClosed_!: EventListener; // assigned in initialize()
-  private handleMenuSelected_!: CustomEventListener<MDCMenuItemEvent>; // assigned in initialize()
-  private validationObserver_!: MutationObserver; // assigned in initialize()
+  private handleMenuItemAction_!: CustomEventListener<MDCMenuItemEvent>; // assigned in initialize()
 
   initialize(
       labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
@@ -87,29 +78,24 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       iconFactory: MDCSelectIconFactory = (el) => new MDCSelectIcon(el),
       helperTextFactory: MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
   ) {
-    this.isMenuOpen_ = false;
-    this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
-    this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
+    this.selectAnchor_ = this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
+    this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
 
-    const targetElement = this.nativeControl_ || this.selectedText_;
-    if (!targetElement) {
+    if (!this.selectedText_) {
       throw new Error(
-          'MDCSelect: Missing required element: Exactly one of the following selectors must be present: ' +
-          `'${strings.NATIVE_CONTROL_SELECTOR}' or '${strings.SELECTED_TEXT_SELECTOR}'`,
+          'MDCSelect: Missing required element: The following selector must be present: ' +
+          `'${strings.SELECTED_TEXT_SELECTOR}'`,
       );
     }
 
-    this.targetElement_ = targetElement;
-    if (this.targetElement_.hasAttribute(strings.ARIA_CONTROLS)) {
-      const helperTextElement = document.getElementById(this.targetElement_.getAttribute(strings.ARIA_CONTROLS)!);
+    if (this.selectedText_.hasAttribute(strings.ARIA_CONTROLS)) {
+      const helperTextElement = document.getElementById(this.selectedText_.getAttribute(strings.ARIA_CONTROLS)!);
       if (helperTextElement) {
         this.helperText_ = helperTextFactory(helperTextElement);
       }
     }
 
-    if (this.selectedText_) {
-      this.enhancedSelectSetup_(menuFactory);
-    }
+    this.menuSetup_(menuFactory);
 
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.label_ = labelElement ? labelFactory(labelElement) : null;
@@ -122,21 +108,12 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
     const leadingIcon = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     if (leadingIcon) {
-      this.root_.classList.add(cssClasses.WITH_LEADING_ICON);
       this.leadingIcon_ = iconFactory(leadingIcon);
-
-      if (this.menuElement_) {
-        this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
-      }
     }
 
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
-      this.ripple = this.createRipple_();
+      this.ripple_ = this.createRipple_();
     }
-
-    // The required state needs to be sync'd before the mutation observer is added.
-    this.initialSyncRequiredState_();
-    this.addMutationObserverForRequired_();
   }
 
   /**
@@ -144,91 +121,47 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
    * on the environment's state.
    */
   initialSyncWithDOM() {
-    this.handleChange_ = () => this.foundation_.handleChange(/* didChange */ true);
+    this.handleChange_ = () => this.foundation_.handleChange();
     this.handleFocus_ = () => this.foundation_.handleFocus();
     this.handleBlur_ = () => this.foundation_.handleBlur();
     this.handleClick_ = (evt) => {
-      if (this.selectedText_) {
-        this.selectedText_.focus();
-      }
+      this.selectedText_.focus();
       this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
     };
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
-    this.handleMenuSelected_ = (evtData) => this.selectedIndex = evtData.detail.index;
-    this.handleMenuOpened_ = () => {
-      this.foundation_.handleMenuOpened();
+    this.handleMenuItemAction_ = (evt) => this.foundation_.handleMenuItemAction(evt.detail.index);
+    this.handleMenuOpened_ = () => this.foundation_.handleMenuOpened();
+    this.handleMenuClosed_ = () => this.foundation_.handleMenuClosed();
 
-      if (this.menu_!.items.length === 0) {
-        return;
-      }
+    this.selectedText_.addEventListener('focus', this.handleFocus_);
+    this.selectedText_.addEventListener('blur', this.handleBlur_);
 
-      // Menu should open to the last selected element, should open to first menu item otherwise.
-      const focusItemIndex = this.selectedIndex >= 0 ? this.selectedIndex : 0;
-      const focusItemEl = this.menu_!.items[focusItemIndex] as HTMLElement;
-      focusItemEl.focus();
-    };
-    this.handleMenuClosed_ = () => {
-      this.foundation_.handleMenuClosed();
+    this.selectedText_.addEventListener('click', this.handleClick_ as EventListener);
 
-      // isMenuOpen_ is used to track the state of the menu opening or closing since the menu.open function
-      // will return false if the menu is still closing and this method listens to the closed event which
-      // occurs after the menu is already closed.
-      this.isMenuOpen_ = false;
-      this.selectedText_!.removeAttribute('aria-expanded');
-      if (document.activeElement !== this.selectedText_) {
-        this.foundation_.handleBlur();
-      }
-    };
+    this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
+    this.menu_!.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
+    this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
+    this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuItemAction_);
+    this.foundation_.init();
 
-    this.targetElement_.addEventListener('change', this.handleChange_);
-    this.targetElement_.addEventListener('focus', this.handleFocus_);
-    this.targetElement_.addEventListener('blur', this.handleBlur_);
-
-    this.targetElement_.addEventListener('click', this.handleClick_ as EventListener);
-
-    if (this.menuElement_) {
-      this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
-      this.menu_!.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
-      this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-      this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
-
-      if (this.hiddenInput_ && this.hiddenInput_.value) {
-        // If the hidden input already has a value, use it to restore the select's value.
-        // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
-        const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
-        enhancedAdapterMethods.setValue(this.hiddenInput_.value);
-      } else if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
-        // If an element is selected, the select should set the initial selected text.
-        const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
-        enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
-      }
-    }
-
-    // Initially sync floating label
-    this.foundation_.handleChange(/* didChange */ false);
-
-    if (this.root_.classList.contains(cssClasses.DISABLED)
-        || (this.nativeControl_ && this.nativeControl_.disabled)) {
-      this.disabled = true;
-    }
+    // Sets disabled state in foundation
+    this.disabled = this.root_.classList.contains(cssClasses.DISABLED);
   }
 
   destroy() {
-    this.targetElement_.removeEventListener('change', this.handleChange_);
-    this.targetElement_.removeEventListener('focus', this.handleFocus_);
-    this.targetElement_.removeEventListener('blur', this.handleBlur_);
-    this.targetElement_.removeEventListener('keydown', this.handleKeydown_);
-    this.targetElement_.removeEventListener('click', this.handleClick_ as EventListener);
+    this.selectedText_.removeEventListener('change', this.handleChange_);
+    this.selectedText_.removeEventListener('focus', this.handleFocus_);
+    this.selectedText_.removeEventListener('blur', this.handleBlur_);
+    this.selectedText_.removeEventListener('keydown', this.handleKeydown_);
+    this.selectedText_.removeEventListener('click', this.handleClick_ as EventListener);
 
-    if (this.menu_) {
-      this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
-      this.menu_.unlisten(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-      this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
-      this.menu_.destroy();
-    }
+    this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
+    this.menu_.unlisten(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
+    this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuItemAction_);
+    this.menu_.destroy();
 
-    if (this.ripple) {
-      this.ripple.destroy();
+    if (this.ripple_) {
+      this.ripple_.destroy();
     }
     if (this.outline_) {
       this.outline_.destroy();
@@ -238,9 +171,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     }
     if (this.helperText_) {
       this.helperText_.destroy();
-    }
-    if (this.validationObserver_) {
-      this.validationObserver_.disconnect();
     }
 
     super.destroy();
@@ -255,23 +185,15 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   get selectedIndex(): number {
-    let selectedIndex = -1;
-    if (this.menuElement_ && this.menu_) {
-      const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
-      selectedIndex = this.menu_.items.indexOf(selectedEl);
-    } else if (this.nativeControl_) {
-      selectedIndex = this.nativeControl_.selectedIndex;
-    }
-    return selectedIndex;
+    return this.foundation_.getSelectedIndex();
   }
 
   set selectedIndex(selectedIndex: number) {
-    this.foundation_.setSelectedIndex(selectedIndex);
+    this.foundation_.setSelectedIndex(selectedIndex, /** closeMenu */ true);
   }
 
   get disabled(): boolean {
-    return this.root_.classList.contains(cssClasses.DISABLED) ||
-        (this.nativeControl_ ? this.nativeControl_.disabled : false);
+    return this.foundation_.getDisabled();
   }
 
   set disabled(disabled: boolean) {
@@ -314,26 +236,14 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
    * Sets the control to the required state.
    */
   set required(isRequired: boolean) {
-    if (this.nativeControl_) {
-      this.nativeControl_.required = isRequired;
-    } else {
-      if (isRequired) {
-        this.selectedText_!.setAttribute('aria-required', isRequired.toString());
-      } else {
-        this.selectedText_!.removeAttribute('aria-required');
-      }
-    }
+    this.foundation_.setRequired(isRequired);
   }
 
   /**
    * Returns whether the select is required.
    */
   get required(): boolean {
-    if (this.nativeControl_) {
-      return this.nativeControl_.required;
-    } else {
-      return this.selectedText_!.getAttribute('aria-required') === 'true';
-    }
+    return this.foundation_.getRequired();
   }
 
   /**
@@ -347,7 +257,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSelectAdapter = {
-      ...(this.nativeControl_ ? this.getNativeSelectAdapterMethods_() : this.getEnhancedSelectAdapterMethods_()),
+      ...this.getSelectAdapterMethods_(),
       ...this.getCommonAdapterMethods_(),
       ...this.getOutlineAdapterMethods_(),
       ...this.getLabelAdapterMethods_(),
@@ -356,18 +266,11 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   /**
-   * Handles setup for the enhanced menu.
+   * Handles setup for the menu.
    */
-  private enhancedSelectSetup_(menuFactory: MDCMenuFactory) {
-    const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
-    this.selectedText_!.setAttribute('tabindex', isDisabled ? '-1' : '0');
-    this.hiddenInput_ = this.root_.querySelector(strings.HIDDEN_INPUT_SELECTOR);
+  private menuSetup_(menuFactory: MDCMenuFactory) {
     this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR)!;
     this.menu_ = menuFactory(this.menuElement_);
-    this.menu_.hoistMenuToBody();
-    this.menu_.setAnchorElement(this.root_);
-    this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
-    this.menu_.wrapFocus = false;
   }
 
   private createRipple_(): MDCRipple {
@@ -375,95 +278,39 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
-      ...MDCRipple.createAdapter(this),
-      registerInteractionHandler: (evtType, handler) => this.targetElement_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.targetElement_.removeEventListener(evtType, handler),
+      ...MDCRipple.createAdapter({root_: this.selectAnchor_}),
+      registerInteractionHandler: (evtType, handler) => this.selectedText_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.selectedText_.removeEventListener(evtType, handler),
     };
     // tslint:enable:object-literal-sort-keys
-    return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
+    return new MDCRipple(this.selectAnchor_, new MDCRippleFoundation(adapter));
   }
 
-  private getNativeSelectAdapterMethods_() {
+  private getSelectAdapterMethods_() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
-      getValue: () => this.nativeControl_!.value,
-      setValue: (value: string) => {
-        this.nativeControl_!.value = value;
-      },
-      openMenu: () => undefined,
-      closeMenu: () => undefined,
-      isMenuOpen: () => false,
-      setSelectedIndex: (index: number) => {
-        this.nativeControl_!.selectedIndex = index;
-      },
-      setDisabled: (isDisabled: boolean) => {
-        this.nativeControl_!.disabled = isDisabled;
-      },
-      setValid: (isValid: boolean) => {
-        if (isValid) {
-          this.root_.classList.remove(cssClasses.INVALID);
-        } else {
-          this.root_.classList.add(cssClasses.INVALID);
-        }
-      },
-      checkValidity: () => this.nativeControl_!.checkValidity(),
-    };
-    // tslint:enable:object-literal-sort-keys
-  }
-
-  private getEnhancedSelectAdapterMethods_() {
-    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-    return {
-      getValue: () => {
-        const listItem = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
-        if (listItem && listItem.hasAttribute(strings.ENHANCED_VALUE_ATTR)) {
-          return listItem.getAttribute(strings.ENHANCED_VALUE_ATTR) || '';
-        }
-        return '';
-      },
-      setValue: (value: string) => {
-        const element = this.menuElement_!.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`);
-        this.setEnhancedSelectedIndex_(element ? this.menu_!.items.indexOf(element) : -1);
-      },
-      openMenu: () => {
-        if (this.menu_ && !this.menu_.open) {
-          this.menu_.open = true;
-          this.isMenuOpen_ = true;
-          this.selectedText_!.setAttribute('aria-expanded', 'true');
-        }
-      },
-      closeMenu: () => {
-        if (this.menu_ && this.menu_.open) {
-          this.menu_.open = false;
-        }
-      },
-      isMenuOpen: () => Boolean(this.menu_) && this.isMenuOpen_,
-      setSelectedIndex: (index: number) => this.setEnhancedSelectedIndex_(index),
-      setDisabled: (isDisabled: boolean) => {
-        this.selectedText_!.setAttribute('tabindex', isDisabled ? '-1' : '0');
-        this.selectedText_!.setAttribute('aria-disabled', isDisabled.toString());
-        if (this.hiddenInput_) {
-          this.hiddenInput_.disabled = isDisabled;
-        }
-      },
-      checkValidity: () => {
-        const classList = this.root_.classList;
-        if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
-          // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
-          // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
-          return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || Boolean(this.value));
-        } else {
-          return true;
-        }
-      },
-      setValid: (isValid: boolean) => {
-        this.selectedText_!.setAttribute('aria-invalid', (!isValid).toString());
-        if (isValid) {
-          this.root_.classList.remove(cssClasses.INVALID);
-        } else {
-          this.root_.classList.add(cssClasses.INVALID);
-        }
-      },
+      getSelectedMenuItem: () => this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR),
+      getMenuItemAttr: (menuItem: Element, attr: string) => menuItem.getAttribute(attr),
+      setSelectedText: (text: string) => this.selectedText_.textContent = text,
+      isSelectedTextFocused: () => document.activeElement === this.selectedText_,
+      getSelectedTextAttr: (attr: string) => this.selectedText_.getAttribute(attr),
+      setSelectedTextAttr: (attr: string, value: string) => this.selectedText_.setAttribute(attr, value),
+      openMenu: () => this.menu_.open = true,
+      closeMenu: () => this.menu_.open = false,
+      getAnchorElement: () => this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!,
+      setMenuAnchorElement: (anchorEl: HTMLElement) => this.menu_.setAnchorElement(anchorEl),
+      setMenuAnchorCorner: (anchorCorner: menuSurfaceConstants.Corner) => this.menu_.setAnchorCorner(anchorCorner),
+      setMenuWrapFocus: (wrapFocus: boolean) => this.menu_.wrapFocus = wrapFocus,
+      setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) =>
+        this.menu_.items[index].setAttribute(attributeName, attributeValue),
+      removeAttributeAtIndex: (index: number, attributeName: string) =>
+        this.menu_.items[index].removeAttribute(attributeName),
+      focusMenuItemAtIndex: (index: number) => (this.menu_.items[index] as HTMLElement).focus(),
+      getMenuItemCount: () => this.menu_.items.length,
+      getMenuItemValues: () => this.menu_.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || ''),
+      getMenuItemTextAtIndex: (index: number) => this.menu_.items[index].textContent as string,
+      addClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.add(className),
+      removeClassAtIndex: (index: number, className: string) => this.menu_.items[index].classList.remove(className),
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -496,10 +343,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   private getLabelAdapterMethods_() {
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
+      hasLabel: () => !!this.label_,
       floatLabel: (shouldFloat: boolean) => this.label_ && this.label_.float(shouldFloat),
       getLabelWidth: () => this.label_ ? this.label_.getWidth() : 0,
     };
+    // tslint:enable:object-literal-sort-keys
   }
 
   /**
@@ -523,79 +373,5 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
     };
-  }
-
-  private setEnhancedSelectedIndex_(index: number) {
-    const selectedItem = this.menu_!.items[index];
-    this.selectedText_!.textContent = selectedItem ? selectedItem.textContent!.trim() : '';
-    const previouslySelected = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
-
-    if (previouslySelected) {
-      previouslySelected.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
-      previouslySelected.removeAttribute(strings.ARIA_SELECTED_ATTR);
-    }
-
-    if (selectedItem) {
-      selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
-      selectedItem.setAttribute(strings.ARIA_SELECTED_ATTR, 'true');
-    }
-
-    // Synchronize hidden input's value with data-value attribute of selected item.
-    // This code path is also followed when setting value directly, so this covers all cases.
-    if (this.hiddenInput_) {
-      this.hiddenInput_.value = selectedItem ? selectedItem.getAttribute(strings.ENHANCED_VALUE_ATTR) || '' : '';
-    }
-
-    this.layout();
-  }
-
-  private initialSyncRequiredState_() {
-    const isRequired =
-        (this.targetElement_ as HTMLSelectElement).required
-        || this.targetElement_.getAttribute('aria-required') === 'true'
-        || this.root_.classList.contains(cssClasses.REQUIRED);
-    if (isRequired) {
-      if (this.nativeControl_) {
-        this.nativeControl_.required = true;
-      } else {
-        this.selectedText_!.setAttribute('aria-required', 'true');
-      }
-      this.root_.classList.add(cssClasses.REQUIRED);
-    }
-  }
-
-  private addMutationObserverForRequired_() {
-    const observerHandler = (attributesList: string[]) => {
-      attributesList.some((attributeName) => {
-        if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) === -1) {
-          return false;
-        }
-
-        if (this.selectedText_) {
-          if (this.selectedText_.getAttribute('aria-required') === 'true') {
-            this.root_.classList.add(cssClasses.REQUIRED);
-          } else {
-            this.root_.classList.remove(cssClasses.REQUIRED);
-          }
-        } else {
-          if (this.nativeControl_!.required) {
-            this.root_.classList.add(cssClasses.REQUIRED);
-          } else {
-            this.root_.classList.remove(cssClasses.REQUIRED);
-          }
-        }
-
-        return true;
-      });
-    };
-
-    const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
-      return mutationsList
-          .map((mutation) => mutation.attributeName)
-          .filter((attributeName) => attributeName) as string[];
-    };
-    const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
-    observer.observe(this.targetElement_, {attributes: true});
-    this.validationObserver_ = observer;
   }
 }
