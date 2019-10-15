@@ -66,20 +66,20 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
   setDeterminate(isDeterminate: boolean) {
     this.isDeterminate_ = isDeterminate;
 
-    if (this.isReversed_) {
-      // reset translation animation timer that was started when reverse
-      // class was introduced, as to keep it in sync with the new scaling
-      // animation timer that's about to start from adding indeterminate class
-      this.adapter_.removeClass(cssClasses.REVERSED_CLASS);
-      this.adapter_.forceLayout();
-      this.adapter_.addClass(cssClasses.REVERSED_CLASS);
-    }
-
     if (this.isDeterminate_) {
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.setScale_(this.adapter_.getPrimaryBar(), this.progress_);
       this.setScale_(this.adapter_.getBuffer(), this.buffer_);
     } else {
+      if (this.isReversed_) {
+        // reset translation animation timer that was started when reverse
+        // class was introduced, as to keep it in sync with the new scaling
+        // animation timer that's about to start from adding indeterminate class
+        this.adapter_.removeClass(cssClasses.REVERSED_CLASS);
+        this.adapter_.forceLayout();
+        this.adapter_.addClass(cssClasses.REVERSED_CLASS);
+      }
+
       this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
       this.setScale_(this.adapter_.getPrimaryBar(), 1);
       this.setScale_(this.adapter_.getBuffer(), 1);
@@ -106,7 +106,8 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
     if (!this.isDeterminate_) {
       // reset scaling animation timer that was started when indeterminate
       // class was introduced, as to keep it in sync with the reversed
-      // translation timer that's about to start from adding reversed class
+      // translation timer that's about to start from adding/removing reversed
+      // class
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.adapter_.forceLayout();
       this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);

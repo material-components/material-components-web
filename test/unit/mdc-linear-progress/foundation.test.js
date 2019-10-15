@@ -70,11 +70,11 @@ test('#setDeterminate removes class', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INDETERMINATE_CLASS));
 });
 
-test('#setDeterminate calls forceLayout to correctly reset animation timers', () => {
+test('#setDeterminate false calls forceLayout to correctly reset animation timers when reversed', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.REVERSED_CLASS)).thenReturn(true);
   foundation.init();
-  foundation.setDeterminate(true);
+  foundation.setDeterminate(false);
   td.verify(mockAdapter.forceLayout());
 });
 
@@ -167,11 +167,19 @@ test('#setReverse removes class', () => {
   td.verify(mockAdapter.removeClass(cssClasses.REVERSED_CLASS));
 });
 
-test('#setReverse calls forceLayout to correctly reset animation timers', () => {
+test('#setReverse true calls forceLayout to correctly reset animation timers when indeterminate', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(true);
   foundation.init();
   foundation.setReverse(true);
+  td.verify(mockAdapter.forceLayout());
+});
+
+test('#setReverse false calls forceLayout to correctly reset animation timers when indeterminate', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(true);
+  foundation.init();
+  foundation.setReverse(false);
   td.verify(mockAdapter.forceLayout());
 });
 
