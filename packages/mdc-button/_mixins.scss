@@ -53,6 +53,8 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
+  @include mdc-touch-target-wrapper($query);
+
   // postcss-bem-linter: define button
   .mdc-button {
     @include mdc-button-base_($query);

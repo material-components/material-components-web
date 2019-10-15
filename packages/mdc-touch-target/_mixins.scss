@@ -20,11 +20,29 @@
 // THE SOFTWARE.
 //
 
+@import "@material/base/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "./variables";
 
-// Styles applied to the component's inner touch target element.
+/// Styles applied to the component's touch target wrapper element.
+@mixin mdc-touch-target-wrapper($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  .mdc-touch-target-wrapper {
+    @include mdc-feature-targets($feat-structure) {
+      // Ensure that styles are only emitted once across all components that
+      // have increased touch targets.
+      @include mdc-base-emit-once("mdc-touch-target/wrapper") {
+        // NOTE: Will change to `inline-block` in the future, but keeping as is
+        // temporarily for backwards-compatibility.
+        display: inline;
+      }
+    }
+  }
+}
+
+/// Styles applied to the component's inner touch target element.
 @mixin mdc-touch-target($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -38,7 +56,7 @@
   }
 }
 
-// Styles applied to the component with the increased touch target.
+/// Styles applied to the component with the increased touch target.
 @mixin mdc-touch-target-component($component-height, $component-width: null, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 

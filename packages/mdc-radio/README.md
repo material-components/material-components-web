@@ -105,7 +105,7 @@ Material Design spec advises that touch targets should be at least 48 x 48 px.
 To meet this requirement, add the `mdc-radio--touch` class to your radio as follows:
 
 ```html
-<span>
+<div class="mdc-touch-target-wrapper">
   <div class="mdc-radio mdc-radio--touch">
     <input class="mdc-radio__native-control" type="radio" id="radio-1" name="radios" checked>
     <div class="mdc-radio__background">
@@ -114,10 +114,10 @@ To meet this requirement, add the `mdc-radio--touch` class to your radio as foll
     </div>
     <div class="mdc-radio__ripple"></div>
   </div>
-</span>
+</div>
 ```
 
-Note that the wrapper `<span>` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+Note that the outer  `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
 
 ## Style Customization
 

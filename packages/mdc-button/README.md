@@ -145,16 +145,16 @@ Material Design spec advises that touch targets should be at least 48 x 48 px.
 To meet this requirement, add the following to your button:
 
 ```html
-<span>
+<div class="mdc-touch-target-wrapper">
   <button class="mdc-button mdc-button--touch">
     <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">My Accessible Button</span>
     <div class="mdc-button__touch"></div>
   </button>
-</span>
+</div>
 ```
 
-Note that the wrapper `<span>` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+Note that the outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
 
 ## Style Customization
 

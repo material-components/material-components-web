@@ -119,7 +119,7 @@ Material Design spec advises that touch targets should be at least 48 x 48 px.
 To meet this requirement, add the `mdc-checkbox--touch` class to your checkbox as follows:
 
 ```html
-<span>
+<div class="mdc-touch-target-wrapper">
   <div class="mdc-checkbox mdc-checkbox--touch">
     <input type="checkbox"
            class="mdc-checkbox__native-control"
@@ -135,10 +135,10 @@ To meet this requirement, add the `mdc-checkbox--touch` class to your checkbox a
     </div>
     <div class="mdc-checkbox__ripple"></div>
   </div>
-</span>
+</div>
 ```
 
-Note that the wrapper `<span>` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+Note that the outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
 
 ## Style Customization
 
