@@ -30,6 +30,7 @@
  */
 export interface MDCLinearProgressAdapter {
   addClass(className: string): void;
+  forceLayout(): void;
   getBuffer(): HTMLElement | null;
   getPrimaryBar(): HTMLElement | null;
   hasClass(className: string): boolean;

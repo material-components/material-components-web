@@ -42,7 +42,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCLinearProgressFoundation, [
-    'addClass', 'getPrimaryBar', 'getBuffer', 'hasClass', 'removeClass', 'setStyle',
+    'addClass', 'getPrimaryBar', 'forceLayout', 'getBuffer', 'hasClass', 'removeClass', 'setStyle',
   ]);
 });
 
@@ -68,6 +68,14 @@ test('#setDeterminate removes class', () => {
   foundation.init();
   foundation.setDeterminate(true);
   td.verify(mockAdapter.removeClass(cssClasses.INDETERMINATE_CLASS));
+});
+
+test('#setDeterminate calls forceLayout to correctly reset animation timers', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.REVERSED_CLASS)).thenReturn(true);
+  foundation.init();
+  foundation.setDeterminate(true);
+  td.verify(mockAdapter.forceLayout());
 });
 
 test('#setDeterminate restores previous progress value after toggled from false to true', () => {
@@ -157,6 +165,14 @@ test('#setReverse removes class', () => {
   foundation.init();
   foundation.setReverse(false);
   td.verify(mockAdapter.removeClass(cssClasses.REVERSED_CLASS));
+});
+
+test('#setReverse calls forceLayout to correctly reset animation timers', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(true);
+  foundation.init();
+  foundation.setReverse(true);
+  td.verify(mockAdapter.forceLayout());
 });
 
 test('#open removes class', () => {

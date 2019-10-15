@@ -38,6 +38,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
   static get defaultAdapter(): MDCLinearProgressAdapter {
     return {
       addClass: () => undefined,
+      forceLayout: () => undefined,
       getBuffer: () => null,
       getPrimaryBar: () => null,
       hasClass: () => false,
@@ -64,6 +65,16 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
 
   setDeterminate(isDeterminate: boolean) {
     this.isDeterminate_ = isDeterminate;
+
+    if (this.isReversed_) {
+      // reset translation animation timer that was started when reverse
+      // class was introduced, as to keep it in sync with the new scaling
+      // animation timer that's about to start from adding indeterminate class
+      this.adapter_.removeClass(cssClasses.REVERSED_CLASS);
+      this.adapter_.forceLayout();
+      this.adapter_.addClass(cssClasses.REVERSED_CLASS);
+    }
+
     if (this.isDeterminate_) {
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.setScale_(this.adapter_.getPrimaryBar(), this.progress_);
@@ -91,6 +102,16 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
 
   setReverse(isReversed: boolean) {
     this.isReversed_ = isReversed;
+
+    if (!this.isDeterminate_) {
+      // reset scaling animation timer that was started when indeterminate
+      // class was introduced, as to keep it in sync with the reversed
+      // translation timer that's about to start from adding reversed class
+      this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
+      this.adapter_.forceLayout();
+      this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
+    }
+
     if (this.isReversed_) {
       this.adapter_.addClass(cssClasses.REVERSED_CLASS);
     } else {
