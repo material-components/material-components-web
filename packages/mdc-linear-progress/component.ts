@@ -59,6 +59,7 @@ export class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation>
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCLinearProgressAdapter = {
       addClass: (className: string) => this.root_.classList.add(className),
+      forceLayout: () => (this.root_ as HTMLElement).offsetWidth,
       getBuffer: () => this.root_.querySelector(MDCLinearProgressFoundation.strings.BUFFER_SELECTOR),
       getPrimaryBar: () => this.root_.querySelector(MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR),
       hasClass: (className: string) => this.root_.classList.contains(className),

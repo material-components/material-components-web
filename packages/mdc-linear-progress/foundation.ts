@@ -38,6 +38,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
   static get defaultAdapter(): MDCLinearProgressAdapter {
     return {
       addClass: () => undefined,
+      forceLayout: () => undefined,
       getBuffer: () => null,
       getPrimaryBar: () => null,
       hasClass: () => false,
@@ -64,11 +65,23 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
 
   setDeterminate(isDeterminate: boolean) {
     this.isDeterminate_ = isDeterminate;
+
     if (this.isDeterminate_) {
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.setScale_(this.adapter_.getPrimaryBar(), this.progress_);
       this.setScale_(this.adapter_.getBuffer(), this.buffer_);
     } else {
+      if (this.isReversed_) {
+        // Adding/removing REVERSED_CLASS starts a translate animation, while
+        // adding INDETERMINATE_CLASS starts a scale animation. Here, we reset
+        // the translate animation in order to keep it in sync with the new
+        // scale animation that will start from adding INDETERMINATE_CLASS
+        // below.
+        this.adapter_.removeClass(cssClasses.REVERSED_CLASS);
+        this.adapter_.forceLayout();
+        this.adapter_.addClass(cssClasses.REVERSED_CLASS);
+      }
+
       this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
       this.setScale_(this.adapter_.getPrimaryBar(), 1);
       this.setScale_(this.adapter_.getBuffer(), 1);
@@ -91,6 +104,18 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
 
   setReverse(isReversed: boolean) {
     this.isReversed_ = isReversed;
+
+    if (!this.isDeterminate_) {
+      // Adding INDETERMINATE_CLASS starts a scale animation, while
+      // adding/removing REVERSED_CLASS starts a translate animation. Here, we
+      // reset the scale animation in order to keep it in sync with the new
+      // translate animation that will start from adding/removing REVERSED_CLASS
+      // below.
+      this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
+      this.adapter_.forceLayout();
+      this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
+    }
+
     if (this.isReversed_) {
       this.adapter_.addClass(cssClasses.REVERSED_CLASS);
     } else {
