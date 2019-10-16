@@ -26,7 +26,7 @@ if ! ./scripts/pre-release.sh; then
 fi
 
 log "Bumping up MDC Web version to canary..."
-if ! npx lerna version premajor --no-git-tag-version --no-push --preid canary.$(git rev-parse --short HEAD) --yes; then
+if ! npx lerna version premajor --no-git-tag-version --no-push --preid canary.$(git rev-parse --short HEAD) --yes --exact; then
   fail "lerna version command failed"
   exit 1
 fi
