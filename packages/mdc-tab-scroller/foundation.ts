@@ -125,7 +125,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   /**
-   * Increment the scroll value by the scrollXIncrement
+   * Increment the scroll value by the scrollXIncrement using animation.
    * @param scrollXIncrement The value by which to increment the scroll position
    */
   incrementScroll(scrollXIncrement: number) {
@@ -134,11 +134,26 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
       return;
     }
 
-    if (this.isRTL_()) {
-      return this.incrementScrollRTL_(scrollXIncrement);
+    this.animate_(this.getIncrementScrollOperation_(scrollXIncrement));
+  }
+
+  /**
+   * Increment the scroll value by the scrollXIncrement without animation.
+   * @param scrollXIncrement The value by which to increment the scroll position
+   */
+  incrementScrollImmediate(scrollXIncrement: number) {
+    // Early exit for non-operational increment values
+    if (scrollXIncrement === 0) {
+      return;
     }
 
-    this.incrementScroll_(scrollXIncrement);
+    const operation = this.getIncrementScrollOperation_(scrollXIncrement);
+    if (operation.scrollDelta === 0) {
+      return;
+    }
+
+    this.stopScrollAnimation_();
+    this.adapter_.setScrollAreaScrollLeft(operation.finalScrollPosition);
   }
 
   /**
@@ -238,27 +253,23 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   /**
-   * Internal increment scroll method
-   * @param scrollX The new scroll position increment
+   * Internal method to compute the increment scroll operation values.
+   * @param scrollX The desired scroll position increment
+   * @return MDCTabScrollerAnimation with the sanitized values for performing the scroll operation.
    */
-  private incrementScroll_(scrollX: number) {
+  private getIncrementScrollOperation_(scrollX: number): MDCTabScrollerAnimation {
+    if (this.isRTL_()) {
+      return this.getRTLScroller().incrementScrollRTL(scrollX);
+    }
+
     const currentScrollX = this.getScrollPosition();
     const targetScrollX = scrollX + currentScrollX;
     const safeScrollX = this.clampScrollValue_(targetScrollX);
     const scrollDelta = safeScrollX - currentScrollX;
-    this.animate_({
+    return {
       finalScrollPosition: safeScrollX,
       scrollDelta,
-    });
-  }
-
-  /**
-   * Internal increment scroll RTL method
-   * @param scrollX The new scroll position RTL increment
-   */
-  private incrementScrollRTL_(scrollX: number) {
-    const animation = this.getRTLScroller().incrementScrollRTL(scrollX);
-    this.animate_(animation);
+    };
   }
 
   /**
