@@ -1,6 +1,6 @@
 {
   "name": "@material/menu",
-  "version": "3.2.0",
+  "version": "4.0.0-canary.735147131.0",
   "description": "The Material Components for the web menu component",
   "license": "MIT",
   "keywords": [
@@ -18,13 +18,13 @@
     "directory": "packages/mdc-menu"
   },
   "dependencies": {
-    "@material/base": "^3.1.0",
-    "@material/dom": "^3.1.0",
-    "@material/feature-targeting": "^3.1.0",
-    "@material/list": "^3.2.0",
-    "@material/menu-surface": "^3.2.0",
-    "@material/ripple": "^3.2.0",
-    "@material/rtl": "^3.2.0",
+    "@material/base": "4.0.0-canary.735147131.0",
+    "@material/dom": "4.0.0-canary.735147131.0",
+    "@material/feature-targeting": "4.0.0-canary.735147131.0",
+    "@material/list": "4.0.0-canary.735147131.0",
+    "@material/menu-surface": "4.0.0-canary.735147131.0",
+    "@material/ripple": "4.0.0-canary.735147131.0",
+    "@material/rtl": "4.0.0-canary.735147131.0",
     "tslib": "^1.9.3"
   }
 }
