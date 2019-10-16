@@ -72,9 +72,11 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
       this.setScale_(this.adapter_.getBuffer(), this.buffer_);
     } else {
       if (this.isReversed_) {
-        // reset translation animation timer that was started when reverse
-        // class was introduced, as to keep it in sync with the new scaling
-        // animation timer that's about to start from adding indeterminate class
+        // Adding/removing REVERSED_CLASS starts a translate animation, while
+        // adding INDETERMINATE_CLASS starts a scale animation. Here, we reset
+        // the translate animation in order to keep it in sync with the new
+        // scale animation that will start from adding INDETERMINATE_CLASS
+        // below.
         this.adapter_.removeClass(cssClasses.REVERSED_CLASS);
         this.adapter_.forceLayout();
         this.adapter_.addClass(cssClasses.REVERSED_CLASS);
@@ -104,10 +106,11 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
     this.isReversed_ = isReversed;
 
     if (!this.isDeterminate_) {
-      // reset scaling animation timer that was started when indeterminate
-      // class was introduced, as to keep it in sync with the reversed
-      // translation timer that's about to start from adding/removing reversed
-      // class
+      // Adding INDETERMINATE_CLASS starts a scale animation, while
+      // adding/removing REVERSED_CLASS starts a translate animation. Here, we
+      // reset the scale animation in order to keep it in sync with the new
+      // translate animation that will start from adding/removing REVERSED_CLASS
+      // below.
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.adapter_.forceLayout();
       this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
