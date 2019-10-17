@@ -405,9 +405,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   private getLineRippleAdapterMethods_(): MDCTextFieldLineRippleAdapter {
     return {
       activateLineRipple: () => {
-        if (this.lineRipple_) {
-          this.lineRipple_.activate();
-        }
+        if (this.lineRipple_) this.lineRipple_.activate();
       },
       deactivateLineRipple: () => {
         if (this.lineRipple_) {
