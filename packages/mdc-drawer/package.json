@@ -1,6 +1,6 @@
 {
   "name": "@material/drawer",
-  "version": "3.2.0",
+  "version": "4.0.0-canary.062ade5c0.0",
   "description": "The Material Components Web drawer component",
   "license": "MIT",
   "keywords": [
@@ -19,16 +19,16 @@
     "directory": "packages/mdc-drawer"
   },
   "dependencies": {
-    "@material/animation": "^3.1.0",
-    "@material/base": "^3.1.0",
-    "@material/elevation": "^3.1.0",
-    "@material/feature-targeting": "^3.1.0",
-    "@material/list": "^3.2.0",
-    "@material/ripple": "^3.2.0",
-    "@material/rtl": "^3.2.0",
-    "@material/shape": "^3.1.0",
-    "@material/theme": "^3.1.0",
-    "@material/typography": "^3.1.0",
+    "@material/animation": "4.0.0-canary.062ade5c0.0",
+    "@material/base": "4.0.0-canary.062ade5c0.0",
+    "@material/elevation": "4.0.0-canary.062ade5c0.0",
+    "@material/feature-targeting": "4.0.0-canary.062ade5c0.0",
+    "@material/list": "4.0.0-canary.062ade5c0.0",
+    "@material/ripple": "4.0.0-canary.062ade5c0.0",
+    "@material/rtl": "4.0.0-canary.062ade5c0.0",
+    "@material/shape": "4.0.0-canary.062ade5c0.0",
+    "@material/theme": "4.0.0-canary.062ade5c0.0",
+    "@material/typography": "4.0.0-canary.062ade5c0.0",
     "focus-trap": "^5.0.0",
     "tslib": "^1.9.3"
   }
