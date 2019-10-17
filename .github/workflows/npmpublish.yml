@@ -11,36 +11,34 @@ on:
       - '**/.npmignore'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10
-      - run: npm i
-
   publish-npm:
-    needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Checkout develop branch
+        uses: actions/checkout@v1
+        with:
+          ref: develop
+          fetch-depth: 1
+      - name: Setup node
+        uses: actions/setup-node@v1
         with:
           node-version: 10
           registry-url: https://registry.npmjs.org/
+      - name: Install dependencies
+        run: |
+          npm install
       - name: Build packages
         run: |
           npm run dist
           node scripts/cp-pkgs.js
           node scripts/verify-pkg-main.js
-      - name: Creating release
+      - name: Create release
         run: |
-          lerna version premajor --no-git-tag-version --no-push --preid canary.$(git rev-parse --short HEAD) --yes --exact
+          npx lerna version premajor --no-git-tag-version --no-push --preid canary.$(git rev-parse --short HEAD) --yes --exact
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -am "chore: Publish"
-      - name: Publishing to NPM registry
-        run: lerna publish from-package --yes --dist-tag canary
+      - name: Publish to NPM registry
+        run: npx lerna publish from-package --yes --dist-tag canary
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
