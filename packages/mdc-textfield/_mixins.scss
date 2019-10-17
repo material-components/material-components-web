@@ -94,7 +94,7 @@
 
   // Target only dense text field.
   @if $height <= 40px {
-    // Target only IE 11
+    // Target only IE 11.
     @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
       .mdc-text-field__input {
         // Set line-height to the height of input element excluding padding & border.
