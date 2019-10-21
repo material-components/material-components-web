@@ -25,6 +25,7 @@ import autoInit from '@material/auto-init/index';
 import * as base from '@material/base/index';
 import * as checkbox from '@material/checkbox/index';
 import * as chips from '@material/chips/index';
+import * as circularProgress from '@material/circular-progress/index';
 import * as dataTable from '@material/data-table/index';
 import * as dialog from '@material/dialog/index';
 import * as dom from '@material/dom/index';
@@ -56,6 +57,7 @@ import * as topAppBar from '@material/top-app-bar/index';
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCChip', chips.MDCChip);
 autoInit.register('MDCChipSet', chips.MDCChipSet);
+autoInit.register('MDCCircularProgress', circularProgress.MDCCircularProgress);
 autoInit.register('MDCDataTable', dataTable.MDCDataTable);
 autoInit.register('MDCDialog', dialog.MDCDialog);
 autoInit.register('MDCDrawer', drawer.MDCDrawer);
@@ -85,6 +87,7 @@ export {
   base,
   checkbox,
   chips,
+  circularProgress,
   dataTable,
   dialog,
   dom,

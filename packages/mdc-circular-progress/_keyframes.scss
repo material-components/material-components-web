@@ -1,0 +1,98 @@
+//
+// Copyright 2019 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@keyframes spinner-container-rotate {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinner-fill-unfill-rotate {
+  @for $i from 1 through 8 {
+    #{$i * 12.5}% {
+      transform: rotate($i * .5 * $mdc-circular-progress-arc-size);
+    }
+  }
+}
+
+/**
+ * HACK: Even though the intention is to have the current .SpinnerLayer at
+ * `opacity: 1`, we set it to `opacity: 0.99` instead since this forces Chrome
+ * to do proper subpixel rendering for the elements being animated. This is
+ * especially visible in Chrome 39 on Ubuntu 14.04. See:
+ *
+ * - https://github.com/Polymer/paper-spinner/issues/9
+ * - https://code.google.com/p/chromium/issues/detail?id=436255
+ */
+
+@keyframes spinner-color-1-fade-in-out {
+  from { opacity: .99; }
+  25% { opacity: .99; }
+  26% { opacity: 0; }
+  89% { opacity: 0; }
+  90% { opacity: .99; }
+  100% { opacity: .99; }
+}
+
+@keyframes spinner-color-2-fade-in-out {
+  from { opacity: 0; }
+  15% { opacity: 0; }
+  25% { opacity: .99; }
+  50% { opacity: .99; }
+  51% { opacity: 0; }
+}
+
+@keyframes spinner-color-3-fade-in-out {
+  from { opacity: 0; }
+  40% { opacity: 0; }
+  50% { opacity: .99; }
+  75% { opacity: .99; }
+  76% { opacity: 0; }
+}
+
+@keyframes spinner-color-4-fade-in-out {
+  from { opacity: 0; }
+  65% { opacity: 0; }
+  75% { opacity: .99; }
+  90% { opacity: .99; }
+  100% { opacity: 0; }
+}
+
+@keyframes spinner-left-spin {
+  from { transform: rotate(265deg); }
+  50% { transform: rotate(130deg); }
+  to { transform: rotate(265deg); }
+}
+
+@keyframes spinner-right-spin {
+  from { transform: rotate(-265deg); }
+  50% { transform: rotate(-130deg); }
+  to { transform: rotate(-265deg); }
+}
+
+@keyframes spinner-fade-out {
+  from { opacity: .99; }
+  to { opacity: 0; }
+}
+
+@keyframes spinner-fade-in {
+  from { opacity: 0; }
+  to { opacity: .99; }
+}

@@ -24,6 +24,7 @@
     "@material/card": "^3.2.0",
     "@material/checkbox": "^3.2.0",
     "@material/chips": "^3.2.0",
+    "@material/circular-progress": "^3.2.0",
     "@material/data-table": "^3.2.0",
     "@material/density": "^0.0.0",
     "@material/dialog": "^3.2.0",

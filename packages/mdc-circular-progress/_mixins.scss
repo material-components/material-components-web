@@ -1,0 +1,238 @@
+//
+// Copyright 2019 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@import "@material/animation/functions";
+@import "@material/theme/mixins";
+@import "./variables";
+@import "./keyframes";
+@import "./functions";
+
+@mixin mdc-circular-progress-core-styles {
+  @include mdc-circular-progress-color($mdc-circular-progress-color);
+  @include mdc-circular-progress-indeterminate-colors($mdc-circular-progress-colors);
+
+  .mdc-circular-progress {
+    @include mdc-circular-progress-size_($mdc-circular-progress-default-size);
+
+    display: inline-block;
+    position: relative;
+    transition: mdc-animation-exit-temporary(opacity, 250ms);
+  }
+
+  .mdc-circular-progress--small {
+    @include mdc-circular-progress-size_(small);
+  }
+
+  .mdc-circular-progress--medium {
+    @include mdc-circular-progress-size_(medium);
+  }
+
+  .mdc-circular-progress--large {
+    @include mdc-circular-progress-size_(large);
+  }
+
+  .mdc-circular-progress__determ-container,
+  .mdc-circular-progress__indeterm-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mdc-circular-progress__determ-container {
+    transform: rotate(-90deg);
+  }
+
+  .mdc-circular-progress__indeterm-container {
+    opacity: 0;
+  }
+
+  .mdc-circular-progress__spinner-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+
+    &.mdc-circular-progress__color-1 {
+      opacity: 1;
+    }
+  }
+
+  .mdc-circular-progress__indeterm-circle-graphic {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    height: 100%;
+    animation: none;
+  }
+
+  .mdc-circular-progress__determ-circle-graphic,
+  .mdc-circular-progress__indeterm-circle-graphic {
+    fill: transparent;
+  }
+
+  .mdc-circular-progress__determ-circle {
+    transition: mdc-animation-enter(stroke-dashoffset, 500ms);
+  }
+
+  /**
+   * Patch the gap that appear between the two adjacent div.circle-clipper while the
+   * spinner is rotating (appears on Chrome 38, Safari 7.1, and IE 11).
+   *
+   * Update: the gap no longer appears on Chrome when .SpinnerLayer's opacity is 0.99,
+   * but still does on Safari and IE.
+   */
+  .mdc-circular-progress__gap-patch {
+    position: absolute;
+    top: 0;
+    left: 47.5%;
+    box-sizing: border-box;
+    width: 5%;
+    height: 100%;
+    border-color: inherit;
+    overflow: hidden;
+
+    .mdc-circular-progress__indeterm-circle-graphic {
+      left: -900%;
+      width: 2000%;
+      transform: rotate(180deg);
+    }
+  }
+
+  .mdc-circular-progress__circle-clipper {
+    display: inline-block;
+    position: relative;
+    width: 50%;
+    height: 100%;
+    border-color: inherit;
+    overflow: hidden;
+
+    .mdc-circular-progress__indeterm-circle-graphic {
+      width: 200%;
+    }
+  }
+
+  .mdc-circular-progress__circle-right {
+    .mdc-circular-progress__indeterm-circle-graphic {
+      left: -100%;
+    }
+  }
+
+  .mdc-circular-progress--indeterminate {
+    .mdc-circular-progress__determ-container {
+      opacity: 0;
+    }
+
+    .mdc-circular-progress__indeterm-container {
+      opacity: 1;
+    }
+
+    @include mdc-circular-progress-indeterminate-active-animations_;
+  }
+
+  .mdc-circular-progress--closed {
+    opacity: 0;
+  }
+}
+
+// Public mixins
+
+@mixin mdc-circular-progress-color($color) {
+  .mdc-circular-progress__determ-circle,
+  .mdc-circular-progress__indeterm-circle-graphic {
+    stroke: $color;
+  }
+}
+
+@mixin mdc-circular-progress-indeterminate-colors($colors) {
+  @if length($colors) != 4 {
+    @error "`mdc-circular-progress-colors` accepts exactly 4 colors";
+  }
+
+  @for $i from 1 through 4 {
+    .mdc-circular-progress__color-#{$i} .mdc-circular-progress__indeterm-circle-graphic {
+      stroke: nth($colors, $i);
+    }
+  }
+}
+
+// Private mixins
+
+@mixin mdc-circular-progress-size_($size) {
+  $resolved-size: map-get($mdc-circular-progress-container-side-length, $size);
+
+  width: $resolved-size;
+  height: $resolved-size;
+
+  .mdc-circular-progress__determ-circle-graphic,
+  .mdc-circular-progress__indeterm-circle-graphic {
+    stroke-width: map-get($mdc-circular-progress-stroke-width, $size);
+  }
+
+  .mdc-circular-progress__gap-patch .mdc-circular-progress__indeterm-circle-graphic {
+    stroke-width: map-get($mdc-circular-progress-stroke-width, $size) * .8;
+  }
+}
+
+@mixin mdc-circular-progress-indeterminate-active-animations_ {
+  .mdc-circular-progress__indeterm-container {
+    $duration:
+      360deg *
+      $mdc-circular-progress-arc-time /
+      ($mdc-circular-progress-arc-start-rotation-interval + (360 - $mdc-circular-progress-arc-size));
+
+    animation: spinner-container-rotate $duration linear infinite;
+  }
+
+  /**
+  * IMPORTANT NOTE ABOUT CSS ANIMATION PROPERTIES (keanulee):
+  *
+  * iOS Safari (tested on iOS 8.1) does not handle animation-delay very well - it doesn't
+  * guarantee that the animation will start _exactly_ after that value. So we avoid using
+  * animation-delay and instead set custom keyframes for each color (as redundant as it
+  * seems).
+  *
+  * We write out each animation in full (instead of separating animation-name,
+  * animation-duration, etc.) because under the polyfill, Safari does not recognize those
+  * specific properties properly, treats them as -webkit-animation, and overrides the
+  * other animation rules. See https://github.com/Polymer/platform/issues/53.
+  */
+  @for $i from 1 through 4 {
+    .mdc-circular-progress__color-#{$i} {
+      animation:
+        spinner-fill-unfill-rotate 4*$mdc-circular-progress-arc-time $mdc-circular-progress-timing-function
+        infinite both,
+        spinner-color-#{$i}-fade-in-out 4*$mdc-circular-progress-arc-time $mdc-circular-progress-timing-function
+        infinite both;
+    }
+  }
+
+  .mdc-circular-progress__circle-left .mdc-circular-progress__indeterm-circle-graphic {
+    animation: spinner-left-spin $mdc-circular-progress-arc-time $mdc-circular-progress-timing-function infinite both;
+  }
+
+  .mdc-circular-progress__circle-right .mdc-circular-progress__indeterm-circle-graphic {
+    animation: spinner-right-spin $mdc-circular-progress-arc-time $mdc-circular-progress-timing-function infinite both;
+  }
+}
