@@ -258,53 +258,62 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   }
 }
 
+///
+/// Sets the stroke color of an unchecked, enabled radio button.
+/// @param {Color} $color - The desired stroke color.
+///
 @mixin mdc-radio-unchecked-stroke-color($color, $query: mdc-feature-all()) {
-  .mdc-radio__native-control:enabled:not(:checked) {
+  @include mdc-radio-if-enabled-unchecked_ {
     @include mdc-radio-stroke-color_($color, $query: $query);
   }
 }
 
+///
+/// Sets the stroke color of a checked, enabled radio button.
+/// @param {Color} $color - The desired stroke color.
+///
 @mixin mdc-radio-checked-stroke-color($color, $query: mdc-feature-all()) {
-  .mdc-radio__native-control:enabled:checked {
+  @include mdc-radio-if-enabled-checked_ {
     @include mdc-radio-stroke-color_($color, $query:$query);
   }
 }
 
+///
+/// Sets the ink color of an enabled radio button.
+/// @param {Color} $color - The desired ink color.
+///
 @mixin mdc-radio-ink-color($color, $query: mdc-feature-all()) {
-  .mdc-radio__native-control:enabled {
+  @include mdc-radio-if-enabled_ {
     @include mdc-radio-ink-color_($color, $query: $query);
   }
 }
 
 ///
-/// Customizes the stroke color of radio when unchecked and disabled
-/// @param {Color} $color - The desired stroke color
+/// Sets the stroke color of an unchecked, disabled radio button.
+/// @param {Color} $color - The desired stroke color.
 ///
 @mixin mdc-radio-disabled-unchecked-stroke-color($color, $query: mdc-feature-all()) {
-  [aria-disabled="true"] .mdc-radio__native-control,
-  .mdc-radio__native-control:disabled:not(:checked) {
+  @include mdc-radio-if-disabled-unchecked_ {
     @include mdc-radio-stroke-color_($color, $query: $query);
   }
 }
 
 ///
-/// Customizes the stroke color of radio when checked and disabled
-/// @param {Color} $color - The desired stroke color
+/// Sets the stroke color of a checked, disabled radio button.
+/// @param {Color} $color - The desired stroke color.
 ///
 @mixin mdc-radio-disabled-checked-stroke-color($color, $query: mdc-feature-all()) {
-  [aria-disabled="true"] .mdc-radio__native-control,
-  .mdc-radio__native-control:disabled:checked {
+  @include mdc-radio-if-disabled-checked_ {
     @include mdc-radio-stroke-color_($color, $query: $query);
   }
 }
 
 ///
-/// Customizes the ink color of radio when disabled
+/// Sets the ink color of a disabled radio button.
 /// @param {Color} $color - The desired ink color
 ///
 @mixin mdc-radio-disabled-ink-color($color, $query: mdc-feature-all()) {
-  [aria-disabled="true"] .mdc-radio__native-control,
-  .mdc-radio__native-control:disabled {
+  @include mdc-radio-if-diabled_ {
     @include mdc-radio-ink-color_($color, $query: $query);
   }
 }
@@ -403,22 +412,105 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   }
 }
 
-// Private
+///
+/// Helps select the radio background only when its native control is in the
+/// enabled state.
+/// @access private
+///
+@mixin mdc-radio-if-enabled_ {
+  .mdc-radio__native-control:enabled + {
+    @content;
+  }
+}
 
+///
+/// Helps select the radio background only when its native control is in the
+/// enabled & unchecked state.
+/// @access private
+///
+@mixin mdc-radio-if-enabled-unchecked_ {
+  .mdc-radio__native-control:enabled:not(:checked) + {
+    @content;
+  }
+}
+
+///
+/// Helps select the radio background only when its native control is in the
+/// enabled & checked state.
+/// @access private
+///
+@mixin mdc-radio-if-enabled-checked_ {
+  .mdc-radio__native-control:enabled:checked + {
+    @content;
+  }
+}
+
+///
+/// Helps select the radio background only when its native control is in the
+/// disabled state.
+/// @access private
+///
+@mixin mdc-radio-if-disabled_ {
+  [aria-disabled="true"] .mdc-radio__native-control,
+  .mdc-radio__native-control:disabled {
+    + {
+      @content;
+    }
+  }
+}
+
+///
+/// Helps select the radio background only when its native control is in the
+/// disabled & unchecked state.
+/// @access private
+///
+@mixin mdc-radio-if-disabled-unchecked_ {
+  [aria-disabled="true"] .mdc-radio__native-control,
+  .mdc-radio__native-control:disabled {
+    &:not(:checked) + {
+      @content;
+    }
+  }
+}
+
+///
+/// Helps select the radio background only when its native control is in the
+/// disabled & checked state.
+/// @access private
+///
+@mixin mdc-radio-if-disabled-checked_ {
+  [aria-disabled="true"] .mdc-radio__native-control,
+  .mdc-radio__native-control:disabled {
+    &:checked + {
+      @content;
+    }
+  }
+}
+
+///
+/// Sets the ink color for radio. This is wrapped in a mixin
+/// that qualifies state such as `mdc-radio-if-enabled_`
+/// @access private
+///
 @mixin mdc-radio-ink-color_($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  + .mdc-radio__background .mdc-radio__inner-circle {
+  .mdc-radio__background .mdc-radio__inner-circle {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(border-color, $color);
     }
   }
 }
 
+///
+/// Sets the stroke color for radio. This is wrapped in a mixin
+/// that qualifies state such as `mdc-radio-if-enabled_`
+/// @access private
+///
 @mixin mdc-radio-stroke-color_($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  + .mdc-radio__background .mdc-radio__outer-circle {
+  .mdc-radio__background .mdc-radio__outer-circle {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(border-color, $color);
     }
