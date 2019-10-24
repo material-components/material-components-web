@@ -24,7 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
-import {MDCMenuDimensions, MDCMenuDistance, MDCMenuPoint} from './types';
+import {AnyDuringTs36Migration, MDCMenuDimensions, MDCMenuDistance, MDCMenuPoint} from './types';
 
 interface AutoLayoutMeasurements {
   anchorSize: MDCMenuDimensions;
@@ -435,11 +435,11 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     const props = Object.keys(position) as Array<keyof Partial<MDCMenuDistance>>;
 
     for (const prop of props) {
-      let value = position[prop] || 0;
+      let value = (position as AnyDuringTs36Migration)[prop] || 0;
 
       // Hoisted surfaces need to have the anchor elements location on the page added to the
       // position properties for proper alignment on the body.
-      value += viewportDistance[prop];
+      value += (viewportDistance as AnyDuringTs36Migration)[prop];
 
       // Surfaces that are absolutely positioned need to have additional calculations for scroll
       // and bottom positioning.
@@ -455,7 +455,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
         }
       }
 
-      position[prop] = value;
+      (position as AnyDuringTs36Migration)[prop] = value;
     }
   }
 
