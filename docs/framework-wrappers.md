@@ -22,6 +22,5 @@ Material Components for the web are architected to be adaptable to various major
     - [BalmUI](https://material.balmjs.com/): Next Generation Material UI for Vue.js
     - [Ember Material Components](https://github.com/onehilltech/ember-cli-mdc): MDC Web integration for Ember (using [vanilla components](./integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
     - [MatBlazor](https://github.com/SamProf/MatBlazor): Material Design components for Blazor
-    - [Svelte Material UI](https://github.com/hperrin/svelte-material-ui): A library of Svelte 3 Material UI components.
 
   - More coming soon! Feel free to submit a pull request adding your library to this list, so long as you meet our [criteria](integrating-into-frameworks.md).
