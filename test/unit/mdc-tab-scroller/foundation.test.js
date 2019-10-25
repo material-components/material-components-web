@@ -285,6 +285,49 @@ test(`#incrementScroll() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMA
   }
 );
 
+test('#incrementScrollImmediate() exits early if increment is 0', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({scrollLeft: 700});
+  foundation.incrementScrollImmediate(0);
+  td.verify(mockAdapter.setScrollAreaScrollLeft(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#incrementScrollImmediate() exits early if increment puts the scrollLeft over the max value', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({scrollLeft: 700});
+  foundation.incrementScrollImmediate(10);
+  td.verify(mockAdapter.setScrollAreaScrollLeft(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#incrementScrollImmediate() exits early if increment puts the scrollLeft below the min value', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({scrollLeft: 0});
+  foundation.incrementScrollImmediate(-10);
+  td.verify(mockAdapter.setScrollAreaScrollLeft(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#incrementScrollImmediate() increases the scrollLeft value by the given value', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({scrollLeft: 123});
+  foundation.incrementScrollImmediate(11);
+  td.verify(mockAdapter.setScrollAreaScrollLeft(134), {times: 1});
+});
+
+test('#incrementScrollImmediate() increases the scrollLeft value by the given value up to the max scroll value', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({scrollLeft: 99, rootWidth: 100, contentWidth: 200});
+  foundation.incrementScrollImmediate(2);
+  td.verify(mockAdapter.setScrollAreaScrollLeft(100), {times: 1});
+});
+
+test('#incrementScrollImmediate() decreases the scrollLeft value by the given value', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({scrollLeft: 123});
+  foundation.incrementScrollImmediate(-11);
+  td.verify(mockAdapter.setScrollAreaScrollLeft(112), {times: 1});
+});
+
+test('#incrementScrollImmediate() decreases the scrollLeft value by the given value down to the min scroll value',
+  () => {
+    const {foundation, mockAdapter} = setupScrollToTest({scrollLeft: 1, rootWidth: 100, contentWidth: 200});
+    foundation.incrementScrollImmediate(-2);
+    td.verify(mockAdapter.setScrollAreaScrollLeft(0), {times: 1});
+  });
+
 // RTL Mode
 
 function setupScrollToRTLTest() {
