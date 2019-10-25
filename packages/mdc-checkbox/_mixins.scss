@@ -264,7 +264,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 /// @param {Color} $unmarked-fill-color - The desired fill color for the unmarked state
 /// @param {Color} $marked-stroke-color - The desired stroke color for the marked state
 /// @param {Color} $marked-fill-color - The desired fill color for the marked state
-/// @param {bool} $generate-keyframes [true] - Whether animation keyframes should be generated
+/// @param {Boolean} $generate-keyframes [true] - Whether animation keyframes should be generated
 ///
 @mixin mdc-checkbox-container-colors(
   $unmarked-stroke-color: $mdc-checkbox-border-color,
