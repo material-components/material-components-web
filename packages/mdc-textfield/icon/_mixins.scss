@@ -28,6 +28,12 @@
   }
 }
 
+@mixin mdc-text-field-disabled-icon-color($color, $styleSecondIcon: false) {
+  &.mdc-text-field--disabled {
+    @include mdc-text-field-icon-color_($color, $styleSecondIcon);
+  }
+}
+
 // Private mixins
 
 @mixin mdc-text-field-icon-horizontal-position_($position-property, $position, $padding, $input-padding) {

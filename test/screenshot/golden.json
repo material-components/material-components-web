@@ -1391,6 +1391,14 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/classes/baseline.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-textfield/classes/disabled-character-counter.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/classes/disabled-character-counter.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/classes/disabled-character-counter.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/classes/disabled-character-counter.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/classes/disabled-character-counter.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-textfield/classes/disabled-helper-text-persistent-validation-msg.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/classes/disabled-helper-text-persistent-validation-msg.html?utm_source=golden_json",
     "screenshots": {
@@ -1775,12 +1783,100 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/10/02/19_16_46_900/spec/mdc-textfield/mixins/density.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-textfield/mixins/disabled-bottom-line-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-bottom-line-color.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-bottom-line-color.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-bottom-line-color.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-bottom-line-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/disabled-character-counter.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-character-counter.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-character-counter.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-character-counter.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-character-counter.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/disabled-fill-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/24/15_30_32_827/spec/mdc-textfield/mixins/disabled-fill-color.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/24/15_30_32_827/spec/mdc-textfield/mixins/disabled-fill-color.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/24/15_30_32_827/spec/mdc-textfield/mixins/disabled-fill-color.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/24/15_30_32_827/spec/mdc-textfield/mixins/disabled-fill-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/disabled-fullwidth-bottom-line-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-fullwidth-bottom-line-color.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-fullwidth-bottom-line-color.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-fullwidth-bottom-line-color.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-fullwidth-bottom-line-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/disabled-helper-text-persistent-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-helper-text-persistent-color.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-helper-text-persistent-color.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-helper-text-persistent-color.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-helper-text-persistent-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/disabled-icon-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-icon-color.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-icon-color.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-icon-color.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-icon-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/disabled-ink-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-ink-color.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-ink-color.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-ink-color.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-ink-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/disabled-label-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-label-color.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-label-color.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-label-color.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-label-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/disabled-outline-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-outline-color.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-outline-color.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-outline-color.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/disabled-outline-color.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-textfield/mixins/outline-shape-radius.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/outline-shape-radius.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/outline-shape-radius.html.windows_chrome_76.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/outline-shape-radius.html.windows_firefox_67.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/29/23_12_52_448/spec/mdc-textfield/mixins/outline-shape-radius.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/textarea-disabled-fill-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/textarea-disabled-fill-color.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/textarea-disabled-fill-color.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/textarea-disabled-fill-color.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/23/20_52_59_386/spec/mdc-textfield/mixins/textarea-disabled-fill-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/mixins/textarea-disabled-outline-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/24/15_30_32_827/spec/mdc-textfield/mixins/textarea-disabled-outline-color.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/24/15_30_32_827/spec/mdc-textfield/mixins/textarea-disabled-outline-color.html.windows_chrome_77.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/24/15_30_32_827/spec/mdc-textfield/mixins/textarea-disabled-outline-color.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/10/24/15_30_32_827/spec/mdc-textfield/mixins/textarea-disabled-outline-color.html.windows_ie_11.png"
     }
   },
   "spec/mdc-top-app-bar/classes/baseline-dense-prominent-with-action-items.html": {

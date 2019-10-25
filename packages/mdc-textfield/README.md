@@ -291,49 +291,55 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 Mixin | Description
 --- | ---
-`mdc-text-field-ink-color($color)` | Customizes the color of the text entered into the text field.
-`mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-ink-color($color)` | Customizes the color of the text entered into an enabled text field.
+`mdc-text-field-disabled-ink-color($color)` | Customizes the color of the entered text in a disabled text field.
+`mdc-text-field-label-color($color)` | Customizes the text color of the label in an enabled text field.
+`mdc-text-field-disabled-label-color($color)` | Customizes the text color of the label in a disabled text field.
 `mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.
 
-#### Mixins for Filled Text Field
+#### Mixins for Filled Text Field and Textarea
+
+Mixin | Description
+--- | ---
+`mdc-text-field-fill-color($color)` | Customizes the background color of the text field or textarea when enabled.
+`mdc-text-field-disabled-fill-color($color)` | Customizes the background color of the text field or textarea when disabled.
+
+#### Mixins for Filled Text Field Only
 
 Mixin | Description
 --- | ---
 `mdc-text-field-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-text-field-fill-color($color)` | Customizes the background color of the text field.
 `mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
 `mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
+`mdc-text-field-disabled-bottom-line-color($color)` | Customizes the disabled text field bottom line color except the outlined and textarea variants.
 `mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
 `mdc-text-field-density($density-scale)` | Sets density scale for default text field variant. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
 `mdc-text-field-height($height)` | Sets height of default text field variant.
 
-#### Mixins for Outlined Text Field
+#### Mixins for Outlined Text Field and Textarea
 
 Mixin | Description
 --- | ---
-`mdc-text-field-focused-outline-color($color)` | Customizes the outline border color when the text field is focused.
-`mdc-text-field-hover-outline-color($color)` | Customizes the outline border color when the text field is hovered.
-`mdc-text-field-outline-color($color)` | Customizes the border color of the outlined text field.
+`mdc-text-field-focused-outline-color($color)` | Customizes the outline border color when the text field or textarea is focused.
+`mdc-text-field-hover-outline-color($color)` | Customizes the outline border color when the text field or textarea is hovered.
+`mdc-text-field-disabled-outline-color($color)` | Customizes the outline border color when the text field or textarea is disabled.
+`mdc-text-field-outline-color($color)` | Customizes the border color of the outlined text field or textarea.
+
+#### Mixins for Outlined Text Field Only
+
+Mixin | Description
+--- | ---
 `mdc-text-field-outline-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to outlined text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-text-field-outlined-density($density-scale)` | Sets density scale for outlined text field (Excluding outlined text field with leading icon). Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
 `mdc-text-field-outlined-height($height)` | Sets height of outlined text field variant (Excluding outlined text field with leading icon).
 `mdc-text-field-outlined-with-leading-icon-density($density-scale)` | Sets density scale for outlined text field with leading icon. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
 `mdc-text-field-outlined-with-leading-icon-height($height)` | Sets height of outlined text field with leading icon variant.
 
-#### Mixins for Textarea
+#### Mixins for Textarea Only
 
 Mixin | Description
 --- | ---
 `mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to text area variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
-`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
-
-
-#### Mixins for Text Field Fullwidth
-
-Mixin | Description
---- | ---
-`mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color.
 
 ## `MDCTextField` Properties and Methods
 
