@@ -29,7 +29,7 @@ $mdc-radio-transition-duration: 120ms !default;
 $mdc-radio-ripple-opacity: .14 !default;
 $mdc-radio-baseline-theme-color: secondary !default;
 $mdc-radio-unchecked-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
-$mdc-radio-circle-color: rgba(mdc-theme-prop-value(on-surface), .26) !default;
+$mdc-radio-disabled-circle-color: rgba(mdc-theme-prop-value(on-surface), .26) !default;
 
 $mdc-radio-minimum-size: 28px !default;
 $mdc-radio-maximum-size: $mdc-radio-ripple-size !default;
