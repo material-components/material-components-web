@@ -24,6 +24,7 @@
 @import "../mixins";
 
 $custom-checkbox-color: crimson;
+$custom-disabled-checkbox-color: rgba(purple, .3);
 
 .test-cell--checkbox {
   @include test-cell-size(91);
@@ -35,10 +36,14 @@ $custom-checkbox-color: crimson;
     $marked-stroke-color: $custom-checkbox-color,
     $marked-fill-color: $custom-checkbox-color
   );
+  @include mdc-checkbox-disabled-container-colors(
+    $marked-fill-color: $custom-disabled-checkbox-color
+  );
 }
 
 .custom-checkbox--ink-color {
   @include mdc-checkbox-ink-color($custom-checkbox-color);
+  @include mdc-checkbox-disabled-ink-color($custom-disabled-checkbox-color);
 }
 
 .test-checkbox-ripple-size {
