@@ -127,9 +127,12 @@ MDC Radio uses [MDC Theme](../mdc-theme)'s `secondary` color by default. Use the
 
 Mixin | Description
 --- | ---
-`mdc-radio-unchecked-stroke-color($color)` | Sets the stroke color of an unchecked radio button
-`mdc-radio-checked-stroke-color($color)` | Sets the stroke color of a checked radio button
-`mdc-radio-ink-color($color)` | Sets the ink color of a radio button
+`mdc-radio-unchecked-stroke-color($color)` | Sets the stroke color of an unchecked, enabled radio button
+`mdc-radio-checked-stroke-color($color)` | Sets the stroke color of a checked, enabled radio button
+`mdc-radio-ink-color($color)` | Sets the ink color of an enabled radio button
+`mdc-radio-disabled-unchecked-stroke-color($color)` | Sets the stroke color of an unchecked, disabled radio button
+`mdc-radio-disabled-checked-stroke-color($color)` | Sets the stroke color of a checked, disabled radio button
+`mdc-radio-disabled-ink-color($color)` | Sets the ink color of a disabled radio button
 `mdc-radio-focus-indicator-color($color)` | Sets the color of the focus indicator
 `mdc-radio-touch-target($size, $ripple-size)` | Sets radio touch target size which can be more than the ripple size. Param `$ripple-size` is required for custom ripple size, defaults to `$mdc-radio-ripple-size`.
 `mdc-radio-ripple-size($size)` | Sets custom ripple size of radio.
