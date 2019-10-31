@@ -126,7 +126,7 @@
     "semver": "^5.3.0",
     "serve-index": "^1.9.1",
     "simple-git": "^1.92.0",
-    "stylelint": "^9.0.0",
+    "stylelint": "^9.2.1",
     "stylelint-config-standard": "^18.0.0",
     "stylelint-order": "^2.0.0",
     "stylelint-scss": "^3.0.0",
