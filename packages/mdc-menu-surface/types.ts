@@ -21,9 +21,6 @@
  * THE SOFTWARE.
  */
 
-// tslint:disable-next-line:no-any
-export type AnyDuringTs36Migration = any;
-
 export interface MDCMenuDimensions {
   width: number;
   height: number;
