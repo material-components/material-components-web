@@ -10,13 +10,24 @@ path: /catalog/density/
 
 Density subsystem provides adaptive layout to components. Material Design uses low-density space by default but offers high-density space when it improves the user experience. Components with high density enable users to process and take action against large amounts of information in a more manageable way. List, tables, and long forms are components that benefit from increased density.
 
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/design/layout/applying-density.html">Material Design guidelines: Applying density</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://glitch.com/~material-density" target="_blank">Demo: Glitch</a>
+  </li>
+</ul>
+
 ## Installation
 
 ```
 npm install @material/density
 ```
 
-> NOTE: You do not need to directly depend on `@material/density`, Use component provided density Sass mixins instead.
+> NOTE: You do not need to directly depend on `@material/density`, use component provided density Sass mixins instead.
 
 ## Basic Usage
 
@@ -36,6 +47,19 @@ This would apply `-3` (high density) to button component instance.
 > You would indirectly use the Density API through respective component's mixin which takes care of setting appropriate
 > component height.
 
+Here are the components that do provide density Sass mixins:
+
+  * [Button](../mdc-button/README.md#sass-mixins)
+  * [Checkbox](../mdc-checkbox/README.md#sass-mixins)
+  * [Chip](../mdc-chips/README.md#sass-mixins)
+  * [Data Table](../mdc-data-table/README.md#sass-mixins)
+  * [Icon Button](../mdc-icon-button/README.md#sass-mixins)
+  * [List](../mdc-list/README.md#sass-mixins)
+  * [Radio](../mdc-radio/README.md#sass-mixins)
+  * [Switch](../mdc-switch/README.md#sass-mixins)
+  * [Tab Bar](../mdc-tab-bar/README.md#sass-mixins)
+  * [Text Field](../mdc-textfield/README.md#sass-mixins)
+
 ## Density Mixins
 
 Components that supports density provides Sass mixins to customize density for that component. Each density mixin takes in a density scale number, e.g. 0 (the default) or -1 (higher density).
@@ -54,6 +78,23 @@ The density interval is set to 4px for visual consistency.
 It is recommended to customize density via the provided density mixins, rather than arbitrarily applying component height.
 
 NOTE: Touch targets are automatically disabled when density mixins are applied, since dense components should be optionally enabled and therefore do not have the same default accessibility requirements.
+
+## Component variants
+
+Components that has different variants may have their own density mixin.
+
+For example, Tab Bar has two density mixins:
+
+  * `mdc-tab-bar-density()`: Density mixin for standard tab bar.
+  * `mdc-tab-bar-stacked-density()`: Density mixin for tab bar that has icon stacked on top of label.
+
+Similarly, text field provides 3 different density mixins based on its variant.
+
+## Nested components
+
+Material component that renders another component inside it needs set its own density scale accordingly. Applying density mixin on parent component does not automatically apply density to its children.
+
+For example, Applying density to data table does not automatically set density scale to row checkbox. You'll have to explicitly set density scale to its children. This'll allow clients to have full control on the layout.
 
 ## Style Customization
 
