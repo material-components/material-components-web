@@ -94,8 +94,11 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
     @include mdc-states(
       on-secondary, $query: $query, $ripple-target: $mdc-fab-ripple-target);
 
+    // stylelint-disable-next-line plugin/selector-bem-pattern
     #{$mdc-fab-ripple-target} {
       @include mdc-ripple-target-common($query: $query);
+
+      overflow: hidden;
     }
   }
 

@@ -82,7 +82,8 @@ Mixin | Description
 Method Signature | Description
 --- | ---
 `scrollTo(scrollX: number) => void` | Scrolls to the scrollX value.
-`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value.
+`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value using animation.
+`incrementScrollImmediate(scrollX: number) => void` | Increments the current scroll value by the scrollX value without animation.
 `getScrollPosition() => number` | Returns the current visual scroll position.
 `getScrollContentWidth() => number` | Returns the width of the scroll content element.
 
