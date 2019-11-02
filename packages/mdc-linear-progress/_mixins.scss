@@ -49,8 +49,10 @@
     @include mdc-feature-targets($feat-structure) {
       position: relative;
       width: 100%;
-      height: 4px;
+      height: $mdc-linear-progress-height;
       transform: translateZ(0);
+      // Create a border around the bar in Windows High Contrast Mode.
+      outline: 1px solid transparent;
       overflow: hidden;
     }
 
@@ -77,8 +79,10 @@
         display: inline-block;
         position: absolute;
         width: 100%;
-        height: 100%;
         animation: none;
+        // border-top is used rather than background-color to ensure that the
+        // bar is visible in Windows High Contrast Mode.
+        border-top: $mdc-linear-progress-height solid;
       }
     }
 
@@ -88,11 +92,11 @@
         width: 100%;
         height: 100%;
         background-repeat: repeat-x;
-        background-size: 10px 4px;
+        background-size: 10px $mdc-linear-progress-height;
       }
 
       @include mdc-feature-targets($feat-animation) {
-        animation: buffering 250ms infinite linear;
+        animation: mdc-linear-progress-buffering 250ms infinite linear;
       }
     }
 
@@ -162,7 +166,9 @@
 
   .mdc-linear-progress__bar-inner {
     @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color);
+      // Border is used rather than background-color to ensure that the
+      // bar is visible in Windows High Contrast Mode.
+      @include mdc-theme-prop(border-color, $color);
     }
   }
 }
@@ -209,12 +215,12 @@
       }
 
       @include mdc-feature-targets($feat-animation) {
-        animation: primary-indeterminate-translate 2s infinite linear;
+        animation: mdc-linear-progress-primary-indeterminate-translate 2s infinite linear;
       }
 
       > .mdc-linear-progress__bar-inner {
         @include mdc-feature-targets($feat-animation) {
-          animation: primary-indeterminate-scale 2s infinite linear;
+          animation: mdc-linear-progress-primary-indeterminate-scale 2s infinite linear;
         }
       }
     }
@@ -226,12 +232,12 @@
       }
 
       @include mdc-feature-targets($feat-animation) {
-        animation: secondary-indeterminate-translate 2s infinite linear;
+        animation: mdc-linear-progress-secondary-indeterminate-translate 2s infinite linear;
       }
 
       > .mdc-linear-progress__bar-inner {
         @include mdc-feature-targets($feat-animation) {
-          animation: secondary-indeterminate-scale 2s infinite linear;
+          animation: mdc-linear-progress-secondary-indeterminate-scale 2s infinite linear;
         }
       }
     }
@@ -253,19 +259,19 @@
 
     .mdc-linear-progress__primary-bar {
       @include mdc-feature-targets($feat-animation) {
-        animation-name: primary-indeterminate-translate-reverse;
+        animation-name: mdc-linear-progress-primary-indeterminate-translate-reverse;
       }
     }
 
     .mdc-linear-progress__secondary-bar {
       @include mdc-feature-targets($feat-animation) {
-        animation-name: secondary-indeterminate-translate-reverse;
+        animation-name: mdc-linear-progress-secondary-indeterminate-translate-reverse;
       }
     }
 
     .mdc-linear-progress__buffering-dots {
       @include mdc-feature-targets($feat-animation) {
-        animation: buffering-reverse 250ms infinite linear;
+        animation: mdc-linear-progress-buffering-reverse 250ms infinite linear;
       }
     }
   }

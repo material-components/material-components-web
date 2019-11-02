@@ -25,6 +25,7 @@
     "@material/checkbox": "^3.2.0",
     "@material/chips": "^3.2.0",
     "@material/data-table": "^3.2.0",
+    "@material/density": "^0.0.0",
     "@material/dialog": "^3.2.0",
     "@material/dom": "^3.1.0",
     "@material/drawer": "^3.2.0",
@@ -58,6 +59,7 @@
     "@material/textfield": "^3.2.0",
     "@material/theme": "^3.1.0",
     "@material/top-app-bar": "^3.2.0",
+    "@material/touch-target": "0.0.0",
     "@material/typography": "^3.1.0"
   }
 }

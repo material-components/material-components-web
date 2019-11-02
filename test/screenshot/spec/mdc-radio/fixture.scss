@@ -25,20 +25,22 @@
 @import "../mixins";
 
 $custom-radio-color: $material-color-red-300;
+$custom-disabled-radio-color: rgba(purple, .4);
 
 .test-cell--radio {
   @include test-cell-size(71, 91);
 
+  display: flex;
   position: relative;
+  flex-direction: column;
+  align-items: center;
 }
 
 .test-radio-label {
   display: block;
-  position: absolute;
-  bottom: 11px;
-  left: 11px;
   width: 39px;
   height: 19px;
+  margin-top: 6px;
   background: rgba($custom-radio-color, .4);
   text-align: center;
   cursor: pointer;
@@ -52,12 +54,19 @@ $custom-radio-color: $material-color-red-300;
 
 .custom-radio--unchecked-stroke-color {
   @include mdc-radio-unchecked-stroke-color($custom-radio-color);
+  @include mdc-radio-disabled-unchecked-stroke-color($custom-disabled-radio-color);
 }
 
 .custom-radio--checked-stroke-color {
   @include mdc-radio-checked-stroke-color($custom-radio-color);
+  @include mdc-radio-disabled-checked-stroke-color($custom-disabled-radio-color);
 }
 
 .custom-radio--ink-color {
   @include mdc-radio-ink-color($custom-radio-color);
+  @include mdc-radio-disabled-ink-color($custom-disabled-radio-color);
+}
+
+.custom-radio-density {
+  @include mdc-radio-density(-3);
 }

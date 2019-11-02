@@ -42,7 +42,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCLinearProgressFoundation, [
-    'addClass', 'getPrimaryBar', 'getBuffer', 'hasClass', 'removeClass', 'setStyle',
+    'addClass', 'getPrimaryBar', 'forceLayout', 'getBuffer', 'hasClass', 'removeClass', 'setStyle',
   ]);
 });
 
@@ -70,6 +70,14 @@ test('#setDeterminate removes class', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INDETERMINATE_CLASS));
 });
 
+test('#setDeterminate false calls forceLayout to correctly reset animation timers when reversed', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.REVERSED_CLASS)).thenReturn(true);
+  foundation.init();
+  foundation.setDeterminate(false);
+  td.verify(mockAdapter.forceLayout());
+});
+
 test('#setDeterminate restores previous progress value after toggled from false to true', () => {
   const {foundation, mockAdapter} = setupTest();
   const primaryBar = {};
@@ -79,6 +87,17 @@ test('#setDeterminate restores previous progress value after toggled from false 
   foundation.setDeterminate(false);
   foundation.setDeterminate(true);
   td.verify(mockAdapter.setStyle(primaryBar, 'transform', 'scaleX(0.123)'), {times: 2});
+});
+
+test('#setDeterminate restores previous buffer value after toggled from false to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const buffer = {};
+  td.when(mockAdapter.getBuffer()).thenReturn(buffer);
+  foundation.init();
+  foundation.setBuffer(0.123);
+  foundation.setDeterminate(false);
+  foundation.setDeterminate(true);
+  td.verify(mockAdapter.setStyle(buffer, 'transform', 'scaleX(0.123)'), {times: 2});
 });
 
 test('#setDeterminate updates progress value set while determinate is false after determinate is true', () => {
@@ -146,6 +165,22 @@ test('#setReverse removes class', () => {
   foundation.init();
   foundation.setReverse(false);
   td.verify(mockAdapter.removeClass(cssClasses.REVERSED_CLASS));
+});
+
+test('#setReverse true calls forceLayout to correctly reset animation timers when indeterminate', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(true);
+  foundation.init();
+  foundation.setReverse(true);
+  td.verify(mockAdapter.forceLayout());
+});
+
+test('#setReverse false calls forceLayout to correctly reset animation timers when indeterminate', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(true);
+  foundation.init();
+  foundation.setReverse(false);
+  td.verify(mockAdapter.forceLayout());
 });
 
 test('#open removes class', () => {

@@ -38,7 +38,6 @@ const strings = {
   ARIA_VALUENOW: 'aria-valuenow',
   CHANGE_EVENT: 'MDCSlider:change',
   INPUT_EVENT: 'MDCSlider:input',
-  LAST_TRACK_MARKER_SELECTOR: '.mdc-slider__track-marker:last-child',
   PIN_VALUE_MARKER_SELECTOR: '.mdc-slider__pin-value-marker',
   STEP_DATA_ATTR: 'data-step',
   THUMB_CONTAINER_SELECTOR: '.mdc-slider__thumb-container',

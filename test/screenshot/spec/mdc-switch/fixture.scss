@@ -60,3 +60,11 @@ $custom-switch-color: $material-color-red-500;
   @include mdc-switch-toggled-on-track-color($custom-switch-color);
   @include mdc-switch-toggled-off-track-color($custom-switch-color);
 }
+
+.custom-switch--density-5 {
+  @include mdc-switch-density(-5);
+}
+
+.custom-switch--density-2 {
+  @include mdc-switch-density(-2);
+}

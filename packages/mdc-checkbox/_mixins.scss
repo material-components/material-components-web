@@ -21,10 +21,11 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/density/functions";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
-@import "@material/rtl/mixins";
+@import "@material/touch-target/mixins";
 @import "./functions";
 @import "./keyframes";
 @import "./variables";
@@ -32,6 +33,8 @@
 //
 // Public
 //
+
+$mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
 @mixin mdc-checkbox-core-styles($query: mdc-feature-all()) {
   @include mdc-checkbox-without-ripple($query);
@@ -47,6 +50,8 @@
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
+  @include mdc-touch-target-wrapper($query);
+
   @include mdc-feature-targets($feat-animation) {
     @include mdc-checkbox-mark-keyframes_;
   }
@@ -57,14 +62,13 @@
     }
 
     @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color, $query: $query);
+    @include mdc-checkbox-density($mdc-checkbox-density-scale, $query: $query);
   }
 
   @include mdc-checkbox-container-colors($query: $query);
-  @include mdc-checkbox-ink-color($mdc-checkbox-mark-color, $query);
-
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-checkbox-disabled-container-color_;
-  }
+  @include mdc-checkbox-disabled-container-colors($query: $query);
+  @include mdc-checkbox-ink-color($mdc-checkbox-mark-color, $query: $query);
+  @include mdc-checkbox-disabled-ink-color($mdc-checkbox-mark-color, $query: $query);
 
   @media screen and (-ms-high-contrast: active) {
     .mdc-checkbox__mixedmark {
@@ -149,6 +153,14 @@
     }
   }
 
+  .mdc-checkbox--touch {
+    @include mdc-touch-target-component(
+      $component-height: $mdc-checkbox-ripple-size,
+      $component-width: $mdc-checkbox-ripple-size,
+      $query: $query);
+    @include mdc-checkbox-touch-target($mdc-touch-target-height, $query: $query);
+  }
+
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
     .mdc-checkbox__checkmark {
       @include mdc-checkbox__checkmark--checked_($query);
@@ -184,10 +196,13 @@
   @include mdc-ripple-common($query);
 
   .mdc-checkbox {
-    @include mdc-ripple-surface($query);
-    @include mdc-states(on-surface, $query: $query);
-    @include mdc-ripple-radius-unbounded($query: $query);
-    @include mdc-checkbox-touch-dimension($mdc-checkbox-touch-area, $query: $query);
+    @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-checkbox-ripple-target);
+    @include mdc-states($color: on-surface, $query: $query, $ripple-target: $mdc-checkbox-ripple-target);
+    @include mdc-ripple-radius-unbounded($query: $query, $ripple-target: $mdc-checkbox-ripple-target);
+  }
+
+  #{$mdc-checkbox-ripple-target} {
+    @include mdc-ripple-target-common($query: $query);
   }
 
   .mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {
@@ -197,9 +212,29 @@
   }
 }
 
-@mixin mdc-checkbox-touch-dimension($touch-dimension, $query: mdc-feature-all()) {
+///
+/// Sets density scale for checkbox.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values
+///     `-3`, `-2`, `-1`, `0`.
+///
+@mixin mdc-checkbox-density($density-scale, $query: mdc-feature-all()) {
+  $size: mdc-density-prop-value(
+    $density-config: $mdc-checkbox-density-config,
+    $density-scale: $density-scale,
+    $property-name: size,
+  );
+
+  @include mdc-checkbox-ripple-size($size, $query: $query);
+
+  @if $density-scale != 0 {
+    @include mdc-checkbox-touch-target-reset_($query: $query);
+  }
+}
+
+@mixin mdc-checkbox-ripple-size($ripple-size, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
-  $checkbox-padding: ($touch-dimension - $mdc-checkbox-size) / 2;
+  $checkbox-padding: ($ripple-size - $mdc-checkbox-icon-size) / 2;
 
   @include mdc-feature-targets($feat-structure) {
     padding: $checkbox-padding;
@@ -207,9 +242,8 @@
 
   .mdc-checkbox__background {
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-rtl-reflexive-position(left, $checkbox-padding, ".mdc-checkbox");
-
       top: $checkbox-padding;
+      left: $checkbox-padding;
     }
   }
 
@@ -217,12 +251,23 @@
     @include mdc-feature-targets($feat-structure) {
       top: -$mdc-checkbox-border-width - $checkbox-padding;
       left: -$mdc-checkbox-border-width - $checkbox-padding;
-      width: $touch-dimension;
-      height: $touch-dimension;
+      width: $ripple-size;
+      height: $ripple-size;
     }
   }
+
+  @include mdc-checkbox-touch-target($ripple-size, $ripple-size: $ripple-size, $query: $query);
 }
 
+///
+/// Sets stroke & fill colors for both marked and unmarked state of enabled checkbox.
+/// Set $generate-keyframes to false to prevent the mixin from generating @keyframes
+/// @param {Color} $unmarked-stroke-color - The desired stroke color for the unmarked state
+/// @param {Color} $unmarked-fill-color - The desired fill color for the unmarked state
+/// @param {Color} $marked-stroke-color - The desired stroke color for the marked state
+/// @param {Color} $marked-fill-color - The desired fill color for the marked state
+/// @param {Boolean} $generate-keyframes [true] - Whether animation keyframes should be generated
+///
 @mixin mdc-checkbox-container-colors(
   $unmarked-stroke-color: $mdc-checkbox-border-color,
   $unmarked-fill-color: transparent,
@@ -234,18 +279,12 @@
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
 
-  @include mdc-checkbox-unmarked-background-selector-enabled_ {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $unmarked-stroke-color);
-      @include mdc-theme-prop(background-color, $unmarked-fill-color);
-    }
+  @include mdc-checkbox-if-unmarked-enabled_ {
+    @include mdc-checkbox-container-colors_($unmarked-stroke-color, $unmarked-fill-color, $query: $query);
   }
 
-  @include mdc-checkbox-marked-background-selector-enabled_ {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $marked-stroke-color);
-      @include mdc-theme-prop(background-color, $marked-fill-color);
-    }
+  @include mdc-checkbox-if-marked-enabled_ {
+    @include mdc-checkbox-container-colors_($marked-stroke-color, $marked-fill-color, $query: $query);
   }
 
   @if $generate-keyframes {
@@ -288,19 +327,48 @@
   }
 }
 
-@mixin mdc-checkbox-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
-  .mdc-checkbox__checkmark {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
-    }
+///
+/// Sets stroke & fill colors for both marked and unmarked state of disabled checkbox.
+/// @param {Color} $unmarked-stroke-color - The desired stroke color for the unmarked state
+/// @param {Color} $unmarked-fill-color - The desired fill color for the unmarked state
+/// @param {Color} $marked-stroke-color - The desired stroke color for the marked state
+/// @param {Color} $marked-fill-color - The desired fill color for the marked state
+///
+@mixin mdc-checkbox-disabled-container-colors(
+  $unmarked-stroke-color: $mdc-checkbox-disabled-color,
+  $unmarked-fill-color: transparent,
+  $marked-stroke-color: transparent,
+  $marked-fill-color: $mdc-checkbox-disabled-color,
+  $query: mdc-feature-all()
+) {
+  @include mdc-checkbox-if-unmarked-disabled_ {
+    @include mdc-checkbox-container-colors_($unmarked-stroke-color, $unmarked-fill-color, $query: $query);
   }
 
-  .mdc-checkbox__mixedmark {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $color);
-    }
+  @include mdc-checkbox-if-marked-disabled_ {
+    @include mdc-checkbox-container-colors_($marked-stroke-color, $marked-fill-color, $query: $query);
+  }
+}
+
+///
+/// Sets the ink color of the checked and indeterminate icons for an enabled checkbox
+/// @param {Color} $color - The desired ink color in enabled state
+///
+@mixin mdc-checkbox-ink-color($color, $query: mdc-feature-all()) {
+  @include mdc-checkbox-if-enabled_ {
+    @include mdc-checkbox-ink-color_($color, $query: $query);
+  }
+}
+
+///
+/// Sets the ink color of the checked and indeterminate icons for a disabled checkbox
+/// @param {Color} $color - The desired ink color in disabled state
+///
+@mixin mdc-checkbox-disabled-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-checkbox-if-disabled_ {
+    @include mdc-checkbox-ink-color_($color, $query: $query);
   }
 }
 
@@ -315,11 +383,36 @@
   }
 
   &.mdc-checkbox--selected {
-    @include mdc-states($color, $query: $query);
+    @include mdc-states($color: $color, $query: $query, $ripple-target: $mdc-checkbox-ripple-target);
   }
 
   &.mdc-ripple-upgraded--background-focused.mdc-checkbox--selected {
-    @include mdc-states-base-color($color, $query: $query);
+    @include mdc-states-base-color($color: $color, $query: $query, $ripple-target: $mdc-checkbox-ripple-target);
+  }
+}
+
+///
+/// Sets checkbox touch target size which can be more than the ripple size. Param `$ripple-size` is required for custom
+/// ripple size.
+///
+/// @param {Number} $size Size of touch target (Native input) in `px`.
+/// @param {Number} $ripple-size Size of ripple in `px`. Required only for custom ripple size.
+///
+@mixin mdc-checkbox-touch-target(
+  $size: $mdc-checkbox-ripple-size,
+  $ripple-size: $mdc-checkbox-ripple-size,
+  $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $offset: ($ripple-size - $size) / 2;
+
+  @include mdc-feature-targets($feat-structure) {
+    .mdc-checkbox__native-control {
+      top: $offset;
+      right: $offset;
+      left: $offset;
+      width: $size;
+      height: $size;
+    }
   }
 }
 
@@ -330,25 +423,14 @@
 @mixin mdc-checkbox-base_ {
   display: inline-block;
   position: relative;
-  flex: 0 0 $mdc-checkbox-size;
+  flex: 0 0 $mdc-checkbox-icon-size;
   box-sizing: content-box;
-  width: $mdc-checkbox-size;
-  height: $mdc-checkbox-size;
+  width: $mdc-checkbox-icon-size;
+  height: $mdc-checkbox-icon-size;
   line-height: 0;
   white-space: nowrap;
   cursor: pointer;
   vertical-align: bottom;
-}
-
-@mixin mdc-checkbox-disabled-container-color_ {
-  @include mdc-checkbox-unmarked-background-selector-disabled_ {
-    @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color);
-  }
-
-  @include mdc-checkbox-marked-background-selector-disabled_ {
-    @include mdc-theme-prop(border-color, transparent);
-    @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color);
-  }
 }
 
 @mixin mdc-checkbox--disabled_ {
@@ -443,37 +525,81 @@
 
 // Background
 
-@mixin mdc-checkbox-unmarked-background-selector-enabled_ {
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
+///
+/// Helps select the checkbox background only when its native control is in
+/// enabled state.
+/// @access private
+///
+@mixin mdc-checkbox-if-enabled_ {
+  .mdc-checkbox__native-control:enabled ~ {
     @content;
   }
 }
 
-@mixin mdc-checkbox-unmarked-background-selector-disabled_ {
+///
+/// Helps select the checkbox background only when its native control is in
+/// disabled state.
+/// @access private
+///
+@mixin mdc-checkbox-if-disabled_ {
+  .mdc-checkbox__native-control:disabled ~ {
+    @content;
+  }
+}
+
+///
+/// Helps select the checkbox background only when its native control is in
+/// unmarked & enabled state.
+/// @access private
+///
+@mixin mdc-checkbox-if-unmarked-enabled_ {
+  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate) ~ {
+    @content;
+  }
+}
+
+///
+/// Helps select the checkbox background only when its native control is in
+/// unmarked & disabled state.
+/// @access private
+///
+@mixin mdc-checkbox-if-unmarked-disabled_ {
   // Note: we must use `[disabled]` instead of `:disabled` below because Edge does not always recalculate the style
   // property when the `:disabled` pseudo-class is followed by a sibling combinator. See:
   // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-checkbox__native-control[disabled]:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
+  .mdc-checkbox__native-control[disabled]:not(:checked):not(:indeterminate) ~ {
     @content;
   }
 }
 
-@mixin mdc-checkbox-marked-background-selector-enabled_ {
-  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
-    @content;
+///
+/// Helps select the checkbox background only when its native control is in
+/// marked & enabled state.
+/// @access private
+///
+@mixin mdc-checkbox-if-marked-enabled_ {
+  .mdc-checkbox__native-control:enabled:checked,
+  .mdc-checkbox__native-control:enabled:indeterminate {
+    ~ {
+      @content;
+    }
   }
 }
 
-@mixin mdc-checkbox-marked-background-selector-disabled_ {
+///
+/// Helps select the checkbox background only when its native control is in
+/// marked & disabled state.
+/// @access private
+///
+@mixin mdc-checkbox-if-marked-disabled_ {
   // Note: we must use `[disabled]` instead of `:disabled` below because Edge does not always recalculate the style
   // property when the `:disabled` pseudo-class is followed by a sibling combinator. See:
   // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
-  .mdc-checkbox__native-control[disabled]:checked ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control[disabled]:indeterminate ~ .mdc-checkbox__background {
-    @content;
+  .mdc-checkbox__native-control[disabled]:checked,
+  .mdc-checkbox__native-control[disabled]:indeterminate {
+    ~ {
+      @content;
+    }
   }
 }
 
@@ -488,8 +614,8 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    width: $mdc-checkbox-size;
-    height: $mdc-checkbox-size;
+    width: $mdc-checkbox-icon-size;
+    height: $mdc-checkbox-icon-size;
     // border-color is overridden by the mdc-checkbox-unmarked-stroke-color() mixin
     border: $mdc-checkbox-border-width solid currentColor;
     border-radius: 2px;
@@ -515,6 +641,23 @@
   transition:
     mdc-checkbox-transition-enter(border-color),
     mdc-checkbox-transition-enter(background-color);
+}
+
+///
+/// Sets the stroke & fill colors for the checkbox.
+/// This mixin should be wrapped in a mixin that qualifies state such as
+/// `mdc-checkbox-if-unmarked-enabled_`.
+/// @access private
+///
+@mixin mdc-checkbox-container-colors_($stroke-color, $fill-color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-checkbox__background {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(border-color, $stroke-color);
+      @include mdc-theme-prop(background-color, $fill-color);
+    }
+  }
 }
 
 // Focus indicator
@@ -560,10 +703,6 @@
 
 @mixin mdc-checkbox__native-control_ {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   margin: 0;
   padding: 0;
   opacity: 0;
@@ -628,6 +767,30 @@
   }
 }
 
+///
+/// Sets the ink color of the checked and indeterminate icons for a checkbox.
+/// This mixin should be wrapped in a mixin that qualifies state such as
+/// `mdc-checkbox-if-unmarked_`.
+/// @access private
+///
+@mixin mdc-checkbox-ink-color_($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-checkbox__background {
+    .mdc-checkbox__checkmark {
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(color, $color);
+      }
+    }
+
+    .mdc-checkbox__mixedmark {
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(border-color, $color);
+      }
+    }
+  }
+}
+
 // Check mark path
 
 @mixin mdc-checkbox__checkmark-path_($query: mdc-feature-all()) {
@@ -679,4 +842,18 @@
 @mixin mdc-checkbox__mixedmark--indeterminate_ {
   transform: scaleX(1) rotate(0deg);
   opacity: 1;
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin mdc-checkbox-touch-target-reset_($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    margin: 0;
+  }
 }

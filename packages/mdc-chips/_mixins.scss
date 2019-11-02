@@ -25,16 +25,20 @@
 @import "@material/checkbox/functions";
 @import "@material/checkbox/variables";
 @import "@material/elevation/mixins";
+@import "@material/density/functions";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/touch-target/mixins";
 @import "@material/typography/mixins";
 @import "@material/shape/mixins";
 @import "@material/shape/functions";
 @import "./variables";
+
+$mdc-chip-ripple-target: ".mdc-chip__ripple";
 
 @mixin mdc-chip-core-styles($query: mdc-feature-all()) {
   @include mdc-chip-without-ripple($query: $query);
@@ -51,13 +55,14 @@
   @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size, $query: $query);
   @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size, $query: $query);
   @include mdc-chip-trailing-icon-margin($query: $query);
+  @include mdc-touch-target-wrapper($query);
 
   .mdc-chip {
     @include mdc-chip-shape-radius(50%, $query: $query);
     @include mdc-chip-fill-color($mdc-chip-fill-color-default, $query: $query);
     @include mdc-chip-ink-color-without-ripple_($mdc-chip-ink-color-default, $query: $query);
     @include mdc-typography(body2, $query: $query);
-    @include mdc-chip-height($mdc-chip-height-default, $query: $query);
+    @include mdc-chip-density($density-scale: 0, $query: $query);
     @include mdc-chip-leading-icon-margin($query: $query);
 
     @include mdc-feature-targets($feat-structure) {
@@ -70,7 +75,6 @@
       outline: none;
       cursor: pointer;
       -webkit-appearance: none;
-      overflow: hidden;
 
       &::-moz-focus-inner {
         padding: 0;
@@ -82,6 +86,10 @@
       @include mdc-feature-targets($feat-color) {
         @include mdc-theme-prop(color, on-surface);
       }
+    }
+
+    .mdc-chip__touch {
+      @include mdc-touch-target($query);
     }
   }
 
@@ -132,9 +140,25 @@
     }
   }
 
+  .mdc-chip__text:focus {
+    @include mdc-feature-targets($feat-structure) {
+      outline: none;
+    }
+  }
+
   .mdc-chip--selected .mdc-chip__checkmark-path {
     @include mdc-feature-targets($feat-structure) {
       stroke-dashoffset: 0;
+    }
+  }
+
+  .mdc-chip__icon--leading,
+  .mdc-chip__icon--trailing {
+    @include mdc-feature-targets($feat-structure) {
+      // Make these positioned elements, such that they're stacked above the
+      // touch target element (`mdc-chip__touch`), so that clicks reach the
+      // icons (e.g. for removable input chips).
+      position: relative;
     }
   }
 
@@ -243,11 +267,20 @@
 
 @mixin mdc-chip-ripple($query: mdc-feature-all()) {
   @include mdc-ripple-common($query);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
   .mdc-chip {
-    @include mdc-ripple-surface($query: $query);
-    @include mdc-ripple-radius-bounded($query: $query);
+    @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-chip-ripple-target);
+    @include mdc-ripple-radius-bounded($query: $query, $ripple-target: $mdc-chip-ripple-target);
     @include mdc-chip-ink-color-ripple_($mdc-chip-ink-color-default, $query: $query);
+
+    #{$mdc-chip-ripple-target} {
+      @include mdc-ripple-target-common($query: $query);
+
+      @include mdc-feature-targets($feat-structure) {
+        overflow: hidden;
+      }
+    }
   }
 
   .mdc-chip-set--choice {
@@ -292,11 +325,30 @@
   }
 }
 
-@mixin mdc-chip-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+@mixin mdc-chip-shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: $mdc-chip-density-scale,
+  $query: mdc-feature-all()) {
+
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-chip-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
   @include mdc-shape-radius(
-    mdc-shape-resolve-percentage-radius($mdc-chip-height-default, $radius),
+    mdc-shape-resolve-percentage-radius($height, $radius),
     $rtl-reflexive,
     $query: $query);
+
+  #{$mdc-chip-ripple-target} {
+    @include mdc-shape-radius(
+      mdc-shape-resolve-percentage-radius($height, $radius),
+      $rtl-reflexive,
+      $query: $query
+    );
+  }
 }
 
 @mixin mdc-chip-fill-color-accessible($color, $query: mdc-feature-all()) {
@@ -345,7 +397,7 @@
 }
 
 @mixin mdc-chip-ink-color-ripple_($color, $query) {
-  @include mdc-states($color, $query: $query);
+  @include mdc-states($color, true, $query: $query, $ripple-target: $mdc-chip-ripple-target);
 }
 
 @mixin mdc-chip-selected-ink-color($color, $query: mdc-feature-all()) {
@@ -379,7 +431,8 @@
 
 @mixin mdc-chip-selected-ink-color-ripple_($color, $query) {
   &.mdc-chip {
-    @include mdc-states-selected($color, $query: $query);
+    @include mdc-states-selected(
+      $color, $has-nested-focusable-element: true, $query: $query, $ripple-target: $mdc-chip-ripple-target);
   }
 }
 
@@ -420,6 +473,14 @@
     padding-left: $horizontal-padding-value;
     border-width: $width;
   }
+
+  #{$mdc-chip-ripple-target} {
+    @include mdc-feature-targets($feat-structure) {
+      top: -$width;
+      left: -$width;
+      border: $width solid transparent;
+    }
+  }
 }
 
 @mixin mdc-chip-horizontal-padding($padding, $query: mdc-feature-all()) {
@@ -450,6 +511,11 @@
     @include mdc-feature-targets($feat-structure) {
       margin: $gap-size / 2;
     }
+  }
+
+  .mdc-chip--touch {
+    @include mdc-touch-target-component(
+      $component-height: $mdc-chip-height, $query: $query);
   }
 }
 
@@ -538,8 +604,7 @@
 
   .mdc-chip__icon--trailing {
     @include mdc-feature-targets($feat-structure) {
-      margin-right: $right-margin;
-      margin-left: $left-margin;
+      @include mdc-rtl-reflexive-property(margin, $left-margin, $right-margin);
     }
   }
 }
@@ -556,6 +621,50 @@
       transition:
         mdc-elevation-transition-value(),
         $mdc-chip-exit-transition;
+    }
+  }
+}
+
+///
+/// Sets the density scale for chips.
+///
+/// @param {Number | String} $density-scale - Density scale value for component.
+///     Supported density scale values are `-2`, `-1`, `0`.
+///
+@mixin mdc-chip-density($density-scale, $query: mdc-feature-all()) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-chip-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include mdc-chip-height($height, $query: $query);
+
+  @if $density-scale != 0 {
+    @include mdc-chip-touch-target-reset_($query: $query);
+  }
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin mdc-chip-touch-target-reset_($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  // Selector is necessary here to override original specificity.
+  &.mdc-chip--touch {
+    @include mdc-feature-targets($feat-structure) {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .mdc-chip__touch {
+    @include mdc-feature-targets($feat-structure) {
+      display: none;
     }
   }
 }

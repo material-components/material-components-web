@@ -444,8 +444,7 @@
 @mixin mdc-slider-rail-tick-mark-color_($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  .mdc-slider__track-marker::after,
-  .mdc-slider__track-marker-container::after {
+  .mdc-slider__track-marker-container {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, $color);
     }

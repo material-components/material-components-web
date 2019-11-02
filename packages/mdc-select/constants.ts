@@ -37,20 +37,20 @@ const strings = {
   ARIA_CONTROLS: 'aria-controls',
   ARIA_SELECTED_ATTR: 'aria-selected',
   CHANGE_EVENT: 'MDCSelect:change',
-  ENHANCED_VALUE_ATTR: 'data-value',
-  HIDDEN_INPUT_SELECTOR: 'input[type="hidden"]',
   LABEL_SELECTOR: '.mdc-floating-label',
   LEADING_ICON_SELECTOR: '.mdc-select__icon',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   MENU_SELECTOR: '.mdc-select__menu',
-  NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
   OUTLINE_SELECTOR: '.mdc-notched-outline',
   SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED_ITEM_CLASS}`,
   SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
+  SELECT_ANCHOR_SELECTOR: '.mdc-select__anchor',
+  VALUE_ATTR: 'data-value',
 };
 
 const numbers = {
   LABEL_SCALE: 0.75,
+  UNSET_INDEX: -1,
 };
 
 export {cssClasses, strings, numbers};

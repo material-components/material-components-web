@@ -47,6 +47,9 @@
   @include mdc-states-focus-opacity(mdc-states-opacity($mdc-text-field-ink-color, focus));
   @include mdc-ripple-radius-bounded;
 
+  // Height
+  @include mdc-text-field-height($mdc-text-field-height);
+
   // Shape
   @include mdc-text-field-shape-radius(small);
 
@@ -69,20 +72,23 @@
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
-  height: $mdc-text-field-height;
   overflow: hidden;
   /* @alternate */
   will-change: opacity, transform, color;
 }
 
 .mdc-text-field__input {
-  @include mdc-typography(subtitle1);
+  // Exclude setting line-height to keep caret (text cursor) same height as the input text in iOS browser.
+  @include mdc-typography(subtitle1, $exclude-props: (line-height));
 
   align-self: flex-end;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 20px 16px 6px;
+  padding:
+    $mdc-text-field-input-padding-top
+    $mdc-text-field-input-padding
+    $mdc-text-field-input-padding-bottom;
   transition: mdc-text-field-transition(opacity);
   border: none;
   border-bottom: 1px solid;

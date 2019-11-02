@@ -41,6 +41,7 @@ npm install @material/button
 
 ```html
 <button class="mdc-button">
+  <div class="mdc-button__ripple"></div>
   <span class="mdc-button__label">Button</span>
 </button>
 ```
@@ -91,6 +92,7 @@ To add an icon, add an element with the `mdc-button__icon` class inside the butt
 
 ```html
 <button class="mdc-button">
+  <div class="mdc-button__ripple"></div>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
   <span class="mdc-button__label">Button</span>
 </button>
@@ -100,6 +102,7 @@ It's also possible to use an SVG icon:
 
 ```html
 <button class="mdc-button">
+  <div class="mdc-button__ripple"></div>
   <svg class="mdc-button__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="...">
   ...
   </svg>
@@ -114,6 +117,7 @@ putting the icon markup _after_ the `mdc-button__label` element.
 
 ```html
 <button class="mdc-button">
+  <div class="mdc-button__ripple"></div>
   <span class="mdc-button__label">Button</span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
 </button>
@@ -128,9 +132,29 @@ Disabled buttons cannot be interacted with and have no visual interaction effect
 
 ```html
 <button class="mdc-button" disabled>
+  <div class="mdc-button__ripple"></div>
   <span class="mdc-button__label">Button</span>
 </button>
 ```
+
+## Additional Information
+
+### Accessibility
+
+Material Design spec advises that touch targets should be at least 48 x 48 px.
+To meet this requirement, add the following to your button:
+
+```html
+<div class="mdc-touch-target-wrapper">
+  <button class="mdc-button mdc-button--touch">
+    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__label">My Accessible Button</span>
+    <div class="mdc-button__touch"></div>
+  </button>
+</div>
+```
+
+Note that the outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
 
 ## Style Customization
 
@@ -139,10 +163,10 @@ Disabled buttons cannot be interacted with and have no visual interaction effect
 CSS Class | Description
 --- | ---
 `mdc-button` | Mandatory. Defaults to a text button that is flush with the surface.
+`mdc-button__ripple` | Mandatory. Indicates the element which shows the ripple styling.
 `mdc-button--raised` | Optional. Styles a contained button that is elevated above the surface.
 `mdc-button--unelevated` | Optional. Styles a contained button that is flush with the surface.
 `mdc-button--outlined` | Optional. Styles an outlined button that is flush with the surface.
-`mdc-button--dense` | Optional. Makes the button text and container slightly smaller.
 `mdc-button__label` | Recommended.\* Indicates the element containing the button's text label.
 `mdc-button__icon` | Optional. Indicates the element containing the button's icon.
 
@@ -173,7 +197,9 @@ Mixin | Description
 `mdc-button-container-fill-color($color)` | Sets the container fill color to the given color.
 `mdc-button-icon-color($color)` | Sets the icon color to the given color.
 `mdc-button-ink-color($color)` | Sets the ink color to the given color, and sets the icon color to the given color unless `mdc-button-icon-color` is also used.
-`mdc-button-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to button with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-button-density($density-scale)` | Sets density scale for button. Supported density scale values (`-3`, `-2`, `-1`, `0`).
+`mdc-button-height($height)` | Sets custom height of button.
+`mdc-button-shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets rounded shape to button with given radius size. `$density-scale` is only required when `$radius` value is in percentage unit, defaults to `$mdc-button-density-default-scale`. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-button-horizontal-padding($padding)` | Sets horizontal padding to the given number.
 `mdc-button-outline-color($color)` | Sets the outline color to the given color.
 `mdc-button-outline-width($width, $padding)` | Sets the outline width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `mdc-button-horizontal-padding` is also included with a custom value.

@@ -91,20 +91,20 @@ in the double line list style as defined by
 <ul class="mdc-list mdc-list--two-line">
   <li class="mdc-list-item" tabindex="0">
     <span class="mdc-list-item__text">
-      <span class="mdc-list-item__primary-text">First-line text</span>
-      <span class="mdc-list-item__secondary-text">Second-line text</span>
+      <span class="mdc-list-item__primary-text">Two-line item</span>
+      <span class="mdc-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
-      <span class="mdc-list-item__primary-text">First-line text</span>
-      <span class="mdc-list-item__secondary-text">Second-line text</span>
+      <span class="mdc-list-item__primary-text">Two-line item</span>
+      <span class="mdc-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
-      <span class="mdc-list-item__primary-text">First-line text</span>
-      <span class="mdc-list-item__secondary-text">Second-line text</span>
+      <span class="mdc-list-item__primary-text">Two-line item</span>
+      <span class="mdc-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
 </ul>
@@ -408,9 +408,13 @@ Mixin | Description
 `mdc-list-item-graphic-fill-color($color)` | Sets background ink color of the graphic element within list item.
 `mdc-list-item-graphic-ink-color($color)` | Sets ink color of the graphic element within list item.
 `mdc-list-item-meta-ink-color($color)` | Sets ink color of the meta element within list item.
-`mdc-list-item-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-list-single-line-shape-radius($radius, $rtl-reflexive, $density-scale)` | Sets the rounded shape to list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false. Set `$density-scale` only when custom density is applied, defaults to `$mdc-list-single-line-density-scale`.
 `mdc-list-divider-color($color)` | Sets divider ink color.
 `mdc-list-group-subheader-ink-color($color)` | Sets ink color of subheader text within list group.
+`mdc-list-item-disabled-text-color($color`) | Sets the color of the text when the list item is disabled.
+`mdc-list-item-disabled-text-opacity($opacity`) | Sets the opacity of the text when the list item is disabled.
+`mdc-list-single-line-density($density-scale)` | Sets density scale to single line list variant. Supported density scales are `-4`, `-3`, `-2`, `-1` and  `0`.
+`mdc-list-single-line-height($height)` | Sets height to single line list variant.
 
 ### Accessibility
 
@@ -546,6 +550,7 @@ Method Signature | Description
 `notifyAction(index: number) => void` | Notifies user action on list item including keyboard and mouse actions.
 `isFocusInsideList() => boolean` | Returns true if the current focused element is inside list root.
 `isRootFocused() => boolean` | Returns true if root element is focused.
+`listItemAtIndexHasClass(index: number, className: string) => boolean` | Returns true if list item at `index` has class `className`.
 
 ### `MDCListFoundation`
 

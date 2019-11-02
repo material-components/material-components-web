@@ -22,7 +22,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@material/animation": "^3.1.0",
     "@material/base": "^3.1.0",
     "@material/floating-label": "^3.2.0",
     "@material/rtl": "^3.2.0",

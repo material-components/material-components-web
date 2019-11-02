@@ -50,10 +50,15 @@ test('attachTo returns an MDCChipSet instance', () => {
 });
 
 class FakeChip {
-  constructor(el) {
+  constructor(el, isSelected=false) {
     this.id = el.id;
     this.destroy = td.func('.destroy');
-    this.selected = false;
+    this.focusPrimaryAction = td.func('.focusPrimaryAction');
+    this.focusTrailingAction = td.func('.focusTrailingAction');
+    this.remove = td.func('.remove');
+    this.removeFocus = td.func('.removeFocus');
+    this.setSelectedFromChipSet = td.func('.setSelectedFromChipSet');
+    this.selected = isSelected;
   }
 }
 
@@ -68,6 +73,14 @@ function setupMockFoundationTest() {
   const MockFoundationConstructor = td.constructor(MDCChipSetFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCChipSet(root, mockFoundation);
+  return {root, component, mockFoundation};
+}
+
+function setupMockFoundationWithSelection() {
+  const root = getFixture();
+  const MockFoundationConstructor = td.constructor(MDCChipSetFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCChipSet(root, mockFoundation, (el) => new FakeChip(el, true));
   return {root, component, mockFoundation};
 }
 
@@ -89,24 +102,36 @@ test('#destroy cleans up child chip components', () => {
 
 test('#initialSyncWithDOM sets up event handlers', () => {
   const {root, mockFoundation} = setupMockFoundationTest();
-  const {INTERACTION_EVENT, REMOVAL_EVENT, SELECTION_EVENT} = MDCChipFoundation.strings;
+  const {
+    INTERACTION_EVENT, ARROW_LEFT_KEY, NAVIGATION_EVENT, REMOVAL_EVENT, SELECTION_EVENT} = MDCChipFoundation.strings;
   const evtData = {
-    chipId: 'chipA', selected: true,
+    chipId: 'chipA', selected: true, key: ARROW_LEFT_KEY, source: 1, shouldIgnore: false,
   };
   const evt1 = document.createEvent('CustomEvent');
   const evt2 = document.createEvent('CustomEvent');
   const evt3 = document.createEvent('CustomEvent');
+  const evt4 = document.createEvent('CustomEvent');
   evt1.initCustomEvent(INTERACTION_EVENT, true, true, evtData);
   evt2.initCustomEvent(REMOVAL_EVENT, true, true, evtData);
   evt3.initCustomEvent(SELECTION_EVENT, true, true, evtData);
+  evt4.initCustomEvent(NAVIGATION_EVENT, true, true, evtData);
 
   root.dispatchEvent(evt1);
   root.dispatchEvent(evt2);
   root.dispatchEvent(evt3);
+  root.dispatchEvent(evt4);
 
   td.verify(mockFoundation.handleChipInteraction('chipA'), {times: 1});
-  td.verify(mockFoundation.handleChipSelection('chipA', true), {times: 1});
+  td.verify(mockFoundation.handleChipSelection('chipA', true, false), {times: 1});
   td.verify(mockFoundation.handleChipRemoval('chipA'), {times: 1});
+  td.verify(mockFoundation.handleChipNavigation('chipA', ARROW_LEFT_KEY, 1), {times: 1});
+});
+
+test('#initialSyncWithDOM calls MDCChipSetFoundation#select on the selected chips', () => {
+  const {mockFoundation} = setupMockFoundationWithSelection();
+  td.verify(mockFoundation.select('chip1'));
+  td.verify(mockFoundation.select('chip2'));
+  td.verify(mockFoundation.select('chip3'));
 });
 
 test('#destroy removes event handlers', () => {
@@ -121,6 +146,9 @@ test('#destroy removes event handlers', () => {
 
   domEvents.emit(root, MDCChipFoundation.strings.REMOVAL_EVENT);
   td.verify(mockFoundation.handleChipRemoval(td.matchers.anything()), {times: 0});
+
+  domEvents.emit(root, MDCChipFoundation.strings.NAVIGATION_EVENT);
+  td.verify(mockFoundation.handleChipNavigation(td.matchers.anything()), {times: 0});
 });
 
 test('get selectedChipIds proxies to foundation', () => {
@@ -150,23 +178,68 @@ test('#adapter.hasClass returns true if class is set on chip set element', () =>
   assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
-test('#adapter.removeChip removes the chip object from the chip set', () => {
+test('#adapter.removeChipAtIndex removes the chip object from the chip set', () => {
   const {component} = setupTest();
   const chip = component.chips[0];
-  component.getDefaultFoundation().adapter_.removeChip(chip.id);
+  component.getDefaultFoundation().adapter_.removeChipAtIndex(0);
   assert.equal(component.chips.length, 2);
   td.verify(chip.destroy());
+  td.verify(chip.remove());
 });
 
-test('#adapter.removeChip does nothing if the given object is not in the chip set', () => {
+test('#adapter.removeChipAtIndex does nothing if the given object is not in the chip set', () => {
   const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.removeChip('chip0');
+  component.getDefaultFoundation().adapter_.removeChipAtIndex(-1);
   assert.equal(component.chips.length, 3);
 });
 
-test('#adapter.setSelected sets selected on chip object', () => {
+test('#adapter.selectChipAtIndex calls setSelectedFromChipSet on chip object', () => {
   const {component} = setupTest();
   const chip = component.chips[0];
-  component.getDefaultFoundation().adapter_.setSelected(chip.id, true);
-  assert.equal(chip.selected, true);
+  component.getDefaultFoundation().adapter_.selectChipAtIndex(0, true, true);
+  td.verify(chip.setSelectedFromChipSet(true, true));
+});
+
+test('#adapter.getChipListCount returns the number of chips', () => {
+  const {component} = setupTest();
+  assert.equal(component.getDefaultFoundation().adapter_.getChipListCount(), 3);
+});
+
+test('#adapter.getIndexOfChipById returns the index of the chip', () => {
+  const {component} = setupTest();
+  assert.equal(component.getDefaultFoundation().adapter_.getIndexOfChipById('chip1'), 0);
+});
+
+test('#adapter.focusChipPrimaryActionAtIndex focuses the primary action of the chip at the given index', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.focusChipPrimaryActionAtIndex(0);
+  td.verify(component.chips[0].focusPrimaryAction(), {times: 1});
+});
+
+test('#adapter.focusChipTrailingActionAtIndex focuses the trailing action of the chip at the given index', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.focusChipTrailingActionAtIndex(0);
+  td.verify(component.chips[0].focusTrailingAction(), {times: 1});
+});
+
+test('#adapter.removeFocusFromChipAtIndex removes focus from the chip at the given index', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.removeFocusFromChipAtIndex(0);
+  td.verify(component.chips[0].removeFocus(), {times: 1});
+});
+
+test('#adapter.isRTL returns true if the text direction is RTL', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  document.documentElement.setAttribute('dir', 'rtl');
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRTL());
+  document.documentElement.removeAttribute('dir');
+  document.documentElement.removeChild(root);
+});
+
+test('#adapter.isRTL returns false if the text direction is not RTL', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRTL());
+  document.documentElement.removeChild(root);
 });

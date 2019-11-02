@@ -20,12 +20,13 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/mixins";
-@import "@material/ripple/mixins";
-@import "@material/rtl/mixins";
+@import "@material/density/functions";
 @import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
+@import "@material/ripple/mixins";
+@import "@material/rtl/mixins";
+@import "@material/theme/mixins";
 @import "./functions";
 @import "./variables";
 
@@ -45,6 +46,8 @@
 
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-switch-density($mdc-switch-density-scale, $query: $query);
 
   .mdc-switch {
     @include mdc-feature-targets($feat-structure) {
@@ -193,6 +196,55 @@
 }
 
 ///
+/// Sets density scale for switch.
+///
+/// @param {Number | String} $density-scale - Density scale value for component.
+///     Supported density scale values are `-5`, `-4`, `-3`, `-2`, `-1`,
+///     `0` (default).
+///
+@mixin mdc-switch-density($density-scale, $query: mdc-feature-all()) {
+  $size: mdc-density-prop-value(
+    $density-config: $mdc-switch-density-config,
+    $density-scale: $density-scale,
+    $property-name: size,
+  );
+
+  @include mdc-switch-ripple-size($size, $query: $query);
+}
+
+@mixin mdc-switch-ripple-size($ripple-size, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  // Position for the tap target that contains the thumb to align the thumb
+  // correctly offset from the track.
+  $tap-target-initial-position:
+    -$ripple-size / 2 + $mdc-switch-thumb-diameter / 2 - $mdc-switch-thumb-offset;
+  // Value to cover the whole switch area (including the ripple) with the
+  // native control.
+  $native-control-width:
+    $mdc-switch-track-width +
+    ($ripple-size - $mdc-switch-thumb-diameter) + $mdc-switch-thumb-offset * 2;
+
+  .mdc-switch__thumb-underlay {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-rtl-reflexive-position(left, $tap-target-initial-position);
+
+      // Ensures the knob is centered on the track.
+      top: -(($ripple-size - $mdc-switch-track-height) / 2);
+      width: $ripple-size;
+      height: $ripple-size;
+    }
+  }
+
+  .mdc-switch__native-control {
+    @include mdc-feature-targets($feat-structure) {
+      width: $native-control-width;
+      height: $ripple-size;
+    }
+  }
+}
+
+///
 /// Customizes ripple opacities surrounding the thumb in `hover`, `focus`, or `press` states
 /// The customizations apply to both on and off switches to ensure symmetry
 /// @param {map} $opacity-map - map specifying custom opacity of zero or more states
@@ -243,16 +295,10 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    @include mdc-rtl-reflexive-position(left, $mdc-switch-tap-target-initial-position);
-
     display: flex;
     position: absolute;
-    // Ensures the knob is centered on the track.
-    top: -(($mdc-switch-tap-target-size - $mdc-switch-track-height) / 2);
     align-items: center;
     justify-content: center;
-    width: $mdc-switch-tap-target-size;
-    height: $mdc-switch-tap-target-size;
     transform: translateX(0);
   }
 
@@ -269,8 +315,6 @@
 
   position: absolute;
   top: 0;
-  width: $mdc-switch-native-control-width;
-  height: $mdc-switch-tap-target-size;
   margin: 0;
   opacity: 0;
   cursor: pointer;

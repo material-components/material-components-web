@@ -64,7 +64,6 @@
   }
 
   // Move the input's position, to allow room for the icon
-  .mdc-select__native-control,
   .mdc-select__selected-text {
     @include mdc-rtl-reflexive-property(padding, $inputPadding /* left */, $mdc-select-icon-right-padding /* right */);
   }

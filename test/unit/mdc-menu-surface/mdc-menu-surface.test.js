@@ -144,20 +144,6 @@ test('anchorElement is properly initialized when the DOM contains an anchor', ()
   assert.equal(component.anchorElement, anchor);
 });
 
-test('hoistMenuToBody', () => {
-  const {root, component, mockFoundation} = setupTest();
-  const div = document.createElement('div');
-  div.appendChild(root);
-  document.body.appendChild(div);
-  component.hoistMenuToBody();
-
-  td.verify(mockFoundation.setIsHoisted(true));
-  assert.equal(root.parentElement, document.body);
-
-  document.body.removeChild(root);
-  document.body.removeChild(div);
-});
-
 test('setIsHoisted', () => {
   const {component, mockFoundation} = setupTest();
   component.setIsHoisted(true);

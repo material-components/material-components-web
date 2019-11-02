@@ -35,12 +35,48 @@ export interface MDCChipSetAdapter {
   hasClass(className: string): boolean;
 
   /**
-   * Removes the chip with the given id from the chip set.
+   * Removes the chip with the given index from the chip set.
+   * Make sure to remove it from the chip list, too.
    */
-  removeChip(chipId: string): void;
+  removeChipAtIndex(index: number): void;
 
   /**
-   * Sets the selected state of the chip with the given id.
+   * Sets the selected state of the chip at the given index.
    */
-  setSelected(chipId: string, selected: boolean): void;
+  selectChipAtIndex(index: number, isSelected: boolean, shouldNotifyClients: boolean): void;
+
+  /**
+   * Returns the index of the chip at the given ID.
+   * @param chipId the unique ID of the chip
+   * @return the numerical index of the chip with the matching id or -1.
+   */
+  getIndexOfChipById(chipId: string): number;
+
+  /**
+   * Calls Chip#focusPrimaryAction() on the chip at the given index.
+   * @param index the index of the chip
+   */
+  focusChipPrimaryActionAtIndex(index: number): void;
+
+  /**
+   * Calls Chip#focusTrailingAction() on the chip at the given index.
+   * @param index the index of the chip
+   */
+  focusChipTrailingActionAtIndex(index: number): void;
+
+  /**
+   * Removes focus from the chip at the given index.
+   * @param index the index of the chip
+   */
+  removeFocusFromChipAtIndex(index: number): void;
+
+  /**
+   * @return true if the text direction is RTL.
+   */
+  isRTL(): boolean;
+
+  /**
+   * @return the number of chips in the chip set.
+   */
+  getChipListCount(): number;
 }

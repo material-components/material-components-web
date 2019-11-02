@@ -20,14 +20,22 @@
 // THE SOFTWARE.
 //
 
+@import "@material/animation/variables";
+@import "@material/density/functions";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
+@import "@material/tab-scroller/mixins";
+@import "@material/tab/mixins";
+@import "./variables";
 
 @mixin mdc-tab-bar-core-styles($query: mdc-feature-all()) {
   // postcss-bem-linter: define tab-bar
   .mdc-tab-bar {
     @include mdc-tab-bar-width(100%, $query);
   }
+
+  @include mdc-tab-bar-density($mdc-tab-bar-density-scale, $query: $query);
+  @include mdc-tab-bar-stacked-density($mdc-tab-bar-stacked-density-scale, $query: $query);
   // postcss-bem-linter: end
 }
 
@@ -36,5 +44,57 @@
 
   @include mdc-feature-targets($feat-structure) {
     width: $width;
+  }
+}
+
+///
+/// Sets density scale to default tab bar variant. Use `mdc-tab-bar-stacked-density()` mixin for stacked tab bar
+/// variant.
+///
+/// @param {Number} $density-scale Density scale value. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
+///
+@mixin mdc-tab-bar-density($density-scale, $query: mdc-feature-all()) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-tab-bar-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  .mdc-tab {
+    @include mdc-tab-height($height, $query: $query);
+  }
+}
+
+///
+/// Sets density scale to stacked tab bar variant.
+///
+/// @param {Number} $density-scale Density scale value. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
+///
+@mixin mdc-tab-bar-stacked-density($density-scale, $query: mdc-feature-all()) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-tab-bar-stacked-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  .mdc-tab--stacked {
+    @include mdc-tab-height($height, $query: $query);
+  }
+}
+
+///
+/// Sets the CSS transition for the tab scrolling animation. This mixin is a proxy to `mdc-tab-scroller-transition`
+/// mixin.
+///
+/// @param {Number | String} $duration-ms - Duration (in ms) of the animation.
+/// @param {String} $timing-function - Optionally overrides the default animation timing function.
+///
+@mixin mdc-tab-bar-tab-scroller-transition(
+  $duration-ms,
+  $timing-function: $mdc-animation-standard-curve-timing-function,
+  $query: mdc-feature-all()
+) {
+  .mdc-tab-scroller {
+    @include mdc-tab-scroller-transition($duration-ms, $timing-function: $timing-function, $query: $query);
   }
 }

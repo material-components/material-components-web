@@ -19,7 +19,9 @@
     "directory": "packages/mdc-tab-bar"
   },
   "dependencies": {
+    "@material/animation": "^3.1.0",
     "@material/base": "^3.1.0",
+    "@material/density": "^0.0.0",
     "@material/elevation": "^3.1.0",
     "@material/feature-targeting": "^3.1.0",
     "@material/tab": "^3.2.0",

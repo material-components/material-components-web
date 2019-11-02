@@ -37,5 +37,21 @@ $custom-icon-button-size: 36px;
 }
 
 .custom-icon-button--icon-size {
-  @include mdc-icon-button-size($custom-icon-button-size);
+  @include mdc-icon-button-icon-size($custom-icon-button-size);
+}
+
+.custom-icon-button--density-1 {
+  @include mdc-icon-button-density($density-scale: -1);
+}
+
+.custom-icon-button--density-2 {
+  @include mdc-icon-button-density($density-scale: -2);
+}
+
+.custom-icon-button--density-3 {
+  @include mdc-icon-button-density($density-scale: -3);
+}
+
+.custom-icon-button--density-4 {
+  @include mdc-icon-button-density($density-scale: -4);
 }

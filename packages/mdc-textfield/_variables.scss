@@ -19,6 +19,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+
+@import "@material/density/variables";
+@import "@material/floating-label/variables";
+@import "@material/notched-outline/variables";
+
+///
+/// Returns outlined text field floating label position for given height.
+///
+/// @todo Instead of adjusting `$positionY` with label box height that might change based on floating label font size
+///     wrap label in a child element to apply `transitionY(-50%)` to automatically offset based on box height.
+///
+@function mdc-text-field-get-outlined-label-position-y($text-field-height) {
+  @return $text-field-height/2 + $mdc-notched-outline-label-box-height/2;
+}
+
 $mdc-text-field-error: error !default;
 $mdc-text-field-fullwidth-bottom-line-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
 $mdc-text-field-disabled-border: rgba(mdc-theme-prop-value(on-surface), .06) !default;
@@ -52,16 +67,31 @@ $mdc-textarea-disabled-border-color: rgba(mdc-theme-prop-value(on-surface), .26)
 // will make text unreadable
 $mdc-textarea-disabled-background: rgba(249, 249, 249, 1) !default;
 
+$mdc-text-field-outlined-stroke-width: 2px !default;
 $mdc-text-field-height: 56px !default;
-$mdc-text-field-label-position-y: 50% !default;
+$mdc-text-field-minimum-height: 40px !default;
+$mdc-text-field-maximum-height: $mdc-text-field-height !default;
+$mdc-text-field-density-scale: $mdc-density-default-scale !default;
+$mdc-text-field-density-config: (
+  height: (
+    default: $mdc-text-field-height,
+    maximum: $mdc-text-field-maximum-height,
+    minimum: $mdc-text-field-minimum-height,
+  ),
+) !default;
+$mdc-text-field-label-position-y: $mdc-floating-label-position-y !default;
 $mdc-text-field-label-offset: 16px !default;
 $mdc-text-field-dense-label-position-y: 70% !default;
 $mdc-text-field-dense-label-scale: .8 !default;
-$mdc-text-field-outlined-label-position-y: 130% !default;
+$mdc-text-field-outlined-label-position-y:
+    mdc-text-field-get-outlined-label-position-y($mdc-text-field-height) !default;
 $mdc-text-field-outlined-dense-label-position-y: 120% !default;
 $mdc-text-field-outlined-with-leading-icon-label-position-x: 0 !default;
 $mdc-text-field-outlined-dense-with-leading-icon-label-position-x: 21px !default;
 $mdc-text-field-textarea-label-position-y: 130% !default;
 $mdc-text-field-helper-line-padding: 16px !default;
 $mdc-text-field-input-padding: 16px !default;
+$mdc-text-field-input-padding-top: 20px !default;
+$mdc-text-field-input-padding-bottom: 6px !default;
+$mdc-text-field-input-border-bottom: 1px !default;
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.

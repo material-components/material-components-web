@@ -27,13 +27,15 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCRipple} from '../../../packages/mdc-ripple/index';
-import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip/index';
+import {MDCChip, MDCChipFoundation, chipCssClasses, chipStrings} from '../../../packages/mdc-chips/chip/index';
 
 const {CHECKMARK_SELECTOR} = MDCChipFoundation.strings;
 
 const getFixture = () => bel`
-  <div class="mdc-chip">
-    <div class="mdc-chip__text">Chip content</div>
+  <div class="mdc-chip" role="row">
+    <span role="gridcell">
+      <span role="button" tabindex="0" class="mdc-chip__text mdc-chip__primary-action">Chip content</span>
+    </span>
   </div>
 `;
 
@@ -45,7 +47,11 @@ const getFixtureWithCheckmark = () => bel`
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
       </svg>
     </div>
-    <div class="mdc-chip__text">Chip content</div>
+    <span role="gridcell">
+      <span role="checkbox" aria-checked="false" tabindex="0" class="mdc-chip__text mdc-chip__primary-action">
+        Chip content
+      </span>
+    </span>
   </div>
 `;
 
@@ -56,8 +62,18 @@ const addLeadingIcon = (root) => {
 };
 
 const addTrailingIcon = (root) => {
-  const icon = bel`<i class="material-icons mdc-chip__icon mdc-chip__icon--trailing">cancel</i>`;
-  root.appendChild(icon);
+  const parent = bel`<span role="gridcell"></span>`;
+  const icon = bel`
+    <i tabindex="0" role="button" class="material-icons mdc-chip__icon mdc-chip__icon--trailing">cancel</i>
+  `;
+  parent.appendChild(icon);
+  root.appendChild(parent);
+  return icon;
+};
+
+const addTrailingAction = (root) => {
+  const icon = addTrailingIcon(root);
+  icon.classList.add(chipCssClasses.TRAILING_ACTION);
   return icon;
 };
 
@@ -101,6 +117,9 @@ test('#initialSyncWithDOM sets up event handlers', () => {
 
   domEvents.emit(root, 'transitionend');
   td.verify(mockFoundation.handleTransitionEnd(td.matchers.anything()), {times: 1});
+
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 1});
 });
 
 test('#initialSyncWithDOM sets up interaction event handler on trailing icon if present', () => {
@@ -121,6 +140,9 @@ test('#destroy removes event handlers', () => {
 
   domEvents.emit(root, 'transitionend');
   td.verify(mockFoundation.handleTransitionEnd(td.matchers.anything()), {times: 0});
+
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 0});
 });
 
 test('#destroy removes interaction event handler on trailing icon if present', () => {
@@ -254,6 +276,16 @@ test('adapter#notifyRemoval emits ' + MDCChipFoundation.strings.REMOVAL_EVENT, (
   td.verify(handler(td.matchers.anything()));
 });
 
+test('adapter#notifyNavigation emits ' + MDCChipFoundation.strings.NAVIGATION_EVENT, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(MDCChipFoundation.strings.NAVIGATION_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyNavigation(MDCChipFoundation.strings.ARROW_LEFT_KEY);
+
+  td.verify(handler(td.matchers.anything()));
+});
+
 test('adapter#getComputedStyleValue returns property value from root element styles', () => {
   const {root, component} = setupTest();
   assert.equal(
@@ -303,6 +335,69 @@ test('adapter#getCheckmarkBoundingClientRect returns null when there is no check
   assert.isNull(component.getDefaultFoundation().adapter_.getCheckmarkBoundingClientRect());
 });
 
+test('adapter#hasTrailingAction returns false when no trailing action is present', () => {
+  const root = getFixture();
+  addTrailingIcon(root);
+  const component = new MDCChip(root);
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasTrailingAction());
+});
+
+test('adapter#hasTrailingAction returns true when trailing icon is present', () => {
+  const root = getFixture();
+  addTrailingAction(root);
+  const component = new MDCChip(root);
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasTrailingAction());
+});
+
+test('adapter#isRTL returns false if the text direction is not RTL', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRTL());
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#isRTL returns true if the text direction is RTL', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  document.documentElement.setAttribute('dir', 'rtl');
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRTL());
+  document.documentElement.removeAttribute('dir');
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#focusPrimaryAction gives focus to the primary action element', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  component.getDefaultFoundation().adapter_.focusPrimaryAction();
+  assert.equal(document.activeElement, root.querySelector(chipStrings.PRIMARY_ACTION_SELECTOR));
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#focusTrailingAction gives focus to the trailing icon element', () => {
+  const root = getFixture();
+  const trailingAction = addTrailingAction(root);
+  document.documentElement.appendChild(root);
+  const component = new MDCChip(root);
+  component.getDefaultFoundation().adapter_.focusTrailingAction();
+  assert.equal(document.activeElement, trailingAction);
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#setPrimaryActionAttr sets the attribute on the text element', () => {
+  const {root, component} = setupTest();
+  const primaryAction = root.querySelector(chipStrings.PRIMARY_ACTION_SELECTOR);
+  component.getDefaultFoundation().adapter_.setPrimaryActionAttr('tabindex', '-1');
+  assert.equal(primaryAction.getAttribute('tabindex'), '-1');
+});
+
+test('adapter#setTrailingActionAttr sets the attribute on the trailing action element', () => {
+  const root = getFixture();
+  const trailingAction = addTrailingAction(root);
+  const component = new MDCChip(root);
+  component.getDefaultFoundation().adapter_.setTrailingActionAttr('tabindex', '-1');
+  assert.equal(trailingAction.getAttribute('tabindex'), '-1');
+});
+
 test('#get selected proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   assert.equal(component.selected, mockFoundation.isSelected());
@@ -325,8 +420,39 @@ test('#set shouldRemoveOnTrailingIconClick proxies to foundation', () => {
   td.verify(mockFoundation.setShouldRemoveOnTrailingIconClick(false));
 });
 
+test('#setSelectedFromChipSet proxies to the same foundation method', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.setSelectedFromChipSet(true, false);
+  td.verify(mockFoundation.setSelectedFromChipSet(true, false));
+});
+
 test('#beginExit proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.beginExit();
   td.verify(mockFoundation.beginExit());
+});
+
+test('#focusPrimaryAction proxies to the foundation#focusPrimaryAction', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.focusPrimaryAction();
+  td.verify(mockFoundation.focusPrimaryAction());
+});
+
+test('#focusTrailingAction proxies to the foundation#focusTrailingAction', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.focusTrailingAction();
+  td.verify(mockFoundation.focusTrailingAction());
+});
+
+test('#removeFocus proxies to the foundation#removeFocus', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.removeFocus();
+  td.verify(mockFoundation.removeFocus());
+});
+
+test('#remove removes the root from the DOM', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  component.remove();
+  assert.isNull(document.querySelector('.mdc-chip'));
 });

@@ -20,13 +20,24 @@
 // THE SOFTWARE.
 //
 
+@import "@material/density/variables";
 @import "@material/theme/variables";
 
-$mdc-radio-touch-area: 40px !default;
-$mdc-radio-ui-size: 20px !default;
-$mdc-radio-ui-pct: percentage($mdc-radio-ui-size / $mdc-radio-touch-area) !default;
+$mdc-radio-ripple-size: 40px !default;
+$mdc-radio-icon-size: 20px !default;
 $mdc-radio-transition-duration: 120ms !default;
 $mdc-radio-ripple-opacity: .14 !default;
 $mdc-radio-baseline-theme-color: secondary !default;
 $mdc-radio-unchecked-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
-$mdc-radio-circle-color: rgba(mdc-theme-prop-value(on-surface), .26) !default;
+$mdc-radio-disabled-circle-color: rgba(mdc-theme-prop-value(on-surface), .26) !default;
+
+$mdc-radio-minimum-size: 28px !default;
+$mdc-radio-maximum-size: $mdc-radio-ripple-size !default;
+$mdc-radio-density-scale: $mdc-density-default-scale !default;
+$mdc-radio-density-config: (
+  size: (
+    minimum: $mdc-radio-minimum-size,
+    default: $mdc-radio-ripple-size,
+    maximum: $mdc-radio-maximum-size,
+  ),
+) !default;

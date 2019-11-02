@@ -39,11 +39,22 @@ npm install @material/chips
 
 ### HTML Structure
 
+>**Note**: Due to IE11 and Edge's lack of support for the `:focus-within` selector, keyboard navigation of the chip set will not be visually obvious.
+
 ```html
-<div class="mdc-chip-set">
-  <button class="mdc-chip">
-    <span class="mdc-chip__text">Chip content</span>
-  </button>
+<div class="mdc-chip-set" role="grid">
+  <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
+    <span role="gridcell">
+      <span role="button" tabindex="0" class="mdc-chip__text">Chip One</span>
+    </span>
+  </div>
+  <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
+    <span role="gridcell">
+      <span role="button" tabindex="-1" class="mdc-chip__text">Chip Two</span>
+    </span>
+  </div>
   ...
 </div>
 ```
@@ -83,10 +94,13 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 #### Leading icon
 
 ```html
-<button class="mdc-chip">
+<div class="mdc-chip" role="row">
+  <div class="mdc-chip__ripple"></div>
   <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
-  <span class="mdc-chip__text">Add to calendar</span>
-</button>
+  <span role="gridcell">
+    <span role="button" tabindex="0" class="mdc-chip__text">Add to calendar</span>
+  </span>
+</div>
 ```
 
 #### Trailing icon
@@ -94,10 +108,15 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 A trailing icon comes with the functionality to remove the chip from the set. If you're adding a trailing icon, also set `tabindex="0"` and `role="button"` to make it accessible by keyboard and screenreader. Trailing icons should only be added to [input chips](#input-chips).
 
 ```html
-<button class="mdc-chip">
-  <span class="mdc-chip__text">Jane Smith</span>
-  <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-</button>
+<div class="mdc-chip" role="row">
+  <div class="mdc-chip__ripple"></div>
+  <span role="gridcell">
+    <span role="button" tabindex="0" class="mdc-chip__text">Jane Smith</span>
+  </span>
+  <span role="gridcell">
+    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="-1" role="button">cancel</i>
+  </span>
+</div>
 ```
 
 ### Choice Chips
@@ -105,7 +124,7 @@ A trailing icon comes with the functionality to remove the chip from the set. If
 Choice chips are a variant of chips which allow single selection from a set of options. To define a set of chips as choice chips, add the class `mdc-chip-set--choice` to the chip set element.
 
 ```html
-<div class="mdc-chip-set mdc-chip-set--choice">
+<div class="mdc-chip-set mdc-chip-set--choice" role="grid">
   ...
 </div>
 ```
@@ -115,15 +134,18 @@ Choice chips are a variant of chips which allow single selection from a set of o
 Filter chips are a variant of chips which allow multiple selection from a set of options. To define a set of chips as filter chips, add the class `mdc-chip-set--filter` to the chip set element. When a filter chip is selected, a checkmark appears as the leading icon. If the chip already has a leading icon, the checkmark replaces it. This requires the HTML structure of a filter chip to differ from other chips:
 
 ```html
-<div class="mdc-chip-set mdc-chip-set--filter">
-  <button class="mdc-chip">
+<div class="mdc-chip-set mdc-chip-set--filter" role="grid">
+  <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
     <span class="mdc-chip__checkmark" >
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
         <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
       </svg>
     </span>
-    <span class="mdc-chip__text">Filterable content</span>
+    <span role="gridcell">
+      <span role="checkbox" tabindex="0" aria-checked="false" class="mdc-chip__text">Filterable content</span>
+    </span>
   </button>
   ...
 </div>
@@ -132,8 +154,9 @@ Filter chips are a variant of chips which allow multiple selection from a set of
 To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` element _before_ the `mdc-chip__checkmark` element:
 
 ```html
-<div class="mdc-chip-set mdc-chip-set--filter">
-  <button class="mdc-chip">
+<div class="mdc-chip-set mdc-chip-set--filter" role="grid">
+  <div class="mdc-chip" role="row">
+    <div class="mdc-chip__ripple"></div>
     <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
     <span class="mdc-chip__checkmark" >
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
@@ -141,8 +164,10 @@ To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` elemen
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
       </svg>
     </span>
-    <span class="mdc-chip__text">Filterable content</span>
-  </button>
+    <span role="gridcell">
+      <span role="checkbox" tabindex="0" aria-checked="false" class="mdc-chip__text">Filterable content</span>
+    </span>
+  </div>
   ...
 </div>
 ```
@@ -152,7 +177,7 @@ To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` elemen
 Input chips are a variant of chips which enable user input by converting text into chips. To define a set of chips as input chips, add the class `mdc-chip-set--input` to the chip set element.
 
 ```html
-<div class="mdc-chip-set mdc-chip-set--input">
+<div class="mdc-chip-set mdc-chip-set--input" role="grid">
   ...
 </div>
 ```
@@ -194,25 +219,56 @@ chipSet.listen('MDCChip:removal', function(event) {
 To display a pre-selected filter or choice chip, add the class `mdc-chip--selected` to the root chip element.
 
 ```html
-<button class="mdc-chip mdc-chip--selected">
-  <span class="mdc-chip__text">Add to calendar</span>
-</button>
+<div class="mdc-chip-set mdc-chip-set--choice" role="grid">
+  <div class="mdc-chip mdc-chip--selected" role="row">
+    <div class="mdc-chip__ripple"></div>
+    <span role="gridcell">
+      <span role="radio" tabindex="0" aria-checked="true" class="mdc-chip__text">Add to calendar</span>
+    </span>
+  </div>
+</div>
 ```
 
 To pre-select filter chips that have a leading icon, also add the class `mdc-chip__icon--leading-hidden` to the `mdc-chip__icon--leading` element. This will ensure that the checkmark displaces the leading icon.
 
 ```html
-<button class="mdc-chip mdc-chip--selected">
-  <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
-  <span class="mdc-chip__checkmark">
-    <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-      <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
-            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-    </svg>
-  </span>
-  <span class="mdc-chip__text">Filterable content</span>
-</button>
+<div class="mdc-chip-set mdc-chip-set--filter" role="grid">
+  <div class="mdc-chip mdc-chip--selected" role="row">
+    <div class="mdc-chip__ripple"></div>
+    <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
+    <span class="mdc-chip__checkmark">
+      <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
+        <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+      </svg>
+    </span>
+    <span role="gridcell">
+      <span role="checkbox" tabindex="0" aria-checked="true" class="mdc-chip__text">Filterable content</span>
+    </span>
+  </div>
+</div>
 ```
+
+## Additional Information
+
+### Accessibility
+
+Material Design spec advises that touch targets should be at least 48 x 48 px.
+To meet this requirement, add the following to your chip:
+
+```html
+<div class="mdc-touch-target-wrapper">
+  <button class="mdc-chip mdc-chip--touch">
+    <div class="mdc-chip__ripple"></div>
+    <span role="gridcell">
+      <span role="button" tabindex="0" class="mdc-chip__text">Chip One</span>
+    </span>
+    <div class="mdc-chip__touch"></div>
+  </button>
+</div>
+```
+
+Note that the outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
 
 ## Style Customization
 
@@ -225,6 +281,7 @@ CSS Class | Description
 `mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips, which allow a single selection from a set of options.
 `mdc-chip-set--filter` | Optional. Indicates that the chips in the set are filter chips, which allow multiple selection from a set of options.
 `mdc-chip` | Mandatory.
+`mdc-chip__ripple` | Mandatory. Indicates the element which shows the ripple styling.
 `mdc-chip--selected` | Optional. Indicates that the chip is selected.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
 `mdc-chip__icon` | Optional. Indicates an icon in the chip. We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts.
@@ -236,6 +293,10 @@ CSS Class | Description
 `mdc-chip__checkmark-path` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG path in a filter chip.
 
 > _NOTE_: Every element that has an `mdc-chip__icon` class must also have either the `mdc-chip__icon--leading` or `mdc-chip__icon--trailing` class.
+
+`mdc-chip__action--primary` | Mandatory. Placed on the `mdc-chip__text` element.
+`mdc-chip__action--trailing` | Optinoal. Placed on the `mdc-chip__icon--trailing` when it should be accessible via keyboard navigation.
+`mdc-chip--deletable` | Optional. Indicates that the chip should be removable by the delete or backspace key.
 
 ### Sass Mixins
 
@@ -260,6 +321,7 @@ Mixin | Description
 `mdc-chip-leading-icon-margin($left-margin, $right-margin)` | Customizes the margin of a leading icon in a chip
 `mdc-chip-trailing-icon-margin($left-margin, $right-margin)` | Customizes the margin of a trailing icon in a chip
 `mdc-chip-elevation-transition()` | Adds a MDC elevation transition to the chip. This should be used instead of setting transition with `mdc-elevation-transition-value()` directly when a box shadow transition is desired for a chip
+`mdc-chip-density($density-scale)` | Sets density scale for chip. Supported density scales  are `-2`, `-1` and `0` (default).
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 
@@ -276,6 +338,10 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 Method Signature | Description
 --- | ---
 `beginExit() => void` | Proxies to the foundation's `beginExit` method
+`focusPrimaryAction() => void` | Proxies to the foundation's `focusPrimaryAction` method
+`focusTrailingAction() => void` | Proxies to the foundation's `focusTrailingAction` method
+`removeFocus() => void` | Proxies to the foundation's `removeFocus` method
+`setSelectedFromChipSet(selected: boolean) => void` | Proxies to the foundation's `setSelectedFromChipset` method (only called from the chip set)
 
 Property | Value Type | Description
 --- | --- | ---
@@ -296,6 +362,7 @@ Event Name | `event.detail` | Description
 `MDCChip:selection` | `{chipId: string, selected: boolean}` | Indicates the chip's selection state has changed (for choice/filter chips)
 `MDCChip:removal` | `{chipId: string, root: Element}` | Indicates the chip is ready to be removed from the DOM
 `MDCChip:trailingIconInteraction` | `{chipId: string}` | Indicates the chip's trailing icon was interacted with (via click/tap or Enter key)
+`MDCChip:navigation` | `{chipId: string, key: string, source: FocusSource}` | Indicates a navigation event has occurred on a chip
 
 > _NOTE_: All of `MDCChip`'s emitted events bubble up through the DOM.
 
@@ -329,7 +396,7 @@ Method Signature | Description
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
 `notifyInteraction() => void` | Notifies the Chip Set that the chip has been interacted with\*
-`notifySelection(selected) => void` | Notifies the Chip Set that the chip has been selected or deselected\*\*
+`notifySelection(selected: boolean, chipSetShouldIgnore: boolean) => void` | Notifies the Chip Set that the chip has been selected or deselected\*\*. When `chipSetShouldIgnore` is `true`, the chip set does not process the event.
 `notifyTrailingIconInteraction() => void` | Notifies the Chip Set that the chip's trailing icon has been interacted with\*
 `notifyRemoval() => void` | Notifies the Chip Set that the chip will be removed\*\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
@@ -337,7 +404,13 @@ Method Signature | Description
 `hasLeadingIcon() => boolean` | Returns whether the chip has a leading icon
 `getRootBoundingClientRect() => ClientRect` | Returns the bounding client rect of the root element
 `getCheckmarkBoundingClientRect() => ClientRect \| null` | Returns the bounding client rect of the checkmark element or null if it doesn't exist
-`setAttr(attr: string, value: string) => void` | Sets the value of the attribute on the root element.
+`notifyNavigation(key: string, source: EventSource) => void` | Notifies the Chip Set that a navigation event has occurred
+`setPrimaryActionAttr(attr: string, value: string) => void` | Sets an attribute on the primary action element to the given value
+`focusPrimaryAction() => void` | Gives focus to the primary action element
+`hasTrailingAction() => boolean` | Returns `true` if the chip has a trailing action element
+`setTrailingActionAttr(attr: string, value: string) => void` | Sets an attribute on the trailing action element to the given value, if the element exists
+`focusTrailingAction() => void` | Gives focus to the trailing action element if present
+
 
 > \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
 
@@ -350,8 +423,14 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
-`removeChip(chipId: string) => void` | Removes the chip with the given id from the chip set
-`setSelected(chipId: string, selected: boolean) => void` | Sets the selected state of the chip with the given id
+`removeChipAtIndex(index: number) => void` | Removes the chip with the given `index` from the chip set
+`selectChipAtIndex(index: string, selected: boolean, shouldNotifyClients: boolean) => void` | Calls `MDCChip#setSelectedFromChipSet(selected)` on the chip at the given `index`. Will emit a selection event if called with `shouldNotifyClients` set to `true`. The emitted selection event will be ignored by the `MDCChipSetFoundation`.
+`getIndexOfChipById(id: string) => number` | Returns the index of the chip with the matching `id` or -1
+`focusChipPrimaryActionAtIndex(index: number) => void` | Calls `MDCChip#focusPrimaryAction()` on the chip at the given `index`
+`focusChipTrailingActionAtIndex(index: number) => void` | Calls `MDCChip#focusTrailingAction()` on the chip at the given `index`
+`isRTL() => boolean` | Returns `true` if the text direction is RTL
+`getChipListCount() => number` | Returns the number of chips inside the chip set
+`removeFocusFromChipAtIndex(index: number) => void` | Calls `MDCChip#removeFocus()` on the chip at the given `index`
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
@@ -361,6 +440,7 @@ Method Signature | Description
 --- | ---
 `isSelected() => boolean` | Returns true if the chip is selected
 `setSelected(selected: boolean) => void` | Sets the chip's selected state
+`setSelectedFromChipSet(selected: boolean, shouldNotifyClients: boolean) => void` | Sets the chip's selected state (called from the chip set) to the `selected` param. Will emit a selection event if called with `shouldNotifyClients` set to `true`. The emitted selection event will be ignored by the `MDCChipSetFoundation`.
 `getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
 `getDimensions() => ClientRect` | Returns the dimensions of the chip. This is used for applying ripple to the chip.
@@ -368,6 +448,8 @@ Method Signature | Description
 `handleInteraction(evt: Event) => void` | Handles an interaction event on the root element
 `handleTransitionEnd(evt: Event) => void` | Handles a transition end event on the root element
 `handleTrailingIconInteraction(evt: Event) => void` | Handles an interaction event on the trailing icon element
+`handleKeydown(evt: Event) => void` | Handles a keydown event on the root element
+`removeFocus() => void` | Removes focusability from the chip
 
 #### `MDCChipFoundation` Event Handlers
 
@@ -378,6 +460,7 @@ Events | Element Selector | Foundation Handler
 `click`, `keydown` | `.mdc-chip` (root) | `handleInteraction()`
 `click`, `keydown` | `.mdc-chip__icon--trailing` (if present) | `handleTrailingIconInteraction()`
 `transitionend` | `.mdc-chip` (root) | `handleTransitionEnd()`
+`keydown` | `.mdc-chip` (root) | `handleKeydown()`
 
 #### `MDCChipSetFoundation`
 
@@ -386,8 +469,9 @@ Method Signature | Description
 `getSelectedChipIds() => ReadonlyArray<string>` | Returns an array of the IDs of all selected chips
 `select(chipId: string) => void` | Selects the chip with the given id
 `handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
-`handleChipSelection(chipId: string, selected: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element
+`handleChipSelection(chipId: string, selected: boolean, chipSetShouldIgnore: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element. When `chipSetShouldIgnore` is true, the chip set does not process the event.
 `handleChipRemoval(chipId: string) => void` | Handles a custom `MDCChip:removal` event on the root element
+`handleChipNavigation(chipId: string, key: string) => void` | Handles a custom `MDCChip:navigation` event on the root element
 
 #### `MDCChipSetFoundation` Event Handlers
 
@@ -398,3 +482,4 @@ Events | Element Selector | Foundation Handler
 `MDCChip:interaction` | `.mdc-chip-set` (root) | `handleChipInteraction`
 `MDCChip:selection` | `.mdc-chip-set` (root) | `handleChipSelection`
 `MDCChip:removal` | `.mdc-chip-set` (root) | `handleChipRemoval`
+`MDCChip:navigation` | `.mdc-chip-set` (root) | `handleChipNavigation`

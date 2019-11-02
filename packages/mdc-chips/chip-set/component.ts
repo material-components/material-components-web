@@ -24,11 +24,12 @@
 import {MDCComponent} from '@material/base/component';
 import {MDCChip, MDCChipFactory} from '../chip/component';
 import {MDCChipFoundation} from '../chip/foundation';
-import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/types';
+import {MDCChipInteractionEvent, MDCChipNavigationEvent, MDCChipRemovalEvent,
+    MDCChipSelectionEvent} from '../chip/types';
 import {MDCChipSetAdapter} from './adapter';
 import {MDCChipSetFoundation} from './foundation';
 
-const {INTERACTION_EVENT, SELECTION_EVENT, REMOVAL_EVENT} = MDCChipFoundation.strings;
+const {INTERACTION_EVENT, SELECTION_EVENT, REMOVAL_EVENT, NAVIGATION_EVENT} = MDCChipFoundation.strings;
 const {CHIP_SELECTOR} = MDCChipSetFoundation.strings;
 
 let idCounter = 0;
@@ -54,6 +55,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   private handleChipInteraction_!: (evt: MDCChipInteractionEvent) => void; // assigned in initialSyncWithDOM()
   private handleChipSelection_!: (evt: MDCChipSelectionEvent) => void; // assigned in initialSyncWithDOM()
   private handleChipRemoval_!: (evt: MDCChipRemovalEvent) => void; // assigned in initialSyncWithDOM()
+  private handleChipNavigation_!: (evt: MDCChipNavigationEvent) => void; // assigned in initialSyncWithDOM()
 
   /**
    * @param chipFactory A function which creates a new MDCChip.
@@ -71,11 +73,16 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     });
 
     this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt.detail.chipId);
-    this.handleChipSelection_ = (evt) => this.foundation_.handleChipSelection(evt.detail.chipId, evt.detail.selected);
+    this.handleChipSelection_ = (evt) => {
+      this.foundation_.handleChipSelection(evt.detail.chipId, evt.detail.selected, evt.detail.shouldIgnore);
+    };
     this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt.detail.chipId);
+    this.handleChipNavigation_ = (evt) => this.foundation_.handleChipNavigation(
+        evt.detail.chipId, evt.detail.key, evt.detail.source);
     this.listen(INTERACTION_EVENT, this.handleChipInteraction_);
     this.listen(SELECTION_EVENT, this.handleChipSelection_);
     this.listen(REMOVAL_EVENT, this.handleChipRemoval_);
+    this.listen(NAVIGATION_EVENT, this.handleChipNavigation_);
   }
 
   destroy() {
@@ -86,6 +93,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.unlisten(INTERACTION_EVENT, this.handleChipInteraction_);
     this.unlisten(SELECTION_EVENT, this.handleChipSelection_);
     this.unlisten(REMOVAL_EVENT, this.handleChipRemoval_);
+    this.unlisten(NAVIGATION_EVENT, this.handleChipNavigation_);
 
     super.destroy();
   }
@@ -102,18 +110,31 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {
+      focusChipPrimaryActionAtIndex: (index) => {
+        this.chips_[index].focusPrimaryAction();
+      },
+      focusChipTrailingActionAtIndex: (index) => {
+        this.chips_[index].focusTrailingAction();
+      },
+      getChipListCount: () => this.chips_.length,
+      getIndexOfChipById: (chipId) => {
+        return this.findChipIndex_(chipId);
+      },
       hasClass: (className) => this.root_.classList.contains(className),
-      removeChip: (chipId) => {
-        const index = this.findChipIndex_(chipId);
-        if (index >= 0) {
+      isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      removeChipAtIndex: (index) => {
+        if (index >= 0 && index < this.chips_.length) {
           this.chips_[index].destroy();
+          this.chips_[index].remove();
           this.chips_.splice(index, 1);
         }
       },
-      setSelected: (chipId, selected) => {
-        const index = this.findChipIndex_(chipId);
-        if (index >= 0) {
-          this.chips_[index].selected = selected;
+      removeFocusFromChipAtIndex: (index) => {
+        this.chips_[index].removeFocus();
+      },
+      selectChipAtIndex: (index, selected, shouldNotifyClients) => {
+        if (index >= 0 && index < this.chips_.length) {
+          this.chips_[index].setSelectedFromChipSet(selected, shouldNotifyClients);
         }
       },
     };

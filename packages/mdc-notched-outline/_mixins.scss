@@ -42,6 +42,17 @@
   }
 }
 
+///
+/// Adds top offset to compensate for border width box size when it is notched.
+/// Use this when floating label is aligned to center to prevent label jump on focus.
+/// @param {Number} $stroke-width Stroke width of notched outline that needs to be offset.
+///
+@mixin mdc-notched-outline-notch-offset($stroke-width) {
+  .mdc-notched-outline--notched .mdc-notched-outline__notch {
+    padding-top: $stroke-width;
+  }
+}
+
 @mixin mdc-notched-outline-shape-radius($radius, $rtl-reflexive: false) {
   $radius: mdc-shape-prop-value($radius);
 
@@ -82,6 +93,36 @@
   &.mdc-notched-outline--upgraded,
   .mdc-notched-outline--upgraded {
     @include mdc-floating-label-float-position($positionY, $positionX, $scale);
+
+    // stylelint-disable-next-line no-descending-specificity
+    .mdc-floating-label--float-above {
+      font-size: 1rem;
+    }
+  }
+}
+
+///
+/// Sets floating label position in notched outline when label is afloat.
+///
+/// @param {Number} $positionY Absolute Y-axis position in `px`.
+/// @param {Number} $positionX Absolute X-axis position in `px`. Defaults to `0`.
+/// @param {Number} $scale Defaults to `.75`.
+///
+/// @todo Replace mixin `mdc-notched-outline-floating-label-float-position` with this mixin when floating label is
+///     center aligned in all the places.
+///
+@mixin mdc-notched-outline-floating-label-float-position-absolute($positionY, $positionX: 0, $scale: .75) {
+  @include mdc-floating-label-float-position($positionY + $mdc-notched-outline-label-adjust-absolute, $positionX, 1);
+
+  .mdc-floating-label--float-above {
+    font-size: ($scale * 1rem);
+  }
+
+  // Two selectors to ensure we select the appropriate class when applied from this component or a parent component.
+  &.mdc-notched-outline--upgraded,
+  .mdc-notched-outline--upgraded {
+    @include mdc-floating-label-float-position(
+      $positionY, $positionX, $scale);
 
     // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {
