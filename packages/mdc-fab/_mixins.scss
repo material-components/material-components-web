@@ -25,11 +25,12 @@
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
 @import "@material/ripple/variables";
-@import "@material/theme/functions";
-@import "@material/theme/mixins";
+@import "@material/rtl/mixins";
 @import "@material/shape/mixins";
 @import "@material/shape/functions";
-@import "@material/rtl/mixins";
+@import "@material/theme/functions";
+@import "@material/theme/mixins";
+@import "@material/touch-target/mixins";
 @import "@material/typography/mixins";
 @import "./variables";
 
@@ -43,6 +44,8 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
 @mixin mdc-fab-without-ripple($query: mdc-feature-all()) {
   // postcss-bem-linter: define fab
 
+  @include mdc-touch-target-wrapper($query);
+
   .mdc-fab {
     @include mdc-fab-base_($query: $query);
     @include mdc-fab-container-color(secondary, $query: $query);
@@ -52,6 +55,14 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
 
   .mdc-fab--mini {
     @include mdc-fab--mini_($query: $query);
+    @include mdc-touch-target-component(
+      $component-height: $mdc-fab-mini-height,
+      $component-width: $mdc-fab-mini-height,
+      $query: $query);
+
+    .mdc-fab__touch {
+      @include mdc-touch-target($set-width: true, $query: $query);
+    }
   }
 
   .mdc-fab--extended {
