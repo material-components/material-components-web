@@ -60,8 +60,8 @@
   @if $set-width {
     @include mdc-feature-targets($feat-structure) {
       left: 50%;
-      transform: translate(-50%, -50%);
       width: $mdc-touch-target-width;
+      transform: translate(-50%, -50%);
     }
   } @else {
     @include mdc-feature-targets($feat-structure) {
