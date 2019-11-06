@@ -1,7 +1,7 @@
 {
   "name": "@material/animation",
   "description": "Animation Variables and Mixins used by Material Components for the web",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "license": "MIT",
   "keywords": [
     "material components",
