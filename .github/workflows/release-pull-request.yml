@@ -33,7 +33,7 @@ jobs:
           npm install
       - name: Bump version
         run: |
-          git checkout -B release/lerna master
+          git checkout -B release/lerna refs/remotes/origin/master
           npx lerna version --conventional-commits --no-git-tag-version --no-push --yes
       - name: Create PR
         uses: peter-evans/create-pull-request@v1.5.2
