@@ -150,7 +150,7 @@ While the FAB is 48x48px by default, the mini FAB is 40x40px. Add the following 
 
 ```html
 <div class="mdc-touch-target-wrapper">
-  <button class="mdc-fab mdc-fab--mini">
+  <button class="mdc-fab mdc-fab--mini mdc-fab--touch">
     <div class="mdc-fab__ripple"></div>
     <span class="material-icons mdc-fab__icon">add</span>
     <span class="mdc-fab__label">Create</span>

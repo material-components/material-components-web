@@ -55,14 +55,10 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
 
   .mdc-fab--mini {
     @include mdc-fab--mini_($query: $query);
-    @include mdc-touch-target-component(
-      $component-height: $mdc-fab-mini-height,
-      $component-width: $mdc-fab-mini-height,
-      $query: $query);
+  }
 
-    .mdc-fab__touch {
-      @include mdc-touch-target($set-width: true, $query: $query);
-    }
+  .mdc-fab--touch {
+    @include mdc-fab--touch_($query: $query);
   }
 
   .mdc-fab--extended {
@@ -313,6 +309,17 @@ $mdc-fab-icon-enter-duration_: 180ms;
   @include mdc-feature-targets($feat-structure) {
     width: $mdc-fab-mini-height;
     height: $mdc-fab-mini-height;
+  }
+}
+
+@mixin mdc-fab--touch_($query: mdc-feature-all()) {
+  @include mdc-touch-target-component(
+    $component-height: $mdc-fab-mini-height,
+    $component-width: $mdc-fab-mini-height,
+    $query: $query);
+
+  .mdc-fab__touch {
+    @include mdc-touch-target($set-width: true, $query: $query);
   }
 }
 
