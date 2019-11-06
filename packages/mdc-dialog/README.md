@@ -40,12 +40,12 @@ npm install @material/dialog
 ### HTML Structure
 
 ```html
-<div class="mdc-dialog"
-     role="alertdialog"
-     aria-modal="true"
-     aria-labelledby="my-dialog-title"
-     aria-describedby="my-dialog-content">
-  <div class="mdc-dialog__container">
+<div class="mdc-dialog">
+  <div class="mdc-dialog__container"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="my-dialog-title"
+      aria-describedby="my-dialog-content">
     <div class="mdc-dialog__surface">
       <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
       <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
@@ -114,12 +114,12 @@ dialog.listen('MDCDialog:opened', () => {
 The Simple Dialog contains a list of potential actions. It does not contain buttons.
 
 ```html
-<div class="mdc-dialog"
-     role="alertdialog"
-     aria-modal="true"
-     aria-labelledby="my-dialog-title"
-     aria-describedby="my-dialog-content">
-  <div class="mdc-dialog__container">
+<div class="mdc-dialog">
+  <div class="mdc-dialog__container"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="my-dialog-title"
+      aria-describedby="my-dialog-content">
     <div class="mdc-dialog__surface">
       <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
       <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
@@ -150,12 +150,12 @@ The Confirmation Dialog contains a list of choices, and buttons to confirm or ca
 radio buttons (indicating single selection) or checkboxes (indicating multiple selection).
 
 ```html
-<div class="mdc-dialog"
-     role="alertdialog"
-     aria-modal="true"
-     aria-labelledby="my-dialog-title"
-     aria-describedby="my-dialog-content">
-  <div class="mdc-dialog__container">
+<div class="mdc-dialog">
+  <div class="mdc-dialog__container"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="my-dialog-title"
+      aria-describedby="my-dialog-content">
     <div class="mdc-dialog__surface">
       <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
       <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
