@@ -5,7 +5,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 4.0.1 (2019-11-06)
 
-**Note:** Version bump only for package material-components-web
+
+### Bug Fixes
+
+* **fab:** Add missing dep to fab package.json. ([#5236](https://github.com/material-components/material-components-web/issues/5236)) ([e0f6fd9](https://github.com/material-components/material-components-web/commit/e0f6fd9))
 
 
 
