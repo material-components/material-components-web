@@ -536,7 +536,6 @@ Method Signature | Description
 --- | ---
 `getListItemCount() => Number` | Returns the total number of list items (elements with `mdc-list-item` class) that are direct children of the `root_` element.
 `getFocusedElementIndex() => Number` | Returns the `index` value of the currently focused element.
-`getListItemIndex(ele: Element) => Number` | Returns the `index` value of the provided `ele` element.
 `getAttributeForElementIndex(index: number, attribute: string) => string | null` | Returns the attribute value of list item at given `index`.
 `setAttributeForElementIndex(index: Number, attr: String, value: String) => void` | Sets the `attr` attribute to `value` for the list item at `index`.
 `addClassForElementIndex(index: Number, className: String) => void` | Adds the `className` class to the list item at `index`.
