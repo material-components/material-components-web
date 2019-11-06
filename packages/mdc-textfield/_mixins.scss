@@ -206,7 +206,7 @@
 /// @param {Color} $color - The desired input text color.
 ///
 @mixin mdc-text-field-ink-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-ink-color_($color);
   }
 }
@@ -216,7 +216,7 @@
 /// @param {Color} $color - The desired input text color.
 ///
 @mixin mdc-text-field-disabled-ink-color($color) {
-  &.mdc-text-field--disabled {
+  @include mdc-text-field-if-disabled_ {
     @include mdc-text-field-ink-color_($color);
   }
 }
@@ -226,7 +226,7 @@
 /// @param {Color} $color - The desired background color.
 ///
 @mixin mdc-text-field-fill-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-fill-color_($color);
   }
 }
@@ -236,37 +236,37 @@
 /// @param {Color} $color - The desired label text color.
 ///
 @mixin mdc-text-field-disabled-fill-color($color) {
-  &.mdc-text-field--disabled {
+  @include mdc-text-field-if-disabled_ {
     @include mdc-text-field-fill-color_($color);
   }
 }
 
 ///
-/// Customizes the text field bottom line color except the outlined and textarea variants.
+/// Customizes the text field bottom line color for the filled variant.
 /// @param {Color} $color - The desired bottom line color.
 ///
 @mixin mdc-text-field-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-bottom-line-color_($color);
   }
 }
 
 ///
-/// Customizes the disabled text field bottom line color except the outlined and textarea variants.
+/// Customizes the disabled text field bottom line color for the filled variant.
 /// @param {Color} $color - The desired bottom line color.
 ///
 @mixin mdc-text-field-disabled-bottom-line-color($color) {
-  &.mdc-text-field--disabled {
+  @include mdc-text-field-if-disabled_ {
     @include mdc-text-field-bottom-line-color_($color);
   }
 }
 
 ///
-/// Customizes the hover text field bottom line color except the outlined and textarea variants.
+/// Customizes the hover text field bottom line color for the filled variant.
 /// @param {Color} $color - The desired bottom line color.
 ///
 @mixin mdc-text-field-hover-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-hover-bottom-line-color_($color);
   }
 }
@@ -276,7 +276,7 @@
 /// @param {Color} $color - The desired line ripple color.
 ///
 @mixin mdc-text-field-line-ripple-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-line-ripple-color_($color);
   }
 }
@@ -286,7 +286,7 @@
 /// @param {Color} $color - The desired label text color.
 ///
 @mixin mdc-text-field-label-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-label-ink-color_($color);
   }
 }
@@ -296,7 +296,7 @@
 /// @param {Color} $color - The desired label text color.
 ///
 @mixin mdc-text-field-disabled-label-color($color) {
-  &.mdc-text-field--disabled {
+  @include mdc-text-field-if-disabled_ {
     @include mdc-text-field-label-ink-color_($color);
   }
 }
@@ -306,7 +306,7 @@
 /// @param {Color} $color - The desired outline border color.
 ///
 @mixin mdc-text-field-outline-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-notched-outline-color($color);
   }
 }
@@ -316,7 +316,7 @@
 /// @param {Color} $color - The desired outline border color.
 ///
 @mixin mdc-text-field-hover-outline-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-hover-outline-color_($color);
   }
 }
@@ -326,7 +326,7 @@
 /// @param {Color} $color - The desired outline border color.
 ///
 @mixin mdc-text-field-focused-outline-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-focused-outline-color_($color);
   }
 }
@@ -336,7 +336,7 @@
 /// @param {Color} $color - The desired outline border color.
 ///
 @mixin mdc-text-field-disabled-outline-color($color) {
-  &.mdc-text-field--disabled {
+  @include mdc-text-field-if-disabled_ {
     @include mdc-notched-outline-color($color);
   }
 }
@@ -841,5 +841,27 @@
 @mixin mdc-text-field-label-ink-color_($color) {
   .mdc-floating-label {
     @include mdc-floating-label-ink-color($color);
+  }
+}
+
+// State qualifiers
+
+///
+/// Helps style the text-field only when it's enabled.
+/// @access private
+///
+@mixin mdc-text-field-if-enabled_ {
+  &:not(.mdc-text-field--disabled) {
+    @content;
+  }
+}
+
+///
+/// Helps style the text-field only when it's disabled.
+/// @access private
+///
+@mixin mdc-text-field-if-disabled_ {
+  &.mdc-text-field--disabled {
+    @content;
   }
 }

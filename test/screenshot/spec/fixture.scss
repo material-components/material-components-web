@@ -105,6 +105,10 @@ $test-layout-cell-grid-color-light: #f9f9f9;
   min-height: 100vh;
 }
 
+.test-viewport--no-bg {
+  @include test-fixture-no-bg;
+}
+
 .test-viewport--light {
   @include test-fixture-grid-bg-light;
 }
