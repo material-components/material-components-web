@@ -72,7 +72,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     }
 
     .mdc-button__touch {
-      @include mdc-touch-target($query);
+      @include mdc-touch-target($query: $query);
     }
 
     @include mdc-button-ink-color(primary, $query);
