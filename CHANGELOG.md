@@ -3,12 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## 4.0.1 (2019-11-06)
+# [4.1.0](https://github.com/material-components/material-components-web/compare/v4.0.0...v4.1.0) (2019-11-07)
 
 
 ### Bug Fixes
 
 * **fab:** Add missing dep to fab package.json. ([#5236](https://github.com/material-components/material-components-web/issues/5236)) ([e0f6fd9](https://github.com/material-components/material-components-web/commit/e0f6fd9))
+
+
+### Features
+
+* **button:** Add disabled state color mixins ([#5232](https://github.com/material-components/material-components-web/issues/5232)) ([b5eb51e](https://github.com/material-components/material-components-web/commit/b5eb51e))
+* **fab:** Add support for increased touch target to mini FAB. ([#5231](https://github.com/material-components/material-components-web/issues/5231)) ([0c4d8f3](https://github.com/material-components/material-components-web/commit/0c4d8f3))
 
 
 
@@ -108,40 +114,43 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **text-field:** Removed sass variable in notched outline - `$mdc-notched-outline-transition-duration`.
 * **mdc-fab:** This changes the structure of the FAB element by moving the ripple from the outer element to an inner mdc-fab__ripple element.
 
-OLD
+  OLD
 
-```html
-<button class="mdc-fab" aria-label="Favorite">
-  <span class="mdc-fab__icon material-icons">favorite</span>
-</button>
-```
+  ```html
+  <button class="mdc-fab" aria-label="Favorite">
+    <span class="mdc-fab__icon material-icons">favorite</span>
+  </button>
+  ```
 
-NEW
+  NEW
 
-```html
-<button class="mdc-fab" aria-label="Favorite">
-  <div class="mdc-fab__ripple"></div>
-  <span class="mdc-fab__icon material-icons">favorite</span>
-</button>
-```
+  ```html
+  <button class="mdc-fab" aria-label="Favorite">
+    <div class="mdc-fab__ripple"></div>
+    <span class="mdc-fab__icon material-icons">favorite</span>
+  </button>
+  ```
+
 * **radio:** Ripple has been moved to a child element. See readme for updates.
 * **slider:** remove adapter methods `appendTrackMarkers`, `removeTrackMarkers `, `setLastTrackMarkersStyleProperty `, and add adapter method `setTrackMarkers`.
 * **button:** This changes the structure of the button element by moving the ripple from the outer <button> element to an inner `mdc-button__ripple` element.
 
-OLD
-```
-<button class="mdc-button">
-  <span class="mdc-button__label">Hello World</span>
-</button>
-```
+  OLD
 
-NEW
-```
-<button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
-  <span class="mdc-button__label">Hello World</span>
-</button>
-```
+  ```html
+  <button class="mdc-button">
+    <span class="mdc-button__label">Hello World</span>
+  </button>
+  ```
+
+  NEW
+
+  ```html
+  <button class="mdc-button">
+    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__label">Hello World</span>
+  </button>
+  ```
 * **chips:** MDCChipSetAdapter#removeChip has been replaced with MDCChipSetAdapter#removeChipAtIndex. MDCChipSetAdapter#setSelected has been replaced with MDCChipSetAdapter#selectChipAtIndex
 * **density:** Renamed sass mixins & variables in MDC Data Table - `mdc-data-table-header-row-height` => `mdc-data-table-header-cell-height` & `mdc-data-table-row-height` => `mdc-data-table-cell-height`. Also removed `mdc-button--dense` variant, use button's density mixin instead.
 
