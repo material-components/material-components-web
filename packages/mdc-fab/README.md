@@ -143,6 +143,24 @@ In browsers that fully support CSS custom properties, the above mixins will work
 
 ### Additional Information
 
+#### Accessibility
+
+Material Design spec advises that touch targets should be at least 48x48px.
+While the FAB is 48x48px by default, the mini FAB is 40x40px. Add the following to meet this requirement for mini FAB's:
+
+```html
+<div class="mdc-touch-target-wrapper">
+  <button class="mdc-fab mdc-fab--mini mdc-fab--touch">
+    <div class="mdc-fab__ripple"></div>
+    <span class="material-icons mdc-fab__icon">add</span>
+    <span class="mdc-fab__label">Create</span>
+    <div class="mdc-fab__touch"></div>
+  </button>
+</div>
+```
+
+Note that the outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+
 #### Positioning
 
 Developers must position MDC FAB as needed within their application's design.

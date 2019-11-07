@@ -144,10 +144,12 @@ same.
 ```html
 <div class="mdc-select mdc-select--outlined">
   <div class="mdc-select__anchor">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div id="demo-selected-text" class="mdc-select__selected-text" aria-labelledby="outlined-select-label"></div>
     <div class="mdc-notched-outline">
       <div class="mdc-notched-outline__leading"></div>
       <div class="mdc-notched-outline__notch">
-        <label class="mdc-floating-label">Pick a Food Group</label>
+        <label id="outlined-select-label" class="mdc-floating-label">Pick a Food Group</label>
       </div>
       <div class="mdc-notched-outline__trailing"></div>
     </div>
