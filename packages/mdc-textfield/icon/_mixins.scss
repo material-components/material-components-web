@@ -22,15 +22,25 @@
 
 // Public mixins
 
+///
+/// Customizes the color for the leading/trailing icons in an enabled text-field.
+/// @param {Color} $color - The desired icon color.
+/// @param {Boolean} $styleSecondIcon [false] - whether to apply the color to only
+///     the trailing icon when used with a leading icon
+///
 @mixin mdc-text-field-icon-color($color, $styleSecondIcon: false) {
   &:not(.mdc-text-field--disabled) {
     @include mdc-text-field-icon-color_($color, $styleSecondIcon);
   }
 }
 
-@mixin mdc-text-field-disabled-icon-color($color, $styleSecondIcon: false) {
+///
+/// Customizes the color for the leading/trailing icons in a disabled text-field.
+/// @param {Color} $color - The desired icon color.
+///
+@mixin mdc-text-field-disabled-icon-color($color) {
   &.mdc-text-field--disabled {
-    @include mdc-text-field-icon-color_($color, $styleSecondIcon);
+    @include mdc-text-field-icon-color_($color);
   }
 }
 
