@@ -60,7 +60,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     @include mdc-button-base_($query);
     @include mdc-button-shape-radius(small, $query: $query);
     @include mdc-button-container-fill-color(transparent, $query);
-
+    @include mdc-button-disabled-container-fill-color(transparent, $query);
     // The icon CSS class overrides styles defined in the .material-icons CSS
     // class, which is loaded separately so the order of CSS definitions is not
     // guaranteed. Therefore, increase specifity by nesting this class to ensure
@@ -72,10 +72,11 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     }
 
     .mdc-button__touch {
-      @include mdc-touch-target($query);
+      @include mdc-touch-target($query: $query);
     }
 
     @include mdc-button-ink-color(primary, $query);
+    @include mdc-button-disabled-ink-color($mdc-button-disabled-ink-color, $query);
   }
 
   .mdc-button__label + .mdc-button__icon {
@@ -111,8 +112,6 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   .mdc-button--raised,
   .mdc-button--unelevated {
     @include mdc-button--filled_($query);
-    @include mdc-button-container-fill-color(primary, $query);
-    @include mdc-button-ink-color(on-primary, $query);
   }
 
   .mdc-button--raised {
@@ -121,8 +120,6 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 
   .mdc-button--outlined {
     @include mdc-button--outlined_($query);
-    @include mdc-button-outline-width($mdc-button-outlined-border-width, $query: $query);
-    @include mdc-button-outline-color(primary, $query);
   }
 
   .mdc-button--touch {
@@ -150,7 +147,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
       @include mdc-feature-targets($feat-structure) {
         position: absolute;
         // Ripple needs content-box as the box sizing and box-sizing: border-box
-        // is often set as a default, so we override that here. 
+        // is often set as a default, so we override that here.
         box-sizing: content-box;
         width: 100%;
         height: 100%;
@@ -191,45 +188,89 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   }
 }
 
+///
+/// Sets the container fill color to the given color for an enabled button.
+/// @param {Color} $color - The desired container fill color.
+///
 @mixin mdc-button-container-fill-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
   // :not(:disabled) is used to support link styled as button
   // as link does not support :enabled style
   &:not(:disabled) {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
-    }
+    @include mdc-button-container-fill-color_($color, $query: $query);
   }
 }
 
+///
+/// Sets the container fill color to the given color for a disabled button.
+/// @param {Color} $color - The desired container fill color.
+///
+@mixin mdc-button-disabled-container-fill-color($color, $query: mdc-feature-all()) {
+  &:disabled {
+    @include mdc-button-container-fill-color_($color, $query: $query);
+  }
+}
+
+///
+/// Sets the outline color to the given color for an enabled button.
+/// @param {Color} $color - The desired outline color.
+///
 @mixin mdc-button-outline-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
   &:not(:disabled) {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $color);
-    }
+    @include mdc-button-outline-color_($color, $query: $query);
   }
 }
 
+///
+/// Sets the outline color to the given color for a disabled button.
+/// @param {Color} $color - The desired outline color.
+///
+@mixin mdc-button-disabled-outline-color($color, $query: mdc-feature-all()) {
+  &:disabled {
+    @include mdc-button-outline-color_($color, $query: $query);
+  }
+}
+
+///
+/// Sets the icon color to the given color for an enabled button.
+/// @param {Color} $color - The desired icon color.
+///
 @mixin mdc-button-icon-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
-  &:not(:disabled) .mdc-button__icon {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
-    }
+  &:not(:disabled) {
+    @include mdc-button-icon-color_($color, $query: $query);
   }
 }
 
-@mixin mdc-button-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+///
+/// Sets the icon color to the given color for a disabled button.
+/// @param {Color} $color - The desired icon color.
+///
+@mixin mdc-button-disabled-icon-color($color, $query: mdc-feature-all()) {
+  &:disabled {
+    @include mdc-button-icon-color_($color, $query: $query);
+  }
+}
 
+///
+/// Sets the ink color to the given color for an enabled button,
+/// and sets the icon color to the given color unless `mdc-button-icon-color`
+/// is also used.
+/// @param {Color} $color - The desired ink color.
+///
+@mixin mdc-button-ink-color($color, $query: mdc-feature-all()) {
   &:not(:disabled) {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
-    }
+    @include mdc-button-ink-color_($color, $query: $query);
+  }
+}
+
+///
+/// Sets the ink color to the given color for a disabled button,
+/// and sets the icon color to the given color unless `mdc-button-icon-color`
+/// is also used.
+/// @param {Color} $color - The desired ink color.
+///
+@mixin mdc-button-disabled-ink-color($color, $query: mdc-feature-all()) {
+  &:disabled {
+    @include mdc-button-ink-color_($color, $query: $query);
   }
 }
 
@@ -382,12 +423,6 @@ $query: mdc-feature-all()) {
   }
 
   &:disabled {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, transparent);
-
-      color: $mdc-button-disabled-ink-color;
-    }
-
     @include mdc-feature-targets($feat-structure) {
       cursor: default;
       pointer-events: none;
@@ -422,32 +457,23 @@ $query: mdc-feature-all()) {
 }
 
 @mixin mdc-button--outlined_($query) {
-  $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-button-outline-width($mdc-button-outlined-border-width, $query: $query);
+  @include mdc-button-outline-color(primary, $query);
+  @include mdc-button-disabled-outline-color($mdc-button-disabled-ink-color, $query);
 
   @include mdc-feature-targets($feat-structure) {
     border-style: solid;
   }
-
-  &:disabled {
-    @include mdc-feature-targets($feat-color) {
-      border-color: $mdc-button-disabled-ink-color;
-    }
-  }
 }
 
 @mixin mdc-button--filled_($query) {
-  $feat-color: mdc-feature-create-target($query, color);
-  $feat-structure: mdc-feature-create-target($query, structure);
-
   @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding, $query);
-
-  &:disabled {
-    @include mdc-feature-targets($feat-color) {
-      background-color: rgba(mdc-theme-prop-value(on-surface), .12);
-      color: $mdc-button-disabled-ink-color;
-    }
-  }
+  @include mdc-button-container-fill-color(primary, $query);
+  @include mdc-button-ink-color(on-primary, $query);
+  @include mdc-button-disabled-container-fill-color($mdc-button-disabled-container-fill-color, $query);
+  @include mdc-button-disabled-ink-color($mdc-button-disabled-ink-color, $query);
 }
 
 @mixin mdc-button--raised_($query) {
@@ -471,5 +497,59 @@ $query: mdc-feature-all()) {
 
   @include mdc-feature-targets($feat-animation) {
     transition: mdc-elevation-transition-value();
+  }
+}
+
+///
+/// Sets the container fill color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin mdc-button-container-fill-color_($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+  }
+}
+
+///
+/// Sets the outline color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin mdc-button-outline-color_($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+///
+/// Sets the icon color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin mdc-button-icon-color_($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-button__icon {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(color, $color);
+    }
+  }
+}
+
+///
+/// Sets the ink color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin mdc-button-ink-color_($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(color, $color);
   }
 }
