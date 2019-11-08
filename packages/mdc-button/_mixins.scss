@@ -316,7 +316,11 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   }
 }
 
-@mixin mdc-button-height($height, $query: $query) {
+///
+/// Sets custom height for button.
+/// @param {Number} $height - Height of button in `px`.
+///
+@mixin mdc-button-height($height, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
