@@ -74,4 +74,4 @@ Mixin | Description
 --- | ---
 `mdc-touch-target-wrapper` | Applied to the wrapper touch target element.
 `mdc-touch-target` | Applied to the inner touch target element.
-`mdc-touch-target-component` | Applied to the component root element. Adds margin to compensate for the increased touch target.
+`mdc-touch-target-margin` | Applied to the component root element. Adds margin to compensate for the increased touch target.

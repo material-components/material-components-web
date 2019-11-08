@@ -123,7 +123,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   }
 
   .mdc-button--touch {
-    @include mdc-touch-target-component(
+    @include mdc-touch-target-margin(
       $component-height: $mdc-button-height, $query: $query);
   }
   // postcss-bem-linter: end
