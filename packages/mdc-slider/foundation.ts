@@ -326,7 +326,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    */
   private computeValueFromPageX_(pageX: number): number {
     const {max_: max, min_: min} = this;
-    const xPos = pageX - this.rect_.left;
+    const xPos = pageX - (this.rect_.left + window.pageXOffset);
     let pctComplete = xPos / this.rect_.width;
     if (this.adapter_.isRTL()) {
       pctComplete = 1 - pctComplete;

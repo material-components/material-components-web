@@ -53,6 +53,23 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.5)'));
   });
 
+  test(`on ${downEvt} sets the value of the slider using the X coordinate of the event and horizontal scroll`, () => {
+    const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 30, width: 100});
+    window.pageXOffset = 25;
+    foundation.init();
+    clock.runToFrame();
+
+    rootHandlers[downEvt](pageXObj(100));
+    clock.runToFrame();
+
+    assert.equal(foundation.getValue(), 45);
+    td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(45px) translateX(-50%)'));
+    td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.45)'));
+    window.pageXOffset = 0;
+  });
+
   test(`on ${downEvt} offsets the value by the X position of the slider element`, () => {
     const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
