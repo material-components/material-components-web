@@ -71,7 +71,7 @@ $mdc-text-field-outlined-stroke-width: 2px !default;
 $mdc-text-field-height: 56px !default;
 $mdc-text-field-minimum-height: 40px !default;
 $mdc-text-field-maximum-height: $mdc-text-field-height !default;
-$mdc-text-field-density-default-scale: $mdc-density-default-scale !default;
+$mdc-text-field-density-scale: $mdc-density-default-scale !default;
 $mdc-text-field-density-config: (
   height: (
     default: $mdc-text-field-height,

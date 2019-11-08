@@ -43,16 +43,32 @@
 }
 
 /// Styles applied to the component's inner touch target element.
-@mixin mdc-touch-target($query: mdc-feature-all()) {
+/// By default, only sets the inner element height to the minimum touch target
+/// height ($mdc-touch-target-height).
+/// @param {Boolean} $set-width [false] - Sets the inner element width to the
+///     minimum touch target width ($mdc-touch-target-width).
+@mixin mdc-touch-target($set-width: false, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
     position: absolute;
     top: 50%;
     right: 0;
-    left: 0;
     height: $mdc-touch-target-height;
-    transform: translateY(-50%);
+  }
+
+  @if $set-width {
+    @include mdc-feature-targets($feat-structure) {
+      /* @noflip */
+      left: 50%;
+      width: $mdc-touch-target-width;
+      transform: translate(-50%, -50%);
+    }
+  } @else {
+    @include mdc-feature-targets($feat-structure) {
+      left: 0;
+      transform: translateY(-50%);
+    }
   }
 }
 

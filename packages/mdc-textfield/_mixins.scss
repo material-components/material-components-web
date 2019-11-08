@@ -178,15 +178,21 @@
 ///     percentage unit and if text field has custom height. Defaults to `$mdc-text-field-height`.
 /// @param {Boolean} $rtl-reflexive Set to true to flip shape radius in RTL context. Defaults to `false`.
 ///
-@mixin mdc-text-field-shape-radius($radius, $text-field-height: $mdc-text-field-height, $rtl-reflexive: false) {
+@mixin mdc-text-field-shape-radius($radius, $density-scale: $mdc-text-field-density-scale, $rtl-reflexive: false) {
   @if length($radius) > 2 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   }
 
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-text-field-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
   $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
 
   @include mdc-shape-radius(
-    mdc-shape-resolve-percentage-radius($text-field-height, $masked-radius),
+    mdc-shape-resolve-percentage-radius($height, $masked-radius),
     $rtl-reflexive
   );
 }
@@ -195,78 +201,150 @@
   @include mdc-notched-outline-shape-radius($radius, $rtl-reflexive);
 }
 
+///
+/// Customizes the color of the text entered into an enabled text field.
+/// @param {Color} $color - The desired input text color.
+///
 @mixin mdc-text-field-ink-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-ink-color_($color);
   }
 }
 
+///
+/// Customizes the color of the entered text in a disabled text field.
+/// @param {Color} $color - The desired input text color.
+///
+@mixin mdc-text-field-disabled-ink-color($color) {
+  @include mdc-text-field-if-disabled_ {
+    @include mdc-text-field-ink-color_($color);
+  }
+}
+
+///
+/// Customizes the background color of the text field or textarea when enabled.
+/// @param {Color} $color - The desired background color.
+///
 @mixin mdc-text-field-fill-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-fill-color_($color);
   }
 }
 
-@mixin mdc-text-field-textarea-stroke-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-textarea-stroke-color_($color);
+///
+/// Customizes the background color of the text field or textarea when disabled.
+/// @param {Color} $color - The desired label text color.
+///
+@mixin mdc-text-field-disabled-fill-color($color) {
+  @include mdc-text-field-if-disabled_ {
+    @include mdc-text-field-fill-color_($color);
   }
 }
 
-@mixin mdc-text-field-textarea-fill-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-textarea-fill-color_($color);
-  }
-}
-
-@mixin mdc-text-field-fullwidth-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-fullwidth-bottom-line-color_($color);
-  }
-}
-
+///
+/// Customizes the text field bottom line color for the filled variant.
+/// @param {Color} $color - The desired bottom line color.
+///
 @mixin mdc-text-field-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-bottom-line-color_($color);
   }
 }
 
+///
+/// Customizes the disabled text field bottom line color for the filled variant.
+/// @param {Color} $color - The desired bottom line color.
+///
+@mixin mdc-text-field-disabled-bottom-line-color($color) {
+  @include mdc-text-field-if-disabled_ {
+    @include mdc-text-field-bottom-line-color_($color);
+  }
+}
+
+///
+/// Customizes the hover text field bottom line color for the filled variant.
+/// @param {Color} $color - The desired bottom line color.
+///
 @mixin mdc-text-field-hover-bottom-line-color($color) {
-  &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-hover-bottom-line-color_($color);
   }
 }
 
+///
+/// Customizes the color of the default line ripple of the text field.
+/// @param {Color} $color - The desired line ripple color.
+///
 @mixin mdc-text-field-line-ripple-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-line-ripple-color_($color);
   }
 }
 
+///
+/// Customizes the text color of the label in an enabled text field.
+/// @param {Color} $color - The desired label text color.
+///
 @mixin mdc-text-field-label-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-label-ink-color_($color);
   }
 }
 
+///
+/// Customizes the text color of the label in a disabled text field.
+/// @param {Color} $color - The desired label text color.
+///
+@mixin mdc-text-field-disabled-label-color($color) {
+  @include mdc-text-field-if-disabled_ {
+    @include mdc-text-field-label-ink-color_($color);
+  }
+}
+
+///
+/// Customizes the border color of the outlined text field or textarea.
+/// @param {Color} $color - The desired outline border color.
+///
 @mixin mdc-text-field-outline-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-notched-outline-color($color);
   }
 }
 
+///
+/// Customizes the outline border color when the text field or textarea is hovered.
+/// @param {Color} $color - The desired outline border color.
+///
 @mixin mdc-text-field-hover-outline-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-hover-outline-color_($color);
   }
 }
 
+///
+/// Customizes the outline border color when the text field or textarea is focused.
+/// @param {Color} $color - The desired outline border color.
+///
 @mixin mdc-text-field-focused-outline-color($color) {
-  &:not(.mdc-text-field--disabled) {
+  @include mdc-text-field-if-enabled_ {
     @include mdc-text-field-focused-outline-color_($color);
   }
 }
 
+///
+/// Customizes the outline border color when the text field or textarea is disabled.
+/// @param {Color} $color - The desired outline border color.
+///
+@mixin mdc-text-field-disabled-outline-color($color) {
+  @include mdc-text-field-if-disabled_ {
+    @include mdc-notched-outline-color($color);
+  }
+}
+
+///
+/// Customizes the caret color of the text field or textarea.
+/// @param {Color} $color - The desired caret color.
+///
 @mixin mdc-text-field-caret-color($color) {
   .mdc-text-field__input {
     @include mdc-theme-prop(caret-color, $color);
@@ -284,7 +362,6 @@
   @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-character-counter-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
-  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-fullwidth-bottom-line-color);
   @include mdc-text-field-fill-color_($mdc-text-field-disabled-background);
 
   border-bottom: none;
@@ -364,8 +441,17 @@
 ///     percentage unit and if text field has custom height. Defaults to `$mdc-text-field-height`.
 /// @param {Boolean} $rtl-reflexive Set to true to flip shape radius in RTL context. Defaults to `false`.
 ///
-@mixin mdc-text-field-outline-shape-radius($radius, $text-field-height: $mdc-text-field-height, $rtl-reflexive: false) {
-  $resolved-radius: nth(mdc-shape-resolve-percentage-radius($text-field-height, mdc-shape-prop-value($radius)), 1);
+@mixin mdc-text-field-outline-shape-radius(
+  $radius,
+  $density-scale: $mdc-text-field-density-scale,
+  $rtl-reflexive: false) {
+  $height: mdc-density-prop-value(
+    $density-config: $mdc-text-field-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  $resolved-radius: nth(mdc-shape-resolve-percentage-radius($height, mdc-shape-prop-value($radius)), 1);
 
   @if (length(mdc-shape-prop-value($radius)) > 1) {
     // stylelint-disable max-line-length
@@ -632,6 +718,9 @@
 
 // Full Width
 @mixin mdc-text-field-fullwidth_ {
+  @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
+  @include mdc-text-field-disabled-bottom-line-color($mdc-text-field-bottom-line-idle);
+
   width: 100%;
 
   &:not(.mdc-text-field--textarea) {
@@ -651,14 +740,14 @@
 }
 
 @mixin mdc-text-field-fullwidth-invalid_ {
-  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-error);
+  @include mdc-text-field-bottom-line-color($mdc-text-field-error);
 }
 
 // Textarea
 @mixin mdc-text-field-textarea-disabled_ {
   @include mdc-text-field-outlined-disabled_;
   /* @alternate */
-  @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
+  @include mdc-text-field-fill-color_($mdc-textarea-disabled-background);
 }
 
 @mixin mdc-text-field-textarea-invalid_ {
@@ -731,20 +820,6 @@
   @include mdc-theme-prop(background-color, $color);
 }
 
-@mixin mdc-text-field-textarea-stroke-color_($color) {
-  @include mdc-notched-outline-color($color);
-}
-
-@mixin mdc-text-field-textarea-fill-color_($color) {
-  @include mdc-theme-prop(background-color, $color);
-}
-
-@mixin mdc-text-field-fullwidth-bottom-line-color_($color) {
-  &:not(.mdc-text-field--textarea) {
-    @include mdc-theme-prop(border-bottom-color, $color);
-  }
-}
-
 @mixin mdc-text-field-bottom-line-color_($color) {
   .mdc-text-field__input {
     @include mdc-theme-prop(border-bottom-color, $color);
@@ -766,5 +841,27 @@
 @mixin mdc-text-field-label-ink-color_($color) {
   .mdc-floating-label {
     @include mdc-floating-label-ink-color($color);
+  }
+}
+
+// State qualifiers
+
+///
+/// Helps style the text-field only when it's enabled.
+/// @access private
+///
+@mixin mdc-text-field-if-enabled_ {
+  &:not(.mdc-text-field--disabled) {
+    @content;
+  }
+}
+
+///
+/// Helps style the text-field only when it's disabled.
+/// @access private
+///
+@mixin mdc-text-field-if-disabled_ {
+  &.mdc-text-field--disabled {
+    @content;
   }
 }

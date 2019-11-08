@@ -60,7 +60,6 @@
   @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
   @include mdc-text-field-hover-bottom-line-color($mdc-text-field-bottom-line-hover);
   @include mdc-text-field-line-ripple-color_(primary);
-  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
   @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
   @include mdc-text-field-character-counter-color($mdc-text-field-helper-text-color);
   @include mdc-text-field-icon-color($mdc-text-field-icon-color);
@@ -249,10 +248,6 @@
 
 .mdc-text-field--focused {
   @include mdc-text-field-focused_;
-}
-
-.mdc-text-field--textarea.mdc-text-field--focused {
-  @include mdc-text-field-textarea-stroke-color(primary);
 }
 
 .mdc-text-field--invalid {

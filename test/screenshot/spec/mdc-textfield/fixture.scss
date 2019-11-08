@@ -24,6 +24,9 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
+$custom-disabled-fill-color: rgba(purple, .2);
+$custom-disabled-ink-color: rgba(purple, .6);
+
 // stylelint-disable selector-class-pattern
 .mdc-text-field {
   width: 100%;
@@ -80,4 +83,48 @@
 
 .custom-density-text-field-leading-icon--outlined {
   @include mdc-text-field-outlined-with-leading-icon-density(-4);
+}
+
+.custom-disabled-colors-text-field--fill-color {
+  @include mdc-text-field-disabled-fill-color($custom-disabled-fill-color);
+}
+
+.custom-disabled-colors-text-field--ink-color {
+  @include mdc-text-field-disabled-ink-color($custom-disabled-ink-color);
+}
+
+.custom-disabled-colors-text-field--label-color {
+  @include mdc-text-field-disabled-label-color($custom-disabled-ink-color);
+}
+
+.custom-disabled-colors-text-field--outline-color {
+  @include mdc-text-field-disabled-outline-color($custom-disabled-ink-color);
+}
+
+.custom-disabled-colors-text-field--bottom-line-color {
+  @include mdc-text-field-disabled-bottom-line-color($custom-disabled-ink-color);
+}
+
+.custom-disabled-colors-text-field--helper-text-color {
+  @include mdc-text-field-disabled-helper-text-color($custom-disabled-ink-color);
+}
+
+.custom-disabled-colors-text-field--icon-color {
+  @include mdc-text-field-disabled-icon-color($custom-disabled-ink-color);
+}
+
+.custom-disabled-colors-text-field--character-counter-color {
+  @include mdc-text-field-disabled-character-counter-color($custom-disabled-ink-color);
+}
+
+.custom-disabled-colors-text-field-textarea--fill-color {
+  @include mdc-text-field-disabled-fill-color($custom-disabled-fill-color);
+}
+
+.custom-disabled-colors-text-field-textarea--stroke-color {
+  @include mdc-text-field-disabled-outline-color($custom-disabled-ink-color);
+}
+
+.custom-disabled-colors-text-field-full-width--bottom-line-color {
+  @include mdc-text-field-disabled-bottom-line-color($custom-disabled-ink-color);
 }
