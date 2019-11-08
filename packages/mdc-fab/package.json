@@ -22,6 +22,7 @@
     "@material/rtl": "^4.0.0",
     "@material/shape": "^4.0.0",
     "@material/theme": "^4.0.0",
+    "@material/touch-target": "^4.0.0",
     "@material/typography": "^4.0.0"
   }
 }

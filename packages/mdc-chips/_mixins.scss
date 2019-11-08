@@ -89,7 +89,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     }
 
     .mdc-chip__touch {
-      @include mdc-touch-target($query);
+      @include mdc-touch-target($query: $query);
     }
   }
 
