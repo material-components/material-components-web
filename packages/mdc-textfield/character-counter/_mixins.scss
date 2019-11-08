@@ -24,8 +24,22 @@
 
 // Public mixins
 
+///
+/// Customizes the color of the character counter associated with an enabled text field.
+/// @param {Color} $color - The desired character counter color.
+///
 @mixin mdc-text-field-character-counter-color($color) {
   &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-character-counter-color_($color);
+  }
+}
+
+///
+/// Customizes the color of the character counter associated with a disabled text field.
+/// @param {Color} $color - The desired character counter color.
+///
+@mixin mdc-text-field-disabled-character-counter-color($color) {
+  &.mdc-text-field--disabled {
     @include mdc-text-field-character-counter-color_($color);
   }
 }
