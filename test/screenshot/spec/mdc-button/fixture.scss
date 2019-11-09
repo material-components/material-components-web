@@ -25,6 +25,7 @@
 @import "../mixins";
 
 $custom-button-color: $material-color-red-300;
+$custom-disabled-button-color: rgba(purple, .3);
 $custom-button-custom-shape-radius: 50%;
 $custom-button-custom-outline-width: 4px;
 $custom-button-custom-horizontal-padding: 24px;
@@ -46,10 +47,12 @@ $custom-button-custom-horizontal-padding: 24px;
 
 .custom-button--ink-color {
   @include mdc-button-ink-color($custom-button-color);
+  @include mdc-button-disabled-ink-color($custom-disabled-button-color);
 }
 
 .custom-button--container-fill-color {
   @include mdc-button-container-fill-color($custom-button-color);
+  @include mdc-button-disabled-container-fill-color($custom-disabled-button-color);
 }
 
 .custom-button--filled-accessible {
@@ -58,6 +61,7 @@ $custom-button-custom-horizontal-padding: 24px;
 
 .custom-button--outline-color {
   @include mdc-button-outline-color($custom-button-color);
+  @include mdc-button-disabled-outline-color($custom-disabled-button-color);
 }
 
 .custom-button--outline-width {
@@ -70,6 +74,7 @@ $custom-button-custom-horizontal-padding: 24px;
 
 .custom-button--icon-color {
   @include mdc-button-icon-color($custom-button-color);
+  @include mdc-button-disabled-icon-color($custom-disabled-button-color);
 }
 
 .custom-button--horizontal-padding {

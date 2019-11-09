@@ -255,6 +255,9 @@ $mdc-fab-icon-enter-duration_: 180ms;
     user-select: none;
     -moz-appearance: none;
     -webkit-appearance: none;
+    // Even though `visible` is the default, IE 11 computes the property as
+    // `hidden` in some cases, unless it's explicitly defined here.
+    overflow: visible;
   }
 
   @include mdc-feature-targets($feat-animation) {

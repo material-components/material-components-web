@@ -160,7 +160,8 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-text-field-icon-color($color, $styleSecondIcon: false)` | Customizes the color for the leading/trailing icons. If the `$styleSecondIcon` is `true` it will output the color to only apply to a trailing icon when used with a leading icon.
+`mdc-text-field-icon-color($color, $styleSecondIcon: false)` | Customizes the color for the leading/trailing icons in an enabled text-field. If the `$styleSecondIcon` is `true` it will apply the color to only the trailing icon when used with a leading icon.
+`mdc-text-field-disabled-icon-color($color)` | Customizes the color for the leading/trailing icons in a disabled text-field.
 
 ## `MDCTextFieldIcon` Properties and Methods
 
