@@ -308,7 +308,7 @@
     // Touch Target
     @include mdc-touch-target-wrapper($query: $query);
     @include mdc-touch-target($query: $query);
-    @include mdc-touch-target-component(0, $query: $query);
+    @include mdc-touch-target-margin(0, $query: $query);
 
     // Typography
     @include mdc-typography-core-styles($query: $query);
