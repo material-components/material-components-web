@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0](https://github.com/material-components/material-components-web/compare/v4.0.0...v5.0.0) (2019-11-09)
+# [5.0.0](https://github.com/material-components/material-components-web/compare/v4.0.0...v5.0.0) (2019-11-11)
 
 
 ### Bug Fixes
@@ -15,6 +15,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **radio:** update disabled color values ([#5210](https://github.com/material-components/material-components-web/issues/5210)) ([491fddc](https://github.com/material-components/material-components-web/commit/491fddc))
 
 
+### Code Refactoring
+
+* **touchtarget:** Rename mdc-touch-target-component => mdc… ([#5245](https://github.com/material-components/material-components-web/issues/5245)) ([afe0dd1](https://github.com/material-components/material-components-web/commit/afe0dd1))
+
+
 ### Features
 
 * **button:** Add disabled state color mixins ([#5232](https://github.com/material-components/material-components-web/issues/5232)) ([b5eb51e](https://github.com/material-components/material-components-web/commit/b5eb51e))
@@ -24,6 +29,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
+* **touchtarget:** Renames mixin from mdc-touch-target-component => mdc-touch-target-margin
 * **text-field:** Redundant mixins `mdc-text-field-textarea-fill-color`, `mdc-text-field-textarea-stroke-color`, `mdc-text-field-fullwidth-bottom-line-color` removed. Instead, use `mdc-text-field-fill-color`, `mdc-text-field-outline-color`, and `mdc-text-field-bottom-line-color` respectively to achieve the same effect.
 
 
