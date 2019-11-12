@@ -56,13 +56,15 @@
   @include mdc-elevation-overlay-selector_ {
     @include mdc-feature-targets($feat-structure) {
       @include mdc-base-emit-once("mdc-elevation/common/structure") {
-        border-radius: inherit;
-        left: 50%;
-        pointer-events: none;
         position: absolute;
         top: 50%;
+        right: 50%;
+        bottom: 50%;
+        left: 50%;
         transform: translate(-50%, -50%);
+        border-radius: inherit;
         opacity: 0;
+        pointer-events: none;
       }
     }
 
@@ -175,9 +177,12 @@
   $penumbra-color: rgba($color, $mdc-elevation-penumbra-opacity + $opacity-boost);
   $ambient-color: rgba($color, $mdc-elevation-ambient-opacity + $opacity-boost);
 
-  $box-shadow: #{"#{$umbra-z-value} #{$umbra-color}"},
-      #{"#{$penumbra-z-value} #{$penumbra-color}"},
-      #{$ambient-z-value} $ambient-color;
+  $box-shadow: (
+    #{"#{$umbra-z-value} #{$umbra-color}"},
+    #{"#{$penumbra-z-value} #{$penumbra-color}"},
+    #{$ambient-z-value} $ambient-color,
+  );
+
   @include mdc-elevation-shadow($box-shadow, $query: $query);
 }
 
