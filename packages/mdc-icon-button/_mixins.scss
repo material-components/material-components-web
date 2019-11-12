@@ -145,7 +145,7 @@
 }
 
 ///
-/// Sets the font color and the ripple color to the provided color value for an enabled icon button.
+/// Sets the font color and the ripple color to the provided color value.
 /// @param {Color} $color - The desired font and ripple color.
 ///
 @mixin mdc-icon-button-ink-color($color, $query: mdc-feature-all()) {
