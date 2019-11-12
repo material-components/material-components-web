@@ -151,7 +151,13 @@
 
     // Elevation
     @include mdc-elevation-core-styles($query: $query);
+    @include mdc-elevation-overlay-common($query: $query);
     @include mdc-elevation(0, $query: $query);
+    @include mdc-elevation-shadow(none, $query: $query);
+    @include mdc-elevation-overlay-parent($query: $query);
+    @include mdc-elevation-overlay-size(100%, $query: $query);
+    @include mdc-elevation-overlay-fill-color(red, $query: $query);
+    @include mdc-elevation-overlay-opacity(99%, $query: $query);
 
     // FAB
     @include mdc-fab-core-styles($query: $query);
