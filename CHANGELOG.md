@@ -97,40 +97,43 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **text-field:** Removed sass variable in notched outline - `$mdc-notched-outline-transition-duration`.
 * **mdc-fab:** This changes the structure of the FAB element by moving the ripple from the outer element to an inner mdc-fab__ripple element.
 
-OLD
+  OLD
 
-```html
-<button class="mdc-fab" aria-label="Favorite">
-  <span class="mdc-fab__icon material-icons">favorite</span>
-</button>
-```
+  ```html
+  <button class="mdc-fab" aria-label="Favorite">
+    <span class="mdc-fab__icon material-icons">favorite</span>
+  </button>
+  ```
 
-NEW
+  NEW
 
-```html
-<button class="mdc-fab" aria-label="Favorite">
-  <div class="mdc-fab__ripple"></div>
-  <span class="mdc-fab__icon material-icons">favorite</span>
-</button>
-```
+  ```html
+  <button class="mdc-fab" aria-label="Favorite">
+    <div class="mdc-fab__ripple"></div>
+    <span class="mdc-fab__icon material-icons">favorite</span>
+  </button>
+  ```
+
 * **radio:** Ripple has been moved to a child element. See readme for updates.
 * **slider:** remove adapter methods `appendTrackMarkers`, `removeTrackMarkers `, `setLastTrackMarkersStyleProperty `, and add adapter method `setTrackMarkers`.
 * **button:** This changes the structure of the button element by moving the ripple from the outer <button> element to an inner `mdc-button__ripple` element.
 
-OLD
-```
-<button class="mdc-button">
-  <span class="mdc-button__label">Hello World</span>
-</button>
-```
+  OLD
 
-NEW
-```
-<button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
-  <span class="mdc-button__label">Hello World</span>
-</button>
-```
+  ```html
+  <button class="mdc-button">
+    <span class="mdc-button__label">Hello World</span>
+  </button>
+  ```
+
+  NEW
+
+  ```html
+  <button class="mdc-button">
+    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__label">Hello World</span>
+  </button>
+  ```
 * **chips:** MDCChipSetAdapter#removeChip has been replaced with MDCChipSetAdapter#removeChipAtIndex. MDCChipSetAdapter#setSelected has been replaced with MDCChipSetAdapter#selectChipAtIndex
 * **density:** Renamed sass mixins & variables in MDC Data Table - `mdc-data-table-header-row-height` => `mdc-data-table-header-cell-height` & `mdc-data-table-row-height` => `mdc-data-table-cell-height`. Also removed `mdc-button--dense` variant, use button's density mixin instead.
 

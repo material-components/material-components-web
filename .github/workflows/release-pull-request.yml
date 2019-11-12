@@ -1,0 +1,57 @@
+name: MDC Release (Pull Request)
+
+# This workflow creates or updates (if already exists) a pull request with new
+# version bump on every commit to master.
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'packages/**/*.ts'
+      - 'packages/**/*.scss'
+      - '**/package*.json'
+      - '**/.npmignore'
+      - '**/*.md'
+
+jobs:
+  release-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v1.0.0
+      - name: Checkout master branch
+        # GITHUB_REF:11 gets `refs/heads/master` => `master`.
+        # See https://github.com/actions/checkout/issues/6
+        run: |
+          git checkout "${GITHUB_REF:11}"
+          git pull
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+          registry-url: https://registry.npmjs.org/
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Bump version
+        run: |
+          npx lerna version --conventional-commits --no-git-tag-version --no-push --yes
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v1.5.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_MESSAGE: "chore: Release"
+          COMMIT_AUTHOR_EMAIL: action@@users.noreply.github.com
+          COMMIT_AUTHOR_NAME: GitHub Action
+          PULL_REQUEST_TITLE: "chore: Release"
+          PULL_REQUEST_BODY: |
+            This PR was opened by [release][1] GitHub action.
+            When you're ready to do a release, you can merge this and release
+            action will automatically publishes to npm registry.
+            If you're not ready to do a release yet, that's fine, whenever you
+            add more commits to master, this PR will be updated.
+
+            [1]: http://github.com/material-components/material-components-web/tree/master/.github/workflows/release-pull-request.yml
+          PULL_REQUEST_BRANCH: chore/release
+          BRANCH_SUFFIX: none

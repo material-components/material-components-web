@@ -1,9 +1,12 @@
-name: NPM Publish
+name: MDC Release (Canary)
+
+# This workflow creates a pre-release and publishes packages to NPM with canary
+# tag on every commit to master.
 
 on:
   push:
     branches:
-      - develop
+      - master
     paths:
       - 'packages/**/*.ts'
       - 'packages/**/*.scss'
@@ -11,14 +14,17 @@ on:
       - '**/.npmignore'
 
 jobs:
-  publish-npm:
+  release-canary:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout develop branch
-        uses: actions/checkout@v1
-        with:
-          ref: develop
-          fetch-depth: 1
+      - name: Clone repository
+        uses: actions/checkout@v1.0.0
+      - name: Checkout master branch
+        # GITHUB_REF:11 gets `refs/heads/master` => `master`.
+        # See https://github.com/actions/checkout/issues/6
+        run: |
+          git checkout "${GITHUB_REF:11}"
+          git pull
       - name: Setup node
         uses: actions/setup-node@v1
         with:
@@ -32,13 +38,13 @@ jobs:
           npm run dist
           node scripts/cp-pkgs.js
           node scripts/verify-pkg-main.js
-      - name: Create release
+      - name: Create canary release
         run: |
           npx lerna version premajor --no-git-tag-version --no-push --preid canary.$(git rev-parse --short HEAD) --yes --exact
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -am "chore: Publish"
-      - name: Publish to NPM registry
+      - name: Publish to NPM registry with canary tag
         run: npx lerna publish from-package --yes --dist-tag canary
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
