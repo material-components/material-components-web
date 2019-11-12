@@ -190,9 +190,9 @@
     }
   }
 
-  @include mdc-icon-button-if-disabled_ {
-    @include mdc-icon-button-ink-color_(text-disabled-on-light, $query);
+  @include mdc-icon-button-disabled-ink-color(text-disabled-on-light, $query: $query);
 
+  @include mdc-icon-button-if-disabled_ {
     @include mdc-feature-targets($feat-structure) {
       cursor: default;
       pointer-events: none;
