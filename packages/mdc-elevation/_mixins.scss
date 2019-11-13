@@ -59,8 +59,6 @@
       @include mdc-base-emit-once("mdc-elevation/common/structure") {
         position: absolute;
         top: 50%;
-        right: 50%;
-        bottom: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: inherit;
@@ -111,7 +109,7 @@
 /// Sets the elevation overlay size.
 ///
 /// @param {Number} $width - The width of the elevation overlay.
-/// @param {Number} $height [$width] - The height of the elevation overlay (defaults to the width)
+/// @param {Number} $height [$width] - The height of the elevation overlay.
 ///
 @mixin mdc-elevation-overlay-size($width, $height: $width, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
@@ -134,7 +132,7 @@
 
   @include mdc-elevation-overlay-selector_ {
     @include mdc-feature-targets($feat-color) {
-      background: $color;
+      background-color: $color;
     }
   }
 }
