@@ -89,6 +89,7 @@
   $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-feature-targets($feat-color) {
+    /* @alternate */
     box-shadow: $box-shadow;
   }
 }
