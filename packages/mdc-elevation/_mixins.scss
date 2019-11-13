@@ -24,6 +24,7 @@
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "@material/theme/variables";
+@import "./functions";
 @import "./variables";
 
 @mixin mdc-elevation-core-styles($query: mdc-feature-all()) {
@@ -59,6 +60,7 @@
       @include mdc-base-emit-once("mdc-elevation/common/structure") {
         position: absolute;
         top: 50%;
+        /* @noflip */
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: inherit;
@@ -75,7 +77,7 @@
   }
 
   @include mdc-base-emit-once("mdc-elevation/common/color") {
-    @include mdc-elevation-overlay-fill-color($mdc-elevation-overlay-color, $query);
+    @include mdc-elevation-overlay-fill-color($mdc-elevation-overlay-color, $query: $query);
   }
 }
 
@@ -200,34 +202,4 @@
   .mdc-elevation-overlay {
     @content;
   }
-}
-
-// Returns a string that can be used as the value for a `transition` property for elevation.
-// Calling this function directly is useful in situations where a component needs to transition
-// more than one property.
-//
-// ```scss
-// .foo {
-//   transition: mdc-elevation-transition-value(), opacity 100ms ease;
-//   will-change: $mdc-elevation-property, opacity;
-// }
-// ```
-@function mdc-elevation-transition-value(
-  $duration: $mdc-elevation-transition-duration,
-  $easing: $mdc-elevation-transition-timing-function
-) {
-  @return #{$mdc-elevation-property} #{$duration} #{$easing};
-}
-
-///
-/// Sets the elevation overlay transition value.
-///
-/// @param {String} $duration - The duration of the transition.
-/// @param {String} $easing - The easing function for the transition.
-/// @return {String}
-///
-@function mdc-elevation-overlay-transition-value(
-  $duration: $mdc-elevation-transition-duration,
-  $easing: $mdc-elevation-transition-timing-function) {
-  @return #{$mdc-elevation-overlay-property} #{$duration} #{$easing};
 }
