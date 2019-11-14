@@ -40,14 +40,14 @@
       <button class="test-dialog-open-button" data-test-dialog-id="test-dialog" autofocus>Open Dialog</button>
 
       <div class="mdc-dialog mdc-dialog--open test-dialog test-dialog--min-width"
-           role="alertdialog"
-           aria-modal="true"
-           aria-labelledby="test-dialog__title"
-           aria-describedby="test-dialog__content"
-           id="test-dialog">
+          id="test-dialog">
         <div class="mdc-dialog__scrim"></div>
         <div class="mdc-dialog__container">
-          <div class="mdc-dialog__surface">
+          <div class="mdc-dialog__surface"
+              role="alertdialog"
+              aria-modal="true"
+              aria-labelledby="test-dialog__title"
+              aria-describedby="test-dialog__content">
             <h2 class="mdc-dialog__title test-dialog__title" id="test-dialog__title">Title</h2>
             <div class="mdc-dialog__content test-dialog__content" id="test-dialog__content">
               <div class="test-dialog__content-rect">

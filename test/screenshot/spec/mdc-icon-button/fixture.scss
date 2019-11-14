@@ -26,6 +26,7 @@
 @import "../mixins";
 
 $custom-icon-button-icon-ink-color: $material-color-red-500;
+$custom-icon-button-disabled-icon-ink-color: rgba(purple, .3);
 $custom-icon-button-size: 36px;
 
 .test-cell--icon-button {
@@ -34,6 +35,7 @@ $custom-icon-button-size: 36px;
 
 .custom-icon-button--ink-color {
   @include mdc-icon-button-ink-color($custom-icon-button-icon-ink-color);
+  @include mdc-icon-button-disabled-ink-color($custom-icon-button-disabled-icon-ink-color);
 }
 
 .custom-icon-button--icon-size {

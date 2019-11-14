@@ -62,7 +62,7 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
   }
 
   .mdc-fab--touch {
-    @include mdc-touch-target-component(
+    @include mdc-touch-target-margin(
       $component-height: $mdc-fab-mini-height,
       $component-width: $mdc-fab-mini-height,
       $query: $query);
