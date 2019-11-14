@@ -51,6 +51,21 @@ However, you can also apply elevation to specific components using `mdc-elevatio
   </div>
 ```
 
+#### Elevation Overlay
+
+The elevation overlay should appear *above* the component container but *below* the ripple. To accomplish this, the `.mdc-elevation-overlay` element should appear *before* the `.mdc-<component>__ripple` element in the DOM.  Here's sample markup for a button with a touch target.
+
+```html
+<button class="mdc-button mdc-button--raised">
+  <div class="mdc-elevation-overlay"></div>
+  <div class="mdc-button__ripple"></div>
+  <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
+  <span class="mdc-button__label">Font Icon</span>
+</button>
+```
+
+This ensures the ripple parts are rendered *above* the overlay.
+
 ### Styles
 
 ```scss
