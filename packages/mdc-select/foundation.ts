@@ -150,10 +150,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.handleChange();
   }
 
-  setValue(value: string) {
+  setValue(value: string, notifyChange = true) {
     const index = this.menuItemValues_.indexOf(value);
     this.setSelectedIndex(index);
-    this.handleChange();
+    this.handleChange(notifyChange);
   }
 
   getValue() {
@@ -227,9 +227,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   /**
    * Handles value changes, via change event or programmatic updates.
    */
-  handleChange() {
+  handleChange(notifyChange = true) {
     this.updateLabel_();
-    this.adapter_.notifyChange(this.getValue());
 
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
     if (isRequired) {
@@ -237,6 +236,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       if (this.helperText_) {
         this.helperText_.setValidity(this.isValid());
       }
+    }
+
+    if (notifyChange) {
+      this.adapter_.notifyChange(this.getValue());
     }
   }
 

@@ -457,12 +457,12 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `handleMenuOpened() => void` | Handles menu or menu surface opened event.
 | `handleMenuClosed() => void` | Handles menu or menu surface closed event.
 | `handleMenuItemAction() => void` | Handles menu selected event.
-| `handleChange() => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API. |
+| `handleChange(notifyChange: boolean) => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API. |
 | `handleKeydown(event: KeyboardEvent) => void` | Handles opening the menu when the `mdc-select__selected-text` element is focused and the user presses the `Enter` or `Space` key. |
 | `getSelectedIndex() => number` | Returns the index of the currently selected menu item. |
 | `setSelectedIndex(index: number) => void` | Handles setting the `mdc-select__selected-text` element and closing the menu. Also causes the label to float and outline to notch if needed. |
 | `getValue() => string` | Handles getting the value through the adapter. |
-| `setValue() => string` | Sets the selected index to the index of the menu item with the given value. |
+| `setValue(value: string, notifyChange: boolean) => void` | Sets the selected index to the index of the menu item with the given value. |
 | `setValid(isValid: boolean) => void` | Sets the valid state through the adapter. |
 | `isValid() => boolean` | Gets the valid state through the adapter's `checkValidity` API. |
 | `setRequired(isRequired: boolean) => void` | Sets the required state through the adapter. |
