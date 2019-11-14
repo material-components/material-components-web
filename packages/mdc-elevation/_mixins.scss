@@ -23,6 +23,7 @@
 @import "@material/base/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
+@import "@material/theme/mixins";
 @import "@material/theme/variables";
 @import "./functions";
 @import "./variables";
@@ -134,7 +135,7 @@
 
   @include mdc-elevation-overlay-selector_ {
     @include mdc-feature-targets($feat-color) {
-      background-color: $color;
+      @include mdc-theme-prop(background-color, $color);
     }
   }
 }
