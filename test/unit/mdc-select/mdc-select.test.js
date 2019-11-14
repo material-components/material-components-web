@@ -289,7 +289,7 @@ test('#set value calls foundation.setValue', () => {
   const hasLabel = true;
   const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   component.value = 'orange';
-  td.verify(mockFoundation.setValue('orange', false /* notifyChange */), {times: 1});
+  td.verify(mockFoundation.setValue('orange'), {times: 1});
 });
 
 test('#get valid forwards to foundation', () => {

@@ -181,9 +181,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   set value(value: string) {
-    // Replicate behavior of native select, which does not emit change events
-    // when the value is changed programmatically.
-    this.foundation_.setValue(value, false /* notifyChange */);
+    this.foundation_.setValue(value);
   }
 
   get selectedIndex(): number {

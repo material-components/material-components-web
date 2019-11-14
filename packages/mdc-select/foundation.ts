@@ -150,10 +150,13 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.handleChange();
   }
 
-  setValue(value: string, notifyChange = true) {
+  setValue(value: string) {
     const index = this.menuItemValues_.indexOf(value);
     this.setSelectedIndex(index);
-    this.handleChange(notifyChange);
+
+    // Replicate behavior of native select, which does not emit change events
+    // when the value is changed programmatically.
+    this.handleChange(false /* notifyChange */);
   }
 
   getValue() {
