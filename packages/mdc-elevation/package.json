@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@material/animation": "^4.0.0",
+    "@material/base": "^4.0.0",
     "@material/feature-targeting": "^4.0.0",
     "@material/theme": "^4.0.0"
   }

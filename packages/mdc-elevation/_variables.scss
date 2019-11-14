@@ -116,6 +116,14 @@ $mdc-elevation-ambient-map: (
 // example in a `will-change` rule.
 $mdc-elevation-property: box-shadow !default;
 
+// The default color for the elevation overlay.
+$mdc-elevation-overlay-color: #fff;
+
+// The css property used for elevation overlay transitions. In most cases this should not be changed. It is exposed
+// as a variable for abstraction / easy use when needing to reference the property directly, for
+// example in a `will-change` rule.
+$mdc-elevation-overlay-property: opacity !default;
+
 // The default duration value for elevation transitions.
 $mdc-elevation-transition-duration: 280ms !default;
 
