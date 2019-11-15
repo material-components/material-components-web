@@ -35,5 +35,7 @@ export interface MDCLinearProgressAdapter {
   getPrimaryBar(): HTMLElement | null;
   hasClass(className: string): boolean;
   removeClass(className: string): void;
+  removeAttribute(name: string): void;
+  setAttribute(name: string, value: string): void;
   setStyle(el: HTMLElement, styleProperty: string, value: string): void;
 }
