@@ -42,7 +42,9 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
       getBuffer: () => null,
       getPrimaryBar: () => null,
       hasClass: () => false,
+      removeAttribute: () => undefined,
       removeClass: () => undefined,
+      setAttribute: () => undefined,
       setStyle: () => undefined,
     };
   }
@@ -68,6 +70,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
 
     if (this.isDeterminate_) {
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
+      this.adapter_.setAttribute(strings.ARIA_VALUENOW, this.progress_.toString());
       this.setScale_(this.adapter_.getPrimaryBar(), this.progress_);
       this.setScale_(this.adapter_.getBuffer(), this.buffer_);
     } else {
@@ -83,6 +86,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
       }
 
       this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
+      this.adapter_.removeAttribute(strings.ARIA_VALUENOW);
       this.setScale_(this.adapter_.getPrimaryBar(), 1);
       this.setScale_(this.adapter_.getBuffer(), 1);
     }
@@ -92,6 +96,7 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
     this.progress_ = value;
     if (this.isDeterminate_) {
       this.setScale_(this.adapter_.getPrimaryBar(), value);
+      this.adapter_.setAttribute(strings.ARIA_VALUENOW, value.toString());
     }
   }
 
