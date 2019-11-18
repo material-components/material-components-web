@@ -335,7 +335,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
     height: $mdc-fab-extended-height;
     // This allows the text within the extended fab to be centered for varying font sizes.
     /* @alternate */
-    line-height: 1;
+    line-height: normal;
   }
 }
 
