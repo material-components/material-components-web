@@ -28,7 +28,8 @@ import {MDCLinearProgress, MDCLinearProgressFoundation} from '../../../packages/
 
 function getFixture() {
   return bel`
-    <div role="progressbar" class="mdc-linear-progress">
+    <div role="progressbar" class="mdc-linear-progress" aria-label="Unit Test Progress Bar" aria-valuemin="0"
+      aria-valuemax="1" aria-valuenow="0">
       <div class="mdc-linear-progress__buffering-dots"></div>
       <div class="mdc-linear-progress__buffer"></div>
       <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
@@ -58,6 +59,7 @@ test('set indeterminate', () => {
 
   component.determinate = false;
   assert.isOk(root.classList.contains('mdc-linear-progress--indeterminate'));
+  assert.equal(undefined, root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUENOW));
 });
 
 test('set progress', () => {
@@ -66,6 +68,7 @@ test('set progress', () => {
   component.progress = 0.5;
   const primaryBar = root.querySelector(MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR);
   assert.equal('scaleX(0.5)', primaryBar.style.transform);
+  assert.equal('0.5', root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUENOW));
 });
 
 test('set buffer', () => {

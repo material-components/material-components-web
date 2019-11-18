@@ -20,9 +20,12 @@
 // THE SOFTWARE.
 //
 
+@import "@material/base/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
+@import "@material/theme/mixins";
 @import "@material/theme/variables";
+@import "./functions";
 @import "./variables";
 
 @mixin mdc-elevation-core-styles($query: mdc-feature-all()) {
@@ -42,6 +45,112 @@
 
     @include mdc-feature-targets($feat-structure) {
       will-change: $mdc-elevation-property;
+    }
+  }
+}
+
+///
+/// Called once per application to set up the global default elevation styles.
+///
+@mixin mdc-elevation-overlay-common($query: mdc-feature-all()) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-elevation-overlay-selector_ {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-base-emit-once("mdc-elevation/common/structure") {
+        position: absolute;
+        top: 50%;
+        /* @noflip */
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: inherit;
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+
+    @include mdc-feature-targets($feat-animation) {
+      @include mdc-base-emit-once("mdc-elevation/common/animation") {
+        transition: mdc-elevation-overlay-transition-value();
+      }
+    }
+  }
+
+  @include mdc-base-emit-once("mdc-elevation/common/color") {
+    @include mdc-elevation-overlay-fill-color($mdc-elevation-overlay-color, $query: $query);
+  }
+}
+
+///
+/// Sets the shadow of the element.
+///
+/// @param {String} $box-shadow - The shadow to apply to the element.
+///
+@mixin mdc-elevation-shadow($box-shadow, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    /* @alternate */
+    box-shadow: $box-shadow;
+  }
+}
+
+///
+/// Sets the elevation overlay surface required positioning.
+///
+@mixin mdc-elevation-overlay-surface-position($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    /* @alternate */
+    position: relative;
+  }
+}
+
+///
+/// Sets the elevation overlay size.
+///
+/// @param {Number} $width - The width of the elevation overlay.
+/// @param {Number} $height [$width] - The height of the elevation overlay.
+///
+@mixin mdc-elevation-overlay-size($width, $height: $width, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-elevation-overlay-selector_ {
+    @include mdc-feature-targets($feat-structure) {
+      width: $width;
+      height: $height;
+    }
+  }
+}
+
+///
+/// Sets the elevation overlay fill color.
+///
+/// @param {Color} $color - The color of the elevation overlay.
+///
+@mixin mdc-elevation-overlay-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-elevation-overlay-selector_ {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, $color);
+    }
+  }
+}
+
+///
+/// Sets the elevation overlay opacity.
+///
+/// @param {Number} $opacity - The opacity of the elevation overlay.
+///
+@mixin mdc-elevation-overlay-opacity($opacity, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-elevation-overlay-selector_ {
+    @include mdc-feature-targets($feat-color) {
+      opacity: $opacity;
     }
   }
 }
@@ -71,27 +180,27 @@
   $penumbra-color: rgba($color, $mdc-elevation-penumbra-opacity + $opacity-boost);
   $ambient-color: rgba($color, $mdc-elevation-ambient-opacity + $opacity-boost);
 
-  @include mdc-feature-targets($feat-color) {
-    box-shadow:
-      #{"#{$umbra-z-value} #{$umbra-color}"},
-      #{"#{$penumbra-z-value} #{$penumbra-color}"},
-      #{$ambient-z-value} $ambient-color;
-  }
+  $box-shadow: (
+    #{"#{$umbra-z-value} #{$umbra-color}"},
+    #{"#{$penumbra-z-value} #{$penumbra-color}"},
+    #{$ambient-z-value} $ambient-color,
+  );
+
+  @include mdc-elevation-shadow($box-shadow, $query: $query);
 }
 
-// Returns a string that can be used as the value for a `transition` property for elevation.
-// Calling this function directly is useful in situations where a component needs to transition
-// more than one property.
-//
-// ```scss
-// .foo {
-//   transition: mdc-elevation-transition-value(), opacity 100ms ease;
-//   will-change: $mdc-elevation-property, opacity;
-// }
-// ```
-@function mdc-elevation-transition-value(
-  $duration: $mdc-elevation-transition-duration,
-  $easing: $mdc-elevation-transition-timing-function
-) {
-  @return #{$mdc-elevation-property} #{$duration} #{$easing};
+// Private
+
+///
+/// Sets the elevation overlay transition value.
+///
+/// @param {String} $duration - The duration of the transition.
+/// @param {String} $easing - The easing function for the transition.
+/// @return {String}
+/// @access private
+///
+@mixin mdc-elevation-overlay-selector_ {
+  .mdc-elevation-overlay {
+    @content;
+  }
 }

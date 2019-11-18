@@ -51,6 +51,21 @@ However, you can also apply elevation to specific components using `mdc-elevatio
   </div>
 ```
 
+#### Elevation Overlay
+
+The elevation overlay should appear *above* the component container in the stacking context but *below* the ripple. To accomplish this, the `.mdc-elevation-overlay` element should appear *before* the `.mdc-<component>__ripple` element in the DOM context.  Here's sample markup for a button with a touch target.
+
+```html
+<button class="mdc-button mdc-button--raised">
+  <div class="mdc-elevation-overlay"></div>
+  <div class="mdc-button__ripple"></div>
+  <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
+  <span class="mdc-button__label">Font Icon</span>
+</button>
+```
+
+This ensures the ripple parts are rendered *above* the overlay.
+
 ### Styles
 
 ```scss
@@ -76,16 +91,26 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-elevation($z-value, $color, $opacity-boost)` | Sets the elevation to the z-space for that given elevation, and optionally sets the color and/or boosts the opacity of the shadow
+`mdc-elevation-overlay-common` | Called once per application to setup the universal elevation overlay styles
+`mdc-elevation-shadow($box-shadow)` | Sets the `box-shadow` of the closest parent selector
+`mdc-elevation-overlay-surface-position` | Sets the positioning of the overlay's surface element so that the overlay can be appropriately centered
+`mdc-elevation-overlay-size($width, $height: $width)` | Sets the width and height of the elevation overlay
+`mdc-elevation-overlay-fill-color($color)` | Sets the color of the elevation overlay
+`mdc-elevation-overlay-opacity($opacity)` | Sets the opacity of the elevation overlay
+
 
 Function | Description
 --- | ---
 `mdc-elevation-transition-value($duration, $easing)` | Returns a value for the `transition` property to transition an element between elevations
+`mdc-elevation-overlay-transition-value($duration, $easing)` | Returns a value for the `transition` property to transition the elevation overlay between elevations
 
 Variable | Description
 --- | ---
 `$mdc-elevation-property` | Default property for elevation transitions
 `$mdc-elevation-transition-duration` | Default duration value for elevation transitions
 `$mdc-elevation-transition-timing-function` | Default easing value for elevation transitions
+`$mdc-elevation-overlay-color` | Default color for the elevation overlay
+`$mdc-elevation-overlay-property` | Default property for the elevation overlay transitions
 
 If you need more configurability over your transitions, use the `mdc-elevation-transition-value` function in conjunction with the exported sass variables.
 
