@@ -116,7 +116,6 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
   removeAttr(name: string) {
     this.adapter_.removeAttr(name);
   }
-  }
 
   /**
    * Hides the help text from screen readers.
