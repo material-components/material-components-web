@@ -422,13 +422,17 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    */
   private styleValidity_(isValid: boolean): void {
     const {INVALID} = MDCTextFieldFoundation.cssClasses;
+    const {ARIA_INVALID} = MDCTextFieldFoundation.strings;
+    const nativeInput = this.getNativeInput_();
     if (isValid) {
       this.adapter_.removeClass(INVALID);
+      nativeInput.removeAttribute(ARIA_INVALID);
     } else {
       this.adapter_.addClass(INVALID);
+      nativeInput.setAttribute(ARIA_INVALID, "true");
     }
     if (this.helperText_) {
-      this.helperText_.setValidity(isValid);
+      this.helperText_.setValidity(isValid, this.isFocused_);
     }
   }
 
@@ -437,8 +441,14 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    */
   private styleFocused_(isFocused: boolean): void {
     const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
+    const {ROLE} = MDCTextFieldFoundation.strings;
     if (isFocused) {
       this.adapter_.addClass(FOCUSED);
+      // Remove the "alert" role from the Helper Text so it can be re-added
+      // on blur, triggering ATs to announce the error message.
+      if (this.helperText_) {
+        this.helperText_.removeAttr(ROLE);
+      }
     } else {
       this.adapter_.removeClass(FOCUSED);
     }
@@ -482,6 +492,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
         valid: true,
       },
       value: '',
+      removeAttribute: () => {},
+      setAttribute: () => {},
     };
   }
 }

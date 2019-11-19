@@ -93,12 +93,13 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
   /**
    * Sets the validity of the helper text based on the input validity.
    */
-  setValidity(inputIsValid: boolean) {
+  setValidity(inputIsValid: boolean, inputIsFocused: boolean) {
     const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
     const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
+    const validationMsgNeedsDisplay =
+        helperTextIsValidationMsg && !inputIsValid;
 
-    if (validationMsgNeedsDisplay) {
+    if (validationMsgNeedsDisplay && !inputIsFocused) {
       this.adapter_.setAttr(strings.ROLE, 'alert');
     } else {
       this.adapter_.removeAttr(strings.ROLE);
@@ -107,6 +108,14 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
     if (!helperTextIsPersistent && !validationMsgNeedsDisplay) {
       this.hide_();
     }
+  }
+
+  /**
+   * Removes an attribute from the helper text Element.
+   */
+  removeAttr(name: string) {
+    this.adapter_.removeAttr(name);
+  }
   }
 
   /**
