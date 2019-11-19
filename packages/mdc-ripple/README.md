@@ -172,7 +172,7 @@ Method Signature | Description
 | `computeBoundingRect() => ClientRect` | Returns the ClientRect for the surface |
 | `getWindowPageOffset() => {x: number, y: number}` | Returns the `page{X,Y}Offset` values for the window object |
 
-> _NOTE_: When implementing `browserSupportsCssVars`, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you.
+> _NOTE_: When implementing `browserSupportsCssVars`, please take the [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you.
 
 ### `MDCRippleFoundation`
 
@@ -307,17 +307,6 @@ Method Signature | Description
 > _NOTE_: The function `util.supportsCssVariables` cache its results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
 
 ## Caveats
-
-### Caveat: Edge
-
-> TL;DR ripples are disabled in Edge because of issues with its support of CSS variables in pseudo elements.
-
-Edge introduced CSS variables in version 15. Unfortunately, there are
-[known issues](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/)
-involving its implementation for pseudo-elements, which cause ripples to behave incorrectly.
-We feature-detect Edge's buggy behavior as it pertains to `::before`, and do not initialize ripples if the bug is
-observed. Earlier versions of Edge (and IE) do not support CSS variables at all,
-and as such ripples are never initialized.
 
 ### Caveat: Safari 9
 

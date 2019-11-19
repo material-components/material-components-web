@@ -158,12 +158,6 @@ Mixin | Description
 
 The ripple effect for the Checkbox component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
-#### Caveat: Edge and CSS Variables
-
-In browsers that fully support CSS variables, MDC Checkbox references CSS variables wherever theme properties are used.
-However, due to Edge's buggy CSS variable support, the `background-color` for `.mdc-checkbox__background::before` will not honor CSS variables in Edge.
-This means you will need to override this style manually for Edge if you alter the CSS variable for the primary color.
-
 ## `MDCCheckbox` Properties and Methods
 
 Property Name | Type | Description
