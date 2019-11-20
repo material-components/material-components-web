@@ -359,7 +359,6 @@ test('#handleClick() from trailing icon emits custom event', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     type: 'click',
-    stopPropagation: td.func('stopPropagation'),
     target: {},
   };
 
@@ -367,14 +366,12 @@ test('#handleClick() from trailing icon emits custom event', () => {
 
   foundation.handleClick(mockEvt);
   td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 1});
-  td.verify(mockEvt.stopPropagation(), {times: 1});
 });
 
 test(`#handleClick() from trailing icon adds ${cssClasses.CHIP_EXIT} class by default`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     type: 'click',
-    stopPropagation: td.func('stopPropagation'),
     target: {},
   };
 
@@ -383,7 +380,6 @@ test(`#handleClick() from trailing icon adds ${cssClasses.CHIP_EXIT} class by de
   foundation.handleClick(mockEvt);
   assert.isTrue(foundation.getShouldRemoveOnTrailingIconClick());
   td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
-  td.verify(mockEvt.stopPropagation());
 });
 
 validKeys.forEach((key) => {
@@ -391,7 +387,6 @@ validKeys.forEach((key) => {
     const {foundation, mockAdapter} = setupTest();
     const mockEvt = {
       type: 'keydown',
-      stopPropagation: td.func('stopPropagation'),
       target: {},
       key,
     };
@@ -401,7 +396,6 @@ validKeys.forEach((key) => {
     foundation.handleKeydown(mockEvt);
     assert.isTrue(foundation.getShouldRemoveOnTrailingIconClick());
     td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
-    td.verify(mockEvt.stopPropagation());
   });
 });
 
@@ -410,7 +404,6 @@ test(`#handleClick() from trailing icon does not add ${cssClasses.CHIP_EXIT} cla
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     type: 'click',
-    stopPropagation: td.func('stopPropagation'),
     target: {},
   };
 
@@ -421,7 +414,6 @@ test(`#handleClick() from trailing icon does not add ${cssClasses.CHIP_EXIT} cla
 
   assert.isFalse(foundation.getShouldRemoveOnTrailingIconClick());
   td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT), {times: 0});
-  td.verify(mockEvt.stopPropagation());
 });
 
 test('#handleKeydown emits custom event with appropriate keys', () => {

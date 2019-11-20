@@ -111,9 +111,17 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {
       focusChipPrimaryActionAtIndex: (index) => {
+        // Early exit if the index is out of bounds
+        if (index < 0 || index >= this.chips_.length) {
+          return;
+        }
         this.chips_[index].focusPrimaryAction();
       },
       focusChipTrailingActionAtIndex: (index) => {
+        // Early exit if the index is out of bounds
+        if (index < 0 || index >= this.chips_.length) {
+          return;
+        }
         this.chips_[index].focusTrailingAction();
       },
       getChipListCount: () => this.chips_.length,
@@ -123,19 +131,27 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       hasClass: (className) => this.root_.classList.contains(className),
       isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       removeChipAtIndex: (index) => {
-        if (index >= 0 && index < this.chips_.length) {
-          this.chips_[index].destroy();
-          this.chips_[index].remove();
-          this.chips_.splice(index, 1);
+        // Early exit if the index is out of bounds
+        if (index < 0 || index >= this.chips_.length) {
+          return;
         }
+        this.chips_[index].destroy();
+        this.chips_[index].remove();
+        this.chips_.splice(index, 1);
       },
       removeFocusFromChipAtIndex: (index) => {
+        // Early exit if the index is out of bounds
+        if (index < 0 || index >= this.chips_.length) {
+          return;
+        }
         this.chips_[index].removeFocus();
       },
       selectChipAtIndex: (index, selected, shouldNotifyClients) => {
-        if (index >= 0 && index < this.chips_.length) {
-          this.chips_[index].setSelectedFromChipSet(selected, shouldNotifyClients);
+        // Early exit if the index is out of bounds
+        if (index < 0 || index >= this.chips_.length) {
+          return;
         }
+        this.chips_[index].setSelectedFromChipSet(selected, shouldNotifyClients);
       },
     };
     return new MDCChipSetFoundation(adapter);

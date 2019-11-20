@@ -144,7 +144,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   handleClick(evt: MouseEvent) {
     const trailingIconIsSource = this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRAILING_ICON);
     if (trailingIconIsSource) {
-      return this.notifyTrailingIconInteractionAndRemove_(evt);
+      return this.notifyTrailingIconInteractionAndRemove_();
     }
 
     this.notifyInteractionAndFocus_();
@@ -210,7 +210,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   handleKeydown(evt: KeyboardEvent) {
     const trailingIconIsSource = this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRAILING_ICON);
     if (trailingIconIsSource && this.shouldProcessKeydownAsClick_(evt)) {
-      return this.notifyTrailingIconInteractionAndRemove_(evt);
+      return this.notifyTrailingIconInteractionAndRemove_();
     }
 
     if (this.shouldProcessKeydownAsClick_(evt)) {
@@ -218,7 +218,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
 
     if (this.shouldRemoveChip_(evt)) {
-      return this.removeChip_(evt);
+      return this.removeChip_();
     }
 
     // Early exit if the key is not usable
@@ -307,16 +307,15 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
   }
 
-  private removeChip_(evt: Event) {
-    evt.stopPropagation();
+  private removeChip_() {
     if (this.shouldRemoveOnTrailingIconClick_) {
       this.beginExit();
     }
   }
 
-  private notifyTrailingIconInteractionAndRemove_(evt: Event) {
+  private notifyTrailingIconInteractionAndRemove_() {
     this.adapter_.notifyTrailingIconInteraction();
-    this.removeChip_(evt);
+    this.removeChip_();
   }
 
   private shouldProcessKeydownAsClick_(evt: KeyboardEvent): boolean {
