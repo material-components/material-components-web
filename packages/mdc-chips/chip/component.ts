@@ -33,10 +33,6 @@ import {MDCChipFoundation} from './foundation';
 import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail,
     MDCChipSelectionEventDetail} from './types';
 
-type InteractionType = 'click' | 'keydown';
-
-const INTERACTION_EVENTS: InteractionType[] = ['click', 'keydown'];
-
 export type MDCChipFactory = (el: Element, foundation?: MDCChipFoundation) => MDCChip;
 
 export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippleCapableSurface {
@@ -84,20 +80,17 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
   root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private leadingIcon_!: Element | null; // assigned in initialize()
-  private trailingIcon_!: Element | null; // assigned in initialize()
   private checkmark_!: Element | null; // assigned in initialize()
   private ripple_!: MDCRipple; // assigned in initialize()
   private primaryAction_!: Element | null; // assigned in initialize()
   private trailingAction_!: Element | null; // assigned in initialize()
 
-  private handleInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
+  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
   private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
-  private handleTrailingIconInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
 
   initialize(rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation)) {
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
-    this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
     this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
     this.primaryAction_ = this.root_.querySelector(strings.PRIMARY_ACTION_SELECTOR);
     this.trailingAction_ = this.root_.querySelector(strings.TRAILING_ACTION_SELECTOR);
@@ -112,39 +105,20 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
   }
 
   initialSyncWithDOM() {
-    this.handleInteraction_ = (evt: MouseEvent | KeyboardEvent) => this.foundation_.handleInteraction(evt);
+    this.handleClick_ = (evt: MouseEvent) => this.foundation_.handleClick(evt);
     this.handleTransitionEnd_ = (evt: TransitionEvent) => this.foundation_.handleTransitionEnd(evt);
-    this.handleTrailingIconInteraction_ = (evt: MouseEvent | KeyboardEvent) =>
-        this.foundation_.handleTrailingIconInteraction(evt);
     this.handleKeydown_ = (evt: KeyboardEvent) => this.foundation_.handleKeydown(evt);
 
-    INTERACTION_EVENTS.forEach((evtType) => {
-      this.listen(evtType, this.handleInteraction_);
-    });
+    this.listen('click', this.handleClick_);
     this.listen('transitionend', this.handleTransitionEnd_);
     this.listen('keydown', this.handleKeydown_);
-
-    if (this.trailingIcon_) {
-      INTERACTION_EVENTS.forEach((evtType) => {
-        this.trailingIcon_!.addEventListener(evtType, this.handleTrailingIconInteraction_ as EventListener);
-      });
-    }
   }
 
   destroy() {
     this.ripple_.destroy();
-
-    INTERACTION_EVENTS.forEach((evtType) => {
-      this.unlisten(evtType, this.handleInteraction_);
-    });
+    this.unlisten('click', this.handleClick_);
     this.unlisten('transitionend', this.handleTransitionEnd_);
     this.unlisten('keydown', this.handleKeydown_);
-
-    if (this.trailingIcon_) {
-      INTERACTION_EVENTS.forEach((evtType) => {
-        this.trailingIcon_!.removeEventListener(evtType, this.handleTrailingIconInteraction_ as EventListener);
-      });
-    }
 
     super.destroy();
   }
