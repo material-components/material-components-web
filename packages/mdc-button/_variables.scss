@@ -39,7 +39,8 @@ $mdc-button-density-config: (
 ) !default;
 
 $mdc-button-outlined-border-width: 1px !default;
+$mdc-button-outline-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
 $mdc-button-shape-radius: small !default;
 
-$mdc-button-disabled-container-fill-color: rgba(mdc-theme-prop-value(on-surface), .12);
-$mdc-button-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
+$mdc-button-disabled-container-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
+$mdc-button-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .38) !default;
