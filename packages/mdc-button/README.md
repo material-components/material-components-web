@@ -207,7 +207,3 @@ Mixin | Description
 `mdc-button-outline-color($color)` | Sets the outline color to the given color for an enabled button.
 `mdc-button-disabled-outline-color($color)` | Sets the outline color to the given color for a disabled button.
 `mdc-button-outline-width($width, $padding)` | Sets the outline width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `mdc-button-horizontal-padding` is also included with a custom value.
-
-##### Caveat: Edge and CSS Custom Properties
-
-In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](../mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using the `mdc-button-container-fill-color` mixin, you must pass in an actual color value for support in Edge.

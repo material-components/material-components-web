@@ -378,7 +378,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background::before,
   .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background::before {
     @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+      @include mdc-theme-prop(background-color, $color);
     }
   }
 
@@ -626,7 +626,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
   .mdc-checkbox__background::before {
     @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, on-surface, $edgeOptOut: true);
+      @include mdc-theme-prop(background-color, on-surface);
     }
   }
 

@@ -68,7 +68,6 @@
 
 @mixin mdc-ripple-common($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-structure: mdc-feature-create-target($query, structure);
 
   // Ensure that styles needed by any component using MDC Ripple are emitted, but only once.
   // (Every component using MDC Ripple imports these mixins, but doesn't necessarily import
@@ -76,24 +75,6 @@
   @include mdc-feature-targets($feat-animation) {
     @include mdc-base-emit-once("mdc-ripple/common/animation") {
       @include mdc-ripple-keyframes_;
-    }
-  }
-
-  @include mdc-feature-targets($feat-structure) {
-    @include mdc-base-emit-once("mdc-ripple/common/structure") {
-      // Styles used to detect buggy behavior of CSS custom properties in Edge.
-      // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-      // This is included in _mixins.scss rather than mdc-ripple.scss so that it will be
-      // present for other components which rely on ripple as well as mdc-ripple itself.
-      .mdc-ripple-surface--test-edge-var-bug {
-        --mdc-ripple-surface-test-edge-var: 1px solid #000;
-
-        visibility: hidden;
-
-        &::before {
-          border: var(--mdc-ripple-surface-test-edge-var);
-        }
-      }
     }
   }
 }
@@ -200,7 +181,7 @@
   #{$ripple-target}::after {
     @include mdc-feature-targets($feat-color) {
       @if alpha(mdc-theme-prop-value($color)) > 0 {
-        @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+        @include mdc-theme-prop(background-color, $color);
       } @else {
         // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
         // This avoids unnecessary transitions and overflow.
