@@ -46,9 +46,13 @@
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
+  @include mdc-elevation-overlay-common($query);
+
   .mdc-card {
     @include mdc-card-shape-radius(medium, $query: $query);
     @include mdc-card-fill-color(surface, $query);
+    @include mdc-elevation-overlay-surface-position($query: $query);
+    @include mdc-elevation-overlay-size(100%, $query: $query);
     @include mdc-elevation(1, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {

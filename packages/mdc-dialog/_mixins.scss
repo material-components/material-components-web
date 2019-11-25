@@ -37,6 +37,8 @@
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
+  @include mdc-elevation-overlay-common($query);
+
   // postcss-bem-linter: define dialog
 
   .mdc-dialog,
@@ -97,6 +99,8 @@
   }
 
   .mdc-dialog__surface {
+    @include mdc-elevation-overlay-surface-position($query: $query);
+    @include mdc-elevation-overlay-size(100%, $query: $query);
     @include mdc-elevation(24, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
