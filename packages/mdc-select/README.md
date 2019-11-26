@@ -457,7 +457,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `handleMenuOpened() => void` | Handles menu or menu surface opened event.
 | `handleMenuClosed() => void` | Handles menu or menu surface closed event.
 | `handleMenuItemAction() => void` | Handles menu selected event.
-| `handleChange(notifyChange: boolean) => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API. |
+| `handleChange() => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API. |
 | `handleKeydown(event: KeyboardEvent) => void` | Handles opening the menu when the `mdc-select__selected-text` element is focused and the user presses the `Enter` or `Space` key. |
 | `getSelectedIndex() => number` | Returns the index of the currently selected menu item. |
 | `setSelectedIndex(index: number) => void` | Handles setting the `mdc-select__selected-text` element and closing the menu. Also causes the label to float and outline to notch if needed. |
