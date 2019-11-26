@@ -47,6 +47,7 @@
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
+  @include mdc-elevation-overlay-common($query);
   @include mdc-switch-density($mdc-switch-density-scale, $query: $query);
 
   .mdc-switch {
@@ -325,6 +326,8 @@
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-color: mdc-feature-create-target($query, color);
 
+  @include mdc-elevation-overlay-surface-position($query: $query);
+  @include mdc-elevation-overlay-size($mdc-switch-thumb-diameter, $query: $query);
   @include mdc-elevation($z-value: 2, $query: $query);
 
   @include mdc-feature-targets($feat-structure) {
