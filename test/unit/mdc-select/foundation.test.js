@@ -256,20 +256,12 @@ test('#handleChange does not call foundation.notchOutline() when there is no lab
   td.verify(foundation.notchOutline(td.matchers.anything()), {times: 0});
 });
 
-test('#handleChange calls adapter.notifyChange() by default', () => {
+test('#handleChange calls adapter.notifyChange()', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('value');
 
   foundation.handleChange();
   td.verify(mockAdapter.notifyChange(td.matchers.anything()), {times: 1});
-});
-
-test('#handleChange does not call adapter.notifyChange() if notifyChange is false', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('value');
-
-  foundation.handleChange(/* notifyChange */ false);
-  td.verify(mockAdapter.notifyChange(td.matchers.anything()), {times: 0});
 });
 
 test('#handleFocus calls adapter.floatLabel(true)', () => {
