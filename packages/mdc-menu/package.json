@@ -20,6 +20,7 @@
   "dependencies": {
     "@material/base": "^5.0.0",
     "@material/dom": "^5.0.0",
+    "@material/elevation": "^5.0.0",
     "@material/feature-targeting": "^5.0.0",
     "@material/list": "^5.0.0",
     "@material/menu-surface": "^5.0.0",
