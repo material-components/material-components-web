@@ -170,14 +170,14 @@ to set the selected item. The select also needs the text from the selected eleme
 
 ```html
 <div class="mdc-select">
-  <div class="mdc-select__anchor demo-width-class">
+  <div class="mdc-select__anchor">
     <i class="mdc-select__dropdown-icon"></i>
     <div class="mdc-select__selected-text">Vegetables</div>
     <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <div class="mdc-line-ripple"></div>
   </div>
 
-  <div class="mdc-select__menu demo-width-class mdc-menu mdc-menu-surface">
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
     <ul class="mdc-list">
       <li class="mdc-list-item" data-value=""></li>
       <li class="mdc-list-item" data-value="grains">
