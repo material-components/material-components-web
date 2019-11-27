@@ -56,6 +56,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size, $query: $query);
   @include mdc-chip-trailing-icon-margin($query: $query);
   @include mdc-touch-target-wrapper($query);
+  @include mdc-elevation-overlay-common($query);
 
   .mdc-chip {
     @include mdc-chip-shape-radius(50%, $query: $query);
@@ -64,10 +65,12 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     @include mdc-typography(body2, $query: $query);
     @include mdc-chip-density($density-scale: 0, $query: $query);
     @include mdc-chip-leading-icon-margin($query: $query);
+    @include mdc-elevation-overlay-surface-position($query: $query);
+    @include mdc-elevation-overlay-size(100%, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
       display: inline-flex;
-      position: relative;
+      // position: relative; already set in mdc-elevation-overlay-surface-position
       align-items: center;
       box-sizing: border-box;
       padding: 0 $mdc-chip-horizontal-padding;

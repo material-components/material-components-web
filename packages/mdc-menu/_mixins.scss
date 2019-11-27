@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "@material/rtl/mixins";
@@ -33,6 +34,7 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-ripple-common($query);
+  @include mdc-elevation-overlay-common($query);
 
   // Customize the menu-surface and contained list to match the mdc-menu styles.
   .mdc-menu {
@@ -46,6 +48,8 @@
     // Include mdc-list selector to ensure list-inside-menu overrides default list styles
     .mdc-list {
       @include mdc-list-item-primary-text-ink-color($mdc-menu-ink-color, $query);
+      @include mdc-elevation-overlay-surface-position($query: $query);
+      @include mdc-elevation-overlay-size(100%, $query: $query);
     }
 
     .mdc-list-divider {

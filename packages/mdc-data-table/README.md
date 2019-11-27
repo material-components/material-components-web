@@ -259,7 +259,7 @@ const {events} from '@material/data-table/constants';
 
 Event constant | Event name | Description
 -- | -- | --
-`ROW_SELECTION_CHANGED` | `MDCDataTable:changed` | Event emitted when row checkbox is checked or unchecked.
+`ROW_SELECTION_CHANGED` | `MDCDataTable:rowSelectionChanged` | Event emitted when row checkbox is checked or unchecked.
 `SELECTED_ALL` | `MDCDataTable:selectedAll` | Event emitted when header row checkbox is checked.
 `UNSELECTED_ALL` | `MDCDataTable:unselectedAll` | Event emitted when header row checkbox is unchecked.
 

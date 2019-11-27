@@ -71,6 +71,15 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   @include mdc-checkbox-disabled-ink-color($mdc-checkbox-mark-color, $query: $query);
 
   @media screen and (-ms-high-contrast: active) {
+    @include mdc-checkbox-disabled-container-colors(
+      $unmarked-stroke-color: GrayText,
+      $unmarked-fill-color: transparent,
+      $marked-stroke-color: GrayText,
+      $marked-fill-color: transparent,
+      $query: $query
+    );
+    @include mdc-checkbox-disabled-ink-color(GrayText, $query: $query);
+
     .mdc-checkbox__mixedmark {
       @include mdc-feature-targets($feat-structure) {
         margin: 0 1px; // Extra horizontal space around mixedmark symbol.
@@ -378,7 +387,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background::before,
   .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background::before {
     @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+      @include mdc-theme-prop(background-color, $color);
     }
   }
 
@@ -626,7 +635,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
   .mdc-checkbox__background::before {
     @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, on-surface, $edgeOptOut: true);
+      @include mdc-theme-prop(background-color, on-surface);
     }
   }
 

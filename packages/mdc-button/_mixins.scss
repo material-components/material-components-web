@@ -54,6 +54,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-touch-target-wrapper($query);
+  @include mdc-elevation-overlay-common($query);
 
   // postcss-bem-linter: define button
   .mdc-button {
@@ -386,10 +387,12 @@ $query: mdc-feature-all()) {
 
   @include mdc-typography(button, $query);
   @include mdc-button-horizontal-padding($mdc-button-horizontal-padding, $query);
+  @include mdc-elevation-overlay-surface-position($query: $query);
+  @include mdc-elevation-overlay-size(100%, $query: $query);
 
   @include mdc-feature-targets($feat-structure) {
     display: inline-flex;
-    position: relative;
+    // position: relative; already set in mdc-elevation-overlay-surface-position
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
@@ -464,8 +467,8 @@ $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-button-outline-width($mdc-button-outlined-border-width, $query: $query);
-  @include mdc-button-outline-color(primary, $query);
-  @include mdc-button-disabled-outline-color($mdc-button-disabled-ink-color, $query);
+  @include mdc-button-outline-color($mdc-button-outline-color, $query);
+  @include mdc-button-disabled-outline-color($mdc-button-disabled-container-color, $query);
 
   @include mdc-feature-targets($feat-structure) {
     border-style: solid;
@@ -476,7 +479,7 @@ $query: mdc-feature-all()) {
   @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding, $query);
   @include mdc-button-container-fill-color(primary, $query);
   @include mdc-button-ink-color(on-primary, $query);
-  @include mdc-button-disabled-container-fill-color($mdc-button-disabled-container-fill-color, $query);
+  @include mdc-button-disabled-container-fill-color($mdc-button-disabled-container-color, $query);
   @include mdc-button-disabled-ink-color($mdc-button-disabled-ink-color, $query);
 }
 
@@ -513,7 +516,7 @@ $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-feature-targets($feat-color) {
-    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    @include mdc-theme-prop(background-color, $color);
   }
 }
 

@@ -97,9 +97,9 @@
 }
 
 ///
-/// Sets the elevation overlay parent required positioning.
+/// Sets the elevation overlay surface required positioning.
 ///
-@mixin mdc-elevation-overlay-parent($query: mdc-feature-all()) {
+@mixin mdc-elevation-overlay-surface-position($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {

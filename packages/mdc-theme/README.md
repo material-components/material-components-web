@@ -104,7 +104,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-theme-prop($property, $style, $important, $edgeOptOut)` | Applies a theme color or a custom color to a CSS property, optionally with `!important`. If `$edgeOptOut` is `true` and a theme color is passed, the style will be wrapped in a `@supports` clause to exclude the style in Edge to avoid issues with its buggy CSS variable support.
+`mdc-theme-prop($property, $style, $important)` | Applies a theme color or a custom color to a CSS property, optionally with `!important`.
 
 #### `mdc-theme-prop` Properties
 

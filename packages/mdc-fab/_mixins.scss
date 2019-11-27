@@ -45,6 +45,7 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
   // postcss-bem-linter: define fab
 
   @include mdc-touch-target-wrapper($query);
+  @include mdc-elevation-overlay-common($query);
 
   .mdc-fab {
     @include mdc-fab-base_($query: $query);
@@ -143,7 +144,7 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
   $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-feature-targets($feat-color) {
-    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    @include mdc-theme-prop(background-color, $color);
   }
 }
 
@@ -233,6 +234,8 @@ $mdc-fab-icon-enter-delay_: 90ms;
 $mdc-fab-icon-enter-duration_: 180ms;
 
 @mixin mdc-fab-base_($query: mdc-feature-all()) {
+  @include mdc-elevation-overlay-surface-position($query: $query);
+  @include mdc-elevation-overlay-size(100%, $query: $query);
   @include mdc-elevation(6, $query: $query);
   @include mdc-fab-shape-radius(50%, $query: $query);
 
@@ -333,6 +336,9 @@ $mdc-fab-icon-enter-duration_: 180ms;
     width: auto;
     max-width: 100%;
     height: $mdc-fab-extended-height;
+    // This allows the text within the extended fab to be centered for varying font sizes.
+    /* @alternate */
+    line-height: normal;
   }
 }
 
