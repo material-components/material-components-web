@@ -147,13 +147,16 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       this.adapter_.closeMenu();
     }
 
-    this.handleChange();
+    this.updateLabel_();
+    this.updateValidity_();
   }
 
   setValue(value: string) {
     const index = this.menuItemValues_.indexOf(value);
     this.setSelectedIndex(index);
-    this.handleChange();
+
+    this.updateLabel_();
+    this.updateValidity_();
   }
 
   getValue() {
@@ -229,15 +232,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    */
   handleChange() {
     this.updateLabel_();
+    this.updateValidity_();
     this.adapter_.notifyChange(this.getValue());
-
-    const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
-    if (isRequired) {
-      this.setValid(this.isValid());
-      if (this.helperText_) {
-        this.helperText_.setValidity(this.isValid());
-      }
-    }
   }
 
   handleMenuItemAction(index: number) {
@@ -402,13 +398,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   /**
-   * Unfocuses the select component.
+   * Updates the valid state when appropriate.
    */
-  private blur_() {
-    this.adapter_.removeClass(cssClasses.FOCUSED);
-    this.updateLabel_();
-    this.adapter_.deactivateBottomLine();
-
+  private updateValidity_() {
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
     if (isRequired) {
       this.setValid(this.isValid());
@@ -416,6 +408,16 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
         this.helperText_.setValidity(this.isValid());
       }
     }
+  }
+
+  /**
+   * Unfocuses the select component.
+   */
+  private blur_() {
+    this.adapter_.removeClass(cssClasses.FOCUSED);
+    this.updateLabel_();
+    this.updateValidity_();
+    this.adapter_.deactivateBottomLine();
   }
 }
 
