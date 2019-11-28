@@ -48,7 +48,7 @@
     $property-name: height,
   );
 
-  @include mdc-text-field-height($height);
+  @include mdc-text-field-height(1 * $height);
 }
 
 ///

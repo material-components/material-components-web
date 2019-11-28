@@ -174,7 +174,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     if (nativeInput && nativeInput.disabled) {
       return;
     }
-    this.receivedUserInput_ = true;
+    this.receivedUserInput_ = !!true;
   }
 
   /**
