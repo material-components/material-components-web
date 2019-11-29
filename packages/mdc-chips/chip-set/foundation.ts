@@ -111,7 +111,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
 
-    // Allow empty chip set in the case of input chips
+    // Do not throw error if chip set is empty
     if (nextIndex < 0) {
       return;
     }

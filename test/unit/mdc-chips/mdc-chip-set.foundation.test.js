@@ -245,6 +245,15 @@ test('#handleChipRemoval gives focus to the next chip', () => {
   td.verify(mockAdapter.focusChipTrailingActionAtIndex(1));
 });
 
+test('#handleChipRemoval does not throw error if chip set is left empty', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getChipListCount()).thenReturn(0);
+  td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(0);
+
+  foundation.handleChipRemoval('chipA');
+  td.verify(mockAdapter.focusChipTrailingActionAtIndex(-1), {times: 0});
+});
+
 function setupChipNavigationTest(chipIds, isRTL=false) {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getIndexOfChipById(td.matchers.isA(String))).thenDo((id) => {
