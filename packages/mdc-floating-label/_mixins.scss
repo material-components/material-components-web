@@ -22,6 +22,8 @@
 
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
 @import "./variables";
 
 @mixin mdc-floating-label-ink-color($color) {
@@ -55,16 +57,20 @@
   }
 }
 
-@mixin mdc-floating-label-float-position($positionY, $positionX: 0%, $scale: .75) {
-  .mdc-floating-label--float-above {
-    @if $positionX > 0 or $positionX < 0 {
-      transform: translateY(-1 * $positionY) translateX(-1 * $positionX) scale($scale);
+@mixin mdc-floating-label-float-position($positionY, $positionX: 0%, $scale: .75, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
 
-      @include mdc-rtl {
-        transform: translateY(-1 * $positionY) translateX($positionX) scale($scale);
+  .mdc-floating-label--float-above {
+    @include mdc-feature-targets($feat-structure) {
+      @if $positionX > 0 or $positionX < 0 {
+        transform: translateY(-1 * $positionY) translateX(-1 * $positionX) scale($scale);
+
+        @include mdc-rtl {
+          transform: translateY(-1 * $positionY) translateX($positionX) scale($scale);
+        }
+      } @else {
+        transform: translateY(-1 * $positionY) scale($scale);
       }
-    } @else {
-      transform: translateY(-1 * $positionY) scale($scale);
     }
   }
 }

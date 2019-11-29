@@ -14,6 +14,7 @@
 @import "@material/list/mixins";
 @import "@material/menu-surface/mixins";
 @import "@material/menu/mixins";
+@import "@material/notched-outline/mixins";
 @import "@material/radio/mixins";
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
@@ -224,6 +225,15 @@
     @include mdc-menu-surface-fill-color(surface, $query: $query);
     @include mdc-menu-surface-ink-color(on-surface, $query: $query);
     @include mdc-menu-surface-shape-radius(medium, $query: $query);
+
+    // Notched outline
+    @include mdc-notched-outline-core-styles($query: $query);
+    @include mdc-notched-outline-color(red, $query: $query);
+    @include mdc-notched-outline-stroke-width(1337px, $query: $query);
+    @include mdc-notched-outline-notch-offset(1337px, $query: $query);
+    @include mdc-notched-outline-shape-radius(42px, $query: $query);
+    @include mdc-notched-outline-floating-label-float-position(100%, $query: $query);
+    @include mdc-notched-outline-floating-label-float-position-absolute(100px, $query: $query);
 
     // Radio
     @include mdc-radio-core-styles($query: $query);
