@@ -22,7 +22,7 @@
     "lint": "npm-run-all --parallel lint:*",
     "postinstall": "lerna bootstrap",
     "pretest": "npm run lint",
-    "test": "npm run test:unit && npm run test:dependency && npm run build && npm run clean",
+    "test": "npm run test:unit && npm run test:feature-targeting && npm run test:dependency && npm run build && npm run clean",
     "screenshot:approve": "node test/screenshot/run.js approve",
     "screenshot:build": "node test/screenshot/run.js build",
     "screenshot:clean": "node test/screenshot/run.js clean",
