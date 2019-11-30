@@ -11,6 +11,7 @@
 @import "@material/icon-button/mixins";
 @import "@material/image-list/mixins";
 @import "@material/linear-progress/mixins";
+@import "@material/line-ripple/mixins";
 @import "@material/list/mixins";
 @import "@material/menu-surface/mixins";
 @import "@material/menu/mixins";
@@ -199,6 +200,10 @@
     @include mdc-linear-progress-core-styles($query: $query);
     @include mdc-linear-progress-bar-color(red, $query: $query);
     @include mdc-linear-progress-buffer-color(red, $query: $query);
+
+    // Line ripple
+    @include mdc-line-ripple-core-styles($query: $query);
+    @include mdc-line-ripple-color(red, $query: $query);
 
     // List
     @include mdc-list-core-styles($query: $query);
