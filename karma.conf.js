@@ -63,20 +63,119 @@ const istanbulInstrumenterLoader = {
   include: path.resolve('./packages'),
 };
 
+// module.exports = function(config) {
+//   config.set({
+//     basePath: '',
+//     // Refer https://github.com/karma-runner/karma-mocha
+//     frameworks: ['mocha'],
+//     files: [
+//       // Refer https://github.com/babel/karma-babel-preprocessor
+//       'node_modules/@babel/polyfill/dist/polyfill.js',
+//       'test/unit/index.js',
+//     ],
+//     preprocessors: {
+//       'test/unit/index.js': ['webpack', 'sourcemap'],
+//     },
+//     reporters: ['progress', 'coverage-istanbul'],
+//     port: 9876,
+//     colors: true,
+//     logLevel: config.LOG_INFO,
+//     browsers: browsers,
+//     browserDisconnectTimeout: 40000,
+//     browserNoActivityTimeout: 120000,
+//     captureTimeout: 240000,
+//     concurrency: USING_SL ? 4 : Infinity,
+//     customLaunchers: customLaunchers,
+
+//     coverageIstanbulReporter: {
+//       'dir': 'coverage',
+//       'reports': ['html', 'lcovonly', 'json'],
+//       'report-config': {
+//         lcovonly: {subdir: '.'},
+//         json: {subdir: '.', file: 'coverage.json'},
+//       },
+//       // 'emitWarning' causes the tests to fail if the thresholds are not met
+//       'emitWarning': false,
+//       'thresholds': {
+//         statements: 95,
+//         branches: 95,
+//         lines: 95,
+//         functions: 95,
+//       },
+//     },
+
+//     client: {
+//       mocha: {
+//         reporter: 'html',
+//         ui: 'qunit',
+
+//         // Number of milliseconds to wait for an individual `test(...)` function to complete.
+//         // The default is 2000.
+//         timeout: 10000,
+//       },
+//     },
+
+//     // Refer https://github.com/webpack-contrib/karma-webpack
+//     webpack: Object.assign({}, webpackConfig, {
+//       plugins: [], // Exclude UglifyJs plugin from test build.
+//       mode: 'development',
+//       module: Object.assign({}, webpackConfig.module, {
+//         // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
+//         // uncluttered source maps.
+//         rules: webpackConfig.module.rules.concat(config.singleRun ? [Object.assign({
+//           enforce: 'post',
+//           test: /\.ts$/,
+//         }, istanbulInstrumenterLoader), Object.assign({
+//           test: /\.js$/,
+//         }, istanbulInstrumenterLoader)] : []),
+//       }),
+//     }),
+
+//     webpackMiddleware: {
+//       noInfo: true,
+//       stats: 'minimal',
+//     },
+//   });
+
+//   if (USING_SL) {
+//     const sauceLabsConfig = {
+//       username: process.env.SAUCE_USERNAME,
+//       accessKey: process.env.SAUCE_ACCESS_KEY,
+//     };
+
+//     if (USING_TRAVISCI) {
+//       // See https://github.com/karma-runner/karma-sauce-launcher/issues/73
+//       Object.assign(sauceLabsConfig, {
+//         testName: 'Material Components Web Unit Tests - CI',
+//         tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+//         startConnect: false,
+//       });
+//     }
+
+//     config.set({
+//       sauceLabs: sauceLabsConfig,
+//       // Attempt to de-flake Sauce Labs tests on TravisCI.
+//       transports: ['polling'],
+//       browserDisconnectTolerance: 3,
+//     });
+//   }
+// };
+
 module.exports = function(config) {
   config.set({
     basePath: '',
-    // Refer https://github.com/karma-runner/karma-mocha
-    frameworks: ['mocha'],
+    frameworks: ['jasmine', 'karma-typescript'],
     files: [
-      // Refer https://github.com/babel/karma-babel-preprocessor
-      'node_modules/@babel/polyfill/dist/polyfill.js',
-      'test/unit/index.js',
+      'packages/*/!(node_modules)/**/!(*.d).ts',
+      'packages/*/!(*.d).ts',
+      'packages/*/test/!(*.d).ts',
     ],
     preprocessors: {
-      'test/unit/index.js': ['webpack', 'sourcemap'],
+      'packages/*/!(node_modules)/**/!(*.d).ts': 'karma-typescript',
+      'packages/*/!(*.d).ts': 'karma-typescript',
+      'packages/*/test/!(*.d).ts': 'karma-typescript',
     },
-    reporters: ['progress', 'coverage-istanbul'],
+    reporters: ['progress', 'karma-typescript'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -86,54 +185,8 @@ module.exports = function(config) {
     captureTimeout: 240000,
     concurrency: USING_SL ? 4 : Infinity,
     customLaunchers: customLaunchers,
-
-    coverageIstanbulReporter: {
-      'dir': 'coverage',
-      'reports': ['html', 'lcovonly', 'json'],
-      'report-config': {
-        lcovonly: {subdir: '.'},
-        json: {subdir: '.', file: 'coverage.json'},
-      },
-      // 'emitWarning' causes the tests to fail if the thresholds are not met
-      'emitWarning': false,
-      'thresholds': {
-        statements: 95,
-        branches: 95,
-        lines: 95,
-        functions: 95,
-      },
-    },
-
-    client: {
-      mocha: {
-        reporter: 'html',
-        ui: 'qunit',
-
-        // Number of milliseconds to wait for an individual `test(...)` function to complete.
-        // The default is 2000.
-        timeout: 10000,
-      },
-    },
-
-    // Refer https://github.com/webpack-contrib/karma-webpack
-    webpack: Object.assign({}, webpackConfig, {
-      plugins: [], // Exclude UglifyJs plugin from test build.
-      mode: 'development',
-      module: Object.assign({}, webpackConfig.module, {
-        // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
-        // uncluttered source maps.
-        rules: webpackConfig.module.rules.concat(config.singleRun ? [Object.assign({
-          enforce: 'post',
-          test: /\.ts$/,
-        }, istanbulInstrumenterLoader), Object.assign({
-          test: /\.js$/,
-        }, istanbulInstrumenterLoader)] : []),
-      }),
-    }),
-
-    webpackMiddleware: {
-      noInfo: true,
-      stats: 'minimal',
+    karmaTypescriptConfig: {
+      tsconfig: './tsconfig.json',
     },
   });
 
