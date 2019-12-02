@@ -110,6 +110,12 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     this.adapter_.removeChipAtIndex(index);
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
+
+    // Early exit if there are no other chips in the set
+    if (nextIndex < 0) {
+      return;
+    }
+
     this.removeFocusFromChipsExcept_(nextIndex);
     // After removing a chip, we should focus the trailing action for the next chip.
     this.adapter_.focusChipTrailingActionAtIndex(nextIndex);
