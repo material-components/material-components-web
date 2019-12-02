@@ -451,7 +451,6 @@
     $property-name: height,
   );
 
-  // stylelint-disable-next-line max-line-length
   $resolved-radius: nth(mdc-shape-resolve-percentage-radius($height, mdc-shape-prop-value($radius)), 1);
 
   @if (length(mdc-shape-prop-value($radius)) > 1) {
