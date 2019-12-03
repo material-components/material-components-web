@@ -34,11 +34,12 @@
     "screenshot:watch": "node test/screenshot/run.js build --watch",
     "screenshot:webpack": "webpack --config=test/screenshot/webpack.config.js --progress --display=minimal",
     "start": "npm-run-all --parallel screenshot:serve screenshot:watch",
-    "test:watch": "karma start --auto-watch",
-    "test:unit": "karma start --single-run",
     "test:dependency": "./scripts/dependency-test.sh",
     "test:feature-targeting": "node test/scss/verify-feature-targeting.js",
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh",
+    "test:unit": "karma start --single-run",
+    "test:jasmineunit": "USE_JASMINE=true karma start --single-run",
+    "test:watch": "karma start --auto-watch",
     "version": "cat lerna.json | grep -e '^  \"version\": ' | awk '{print $2}' | sed 's/[\",]//g'"
   },
   "devDependencies": {
