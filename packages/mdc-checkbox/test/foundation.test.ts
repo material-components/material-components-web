@@ -23,35 +23,17 @@
 
 import 'jasmine';
 
-import {MDCFoundation} from '@material/base/foundation';
-
+import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
+import {setupFoundationTest} from '../../../testing/helpers/setup';
 import {cssClasses, numbers, strings} from '../constants';
 import MDCCheckboxFoundation from '../foundation';
 
 const DESC_UNDEFINED = {
+  configurable: true,
+  enumerable: false,
   get: undefined,
   set: undefined,
-  enumerable: false,
-  configurable: true,
 };
-
-/* TODO: Move below to separate directory. */
-type MDCFoundationStatics = typeof MDCFoundation;
-
-// `extends MDCFoundationStatics` to include MDCFoundation statics in type
-// definition.
-interface FoundationConstructor<F extends MDCFoundation> extends
-    MDCFoundationStatics {
-  new(...args: any[]): F;
-}
-
-function setupFoundationTest<F extends MDCFoundation>(
-    FoundationClass: FoundationConstructor<F>) {
-  const mockAdapter = jasmine.createSpyObj(
-      FoundationClass.name, FoundationClass.defaultAdapter);
-  const foundation = new FoundationClass(mockAdapter);
-  return {foundation, mockAdapter};
-}
 
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCCheckboxFoundation);
@@ -60,88 +42,10 @@ function setupTest() {
   return {foundation, mockAdapter, nativeControl};
 }
 
-function getUnequalArrayMessage(
-    actualArray: string[], expectedArray: string[]): string {
-  const format = (values: string[], singularName: string): string => {
-    const count = values.length;
-    if (count === 0) {
-      return '';
-    }
-    const plural = count === 1 ? '' : 's';
-    const str = values.join(', ');
-    return `${count} ${singularName}${plural}: ${str}`;
-  };
-
-  const getAddedStr =
-      (actualSet: Set<string>, expectedSet: Set<string>): string => {
-        const addedArray: string[] = [];
-        actualSet.forEach((val) => {
-          if (!expectedSet.has(val)) {
-            addedArray.push(val);
-          }
-        });
-        return format(addedArray, 'unexpected method');
-      };
-
-  const getRemovedStr =
-      (actualSet: Set<string>, expectedSet: Set<string>): string => {
-        const removedArray: string[] = [];
-        expectedSet.forEach((val) => {
-          if (!actualSet.has(val)) {
-            removedArray.push(val);
-          }
-        });
-        return format(removedArray, 'missing method');
-      };
-
-  const toSet = (array: string[]): Set<string> => {
-    const set: Set<string> = new Set();
-    array.forEach((value) => set.add(value));
-    return set;
-  };
-
-  const actualSet = toSet(actualArray);
-  const expectedSet = toSet(expectedArray);
-  const addedStr = getAddedStr(actualSet, expectedSet);
-  const removedStr = getRemovedStr(actualSet, expectedSet);
-  const messages = [addedStr, removedStr].filter((val) => val.length > 0);
-
-  if (messages.length === 0) {
-    return '';
-  }
-
-  return `Found ${messages.join('; ')}`;
-}
-
-function verifyDefaultAdapter<F extends MDCFoundation>(
-    FoundationClass: FoundationConstructor<F>, expectedMethodNames: string[]) {
-  const defaultAdapter = FoundationClass.defaultAdapter as {
-    [key: string]: any;
-  };
-  const adapterKeys = Object.keys(defaultAdapter);
-  const actualMethodNames =
-      adapterKeys.filter((key) => typeof defaultAdapter[key] === 'function');
-
-  expect(adapterKeys.length)
-      .toEqual(
-          actualMethodNames.length, 'Every adapter key must be a function');
-
-  // Test for equality without requiring that the array be in a specific order.
-  const actualArray = actualMethodNames.slice().sort();
-  const expectedArray = expectedMethodNames.slice().sort();
-  expect(expectedArray)
-      .toEqual(actualArray, getUnequalArrayMessage(actualArray, expectedArray));
-
-  // Test default methods.
-  actualMethodNames.forEach(
-      (method) => expect(() => defaultAdapter[method]).not.toThrow());
-}
-/* TODO: Move above to separate directory. */
-
 interface CheckboxState {
-  checked: boolean, indeterminate: boolean,
+  checked: boolean;
+  indeterminate: boolean;
 }
-;
 
 // Sets up tests which execute change events through the change handler which
 // the foundation registers. Returns an object containing the following

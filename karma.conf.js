@@ -129,11 +129,13 @@ const jasmineConfig = {
     'packages/*/!(node_modules)/**/!(*.d).ts',
     'packages/*/!(*.d).ts',
     'packages/*/test/!(*.d).ts',
+    'testing/**/*.ts',
   ],
   preprocessors: {
     'packages/*/!(node_modules)/**/!(*.d).ts': 'karma-typescript',
     'packages/*/!(*.d).ts': 'karma-typescript',
     'packages/*/test/!(*.d).ts': 'karma-typescript',
+    'testing/**/*.ts': 'karma-typescript',
   },
   reporters: ['progress', 'karma-typescript'],
   port: 9876,
