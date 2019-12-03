@@ -363,7 +363,8 @@ $mdc-fab-icon-enter-duration_: 180ms;
     justify-content: flex-start;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
   }
 }
 

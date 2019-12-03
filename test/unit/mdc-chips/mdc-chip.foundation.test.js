@@ -149,19 +149,21 @@ test(`#beginExit adds ${cssClasses.CHIP_EXIT} class`, () => {
   td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
 });
 
-test('#handleKeydown does not emit event on invalid key', () => {
+test('#handleInteraction does not emit event on invalid key', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockKeydown = {
+  const mockEvt = {
     type: 'keydown',
     key: 'Shift',
   };
 
-  foundation.handleKeydown(mockKeydown);
+  foundation.handleInteraction(mockEvt);
   td.verify(mockAdapter.notifyInteraction(), {times: 0});
 });
 
 const validEvents = [
   {
+    type: 'click',
+  }, {
     type: 'keydown',
     key: 'Enter',
   }, {
@@ -171,37 +173,21 @@ const validEvents = [
 ];
 
 validEvents.forEach((evt) => {
-  test(`#handleKeydown(${evt}) notifies interaction`, () => {
+  test(`#handleInteraction(${evt}) notifies interaction`, () => {
     const {foundation, mockAdapter} = setupTest();
 
-    foundation.handleKeydown(evt);
+    foundation.handleInteraction(evt);
     td.verify(mockAdapter.notifyInteraction());
   });
 
-  test(`#handleKeydown(${evt}) focuses the primary action`, () => {
+  test(`#handleInteraction(${evt}) focuses the primary action`, () => {
     const {foundation, mockAdapter} = setupTest();
 
-    foundation.handleKeydown(evt);
+    foundation.handleInteraction(evt);
     td.verify(mockAdapter.setPrimaryActionAttr(strings.TAB_INDEX, '0'));
     td.verify(mockAdapter.setTrailingActionAttr(strings.TAB_INDEX, '-1'));
     td.verify(mockAdapter.focusPrimaryAction());
   });
-});
-
-test('#handleClick(evt) notifies interaction', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.handleClick({type: 'click'});
-  td.verify(mockAdapter.notifyInteraction());
-});
-
-test('#handleClick(evt) focuses the primary action', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.handleClick({type: 'click'});
-  td.verify(mockAdapter.setPrimaryActionAttr(strings.TAB_INDEX, '0'));
-  td.verify(mockAdapter.setTrailingActionAttr(strings.TAB_INDEX, '-1'));
-  td.verify(mockAdapter.focusPrimaryAction());
 });
 
 test('#handleTransitionEnd notifies removal of chip on width transition end', () => {
@@ -318,106 +304,62 @@ test('#handleTransitionEnd does nothing for width property when not exiting', ()
   td.verify(mockAdapter.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
 });
 
-test('#handleKeydown emits no custom event on invalid keys', () => {
+test('#handleTrailingIconInteraction emits no event on invalid keys', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
-    type: 'keydown',
+    type: 'keydowb',
     key: 'Shift',
     stopPropagation: td.func('stopPropagation'),
-    target: {},
   };
 
-  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.TRAILING_ICON)).thenReturn(true);
-
-  foundation.handleKeydown(mockEvt);
+  foundation.handleTrailingIconInteraction(mockEvt);
   td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 0});
 });
 
-const validKeys = [
-  ' ', // Space
-  'Enter',
-];
-
-validKeys.forEach((key) => {
-  test(`#handleKeydown() from trailing icon emits custom event on "${key}"`, () => {
-    const {foundation, mockAdapter} = setupTest();
-    const mockEvt = {
-      type: 'keydown',
-      stopPropagation: td.func('stopPropagation'),
-      target: {},
-      key,
-    };
-
-    td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.TRAILING_ICON)).thenReturn(true);
-
-    foundation.handleKeydown(mockEvt);
-    td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 1});
-  });
-});
-
-test('#handleClick() from trailing icon emits custom event', () => {
+test('#handleTrailingIconInteraction emits custom event on click or enter key in trailing icon', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     type: 'click',
     stopPropagation: td.func('stopPropagation'),
-    target: {},
   };
 
-  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.TRAILING_ICON)).thenReturn(true);
-
-  foundation.handleClick(mockEvt);
+  foundation.handleTrailingIconInteraction(mockEvt);
   td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 1});
   td.verify(mockEvt.stopPropagation(), {times: 1});
+
+  foundation.handleTrailingIconInteraction(Object.assign(mockEvt, {type: 'keydown', key: ' '}));
+  td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 2});
+  td.verify(mockEvt.stopPropagation(), {times: 2});
+
+  foundation.handleTrailingIconInteraction(Object.assign(mockEvt, {type: 'keydown', key: 'Enter'}));
+  td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 3});
+  td.verify(mockEvt.stopPropagation(), {times: 3});
 });
 
-test(`#handleClick() from trailing icon adds ${cssClasses.CHIP_EXIT} class by default`, () => {
+test(`#handleTrailingIconInteraction adds ${cssClasses.CHIP_EXIT} class by default on click in trailing icon`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     type: 'click',
     stopPropagation: td.func('stopPropagation'),
-    target: {},
   };
 
-  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.TRAILING_ICON)).thenReturn(true);
+  foundation.handleTrailingIconInteraction(mockEvt);
 
-  foundation.handleClick(mockEvt);
   assert.isTrue(foundation.getShouldRemoveOnTrailingIconClick());
   td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
   td.verify(mockEvt.stopPropagation());
 });
 
-validKeys.forEach((key) => {
-  test(`#handleKeydown({key: "${key}"}) from trailing icon adds ${cssClasses.CHIP_EXIT} class by default`, () => {
-    const {foundation, mockAdapter} = setupTest();
-    const mockEvt = {
-      type: 'keydown',
-      stopPropagation: td.func('stopPropagation'),
-      target: {},
-      key,
-    };
-
-    td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.TRAILING_ICON)).thenReturn(true);
-
-    foundation.handleKeydown(mockEvt);
-    assert.isTrue(foundation.getShouldRemoveOnTrailingIconClick());
-    td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
-    td.verify(mockEvt.stopPropagation());
-  });
-});
-
-test(`#handleClick() from trailing icon does not add ${cssClasses.CHIP_EXIT} class to trailing icon ` +
+test(`#handleTrailingIconInteraction does not add ${cssClasses.CHIP_EXIT} class on click in trailing icon ` +
   'if shouldRemoveOnTrailingIconClick_ is false', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     type: 'click',
     stopPropagation: td.func('stopPropagation'),
-    target: {},
   };
 
-  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.TRAILING_ICON)).thenReturn(true);
-
   foundation.setShouldRemoveOnTrailingIconClick(false);
-  foundation.handleClick(mockEvt);
+  foundation.handleTrailingIconInteraction(mockEvt);
 
   assert.isFalse(foundation.getShouldRemoveOnTrailingIconClick());
   td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT), {times: 0});
