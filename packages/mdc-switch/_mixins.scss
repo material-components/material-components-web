@@ -87,10 +87,6 @@
       .mdc-switch__thumb-underlay {
         @include mdc-switch__thumb-underlay-checked_;
       }
-
-      .mdc-switch__native-control {
-        @include mdc-switch__native-control-checked_;
-      }
     }
   }
 
@@ -311,11 +307,13 @@
 }
 
 @mixin mdc-switch__native-control_ {
-  @include mdc-rtl-reflexive-position(left, 0);
-
   position: absolute;
-  top: 0;
+  top: 50%;
+  right: 50%;
+  bottom: 50%;
+  left: 50%;
   margin: 0;
+  transform: translate(-50%, -50%);
   opacity: 0;
   cursor: pointer;
   pointer-events: auto;
@@ -350,15 +348,6 @@
 
   @include mdc-rtl {
     transform: translateX(-($mdc-switch-thumb-active-margin));
-  }
-}
-
-@mixin mdc-switch__native-control-checked_ {
-  // Translate the native control the opposite direction so that the tap target stays the same.
-  transform: translateX(-($mdc-switch-thumb-active-margin));
-
-  @include mdc-rtl {
-    transform: translateX($mdc-switch-thumb-active-margin);
   }
 }
 

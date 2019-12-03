@@ -42,9 +42,9 @@ npm install @material/switch
 <div class="mdc-switch">
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
-    <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
     <div class="mdc-switch__thumb"></div>
   </div>
+  <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
 </div>
 <label for="basic-switch">off/on</label>
 ```
@@ -77,9 +77,9 @@ Add the `mdc-switch--disabled` class to the `mdc-switch` element, and the `disab
 <div class="mdc-switch mdc-switch--disabled">
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
-    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" disabled>
     <div class="mdc-switch__thumb"></div>
   </div>
+  <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" disabled>
 </div>
 <label for="another-basic-switch">off/on</label>
 ```
@@ -92,9 +92,9 @@ Add the `mdc-switch--checked` class to the `mdc-switch` element, and the `checke
 <div class="mdc-switch mdc-switch--checked">
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
-    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" checked>
     <div class="mdc-switch__thumb"></div>
   </div>
+  <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" checked>
 </div>
 <label for="another-basic-switch">off/on</label>
 ```
