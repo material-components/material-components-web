@@ -191,11 +191,11 @@ describe('MDCCheckboxFoundation', () => {
     jasmine.clock().install();
   });
 
-//   it('exports constants', () => {
-//     expect(cssClasses).toEqual(MDCCheckboxFoundation.cssClasses);
-//     expect(numbers).toEqual(MDCCheckboxFoundation.numbers);
-//     expect(strings).toEqual(MDCCheckboxFoundation.strings);
-//   });
+  it('exports constants', () => {
+    expect(cssClasses).toEqual(MDCCheckboxFoundation.cssClasses);
+    expect(numbers).toEqual(MDCCheckboxFoundation.numbers);
+    expect(strings).toEqual(MDCCheckboxFoundation.strings);
+  });
 
   it('defaultAdapter returns a complete adapter implementation', () => {
     verifyDefaultAdapter(MDCCheckboxFoundation, [

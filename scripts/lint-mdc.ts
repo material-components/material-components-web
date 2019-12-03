@@ -106,7 +106,7 @@ run();
 
 function run() {
   const inputFilePaths = glob.sync(path.join(PACKAGES_DIR_ABSOLUTE, '**/*.ts'), {
-    ignore: ['**/node_modules/**', '**/dist/**', '**/*.d.ts'],
+    ignore: ['**/node_modules/**', '**/dist/**', '**/*.d.ts', '**/test/*.ts'],
     nodir: true,
   });
 
