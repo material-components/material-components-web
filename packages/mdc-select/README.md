@@ -462,7 +462,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `getSelectedIndex() => number` | Returns the index of the currently selected menu item. |
 | `setSelectedIndex(index: number) => void` | Handles setting the `mdc-select__selected-text` element and closing the menu. Also causes the label to float and outline to notch if needed. |
 | `getValue() => string` | Handles getting the value through the adapter. |
-| `setValue(value: string) => void` | Sets the selected index to the index of the menu item with the given value. |
+| `setValue() => string` | Sets the selected index to the index of the menu item with the given value. |
 | `setValid(isValid: boolean) => void` | Sets the valid state through the adapter. |
 | `isValid() => boolean` | Gets the valid state through the adapter's `checkValidity` API. |
 | `setRequired(isRequired: boolean) => void` | Sets the required state through the adapter. |

@@ -256,11 +256,11 @@ test('#handleChange does not call foundation.notchOutline() when there is no lab
   td.verify(foundation.notchOutline(td.matchers.anything()), {times: 0});
 });
 
-test('#handleChange calls adapter.notifyChange()', () => {
+test('#handleChange calls adapter.notifyChange() if didChange is true', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getMenuItemAttr(td.matchers.anything(), strings.VALUE_ATTR)).thenReturn('value');
 
-  foundation.handleChange();
+  foundation.handleChange(/* didChange */ true);
   td.verify(mockAdapter.notifyChange(td.matchers.anything()), {times: 1});
 });
 
