@@ -37,9 +37,11 @@
     "test:dependency": "./scripts/dependency-test.sh",
     "test:feature-targeting": "node test/scss/verify-feature-targeting.js",
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh",
-    "test:unit": "karma start --single-run",
+    "test:unit": "npm run test:jasmineunit && npm run test:mochaunit",
     "test:jasmineunit": "USE_JASMINE=true karma start --single-run",
-    "test:watch": "karma start --auto-watch",
+    "test:jasminewatch": "USE_JASMINE=true karma start --auto-watch",
+    "test:mochaunit": "karma start --single-run",
+    "test:mochawatch": "karma start --auto-watch",
     "version": "cat lerna.json | grep -e '^  \"version\": ' | awk '{print $2}' | sed 's/[\",]//g'"
   },
   "devDependencies": {
