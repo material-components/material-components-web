@@ -113,7 +113,7 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   const {root, mockFoundation} = setupMockFoundationTest();
 
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
+  td.verify(mockFoundation.handleInteraction(td.matchers.anything()), {times: 1});
 
   domEvents.emit(root, 'transitionend');
   td.verify(mockFoundation.handleTransitionEnd(td.matchers.anything()), {times: 1});
@@ -122,18 +122,37 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 1});
 });
 
+test('#initialSyncWithDOM sets up interaction event handler on trailing icon if present', () => {
+  const root = getFixture();
+  const icon = addTrailingIcon(root);
+  const {mockFoundation} = setupMockFoundationTest(root);
+
+  domEvents.emit(icon, 'click');
+  td.verify(mockFoundation.handleTrailingIconInteraction(td.matchers.anything()), {times: 1});
+});
+
 test('#destroy removes event handlers', () => {
   const {root, component, mockFoundation} = setupMockFoundationTest();
   component.destroy();
 
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
+  td.verify(mockFoundation.handleInteraction(td.matchers.anything()), {times: 0});
 
   domEvents.emit(root, 'transitionend');
   td.verify(mockFoundation.handleTransitionEnd(td.matchers.anything()), {times: 0});
 
   domEvents.emit(root, 'keydown');
   td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 0});
+});
+
+test('#destroy removes interaction event handler on trailing icon if present', () => {
+  const root = getFixture();
+  const icon = addTrailingIcon(root);
+  const {component, mockFoundation} = setupMockFoundationTest(root);
+
+  component.destroy();
+  domEvents.emit(icon, 'click');
+  td.verify(mockFoundation.handleTrailingIconInteraction(td.matchers.anything()), {times: 0});
 });
 
 test('#destroy destroys ripple', () => {
