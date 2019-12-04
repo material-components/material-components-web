@@ -65,6 +65,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     @include mdc-typography(body2, $query: $query);
     @include mdc-chip-density($density-scale: 0, $query: $query);
     @include mdc-chip-leading-icon-margin($query: $query);
+    @include mdc-elevation-overlay-surface-position($query: $query);
     @include mdc-elevation-overlay-dimensions(100%, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
