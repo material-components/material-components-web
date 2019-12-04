@@ -388,7 +388,7 @@ $query: mdc-feature-all()) {
   @include mdc-typography(button, $query);
   @include mdc-button-horizontal-padding($mdc-button-horizontal-padding, $query);
   @include mdc-elevation-overlay-surface-position($query: $query);
-  @include mdc-elevation-overlay-size(100%, $query: $query);
+  @include mdc-elevation-overlay-dimensions(100%, $query: $query);
 
   @include mdc-feature-targets($feat-structure) {
     display: inline-flex;

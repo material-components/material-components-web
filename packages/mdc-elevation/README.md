@@ -94,7 +94,7 @@ Mixin | Description
 `mdc-elevation-overlay-common` | Called once per application to setup the universal elevation overlay styles
 `mdc-elevation-shadow($box-shadow)` | Sets the `box-shadow` of the closest parent selector
 `mdc-elevation-overlay-surface-position` | Sets the positioning of the overlay's surface element so that the overlay can be appropriately centered
-`mdc-elevation-overlay-size($width, $height: $width)` | Sets the width and height of the elevation overlay
+`mdc-elevation-overlay-dimensions($width, $height: $width, $has-content-sizing: true)` | Sets the dimensions of the elevation overlay
 `mdc-elevation-overlay-fill-color($color)` | Sets the color of the elevation overlay
 `mdc-elevation-overlay-opacity($opacity)` | Sets the opacity of the elevation overlay
 
