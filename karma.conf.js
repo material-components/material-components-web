@@ -87,23 +87,6 @@ const mochaConfig = {
   },
   reporters: ['progress', 'coverage-istanbul'],
 
-  coverageIstanbulReporter: {
-    'dir': 'coverage',
-    'reports': ['html', 'lcovonly', 'json'],
-    'report-config': {
-      lcovonly: {subdir: '.'},
-      json: {subdir: '.', file: 'coverage.json'},
-    },
-    // 'emitWarning' causes the tests to fail if the thresholds are not met
-    'emitWarning': false,
-    'thresholds': {
-      statements: 95,
-      branches: 95,
-      lines: 95,
-      functions: 95,
-    },
-  },
-
   client: {
     mocha: {
       reporter: 'html',
@@ -146,6 +129,23 @@ module.exports = function(config) {
     captureTimeout: 240000,
     concurrency: USING_SL ? 4 : Infinity,
     customLaunchers: customLaunchers,
+
+    coverageIstanbulReporter: {
+      'dir': 'coverage',
+      'reports': ['html', 'lcovonly', 'json'],
+      'report-config': {
+        lcovonly: {subdir: '.'},
+        json: {subdir: '.', file: 'coverage.json'},
+      },
+      // 'emitWarning' causes the tests to fail if the thresholds are not met
+      'emitWarning': false,
+      'thresholds': {
+        statements: 95,
+        branches: 95,
+        lines: 95,
+        functions: 95,
+      },
+    },
   }));
 
   if (!USE_JASMINE) {
