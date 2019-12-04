@@ -60,10 +60,6 @@
     @include mdc-feature-targets($feat-structure) {
       @include mdc-base-emit-once("mdc-elevation/common/structure") {
         position: absolute;
-        top: 50%;
-        /* @noflip */
-        left: 50%;
-        transform: translate(-50%, -50%);
         border-radius: inherit;
         opacity: 0;
         pointer-events: none;
@@ -109,18 +105,30 @@
 }
 
 ///
-/// Sets the elevation overlay size.
+/// Sets the dimensions of the elevation overlay, including positioning and sizing.
 ///
-/// @param {Number} $width - The width of the elevation overlay.
-/// @param {Number} $height [$width] - The height of the elevation overlay.
+/// @param {Number} $width - The width of the elevation overlay
+/// @param {Number} [$height] - The height of the elevation overlay
+/// @param {Boolean} [$has-content-sizing] - Set to false if the container has no content sizing
 ///
-@mixin mdc-elevation-overlay-size($width, $height: $width, $query: mdc-feature-all()) {
+@mixin mdc-elevation-overlay-dimensions($width, $height: $width, $has-content-sizing: true, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-elevation-overlay-selector_ {
     @include mdc-feature-targets($feat-structure) {
       width: $width;
       height: $height;
+
+      @if $has-content-sizing {
+        top: 0;
+        /* @noflip */
+        left: 0;
+      } @else {
+        top: 50%;
+        /* @noflip */
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
     }
   }
 }

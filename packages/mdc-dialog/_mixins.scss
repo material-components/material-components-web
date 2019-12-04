@@ -100,7 +100,7 @@
 
   .mdc-dialog__surface {
     @include mdc-elevation-overlay-surface-position($query: $query);
-    @include mdc-elevation-overlay-size(100%, $query: $query);
+    @include mdc-elevation-overlay-dimensions(100%, $query: $query);
     @include mdc-elevation(24, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
