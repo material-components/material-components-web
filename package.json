@@ -37,7 +37,7 @@
     "test:dependency": "./scripts/dependency-test.sh",
     "test:feature-targeting": "node test/scss/verify-feature-targeting.js",
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh",
-    "test:unit": "npm run test:jasmineunit && npm run test:mochaunit",
+    "test:unit": "npm run test:jasmineunit; npm run test:mochaunit",
     "test:jasmineunit": "USE_JASMINE=true karma start --single-run",
     "test:jasminewatch": "USE_JASMINE=true karma start --auto-watch",
     "test:mochaunit": "karma start --single-run",

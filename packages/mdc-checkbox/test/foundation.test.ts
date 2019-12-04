@@ -150,9 +150,10 @@ describe('MDCCheckboxFoundation', () => {
     const originalDesc =
         Object.getOwnPropertyDescriptor(Object, 'getOwnPropertyDescriptor');
     Object.defineProperty(
-        Object, 'getOwnPropertyDescriptor', Object.assign({}, originalDesc, {
+        Object, 'getOwnPropertyDescriptor', {
+          ...originalDesc,
           value: mockGetOwnPropertyDescriptor,
-        }));
+        });
     runTests();
 
     // After running tests, restore original property.
