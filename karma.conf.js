@@ -79,14 +79,6 @@ const mochaConfig = {
     'test/unit/index.js': ['webpack', 'sourcemap'],
   },
   reporters: ['progress', 'coverage-istanbul'],
-  port: 9876,
-  colors: true,
-  browsers: browsers,
-  browserDisconnectTimeout: 40000,
-  browserNoActivityTimeout: 120000,
-  captureTimeout: 240000,
-  concurrency: USING_SL ? 4 : Infinity,
-  customLaunchers: customLaunchers,
 
   coverageIstanbulReporter: {
     'dir': 'coverage',
@@ -122,39 +114,40 @@ const mochaConfig = {
   },
 };
 
+// Files to include in Jasmine tests.
+const FILES_TO_USE = [
+  'packages/*/!(node_modules)/**/!(*.d).ts',
+  'packages/*/!(*.d).ts',
+  'packages/*/test/!(*.d).ts',
+  'testing/**/*.ts',
+];
+
 const jasmineConfig = {
   basePath: '',
   frameworks: ['jasmine', 'karma-typescript'],
-  files: [
-    'packages/*/!(node_modules)/**/!(*.d).ts',
-    'packages/*/!(*.d).ts',
-    'packages/*/test/!(*.d).ts',
-    'testing/**/*.ts',
-  ],
-  preprocessors: {
-    'packages/*/!(node_modules)/**/!(*.d).ts': 'karma-typescript',
-    'packages/*/!(*.d).ts': 'karma-typescript',
-    'packages/*/test/!(*.d).ts': 'karma-typescript',
-    'testing/**/*.ts': 'karma-typescript',
-  },
+  files: FILES_TO_USE,
+  preprocessors: FILES_TO_USE.reduce((obj, file) => {
+    obj[file] = 'karma-typescript';
+    return obj;
+  }, {}),
   reporters: ['progress', 'karma-typescript'],
-  port: 9876,
-  colors: true,
-  browsers: browsers,
-  browserDisconnectTimeout: 40000,
-  browserNoActivityTimeout: 120000,
-  captureTimeout: 240000,
-  concurrency: USING_SL ? 4 : Infinity,
-  customLaunchers: customLaunchers,
   karmaTypescriptConfig: {
     tsconfig: './tsconfig.json',
   },
 };
 
 module.exports = function(config) {
-  config.set(Object.assign(USE_JASMINE ? jasmineConfig : mochaConfig), {
+  config.set(Object.assign(USE_JASMINE ? jasmineConfig : mochaConfig, {
     logLevel: config.LOG_INFO,
-  });
+    port: 9876,
+    colors: true,
+    browsers: browsers,
+    browserDisconnectTimeout: 40000,
+    browserNoActivityTimeout: 120000,
+    captureTimeout: 240000,
+    concurrency: USING_SL ? 4 : Infinity,
+    customLaunchers: customLaunchers,
+  }));
 
   if (!USE_JASMINE) {
     // Need to set webpack here rather than in `mochaConfig` to read `config.singleRun`.
