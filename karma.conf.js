@@ -30,6 +30,13 @@ const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_
 // Otherwise, runs old Mocha unit tests.
 const USE_JASMINE = Boolean(process.env.USE_JASMINE);
 
+// Files to include in Jasmine tests.
+const FILES_TO_USE = [
+  'packages/*/!(node_modules)/**/!(*.d).ts',
+  'packages/*/!(*.d).ts',
+  'testing/**/*.ts',
+];
+
 const HEADLESS_LAUNCHERS = {
   /** See https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-348248951 */
   'ChromeHeadlessNoSandbox': {
@@ -113,14 +120,6 @@ const mochaConfig = {
     stats: 'minimal',
   },
 };
-
-// Files to include in Jasmine tests.
-const FILES_TO_USE = [
-  'packages/*/!(node_modules)/**/!(*.d).ts',
-  'packages/*/!(*.d).ts',
-  'packages/*/test/!(*.d).ts',
-  'testing/**/*.ts',
-];
 
 const jasmineConfig = {
   basePath: '',

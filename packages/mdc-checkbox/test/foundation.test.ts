@@ -47,18 +47,20 @@ interface CheckboxState {
   indeterminate: boolean;
 }
 
-// Sets up tests which execute change events through the change handler which
-// the foundation registers. Returns an object containing the following
-// properties:
-// - foundation - The MDCCheckboxFoundation instance
-// - mockAdapter - The adapter given to the foundation. The adapter is
-//   pre-configured to capture the changeHandler registered as well as respond
-//   with different mock objects for native controls based on the state given
-//   to the change() function.
-// - change - A function that's passed an object containing two "checked" and
-//   "boolean" properties, representing the state of the native control after
-//   it was changed. E.g. `change({checked: true, indeterminate: false})`
-//   simulates a change event as the result of a checkbox being checked.
+/**
+ * Sets up tests which execute change events through the change handler which
+ * the foundation registers. Returns an object containing the following
+ * properties:
+ * - foundation - The MDCCheckboxFoundation instance
+ * - mockAdapter - The adapter given to the foundation. The adapter is
+ *   pre-configured to capture the changeHandler registered as well as respond
+ *   with different mock objects for native controls based on the state given
+ *   to the change() function.
+ * - change - A function that's passed an object containing two "checked" and
+ *   "boolean" properties, representing the state of the native control after
+ *   it was changed. E.g. `change({checked: true, indeterminate: false})`
+ *   simulates a change event as the result of a checkbox being checked.
+ */
 function setupChangeHandlerTest() {
   const {foundation, mockAdapter} = setupTest();
   mockAdapter.isAttachedToDOM.and.returnValue(true);
@@ -133,10 +135,12 @@ describe('MDCCheckboxFoundation', () => {
                'aria-checked', strings.ARIA_CHECKED_INDETERMINATE_VALUE);
      });
 
-  // Shims Object.getOwnPropertyDescriptor for the checkbox's WebIDL attributes.
-  // Used to test the behavior of overridding WebIDL properties in different
-  // browser environments. For example, in Safari WebIDL attributes don't
-  // return get/set in descriptors.
+  /*
+   * Shims Object.getOwnPropertyDescriptor for the checkbox's WebIDL attributes.
+   * Used to test the behavior of overridding WebIDL properties in different
+   * browser environments. For example, in Safari WebIDL attributes don't
+   * return get/set in descriptors.
+  */
   function withMockCheckboxDescriptorReturning(
       descriptor: undefined|typeof DESC_UNDEFINED, runTests: () => void) {
     const mockGetOwnPropertyDescriptor =

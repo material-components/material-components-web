@@ -22,7 +22,6 @@
  */
 
 import {MDCFoundation} from '../../packages/mdc-base/foundation';
-
 import {FoundationConstructor} from './setup';
 
 /**
