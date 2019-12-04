@@ -94,46 +94,6 @@ testFoundation('runs deactivation UX on contextmenu after pointerdown', ({founda
   td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
 });
 
-testFoundation('runs deactivation UX on mouseup after mousedown', ({foundation, adapter, clock}) => {
-  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
-  const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
-  foundation.init();
-  clock.runToFrame();
-
-  handlers.mousedown({pageX: 0, pageY: 0});
-  clock.runToFrame();
-
-  documentHandlers.mouseup();
-  clock.runToFrame();
-  clock.tick(DEACTIVATION_TIMEOUT_MS);
-
-  td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
-  td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
-
-  clock.tick(numbers.FG_DEACTIVATION_MS);
-  td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
-});
-
-testFoundation('runs deactivation UX on contextmenu after mousedown', ({foundation, adapter, clock}) => {
-  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
-  const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
-  foundation.init();
-  clock.runToFrame();
-
-  handlers.mousedown({pageX: 0, pageY: 0});
-  clock.runToFrame();
-
-  documentHandlers.contextmenu();
-  clock.runToFrame();
-  clock.tick(DEACTIVATION_TIMEOUT_MS);
-
-  td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
-  td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
-
-  clock.tick(numbers.FG_DEACTIVATION_MS);
-  td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
-});
-
 testFoundation('runs deactivation on keyup after keydown when keydown makes surface active',
   ({foundation, adapter, clock}) => {
     const handlers = captureHandlers(adapter, 'registerInteractionHandler');
@@ -202,11 +162,11 @@ testFoundation('runs deactivation UX when activation UX timer finishes first (ac
     foundation.init();
     clock.runToFrame();
 
-    handlers.mousedown({pageX: 0, pageY: 0});
+    handlers.pointerdown({pageX: 0, pageY: 0});
     clock.runToFrame();
 
     clock.tick(DEACTIVATION_TIMEOUT_MS);
-    documentHandlers.mouseup();
+    documentHandlers.pointerup();
     clock.runToFrame();
 
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
@@ -223,17 +183,17 @@ testFoundation('clears any pending deactivation UX timers when re-triggered', ({
   clock.runToFrame();
 
   // Trigger the first interaction
-  handlers.mousedown({pageX: 0, pageY: 0});
+  handlers.pointerdown({pageX: 0, pageY: 0});
   clock.runToFrame();
-  documentHandlers.mouseup();
+  documentHandlers.pointerup();
   clock.runToFrame();
   // Simulate certain amount of delay between first and second interaction
   clock.tick(20);
 
   // Trigger the second interaction
-  handlers.mousedown({pageX: 0, pageY: 0});
+  handlers.pointerdown({pageX: 0, pageY: 0});
   clock.runToFrame();
-  documentHandlers.mouseup();
+  documentHandlers.pointerup();
   clock.runToFrame();
 
   clock.tick(DEACTIVATION_TIMEOUT_MS);
@@ -254,9 +214,9 @@ testFoundation('clears any pending foreground deactivation class removal timers 
     clock.runToFrame();
 
     // Trigger the first interaction
-    handlers.mousedown({pageX: 0, pageY: 0});
+    handlers.pointerdown({pageX: 0, pageY: 0});
     clock.runToFrame();
-    documentHandlers.mouseup();
+    documentHandlers.pointerup();
     clock.runToFrame();
 
     // Tick the clock such that the deactivation UX gets run, but _not_ so the foreground deactivation removal
@@ -268,7 +228,7 @@ testFoundation('clears any pending foreground deactivation class removal timers 
     td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION), {times: 1});
 
     // Trigger another activation
-    handlers.mousedown({pageX: 0, pageY: 0});
+    handlers.pointerdown({pageX: 0, pageY: 0});
     clock.runToFrame();
 
     // Tick the clock past the time when the initial foreground deactivation timer would have ran.
@@ -287,10 +247,10 @@ testFoundation('waits until activation UX timer runs before removing active fill
     foundation.init();
     clock.runToFrame();
 
-    handlers.mousedown({pageX: 0, pageY: 0});
+    handlers.pointerdown({pageX: 0, pageY: 0});
     clock.runToFrame();
 
-    documentHandlers.mouseup();
+    documentHandlers.pointerup();
     // Test conditions slightly before the timeout lapses (subtracting ~2 frames due to runToFrame above)
     clock.tick(DEACTIVATION_TIMEOUT_MS - 32);
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 1});
@@ -308,7 +268,7 @@ testFoundation('waits until actual deactivation UX is needed if animation finish
     foundation.init();
     clock.runToFrame();
 
-    handlers.mousedown({pageX: 0, pageY: 0});
+    handlers.pointerdown({pageX: 0, pageY: 0});
     clock.runToFrame();
     clock.tick(DEACTIVATION_TIMEOUT_MS);
 
@@ -340,22 +300,22 @@ testFoundation('only re-activates when there are no additional pointer events to
     td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
 
     // Also at this point, all of the document event handlers should have been deregistered so no more will be called.
-    ['mouseup', 'pointerup', 'touchend'].forEach((type) => {
+    ['pointerup', 'touchend'].forEach((type) => {
       td.verify(adapter.deregisterDocumentInteractionHandler(type, td.matchers.isA(Function)), {times: 1});
     });
 
-    handlers.mousedown({pageX: 0, pageY: 0});
+    handlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
     clock.runToFrame();
 
     // Verify that activation only happened once, at pointerdown
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
 
-    documentHandlers.mouseup();
+    documentHandlers.touchend();
     clock.runToFrame();
     clock.tick(numbers.TAP_DELAY_MS);
 
-    // Finally, verify that since mouseup happened, we can re-activate the ripple.
-    handlers.mousedown({pageX: 0, pageY: 0});
+    // Finally, verify that since touchend happened, we can re-activate the ripple.
+    handlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
     clock.runToFrame();
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 2});
   });

@@ -46,17 +46,17 @@ interface Coordinates {
   top: number;
 }
 
-type ActivationEventType = 'touchstart' | 'pointerdown' | 'mousedown' | 'keydown';
-type DeactivationEventType = 'touchend' | 'pointerup' | 'mouseup' | 'contextmenu';
+type ActivationEventType = 'touchstart' | 'pointerdown' | 'keydown';
+type DeactivationEventType = 'touchend' | 'pointerup' | 'contextmenu';
 
 // Activation events registered on the root element of each instance for activation
 const ACTIVATION_EVENT_TYPES: ActivationEventType[] = [
-  'touchstart', 'pointerdown', 'mousedown', 'keydown',
+  'touchstart', 'pointerdown', 'keydown',
 ];
 
 // Deactivation events registered on documentElement when a pointer-related down event occurs
 const POINTER_DEACTIVATION_EVENT_TYPES: DeactivationEventType[] = [
-  'touchend', 'pointerup', 'mouseup', 'contextmenu',
+  'touchend', 'pointerup', 'contextmenu',
 ];
 
 // simultaneous nested activations
@@ -314,7 +314,7 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     activationState.isProgrammatic = evt === undefined;
     activationState.activationEvent = evt;
     activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : evt !== undefined && (
-        evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown'
+        evt.type === 'touchstart' || evt.type === 'pointerdown'
     );
 
     const hasActivatedChild = evt !== undefined && activatedTargets.length > 0 && activatedTargets.some(
