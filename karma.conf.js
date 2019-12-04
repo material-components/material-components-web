@@ -87,6 +87,23 @@ const mochaConfig = {
   },
   reporters: ['progress', 'coverage-istanbul'],
 
+  coverageIstanbulReporter: {
+    'dir': 'coverage',
+    'reports': ['html', 'lcovonly', 'json'],
+    'report-config': {
+      lcovonly: {subdir: '.'},
+      json: {subdir: '.', file: 'coverage.json'},
+    },
+    // Set 'emitWarning = true' to NOT fail tests if the thresholds are not met
+    'emitWarning': false,
+    'thresholds': {
+      statements: 95,
+      branches: 95,
+      lines: 95,
+      functions: 95,
+    },
+  },
+
   client: {
     mocha: {
       reporter: 'html',
@@ -106,16 +123,40 @@ const mochaConfig = {
 
 const jasmineConfig = {
   basePath: '',
-  frameworks: ['jasmine', 'karma-typescript'],
   files: FILES_TO_USE,
+  frameworks: ['jasmine', 'karma-typescript'],
+  karmaTypescriptConfig: {
+    coverageOptions: {
+      threshold: {
+        global: {
+          // TODO: Raise threshold to at least 90% after more tests have been migrated.
+          statements: 80,
+          branches: 80,
+          functions: 50,
+          lines: 80,
+          excludes: [
+            'testing/**/*.ts',
+            'packages/!(mdc-checkbox)/**/*',
+            'packages/**/component.ts', // Jasmine tests cover foundation/adapter only.
+          ],
+        },
+      },
+    },
+    reports: {
+      html: 'coverage',
+      lcovonly: 'coverage',
+      json: {
+        directory: 'coverage',
+        filename: 'coverage.json',
+      },
+    },
+    tsconfig: './tsconfig.json',
+  },
   preprocessors: FILES_TO_USE.reduce((obj, file) => {
     obj[file] = 'karma-typescript';
     return obj;
   }, {}),
   reporters: ['progress', 'karma-typescript'],
-  karmaTypescriptConfig: {
-    tsconfig: './tsconfig.json',
-  },
 };
 
 module.exports = function(config) {
@@ -129,23 +170,6 @@ module.exports = function(config) {
     captureTimeout: 240000,
     concurrency: USING_SL ? 4 : Infinity,
     customLaunchers: customLaunchers,
-
-    coverageIstanbulReporter: {
-      'dir': 'coverage',
-      'reports': ['html', 'lcovonly', 'json'],
-      'report-config': {
-        lcovonly: {subdir: '.'},
-        json: {subdir: '.', file: 'coverage.json'},
-      },
-      // 'emitWarning' causes the tests to fail if the thresholds are not met
-      'emitWarning': false,
-      'thresholds': {
-        statements: 95,
-        branches: 95,
-        lines: 95,
-        functions: 95,
-      },
-    },
   }));
 
   if (!USE_JASMINE) {
