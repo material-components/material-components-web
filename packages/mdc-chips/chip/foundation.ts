@@ -141,13 +141,11 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   /**
    * Handles an interaction event on the root element.
    */
-  handleClick(evt: MouseEvent) {
-    const trailingIconIsSource = this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRAILING_ICON);
-    if (trailingIconIsSource) {
-      return this.notifyTrailingIconInteractionAndRemove_(evt);
+  handleInteraction(evt: MouseEvent | KeyboardEvent) {
+    if (this.shouldHandleInteraction_(evt)) {
+      this.adapter_.notifyInteraction();
+      this.focusPrimaryAction_();
     }
-
-    this.notifyInteractionAndFocus_();
   }
 
   /**
@@ -205,24 +203,27 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   /**
+   * Handles an interaction event on the trailing icon element. This is used to
+   * prevent the ripple from activating on interaction with the trailing icon.
+   */
+  handleTrailingIconInteraction(evt: MouseEvent | KeyboardEvent) {
+    if (this.shouldHandleInteraction_(evt)) {
+      this.adapter_.notifyTrailingIconInteraction();
+      this.removeChip_(evt);
+    }
+  }
+
+  /**
    * Handles a keydown event from the root element.
    */
   handleKeydown(evt: KeyboardEvent) {
-    const trailingIconIsSource = this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRAILING_ICON);
-    if (trailingIconIsSource && this.shouldProcessKeydownAsClick_(evt)) {
-      return this.notifyTrailingIconInteractionAndRemove_(evt);
-    }
-
-    if (this.shouldProcessKeydownAsClick_(evt)) {
-      return this.notifyInteractionAndFocus_();
-    }
-
     if (this.shouldRemoveChip_(evt)) {
       return this.removeChip_(evt);
     }
 
+    const key = evt.key;
     // Early exit if the key is not usable
-    if (!navigationKeys.has(evt.key)) {
+    if (!navigationKeys.has(key)) {
       return;
     }
 
@@ -307,20 +308,20 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
   }
 
-  private removeChip_(evt: Event) {
+  private removeChip_(evt: MouseEvent|KeyboardEvent) {
     evt.stopPropagation();
     if (this.shouldRemoveOnTrailingIconClick_) {
       this.beginExit();
     }
   }
 
-  private notifyTrailingIconInteractionAndRemove_(evt: Event) {
-    this.adapter_.notifyTrailingIconInteraction();
-    this.removeChip_(evt);
-  }
+  private shouldHandleInteraction_(evt: MouseEvent|KeyboardEvent): boolean {
+    if (evt.type === 'click') {
+      return true;
+    }
 
-  private shouldProcessKeydownAsClick_(evt: KeyboardEvent): boolean {
-    return evt.key === strings.ENTER_KEY || evt.key === strings.SPACEBAR_KEY;
+    const keyEvt = evt as KeyboardEvent;
+    return keyEvt.key === strings.ENTER_KEY || keyEvt.key === strings.SPACEBAR_KEY;
   }
 
   private shouldRemoveChip_(evt: KeyboardEvent): boolean {
@@ -344,11 +345,6 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   private notifyIgnoredSelection_(selected: boolean) {
     this.adapter_.notifySelection(selected, true);
-  }
-
-  private notifyInteractionAndFocus_() {
-    this.adapter_.notifyInteraction();
-    this.focusPrimaryAction_();
   }
 }
 
