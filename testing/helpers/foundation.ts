@@ -51,8 +51,11 @@ export function verifyDefaultAdapter<F extends MDCFoundation>(
       .toEqual(actualArray, getUnequalArrayMessage(actualArray, expectedArray));
 
   // Test default methods.
-  actualMethodNames.forEach(
-      (method) => expect(() => defaultAdapter[method]).not.toThrow());
+  actualMethodNames.forEach((method) => {
+    expect(() => {
+      defaultAdapter[method]();
+    }).not.toThrow();
+  });
 }
 
 function getUnequalArrayMessage(
@@ -91,7 +94,9 @@ function getUnequalArrayMessage(
 
   const toSet = (array: string[]): Set<string> => {
     const set: Set<string> = new Set();
-    array.forEach((value) => set.add(value));
+    array.forEach((value) => {
+      set.add(value);
+    });
     return set;
   };
 

@@ -82,12 +82,11 @@ function setupChangeHandlerTest() {
 function testChangeHandler(
     desc: string, changes: CheckboxState|CheckboxState[],
     expectedClass: string) {
-  changes = (Array.isArray(changes) ? changes : [changes]) as CheckboxState[];
+  changes = Array.isArray(changes) ? changes : [changes]
   it(`changeHandler: ${desc}`, () => {
     const {mockAdapter, change} = setupChangeHandlerTest();
 
     (changes as any).forEach(change);
-    // td.verify(mockAdapter.addClass(expectedClass), verificationOpts);
     expect(mockAdapter.addClass).toHaveBeenCalledWith(expectedClass);
   });
 }
