@@ -52,7 +52,7 @@
     @include mdc-card-shape-radius(medium, $query: $query);
     @include mdc-card-fill-color(surface, $query);
     @include mdc-elevation-overlay-surface-position($query: $query);
-    @include mdc-elevation-overlay-size(100%, $query: $query);
+    @include mdc-elevation-overlay-dimensions(100%, $query: $query);
     @include mdc-elevation(1, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
