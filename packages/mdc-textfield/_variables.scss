@@ -67,7 +67,7 @@ $mdc-textarea-disabled-border-color: rgba(mdc-theme-prop-value(on-surface), .26)
 // will make text unreadable
 $mdc-textarea-disabled-background: rgba(249, 249, 249, 1) !default;
 
-$mdc-text-field-outlined-stroke-width: 2px !default;
+$mdc-text-field-outlined-stroke-width: 1 * 2px !default;
 $mdc-text-field-height: 56px !default;
 $mdc-text-field-minimum-height: 40px !default;
 $mdc-text-field-maximum-height: $mdc-text-field-height !default;
