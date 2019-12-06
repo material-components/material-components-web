@@ -38,7 +38,7 @@
   // postcss-bem-linter: define icon-button
   .mdc-icon-button {
     @include mdc-icon-button-base_($query: $query);
-    @include mdc-icon-button-density(0, $query: $query);
+    @include mdc-icon-button-density(0 * 0, $query: $query);
   }
 
   .mdc-icon-button__icon {
