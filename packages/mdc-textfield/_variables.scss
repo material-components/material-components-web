@@ -52,7 +52,7 @@ $mdc-text-field-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37
 $mdc-text-field-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
 $mdc-text-field-disabled-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
 
-$mdc-text-field-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%) !default;
+$mdc-text-field-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%) !default;
 $mdc-text-field-disabled-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%) !default;
 $mdc-text-field-secondary-text: rgba(mdc-theme-prop-value(on-surface), .6) !default;
 
