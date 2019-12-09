@@ -48,12 +48,14 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
       isIndeterminate: () => false,
       removeClass: () => undefined,
       removeNativeControlAttr: () => undefined,
+      setChecked: () => undefined,
       setNativeControlAttr: () => undefined,
       setNativeControlDisabled: () => undefined,
     };
   }
 
   private currentCheckState_ = strings.TRANSITION_STATE_INIT;
+  private previousIsChecked_ = false;
   private currentAnimationClass_ = '';
   private animEndLatchTimer_ = 0;
   private enableAnimationEndHandler_ = false;
@@ -64,6 +66,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
 
   init() {
     this.currentCheckState_ = this.determineCheckState_();
+    this.previousIsChecked_ = this.adapter_.isChecked();
     this.updateAriaChecked_();
     this.adapter_.addClass(cssClasses.UPGRADED);
   }
@@ -95,6 +98,18 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
       this.adapter_.removeClass(this.currentAnimationClass_);
       this.enableAnimationEndHandler_ = false;
     }, numbers.ANIM_END_LATCH_MS);
+  }
+
+  /**
+   * Handles the click event for the checkbox
+   * added for IE browser to fix compatibility issue b/144588184
+   */
+  handleClick() {
+    const {TRANSITION_STATE_INDETERMINATE} = strings;
+    if (this.currentCheckState_ === TRANSITION_STATE_INDETERMINATE) {
+      this.adapter_.setChecked(!this.previousIsChecked_);
+      this.handleChange();
+    }
   }
 
   /**
