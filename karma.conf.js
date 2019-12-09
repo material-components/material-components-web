@@ -142,6 +142,9 @@ const jasmineConfig = {
         },
       },
     },
+    exclude: [
+      'scripts/**/*.ts',
+    ],
     reports: {
       html: 'coverage',
       lcovonly: 'coverage',
@@ -150,7 +153,7 @@ const jasmineConfig = {
         filename: 'coverage.json',
       },
     },
-    tsconfig: './tsconfig.json',
+    tsconfig: './tsconfig-base.json',
   },
   preprocessors: FILES_TO_USE.reduce((obj, file) => {
     obj[file] = 'karma-typescript';
