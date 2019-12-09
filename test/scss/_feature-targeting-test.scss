@@ -154,8 +154,8 @@
     @include mdc-elevation-overlay-common($query: $query);
     @include mdc-elevation(0, $query: $query);
     @include mdc-elevation-shadow(none, $query: $query);
-    @include mdc-elevation-overlay-parent($query: $query);
     @include mdc-elevation-overlay-dimensions(100%, $query: $query);
+    @include mdc-elevation-overlay-surface-position($query: $query);
     @include mdc-elevation-overlay-fill-color(red, $query: $query);
     @include mdc-elevation-overlay-opacity(99%, $query: $query);
 
