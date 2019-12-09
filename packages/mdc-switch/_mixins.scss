@@ -309,8 +309,7 @@
 @mixin mdc-switch__native-control_ {
   position: absolute;
   top: 50%;
-  right: 50%;
-  bottom: 50%;
+  /* @noflip */
   left: 50%;
   margin: 0;
   transform: translate(-50%, -50%);
