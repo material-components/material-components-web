@@ -182,7 +182,7 @@ Method Signature | Description
 `isIndeterminate() => boolean` | Returns true if the component is in the indeterminate state.
 `isChecked() => boolean` | Returns true if the component is checked.
 `hasNativeControl() => boolean` | Returns true if the input is present in the component.
-`setCheck(checkStatus: boolean) => void` | Sets the check status of the component.
+`setChecked(checkStatus: boolean) => void` | Sets the check status of the component.
 `setNativeControlDisabled(disabled: boolean) => void` | Sets the input to disabled.
 `setNativeControlAttr(attr: string, value: string) => void` | Sets an HTML attribute to the given value on the native input element.
 `removeNativeControlAttr(attr: string) => void` | Removes an attribute from the native input element.
