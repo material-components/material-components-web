@@ -150,7 +150,7 @@ and the [optional modifier classes](#css-classes).
 
 #### Actions
 
-This area is used for showing different actions the user can take, typically at the bottom of a card.
+This area is used to show different actions the user can take, typically at the bottom of a card.
 It's often used with [buttons](../mdc-button):
 
 ```html
