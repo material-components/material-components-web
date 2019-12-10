@@ -57,22 +57,25 @@
   position: relative; // Menu is absolutely positioned relative to this.
 
   &__dropdown-icon {
-    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-dropdown-opacity);
+    @include mdc-select-dd-arrow-bg_($mdc-select-dropdown-color, $mdc-select-dropdown-opacity);
     @include mdc-rtl-reflexive(left, auto, right, 8px);
 
     position: absolute;
-    bottom: 16px;
-    width: 24px;
-    height: 24px;
+    bottom: 26px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid;
     transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
     pointer-events: none;
 
     .mdc-select--focused & {
-      @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
+      @include mdc-select-dd-arrow-bg_(primary);
     }
 
     .mdc-select--activated & {
-      transform: rotate(180deg) translateY(-5px);
+      transform: rotate(180deg);
       transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
     }
   }
@@ -127,7 +130,7 @@
   }
 
   .mdc-select__dropdown-icon {
-    @include mdc-select-dd-arrow-svg-bg_($mdc-select-error-color, 1);
+    @include mdc-select-dd-arrow-bg_($mdc-select-error-color);
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern

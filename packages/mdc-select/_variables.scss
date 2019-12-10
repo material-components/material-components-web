@@ -32,7 +32,7 @@ $mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
 $mdc-select-dropdown-color: mdc-theme-prop-value(on-surface) !default;
 $mdc-select-icon-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
 $mdc-select-label-color: rgba(mdc-theme-prop-value(on-surface), .6) !default;
-$mdc-select-focused-label-color: rgba(mdc-theme-prop-value(primary), .87) !default;
+$mdc-select-focused-label-color: primary !default;
 $mdc-select-bottom-line-idle-color: rgba(mdc-theme-prop-value(on-surface), .42) !default;
 $mdc-select-bottom-line-hover-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
 $mdc-select-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6) !default;
