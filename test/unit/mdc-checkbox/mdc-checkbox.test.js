@@ -143,11 +143,11 @@ test('get ripple returns a MDCRipple instance', () => {
   assert.isOk(component.ripple instanceof MDCRipple);
 });
 
-test('checkbox change event calls #foundation.handleChange', () => {
+test('checkbox click event calls #foundation.handleClick', () => {
   const {cb, component} = setupTest();
-  component.foundation_.handleChange = td.func();
-  domEvents.emit(cb, 'change');
-  td.verify(component.foundation_.handleChange(), {times: 1});
+  component.foundation_.handleClick = td.func();
+  domEvents.emit(cb, 'click');
+  td.verify(component.foundation_.handleClick(), {times: 1});
 });
 
 test('root animationend event calls #foundation.handleAnimationEnd', () => {
@@ -169,12 +169,12 @@ test('"indeterminate" property change hook calls foundation#handleChange', () =>
   td.verify(mockFoundation.handleChange(), {times: 1});
 });
 
-test('checkbox change event handler is destroyed on #destroy', () => {
+test('checkbox click event handler is destroyed on #destroy', () => {
   const {cb, component} = setupTest();
-  component.foundation_.handleChange = td.func();
+  component.foundation_.handleClick = td.func();
   component.destroy();
-  domEvents.emit(cb, 'change');
-  td.verify(component.foundation_.handleChange(), {times: 0});
+  domEvents.emit(cb, 'click');
+  td.verify(component.foundation_.handleClick(), {times: 0});
 });
 
 test('root animationend event handler is destroyed on #destroy', () => {
