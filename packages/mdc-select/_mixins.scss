@@ -191,6 +191,7 @@
 
 @mixin mdc-select-dd-arrow-bg_($color, $opacity: 1) {
   @include mdc-theme-prop(border-top-color, $color);
+
   opacity: $opacity;
 }
 

@@ -64,10 +64,10 @@
     bottom: 26px;
     width: 0;
     height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid;
     transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
+    border-top: 6px solid;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
     pointer-events: none;
 
     .mdc-select--focused & {
