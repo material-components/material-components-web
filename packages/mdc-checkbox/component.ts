@@ -117,7 +117,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
       isIndeterminate: () => this.indeterminate,
       removeClass: (className) => this.root_.classList.remove(className),
       removeNativeControlAttr: (attr) => this.nativeControl_.removeAttribute(attr),
-      setChecked: (checkStatus) => this.nativeControl_.checked = checkStatus,
+      setChecked: (checkStatus) => this.checked = checkStatus,
       setNativeControlAttr: (attr, value) => this.nativeControl_.setAttribute(attr, value),
       setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
     };

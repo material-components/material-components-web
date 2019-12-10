@@ -280,6 +280,18 @@ test('#adapter.hasNativeControl returns true when checkbox exists', () => {
   assert.isTrue(component.getDefaultFoundation().adapter_.hasNativeControl());
 });
 
+test('#adapter.setChecked returns true when checkbox is set checked', () => {
+  const {cb, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setChecked(true);
+  assert.isTrue(cb.checked);
+});
+
+test('#adapter.setChecked returns false when checkbox is set not checked', () => {
+  const {cb, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setChecked(false);
+  assert.isFalse(cb.checked);
+});
+
 test('#adapter.setNativeControlDisabled returns true when checkbox is disabled', () => {
   const {cb, component} = setupTest();
   component.getDefaultFoundation().adapter_.setNativeControlDisabled(true);

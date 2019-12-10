@@ -113,7 +113,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 
   /**
-   * Handles the change event for the checkbox
+   * Handles the actions after check status changes
    */
   handleChange() {
     this.transitionCheckState_();
