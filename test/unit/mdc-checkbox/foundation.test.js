@@ -88,7 +88,7 @@ function setupClickHandlerTest() {
   return {foundation, mockAdapter, change};
 }
 
-function testChangeHandler(desc, changes, expectedClass, verificationOpts) {
+function testClickHandler(desc, changes, expectedClass, verificationOpts) {
   changes = Array.isArray(changes) ? changes : [changes];
   test(`clickHandler: ${desc}`, () => {
     const {mockAdapter, change} = setupClickHandlerTest();
@@ -114,8 +114,8 @@ test('exports numbers', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
     'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr',
-    'forceLayout', 'isAttachedToDOM', 'isIndeterminate', 'isChecked', 'setChecked',
-    'hasNativeControl', 'setNativeControlDisabled',
+    'forceLayout', 'isAttachedToDOM', 'isIndeterminate', 'isChecked',
+    'hasNativeControl', 'setNativeControlDisabled', 'setChecked',
   ]);
 });
 
@@ -177,17 +177,17 @@ test('#setDisabled removes mdc-checkbox--disabled class from the root element wh
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
 });
 
-testChangeHandler('unchecked -> checked animation class', {
+testClickHandler('unchecked -> checked animation class', {
   checked: true,
   indeterminate: false,
 }, cssClasses.ANIM_UNCHECKED_CHECKED);
 
-testChangeHandler('unchecked -> indeterminate animation class', {
+testClickHandler('unchecked -> indeterminate animation class', {
   checked: false,
   indeterminate: true,
 }, cssClasses.ANIM_UNCHECKED_INDETERMINATE);
 
-testChangeHandler('checked -> unchecked animation class', [
+testClickHandler('checked -> unchecked animation class', [
   {
     checked: true,
     indeterminate: false,
@@ -198,7 +198,7 @@ testChangeHandler('checked -> unchecked animation class', [
   },
 ], cssClasses.ANIM_CHECKED_UNCHECKED);
 
-testChangeHandler('checked -> indeterminate animation class', [
+testClickHandler('checked -> indeterminate animation class', [
   {
     checked: true,
     indeterminate: false,
@@ -209,7 +209,7 @@ testChangeHandler('checked -> indeterminate animation class', [
   },
 ], cssClasses.ANIM_CHECKED_INDETERMINATE);
 
-testChangeHandler('indeterminate -> checked animation class', [
+testClickHandler('indeterminate -> checked animation class', [
   {
     checked: false,
     indeterminate: true,
@@ -220,7 +220,7 @@ testChangeHandler('indeterminate -> checked animation class', [
   },
 ], cssClasses.ANIM_INDETERMINATE_CHECKED);
 
-testChangeHandler('indeterminate -> unchecked animation class', [
+testClickHandler('indeterminate -> unchecked animation class', [
   {
     checked: true,
     indeterminate: true,
@@ -231,7 +231,7 @@ testChangeHandler('indeterminate -> unchecked animation class', [
   },
 ], cssClasses.ANIM_INDETERMINATE_UNCHECKED);
 
-testChangeHandler('no transition classes applied when no state change', [
+testClickHandler('no transition classes applied when no state change', [
   {
     checked: true,
     indeterminate: false,
@@ -327,7 +327,7 @@ test('animation end is debounced if event is called twice', () => {
   td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED), {times: 1});
 });
 
-test('change handler triggers layout for changes within the same frame to correctly restart anims', () => {
+test('click handler triggers layout for changes within the same frame to correctly restart anims', () => {
   const {mockAdapter, change} = setupClickHandlerTest();
 
   change({checked: true, indeterminate: false});
@@ -337,7 +337,7 @@ test('change handler triggers layout for changes within the same frame to correc
   td.verify(mockAdapter.forceLayout());
 });
 
-test('change handler updates aria-checked attribute correctly.', () => {
+test('click handler updates aria-checked attribute correctly.', () => {
   const {mockAdapter, change} = setupClickHandlerTest();
 
   change({checked: true, indeterminate: true});
@@ -347,7 +347,7 @@ test('change handler updates aria-checked attribute correctly.', () => {
   td.verify(mockAdapter.removeNativeControlAttr('aria-checked'));
 });
 
-test('change handler does not add animation classes when isAttachedToDOM() is falsy', () => {
+test('click handler does not add animation classes when isAttachedToDOM() is falsy', () => {
   const {mockAdapter, change} = setupClickHandlerTest();
   const animClassArg = td.matchers.argThat((cls) => cls.indexOf('mdc-checkbox--anim') >= 0);
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(false);
@@ -356,7 +356,7 @@ test('change handler does not add animation classes when isAttachedToDOM() is fa
   td.verify(mockAdapter.addClass(animClassArg), {times: 0});
 });
 
-test('change handler does not add animation classes for bogus changes (init -> unchecked)', () => {
+test('click handler does not add animation classes for bogus changes (init -> unchecked)', () => {
   const {mockAdapter, change} = setupClickHandlerTest();
   const animClassArg = td.matchers.argThat((cls) => cls.indexOf('mdc-checkbox--anim') >= 0);
 

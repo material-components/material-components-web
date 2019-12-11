@@ -108,8 +108,8 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     const {TRANSITION_STATE_INDETERMINATE} = strings;
     if (this.currentCheckState_ === TRANSITION_STATE_INDETERMINATE) {
       this.adapter_.setChecked(!this.previousIsChecked_);
-      this.handleChange();
     }
+    this.handleChange();
   }
 
   /**
