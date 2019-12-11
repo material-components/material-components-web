@@ -96,5 +96,5 @@ if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   # - package (non-unit test) JS/Sass files
   # - screenshot test files
   # - image files
-  check_for_testable_files '^packages/(?!.+/test/).+\.(js|ts|css|scss)$' '^test/screenshot/' '\.(png|jpg|jpeg|gif|svg)$'
+  check_for_testable_files '^packages/.+\.(js|ts|css|scss)$' '^test/screenshot/' '\.(png|jpg|jpeg|gif|svg)$'
 fi
