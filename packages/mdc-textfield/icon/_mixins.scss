@@ -20,17 +20,28 @@
 // THE SOFTWARE.
 //
 
+@import "@material/rtl/mixins";
+@import "./variables";
+
 // Public mixins
 
 ///
-/// Customizes the color for the leading/trailing icons in an enabled text-field.
+/// Customizes the color for the leading icon in an enabled text-field.
 /// @param {Color} $color - The desired icon color.
-/// @param {Boolean} $styleSecondIcon [false] - whether to apply the color to only
-///     the trailing icon when used with a leading icon
 ///
-@mixin mdc-text-field-icon-color($color, $styleSecondIcon: false) {
+@mixin mdc-text-field-leading-icon-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-icon-color_($color, $styleSecondIcon);
+    @include mdc-text-field-leading-icon-color_($color);
+  }
+}
+
+///
+/// Customizes the color for the trailing icon in an enabled text-field.
+/// @param {Color} $color - The desired icon color.
+///
+@mixin mdc-text-field-trailing-icon-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-trailing-icon-color_($color);
   }
 }
 
@@ -40,58 +51,41 @@
 ///
 @mixin mdc-text-field-disabled-icon-color($color) {
   &.mdc-text-field--disabled {
-    @include mdc-text-field-icon-color_($color);
+    @include mdc-text-field-leading-icon-color_($color);
+    @include mdc-text-field-trailing-icon-color_($color);
   }
 }
 
 // Private mixins
 
-@mixin mdc-text-field-icon-horizontal-position_($position-property, $position, $padding, $input-padding) {
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive-position($position-property, $position);
-  }
+@mixin mdc-text-field-leading-icon_ {
+  @include mdc-text-field-icon_;
+  @include mdc-rtl-reflexive-box(margin, right, $mdc-text-field-leading-icon-margin);
+}
 
-  // Move the input's position, to allow room for the icon
-  @if ($position-property == left) {
-    .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $padding, $input-padding);
-    }
-  } @else {
-    .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $input-padding, $padding);
-    }
+@mixin mdc-text-field-trailing-icon_ {
+  @include mdc-text-field-icon_;
+  @include mdc-rtl-reflexive-box(margin, left, $mdc-text-field-trailing-icon-margin);
+}
+
+@mixin mdc-text-field-icon_ {
+  cursor: pointer;
+
+  &:not([tabindex]),
+  &[tabindex="-1"] {
+    cursor: default;
+    pointer-events: none;
   }
 }
 
-@mixin mdc-text-field-icon-horizontal-position-two-icons_(
-  $position-left,
-  $padding-left,
-  $position-right,
-  $padding-right
-) {
-  .mdc-text-field__icon {
-    @include mdc-rtl-reflexive(left, $position-left, right, auto);
-
-    ~ .mdc-text-field__icon {
-      @include mdc-rtl-reflexive(right, $position-right, left, auto);
-    }
-  }
-
-  // Move the input's position, to allow room for the icons.
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $padding-left, $padding-right);
+@mixin mdc-text-field-leading-icon-color_($color) {
+  .mdc-text-field__leading-icon {
+    @include mdc-theme-prop(color, $color);
   }
 }
 
-@mixin mdc-text-field-icon-color_($color, $styleSecondIcon: false) {
-  .mdc-text-field__icon {
-    @if ($styleSecondIcon) {
-      // Select the second instance of this class regardless of element type.
-      ~ .mdc-text-field__icon {
-        @include mdc-theme-prop(color, $color);
-      }
-    } @else {
-      @include mdc-theme-prop(color, $color);
-    }
+@mixin mdc-text-field-trailing-icon-color_($color) {
+  .mdc-text-field__trailing-icon {
+    @include mdc-theme-prop(color, $color);
   }
 }

@@ -23,5 +23,50 @@
 // Public
 
 @mixin mdc-line-ripple-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+  &::after {
+    @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-line-ripple-inactive-color($color) {
+  &::before {
+    @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+// Private
+
+@mixin mdc-line-ripple-resting_ {
+  @include mdc-line-ripple-line_;
+
+  border-bottom-width: 1px;
+  z-index: 1;
+}
+
+@mixin mdc-line-ripple_ {
+  @include mdc-line-ripple-line_;
+
+  transform: scaleX(0);
+  transition: mdc-line-ripple-transition-value(transform), mdc-line-ripple-transition-value(opacity);
+  border-bottom-width: 2px;
+  opacity: 0;
+  z-index: 2;
+}
+
+@mixin mdc-line-ripple-active_ {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+@mixin mdc-line-ripple-deactivating_ {
+  opacity: 0;
+}
+
+@mixin mdc-line-ripple-line_ {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-bottom-style: solid;
+  content: "";
 }

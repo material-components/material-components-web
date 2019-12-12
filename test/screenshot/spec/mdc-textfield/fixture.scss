@@ -128,3 +128,19 @@ $custom-disabled-ink-color: rgba(purple, .6);
 .custom-disabled-colors-text-field-full-width--bottom-line-color {
   @include mdc-text-field-disabled-bottom-line-color($custom-disabled-ink-color);
 }
+
+.custom-text-field--prefix-color {
+  @include mdc-text-field-prefix-color($custom-disabled-ink-color);
+}
+
+.custom-disabled-colors-text-field--prefix-color {
+  @include mdc-text-field-disabled-prefix-color($custom-disabled-ink-color);
+}
+
+.custom-text-field--suffix-color {
+  @include mdc-text-field-suffix-color($custom-disabled-ink-color);
+}
+
+.custom-disabled-colors-text-field--suffix-color {
+  @include mdc-text-field-disabled-suffix-color($custom-disabled-ink-color);
+}

@@ -53,8 +53,8 @@
 }
 
 @mixin mdc-select-hover-bottom-line-color($color) {
-  &:not(.mdc-select--disabled) .mdc-select__selected-text:hover {
-    @include mdc-select-native-control-bottom-line-color_($color);
+  &:not(.mdc-select--disabled):hover {
+    @include mdc-select-bottom-line-color_($color);
   }
 }
 
@@ -174,13 +174,9 @@
 }
 
 @mixin mdc-select-bottom-line-color_($color) {
-  .mdc-select__selected-text {
-    @include mdc-select-native-control-bottom-line-color_($color);
+  .mdc-line-ripple {
+    @include mdc-line-ripple-inactive-color($color);
   }
-}
-
-@mixin mdc-select-native-control-bottom-line-color_($color) {
-  @include mdc-theme-prop(border-bottom-color, $color);
 }
 
 @mixin mdc-select-focused-line-ripple-color_($color) {
@@ -298,7 +294,6 @@
     padding-top: 20px;
     padding-bottom: 4px;
     border: none;
-    border-bottom: 1px solid;
     outline: none;
     background-color: transparent;
     color: inherit; // Override default user agent stylesheet
@@ -330,17 +325,12 @@
   .mdc-select__selected-text {
     @include mdc-theme-prop(color, $mdc-select-disabled-ink-color);
 
-    border-bottom-style: dotted;
     pointer-events: none;
   }
 
   &.mdc-select--outlined {
     @include mdc-select-container-fill-color_(transparent);
     @include mdc-select-outline-color_($mdc-select-outlined-disabled-border);
-
-    .mdc-select__selected-text {
-      border-bottom-style: none;
-    }
   }
 
   cursor: default;

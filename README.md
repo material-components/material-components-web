@@ -40,11 +40,11 @@ Material Components for the web is the successor to [Material Design Lite](https
 <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
 
 <!-- Render textfield component -->
-<div class="mdc-text-field">
+<label class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
   <label class="mdc-floating-label" for="my-text-field">Label</label>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 
 <!-- Required MDC Web JavaScript library -->
 <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
@@ -71,11 +71,11 @@ npm install @material/textfield
 Sample usage of text field component. Please see [MDC Textfield](packages/mdc-textfield) component page for more options.
 
 ```html
-<div class="mdc-text-field">
+<label class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
   <label class="mdc-floating-label" for="my-text-field">Label</label>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 #### CSS

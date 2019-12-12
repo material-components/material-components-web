@@ -56,45 +56,48 @@
   // Colors
   @include mdc-text-field-label-color($mdc-text-field-label);
   @include mdc-text-field-ink-color($mdc-text-field-ink-color);
+  @include mdc-text-field-prefix-color($mdc-text-field-helper-text-color);
+  @include mdc-text-field-suffix-color($mdc-text-field-helper-text-color);
   @include mdc-text-field-caret-color(primary);
   @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
   @include mdc-text-field-hover-bottom-line-color($mdc-text-field-bottom-line-hover);
   @include mdc-text-field-line-ripple-color_(primary);
   @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
   @include mdc-text-field-character-counter-color($mdc-text-field-helper-text-color);
-  @include mdc-text-field-icon-color($mdc-text-field-icon-color);
+  @include mdc-text-field-leading-icon-color($mdc-text-field-icon-color);
+  @include mdc-text-field-trailing-icon-color($mdc-text-field-icon-color);
   @include mdc-text-field-fill-color($mdc-text-field-background);
 
   // Floating Label
   @include mdc-text-field-floating-label_;
 
+  // Input padding
+  @include mdc-text-field-input-position_;
+
   display: inline-flex;
   position: relative;
+  align-items: center;
   box-sizing: border-box;
+  padding: 0 $mdc-text-field-padding;
   overflow: hidden;
   /* @alternate */
   will-change: opacity, transform, color;
 }
 
 .mdc-text-field__input {
-  // Exclude setting line-height to keep caret (text cursor) same height as the input text in iOS browser.
-  @include mdc-typography(subtitle1, $exclude-props: (line-height));
+  @include mdc-typography(subtitle1);
 
-  align-self: flex-end;
+  flex: 1;
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
-  padding:
-    $mdc-text-field-input-padding-top
-    $mdc-text-field-input-padding
-    $mdc-text-field-input-padding-bottom;
+  padding: 0;
   transition: mdc-text-field-transition(opacity);
   border: none;
-  border-bottom: 1px solid;
   border-radius: 0;
   background: none;
   appearance: none;
 
+  // TODO(lizmitchell): what about disabled placeholder color?
   &::placeholder {
     transition: mdc-text-field-transition(opacity, $duration: 67ms);
     opacity: 0;
@@ -129,18 +132,20 @@
   &:-webkit-autofill {
     z-index: auto !important;
   }
-
-  // Vertically center aligns the text input placeholder and value for only filled variant.
-  .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) & {
-    padding-top: 16px;
-    padding-bottom: 16px;
-  }
 }
 // stylelint-disable-next-line plugin/selector-bem-pattern
 // Move label when text-field gets auto-filled in Chrome.
 .mdc-text-field__input:-webkit-autofill + .mdc-floating-label {
   transform: translateY(-50%) scale(.75);
   cursor: auto;
+}
+
+.mdc-text-field__prefix {
+  @include mdc-text-field-prefix_;
+}
+
+.mdc-text-field__suffix {
+  @include mdc-text-field-suffix_;
 }
 
 .mdc-text-field--outlined {
@@ -175,32 +180,20 @@
   @include mdc-text-field-with-trailing-icon_;
 }
 
-.mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon {
-  @include mdc-text-field-with-both-icons_;
-}
-
 // stylelint-disable plugin/selector-bem-pattern
-.mdc-text-field--with-leading-icon.mdc-text-field--dense .mdc-text-field__icon,
-.mdc-text-field--with-trailing-icon.mdc-text-field--dense .mdc-text-field__icon {
-  bottom: 16px;
-  transform: scale(.8);
+.mdc-text-field--dense {
+  @include mdc-text-field-dense_;
+
+  .mdc-text-field__leading-icon,
+  .mdc-text-field__trailing-icon {
+    // TODO(lizmitchell): move this?
+    transform: scale(.8);
+  }
 }
 // stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--with-leading-icon.mdc-text-field--dense {
   @include mdc-text-field-dense-with-leading-icon_;
-}
-
-.mdc-text-field--with-trailing-icon.mdc-text-field--dense {
-  @include mdc-text-field-dense-with-trailing-icon_;
-}
-
-.mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon.mdc-text-field--dense {
-  @include mdc-text-field-dense-with-both-icons_;
-}
-
-.mdc-text-field--dense {
-  @include mdc-text-field-dense_;
 }
 
 @include mdc-required-text-field-label-asterisk_ {
@@ -252,6 +245,14 @@
 
 .mdc-text-field--invalid {
   @include mdc-text-field-invalid_;
+}
+
+.mdc-text-field--end-aligned {
+  @include mdc-text-field-end-aligned_;
+}
+
+.mdc-text-field--ltr-input {
+  @include mdc-text-field-ltr-input_;
 }
 
 .mdc-text-field--textarea.mdc-text-field--invalid {

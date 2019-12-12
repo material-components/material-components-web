@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2018 Google Inc.
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Baseline Text Field Element without label with suffix - MDC Web Screenshot Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../../out/mdc.textfield.css">
+    <link rel="stylesheet" href="../../../out/mdc.typography.css">
+    <link rel="stylesheet" href="../../../out/spec/fixture.css">
+    <link rel="stylesheet" href="../../../out/spec/mdc-textfield/fixture.css">
+  </head>
+
+  <body class="test-container">
+  <main class="test-viewport test-viewport--mobile">
+    <div class="test-layout">
+
+      <div class="test-cell test-cell--textfield">
+        <label class="mdc-text-field mdc-text-field--no-label">
+          <!-- htmllint-disable -->
+          <input type="text" class="mdc-text-field__input test-text-field__input" placeholder="Placeholder" aria-label="Label">
+          <!-- htmllint-enable -->
+          <span class="mdc-text-field__suffix">lb</span>
+          <div class="mdc-line-ripple"></div>
+        </label>
+      </div>
+
+      <div class="test-cell test-cell--textfield">
+        <label class="mdc-text-field mdc-text-field--no-label mdc-text-field--outlined">
+          <!-- htmllint-disable -->
+          <input type="text" class="mdc-text-field__input test-text-field__input" placeholder="Placeholder" aria-label="Label">
+          <!-- htmllint-enable -->
+          <span class="mdc-text-field__suffix">lb</span>
+          <div class="mdc-notched-outline">
+            <div class="mdc-notched-outline__leading"></div>
+            <div class="mdc-notched-outline__trailing"></div>
+          </div>
+        </label>
+      </div>
+
+      <div class="test-cell test-cell--textfield">
+        <label class="mdc-text-field mdc-text-field--no-label">
+          <!-- htmllint-disable -->
+          <input type="text" class="mdc-text-field__input test-text-field__input" value="Filled value" aria-label="Label">
+          <!-- htmllint-enable -->
+          <span class="mdc-text-field__suffix">lb</span>
+          <div class="mdc-line-ripple"></div>
+        </label>
+      </div>
+
+      <div class="test-cell test-cell--textfield">
+        <label class="mdc-text-field mdc-text-field--no-label mdc-text-field--outlined">
+          <!-- htmllint-disable -->
+          <input type="text" class="mdc-text-field__input test-text-field__input" value="Filled value" aria-label="Label">
+          <!-- htmllint-enable -->
+          <span class="mdc-text-field__suffix">lb</span>
+          <div class="mdc-notched-outline">
+            <div class="mdc-notched-outline__leading"></div>
+            <div class="mdc-notched-outline__trailing"></div>
+          </div>
+        </label>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Automatically provides/replaces `Promise` if missing or broken. -->
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+  <script src="../../../out/material-components-web.js"></script>
+  <script src="../../../out/spec/fixture.js"></script>
+  <script src="../../../out/spec/mdc-textfield/fixture.js"></script>
+  </body>
+</html>

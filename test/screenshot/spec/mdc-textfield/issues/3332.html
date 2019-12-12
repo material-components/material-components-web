@@ -38,7 +38,7 @@
         <!-- This test sets `text-align: center` on the parent container to assert that the svg outline will render appropriately when focused. -->
         <!-- See https://github.com/material-components/material-components-web/issues/3332 -->
         <div class="test-cell test-cell--textfield" style="text-align: center;">
-          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--focused test-text-field-issues-3332">
+          <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--focused test-text-field-issues-3332">
             <!-- The single space value is to overcome an issue where the component does not draw the SVG path when created unless there is a value. -->
             <input type="text" id="outlined-text-field" class="mdc-text-field__input" value=" ">
             <div class="mdc-notched-outline mdc-notched-outline--notched">
@@ -48,11 +48,11 @@
               </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
-          </div>
+          </label>
         </div>
 
         <div class="test-cell test-cell--textarea" style="text-align: center;">
-          <div class="mdc-text-field mdc-text-field--textarea">
+          <label class="mdc-text-field mdc-text-field--textarea">
             <textarea id="textarea" class="mdc-text-field__input" rows="2" cols="40"></textarea>
             <div class="mdc-notched-outline">
               <div class="mdc-notched-outline__leading"></div>
@@ -61,7 +61,7 @@
               </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
-          </div>
+          </label>
         </div>
       </div>
     </main>

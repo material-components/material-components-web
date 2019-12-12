@@ -20,9 +20,17 @@
 // THE SOFTWARE.
 //
 
-$mdc-text-field-icon-position: 16px !default;
-$mdc-text-field-trailing-icon-position: 12px !default;
-$mdc-text-field-icon-padding: 48px !default;
-$mdc-text-field-dense-icon-padding: 44px !default;
-$mdc-text-field-dense-icon-position: 12px !default;
-$mdc-text-field-dense-icon-padding: 38px !default;
+@import "../variables";
+
+$mdc-text-field-leading-icon-margin: 8px !default;
+$mdc-text-field-trailing-icon-margin: 16px !default;
+$mdc-text-field-with-trailing-icon-padding: 12px !default;
+$mdc-text-field-icon-size: 24px !default;
+$mdc-text-field-label-offset-with-leading-icon:
+  $mdc-text-field-padding +
+  $mdc-text-field-icon-size +
+  $mdc-text-field-leading-icon-margin;
+$mdc-text-field-dense-label-offset-with-leading-icon:
+  $mdc-text-field-dense-padding +
+  $mdc-text-field-icon-size +
+  $mdc-text-field-leading-icon-margin;

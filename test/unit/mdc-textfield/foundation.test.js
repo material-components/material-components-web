@@ -145,20 +145,24 @@ test('#setValue with non-empty value styles the label', () => {
   const {foundation, nativeInput, mockAdapter} = setupValueTest({value: '', hasLabel: true});
   // Initial empty value should not float label.
   td.verify(mockAdapter.floatLabel(false), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
   nativeInput.value = value;
   foundation.setValue(value);
   td.verify(mockAdapter.shakeLabel(false));
   td.verify(mockAdapter.floatLabel(true));
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING));
 });
 
 test('#setValue with empty value styles the label', () => {
   const {foundation, nativeInput, mockAdapter} = setupValueTest({value: 'old value', hasLabel: true});
   // Initial value should float the label.
   td.verify(mockAdapter.floatLabel(true));
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING));
   nativeInput.value = '';
   foundation.setValue('');
   td.verify(mockAdapter.shakeLabel(false));
   td.verify(mockAdapter.floatLabel(false));
+  td.verify(mockAdapter.removeClass(cssClasses.LABEL_FLOATING));
 });
 
 test('#setValue valid and invalid input', () => {
@@ -170,6 +174,7 @@ test('#setValue valid and invalid input', () => {
   td.verify(helperText.setValidity(false));
   td.verify(mockAdapter.shakeLabel(true));
   td.verify(mockAdapter.floatLabel(true));
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING));
 
   nativeInput.validity.valid = true;
   foundation.setValue('valid');
@@ -177,6 +182,7 @@ test('#setValue valid and invalid input', () => {
   td.verify(helperText.setValidity(true));
   td.verify(mockAdapter.shakeLabel(false));
   td.verify(mockAdapter.floatLabel(true));
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING));
 });
 
 test('#setValue with invalid status and empty value does not shake the label', () => {
@@ -188,6 +194,7 @@ test('#setValue with invalid status and empty value does not shake the label', (
   td.verify(helperText.setValidity(false));
   td.verify(mockAdapter.shakeLabel(false));
   td.verify(mockAdapter.floatLabel(false));
+  td.verify(mockAdapter.removeClass(cssClasses.LABEL_FLOATING));
 });
 
 test('#setValue does not affect focused state', () => {
@@ -437,6 +444,7 @@ test('#init floats label if the input contains a value', () => {
   });
   foundation.init();
   td.verify(mockAdapter.floatLabel(true));
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING));
 });
 
 test('#init does not call floatLabel if there is no label and the input contains a value', () => {
@@ -450,6 +458,7 @@ test('#init does not call floatLabel if there is no label and the input contains
   });
   foundation.init();
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
 });
 
 test('#init does not float label if the input does not contain a value', () => {
@@ -463,6 +472,7 @@ test('#init does not float label if the input does not contain a value', () => {
   });
   foundation.init();
   td.verify(mockAdapter.floatLabel(/* value */ '', /* isFocused */ false, /* isBadInput */ false), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
 });
 
 test('#setHelperTextContent sets the content of the helper text element', () => {
@@ -579,9 +589,11 @@ test('on input styles label if input event occurs without any other events', () 
     .thenDo((evtType, handler) => input = handler);
   foundation.init();
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
   input();
   td.verify(mockAdapter.shakeLabel(false));
   td.verify(mockAdapter.floatLabel(true));
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING));
 });
 
 test('on input doesnot styles label if input event occurs without any other events but hasLabel is false', () => {
@@ -593,6 +605,7 @@ test('on input doesnot styles label if input event occurs without any other even
   input();
   td.verify(mockAdapter.shakeLabel(td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
 });
 
 test('on input does nothing if input event preceded by keydown event', () => {
@@ -622,6 +635,7 @@ test('on input does nothing if input event preceded by keydown event', () => {
   input();
   td.verify(mockAdapter.shakeLabel(), {times: 0});
   td.verify(mockAdapter.floatLabel(), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
 });
 
 test('on focus adds mdc-text-field--focused class', () => {
@@ -658,6 +672,7 @@ test('on focus styles label', () => {
     });
   foundation.init();
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
   focus();
   td.verify(mockAdapter.shakeLabel(false));
 });
@@ -672,6 +687,7 @@ test('on focus do not styles label if hasLabel is false', () => {
   foundation.init();
   focus();
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
   td.verify(mockAdapter.shakeLabel(td.matchers.anything()), {times: 0});
 });
 
@@ -716,36 +732,44 @@ test('on blur styles label when no input value present and validity checks pass'
   const {blur, mockAdapter} = setupBlurTest();
   td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
   blur();
   td.verify(mockAdapter.shakeLabel(false));
   td.verify(mockAdapter.floatLabel(false));
+  td.verify(mockAdapter.removeClass(cssClasses.LABEL_FLOATING));
 });
 
 test('does not style label on blur when no input value present and validity checks pass and hasLabel is false', () => {
   const {blur, mockAdapter} = setupBlurTest();
   td.verify(mockAdapter.floatLabel(/* value */ '', /* isFocused */ false), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
   blur();
   td.verify(mockAdapter.shakeLabel(td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
 });
 
 test('on blur styles label if input has a value', () => {
   const {blur, nativeInput, mockAdapter} = setupBlurTest();
   td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
   nativeInput.value = 'non-empty value';
   blur();
   td.verify(mockAdapter.shakeLabel(false));
   td.verify(mockAdapter.floatLabel(true));
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING));
 });
 
 test('does not style label on blur if input has a value and hasLabel is false', () => {
   const {blur, nativeInput, mockAdapter} = setupBlurTest();
   td.verify(mockAdapter.floatLabel(/* value */ '', /* isFocused */ false), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
   nativeInput.value = 'non-empty value';
   blur();
   td.verify(mockAdapter.shakeLabel(td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING), {times: 0});
 });
 
 test('on blur removes mdc-text-field--invalid if useNativeValidation is true and' +
@@ -923,6 +947,7 @@ test('should not call styleValidity_ on non-whitelisted attribute change', () =>
 test('label floats on invalid input even if value is empty', () => {
   const {mockAdapter} = setupValueTest({value: '', optIsValid: false, optIsBadInput: true, hasLabel: true});
   td.verify(mockAdapter.floatLabel(true));
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING));
 });
 
 test('label floats when type is date even if value is empty', () => {
@@ -939,6 +964,7 @@ test('label floats when type is date even if value is empty', () => {
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
   td.verify(mockAdapter.floatLabel(true));
+  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOATING));
 });
 
 test('#handleInput activates focus state', () => {

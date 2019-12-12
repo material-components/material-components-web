@@ -23,6 +23,7 @@
 @import "@material/density/variables";
 @import "@material/floating-label/variables";
 @import "@material/notched-outline/variables";
+@import "@material/typography/variables";
 
 ///
 /// Returns outlined text field floating label position for given height.
@@ -71,6 +72,7 @@ $mdc-text-field-outlined-stroke-width: 2px !default;
 $mdc-text-field-height: 56px !default;
 $mdc-text-field-minimum-height: 40px !default;
 $mdc-text-field-maximum-height: $mdc-text-field-height !default;
+$mdc-text-field-padding: 16px !default;
 $mdc-text-field-density-scale: $mdc-density-default-scale !default;
 $mdc-text-field-density-config: (
   height: (
@@ -81,6 +83,8 @@ $mdc-text-field-density-config: (
 ) !default;
 $mdc-text-field-label-position-y: $mdc-floating-label-position-y !default;
 $mdc-text-field-label-offset: 16px !default;
+$mdc-text-field-dense-height: 48px !default;
+$mdc-text-field-dense-padding: 12px !default;
 $mdc-text-field-dense-label-position-y: 70% !default;
 $mdc-text-field-dense-label-scale: .8 !default;
 $mdc-text-field-outlined-label-position-y:
@@ -90,8 +94,10 @@ $mdc-text-field-outlined-with-leading-icon-label-position-x: 0 !default;
 $mdc-text-field-outlined-dense-with-leading-icon-label-position-x: 21px !default;
 $mdc-text-field-textarea-label-position-y: 130% !default;
 $mdc-text-field-helper-line-padding: 16px !default;
-$mdc-text-field-input-padding: 16px !default;
-$mdc-text-field-input-padding-top: 20px !default;
-$mdc-text-field-input-padding-bottom: 6px !default;
+$mdc-text-field-input-height: 28px !default;
+$mdc-text-field-input-padding-top: 21px !default;
 $mdc-text-field-input-border-bottom: 1px !default;
+$mdc-text-field-affix-padding: 12px !default;
+$mdc-text-field-affix-aligned-padding: 2px !default;
+$mdc-text-field-input-rtl-root-selector: ".mdc-text-field:not(.mdc-text-field--ltr-input)";
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.

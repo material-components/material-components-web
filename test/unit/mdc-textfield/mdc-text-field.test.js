@@ -39,12 +39,12 @@ import {cssClasses as characterCounterCssClasses} from '../../../packages/mdc-te
 const {cssClasses} = MDCTextFieldFoundation;
 
 const getFixture = () => bel`
-  <div class="mdc-text-field mdc-text-field--with-leading-icon">
-    <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+  <label class="mdc-text-field mdc-text-field--with-leading-icon">
+    <i class="material-icons mdc-text-field__leading-icon" tabindex="0" role="button">event</i>
     <input type="text" class="mdc-text-field__input" id="my-text-field">
     <label class="mdc-floating-label" for="my-text-field">My Label</label>
     <div class="mdc-line-ripple"></div>
-  </div>
+  </label>
 `;
 
 const getHelperLineWithHelperText = () => bel`
@@ -179,7 +179,7 @@ test('#constructor instantiates a leading icon if an icon element is present', (
 test('#constructor instantiates an icon for both icon elements if present', () => {
   const root = getFixture(true);
   root.classList.add('mdc-text-field--with-trailing-icon');
-  root.appendChild(bel`<i class="mdc-text-field__icon material-icons">3d_rotations</i>`);
+  root.appendChild(bel`<i class="mdc-text-field__trailing-icon material-icons">3d_rotations</i>`);
   const component = new MDCTextField(root);
   assert.instanceOf(component.leadingIcon_, MDCTextFieldIcon);
   assert.instanceOf(component.trailingIcon_, MDCTextFieldIcon);
@@ -187,9 +187,9 @@ test('#constructor instantiates an icon for both icon elements if present', () =
 
 test('#constructor instantiates a trailing icon if the icon is present', () => {
   const root = getFixture(true);
-  const icon = root.querySelector('.mdc-text-field__icon');
-  root.removeChild(icon);
-  root.appendChild(icon);
+  const leadingIcon = root.querySelector('.mdc-text-field__leading-icon');
+  root.removeChild(leadingIcon);
+  root.appendChild(bel`<i class="mdc-text-field__trailing-icon material-icons">3d_rotations</i>`);
   root.classList.add('mdc-text-field--with-trailing-icon');
   root.classList.remove('mdc-text-field--with-leading-icon');
   const component = new MDCTextField(root);
@@ -212,9 +212,9 @@ test('#constructor instantiates an outline on the `.mdc-notched-outline` element
 
 test('#constructor handles undefined optional sub-elements gracefully', () => {
   const root = bel`
-    <div class="mdc-text-field">
+    <label class="mdc-text-field">
       <input type="text" class="mdc-text-field__input" id="my-text-field">
-    </div>
+    </label>
   `;
   assert.doesNotThrow(() => new MDCTextField(root));
 });
@@ -230,9 +230,9 @@ test('default adapter methods handle sub-elements when present', () => {
 
 test('default adapter methods handle undefined optional sub-elements gracefully', () => {
   const root = bel`
-    <div class="mdc-text-field">
+    <label class="mdc-text-field">
       <input type="text" class="mdc-text-field__input" id="my-text-field">
-    </div>
+    </label>
   `;
   const component = new MDCTextField(root);
   const adapter = component.getDefaultFoundation().adapter_;
@@ -349,9 +349,9 @@ test('#destroy cleans up the outline if present', () => {
 
 test('#destroy handles undefined optional sub-elements gracefully', () => {
   const root = bel`
-    <div class="mdc-text-field">
+    <label class="mdc-text-field">
       <input type="text" class="mdc-text-field__input" id="my-text-field">
-    </div>
+    </label>
   `;
   const component = new MDCTextField(root);
   assert.doesNotThrow(() => component.destroy());
@@ -367,7 +367,7 @@ test('#destroy handles undefined optional ripple gracefully', () => {
 test('#destroy calls destroy for both icon elements if present', () => {
   const root = getFixture(true);
   root.classList.add('mdc-text-field--with-trailing-icon');
-  root.appendChild(bel`<i class="mdc-text-field__icon material-icons">3d_rotations</i>`);
+  root.appendChild(bel`<i class="mdc-text-field__trailing-icon material-icons">3d_rotations</i>`);
   const component = new MDCTextField(root);
   component.leadingIcon_.destroy = td.func('leadingIcon_.destroy');
   component.trailingIcon_.destroy = td.func('trailingIcon_.destroy');
@@ -538,6 +538,22 @@ test('#adapter.setLineRippleTransformOrigin calls the setRippleCenter method on 
   const {component, lineRipple} = setupTest();
   component.getDefaultFoundation().adapter_.setLineRippleTransformOrigin(100);
   td.verify(lineRipple.setRippleCenter(100));
+});
+
+test('clicking trailing icon does not focus input', () => {
+  const root = getFixture(true);
+  root.classList.add('mdc-text-field--with-trailing-icon');
+  root.appendChild(bel`<i class="mdc-text-field__trailing-icon material-icons">3d_rotations</i>`);
+  const trailingIcon = root.querySelector('.mdc-text-field__trailing-icon');
+  const component = new MDCTextField(root);
+  document.body.appendChild(root);
+  component.root_.click();
+  assert.equal(component.input_, document.activeElement, 'input_ should be focused');
+  component.input_.blur();
+  assert.notEqual(component.input_, document.activeElement, 'ensure input_ was blurred');
+  trailingIcon.click();
+  assert.notEqual(component.input_, document.activeElement, 'input_ should not be focused');
+  document.body.removeChild(root);
 });
 
 function setupMockFoundationTest(root = getFixture()) {

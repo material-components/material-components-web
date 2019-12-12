@@ -27,7 +27,9 @@ const strings = {
 };
 
 const cssClasses = {
-  ROOT: 'mdc-text-field__icon',
+  // TODO(lizmitchell): what are these used for? should they be used instead of textfield constants?
+  LEADING: 'mdc-text-field__leading-icon',
+  TRAILING: 'mdc-text-field__trailing-icon',
 };
 
 export {strings, cssClasses};
