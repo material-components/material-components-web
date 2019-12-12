@@ -69,6 +69,7 @@ const istanbulInstrumenterLoader = {
     /node_modules/,
     /adapter.[jt]s$/,
     /constants.[jt]s$/,
+    /checkbox\/foundation.ts$/,
   ],
   include: path.resolve('./packages'),
 };
@@ -135,6 +136,8 @@ const jasmineConfig = {
           functions: 50,
           lines: 80,
           excludes: [
+            'adapter.ts',
+            'constants.ts',
             'testing/**/*.ts',
             'packages/!(mdc-checkbox)/**/*',
             'packages/**/component.ts', // Jasmine tests cover foundation/adapter only.
