@@ -47,7 +47,6 @@
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-elevation-overlay-common($query);
   @include mdc-switch-density($mdc-switch-density-scale, $query: $query);
 
   .mdc-switch {
@@ -146,7 +145,6 @@
   &.mdc-switch--checked .mdc-switch__track {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, $color);
-      @include mdc-theme-prop(border-color, $color);
     }
   }
 }
@@ -174,7 +172,6 @@
   &:not(.mdc-switch--checked) .mdc-switch__track {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, $color);
-      @include mdc-theme-prop(border-color, $color);
     }
   }
 }
@@ -272,6 +269,7 @@
 @mixin mdc-switch__track_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-feature-targets($feat-structure) {
     box-sizing: border-box;
@@ -287,6 +285,10 @@
       mdc-switch-transition(opacity),
       mdc-switch-transition(background-color),
       mdc-switch-transition(border-color);
+  }
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(border-color, transparent);
   }
 }
 
@@ -326,8 +328,6 @@
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-color: mdc-feature-create-target($query, color);
 
-  @include mdc-elevation-overlay-surface-position($query: $query);
-  @include mdc-elevation-overlay-dimensions($mdc-switch-thumb-diameter, $has-content-sizing: false, $query: $query);
   @include mdc-elevation($z-value: 2, $query: $query);
 
   @include mdc-feature-targets($feat-structure) {
