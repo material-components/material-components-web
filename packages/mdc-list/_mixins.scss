@@ -431,9 +431,13 @@
 @mixin mdc-list-item-disabled-text-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  .mdc-list-item--disabled .mdc-list-item__text {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
+  .mdc-list-item--disabled {
+    .mdc-list-item__text,
+    .mdc-list-item__primary-text,
+    .mdc-list-item__secondary-text {
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(color, $color);
+      }
     }
   }
 }
