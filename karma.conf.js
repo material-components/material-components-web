@@ -125,7 +125,8 @@ const mochaConfig = {
 const jasmineConfig = {
   basePath: '',
   files: FILES_TO_USE,
-  frameworks: ['jasmine', 'karma-typescript'],
+  frameworks: ['jasmine', 'karma-typescript', 'polyfill'],
+  polyfill: ['CustomEvent'],
   karmaTypescriptConfig: {
     coverageOptions: {
       threshold: {
