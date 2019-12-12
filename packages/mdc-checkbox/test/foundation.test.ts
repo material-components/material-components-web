@@ -24,7 +24,7 @@
 import 'jasmine';
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
-import {setupFoundationTest} from '../../../testing/helpers/setup';
+import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {cssClasses, numbers, strings} from '../constants';
 import MDCCheckboxFoundation from '../foundation';
 
@@ -36,7 +36,7 @@ const DESC_UNDEFINED = {
 };
 
 function setupTest() {
-  const {foundation, mockAdapter} = setupFoundationTest(MDCCheckboxFoundation);
+  const {foundation, mockAdapter} = setUpFoundationTest(MDCCheckboxFoundation);
   const nativeControl = document.createElement('input');
   nativeControl.setAttribute('type', 'checkbox');
   return {foundation, mockAdapter, nativeControl};
@@ -92,9 +92,7 @@ function testChangeHandler(
 }
 
 describe('MDCCheckboxFoundation', () => {
-  beforeAll(() => {
-    jasmine.clock().install();
-  });
+  setUpMdcTestEnvironment();
 
   it('exports constants', () => {
     expect(cssClasses).toEqual(MDCCheckboxFoundation.cssClasses);
