@@ -104,11 +104,8 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
    * Handles the click event for the checkbox
    */
   handleClick() {
-    /**
-     * added for IE browser to fix compatibility issue
-     * buganizer issue: b/144588184
-     * github issue: https://github.com/material-components/material-components-web/issues/4893
-     */
+    // added for IE browser to fix compatibility issue:
+    // https://github.com/material-components/material-components-web/issues/4893
     const {TRANSITION_STATE_INDETERMINATE} = strings;
     if (this.currentCheckState_ === TRANSITION_STATE_INDETERMINATE) {
       this.adapter_.setChecked(!this.realCheckState_);
