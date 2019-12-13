@@ -51,7 +51,7 @@ export function setUpMdcTestEnvironment() {
     // Replace RAF with setTimeout, since setTimeout is overridden to be
     // synchronous in Jasmine clock installation.
     window.requestAnimationFrame = (fn: Function) => setTimeout(fn, 1);
-    window.cancelAnimationFrame = (id: number) => clearTimeout(id);
+    window.cancelAnimationFrame = (id: number) => { clearTimeout(id); };
   });
 
   beforeEach(() => {
