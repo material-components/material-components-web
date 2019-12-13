@@ -89,6 +89,19 @@
         "custom_config": {
           "skip_all": true
         }
+      },
+      {
+        "description": "FF flakes for menu, screenshotting before animation is complete. `fonts_loaded_reflow_delay_ms` is increased, as it's also used for the animation delay.",
+        "browser_regex_patterns": [
+          "desktop_windows_firefox@69"
+        ],
+        "url_regex_patterns": [
+          "mdc-menu/classes/menu-selection-group-only.html",
+          "mdc-menu/classes/menu-selection-group.html"
+        ],
+        "custom_config": {
+          "fonts_loaded_reflow_delay_ms": 250
+        }
       }
     ]
   }
