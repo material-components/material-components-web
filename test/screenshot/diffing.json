@@ -85,7 +85,8 @@
         ],
         "url_regex_patterns": [
           "mdc-textfield/classes/textarea-invalid.html",
-          "mdc-textfield/mixins/density-invalid.html"
+          "mdc-textfield/mixins/density-invalid.html",
+          "mdc-textfield/mixins/density-leading-icon-invalid.html"
         ],
         "custom_config": {
           "skip_all": true
@@ -99,7 +100,6 @@
         "url_regex_patterns": [
           "mdc-menu/classes/menu-selection-group-only.html",
           "mdc-menu/classes/menu-selection-group.html",
-          "mdc-textfield/mixins/density-leading-icon-invalid.html"
         ],
         "custom_config": {
           "fonts_loaded_reflow_delay_ms": 250
