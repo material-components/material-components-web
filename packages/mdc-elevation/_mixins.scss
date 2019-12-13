@@ -71,10 +71,10 @@
         transition: mdc-elevation-overlay-transition-value();
       }
     }
-  }
 
-  @include mdc-base-emit-once("mdc-elevation/common/color") {
-    @include mdc-elevation-overlay-fill-color($mdc-elevation-overlay-color, $query: $query);
+    @include mdc-base-emit-once("mdc-elevation/common/color") {
+      @include mdc-elevation-overlay-fill-color($mdc-elevation-overlay-color, $query: $query);
+    }
   }
 }
 
@@ -135,21 +135,21 @@
 
 ///
 /// Sets the elevation overlay fill color.
+/// Expected to be called directly on the elevation overlay element.
 ///
 /// @param {Color} $color - The color of the elevation overlay.
 ///
 @mixin mdc-elevation-overlay-fill-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  @include mdc-elevation-overlay-selector_ {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color);
-    }
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(background-color, $color);
   }
 }
 
 ///
 /// Sets the elevation overlay opacity.
+/// Expected to be called from a parent element.
 ///
 /// @param {Number} $opacity - The opacity of the elevation overlay.
 ///
