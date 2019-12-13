@@ -77,6 +77,18 @@
         "custom_config": {
           "skip_all": true
         }
+      },
+      {
+        "description": "FF flakes frequently with invalid textarea.",
+        "browser_regex_patterns": [
+          "desktop_windows_firefox@69"
+        ],
+        "url_regex_patterns": [
+          "mdc-textfield/classes/textarea-invalid.html"
+        ],
+        "custom_config": {
+          "skip_all": true
+        }
       }
     ]
   }
