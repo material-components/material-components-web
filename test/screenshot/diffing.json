@@ -78,6 +78,7 @@
           "skip_all": true
         }
       },
+
       {
         "description": "FF flakes frequently with invalid textarea.",
         "browser_regex_patterns": [
