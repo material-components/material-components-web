@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  */
 
+import {emitEvent} from '../../../testing/dom/events';
+import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCRipple} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {strings} from '../constants';
 import {MDCCheckbox, MDCCheckboxFoundation} from '../index';
 
@@ -99,7 +100,7 @@ describe('MDCCheckbox', () => {
          input.matches = fakeMatches;
 
          expect(root.classList.contains('mdc-ripple-upgraded')).toBe(true);
-         input.dispatchEvent(new CustomEvent('keydown'));
+         emitEvent(input, 'keydown');
          jasmine.clock().tick(1);
 
          expect(root.classList.contains(
@@ -152,14 +153,14 @@ describe('MDCCheckbox', () => {
   it('checkbox change event calls #foundation.handleChange', () => {
     const {cb, component} = setupTest();
     (component as any).foundation_.handleChange = jasmine.createSpy();
-    cb.dispatchEvent(new CustomEvent('change'));
+    emitEvent(cb, 'change');
     expect((component as any).foundation_.handleChange).toHaveBeenCalled();
   });
 
   it('root animationend event calls #foundation.handleAnimationEnd', () => {
     const {root, component} = setupTest();
     (component as any).foundation_.handleAnimationEnd = jasmine.createSpy();
-    root.dispatchEvent(new CustomEvent('animationend'));
+    emitEvent(root, 'animationend');
     expect((component as any).foundation_.handleAnimationEnd)
         .toHaveBeenCalled();
   });
@@ -181,7 +182,7 @@ describe('MDCCheckbox', () => {
     const {cb, component} = setupTest();
     (component as any).foundation_.handleChange = jasmine.createSpy();
     component.destroy();
-    cb.dispatchEvent(new CustomEvent('change'));
+    emitEvent(cb, 'change');
     expect((component as any).foundation_.handleChange).not.toHaveBeenCalled();
   });
 
@@ -189,7 +190,7 @@ describe('MDCCheckbox', () => {
     const {root, component} = setupTest();
     (component as any).foundation_.handleAnimationEnd = jasmine.createSpy();
     component.destroy();
-    root.dispatchEvent(new CustomEvent('animationend'));
+    emitEvent(root, 'animationend');
     expect((component as any).foundation_.handleAnimationEnd)
         .not.toHaveBeenCalled();
   });
