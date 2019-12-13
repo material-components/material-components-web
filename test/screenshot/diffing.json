@@ -11,7 +11,7 @@
       "min_changed_pixel_count": 15,
       "max_changed_pixel_fraction_to_retry": 0.10,
       "font_face_observer_timeout_ms": 3000,
-      "fonts_loaded_reflow_delay_ms": 0,
+      "fonts_loaded_reflow_delay_ms": 100,
       "retry_delay_ms": 0
     },
 
