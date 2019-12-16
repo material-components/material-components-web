@@ -24,6 +24,11 @@
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {MDCRadioFoundation} from '../foundation';
 
+function setupTest() {
+const {foundation, mockAdapter} = setUpFoundationTest(MDCRadioFoundation);
+return {foundation, mockAdapter};
+}
+
 describe('MDCRadioFoundation', () => {
   it('exports cssClasses', () => {
     expect('cssClasses' in MDCRadioFoundation).toBeTruthy();
@@ -45,11 +50,6 @@ describe('MDCRadioFoundation', () => {
       expect(() => (defaultAdapter as any)[m]).not.toThrow();
     });
   });
-
-  function setupTest() {
-    const {foundation, mockAdapter} = setUpFoundationTest(MDCRadioFoundation);
-    return {foundation, mockAdapter};
-  }
 
   it('#setDisabled calls adapter.setNativeControlDisabled', () => {
     const {foundation, mockAdapter} = setupTest();
