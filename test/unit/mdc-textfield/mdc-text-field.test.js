@@ -541,7 +541,7 @@ test('#adapter.setLineRippleTransformOrigin calls the setRippleCenter method on 
 });
 
 test('clicking trailing icon does not focus input', () => {
-  const root = getFixture(true);
+  const root = getFixture();
   root.classList.add('mdc-text-field--with-trailing-icon');
   root.appendChild(bel`<i class="mdc-text-field__trailing-icon material-icons">3d_rotations</i>`);
   const trailingIcon = root.querySelector('.mdc-text-field__trailing-icon');
@@ -554,6 +554,73 @@ test('clicking trailing icon does not focus input', () => {
   trailingIcon.click();
   assert.notEqual(component.input_, document.activeElement, 'input_ should not be focused');
   document.body.removeChild(root);
+});
+
+test('get prefixText returns prefix textContent, or null without a prefix', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  assert.isNull(component.prefixText);
+  const prefixRoot = getFixture();
+  prefixRoot.appendChild(bel`<span class="mdc-text-field__prefix">$</span>`);
+  const prefixComponent = new MDCTextField(prefixRoot);
+  assert.equal(prefixComponent.prefixText, '$');
+});
+
+test('set prefixText changes prefix textContent, if it exists', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  component.prefixText = 'foo';
+  assert.isNull(component.prefixText);
+  const prefixRoot = getFixture();
+  prefixRoot.appendChild(bel`<span class="mdc-text-field__prefix">$</span>`);
+  const prefixComponent = new MDCTextField(prefixRoot);
+  prefixComponent.prefixText = 'foo';
+  assert.equal(prefixComponent.prefixText, 'foo');
+  assert.equal(prefixComponent.prefix_.textContent, 'foo');
+});
+
+test('get suffixText returns suffix textContent, or null without a suffix', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  assert.isNull(component.suffixText);
+  const suffixRoot = getFixture();
+  suffixRoot.appendChild(bel`<span class="mdc-text-field__suffix">/100</span>`);
+  const suffixComponent = new MDCTextField(suffixRoot);
+  assert.equal(suffixComponent.suffixText, '/100');
+});
+
+
+test('set suffixTest changes suffix textContent, if it exists', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  component.suffixText = 'foo';
+  assert.isNull(component.suffixText);
+  const suffixRoot = getFixture();
+  suffixRoot.appendChild(bel`<span class="mdc-text-field__suffix">/100</span>`);
+  const suffixComponent = new MDCTextField(suffixRoot);
+  suffixComponent.suffixText = 'foo';
+  assert.equal(suffixComponent.suffixText, 'foo');
+  assert.equal(suffixComponent.suffix_.textContent, 'foo');
+});
+
+test('get/set endAligned toggles class', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  assert.isFalse(component.endAligned);
+  root.classList.add(cssClasses.END_ALIGNED);
+  assert.isTrue(component.endAligned);
+  component.endAligned = false;
+  assert.isFalse(root.classList.contains(cssClasses.END_ALIGNED));
+});
+
+test('get/set ltrInput toggles class', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  assert.isFalse(component.ltrInput);
+  root.classList.add(cssClasses.LTR_INPUT);
+  assert.isTrue(component.ltrInput);
+  component.ltrInput = false;
+  assert.isFalse(root.classList.contains(cssClasses.LTR_INPUT));
 });
 
 function setupMockFoundationTest(root = getFixture()) {

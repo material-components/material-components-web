@@ -89,9 +89,9 @@
   @include mdc-text-field-input-placeholder_;
 
   flex: 1;
-  height: $mdc-text-field-input-height; // explicit height needed for IE11
   width: 100%;
   min-width: 0; // Needed for Firefox inside a flex container
+  height: $mdc-text-field-input-height; // explicit height needed for IE11
   padding: 0;
   transition: mdc-text-field-transition(opacity);
   border: none;

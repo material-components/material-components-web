@@ -28,17 +28,21 @@ const strings = {
   LEADING_ICON_SELECTOR: '.mdc-text-field__leading-icon',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   OUTLINE_SELECTOR: '.mdc-notched-outline',
+  PREFIX_SELECTOR: '.mdc-text-field__prefix',
+  SUFFIX_SELECTOR: '.mdc-text-field__suffix',
   TRAILING_ICON_SELECTOR: '.mdc-text-field__trailing-icon',
 };
 
 const cssClasses = {
   DENSE: 'mdc-text-field--dense',
   DISABLED: 'mdc-text-field--disabled',
+  END_ALIGNED: 'mdc-text-field--end-aligned',
   FOCUSED: 'mdc-text-field--focused',
   FULLWIDTH: 'mdc-text-field--fullwidth',
   HELPER_LINE: 'mdc-text-field-helper-line',
   INVALID: 'mdc-text-field--invalid',
   LABEL_FLOATING: 'mdc-text-field--label-floating',
+  LTR_INPUT: 'mdc-text-field--ltr-input',
   NO_LABEL: 'mdc-text-field--no-label',
   OUTLINED: 'mdc-text-field--outlined',
   ROOT: 'mdc-text-field',

@@ -75,6 +75,8 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
   private outline_!: MDCNotchedOutline | null; // assigned in initialize()
   private trailingIcon_!: MDCTextFieldIcon | null; // assigned in initialize()
+  private prefix_!: Element | null; // assigned in initialize()
+  private suffix_!: Element | null; // assigned in initialize()
 
   initialize(
       rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
@@ -122,6 +124,10 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     this.trailingIcon_ = trailingIconEl ? iconFactory(trailingIconEl) : null;
 
     this.ripple = this.createRipple_(rippleFactory);
+
+    // Prefix and Suffix
+    this.prefix_ = this.root_.querySelector(strings.PREFIX_SELECTOR);
+    this.suffix_ = this.root_.querySelector(strings.SUFFIX_SELECTOR);
   }
 
   destroy() {
@@ -316,6 +322,75 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
    */
   set useNativeValidation(useNativeValidation: boolean) {
     this.foundation_.setUseNativeValidation(useNativeValidation);
+  }
+
+  /**
+   * Gets the text content of the prefix, or null if it does not exist.
+   */
+  get prefixText() {
+    return this.prefix_ && this.prefix_.textContent;
+  }
+
+  /**
+   * Sets the text content of the prefix, if it exists.
+   */
+  set prefixText(prefixText: string | null) {
+    if (this.prefix_) {
+      this.prefix_.textContent = prefixText;
+    }
+  }
+
+  /**
+   * Gets the text content of the suffix, or null if it does not exist.
+   */
+  get suffixText() {
+    return this.suffix_ && this.suffix_.textContent;
+  }
+
+  /**
+   * Sets the text content of the suffix, if it exists.
+   */
+  set suffixText(suffixText: string | null) {
+    if (this.suffix_) {
+      this.suffix_.textContent = suffixText;
+    }
+  }
+
+  /**
+   * Indicates if a text field is end-aligned if true, or start-aligned if false.
+   */
+  get endAligned() {
+    return this.getRootAdapterMethods_().hasClass(cssClasses.END_ALIGNED);
+  }
+
+  /**
+   * Sets the alignment of the text field. If true, the text will be end-aligned. If false, the
+   * text will be start-aligned.
+   */
+  set endAligned(isEndAligned: boolean) {
+    if (isEndAligned) {
+      this.getRootAdapterMethods_().addClass(cssClasses.END_ALIGNED);
+    } else {
+      this.getRootAdapterMethods_().removeClass(cssClasses.END_ALIGNED);
+    }
+  }
+
+  /**
+   * Indicates if the text field's input, prefix, and suffix are forced to LTR for RTL languages.
+   */
+  get ltrInput() {
+    return this.getRootAdapterMethods_().hasClass(cssClasses.LTR_INPUT);
+  }
+
+  /**
+   * Forces the text field's input, prefix, and suffix to be aligned in LTR for RTL languages.
+   */
+  set ltrInput(isLtrInput: boolean) {
+    if (isLtrInput) {
+      this.getRootAdapterMethods_().addClass(cssClasses.LTR_INPUT);
+    } else {
+      this.getRootAdapterMethods_().removeClass(cssClasses.LTR_INPUT);
+    }
   }
 
   /**

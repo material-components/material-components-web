@@ -355,6 +355,10 @@ Property | Value Type | Description
 `trailingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
 `leadingIconContent` | `string` (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
 `trailingIconContent` | `string` (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
+`prefixText` | `string` | Gets or sets the prefix's textContent.
+`suffixText` | `string` | Gets or sets the prefix's textContent.
+`endAligned` | `boolean` | Aligns the input to the end if true, or start if false.
+`ltrInput` | `boolean` | Forces the input, prefix, and suffix direction as LTR in RTL languages.
 
 In addition to the above, the following properties proxy to the `input` element's properties of the same name:
 
