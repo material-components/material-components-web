@@ -86,38 +86,18 @@
 
 .mdc-text-field__input {
   @include mdc-typography(subtitle1);
+  @include mdc-text-field-input-placeholder_;
 
   flex: 1;
   box-sizing: border-box;
   width: 100%;
+  min-width: 0; // Needed for Firefox inside a flex container
   padding: 0;
   transition: mdc-text-field-transition(opacity);
   border: none;
   border-radius: 0;
   background: none;
   appearance: none;
-
-  // TODO(lizmitchell): what about disabled placeholder color?
-  &::placeholder {
-    transition: mdc-text-field-transition(opacity, $duration: 67ms);
-    opacity: 0;
-    color: $mdc-text-field-placeholder-ink-color;
-  }
-
-  // Override the placeholder styles in IE with important rule to improve specificity.
-  // stylelint-disable-next-line selector-no-vendor-prefix
-  &:-ms-input-placeholder {
-    color: $mdc-text-field-placeholder-ink-color !important;
-  }
-
-  // Always show placeholder for text fields that has no label and show only on focused state when label is present.
-  .mdc-text-field--fullwidth &::placeholder,
-  .mdc-text-field--no-label &::placeholder,
-  .mdc-text-field--focused &::placeholder {
-    transition-delay: 40ms;
-    transition-duration: 110ms;
-    opacity: 1;
-  }
 
   &:focus {
     outline: none;
