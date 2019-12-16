@@ -95,8 +95,8 @@ $mdc-text-field-outlined-with-leading-icon-label-position-x: 0 !default;
 $mdc-text-field-outlined-dense-with-leading-icon-label-position-x: 21px !default;
 $mdc-text-field-textarea-label-position-y: 130% !default;
 $mdc-text-field-helper-line-padding: 16px !default;
-$mdc-text-field-input-height: 28px !default;
-$mdc-text-field-input-padding-top: 21px !default;
+$mdc-text-field-input-height: 28px !default; // should match subtitle1 line-height
+$mdc-text-field-input-padding-top: 20px !default;
 $mdc-text-field-input-border-bottom: 1px !default;
 $mdc-text-field-affix-padding: 12px !default;
 $mdc-text-field-affix-aligned-padding: 2px !default;
