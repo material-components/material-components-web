@@ -32,7 +32,7 @@ export interface FoundationConstructor<F extends MDCFoundation> extends
   new(...args: any[]): F;
 }
 
-export function setupFoundationTest<F extends MDCFoundation>(
+export function setUpFoundationTest<F extends MDCFoundation>(
     FoundationClass: FoundationConstructor<F>) {
   const mockAdapter = jasmine.createSpyObj(
       FoundationClass.name, FoundationClass.defaultAdapter);
