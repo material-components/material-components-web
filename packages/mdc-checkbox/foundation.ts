@@ -55,6 +55,9 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 
   private currentCheckState_ = strings.TRANSITION_STATE_INIT;
+  // Native checkboxes can only have two real states: checked/true or unchecked/false
+  // The indeterminate state is visual only.
+  // See https://stackoverflow.com/a/33529024 for more details.
   private realCheckState_ = false;
   private currentAnimationClass_ = '';
   private animEndLatchTimer_ = 0;
