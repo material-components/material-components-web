@@ -139,7 +139,11 @@ function renderComponent(props) {
     </div>
   `;
 
-  document.body.innerHTML = '';
+  const prevTable = document.querySelector(`.${cssClasses.ROOT}`);
+  if (prevTable) {
+    document.body.removeChild(prevTable.parentElement);
+  }
+
   const container = document.createElement('div');
   container.innerHTML = blobHtml;
   document.body.appendChild(container);
