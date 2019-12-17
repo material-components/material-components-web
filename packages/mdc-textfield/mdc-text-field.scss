@@ -88,7 +88,9 @@
   @include mdc-typography(subtitle1);
   @include mdc-text-field-input-placeholder_;
 
-  flex: 1;
+  // -grow and -shrink instead of flex: 1 since IE11's flex-basis defaults to 0px
+  flex-grow: 1;
+  flex-shrink: 1;
   width: 100%;
   min-width: 0; // Needed for Firefox inside a flex container
   height: $mdc-text-field-input-height; // explicit height needed for IE11
