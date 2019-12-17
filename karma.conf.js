@@ -133,7 +133,7 @@ const jasmineConfig = {
         global: {
           // TODO: Raise threshold to at least 90% after more tests have been migrated.
           statements: 80,
-          branches: 80,
+          branches: 70,
           functions: 50,
           lines: 80,
           excludes: [
@@ -142,7 +142,6 @@ const jasmineConfig = {
             'testing/**/*.ts',
             'packages/!(mdc-checkbox)/**/*',
             'packages/!(mdc-radio)/**/*',
-            'packages/**/component.ts', // Jasmine tests cover foundation/adapter only.
           ],
         },
       },
