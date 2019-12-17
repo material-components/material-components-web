@@ -70,7 +70,7 @@ const istanbulInstrumenterLoader = {
     /adapter.[jt]s$/,
     /constants.[jt]s$/,
     /checkbox\/foundation.ts$/,
-    /radio\/foundation.ts$/,
+    /radio\/.*$/,
   ],
   include: path.resolve('./packages'),
 };
