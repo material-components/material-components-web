@@ -71,6 +71,7 @@ const istanbulInstrumenterLoader = {
     /constants.[jt]s$/,
     /checkbox\/foundation.ts$/,
     /radio\/foundation.ts$/,
+    /tab\/.*$/,
   ],
   include: path.resolve('./packages'),
 };
@@ -142,6 +143,7 @@ const jasmineConfig = {
             'testing/**/*.ts',
             'packages/!(mdc-checkbox)/**/*',
             'packages/!(mdc-radio)/**/*',
+            'packages/!(mdc-tab)/**/*',
           ],
         },
       },
