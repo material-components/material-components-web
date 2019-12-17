@@ -292,7 +292,9 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 Mixin | Description
 --- | ---
 `mdc-text-field-ink-color($color)` | Customizes the color of the text entered into an enabled text field.
+`mdc-text-field-placeholder-color($color)` | Customizes the color of the placeholder in an enabled text field.
 `mdc-text-field-disabled-ink-color($color)` | Customizes the color of the entered text in a disabled text field.
+`mdc-text-field-disabled-placeholder-color($color)` | Customizes the color of the placeholder in a disabled text field.
 `mdc-text-field-label-color($color)` | Customizes the text color of the label in an enabled text field.
 `mdc-text-field-disabled-label-color($color)` | Customizes the text color of the label in a disabled text field.
 `mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.

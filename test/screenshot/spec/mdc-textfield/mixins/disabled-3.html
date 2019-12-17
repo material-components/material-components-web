@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2019 Google Inc.
+  Copyright 2018 Google Inc.
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Baseline Text Field Element with Placeholder - MDC Web Screenshot Test</title>
+    <title>Disabled Mixin Tests Part 3 for Text Field - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.textfield.css">
     <link rel="stylesheet" href="../../../out/mdc.typography.css">
@@ -41,19 +41,19 @@
   </head>
 
   <body class="test-container">
-    <main class="test-viewport test-viewport--mobile">
+    <main class="test-viewport test-viewport--no-bg">
       <div class="test-layout">
 
-        <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--no-label">
-            <input type="text" id="filled-text-field" class="mdc-text-field__input test-text-field__input" placeholder="Placeholder text">
+        <div class="test-cell test-cell--light test-cell--textfield-small">
+          <div class="mdc-text-field mdc-text-field--no-label mdc-text-field--disabled custom-disabled-colors-text-field--placeholder-color">
+            <input type="text" id="filled-text-field--bottom-line-color" class="mdc-text-field__input test-text-field__input" disabled placeholder="Placeholder text">
             <div class="mdc-line-ripple"></div>
           </div>
         </div>
 
-        <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input" placeholder="Placeholder text">
+        <div class="test-cell test-cell--light test-cell--textfield-small">
+          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label mdc-text-field--disabled custom-disabled-colors-text-field--placeholder-color">
+            <input type="text" id="outlined-text-field--bottom-line-color" class="mdc-text-field__input test-text-field__input" disabled placeholder="Placeholder text">
             <div class="mdc-notched-outline">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__trailing"></div>
