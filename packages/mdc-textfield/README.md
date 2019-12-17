@@ -357,6 +357,7 @@ Property | Value Type | Description
 `trailingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
 `leadingIconContent` | `string` (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
 `trailingIconContent` | `string` (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
+`endAligned` | `boolean` | Aligns the input to the end if true, or start if false.
 
 In addition to the above, the following properties proxy to the `input` element's properties of the same name:
 

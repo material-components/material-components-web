@@ -829,6 +829,13 @@
   }
 }
 
+// End aligned
+@mixin mdc-text-field-end-aligned_ {
+  .mdc-text-field__input {
+    text-align: end;
+  }
+}
+
 // Customization
 
 @mixin mdc-text-field-ink-color_($color) {

@@ -327,6 +327,25 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   /**
+   * Indicates if a text field is end-aligned if true, or start-aligned if false.
+   */
+  get endAligned() {
+    return this.getRootAdapterMethods_().hasClass(cssClasses.END_ALIGNED);
+  }
+
+  /**
+   * Sets the alignment of the text field. If true, the text will be end-aligned. If false, the
+   * text will be start-aligned.
+   */
+  set endAligned(isEndAligned: boolean) {
+    if (isEndAligned) {
+      this.getRootAdapterMethods_().addClass(cssClasses.END_ALIGNED);
+    } else {
+      this.getRootAdapterMethods_().removeClass(cssClasses.END_ALIGNED);
+    }
+  }
+
+  /**
    * Focuses the input element.
    */
   focus() {

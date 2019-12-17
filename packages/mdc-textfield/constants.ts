@@ -33,6 +33,7 @@ const strings = {
 const cssClasses = {
   DENSE: 'mdc-text-field--dense',
   DISABLED: 'mdc-text-field--disabled',
+  END_ALIGNED: 'mdc-text-field--end-aligned',
   FOCUSED: 'mdc-text-field--focused',
   FULLWIDTH: 'mdc-text-field--fullwidth',
   HELPER_LINE: 'mdc-text-field-helper-line',
