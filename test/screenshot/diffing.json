@@ -85,7 +85,8 @@
         ],
         "url_regex_patterns": [
           "mdc-textfield/classes/textarea-invalid.html",
-          "mdc-textfield/mixins/density-invalid.html"
+          "mdc-textfield/mixins/density-invalid.html",
+          "mdc-textfield/mixins/density-leading-icon-invalid.html"
         ],
         "custom_config": {
           "skip_all": true

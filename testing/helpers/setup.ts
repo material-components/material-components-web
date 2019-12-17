@@ -32,10 +32,33 @@ export interface FoundationConstructor<F extends MDCFoundation> extends
   new(...args: any[]): F;
 }
 
-export function setupFoundationTest<F extends MDCFoundation>(
+export function setUpFoundationTest<F extends MDCFoundation>(
     FoundationClass: FoundationConstructor<F>) {
   const mockAdapter = jasmine.createSpyObj(
       FoundationClass.name, FoundationClass.defaultAdapter);
   const foundation = new FoundationClass(mockAdapter);
   return {foundation, mockAdapter};
+}
+
+/**
+ * Sets up common functionality across all MDC foundation/component unit tests:
+ * - Installation of the Jasmine clock.
+ * - Replaces RAF with setTimeout so functionality in RAF's can be tested with
+ *   the Jasmine clock.
+ */
+export function setUpMdcTestEnvironment() {
+  beforeAll(() => {
+    // Replace RAF with setTimeout, since setTimeout is overridden to be
+    // synchronous in Jasmine clock installation.
+    window.requestAnimationFrame = (fn: Function) => setTimeout(fn, 1);
+    window.cancelAnimationFrame = (id: number) => { clearTimeout(id); };
+  });
+
+  beforeEach(() => {
+    jasmine.clock().install();
+  });
+
+  afterEach(() => {
+    jasmine.clock().uninstall();
+  });
 }
