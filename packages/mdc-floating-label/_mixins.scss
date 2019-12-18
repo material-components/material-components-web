@@ -21,60 +21,149 @@
 //
 
 @import "@material/rtl/mixins";
+@import "@material/theme/variables";
 @import "@material/theme/mixins";
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
+@import "@material/animation/variables";
+@import "@material/typography/mixins";
 @import "./variables";
 
-@mixin mdc-floating-label-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+@mixin mdc-floating-label-core-styles($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-animation: mdc-feature-create-target($query, animation);
+
+  // postcss-bem-linter: define floating-label
+  .mdc-floating-label {
+    @include mdc-typography(subtitle1, $query: $query, $exclude-props: (line-height));
+
+    @include mdc-feature-targets($feat-structure) {
+      position: absolute;
+      /* @noflip */
+      left: 0;
+      /* @noflip */
+      transform-origin: left top;
+      line-height: 1.15rem;
+      text-align: left;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: text;
+      overflow: hidden;
+
+      /* @alternate */
+      // Force the label into its own layer to prevent visible layer promotion adjustments
+      // when the ripple is activated behind it.
+      will-change: transform;
+
+      @include mdc-rtl {
+        /* @noflip */
+        right: 0;
+        /* @noflip */
+        left: auto;
+        /* @noflip */
+        transform-origin: right top;
+        /* @noflip */
+        text-align: right;
+      }
+    }
+
+    @include mdc-feature-targets($feat-animation) {
+      transition:
+        transform $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function,
+        color $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function;
+    }
+  }
+
+  .mdc-floating-label--float-above {
+    @include mdc-feature-targets($feat-structure) {
+      cursor: auto;
+    }
+  }
+
+  @at-root {
+    @include mdc-floating-label-float-position($mdc-floating-label-position-y, $query: $query);
+    @include mdc-floating-label-shake-animation(standard, $query: $query);
+  }
+
+  @include mdc-floating-label-shake-keyframes(standard, $mdc-floating-label-position-y, $query: $query);
+}
+
+@mixin mdc-floating-label-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
 // Used for textarea in case of scrolling
-@mixin mdc-floating-label-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
-}
+@mixin mdc-floating-label-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
 
-@mixin mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX: 0%, $scale: .75) {
-  @keyframes mdc-floating-label-shake-float-above-#{$modifier} {
-    0% {
-      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
-    }
-
-    33% {
-      animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
-      transform: translateX(calc(4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
-    }
-
-    66% {
-      animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
-      transform: translateX(calc(-4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
-    }
-
-    100% {
-      transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
-    }
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-floating-label-float-position($positionY, $positionX: 0%, $scale: .75) {
-  .mdc-floating-label--float-above {
-    @if $positionX > 0 or $positionX < 0 {
-      transform: translateY(-1 * $positionY) translateX(-1 * $positionX) scale($scale);
+@mixin mdc-floating-label-shake-keyframes(
+  $modifier, $positionY, $positionX: 0%, $scale: .75, $query: mdc-feature-all()) {
+  $feat-animation: mdc-feature-create-target($query, animation);
 
-      @include mdc-rtl {
-        transform: translateY(-1 * $positionY) translateX($positionX) scale($scale);
+  @include mdc-feature-targets($feat-animation) {
+    @keyframes mdc-floating-label-shake-float-above-#{$modifier} {
+      0% {
+        transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
       }
-    } @else {
-      transform: translateY(-1 * $positionY) scale($scale);
+
+      33% {
+        animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
+        transform: translateX(calc(4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+      }
+
+      66% {
+        animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
+        transform: translateX(calc(-4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+      }
+
+      100% {
+        transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+      }
     }
   }
 }
 
-@mixin mdc-floating-label-shake-animation($modifier) {
-  .mdc-floating-label--shake {
-    animation: mdc-floating-label-shake-float-above-#{$modifier} 250ms 1;
+@mixin mdc-floating-label-float-position($positionY, $positionX: 0%, $scale: .75, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  .mdc-floating-label--float-above {
+    @include mdc-feature-targets($feat-structure) {
+      @if $positionX > 0 or $positionX < 0 {
+        transform: translateY(-1 * $positionY) translateX(-1 * $positionX) scale($scale);
+
+        @include mdc-rtl {
+          transform: translateY(-1 * $positionY) translateX($positionX) scale($scale);
+        }
+      } @else {
+        transform: translateY(-1 * $positionY) scale($scale);
+      }
+    }
   }
 }
 
-@mixin mdc-floating-label-max-width($max-width) {
-  max-width: $max-width;
+@mixin mdc-floating-label-shake-animation($modifier, $query: mdc-feature-all()) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+
+  .mdc-floating-label--shake {
+    @include mdc-feature-targets($feat-animation) {
+      animation: mdc-floating-label-shake-float-above-#{$modifier} 250ms 1;
+    }
+  }
+}
+
+@mixin mdc-floating-label-max-width($max-width, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    max-width: $max-width;
+  }
 }
