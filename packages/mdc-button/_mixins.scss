@@ -381,6 +381,15 @@ $query: mdc-feature-all()) {
   }
 }
 
+///
+/// Sets the button label to overflow as ellipsis
+///
+@mixin mdc-button-label-overlow-ellipsis($query: mdc-feature-all()) {
+  .mdc-button__label {
+    @include mdc-typography-overflow-ellipsis($query: $query);
+  }
+}
+
 @mixin mdc-button-base_($query) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);

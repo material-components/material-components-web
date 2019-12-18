@@ -46,6 +46,7 @@
     @include mdc-button-theme-baseline($query: $query);
     @include mdc-button-density(-1, $query: $query);
     @include mdc-button-height(0, $query: $query);
+    @include mdc-button-label-overlow-ellipsis($query: $query);
 
     // Card
     @include mdc-card-core-styles($query: $query);
