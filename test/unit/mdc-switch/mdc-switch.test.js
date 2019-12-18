@@ -117,11 +117,11 @@ test('get/set checked updates the aria-checked of the native switch input elemen
   component.checked = true;
   assert.equal(
     inputEl.getAttribute(MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR),
-    MDCSwitchFoundation.strings.ARIA_CHECKED_CHECKED_VALUE);
+    'true');
   component.checked = false;
   assert.equal(
     inputEl.getAttribute(MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR),
-    MDCSwitchFoundation.strings.ARIA_CHECKED_UNCHECKED_VALUE);
+    'false');
 });
 
 test('get ripple returns a MDCRipple instance', () => {

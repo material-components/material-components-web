@@ -86,10 +86,7 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
 
   private updateAriaChecked_(checked: boolean) {
     this.adapter_.setNativeControlAttr(
-        strings.ARIA_CHECKED_ATTR,
-        checked ?
-            strings.ARIA_CHECKED_CHECKED_VALUE :
-            strings.ARIA_CHECKED_UNCHECKED_VALUE);
+      strings.ARIA_CHECKED_ATTR, `${!!checked}`);
   }
 }
 

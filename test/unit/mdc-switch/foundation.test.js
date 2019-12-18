@@ -83,7 +83,7 @@ test('#setChecked sets aria-checked to true when set to true', () => {
   foundation.setChecked(true);
   td.verify(mockAdapter.setNativeControlAttr(
     MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR,
-    MDCSwitchFoundation.strings.ARIA_CHECKED_CHECKED_VALUE));
+    'true'));
 });
 
 test('#setChecked sets aria-checked to false when set to false', () => {
@@ -91,7 +91,7 @@ test('#setChecked sets aria-checked to false when set to false', () => {
   foundation.setChecked(false);
   td.verify(mockAdapter.setNativeControlAttr(
     MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR,
-    MDCSwitchFoundation.strings.ARIA_CHECKED_UNCHECKED_VALUE));
+    'false'));
 });
 
 test('#setDisabled updates the disabled state', () => {
@@ -135,7 +135,7 @@ test('#handleChange sets aria-checked to true when the switch is a checked state
   foundation.handleChange({target: {checked: true}});
   td.verify(mockAdapter.setNativeControlAttr(
     MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR,
-    MDCSwitchFoundation.strings.ARIA_CHECKED_CHECKED_VALUE));
+    'true'));
 });
 
 test('#handleChange sets aria-checked to false when the switch is a unchecked state', () => {
@@ -144,5 +144,5 @@ test('#handleChange sets aria-checked to false when the switch is a unchecked st
   foundation.handleChange({target: {checked: false}});
   td.verify(mockAdapter.setNativeControlAttr(
     MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR,
-    MDCSwitchFoundation.strings.ARIA_CHECKED_UNCHECKED_VALUE));
+    'false'));
 });
