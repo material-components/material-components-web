@@ -35,7 +35,7 @@
 
   // postcss-bem-linter: define floating-label
   .mdc-floating-label {
-    @include mdc-typography(subtitle1, $query: $query, $exclude-props: (line-height));
+    @include mdc-typography(subtitle1, $exclude-props: (line-height), $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
       position: absolute;
