@@ -194,4 +194,4 @@ Method Signature | Description
 `setDisabled(disabled: boolean) => void` | Updates the `disabled` property on the underlying input. Does nothing when the underlying input is not present.
 `handleAnimationEnd() => void` | `animationend` event handler that should be applied to the root element.
 `handleClick() => void` | `click` event handler that should be applied to the checkbox element.
-`handleChange() => void` | Actions taken after check status changes.
+`handleChange() => void` | Handles check status changes.
