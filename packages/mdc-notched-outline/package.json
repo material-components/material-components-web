@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@material/base": "^4.0.0",
+    "@material/feature-targeting": "^4.0.0",
     "@material/floating-label": "^4.0.0",
     "@material/rtl": "^4.0.0",
     "@material/shape": "^4.0.0",
