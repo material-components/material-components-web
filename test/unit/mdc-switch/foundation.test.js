@@ -129,7 +129,7 @@ test('#handleChange removes mdc-switch--checked from the switch when it is an un
   td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.CHECKED));
 });
 
-test('#handleChange sets aria-checked to true when the swith is a checked state', () => {
+test('#handleChange sets aria-checked to true when the switch is a checked state', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.handleChange({target: {checked: true}});
@@ -138,7 +138,7 @@ test('#handleChange sets aria-checked to true when the swith is a checked state'
     MDCSwitchFoundation.strings.ARIA_CHECKED_CHECKED_VALUE));
 });
 
-test('#handleChange sets aria-checked to false when the swith is a checked state', () => {
+test('#handleChange sets aria-checked to false when the switch is a unchecked state', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.handleChange({target: {checked: false}});

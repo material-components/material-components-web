@@ -93,7 +93,7 @@ Add the `mdc-switch--checked` class to the `mdc-switch` element, and the `checke
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
     <div class="mdc-switch__thumb"></div>
-    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="false" checked>
+    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="true" checked>
   </div>
 </div>
 <label for="another-basic-switch">off/on</label>
