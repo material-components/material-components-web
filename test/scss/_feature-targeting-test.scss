@@ -6,6 +6,7 @@
 @import "@material/drawer/mixins";
 @import "@material/elevation/mixins";
 @import "@material/fab/mixins";
+@import "@material/floating-label/mixins";
 @import "@material/form-field/mixins";
 @import "@material/grid-list/mixins";
 @import "@material/icon-button/mixins";
@@ -160,6 +161,15 @@
     @include mdc-elevation-overlay-surface-position($query: $query);
     @include mdc-elevation-overlay-fill-color(red, $query: $query);
     @include mdc-elevation-overlay-opacity(99%, $query: $query);
+
+    // Floating label
+    @include mdc-floating-label-core-styles($query: $query);
+    @include mdc-floating-label-ink-color(red, $query: $query);
+    @include mdc-floating-label-fill-color(red, $query: $query);
+    @include mdc-floating-label-shake-keyframes(standard, 100%, $query: $query);
+    @include mdc-floating-label-float-position(100%, $query: $query);
+    @include mdc-floating-label-shake-animation(standard, $query: $query);
+    @include mdc-floating-label-max-width(100%, $query: $query);
 
     // FAB
     @include mdc-fab-core-styles($query: $query);
