@@ -34,14 +34,18 @@
 
       <div class="test-cell test-cell--textfield">
         <div class="mdc-text-field mdc-text-field--end-aligned mdc-text-field--no-label">
-          <input type="text" class="mdc-text-field__input test-text-field__input" placeholder="Placeholder">
+          <!-- htmllint-disable -->
+          <input type="text" class="mdc-text-field__input test-text-field__input" aria-label="Label" placeholder="Placeholder">
+          <!-- htmllint-enable -->
           <div class="mdc-line-ripple"></div>
         </div>
       </div>
 
       <div class="test-cell test-cell--textfield">
         <div class="mdc-text-field mdc-text-field--end-aligned mdc-text-field--outlined mdc-text-field--no-label">
-          <input type="text" class="mdc-text-field__input test-text-field__input" placeholder="Placeholder">
+          <!-- htmllint-disable -->
+          <input type="text" class="mdc-text-field__input test-text-field__input" aria-label="Label" placeholder="Placeholder">
+          <!-- htmllint-enable -->
           <div class="mdc-notched-outline">
             <div class="mdc-notched-outline__leading"></div>
             <div class="mdc-notched-outline__trailing"></div>
