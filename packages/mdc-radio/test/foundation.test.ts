@@ -25,8 +25,8 @@ import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {MDCRadioFoundation} from '../foundation';
 
 function setupTest() {
-const {foundation, mockAdapter} = setUpFoundationTest(MDCRadioFoundation);
-return {foundation, mockAdapter};
+  const {foundation, mockAdapter} = setUpFoundationTest(MDCRadioFoundation);
+  return {foundation, mockAdapter};
 }
 
 describe('MDCRadioFoundation', () => {
