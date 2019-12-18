@@ -839,13 +839,13 @@
 
 @mixin mdc-text-field-placeholder-color_($color) {
   .mdc-text-field__input::placeholder {
-    color: $color;
+    @include mdc-theme-prop(color, $color);
   }
 
   // Override the placeholder styles in IE with important rule to improve specificity.
   // stylelint-disable-next-line selector-no-vendor-prefix
   .mdc-text-field__input:-ms-input-placeholder {
-    color: $color !important;
+    @include mdc-theme-prop(color, $color, $important: true);
   }
 }
 

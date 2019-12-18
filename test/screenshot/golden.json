@@ -1808,19 +1808,11 @@
     }
   },
   "spec/mdc-textfield/mixins/disabled-2.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/06/23_03_42_080/spec/mdc-textfield/mixins/disabled-2.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/21_25_01_625/spec/mdc-textfield/mixins/disabled-2.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/06/23_03_42_080/spec/mdc-textfield/mixins/disabled-2.html.windows_chrome_77.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/06/23_03_42_080/spec/mdc-textfield/mixins/disabled-2.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/06/23_03_42_080/spec/mdc-textfield/mixins/disabled-2.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-textfield/mixins/disabled-3.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/12/18/18_58_50_809/spec/mdc-textfield/mixins/disabled-3.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/12/18/18_58_50_809/spec/mdc-textfield/mixins/disabled-3.html.windows_chrome_77.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/12/18/18_58_50_809/spec/mdc-textfield/mixins/disabled-3.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/12/18/18_58_50_809/spec/mdc-textfield/mixins/disabled-3.html.windows_ie_11.png"
+      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/21_25_01_625/spec/mdc-textfield/mixins/disabled-2.html.windows_chrome_77.png",
+      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/21_25_01_625/spec/mdc-textfield/mixins/disabled-2.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/21_25_01_625/spec/mdc-textfield/mixins/disabled-2.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/mixins/outline-shape-radius.html": {
