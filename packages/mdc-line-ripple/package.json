@@ -24,6 +24,7 @@
   "dependencies": {
     "@material/animation": "^5.0.0",
     "@material/base": "^5.0.0",
+    "@material/feature-targeting": "^5.0.0",
     "@material/theme": "^5.0.0",
     "tslib": "^1.9.3"
   }
