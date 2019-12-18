@@ -69,7 +69,7 @@ const istanbulInstrumenterLoader = {
     /node_modules/,
     /adapter.[jt]s$/,
     /constants.[jt]s$/,
-    /checkbox\/foundation.ts$/,
+    /checkbox\/.*$/,
     /radio\/foundation.ts$/,
   ],
   include: path.resolve('./packages'),
