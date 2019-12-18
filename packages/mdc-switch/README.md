@@ -43,7 +43,7 @@ npm install @material/switch
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
     <div class="mdc-switch__thumb"></div>
-    <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+    <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="false">
   </div>
 </div>
 <label for="basic-switch">off/on</label>
@@ -78,7 +78,7 @@ Add the `mdc-switch--disabled` class to the `mdc-switch` element, and the `disab
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
     <div class="mdc-switch__thumb"></div>
-    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" disabled>
+    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="false" disabled>
   </div>
 </div>
 <label for="another-basic-switch">off/on</label>
@@ -93,7 +93,7 @@ Add the `mdc-switch--checked` class to the `mdc-switch` element, and the `checke
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
     <div class="mdc-switch__thumb"></div>
-    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" checked>
+    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="false" checked>
   </div>
 </div>
 <label for="another-basic-switch">off/on</label>
@@ -152,6 +152,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `setNativeControlChecked(checked: boolean)` | Sets the checked state of the native control. |
 | `setNativeControlDisabled(disabled: boolean)` | Sets the disabled state of the native control. |
+| `setNativeControlAttr(attr: string, value: string)` | Sets an HTML attribute to the given value on the native input element. |
 
 ### `MDCSwitchFoundation`
 

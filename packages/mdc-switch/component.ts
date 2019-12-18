@@ -69,6 +69,7 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
       removeClass: (className) => this.root_.classList.remove(className),
       setNativeControlChecked: (checked) => this.nativeControl_.checked = checked,
       setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+      setNativeControlAttr: (attr, value) => this.nativeControl_.setAttribute(attr, value),
     };
     return new MDCSwitchFoundation(adapter);
   }

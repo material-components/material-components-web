@@ -31,6 +31,12 @@ const cssClasses = {
 
 /** String constants used by the switch. */
 const strings = {
+  /** Aria attribute for checked or unchecked state of switch */
+  ARIA_CHECKED_ATTR: 'aria-checked',
+  /** Aria attribute value for checked state of switch */
+  ARIA_CHECKED_CHECKED_VALUE: 'true',
+  /** Aria attribute value for unchecked state of switch */
+  ARIA_CHECKED_UNCHECKED_VALUE: 'false',
   /** A CSS selector used to locate the native HTML control for the switch.  */
   NATIVE_CONTROL_SELECTOR: '.mdc-switch__native-control',
   /** A CSS selector used to locate the ripple surface element for the switch. */
