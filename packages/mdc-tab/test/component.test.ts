@@ -197,7 +197,6 @@ describe('MDCTab', () => {
 
        component.listen(MDCTabFoundation.strings.INTERACTED_EVENT, handler);
        (component.getDefaultFoundation() as any).adapter_.notifyInteracted();
-       // expect(handler).toHaveBeenCalledWith(td.matchers.anything());
        expect(handler).toHaveBeenCalled();
      });
 
