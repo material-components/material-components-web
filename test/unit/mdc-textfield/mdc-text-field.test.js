@@ -540,16 +540,6 @@ test('#adapter.setLineRippleTransformOrigin calls the setRippleCenter method on 
   td.verify(lineRipple.setRippleCenter(100));
 });
 
-test('get/set endAligned toggles class', () => {
-  const root = getFixture();
-  const component = new MDCTextField(root);
-  assert.isFalse(component.endAligned);
-  root.classList.add(cssClasses.END_ALIGNED);
-  assert.isTrue(component.endAligned);
-  component.endAligned = false;
-  assert.isFalse(root.classList.contains(cssClasses.END_ALIGNED));
-});
-
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTextFieldFoundation);
   const mockFoundation = new MockFoundationConstructor();

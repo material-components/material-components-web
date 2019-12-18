@@ -271,6 +271,7 @@ CSS Class | Description
 `mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon.
 `mdc-text-field--focused` | Styles the text field as a text field in focus.
 `mdc-text-field--no-label` | Styles the text field that has no label.
+`mdc-text-field--end-aligned` | Styles the text field with an end-aligned input.
 `mdc-text-field-helper-line` | Styles the container of helper text and character counter elements.
 
 #### Deprecation Notice
@@ -357,7 +358,6 @@ Property | Value Type | Description
 `trailingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
 `leadingIconContent` | `string` (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
 `trailingIconContent` | `string` (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
-`endAligned` | `boolean` | Aligns the input to the end if true, or start if false.
 
 In addition to the above, the following properties proxy to the `input` element's properties of the same name:
 
