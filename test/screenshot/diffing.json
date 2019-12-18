@@ -99,7 +99,7 @@
         ],
         "url_regex_patterns": [
           "mdc-menu/classes/menu-selection-group-only.html",
-          "mdc-menu/classes/menu-selection-group.html"
+          "mdc-menu/classes/menu-selection-group.html",
           "mdc-menu/classes/multiple-menu-selection-group.html"
         ],
         "custom_config": {
