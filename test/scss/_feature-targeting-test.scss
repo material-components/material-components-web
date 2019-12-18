@@ -6,11 +6,13 @@
 @import "@material/drawer/mixins";
 @import "@material/elevation/mixins";
 @import "@material/fab/mixins";
+@import "@material/floating-label/mixins";
 @import "@material/form-field/mixins";
 @import "@material/grid-list/mixins";
 @import "@material/icon-button/mixins";
 @import "@material/image-list/mixins";
 @import "@material/linear-progress/mixins";
+@import "@material/line-ripple/mixins";
 @import "@material/list/mixins";
 @import "@material/menu-surface/mixins";
 @import "@material/menu/mixins";
@@ -47,6 +49,7 @@
     @include mdc-button-theme-baseline($query: $query);
     @include mdc-button-density(-1, $query: $query);
     @include mdc-button-height(0, $query: $query);
+    @include mdc-button-label-overlow-ellipsis($query: $query);
 
     // Card
     @include mdc-card-core-styles($query: $query);
@@ -155,10 +158,19 @@
     @include mdc-elevation-overlay-common($query: $query);
     @include mdc-elevation(0, $query: $query);
     @include mdc-elevation-shadow(none, $query: $query);
-    @include mdc-elevation-overlay-parent($query: $query);
     @include mdc-elevation-overlay-dimensions(100%, $query: $query);
+    @include mdc-elevation-overlay-surface-position($query: $query);
     @include mdc-elevation-overlay-fill-color(red, $query: $query);
     @include mdc-elevation-overlay-opacity(99%, $query: $query);
+
+    // Floating label
+    @include mdc-floating-label-core-styles($query: $query);
+    @include mdc-floating-label-ink-color(red, $query: $query);
+    @include mdc-floating-label-fill-color(red, $query: $query);
+    @include mdc-floating-label-shake-keyframes(standard, 100%, $query: $query);
+    @include mdc-floating-label-float-position(100%, $query: $query);
+    @include mdc-floating-label-shake-animation(standard, $query: $query);
+    @include mdc-floating-label-max-width(100%, $query: $query);
 
     // FAB
     @include mdc-fab-core-styles($query: $query);
@@ -200,6 +212,10 @@
     @include mdc-linear-progress-core-styles($query: $query);
     @include mdc-linear-progress-bar-color(red, $query: $query);
     @include mdc-linear-progress-buffer-color(red, $query: $query);
+
+    // Line ripple
+    @include mdc-line-ripple-core-styles($query: $query);
+    @include mdc-line-ripple-color(red, $query: $query);
 
     // List
     @include mdc-list-core-styles($query: $query);

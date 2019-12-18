@@ -145,7 +145,6 @@
   &.mdc-switch--checked .mdc-switch__track {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, $color);
-      @include mdc-theme-prop(border-color, $color);
     }
   }
 }
@@ -173,7 +172,6 @@
   &:not(.mdc-switch--checked) .mdc-switch__track {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, $color);
-      @include mdc-theme-prop(border-color, $color);
     }
   }
 }
@@ -271,6 +269,7 @@
 @mixin mdc-switch__track_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-feature-targets($feat-structure) {
     box-sizing: border-box;
@@ -286,6 +285,10 @@
       mdc-switch-transition(opacity),
       mdc-switch-transition(background-color),
       mdc-switch-transition(border-color);
+  }
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(border-color, transparent);
   }
 }
 

@@ -77,6 +77,34 @@
         "custom_config": {
           "skip_all": true
         }
+      },
+      {
+        "description": "FF flakes frequently with invalid textarea.",
+        "browser_regex_patterns": [
+          "desktop_windows_firefox@69"
+        ],
+        "url_regex_patterns": [
+          "mdc-textfield/classes/textarea-invalid.html",
+          "mdc-textfield/mixins/density-invalid.html",
+          "mdc-textfield/mixins/density-leading-icon-invalid.html"
+        ],
+        "custom_config": {
+          "skip_all": true
+        }
+      },
+      {
+        "description": "FF flakes for menu, screenshotting before animation is complete. `fonts_loaded_reflow_delay_ms` is increased, as it's also used for the animation delay.",
+        "browser_regex_patterns": [
+          "desktop_windows_firefox@69"
+        ],
+        "url_regex_patterns": [
+          "mdc-menu/classes/menu-selection-group-only.html",
+          "mdc-menu/classes/menu-selection-group.html",
+          "mdc-menu/classes/multiple-menu-selection-group.html"
+        ],
+        "custom_config": {
+          "fonts_loaded_reflow_delay_ms": 250
+        }
       }
     ]
   }

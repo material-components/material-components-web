@@ -78,7 +78,7 @@ print_all_changed_files
 
 if [[ "$TEST_SUITE" == 'unit' ]]; then
   # Only run unit tests if JS files changed
-  check_for_testable_files '^karma\.conf\.js$' '^packages/.+\.(js|ts)$' '^test/unit/.+\.(js|ts)$'
+  check_for_testable_files '^karma\.conf\.js$' '^packages/.+\.(js|ts)$' '^test/unit/.+\.(js|ts)$' '^testing/.+\.ts'
 fi
 
 if [[ "$TEST_SUITE" == 'build' ]]; then
@@ -92,6 +92,9 @@ if [[ "$TEST_SUITE" == 'site-generator' ]]; then
 fi
 
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
-  # Only run screenshot tests if package JS/Sass files, screenshot test files, or image files changed.
+  # Only run screenshot tests if the following change:
+  # - package (non-unit test) JS/Sass files
+  # - screenshot test files
+  # - image files
   check_for_testable_files '^packages/.+\.(js|ts|css|scss)$' '^test/screenshot/' '\.(png|jpg|jpeg|gif|svg)$'
 fi

@@ -251,8 +251,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter_.addClass(cssClasses.FOCUSED);
 
     if (this.adapter_.hasLabel()) {
-      this.adapter_.floatLabel(true);
       this.notchOutline(true);
+      this.adapter_.floatLabel(true);
     }
 
     this.adapter_.activateBottomLine();
