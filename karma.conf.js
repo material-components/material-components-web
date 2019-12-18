@@ -69,7 +69,8 @@ const istanbulInstrumenterLoader = {
     /node_modules/,
     /adapter.[jt]s$/,
     /constants.[jt]s$/,
-    /checkbox\/foundation.ts$/,
+    /checkbox\/.*$/,
+    /radio\/foundation.ts$/,
   ],
   include: path.resolve('./packages'),
 };
@@ -132,7 +133,7 @@ const jasmineConfig = {
         global: {
           // TODO: Raise threshold to at least 90% after more tests have been migrated.
           statements: 80,
-          branches: 80,
+          branches: 70,
           functions: 50,
           lines: 80,
           excludes: [
@@ -140,7 +141,7 @@ const jasmineConfig = {
             'constants.ts',
             'testing/**/*.ts',
             'packages/!(mdc-checkbox)/**/*',
-            'packages/**/component.ts', // Jasmine tests cover foundation/adapter only.
+            'packages/!(mdc-radio)/**/*',
           ],
         },
       },
