@@ -23,11 +23,12 @@
 
 const strings = {
   ARIA_CONTROLS: 'aria-controls',
-  ICON_SELECTOR: '.mdc-text-field__icon',
   INPUT_SELECTOR: '.mdc-text-field__input',
   LABEL_SELECTOR: '.mdc-floating-label',
+  LEADING_ICON_SELECTOR: '.mdc-text-field__leading-icon',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   OUTLINE_SELECTOR: '.mdc-notched-outline',
+  TRAILING_ICON_SELECTOR: '.mdc-text-field__trailing-icon'
 };
 
 const cssClasses = {

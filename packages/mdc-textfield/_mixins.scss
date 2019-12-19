@@ -382,7 +382,8 @@
   @include mdc-text-field-label-ink-color_($mdc-text-field-disabled-label-color);
   @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-character-counter-color_($mdc-text-field-disabled-helper-text-color);
-  @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
+  @include mdc-text-field-leading-icon-color_($mdc-text-field-disabled-icon);
+  @include mdc-text-field-trailing-icon-color_($mdc-text-field-disabled-icon);
   @include mdc-text-field-fill-color_($mdc-text-field-disabled-background);
 
   border-bottom: none;
@@ -400,16 +401,7 @@
   @include mdc-text-field-label-color($mdc-text-field-error);
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
   @include mdc-text-field-caret-color($mdc-text-field-error);
-
-  &.mdc-text-field--with-trailing-icon {
-    &:not(.mdc-text-field--with-leading-icon) {
-      @include mdc-text-field-icon-color($mdc-text-field-error);
-    }
-
-    &.mdc-text-field--with-leading-icon {
-      @include mdc-text-field-icon-color($mdc-text-field-error, /* styleSecondIcon */ true);
-    }
-  }
+  @include mdc-text-field-trailing-icon-color($mdc-text-field-error);
 
   + .mdc-text-field-helper-line .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
@@ -573,7 +565,8 @@
     top: 14px;
   }
 
-  .mdc-text-field__icon {
+  .mdc-text-field__leading-icon,
+  .mdc-text-field__trailing-icon {
     top: 12px;
   }
 }
@@ -600,7 +593,8 @@
     z-index: 1;
   }
 
-  .mdc-text-field__icon {
+  .mdc-text-field__leading-icon,
+  .mdc-text-field__trailing-icon {
     z-index: 2;
   }
 
@@ -610,13 +604,9 @@
 }
 
 @mixin mdc-text-field-hover-outline-color_($color) {
-  &:not(.mdc-text-field--focused) {
-    // stylelint-disable-next-line selector-combinator-space-after
-    .mdc-text-field__input:hover ~,
-    .mdc-text-field__icon:hover ~ {
-      .mdc-notched-outline {
-        @include mdc-notched-outline-color($color);
-      }
+  &:not(.mdc-text-field--focused):hover {
+    .mdc-notched-outline {
+      @include mdc-notched-outline-color($color);
     }
   }
 }
@@ -631,6 +621,7 @@
 
 @mixin mdc-text-field-with-leading-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
+    leading,
     left,
     $mdc-text-field-icon-position,
     $mdc-text-field-icon-padding,
@@ -644,6 +635,7 @@
 
 @mixin mdc-text-field-dense-with-leading-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
+    leading,
     left,
     $mdc-text-field-dense-icon-position,
     $mdc-text-field-dense-icon-padding,
@@ -657,6 +649,7 @@
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
+    leading,
     left,
     $mdc-text-field-icon-position,
     $mdc-text-field-icon-padding,
@@ -693,6 +686,7 @@
 
 @mixin mdc-text-field-with-trailing-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
+    trailing,
     right,
     $mdc-text-field-trailing-icon-position,
     $mdc-text-field-icon-padding,
@@ -702,6 +696,7 @@
   // Outlined uses 16px for text alignment when using a trailing icon.
   &.mdc-text-field--outlined {
     @include mdc-text-field-icon-horizontal-position_(
+      trailing,
       right,
       $mdc-text-field-icon-position,
       $mdc-text-field-icon-padding,
@@ -712,6 +707,7 @@
 
 @mixin mdc-text-field-dense-with-trailing-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
+    trailing,
     right,
     $mdc-text-field-dense-icon-position,
     $mdc-text-field-dense-icon-padding,
