@@ -150,11 +150,11 @@ describe('MDCCheckbox', () => {
     expect(component.ripple instanceof MDCRipple).toBeTruthy();
   });
 
-  it('checkbox change event calls #foundation.handleChange', () => {
+  it('checkbox click event calls #foundation.handleClick', () => {
     const {cb, component} = setupTest();
-    (component as any).foundation_.handleChange = jasmine.createSpy();
-    emitEvent(cb, 'change');
-    expect((component as any).foundation_.handleChange).toHaveBeenCalled();
+    (component as any).foundation_.handleClick = jasmine.createSpy();
+    emitEvent(cb, 'click');
+    expect((component as any).foundation_.handleClick).toHaveBeenCalled();
   });
 
   it('root animationend event calls #foundation.handleAnimationEnd', () => {
@@ -178,12 +178,12 @@ describe('MDCCheckbox', () => {
        expect(mockFoundation.handleChange).toHaveBeenCalled();
      });
 
-  it('checkbox change event handler is destroyed on #destroy', () => {
+  it('checkbox click event handler is destroyed on #destroy', () => {
     const {cb, component} = setupTest();
-    (component as any).foundation_.handleChange = jasmine.createSpy();
+    (component as any).foundation_.handleClick = jasmine.createSpy();
     component.destroy();
-    emitEvent(cb, 'change');
-    expect((component as any).foundation_.handleChange).not.toHaveBeenCalled();
+    emitEvent(cb, 'click');
+    expect((component as any).foundation_.handleClick).not.toHaveBeenCalled();
   });
 
   it('root animationend event handler is destroyed on #destroy', () => {
@@ -302,6 +302,20 @@ describe('MDCCheckbox', () => {
     cb.checked = false;
     expect((component.getDefaultFoundation() as any).adapter_.isChecked())
         .toBe(false);
+  });
+
+  it('#adapter.setChecked returns true when checkbox is checked', () => {
+    const {cb, component} = setupTest();
+    (component.getDefaultFoundation() as any)
+        .adapter_.setChecked(true);
+    expect(cb.checked).toBe(true);
+  });
+
+  it('#adapter.setChecked returns false when checkbox is not checked', () => {
+    const {cb, component} = setupTest();
+    (component.getDefaultFoundation() as any)
+        .adapter_.setChecked(false);
+    expect(cb.checked).toBe(false);
   });
 
   it('#adapter.hasNativeControl returns true when checkbox exists', () => {

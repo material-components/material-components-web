@@ -48,12 +48,17 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
       isIndeterminate: () => false,
       removeClass: () => undefined,
       removeNativeControlAttr: () => undefined,
+      setChecked: () => undefined,
       setNativeControlAttr: () => undefined,
       setNativeControlDisabled: () => undefined,
     };
   }
 
   private currentCheckState_ = strings.TRANSITION_STATE_INIT;
+  // Native checkboxes can only have two real states: checked/true or unchecked/false
+  // The indeterminate state is visual only.
+  // See https://stackoverflow.com/a/33529024 for more details.
+  private realCheckState_ = false;
   private currentAnimationClass_ = '';
   private animEndLatchTimer_ = 0;
   private enableAnimationEndHandler_ = false;
@@ -64,6 +69,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
 
   init() {
     this.currentCheckState_ = this.determineCheckState_();
+    this.realCheckState_ = this.adapter_.isChecked();
     this.updateAriaChecked_();
     this.adapter_.addClass(cssClasses.UPGRADED);
   }
@@ -98,7 +104,20 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 
   /**
-   * Handles the change event for the checkbox
+   * Handles the click event for the checkbox
+   */
+  handleClick() {
+    // added for IE browser to fix compatibility issue:
+    // https://github.com/material-components/material-components-web/issues/4893
+    const {TRANSITION_STATE_INDETERMINATE} = strings;
+    if (this.currentCheckState_ === TRANSITION_STATE_INDETERMINATE) {
+      this.adapter_.setChecked(!this.realCheckState_);
+    }
+    this.transitionCheckState_();
+  }
+
+  /**
+   * Handles the actions after check status changes
    */
   handleChange() {
     this.transitionCheckState_();
@@ -118,11 +137,16 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     this.updateAriaChecked_();
 
     const {TRANSITION_STATE_UNCHECKED} = strings;
+    const {TRANSITION_STATE_CHECKED} = strings;
     const {SELECTED} = cssClasses;
     if (newState === TRANSITION_STATE_UNCHECKED) {
       this.adapter_.removeClass(SELECTED);
+      this.realCheckState_ = false;
     } else {
       this.adapter_.addClass(SELECTED);
+      if (newState === TRANSITION_STATE_CHECKED) {
+        this.realCheckState_ = true;
+      }
     }
 
     // Check to ensure that there isn't a previously existing animation class, in case for example
