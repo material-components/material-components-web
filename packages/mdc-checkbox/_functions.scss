@@ -20,7 +20,8 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/functions";
+@import "@material/animation/functions";
+@import "./variables";
 
 @function mdc-checkbox-transition-enter($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
   @return mdc-animation-enter($property, $duration, $delay);
