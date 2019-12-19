@@ -34,39 +34,68 @@
   // postcss-bem-linter: define line-ripple
   .mdc-line-ripple {
     @include mdc-feature-targets($feat-structure) {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      transform: scaleX(0);
-      opacity: 0;
-      z-index: 2;
+      &::before,
+      &::after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        border-bottom-style: solid;
+        content: "";
+      }
+
+      &::before {
+        border-bottom-width: 1px;
+        z-index: 1;
+      }
+
+      &::after {
+        transform: scaleX(0);
+        border-bottom-width: 2px;
+        opacity: 0;
+        z-index: 2;
+      }
     }
 
     @include mdc-feature-targets($feat-animation) {
-      transition: mdc-line-ripple-transition-value(transform), mdc-line-ripple-transition-value(opacity);
+      &::after {
+        transition: mdc-line-ripple-transition-value(transform), mdc-line-ripple-transition-value(opacity);
+      }
     }
   }
 
-  .mdc-line-ripple--active {
+  .mdc-line-ripple--active::after {
     @include mdc-feature-targets($feat-structure) {
       transform: scaleX(1);
       opacity: 1;
     }
   }
 
-  .mdc-line-ripple--deactivating {
+  .mdc-line-ripple--deactivating::after {
     @include mdc-feature-targets($feat-structure) {
       opacity: 0;
     }
   }
 }
 
-@mixin mdc-line-ripple-color($color, $query: mdc-feature-all()) {
+// Public
+
+@mixin mdc-line-ripple-active-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-feature-targets($feat-color) {
-    @include mdc-theme-prop(background-color, $color);
+    &::after {
+      @include mdc-theme-prop(border-bottom-color, $color);
+    }
+  }
+}
+
+@mixin mdc-line-ripple-inactive-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    &::before {
+      @include mdc-theme-prop(border-bottom-color, $color);
+    }
   }
 }

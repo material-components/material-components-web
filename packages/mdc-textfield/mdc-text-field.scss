@@ -87,11 +87,9 @@
   padding:
     $mdc-text-field-input-padding-top
     $mdc-text-field-input-padding
-    $mdc-text-field-input-padding-bottom;
+    $mdc-text-field-input-padding-bottom + $mdc-text-field-input-border-bottom;
   transition: mdc-text-field-transition(opacity);
   border: none;
-  border-bottom: 1px solid;
-  border-radius: 0;
   background: none;
   appearance: none;
 
@@ -133,7 +131,7 @@
   // Vertically center aligns the text input placeholder and value for only filled variant.
   .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) & {
     padding-top: 16px;
-    padding-bottom: 16px;
+    padding-bottom: 16px + $mdc-text-field-input-border-bottom;
   }
 }
 // stylelint-disable-next-line plugin/selector-bem-pattern

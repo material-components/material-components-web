@@ -215,7 +215,8 @@
 
     // Line ripple
     @include mdc-line-ripple-core-styles($query: $query);
-    @include mdc-line-ripple-color(red, $query: $query);
+    @include mdc-line-ripple-active-color(red, $query: $query);
+    @include mdc-line-ripple-inactive-color(red, $query: $query);
 
     // List
     @include mdc-list-core-styles($query: $query);

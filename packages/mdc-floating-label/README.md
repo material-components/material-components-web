@@ -60,7 +60,7 @@ a unique `id` to each `<input>` by wrapping `mdc-text-field__input` within a `<l
 <label class="mdc-text-field">
   <input type="text" class="mdc-text-field__input">
   <span class="mdc-floating-label">Hint Text</span>
-  <div class="mdc-text-field__bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 </label>
 ```
 

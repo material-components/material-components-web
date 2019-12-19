@@ -285,7 +285,7 @@ these mixins within CSS selectors like `.foo-text-field:not(.mdc-text-field--foc
 and `.foo-text-field.mdc-text-field--focused` to select your focused text-fields. To change the invalid state of your text fields,
 apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--invalid`.
 
-> _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
+> _NOTE_: the `mdc-line-ripple-active-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
 
 #### Mixins for all Text Fields
 
