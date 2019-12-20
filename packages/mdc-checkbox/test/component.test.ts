@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {emitEvent} from '../../../testing/dom/events';
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+import {emitEvent} from '../../mdc-testing/dom/events';
+import {setUpMdcTestEnvironment} from '../../mdc-testing/helpers/setup';
 import {MDCRipple} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
 import {strings} from '../constants';

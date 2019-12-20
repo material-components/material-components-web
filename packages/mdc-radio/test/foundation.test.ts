@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {setUpFoundationTest} from '../../mdc-testing/helpers/setup';
 import {MDCRadioFoundation} from '../foundation';
 
 function setupTest() {

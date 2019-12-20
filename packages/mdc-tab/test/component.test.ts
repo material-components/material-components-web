@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {emitEvent} from '../../../testing/dom/events';
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+import {emitEvent} from '../../mdc-testing/dom/events';
+import {setUpMdcTestEnvironment} from '../../mdc-testing/helpers/setup';
 import {MDCTab, MDCTabFoundation} from '../index';
 
 const getFixture = () => {

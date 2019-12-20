@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+import {setUpMdcTestEnvironment} from '../../mdc-testing/helpers/setup';
 import {MDCRipple} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
 import {MDCRadio, MDCRadioFoundation} from '../index';

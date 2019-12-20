@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
-import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {verifyDefaultAdapter} from '../../mdc-testing/helpers/foundation';
+import {setUpFoundationTest} from '../../mdc-testing/helpers/setup';
 import {MDCTabFoundation} from '../foundation';
 
 function setupTest() {
