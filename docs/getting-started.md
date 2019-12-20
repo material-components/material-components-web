@@ -29,7 +29,10 @@ We also recommend using [Material Icons](https://material.io/tools/icons/) from 
 Then include MDC markup...
 
 ```html
-<button class="foo-button mdc-button">Button</button>
+<button class="mdc-button foo-button">
+  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__label">Button</span>
+</button>
 ```
 
 ...and instantiate JavaScript:
