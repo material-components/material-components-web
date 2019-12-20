@@ -86,20 +86,20 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
   root_!: Element; // assigned in MDCComponent constructor
 
   private readonly ripple_: MDCRipple = this.createRipple_();
-  private handleClick_!: EventListener; // assigned in initialSyncWithDOM()
+  private handleChange_!: EventListener; // assigned in initialSyncWithDOM()
   private handleAnimationEnd_!: EventListener; // assigned in initialSyncWithDOM()
 
   initialSyncWithDOM() {
-    this.handleClick_ = () => this.foundation_.handleClick();
+    this.handleChange_ = () => this.foundation_.handleChange();
     this.handleAnimationEnd_ = () => this.foundation_.handleAnimationEnd();
-    this.nativeControl_.addEventListener('click', this.handleClick_);
+    this.nativeControl_.addEventListener('change', this.handleChange_);
     this.listen(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
     this.installPropertyChangeHooks_();
   }
 
   destroy() {
     this.ripple_.destroy();
-    this.nativeControl_.removeEventListener('click', this.handleClick_);
+    this.nativeControl_.removeEventListener('change', this.handleChange_);
     this.unlisten(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
     this.uninstallPropertyChangeHooks_();
     super.destroy();
@@ -117,7 +117,6 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
       isIndeterminate: () => this.indeterminate,
       removeClass: (className) => this.root_.classList.remove(className),
       removeNativeControlAttr: (attr) => this.nativeControl_.removeAttribute(attr),
-      setChecked: (checkStatus) => this.checked = checkStatus,
       setNativeControlAttr: (attr, value) => this.nativeControl_.setAttribute(attr, value),
       setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
     };

@@ -37,7 +37,6 @@ export interface MDCCheckboxAdapter {
   isIndeterminate(): boolean;
   removeClass(className: string): void;
   removeNativeControlAttr(attr: string): void;
-  setChecked(checkStatus: boolean): void;
   setNativeControlAttr(attr: string, value: string): void;
   setNativeControlDisabled(disabled: boolean): void;
 }
