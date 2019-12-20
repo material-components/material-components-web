@@ -23,7 +23,7 @@
 @import "./functions";
 
 :root {
-  --mdc-typography-font-family: 'Roboto', sans-serif;
+  --mdc-typography-font-family: "Roboto", sans-serif;
 }
 
 $mdc-typography-font-family: var(--mdc-typography-font-family), unquote("Roboto, sans-serif") !default;
