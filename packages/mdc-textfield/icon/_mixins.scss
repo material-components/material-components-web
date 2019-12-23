@@ -59,55 +59,26 @@
 
 // Private mixins
 
-@mixin mdc-text-field-icon-horizontal-position_(
-  $icon-position,
-  $position-property,
-  $position,
-  $padding,
-  $input-padding
-) {
-  .mdc-text-field__#{$icon-position}-icon {
-    @include mdc-rtl-reflexive-position($position-property, $position);
-  }
-
-  // Move the input's position, to allow room for the icon
+@mixin mdc-text-field-icon-horizontal-position_($position-property, $position) {
   @if ($position-property == left) {
-    .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $padding, $input-padding);
+    .mdc-text-field__icon--leading {
+      @include mdc-rtl-reflexive-position($position-property, $position);
     }
   } @else {
-    .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $input-padding, $padding);
+    .mdc-text-field__icon--trailing {
+      @include mdc-rtl-reflexive-position($position-property, $position);
     }
   }
 }
 
-@mixin mdc-text-field-icon-horizontal-position-two-icons_(
-  $position-left,
-  $padding-left,
-  $position-right,
-  $padding-right
-) {
-  .mdc-text-field__leading-icon {
+@mixin mdc-text-field-icon-horizontal-position-two-icons_($position-left, $position-right) {
+  .mdc-text-field__icon--leading {
     @include mdc-rtl-reflexive(left, $position-left, right, auto);
   }
 
-  .mdc-text-field__trailing-icon {
+  .mdc-text-field__icon--trailing {
     @include mdc-rtl-reflexive(right, $position-right, left, auto);
   }
-
-  // Move the input's position, to allow room for the icons.
-  .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $padding-left, $padding-right);
-  }
-}
-
-@mixin mdc-text-field-leading-icon_ {
-  @include mdc-text-field-icon_;
-}
-
-@mixin mdc-text-field-trailing-icon_ {
-  @include mdc-text-field-icon_;
 }
 
 @mixin mdc-text-field-icon_ {
@@ -124,13 +95,13 @@
 }
 
 @mixin mdc-text-field-leading-icon-color_($color) {
-  .mdc-text-field__leading-icon {
+  .mdc-text-field__icon--leading {
     @include mdc-theme-prop(color, $color);
   }
 }
 
 @mixin mdc-text-field-trailing-icon-color_($color) {
-  .mdc-text-field__trailing-icon {
+  .mdc-text-field__icon--trailing {
     @include mdc-theme-prop(color, $color);
   }
 }

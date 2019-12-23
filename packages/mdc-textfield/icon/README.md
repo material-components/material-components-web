@@ -24,7 +24,7 @@ Icons describe the type of input a text field requires. They can also be interac
 ### HTML Structure
 
 ```html
-<i class="material-icons mdc-text-field__leading-icon" tabindex="0" role="button">event</i>
+<i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
 ```
 
 #### Icon Set
@@ -55,7 +55,7 @@ const icon = new MDCTextFieldIcon(document.querySelector('.mdc-text-field-icon')
 
 ## Variants
 
-Leading and trailing icons can be applied to default or `mdc-text-field--outlined` Text Fields. To add an icon, add the relevant class (`mdc-text-field--with-leading-icon` and/or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__leading-icon` or `mdc-text-field__trailing-icon`.
+Leading and trailing icons can be applied to default or `mdc-text-field--outlined` Text Fields. To add an icon, add the relevant class (`mdc-text-field--with-leading-icon` and/or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon` with the modifier`mdc-text-field__icon--leading` or `mdc-text-field__icon--trailing`.
 
 > **NOTE:** if you would like to display un-clickable icons, simply omit `tabindex="0"` and `role="button"`, and the CSS will ensure the cursor is set to default, and that interacting with an icon doesn't do anything unexpected.
 
@@ -65,7 +65,7 @@ In text field:
 
 ```html
 <div class="mdc-text-field mdc-text-field--with-leading-icon">
-  <i class="material-icons mdc-text-field__leading-icon" tabindex="0" role="button">event</i>
+  <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
   <div class="mdc-line-ripple"></div>
@@ -76,7 +76,7 @@ In outlined text field:
 
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
-  <i class="material-icons mdc-text-field__leading-icon" tabindex="0" role="button">event</i>
+  <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
@@ -95,7 +95,7 @@ In text field:
 ```html
 <div class="mdc-text-field mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <i class="material-icons mdc-text-field__trailing-icon" tabindex="0" role="button">event</i>
+  <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
   <label for="my-input" class="mdc-floating-label">Your Name</label>
   <div class="mdc-line-ripple"></div>
 </div>
@@ -106,7 +106,7 @@ In outlined text field:
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <i class="material-icons mdc-text-field__trailing-icon" tabindex="0" role="button">event</i>
+  <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
@@ -123,9 +123,9 @@ In text field:
 
 ```html
 <div class="mdc-text-field mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
-  <i class="material-icons mdc-text-field__leading-icon">phone</i>
+  <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading">phone</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <i class="material-icons mdc-text-field__trailing-icon" tabindex="0" role="button">event</i>
+  <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
   <label for="my-input" class="mdc-floating-label">Phone Number</label>
   <div class="mdc-line-ripple"></div>
 </div>
@@ -135,9 +135,9 @@ In outlined text field:
 
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
-  <i class="material-icons mdc-text-field__leading-icon">phone</i>
+  <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading">phone</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <i class="material-icons mdc-text-field__trailing-icon" tabindex="0" role="button">clear</i>
+  <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">clear</i>
   <div class="mdc-notched-outline">
    <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
@@ -154,8 +154,9 @@ In outlined text field:
 
 CSS Class | Description
 --- | ---
-`mdc-text-field__leading-icon` | Mandatory for leading icons.
-`mdc-text-field__trailing-icon` | Mandatory for trailing icons.
+`mdc-text-field__icon` | Mandatory.
+`mdc-text-field__icon--leading` | Mandatory for leading icons.
+`mdc-text-field__icon--trailing` | Mandatory for trailing icons.
 
 ### Sass Mixins
 

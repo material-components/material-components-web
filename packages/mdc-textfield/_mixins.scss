@@ -565,8 +565,7 @@
     top: 14px;
   }
 
-  .mdc-text-field__leading-icon,
-  .mdc-text-field__trailing-icon {
+  .mdc-text-field__icon {
     top: 12px;
   }
 }
@@ -593,8 +592,7 @@
     z-index: 1;
   }
 
-  .mdc-text-field__leading-icon,
-  .mdc-text-field__trailing-icon {
+  .mdc-text-field__icon {
     z-index: 2;
   }
 
@@ -621,12 +619,13 @@
 
 @mixin mdc-text-field-with-leading-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
-    leading,
     left,
-    $mdc-text-field-icon-position,
-    $mdc-text-field-icon-padding,
-    $mdc-text-field-input-padding
+    $mdc-text-field-icon-position
   );
+
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-icon-padding, $mdc-text-field-input-padding);
+  }
 
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
@@ -635,12 +634,13 @@
 
 @mixin mdc-text-field-dense-with-leading-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
-    leading,
     left,
-    $mdc-text-field-dense-icon-position,
-    $mdc-text-field-dense-icon-padding,
-    $mdc-text-field-input-padding
+    $mdc-text-field-dense-icon-position
   );
+
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-padding, $mdc-text-field-input-padding);
+  }
 
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
@@ -649,11 +649,8 @@
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
-    leading,
     left,
-    $mdc-text-field-icon-position,
-    $mdc-text-field-icon-padding,
-    $mdc-text-field-input-padding
+    $mdc-text-field-icon-position
   );
   @include mdc-notched-outline-floating-label-float-position-absolute($mdc-text-field-outlined-label-position-y, 32px);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
@@ -686,51 +683,56 @@
 
 @mixin mdc-text-field-with-trailing-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
-    trailing,
     right,
-    $mdc-text-field-trailing-icon-position,
-    $mdc-text-field-icon-padding,
-    $mdc-text-field-input-padding
+    $mdc-text-field-trailing-icon-position
   );
+
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-input-padding, $mdc-text-field-icon-padding);
+  }
 
   // Outlined uses 16px for text alignment when using a trailing icon.
   &.mdc-text-field--outlined {
     @include mdc-text-field-icon-horizontal-position_(
-      trailing,
       right,
-      $mdc-text-field-icon-position,
-      $mdc-text-field-icon-padding,
-      $mdc-text-field-input-padding
+      $mdc-text-field-icon-position
     );
   }
 }
 
 @mixin mdc-text-field-dense-with-trailing-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
-    trailing,
     right,
-    $mdc-text-field-dense-icon-position,
-    $mdc-text-field-dense-icon-padding,
-    $mdc-text-field-input-padding
+    $mdc-text-field-dense-icon-position
   );
+
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-input-padding, $mdc-text-field-dense-icon-padding);
+  }
 }
 
 @mixin mdc-text-field-with-both-icons_ {
   @include mdc-text-field-icon-horizontal-position-two-icons_(
     $mdc-text-field-icon-position,
-    $mdc-text-field-icon-padding,
-    $mdc-text-field-trailing-icon-position,
-    $mdc-text-field-icon-padding
+    $mdc-text-field-trailing-icon-position
   );
+
+  .mdc-text-field__input {
+    padding-right: $mdc-text-field-icon-padding;
+    padding-left: $mdc-text-field-icon-padding;
+  }
 }
 
 @mixin mdc-text-field-dense-with-both-icons_ {
   @include mdc-text-field-icon-horizontal-position-two-icons_(
     $mdc-text-field-dense-icon-position,
-    $mdc-text-field-dense-icon-padding,
-    $mdc-text-field-dense-icon-position,
-    $mdc-text-field-dense-icon-padding
+    $mdc-text-field-dense-icon-position
   );
+
+  .mdc-text-field__input {
+    padding-right: $mdc-text-field-dense-icon-padding;
+    padding-left: $mdc-text-field-dense-icon-padding;
+  }
 }
 
 // Full Width

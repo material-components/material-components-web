@@ -27,8 +27,7 @@ const strings = {
 };
 
 const cssClasses = {
-  LEADING: 'mdc-text-field__leading-icon',
-  TRAILING: 'mdc-text-field__trailing-icon',
+  ROOT: 'mdc-text-field__icon',
 };
 
 export {strings, cssClasses};

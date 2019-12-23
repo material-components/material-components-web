@@ -25,10 +25,10 @@ const strings = {
   ARIA_CONTROLS: 'aria-controls',
   INPUT_SELECTOR: '.mdc-text-field__input',
   LABEL_SELECTOR: '.mdc-floating-label',
-  LEADING_ICON_SELECTOR: '.mdc-text-field__leading-icon',
+  LEADING_ICON_SELECTOR: '.mdc-text-field__icon--leading',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   OUTLINE_SELECTOR: '.mdc-notched-outline',
-  TRAILING_ICON_SELECTOR: '.mdc-text-field__trailing-icon'
+  TRAILING_ICON_SELECTOR: '.mdc-text-field__icon--trailing'
 };
 
 const cssClasses = {

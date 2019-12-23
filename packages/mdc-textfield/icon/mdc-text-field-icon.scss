@@ -22,10 +22,6 @@
 
 @import "./mixins";
 
-.mdc-text-field__leading-icon {
-  @include mdc-text-field-leading-icon_;
-}
-
-.mdc-text-field__trailing-icon {
-  @include mdc-text-field-trailing-icon_;
+.mdc-text-field__icon {
+  @include mdc-text-field-icon_;
 }

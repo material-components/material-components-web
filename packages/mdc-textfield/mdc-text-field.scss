@@ -175,8 +175,7 @@
 }
 
 // stylelint-disable plugin/selector-bem-pattern
-.mdc-text-field--dense .mdc-text-field__leading-icon,
-.mdc-text-field--dense .mdc-text-field__trailing-icon {
+.mdc-text-field--dense .mdc-text-field__icon {
   bottom: 16px;
   transform: scale(.8);
 }
