@@ -151,7 +151,7 @@ test('on click notifies custom icon event', () => {
     });
   } else {
     evt = document.createEvent('CustomEvent');
-    evt.initCustomEvent('click', true, false);
+    evt.initCustomEvent('click', true, false, {});
   }
 
   let click;
