@@ -100,11 +100,9 @@ const addTrailingAction = (root: HTMLElement) => {
 };
 
 class FakeRipple {
-  root: HTMLElement | null;
   destroy: jasmine.Spy;
 
-  constructor(root: HTMLElement | null) {
-    this.root = root;
+  constructor(readonly root: HTMLElement | null) {
     this.destroy = jasmine.createSpy('.destroy');
   }
 }
