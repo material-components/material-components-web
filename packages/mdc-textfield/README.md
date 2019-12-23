@@ -32,11 +32,11 @@ npm install @material/textfield
 ### HTML Structure
 
 ```html
-<div class="mdc-text-field">
+<label class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
   <label class="mdc-floating-label" for="my-text-field">Hint text</label>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 > NOTE: For more details, see [MDC Line Ripple](../mdc-line-ripple/README.md)
@@ -65,12 +65,12 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 Full width text fields are useful for in-depth tasks or entering complex information.
 
 ```html
-<div class="mdc-text-field mdc-text-field--fullwidth">
+<label class="mdc-text-field mdc-text-field--fullwidth">
   <input class="mdc-text-field__input"
          type="text"
          placeholder="Full-Width Text Field"
          aria-label="Full-Width Text Field">
-</div>
+</label>
 ```
 
 > _NOTE_: Do not use `mdc-text-field--outlined` to style a full width text field.
@@ -81,7 +81,7 @@ included as part of the DOM structure of a full width text field.
 ### Textarea
 
 ```html
-<div class="mdc-text-field mdc-text-field--textarea">
+<label class="mdc-text-field mdc-text-field--textarea">
   <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40"></textarea>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
@@ -90,13 +90,13 @@ included as part of the DOM structure of a full width text field.
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 ### Outlined
 
 ```html
-<div class="mdc-text-field mdc-text-field--outlined">
+<label class="mdc-text-field mdc-text-field--outlined">
   <input type="text" id="tf-outlined" class="mdc-text-field__input">
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
@@ -105,7 +105,7 @@ included as part of the DOM structure of a full width text field.
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 See [here](../mdc-notched-outline/) for more information on using the notched outline sub-component.
@@ -117,11 +117,11 @@ See [here](../mdc-notched-outline/) for more information on using the notched ou
 To disable the text field, add the `disabled` attribute to the `<input>` element and add the `mdc-text-field--disabled` class to the `mdc-text-field` element.
 
 ```html
-<div class="mdc-text-field mdc-text-field--disabled">
+<label class="mdc-text-field mdc-text-field--disabled">
   <input type="text" id="disabled-text-field" class="mdc-text-field__input" disabled>
   <label class="mdc-floating-label" for="disabled-text-field">Disabled text field</label>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 ### Text Field without label
@@ -132,34 +132,34 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 #### Filled
 
 ```html
-<div class="mdc-text-field mdc-text-field--no-label">
+<label class="mdc-text-field mdc-text-field--no-label">
   <input type="text" class="mdc-text-field__input" placeholder="Placeholder text" aria-label="Label">
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 #### Outlined
 
 ```html
-<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+<label class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
   <input type="text" class="mdc-text-field__input" aria-label="Label">
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 #### Textarea
 
 ```html
-<div class="mdc-text-field mdc-text-field--textarea mdc-text-field--no-label">
+<label class="mdc-text-field mdc-text-field--textarea mdc-text-field--no-label">
   <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 ### Text Field with Helper Text
@@ -169,11 +169,11 @@ and disappears on input field blur by default, or it can be persistent. Helper t
 which is immediate sibling of `.mdc-text-field`. See [here](helper-text/) for more information on using helper text.
 
 ```html
-<div class="mdc-text-field">
+<label class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
   <label class="mdc-floating-label" for="my-text-field">My Label</label>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 <div class="mdc-text-field-helper-line">
   <div class="mdc-text-field-helper-text">helper text</div>
 </div>
@@ -186,11 +186,11 @@ Character counter should be rendered inside `.mdc-text-field-helper-line` elemen
 See [here](character-counter/) for more information on using character counter.
 
 ```html
-<div class="mdc-text-field">
+<label class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input" maxlength="10">
   <label class="mdc-floating-label" for="my-text-field">My Label</label>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 <div class="mdc-text-field-helper-line">
   <div class="mdc-text-field-character-counter">0 / 10</div>
 </div>
@@ -202,7 +202,7 @@ The layout structure of character counter for multi-line text field (textarea) i
 inside of text field component.
 
 ```html
-<div class="mdc-text-field mdc-text-field--textarea">
+<label class="mdc-text-field mdc-text-field--textarea">
   <div class="mdc-text-field-character-counter">0 / 140</div>
   <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40" maxlength="140"></textarea>
   <div class="mdc-notched-outline">
@@ -212,7 +212,7 @@ inside of text field component.
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 Helper text and Character counter are optional subcomponents of text field that can co-exist independently.
@@ -229,11 +229,11 @@ well as interaction targets. See [here](icon/) for more information on using ico
 by HTML5's form validation API.
 
 ```html
-<div class="mdc-text-field">
+<label class="mdc-text-field">
   <input type="password" id="pw" class="mdc-text-field__input" required minlength=8>
   <label for="pw" class="mdc-floating-label">Password</label>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 `MDCTextFieldFoundation` automatically appends an asterisk to the label text if the required attribute is set.
@@ -246,13 +246,13 @@ ensure that the label moves out of the way of the text field's value and prevent
 Un-styled Content (**FOUC**).
 
 ```html
-<div class="mdc-text-field">
+<label class="mdc-text-field">
   <input type="text" id="pre-filled" class="mdc-text-field__input" value="Pre-filled value">
   <label class="mdc-floating-label mdc-floating-label--float-above" for="pre-filled">
     Label in correct place
   </label>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 ## Style Customization

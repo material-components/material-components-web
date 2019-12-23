@@ -25,6 +25,7 @@
   "indent-width-cont": true,
   "input-radio-req-name": true,
   "input-req-label": true,
+  "label-req-for": true,
   "line-max-len": 200,
   "line-max-len-ignore-regex": "<script|<link|<path|^\\s*<!--\\s*https?://|^\\s*https?://|^\\s*href=\"[^\"]+\"",
   "line-no-trailing-whitespace": false,

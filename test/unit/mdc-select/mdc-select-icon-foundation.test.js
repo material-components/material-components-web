@@ -144,10 +144,7 @@ test('#setContent updates the text content', () => {
 
 test('on click notifies custom icon event', () => {
   const {foundation, mockAdapter} = setupTest();
-  const evt = {
-    target: {},
-    type: 'click',
-  };
+  const evt = new CustomEvent('click');
   let click;
 
   td.when(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function))).thenDo((evtType, handler) => {
