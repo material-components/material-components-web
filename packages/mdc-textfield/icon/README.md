@@ -55,7 +55,7 @@ const icon = new MDCTextFieldIcon(document.querySelector('.mdc-text-field-icon')
 
 ## Variants
 
-Leading and trailing icons can be applied to default or `mdc-text-field--outlined` Text Fields. To add an icon, add the relevant class (`mdc-text-field--with-leading-icon` and/or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon` with the modifier`mdc-text-field__icon--leading` or `mdc-text-field__icon--trailing`.
+Leading and trailing icons can be applied to default or `mdc-text-field--outlined` Text Fields. To add an icon, add the relevant class (`mdc-text-field--with-leading-icon` and/or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon` with the modifier `mdc-text-field__icon--leading` or `mdc-text-field__icon--trailing`.
 
 > **NOTE:** if you would like to display un-clickable icons, simply omit `tabindex="0"` and `role="button"`, and the CSS will ensure the cursor is set to default, and that interacting with an icon doesn't do anything unexpected.
 
