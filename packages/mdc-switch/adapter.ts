@@ -50,7 +50,7 @@ export interface MDCSwitchAdapter {
   setNativeControlDisabled(disabled: boolean): void;
 
   /**
-   * Set an attribute value of the native HTML control underlying the switch.
+   * Sets an attribute value of the native HTML control underlying the switch.
    */
   setNativeControlAttr(attr: string, value: string): void;
 }
