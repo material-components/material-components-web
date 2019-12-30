@@ -143,46 +143,6 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/02/14_50_15_747/spec/mdc-card/mixins/media-aspect-ratio.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-checkbox/classes/baseline.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/classes/baseline.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/classes/baseline.html.windows_chrome_77.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/classes/baseline.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/classes/baseline.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-checkbox/mixins/container-colors.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/container-colors.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/container-colors.html.windows_chrome_77.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/container-colors.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/container-colors.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-checkbox/mixins/density.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/density.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/density.html.windows_chrome_77.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/density.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/density.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-checkbox/mixins/ink-color.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/ink-color.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/ink-color.html.windows_chrome_77.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/ink-color.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/ink-color.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-checkbox/mixins/ripple-size.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/ripple-size.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/ripple-size.html.windows_chrome_77.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/ripple-size.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/allanchen/2019/11/08/20_42_09_477/spec/mdc-checkbox/mixins/ripple-size.html.windows_ie_11.png"
-    }
-  },
   "spec/mdc-chips/classes/action.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/11/01/18_25_15_143/spec/mdc-chips/classes/action.html?utm_source=golden_json",
     "screenshots": {
