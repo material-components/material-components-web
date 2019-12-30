@@ -34,8 +34,14 @@ export interface FoundationConstructor<F extends MDCFoundation> extends
 
 export function setUpFoundationTest<F extends MDCFoundation>(
     FoundationClass: FoundationConstructor<F>) {
-  const mockAdapter = jasmine.createSpyObj(
-      FoundationClass.name, FoundationClass.defaultAdapter);
+  const mockAdapterMethods = {};
+  Object.keys(FoundationClass.defaultAdapter).forEach((methodName) => {
+    const value = (FoundationClass.defaultAdapter as any)[methodName];
+    (mockAdapterMethods as any)[methodName] =
+        typeof value === 'function' ? value() : value;
+  });
+  const mockAdapter =
+      jasmine.createSpyObj(FoundationClass.name, mockAdapterMethods);
   const foundation = new FoundationClass(mockAdapter);
   return {foundation, mockAdapter};
 }
