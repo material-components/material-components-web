@@ -55,8 +55,8 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size, $query: $query);
   @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size, $query: $query);
   @include mdc-chip-trailing-icon-margin($query: $query);
-  @include mdc-touch-target-wrapper($query);
-  @include mdc-elevation-overlay-common($query);
+  @include mdc-touch-target-wrapper($query); // COPYBARA_COMMENT_THIS_LINE
+  @include mdc-elevation-overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-chip {
     @include mdc-chip-shape-radius(50%, $query: $query);
@@ -269,7 +269,7 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 }
 
 @mixin mdc-chip-ripple($query: mdc-feature-all()) {
-  @include mdc-ripple-common($query);
+  @include mdc-ripple-common($query); // COPYBARA_COMMENT_THIS_LINE
   $feat-structure: mdc-feature-create-target($query, structure);
 
   .mdc-chip {

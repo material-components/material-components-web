@@ -107,7 +107,7 @@
 // This API is intended for use by frameworks that may want to separate the ripple-related styles
 // from the other tah styles. It is recommended that most users use `mdc-tab-core-styles` instead.
 @mixin mdc-tab-ripple($query: mdc-feature-all()) {
-  @include mdc-ripple-common($query);
+  @include mdc-ripple-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-tab__ripple {
     @include mdc-tab__ripple_($query);

@@ -302,7 +302,7 @@
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // list styles. It is recommended that most users use `mdc-list-core-styles` instead.
 @mixin mdc-list-ripple($query: mdc-feature-all()) {
-  @include mdc-ripple-common($query);
+  @include mdc-ripple-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // List items should support states by default, but it should be possible to opt out.
   // Direct child combinator is necessary for non-interactive modifier on parent to not

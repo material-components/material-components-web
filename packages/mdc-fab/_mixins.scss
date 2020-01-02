@@ -44,8 +44,8 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
 @mixin mdc-fab-without-ripple($query: mdc-feature-all()) {
   // postcss-bem-linter: define fab
 
-  @include mdc-touch-target-wrapper($query);
-  @include mdc-elevation-overlay-common($query);
+  @include mdc-touch-target-wrapper($query); // COPYBARA_COMMENT_THIS_LINE
+  @include mdc-elevation-overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-fab {
     @include mdc-fab-base_($query: $query);
@@ -97,7 +97,7 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
 @mixin mdc-fab-ripple($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-ripple-common($query);
+  @include mdc-ripple-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // postcss-bem-linter: define fab
 

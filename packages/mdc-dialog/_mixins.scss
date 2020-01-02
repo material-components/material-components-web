@@ -37,7 +37,7 @@
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-elevation-overlay-common($query);
+  @include mdc-elevation-overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // postcss-bem-linter: define dialog
 

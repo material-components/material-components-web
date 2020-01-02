@@ -46,7 +46,7 @@
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-elevation-overlay-common($query);
+  @include mdc-elevation-overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-card {
     @include mdc-card-shape-radius(medium, $query: $query);
@@ -278,7 +278,7 @@
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // card styles. It is recommended that most users use `mdc-card-core-styles` instead.
 @mixin mdc-card-ripple($query: mdc-feature-all()) {
-  @include mdc-ripple-common($query);
+  @include mdc-ripple-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-card__primary-action {
     @include mdc-ripple-surface($query);
