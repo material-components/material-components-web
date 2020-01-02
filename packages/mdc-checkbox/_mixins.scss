@@ -50,7 +50,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-touch-target-wrapper($query);
+  @include mdc-touch-target-wrapper($query); // COPYBARA_COMMENT_THIS_LINE
 
   @include mdc-feature-targets($feat-animation) {
     @include mdc-checkbox-mark-keyframes_;
@@ -202,7 +202,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 @mixin mdc-checkbox-ripple($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-ripple-common($query);
+  @include mdc-ripple-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-checkbox {
     @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-checkbox-ripple-target);

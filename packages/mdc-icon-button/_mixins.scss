@@ -72,7 +72,7 @@
 }
 
 @mixin mdc-icon-button-ripple($query: mdc-feature-all()) {
-  @include mdc-ripple-common($query);
+  @include mdc-ripple-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-icon-button {
     @include mdc-ripple-surface($query: $query);

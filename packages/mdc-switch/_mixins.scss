@@ -114,7 +114,7 @@
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // switch styles. It is recommended that most users use `mdc-switch-core-styles` instead.
 @mixin mdc-switch-ripple($query: mdc-feature-all()) {
-  @include mdc-ripple-common($query);
+  @include mdc-ripple-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-switch {
     @include mdc-switch-toggled-off-ripple-color($mdc-switch-toggled-off-ripple-color, $query);
