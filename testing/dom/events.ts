@@ -26,14 +26,18 @@
  * Necessary for IE11 compatibility, as the `Event` constructor is not
  * supported.
  */
-export function emitEvent(targetEl: Element, eventName: string) {
-  let event;
-  if (typeof(Event) === 'function') {
-    event = new Event(eventName);
-  } else {
-    // IE11 support.
-    event = document.createEvent('Event');
-    event.initEvent(eventName, /* bubbles */ false, /* cancelable */ false);
-  }
-  targetEl.dispatchEvent(event);
+export function emitEvent(
+  targetEl: Element, eventName: string, {bubbles, cancelable}: EventInit = {
+    bubbles: false,
+    cancelable: false
+  }) {
+let event;
+if (typeof(Event) === 'function') {
+  event = new Event(eventName, {bubbles, cancelable});
+} else {
+  // IE11 support.
+  event = document.createEvent('Event');
+  event.initEvent(eventName, bubbles, cancelable);
+}
+targetEl.dispatchEvent(event);
 }
