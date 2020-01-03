@@ -40,81 +40,129 @@ describe('MDCTabScrollerRTLDefault', () => {
   it('#getScrollPositionRTL() returns the distance from the right edge', () => {
     const {scroller} =
         setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
     expect(scroller.getScrollPositionRTL() === 123).toBe(true);
+=======
+    expect(scroller.getScrollPositionRTL()).toBe(123);
+>>>>>>> refs/remotes/origin/cl_288015838
   });
 
   it('#scrollToRTL() returns a normalized scrollX property', () => {
     const {scroller} =
         setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
     expect(scroller.scrollToRTL(111).finalScrollPosition === 689).toBe(true);
+=======
+    expect(scroller.scrollToRTL(111).finalScrollPosition).toBe(689);
+>>>>>>> refs/remotes/origin/cl_288015838
   });
 
   it('#scrollToRTL() returns a normalized translateX property', () => {
     const {scroller} =
         setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
     expect(scroller.scrollToRTL(111).scrollDelta === 12).toBe(true);
+=======
+    expect(scroller.scrollToRTL(111).scrollDelta).toBe(12);
+>>>>>>> refs/remotes/origin/cl_288015838
   });
 
   it('#scrollToRTL() returns 0 for scrollX property when scrollLeft would be too far left',
      () => {
        const {scroller} =
            setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
        expect(scroller.scrollToRTL(801).finalScrollPosition === 0).toBe(true);
+=======
+       expect(scroller.scrollToRTL(801).finalScrollPosition).toBe(0);
+>>>>>>> refs/remotes/origin/cl_288015838
      });
 
   it('#scrollToRTL() returns 0 for translateX property when scrollLeft would be the same',
      () => {
        const {scroller} =
            setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
        expect(scroller.scrollToRTL(123).scrollDelta === 0).toBe(true);
+=======
+       expect(scroller.scrollToRTL(123).scrollDelta).toBe(0);
+>>>>>>> refs/remotes/origin/cl_288015838
      });
 
   it('#scrollToRTL() returns max scroll value for scrollX property when scrollLeft would be too far right',
      () => {
        const {scroller} =
            setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
        expect(scroller.scrollToRTL(-10).finalScrollPosition === 800).toBe(true);
+=======
+       expect(scroller.scrollToRTL(-10).finalScrollPosition).toBe(800);
+>>>>>>> refs/remotes/origin/cl_288015838
      });
 
   it('#incrementScrollRTL() returns a normalized scrollX property', () => {
     const {scroller} =
         setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
     expect(scroller.incrementScrollRTL(50).finalScrollPosition === 627)
         .toBe(true);
+=======
+    expect(scroller.incrementScrollRTL(50).finalScrollPosition).toBe(627);
+>>>>>>> refs/remotes/origin/cl_288015838
   });
 
   it('#incrementScrollRTL() returns a normalized translateX property', () => {
     const {scroller} =
         setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
     expect(scroller.incrementScrollRTL(50).scrollDelta === -50).toBe(true);
+=======
+    expect(scroller.incrementScrollRTL(50).scrollDelta).toBe(-50);
+>>>>>>> refs/remotes/origin/cl_288015838
   });
 
   it('#incrementScrollRTL() returns 0 for scrollX property when scrollLeft would be too far left',
      () => {
        const {scroller} =
            setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
        expect(scroller.incrementScrollRTL(678).finalScrollPosition === 0)
            .toBe(true);
+=======
+       expect(scroller.incrementScrollRTL(678).finalScrollPosition).toBe(0);
+>>>>>>> refs/remotes/origin/cl_288015838
      });
 
   it('#incrementScrollRTL() returns 0 for translateX property when scrollLeft would be the same',
      () => {
        const {scroller} =
            setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
        expect(scroller.incrementScrollRTL(0).scrollDelta === 0).toBe(true);
+=======
+       expect(scroller.incrementScrollRTL(0).scrollDelta).toBe(0);
+>>>>>>> refs/remotes/origin/cl_288015838
      });
 
   it('#incrementScrollRTL() returns max scroll value for scrollX property when scrollLeft would be too far right',
      () => {
        const {scroller} =
            setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
        expect(scroller.incrementScrollRTL(-124).finalScrollPosition === 800)
            .toBe(true);
+=======
+       expect(scroller.incrementScrollRTL(-124).finalScrollPosition).toBe(800);
+>>>>>>> refs/remotes/origin/cl_288015838
      });
 
   it('#getAnimatingScrollPosition() returns just the scrollX value', () => {
     const {scroller} =
         setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+<<<<<<< HEAD
     expect(scroller.getAnimatingScrollPosition(123) === 123).toBe(true);
+=======
+    expect(scroller.getAnimatingScrollPosition(123)).toBe(123);
+>>>>>>> refs/remotes/origin/cl_288015838
   });
 });
