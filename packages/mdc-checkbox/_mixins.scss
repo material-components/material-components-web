@@ -26,6 +26,7 @@
 @import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
 @import "@material/touch-target/mixins";
+@import "@material/theme/functions";
 @import "./functions";
 @import "./keyframes";
 @import "./variables";
@@ -297,7 +298,11 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 
   @if $generate-keyframes {
-    $uid: unique-id();
+    $uid: mdc-theme-color-hash($unmarked-stroke-color) +
+      mdc-theme-color-hash($marked-stroke-color) +
+      mdc-theme-color-hash($unmarked-fill-color) +
+      mdc-theme-color-hash($marked-fill-color);
+
     $anim-selector: if(&, "&.mdc-checkbox--anim", ".mdc-checkbox--anim");
 
     @include mdc-feature-targets($feat-animation, $feat-color) {
@@ -306,7 +311,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
         $to-stroke-color: $marked-stroke-color,
         $from-fill-color: $unmarked-fill-color,
         $to-fill-color: $marked-fill-color,
-        $uid: $uid
+        $uid: #{$uid}
       );
     }
 

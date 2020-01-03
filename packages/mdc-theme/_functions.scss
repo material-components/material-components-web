@@ -79,3 +79,16 @@
 
   @return var(#{$var}, $fallback);
 }
+
+///
+/// @param $color Target color in any color format.
+/// @return Returns hash in string format that uniquely represents
+///     any given color format. Useful for generating unique keyframe names.
+///
+@function mdc-theme-color-hash($color) {
+  @if type-of($color) == "string" {
+    @return $color;
+  }
+
+  @return str-slice(ie-hex-str($color), 2);
+}
