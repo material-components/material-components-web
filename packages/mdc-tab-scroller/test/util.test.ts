@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,15 +21,11 @@
  * THE SOFTWARE.
  */
 
-import {assert} from 'chai';
-import td from 'testdouble';
-import {cssClasses} from '../../../packages/mdc-tab-scroller/constants';
-import * as util from '../../../packages/mdc-tab-scroller/util';
+import {cssClasses} from '../constants';
+import * as util from '../util';
 
-suite('MDCTabScroller - util');
-
-function createMockDocumentForHorizontalScrollbarHeight(height) {
-  const classListAddFunc = td.func('classList.add');
+function createMockDocumentForHorizontalScrollbarHeight(height: number) {
+  const classListAddFunc = jasmine.createSpy('classList.add');
   const mockDocument = {
     appendedNodes: 0,
     body: {
@@ -39,8 +35,9 @@ function createMockDocumentForHorizontalScrollbarHeight(height) {
     createElement: () => {
       return {
         classList: {add: classListAddFunc},
-        // Populate both offsetHeight and contentHeight such that the difference is the intended height,
-        // to test that the util function is computing based on both
+        // Populate both offsetHeight and contentHeight such that the difference
+        // is the intended height, to test that the util function is computing
+        // based on both
         clientHeight: height,
         offsetHeight: height * 2,
       };
@@ -50,11 +47,16 @@ function createMockDocumentForHorizontalScrollbarHeight(height) {
   return {mockDocument, classListAddFunc};
 }
 
-test('#computeHorizontalScrollbarHeight returns value based on difference between offset and client height', () => {
-  const expectedHeight = 17;
-  const {mockDocument, classListAddFunc} = createMockDocumentForHorizontalScrollbarHeight(expectedHeight);
+describe('MDCTabScroller - util', () => {
+  it('#computeHorizontalScrollbarHeight returns value based on difference between offset and client height',
+     () => {
+       const expectedHeight = 17;
+       const {mockDocument, classListAddFunc} =
+           createMockDocumentForHorizontalScrollbarHeight(expectedHeight);
 
-  assert.strictEqual(util.computeHorizontalScrollbarHeight(mockDocument, false /* shouldCacheResult */),
-    expectedHeight);
-  td.verify(classListAddFunc(cssClasses.SCROLL_TEST));
+       expect(util.computeHorizontalScrollbarHeight(
+                  mockDocument as any, false /* shouldCacheResult */))
+           .toBe(expectedHeight);
+       expect(classListAddFunc).toHaveBeenCalledWith(cssClasses.SCROLL_TEST);
+     });
 });
