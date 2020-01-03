@@ -42,11 +42,11 @@ $mdc-select-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-val
 $mdc-select-dropdown-opacity: .54 !default;
 
 // Disabled Styles
-$mdc-select-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
-$mdc-select-disabled-icon-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
-$mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
+$mdc-select-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .38) !default;
+$mdc-select-disabled-icon-color: rgba(mdc-theme-prop-value(on-surface), .38) !default;
+$mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .38) !default;
 $mdc-select-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%) !default;
-$mdc-select-disabled-dropdown-opacity: .37 !default;
+$mdc-select-disabled-dropdown-opacity: .38 !default;
 
 $mdc-select-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .38) !default;
 $mdc-select-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87) !default;

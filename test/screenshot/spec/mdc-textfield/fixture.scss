@@ -93,6 +93,10 @@ $custom-disabled-ink-color: rgba(purple, .6);
   @include mdc-text-field-disabled-ink-color($custom-disabled-ink-color);
 }
 
+.custom-disabled-colors-text-field--placeholder-color {
+  @include mdc-text-field-disabled-placeholder-color($custom-disabled-ink-color);
+}
+
 .custom-disabled-colors-text-field--label-color {
   @include mdc-text-field-disabled-label-color($custom-disabled-ink-color);
 }

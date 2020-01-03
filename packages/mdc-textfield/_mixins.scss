@@ -222,6 +222,26 @@
 }
 
 ///
+/// Customizes the color of the placeholder in an enabled text field.
+/// @param {Color} $color - The desired placeholder text color.
+///
+@mixin mdc-text-field-placeholder-color($color) {
+  @include mdc-text-field-if-enabled_ {
+    @include mdc-text-field-placeholder-color_($color);
+  }
+}
+
+///
+/// Customizes the color of the placeholder in a disabled text field.
+/// @param {Color} $color - The desired placeholder text color.
+///
+@mixin mdc-text-field-disabled-placeholder-color($color) {
+  @include mdc-text-field-if-disabled_ {
+    @include mdc-text-field-placeholder-color_($color);
+  }
+}
+
+///
 /// Customizes the background color of the text field or textarea when enabled.
 /// @param {Color} $color - The desired background color.
 ///
@@ -233,7 +253,7 @@
 
 ///
 /// Customizes the background color of the text field or textarea when disabled.
-/// @param {Color} $color - The desired label text color.
+/// @param {Color} $color - The desired background color.
 ///
 @mixin mdc-text-field-disabled-fill-color($color) {
   @include mdc-text-field-if-disabled_ {
@@ -358,6 +378,7 @@
 @mixin mdc-text-field-disabled_ {
   @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
   @include mdc-text-field-ink-color_($mdc-text-field-disabled-ink-color);
+  @include mdc-text-field-placeholder-color_($mdc-text-field-disabled-placeholder-ink-color);
   @include mdc-text-field-label-ink-color_($mdc-text-field-disabled-label-color);
   @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-character-counter-color_($mdc-text-field-disabled-helper-text-color);
@@ -813,6 +834,18 @@
 @mixin mdc-text-field-ink-color_($color) {
   .mdc-text-field__input {
     @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-text-field-placeholder-color_($color) {
+  .mdc-text-field__input::placeholder {
+    @include mdc-theme-prop(color, $color);
+  }
+
+  // Override the placeholder styles in IE with important rule to improve specificity.
+  // stylelint-disable-next-line selector-no-vendor-prefix
+  .mdc-text-field__input:-ms-input-placeholder {
+    @include mdc-theme-prop(color, $color, $important: true);
   }
 }
 
