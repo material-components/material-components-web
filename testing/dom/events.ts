@@ -27,17 +27,17 @@
  * supported.
  */
 export function emitEvent(
-  targetEl: Element, eventName: string, {bubbles, cancelable}: EventInit = {
-    bubbles: false,
-    cancelable: false
-  }) {
-let event;
-if (typeof(Event) === 'function') {
-  event = new Event(eventName, {bubbles, cancelable});
-} else {
-  // IE11 support.
-  event = document.createEvent('Event');
-  event.initEvent(eventName, bubbles, cancelable);
-}
-targetEl.dispatchEvent(event);
+    targetEl: Element, eventName: string, {bubbles, cancelable}: EventInit = {
+      bubbles: false,
+      cancelable: false
+    }) {
+  let event;
+  if (typeof(Event) === 'function') {
+    event = new Event(eventName, {bubbles, cancelable});
+  } else {
+    // IE11 support.
+    event = document.createEvent('Event');
+    event.initEvent(eventName, bubbles, cancelable);
+  }
+  targetEl.dispatchEvent(event);
 }
