@@ -54,17 +54,9 @@ describe('MDCTabScroller - util', () => {
        const {mockDocument, classListAddFunc} =
            createMockDocumentForHorizontalScrollbarHeight(expectedHeight);
 
-<<<<<<< HEAD
-       expect(
-           util.computeHorizontalScrollbarHeight(
-               mockDocument as any, false /* shouldCacheResult */) ===
-           expectedHeight)
-           .toBe(true);
-=======
        expect(util.computeHorizontalScrollbarHeight(
                   mockDocument as any, false /* shouldCacheResult */))
            .toBe(expectedHeight);
->>>>>>> refs/remotes/origin/cl_288015838
        expect(classListAddFunc).toHaveBeenCalledWith(cssClasses.SCROLL_TEST);
      });
 });
