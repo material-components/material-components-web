@@ -833,9 +833,11 @@
 @mixin mdc-text-field-end-aligned_ {
   .mdc-text-field__input {
     // IE11 does not support text-align: end
+    /* @noflip */
     text-align: right;
 
     @include mdc-rtl {
+      /* @noflip */
       text-align: left;
     }
   }
