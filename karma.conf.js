@@ -74,6 +74,7 @@ const istanbulInstrumenterLoader = {
     /radio\/.*$/,
     /tab\/.*$/,
     /tab-bar\/.*$/,
+    /tab-scroller\/.*$/,
   ],
   include: path.resolve('./packages'),
 };
@@ -148,6 +149,7 @@ const jasmineConfig = {
             'packages/!(mdc-radio)/**/*',
             'packages/!(mdc-tab)/**/*',
             'packages/!(mdc-tab-bar)/**/*',
+            'packages/!(mdc-tab-scroller)/**/*',
           ],
         },
       },
