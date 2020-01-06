@@ -79,3 +79,59 @@
 
   @return var(#{$var}, $fallback);
 }
+
+///
+/// @param $color Target color in any color format.
+/// @return Returns hash in string format that uniquely represents
+///     any given color format. Useful for generating unique keyframe names.
+/// @example
+///   `color-hash(#6200ee)` => "6200ee"
+///   `color-hash(rgb(255, 112, 112))` => "ff7070"
+///   `color-hash(var(--my-fancy-color))` => "--my-fancy-color"
+///
+@function mdc-theme-color-hash($color) {
+  @if mdc-theme-is-var-with-fallback_($color) {
+    $color: map-get($color, "fallback");
+  }
+
+  @if mdc-theme-is-css-var_($color) {
+    @return mdc-theme-get-css-varname_($color);
+  }
+
+  @if type-of($color) == "string" {
+    @return $color;
+  }
+
+  @return str-slice(ie-hex-str($color), 2); // Index starts at 1
+}
+
+///
+/// @return Returns true if given color is set to CSS variable.
+/// @access Private
+///
+@function mdc-theme-is-css-var_($color) {
+  @return str_slice(inspect($color), 1, 4) == "var(";
+}
+
+///
+/// @return Returns CSS variable name from color value in CSS variable format.
+///     Returns original color value if not in CSS variable format.
+/// @example
+///   mdc-theme-get-css-varname_(var(--my-fancy-color, #4CAF50)) => --my-fancy-color
+///   mdc-theme-get-css-varname_(var(--my-fancy-color)) => --my-fancy-color
+/// @access Private
+///
+@function mdc-theme-get-css-varname_($color) {
+  @if not mdc-theme-is-css-var_($color) {
+    @return $color;
+  }
+
+  $color: inspect($color);
+
+  $var-start-index: str-index($color, "--");
+  $color: str_slice($color, $var-start-index);
+  $var-end-index: str-index($color, ",") or str-index($color, ")");
+  $color: str_slice($color, 0, $var-end-index - 1);
+
+  @return $color;
+}
