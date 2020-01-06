@@ -51,6 +51,10 @@
 @mixin mdc-text-field-icon-horizontal-position_($position-property, $position, $padding, $input-padding) {
   .mdc-text-field__icon {
     @include mdc-rtl-reflexive-position($position-property, $position);
+
+    &.mdc-icon-button {
+      @include mdc-rtl-reflexive-position($position-property, 0);
+    }
   }
 
   // Move the input's position, to allow room for the icon
@@ -74,8 +78,16 @@
   .mdc-text-field__icon {
     @include mdc-rtl-reflexive(left, $position-left, right, auto);
 
+    &.mdc-icon-button {
+      @include mdc-rtl-reflexive(left, 0, right, auto);
+    }
+
     ~ .mdc-text-field__icon {
       @include mdc-rtl-reflexive(right, $position-right, left, auto);
+
+      &.mdc-icon-button {
+        @include mdc-rtl-reflexive(right, 0, left, auto);
+      }
     }
   }
 

@@ -29,6 +29,10 @@
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+
+  &.mdc-icon-button {
+    bottom: 4px;
+  }
 }
 
 .mdc-text-field__icon:not([tabindex]),
