@@ -1199,6 +1199,14 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/11/01/18_25_15_143/spec/mdc-textfield/classes/baseline-character-counter.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-textfield/classes/baseline-end-aligned.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/19_42_39_069/spec/mdc-textfield/classes/baseline-end-aligned.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/19_17_22_556/spec/mdc-textfield/classes/baseline-end-aligned.html.windows_chrome_77.png",
+      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/19_17_22_556/spec/mdc-textfield/classes/baseline-end-aligned.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/19_42_39_069/spec/mdc-textfield/classes/baseline-end-aligned.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-textfield/classes/baseline-fullwidth.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/02/08/19_22_02_713/spec/mdc-textfield/classes/baseline-fullwidth.html?utm_source=golden_json",
     "screenshots": {
@@ -1621,6 +1629,14 @@
       "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/22/20_34_34_568/spec/mdc-textfield/classes/textarea-disabled.html.windows_chrome_71.png",
       "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/22/20_34_34_568/spec/mdc-textfield/classes/textarea-disabled.html.windows_firefox_64.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/22/20_34_34_568/spec/mdc-textfield/classes/textarea-disabled.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/classes/textarea-end-aligned.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/22_08_30_352/spec/mdc-textfield/classes/textarea-end-aligned.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/22_08_30_352/spec/mdc-textfield/classes/textarea-end-aligned.html.windows_chrome_77.png",
+      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/22_08_30_352/spec/mdc-textfield/classes/textarea-end-aligned.html.windows_firefox_69.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/lizmitchell/2019/12/18/22_08_30_352/spec/mdc-textfield/classes/textarea-end-aligned.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/classes/textarea-focused.html": {

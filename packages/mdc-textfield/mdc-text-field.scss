@@ -264,6 +264,10 @@
   @include mdc-text-field-textarea-disabled_;
 }
 
+.mdc-text-field--end-aligned {
+  @include mdc-text-field-end-aligned_;
+}
+
 @include mdc-floating-label-shake-keyframes(
   text-field-dense,
   $mdc-text-field-dense-label-position-y,

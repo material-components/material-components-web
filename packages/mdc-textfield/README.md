@@ -271,6 +271,7 @@ CSS Class | Description
 `mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon.
 `mdc-text-field--focused` | Styles the text field as a text field in focus.
 `mdc-text-field--no-label` | Styles the text field that has no label.
+`mdc-text-field--end-aligned` | Styles the text field with an end-aligned input.
 `mdc-text-field-helper-line` | Styles the container of helper text and character counter elements.
 
 #### Deprecation Notice
