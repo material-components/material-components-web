@@ -602,10 +602,13 @@
 }
 
 @mixin mdc-text-field-hover-outline-color_($color) {
-  &:not(.mdc-text-field--focused):hover {
-    .mdc-notched-outline {
-      @include mdc-notched-outline-color($color);
-    }
+  &:not(.mdc-text-field--focused) {
+    // stylelint-disable-next-line selector-combinator-space-after
+    .mdc-text-field__input:hover ~,
+    .mdc-text-field__icon:hover ~ {
+      .mdc-notched-outline {
+        @include mdc-notched-outline-color($color);
+      }
   }
 }
 
