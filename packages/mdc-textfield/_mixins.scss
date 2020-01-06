@@ -698,6 +698,11 @@
 }
 
 @mixin mdc-text-field-with-both-icons_ {
+  @include mdc-text-field-icon-horizontal-position-two-icons_(
+    $mdc-text-field-icon-position,
+    $mdc-text-field-trailing-icon-position
+  );
+
   .mdc-text-field__input {
     padding-right: $mdc-text-field-icon-padding;
     padding-left: $mdc-text-field-icon-padding;
@@ -705,6 +710,11 @@
 }
 
 @mixin mdc-text-field-dense-with-both-icons_ {
+  @include mdc-text-field-icon-horizontal-position-two-icons_(
+    $mdc-text-field-dense-icon-position,
+    $mdc-text-field-dense-icon-position
+  );
+
   .mdc-text-field__input {
     padding-right: $mdc-text-field-dense-icon-padding;
     padding-left: $mdc-text-field-dense-icon-padding;

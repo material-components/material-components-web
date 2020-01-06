@@ -71,6 +71,11 @@
   }
 }
 
+@mixin mdc-text-field-icon-horizontal-position-two-icons_($position-left, $position-right) {
+  @include mdc-text-field-leading-icon-horizontal-position_($position-left);
+  @include mdc-text-field-trailing-icon-horizontal-position_($position-right);
+}
+
 @mixin mdc-text-field-icon_ {
   position: absolute;
   top: 50%;
