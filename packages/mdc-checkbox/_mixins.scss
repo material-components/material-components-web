@@ -91,24 +91,24 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   // Needed to disable hover effects on CSS-only (non-JS) checkboxes
   .mdc-checkbox--disabled {
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-checkbox--disabled_;
+      @include mdc-checkbox-disabled_;
     }
   }
 
   .mdc-checkbox__background {
-    @include mdc-checkbox__background_($query);
+    @include mdc-checkbox-background_($query);
   }
 
   .mdc-checkbox__checkmark {
-    @include mdc-checkbox__checkmark_($query);
+    @include mdc-checkbox-checkmark_($query);
   }
 
   .mdc-checkbox__checkmark-path {
-    @include mdc-checkbox__checkmark-path_($query);
+    @include mdc-checkbox-checkmark-path_($query);
   }
 
   .mdc-checkbox__mixedmark {
-    @include mdc-checkbox__mixedmark_($query);
+    @include mdc-checkbox-mixedmark_($query);
   }
 
   // JS checkbox
@@ -118,47 +118,47 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
     .mdc-checkbox__checkmark-path,
     .mdc-checkbox__mixedmark {
       @include mdc-feature-targets($feat-animation) {
-        @include mdc-checkbox__child--upgraded_;
+        @include mdc-checkbox-child--upgraded_;
       }
     }
   }
 
   .mdc-checkbox--anim {
     @include mdc-feature-targets($feat-animation) {
-      @include mdc-checkbox--anim_;
+      @include mdc-checkbox-anim_;
     }
   }
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
   .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
     @include mdc-feature-targets($feat-animation) {
-      @include mdc-checkbox__background--marked_;
+      @include mdc-checkbox-background--marked_;
     }
 
     .mdc-checkbox__checkmark-path {
       @include mdc-feature-targets($feat-structure) {
-        @include mdc-checkbox__checkmark-path--marked_;
+        @include mdc-checkbox-checkmark-path--marked_;
       }
     }
   }
 
   // The frame's ::before element is used as a focus indicator for the checkbox
   .mdc-checkbox__background::before {
-    @include mdc-checkbox__focus-indicator_($query);
+    @include mdc-checkbox-focus-indicator_($query);
   }
 
   .mdc-checkbox__native-control:focus ~ .mdc-checkbox__background::before {
-    @include mdc-checkbox__focus-indicator--focused_($query);
+    @include mdc-checkbox-focus-indicator--focused_($query);
   }
 
   .mdc-checkbox__native-control {
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-checkbox__native-control_;
+      @include mdc-checkbox-native-control_;
     }
 
     &:disabled {
       @include mdc-feature-targets($feat-structure) {
-        @include mdc-checkbox--disabled_;
+        @include mdc-checkbox-disabled_;
       }
     }
   }
@@ -173,24 +173,24 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
     .mdc-checkbox__checkmark {
-      @include mdc-checkbox__checkmark--checked_($query);
+      @include mdc-checkbox-checkmark--checked_($query);
     }
 
     .mdc-checkbox__mixedmark {
       @include mdc-feature-targets($feat-structure) {
-        @include mdc-checkbox__mixedmark--checked_;
+        @include mdc-checkbox-mixedmark--checked_;
       }
     }
   }
 
   .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
     .mdc-checkbox__checkmark {
-      @include mdc-checkbox__checkmark--indeterminate_($query);
+      @include mdc-checkbox-checkmark--indeterminate_($query);
     }
 
     .mdc-checkbox__mixedmark {
       @include mdc-feature-targets($feat-structure) {
-        @include mdc-checkbox__mixedmark--indeterminate_;
+        @include mdc-checkbox-mixedmark--indeterminate_;
       }
     }
   }
@@ -447,12 +447,12 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   vertical-align: bottom;
 }
 
-@mixin mdc-checkbox--disabled_ {
+@mixin mdc-checkbox-disabled_ {
   cursor: default;
   pointer-events: none;
 }
 
-@mixin mdc-checkbox__child--upgraded_ {
+@mixin mdc-checkbox-child--upgraded_ {
   // Due to the myriad of selector combos used to properly style a CSS-only checkbox, all of
   // which have varying selector precedence and make use of transitions, it is cleaner and more
   // efficient here to simply use !important, since the mdc-checkbox--anim-* classes will take
@@ -462,7 +462,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
 // Animation
 
-@mixin mdc-checkbox--anim_ {
+@mixin mdc-checkbox-anim_ {
   $mdc-checkbox-indeterminate-change-duration_: 500ms;
 
   // stylelint-disable selector-max-type
@@ -617,7 +617,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin mdc-checkbox__background_($query: mdc-feature-all()) {
+@mixin mdc-checkbox-background_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-color: mdc-feature-create-target($query, color);
@@ -651,7 +651,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin mdc-checkbox__background--marked_ {
+@mixin mdc-checkbox-background--marked_ {
   transition:
     mdc-checkbox-transition-enter(border-color),
     mdc-checkbox-transition-enter(background-color);
@@ -676,7 +676,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
 // Focus indicator
 
-@mixin mdc-checkbox__focus-indicator_($query: mdc-feature-all()) {
+@mixin mdc-checkbox-focus-indicator_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -697,7 +697,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin mdc-checkbox__focus-indicator--focused_($query: mdc-feature-all()) {
+@mixin mdc-checkbox-focus-indicator--focused_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -715,7 +715,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
 // Native input
 
-@mixin mdc-checkbox__native-control_ {
+@mixin mdc-checkbox-native-control_ {
   position: absolute;
   margin: 0;
   padding: 0;
@@ -725,7 +725,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
 // Check mark
 
-@mixin mdc-checkbox__checkmark_($query: mdc-feature-all()) {
+@mixin mdc-checkbox-checkmark_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -750,7 +750,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin mdc-checkbox__checkmark--checked_($query: mdc-feature-all()) {
+@mixin mdc-checkbox-checkmark--checked_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -765,7 +765,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin mdc-checkbox__checkmark--indeterminate_($query: mdc-feature-all()) {
+@mixin mdc-checkbox-checkmark--indeterminate_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -807,7 +807,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
 
 // Check mark path
 
-@mixin mdc-checkbox__checkmark-path_($query: mdc-feature-all()) {
+@mixin mdc-checkbox-checkmark-path_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -823,13 +823,13 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin mdc-checkbox__checkmark-path--marked_ {
+@mixin mdc-checkbox-checkmark-path--marked_ {
   stroke-dashoffset: 0;
 }
 
 // Mixed mark
 
-@mixin mdc-checkbox__mixedmark_($query: mdc-feature-all()) {
+@mixin mdc-checkbox-mixedmark_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -849,11 +849,11 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin mdc-checkbox__mixedmark--checked_ {
+@mixin mdc-checkbox-mixedmark--checked_ {
   transform: scaleX(1) rotate(-45deg);
 }
 
-@mixin mdc-checkbox__mixedmark--indeterminate_ {
+@mixin mdc-checkbox-mixedmark--indeterminate_ {
   transform: scaleX(1) rotate(0deg);
   opacity: 1;
 }

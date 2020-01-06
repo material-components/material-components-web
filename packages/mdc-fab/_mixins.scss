@@ -55,11 +55,11 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
   }
 
   .mdc-fab--mini {
-    @include mdc-fab--mini_($query: $query);
+    @include mdc-fab-mini_($query: $query);
   }
 
   .mdc-fab--extended {
-    @include mdc-fab--extended_($query: $query);
+    @include mdc-fab-extended_($query: $query);
   }
 
   .mdc-fab--touch {
@@ -74,21 +74,21 @@ $mdc-fab-ripple-target: ".mdc-fab__ripple";
   }
 
   .mdc-fab__label {
-    @include mdc-fab--label_($query: $query);
+    @include mdc-fab-label_($query: $query);
   }
 
   .mdc-fab__icon {
-    @include mdc-fab__icon_($query: $query);
+    @include mdc-fab-icon_($query: $query);
   }
 
   // Increase specificity for FAB icon styles that need to override styles defined for .material-icons
   // (which is loaded separately so the order of CSS definitions is not guaranteed)
   .mdc-fab .mdc-fab__icon {
-    @include mdc-fab__icon-overrides_($query: $query);
+    @include mdc-fab-icon-overrides_($query: $query);
   }
 
   .mdc-fab--exited {
-    @include mdc-fab--exited_($query: $query);
+    @include mdc-fab-exited_($query: $query);
   }
 
   // postcss-bem-linter: end
@@ -318,7 +318,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
   // stylelint-enable selector-max-type
 }
 
-@mixin mdc-fab--mini_($query: mdc-feature-all()) {
+@mixin mdc-fab-mini_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
@@ -327,7 +327,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
   }
 }
 
-@mixin mdc-fab--extended_($query: mdc-feature-all()) {
+@mixin mdc-fab-extended_($query: mdc-feature-all()) {
   @include mdc-typography(button, $query: $query);
   @include mdc-fab-extended-shape-radius(50%, $query: $query);
   @include mdc-fab-extended-padding($mdc-fab-extended-icon-padding, $mdc-fab-extended-label-padding, $query: $query);
@@ -344,7 +344,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
   }
 }
 
-@mixin mdc-fab__icon_($query: mdc-feature-all()) {
+@mixin mdc-fab-icon_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -358,7 +358,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
   }
 }
 
-@mixin mdc-fab__label_($query: mdc-feature-all()) {
+@mixin mdc-fab-label_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
@@ -370,7 +370,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
   }
 }
 
-@mixin mdc-fab__icon-overrides_($query: mdc-feature-all()) {
+@mixin mdc-fab-icon-overrides_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
@@ -380,7 +380,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
   }
 }
 
-@mixin mdc-fab--exited_($query: mdc-feature-all()) {
+@mixin mdc-fab-exited_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
