@@ -59,25 +59,15 @@
 
 // Private mixins
 
-@mixin mdc-text-field-icon-horizontal-position_($position-property, $position) {
-  @if ($position-property == left) {
-    .mdc-text-field__icon--leading {
-      @include mdc-rtl-reflexive-position($position-property, $position);
-    }
-  } @else {
-    .mdc-text-field__icon--trailing {
-      @include mdc-rtl-reflexive-position($position-property, $position);
-    }
+@mixin mdc-text-field-leading-icon-horizontal-position_($position) {
+  .mdc-text-field__icon--leading {
+    @include mdc-rtl-reflexive-position(left, $position);
   }
 }
 
-@mixin mdc-text-field-icon-horizontal-position-two-icons_($position-left, $position-right) {
-  .mdc-text-field__icon--leading {
-    @include mdc-rtl-reflexive(left, $position-left, right, auto);
-  }
-
+@mixin mdc-text-field-trailing-icon-horizontal-position_($position) {
   .mdc-text-field__icon--trailing {
-    @include mdc-rtl-reflexive(right, $position-right, left, auto);
+    @include mdc-rtl-reflexive-position(right, $position);
   }
 }
 
