@@ -27,17 +27,19 @@
  * supported.
  */
 export function emitEvent(
-    targetEl: Element, eventName: string, {bubbles, cancelable}: EventInit = {
+    targetEl: Element, eventName: string,
+    {bubbles, cancelable, detail}: CustomEventInit = {
       bubbles: false,
-      cancelable: false
+      cancelable: false,
     }) {
   let event;
   if (typeof(Event) === 'function') {
-    event = new Event(eventName, {bubbles, cancelable});
+    event = new CustomEvent(eventName, {bubbles, cancelable, detail});
   } else {
     // IE11 support.
-    event = document.createEvent('Event');
-    event.initEvent(eventName, bubbles, cancelable);
+    event = document.createEvent('CustomEvent');
+    event.initCustomEvent(
+        eventName, Boolean(bubbles), Boolean(cancelable), detail);
   }
   targetEl.dispatchEvent(event);
 }
