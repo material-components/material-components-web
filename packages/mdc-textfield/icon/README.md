@@ -66,8 +66,8 @@ In text field:
 ```html
 <label class="mdc-text-field mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
-  <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-floating-label">Your Name</label>
+  <input type="text" aria-labelledby="label-id" class="mdc-text-field__input">
+  <span for="label-id" class="mdc-floating-label">Your Name</span>
   <div class="mdc-line-ripple"></div>
 </label>
 ```
@@ -77,11 +77,11 @@ In outlined text field:
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
-  <input type="text" id="my-input" class="mdc-text-field__input">
+  <input type="text" aria-labelledby="label-id" class="mdc-text-field__input">
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
-      <label for="my-input" class="mdc-floating-label">Your Name</label>
+      <span for="label-id" class="mdc-floating-label">Your Name</span>
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
@@ -94,8 +94,8 @@ In text field:
 
 ```html
 <label class="mdc-text-field mdc-text-field--with-trailing-icon">
-  <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-floating-label">Your Name</label>
+  <input type="text" aria-labelledby="label-id" class="mdc-text-field__input">
+  <span id="label-id" class="mdc-floating-label">Your Name</span>
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <div class="mdc-line-ripple"></div>
 </label>
@@ -105,12 +105,12 @@ In outlined text field:
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
-  <input type="text" id="my-input" class="mdc-text-field__input">
+  <input type="text" aria-labelledby="label-id" class="mdc-text-field__input">
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
-      <label for="my-input" class="mdc-floating-label">Your Name</label>
+      <span id="label-id" class="mdc-floating-label">Your Name</span>
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
@@ -124,8 +124,8 @@ In text field:
 ```html
 <label class="mdc-text-field mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
   <i class="material-icons mdc-text-field__icon">phone</i>
-  <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-floating-label">Phone Number</label>
+  <input type="text" aria-labelledby="label-id" class="mdc-text-field__input">
+  <span id="label-id" class="mdc-floating-label">Phone Number</span>
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <div class="mdc-line-ripple"></div>
 </label>
@@ -136,12 +136,12 @@ In outlined text field:
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
   <i class="material-icons mdc-text-field__icon">phone</i>
-  <input type="text" id="my-input" class="mdc-text-field__input">
+  <input type="text" aria-labelledby="label-id" class="mdc-text-field__input">
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">clear</i>
   <div class="mdc-notched-outline">
    <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
-      <label for="my-input" class="mdc-floating-label">Phone Number</label>
+      <span id="label-id" class="mdc-floating-label">Phone Number</span>
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>

@@ -32,8 +32,10 @@ npm install @material/floating-label
 ### HTML Structure
 
 ```html
-<label class="mdc-floating-label" for="my-text-field-id">Hint text</label>
+<span class="mdc-floating-label" id="label-id">Hint text</span>
 ```
+
+> NOTE: Use `aria-labelledby` with the label's ID for accessibility.
 
 ### Styles
 
@@ -48,23 +50,6 @@ import {MDCFloatingLabel} from '@material/floating-label';
 
 const floatingLabel = new MDCFloatingLabel(document.querySelector('.mdc-floating-label'));
 ```
-
-## Variants
-
-### Avoid Dynamic ID Generation
-
-If you're using the JavaScript-enabled version of floating label, you can avoid needing to assign
-a unique `id` to each `<input>` by wrapping `mdc-text-field__input` within a `<label>`:
-
-```html
-<label class="mdc-text-field">
-  <input type="text" class="mdc-text-field__input">
-  <span class="mdc-floating-label">Hint Text</span>
-  <div class="mdc-text-field__bottom-line"></div>
-</label>
-```
-
-> NOTE: This method also works with `<select>`.
 
 ## Style Customization
 

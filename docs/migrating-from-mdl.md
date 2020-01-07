@@ -99,8 +99,8 @@ MDC Web:
 
 ```html
 <label class="mdc-text-field">
-  <input class="mdc-text-field__input" type="text" id="input">
-  <label for="input" class="mdc-floating-label">Input Label</label>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="label-id">
+  <span id="label-id" class="mdc-floating-label">Input Label</span>
   <div class="mdc-line-ripple"></div>
 </label>
 ```
@@ -125,8 +125,8 @@ element, with the component’s class name as the value. For example:
 
 ```html
 <label class="mdc-text-field" data-mdc-auto-init="MDCTextField">
-  <input class="mdc-text-field__input" type="text" id="input">
-  <label for="input" class="mdc-floating-label">Input Label</label>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="label-id">
+  <span id="label-id" class="mdc-floating-label">Input Label</span>
   <div class="mdc-line-ripple"></div>
 </label>
 ```

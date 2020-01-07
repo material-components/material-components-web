@@ -36,7 +36,7 @@ npm install @material/notched-outline
 <div class="mdc-notched-outline">
   <div class="mdc-notched-outline__leading"></div>
   <div class="mdc-notched-outline__notch">
-    <label class="mdc-floating-label">Label</label>
+    <span class="mdc-floating-label">Label</span>
   </div>
   <div class="mdc-notched-outline__trailing"></div>
 </div>

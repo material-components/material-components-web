@@ -53,10 +53,11 @@ the input element.
 
 ```html
 <label class="mdc-text-field">
-  <input type="text" id="username" class="mdc-text-field__input"
+  <input type="text" class="mdc-text-field__input"
+         aria-labelledby="username-label"
          aria-controls="username-helper-text"
          aria-describedby="username-helper-text">
-  <label for="username" class="mdc-floating-label">Username</label>
+  <span id="username-label" class="mdc-floating-label">Username</span>
   <div class="mdc-line-ripple"></div>
 </label>
 <div class="mdc-text-field-helper-line">
