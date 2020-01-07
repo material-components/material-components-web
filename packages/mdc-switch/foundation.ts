@@ -43,6 +43,7 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
       removeClass: () => undefined,
       setNativeControlChecked: () => undefined,
       setNativeControlDisabled: () => undefined,
+      setNativeControlAttr: () => undefined,
     };
   }
 
@@ -53,6 +54,7 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   /** Sets the checked state of the switch. */
   setChecked(checked: boolean) {
     this.adapter_.setNativeControlChecked(checked);
+    this.updateAriaChecked_(checked);
     this.updateCheckedStyling_(checked);
   }
 
@@ -69,6 +71,7 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   /** Handles the change event for the switch native control. */
   handleChange(evt: Event) {
     const nativeControl = evt.target as HTMLInputElement;
+    this.updateAriaChecked_(nativeControl.checked);
     this.updateCheckedStyling_(nativeControl.checked);
   }
 
@@ -79,6 +82,11 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
     } else {
       this.adapter_.removeClass(cssClasses.CHECKED);
     }
+  }
+
+  private updateAriaChecked_(checked: boolean) {
+    this.adapter_.setNativeControlAttr(
+      strings.ARIA_CHECKED_ATTR, `${!!checked}`);
   }
 }
 

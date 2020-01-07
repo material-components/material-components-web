@@ -111,6 +111,19 @@ test('get/set disabled updates the component styles', () => {
   assert.isNotOk(root.classList.contains(MDCSwitchFoundation.cssClasses.DISABLED));
 });
 
+test('get/set checked updates the aria-checked of the native switch input element', () => {
+  const {root, component} = setupTest();
+  const inputEl = root.querySelector(NATIVE_CONTROL_SELECTOR);
+  component.checked = true;
+  assert.equal(
+    inputEl.getAttribute(MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR),
+    'true');
+  component.checked = false;
+  assert.equal(
+    inputEl.getAttribute(MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR),
+    'false');
+});
+
 test('get ripple returns a MDCRipple instance', () => {
   const {component} = setupTest();
   assert.isOk(component.ripple instanceof MDCRipple);

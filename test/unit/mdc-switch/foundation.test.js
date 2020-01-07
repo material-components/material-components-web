@@ -41,7 +41,13 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
   assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  assert.deepEqual(methods, ['addClass', 'removeClass', 'setNativeControlChecked', 'setNativeControlDisabled']);
+  assert.deepEqual(methods, [
+    'addClass',
+    'removeClass',
+    'setNativeControlChecked',
+    'setNativeControlDisabled',
+    'setNativeControlAttr',
+  ]);
   methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
@@ -70,6 +76,22 @@ test('#setChecked removes mdc-switch--checked from the switch element when set t
   const {foundation, mockAdapter} = setupTest();
   foundation.setChecked(false);
   td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.CHECKED));
+});
+
+test('#setChecked sets aria-checked to true when set to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setChecked(true);
+  td.verify(mockAdapter.setNativeControlAttr(
+    MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR,
+    'true'));
+});
+
+test('#setChecked sets aria-checked to false when set to false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setChecked(false);
+  td.verify(mockAdapter.setNativeControlAttr(
+    MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR,
+    'false'));
 });
 
 test('#setDisabled updates the disabled state', () => {
@@ -105,4 +127,22 @@ test('#handleChange removes mdc-switch--checked from the switch when it is an un
 
   foundation.handleChange({target: {checked: false}});
   td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.CHECKED));
+});
+
+test('#handleChange sets aria-checked to true when the switch is a checked state', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.handleChange({target: {checked: true}});
+  td.verify(mockAdapter.setNativeControlAttr(
+    MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR,
+    'true'));
+});
+
+test('#handleChange sets aria-checked to false when the switch is a unchecked state', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.handleChange({target: {checked: false}});
+  td.verify(mockAdapter.setNativeControlAttr(
+    MDCSwitchFoundation.strings.ARIA_CHECKED_ATTR,
+    'false'));
 });
