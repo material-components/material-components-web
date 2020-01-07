@@ -173,9 +173,9 @@ describe('MDCList', () => {
   it('#initializeListType populates selectedIndex based on preselected checkbox items',
      () => {
        const {root, component, mockFoundation} = setupTest();
-       const listElements =
-           root.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`);
-       listElements.forEach((itemEl) => {
+       const listElements = [].slice.call(root.querySelectorAll(
+                                `.${cssClasses.LIST_ITEM_CLASS}`)) as Element[];
+       listElements.forEach((itemEl: Element) => {
          itemEl.setAttribute('role', 'checkbox');
        });
 
