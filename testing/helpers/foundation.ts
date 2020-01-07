@@ -25,6 +25,20 @@ import {MDCFoundation} from '../../packages/mdc-base/foundation';
 import {FoundationConstructor} from './setup';
 
 /**
+ * Creates a mockFoundation object with spy functions for each of the
+ * foundation class' methods.
+ */
+export function createMockFoundation<F extends MDCFoundation>(
+    FoundationClass: FoundationConstructor<F>) {
+  const mockFoundationMethods =
+      Object.getOwnPropertyNames(FoundationClass.prototype)
+          .concat(Object.getOwnPropertyNames(MDCFoundation.prototype));
+  const mockFoundation =
+      jasmine.createSpyObj(FoundationClass.name, mockFoundationMethods);
+  return mockFoundation;
+}
+
+/**
  * Sanity tests to ensure the following:
  * - Default adapters contain functions
  * - All expected adapter functions are accounted for
