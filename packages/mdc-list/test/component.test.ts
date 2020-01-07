@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {cssClasses, strings} from '../constants';
 import {MDCList, MDCListFoundation} from '../index';
 
@@ -79,23 +80,7 @@ function getFixtureWithDisabledItems() {
 }
 
 function setupTest(root = getFixture()) {
-  const mockFoundation = new MDCListFoundation();
-  const methodsToSpyOn = [
-    'getSelectedIndex',
-    'handleClick',
-    'handleFocusIn',
-    'handleFocusOut',
-    'handleKeydown',
-    'setEnabled',
-    'setSelectedIndex',
-    'setSingleSelection',
-    'setUseActivatedClass',
-    'setVerticalOrientation',
-    'setWrapFocus',
-  ];
-  methodsToSpyOn.forEach((method) => {
-    spyOn(mockFoundation, method as any);
-  });
+  const mockFoundation = createMockFoundation(MDCListFoundation);
   const component = new MDCList(root, mockFoundation);
   return {root, component, mockFoundation};
 }

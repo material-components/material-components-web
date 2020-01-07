@@ -23,6 +23,7 @@
 
 import {MDCTab, MDCTabFoundation} from '../../mdc-tab/index';
 import {emitEvent} from '../../../testing/dom/events';
+import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {MDCTabBar, MDCTabBarFoundation} from '../index';
 
 function getFixture() {
@@ -118,17 +119,7 @@ describe('MDCTabBar', () => {
 
   function setupMockFoundationTest() {
     const root = getFixture();
-    const mockFoundation = new MDCTabBarFoundation();
-    const methodsToSpyOn = [
-      'activateTab',
-      'handleKeyDown',
-      'handleTabInteraction',
-      'scrollIntoView',
-      'setUseAutomaticActivation',
-    ];
-    methodsToSpyOn.forEach((method) => {
-      spyOn(mockFoundation, method as any);
-    });
+    const mockFoundation = createMockFoundation(MDCTabBarFoundation);
     const component = new MDCTabBar(
         root, mockFoundation, () => new FakeTab(), () => new FakeTabScroller());
     return {root, component, mockFoundation};

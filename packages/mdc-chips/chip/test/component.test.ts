@@ -23,6 +23,7 @@
 
 import {MDCRipple} from '../../../mdc-ripple/index';
 import {emitEvent} from '../../../../testing/dom/events';
+import {createMockFoundation} from '../../../../testing/helpers/foundation';
 import {chipCssClasses, chipStrings, MDCChip, MDCChipFoundation} from '../index';
 
 const {CHECKMARK_SELECTOR} = MDCChipFoundation.strings;
@@ -120,27 +121,7 @@ function setupMockRippleTest() {
 }
 
 function setupMockFoundationTest(root = getFixture()) {
-  const mockFoundation = new MDCChipFoundation();
-  const methodsToSpyOn = [
-    'isSelected',
-    'setSelected',
-    `setSelectedFromChipSet`,
-    `getShouldRemoveOnTrailingIconClick`,
-    'setShouldRemoveOnTrailingIconClick',
-    'getDimensions',
-    'beginExit',
-    'handleInteraction',
-    'handleTransitionEnd',
-    'handleTrailingIconInteraction',
-    'handleKeydown',
-    'removeFocus',
-    'focusPrimaryAction',
-    'focusTrailingAction',
-  ];
-  methodsToSpyOn.forEach((method) => {
-    spyOn(mockFoundation, method as any);
-  });
-
+  const mockFoundation = createMockFoundation(MDCChipFoundation);
   const component = new MDCChip(root, mockFoundation);
   return {root, component, mockFoundation};
 }
