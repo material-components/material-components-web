@@ -22,8 +22,7 @@
  */
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCTabScrollerFoundation} from '../foundation';
 import {MDCTabScrollerRTLDefault} from '../rtl-default-scroller';
 import {MDCTabScrollerRTLNegative} from '../rtl-negative-scroller';
