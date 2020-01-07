@@ -175,8 +175,9 @@ describe('MDCList', () => {
        const {root, component, mockFoundation} = setupTest();
        const listElements =
            root.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`);
-       listElements.forEach(
-           (itemEl) => itemEl.setAttribute('role', 'checkbox'));
+       listElements.forEach((itemEl) => {
+         itemEl.setAttribute('role', 'checkbox');
+       });
 
        listElements[2].setAttribute('aria-checked', 'true');
        component.initializeListType();
