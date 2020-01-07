@@ -22,6 +22,7 @@
  */
 
 import {emitEvent} from '../../../testing/dom/events';
+import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCTab, MDCTabFoundation} from '../index';
 
@@ -43,21 +44,10 @@ const getFixture = () => {
   return el;
 };
 
-function setupTest({createMockFoundation = false} = {}) {
-  let mockFoundation = new MDCTabFoundation();
-  if (createMockFoundation) {
-    const methodsToSpyOn = [
-      'activate',
-      'computeDimensions',
-      'deactivate',
-      'handleClick',
-      'isActive',
-      'setFocusOnActivate'
-    ];
-    methodsToSpyOn.forEach((method) => {
-      spyOn(mockFoundation, method as any);
-    });
-  }
+function setupTest({useMockFoundation = false} = {}) {
+  let mockFoundation = useMockFoundation ?
+      createMockFoundation(MDCTabFoundation) :
+      new MDCTabFoundation();
   const root = getFixture();
   const content = root.querySelector(
                       MDCTabFoundation.strings.CONTENT_SELECTOR) as HTMLElement;
@@ -74,7 +64,7 @@ describe('MDCTab', () => {
 
   it('click handler is added during initialSyncWithDOM', () => {
     const {component, root, mockFoundation} =
-        setupTest({createMockFoundation: true});
+        setupTest({useMockFoundation: true});
 
     emitEvent(root, 'click');
     expect(mockFoundation.handleClick).toHaveBeenCalled();
@@ -84,7 +74,7 @@ describe('MDCTab', () => {
 
   it('click handler is removed during destroy', () => {
     const {component, root, mockFoundation} =
-        setupTest({createMockFoundation: true});
+        setupTest({useMockFoundation: true});
 
     component.destroy();
     emitEvent(root, 'click');
@@ -201,32 +191,32 @@ describe('MDCTab', () => {
      });
 
   it('#active getter calls foundation.isActive', () => {
-    const {component, mockFoundation} = setupTest({createMockFoundation: true});
+    const {component, mockFoundation} = setupTest({useMockFoundation: true});
     component.active;
     expect(mockFoundation.isActive).toHaveBeenCalled();
   });
 
   it('#focusOnActivate setter calls foundation.setFocusOnActivate', () => {
-    const {component, mockFoundation} = setupTest({createMockFoundation: true});
+    const {component, mockFoundation} = setupTest({useMockFoundation: true});
     component.focusOnActivate = false;
     expect(mockFoundation.setFocusOnActivate).toHaveBeenCalledWith(false);
   });
 
   it('#activate() calls activate', () => {
-    const {component, mockFoundation} = setupTest({createMockFoundation: true});
+    const {component, mockFoundation} = setupTest({useMockFoundation: true});
     component.activate();
     expect(mockFoundation.activate).toHaveBeenCalledWith(undefined);
   });
 
   it('#activate({ClientRect}) calls activate', () => {
-    const {component, mockFoundation} = setupTest({createMockFoundation: true});
+    const {component, mockFoundation} = setupTest({useMockFoundation: true});
     component.activate({width: 100, left: 200} as ClientRect);
     expect(mockFoundation.activate)
         .toHaveBeenCalledWith({width: 100, left: 200} as ClientRect);
   });
 
   it('#deactivate() calls deactivate', () => {
-    const {component, mockFoundation} = setupTest({createMockFoundation: true});
+    const {component, mockFoundation} = setupTest({useMockFoundation: true});
     component.deactivate();
     expect(mockFoundation.deactivate).toHaveBeenCalled();
   });
@@ -241,7 +231,7 @@ describe('MDCTab', () => {
      });
 
   it('#computeDimensions() calls computeDimensions', () => {
-    const {component, mockFoundation} = setupTest({createMockFoundation: true});
+    const {component, mockFoundation} = setupTest({useMockFoundation: true});
     component.computeDimensions();
     expect(mockFoundation.computeDimensions).toHaveBeenCalled();
   });

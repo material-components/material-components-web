@@ -22,6 +22,7 @@
  */
 
 import {emitEvent} from '../../../../testing/dom/events';
+import {createMockFoundation} from '../../../../testing/helpers/foundation';
 import {MDCChipFoundation} from '../../chip/index';
 import {MDCChipSet, MDCChipSetFoundation} from '../index';
 
@@ -81,18 +82,7 @@ describe('MDCChipSet', () => {
 
   function setupMockFoundationTest({hasSelection = false} = {}) {
     const root = getFixture();
-    const mockFoundation = new MDCChipSetFoundation();
-    const methodsToSpyOn = [
-      'getSelectedChipIds',
-      'select',
-      'handleChipInteraction',
-      'handleChipSelection',
-      'handleChipRemoval',
-      'handleChipNavigation',
-    ];
-    methodsToSpyOn.forEach((method) => {
-      spyOn(mockFoundation, method as any);
-    });
+    const mockFoundation = createMockFoundation(MDCChipSetFoundation);
 
     if (!hasSelection) {
       const component = new MDCChipSet(root, mockFoundation);

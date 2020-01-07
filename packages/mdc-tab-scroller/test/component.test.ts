@@ -22,6 +22,7 @@
  */
 
 import {emitEvent} from '../../../testing/dom/events';
+import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {MDCTabScroller, MDCTabScrollerFoundation, util,} from '../index';
 import {MDCTabScrollerRTL} from '../rtl-scroller';
 
@@ -205,17 +206,7 @@ describe('MDCTabScroller', () => {
      });
 
   function setupMockFoundationTest(root = getFixture()) {
-    const mockFoundation = new MDCTabScrollerFoundation();
-    const methodsToSpyOn = [
-      'getScrollPosition',
-      'handleInteraction',
-      'handleTransitionEnd',
-      'incrementScroll',
-      'scrollTo',
-    ];
-    methodsToSpyOn.forEach((method) => {
-      spyOn(mockFoundation, method as any);
-    });
+    const mockFoundation = createMockFoundation(MDCTabScrollerFoundation);
     const component = new MDCTabScroller(root, mockFoundation);
     return {root, component, mockFoundation};
   }

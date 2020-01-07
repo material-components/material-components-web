@@ -21,10 +21,11 @@
  * THE SOFTWARE.
  */
 
-import {emitEvent} from '../../../testing/dom/events';
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCRipple} from '../../mdc-ripple/index';
 import {supportsCssVariables} from '../../mdc-ripple/util';
+import {emitEvent} from '../../../testing/dom/events';
+import {createMockFoundation} from '../../../testing/helpers/foundation';
+import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {strings} from '../constants';
 import {MDCCheckbox, MDCCheckboxFoundation} from '../index';
 
@@ -65,8 +66,7 @@ function setupMockFoundationTest() {
   const root = getFixture();
   const cb =
       root.querySelector(strings.NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
-  const mockFoundation = new MDCCheckboxFoundation();
-  spyOn(mockFoundation, 'handleChange');
+  const mockFoundation = createMockFoundation(MDCCheckboxFoundation);
   const component = new MDCCheckbox(root, mockFoundation);
   return {root, cb, component, mockFoundation};
 }
