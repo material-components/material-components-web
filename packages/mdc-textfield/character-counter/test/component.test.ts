@@ -21,29 +21,37 @@
  * THE SOFTWARE.
  */
 
-import bel from 'bel';
-import {assert} from 'chai';
 
-import {MDCTextFieldCharacterCounter} from '../../../packages/mdc-textfield/character-counter/index';
+import {MDCTextFieldCharacterCounter} from '../../../mdc-textfield/character-counter/index';
 
-const getFixture = () => bel`
-  <div class="mdc-text-field-character-counter">0/10</div>
-`;
+const getFixture = () => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `
+    <div class="mdc-text-field-character-counter">0/10</div>
+  `;
 
-suite('MDCTextFieldCharacterCounter');
+  const el = wrapper.firstElementChild as HTMLElement;
+  wrapper.removeChild(el);
+  return el;
+};
 
-test('attachTo returns an MDCTextFieldCharacterCounter instance', () => {
-  assert.isOk(MDCTextFieldCharacterCounter.attachTo(getFixture()) instanceof MDCTextFieldCharacterCounter);
-});
+describe('MDCTextFieldCharacterCounter', () => {
+  it('attachTo returns an MDCTextFieldCharacterCounter instance', () => {
+    expect(
+        MDCTextFieldCharacterCounter.attachTo(getFixture()) instanceof
+        MDCTextFieldCharacterCounter)
+        .toBeTruthy();
+  });
 
-function setupTest() {
-  const root = getFixture();
-  const component = new MDCTextFieldCharacterCounter(root);
-  return {root, component};
-}
+  function setupTest() {
+    const root = getFixture();
+    const component = new MDCTextFieldCharacterCounter(root);
+    return {root, component};
+  }
 
-test('#adapter.setContent sets the text content of the element', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setContent('5 / 10');
-  assert.equal(root.textContent, '5 / 10');
+  it('#adapter.setContent sets the text content of the element', () => {
+    const {root, component} = setupTest();
+    (component.getDefaultFoundation() as any).adapter_.setContent('5 / 10');
+    expect(root.textContent).toEqual('5 / 10');
+  });
 });
