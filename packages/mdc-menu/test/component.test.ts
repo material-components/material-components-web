@@ -107,14 +107,12 @@ class FakeMenuSurface {
   setAbsolutePosition: Function = jasmine.createSpy('.setAbsolutePosition');
   setIsHoisted: Function = jasmine.createSpy('.setIsHoisted');
   anchorElement: HTMLElement|null = null;
-
-  constructor(root: HTMLElement) {}
 }
 
 function setupTestWithFakes(open = false) {
   const root = getFixture(open);
 
-  const menuSurface = new FakeMenuSurface(root);
+  const menuSurface = new FakeMenuSurface();
   const mockFoundation = createMockFoundation(MDCMenuFoundation);
 
   const list = new FakeList(root.querySelector('.mdc-list') as HTMLElement);
