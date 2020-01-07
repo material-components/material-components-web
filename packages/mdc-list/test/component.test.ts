@@ -407,7 +407,7 @@ describe('MDCList', () => {
   it('focusIn handler is added to root element', () => {
     const {root, mockFoundation} = setupTest();
     document.body.appendChild(root);
-    const event = document.createEvent('Event');
+    const event = document.createEvent('FocusEvent');
     event.initEvent('focusin', true, true);
     const listElementItem = root.querySelector('.mdc-list-item') as HTMLElement;
     listElementItem.dispatchEvent(event);
@@ -420,7 +420,7 @@ describe('MDCList', () => {
     const {root, component, mockFoundation} = setupTest();
     document.body.appendChild(root);
     component.destroy();
-    const event = document.createEvent('Event');
+    const event = document.createEvent('FocusEvent');
     event.initEvent('focusin', true, true);
     const listElementItem = root.querySelector('.mdc-list-item') as HTMLElement;
     listElementItem.dispatchEvent(event);
@@ -431,7 +431,7 @@ describe('MDCList', () => {
   it('focusOut handler is added to root element', () => {
     const {root, mockFoundation} = setupTest();
     document.body.appendChild(root);
-    const event = document.createEvent('Event');
+    const event = document.createEvent('FocusEvent');
     event.initEvent('focusout', true, true);
     const listElementItem = root.querySelector('.mdc-list-item') as HTMLElement;
     listElementItem.dispatchEvent(event);
@@ -444,7 +444,7 @@ describe('MDCList', () => {
     const {root, component, mockFoundation} = setupTest();
     document.body.appendChild(root);
     component.destroy();
-    const event = document.createEvent('Event');
+    const event = document.createEvent('FocusEvent');
     event.initEvent('focusout', true, true);
     const listElementItem = root.querySelector('.mdc-list-item') as HTMLElement;
     listElementItem.dispatchEvent(event);
