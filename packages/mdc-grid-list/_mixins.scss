@@ -76,6 +76,7 @@
       position: relative;
       /* @alternate */
       width: $mdc-grid-list-tile-width;
+      // stylelint-disable-next-line declaration-block-no-duplicate-properties
       width: var(--mdc-grid-list-tile-width, $mdc-grid-list-tile-width);
     }
   }
@@ -231,21 +232,21 @@
 
   .mdc-grid-tile {
     @include mdc-feature-targets($feat-structure) {
-      margin: $gutter-width/2 0;
-      padding: 0 $gutter-width/2;
+      margin: $gutter-width / 2 0;
+      padding: 0 $gutter-width / 2;
     }
   }
 
   .mdc-grid-tile__secondary {
     @include mdc-feature-targets($feat-structure) {
-      left: $gutter-width/2;
+      left: $gutter-width / 2;
       width: calc(100% - #{$gutter-width});
     }
   }
 
   .mdc-grid-list__tiles {
     @include mdc-feature-targets($feat-structure) {
-      margin: $gutter-width/2 auto;
+      margin: $gutter-width / 2 auto;
     }
   }
 }

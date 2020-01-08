@@ -469,6 +469,7 @@
     @include mdc-feature-targets($feat-color) {
       /* @alternate */
       stroke: $color;
+      // stylelint-disable-next-line declaration-block-no-duplicate-properties
       stroke: var(--mdc-slider-bg-color-behind-component, $color);
     }
   }

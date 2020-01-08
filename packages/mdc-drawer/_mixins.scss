@@ -450,7 +450,7 @@
   // postcss-bem-linter: ignore
   .mdc-list-divider {
     @include mdc-feature-targets($feat-structure) {
-      margin: 3px 0 4px 0;
+      margin: 3px 0 4px;
     }
   }
 

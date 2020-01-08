@@ -84,6 +84,7 @@
   }
 
   width: calc(#{$percent} - #{$gutter});
+  // stylelint-disable-next-line declaration-block-no-duplicate-properties
   width: calc(#{$percent} - var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}));
 
   @supports (display: grid) {
@@ -101,6 +102,7 @@
   box-sizing: border-box;
   margin: 0 auto;
   padding: $margin;
+  // stylelint-disable-next-line declaration-block-no-duplicate-properties
   padding: var(--mdc-layout-grid-margin-#{$size}, #{$margin});
 
   @if $max-width {
@@ -117,12 +119,14 @@
   flex-flow: row wrap;
   align-items: stretch;
   margin: -$gutter / 2;
+  // stylelint-disable-next-line declaration-block-no-duplicate-properties
   margin: calc(var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2 * -1);
 
   @supports (display: grid) {
     display: grid;
     margin: 0;
     grid-gap: $gutter;
+    // stylelint-disable-next-line declaration-block-no-duplicate-properties
     grid-gap: var(--mdc-layout-grid-gutter-#{$size}, $gutter);
     grid-template-columns: repeat(map-get($mdc-layout-grid-columns, $size), minmax(0, 1fr));
   }
@@ -137,6 +141,7 @@
 
   box-sizing: border-box;
   margin: $gutter / 2;
+  // stylelint-disable-next-line declaration-block-no-duplicate-properties
   margin: calc(var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2);
 
   @supports (display: grid) {
@@ -184,6 +189,7 @@
   $margin-number: 2;
 
   width: $column-width * $columnCount + $gutter * $gutter-number + $margin * $margin-number;
+  // stylelint-disable-next-line declaration-block-no-duplicate-properties
   width:
     calc(
       var(--mdc-layout-grid-column-width-#{$size}, #{$column-width}) * #{$columnCount} +

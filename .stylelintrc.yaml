@@ -1,334 +1,64 @@
-extends: stylelint-config-standard
+# Keep this file in sync with internal sass/stylelint/stylelintrc.yaml file.
 plugins:
-  - stylelint-selector-bem-pattern
   - stylelint-scss
-  - stylelint-order
 rules:
-  # Wrap lines greater than 120 characters
-  max-line-length: 120
-  # Override stylelint-config-standard - we only use CSS comments for annotations that don't warrant an empty line
-  comment-empty-line-before: null
-  # Follow best practices
-  font-family-name-quotes: always-where-recommended
-  # https://stackoverflow.com/a/34383157/467582
-  function-url-quotes: always
-  # https://www.w3.org/TR/selectors/#attribute-selectors
-  # http://stackoverflow.com/q/3851091
-  selector-attribute-quotes: always
-  # Double-quotes are our convention throughout our codebase within (S)CSS. They also reflect how
-  # attribute strings are normally quoted within the DOM.
-  string-quotes: double
-  order/order:
-    -
-      -
-        type: at-rule
-        hasBlock: false
-      - custom-properties
-      - declarations
-    -
-      unspecified: ignore
-      disableFix: true
-  # https://github.com/sasstools/sass-lint/blob/develop/lib/config/property-sort-orders/smacss.yml
-  order/properties-order:
-    - display
-    - position
-    - top
-    - right
-    - bottom
-    - left
-
-    - flex
-    - flex-basis
-    - flex-direction
-    - flex-flow
-    - flex-grow
-    - flex-shrink
-    - flex-wrap
-    - align-content
-    - align-items
-    - align-self
-    - justify-content
-    - order
-
-    - box-sizing
-
-    - width
-    - min-width
-    - max-width
-
-    - height
-    - min-height
-    - max-height
-
-    - margin
-    - margin-top
-    - margin-right
-    - margin-bottom
-    - margin-left
-
-    - padding
-    - padding-top
-    - padding-right
-    - padding-bottom
-    - padding-left
-
-    - float
-    - clear
-
-    - resize
-
-    - columns
-    - column-count
-    - column-gap
-    - column-fill
-    - column-rule
-    - column-span
-    - column-width
-
-    - grid-gap
-    - grid-template-columns
-
-    - animation
-    - animation-name
-    - animation-timing-function
-
-    - transform
-    - transform-box
-    - transform-origin
-    - transform-style
-
-    - transition
-    - transition-delay
-    - transition-duration
-    - transition-property
-    - transition-timing-function
-
-    # Border
-
-    - border
-    - border-top
-    - border-right
-    - border-bottom
-    - border-left
-    - border-width
-    - border-top-width
-    - border-right-width
-    - border-bottom-width
-    - border-left-width
-
-    - border-style
-    - border-top-style
-    - border-right-style
-    - border-bottom-style
-    - border-left-style
-
-    - border-radius
-    - border-top-left-radius
-    - border-top-right-radius
-    - border-bottom-left-radius
-    - border-bottom-right-radius
-
-    - border-color
-    - border-top-color
-    - border-right-color
-    - border-bottom-color
-    - border-left-color
-
-    - outline
-    - outline-color
-    - outline-offset
-    - outline-style
-    - outline-width
-
-    # Background
-
-    - background
-    - background-attachment
-    - background-clip
-    - background-color
-    - background-image
-    - background-repeat
-    - background-position
-    - background-size
-
-    - fill
-
-    - opacity
-
-    # Text
-
-    - color
-
-    - font
-    - font-family
-    - font-size
-    - font-smoothing
-    - font-style
-    - font-variant
-    - font-weight
-
-    - letter-spacing
-    - line-height
-    - list-style
-
-    - text-align
-    - text-decoration
-    - text-indent
-    - text-overflow
-    - text-rendering
-    - text-shadow
-    - text-transform
-    - text-wrap
-
-    - white-space
-    - word-spacing
-
-    # Cursor
-
-    - cursor
-    - pointer-events
-    - user-select
-
-    # Other
-
-    - appearance
-    - border-collapse
-    - border-spacing
-    - box-shadow
-    - caption-side
-    - content
-    - empty-cells
-    - overflow
-    - overflow-x
-    - overflow-y
-    - quotes
-    - speak
-    - table-layout
-    - vertical-align
-    - visibility
-    - will-change
-    - z-index
-  declaration-property-unit-whitelist:
-    font-size:
-      - "rem"
-      - "px"
-  # The following prefix rules are enabled since we use autoprefixer
-  at-rule-no-vendor-prefix: true
-  media-feature-name-no-vendor-prefix: true
-  selector-no-vendor-prefix: true
-  value-no-vendor-prefix: true
-  # Usually if you're nesting past 3 levels deep there's a problem
-  max-nesting-depth: 3
-  # Because we adhere to BEM we can limit the amount of necessary compound selectors. Most should
-  # just be 1 level selector. However, modifiers can introduce an additional compound selector.
-  # Furthermore, generic qualifying selectors (e.g. `[dir="rtl"]`) can introduce yet another level.
-  selector-max-compound-selectors: 4
-  # For specificity: disallow IDs (0). Allow for complex combinations of classes, pseudo-classes,
-  # attribute modifiers based on selector-max-compound-selectors, plus an addition for
-  # pseudo-classes (4). Allow for pseudo-elements (1).
-  selector-max-specificity: 0,4,1
-  at-rule-no-unknown:
-    - true
-    - ignoreAtRules:
-      - at-root
-      - content
-      - each
-      - else
-      - error
-      - for
-      - function
-      - include
-      - if
-      - mixin
-      - return
-      - warn
-  # Disallow "@extend" in scss.
-  # http://csswizardry.com/2016/02/mixins-better-for-performance/
-  # http://vanseodesign.com/css/sass-mixin-or-extend/
-  # Besides performance, @extend actually *changes* the selector precedence by creating a compound
-  # selector, which can lead to ambiguous results.
-  at-rule-blacklist:
-    - extend
-  # Extremely useful for typos, and anything emergent can be ignored by this rule
-  property-no-unknown:
-    - true
-    - ignoreProperties:
-        - contain
-  # There is no reason that a specific ID would be needed for UI components
-  selector-max-id: 0
-  # Qualifying types are not needed when using a naming system like BEM
-  selector-no-qualifying-type: true
-  # In general, we should not be modifying elements within our components, since we can't
-  # predict the use cases in which users would add a certain type of element into a component.
-  selector-max-type:
-    - 0
-    - ignoreTypes:
-        - /fieldset/
-  # Styles for components should never need the universal selector.
-  selector-max-universal: 0
-  # Ensure any defined symbols are prefixed with "mdc-"
-  custom-media-pattern: ^mdc-.+
-  custom-property-pattern: ^mdc-.+
-  selector-class-pattern:
-    - ^mdc-.+
-    - resolveNestedSelectors: true
-  selector-id-pattern: ^mdc-.+
-  # Names are more semantic than numbers
-  font-weight-notation: named-where-possible
-  # http://www.paulirish.com/2010/the-protocol-relative-url/
-  function-url-no-scheme-relative: true
-  # TODO: and FIXME: warnings are super useful because they remind us that we should address these
-  # within our codebase
-  comment-word-blacklist:
-    -
-      - /^TODO:/
-      - /^FIXME:/
-    - severity: warning
-  # Part of google's style guide
-  number-leading-zero: never
-  at-rule-empty-line-before:
-    - always
-    -
-      except:
-        - blockless-after-blockless
-        - first-nested
-      ignore:
-        - after-comment
-      ignoreAtRules:
-        - else
+  # This list is to be verified with tests in `e2e_test.js`, in order to verify that each rule is
+  # functioning, and that this file does not contain typos.
   block-closing-brace-newline-after:
     - always
     - ignoreAtRules:
       - if
       - else
-
-  # We use Harry Roberts' BEM dialect as our preferred way to format classes.
-  # See: http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/
-  # See: https://github.com/postcss/postcss-bem-linter/blob/c59db3f/lib/preset-patterns.js#L39
-  plugin/selector-bem-pattern:
-    componentName: ^[a-z]+(?:-[a-z]+)*$
-    # <namespace>-<block>__<element>*--<modifier>*[<attribute>]*
-    componentSelectors: ^\.mdc-{componentName}(?:__[a-z]+(?:-[a-z]+)*)*(?:--[a-z]+(?:-[a-z]+)*)*(?:\[.+\])*$
-    ignoreSelectors:
-      - ^fieldset
-      - ^\[aria\-disabled=(?:.+)\]
-
-  # SCSS naming patterns, just like our CSS conventions above.
-  # (note for $-vars we use a leading underscore for "private" variables)
-  scss/dollar-variable-pattern:
-    - ^_?mdc-.+
-    -
-      ignore: local
-  scss/at-function-pattern: ^mdc-.+
-  scss/at-mixin-pattern: ^mdc-.+
-  # Prevents unneeded nesting selectors
-  scss/selector-no-redundant-nesting-selector: true
-  # Since leading underscores are not needed, they can be omitted
-  scss/at-import-no-partial-leading-underscore: true
-  # Since mixins are explicit (`@include`) and parens are unnecessary for argumentless mixins, they
-  # can be omitted.
-  scss/at-else-closing-brace-newline-after: always-last-in-chain
-  scss/at-else-closing-brace-space-after: always-intermediate
-  scss/at-else-empty-line-before: never
-  scss/at-if-closing-brace-newline-after: always-last-in-chain
-  scss/at-if-closing-brace-space-after: always-intermediate
+  block-no-empty: true
+  color-hex-case: lower
+  color-hex-length: short
+  color-no-invalid-hex: true
+  declaration-block-no-duplicate-properties: true
+  declaration-block-no-redundant-longhand-properties: true
+  declaration-block-no-shorthand-property-overrides: true
+  declaration-block-trailing-semicolon: always
+  function-calc-no-unspaced-operator: true
+  function-url-no-scheme-relative: true
+  function-url-quotes: never
+  # Need to check if units are required for some flex properties in some browsers.
+  # length-zero-no-unit
+  no-duplicate-at-import-rules: true
+  no-eol-whitespace: true
+  no-extra-semicolons: true
+  # In MDC, @keyframe's are defined in a separate file.
+  # no-unknown-animations: true
+  number-leading-zero: never
+  # Requires known-css-parser, not yet imported into third_party.
+  # property-no-unknown: true
+  rule-empty-line-before:
+    - always
+    - ignore:
+      - after-comment
+      - first-nested
+      - inside-block
+  selector-pseudo-class-no-unknown: true
+  selector-pseudo-element-no-unknown:
+    - true
+    - ignorePseudoElements:
+        ng-deep
+  scss/at-rule-no-unknown: true
+  # No config allows this:
+  #
+  # ```scss
+  # $long-varaible-name:
+  #     (long, list, of, strings, that, is, too, wide, for, good, formatting);
+  # ```
+  #
+  # Possibly solved with request at https://github.com/kristerkari/stylelint-scss/issues/172.
+  # scss/dollar-variable-colon-space-after: always
+  scss/dollar-variable-colon-space-before: never
+  scss/operator-no-unspaced: true
+  shorthand-property-no-redundant-values: true
+  # TODO: Enable this when not conflicting with other sass file changes.
+  # string-quotes: single
+  unit-case: lower
+  unit-no-unknown:
+    - true
+    - ignoreUnits:
+      - /^[-+][\d$(]/
+  value-keyword-case: lower
