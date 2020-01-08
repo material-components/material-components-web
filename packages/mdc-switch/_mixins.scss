@@ -62,48 +62,48 @@
 
   .mdc-switch__native-control {
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-switch__native-control_;
+      @include mdc-switch-native-control_;
     }
   }
 
   .mdc-switch__track {
-    @include mdc-switch__track_($query);
+    @include mdc-switch-track_($query);
   }
 
   .mdc-switch__thumb-underlay {
-    @include mdc-switch__thumb-underlay_($query);
+    @include mdc-switch-thumb-underlay_($query);
   }
 
   .mdc-switch__thumb {
-    @include mdc-switch__thumb_($query);
+    @include mdc-switch-thumb_($query);
   }
 
   .mdc-switch--checked {
     @include mdc-feature-targets($feat-structure) {
       .mdc-switch__track {
-        @include mdc-switch__track-checked_;
+        @include mdc-switch-track-checked_;
       }
 
       .mdc-switch__thumb-underlay {
-        @include mdc-switch__thumb-underlay-checked_;
+        @include mdc-switch-thumb-underlay-checked_;
       }
 
       .mdc-switch__native-control {
-        @include mdc-switch__native-control-checked_;
+        @include mdc-switch-native-control-checked_;
       }
     }
   }
 
   .mdc-switch--disabled {
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-switch--disabled-base_;
+      @include mdc-switch-disabled-base_;
 
       .mdc-switch__thumb {
-        @include mdc-switch__thumb-disabled_;
+        @include mdc-switch-thumb-disabled_;
       }
 
       .mdc-switch__native-control {
-        @include mdc-switch__native-control-disabled_;
+        @include mdc-switch-native-control-disabled_;
       }
     }
   }
@@ -266,7 +266,7 @@
   user-select: none;
 }
 
-@mixin mdc-switch__track_($query: mdc-feature-all()) {
+@mixin mdc-switch-track_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-color: mdc-feature-create-target($query, color);
@@ -292,7 +292,7 @@
   }
 }
 
-@mixin mdc-switch__thumb-underlay_($query: mdc-feature-all()) {
+@mixin mdc-switch-thumb-underlay_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
@@ -313,7 +313,7 @@
   }
 }
 
-@mixin mdc-switch__native-control_ {
+@mixin mdc-switch-native-control_ {
   @include mdc-rtl-reflexive-position(left, 0);
 
   position: absolute;
@@ -324,7 +324,7 @@
   pointer-events: auto;
 }
 
-@mixin mdc-switch__thumb_($query: mdc-feature-all()) {
+@mixin mdc-switch-thumb_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-color: mdc-feature-create-target($query, color);
 
@@ -344,11 +344,11 @@
 
 // Checked state
 
-@mixin mdc-switch__track-checked_ {
+@mixin mdc-switch-track-checked_ {
   opacity: .54;
 }
 
-@mixin mdc-switch__thumb-underlay-checked_ {
+@mixin mdc-switch-thumb-underlay-checked_ {
   transform: translateX($mdc-switch-thumb-active-margin);
 
   @include mdc-rtl {
@@ -356,7 +356,7 @@
   }
 }
 
-@mixin mdc-switch__native-control-checked_ {
+@mixin mdc-switch-native-control-checked_ {
   // Translate the native control the opposite direction so that the tap target stays the same.
   transform: translateX(-($mdc-switch-thumb-active-margin));
 
@@ -367,16 +367,16 @@
 
 // Disabled state
 
-@mixin mdc-switch--disabled-base_ {
+@mixin mdc-switch-disabled-base_ {
   opacity: .38;
   pointer-events: none;
 }
 
-@mixin mdc-switch__thumb-disabled_ {
+@mixin mdc-switch-thumb-disabled_ {
   border-width: 1px;  // In high contrast mode, only show outline of knob.
 }
 
-@mixin mdc-switch__native-control-disabled_ {
+@mixin mdc-switch-native-control-disabled_ {
   cursor: default;
   pointer-events: none;
 }

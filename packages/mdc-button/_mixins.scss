@@ -68,7 +68,7 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     // overrides apply.
     .mdc-button__icon {
       @include mdc-feature-targets($feat-structure) {
-        @include mdc-button__icon_;
+        @include mdc-button-icon_;
       }
     }
 
@@ -82,14 +82,14 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 
   .mdc-button__label + .mdc-button__icon {
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-button__icon-trailing_;
+      @include mdc-button-icon-trailing_;
     }
   }
 
   // stylelint-disable-next-line selector-no-qualifying-type
   svg.mdc-button__icon {
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-button__icon-svg_;
+      @include mdc-button-icon-svg_;
     }
   }
 
@@ -99,28 +99,28 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
     .mdc-button__icon {
       @include mdc-feature-targets($feat-structure) {
         // Icons inside contained buttons have different styles due to increased button padding
-        @include mdc-button__icon-contained_;
+        @include mdc-button-icon-contained_;
       }
     }
 
     .mdc-button__label + .mdc-button__icon {
       @include mdc-feature-targets($feat-structure) {
-        @include mdc-button__icon-contained-trailing_;
+        @include mdc-button-icon-contained-trailing_;
       }
     }
   }
 
   .mdc-button--raised,
   .mdc-button--unelevated {
-    @include mdc-button--filled_($query);
+    @include mdc-button-filled_($query);
   }
 
   .mdc-button--raised {
-    @include mdc-button--raised_($query);
+    @include mdc-button-raised_($query);
   }
 
   .mdc-button--outlined {
-    @include mdc-button--outlined_($query);
+    @include mdc-button-outlined_($query);
   }
 
   .mdc-button--touch {
@@ -446,7 +446,7 @@ $query: mdc-feature-all()) {
   }
 }
 
-@mixin mdc-button__icon_ {
+@mixin mdc-button-icon_ {
   @include mdc-rtl-reflexive-box(margin, right, 8px);
 
   display: inline-block;
@@ -456,23 +456,23 @@ $query: mdc-feature-all()) {
   vertical-align: top;
 }
 
-@mixin mdc-button__icon-trailing_ {
+@mixin mdc-button-icon-trailing_ {
   @include mdc-rtl-reflexive-box(margin, left, 8px);
 }
 
-@mixin mdc-button__icon-svg_ {
+@mixin mdc-button-icon-svg_ {
   fill: currentColor;
 }
 
-@mixin mdc-button__icon-contained_ {
+@mixin mdc-button-icon-contained_ {
   @include mdc-rtl-reflexive-property(margin, -4px, 8px);
 }
 
-@mixin mdc-button__icon-contained-trailing_ {
+@mixin mdc-button-icon-contained-trailing_ {
   @include mdc-rtl-reflexive-property(margin, 8px, -4px);
 }
 
-@mixin mdc-button--outlined_($query) {
+@mixin mdc-button-outlined_($query) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-button-outline-width($mdc-button-outlined-border-width, $query: $query);
@@ -484,7 +484,7 @@ $query: mdc-feature-all()) {
   }
 }
 
-@mixin mdc-button--filled_($query) {
+@mixin mdc-button-filled_($query) {
   @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding, $query);
   @include mdc-button-container-fill-color(primary, $query);
   @include mdc-button-ink-color(on-primary, $query);
@@ -492,7 +492,7 @@ $query: mdc-feature-all()) {
   @include mdc-button-disabled-ink-color($mdc-button-disabled-ink-color, $query);
 }
 
-@mixin mdc-button--raised_($query) {
+@mixin mdc-button-raised_($query) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
 
