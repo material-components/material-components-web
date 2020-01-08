@@ -22,60 +22,70 @@
  */
 
 
-import {MDCNotchedOutline} from '../../mdc-notched-outline/index';
+import {MDCFloatingLabel} from '../../mdc-floating-label/index';
 
 const getFixture = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
-    <div class="mdc-notched-outline">
-      <div class="mdc-notched-outline__leading"></div>
-      <div class="mdc-notched-outline__notch"></div>
-      <div class="mdc-notched-outline__trailing"></div>
-    </div>
+    <label class="mdc-floating-label"></label>
   `;
   const el = wrapper.firstElementChild as HTMLElement;
   wrapper.removeChild(el);
   return el;
 };
 
-describe('MDCNotchedOutline', () => {
-  it('attachTo returns an MDCNotchedOutline instance', () => {
-    expect(
-        MDCNotchedOutline.attachTo(getFixture()) instanceof MDCNotchedOutline)
+
+describe('MDCFloatingLabel', () => {
+  it('attachTo returns an MDCFloatingLabel instance', () => {
+    expect(MDCFloatingLabel.attachTo(getFixture()) instanceof MDCFloatingLabel)
         .toBeTruthy();
   });
 
   function setupTest() {
     const root = getFixture();
-    const component = new MDCNotchedOutline(root);
+    const component = new MDCFloatingLabel(root);
     return {root, component};
   }
 
-  it('adapter#addClass adds a class to the root element', () => {
+  it('#shake calls the foundation shake method', () => {
+    const {component} = setupTest();
+    component['foundation_'].shake = jasmine.createSpy('');
+    component.shake(true);
+    expect(component['foundation_'].shake).toHaveBeenCalledWith(true);
+    expect(component['foundation_'].shake).toHaveBeenCalledTimes(1);
+  });
+
+  it('#getWidth calls the foundation getWidth method', () => {
+    const {component} = setupTest();
+    component['foundation_'].getWidth = jasmine.createSpy('');
+    component.getWidth();
+    expect(component['foundation_'].getWidth).toHaveBeenCalledTimes(1);
+  });
+
+  it('#float calls the foundation float method', () => {
+    const {component} = setupTest();
+    component['foundation_'].float = jasmine.createSpy('');
+    component.float(true);
+    expect(component['foundation_'].float).toHaveBeenCalledWith(true);
+    expect(component['foundation_'].float).toHaveBeenCalledTimes(1);
+  });
+
+  it('#adapter.addClass adds a class to the element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any).adapter_.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
-  it('adapter#removeClass removes a class to the root element', () => {
+  it('#adapter.removeClass removes a class from the element', () => {
     const {root, component} = setupTest();
+    root.classList.add('foo');
     (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
-    (component.getDefaultFoundation() as any)
-        .adapter_.setNotchWidthProperty(50);
-    (component.getDefaultFoundation() as any)
-        .adapter_.removeNotchWidthProperty();
-    const path =
-        root.querySelector('.mdc-notched-outline__notch') as HTMLElement;
-    expect('').toEqual(path.style.width as string);
+    expect(root.classList.contains('foo')).toBe(false);
   });
 
-  it('#adapter.setNotchWidthProperty sets the width property on the notched element',
-     () => {
-       const {root, component} = setupTest();
-       (component.getDefaultFoundation() as any)
-           .adapter_.setNotchWidthProperty(50);
-       const path =
-           root.querySelector('.mdc-notched-outline__notch') as HTMLElement;
-       expect('50px').toEqual(path.style.width as string);
-     });
+  it('#adapter.getWidth returns the width of the label element', () => {
+    const {root, component} = setupTest();
+    expect((component.getDefaultFoundation() as any).adapter_.getWidth())
+        .toEqual(root.offsetWidth);
+  });
 });
