@@ -29,7 +29,7 @@ import domEvents from 'dom-events';
 import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from '../../../packages/mdc-textfield/icon/index';
 
 const getFixture = () => bel`
-  <div class="mdc-text-field__icon"></div>
+  <div class="mdc-text-field__icon mdc-text-field__icon--leading"></div>
 `;
 
 suite('MDCTextFieldIcon');
