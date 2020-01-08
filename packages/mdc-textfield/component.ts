@@ -114,11 +114,13 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     this.characterCounter_ = characterCounterEl ? characterCounterFactory(characterCounterEl) : null;
 
     // Leading icon
-    const leadingIconEl = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+    const leadingIconEl =
+        this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     this.leadingIcon_ = leadingIconEl ? iconFactory(leadingIconEl) : null;
 
     // Trailing icon
-    const trailingIconEl = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
+    const trailingIconEl =
+        this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
     this.trailingIcon_ = trailingIconEl ? iconFactory(trailingIconEl) : null;
 
     this.ripple = this.createRipple_(rippleFactory);
