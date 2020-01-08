@@ -467,7 +467,10 @@
     $property-name: height,
   );
 
-  $resolved-radius: list.nth(shape-functions.resolve-percentage-radius($height, shape-functions.prop-value($radius)), 1);
+  $resolved-radius: list.nth(
+    shape-functions.resolve-percentage-radius($height, shape-functions.prop-value($radius)),
+    1
+  );
 
   @if (list.length(shape-functions.prop-value($radius)) > 1) {
     // stylelint-disable max-line-length
@@ -481,11 +484,19 @@
 
   @if ($resolved-radius > notched-outline-variables.$leading-width) {
     .mdc-text-field__input {
-      @include rtl-mixins.reflexive-property(padding, $resolved-radius + notched-outline-variables.$padding, 0);
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $resolved-radius + notched-outline-variables.$padding,
+        0
+      );
     }
 
     + .mdc-text-field-helper-line {
-      @include rtl-mixins.reflexive-property(padding, $resolved-radius + notched-outline-variables.$padding, $resolved-radius);
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $resolved-radius + notched-outline-variables.$padding,
+        $resolved-radius
+      );
     }
   }
 }
@@ -516,12 +527,16 @@
 
     &--with-leading-icon {
       .mdc-floating-label {
-        @include rtl-mixins.reflexive-position(left, (icon-variables.$icon-padding - notched-outline-variables.$leading-width));
+        @include rtl-mixins.reflexive-position(
+          left,
+          (icon-variables.$icon-padding - notched-outline-variables.$leading-width)
+        );
 
         &--float-above {
           @include rtl-mixins.reflexive-position(
             left,
-            (icon-variables.$icon-padding - notched-outline-variables.$leading-width) + notched-outline-variables.$padding
+            (icon-variables.$icon-padding - notched-outline-variables.$leading-width) +
+            notched-outline-variables.$padding
           );
         }
       }
@@ -658,7 +673,10 @@
   }
 
   .mdc-floating-label {
-    @include rtl-mixins.reflexive-position(left, icon-variables.$icon-padding - notched-outline-variables.$leading-width);
+    @include rtl-mixins.reflexive-position(
+      left,
+      icon-variables.$icon-padding - notched-outline-variables.$leading-width
+    );
   }
 }
 
@@ -675,7 +693,10 @@
   }
 
   .mdc-floating-label {
-    @include rtl-mixins.reflexive-position(left, icon-variables.$dense-icon-padding - notched-outline-variables.$leading-width);
+    @include rtl-mixins.reflexive-position(
+      left,
+      icon-variables.$dense-icon-padding - notched-outline-variables.$leading-width
+    );
   }
 }
 

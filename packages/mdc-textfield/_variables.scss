@@ -56,7 +56,11 @@ $disabled-placeholder-ink-color: rgba(theme-variables.prop-value(on-surface), .3
 $disabled-helper-text-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
 
 $background: color.mix(theme-variables.prop-value(on-surface), theme-variables.prop-value(surface), 4%) !default;
-$disabled-background: color.mix(theme-variables.prop-value(on-surface), theme-variables.prop-value(surface), 2%) !default;
+$disabled-background: color.mix(
+  theme-variables.prop-value(on-surface),
+  theme-variables.prop-value(surface),
+  2%
+) !default;
 $secondary-text: rgba(theme-variables.prop-value(on-surface), .6) !default;
 
 $outlined-idle-border: rgba(theme-variables.prop-value(on-surface), .38) !default;

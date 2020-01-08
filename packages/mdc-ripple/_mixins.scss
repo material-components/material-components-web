@@ -199,7 +199,11 @@
 /// @param {map} $opacity-map - map specifying custom opacity of zero or more states
 /// @param {bool} $has-nested-focusable-element - whether the component contains a focusable element in the root
 ///
-@mixin states-opacities($opacity-map: (), $has-nested-focusable-element: false, $query: feature-targeting-functions.all()) {
+@mixin states-opacities(
+  $opacity-map: (),
+  $has-nested-focusable-element: false,
+  $query: feature-targeting-functions.all()
+) {
   // Ensure sufficient specificity to override base state opacities
   @if map.has-key($opacity-map, hover) {
     @include states-hover-opacity(map.get($opacity-map, hover), $query: $query);

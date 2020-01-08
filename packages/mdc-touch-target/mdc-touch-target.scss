@@ -21,8 +21,6 @@
 //
 
 @use "./mixins";
-
 @forward "mixins";
 @forward "variables";
-
 @include mixins.wrapper;

@@ -66,6 +66,10 @@
 
   // Move the input's position, to allow room for the icon
   .mdc-select__selected-text {
-    @include rtl-mixins.reflexive-property(padding, $inputPadding /* left */, variables.$icon-right-padding /* right */);
+    @include rtl-mixins.reflexive-property(
+      padding,
+      $inputPadding /* left */,
+      variables.$icon-right-padding /* right */
+    );
   }
 }

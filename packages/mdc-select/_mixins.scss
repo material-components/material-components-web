@@ -108,7 +108,10 @@
   $masked-radius: functions.mask-radius($radius, 1 1 0 0);
 
   .mdc-select__anchor {
-    @include shape-mixins.radius(functions.resolve-percentage-radius(variables.$height, $masked-radius), $rtl-reflexive);
+    @include shape-mixins.radius(
+      functions.resolve-percentage-radius(variables.$height, $masked-radius),
+      $rtl-reflexive
+    );
   }
 }
 
@@ -248,10 +251,16 @@
 
     &.mdc-select--with-leading-icon {
       .mdc-floating-label {
-        @include rtl-mixins.reflexive-position(left, variables.$icon-padding - notched-outline-variables.$leading-width);
+        @include rtl-mixins.reflexive-position(
+          left,
+          variables.$icon-padding - notched-outline-variables.$leading-width
+        );
 
         &--float-above {
-          @include rtl-mixins.reflexive-position(left, variables.$icon-padding - notched-outline-variables.$leading-width);
+          @include rtl-mixins.reflexive-position(
+            left,
+            variables.$icon-padding - notched-outline-variables.$leading-width
+          );
         }
       }
     }

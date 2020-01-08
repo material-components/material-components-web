@@ -5,7 +5,9 @@ plugins:
   - stylelint-order
 rules:
   # Wrap lines greater than 120 characters
-  max-line-length: 120
+  max-line-length:
+    - 120
+    - ignorePattern: '/^@forward ".*"( as mdc-.*)? hide/'
   # Override stylelint-config-standard - we only use CSS comments for annotations that don't warrant an empty line
   comment-empty-line-before: null
   # Follow best practices
@@ -236,11 +238,13 @@ rules:
       - else
       - error
       - for
+      - forward
       - function
       - include
       - if
       - mixin
       - return
+      - use
       - warn
   # Disallow "@extend" in scss.
   # http://csswizardry.com/2016/02/mixins-better-for-performance/
@@ -313,14 +317,6 @@ rules:
       - ^fieldset
       - ^\[aria\-disabled=(?:.+)\]
 
-  # SCSS naming patterns, just like our CSS conventions above.
-  # (note for $-vars we use a leading underscore for "private" variables)
-  scss/dollar-variable-pattern:
-    - ^_?mdc-.+
-    -
-      ignore: local
-  scss/at-function-pattern: ^mdc-.+
-  scss/at-mixin-pattern: ^mdc-.+
   # Prevents unneeded nesting selectors
   scss/selector-no-redundant-nesting-selector: true
   # Since leading underscores are not needed, they can be omitted

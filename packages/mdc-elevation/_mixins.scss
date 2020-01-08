@@ -114,7 +114,12 @@
 /// @param {Number} [$height] - The height of the elevation overlay
 /// @param {Boolean} [$has-content-sizing] - Set to false if the container has no content sizing
 ///
-@mixin overlay-dimensions($width, $height: $width, $has-content-sizing: true, $query: feature-targeting-functions.all()) {
+@mixin overlay-dimensions(
+  $width,
+  $height: $width,
+  $has-content-sizing: true,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include overlay-selector_ {
@@ -170,7 +175,12 @@
 // The $z-value must be between 0 and 24.
 // If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
 // $opacity-boost.
-@mixin elevation($z-value, $color: variables.$baseline-color, $opacity-boost: 0, $query: feature-targeting-functions.all()) {
+@mixin elevation(
+  $z-value,
+  $color: variables.$baseline-color,
+  $opacity-boost: 0,
+  $query: feature-targeting-functions.all()
+) {
   @if meta.type-of($z-value) != number or not math.is-unitless($z-value) {
     @error "$z-value must be a unitless number, but received '#{$z-value}'";
   }

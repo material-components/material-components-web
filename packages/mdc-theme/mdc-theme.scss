@@ -21,10 +21,8 @@
 //
 
 @use "./mixins";
-
 @forward "constants";
 @forward "functions";
 @forward "mixins";
 @forward "variables";
-
 @include mixins.core-styles;

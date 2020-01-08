@@ -468,7 +468,11 @@ $ripple-target: ".mdc-chip__ripple";
   }
 }
 
-@mixin outline-width($width, $horizontal-padding: variables.$horizontal-padding, $query: feature-targeting-functions.all()) {
+@mixin outline-width(
+  $width,
+  $horizontal-padding: variables.$horizontal-padding,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   // Note: Adjust padding to maintain consistent width with non-outlined chips

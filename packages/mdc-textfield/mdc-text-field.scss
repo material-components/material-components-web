@@ -41,7 +41,6 @@
 @use "character-counter/mixins" as character-counter-mixins;
 @use "helper-text/mixins" as helper-text-mixins;
 @use "icon/mixins" as icon-mixins;
-
 @forward "character-counter/mixins";
 @forward "functions";
 @forward "helper-text/mixins";

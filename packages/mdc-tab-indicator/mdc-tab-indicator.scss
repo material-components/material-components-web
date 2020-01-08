@@ -22,7 +22,5 @@
  */
 
 @use "./mixins";
-
 @forward "mixins";
-
 @include mixins.core-styles;

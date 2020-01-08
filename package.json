@@ -78,7 +78,7 @@
     "cross-env": "^5.0.0",
     "css-loader": "^2.0.0",
     "cssom": "^0.3.2",
-    "dart-sass": "^1.15.2",
+    "dart-sass": "^1.24.3",
     "debounce": "^1.1.0",
     "del": "^4.0.0",
     "detect-port": "^1.2.3",

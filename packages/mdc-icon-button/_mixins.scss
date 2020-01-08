@@ -125,7 +125,12 @@
 ///     This mixin provides too much of low level customization.
 ///     Please use mdc-icon-button-size instead.
 ///
-@mixin icon-size($width, $height: $width, $padding: math.max($width,$height)/2, $query: feature-targeting-functions.all()) {
+@mixin icon-size(
+  $width,
+  $height: $width,
+  $padding: math.max($width,$height)/2,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
