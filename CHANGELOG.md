@@ -28,12 +28,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **list:** Ensure disabled colors apply to primary and secondary text ([#5322](https://github.com/material-components/material-components-web/issues/5322)) ([878a08b](https://github.com/material-components/material-components-web/commit/878a08b))
 * **radio:** update disabled color values ([#5210](https://github.com/material-components/material-components-web/issues/5210)) ([491fddc](https://github.com/material-components/material-components-web/commit/491fddc))
 * **select:** Do not fire change event on programmatic change ([#5255](https://github.com/material-components/material-components-web/issues/5255)) ([ec72968](https://github.com/material-components/material-components-web/commit/ec72968))
-* add missing SASS dependencies ([#5337](https://github.com/material-components/material-components-web/issues/5337)) ([d2ae6e1](https://github.com/material-components/material-components-web/commit/d2ae6e1))
 * **select:** Fix notch outline width when floating ([#5319](https://github.com/material-components/material-components-web/issues/5319)) ([1c494e5](https://github.com/material-components/material-components-web/commit/1c494e5))
 * **switch:** handle aria-checked correctly. ([#5202](https://github.com/material-components/material-components-web/issues/5202)) ([#5357](https://github.com/material-components/material-components-web/issues/5357)) ([d245a1a](https://github.com/material-components/material-components-web/commit/d245a1a))
 * **switch:** set track border to be transparent ([#5323](https://github.com/material-components/material-components-web/issues/5323)) ([397905b](https://github.com/material-components/material-components-web/commit/397905b))
 * **testing:** Revert change from [#5299](https://github.com/material-components/material-components-web/issues/5299). ([#5324](https://github.com/material-components/material-components-web/issues/5324)) ([5fb62be](https://github.com/material-components/material-components-web/commit/5fb62be))
 * **textfield:** add placeholder mixins and fix disabled colors ([#5360](https://github.com/material-components/material-components-web/issues/5360)) ([0a40ced](https://github.com/material-components/material-components-web/commit/0a40ced))
+* **textfield:** add separate classes for leading/trailing icons ([#5367](https://github.com/material-components/material-components-web/issues/5367)) ([70c708d](https://github.com/material-components/material-components-web/commit/70c708d))
+* add missing SASS dependencies ([#5337](https://github.com/material-components/material-components-web/issues/5337)) ([d2ae6e1](https://github.com/material-components/material-components-web/commit/d2ae6e1))
 * Remove edge detection for CSS custom properties ([#5264](https://github.com/material-components/material-components-web/issues/5264)) ([fe444ac](https://github.com/material-components/material-components-web/commit/fe444ac))
 
 
@@ -76,7 +77,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-* **switch:** Added setNativeControlAttr method in mdc-switch adapter.
+* **textfield:** icons must use `.mdc-text-field__icon--leading` or `.mdc-text-field__icon--trailing` classes. `mdc-text-field-icon-color()` mixin has been split into `mdc-text-field-leading-icon-color()` and `mdc-text-field-trailing-icon-color()`.
+
+* chore(textfield): use --leading/trailing modifiers for icons
+
+* chore(textfield): docs typo
+
+* chore(textfield): revert hover fix
+
+* chore(textfield): fix unclosed css block
+
+* chore(textfield): separate position mixins for leading/trailing icons
+
+* chore(textfield): restore two-icons position mixin
+
+* chore(textfield): update component test with icon classes
+
+* chore(textfield): update foundation test for preventDefault error
+* **text-field:** Redundant mixins `mdc-text-field-textarea-fill-color`, `mdc-text-field-textarea-stroke-color`, `mdc-text-field-fullwidth-bottom-line-color` removed. Instead, use `mdc-text-field-fill-color`, `mdc-text-field-outline-color`, and `mdc-text-field-bottom-line-color` respectively to achieve the same effect.
 * **checkbox:** remove event listener for 'change' and add event listener for 'click'.
 
 - Add handleClick() method in foundation to handle click event.
@@ -84,12 +102,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **switch:** Switch DOM structure has changed. See switch README for details
 * **button:** Variable `$mdc-button-disabled-container-fill-color`
 renamed to `$mdc-button-disabled-container-color`.
-* Removed `$edgeOptOut` option from `mdc-theme-prop()` Sass mixin.
+* **switch:** Added setNativeControlAttr method in mdc-switch adapter.
 * **chips:** the handleInteraction and handleTrailingIconInteraction handlers have been removed from the MDCChipFoundation. The handleClick handler has been added to the MDCChipFoundation
 * Adds new adapter methods to MDCLinearProgressAdapter.
 * **elevation:** Functions moved into the _functions.scss file
 * **touchtarget:** Renames mixin from mdc-touch-target-component => mdc-touch-target-margin
-* **text-field:** Redundant mixins `mdc-text-field-textarea-fill-color`, `mdc-text-field-textarea-stroke-color`, `mdc-text-field-fullwidth-bottom-line-color` removed. Instead, use `mdc-text-field-fill-color`, `mdc-text-field-outline-color`, and `mdc-text-field-bottom-line-color` respectively to achieve the same effect.
+* Removed `$edgeOptOut` option from `mdc-theme-prop()` Sass mixin.
 
 
 
