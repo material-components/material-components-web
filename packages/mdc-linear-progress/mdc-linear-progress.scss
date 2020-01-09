@@ -18,8 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+@forward "variables";
 @use "./mixins";
 @forward "keyframes";
 @forward "mixins";
-@forward "variables";
 @include mixins.core-styles;

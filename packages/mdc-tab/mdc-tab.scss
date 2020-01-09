@@ -20,8 +20,7 @@
 // THE SOFTWARE.
 //
 
-@use "./mixins";
-@forward "@material/tab-indicator/mixins" as indicator-*;
-@forward "mixins";
 @forward "variables";
+@use "./mixins";
+@forward "mixins";
 @include mixins.core-styles;

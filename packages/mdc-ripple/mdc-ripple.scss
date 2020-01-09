@@ -20,10 +20,10 @@
 // THE SOFTWARE.
 //
 
+@forward "variables";
 @forward "functions";
 @forward "keyframes";
 @forward "mixins";
-@forward "variables";
 @use "./mixins";
 @include mixins.common;
 @include mixins.core-styles;

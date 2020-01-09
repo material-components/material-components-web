@@ -20,10 +20,10 @@
 
 @use "sass:list";
 @use "sass:map";
-@use "./variables";
-@use "./mixins";
-@forward "mixins";
-@forward "variables";
+@forward "./variables";
+@forward "./mixins";
+@use "variables";
+@use "mixins";
 
 :root {
   @each $size in map.keys(variables.$columns) {

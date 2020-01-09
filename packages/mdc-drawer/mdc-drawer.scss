@@ -20,6 +20,6 @@
 // THE SOFTWARE.
 //
 
-@use "./common";
+@forward "./common";
 @use "./dismissible/mdc-drawer-dismissible";
-@forward "modal/mdc-drawer-modal";
+@use "modal/mdc-drawer-modal";

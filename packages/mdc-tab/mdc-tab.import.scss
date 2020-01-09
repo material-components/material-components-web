@@ -16,6 +16,7 @@
 @forward "@material/typography/mixins" as mdc-typography-* hide mdc-typography-typography;
 @forward "@material/rtl/mixins" as mdc-* hide mdc-property-, mdc-reflexive, mdc-reflexive-box, mdc-reflexive-position, mdc-reflexive-property;
 @forward "@material/rtl/mixins" as mdc-rtl-* hide mdc-rtl-rtl;
+@forward "@material/tab-indicator/mixins" as mdc-tab-indicator-*;
 @forward "@material/feature-targeting/functions" as mdc-feature-*;
 @forward "@material/animation/functions" as mdc-animation-*;
 @forward "@material/theme/functions" as mdc-theme-*;

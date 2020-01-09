@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+@forward "variables";
 @use "./mixins";
 @forward "functions";
 @forward "mixins";
-@forward "variables";
 @include mixins.core-styles;

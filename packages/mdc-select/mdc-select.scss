@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@forward "variables";
 @use "./keyframes";
 @use "./mixins";
 @use "./variables";
@@ -40,7 +41,6 @@
 @use "@material/theme/variables" as theme-variables;
 @forward "helper-text/mixins";
 @forward "mixins";
-@forward "variables";
 
 // postcss-bem-linter: define select
 .mdc-select {

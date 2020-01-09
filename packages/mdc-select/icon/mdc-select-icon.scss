@@ -19,9 +19,9 @@
 //  THE SOFTWARE.
 //
 
+@forward "variables";
 @use "./mixins";
 @forward "mixins";
-@forward "variables";
 
 .mdc-select--with-leading-icon {
   @include mixins.icon_;

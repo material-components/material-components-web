@@ -30,6 +30,7 @@
 @use "@material/theme/variables" as variables3;
 @use "@material/typography/mixins" as typography-mixins;
 @use "@material/typography/variables" as variables4;
+@forward "variables";
 @use "./functions";
 @use "./helper-text/mdc-text-field-helper-text";
 @use "./character-counter/mdc-text-field-character-counter";
@@ -47,7 +48,6 @@
 @forward "icon/mixins";
 @forward "icon/variables";
 @forward "mixins" hide mdc-required-text-field-label-asterisk-;
-@forward "variables";
 
 // postcss-bem-linter: define text-field
 
