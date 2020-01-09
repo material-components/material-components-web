@@ -81,16 +81,6 @@ if [[ "$TEST_SUITE" == 'unit' ]]; then
   check_for_testable_files '^karma\.conf\.js$' '^packages/.+\.(js|ts)$' '^test/unit/.+\.(js|ts)$' '^testing/.+\.ts'
 fi
 
-if [[ "$TEST_SUITE" == 'build' ]]; then
-  # Only run build if package JS/Sass files changed
-  check_for_testable_files '^packages/.+\.(js|ts|css|scss)$'
-fi
-
-if [[ "$TEST_SUITE" == 'site-generator' ]]; then
-  # Only run site-generator test if docs, Markdown, or image files changed
-  check_for_testable_files '^docs/' '\.md$' '\.(png|jpg|jpeg|gif|svg)$'
-fi
-
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   # Only run screenshot tests if the following change:
   # - package (non-unit test) JS/Sass files

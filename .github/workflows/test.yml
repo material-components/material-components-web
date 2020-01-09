@@ -1,12 +1,10 @@
 name: MDC Test
 
 on:
-  pull_request:
   push:
     branches:
       - master
-      - develop
-      - feature/**
+  pull_request:
 
 jobs:
   lint:
@@ -18,3 +16,22 @@ jobs:
           node-version: 10
       - run: npm install
       - run: npm run lint
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - run: npm install
+      - run: npm run dist
+  site-generator-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          # Node v8 is required.
+          node-version: 8
+      - run: npm install
+      - run: npm run test:site
