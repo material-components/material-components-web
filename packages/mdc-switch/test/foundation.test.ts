@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {setUpFoundationTest} from '../../testing/helpers/setup';
-import {MDCSwitchFoundation} from '../../switch/foundation';
+import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {MDCSwitchFoundation} from '../foundation';
 
 function setupTest() {
   const {foundation, mockAdapter} = setUpFoundationTest(MDCSwitchFoundation);
