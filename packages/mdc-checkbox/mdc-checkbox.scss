@@ -20,5 +20,11 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-checkbox-core-styles;
+@use "./mixins";
+
+@forward "functions";
+@forward "keyframes";
+@forward "mixins";
+@forward "variables";
+
+@include mixins.core-styles;

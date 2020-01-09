@@ -20,34 +20,35 @@
 // THE SOFTWARE.
 //
 
-@import "@material/ripple/variables";
-@import "@material/theme/variables";
-@import "@material/density/variables";
+@use "sass:map";
+@use "@material/ripple/variables" as ripple-variables;
+@use "@material/theme/variables" as theme-variables;
+@use "@material/density/variables" as density-variables;
 
-$mdc-checkbox-mark-color: mdc-theme-prop-value(on-primary) !default;
-$mdc-checkbox-border-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
-$mdc-checkbox-disabled-color: rgba(mdc-theme-prop-value(on-surface), .38) !default;
-$mdc-checkbox-baseline-theme-color: secondary !default;
+$mark-color: theme-variables.prop-value(on-primary) !default;
+$border-color: rgba(theme-variables.prop-value(on-surface), .54) !default;
+$disabled-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
+$baseline-theme-color: secondary !default;
 
-$mdc-checkbox-ripple-size: 40px !default;
-$mdc-checkbox-icon-size: 18px !default;
-$mdc-checkbox-mark-stroke-size: 2/15 * $mdc-checkbox-icon-size !default;
-$mdc-checkbox-border-width: 2px !default;
-$mdc-checkbox-transition-duration: 90ms !default;
-$mdc-checkbox-item-spacing: 4px !default;
-$mdc-checkbox-focus-indicator-opacity: map-get($mdc-ripple-dark-ink-opacities, focus) !default;
+$ripple-size: 40px !default;
+$icon-size: 18px !default;
+$mark-stroke-size: 2/15 * $icon-size !default;
+$border-width: 2px !default;
+$transition-duration: 90ms !default;
+$item-spacing: 4px !default;
+$focus-indicator-opacity: map.get(ripple-variables.$dark-ink-opacities, focus) !default;
 
-$mdc-checkbox-minimum-size: 28px !default;
-$mdc-checkbox-maximum-size: $mdc-checkbox-ripple-size !default;
-$mdc-checkbox-density-scale: $mdc-density-default-scale !default;
-$mdc-checkbox-density-config: (
+$minimum-size: 28px !default;
+$maximum-size: $ripple-size !default;
+$density-scale: density-variables.$default-scale !default;
+$density-config: (
   size: (
-    minimum: $mdc-checkbox-minimum-size,
-    default: $mdc-checkbox-ripple-size,
-    maximum: $mdc-checkbox-maximum-size,
+    minimum: $minimum-size,
+    default: $ripple-size,
+    maximum: $maximum-size,
   ),
 ) !default;
 
 // Manual calculation done on SVG
-$mdc-checkbox-mark-path-length_: 29.7833385 !default;
-$mdc-checkbox-indeterminate-checked-easing-function_: cubic-bezier(.14, 0, 0, 1) !default;
+$mark-path-length_: 29.7833385 !default;
+$indeterminate-checked-easing-function_: cubic-bezier(.14, 0, 0, 1) !default;

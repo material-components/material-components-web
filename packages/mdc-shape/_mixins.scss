@@ -20,28 +20,30 @@
 // THE SOFTWARE.
 //
 
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "./variables";
-@import "./functions";
+@use "sass:list";
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/rtl/mixins" as rtl-mixins;
+@use "./variables";
+@use "./functions";
 
-@mixin mdc-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     // Even if $rtl-reflexive is true, only emit RTL styles if we can't easily tell that the given radius is symmetrical
-    $needs-flip: $rtl-reflexive and length($radius) > 1;
+    $needs-flip: $rtl-reflexive and list.length($radius) > 1;
 
     @if ($needs-flip) {
       /* @noflip */
     }
 
-    border-radius: mdc-shape-prop-value($radius);
+    border-radius: functions.prop-value($radius);
 
     @if ($needs-flip) {
-      @include mdc-rtl {
+      @include rtl-mixins.rtl {
         /* @noflip */
-        border-radius: mdc-shape-flip-radius(mdc-shape-prop-value($radius));
+        border-radius: functions.flip-radius(functions.prop-value($radius));
       }
     }
   }

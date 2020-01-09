@@ -19,17 +19,19 @@
 //  THE SOFTWARE.
 //
 
-@import "../functions";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
+@use "../functions";
+@use "@material/theme/mixins" as mixins2;
+@use "@material/typography/mixins";
+
+@forward "../functions";
 
 // postcss-bem-linter: define select-helper-text
 .mdc-select-helper-text {
-  @include mdc-typography(caption);
-  @include mdc-typography-baseline-top(16px);
+  @include mixins.typography(caption);
+  @include mixins.baseline-top(16px);
 
   margin: 0;
-  transition: mdc-select-transition(opacity);
+  transition: functions.transition(opacity);
   opacity: 0;
   will-change: opacity;
 }

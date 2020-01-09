@@ -20,5 +20,9 @@
 // THE SOFTWARE.
 //
 
-@import "../mixins";
-@include mdc-chip-set-core-styles;
+@use "../mixins";
+
+@forward "../mixins";
+@forward "../variables";
+
+@include mixins.set-core-styles;

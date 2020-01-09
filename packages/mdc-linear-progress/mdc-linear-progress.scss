@@ -18,5 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@import "./mixins";
-@include mdc-linear-progress-core-styles;
+@use "./mixins";
+
+@forward "keyframes";
+@forward "mixins";
+@forward "variables";
+
+@include mixins.core-styles;

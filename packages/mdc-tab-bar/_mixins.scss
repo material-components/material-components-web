@@ -20,29 +20,29 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/variables";
-@import "@material/density/functions";
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "@material/tab-scroller/mixins";
-@import "@material/tab/mixins";
-@import "./variables";
+@use "@material/animation/variables" as animation-variables;
+@use "@material/density/functions" as density-functions;
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/tab-scroller/mixins" as tab-scroller-mixins;
+@use "@material/tab/mixins" as tab-mixins;
+@use "./variables";
 
-@mixin mdc-tab-bar-core-styles($query: mdc-feature-all()) {
+@mixin core-styles($query: feature-targeting-functions.all()) {
   // postcss-bem-linter: define tab-bar
   .mdc-tab-bar {
-    @include mdc-tab-bar-width(100%, $query);
+    @include width(100%, $query);
   }
 
-  @include mdc-tab-bar-density($mdc-tab-bar-density-scale, $query: $query);
-  @include mdc-tab-bar-stacked-density($mdc-tab-bar-stacked-density-scale, $query: $query);
+  @include density(variables.$density-scale, $query: $query);
+  @include stacked-density(variables.$stacked-density-scale, $query: $query);
   // postcss-bem-linter: end
 }
 
-@mixin mdc-tab-bar-width($width, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin width($width, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     width: $width;
   }
 }
@@ -53,15 +53,15 @@
 ///
 /// @param {Number} $density-scale Density scale value. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
 ///
-@mixin mdc-tab-bar-density($density-scale, $query: mdc-feature-all()) {
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-tab-bar-density-config,
+@mixin density($density-scale, $query: feature-targeting-functions.all()) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
   .mdc-tab {
-    @include mdc-tab-height($height, $query: $query);
+    @include tab-mixins.height($height, $query: $query);
   }
 }
 
@@ -70,15 +70,15 @@
 ///
 /// @param {Number} $density-scale Density scale value. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
 ///
-@mixin mdc-tab-bar-stacked-density($density-scale, $query: mdc-feature-all()) {
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-tab-bar-stacked-density-config,
+@mixin stacked-density($density-scale, $query: feature-targeting-functions.all()) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$stacked-density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
   .mdc-tab--stacked {
-    @include mdc-tab-height($height, $query: $query);
+    @include tab-mixins.height($height, $query: $query);
   }
 }
 
@@ -89,12 +89,12 @@
 /// @param {Number | String} $duration-ms - Duration (in ms) of the animation.
 /// @param {String} $timing-function - Optionally overrides the default animation timing function.
 ///
-@mixin mdc-tab-bar-tab-scroller-transition(
+@mixin tab-scroller-transition(
   $duration-ms,
-  $timing-function: $mdc-animation-standard-curve-timing-function,
-  $query: mdc-feature-all()
+  $timing-function: animation-variables.$standard-curve-timing-function,
+  $query: feature-targeting-functions.all()
 ) {
   .mdc-tab-scroller {
-    @include mdc-tab-scroller-transition($duration-ms, $timing-function: $timing-function, $query: $query);
+    @include tab-scroller-mixins.transition($duration-ms, $timing-function: $timing-function, $query: $query);
   }
 }

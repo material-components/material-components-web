@@ -20,9 +20,12 @@
 // THE SOFTWARE.
 //
 
-@import "@material/base/mixins";
-@import "./mixins";
+@use "@material/base/mixins" as base-mixins;
+@use "./mixins";
 
-@include mdc-base-emit-once("mdc-floating-label") {
-  @include mdc-floating-label-core-styles;
+@forward "mixins";
+@forward "variables";
+
+@include base-mixins.emit-once("mdc-floating-label") {
+  @include mixins.core-styles;
 }

@@ -20,5 +20,9 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-touch-target-wrapper;
+@use "./mixins";
+
+@forward "mixins";
+@forward "variables";
+
+@include mixins.wrapper;

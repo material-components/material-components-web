@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@mixin mdc-slider-emphasize-keyframes_ {
+@mixin emphasize-keyframes_ {
   @keyframes mdc-slider-emphasize {
     0% {
       animation-timing-function: ease-out;

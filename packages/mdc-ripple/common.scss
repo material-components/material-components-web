@@ -20,5 +20,10 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-ripple-common;
+@forward "functions";
+@forward "keyframes";
+@forward "mixins";
+@forward "variables";
+
+@use "./mixins";
+@include mixins.common;

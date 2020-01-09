@@ -21,5 +21,9 @@
  * THE SOFTWARE.
  */
 
-@import "./mixins";
-@include mdc-tab-scroller-core-styles;
+@use "./mixins";
+
+@forward "mixins";
+@forward "variables";
+
+@include mixins.core-styles;

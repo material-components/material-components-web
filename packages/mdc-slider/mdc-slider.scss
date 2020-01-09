@@ -20,5 +20,10 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-slider-core-styles;
+@use "./mixins";
+
+@forward "keyframes";
+@forward "mixins";
+@forward "variables";
+
+@include mixins.core-styles;

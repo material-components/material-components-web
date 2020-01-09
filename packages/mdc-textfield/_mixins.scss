@@ -20,20 +20,23 @@
 // THE SOFTWARE.
 //
 
-@import "@material/density/functions";
-@import "@material/floating-label/mixins";
-@import "@material/line-ripple/mixins";
-@import "@material/notched-outline/mixins";
-@import "@material/notched-outline/variables";
-@import "@material/theme/mixins";
-@import "@material/shape/mixins";
-@import "@material/shape/functions";
-@import "helper-text/mixins";
-@import "character-counter/mixins";
-@import "icon/mixins";
-@import "icon/variables";
-@import "./variables";
-@import "./functions";
+@use "sass:list";
+@use "@material/density/functions" as density-functions;
+@use "@material/floating-label/mixins" as floating-label-mixins;
+@use "@material/line-ripple/mixins" as line-ripple-mixins;
+@use "@material/notched-outline/mixins" as notched-outline-mixins;
+@use "@material/notched-outline/variables" as notched-outline-variables;
+@use "@material/ripple/mixins" as ripple-mixins;
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/shape/mixins" as shape-mixins;
+@use "@material/shape/functions" as shape-functions;
+@use "helper-text/mixins" as helper-text-mixins;
+@use "character-counter/mixins" as character-counter-mixins;
+@use "icon/mixins" as icon-mixins;
+@use "icon/variables" as icon-variables;
+@use "./variables";
+@use "./functions";
+@use "@material/rtl/mixins" as rtl-mixins;
 
 ///
 /// Sets density scale for default text field variant.
@@ -41,14 +44,14 @@
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
 ///
-@mixin mdc-text-field-density($density-scale) {
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-text-field-density-config,
+@mixin density($density-scale) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  @include mdc-text-field-height($height);
+  @include height($height);
 }
 
 ///
@@ -57,14 +60,14 @@
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
 ///
-@mixin mdc-text-field-outlined-density($density-scale) {
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-text-field-density-config,
+@mixin outlined-density($density-scale) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  @include mdc-text-field-outlined-height($height);
+  @include outlined-height($height);
 }
 
 ///
@@ -73,14 +76,14 @@
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
 ///
-@mixin mdc-text-field-outlined-with-leading-icon-density($density-scale) {
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-text-field-density-config,
+@mixin outlined-with-leading-icon-density($density-scale) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  @include mdc-text-field-outlined-with-leading-icon-height($height);
+  @include outlined-with-leading-icon-height($height);
 }
 
 ///
@@ -89,7 +92,7 @@
 /// @param {Number} $height
 /// @access public
 ///
-@mixin mdc-text-field-height($height) {
+@mixin height($height) {
   height: $height;
 
   // Target only dense text field.
@@ -100,9 +103,9 @@
         // Set line-height to the height of input element excluding padding & border.
         line-height:
           $height
-          - $mdc-text-field-input-padding-top
-          - $mdc-text-field-input-padding-bottom
-          - $mdc-text-field-input-border-bottom;
+          - variables.$input-padding-top
+          - variables.$input-padding-bottom
+          - variables.$input-border-bottom;
       }
     }
   }
@@ -114,18 +117,18 @@
 /// @param {Number} $height
 /// @access public
 ///
-@mixin mdc-text-field-outlined-height($height) {
+@mixin outlined-height($height) {
   $keyframe-suffix: text-field-outlined-#{$height};
-  $positionY: mdc-text-field-get-outlined-label-position-y($height);
+  $positionY: variables.get-outlined-label-position-y($height);
 
-  @include mdc-notched-outline-floating-label-float-position-absolute($positionY);
+  @include notched-outline-mixins.floating-label-float-position-absolute($positionY);
 
   @at-root {
-    @include mdc-floating-label-shake-keyframes($keyframe-suffix, $positionY);
+    @include floating-label-mixins.shake-keyframes($keyframe-suffix, $positionY);
   }
 
-  @include mdc-floating-label-shake-animation($keyframe-suffix);
-  @include mdc-text-field-height($height);
+  @include floating-label-mixins.shake-animation($keyframe-suffix);
+  @include height($height);
 }
 
 ///
@@ -134,40 +137,40 @@
 /// @param {Number} $height
 /// @access public
 ///
-@mixin mdc-text-field-outlined-with-leading-icon-height($height) {
+@mixin outlined-with-leading-icon-height($height) {
   $keyframe-suffix: text-field-outlined-with-leading-icon-#{$height};
-  $positionY: mdc-text-field-get-outlined-label-position-y($height);
+  $positionY: variables.get-outlined-label-position-y($height);
 
   // For specificity
   &.mdc-text-field--outlined {
-    @include mdc-notched-outline-floating-label-float-position-absolute($positionY, 32px);
+    @include notched-outline-mixins.floating-label-float-position-absolute($positionY, 32px);
   }
 
   @at-root {
-    @include mdc-floating-label-shake-keyframes(
+    @include floating-label-mixins.shake-keyframes(
       $keyframe-suffix,
       $positionY,
-      $mdc-text-field-outlined-with-leading-icon-label-position-x
+      variables.$outlined-with-leading-icon-label-position-x
     );
   }
 
-  @include mdc-floating-label-shake-animation($keyframe-suffix);
+  @include floating-label-mixins.shake-animation($keyframe-suffix);
 
   $keyframe-suffix-rtl: #{$keyframe-suffix}-rtl;
 
   @at-root {
-    @include mdc-floating-label-shake-keyframes(
+    @include floating-label-mixins.shake-keyframes(
       $keyframe-suffix-rtl,
       $positionY,
-      -$mdc-text-field-outlined-with-leading-icon-label-position-x
+      -(variables.$outlined-with-leading-icon-label-position-x)
     );
   }
 
-  @include mdc-rtl {
-    @include mdc-floating-label-shake-animation($keyframe-suffix);
+  @include rtl-mixins.rtl {
+    @include floating-label-mixins.shake-animation($keyframe-suffix);
   }
 
-  @include mdc-text-field-height($height);
+  @include height($height);
 }
 
 ///
@@ -178,36 +181,36 @@
 ///     percentage unit and if text field has custom height. Defaults to `$mdc-text-field-height`.
 /// @param {Boolean} $rtl-reflexive Set to true to flip shape radius in RTL context. Defaults to `false`.
 ///
-@mixin mdc-text-field-shape-radius($radius, $density-scale: $mdc-text-field-density-scale, $rtl-reflexive: false) {
-  @if length($radius) > 2 {
+@mixin shape-radius($radius, $density-scale: variables.$density-scale, $rtl-reflexive: false) {
+  @if list.length($radius) > 2 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   }
 
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-text-field-density-config,
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
+  $masked-radius: shape-functions.mask-radius($radius, 1 1 0 0);
 
-  @include mdc-shape-radius(
-    mdc-shape-resolve-percentage-radius($height, $masked-radius),
+  @include shape-mixins.radius(
+    shape-functions.resolve-percentage-radius($height, $masked-radius),
     $rtl-reflexive
   );
 }
 
-@mixin mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-notched-outline-shape-radius($radius, $rtl-reflexive);
+@mixin textarea-shape-radius($radius, $rtl-reflexive: false) {
+  @include notched-outline-mixins.shape-radius($radius, $rtl-reflexive);
 }
 
 ///
 /// Customizes the color of the text entered into an enabled text field.
 /// @param {Color} $color - The desired input text color.
 ///
-@mixin mdc-text-field-ink-color($color) {
-  @include mdc-text-field-if-enabled_ {
-    @include mdc-text-field-ink-color_($color);
+@mixin ink-color($color) {
+  @include if-enabled_ {
+    @include ink-color_($color);
   }
 }
 
@@ -215,9 +218,9 @@
 /// Customizes the color of the entered text in a disabled text field.
 /// @param {Color} $color - The desired input text color.
 ///
-@mixin mdc-text-field-disabled-ink-color($color) {
-  @include mdc-text-field-if-disabled_ {
-    @include mdc-text-field-ink-color_($color);
+@mixin disabled-ink-color($color) {
+  @include if-disabled_ {
+    @include ink-color_($color);
   }
 }
 
@@ -225,9 +228,9 @@
 /// Customizes the color of the placeholder in an enabled text field.
 /// @param {Color} $color - The desired placeholder text color.
 ///
-@mixin mdc-text-field-placeholder-color($color) {
-  @include mdc-text-field-if-enabled_ {
-    @include mdc-text-field-placeholder-color_($color);
+@mixin placeholder-color($color) {
+  @include if-enabled_ {
+    @include placeholder-color_($color);
   }
 }
 
@@ -235,9 +238,9 @@
 /// Customizes the color of the placeholder in a disabled text field.
 /// @param {Color} $color - The desired placeholder text color.
 ///
-@mixin mdc-text-field-disabled-placeholder-color($color) {
-  @include mdc-text-field-if-disabled_ {
-    @include mdc-text-field-placeholder-color_($color);
+@mixin disabled-placeholder-color($color) {
+  @include if-disabled_ {
+    @include placeholder-color_($color);
   }
 }
 
@@ -245,9 +248,9 @@
 /// Customizes the background color of the text field or textarea when enabled.
 /// @param {Color} $color - The desired background color.
 ///
-@mixin mdc-text-field-fill-color($color) {
-  @include mdc-text-field-if-enabled_ {
-    @include mdc-text-field-fill-color_($color);
+@mixin fill-color($color) {
+  @include if-enabled_ {
+    @include fill-color_($color);
   }
 }
 
@@ -255,9 +258,9 @@
 /// Customizes the background color of the text field or textarea when disabled.
 /// @param {Color} $color - The desired background color.
 ///
-@mixin mdc-text-field-disabled-fill-color($color) {
-  @include mdc-text-field-if-disabled_ {
-    @include mdc-text-field-fill-color_($color);
+@mixin disabled-fill-color($color) {
+  @include if-disabled_ {
+    @include fill-color_($color);
   }
 }
 
@@ -265,9 +268,9 @@
 /// Customizes the text field bottom line color for the filled variant.
 /// @param {Color} $color - The desired bottom line color.
 ///
-@mixin mdc-text-field-bottom-line-color($color) {
-  @include mdc-text-field-if-enabled_ {
-    @include mdc-text-field-bottom-line-color_($color);
+@mixin bottom-line-color($color) {
+  @include if-enabled_ {
+    @include bottom-line-color_($color);
   }
 }
 
@@ -275,9 +278,9 @@
 /// Customizes the disabled text field bottom line color for the filled variant.
 /// @param {Color} $color - The desired bottom line color.
 ///
-@mixin mdc-text-field-disabled-bottom-line-color($color) {
-  @include mdc-text-field-if-disabled_ {
-    @include mdc-text-field-bottom-line-color_($color);
+@mixin disabled-bottom-line-color($color) {
+  @include if-disabled_ {
+    @include bottom-line-color_($color);
   }
 }
 
@@ -285,9 +288,9 @@
 /// Customizes the hover text field bottom line color for the filled variant.
 /// @param {Color} $color - The desired bottom line color.
 ///
-@mixin mdc-text-field-hover-bottom-line-color($color) {
-  @include mdc-text-field-if-enabled_ {
-    @include mdc-text-field-hover-bottom-line-color_($color);
+@mixin hover-bottom-line-color($color) {
+  @include if-enabled_ {
+    @include hover-bottom-line-color_($color);
   }
 }
 
@@ -295,9 +298,9 @@
 /// Customizes the color of the default line ripple of the text field.
 /// @param {Color} $color - The desired line ripple color.
 ///
-@mixin mdc-text-field-line-ripple-color($color) {
-  @include mdc-text-field-if-enabled_ {
-    @include mdc-text-field-line-ripple-color_($color);
+@mixin line-ripple-color($color) {
+  @include if-enabled_ {
+    @include line-ripple-color_($color);
   }
 }
 
@@ -305,9 +308,9 @@
 /// Customizes the text color of the label in an enabled text field.
 /// @param {Color} $color - The desired label text color.
 ///
-@mixin mdc-text-field-label-color($color) {
-  @include mdc-text-field-if-enabled_ {
-    @include mdc-text-field-label-ink-color_($color);
+@mixin label-color($color) {
+  @include if-enabled_ {
+    @include label-ink-color_($color);
   }
 }
 
@@ -315,9 +318,9 @@
 /// Customizes the text color of the label in a disabled text field.
 /// @param {Color} $color - The desired label text color.
 ///
-@mixin mdc-text-field-disabled-label-color($color) {
-  @include mdc-text-field-if-disabled_ {
-    @include mdc-text-field-label-ink-color_($color);
+@mixin disabled-label-color($color) {
+  @include if-disabled_ {
+    @include label-ink-color_($color);
   }
 }
 
@@ -325,9 +328,9 @@
 /// Customizes the border color of the outlined text field or textarea.
 /// @param {Color} $color - The desired outline border color.
 ///
-@mixin mdc-text-field-outline-color($color) {
-  @include mdc-text-field-if-enabled_ {
-    @include mdc-notched-outline-color($color);
+@mixin outline-color($color) {
+  @include if-enabled_ {
+    @include notched-outline-mixins.color($color);
   }
 }
 
@@ -335,9 +338,9 @@
 /// Customizes the outline border color when the text field or textarea is hovered.
 /// @param {Color} $color - The desired outline border color.
 ///
-@mixin mdc-text-field-hover-outline-color($color) {
-  @include mdc-text-field-if-enabled_ {
-    @include mdc-text-field-hover-outline-color_($color);
+@mixin hover-outline-color($color) {
+  @include if-enabled_ {
+    @include hover-outline-color_($color);
   }
 }
 
@@ -345,9 +348,9 @@
 /// Customizes the outline border color when the text field or textarea is focused.
 /// @param {Color} $color - The desired outline border color.
 ///
-@mixin mdc-text-field-focused-outline-color($color) {
-  @include mdc-text-field-if-enabled_ {
-    @include mdc-text-field-focused-outline-color_($color);
+@mixin focused-outline-color($color) {
+  @include if-enabled_ {
+    @include focused-outline-color_($color);
   }
 }
 
@@ -355,9 +358,9 @@
 /// Customizes the outline border color when the text field or textarea is disabled.
 /// @param {Color} $color - The desired outline border color.
 ///
-@mixin mdc-text-field-disabled-outline-color($color) {
-  @include mdc-text-field-if-disabled_ {
-    @include mdc-notched-outline-color($color);
+@mixin disabled-outline-color($color) {
+  @include if-disabled_ {
+    @include notched-outline-mixins.color($color);
   }
 }
 
@@ -365,9 +368,9 @@
 /// Customizes the caret color of the text field or textarea.
 /// @param {Color} $color - The desired caret color.
 ///
-@mixin mdc-text-field-caret-color($color) {
+@mixin caret-color($color) {
   .mdc-text-field__input {
-    @include mdc-theme-prop(caret-color, $color);
+    @include theme-mixins.prop(caret-color, $color);
   }
 }
 
@@ -375,16 +378,16 @@
 
 // Baseline
 
-@mixin mdc-text-field-disabled_ {
-  @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
-  @include mdc-text-field-ink-color_($mdc-text-field-disabled-ink-color);
-  @include mdc-text-field-placeholder-color_($mdc-text-field-disabled-placeholder-ink-color);
-  @include mdc-text-field-label-ink-color_($mdc-text-field-disabled-label-color);
-  @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
-  @include mdc-text-field-character-counter-color_($mdc-text-field-disabled-helper-text-color);
-  @include mdc-text-field-leading-icon-color_($mdc-text-field-disabled-icon);
-  @include mdc-text-field-trailing-icon-color_($mdc-text-field-disabled-icon);
-  @include mdc-text-field-fill-color_($mdc-text-field-disabled-background);
+@mixin disabled_ {
+  @include bottom-line-color_(variables.$disabled-border);
+  @include ink-color_(variables.$disabled-ink-color);
+  @include placeholder-color_(variables.$disabled-placeholder-ink-color);
+  @include label-ink-color_(variables.$disabled-label-color);
+  @include helper-text-mixins.helper-text-color_(variables.$disabled-helper-text-color);
+  @include character-counter-mixins.character-counter-color_(variables.$disabled-helper-text-color);
+  @include icon-mixins.leading-icon-color_(variables.$disabled-icon);
+  @include icon-mixins.trailing-icon-color_(variables.$disabled-icon);
+  @include fill-color_(variables.$disabled-background);
 
   border-bottom: none;
   pointer-events: none;
@@ -394,35 +397,35 @@
   }
 }
 
-@mixin mdc-text-field-invalid_ {
-  @include mdc-text-field-bottom-line-color($mdc-text-field-error);
-  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error);
-  @include mdc-text-field-line-ripple-color($mdc-text-field-error);
-  @include mdc-text-field-label-color($mdc-text-field-error);
-  @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
-  @include mdc-text-field-caret-color($mdc-text-field-error);
-  @include mdc-text-field-trailing-icon-color($mdc-text-field-error);
+@mixin invalid_ {
+  @include bottom-line-color(variables.$error);
+  @include hover-bottom-line-color(variables.$error);
+  @include line-ripple-color(variables.$error);
+  @include label-color(variables.$error);
+  @include helper-text-mixins.helper-text-validation-color(variables.$error);
+  @include caret-color(variables.$error);
+  @include icon-mixins.trailing-icon-color(variables.$error);
 
   + .mdc-text-field-helper-line .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
   }
 }
 
-@mixin mdc-text-field-focused_ {
-  @include mdc-text-field-label-color($mdc-text-field-focused-label-color);
+@mixin focused_ {
+  @include label-color(variables.$focused-label-color);
 
   + .mdc-text-field-helper-line .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
     opacity: 1;
   }
 }
 
-@mixin mdc-text-field-dense_ {
-  @include mdc-floating-label-float-position(
-    $mdc-text-field-dense-label-position-y,
+@mixin dense_ {
+  @include floating-label-mixins.float-position(
+    variables.$dense-label-position-y,
     0%,
-    $mdc-text-field-dense-label-scale
+    variables.$dense-label-scale
   );
-  @include mdc-floating-label-shake-animation(text-field-dense);
+  @include floating-label-mixins.shake-animation(text-field-dense);
 
   .mdc-text-field__input {
     padding: 12px 12px 0;
@@ -454,42 +457,42 @@
 ///     percentage unit and if text field has custom height. Defaults to `$mdc-text-field-height`.
 /// @param {Boolean} $rtl-reflexive Set to true to flip shape radius in RTL context. Defaults to `false`.
 ///
-@mixin mdc-text-field-outline-shape-radius(
+@mixin outline-shape-radius(
   $radius,
-  $density-scale: $mdc-text-field-density-scale,
+  $density-scale: variables.$density-scale,
   $rtl-reflexive: false) {
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-text-field-density-config,
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  $resolved-radius: nth(mdc-shape-resolve-percentage-radius($height, mdc-shape-prop-value($radius)), 1);
+  $resolved-radius: list.nth(shape-functions.resolve-percentage-radius($height, shape-functions.prop-value($radius)), 1);
 
-  @if (length(mdc-shape-prop-value($radius)) > 1) {
+  @if (list.length(shape-functions.prop-value($radius)) > 1) {
     // stylelint-disable max-line-length
     @warn "mdc-text-field-outline-shape-radius only supports a single radius; see https://github.com/material-components/material-components-web/issues/4140";
     // stylelint-enable
   }
 
   .mdc-notched-outline {
-    @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
+    @include notched-outline-mixins.shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  @if ($resolved-radius > $mdc-notched-outline-leading-width) {
+  @if ($resolved-radius > notched-outline-variables.$leading-width) {
     .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $resolved-radius + $mdc-notched-outline-padding, 0);
+      @include rtl-mixins.reflexive-property(padding, $resolved-radius + notched-outline-variables.$padding, 0);
     }
 
     + .mdc-text-field-helper-line {
-      @include mdc-rtl-reflexive-property(padding, $resolved-radius + $mdc-notched-outline-padding, $resolved-radius);
+      @include rtl-mixins.reflexive-property(padding, $resolved-radius + notched-outline-variables.$padding, $resolved-radius);
     }
   }
 }
 
-@mixin mdc-text-field-floating-label_ {
+@mixin floating-label_ {
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-label-offset);
+    @include rtl-mixins.reflexive-position(left, variables.$label-offset);
 
     top: 50%;
     transform: translateY(-50%);
@@ -498,27 +501,27 @@
 
   // Include these mixins to override above `transform` property.
   //TODO: Remove these from here when floating label is center aligned in all position - this lowers specificity.
-  @include mdc-floating-label-float-position($mdc-text-field-label-position-y);
+  @include floating-label-mixins.float-position(variables.$label-position-y);
 
   &--textarea {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
+      @include rtl-mixins.reflexive-position(left, notched-outline-variables.$padding);
     }
   }
 
   &--outlined {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
+      @include rtl-mixins.reflexive-position(left, notched-outline-variables.$padding);
     }
 
     &--with-leading-icon {
       .mdc-floating-label {
-        @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width));
+        @include rtl-mixins.reflexive-position(left, (icon-variables.$icon-padding - notched-outline-variables.$leading-width));
 
         &--float-above {
-          @include mdc-rtl-reflexive-position(
+          @include rtl-mixins.reflexive-position(
             left,
-            ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width) + $mdc-notched-outline-padding
+            (icon-variables.$icon-padding - notched-outline-variables.$leading-width) + notched-outline-variables.$padding
           );
         }
       }
@@ -528,32 +531,32 @@
 
 // Outlined
 
-@mixin mdc-text-field-outlined-disabled_ {
-  @include mdc-notched-outline-color($mdc-text-field-outlined-disabled-border);
-  @include mdc-text-field-fill-color_(transparent);
+@mixin outlined-disabled_ {
+  @include notched-outline-mixins.color(variables.$outlined-disabled-border);
+  @include fill-color_(transparent);
 
   .mdc-text-field__input {
     border-bottom: none;
   }
 }
 
-@mixin mdc-text-field-outlined-invalid_ {
-  @include mdc-text-field-outline-color($mdc-text-field-error);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-error);
-  @include mdc-text-field-focused-outline-color($mdc-text-field-error);
+@mixin outlined-invalid_ {
+  @include outline-color(variables.$error);
+  @include hover-outline-color(variables.$error);
+  @include focused-outline-color(variables.$error);
 }
 
-@mixin mdc-text-field-outlined-focused_ {
-  @include mdc-notched-outline-stroke-width($mdc-text-field-outlined-stroke-width);
+@mixin outlined-focused_ {
+  @include notched-outline-mixins.stroke-width(variables.$outlined-stroke-width);
 }
 
-@mixin mdc-text-field-outlined-dense_ {
-  @include mdc-notched-outline-floating-label-float-position(
-    $mdc-text-field-outlined-dense-label-position-y,
+@mixin outlined-dense_ {
+  @include notched-outline-mixins.floating-label-float-position(
+    variables.$outlined-dense-label-position-y,
     0%,
-    $mdc-text-field-dense-label-scale
+    variables.$dense-label-scale
   );
-  @include mdc-floating-label-shake-animation(text-field-outlined-dense);
+  @include floating-label-mixins.shake-animation(text-field-outlined-dense);
 
   height: 48px;
 
@@ -570,16 +573,16 @@
   }
 }
 
-@mixin mdc-text-field-outlined_ {
-  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
-  @include mdc-text-field-focused-outline-color(primary);
-  @include mdc-floating-label-shake-animation(text-field-outlined);
-  @include mdc-text-field-outline-shape-radius(small);
-  @include mdc-notched-outline-floating-label-float-position-absolute($mdc-text-field-outlined-label-position-y);
-  @include mdc-notched-outline-notch-offset($mdc-notched-outline-border-width);
-  @include mdc-states-base-color(transparent);
-  @include mdc-text-field-fill-color(transparent);
+@mixin outlined_ {
+  @include outline-color(variables.$outlined-idle-border);
+  @include hover-outline-color(variables.$outlined-hover-border);
+  @include focused-outline-color(primary);
+  @include floating-label-mixins.shake-animation(text-field-outlined);
+  @include outline-shape-radius(small);
+  @include notched-outline-mixins.floating-label-float-position-absolute(variables.$outlined-label-position-y);
+  @include notched-outline-mixins.notch-offset(notched-outline-variables.$border-width);
+  @include ripple-mixins.states-base-color(transparent);
+  @include fill-color(transparent);
 
   border: none;
   overflow: visible;
@@ -597,140 +600,140 @@
   }
 
   &.mdc-text-field--focused {
-    @include mdc-notched-outline-notch-offset($mdc-text-field-outlined-stroke-width);
+    @include notched-outline-mixins.notch-offset(variables.$outlined-stroke-width);
   }
 }
 
-@mixin mdc-text-field-hover-outline-color_($color) {
+@mixin hover-outline-color_($color) {
   &:not(.mdc-text-field--focused) {
     // stylelint-disable-next-line selector-combinator-space-after
     .mdc-text-field__input:hover ~,
     .mdc-text-field__icon:hover ~ {
       .mdc-notched-outline {
-        @include mdc-notched-outline-color($color);
+        @include notched-outline-mixins.color($color);
       }
     }
   }
 }
 
-@mixin mdc-text-field-focused-outline-color_($color) {
+@mixin focused-outline-color_($color) {
   &.mdc-text-field--focused {
-    @include mdc-notched-outline-color($color);
+    @include notched-outline-mixins.color($color);
   }
 }
 
 // Icons
 
-@mixin mdc-text-field-with-leading-icon_ {
-  @include mdc-text-field-leading-icon-horizontal-position_($mdc-text-field-icon-position);
+@mixin with-leading-icon_ {
+  @include icon-mixins.leading-icon-horizontal-position_(icon-variables.$icon-position);
 
   .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-icon-padding, $mdc-text-field-input-padding);
+    @include rtl-mixins.reflexive-property(padding, icon-variables.$icon-padding, variables.$input-padding);
   }
 
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
+    @include rtl-mixins.reflexive-position(left, icon-variables.$icon-padding);
   }
 }
 
-@mixin mdc-text-field-dense-with-leading-icon_ {
-  @include mdc-text-field-leading-icon-horizontal-position_($mdc-text-field-dense-icon-position);
+@mixin dense-with-leading-icon_ {
+  @include icon-mixins.leading-icon-horizontal-position_(icon-variables.$dense-icon-position);
 
   .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-dense-icon-padding, $mdc-text-field-input-padding);
+    @include rtl-mixins.reflexive-property(padding, icon-variables.$dense-icon-padding, variables.$input-padding);
   }
 
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
+    @include rtl-mixins.reflexive-position(left, icon-variables.$dense-icon-padding);
   }
 }
 
-@mixin mdc-text-field-outlined-with-leading-icon_ {
-  @include mdc-text-field-leading-icon-horizontal-position_($mdc-text-field-icon-position);
-  @include mdc-notched-outline-floating-label-float-position-absolute($mdc-text-field-outlined-label-position-y, 32px);
-  @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
+@mixin outlined-with-leading-icon_ {
+  @include icon-mixins.leading-icon-horizontal-position_(icon-variables.$icon-position);
+  @include notched-outline-mixins.floating-label-float-position-absolute(variables.$outlined-label-position-y, 32px);
+  @include floating-label-mixins.shake-animation(text-field-outlined-leading-icon);
 
-  @include mdc-rtl {
-    @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-rtl);
+  @include rtl-mixins.rtl {
+    @include floating-label-mixins.shake-animation(text-field-outlined-leading-icon-rtl);
   }
 
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding - $mdc-notched-outline-leading-width);
+    @include rtl-mixins.reflexive-position(left, icon-variables.$icon-padding - notched-outline-variables.$leading-width);
   }
 }
 
-@mixin mdc-text-field-outlined-dense-with-leading-icon_ {
-  @include mdc-notched-outline-floating-label-float-position(
-    $mdc-text-field-outlined-dense-label-position-y,
-    $mdc-text-field-outlined-dense-with-leading-icon-label-position-x,
-    $mdc-text-field-dense-label-scale
+@mixin outlined-dense-with-leading-icon_ {
+  @include notched-outline-mixins.floating-label-float-position(
+    variables.$outlined-dense-label-position-y,
+    variables.$outlined-dense-with-leading-icon-label-position-x,
+    variables.$dense-label-scale
   );
-  @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense);
+  @include floating-label-mixins.shake-animation(text-field-outlined-leading-icon-dense);
 
-  @include mdc-rtl {
-    @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense-rtl);
+  @include rtl-mixins.rtl {
+    @include floating-label-mixins.shake-animation(text-field-outlined-leading-icon-dense-rtl);
   }
 
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding - $mdc-notched-outline-leading-width);
+    @include rtl-mixins.reflexive-position(left, icon-variables.$dense-icon-padding - notched-outline-variables.$leading-width);
   }
 }
 
-@mixin mdc-text-field-with-trailing-icon_ {
-  @include mdc-text-field-trailing-icon-horizontal-position_($mdc-text-field-trailing-icon-position);
+@mixin with-trailing-icon_ {
+  @include icon-mixins.trailing-icon-horizontal-position_(icon-variables.$trailing-icon-position);
 
   .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-input-padding, $mdc-text-field-icon-padding);
+    @include rtl-mixins.reflexive-property(padding, variables.$input-padding, icon-variables.$icon-padding);
   }
 
   // Outlined uses 16px for text alignment when using a trailing icon.
   &.mdc-text-field--outlined {
-    @include mdc-text-field-trailing-icon-horizontal-position_($mdc-text-field-icon-position);
+    @include icon-mixins.trailing-icon-horizontal-position_(icon-variables.$icon-position);
   }
 }
 
-@mixin mdc-text-field-dense-with-trailing-icon_ {
-  @include mdc-text-field-trailing-icon-horizontal-position_($mdc-text-field-dense-icon-position);
+@mixin dense-with-trailing-icon_ {
+  @include icon-mixins.trailing-icon-horizontal-position_(icon-variables.$dense-icon-position);
 
   .mdc-text-field__input {
-    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-input-padding, $mdc-text-field-dense-icon-padding);
+    @include rtl-mixins.reflexive-property(padding, variables.$input-padding, icon-variables.$dense-icon-padding);
   }
 }
 
-@mixin mdc-text-field-with-both-icons_ {
-  @include mdc-text-field-icon-horizontal-position-two-icons_(
-    $mdc-text-field-icon-position,
-    $mdc-text-field-trailing-icon-position
+@mixin with-both-icons_ {
+  @include icon-mixins.icon-horizontal-position-two-icons_(
+    icon-variables.$icon-position,
+    icon-variables.$trailing-icon-position
   );
 
   .mdc-text-field__input {
-    padding-right: $mdc-text-field-icon-padding;
-    padding-left: $mdc-text-field-icon-padding;
+    padding-right: icon-variables.$icon-padding;
+    padding-left: icon-variables.$icon-padding;
   }
 }
 
-@mixin mdc-text-field-dense-with-both-icons_ {
-  @include mdc-text-field-icon-horizontal-position-two-icons_(
-    $mdc-text-field-dense-icon-position,
-    $mdc-text-field-dense-icon-position
+@mixin dense-with-both-icons_ {
+  @include icon-mixins.icon-horizontal-position-two-icons_(
+    icon-variables.$dense-icon-position,
+    icon-variables.$dense-icon-position
   );
 
   .mdc-text-field__input {
-    padding-right: $mdc-text-field-dense-icon-padding;
-    padding-left: $mdc-text-field-dense-icon-padding;
+    padding-right: icon-variables.$dense-icon-padding;
+    padding-left: icon-variables.$dense-icon-padding;
   }
 }
 
 // Full Width
-@mixin mdc-text-field-fullwidth_ {
-  @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
-  @include mdc-text-field-disabled-bottom-line-color($mdc-text-field-bottom-line-idle);
+@mixin fullwidth_ {
+  @include bottom-line-color(variables.$bottom-line-idle);
+  @include disabled-bottom-line-color(variables.$bottom-line-idle);
 
   width: 100%;
 
   &:not(.mdc-text-field--textarea) {
-    @include mdc-states-base-color(transparent);
-    @include mdc-text-field-fill-color(transparent);
+    @include ripple-mixins.states-base-color(transparent);
+    @include fill-color(transparent);
 
     display: block;
 
@@ -744,35 +747,35 @@
   }
 }
 
-@mixin mdc-text-field-fullwidth-invalid_ {
-  @include mdc-text-field-bottom-line-color($mdc-text-field-error);
+@mixin fullwidth-invalid_ {
+  @include bottom-line-color(variables.$error);
 }
 
 // Textarea
-@mixin mdc-text-field-textarea-disabled_ {
-  @include mdc-text-field-outlined-disabled_;
+@mixin textarea-disabled_ {
+  @include outlined-disabled_;
   /* @alternate */
-  @include mdc-text-field-fill-color_($mdc-textarea-disabled-background);
+  @include fill-color_(variables.$textarea-disabled-background);
 }
 
-@mixin mdc-text-field-textarea-invalid_ {
-  @include mdc-text-field-outline-color($mdc-text-field-error);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-error);
-  @include mdc-text-field-focused-outline-color($mdc-text-field-error);
+@mixin textarea-invalid_ {
+  @include outline-color(variables.$error);
+  @include hover-outline-color(variables.$error);
+  @include focused-outline-color(variables.$error);
 }
 
-@mixin mdc-text-field-textarea_ {
+@mixin textarea_ {
   // Note: The refactor to add the filled textarea style will result in a lot of the specificity issues that the
   // textarea has being resolved by using the same --outlined variant class as the text field.
-  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
-  @include mdc-text-field-focused-outline-color(primary);
-  @include mdc-floating-label-shake-animation(textarea);
-  @include mdc-text-field-outline-shape-radius(small);
-  @include mdc-states-base-color(transparent);
-  @include mdc-text-field-fill-color(transparent);
-  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-textarea-label-position-y);
-  @include mdc-text-field-character-counter-position(16px, 13px);
+  @include outline-color(variables.$outlined-idle-border);
+  @include hover-outline-color(variables.$outlined-hover-border);
+  @include focused-outline-color(primary);
+  @include floating-label-mixins.shake-animation(textarea);
+  @include outline-shape-radius(small);
+  @include ripple-mixins.states-base-color(transparent);
+  @include fill-color(transparent);
+  @include notched-outline-mixins.floating-label-float-position(variables.$textarea-label-position-y);
+  @include character-counter-mixins.character-counter-position(16px, 13px);
 
   $padding-inset: 16px;
 
@@ -809,18 +812,18 @@
   }
 
   &.mdc-text-field--focused {
-    @include mdc-text-field-outlined-focused_;
+    @include outlined-focused_;
   }
 }
 
 // End aligned
-@mixin mdc-text-field-end-aligned_ {
+@mixin end-aligned_ {
   .mdc-text-field__input {
     // IE11 does not support text-align: end
     /* @noflip */
     text-align: right;
 
-    @include mdc-rtl {
+    @include rtl-mixins.rtl {
       /* @noflip */
       text-align: left;
     }
@@ -829,49 +832,49 @@
 
 // Customization
 
-@mixin mdc-text-field-ink-color_($color) {
+@mixin ink-color_($color) {
   .mdc-text-field__input {
-    @include mdc-theme-prop(color, $color);
+    @include theme-mixins.prop(color, $color);
   }
 }
 
-@mixin mdc-text-field-placeholder-color_($color) {
+@mixin placeholder-color_($color) {
   .mdc-text-field__input::placeholder {
-    @include mdc-theme-prop(color, $color);
+    @include theme-mixins.prop(color, $color);
   }
 
   // Override the placeholder styles in IE with important rule to improve specificity.
   // stylelint-disable-next-line selector-no-vendor-prefix
   .mdc-text-field__input:-ms-input-placeholder {
-    @include mdc-theme-prop(color, $color, $important: true);
+    @include theme-mixins.prop(color, $color, $important: true);
   }
 }
 
-@mixin mdc-text-field-fill-color_($color) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin fill-color_($color) {
+  @include theme-mixins.prop(background-color, $color);
 }
 
-@mixin mdc-text-field-bottom-line-color_($color) {
+@mixin bottom-line-color_($color) {
   .mdc-text-field__input {
-    @include mdc-theme-prop(border-bottom-color, $color);
+    @include theme-mixins.prop(border-bottom-color, $color);
   }
 }
 
-@mixin mdc-text-field-hover-bottom-line-color_($color) {
+@mixin hover-bottom-line-color_($color) {
   .mdc-text-field__input:hover {
-    @include mdc-theme-prop(border-bottom-color, $color);
+    @include theme-mixins.prop(border-bottom-color, $color);
   }
 }
 
-@mixin mdc-text-field-line-ripple-color_($color) {
+@mixin line-ripple-color_($color) {
   .mdc-line-ripple {
-    @include mdc-line-ripple-color($color);
+    @include line-ripple-mixins.color($color);
   }
 }
 
-@mixin mdc-text-field-label-ink-color_($color) {
+@mixin label-ink-color_($color) {
   .mdc-floating-label {
-    @include mdc-floating-label-ink-color($color);
+    @include floating-label-mixins.ink-color($color);
   }
 }
 
@@ -881,7 +884,7 @@
 /// Helps style the text-field only when it's enabled.
 /// @access private
 ///
-@mixin mdc-text-field-if-enabled_ {
+@mixin if-enabled_ {
   &:not(.mdc-text-field--disabled) {
     @content;
   }
@@ -891,7 +894,7 @@
 /// Helps style the text-field only when it's disabled.
 /// @access private
 ///
-@mixin mdc-text-field-if-disabled_ {
+@mixin if-disabled_ {
   &.mdc-text-field--disabled {
     @content;
   }

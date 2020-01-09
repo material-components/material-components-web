@@ -20,5 +20,11 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-theme-core-styles;
+@use "./mixins";
+
+@forward "constants";
+@forward "functions";
+@forward "mixins";
+@forward "variables";
+
+@include mixins.core-styles;

@@ -20,17 +20,20 @@
 // THE SOFTWARE.
 //
 
-@import "@material/elevation/mixins";
-@import "@material/animation/variables";
-@import "@material/rtl/mixins";
-@import "@material/typography/mixins";
-@import "./mixins";
-@import "./variables";
+@use "@material/elevation/mixins" as elevation-mixins;
+@use "@material/animation/variables" as animation-variables;
+@use "@material/rtl/mixins" as rtl-mixins;
+@use "@material/typography/mixins" as typography-mixins;
+@use "./mixins";
+@use "./variables";
+
+@forward "mixins";
+@forward "variables";
 
 // postcss-bem-linter: define top-app-bar
 .mdc-top-app-bar {
-  @include mdc-top-app-bar-fill-color-accessible(primary);
-  @include mdc-top-app-bar-icon-ink-color(on-primary);
+  @include mixins.fill-color-accessible(primary);
+  @include mixins.icon-ink-color(on-primary);
 
   display: flex;
   position: fixed;
@@ -45,7 +48,7 @@
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    height: $mdc-top-app-bar-row-height;
+    height: variables.$row-height;
   }
 
   &__section {
@@ -53,7 +56,7 @@
     flex: 1 1 auto;
     align-items: center;
     min-width: 0;
-    padding: $mdc-top-app-bar-section-vertical-padding $mdc-top-app-bar-section-horizontal-padding;
+    padding: variables.$section-vertical-padding variables.$section-horizontal-padding;
     z-index: 1;
 
     &--align-start {
@@ -68,8 +71,8 @@
   }
 
   &__title {
-    @include mdc-typography(headline6);
-    @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-title-left-padding);
+    @include typography-mixins.typography(headline6);
+    @include rtl-mixins.reflexive-box(padding, left, variables.$title-left-padding);
 
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -79,7 +82,7 @@
 }
 
 @at-root {
-  @include mdc-top-app-bar-short-shape-radius(24px);
+  @include mixins.short-shape-radius(24px);
 }
 
 .mdc-top-app-bar--short {
@@ -89,9 +92,9 @@
   /* @noflip */
   left: 0;
   width: 100%;
-  transition: width 250ms $mdc-animation-standard-curve-timing-function;
+  transition: width 250ms animation-variables.$standard-curve-timing-function;
 
-  @include mdc-rtl {
+  @include rtl-mixins.rtl {
     /* @noflip */
     right: 0;
     /* @noflip */
@@ -99,65 +102,65 @@
   }
 
   .mdc-top-app-bar__row {
-    height: $mdc-top-app-bar-mobile-row-height;
+    height: variables.$mobile-row-height;
   }
 
   .mdc-top-app-bar__section {
-    padding: $mdc-top-app-bar-mobile-section-padding;
+    padding: variables.$mobile-section-padding;
   }
 
   .mdc-top-app-bar__title {
-    transition: opacity 200ms $mdc-animation-standard-curve-timing-function;
+    transition: opacity 200ms animation-variables.$standard-curve-timing-function;
     opacity: 1;
   }
 }
 
 .mdc-top-app-bar--short-collapsed {
-  @include mdc-elevation(4);
+  @include elevation-mixins.elevation(4);
 
-  width: $mdc-top-app-bar-short-collapsed-width;
-  transition: width 300ms $mdc-animation-standard-curve-timing-function;
+  width: variables.$short-collapsed-width;
+  transition: width 300ms animation-variables.$standard-curve-timing-function;
 
   .mdc-top-app-bar__title {
     display: none;
   }
 
   .mdc-top-app-bar__action-item {
-    transition: padding 150ms $mdc-animation-standard-curve-timing-function;
+    transition: padding 150ms animation-variables.$standard-curve-timing-function;
   }
 }
 
 // stylelint-disable-next-line plugin/selector-bem-pattern
 .mdc-top-app-bar--short-collapsed.mdc-top-app-bar--short-has-action-item {
-  width: $mdc-top-app-bar-short-collapsed-width * 2;
+  width: variables.$short-collapsed-width * 2;
 
   .mdc-top-app-bar__section--align-end {
-    @include mdc-rtl-reflexive-box(padding, right, 12px);
+    @include rtl-mixins.reflexive-box(padding, right, 12px);
   }
 }
 
 .mdc-top-app-bar--dense {
   .mdc-top-app-bar__row {
-    height: $mdc-top-app-bar-dense-row-height;
+    height: variables.$dense-row-height;
   }
 
   .mdc-top-app-bar__section {
-    padding: 0 $mdc-top-app-bar-dense-section-horizontal-padding;
+    padding: 0 variables.$dense-section-horizontal-padding;
   }
 
   .mdc-top-app-bar__title {
-    @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-dense-title-left-padding);
+    @include rtl-mixins.reflexive-box(padding, left, variables.$dense-title-left-padding);
   }
 }
 
 .mdc-top-app-bar--prominent {
   .mdc-top-app-bar__row {
-    height: $mdc-top-app-bar-prominent-row-height;
+    height: variables.$prominent-row-height;
   }
 
   .mdc-top-app-bar__title {
     align-self: flex-end;
-    padding-bottom: $mdc-top-app-bar-prominent-title-bottom-padding;
+    padding-bottom: variables.$prominent-title-bottom-padding;
   }
 
   .mdc-top-app-bar__action-item,
@@ -172,7 +175,7 @@
 }
 
 .mdc-top-app-bar--fixed-scrolled {
-  @include mdc-elevation(4);
+  @include elevation-mixins.elevation(4);
 
   transition: box-shadow 200ms linear;
 }
@@ -181,40 +184,40 @@
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-top-app-bar--dense.mdc-top-app-bar--prominent {
   .mdc-top-app-bar__row {
-    height: $mdc-top-app-bar-dense-row-height * 2;
+    height: variables.$dense-row-height * 2;
   }
 
   .mdc-top-app-bar__section {
-    padding: 0 $mdc-top-app-bar-section-horizontal-padding;
+    padding: 0 variables.$section-horizontal-padding;
   }
 
   .mdc-top-app-bar__title {
-    @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-title-left-padding);
+    @include rtl-mixins.reflexive-box(padding, left, variables.$title-left-padding);
 
-    padding-bottom: $mdc-top-app-bar-dense-prominent-title-bottom-padding;
+    padding-bottom: variables.$dense-prominent-title-bottom-padding;
   }
 }
 // stylelint-enable plugin/selector-bem-pattern
 
 .mdc-top-app-bar--fixed-adjust {
-  padding-top: $mdc-top-app-bar-row-height;
+  padding-top: variables.$row-height;
 }
 
 .mdc-top-app-bar--dense-fixed-adjust {
-  padding-top: $mdc-top-app-bar-dense-row-height;
+  padding-top: variables.$dense-row-height;
 }
 
 .mdc-top-app-bar--short-fixed-adjust {
-  padding-top: $mdc-top-app-bar-mobile-row-height;
+  padding-top: variables.$mobile-row-height;
 }
 
 .mdc-top-app-bar--prominent-fixed-adjust {
-  padding-top: $mdc-top-app-bar-prominent-row-height;
+  padding-top: variables.$prominent-row-height;
 }
 
 .mdc-top-app-bar--dense-prominent-fixed-adjust {
-  padding-top: $mdc-top-app-bar-dense-row-height * 2;
+  padding-top: variables.$dense-row-height * 2;
 }
 
 // Mobile Styles
-@include mdc-top-app-bar-mobile-breakpoint_;
+@include mixins.mobile-breakpoint_;

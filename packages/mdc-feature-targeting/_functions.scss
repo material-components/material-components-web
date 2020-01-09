@@ -20,7 +20,10 @@
 // THE SOFTWARE.
 //
 
-@import "./variables";
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+@use "./variables";
 
 // ==Terminology==
 // Feature:
@@ -42,32 +45,32 @@
 //
 
 // Creates a feature target from the given feature query and targeted feature.
-@function mdc-feature-create-target($feature-query, $targeted-feature) {
+@function create-target($feature-query, $targeted-feature) {
   $feature-target: (query: $feature-query, target: $targeted-feature);
-  $valid: mdc-feature-verify-target_($feature-target);
+  $valid: verify-target_($feature-target);
 
   @return $feature-target;
 }
 
 // Parses a list of feature targets to produce a map containing the feature query and list of
 // available features.
-@function mdc-feature-parse-targets($feature-targets) {
-  $valid: mdc-feature-verify-target_($feature-targets...);
+@function parse-targets($feature-targets) {
+  $valid: verify-target_($feature-targets...);
   $available-features: ();
 
   @each $target in $feature-targets {
-    $available-features: append($available-features, map-get($target, target));
+    $available-features: list.append($available-features, map.get($target, target));
   }
 
   @return (
     available: $available-features,
-    query: map-get(nth($feature-targets, 1), query)
+    query: map.get(list.nth($feature-targets, 1), query)
   );
 }
 
 // Creates a feature query that is satisfied iff all of its sub-queries are satisfied.
-@function mdc-feature-all($feature-queries...) {
-  $valid: mdc-feature-verify-query_($feature-queries...);
+@function all($feature-queries...) {
+  $valid: verify-query_($feature-queries...);
 
   @return (
     op: all,
@@ -76,8 +79,8 @@
 }
 
 // Creates a feature query that is satisfied iff any of its sub-queries are satisfied.
-@function mdc-feature-any($feature-queries...) {
-  $valid: mdc-feature-verify-query_($feature-queries...);
+@function any($feature-queries...) {
+  $valid: verify-query_($feature-queries...);
 
   @return (
     op: any,
@@ -86,13 +89,13 @@
 }
 
 // Creates a feature query that is satisfied iff its sub-query is not satisfied.
-@function mdc-feature-without($feature-query) {
-  $valid: mdc-feature-verify-query_($feature-query);
+@function without($feature-query) {
+  $valid: verify-query_($feature-query);
 
   @return (
     op: without,
     // NOTE: we need to use `append`, just putting parens around a single value doesn't make it a list in Sass.
-    queries: append((), $feature-query)
+    queries: list.append((), $feature-query)
   );
 }
 
@@ -101,36 +104,36 @@
 //
 
 // Verifies that the given feature targets are valid, throws an error otherwise.
-@function mdc-feature-verify-target_($feature-targets...) {
+@function verify-target_($feature-targets...) {
   @each $target in $feature-targets {
-    @if type-of($target) != map {
+    @if meta.type-of($target) != map {
       @error "Invalid feature target: '#{$target}'. Must be a map.";
     }
 
-    $targeted-feature: map-get($target, target);
-    $feature-query: map-get($target, query);
-    $valid: mdc-feature-verify-feature_($targeted-feature) and mdc-feature-verify-query_($feature-query);
+    $targeted-feature: map.get($target, target);
+    $feature-query: map.get($target, query);
+    $valid: verify-feature_($targeted-feature) and verify-query_($feature-query);
   }
 
   @return true;
 }
 
 // Checks whether the given feature query is satisfied by the given list of available features.
-@function mdc-feature-is-query-satisfied_($feature-query, $available-features) {
-  $valid: mdc-feature-verify-query_($feature-query);
-  $valid: mdc-feature-verify-feature_($available-features...);
+@function is-query-satisfied_($feature-query, $available-features) {
+  $valid: verify-query_($feature-query);
+  $valid: verify-feature_($available-features...);
 
-  @if type-of($feature-query) == map {
-    $op: map-get($feature-query, op);
-    $sub-queries: map-get($feature-query, queries);
+  @if meta.type-of($feature-query) == map {
+    $op: map.get($feature-query, op);
+    $sub-queries: map.get($feature-query, queries);
 
     @if $op == without {
-      @return not mdc-feature-is-query-satisfied_(nth($sub-queries, 1), $available-features);
+      @return not is-query-satisfied_(list.nth($sub-queries, 1), $available-features);
     }
 
     @if $op == any {
       @each $sub-query in $sub-queries {
-        @if mdc-feature-is-query-satisfied_($sub-query, $available-features) {
+        @if is-query-satisfied_($sub-query, $available-features) {
           @return true;
         }
       }
@@ -140,7 +143,7 @@
 
     @if $op == all {
       @each $sub-query in $sub-queries {
-        @if not mdc-feature-is-query-satisfied_($sub-query, $available-features) {
+        @if not is-query-satisfied_($sub-query, $available-features) {
           @return false;
         }
       }
@@ -149,7 +152,7 @@
     }
   }
 
-  @return mdc-feature-list-contains_($available-features, $feature-query);
+  @return list-contains_($available-features, $feature-query);
 }
 
 //
@@ -157,10 +160,10 @@
 //
 
 // Verifies that the given feature(s) are valid, throws an error otherwise.
-@function mdc-feature-verify-feature_($features...) {
+@function verify-feature_($features...) {
   @each $feature in $features {
-    @if not mdc-feature-list-contains_($mdc-feature-all-features, $feature) {
-      @error "Invalid feature: '#{$feature}'. Valid features are: #{$mdc-feature-all-features}.";
+    @if not list-contains_(variables.$all-features, $feature) {
+      @error "Invalid feature: '#{$feature}'. Valid features are: #{variables.$all-features}.";
     }
   }
 
@@ -168,19 +171,19 @@
 }
 
 // Verifies that the given feature queries are valid, throws an error otherwise.
-@function mdc-feature-verify-query_($feature-queries...) {
+@function verify-query_($feature-queries...) {
   @each $query in $feature-queries {
-    @if type-of($query) == map {
-      $op: map-get($query, op);
-      $sub-queries: map-get($query, queries);
-      $valid: mdc-feature-verify-query_($sub-queries...);
+    @if meta.type-of($query) == map {
+      $op: map.get($query, op);
+      $sub-queries: map.get($query, queries);
+      $valid: verify-query_($sub-queries...);
 
-      @if not mdc-feature-list-contains_($mdc-feature-all-query-operators, $op) {
+      @if not list-contains_(variables.$all-query-operators, $op) {
         @error "Invalid feature query operator: '#{$op}'. " +
-          "Valid operators are: #{$mdc-feature-all-query-operators}";
+          "Valid operators are: #{variables.$all-query-operators}";
       }
     } @else {
-      $valid: mdc-feature-verify-feature_($query);
+      $valid: verify-feature_($query);
     }
   }
 
@@ -188,6 +191,6 @@
 }
 
 // Checks whether the given list contains the given item.
-@function mdc-feature-list-contains_($list, $item) {
-  @return index($list, $item) != null;
+@function list-contains_($list, $item) {
+  @return list.index($list, $item) != null;
 }

@@ -20,179 +20,185 @@
 // THE SOFTWARE.
 //
 
-@import "@material/floating-label/mixins";
-@import "@material/theme/mixins";
-@import "@material/shape/mixins";
-@import "@material/shape/functions";
-@import "@material/line-ripple/mixins";
-@import "@material/notched-outline/mixins";
-@import "@material/notched-outline/variables";
-@import "./icon/mixins";
-@import "./variables";
+@use "sass:list";
+@use "sass:string";
+@use "@material/floating-label/mixins" as floating-label-mixins;
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/shape/mixins" as shape-mixins;
+@use "@material/shape/functions";
+@use "@material/line-ripple/mixins" as line-ripple-mixins;
+@use "@material/notched-outline/mixins" as notched-outline-mixins;
+@use "@material/notched-outline/variables" as notched-outline-variables;
+@use "@material/ripple/mixins" as ripple-mixins;
+@use "./icon/mixins";
+@use "./variables";
+@use "@material/rtl/mixins" as rtl-mixins;
+@use "@material/theme/variables" as theme-variables;
+@use "@material/typography/mixins" as typography-mixins;
 
 // Public
 
-@mixin mdc-select-ink-color($color) {
+@mixin ink-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-ink-color_($color);
+    @include ink-color_($color);
   }
 }
 
-@mixin mdc-select-container-fill-color($color) {
+@mixin container-fill-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-container-fill-color_($color);
+    @include container-fill-color_($color);
   }
 }
 
-@mixin mdc-select-focused-label-color($color) {
+@mixin focused-label-color($color) {
   &:not(.mdc-select--disabled) {
     &.mdc-select--focused .mdc-floating-label {
-      @include mdc-floating-label-ink-color(mdc-theme-prop-value($color));
+      @include floating-label-mixins.ink-color(theme-variables.prop-value($color));
     }
   }
 }
 
-@mixin mdc-select-hover-bottom-line-color($color) {
+@mixin hover-bottom-line-color($color) {
   &:not(.mdc-select--disabled) .mdc-select__selected-text:hover {
-    @include mdc-select-native-control-bottom-line-color_($color);
+    @include native-control-bottom-line-color_($color);
   }
 }
 
-@mixin mdc-select-bottom-line-color($color) {
+@mixin bottom-line-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-bottom-line-color_($color);
+    @include bottom-line-color_($color);
   }
 }
 
-@mixin mdc-select-focused-bottom-line-color($color) {
+@mixin focused-bottom-line-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-focused-line-ripple-color_($color);
+    @include focused-line-ripple-color_($color);
   }
 }
 
-@mixin mdc-select-label-color($color) {
+@mixin label-color($color) {
   &:not(.mdc-select--disabled) .mdc-floating-label {
-    @include mdc-floating-label-ink-color($color);
+    @include floating-label-mixins.ink-color($color);
   }
 }
 
-@mixin mdc-select-outline-color($color) {
+@mixin outline-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-outline-color_($color);
+    @include outline-color_($color);
   }
 }
 
-@mixin mdc-select-hover-outline-color($color) {
+@mixin hover-outline-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-hover-outline-color_($color);
+    @include hover-outline-color_($color);
   }
 }
 
-@mixin mdc-select-focused-outline-color($color) {
+@mixin focused-outline-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-focused-outline-color_($color);
+    @include focused-outline-color_($color);
   }
 }
 
-@mixin mdc-select-shape-radius($radius, $rtl-reflexive: false) {
-  @if length($radius) > 2 {
+@mixin shape-radius($radius, $rtl-reflexive: false) {
+  @if list.length($radius) > 2 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   }
 
-  $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
+  $masked-radius: functions.mask-radius($radius, 1 1 0 0);
 
   .mdc-select__anchor {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $masked-radius), $rtl-reflexive);
+    @include shape-mixins.radius(functions.resolve-percentage-radius(variables.$height, $masked-radius), $rtl-reflexive);
   }
 }
 
-@mixin mdc-select-outline-shape-radius($radius, $rtl-reflexive: false) {
-  $resolved-radius: nth(mdc-shape-resolve-percentage-radius($mdc-select-height, mdc-shape-prop-value($radius)), 1);
+@mixin outline-shape-radius($radius, $rtl-reflexive: false) {
+  $resolved-radius: list.nth(functions.resolve-percentage-radius(variables.$height, functions.prop-value($radius)), 1);
 
-  @if (length(mdc-shape-prop-value($radius)) > 1) {
+  @if (list.length(functions.prop-value($radius)) > 1) {
     // stylelint-disable-next-line max-line-length
     @warn "mdc-select-outline-shape-radius only supports a single radius; see https://github.com/material-components/material-components-web/issues/4140";
   }
 
   .mdc-notched-outline {
-    @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
+    @include notched-outline-mixins.shape-radius($resolved-radius, $rtl-reflexive);
   }
 
   .mdc-select__selected-text {
-    @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
+    @include shape-mixins.radius($resolved-radius, $rtl-reflexive);
   }
 
-  @if ($resolved-radius > $mdc-notched-outline-leading-width) {
+  @if ($resolved-radius > notched-outline-variables.$leading-width) {
     .mdc-select__selected-text {
-      @include mdc-rtl-reflexive-property(
+      @include rtl-mixins.reflexive-property(
         padding,
-        $resolved-radius + $mdc-notched-outline-padding,
-        $mdc-select-arrow-padding
+        $resolved-radius + notched-outline-variables.$padding,
+        variables.$arrow-padding
       );
     }
 
     + .mdc-select-helper-text {
-      @include mdc-rtl-reflexive-property(
+      @include rtl-mixins.reflexive-property(
         margin,
-        $resolved-radius + $mdc-notched-outline-padding,
-        $mdc-select-outline-label-offset
+        $resolved-radius + notched-outline-variables.$padding,
+        variables.$outline-label-offset
       );
     }
   }
 }
 
 // Private
-@mixin mdc-select-focused-line-ripple_ {
+@mixin focused-line-ripple_ {
   &.mdc-select--focused .mdc-line-ripple {
     @content;
   }
 }
 
-@mixin mdc-select-focused-outline_ {
+@mixin focused-outline_ {
   &.mdc-select--focused .mdc-notched-outline {
-    @include mdc-notched-outline-stroke-width(2px);
+    @include notched-outline-mixins.stroke-width(2px);
     @content;
   }
 }
 
-@mixin mdc-select-focused-outline-idle_ {
+@mixin focused-outline-idle_ {
   &.mdc-select--focused {
     @content;
   }
 }
 
-@mixin mdc-select-ink-color_($color) {
+@mixin ink-color_($color) {
   .mdc-select__selected-text {
-    @include mdc-theme-prop(color, $color);
+    @include theme-mixins.prop(color, $color);
   }
 }
 
-@mixin mdc-select-container-fill-color_($color) {
+@mixin container-fill-color_($color) {
   .mdc-select__anchor {
-    @include mdc-theme-prop(background-color, $color);
+    @include theme-mixins.prop(background-color, $color);
   }
 }
 
-@mixin mdc-select-bottom-line-color_($color) {
+@mixin bottom-line-color_($color) {
   .mdc-select__selected-text {
-    @include mdc-select-native-control-bottom-line-color_($color);
+    @include native-control-bottom-line-color_($color);
   }
 }
 
-@mixin mdc-select-native-control-bottom-line-color_($color) {
-  @include mdc-theme-prop(border-bottom-color, $color);
+@mixin native-control-bottom-line-color_($color) {
+  @include theme-mixins.prop(border-bottom-color, $color);
 }
 
-@mixin mdc-select-focused-line-ripple-color_($color) {
-  @include mdc-select-focused-line-ripple_ {
-    @include mdc-line-ripple-color($color);
+@mixin focused-line-ripple-color_($color) {
+  @include focused-line-ripple_ {
+    @include line-ripple-mixins.color($color);
   }
 }
 
-@mixin mdc-select-dd-arrow-svg-bg_($fill-hex-number, $opacity) {
+@mixin dd-arrow-svg-bg_($fill-hex-number, $opacity) {
   // Lookup color and remove leading #.
-  $fill-hex-number: mdc-theme-prop-value($fill-hex-number);
-  $fill-hex-number: str-slice(unquote("#{$fill-hex-number}"), 2);
+  $fill-hex-number: theme-variables.prop-value($fill-hex-number);
+  $fill-hex-number: string.slice(string.unquote("#{$fill-hex-number}"), 2);
 
   background:
     url("data:image/svg+xml,%3Csvg%20width%3D%2210px%22%20height%3D%225px%22%20viewBox%3D%227%2010%2010%205%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Shape%22%20stroke%3D%22none%22%20fill%3D%22%23#{$fill-hex-number}%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22#{$opacity}%22%20points%3D%227%2010%2012%2015%2017%2010%22%3E%3C%2Fpolygon%3E%0A%3C%2Fsvg%3E")
@@ -200,28 +206,28 @@
     center;
 }
 
-@mixin mdc-select-outline-color_($color) {
-  @include mdc-notched-outline-color($color);
+@mixin outline-color_($color) {
+  @include notched-outline-mixins.color($color);
 }
 
-@mixin mdc-select-hover-outline-color_($color) {
+@mixin hover-outline-color_($color) {
   // stylelint-disable-next-line selector-combinator-space-after
   &:not(.mdc-select--focused) .mdc-select__selected-text:hover ~ {
     .mdc-notched-outline {
-      @include mdc-notched-outline-color($color);
+      @include notched-outline-mixins.color($color);
     }
   }
 }
 
-@mixin mdc-select-focused-outline-color_($color) {
-  @include mdc-select-focused-outline_ {
-    @include mdc-notched-outline-color($color);
+@mixin focused-outline-color_($color) {
+  @include focused-outline_ {
+    @include notched-outline-mixins.color($color);
   }
 }
 
-@mixin mdc-select-floating-label_ {
+@mixin floating-label_ {
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, $mdc-select-outline-label-offset);
+    @include rtl-mixins.reflexive-position(left, variables.$outline-label-offset);
 
     top: 21px;
     pointer-events: none;
@@ -229,53 +235,53 @@
 
   &.mdc-select--with-leading-icon {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, $mdc-select-icon-padding);
+      @include rtl-mixins.reflexive-position(left, variables.$icon-padding);
     }
   }
 
   &.mdc-select--outlined {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
+      @include rtl-mixins.reflexive-position(left, notched-outline-variables.$padding);
 
       top: 17px;
     }
 
     &.mdc-select--with-leading-icon {
       .mdc-floating-label {
-        @include mdc-rtl-reflexive-position(left, $mdc-select-icon-padding - $mdc-notched-outline-leading-width);
+        @include rtl-mixins.reflexive-position(left, variables.$icon-padding - notched-outline-variables.$leading-width);
 
         &--float-above {
-          @include mdc-rtl-reflexive-position(left, $mdc-select-icon-padding - $mdc-notched-outline-leading-width);
+          @include rtl-mixins.reflexive-position(left, variables.$icon-padding - notched-outline-variables.$leading-width);
         }
       }
     }
   }
 }
 
-@mixin mdc-select-with-leading-icon_ {
-  @include mdc-select-icon-horizontal-position_(16px, $mdc-select-icon-padding);
+@mixin with-leading-icon_ {
+  @include mixins.icon-horizontal-position_(16px, variables.$icon-padding);
 
   &.mdc-select--outlined {
-    @include mdc-notched-outline-floating-label-float-position(
-      $mdc-select-outlined-label-position-y,
-      $mdc-select-outlined-with-leading-icon-label-position-x
+    @include notched-outline-mixins.floating-label-float-position(
+      variables.$outlined-label-position-y,
+      variables.$outlined-with-leading-icon-label-position-x
     );
-    @include mdc-floating-label-shake-animation(select-outlined-leading-icon);
+    @include floating-label-mixins.shake-animation(select-outlined-leading-icon);
 
-    @include mdc-rtl {
-      @include mdc-floating-label-shake-animation(select-outlined-leading-icon-rtl);
+    @include rtl-mixins.rtl {
+      @include floating-label-mixins.shake-animation(select-outlined-leading-icon-rtl);
     }
   }
 
   &.mdc-select__menu .mdc-list-item__text {
-    @include mdc-rtl-reflexive-property(padding, 32px /* left-value */, 32px /* right-value */);
+    @include rtl-mixins.reflexive-property(padding, 32px /* left-value */, 32px /* right-value */);
   }
 }
 
-@mixin mdc-select-text_ {
+@mixin text_ {
   .mdc-select__selected-text {
-    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
-    @include mdc-typography(subtitle1);
+    @include rtl-mixins.reflexive-property(padding, variables.$label-padding, variables.$arrow-padding);
+    @include typography-mixins.typography(subtitle1);
 
     &::-ms-expand {
       display: none;
@@ -294,7 +300,7 @@
     box-sizing: border-box;
     width: 100%;
     min-width: 200px;
-    height: $mdc-select-height;
+    height: variables.$height;
     padding-top: 20px;
     padding-bottom: 4px;
     border: none;
@@ -308,15 +314,15 @@
   }
 }
 
-@mixin mdc-select-disabled_ {
-  @include mdc-select-container-fill-color_($mdc-select-disabled-fill-color);
+@mixin disabled_ {
+  @include container-fill-color_(variables.$disabled-fill-color);
 
   .mdc-floating-label {
-    @include mdc-floating-label-ink-color($mdc-select-disabled-label-color);
+    @include floating-label-mixins.ink-color(variables.$disabled-label-color);
   }
 
   .mdc-select__dropdown-icon {
-    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-disabled-dropdown-opacity);
+    @include dd-arrow-svg-bg_(variables.$dropdown-color, variables.$disabled-dropdown-opacity);
   }
 
   .mdc-line-ripple {
@@ -324,19 +330,19 @@
   }
 
   .mdc-select__icon {
-    @include mdc-theme-prop(color, $mdc-select-disabled-icon-color);
+    @include theme-mixins.prop(color, variables.$disabled-icon-color);
   }
 
   .mdc-select__selected-text {
-    @include mdc-theme-prop(color, $mdc-select-disabled-ink-color);
+    @include theme-mixins.prop(color, variables.$disabled-ink-color);
 
     border-bottom-style: dotted;
     pointer-events: none;
   }
 
   &.mdc-select--outlined {
-    @include mdc-select-container-fill-color_(transparent);
-    @include mdc-select-outline-color_($mdc-select-outlined-disabled-border);
+    @include container-fill-color_(transparent);
+    @include outline-color_(variables.$outlined-disabled-border);
 
     .mdc-select__selected-text {
       border-bottom-style: none;
@@ -347,7 +353,7 @@
   pointer-events: none;
 }
 
-@mixin mdc-select-no-label_ {
+@mixin no-label_ {
   &:not(.mdc-select--outlined) {
     .mdc-select__anchor .mdc-select__selected-text {
       padding-top: 14px;
@@ -355,26 +361,26 @@
   }
 }
 
-@mixin mdc-select-outlined_ {
-  @include mdc-select-container-fill-color(transparent);
-  @include mdc-select-outline-color($mdc-select-outlined-idle-border);
-  @include mdc-select-hover-outline-color($mdc-select-outlined-hover-border);
-  @include mdc-select-focused-outline-color(primary);
-  @include mdc-select-outline-shape-radius(small);
-  @include mdc-select-container-fill-color(transparent);
+@mixin outlined_ {
+  @include container-fill-color(transparent);
+  @include outline-color(variables.$outlined-idle-border);
+  @include hover-outline-color(variables.$outlined-hover-border);
+  @include focused-outline-color(primary);
+  @include outline-shape-radius(small);
+  @include container-fill-color(transparent);
 
   border: none;
 
   .mdc-select__anchor {
-    @include mdc-states-base-color(transparent);
-    @include mdc-floating-label-shake-animation(text-field-outlined);
-    @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, 0);
+    @include ripple-mixins.states-base-color(transparent);
+    @include floating-label-mixins.shake-animation(text-field-outlined);
+    @include notched-outline-mixins.floating-label-float-position(variables.$outlined-label-position-y, 0);
 
     overflow: visible;
   }
 
   .mdc-select__selected-text {
-    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
+    @include rtl-mixins.reflexive-property(padding, variables.$label-padding, variables.$arrow-padding);
 
     display: flex;
     padding-top: 14px;
@@ -394,7 +400,7 @@
   }
 }
 
-@mixin mdc-select-helper-text_ {
+@mixin helper-text_ {
   .mdc-select-helper-text {
     // stylelint-disable plugin/selector-bem-pattern
     .mdc-select__anchor + & {

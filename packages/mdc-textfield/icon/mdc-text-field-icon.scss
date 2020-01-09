@@ -20,8 +20,10 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
+@use "./mixins";
+
+@forward "mixins";
 
 .mdc-text-field__icon {
-  @include mdc-text-field-icon_;
+  @include mixins.icon_;
 }

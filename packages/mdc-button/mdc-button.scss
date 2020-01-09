@@ -20,6 +20,10 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-button-core-styles;
-@include mdc-button-theme-baseline;
+@use "./mixins";
+
+@forward "mixins";
+@forward "variables";
+
+@include mixins.core-styles;
+@include mixins.theme-baseline;

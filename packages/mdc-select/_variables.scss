@@ -20,47 +20,48 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/variables";
-@import "@material/theme/variables";
+@use "sass:color";
+@use "@material/animation/variables" as variables2;
+@use "@material/theme/variables";
 
-$mdc-select-arrow-padding: 52px !default;
-$mdc-select-label-padding: 16px !default;
-$mdc-select-height: 56px !default;
-$mdc-select-icon-padding: 48px !default;
+$arrow-padding: 52px !default;
+$label-padding: 16px !default;
+$height: 56px !default;
+$icon-padding: 48px !default;
 
-$mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
-$mdc-select-dropdown-color: mdc-theme-prop-value(on-surface) !default;
-$mdc-select-icon-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
-$mdc-select-label-color: rgba(mdc-theme-prop-value(on-surface), .6) !default;
-$mdc-select-focused-label-color: rgba(mdc-theme-prop-value(primary), .87) !default;
-$mdc-select-bottom-line-idle-color: rgba(mdc-theme-prop-value(on-surface), .42) !default;
-$mdc-select-bottom-line-hover-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
-$mdc-select-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6) !default;
+$ink-color: rgba(variables.prop-value(on-surface), .87) !default;
+$dropdown-color: variables.prop-value(on-surface) !default;
+$icon-color: rgba(variables.prop-value(on-surface), .54) !default;
+$label-color: rgba(variables.prop-value(on-surface), .6) !default;
+$focused-label-color: rgba(variables.prop-value(primary), .87) !default;
+$bottom-line-idle-color: rgba(variables.prop-value(on-surface), .42) !default;
+$bottom-line-hover-color: rgba(variables.prop-value(on-surface), .87) !default;
+$helper-text-color: rgba(variables.prop-value(on-surface), .6) !default;
 
-$mdc-select-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%) !default;
+$fill-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 4%) !default;
 
-$mdc-select-dropdown-opacity: .54 !default;
+$dropdown-opacity: .54 !default;
 
 // Disabled Styles
-$mdc-select-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .38) !default;
-$mdc-select-disabled-icon-color: rgba(mdc-theme-prop-value(on-surface), .38) !default;
-$mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .38) !default;
-$mdc-select-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%) !default;
-$mdc-select-disabled-dropdown-opacity: .38 !default;
+$disabled-label-color: rgba(variables.prop-value(on-surface), .38) !default;
+$disabled-icon-color: rgba(variables.prop-value(on-surface), .38) !default;
+$disabled-ink-color: rgba(variables.prop-value(on-surface), .38) !default;
+$disabled-fill-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 2%) !default;
+$disabled-dropdown-opacity: .38 !default;
 
-$mdc-select-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .38) !default;
-$mdc-select-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87) !default;
+$outlined-idle-border: rgba(variables.prop-value(on-surface), .38) !default;
+$outlined-hover-border: rgba(variables.prop-value(on-surface), .87) !default;
 
 // should be .06 after mdc-select opacity is applied
-$mdc-select-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .16) !default;
+$outlined-disabled-border: rgba(variables.prop-value(on-surface), .16) !default;
 
-$mdc-select-label-position-y: 70% !default;
-$mdc-select-outline-label-offset: 16px !default;
-$mdc-select-outlined-label-position-y: 130% !default;
-$mdc-select-outlined-dense-label-position-y: 110% !default;
-$mdc-select-outlined-with-leading-icon-label-position-x: 32px !default;
+$label-position-y: 70% !default;
+$outline-label-offset: 16px !default;
+$outlined-label-position-y: 130% !default;
+$outlined-dense-label-position-y: 110% !default;
+$outlined-with-leading-icon-label-position-x: 32px !default;
 
-$mdc-select-dropdown-transition-duration: 150ms !default;
+$dropdown-transition-duration: 150ms !default;
 
 // Error colors
-$mdc-select-error-color: error !default;
+$error-color: error !default;

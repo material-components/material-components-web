@@ -18,5 +18,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@import "./mixins";
-@include mdc-list-core-styles;
+@use "./mixins";
+
+@forward "mixins";
+@forward "variables";
+
+@include mixins.core-styles;
