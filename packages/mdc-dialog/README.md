@@ -378,10 +378,10 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns whether the given class exists on the root element.
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
-`eventTargetMatches(target: EventTarget | null, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
-`trapFocus(initialFocusEl: HTMLElement|null) => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). Moves focus to `initialFocusEl`, if set.
+`eventTargetMatches(target: EventTarget \| null, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
+`trapFocus(initialFocusEl: HTMLElement \| null) => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). Moves focus to `initialFocusEl`, if set.
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
-`getInitialFocusEl() => HTMLElement|null` | Returns the `data-mdc-dialog-initial-focus` element to add focus to after the dialog has opened.
+`getInitialFocusEl() => HTMLElement \| null` | Returns the `data-mdc-dialog-initial-focus` element to add focus to after the dialog has opened.
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
 `areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
 `getActionFromEvent(event: Event) => string \| null` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target, or an ancestor of the target.
