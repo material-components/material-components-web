@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2019 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +21,15 @@
  * THE SOFTWARE.
  */
 
-import {MDCDataTable} from '../../../../packages/mdc-data-table';
-
-window.mdc.testFixture.fontsLoaded.then(() => {
-  const dataTable = MDCDataTable.attachTo(document.querySelector('.test-data-table-baseline-checkbox'));
-  const rowIds = ['u1', 'u2'];
-
-  dataTable.setSelectedRowIds(rowIds);
-  window.mdc.testFixture.notifyDomReady();
-});
+/**
+ * No-op tagged template literal. Used for syntax highlighting.
+ */
+export const html =
+    (strings: TemplateStringsArray, ...keys: unknown[]): string => {
+      let result = '';
+      for (let index = 0; index < strings.length - 1; index++) {
+        result += strings[index] + `${keys[index]}`;
+      }
+      result += strings[strings.length - 1];
+      return result;
+    };

@@ -113,21 +113,15 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     }
     this.characterCounter_ = characterCounterEl ? characterCounterFactory(characterCounterEl) : null;
 
-    this.leadingIcon_ = null;
-    this.trailingIcon_ = null;
-    const iconElements = this.root_.querySelectorAll(strings.ICON_SELECTOR);
-    if (iconElements.length > 0) {
-      if (iconElements.length > 1) { // Has both icons.
-        this.leadingIcon_ = iconFactory(iconElements[0]);
-        this.trailingIcon_ = iconFactory(iconElements[1]);
-      } else {
-        if (this.root_.classList.contains(cssClasses.WITH_LEADING_ICON)) {
-          this.leadingIcon_ = iconFactory(iconElements[0]);
-        } else {
-          this.trailingIcon_ = iconFactory(iconElements[0]);
-        }
-      }
-    }
+    // Leading icon
+    const leadingIconEl =
+        this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+    this.leadingIcon_ = leadingIconEl ? iconFactory(leadingIconEl) : null;
+
+    // Trailing icon
+    const trailingIconEl =
+        this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
+    this.trailingIcon_ = trailingIconEl ? iconFactory(trailingIconEl) : null;
 
     this.ripple = this.createRipple_(rippleFactory);
   }
