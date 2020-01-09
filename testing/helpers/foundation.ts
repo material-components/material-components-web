@@ -72,26 +72,6 @@ export function verifyDefaultAdapter<F extends MDCFoundation>(
   });
 }
 
-/**
- * Returns an object that intercepts calls to an adapter method used to register
- * event handlers, and adds it to that object where the key is the event name
- * and the value is the function being used. This is the preferred way of
- * testing interaction handlers.
- *
- * Note that `handlerCaptureMethodName` _must_ have a signature of `(string,
- * EventListener) => any` in order to be effective.
- */
-export function captureHandlers(
-    adapter: {[key: string]: any}, handlerCaptureMethodName: string) {
-  const handlers: {[key: string]: any} = {};
-  adapter[handlerCaptureMethodName]
-      .withArgs(jasmine.any(String), jasmine.any(Function))
-      .and.callFake((type: string, handler: Function) => {
-        handlers[type] = handler;
-      });
-  return handlers;
-}
-
 function getUnequalArrayMessage(
     actualArray: string[], expectedArray: string[]): string {
   const format = (values: string[], singularName: string): string => {

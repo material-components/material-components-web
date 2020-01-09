@@ -148,7 +148,6 @@ describe('MDCTextFieldIconFoundation', () => {
     const evt = {
       target: {},
       type: 'click',
-      preventDefault: () => {},
     };
     let click: Function|undefined;
 

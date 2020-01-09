@@ -37,7 +37,7 @@ const getFixture = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
     <div class="mdc-text-field mdc-text-field--with-leading-icon">
-      <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
+      <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
       <input type="text" class="mdc-text-field__input" id="my-text-field">
       <label class="mdc-floating-label" for="my-text-field">My Label</label>
       <div class="mdc-line-ripple"></div>
@@ -220,7 +220,7 @@ describe('MDCTextField', () => {
 
        const wrapper = document.createElement('div');
        wrapper.innerHTML =
-           `<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`;
+           `<i class="mdc-text-field__icon material-icons">3d_rotations</i>`;
        const el = wrapper.firstElementChild as HTMLElement;
        wrapper.removeChild(el);
        root.appendChild(el);
@@ -232,13 +232,9 @@ describe('MDCTextField', () => {
 
   it('#constructor instantiates a trailing icon if the icon is present', () => {
     const root = getFixture();
-    const leadingIcon = root.querySelector('.mdc-text-field__icon');
-    root.removeChild(leadingIcon as HTMLElement);
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML =
-        `<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`;
-    const trailingIcon = wrapper.firstElementChild as HTMLElement;
-    root.appendChild(trailingIcon);
+    const icon = root.querySelector('.mdc-text-field__icon');
+    root.removeChild(icon as HTMLElement);
+    root.appendChild(icon as HTMLElement);
     root.classList.add('mdc-text-field--with-trailing-icon');
     root.classList.remove('mdc-text-field--with-leading-icon');
     const component = new MDCTextField(root);
@@ -448,7 +444,7 @@ describe('MDCTextField', () => {
 
     const wrapper = document.createElement('div');
     wrapper.innerHTML =
-        `<i class="mdc-text-field__icon mdc-text-field__icon--trailing material-icons">3d_rotations</i>`;
+        `<i class="mdc-text-field__icon material-icons">3d_rotations</i>`;
     const child = wrapper.firstElementChild as HTMLElement;
     wrapper.removeChild(child);
     root.appendChild(child);
