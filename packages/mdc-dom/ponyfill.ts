@@ -61,7 +61,7 @@ export function estimateScrollWidth(element: Element): number {
   // parent, the offsetParent property will be null (see
   // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent).
   // This check ensures we only clone the node when necessary.
-  const htmlEl = element as HTMLElement
+  const htmlEl = element as HTMLElement;
   if (htmlEl.offsetParent !== null) {
     return htmlEl.scrollWidth;
   }
