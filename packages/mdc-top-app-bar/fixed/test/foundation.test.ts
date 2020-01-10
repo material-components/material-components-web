@@ -22,7 +22,6 @@
  */
 
 import {createMockAdapter} from '../../../../testing/helpers/foundation';
-import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {MDCTopAppBarFoundation} from '../../standard/foundation';
 import {MDCFixedTopAppBarFoundation} from '../foundation';
 
