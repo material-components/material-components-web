@@ -839,14 +839,26 @@
 }
 
 @mixin placeholder-color_($color) {
-  .mdc-text-field__input::placeholder {
-    @include theme-mixins.prop(color, $color);
+  // GSS will combine selectors with the same content, and some browsers have a
+  // CSS quirk where it drops a rule if it does not recognize one of the
+  // selectors.
+  // To avoid GSS combining the ::placeholder and :-ms-input-placeholder
+  // selectors, we wrap them in `@media all`.
+  // TODO(b/142329051)
+  @media all {
+    // ::placeholder needs to be wrapped because IE11 will drop other selectors
+    // using the same color
+    .mdc-text-field__input::placeholder {
+      @include theme-mixins.prop(color, $color);
+    }
   }
 
-  // Override the placeholder styles in IE with important rule to improve specificity.
-  // stylelint-disable-next-line selector-no-vendor-prefix
-  .mdc-text-field__input:-ms-input-placeholder {
-    @include theme-mixins.prop(color, $color, $important: true);
+  @media all {
+    // :-ms-input-placeholder needs to be wrapped because Firefox will drop
+    // other selectors using the same color
+    .mdc-text-field__input:-ms-input-placeholder {
+      @include theme-mixins.prop(color, $color);
+    }
   }
 }
 
