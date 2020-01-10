@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import bel from 'bel';
 import td from 'testdouble';
 
-import {closest, matches} from '../../../packages/mdc-dom/ponyfill.ts';
+import {closest, matches, estimateScrollWidth} from '../../../packages/mdc-dom/ponyfill.ts';
 
 suite('MDCDom - ponyfill');
 
@@ -85,4 +85,20 @@ test('#matches supports vendor prefixes', () => {
   assert.isTrue(matches({matches: () => true}, ''));
   assert.isTrue(matches({webkitMatchesSelector: () => true}, ''));
   assert.isTrue(matches({msMatchesSelector: () => true}, ''));
+});
+
+test('#estimateScrollWidth returns the default width when the element is not hidden', () => {
+  const root = bel`<span>
+    <span id="i0" style="width:10px;"></span>
+  </span>`;
+  const el = root.querySelector('#i0');
+  assert.strictEqual(estimateScrollWidth(el), 10);
+});
+
+test('#estimateScrollWidth returns the estimated width when the element is hidden', () => {
+  const root = bel`<span style="display:none;">
+    <span id="i0" style="width:10px;"></span>
+  </span>`;
+  const el = root.querySelector('#i0');
+  assert.strictEqual(estimateScrollWidth(el), 10);
 });
