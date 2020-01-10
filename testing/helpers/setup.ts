@@ -23,25 +23,11 @@
 
 import {MDCFoundation} from '../../packages/mdc-base/foundation';
 
-type MDCFoundationStatics = typeof MDCFoundation;
-
-// `extends MDCFoundationStatics` to include MDCFoundation statics in type
-// definition.
-export interface FoundationConstructor<F extends MDCFoundation> extends
-    MDCFoundationStatics {
-  new(...args: any[]): F;
-}
+import {createMockAdapter, FoundationConstructor} from './foundation';
 
 export function setUpFoundationTest<F extends MDCFoundation>(
     FoundationClass: FoundationConstructor<F>) {
-  const mockAdapterMethods = {};
-  Object.keys(FoundationClass.defaultAdapter).forEach((methodName) => {
-    const value = (FoundationClass.defaultAdapter as any)[methodName];
-    (mockAdapterMethods as any)[methodName] =
-        typeof value === 'function' ? value() : value;
-  });
-  const mockAdapter =
-      jasmine.createSpyObj(FoundationClass.name, mockAdapterMethods);
+  const mockAdapter = createMockAdapter(FoundationClass);
   const foundation = new FoundationClass(mockAdapter);
   return {foundation, mockAdapter};
 }
