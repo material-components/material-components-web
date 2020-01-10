@@ -54,18 +54,19 @@ export function matches(element: Element, selector: string): boolean {
  * returned as 0. However, the element will have a true width once no longer
  * inside a display: none context. This method computes an estimated width when
  * the element is hidden or returns the true width when the element is visble.
- * @param {HTMLElement} element the element whose width to estimate
+ * @param {Element} element the element whose width to estimate
  */
-export function estimateScrollWidth(element: HTMLElement): number {
+export function estimateScrollWidth(element: Element): number {
   // Check the offsetParent. If the element inherits display: none from any
   // parent, the offsetParent property will be null (see
   // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent).
   // This check ensures we only clone the node when necessary.
-  if (element.offsetParent !== null) {
-    return element.scrollWidth;
+  const htmlEl = element as HTMLElement
+  if (htmlEl.offsetParent !== null) {
+    return htmlEl.scrollWidth;
   }
 
-  const clone = element.cloneNode(true) as HTMLElement;
+  const clone = htmlEl.cloneNode(true) as HTMLElement;
   clone.style.setProperty('position', 'absolute');
   clone.style.setProperty('transform', '-9999px, -9999px');
   document.documentElement.appendChild(clone);

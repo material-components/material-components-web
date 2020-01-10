@@ -60,7 +60,7 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
     const adapter: MDCFloatingLabelAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      getWidth: () => ponyfill.estimateScrollWidth(this.root_ as HTMLElement),
+      getWidth: () => ponyfill.estimateScrollWidth(this.root_),
       registerInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),
     };
