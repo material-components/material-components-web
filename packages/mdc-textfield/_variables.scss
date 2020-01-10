@@ -32,7 +32,7 @@
 ///     wrap label in a child element to apply `transitionY(-50%)` to automatically offset based on box height.
 ///
 @function mdc-text-field-get-outlined-label-position-y($text-field-height) {
-  @return $text-field-height/2 + $mdc-notched-outline-label-box-height/2;
+  @return $text-field-height / 2 + $mdc-notched-outline-label-box-height / 2;
 }
 
 $mdc-text-field-error: error !default;
