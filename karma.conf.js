@@ -24,8 +24,7 @@
 const path = require('path');
 const webpackConfig = require('./webpack.config')[1];
 
-const USING_TRAVISCI = Boolean(process.env.TRAVIS);
-const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
+const USE_SAUCE = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 // If true, runs new suite of Jasmine foundation unit tests.
 // Otherwise, runs old Mocha unit tests.
 const USE_JASMINE = Boolean(process.env.USE_JASMINE);
@@ -38,7 +37,6 @@ const FILES_TO_USE = [
 ];
 
 const HEADLESS_LAUNCHERS = {
-  /** See https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-348248951 */
   'ChromeHeadlessNoSandbox': {
     base: 'ChromeHeadless',
     flags: ['--no-sandbox'],
@@ -58,8 +56,8 @@ const SAUCE_LAUNCHERS = {
   },
 };
 
-const customLaunchers = Object.assign({}, USING_SL ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
-const browsers = USING_TRAVISCI ? Object.keys(customLaunchers) : ['Chrome'];
+const customLaunchers = Object.assign({}, USE_SAUCE ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
+const browsers = USE_SAUCE ? Object.keys(customLaunchers) : ['Chrome'];
 const istanbulInstrumenterLoader = {
   use: [{
     loader: 'istanbul-instrumenter-loader',
@@ -203,7 +201,7 @@ module.exports = function(config) {
     browserDisconnectTimeout: 40000,
     browserNoActivityTimeout: 120000,
     captureTimeout: 240000,
-    concurrency: USING_SL ? 4 : Infinity,
+    concurrency: USE_SAUCE ? 10 : Infinity,
     customLaunchers: customLaunchers,
   }));
 
@@ -228,24 +226,18 @@ module.exports = function(config) {
     });
   }
 
-  if (USING_SL) {
+  if (USE_SAUCE) {
     const sauceLabsConfig = {
       username: process.env.SAUCE_USERNAME,
       accessKey: process.env.SAUCE_ACCESS_KEY,
+      testName: 'Material Components Web Unit Tests - CI',
+      build: process.env.SAUCE_BUILD_ID,
+      tunnelIdentifier: process.env.SAUCE_TUNNEL_ID,
     };
-
-    if (USING_TRAVISCI) {
-      // See https://github.com/karma-runner/karma-sauce-launcher/issues/73
-      Object.assign(sauceLabsConfig, {
-        testName: 'Material Components Web Unit Tests - CI',
-        tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-        startConnect: false,
-      });
-    }
 
     config.set({
       sauceLabs: sauceLabsConfig,
-      // Attempt to de-flake Sauce Labs tests on TravisCI.
+      // Attempt to de-flake Sauce Labs tests.
       transports: ['polling'],
       browserDisconnectTolerance: 3,
     });
