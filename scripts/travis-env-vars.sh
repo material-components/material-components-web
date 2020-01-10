@@ -76,11 +76,6 @@ function has_testable_files() {
 print_travis_env_vars
 print_all_changed_files
 
-if [[ "$TEST_SUITE" == 'unit' ]]; then
-  # Only run unit tests if JS files changed
-  check_for_testable_files '^karma\.conf\.js$' '^packages/.+\.(js|ts)$' '^test/unit/.+\.(js|ts)$' '^testing/.+\.ts'
-fi
-
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   # Only run screenshot tests if the following change:
   # - package (non-unit test) JS/Sass files

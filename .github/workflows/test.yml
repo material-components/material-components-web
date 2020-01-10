@@ -35,3 +35,19 @@ jobs:
           node-version: 8
       - run: npm install
       - run: npm run test:site
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - run: npm install
+      - name: Run unit tests
+        run: |
+          export SAUCE_BUILD_ID=mdc-tests-${GITHUB_EVENT_NAME}-${GITHUB_ACTION}-${GITHUB_SHA}
+          export SAUCE_TUNNEL_ID=${SAUCE_BUILD_ID}-tunnel
+          npm run test:unit
+        env:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
