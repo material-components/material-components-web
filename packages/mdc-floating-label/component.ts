@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {ponyfill} from '@material/dom/index';
+import {estimateScrollWidth} from '@material/dom/ponyfill';
 import {MDCFloatingLabelAdapter} from './adapter';
 import {MDCFloatingLabelFoundation} from './foundation';
 
@@ -60,7 +60,7 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
     const adapter: MDCFloatingLabelAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      getWidth: () => ponyfill.estimateScrollWidth(this.root_),
+      getWidth: () => estimateScrollWidth(this.root_),
       registerInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),
     };
