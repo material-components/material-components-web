@@ -55,7 +55,7 @@
   }
 
   .mdc-tab__content {
-    @include mdc-tab__content_($query);
+    @include mdc-tab-content_($query);
   }
 
   .mdc-tab__text-label {
@@ -88,11 +88,11 @@
   }
 
   .mdc-tab--stacked {
-    @include mdc-tab--stacked_($query);
+    @include mdc-tab-stacked_($query);
   }
 
   .mdc-tab--active {
-    @include mdc-tab--active_($query);
+    @include mdc-tab-active_($query);
   }
 
   .mdc-tab:not(.mdc-tab--stacked) .mdc-tab__icon + .mdc-tab__text-label {
@@ -110,7 +110,7 @@
   @include mdc-ripple-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-tab__ripple {
-    @include mdc-tab__ripple_($query);
+    @include mdc-tab-ripple_($query);
   }
 }
 
@@ -256,7 +256,7 @@
   }
 }
 
-@mixin mdc-tab__ripple_($query: mdc-feature-all()) {
+@mixin mdc-tab-ripple_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-ripple-surface($query);
@@ -273,7 +273,7 @@
   }
 }
 
-@mixin mdc-tab__content_($query: mdc-feature-all()) {
+@mixin mdc-tab-content_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-tab-indicator-surface($query);
@@ -287,7 +287,7 @@
   }
 }
 
-@mixin mdc-tab--stacked_($query: mdc-feature-all()) {
+@mixin mdc-tab-stacked_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
@@ -304,7 +304,7 @@
   }
 }
 
-@mixin mdc-tab--active_($query: mdc-feature-all()) {
+@mixin mdc-tab-active_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
 
   @include mdc-tab-text-label-color($mdc-tab-text-label-color-active, $query);

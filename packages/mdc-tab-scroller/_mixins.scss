@@ -97,7 +97,7 @@
   }
 
   .mdc-tab-scroller__scroll-content {
-    @include mdc-tab-scroller__scroll-content_($query);
+    @include mdc-tab-scroller-scroll-content_($query);
   }
 
   .mdc-tab-scroller--align-start .mdc-tab-scroller__scroll-content {
@@ -133,7 +133,7 @@
 // Private
 //
 
-@mixin mdc-tab-scroller__scroll-content_($query: mdc-feature-all()) {
+@mixin mdc-tab-scroller-scroll-content_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-animation: mdc-feature-create-target($query, animation);
 
