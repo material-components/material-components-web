@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-$mdc-menu-surface-fade-in-duration: .03s !default;
-$mdc-menu-surface-fade-out-duration: .075s !default;
-$mdc-menu-surface-scale-duration: .12s !default;
-$mdc-menu-surface-min-distance-from-edge: 32px !default;
-$mdc-menu-surface-z-index: 8 !default; // One above mdc-dialog
+$fade-in-duration: .03s !default;
+$fade-out-duration: .075s !default;
+$scale-duration: .12s !default;
+$min-distance-from-edge: 32px !default;
+$z-index: 8 !default; // One above mdc-dialog

@@ -20,34 +20,35 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/functions";
-@import "@material/theme/variables"; // for mdc-theme-prop-value
-@import "./variables";
+@use "sass:map";
+@use "@material/theme/functions";
+@use "@material/theme/variables" as theme-variables; // for mdc-theme-prop-value
+@use "./variables";
 
 //
 // Public
 //
 
-@function mdc-states-opacity($color, $state) {
-  $opacity-map: mdc-states-opacities_($color);
+@function states-opacity($color, $state) {
+  $opacity-map: states-opacities_($color);
 
-  @if not map-has-key($opacity-map, $state) {
-    @error "Invalid state: '#{$state}'. Choose one of: #{map-keys($opacity-map)}";
+  @if not map.has-key($opacity-map, $state) {
+    @error "Invalid state: '#{$state}'. Choose one of: #{map.keys($opacity-map)}";
   }
 
-  @return map-get($opacity-map, $state);
+  @return map.get($opacity-map, $state);
 }
 
 //
 // Private
 //
 
-@function mdc-states-opacities_($color) {
-  $color-value: mdc-theme-prop-value($color);
+@function states-opacities_($color) {
+  $color-value: theme-variables.prop-value($color);
   $opacity-map: if(
-    mdc-theme-tone($color-value) == "light",
-    $mdc-ripple-light-ink-opacities,
-    $mdc-ripple-dark-ink-opacities
+    functions.tone($color-value) == "light",
+    variables.$light-ink-opacities,
+    variables.$dark-ink-opacities
   );
 
   @return $opacity-map;

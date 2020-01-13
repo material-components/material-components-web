@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@mixin mdc-linear-progress-primary-indeterminate-translate-keyframes_ {
+@mixin primary-indeterminate-translate-keyframes_ {
   @keyframes mdc-linear-progress-primary-indeterminate-translate {
     0% {
       transform: translateX(0);
@@ -42,7 +42,7 @@
   }
 }
 
-@mixin mdc-linear-progress-primary-indeterminate-scale-keyframes_ {
+@mixin primary-indeterminate-scale-keyframes_ {
   @keyframes mdc-linear-progress-primary-indeterminate-scale {
     0% {
       transform: scaleX(.08);
@@ -64,7 +64,7 @@
   }
 }
 
-@mixin mdc-linear-progress-secondary-indeterminate-translate-keyframes_ {
+@mixin secondary-indeterminate-translate-keyframes_ {
   @keyframes mdc-linear-progress-secondary-indeterminate-translate {
     0% {
       animation-timing-function: cubic-bezier(.15, 0, .515058, .409685);
@@ -87,7 +87,7 @@
   }
 }
 
-@mixin mdc-linear-progress-secondary-indeterminate-scale-keyframes_ {
+@mixin secondary-indeterminate-scale-keyframes_ {
   @keyframes mdc-linear-progress-secondary-indeterminate-scale {
     0% {
       animation-timing-function: cubic-bezier(.205028, .057051, .57661, .453971);
@@ -110,7 +110,7 @@
   }
 }
 
-@mixin mdc-linear-progress-buffering-keyframes_ {
+@mixin buffering-keyframes_ {
   @keyframes mdc-linear-progress-buffering {
     to {
       transform: translateX(-10px);
@@ -118,7 +118,7 @@
   }
 }
 
-@mixin mdc-linear-progress-primary-indeterminate-translate-reverse-keyframes_ {
+@mixin primary-indeterminate-translate-reverse-keyframes_ {
   @keyframes mdc-linear-progress-primary-indeterminate-translate-reverse {
     0% {
       transform: translateX(0);
@@ -140,7 +140,7 @@
   }
 }
 
-@mixin mdc-linear-progress-secondary-indeterminate-translate-reverse-keyframes_ {
+@mixin secondary-indeterminate-translate-reverse-keyframes_ {
   @keyframes mdc-linear-progress-secondary-indeterminate-translate-reverse {
     0% {
       animation-timing-function: cubic-bezier(.15, 0, .515058, .409685);
@@ -163,7 +163,7 @@
   }
 }
 
-@mixin mdc-linear-progress-buffering-reverse-keyframes_ {
+@mixin buffering-reverse-keyframes_ {
   @keyframes mdc-linear-progress-buffering-reverse {
     to {
       transform: translateX(10px);

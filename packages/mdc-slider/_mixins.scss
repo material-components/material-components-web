@@ -20,47 +20,47 @@
 // THE SOFTWARE.
 //
 
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "@material/theme/functions";
-@import "@material/theme/mixins";
-@import "@material/theme/variables"; // for mdc-theme-prop-value
-@import "@material/typography/mixins";
-@import "@material/rtl/mixins";
-@import "./variables";
-@import "./keyframes";
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/theme/functions" as theme-functions;
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/theme/variables" as theme-variables; // for mdc-theme-prop-value
+@use "@material/typography/mixins" as typography-mixins;
+@use "@material/rtl/mixins" as rtl-mixins;
+@use "./variables";
+@use "./keyframes";
 
 //
 // Public
 //
-@mixin mdc-slider-core-styles($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-  $feat-animation: mdc-feature-create-target($query, animation);
+@mixin core-styles($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
 
   // postcss-bem-linter: define slider
 
-  @include mdc-feature-targets($feat-animation) {
-    @include mdc-slider-emphasize-keyframes_;
+  @include feature-targeting-mixins.targets($feat-animation) {
+    @include keyframes.emphasize-keyframes_;
   }
 
   .mdc-slider {
-    @include mdc-slider-color-accessible(secondary, $query: $query);
+    @include color-accessible(secondary, $query: $query);
 
     &--disabled {
       $disabled-color: #9a9a9a;
 
-      @include mdc-slider-highlight-color_($disabled-color, $query: $query);
-      @include mdc-slider-rail-color_($disabled-color, $query: $query);
-      @include mdc-slider-rail-tick-mark-color_($disabled-color, $query: $query);
-      @include mdc-slider-thumb-color_($disabled-color, $query: $query);
-      @include mdc-slider-thumb-stroke-cutout_(white, $query: $query);
+      @include highlight-color_($disabled-color, $query: $query);
+      @include rail-color_($disabled-color, $query: $query);
+      @include rail-tick-mark-color_($disabled-color, $query: $query);
+      @include thumb-color_($disabled-color, $query: $query);
+      @include thumb-stroke-cutout_(white, $query: $query);
 
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         cursor: auto;
       }
     }
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       position: relative;
       width: 100%;
       height: 48px;
@@ -73,16 +73,16 @@
       }
     }
 
-    @include mdc-slider-track_($query: $query);
-    @include mdc-slider-track-marker_($query: $query);
-    @include mdc-slider-thumb_($query: $query);
-    @include mdc-slider-focus-ring_($query: $query);
-    @include mdc-slider-pin_($query: $query);
+    @include track_($query: $query);
+    @include track-marker_($query: $query);
+    @include thumb_($query: $query);
+    @include focus-ring_($query: $query);
+    @include pin_($query: $query);
   }
 
   .mdc-slider--active {
     .mdc-slider__thumb {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         transform: scale3d(1, 1, 1);
       }
     }
@@ -90,13 +90,13 @@
 
   .mdc-slider--focus {
     .mdc-slider__thumb {
-      @include mdc-feature-targets($feat-animation) {
+      @include feature-targeting-mixins.targets($feat-animation) {
         animation: mdc-slider-emphasize 266.67ms linear;
       }
     }
 
     .mdc-slider__focus-ring {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         transform: scale3d(1.55, 1.55, 1.55);
         opacity: .25;
       }
@@ -105,7 +105,7 @@
 
   .mdc-slider--in-transit {
     .mdc-slider__thumb {
-      @include mdc-feature-targets($feat-animation) {
+      @include feature-targeting-mixins.targets($feat-animation) {
         transition-delay: 140ms;
       }
     }
@@ -124,7 +124,7 @@
   .mdc-slider:focus:not(.mdc-slider--active) {
     .mdc-slider__thumb-container,
     .mdc-slider__track {
-      @include mdc-feature-targets($feat-animation) {
+      @include feature-targeting-mixins.targets($feat-animation) {
         transition: transform 80ms ease;
       }
     }
@@ -134,13 +134,13 @@
     // stylelint-disable plugin/selector-bem-pattern
     &.mdc-slider--active {
       .mdc-slider__thumb {
-        @include mdc-feature-targets($feat-structure) {
+        @include feature-targeting-mixins.targets($feat-structure) {
           transform: scale(calc(12 / 21));
         }
       }
 
       .mdc-slider__pin {
-        @include mdc-feature-targets($feat-structure) {
+        @include feature-targeting-mixins.targets($feat-structure) {
           transform: rotate(-45deg) scale(1) translate(19px, -20px);
         }
       }
@@ -148,7 +148,7 @@
 
     &.mdc-slider--focus {
       .mdc-slider__thumb {
-        @include mdc-feature-targets($feat-animation) {
+        @include feature-targeting-mixins.targets($feat-animation) {
           animation: none;
         }
       }
@@ -156,7 +156,7 @@
 
     &.mdc-slider--display-markers {
       .mdc-slider__track-marker-container {
-        @include mdc-feature-targets($feat-structure) {
+        @include feature-targeting-mixins.targets($feat-structure) {
           visibility: visible;
         }
       }
@@ -167,95 +167,95 @@
   // postcss-bem-linter: end
 }
 
-@mixin mdc-slider-highlight-color($color, $query: mdc-feature-all()) {
+@mixin highlight-color($color, $query: feature-targeting-functions.all()) {
   &:not(.mdc-slider--disabled) {
-    @include mdc-slider-highlight-color_($color, $query: $query);
+    @include highlight-color_($color, $query: $query);
   }
 }
 
-@mixin mdc-slider-rail-color($color, $opacity: $mdc-slider-baseline-rail-opacity, $query: mdc-feature-all()) {
+@mixin rail-color($color, $opacity: variables.$baseline-rail-opacity, $query: feature-targeting-functions.all()) {
   &:not(.mdc-slider--disabled) {
-    @include mdc-slider-rail-color_($color, $opacity, $query: $query);
+    @include rail-color_($color, $opacity, $query: $query);
   }
 }
 
-@mixin mdc-slider-rail-tick-mark-color($color, $query: mdc-feature-all()) {
+@mixin rail-tick-mark-color($color, $query: feature-targeting-functions.all()) {
   &:not(.mdc-slider--disabled) {
-    @include mdc-slider-rail-tick-mark-color_($color, $query: $query);
+    @include rail-tick-mark-color_($color, $query: $query);
   }
 }
 
-@mixin mdc-slider-thumb-color($color, $query: mdc-feature-all()) {
+@mixin thumb-color($color, $query: feature-targeting-functions.all()) {
   &:not(.mdc-slider--disabled) {
-    @include mdc-slider-thumb-color_($color, $query: $query);
+    @include thumb-color_($color, $query: $query);
   }
 }
 
-@mixin mdc-slider-focus-halo-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin focus-halo-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   &:not(.mdc-slider--disabled) {
     .mdc-slider__focus-ring {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(background-color, $color);
+      @include feature-targeting-mixins.targets($feat-color) {
+        @include theme-mixins.prop(background-color, $color);
       }
     }
   }
 }
 
-@mixin mdc-slider-value-pin-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin value-pin-ink-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   &:not(.mdc-slider--disabled) {
     .mdc-slider__pin {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(color, $color);
+      @include feature-targeting-mixins.targets($feat-color) {
+        @include theme-mixins.prop(color, $color);
       }
     }
   }
 }
 
-@mixin mdc-slider-value-pin-fill-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin value-pin-fill-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   &:not(.mdc-slider--disabled) {
     .mdc-slider__pin {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(background-color, $color);
+      @include feature-targeting-mixins.targets($feat-color) {
+        @include theme-mixins.prop(background-color, $color);
       }
     }
   }
 }
 
-@mixin mdc-slider-value-pin-fill-color-accessible($color, $query: mdc-feature-all()) {
-  $color-value: mdc-theme-prop-value($color);
-  $ink-color: if(mdc-theme-tone($color-value) == "light", text-primary-on-light, text-primary-on-dark);
+@mixin value-pin-fill-color-accessible($color, $query: feature-targeting-functions.all()) {
+  $color-value: theme-variables.prop-value($color);
+  $ink-color: if(theme-functions.tone($color-value) == "light", text-primary-on-light, text-primary-on-dark);
 
-  @include mdc-slider-value-pin-fill-color($color, $query: $query);
-  @include mdc-slider-value-pin-ink-color($ink-color, $query: $query);
+  @include value-pin-fill-color($color, $query: $query);
+  @include value-pin-ink-color($ink-color, $query: $query);
 }
 
 // NOTE: This mixin sets the color of ALL customizable elements in the slider. If new elements are added, this mixin
 // should be updated to cover those additional elements.
-@mixin mdc-slider-color-accessible($color, $query: mdc-feature-all()) {
-  @include mdc-slider-highlight-color($color, $query: $query);
-  @include mdc-slider-rail-color($color, $query: $query);
-  @include mdc-slider-rail-tick-mark-color($color, $query: $query);
-  @include mdc-slider-thumb-color($color, $query: $query);
-  @include mdc-slider-focus-halo-color($color, $query: $query);
-  @include mdc-slider-value-pin-fill-color-accessible($color, $query: $query);
+@mixin color-accessible($color, $query: feature-targeting-functions.all()) {
+  @include highlight-color($color, $query: $query);
+  @include rail-color($color, $query: $query);
+  @include rail-tick-mark-color($color, $query: $query);
+  @include thumb-color($color, $query: $query);
+  @include focus-halo-color($color, $query: $query);
+  @include value-pin-fill-color-accessible($color, $query: $query);
 }
 
 //
 // Private
 //
 
-@mixin mdc-slider-track_($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-  $feat-animation: mdc-feature-create-target($query, animation);
+@mixin track_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
 
   &__track-container {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       position: absolute;
       top: 50%;
       width: 100%;
@@ -265,35 +265,35 @@
   }
 
   &__track {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       position: absolute;
       width: 100%;
       height: 100%;
       transform-origin: left top;
 
-      @include mdc-rtl(".mdc-slider") {
+      @include rtl-mixins.rtl(".mdc-slider") {
         transform-origin: right top;
       }
     }
 
-    @include mdc-feature-targets($feat-animation) {
+    @include feature-targeting-mixins.targets($feat-animation) {
       will-change: transform;
     }
   }
 }
 
-@mixin mdc-slider-track-marker_($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin track-marker_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   // stylelint-disable-next-line selector-max-type
   &__track-marker-container {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: flex;
       margin-right: 0;
       margin-left: -1px;
       visibility: hidden;
 
-      @include mdc-rtl(".mdc-slider") {
+      @include rtl-mixins.rtl(".mdc-slider") {
         margin-right: -1px;
         margin-left: 0;
       }
@@ -310,7 +310,7 @@
   }
 
   &__track-marker {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       flex: 1;
 
       // stylelint-disable-next-line selector-max-type
@@ -329,12 +329,12 @@
   }
 }
 
-@mixin mdc-slider-thumb_($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-  $feat-animation: mdc-feature-create-target($query, animation);
+@mixin thumb_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
 
   &__thumb-container {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       position: absolute;
       top: 15px;
       left: 0;
@@ -345,13 +345,13 @@
       user-select: none;
     }
 
-    @include mdc-feature-targets($feat-animation) {
+    @include feature-targeting-mixins.targets($feat-animation) {
       will-change: transform;
     }
   }
 
   &__thumb {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       position: absolute;
       top: 0;
       left: 0;
@@ -359,36 +359,36 @@
       stroke-width: 3.5;
     }
 
-    @include mdc-feature-targets($feat-animation) {
+    @include feature-targeting-mixins.targets($feat-animation) {
       transition: transform 100ms ease-out, fill 100ms ease-out, stroke 100ms ease-out;
     }
   }
 }
 
-@mixin mdc-slider-focus-ring_($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-  $feat-animation: mdc-feature-create-target($query, animation);
+@mixin focus-ring_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
 
   &__focus-ring {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       width: 21px;
       height: 21px;
       border-radius: 50%;
       opacity: 0;
     }
 
-    @include mdc-feature-targets($feat-animation) {
+    @include feature-targeting-mixins.targets($feat-animation) {
       transition: transform 266.67ms ease-out, opacity 266.67ms ease-out, background-color 266.67ms ease-out;
     }
   }
 }
 
-@mixin mdc-slider-pin_($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-  $feat-animation: mdc-feature-create-target($query, animation);
+@mixin pin_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
 
   &__pin {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: flex;
       position: absolute;
       top: 0;
@@ -407,66 +407,66 @@
       z-index: 1;
     }
 
-    @include mdc-feature-targets($feat-animation) {
+    @include feature-targeting-mixins.targets($feat-animation) {
       transition: transform 100ms ease-out;
     }
   }
 
   &__pin-value-marker {
-    @include mdc-typography(body2, $query: $query);
+    @include typography-mixins.typography(body2, $query: $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       transform: rotate(45deg);
     }
   }
 }
 
-@mixin mdc-slider-highlight-color_($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin highlight-color_($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-slider__track {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(background-color, $color);
     }
   }
 }
 
-@mixin mdc-slider-rail-color_($color, $opacity: $mdc-slider-baseline-rail-opacity, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin rail-color_($color, $opacity: variables.$baseline-rail-opacity, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-slider__track-container {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $opacity));
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(background-color, rgba(theme-variables.prop-value($color), $opacity));
     }
   }
 }
 
-@mixin mdc-slider-rail-tick-mark-color_($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin rail-tick-mark-color_($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-slider__track-marker-container {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(background-color, $color);
     }
   }
 }
 
-@mixin mdc-slider-thumb-color_($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin thumb-color_($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-slider__thumb {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(fill, $color);
-      @include mdc-theme-prop(stroke, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(fill, $color);
+      @include theme-mixins.prop(stroke, $color);
     }
   }
 }
 
-@mixin mdc-slider-thumb-stroke-cutout_($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin thumb-stroke-cutout_($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-slider__thumb {
-    @include mdc-feature-targets($feat-color) {
+    @include feature-targeting-mixins.targets($feat-color) {
       /* @alternate */
       stroke: $color;
       // stylelint-disable-next-line declaration-block-no-duplicate-properties

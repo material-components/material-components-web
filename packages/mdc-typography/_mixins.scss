@@ -20,43 +20,45 @@
 // THE SOFTWARE.
 //
 
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "./variables";
+@use "sass:list";
+@use "sass:map";
+@use "@material/feature-targeting/functions";
+@use "@material/feature-targeting/mixins";
+@use "./variables";
 
-@mixin mdc-typography-core-styles($query: mdc-feature-all()) {
+@mixin core-styles($query: functions.all()) {
   .mdc-typography {
-    @include mdc-typography-base($query: $query);
+    @include base($query: $query);
   }
 
-  @each $style in map-keys($mdc-typography-styles) {
+  @each $style in map.keys(variables.$styles) {
     .mdc-typography--#{$style} {
-      @include mdc-typography($style, $query: $query);
+      @include typography($style, $query: $query);
     }
   }
 }
 
-@mixin mdc-typography-base($query: mdc-feature-all()) {
-  $feat-typography: mdc-feature-create-target($query, typography);
+@mixin base($query: functions.all()) {
+  $feat-typography: functions.create-target($query, typography);
 
-  @include mdc-feature-targets($feat-typography) {
-    @each $key, $value in $mdc-typography-base {
+  @include mixins.targets($feat-typography) {
+    @each $key, $value in variables.$base {
       #{$key}: $value;
     }
   }
 }
 
-@mixin mdc-typography($style, $query: mdc-feature-all(), $exclude-props: ()) {
-  $feat-typography: mdc-feature-create-target($query, typography);
-  $style-props: map-get($mdc-typography-styles, $style);
+@mixin typography($style, $query: functions.all(), $exclude-props: ()) {
+  $feat-typography: functions.create-target($query, typography);
+  $style-props: map.get(variables.$styles, $style);
 
-  @if not map-has-key($mdc-typography-styles, $style) {
-    @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{map-keys($mdc-typography-styles)}";
+  @if not map.has-key(variables.$styles, $style) {
+    @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{map.keys(variables.$styles)}";
   }
 
-  @include mdc-feature-targets($feat-typography) {
+  @include mixins.targets($feat-typography) {
     @each $key, $value in $style-props {
-      @if index($exclude-props, $key) == null {
+      @if list.index($exclude-props, $key) == null {
         #{$key}: $value;
       }
     }
@@ -64,20 +66,20 @@
 }
 
 // Element must be `display: block` or `display: inline-block` for this to work.
-@mixin mdc-typography-overflow-ellipsis($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin overflow-ellipsis($query: functions.all()) {
+  $feat-structure: functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include mixins.targets($feat-structure) {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
   }
 }
 
-@mixin mdc-typography-baseline-top($distance, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin baseline-top($distance, $query: functions.all()) {
+  $feat-structure: functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include mixins.targets($feat-structure) {
     display: block;
     margin-top: 0;
     /* @alternate */
@@ -85,31 +87,31 @@
   }
 
   &::before {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-typography-baseline-strut_($distance);
+    @include mixins.targets($feat-structure) {
+      @include baseline-strut_($distance);
 
       vertical-align: 0;
     }
   }
 }
 
-@mixin mdc-typography-baseline-bottom($distance, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin baseline-bottom($distance, $query: functions.all()) {
+  $feat-structure: functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include mixins.targets($feat-structure) {
     margin-bottom: -1 * $distance;
   }
 
   &::after {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-typography-baseline-strut_($distance);
+    @include mixins.targets($feat-structure) {
+      @include baseline-strut_($distance);
 
       vertical-align: -1 * $distance;
     }
   }
 }
 
-@mixin mdc-typography-baseline-strut_($distance) {
+@mixin baseline-strut_($distance) {
   display: inline-block;
   width: 0;
   height: $distance;

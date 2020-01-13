@@ -20,7 +20,8 @@
 // THE SOFTWARE.
 //
 
-@import "@material/rtl/mixins";
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/rtl/mixins" as rtl-mixins;
 
 // Public mixins
 
@@ -28,9 +29,9 @@
 /// Customizes the color of the character counter associated with an enabled text field.
 /// @param {Color} $color - The desired character counter color.
 ///
-@mixin mdc-text-field-character-counter-color($color) {
+@mixin character-counter-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-character-counter-color_($color);
+    @include character-counter-color_($color);
   }
 }
 
@@ -38,15 +39,15 @@
 /// Customizes the color of the character counter associated with a disabled text field.
 /// @param {Color} $color - The desired character counter color.
 ///
-@mixin mdc-text-field-disabled-character-counter-color($color) {
+@mixin disabled-character-counter-color($color) {
   &.mdc-text-field--disabled {
-    @include mdc-text-field-character-counter-color_($color);
+    @include character-counter-color_($color);
   }
 }
 
-@mixin mdc-text-field-character-counter-position($xOffset, $yOffset) {
+@mixin character-counter-position($xOffset, $yOffset) {
   .mdc-text-field-character-counter {
-    @include mdc-rtl-reflexive-position(right, $xOffset);
+    @include rtl-mixins.reflexive-position(right, $xOffset);
 
     position: absolute;
     bottom: $yOffset;
@@ -55,11 +56,11 @@
 
 // Private mixins
 
-@mixin mdc-text-field-character-counter-color_($color) {
+@mixin character-counter-color_($color) {
   // Character counter is placed inside mdc-textfield element (for textarea variant ) or
   // inside helper line which is sibling to mdc-textfield.
   .mdc-text-field-character-counter,
   + .mdc-text-field-helper-line .mdc-text-field-character-counter {
-    @include mdc-theme-prop(color, $color);
+    @include theme-mixins.prop(color, $color);
   }
 }

@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "../mixins";
-@include mdc-drawer-modal-core-styles;
+@use "../mixins";
+@include mixins.modal-core-styles;

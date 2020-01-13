@@ -20,20 +20,20 @@
 // THE SOFTWARE.
 //
 
-$mdc-dialog-scrim-color: on-surface !default;
-$mdc-dialog-title-ink-color: on-surface !default;
-$mdc-dialog-content-ink-color: on-surface !default;
-$mdc-dialog-scroll-divider-color: on-surface !default;
+$scrim-color: on-surface !default;
+$title-ink-color: on-surface !default;
+$content-ink-color: on-surface !default;
+$scroll-divider-color: on-surface !default;
 
-$mdc-dialog-scrim-opacity: .32 !default;
-$mdc-dialog-title-ink-opacity: .87 !default;
-$mdc-dialog-content-ink-opacity: .6 !default;
-$mdc-dialog-scroll-divider-opacity: .12 !default;
+$scrim-opacity: .32 !default;
+$title-ink-opacity: .87 !default;
+$content-ink-opacity: .6 !default;
+$scroll-divider-opacity: .12 !default;
 
-$mdc-dialog-min-width: 280px !default;
-$mdc-dialog-max-width: 560px !default;
-$mdc-dialog-margin: 16px !default;
-$mdc-dialog-title-bottom-padding: 9px !default;
-$mdc-dialog-actions-padding: 8px !default;
+$min-width: 280px !default;
+$max-width: 560px !default;
+$margin: 16px !default;
+$title-bottom-padding: 9px !default;
+$actions-padding: 8px !default;
 
-$mdc-dialog-z-index: 7 !default;
+$z-index: 7 !default;

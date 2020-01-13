@@ -20,49 +20,50 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/variables";
-@import "@material/density/variables";
-@import "@material/theme/variables";
+@use "sass:color";
+@use "@material/animation/variables" as animation-variables;
+@use "@material/density/variables" as density-variables;
+@use "@material/theme/variables" as theme-variables;
 
-$mdc-chip-fill-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%) !default;
-$mdc-chip-ink-color-default: rgba(mdc-theme-prop-value(on-surface), .87) !default;
-$mdc-chip-horizontal-padding: 12px !default;
-$mdc-chip-height: 32px !default;
+$fill-color-default: color.mix(theme-variables.prop-value(on-surface), theme-variables.prop-value(surface), 12%) !default;
+$ink-color-default: rgba(theme-variables.prop-value(on-surface), .87) !default;
+$horizontal-padding: 12px !default;
+$height: 32px !default;
 
-$mdc-chip-minimum-height: 24px !default;
-$mdc-chip-maximum-height: $mdc-chip-height !default;
-$mdc-chip-density-scale: $mdc-density-default-scale !default;
-$mdc-chip-density-config: (
+$minimum-height: 24px !default;
+$maximum-height: $height !default;
+$density-scale: density-variables.$default-scale !default;
+$density-config: (
   height: (
-    default: $mdc-chip-height,
-    maximum: $mdc-chip-maximum-height,
-    minimum: $mdc-chip-minimum-height,
+    default: $height,
+    maximum: $maximum-height,
+    minimum: $minimum-height,
   ),
 ) !default;
 
-$mdc-chip-icon-color: mdc-theme-prop-value(on-surface) !default;
-$mdc-chip-icon-opacity: .54 !default;
-$mdc-chip-trailing-icon-hover-opacity: .62 !default;
-$mdc-chip-trailing-icon-focus-opacity: .87 !default;
-$mdc-chip-leading-icon-size: 20px !default;
-$mdc-chip-trailing-icon-size: 18px !default;
+$icon-color: theme-variables.prop-value(on-surface) !default;
+$icon-opacity: .54 !default;
+$trailing-icon-hover-opacity: .62 !default;
+$trailing-icon-focus-opacity: .87 !default;
+$leading-icon-size: 20px !default;
+$trailing-icon-size: 18px !default;
 // Speed up delay to bridge gap between leading icon and checkmark transition.
-$mdc-chip-leading-icon-delay: -50ms !default;
-$mdc-chip-checkmark-with-leading-icon-delay: 80ms !default;
+$leading-icon-delay: -50ms !default;
+$checkmark-with-leading-icon-delay: 80ms !default;
 
-$mdc-chip-checkmark-animation-delay: 50ms !default;
-$mdc-chip-checkmark-animation-duration: 150ms !default;
-$mdc-chip-width-animation-duration: 150ms !default;
-$mdc-chip-opacity-animation-duration: 75ms !default;
+$checkmark-animation-delay: 50ms !default;
+$checkmark-animation-duration: 150ms !default;
+$width-animation-duration: 150ms !default;
+$opacity-animation-duration: 75ms !default;
 
-$mdc-chip-leading-icon-margin-right: 4px !default;
-$mdc-chip-leading-icon-margin-left: -4px !default;
+$leading-icon-margin-right: 4px !default;
+$leading-icon-margin-left: -4px !default;
 
-$mdc-chip-trailing-icon-margin-right: -4px !default;
-$mdc-chip-trailing-icon-margin-left: 4px !default;
+$trailing-icon-margin-right: -4px !default;
+$trailing-icon-margin-left: 4px !default;
 
-$mdc-chip-exit-transition:
-  opacity 75ms $mdc-animation-standard-curve-timing-function,
-  width 150ms $mdc-animation-deceleration-curve-timing-function,
+$exit-transition:
+  opacity 75ms animation-variables.$standard-curve-timing-function,
+  width 150ms animation-variables.$deceleration-curve-timing-function,
   padding 100ms linear,
   margin 100ms linear !default;

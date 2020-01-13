@@ -20,15 +20,15 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/variables"; // for mdc-theme-prop-value()
+@use "@material/theme/variables"; // for mdc-theme-prop-value()
 
-$mdc-tab-icon-size: 24px !default;
-$mdc-tab-height: 48px !default;
-$mdc-tab-stacked-height: 72px !default;
-$mdc-tab-horizontal-padding: 24px !default;
-$mdc-tab-text-label-opacity: .6 !default;
-$mdc-tab-icon-opacity: .54 !default;
-$mdc-tab-text-label-color-default: rgba(mdc-theme-prop-value(on-surface), $mdc-tab-text-label-opacity) !default;
-$mdc-tab-icon-color-default: rgba(mdc-theme-prop-value(on-surface), $mdc-tab-icon-opacity) !default;
-$mdc-tab-text-label-color-active: primary !default;
-$mdc-tab-icon-color-active: primary !default;
+$icon-size: 24px !default;
+$height: 48px !default;
+$stacked-height: 72px !default;
+$horizontal-padding: 24px !default;
+$text-label-opacity: .6 !default;
+$icon-opacity: .54 !default;
+$text-label-color-default: rgba(variables.prop-value(on-surface), $text-label-opacity) !default;
+$icon-color-default: rgba(variables.prop-value(on-surface), $icon-opacity) !default;
+$text-label-color-active: primary !default;
+$icon-color-active: primary !default;

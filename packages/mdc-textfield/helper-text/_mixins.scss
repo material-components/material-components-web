@@ -20,15 +20,16 @@
 // THE SOFTWARE.
 //
 
+@use "@material/theme/mixins";
 // Public mixins
 
 ///
 /// Customizes the color of the helper text following an enabled text-field.
 /// @param {Color} $color - The desired helper text color.
 ///
-@mixin mdc-text-field-helper-text-color($color) {
+@mixin helper-text-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-helper-text-color_($color);
+    @include helper-text-color_($color);
   }
 }
 
@@ -36,28 +37,28 @@
 /// Customizes the color of the helper text following a disabled text-field.
 /// @param {Color} $color - The desired helper text color.
 ///
-@mixin mdc-text-field-disabled-helper-text-color($color) {
+@mixin disabled-helper-text-color($color) {
   &.mdc-text-field--disabled {
-    @include mdc-text-field-helper-text-color_($color);
+    @include helper-text-color_($color);
   }
 }
 
-@mixin mdc-text-field-helper-text-validation-color($color) {
+@mixin helper-text-validation-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-helper-text-validation-color_($color);
+    @include helper-text-validation-color_($color);
   }
 }
 
 // Private mixins
 
-@mixin mdc-text-field-helper-text-color_($color) {
+@mixin helper-text-color_($color) {
   + .mdc-text-field-helper-line .mdc-text-field-helper-text {
-    @include mdc-theme-prop(color, $color);
+    @include mixins.prop(color, $color);
   }
 }
 
-@mixin mdc-text-field-helper-text-validation-color_($color) {
+@mixin helper-text-validation-color_($color) {
   &.mdc-text-field--invalid + .mdc-text-field-helper-line .mdc-text-field-helper-text--validation-msg {
-    @include mdc-theme-prop(color, $color);
+    @include mixins.prop(color, $color);
   }
 }
