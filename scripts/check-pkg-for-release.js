@@ -183,45 +183,6 @@ function checkCSSDependencyAddedInMDCPackage() {
   }
 }
 
-
-function checkUsedDependenciesMatchDeclaredDependencies() {
-  const files = readDirRecursive(
-    PACKAGE_RELATIVE_PATH,
-    (fileName) => {
-      return fileName[0] !== '.'
-        && fileName !== 'node_modules' && fileName !== 'test';
-    }
-  );
-
-  const usedDeps = new Set();
-  const importMatcher = RegExp('(@import|from) ["\'](@material/[^/"\']+)', 'g');
-  files.forEach((file) => {
-    if (file.endsWith('.scss') || file.endsWith('.ts') && !file.endsWith('.d.ts')) {
-      const src = fs.readFileSync(path.join(PACKAGE_RELATIVE_PATH, file), 'utf8');
-      while ((dep = importMatcher.exec(src)) !== null) {
-        usedDeps.add(dep[2]);
-      }
-    }
-  });
-
-  const declaredDeps = new Set(
-    Object.keys(CLI_PACKAGE_JSON.dependencies ? CLI_PACKAGE_JSON.dependencies : [])
-      .filter((key) => key.startsWith('@material/')));
-
-  const usedButNotDeclared = [...usedDeps].filter((x) => !declaredDeps.has(x));
-  const declaredButNotUsed = [...declaredDeps].filter((x) => !usedDeps.has(x));
-
-  assert.equal(usedButNotDeclared.length, 0,
-    'FAILURE: Component ' + CLI_PACKAGE_JSON.name +
-    ' uses one or more MDC dependencies not declared in package.json.\n' +
-    getMissingDependencyRemedy(usedButNotDeclared));
-
-  assert.equal(declaredButNotUsed.length, 0,
-    'FAILURE: Component ' + CLI_PACKAGE_JSON.name +
-    ' declares one or more MDC dependencies in package.json that are unused.\n' +
-    getUnusedDependencyRemedy(declaredButNotUsed));
-}
-
 function checkJSDependencyAddedInMDCPackage() {
   const NOT_IMPORTED = ['animation'];
   const name = getPkgName();
@@ -309,6 +270,44 @@ function checkComponentExportedAddedInMDCPackage(ast) {
     },
   });
   return isExported;
+}
+
+function checkUsedDependenciesMatchDeclaredDependencies() {
+  const files = readDirRecursive(
+    PACKAGE_RELATIVE_PATH,
+    (fileName) => {
+      return fileName[0] !== '.'
+        && fileName !== 'node_modules' && fileName !== 'test';
+    }
+  );
+
+  const usedDeps = new Set();
+  const importMatcher = RegExp('(@import|from) ["\'](@material/[^/"\']+)', 'g');
+  files.forEach((file) => {
+    if (file.endsWith('.scss') || file.endsWith('.ts') && !file.endsWith('.d.ts')) {
+      const src = fs.readFileSync(path.join(PACKAGE_RELATIVE_PATH, file), 'utf8');
+      while ((dep = importMatcher.exec(src)) !== null) {
+        usedDeps.add(dep[2]);
+      }
+    }
+  });
+
+  const declaredDeps = new Set(
+    Object.keys(CLI_PACKAGE_JSON.dependencies ? CLI_PACKAGE_JSON.dependencies : [])
+      .filter((key) => key.startsWith('@material/')));
+
+  const usedButNotDeclared = [...usedDeps].filter((x) => !declaredDeps.has(x));
+  const declaredButNotUsed = [...declaredDeps].filter((x) => !usedDeps.has(x));
+
+  assert.equal(usedButNotDeclared.length, 0,
+    'FAILURE: Component ' + CLI_PACKAGE_JSON.name +
+    ' uses one or more MDC dependencies not declared in package.json.\n' +
+    getMissingDependencyRemedy(usedButNotDeclared));
+
+  assert.equal(declaredButNotUsed.length, 0,
+    'FAILURE: Component ' + CLI_PACKAGE_JSON.name +
+    ' declares one or more MDC dependencies in package.json that are unused.\n' +
+    getUnusedDependencyRemedy(declaredButNotUsed));
 }
 
 function getPkgName() {
