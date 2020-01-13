@@ -104,9 +104,8 @@
       padding:
         variables.$input-padding-top
         variables.$input-padding
-        variables.$input-padding-bottom;
+        variables.$input-padding-bottom + variables.$input-border-bottom;
       border: none;
-      border-bottom: 1px solid;
       border-radius: 0;
       background: none;
       appearance: none;
@@ -165,7 +164,7 @@
     .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) & {
       @include feature-targeting-mixins.targets($feat-structure) {
         padding-top: 16px;
-        padding-bottom: 16px;
+        padding-bottom: 16px + variables.$input-border-bottom;
       }
     }
   }
@@ -755,8 +754,11 @@
   @include icon-mixins.trailing-icon-color_(variables.$disabled-icon, $query: $query);
   @include fill-color_(variables.$disabled-background, $query: $query);
 
+  @media screen and (-ms-high-contrast: active) {
+    @include bottom-line-color_(GrayText, $query: $query);
+  }
+
   @include feature-targeting-mixins.targets($feat-structure) {
-    border-bottom: none;
     pointer-events: none;
   }
 
@@ -938,16 +940,8 @@
 // Outlined
 
 @mixin outlined-disabled_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
   @include notched-outline-mixins.color(variables.$outlined-disabled-border, $query: $query);
   @include fill-color_(transparent, $query);
-
-  .mdc-text-field__input {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      border-bottom: none;
-    }
-  }
 }
 
 @mixin outlined-invalid_($query: feature-targeting-functions.all()) {
@@ -1008,7 +1002,6 @@
   @include fill-color(transparent, $query: $query);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    border: none;
     overflow: visible;
   }
 
@@ -1034,13 +1027,9 @@
 }
 
 @mixin hover-outline-color_($color, $query: feature-targeting-functions.all()) {
-  &:not(.mdc-text-field--focused) {
-    // stylelint-disable-next-line selector-combinator-space-after
-    .mdc-text-field__input:hover ~,
-    .mdc-text-field__icon:hover ~ {
-      .mdc-notched-outline {
-        @include notched-outline-mixins.color($color, $query: $query);
-      }
+  &:not(.mdc-text-field--focused):hover {
+    .mdc-notched-outline {
+      @include notched-outline-mixins.color($color, $query: $query);
     }
   }
 }
@@ -1212,7 +1201,7 @@
 
     .mdc-text-field__input {
       @include feature-targeting-mixins.targets($feat-structure) {
-        padding: 0;
+        padding: 0 0 variables.$input-border-bottom;
       }
     }
   }
@@ -1276,7 +1265,6 @@
       height: auto;
       margin: $padding-inset / 2 1px 1px 0;
       padding: 0 $padding-inset $padding-inset;
-      border: none;
     }
 
     @include feature-targeting-mixins.targets($feat-typography) {
@@ -1385,28 +1373,22 @@
 }
 
 @mixin bottom-line-color_($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
-
-  .mdc-text-field__input {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(border-bottom-color, $color);
-    }
+  .mdc-line-ripple {
+    @include line-ripple-mixins.inactive-color($color, $query: $query);
   }
 }
 
 @mixin hover-bottom-line-color_($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
-  .mdc-text-field__input:hover {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(border-bottom-color, $color);
-    }
+  &:hover .mdc-line-ripple {
+    @include line-ripple-mixins.inactive-color($color, $query: $query);
   }
 }
 
 @mixin line-ripple-color_($color, $query: feature-targeting-functions.all()) {
   .mdc-line-ripple {
-    @include line-ripple-mixins.color($color, $query: $query);
+    @include line-ripple-mixins.active-color($color, $query: $query);
   }
 }
 
