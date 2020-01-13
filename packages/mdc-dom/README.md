@@ -34,6 +34,7 @@ Function Signature | Description
 --- | ---
 `closest(element: Element, selector: string) => ?Element` | Returns the ancestor of the given element matching the given selector (which may be the element itself if it matches), or `null` if no matching ancestor is found.
 `matches(element: Element, selector: string) => boolean` | Returns true if the given element matches the given CSS selector.
+`estimateScrollWidth(element: Element) => number`  | Returns the true optical width of the element if visible or an estimation if hidden by a parent element with `display: none;`.
 
 ### Event Functions
 
