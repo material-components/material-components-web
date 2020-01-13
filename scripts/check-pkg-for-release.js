@@ -30,7 +30,7 @@
 
 const assert = require('assert');
 const fs = require('fs');
-const readDirRecursive = require('fs-readdir-recursive')
+const readDirRecursive = require('fs-readdir-recursive');
 const path = require('path');
 
 const {default: traverse} = require('babel-traverse');
@@ -206,10 +206,10 @@ function checkUsedDependenciesMatchDeclaredDependencies() {
 
   const declaredDeps = new Set(
     Object.keys(CLI_PACKAGE_JSON.dependencies ? CLI_PACKAGE_JSON.dependencies : [])
-    .filter((key) => key.startsWith('@material/')));
+      .filter((key) => key.startsWith('@material/')));
 
-  let usedButNotDeclared = [...usedDeps].filter(x => !declaredDeps.has(x));
-  let declaredButNotUsed = [...declaredDeps].filter(x => !usedDeps.has(x));
+  const usedButNotDeclared = [...usedDeps].filter((x) => !declaredDeps.has(x));
+  const declaredButNotUsed = [...declaredDeps].filter((x) => !usedDeps.has(x));
 
   assert.equal(usedButNotDeclared.length, 0,
     'FAILURE: Component ' + CLI_PACKAGE_JSON.name +
@@ -322,17 +322,17 @@ function getPkgName() {
 }
 
 function getMissingDependencyRemedy(missingDeps) {
-  let remedyStr = "Please add the missing dependencies using the following command(s):\n";
+  let remedyStr = 'Please add the missing dependencies using the following command(s):\n';
   missingDeps.forEach((dep) => {
     remedyStr += `npx lerna add ${dep} packages/${PACKAGE_RELATIVE_PATH.split('/')[1]}\n`;
-  })
+  });
   return remedyStr;
 }
 
 function getUnusedDependencyRemedy(unusedDeps) {
-  let remedyStr = "Please remove the unused dependencies using the following command(s):\n";
+  let remedyStr = 'Please remove the unused dependencies using the following command(s):\n';
   unusedDeps.forEach((dep) => {
     remedyStr += `npx lerna exec --scope ${CLI_PACKAGE_JSON.name} -- npm uninstall --no-shrinkwrap ${dep}\n`;
-  })
+  });
   return remedyStr;
 }
