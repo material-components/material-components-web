@@ -30,6 +30,7 @@
 
 const assert = require('assert');
 const fs = require('fs');
+const readDirRecursive = require('fs-readdir-recursive')
 const path = require('path');
 
 const {default: traverse} = require('babel-traverse');
@@ -43,6 +44,7 @@ if (!CLI_PACKAGE_JSON_RELATIVE_PATH) {
   console.error(`Usage: node ${path.basename(process.argv[1])} packages/mdc-foo/package.json`);
   process.exit(1);
 }
+const PACKAGE_RELATIVE_PATH = CLI_PACKAGE_JSON_RELATIVE_PATH.replace('package.json', '');
 
 if (!new RegExp('packages/[^/]+/package.json$').test(CLI_PACKAGE_JSON_RELATIVE_PATH)) {
   console.error(`Invalid argument: "${CLI_PACKAGE_JSON_RELATIVE_PATH}" is not a valid path to a package.json file.`);
@@ -94,6 +96,7 @@ function main() {
     } else {
       checkDependencyAddedInWebpackConfig();
       checkDependencyAddedInMDCPackage();
+      checkUsedDependenciesMatchDeclaredDependencies();
     }
   }
 }
@@ -178,6 +181,45 @@ function checkCSSDependencyAddedInMDCPackage() {
     'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' +
     'Please add ' + name + ' to ' + MASTER_CSS_RELATIVE_PATH + ' import rule before commit.');
   }
+}
+
+
+function checkUsedDependenciesMatchDeclaredDependencies() {
+  const files = readDirRecursive(
+    PACKAGE_RELATIVE_PATH,
+    (fileName) => {
+      return fileName[0] !== '.'
+        && fileName !== 'node_modules' && fileName !== 'test';
+    }
+  );
+
+  const usedDeps = new Set();
+  const importMatcher = RegExp('(@import|from) ["\'](@material/[^/"\']+)', 'g');
+  files.forEach((file) => {
+    if (file.endsWith('.scss') || file.endsWith('.ts') && !file.endsWith('.d.ts')) {
+      const src = fs.readFileSync(path.join(PACKAGE_RELATIVE_PATH, file), 'utf8');
+      while ((dep = importMatcher.exec(src)) !== null) {
+        usedDeps.add(dep[2]);
+      }
+    }
+  });
+
+  const declaredDeps = new Set(
+    Object.keys(CLI_PACKAGE_JSON.dependencies ? CLI_PACKAGE_JSON.dependencies : [])
+    .filter((key) => key.startsWith('@material/')));
+
+  let usedButNotDeclared = [...usedDeps].filter(x => !declaredDeps.has(x));
+  let declaredButNotUsed = [...declaredDeps].filter(x => !usedDeps.has(x));
+
+  assert.equal(usedButNotDeclared.length, 0,
+    'FAILURE: Component ' + CLI_PACKAGE_JSON.name +
+    ' uses one or more MDC dependencies not declared in package.json.\n' +
+    getMissingDependencyRemedy(usedButNotDeclared));
+
+  assert.equal(declaredButNotUsed.length, 0,
+    'FAILURE: Component ' + CLI_PACKAGE_JSON.name +
+    ' declares one or more MDC dependencies in package.json that are unused.\n' +
+    getUnusedDependencyRemedy(declaredButNotUsed));
 }
 
 function checkJSDependencyAddedInMDCPackage() {
@@ -277,4 +319,20 @@ function getPkgName() {
     name = 'text-field';
   }
   return name;
+}
+
+function getMissingDependencyRemedy(missingDeps) {
+  let remedyStr = "Please add the missing dependencies using the following command(s):\n";
+  missingDeps.forEach((dep) => {
+    remedyStr += `npx lerna add ${dep} packages/${PACKAGE_RELATIVE_PATH.split('/')[1]}\n`;
+  })
+  return remedyStr;
+}
+
+function getUnusedDependencyRemedy(unusedDeps) {
+  let remedyStr = "Please remove the unused dependencies using the following command(s):\n";
+  unusedDeps.forEach((dep) => {
+    remedyStr += `npx lerna exec --scope ${CLI_PACKAGE_JSON.name} -- npm uninstall --no-shrinkwrap ${dep}\n`;
+  })
+  return remedyStr;
 }
