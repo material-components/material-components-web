@@ -284,7 +284,7 @@ describe('MDCTextField', () => {
     const component = new MDCTextField(root);
     const adapter = (component.getDefaultFoundation() as any).adapter_;
     expect(adapter.hasClass('foo')).toBe(false);
-    expect(adapter.getLabelWidth()).toEqual(0);
+    expect(adapter.getLabelWidth()).toBeGreaterThan(0);
     expect(() => adapter.floatLabel).not.toThrow();
   });
 
