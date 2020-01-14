@@ -1,0 +1,13 @@
+@forward "@material/base/mixins" as mdc-base-*;
+@forward "@material/feature-targeting/variables" as mdc-feature-*;
+@forward "@material/feature-targeting/mixins" as mdc-feature-*;
+@forward "@material/theme/constants" as mdc-theme-*;
+@forward "@material/theme/variables" as mdc-theme-*;
+@forward "@material/animation/variables" as mdc-animation-*;
+@forward "variables" as mdc-elevation-*;
+@forward "@material/theme/mixins" as mdc-theme-*;
+@forward "@material/feature-targeting/functions" as mdc-feature-*;
+@forward "@material/theme/functions" as mdc-theme-*;
+@forward "functions" as mdc-elevation-*;
+@forward "mixins" as mdc-* show mdc-elevation;
+@forward "mixins" as mdc-elevation-* hide mdc-elevation-elevation;

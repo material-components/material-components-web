@@ -20,7 +20,11 @@
 // THE SOFTWARE.
 //
 
-@import "./variables";
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
+@use "./variables";
 
 //
 // Flips the radius values based on RTL context.
@@ -30,19 +34,19 @@
 // 1. mdc-shape-flip-radius((0, 4px, 4px, 0)) => 4px 0 0 4px
 // 2. mdc-shape-flip-radius((0, 8px)) => 8px 0
 //
-@function mdc-shape-flip-radius($radius) {
-  @if type-of($radius) == "list" {
-    @if length($radius) > 4 {
+@function flip-radius($radius) {
+  @if meta.type-of($radius) == "list" {
+    @if list.length($radius) > 4 {
       @error "Invalid radius: '#{$radius}' is more than 4 values";
     }
   }
 
-  @if length($radius) == 4 {
-    @return nth($radius, 2) nth($radius, 1) nth($radius, 4) nth($radius, 3);
-  } @else if length($radius) == 3 {
-    @return nth($radius, 2) nth($radius, 1) nth($radius, 2) nth($radius, 3);
-  } @else if length($radius) == 2 {
-    @return nth($radius, 2) nth($radius, 1);
+  @if list.length($radius) == 4 {
+    @return list.nth($radius, 2) list.nth($radius, 1) list.nth($radius, 4) list.nth($radius, 3);
+  } @else if list.length($radius) == 3 {
+    @return list.nth($radius, 2) list.nth($radius, 1) list.nth($radius, 2) list.nth($radius, 3);
+  } @else if list.length($radius) == 2 {
+    @return list.nth($radius, 2) list.nth($radius, 1);
   } @else {
     @return $radius;
   }
@@ -56,19 +60,19 @@
 //
 // mdc-shape-resolve-percentage-radius(36px, 50%) => `18px` (i.e., 36px / 2)
 //
-@function mdc-shape-resolve-percentage-radius($component-height, $radius) {
-  $radius: mdc-shape-prop-value($radius);
+@function resolve-percentage-radius($component-height, $radius) {
+  $radius: prop-value($radius);
 
-  @if type-of($radius) == "list" {
+  @if meta.type-of($radius) == "list" {
     $radius-value: ();
 
     @each $corner in $radius {
-      $radius-value: append($radius-value, mdc-shape-resolve-percentage-for-corner_($component-height, $corner));
+      $radius-value: list.append($radius-value, resolve-percentage-for-corner_($component-height, $corner));
     }
 
     @return $radius-value;
   } @else {
-    @return mdc-shape-resolve-percentage-for-corner_($component-height, $radius);
+    @return resolve-percentage-for-corner_($component-height, $radius);
   }
 }
 
@@ -82,32 +86,32 @@
 // mdc-shape-prop-value(small) => 4px
 // mdc-shape-prop-value(small small 0 0) => 4px 4px 0 0
 //
-@function mdc-shape-prop-value($radius) {
-  @if type-of($radius) == "list" {
-    @if length($radius) > 4 {
+@function prop-value($radius) {
+  @if meta.type-of($radius) == "list" {
+    @if list.length($radius) > 4 {
       @error "Invalid radius: '#{$radius}' is more than 4 values";
     }
 
     $radius-values: ();
 
-    @for $i from 1 through length($radius) {
-      $corner: nth($radius, $i);
+    @for $i from 1 through list.length($radius) {
+      $corner: list.nth($radius, $i);
 
-      @if map-has-key($mdc-shape-category-values, $corner) {
+      @if map.has-key(variables.$category-values, $corner) {
         // If a category is encountered within a list of radii, apply the category's value for the corresponding corner
         $radius-values:
-          append($radius-values, nth(mdc-shape-unpack-radius_(map-get($mdc-shape-category-values, $corner)), $i));
+          list.append($radius-values, list.nth(unpack-radius_(map.get(variables.$category-values, $corner)), $i));
       } @else {
-        $radius-values: append($radius-values, mdc-shape-validate-radius-value_($corner));
+        $radius-values: list.append($radius-values, validate-radius-value_($corner));
       }
     }
 
     @return $radius-values;
   } @else {
-    @if map-has-key($mdc-shape-category-values, $radius) {
-      @return map-get($mdc-shape-category-values, $radius);
+    @if map.has-key(variables.$category-values, $radius) {
+      @return map.get(variables.$category-values, $radius);
     } @else {
-      @return mdc-shape-validate-radius-value_($radius);
+      @return validate-radius-value_($radius);
     }
   }
 }
@@ -122,23 +126,23 @@
 // 2. mdc-shape-mask-radius(8px, 0 0 1 1) => 0 0 8px 8px
 // 3. mdc-shape-mask-radius(4px 4px 4px 4px, 0 1 1 0) => 0 4px 4px 0
 //
-@function mdc-shape-mask-radius($radius, $masked-corners) {
-  @if type-of($radius) == "list" {
-    @if length($radius) > 4 {
+@function mask-radius($radius, $masked-corners) {
+  @if meta.type-of($radius) == "list" {
+    @if list.length($radius) > 4 {
       @error "Invalid radius: '#{$radius}' is more than 4 values";
     }
   }
 
-  @if length($masked-corners) != 4 {
-    @error "Expected masked-corners of length 4 but got '#{length($masked-corners)}'.";
+  @if list.length($masked-corners) != 4 {
+    @error "Expected masked-corners of length 4 but got '#{list.length($masked-corners)}'.";
   }
 
-  $radius: mdc-shape-unpack-radius_($radius);
+  $radius: unpack-radius_($radius);
 
-  @return if(nth($masked-corners, 1) == 1, nth($radius, 1), 0)
-    if(nth($masked-corners, 2) == 1, nth($radius, 2), 0)
-    if(nth($masked-corners, 3) == 1, nth($radius, 3), 0)
-    if(nth($masked-corners, 4) == 1, nth($radius, 4), 0);
+  @return if(list.nth($masked-corners, 1) == 1, list.nth($radius, 1), 0)
+    if(list.nth($masked-corners, 2) == 1, list.nth($radius, 2), 0)
+    if(list.nth($masked-corners, 3) == 1, list.nth($radius, 3), 0)
+    if(list.nth($masked-corners, 4) == 1, list.nth($radius, 4), 0);
 }
 
 //
@@ -154,22 +158,22 @@
 //
 // TODO: This is private for purposes of getting it into a patch; make it public for a future minor/major release.
 //
-@function mdc-shape-unpack-radius_($radius) {
-  @if length($radius) == 4 {
+@function unpack-radius_($radius) {
+  @if list.length($radius) == 4 {
     @return $radius;
-  } @else if length($radius) == 3 {
-    @return nth($radius, 1) nth($radius, 2) nth($radius, 3) nth($radius, 2);
-  } @else if length($radius) == 2 {
-    @return nth($radius, 1) nth($radius, 2) nth($radius, 1) nth($radius, 2);
-  } @else if length($radius) == 1 {
+  } @else if list.length($radius) == 3 {
+    @return list.nth($radius, 1) list.nth($radius, 2) list.nth($radius, 3) list.nth($radius, 2);
+  } @else if list.length($radius) == 2 {
+    @return list.nth($radius, 1) list.nth($radius, 2) list.nth($radius, 1) list.nth($radius, 2);
+  } @else if list.length($radius) == 1 {
     @return $radius $radius $radius $radius;
   }
 
   @error "Invalid radius: '#{$radius}' is more than 4 values";
 }
 
-@function mdc-shape-resolve-percentage-for-corner_($component-height, $radius) {
-  @if type-of($radius) == "number" and unit($radius) == "%" {
+@function resolve-percentage-for-corner_($component-height, $radius) {
+  @if meta.type-of($radius) == "number" and math.unit($radius) == "%" {
     // Converts the percentage to number without unit. Example: 50% => 50.
     $percentage: $radius / ($radius * 0 + 1);
 
@@ -179,8 +183,8 @@
   }
 }
 
-@function mdc-shape-validate-radius-value_($radius) {
-  $is-number: type-of($radius) == "number";
+@function validate-radius-value_($radius) {
+  $is-number: meta.type-of($radius) == "number";
 
   @if not ($is-number or str_index($radius, "var(") or str_index($radius, "calc(")) {
     @error "Invalid radius: #{$radius}";

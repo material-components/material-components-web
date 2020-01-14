@@ -1,3 +1,5 @@
+@use "sass:map";
+@use "sass:string";
 
 //
 // Copyright 2018 Google Inc.
@@ -21,7 +23,7 @@
 // THE SOFTWARE.
 //
 
-@function mdc-typography-get-global-variable_($style) {
+@function get-global-variable_($style) {
   @if $style == "headline1" {
     @return $mdc-typography-styles-headline1;
   } @else if $style == "headline2" {
@@ -53,24 +55,24 @@
   }
 }
 
-@function mdc-typography-set-styles_($base-styles, $scale-styles) {
+@function set-styles_($base-styles, $scale-styles) {
   @each $style, $style-props in $scale-styles {
 
     // Merge base properties for all styles.
-    $style-props: map-merge($base-styles, $style-props);
+    $style-props: map.merge($base-styles, $style-props);
 
     // Merge global overrides onto each style.
-    @if global_variable_exists(unquote("mdc-typography-styles-#{$style}")) {
-      $style-props: map-merge($style-props, mdc-typography-get-global-variable_(#{$style}));
+    @if global_variable_exists(string.unquote("mdc-typography-styles-#{$style}")) {
+      $style-props: map.merge($style-props, get-global-variable_(#{$style}));
     }
 
     // Override original styles with new styles.
-    $scale-styles: map-merge($scale-styles, (#{$style}: $style-props));
+    $scale-styles: map.merge($scale-styles, (#{$style}: $style-props));
   }
 
   @return $scale-styles;
 }
 
-@function mdc-typography-get-letter-spacing_($tracking, $font-size) {
+@function get-letter-spacing_($tracking, $font-size) {
   @return $tracking / ($font-size * 16) * 1em;
 }

@@ -20,11 +20,11 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/variables";
-@import "@material/theme/mixins";
-@import "./variables";
+@use "@material/animation/variables" as animation-variables;
+@use "@material/theme/mixins";
+@use "./variables";
 
-@mixin mdc-checkbox-container-keyframes_(
+@mixin container-keyframes_(
   $from-stroke-color,
   $to-stroke-color,
   $from-fill-color,
@@ -32,39 +32,39 @@
   $uid) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
-      @include mdc-theme-prop(border-color, $from-stroke-color);
-      @include mdc-theme-prop(background-color, $from-fill-color);
+      @include mixins.prop(border-color, $from-stroke-color);
+      @include mixins.prop(background-color, $from-fill-color);
     }
 
     50% {
-      @include mdc-theme-prop(border-color, $to-stroke-color);
-      @include mdc-theme-prop(background-color, $to-fill-color);
+      @include mixins.prop(border-color, $to-stroke-color);
+      @include mixins.prop(background-color, $to-fill-color);
     }
   }
 
   @keyframes mdc-checkbox-fade-out-background-#{$uid} {
     0%,
     80% {
-      @include mdc-theme-prop(border-color, $to-stroke-color);
-      @include mdc-theme-prop(background-color, $to-fill-color);
+      @include mixins.prop(border-color, $to-stroke-color);
+      @include mixins.prop(background-color, $to-fill-color);
     }
 
     100% {
-      @include mdc-theme-prop(border-color, $from-stroke-color);
-      @include mdc-theme-prop(background-color, $from-fill-color);
+      @include mixins.prop(border-color, $from-stroke-color);
+      @include mixins.prop(background-color, $from-fill-color);
     }
   }
 }
 
-@mixin mdc-checkbox-mark-keyframes_ {
+@mixin mark-keyframes_ {
   @keyframes mdc-checkbox-unchecked-checked-checkmark-path {
     0%,
     50% {
-      stroke-dashoffset: $mdc-checkbox-mark-path-length_;
+      stroke-dashoffset: variables.$mark-path-length_;
     }
 
     50% {
-      animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
+      animation-timing-function: animation-variables.$deceleration-curve-timing-function;
     }
 
     100% {
@@ -89,20 +89,20 @@
 
   @keyframes mdc-checkbox-checked-unchecked-checkmark-path {
     from {
-      animation-timing-function: $mdc-animation-acceleration-curve-timing-function;
+      animation-timing-function: animation-variables.$acceleration-curve-timing-function;
       opacity: 1;
       stroke-dashoffset: 0;
     }
 
     to {
       opacity: 0;
-      stroke-dashoffset: $mdc-checkbox-mark-path-length_ * -1;
+      stroke-dashoffset: variables.$mark-path-length_ * -1;
     }
   }
 
   @keyframes mdc-checkbox-checked-indeterminate-checkmark {
     from {
-      animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
+      animation-timing-function: animation-variables.$deceleration-curve-timing-function;
       transform: rotate(0deg);
       opacity: 1;
     }
@@ -115,7 +115,7 @@
 
   @keyframes mdc-checkbox-indeterminate-checked-checkmark {
     from {
-      animation-timing-function: $mdc-checkbox-indeterminate-checked-easing-function_;
+      animation-timing-function: variables.$indeterminate-checked-easing-function_;
       transform: rotate(45deg);
       opacity: 0;
     }
@@ -141,7 +141,7 @@
 
   @keyframes mdc-checkbox-indeterminate-checked-mixedmark {
     from {
-      animation-timing-function: $mdc-checkbox-indeterminate-checked-easing-function_;
+      animation-timing-function: variables.$indeterminate-checked-easing-function_;
       transform: rotate(0deg);
       opacity: 1;
     }

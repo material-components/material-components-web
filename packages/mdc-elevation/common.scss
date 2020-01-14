@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-elevation-overlay-common;
+@use "./mixins";
+@include mixins.overlay-common;

@@ -21,33 +21,33 @@
 //
 
 // Default styles
-$mdc-top-app-bar-row-height: 64px !default;
-$mdc-top-app-bar-title-left-padding: 20px !default;
-$mdc-top-app-bar-section-vertical-padding: 8px !default;
-$mdc-top-app-bar-section-horizontal-padding: 12px !default;
+$row-height: 64px !default;
+$title-left-padding: 20px !default;
+$section-vertical-padding: 8px !default;
+$section-horizontal-padding: 12px !default;
 
-$mdc-top-app-bar-mobile-breakpoint: 599px !default;
+$mobile-breakpoint: 599px !default;
 
 // Default mobile styles
-$mdc-top-app-bar-mobile-row-height: 56px !default;
-$mdc-top-app-bar-mobile-section-padding: 4px !default;
+$mobile-row-height: 56px !default;
+$mobile-section-padding: 4px !default;
 
 // Short top app bar
-$mdc-top-app-bar-short-collapsed-border-radius: 4px !default;
-$mdc-top-app-bar-short-collapsed-width: 56px !default;
-$mdc-top-app-bar-short-collapsed-right-icon-padding: 12px !default;
+$short-collapsed-border-radius: 4px !default;
+$short-collapsed-width: 56px !default;
+$short-collapsed-right-icon-padding: 12px !default;
 
 // Prominent styles
-$mdc-top-app-bar-prominent-row-height: 128px !default;
-$mdc-top-app-bar-prominent-title-bottom-padding: 2px !default;
+$prominent-row-height: 128px !default;
+$prominent-title-bottom-padding: 2px !default;
 
 // Prominent mobile styles
-$mdc-top-app-bar-prominent-mobile-title-bottom-padding: 6px !default;
+$prominent-mobile-title-bottom-padding: 6px !default;
 
 // Dense styles
-$mdc-top-app-bar-dense-row-height: 48px !default;
-$mdc-top-app-bar-dense-section-horizontal-padding: 4px !default;
-$mdc-top-app-bar-dense-title-left-padding: 12px !default;
+$dense-row-height: 48px !default;
+$dense-section-horizontal-padding: 4px !default;
+$dense-title-left-padding: 12px !default;
 
 // Dense & Prominent styles
-$mdc-top-app-bar-dense-prominent-title-bottom-padding: 9px !default;
+$dense-prominent-title-bottom-padding: 9px !default;

@@ -20,33 +20,34 @@
 // THE SOFTWARE.
 //
 
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "./variables";
-@import "./functions";
+@use "sass:map";
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins";
+@use "./variables";
+@use "./functions";
 
-@mixin mdc-theme-core-styles($query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin core-styles($query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   :root {
-    @include mdc-feature-targets($feat-color) {
-      @each $style in map-keys($mdc-theme-property-values) {
-        --mdc-theme-#{$style}: #{map-get($mdc-theme-property-values, $style)};
+    @include mixins.targets($feat-color) {
+      @each $style in map.keys(variables.$property-values) {
+        --mdc-theme-#{$style}: #{map.get(variables.$property-values, $style)};
       }
     }
   }
 
-  @each $style in map-keys($mdc-theme-property-values) {
+  @each $style in map.keys(variables.$property-values) {
     @if $style != "background" and $style != "surface" {
       .mdc-theme--#{$style} {
-        @include mdc-feature-targets($feat-color) {
-          @include mdc-theme-prop(color, $style, true);
+        @include mixins.targets($feat-color) {
+          @include prop(color, $style, true);
         }
       }
     } @else {
       .mdc-theme--#{$style} {
-        @include mdc-feature-targets($feat-color) {
-          @include mdc-theme-prop(background-color, $style);
+        @include mixins.targets($feat-color) {
+          @include prop(background-color, $style);
         }
       }
     }
@@ -55,8 +56,8 @@
   // CSS rules for using primary and secondary (plus light/dark variants) as background colors.
   @each $style in ("primary", "secondary") {
     .mdc-theme--#{$style}-bg {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(background-color, $style, true);
+      @include mixins.targets($feat-color) {
+        @include prop(background-color, $style, true);
       }
     }
   }
@@ -65,20 +66,20 @@
 // Applies the correct theme color style to the specified property.
 // $property is typically color or background-color, but can be any CSS property that accepts color values.
 // $style should be one of the map keys in $mdc-theme-property-values (_variables.scss), or a color value.
-@mixin mdc-theme-prop($property, $style, $important: false) {
+@mixin prop($property, $style, $important: false) {
   $important-rule: if($important, "!important", "");
 
-  @if mdc-theme-is-var-with-fallback_($style) {
-    #{$property}: mdc-theme-get-var-fallback_($style) #{$important-rule};
+  @if functions.is-var-with-fallback_($style) {
+    #{$property}: functions.get-var-fallback_($style) #{$important-rule};
     /* @alternate */
-    #{$property}: mdc-theme-var_($style) #{$important-rule};
-  } @else if mdc-theme-is-valid-theme-prop-value_($style) {
+    #{$property}: functions.var_($style) #{$important-rule};
+  } @else if variables.is-valid-theme-prop-value_($style) {
     #{$property}: $style #{$important-rule};
   } @else {
-    @if not map-has-key($mdc-theme-property-values, $style) {
-      @error "Invalid style: '#{$style}'. Choose one of: #{map-keys($mdc-theme-property-values)}";
+    @if not map.has-key(variables.$property-values, $style) {
+      @error "Invalid style: '#{$style}'. Choose one of: #{map.keys(variables.$property-values)}";
     }
-    $value: map-get($mdc-theme-property-values, $style);
+    $value: map.get(variables.$property-values, $style);
 
     #{$property}: $value #{$important-rule};
     /* @alternate */
