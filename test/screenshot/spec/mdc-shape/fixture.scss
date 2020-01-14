@@ -20,32 +20,21 @@
 // THE SOFTWARE.
 //
 
-@import "../mixins";
+@use "../mixins";
+@use "@material/shape/variables" with (
+  $small-component-radius: 50%,
+);
+@use "@material/button/mdc-button";
+@use "@material/fab/mdc-fab";
+@use "@material/textfield/mdc-text-field";
+@use "@material/select/mdc-select";
 
 .test-cell--fab,
 .test-cell--button {
-  // stylelint-disable scss/dollar-variable-pattern
-  $mdc-shape-small-component-radius: 0 50% 0 50%;
-  // stylelint-enable scss/dollar-variable-pattern
-
-  @at-root {
-    @import "../../../../packages/mdc-button/mdc-button";
-    @import "../../../../packages/mdc-fab/mdc-fab";
-  }
-
-  @include test-cell-size(301, 81);
+  @include mixins.test-cell-size(301, 81);
 }
 
 .test-cell--textfield,
 .test-cell--select {
-  // stylelint-disable scss/dollar-variable-pattern
-  $mdc-shape-small-component-radius: 50%;
-  // stylelint-enable scss/dollar-variable-pattern
-
-  @at-root {
-    @import "../../../../packages/mdc-textfield/mdc-text-field";
-    @import "../../../../packages/mdc-select/mdc-select";
-  }
-
-  @include test-cell-size(301, 81);
+  @include mixins.test-cell-size(301, 81);
 }
