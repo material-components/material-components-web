@@ -33,7 +33,7 @@ $mdc-theme-on-primary: if(mdc-theme-contrast-tone($mdc-theme-primary) == "dark",
 
 // The $mdc-theme-accent variable is DEPRECATED - it exists purely for backward compatibility.
 // The $mdc-theme-secondary* variables should be used for all new projects.
-$mdc-theme-accent: #018786 !default; // baseline teal, 600 tone
+$mdc-theme-accent: #03dac6 !default; // baseline teal, 200 tone
 $mdc-theme-secondary: $mdc-theme-accent !default;
 $mdc-theme-on-secondary: if(mdc-theme-contrast-tone($mdc-theme-secondary) == "dark", #000, #fff) !default;
 $mdc-theme-background: #fff !default; // White

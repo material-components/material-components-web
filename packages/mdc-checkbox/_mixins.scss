@@ -69,7 +69,7 @@ $mdc-checkbox-ripple-target: ".mdc-checkbox__ripple";
   @include mdc-checkbox-container-colors($query: $query);
   @include mdc-checkbox-disabled-container-colors($query: $query);
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color, $query: $query);
-  @include mdc-checkbox-disabled-ink-color($mdc-checkbox-mark-color, $query: $query);
+  @include mdc-checkbox-disabled-ink-color($mdc-checkbox-disabled-mark-color, $query: $query);
 
   @media screen and (-ms-high-contrast: active) {
     @include mdc-checkbox-disabled-container-colors(
