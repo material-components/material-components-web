@@ -31,13 +31,25 @@ import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
-
-import {MDCTextFieldAdapter, MDCTextFieldInputAdapter, MDCTextFieldLabelAdapter, MDCTextFieldLineRippleAdapter, MDCTextFieldOutlineAdapter, MDCTextFieldRootAdapter,} from './adapter';
-import {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFactory,} from './character-counter/component';
+import {
+  MDCTextFieldAdapter,
+  MDCTextFieldInputAdapter,
+  MDCTextFieldLabelAdapter,
+  MDCTextFieldLineRippleAdapter,
+  MDCTextFieldOutlineAdapter,
+  MDCTextFieldRootAdapter,
+} from './adapter';
+import {
+  MDCTextFieldCharacterCounter,
+  MDCTextFieldCharacterCounterFactory,
+} from './character-counter/component';
 import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldFoundation} from './foundation';
-import {MDCTextFieldHelperText, MDCTextFieldHelperTextFactory,} from './helper-text/component';
+import {
+  MDCTextFieldHelperText,
+  MDCTextFieldHelperTextFactory,
+} from './helper-text/component';
 import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
 import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon/component';
 import {MDCTextFieldFoundationMap} from './types';
