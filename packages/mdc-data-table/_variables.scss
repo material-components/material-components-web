@@ -20,43 +20,43 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/variables";
-@import "@material/density/variables";
+@use "@material/theme/variables" as theme-variables;
+@use "@material/density/variables" as density-variables;
 
-$mdc-data-table-fill-color: surface !default;
-$mdc-data-table-header-row-fill-color: inherit !default;
-$mdc-data-table-row-fill-color: inherit !default;
-$mdc-data-table-selected-row-fill-color: rgba(mdc-theme-prop-value(primary), .04) !default;
+$fill-color: surface !default;
+$header-row-fill-color: inherit !default;
+$row-fill-color: inherit !default;
+$selected-row-fill-color: rgba(theme-variables.prop-value(primary), .04) !default;
 
-$mdc-data-table-checked-icon-color: primary !default;
-$mdc-data-table-divider-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
-$mdc-data-table-divider-size: 1px !default;
-$mdc-data-table-row-hover-fill-color: rgba(mdc-theme-prop-value(on-surface), .04) !default;
-$mdc-data-table-checkbox-touch-dimension: 48px !default;
+$checked-icon-color: primary !default;
+$divider-color: rgba(theme-variables.prop-value(on-surface), .12) !default;
+$divider-size: 1px !default;
+$row-hover-fill-color: rgba(theme-variables.prop-value(on-surface), .04) !default;
+$checkbox-touch-dimension: 48px !default;
 
-$mdc-data-table-header-row-text-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
-$mdc-data-table-row-text-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
+$header-row-text-color: rgba(theme-variables.prop-value(on-surface), .87) !default;
+$row-text-color: rgba(theme-variables.prop-value(on-surface), .87) !default;
 
-$mdc-data-table-shape-radius: medium !default;
-$mdc-data-table-stroke-size: 1px !default;
-$mdc-data-table-stroke-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
+$shape-radius: medium !default;
+$stroke-size: 1px !default;
+$stroke-color: rgba(theme-variables.prop-value(on-surface), .12) !default;
 
-$mdc-data-table-cell-height: 52px !default;
-$mdc-data-table-header-cell-height: mdc-data-table-get-header-cell-height($mdc-data-table-cell-height) !default;
-$mdc-data-table-cell-leading-padding: 16px !default;
-$mdc-data-table-cell-trailing-padding: 16px !default;
+$cell-height: 52px !default;
+$header-cell-height: get-header-cell-height($cell-height) !default;
+$cell-leading-padding: 16px !default;
+$cell-trailing-padding: 16px !default;
 
-$mdc-data-table-minimum-cell-height: 36px !default;
-$mdc-data-table-maximum-cell-height: $mdc-data-table-cell-height !default;
-$mdc-data-table-default-density-scale: $mdc-density-default-scale !default;
-$mdc-data-table-density-config: (
+$minimum-cell-height: 36px !default;
+$maximum-cell-height: $cell-height !default;
+$default-density-scale: density-variables.$default-scale !default;
+$density-config: (
   height: (
-    maximum: $mdc-data-table-cell-height,
-    default: $mdc-data-table-cell-height,
-    minimum: $mdc-data-table-minimum-cell-height,
+    maximum: $cell-height,
+    default: $cell-height,
+    minimum: $minimum-cell-height,
   )
 );
 
-@function mdc-data-table-get-header-cell-height($height) {
+@function get-header-cell-height($height) {
   @return $height + 4px;
 }

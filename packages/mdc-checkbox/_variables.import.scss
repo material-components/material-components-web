@@ -1,0 +1,7 @@
+@forward "@material/ripple/variables" as mdc-* hide $mdc-dark-ink-opacities, $mdc-fade-in-duration, $mdc-fade-out-duration, $mdc-light-ink-opacities, $mdc-pressed-dark-ink-opacity, $mdc-pressed-light-ink-opacity, $mdc-translate-duration;
+@forward "@material/ripple/variables" as mdc-ripple-* hide $mdc-ripple-states-wash-duration;
+@forward "@material/theme/constants" as mdc-theme-*;
+@forward "@material/theme/variables" as mdc-theme-*;
+@forward "@material/density/variables" as mdc-density-*;
+@forward "@material/theme/functions" as mdc-theme-*;
+@forward "variables" as mdc-checkbox-*;

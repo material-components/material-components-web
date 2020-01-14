@@ -19,30 +19,32 @@
 //  THE SOFTWARE.
 //
 
+@use "@material/theme/mixins";
+
 // Public mixins
 
-@mixin mdc-select-helper-text-color($color) {
+@mixin helper-text-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-helper-text-color_($color);
+    @include helper-text-color_($color);
   }
 }
 
-@mixin mdc-select-helper-text-validation-color($color) {
+@mixin helper-text-validation-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-helper-text-validation-color_($color);
+    @include helper-text-validation-color_($color);
   }
 }
 
 // Private mixins
 
-@mixin mdc-select-helper-text-color_($color) {
+@mixin helper-text-color_($color) {
   .mdc-select__anchor + .mdc-select-helper-text {
-    @include mdc-theme-prop(color, $color);
+    @include mixins.prop(color, $color);
   }
 }
 
-@mixin mdc-select-helper-text-validation-color_($color) {
+@mixin helper-text-validation-color_($color) {
   &.mdc-select--invalid .mdc-select__anchor + .mdc-select-helper-text--validation-msg {
-    @include mdc-theme-prop(color, $color);
+    @include mixins.prop(color, $color);
   }
 }

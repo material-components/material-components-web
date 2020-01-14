@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-form-field-core-styles;
+@use "./mixins";
+@include mixins.core-styles;

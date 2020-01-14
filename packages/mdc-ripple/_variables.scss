@@ -20,17 +20,17 @@
 // THE SOFTWARE.
 //
 
-$mdc-ripple-fade-in-duration: 75ms !default;
-$mdc-ripple-fade-out-duration: 150ms !default;
-$mdc-ripple-translate-duration: 225ms !default;
-$mdc-states-wash-duration: 15ms !default;
+$fade-in-duration: 75ms !default;
+$fade-out-duration: 150ms !default;
+$translate-duration: 225ms !default;
+$states-wash-duration: 15ms !default;
 
 // Notes on states:
 // * focus takes precedence over hover (i.e. if an element is both focused and hovered, only focus value applies)
 // * press state applies to a separate pseudo-element, so it has an additive effect on top of other states
 // * selected/activated are applied additively to hover/focus via calculations at preprocessing time
 
-$mdc-ripple-dark-ink-opacities: (
+$dark-ink-opacities: (
   hover: .04,
   focus: .12,
   press: .12,
@@ -38,7 +38,7 @@ $mdc-ripple-dark-ink-opacities: (
   activated: .12
 ) !default;
 
-$mdc-ripple-light-ink-opacities: (
+$light-ink-opacities: (
   hover: .08,
   focus: .24,
   press: .24,
@@ -48,5 +48,5 @@ $mdc-ripple-light-ink-opacities: (
 
 // Legacy
 
-$mdc-ripple-pressed-dark-ink-opacity: .16 !default;
-$mdc-ripple-pressed-light-ink-opacity: .32 !default;
+$pressed-dark-ink-opacity: .16 !default;
+$pressed-light-ink-opacity: .32 !default;

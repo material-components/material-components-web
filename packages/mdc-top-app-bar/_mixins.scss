@@ -20,41 +20,43 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/variables";
-@import "@material/ripple/mixins";
-@import "@material/theme/variables"; // for mdc-theme-accessible-ink-color
-@import "@material/theme/mixins";
-@import "@material/shape/mixins";
-@import "@material/shape/functions";
-@import "./variables";
+@use "sass:list";
+@use "@material/animation/variables" as animation-variables;
+@use "@material/ripple/mixins" as ripple-mixins;
+@use "@material/theme/variables" as theme-variables; // for mdc-theme-accessible-ink-color
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/shape/mixins" as shape-mixins;
+@use "@material/shape/functions";
+@use "./variables";
+@use "@material/rtl/mixins" as rtl-mixins;
 
 //
 // Public
 //
 
-@mixin mdc-top-app-bar-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+@mixin ink-color($color) {
+  @include theme-mixins.prop(color, $color);
 }
 
-@mixin mdc-top-app-bar-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin fill-color($color) {
+  @include theme-mixins.prop(background-color, $color);
 }
 
-@mixin mdc-top-app-bar-fill-color-accessible($color) {
-  @include mdc-top-app-bar-fill-color($color);
-  @include mdc-top-app-bar-ink-color(mdc-theme-accessible-ink-color($color));
+@mixin fill-color-accessible($color) {
+  @include fill-color($color);
+  @include ink-color(theme-variables.accessible-ink-color($color));
 }
 
-@mixin mdc-top-app-bar-icon-ink-color($color) {
+@mixin icon-ink-color($color) {
   .mdc-top-app-bar__action-item,
   .mdc-top-app-bar__navigation-icon {
-    @include mdc-theme-prop(color, $color);
-    @include mdc-states($color);
+    @include theme-mixins.prop(color, $color);
+    @include ripple-mixins.states($color);
   }
 }
 
-@mixin mdc-top-app-bar-short-shape-radius($radius, $rtl-reflexive: true) {
-  @if length($radius) > 1 {
+@mixin short-shape-radius($radius, $rtl-reflexive: true) {
+  @if list.length($radius) > 1 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   }
 
@@ -63,8 +65,8 @@
   $selector: if(&, "&.mdc-top-app-bar--short-collapsed", ".mdc-top-app-bar--short-collapsed");
 
   #{$selector} {
-    @include mdc-shape-radius(
-      mdc-shape-resolve-percentage-radius($mdc-top-app-bar-dense-row-height, $radius),
+    @include shape-mixins.radius(
+      functions.resolve-percentage-radius(variables.$dense-row-height, $radius),
       $rtl-reflexive
     );
   }
@@ -74,36 +76,36 @@
 // Private
 //
 
-@mixin mdc-top-app-bar-mobile-breakpoint_($mobile-breakpoint: $mdc-top-app-bar-mobile-breakpoint) {
+@mixin mobile-breakpoint_($mobile-breakpoint: variables.$mobile-breakpoint) {
   @media (max-width: $mobile-breakpoint) {
     .mdc-top-app-bar__row {
-      height: $mdc-top-app-bar-mobile-row-height;
+      height: variables.$mobile-row-height;
     }
 
     .mdc-top-app-bar__section {
-      padding: $mdc-top-app-bar-mobile-section-padding;
+      padding: variables.$mobile-section-padding;
     }
 
     .mdc-top-app-bar--short {
-      transition: width 200ms $mdc-animation-standard-curve-timing-function;
+      transition: width 200ms animation-variables.$standard-curve-timing-function;
     }
 
     .mdc-top-app-bar--short-collapsed {
-      transition: width 250ms $mdc-animation-standard-curve-timing-function;
+      transition: width 250ms animation-variables.$standard-curve-timing-function;
 
       .mdc-top-app-bar__section--align-end {
-        @include mdc-rtl-reflexive-box(padding, right, $mdc-top-app-bar-short-collapsed-right-icon-padding);
+        @include rtl-mixins.reflexive-box(padding, right, variables.$short-collapsed-right-icon-padding);
       }
     }
 
     .mdc-top-app-bar--prominent {
       .mdc-top-app-bar__title {
-        padding-bottom: $mdc-top-app-bar-prominent-mobile-title-bottom-padding;
+        padding-bottom: variables.$prominent-mobile-title-bottom-padding;
       }
     }
 
     .mdc-top-app-bar--fixed-adjust {
-      padding-top: $mdc-top-app-bar-mobile-row-height;
+      padding-top: variables.$mobile-row-height;
     }
   }
 }

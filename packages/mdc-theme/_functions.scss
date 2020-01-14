@@ -20,37 +20,43 @@
 // THE SOFTWARE.
 //
 
-@import "./constants";
+@use "sass:color";
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
+@use "sass:string";
+@use "./constants";
 
 // Calculate the luminance for a color.
 // See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
-@function mdc-theme-luminance($color) {
-  $red: nth($mdc-theme-linear-channel-values, red($color) + 1);
-  $green: nth($mdc-theme-linear-channel-values, green($color) + 1);
-  $blue: nth($mdc-theme-linear-channel-values, blue($color) + 1);
+@function luminance($color) {
+  $red: list.nth(constants.$linear-channel-values, color.red($color) + 1);
+  $green: list.nth(constants.$linear-channel-values, color.green($color) + 1);
+  $blue: list.nth(constants.$linear-channel-values, color.blue($color) + 1);
 
   @return .2126 * $red + .7152 * $green + .0722 * $blue;
 }
 
 // Calculate the contrast ratio between two colors.
 // See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
-@function mdc-theme-contrast($back, $front) {
-  $backLum: mdc-theme-luminance($back) + .05;
-  $foreLum: mdc-theme-luminance($front) + .05;
+@function contrast($back, $front) {
+  $backLum: luminance($back) + .05;
+  $foreLum: luminance($front) + .05;
 
-  @return max($backLum, $foreLum) / min($backLum, $foreLum);
+  @return math.max($backLum, $foreLum) / math.min($backLum, $foreLum);
 }
 
 // Determine whether the color is "light" or "dark".
-@function mdc-theme-tone($color) {
+@function tone($color) {
   @if $color == "dark" or $color == "light" {
     @return $color;
   }
 
   $minimumContrast: 3.1;
 
-  $lightContrast: mdc-theme-contrast($color, white);
-  $darkContrast: mdc-theme-contrast($color, rgba(black, .87));
+  $lightContrast: contrast($color, white);
+  $darkContrast: contrast($color, rgba(black, .87));
 
   @if ($lightContrast < $minimumContrast) and ($darkContrast > $lightContrast) {
     @return "light";
@@ -61,21 +67,21 @@
 
 // Determine whether to use dark or light text on top of given color to meet accessibility standards for contrast.
 // Returns "dark" if the given color is light and "light" if the given color is dark.
-@function mdc-theme-contrast-tone($color) {
-  @return if(mdc-theme-tone($color) == "dark", "light", "dark");
+@function contrast-tone($color) {
+  @return if(tone($color) == "dark", "light", "dark");
 }
 
-@function mdc-theme-is-var-with-fallback_($style) {
-  @return type-of($style) == "map" and map-has-key($style, "varname") and map-has-key($style, "fallback");
+@function is-var-with-fallback_($style) {
+  @return meta.type-of($style) == "map" and map.has-key($style, "varname") and map.has-key($style, "fallback");
 }
 
-@function mdc-theme-get-var-fallback_($style) {
-  @return map-get($style, "fallback");
+@function get-var-fallback_($style) {
+  @return map.get($style, "fallback");
 }
 
-@function mdc-theme-var_($style) {
-  $var: map-get($style, "varname");
-  $fallback: mdc-theme-get-var-fallback_($style);
+@function var_($style) {
+  $var: map.get($style, "varname");
+  $fallback: get-var-fallback_($style);
 
   @return var(#{$var}, $fallback);
 }
@@ -89,28 +95,28 @@
 ///   `color-hash(rgb(255, 112, 112))` => "ff7070"
 ///   `color-hash(var(--my-fancy-color))` => "--my-fancy-color"
 ///
-@function mdc-theme-color-hash($color) {
-  @if mdc-theme-is-var-with-fallback_($color) {
-    $color: map-get($color, "fallback");
+@function color-hash($color) {
+  @if is-var-with-fallback_($color) {
+    $color: map.get($color, "fallback");
   }
 
-  @if mdc-theme-is-css-var_($color) {
-    @return mdc-theme-get-css-varname_($color);
+  @if is-css-var_($color) {
+    @return get-css-varname_($color);
   }
 
-  @if type-of($color) == "string" {
+  @if meta.type-of($color) == "string" {
     @return $color;
   }
 
-  @return str-slice(ie-hex-str($color), 2); // Index starts at 1
+  @return string.slice(color.ie-hex-str($color), 2); // Index starts at 1
 }
 
 ///
 /// @return Returns true if given color is set to CSS variable.
 /// @access Private
 ///
-@function mdc-theme-is-css-var_($color) {
-  @return str_slice(inspect($color), 1, 4) == "var(";
+@function is-css-var_($color) {
+  @return str_slice(meta.inspect($color), 1, 4) == "var(";
 }
 
 ///
@@ -121,16 +127,16 @@
 ///   mdc-theme-get-css-varname_(var(--my-fancy-color)) => --my-fancy-color
 /// @access Private
 ///
-@function mdc-theme-get-css-varname_($color) {
-  @if not mdc-theme-is-css-var_($color) {
+@function get-css-varname_($color) {
+  @if not is-css-var_($color) {
     @return $color;
   }
 
-  $color: inspect($color);
+  $color: meta.inspect($color);
 
-  $var-start-index: str-index($color, "--");
+  $var-start-index: string.index($color, "--");
   $color: str_slice($color, $var-start-index);
-  $var-end-index: str-index($color, ",") or str-index($color, ")");
+  $var-end-index: string.index($color, ",") or string.index($color, ")");
   $color: str_slice($color, 0, $var-end-index - 1);
 
   @return $color;

@@ -1,0 +1,2 @@
+@forward "variables" as mdc-* hide $mdc-dark-ink-opacities, $mdc-fade-in-duration, $mdc-fade-out-duration, $mdc-light-ink-opacities, $mdc-pressed-dark-ink-opacity, $mdc-pressed-light-ink-opacity, $mdc-translate-duration;
+@forward "variables" as mdc-ripple-* hide $mdc-ripple-states-wash-duration;

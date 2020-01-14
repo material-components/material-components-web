@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@import "./variables";
+@use "./variables";
 
 ///
 /// Sets the elevation transition value.
@@ -29,10 +29,10 @@
 /// @param {String} $easing - The easing function for the transition.
 /// @return {String}
 ///
-@function mdc-elevation-transition-value(
-  $duration: $mdc-elevation-transition-duration,
-  $easing: $mdc-elevation-transition-timing-function) {
-  @return #{$mdc-elevation-property} #{$duration} #{$easing};
+@function transition-value(
+  $duration: variables.$transition-duration,
+  $easing: variables.$transition-timing-function) {
+  @return #{variables.$property} #{$duration} #{$easing};
 }
 
 ///
@@ -42,8 +42,8 @@
 /// @param {String} $easing - The easing function for the transition.
 /// @return {String}
 ///
-@function mdc-elevation-overlay-transition-value(
-  $duration: $mdc-elevation-transition-duration,
-  $easing: $mdc-elevation-transition-timing-function) {
-  @return #{$mdc-elevation-overlay-property} #{$duration} #{$easing};
+@function overlay-transition-value(
+  $duration: variables.$transition-duration,
+  $easing: variables.$transition-timing-function) {
+  @return #{variables.$overlay-property} #{$duration} #{$easing};
 }
