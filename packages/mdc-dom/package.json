@@ -1,7 +1,7 @@
 {
   "name": "@material/dom",
   "description": "DOM manipulation utilities for Material Components for the web",
-  "version": "4.0.0",
+  "version": "5.0.0-canary.faa9af310.0",
   "license": "MIT",
   "main": "dist/mdc.dom.js",
   "module": "index.js",

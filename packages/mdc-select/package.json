@@ -1,7 +1,7 @@
 {
   "name": "@material/select",
   "description": "The Material Components web select (text field drop-down) component",
-  "version": "4.0.0",
+  "version": "5.0.0-canary.faa9af310.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -19,18 +19,18 @@
     "directory": "packages/mdc-select"
   },
   "dependencies": {
-    "@material/animation": "^4.0.0",
-    "@material/base": "^4.0.0",
-    "@material/floating-label": "^4.0.0",
-    "@material/line-ripple": "^4.0.0",
-    "@material/menu": "^4.0.0",
-    "@material/menu-surface": "^4.0.0",
-    "@material/notched-outline": "^4.0.0",
-    "@material/ripple": "^4.0.0",
-    "@material/rtl": "^4.0.0",
-    "@material/shape": "^4.0.0",
-    "@material/theme": "^4.0.0",
-    "@material/typography": "^4.0.0",
+    "@material/animation": "5.0.0-canary.faa9af310.0",
+    "@material/base": "5.0.0-canary.faa9af310.0",
+    "@material/floating-label": "5.0.0-canary.faa9af310.0",
+    "@material/line-ripple": "5.0.0-canary.faa9af310.0",
+    "@material/menu": "5.0.0-canary.faa9af310.0",
+    "@material/menu-surface": "5.0.0-canary.faa9af310.0",
+    "@material/notched-outline": "5.0.0-canary.faa9af310.0",
+    "@material/ripple": "5.0.0-canary.faa9af310.0",
+    "@material/rtl": "5.0.0-canary.faa9af310.0",
+    "@material/shape": "5.0.0-canary.faa9af310.0",
+    "@material/theme": "5.0.0-canary.faa9af310.0",
+    "@material/typography": "5.0.0-canary.faa9af310.0",
     "tslib": "^1.9.3"
   }
 }

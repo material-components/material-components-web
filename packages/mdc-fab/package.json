@@ -1,7 +1,7 @@
 {
   "name": "@material/fab",
   "description": "The Material Components for the web floating action button component",
-  "version": "4.0.0",
+  "version": "5.0.0-canary.faa9af310.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,14 +15,14 @@
     "directory": "packages/mdc-fab"
   },
   "dependencies": {
-    "@material/animation": "^4.0.0",
-    "@material/elevation": "^4.0.0",
-    "@material/feature-targeting": "^4.0.0",
-    "@material/ripple": "^4.0.0",
-    "@material/rtl": "^4.0.0",
-    "@material/shape": "^4.0.0",
-    "@material/theme": "^4.0.0",
-    "@material/touch-target": "^4.0.0",
-    "@material/typography": "^4.0.0"
+    "@material/animation": "5.0.0-canary.faa9af310.0",
+    "@material/elevation": "5.0.0-canary.faa9af310.0",
+    "@material/feature-targeting": "5.0.0-canary.faa9af310.0",
+    "@material/ripple": "5.0.0-canary.faa9af310.0",
+    "@material/rtl": "5.0.0-canary.faa9af310.0",
+    "@material/shape": "5.0.0-canary.faa9af310.0",
+    "@material/theme": "5.0.0-canary.faa9af310.0",
+    "@material/touch-target": "5.0.0-canary.faa9af310.0",
+    "@material/typography": "5.0.0-canary.faa9af310.0"
   }
 }
