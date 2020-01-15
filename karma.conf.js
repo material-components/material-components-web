@@ -66,6 +66,7 @@ const istanbulInstrumenterLoader = {
   exclude: [
     /node_modules/,
     /adapter.[jt]s$/,
+    /base\/.*$/,
     /checkbox\/.*$/,
     /chips\/.*$/,
     /constants.[jt]s$/,
@@ -154,6 +155,7 @@ const jasmineConfig = {
             'adapter.ts',
             'constants.ts',
             'testing/**/*.ts',
+            'packages/!(mdc-base)/**/*',
             'packages/!(mdc-checkbox)/**/*',
             'packages/!(mdc-chips)/**/*',
             'packages/!(mdc-data-table)/**/*',
