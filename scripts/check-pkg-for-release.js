@@ -283,7 +283,7 @@ function checkUsedDependenciesMatchDeclaredDependencies() {
   );
 
   const usedDeps = new Set();
-  const importMatcher = RegExp('(@import|from) ["\'](@material/[^/"\']+)', 'g');
+  const importMatcher = RegExp('(@use|@import|from) ["\'](@material/[^/"\']+)', 'g');
   files.forEach((file) => {
     if (file.endsWith('.scss') || file.endsWith('.ts') && !file.endsWith('.d.ts')) {
       const src = fs.readFileSync(path.join(PACKAGE_RELATIVE_PATH, file), 'utf8');
