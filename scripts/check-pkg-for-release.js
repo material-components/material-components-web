@@ -32,6 +32,7 @@ const assert = require('assert');
 const fs = require('fs');
 const readDirRecursive = require('fs-readdir-recursive');
 const path = require('path');
+const child_process = require('child_process');
 
 const {default: traverse} = require('babel-traverse');
 const parser = require('@babel/parser');
@@ -299,15 +300,8 @@ function checkUsedDependenciesMatchDeclaredDependencies() {
   const usedButNotDeclared = [...usedDeps].filter((x) => !declaredDeps.has(x));
   const declaredButNotUsed = [...declaredDeps].filter((x) => !usedDeps.has(x));
 
-  assert.equal(usedButNotDeclared.length, 0,
-    'FAILURE: Component ' + CLI_PACKAGE_JSON.name +
-    ' uses one or more MDC dependencies not declared in package.json.\n' +
-    getMissingDependencyRemedy(usedButNotDeclared));
-
-  assert.equal(declaredButNotUsed.length, 0,
-    'FAILURE: Component ' + CLI_PACKAGE_JSON.name +
-    ' declares one or more MDC dependencies in package.json that are unused.\n' +
-    getUnusedDependencyRemedy(declaredButNotUsed));
+  assert.equal(usedButNotDeclared.length, 0, getMissingDependencyMsg(usedButNotDeclared));
+  assert.equal(declaredButNotUsed.length, 0, getUnusedDependencyMsg(declaredButNotUsed));
 }
 
 function getPkgName() {
@@ -320,18 +314,39 @@ function getPkgName() {
   return name;
 }
 
-function getMissingDependencyRemedy(missingDeps) {
-  let remedyStr = 'Please add the missing dependencies using the following command(s):\n';
-  missingDeps.forEach((dep) => {
-    remedyStr += `npx lerna add ${dep} packages/${PACKAGE_RELATIVE_PATH.split('/')[1]}\n`;
+function getMissingDependencyMsg(missingDeps) {
+  const missingDepsWithVersions = getPackageNamesWithVersions(missingDeps);
+
+  let msg = 'FAILURE: The following MDC dependencies were used in ' +
+    CLI_PACKAGE_JSON.name + ' but were not declared in its package.json:\n' +
+    missingDepsWithVersions.join('\n') +
+    '\n\nPlease add the missing dependencies to package.json manually, or by' +
+    'running the following command(s) on the root of the repository:\n';
+
+  missingDepsWithVersions.forEach((dep) => {
+    msg += `npx lerna add ${dep} packages/${PACKAGE_RELATIVE_PATH.split('/')[1]}\n`;
   });
-  return remedyStr;
+  return msg;
 }
 
-function getUnusedDependencyRemedy(unusedDeps) {
-  let remedyStr = 'Please remove the unused dependencies using the following command(s):\n';
+function getUnusedDependencyMsg(unusedDeps) {
+  let msg = 'FAILURE: The following MDC dependencies in package ' +
+    CLI_PACKAGE_JSON.name + ' are declared in its package.json but not used:\n' +
+    unusedDeps.join('\n') +
+    '\n\nPlease remove the unused dependencies in package.json manually, or ' +
+    'by running the following command(s) on the root of the repository:\n';
+
   unusedDeps.forEach((dep) => {
-    remedyStr += `npx lerna exec --scope ${CLI_PACKAGE_JSON.name} -- npm uninstall --no-shrinkwrap ${dep}\n`;
+    msg += `npx lerna exec --scope ${CLI_PACKAGE_JSON.name} -- npm uninstall --no-shrinkwrap ${dep}\n`;
   });
-  return remedyStr;
+  return msg;
+}
+
+function getPackageNamesWithVersions(packageNames) {
+  const packageNamesWithVersions = [];
+  packageNames.forEach((name) => {
+    const version = child_process.execSync(`npm show ${name} version`).toString().replace('\n', '');
+    packageNamesWithVersions.push(`${name}@${version}`);
+  });
+  return packageNamesWithVersions;
 }
