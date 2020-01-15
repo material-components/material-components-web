@@ -25,6 +25,7 @@
     "@material/elevation": "^4.0.0",
     "@material/feature-targeting": "^4.0.0",
     "@material/tab": "^4.0.0",
+	"@material/tab-indicator": "^4.0.0",
     "@material/tab-scroller": "^4.0.0",
     "tslib": "^1.9.3"
   },
