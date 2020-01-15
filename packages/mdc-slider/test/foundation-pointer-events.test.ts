@@ -390,5 +390,31 @@ describe('MDCSliderFoundation - pointer events', () => {
 
       expect(mockAdapter.notifyChange).toHaveBeenCalled();
     });
+
+    it(`on body ${
+           moveEvt} discrete slider avoids "-0" pin value marker`,
+       () => {
+         const {foundation, mockAdapter, rootHandlers, bodyHandlers} =
+             setupTest();
+
+         mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
+         mockAdapter.hasClass.withArgs(cssClasses.IS_DISCRETE)
+             .and.returnValue(true);
+         foundation.init();
+         foundation.setMin(-50);
+         foundation.setMax(50);
+         jasmine.clock().tick(1);
+
+         // Simulate barely moving the pointer to the left of "0"
+         rootHandlers[downEvt](clientXObj(50));
+         bodyHandlers[moveEvt]({
+           preventDefault: () => {},
+           ...clientXObj(49.9),
+         });
+         jasmine.clock().tick(1);
+
+         const stringValue = mockAdapter.setMarkerValue.calls.mostRecent().args[0].toLocaleString();
+         expect(stringValue).toEqual('0');
+       });
   }
 });
