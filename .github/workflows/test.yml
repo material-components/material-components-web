@@ -51,7 +51,7 @@ jobs:
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-  unit-test:
+  dependency-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
