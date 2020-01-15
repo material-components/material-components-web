@@ -22,7 +22,6 @@
     "@material/animation": "^4.0.0",
     "@material/base": "^4.0.0",
     "@material/density": "^4.0.0",
-    "@material/elevation": "^4.0.0",
     "@material/feature-targeting": "^4.0.0",
     "@material/tab": "^4.0.0",
     "@material/tab-scroller": "^4.0.0",

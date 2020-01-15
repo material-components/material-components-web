@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@material/base": "^4.0.0",
+    "@material/density": "^4.0.0",
     "@material/feature-targeting": "^4.0.0",
     "@material/ripple": "^4.0.0",
     "@material/theme": "^4.0.0",

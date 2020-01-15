@@ -30,7 +30,9 @@
 
 const assert = require('assert');
 const fs = require('fs');
+const readDirRecursive = require('fs-readdir-recursive');
 const path = require('path');
+const childProcess = require('child_process');
 
 const {default: traverse} = require('babel-traverse');
 const parser = require('@babel/parser');
@@ -43,6 +45,7 @@ if (!CLI_PACKAGE_JSON_RELATIVE_PATH) {
   console.error(`Usage: node ${path.basename(process.argv[1])} packages/mdc-foo/package.json`);
   process.exit(1);
 }
+const PACKAGE_RELATIVE_PATH = CLI_PACKAGE_JSON_RELATIVE_PATH.replace('package.json', '');
 
 if (!new RegExp('packages/[^/]+/package.json$').test(CLI_PACKAGE_JSON_RELATIVE_PATH)) {
   console.error(`Invalid argument: "${CLI_PACKAGE_JSON_RELATIVE_PATH}" is not a valid path to a package.json file.`);
@@ -94,6 +97,7 @@ function main() {
     } else {
       checkDependencyAddedInWebpackConfig();
       checkDependencyAddedInMDCPackage();
+      checkUsedDependenciesMatchDeclaredDependencies();
     }
   }
 }
@@ -269,6 +273,43 @@ function checkComponentExportedAddedInMDCPackage(ast) {
   return isExported;
 }
 
+/**
+ * Checks that all dependencies used in SASS and TypeScript files in the package
+ * match up with those declared in package.json.
+ *
+ * @throws {AssertionError} Will throw an error if dependencies do not strictly match.
+ */
+function checkUsedDependenciesMatchDeclaredDependencies() {
+  const files = readDirRecursive(
+    PACKAGE_RELATIVE_PATH,
+    (fileName) => {
+      return fileName[0] !== '.'
+        && fileName !== 'node_modules' && fileName !== 'test';
+    }
+  );
+
+  const usedDeps = new Set();
+  const importMatcher = RegExp('(@use|@import|from) ["\'](@material/[^/"\']+)', 'g');
+  files.forEach((file) => {
+    if (file.endsWith('.scss') || file.endsWith('.ts') && !file.endsWith('.d.ts')) {
+      const src = fs.readFileSync(path.join(PACKAGE_RELATIVE_PATH, file), 'utf8');
+      while ((dep = importMatcher.exec(src)) !== null) {
+        usedDeps.add(dep[2]);
+      }
+    }
+  });
+
+  const declaredDeps = new Set(
+    Object.keys(CLI_PACKAGE_JSON.dependencies ? CLI_PACKAGE_JSON.dependencies : [])
+      .filter((key) => key.startsWith('@material/')));
+
+  const usedButNotDeclared = [...usedDeps].filter((x) => !declaredDeps.has(x));
+  const declaredButNotUsed = [...declaredDeps].filter((x) => !usedDeps.has(x));
+
+  assert.equal(usedButNotDeclared.length, 0, getMissingDependencyMsg(usedButNotDeclared));
+  assert.equal(declaredButNotUsed.length, 0, getUnusedDependencyMsg(declaredButNotUsed));
+}
+
 function getPkgName() {
   let name = CLI_PACKAGE_JSON.name.split('/')[1];
   if (name === 'textfield') {
@@ -277,4 +318,41 @@ function getPkgName() {
     name = 'text-field';
   }
   return name;
+}
+
+function getMissingDependencyMsg(missingDeps) {
+  const missingDepsWithVersions = getPackageNamesWithVersions(missingDeps);
+
+  let msg = 'FAILURE: The following MDC dependencies were used in ' +
+    CLI_PACKAGE_JSON.name + ' but were not declared in its package.json:\n' +
+    missingDepsWithVersions.join('\n') +
+    '\n\nPlease add the missing dependencies to package.json manually, or by ' +
+    'running the following command(s) on the root of the repository:\n';
+
+  missingDepsWithVersions.forEach((dep) => {
+    msg += `npx lerna add ${dep} packages/${PACKAGE_RELATIVE_PATH.split('/')[1]}\n`;
+  });
+  return msg;
+}
+
+function getUnusedDependencyMsg(unusedDeps) {
+  let msg = 'FAILURE: The following MDC dependencies in package ' +
+    CLI_PACKAGE_JSON.name + ' are declared in its package.json but not used:\n' +
+    unusedDeps.join('\n') +
+    '\n\nPlease remove the unused dependencies in package.json manually, or ' +
+    'by running the following command(s) on the root of the repository:\n';
+
+  unusedDeps.forEach((dep) => {
+    msg += `npx lerna exec --scope ${CLI_PACKAGE_JSON.name} -- npm uninstall --no-shrinkwrap ${dep}\n`;
+  });
+  return msg;
+}
+
+function getPackageNamesWithVersions(packageNames) {
+  const packageNamesWithVersions = [];
+  packageNames.forEach((name) => {
+    const version = childProcess.execSync(`npm show ${name} version`).toString().replace('\n', '');
+    packageNamesWithVersions.push(`${name}@${version}`);
+  });
+  return packageNamesWithVersions;
 }

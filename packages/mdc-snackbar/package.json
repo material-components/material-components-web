@@ -22,6 +22,7 @@
     "@material/base": "^4.0.0",
     "@material/button": "^4.0.0",
     "@material/dom": "^4.0.0",
+    "@material/elevation": "^4.0.0",
     "@material/feature-targeting": "^4.0.0",
     "@material/icon-button": "^4.0.0",
     "@material/ripple": "^4.0.0",
