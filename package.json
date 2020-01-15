@@ -34,6 +34,7 @@
     "screenshot:watch": "node test/screenshot/run.js build --watch",
     "screenshot:webpack": "webpack --config=test/screenshot/webpack.config.js --progress --display=minimal",
     "start": "npm-run-all --parallel screenshot:serve screenshot:watch",
+    "test:sass": "jasmine --config=jasmine-node.json",
     "test:dependency": "./scripts/dependency-test.sh",
     "test:feature-targeting": "node test/scss/verify-feature-targeting.js",
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh",

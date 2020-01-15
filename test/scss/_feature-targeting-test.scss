@@ -1,4 +1,3 @@
-@import "@material/button/mixins";
 @import "@material/card/mixins";
 @import "@material/checkbox/mixins";
 @import "@material/chips/mixins";
@@ -34,23 +33,6 @@
 
 @mixin mdc-feature-targeting-test($query) {
   .mdc-test {
-    // Button
-    @include mdc-button-core-styles($query: $query);
-    @include mdc-button-filled-accessible(red, $query: $query);
-    @include mdc-button-container-fill-color(red, $query: $query);
-    @include mdc-button-outline-color(red, $query: $query);
-    @include mdc-button-icon-color(red, $query: $query);
-    @include mdc-button-ink-color(red, $query: $query);
-    @include mdc-button-shape-radius(0, $query: $query);
-    @include mdc-button-horizontal-padding(0, $query: $query);
-    @include mdc-button-outline-width(0, $query: $query);
-    @include mdc-button-ripple($query: $query);
-    @include mdc-button-without-ripple($query: $query);
-    @include mdc-button-theme-baseline($query: $query);
-    @include mdc-button-density(-1, $query: $query);
-    @include mdc-button-height(0, $query: $query);
-    @include mdc-button-label-overlow-ellipsis($query: $query);
-
     // Card
     @include mdc-card-core-styles($query: $query);
     @include mdc-card-fill-color(red, $query: $query);

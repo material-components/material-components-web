@@ -141,6 +141,12 @@ const mochaConfig = {
 const jasmineConfig = {
   basePath: '',
   files: FILES_TO_USE,
+  exclude: [
+    'packages/**/*.scss.test.ts',
+    'testing/helpers/sass-test-compile.helper.ts',
+    'testing/helpers/ts-node.helper.js',
+    'scripts/**/*.ts',
+  ],
   frameworks: ['jasmine', 'karma-typescript'],
   karmaTypescriptConfig: {
     coverageOptions: {
@@ -178,9 +184,6 @@ const jasmineConfig = {
         },
       },
     },
-    exclude: [
-      'scripts/**/*.ts',
-    ],
     reports: {
       html: 'coverage',
       lcovonly: 'coverage',
