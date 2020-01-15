@@ -20,10 +20,10 @@
 // THE SOFTWARE.
 //
 
-@import "@material/base/mixins";
-@import "./mixins";
+@use "@material/base/mixins" as base-mixins;
+@use "./mixins";
 
 // Line Ripple is intended for use by multiple components, but its styles should only be emitted once when bundled
-@include mdc-base-emit-once("mdc-line-ripple") {
-  @include mdc-line-ripple-core-styles;
+@include base-mixins.emit-once("mdc-line-ripple") {
+  @include mixins.core-styles;
 }

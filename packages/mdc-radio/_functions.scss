@@ -20,13 +20,13 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/functions";
-@import "./variables";
+@use "@material/animation/functions";
+@use "./variables";
 
-@function mdc-radio-enter($name) {
-  @return mdc-animation-enter($name, $mdc-radio-transition-duration);
+@function enter($name) {
+  @return functions.enter($name, variables.$transition-duration);
 }
 
-@function mdc-radio-exit($name) {
-  @return mdc-animation-exit-temporary($name, $mdc-radio-transition-duration);
+@function exit($name) {
+  @return functions.exit-temporary($name, variables.$transition-duration);
 }

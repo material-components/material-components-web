@@ -19,10 +19,10 @@
 //  THE SOFTWARE.
 //
 
-@import "./mixins";
+@use "./mixins";
 
 .mdc-select--with-leading-icon {
-  @include mdc-select-icon_;
+  @include mixins.icon_;
 }
 
 .mdc-select__icon:not([tabindex]),

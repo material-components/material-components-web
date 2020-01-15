@@ -18,38 +18,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@import "./variables";
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
+@use "./variables";
 
 // returns the lower grid boundary or null if the smallest grid is selected
-@function mdc-layout-grid-breakpoint-min($size) {
-  @if not map-has-key($mdc-layout-grid-columns, $size) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+@function breakpoint-min($size) {
+  @if not map.has-key(variables.$columns, $size) {
+    @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
-  $min: map-get($mdc-layout-grid-breakpoints, $size);
+  $min: map.get(variables.$breakpoints, $size);
 
   @return if($min > 0, $min, null);
 }
 
 // returns the upper grid boundary or null if the largest grid is selected
-@function mdc-layout-grid-breakpoint-max($size) {
-  @if not map-has-key($mdc-layout-grid-columns, $size) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+@function breakpoint-max($size) {
+  @if not map.has-key(variables.$columns, $size) {
+    @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
-  $names: map-keys($mdc-layout-grid-columns);
-  $n: index($names, $size);
-  $prev: if($n > 1, nth($names, $n - 1), null);
+  $names: map.keys(variables.$columns);
+  $n: list.index($names, $size);
+  $prev: if($n > 1, list.nth($names, $n - 1), null);
 
-  @return if($prev, (mdc-layout-grid-breakpoint-min($prev) - 1px), null);
+  @return if($prev, (breakpoint-min($prev) - 1px), null);
 }
 
 // Private mixins, meant for internal use.
-@mixin mdc-layout-grid-media-query_($size) {
-  @if not map-has-key($mdc-layout-grid-columns, $size) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+@mixin media-query_($size) {
+  @if not map.has-key(variables.$columns, $size) {
+    @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
 
-  $min: mdc-layout-grid-breakpoint-min($size);
-  $max: mdc-layout-grid-breakpoint-max($size);
+  $min: breakpoint-min($size);
+  $max: breakpoint-max($size);
 
   @if $min == null and $max != null {
     // Phone
@@ -72,12 +75,12 @@
   }
 }
 
-@mixin mdc-layout-grid-cell-span_($size, $span, $gutter) {
-  @if not map-has-key($mdc-layout-grid-columns, $size) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+@mixin cell-span_($size, $span, $gutter) {
+  @if not map.has-key(variables.$columns, $size) {
+    @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
 
-  $percent: percentage($span / map-get($mdc-layout-grid-columns, $size));
+  $percent: math.percentage($span / map.get(variables.$columns, $size));
 
   @if $percent > 100% {
     $percent: 100%;
@@ -89,14 +92,14 @@
 
   @supports (display: grid) {
     width: auto;
-    grid-column-end: span min($span, map-get($mdc-layout-grid-columns, $size));
+    grid-column-end: span math.min($span, map.get(variables.$columns, $size));
   }
 }
 
 // Public mixins, meant for developer usage.
-@mixin mdc-layout-grid($size, $margin, $max-width: null) {
-  @if not map-has-key($mdc-layout-grid-columns, $size) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+@mixin layout-grid($size, $margin, $max-width: null) {
+  @if not map.has-key(variables.$columns, $size) {
+    @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
 
   box-sizing: border-box;
@@ -110,9 +113,9 @@
   }
 }
 
-@mixin mdc-layout-grid-inner($size, $margin, $gutter) {
-  @if not map-has-key($mdc-layout-grid-columns, $size) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+@mixin inner($size, $margin, $gutter) {
+  @if not map.has-key(variables.$columns, $size) {
+    @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
 
   display: flex;
@@ -128,16 +131,16 @@
     grid-gap: $gutter;
     // stylelint-disable-next-line declaration-block-no-duplicate-properties
     grid-gap: var(--mdc-layout-grid-gutter-#{$size}, $gutter);
-    grid-template-columns: repeat(map-get($mdc-layout-grid-columns, $size), minmax(0, 1fr));
+    grid-template-columns: repeat(map.get(variables.$columns, $size), minmax(0, 1fr));
   }
 }
 
-@mixin mdc-layout-grid-cell($size, $default-span, $gutter) {
-  @if not map-has-key($mdc-layout-grid-columns, $size) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+@mixin cell($size, $default-span, $gutter) {
+  @if not map.has-key(variables.$columns, $size) {
+    @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
 
-  @include mdc-layout-grid-cell-span_($size, $default-span, $gutter);
+  @include cell-span_($size, $default-span, $gutter);
 
   box-sizing: border-box;
   margin: $gutter / 2;
@@ -149,11 +152,11 @@
   }
 }
 
-@mixin mdc-layout-grid-cell-order($order) {
+@mixin cell-order($order) {
   order: $order;
 }
 
-@mixin mdc-layout-grid-cell-align($position) {
+@mixin cell-align($position) {
   @if $position == "top" {
     align-self: flex-start;
 
@@ -179,12 +182,12 @@
   }
 }
 
-@mixin mdc-layout-grid-fixed-column-width($size, $margin, $gutter, $column-width) {
-  @if not map-has-key($mdc-layout-grid-columns, $size) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-layout-grid-columns)}";
+@mixin fixed-column-width($size, $margin, $gutter, $column-width) {
+  @if not map.has-key(variables.$columns, $size) {
+    @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
 
-  $columnCount: map-get($mdc-layout-grid-columns, $size);
+  $columnCount: map.get(variables.$columns, $size);
   $gutter-number: $columnCount - 1;
   $margin-number: 2;
 

@@ -20,7 +20,8 @@
 // THE SOFTWARE.
 //
 
-@import "./variables";
+@use "sass:list";
+@use "./variables";
 
 // Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.
 //
@@ -31,14 +32,14 @@
 //   position: absolute;
 //   left: 0;
 //
-//   @include mdc-rtl {
+//   @include rtl {
 //     left: auto;
 //     right: 0;
 //   }
 //
 //   &__bar {
 //     margin-left: 4px;
-//     @include mdc-rtl(".mdc-foo") {
+//     @include rtl(".mdc-foo") {
 //       margin-left: auto;
 //       margin-right: 4px;
 //     }
@@ -48,7 +49,7 @@
 // .mdc-foo--mod {
 //   padding-left: 4px;
 //
-//   @include mdc-rtl {
+//   @include rtl {
 //     padding-left: auto;
 //     padding-right: 4px;
 //   }
@@ -68,8 +69,8 @@
 // ```
 //
 // In the future, selectors such as the `:dir` pseudo-class (http://mdn.io/css/:dir) will help us mitigate this.
-@mixin mdc-rtl($root-selector: null) {
-  @if ($mdc-rtl-include) {
+@mixin rtl($root-selector: null) {
+  @if (variables.$include) {
     @if ($root-selector) {
       @at-root {
         #{$root-selector}[dir="rtl"] &,
@@ -94,7 +95,7 @@
 //
 // ```scss
 // .mdc-foo {
-//   @include mdc-rtl-reflexive-box(margin, left, 8px);
+//   @include rtl-reflexive-box(margin, left, 8px);
 // }
 // ```
 //
@@ -105,7 +106,7 @@
 //   margin-left: 8px;
 //   margin-right: 0;
 //
-//   @include mdc-rtl {
+//   @include rtl {
 //     margin-left: 0;
 //     margin-right: 8px;
 //   }
@@ -116,7 +117,7 @@
 //
 // ```scss
 // .mdc-foo {
-//   @include mdc-rtl-reflexive-box(margin, right, 8px);
+//   @include rtl-reflexive-box(margin, right, 8px);
 // }
 // ```
 //
@@ -127,7 +128,7 @@
 //   margin-left: 0;
 //   margin-right: 8px;
 //
-//   @include mdc-rtl {
+//   @include rtl {
 //     margin-left: 8px;
 //     margin-right: 0;
 //   }
@@ -135,12 +136,12 @@
 // ```
 //
 // You can also pass an optional 4th `$root-selector` argument which will be forwarded to `mdc-rtl`,
-// e.g. `@include mdc-rtl-reflexive-box(margin, left, 8px, ".mdc-component")`.
+// e.g. `@include rtl-reflexive-box(margin, left, 8px, ".mdc-component")`.
 //
 // Note that this function will always zero out the original value in an RTL context.
 // If you're trying to flip the values, use `mdc-rtl-reflexive-property()` instead.
-@mixin mdc-rtl-reflexive-box($base-property, $default-direction, $value, $root-selector: null) {
-  @if (index((right, left), $default-direction) == null) {
+@mixin reflexive-box($base-property, $default-direction, $value, $root-selector: null) {
+  @if (list.index((right, left), $default-direction) == null) {
     @error "Invalid default direction: '#{$default-direction}'. Please specifiy either 'right' or 'left'.";
   }
 
@@ -152,7 +153,7 @@
     $right-value: $value;
   }
 
-  @include mdc-rtl-reflexive-property($base-property, $left-value, $right-value, $root-selector);
+  @include reflexive-property($base-property, $left-value, $right-value, $root-selector);
 }
 
 // Takes a base property and emits rules that assign <base-property>-left to <left-value> and
@@ -161,7 +162,7 @@
 //
 // ```scss
 // .mdc-foo {
-//   @include mdc-rtl-reflexive-property(margin, auto, 12px);
+//   @include rtl-reflexive-property(margin, auto, 12px);
 // }
 // ```
 //
@@ -172,7 +173,7 @@
 //   margin-left: auto;
 //   margin-right: 12px;
 //
-//   @include mdc-rtl {
+//   @include rtl {
 //     margin-left: 12px;
 //     margin-right: auto;
 //   }
@@ -180,11 +181,11 @@
 // ```
 //
 // An optional 4th `$root-selector` argument can be given, which will be passed to `mdc-rtl`.
-@mixin mdc-rtl-reflexive-property($base-property, $left-value, $right-value, $root-selector: null) {
+@mixin reflexive-property($base-property, $left-value, $right-value, $root-selector: null) {
   $prop-left: #{$base-property}-left;
   $prop-right: #{$base-property}-right;
 
-  @include mdc-rtl-reflexive($prop-left, $left-value, $prop-right, $right-value, $root-selector);
+  @include reflexive($prop-left, $left-value, $prop-right, $right-value, $root-selector);
 }
 
 // Takes an argument specifying a horizontal position property (either "left" or "right") as well
@@ -193,7 +194,7 @@
 //
 // ```scss
 // .mdc-foo {
-//   @include mdc-rtl-reflexive-position(left, 0);
+//   @include rtl-reflexive-position(left, 0);
 // }
 // ```
 //
@@ -204,7 +205,7 @@
 //   left: 0;
 //   right: initial;
 //
-//   @include mdc-rtl {
+//   @include rtl {
 //     left: initial;
 //     right: 0;
 //   }
@@ -212,8 +213,8 @@
 // ```
 //
 // An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
-@mixin mdc-rtl-reflexive-position($position-property, $value, $root-selector: null) {
-  @if (index((right, left), $position-property) == null) {
+@mixin reflexive-position($position-property, $value, $root-selector: null) {
+  @if (list.index((right, left), $position-property) == null) {
     @error "Invalid position #{position-property}. Please specifiy either right or left";
   }
 
@@ -226,7 +227,7 @@
     $left-value: initial;
   }
 
-  @include mdc-rtl-reflexive(left, $left-value, right, $right-value, $root-selector);
+  @include reflexive(left, $left-value, right, $right-value, $root-selector);
 }
 
 // Takes pair of properties with values as arguments and flips it in RTL context.
@@ -234,7 +235,7 @@
 //
 // ```scss
 // .mdc-foo {
-//   @include mdc-rtl-reflexive(left, 2px, right, 5px);
+//   @include rtl-reflexive(left, 2px, right, 5px);
 // }
 // ```
 //
@@ -245,7 +246,7 @@
 //   left: 2px;
 //   right: 5px;
 //
-//   @include mdc-rtl {
+//   @include rtl {
 //     right: 2px;
 //     left: 5px;
 //   }
@@ -253,19 +254,19 @@
 // ```
 //
 // An optional fifth `$root-selector` argument may also be given, which is passed to `mdc-rtl`.
-@mixin mdc-rtl-reflexive(
+@mixin reflexive(
   $left-property,
   $left-value,
   $right-property,
   $right-value,
   $root-selector: null
 ) {
-  @include mdc-rtl-property_($left-property, $left-value);
-  @include mdc-rtl-property_($right-property, $right-value);
+  @include property_($left-property, $left-value);
+  @include property_($right-property, $right-value);
 
-  @include mdc-rtl($root-selector) {
-    @include mdc-rtl-property_($left-property, $right-value);
-    @include mdc-rtl-property_($right-property, $left-value);
+  @include rtl($root-selector) {
+    @include property_($left-property, $right-value);
+    @include property_($right-property, $left-value);
   }
 }
 
@@ -276,8 +277,8 @@
 /// @param {String} $value
 /// @access private
 ///
-@mixin mdc-rtl-property_($property, $value) {
-  @if $mdc-rtl-include {
+@mixin property_($property, $value) {
+  @if variables.$include {
     /* @noflip */
   }
 

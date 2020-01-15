@@ -20,27 +20,28 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/functions";
-@import "@material/theme/variables"; // for mdc-theme-prop-value() function
+@use "sass:color";
+@use "@material/theme/functions";
+@use "@material/theme/variables"; // for mdc-theme-prop-value() function
 
-$mdc-snackbar-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 80%) !default;
-$mdc-snackbar-label-ink-color: rgba(mdc-theme-prop-value(surface), mdc-theme-text-emphasis(high)) !default;
-$mdc-snackbar-action-ink-color: #bb86fc !default;
-$mdc-snackbar-dismiss-ink-color: rgba(mdc-theme-prop-value(surface), mdc-theme-text-emphasis(high)) !default;
+$fill-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 80%) !default;
+$label-ink-color: rgba(variables.prop-value(surface), variables.text-emphasis(high)) !default;
+$action-ink-color: #bb86fc !default;
+$dismiss-ink-color: rgba(variables.prop-value(surface), variables.text-emphasis(high)) !default;
 
-$mdc-snackbar-label-type-scale: body2 !default;
-$mdc-snackbar-dismiss-icon-size: 18px !default;
-$mdc-snackbar-min-width: 344px !default;
-$mdc-snackbar-max-width: 672px !default;
-$mdc-snackbar-mobile-breakpoint: 480px !default;
-$mdc-snackbar-viewport-margin-narrow: 8px !default;
-$mdc-snackbar-viewport-margin-wide: 24px !default;
-$mdc-snackbar-padding: 8px !default;
+$label-type-scale: body2 !default;
+$dismiss-icon-size: 18px !default;
+$min-width: 344px !default;
+$max-width: 672px !default;
+$mobile-breakpoint: 480px !default;
+$viewport-margin-narrow: 8px !default;
+$viewport-margin-wide: 24px !default;
+$padding: 8px !default;
 
-$mdc-snackbar-elevation: 6 !default;
-$mdc-snackbar-shape-radius: small !default; // Key from $mdc-shape-category-values or CSS length value (e.g., 4px)
-$mdc-snackbar-z-index: 8 !default; // One above mdc-dialog
+$elevation: 6 !default;
+$shape-radius: small !default; // Key from $mdc-shape-category-values or CSS length value (e.g., 4px)
+$z-index: 8 !default; // One above mdc-dialog
 
 // These variables need to be kept in sync with the values in constants.js.
-$mdc-snackbar-enter-duration: 150ms !default;
-$mdc-snackbar-exit-duration: 75ms !default;
+$enter-duration: 150ms !default;
+$exit-duration: 75ms !default;

@@ -20,6 +20,6 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-ripple-common;
-@include mdc-ripple-core-styles;
+@use "./mixins";
+@include mixins.common;
+@include mixins.core-styles;

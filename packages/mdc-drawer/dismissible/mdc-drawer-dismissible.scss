@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "../mixins";
-@include mdc-drawer-dismissible-core-styles;
+@use "../mixins";
+@include mixins.dismissible-core-styles;

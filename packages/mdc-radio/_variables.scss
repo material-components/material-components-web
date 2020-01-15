@@ -20,24 +20,24 @@
 // THE SOFTWARE.
 //
 
-@import "@material/density/variables";
-@import "@material/theme/variables";
+@use "@material/density/variables" as density-variables;
+@use "@material/theme/variables" as theme-variables;
 
-$mdc-radio-ripple-size: 40px !default;
-$mdc-radio-icon-size: 20px !default;
-$mdc-radio-transition-duration: 120ms !default;
-$mdc-radio-ripple-opacity: .14 !default;
-$mdc-radio-baseline-theme-color: secondary !default;
-$mdc-radio-unchecked-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
-$mdc-radio-disabled-circle-color: rgba(mdc-theme-prop-value(on-surface), .38) !default;
+$ripple-size: 40px !default;
+$icon-size: 20px !default;
+$transition-duration: 120ms !default;
+$ripple-opacity: .14 !default;
+$baseline-theme-color: secondary !default;
+$unchecked-color: rgba(theme-variables.prop-value(on-surface), .54) !default;
+$disabled-circle-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
 
-$mdc-radio-minimum-size: 28px !default;
-$mdc-radio-maximum-size: $mdc-radio-ripple-size !default;
-$mdc-radio-density-scale: $mdc-density-default-scale !default;
-$mdc-radio-density-config: (
+$minimum-size: 28px !default;
+$maximum-size: $ripple-size !default;
+$density-scale: density-variables.$default-scale !default;
+$density-config: (
   size: (
-    minimum: $mdc-radio-minimum-size,
-    default: $mdc-radio-ripple-size,
-    maximum: $mdc-radio-maximum-size,
+    minimum: $minimum-size,
+    default: $ripple-size,
+    maximum: $maximum-size,
   ),
 ) !default;

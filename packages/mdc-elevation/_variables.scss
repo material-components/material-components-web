@@ -20,14 +20,14 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/variables";
+@use "@material/animation/variables";
 
-$mdc-elevation-baseline-color: black !default;
-$mdc-elevation-umbra-opacity: .2 !default;
-$mdc-elevation-penumbra-opacity: .14 !default;
-$mdc-elevation-ambient-opacity: .12 !default;
+$baseline-color: black !default;
+$umbra-opacity: .2 !default;
+$penumbra-opacity: .14 !default;
+$ambient-opacity: .12 !default;
 
-$mdc-elevation-umbra-map: (
+$umbra-map: (
   0: "0px 0px 0px 0px",
   1: "0px 2px 1px -1px",
   2: "0px 3px 1px -2px",
@@ -55,7 +55,7 @@ $mdc-elevation-umbra-map: (
   24: "0px 11px 15px -7px"
 ) !default;
 
-$mdc-elevation-penumbra-map: (
+$penumbra-map: (
   0: "0px 0px 0px 0px",
   1: "0px 1px 1px 0px",
   2: "0px 2px 2px 0px",
@@ -83,7 +83,7 @@ $mdc-elevation-penumbra-map: (
   24: "0px 24px 38px 3px"
 ) !default;
 
-$mdc-elevation-ambient-map: (
+$ambient-map: (
   0: "0px 0px 0px 0px",
   1: "0px 1px 3px 0px",
   2: "0px 1px 5px 0px",
@@ -114,18 +114,18 @@ $mdc-elevation-ambient-map: (
 // The css property used for elevation. In most cases this should not be changed. It is exposed
 // as a variable for abstraction / easy use when needing to reference the property directly, for
 // example in a `will-change` rule.
-$mdc-elevation-property: box-shadow !default;
+$property: box-shadow !default;
 
 // The default color for the elevation overlay.
-$mdc-elevation-overlay-color: #fff;
+$overlay-color: #fff;
 
 // The css property used for elevation overlay transitions. In most cases this should not be changed. It is exposed
 // as a variable for abstraction / easy use when needing to reference the property directly, for
 // example in a `will-change` rule.
-$mdc-elevation-overlay-property: opacity !default;
+$overlay-property: opacity !default;
 
 // The default duration value for elevation transitions.
-$mdc-elevation-transition-duration: 280ms !default;
+$transition-duration: 280ms !default;
 
 // The default easing value for elevation transitions.
-$mdc-elevation-transition-timing-function: $mdc-animation-standard-curve-timing-function !default;
+$transition-timing-function: variables.$standard-curve-timing-function !default;

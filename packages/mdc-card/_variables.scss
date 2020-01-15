@@ -20,9 +20,10 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/mixins";
-@import "@material/theme/variables";
+@use "sass:color";
+@use "@material/theme/mixins";
+@use "@material/theme/variables";
 
-$mdc-card-action-icon-color: rgba(mdc-theme-prop-value(on-surface), mdc-theme-text-emphasis(medium)) !default;
-$mdc-card-outline-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%) !default;
-$mdc-card-outline-width: 1px !default;
+$action-icon-color: rgba(variables.prop-value(on-surface), variables.text-emphasis(medium)) !default;
+$outline-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 12%) !default;
+$outline-width: 1px !default;

@@ -20,6 +20,6 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-data-table-core-styles;
-@include mdc-data-table-theme-baseline;
+@use "./mixins";
+@include mixins.core-styles;
+@include mixins.theme-baseline;
