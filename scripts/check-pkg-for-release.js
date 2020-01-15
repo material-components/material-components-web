@@ -273,6 +273,12 @@ function checkComponentExportedAddedInMDCPackage(ast) {
   return isExported;
 }
 
+/**
+ * Checks that all dependencies used in SASS and TypeScript files in the package
+ * match up with those declared in package.json.
+ *
+ * @throws {AssertionError} Will throw an error if dependencies do not strictly match.
+ */
 function checkUsedDependenciesMatchDeclaredDependencies() {
   const files = readDirRecursive(
     PACKAGE_RELATIVE_PATH,
@@ -320,7 +326,7 @@ function getMissingDependencyMsg(missingDeps) {
   let msg = 'FAILURE: The following MDC dependencies were used in ' +
     CLI_PACKAGE_JSON.name + ' but were not declared in its package.json:\n' +
     missingDepsWithVersions.join('\n') +
-    '\n\nPlease add the missing dependencies to package.json manually, or by' +
+    '\n\nPlease add the missing dependencies to package.json manually, or by ' +
     'running the following command(s) on the root of the repository:\n';
 
   missingDepsWithVersions.forEach((dep) => {
