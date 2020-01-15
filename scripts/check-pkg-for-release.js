@@ -32,7 +32,7 @@ const assert = require('assert');
 const fs = require('fs');
 const readDirRecursive = require('fs-readdir-recursive');
 const path = require('path');
-const child_process = require('child_process');
+const childProcess = require('child_process');
 
 const {default: traverse} = require('babel-traverse');
 const parser = require('@babel/parser');
@@ -345,7 +345,7 @@ function getUnusedDependencyMsg(unusedDeps) {
 function getPackageNamesWithVersions(packageNames) {
   const packageNamesWithVersions = [];
   packageNames.forEach((name) => {
-    const version = child_process.execSync(`npm show ${name} version`).toString().replace('\n', '');
+    const version = childProcess.execSync(`npm show ${name} version`).toString().replace('\n', '');
     packageNamesWithVersions.push(`${name}@${version}`);
   });
   return packageNamesWithVersions;
