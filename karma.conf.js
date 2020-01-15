@@ -36,6 +36,14 @@ const FILES_TO_USE = [
   'testing/**/*.ts',
 ];
 
+// Files to exclude in Jasmine tests.
+const EXCLUDE_FILES = [
+  'packages/**/*.scss.test.ts',
+  'testing/helpers/sass-test-compile.helper.ts',
+  'testing/helpers/ts-node.helper.js',
+  'scripts/**/*.ts',
+];
+
 const HEADLESS_LAUNCHERS = {
   'ChromeHeadlessNoSandbox': {
     base: 'ChromeHeadless',
@@ -141,14 +149,10 @@ const mochaConfig = {
 const jasmineConfig = {
   basePath: '',
   files: FILES_TO_USE,
-  exclude: [
-    'packages/**/*.scss.test.ts',
-    'testing/helpers/sass-test-compile.helper.ts',
-    'testing/helpers/ts-node.helper.js',
-    'scripts/**/*.ts',
-  ],
+  exclude: EXCLUDE_FILES,
   frameworks: ['jasmine', 'karma-typescript'],
   karmaTypescriptConfig: {
+    exclude: EXCLUDE_FILES,
     coverageOptions: {
       threshold: {
         global: {

@@ -26,7 +26,7 @@
  * This helper file is executed before running jasmine node tests.
  */
 
-// tslint:disable-next-line:no-var-requires No deceleration file for dart-sass, use require() instead.
+// tslint:disable-next-line:no-var-requires dart-sass does not have type information, use require() instead.
 const sass = require('dart-sass');
 import fs from 'fs';
 import glob from 'glob';
