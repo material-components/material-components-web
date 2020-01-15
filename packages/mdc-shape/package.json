@@ -17,6 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@material/feature-targeting": "^5.0.0"
+    "@material/feature-targeting": "^5.0.0",
+    "@material/rtl": "^5.0.0"
   }
 }
