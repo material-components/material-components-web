@@ -112,7 +112,8 @@ export function captureHandlers(
   adapter[handlerCaptureMethodName]
       .withArgs(jasmine.any(String), jasmine.any(Function))
       .and.callFake((type: string, handler: Function) => {
-        handlers[type] = handler;
+        handlers[type] = (evtInfo: {[key: string]: any} = {}) =>
+            handler({type, ...evtInfo});
       });
   return handlers;
 }

@@ -32,12 +32,12 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     return new MDCSlider(root);
   }
 
-  protected root_!: HTMLElement; // assigned in MDCComponent constructor
+  protected root_!: HTMLElement;  // assigned in MDCComponent constructor
 
-  private thumbContainer_!: HTMLElement; // assigned in initialize()
-  private track_!: HTMLElement; // assigned in initialize()
-  private pinValueMarker_!: HTMLElement; // assigned in initialize()
-  private trackMarkerContainer_!: HTMLElement; // assigned in initialize()
+  private thumbContainer_!: HTMLElement;        // assigned in initialize()
+  private track_!: HTMLElement;                 // assigned in initialize()
+  private pinValueMarker_!: HTMLElement;        // assigned in initialize()
+  private trackMarkerContainer_!: HTMLElement;  // assigned in initialize()
 
   get value(): number {
     return this.foundation_.getValue();
@@ -80,16 +80,22 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   }
 
   initialize() {
-    this.thumbContainer_ = this.root_.querySelector<HTMLElement>(strings.THUMB_CONTAINER_SELECTOR)!;
-    this.track_ = this.root_.querySelector<HTMLElement>(strings.TRACK_SELECTOR)!;
-    this.pinValueMarker_ = this.root_.querySelector<HTMLElement>(strings.PIN_VALUE_MARKER_SELECTOR)!;
-    this.trackMarkerContainer_ = this.root_.querySelector<HTMLElement>(strings.TRACK_MARKER_CONTAINER_SELECTOR)!;
+    this.thumbContainer_ = this.root_.querySelector<HTMLElement>(
+        strings.THUMB_CONTAINER_SELECTOR)!;
+    this.track_ =
+        this.root_.querySelector<HTMLElement>(strings.TRACK_SELECTOR)!;
+    this.pinValueMarker_ = this.root_.querySelector<HTMLElement>(
+        strings.PIN_VALUE_MARKER_SELECTOR)!;
+    this.trackMarkerContainer_ = this.root_.querySelector<HTMLElement>(
+        strings.TRACK_MARKER_CONTAINER_SELECTOR)!;
   }
 
   getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
+    // tslint:disable:object-literal-sort-keys Methods should be in the same
+    // order as the adapter interface.
     const adapter: MDCSliderAdapter = {
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
@@ -99,25 +105,38 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       removeAttribute: (name) => this.root_.removeAttribute(name),
       computeBoundingRect: () => this.root_.getBoundingClientRect(),
       getTabIndex: () => this.root_.tabIndex,
-      registerInteractionHandler: (evtType, handler) => this.listen(evtType, handler, applyPassive()),
-      deregisterInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler, applyPassive()),
+      registerInteractionHandler: (evtType, handler) =>
+          this.listen(evtType, handler, applyPassive()),
+      deregisterInteractionHandler: (evtType, handler) =>
+          this.unlisten(evtType, handler, applyPassive()),
       registerThumbContainerInteractionHandler: (evtType, handler) => {
         this.thumbContainer_.addEventListener(evtType, handler, applyPassive());
       },
       deregisterThumbContainerInteractionHandler: (evtType, handler) => {
-        this.thumbContainer_.removeEventListener(evtType, handler, applyPassive());
+        this.thumbContainer_.removeEventListener(
+            evtType, handler, applyPassive());
       },
-      registerBodyInteractionHandler: (evtType, handler) => document.body.addEventListener(evtType, handler),
-      deregisterBodyInteractionHandler: (evtType, handler) => document.body.removeEventListener(evtType, handler),
-      registerResizeHandler: (handler) => window.addEventListener('resize', handler),
-      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
-      notifyInput: () => this.emit<MDCSlider>(strings.INPUT_EVENT, this), // TODO(acdvorak): Create detail interface
-      notifyChange: () => this.emit<MDCSlider>(strings.CHANGE_EVENT, this), // TODO(acdvorak): Create detail interface
+      registerBodyInteractionHandler: (evtType, handler) =>
+          document.body.addEventListener(evtType, handler),
+      deregisterBodyInteractionHandler: (evtType, handler) =>
+          document.body.removeEventListener(evtType, handler),
+      registerResizeHandler: (handler) =>
+          window.addEventListener('resize', handler),
+      deregisterResizeHandler: (handler) =>
+          window.removeEventListener('resize', handler),
+      notifyInput: () => this.emit<MDCSlider>(
+          strings.INPUT_EVENT,
+          this),  // TODO(acdvorak): Create detail interface
+      notifyChange: () => this.emit<MDCSlider>(
+          strings.CHANGE_EVENT,
+          this),  // TODO(acdvorak): Create detail interface
       setThumbContainerStyleProperty: (propertyName, value) => {
         this.thumbContainer_.style.setProperty(propertyName, value);
       },
-      setTrackStyleProperty: (propertyName, value) => this.track_.style.setProperty(propertyName, value),
-      setMarkerValue: (value) => this.pinValueMarker_.innerText = value.toLocaleString(),
+      setTrackStyleProperty: (propertyName, value) =>
+          this.track_.style.setProperty(propertyName, value),
+      setMarkerValue: (value) => this.pinValueMarker_.innerText =
+          value.toLocaleString(),
       setTrackMarkers: (step, max, min) => {
         const stepStr = step.toLocaleString();
         const maxStr = max.toLocaleString();
@@ -125,10 +144,13 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
         // keep calculation in css for better rounding/subpixel behavior
         const markerAmount = `((${maxStr} - ${minStr}) / ${stepStr})`;
         const markerWidth = `2px`;
-        const markerBkgdImage = `linear-gradient(to right, currentColor ${markerWidth}, transparent 0)`;
-        const markerBkgdLayout = `0 center / calc((100% - ${markerWidth}) / ${markerAmount}) 100% repeat-x`;
+        const markerBkgdImage = `linear-gradient(to right, currentColor ${
+            markerWidth}, transparent 0)`;
+        const markerBkgdLayout = `0 center / calc((100% - ${markerWidth}) / ${
+            markerAmount}) 100% repeat-x`;
         const markerBkgdShorthand = `${markerBkgdImage} ${markerBkgdLayout}`;
-        this.trackMarkerContainer_.style.setProperty('background', markerBkgdShorthand);
+        this.trackMarkerContainer_.style.setProperty(
+            'background', markerBkgdShorthand);
       },
       isRTL: () => getComputedStyle(this.root_).direction === 'rtl',
     };
@@ -137,9 +159,12 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   }
 
   initialSyncWithDOM() {
-    const origValueNow = this.parseFloat_(this.root_.getAttribute(strings.ARIA_VALUENOW), this.value);
-    const min = this.parseFloat_(this.root_.getAttribute(strings.ARIA_VALUEMIN), this.min);
-    const max = this.parseFloat_(this.root_.getAttribute(strings.ARIA_VALUEMAX), this.max);
+    const origValueNow = this.parseFloat_(
+        this.root_.getAttribute(strings.ARIA_VALUENOW), this.value);
+    const min = this.parseFloat_(
+        this.root_.getAttribute(strings.ARIA_VALUEMIN), this.min);
+    const max = this.parseFloat_(
+        this.root_.getAttribute(strings.ARIA_VALUEMAX), this.max);
 
     // min and max need to be set in the right order to avoid throwing an error
     // when the new min is greater than the default max.
@@ -151,12 +176,12 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       this.max = max;
     }
 
-    this.step = this.parseFloat_(this.root_.getAttribute(strings.STEP_DATA_ATTR), this.step);
+    this.step = this.parseFloat_(
+        this.root_.getAttribute(strings.STEP_DATA_ATTR), this.step);
     this.value = origValueNow;
-    this.disabled = (
-        this.root_.hasAttribute(strings.ARIA_DISABLED) &&
-        this.root_.getAttribute(strings.ARIA_DISABLED) !== 'false'
-    );
+    this.disabled =
+        (this.root_.hasAttribute(strings.ARIA_DISABLED) &&
+         this.root_.getAttribute(strings.ARIA_DISABLED) !== 'false');
     this.foundation_.setupTrackMarker();
   }
 
@@ -172,8 +197,8 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     this.value -= amount;
   }
 
-  private parseFloat_(str: string | null, defaultValue: number) {
-    const num = parseFloat(str!); // tslint:disable-line:ban
+  private parseFloat_(str: string|null, defaultValue: number) {
+    const num = parseFloat(str!);  // tslint:disable-line:ban
     const isNumeric = typeof num === 'number' && isFinite(num);
     return isNumeric ? num : defaultValue;
   }

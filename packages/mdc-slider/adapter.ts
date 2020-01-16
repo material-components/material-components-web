@@ -47,9 +47,10 @@ export interface MDCSliderAdapter {
   removeClass(className: string): void;
 
   /**
-   * Returns a string if attribute name exists on the slider Element, otherwise returns null
+   * Returns a string if attribute name exists on the slider Element, otherwise
+   * returns null
    */
-  getAttribute(name: string): string | null;
+  getAttribute(name: string): string|null;
 
   /**
    * Sets attribute name on slider Element to value
@@ -74,32 +75,40 @@ export interface MDCSliderAdapter {
   /**
    * Registers an event handler on the root element for a given event.
    */
-  registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  registerInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event handler on the root element for a given event.
    */
-  deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  deregisterInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
-   * Registers an event handler on the thumb container element for a given event.
+   * Registers an event handler on the thumb container element for a given
+   * event.
    */
-  registerThumbContainerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  registerThumbContainerInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
-   * Deregisters an event handler on the thumb container element for a given event.
+   * Deregisters an event handler on the thumb container element for a given
+   * event.
    */
-  deregisterThumbContainerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  deregisterThumbContainerInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event handler on the body for a given event.
    */
-  registerBodyInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  registerBodyInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event handler on the body for a given event.
    */
-  deregisterBodyInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  deregisterBodyInteractionHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event handler for the window resize event
