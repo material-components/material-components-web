@@ -50,6 +50,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       eventTargetHasClass: () => false,
       focusPrimaryAction: () => undefined,
       focusTrailingAction: () => undefined,
+      getAttribute: () => null,
       getCheckmarkBoundingClientRect: () => emptyClientRect,
       getComputedStyleValue: () => '',
       getRootBoundingClientRect: () => emptyClientRect,
@@ -180,7 +181,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
     if (shouldHandle && widthIsAnimating) {
       this.removeFocus_();
-      this.adapter_.notifyRemoval();
+      const removedAnnouncement =
+          this.adapter_.getAttribute(strings.REMOVED_ANNOUNCEMENT_ATTRIBUTE);
+
+      this.adapter_.notifyRemoval(removedAnnouncement);
     }
 
     // Handle a transition end event on the leading icon or checkmark, since the transition end event bubbles.

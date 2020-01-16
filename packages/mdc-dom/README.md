@@ -55,3 +55,12 @@ Method Signature | Description
 --- | ---
 `trapFocus() => void` | Traps focus in the root element. Also focuses on `initialFocusEl` if set; otherwise, sets initial focus to the first focusable child element.
 `releaseFocus() => void` | Releases focus from the root element. Also restores focus to the previously focused element.
+
+## Announce
+
+The `announce` utility file contains a single helper method for announcing a message via an `aria-live` region. It is intended for usage from MDC-internal components.
+
+Method Signature | Description
+--- | ---
+`announce(message: string, priority?: AnnouncerPriority) => void` | Announces the message via an `aria-live` region with the given priority (defaults to polite)
+<!-- TODO: Remove once only exported members are required in docs `say()` --> <!-- | --> <!-- DO NOT USE -->
