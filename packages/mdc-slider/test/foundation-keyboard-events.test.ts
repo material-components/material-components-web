@@ -30,11 +30,10 @@ describe('MDCSliderFoundation - keyboard events', () => {
   setUpMdcTestEnvironment();
 
   function createFakeEvent(info = {}) {
-    return Object.assign(
-        {
-          preventDefault: jasmine.createSpy('evt.preventDefault'),
-        },
-        info);
+    return {
+      preventDefault: jasmine.createSpy('evt.preventDefault'),
+      ...info,
+    }
   }
 
   it('on arrow left keydown prevents the default behavior', () => {
