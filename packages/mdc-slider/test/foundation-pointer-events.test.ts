@@ -260,7 +260,7 @@ describe('MDCSliderFoundation - pointer events', () => {
       jasmine.clock().tick(1);
 
       rootHandlers[downEvt](pageXObj(49));
-      bodyHandlers[moveEvt](Object.assign({preventDefault}, pageXObj(50)));
+      bodyHandlers[moveEvt]({preventDefault, ...pageXObj(50)});
       jasmine.clock().tick(1);
 
       expect(preventDefault).toHaveBeenCalled();
@@ -277,11 +277,10 @@ describe('MDCSliderFoundation - pointer events', () => {
          jasmine.clock().tick(1);
 
          rootHandlers[downEvt](pageXObj(49));
-         bodyHandlers[moveEvt](Object.assign(
-             {
-               preventDefault: () => {},
-             },
-             pageXObj(50)));
+         bodyHandlers[moveEvt]({
+           preventDefault: () => {},
+           ...pageXObj(50),
+         });
          jasmine.clock().tick(1);
 
          expect(foundation.getValue()).toEqual(50);
@@ -300,11 +299,10 @@ describe('MDCSliderFoundation - pointer events', () => {
       jasmine.clock().tick(1);
 
       rootHandlers[downEvt](pageXObj(49));
-      bodyHandlers[moveEvt](Object.assign(
-          {
-            preventDefault: () => {},
-          },
-          pageXObj(50)));
+      bodyHandlers[moveEvt]({
+        preventDefault: () => {},
+        ...pageXObj(50),
+      });
       jasmine.clock().tick(1);
 
       // Once on mousedown, once on mousemove
@@ -325,11 +323,10 @@ describe('MDCSliderFoundation - pointer events', () => {
          jasmine.clock().tick(1);
 
          rootHandlers[downEvt](pageXObj(49));
-         bodyHandlers[moveEvt](Object.assign(
-             {
-               preventDefault: () => {},
-             },
-             pageXObj(50)));
+         bodyHandlers[moveEvt]({
+           preventDefault: () => {},
+           ...pageXObj(50),
+         });
          jasmine.clock().tick(1);
 
          // Once on mousedown, once on mousemove
