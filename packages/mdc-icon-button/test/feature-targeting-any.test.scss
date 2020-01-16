@@ -1,0 +1,15 @@
+@use "../mixins" as icon-button;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include icon-button.core-styles($query: $query);
+    @include icon-button.density(0, $query: $query);
+    @include icon-button.size(0, $query: $query);
+    @include icon-button.icon-size(0, $query: $query);
+    @include icon-button.ink-color(red, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

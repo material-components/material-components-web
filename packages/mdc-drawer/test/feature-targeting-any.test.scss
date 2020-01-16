@@ -1,0 +1,29 @@
+@use "../mixins" as drawer;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include drawer.core-styles($query: $query);
+    @include drawer.dismissible-core-styles($query: $query);
+    @include drawer.modal-core-styles($query: $query);
+    @include drawer.activated-overlay-color(red, $query: $query);
+    @include drawer.border-color(red, $query: $query);
+    @include drawer.item-shape-radius(42, $query: $query);
+    @include drawer.shape-radius(42, $query: $query);
+    @include drawer.divider-color(red, $query: $query);
+    @include drawer.title-ink-color(red, $query: $query);
+    @include drawer.subtitle-ink-color(red, $query: $query);
+    @include drawer.fill-color-accessible(red, $query: $query);
+    @include drawer.item-icon-ink-color(red, $query: $query);
+    @include drawer.item-activated-icon-ink-color(red, $query: $query);
+    @include drawer.item-activated-text-ink-color(red, $query: $query);
+    @include drawer.item-text-ink-color(red, $query: $query);
+    @include drawer.surface-fill-color(red, $query: $query);
+    @include drawer.scrim-fill-color(red, $query: $query);
+    @include drawer.z-index(1337, $query: $query);
+    @include drawer.width(1337px, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

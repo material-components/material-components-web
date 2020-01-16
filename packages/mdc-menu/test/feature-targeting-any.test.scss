@@ -1,0 +1,12 @@
+@use "../mixins" as menu;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include menu.core-styles($query: $query);
+    @include menu.width(0, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

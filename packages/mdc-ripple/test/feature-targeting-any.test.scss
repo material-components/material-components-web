@@ -1,0 +1,23 @@
+@use "../mixins" as ripple;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include ripple.core-styles($query: $query);
+    @include ripple.common($query: $query);
+    @include ripple.surface($query: $query);
+    @include ripple.target-common($query: $query);
+    @include ripple.states-base-color(red, $query: $query);
+    @include ripple.states-hover-opacity(1, $query: $query);
+    @include ripple.states-focus-opacity(1, $query: $query);
+    @include ripple.states-press-opacity(1, $query: $query);
+    @include ripple.states($query: $query);
+    @include ripple.states-activated(red, $query: $query);
+    @include ripple.states-selected(red, $query: $query);
+    @include ripple.radius-bounded($query: $query);
+    @include ripple.radius-unbounded($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

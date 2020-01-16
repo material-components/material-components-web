@@ -1,0 +1,34 @@
+@use "../mixins" as chips;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include chips.core-styles($query: $query);
+    @include chips.elevation-transition($query: $query);
+    @include chips.density(-1, $query: $query);
+    @include chips.fill-color(red, $query: $query);
+    @include chips.fill-color-accessible(red, $query: $query);
+    @include chips.height(0, $query: $query);
+    @include chips.horizontal-padding(0, $query: $query);
+    @include chips.ink-color(red, $query: $query);
+    @include chips.leading-icon-color(red, $query: $query);
+    @include chips.leading-icon-margin($query: $query);
+    @include chips.leading-icon-size(0, $query: $query);
+    @include chips.outline($query: $query);
+    @include chips.outline-color(red, $query: $query);
+    @include chips.outline-style(soild, $query: $query);
+    @include chips.outline-width(0, $query: $query);
+    @include chips.ripple($query: $query);
+    @include chips.selected-ink-color(red, $query: $query);
+    @include chips.set-core-styles($query: $query);
+    @include chips.set-spacing(0, $query: $query);
+    @include chips.shape-radius(0, $query: $query);
+    @include chips.trailing-icon-color(red, $query: $query);
+    @include chips.trailing-icon-margin($query: $query);
+    @include chips.trailing-icon-size(0, $query: $query);
+    @include chips.without-ripple($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

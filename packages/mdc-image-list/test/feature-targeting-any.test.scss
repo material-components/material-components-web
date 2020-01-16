@@ -1,0 +1,15 @@
+@use "../mixins" as image-list;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include image-list.core-styles($query: $query);
+    @include image-list.aspect(1, $query: $query);
+    @include image-list.shape-radius(0, $query: $query);
+    @include image-list.standard-columns(4, 4px, $query: $query);
+    @include image-list.masonry-columns(4, 4px, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());
