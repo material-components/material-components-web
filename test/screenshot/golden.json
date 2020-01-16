@@ -1,36 +1,4 @@
 {
-  "spec/mdc-card/classes/baseline.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/02/14_50_15_747/spec/mdc-card/classes/baseline.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/02/14_50_15_747/spec/mdc-card/classes/baseline.html.windows_chrome_69.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/02/14_50_15_747/spec/mdc-card/classes/baseline.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/02/14_50_15_747/spec/mdc-card/classes/baseline.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-card/classes/media.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/10/14_25_41_111/spec/mdc-card/classes/media.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/10/14_25_41_111/spec/mdc-card/classes/media.html.windows_chrome_74.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2019/03/25/21_32_26_116/spec/mdc-card/classes/media.html.windows_firefox_65.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2019/03/25/21_32_26_116/spec/mdc-card/classes/media.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-card/mixins/color-and-shape.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/02/14_50_15_747/spec/mdc-card/mixins/color-and-shape.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/02/14_50_15_747/spec/mdc-card/mixins/color-and-shape.html.windows_chrome_69.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/02/14_50_15_747/spec/mdc-card/mixins/color-and-shape.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/02/14_50_15_747/spec/mdc-card/mixins/color-and-shape.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-card/mixins/media-aspect-ratio.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/10/14_25_41_111/spec/mdc-card/mixins/media-aspect-ratio.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/10/14_25_41_111/spec/mdc-card/mixins/media-aspect-ratio.html.windows_chrome_74.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-card/mixins/media-aspect-ratio.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/02/14_50_15_747/spec/mdc-card/mixins/media-aspect-ratio.html.windows_ie_11.png"
-    }
-  },
   "spec/mdc-dialog/classes/baseline-alert-above-drawer.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/08/27/16_53_20_055/spec/mdc-dialog/classes/baseline-alert-above-drawer.html?utm_source=golden_json",
     "screenshots": {
