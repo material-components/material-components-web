@@ -113,7 +113,7 @@ export function captureHandlers(
       .withArgs(jasmine.any(String), jasmine.any(Function))
       .and.callFake((type: string, handler: Function) => {
         handlers[type] = (evtInfo: {[key: string]: any} = {}) =>
-            handler(Object.assign({type}, evtInfo));
+            handler({type, ...evtInfo});
       });
   return handlers;
 }
