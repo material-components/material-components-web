@@ -436,7 +436,15 @@
 
   .mdc-slider__track-container {
     @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(background-color, rgba(theme-variables.prop-value($color), $opacity));
+      &::after {
+        @include theme-mixins.prop(background-color, $color);
+
+        display: block;
+        width: 100%;
+        height: 100%;
+        opacity: $opacity;
+        content: "";
+      }
     }
   }
 }

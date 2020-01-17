@@ -1,0 +1,11 @@
+{
+  "spec_dir": ".",
+  "spec_files": [
+    "packages/**/test/*.scss.test.ts"
+  ],
+  "helpers": [
+    "testing/helpers/ts-node.helper.js",
+    "testing/helpers/sass-test-compile.helper.ts"
+  ],
+  "stopSpecOnExpectationFailure": false
+}

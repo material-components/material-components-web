@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,15 @@
  * THE SOFTWARE.
  */
 
-window.mdc.testFixture.fontsLoaded.then(() => {
-  window.mdc.testFixture.notifyDomReady();
+import 'jasmine';
+
+import * as fs from 'fs';
+import * as path from 'path';
+
+describe('mdc-button.scss', () => {
+  it('Sass produces no CSS when we ask for no features in feature targeting', () => {
+    const filePath = path.join(__dirname, 'feature-targeting-any.test.css');
+    const css = fs.readFileSync(filePath, 'utf8').trim();
+    expect(css).toEqual('');
+  });
 });

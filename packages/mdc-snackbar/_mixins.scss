@@ -94,6 +94,8 @@
 
   .mdc-snackbar__surface {
     @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(padding, 0, variables.$padding);
+
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -131,12 +133,15 @@
     @include typography-mixins.typography(variables.$label-type-scale, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(padding, 16px, variables.$padding);
+
       flex-grow: 1;
       box-sizing: border-box;
       margin: 0;
 
       // 14px top/bottom padding needed to make the height 48px.
-      padding: 14px 16px;
+      padding-top: 14px;
+      padding-bottom: 14px;
     }
   }
 
@@ -151,7 +156,6 @@
 
   .mdc-snackbar__actions {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(margin, 0, variables.$padding);
 
       display: flex;
       flex-shrink: 0;
@@ -271,6 +275,13 @@
 
 @mixin layout-stacked($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-snackbar__label {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(padding, 16px, 0);
+      padding-bottom: 12px;
+    }
+  }
 
   .mdc-snackbar__surface {
     @include feature-targeting-mixins.targets($feat-structure) {

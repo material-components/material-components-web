@@ -17,6 +17,7 @@ packages/*/dist
 packages/**/*.js
 packages/**/*.d.ts
 packages/**/*.map
+packages/**/test/**.css
 
 # Material.io site generator test (`npm run test:site`)
 .site-generator-tmp/
