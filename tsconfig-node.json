@@ -1,7 +1,7 @@
 {
   "include": [
     "packages/**/test/*scss.test.ts",
-    "testing/helpers/sass-test-compile.helper.ts",
+    "testing/featuretargeting/**",
   ],
   "extends": "./tsconfig-base.json",
   "types": ["node"]

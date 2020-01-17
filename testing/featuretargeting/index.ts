@@ -21,12 +21,16 @@
  * THE SOFTWARE.
  */
 
-import 'jasmine';
+import * as fs from 'fs';
 
-import * as path from 'path';
-import {expectStylesWithNoFeaturesToBeEmpty} from '../../../testing/featuretargeting';
-
-describe('mdc-button.scss', () => {
-  expectStylesWithNoFeaturesToBeEmpty(
-    path.join(__dirname, 'feature-targeting-any.test.css'));
-});
+/**
+ * Tests if generated CSS with no features in feature targeting expected to be
+ * empty. Use this from Jasmine node test suite.
+ * @param filePath File path of CSS files that you want to test.
+ */
+export const expectStylesWithNoFeaturesToBeEmpty = (filePath: string) => {
+  it('Sass produces no CSS when we ask for no features in feature targeting', () => {
+    const css = fs.readFileSync(filePath, 'utf8').trim();
+    expect(css).toEqual('');
+  });
+};

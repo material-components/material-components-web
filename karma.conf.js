@@ -39,8 +39,8 @@ const FILES_TO_USE = [
 // Files to exclude in Jasmine tests.
 const EXCLUDE_FILES = [
   'packages/**/*.scss.test.ts',
-  'testing/helpers/sass-test-compile.helper.ts',
-  'testing/helpers/ts-node.helper.js',
+  'testing/featuretargeting/**',
+  'testing/ts-node.register.js',
   'scripts/**/*.ts',
 ];
 
