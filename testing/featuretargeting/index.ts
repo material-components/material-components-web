@@ -29,8 +29,9 @@ import * as fs from 'fs';
  * @param filePath File path of CSS files that you want to test.
  */
 export const expectStylesWithNoFeaturesToBeEmpty = (filePath: string) => {
-  it('Sass produces no CSS when we ask for no features in feature targeting', () => {
-    const css = fs.readFileSync(filePath, 'utf8').trim();
-    expect(css).toEqual('');
-  });
+  it('Sass produces no CSS when we ask for no features in feature targeting',
+     () => {
+       const css = fs.readFileSync(filePath, 'utf8').trim();
+       expect(css).toEqual('');
+     });
 };

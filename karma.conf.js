@@ -64,6 +64,8 @@ const SAUCE_LAUNCHERS = {
   },
 };
 
+const PROGRESS = USE_SAUCE ? 'dots' : 'progress';
+
 const customLaunchers = Object.assign({}, USE_SAUCE ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
 const browsers = USE_SAUCE ? Object.keys(customLaunchers) : ['Chrome'];
 const istanbulInstrumenterLoader = {
@@ -114,7 +116,7 @@ const mochaConfig = {
   preprocessors: {
     'test/unit/index.js': ['webpack', 'sourcemap'],
   },
-  reporters: ['progress', 'coverage-istanbul'],
+  reporters: [PROGRESS, 'coverage-istanbul'],
 
   coverageIstanbulReporter: {
     'dir': 'coverage',
@@ -210,7 +212,7 @@ const jasmineConfig = {
     obj[file] = 'karma-typescript';
     return obj;
   }, {}),
-  reporters: ['progress', 'karma-typescript'],
+  reporters: [PROGRESS, 'karma-typescript'],
 };
 
 module.exports = function(config) {

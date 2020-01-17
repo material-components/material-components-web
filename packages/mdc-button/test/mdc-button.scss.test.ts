@@ -28,5 +28,5 @@ import {expectStylesWithNoFeaturesToBeEmpty} from '../../../testing/featuretarge
 
 describe('mdc-button.scss', () => {
   expectStylesWithNoFeaturesToBeEmpty(
-    path.join(__dirname, 'feature-targeting-any.test.css'));
+      path.join(__dirname, 'feature-targeting-any.test.css'));
 });

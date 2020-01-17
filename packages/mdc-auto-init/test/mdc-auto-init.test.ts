@@ -114,6 +114,7 @@ describe('MDCAutoInit', () => {
   });
 
   it('#register warns when registered key is being overridden', () => {
+    setupTest();
     const warn = jasmine.createSpy('warn');
     mdcAutoInit.register(
         'FakeComponent',
