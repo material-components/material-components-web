@@ -435,7 +435,7 @@
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-slider__track-container {
-	  @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting-mixins.targets($feat-color) {
       &::after {
         @include theme-mixins.prop(background-color, $color);
 
