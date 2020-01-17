@@ -78,7 +78,7 @@ function setupTestWithMocks(fixture = getFixture()) {
 
   const mockFoundation = createMockFoundation(MDCSnackbarFoundation);
   const announce = jasmine.createSpy('announce');
-  const component = new MDCSnackbar(root, mockFoundation, () => announce)!;
+  const component = new MDCSnackbar(root, mockFoundation, () => announce);
 
   return {
     component,
