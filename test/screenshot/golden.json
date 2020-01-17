@@ -511,22 +511,6 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2020/01/14/18_50_51_450/spec/mdc-shape/variables/override.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-slider/classes/baseline_continuous.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/13/21_53_54_571/spec/mdc-slider/classes/baseline_continuous.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/13/21_53_54_571/spec/mdc-slider/classes/baseline_continuous.html.windows_chrome_75.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/13/21_53_54_571/spec/mdc-slider/classes/baseline_continuous.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/13/21_53_54_571/spec/mdc-slider/classes/baseline_continuous.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-slider/classes/baseline_discrete.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/13/21_53_54_571/spec/mdc-slider/classes/baseline_discrete.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/13/21_53_54_571/spec/mdc-slider/classes/baseline_discrete.html.windows_chrome_75.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/13/21_53_54_571/spec/mdc-slider/classes/baseline_discrete.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/13/21_53_54_571/spec/mdc-slider/classes/baseline_discrete.html.windows_ie_11.png"
-    }
-  },
   "spec/mdc-snackbar/classes/baseline-with-action.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/esgonzalez/2020/01/15/01_02_34_587/spec/mdc-snackbar/classes/baseline-with-action.html?utm_source=golden_json",
     "screenshots": {
