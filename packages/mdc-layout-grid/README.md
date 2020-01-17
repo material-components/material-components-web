@@ -149,7 +149,7 @@ Generates CSS for a grid container on certain device type. The mixin takes three
 - `$margin`: the size of the grid margin.
 - `$max-width` (optional): the maximum width of the grid, at which point space stops being distributed by the columns.
 
-#### `mdc-layout-grid-inner($size, $margin, $max-width)`
+#### `mdc-layout-grid-inner($size, $margin, $gutter)`
 
 Generates CSS for a grid cell wrapper on certain device type. The mixin takes three parameters:
 - `$size`: the target platform: `desktop`, `tablet` or `phone`.

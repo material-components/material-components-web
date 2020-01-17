@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +21,17 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '../../../packages/mdc-animation/index.ts';
-import {captureHandlers} from '../helpers/foundation';
-import {install as installClock} from '../helpers/clock';
-import {setupFoundationTest} from '../helpers/setup';
+import * as fs from 'fs';
 
-import {MDCSliderFoundation} from '../../../packages/mdc-slider/foundation';
-
-export const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
-
-export function setupEventTest() {
-  const {foundation, mockAdapter} = setupFoundationTest(MDCSliderFoundation);
-  const clock = installClock();
-
-  return {
-    foundation,
-    mockAdapter,
-    clock,
-    rootHandlers: captureHandlers(mockAdapter, 'registerInteractionHandler'),
-    thumbContainerHandlers: captureHandlers(mockAdapter, 'registerThumbContainerInteractionHandler'),
-    bodyHandlers: captureHandlers(mockAdapter, 'registerBodyInteractionHandler'),
-  };
-}
+/**
+ * Tests if generated CSS with no features in feature targeting expected to be
+ * empty. Use this from Jasmine node test suite.
+ * @param filePath File path of CSS files that you want to test.
+ */
+export const expectStylesWithNoFeaturesToBeEmpty = (filePath: string) => {
+  it('Sass produces no CSS when we ask for no features in feature targeting',
+     () => {
+       const css = fs.readFileSync(filePath, 'utf8').trim();
+       expect(css).toEqual('');
+     });
+};

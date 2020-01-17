@@ -4,8 +4,8 @@
     "packages/**/test/*.scss.test.ts"
   ],
   "helpers": [
-    "testing/helpers/ts-node.helper.js",
-    "testing/helpers/sass-test-compile.helper.ts"
+    "testing/ts-node.register.js",
+    "testing/featuretargeting/sass-test-compile.helper.ts"
   ],
   "stopSpecOnExpectationFailure": false
 }

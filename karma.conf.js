@@ -39,8 +39,8 @@ const FILES_TO_USE = [
 // Files to exclude in Jasmine tests.
 const EXCLUDE_FILES = [
   'packages/**/*.scss.test.ts',
-  'testing/helpers/sass-test-compile.helper.ts',
-  'testing/helpers/ts-node.helper.js',
+  'testing/featuretargeting/**',
+  'testing/ts-node.register.js',
   'scripts/**/*.ts',
 ];
 
@@ -64,6 +64,8 @@ const SAUCE_LAUNCHERS = {
   },
 };
 
+const PROGRESS = USE_SAUCE ? 'dots' : 'progress';
+
 const customLaunchers = Object.assign({}, USE_SAUCE ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
 const browsers = USE_SAUCE ? Object.keys(customLaunchers) : ['Chrome'];
 const istanbulInstrumenterLoader = {
@@ -75,6 +77,7 @@ const istanbulInstrumenterLoader = {
     /node_modules/,
     /adapter.[jt]s$/,
     /animation\/.*$/,
+    /auto-init\/.*$/,
     /base\/.*$/,
     /checkbox\/.*$/,
     /chips\/.*$/,
@@ -90,6 +93,7 @@ const istanbulInstrumenterLoader = {
     /notched-outline\/.*$/,
     /radio\/.*$/,
     /slider\/.*$/,
+    /snackbar\/.*$/,
     /switch\/.*$/,
     /tab-bar\/.*$/,
     /tab-scroller\/.*$/,
@@ -112,7 +116,7 @@ const mochaConfig = {
   preprocessors: {
     'test/unit/index.js': ['webpack', 'sourcemap'],
   },
-  reporters: ['progress', 'coverage-istanbul'],
+  reporters: [PROGRESS, 'coverage-istanbul'],
 
   coverageIstanbulReporter: {
     'dir': 'coverage',
@@ -168,6 +172,7 @@ const jasmineConfig = {
             'constants.ts',
             'testing/**/*.ts',
             'packages/!(mdc-animation)/**/*',
+            'packages/!(mdc-auto-init)/**/*',
             'packages/!(mdc-base)/**/*',
             'packages/!(mdc-checkbox)/**/*',
             'packages/!(mdc-chips)/**/*',
@@ -182,6 +187,7 @@ const jasmineConfig = {
             'packages/!(mdc-notched-outline)/**/*',
             'packages/!(mdc-radio)/**/*',
             'packages/!(mdc-slider)/**/*',
+            'packages/!(mdc-snackbar)/**/*',
             'packages/!(mdc-switch)/**/*',
             'packages/!(mdc-tab-bar)/**/*',
             'packages/!(mdc-tab-scroller)/**/*',
@@ -206,7 +212,7 @@ const jasmineConfig = {
     obj[file] = 'karma-typescript';
     return obj;
   }, {}),
-  reporters: ['progress', 'karma-typescript'],
+  reporters: [PROGRESS, 'karma-typescript'],
 };
 
 module.exports = function(config) {
