@@ -23,10 +23,13 @@
 
 import 'jasmine';
 
+import * as fs from 'fs';
 import * as path from 'path';
-import {expectStylesWithNoFeaturesToBeEmpty} from '../../../testing/featuretargeting';
 
 describe('mdc-button.scss', () => {
-  expectStylesWithNoFeaturesToBeEmpty(
-    path.join(__dirname, 'feature-targeting-any.test.css'));
+  it('Sass produces no CSS when we ask for no features in feature targeting', () => {
+    const filePath = path.join(__dirname, 'feature-targeting-any.test.css');
+    const css = fs.readFileSync(filePath, 'utf8').trim();
+    expect(css).toEqual('');
+  });
 });
