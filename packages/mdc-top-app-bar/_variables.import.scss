@@ -1,1 +1,1 @@
-@forward "variables" as mdc-top-app-bar-*;
+@forward "./index" as mdc-top-app-bar-* hide mdc-top-app-bar-ink-color, mdc-top-app-bar-fill-color, mdc-top-app-bar-fill-color-accessible, mdc-top-app-bar-icon-ink-color, mdc-top-app-bar-short-shape-radius, mdc-top-app-bar-mobile-breakpoint-;

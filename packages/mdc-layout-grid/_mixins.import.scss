@@ -1,3 +1,2 @@
-@forward "variables" as mdc-layout-grid-*;
-@forward "mixins" as mdc-* show mdc-layout-grid;
-@forward "mixins" as mdc-layout-grid-* hide mdc-layout-grid-layout-grid;
+@forward "./index" as mdc-layout-grid-* hide mdc-layout-grid-layout-grid;
+@forward "./index" as mdc-*;

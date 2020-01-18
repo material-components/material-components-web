@@ -1,4 +1,2 @@
-@forward "@material/theme/constants" as mdc-theme-*;
-@forward "@material/theme/variables" as mdc-theme-*;
-@forward "@material/theme/functions" as mdc-theme-*;
-@forward "variables" as mdc-drawer-*;
+@forward "@material/theme" as mdc-theme-* hide mdc-theme-core-styles, mdc-theme-prop;
+@forward "./index" as mdc-drawer-* hide mdc-drawer-core-styles, mdc-drawer-dismissible-core-styles, mdc-drawer-modal-core-styles, mdc-drawer-activated-overlay-color, mdc-drawer-border-color, mdc-drawer-item-shape-radius, mdc-drawer-shape-radius, mdc-drawer-divider-color, mdc-drawer-title-ink-color, mdc-drawer-subtitle-ink-color, mdc-drawer-fill-color-accessible, mdc-drawer-item-icon-ink-color, mdc-drawer-item-activated-icon-ink-color, mdc-drawer-item-activated-text-ink-color, mdc-drawer-item-text-ink-color, mdc-drawer-surface-fill-color, mdc-drawer-scrim-fill-color, mdc-drawer-z-index, mdc-drawer-width, mdc-drawer-list-item-;

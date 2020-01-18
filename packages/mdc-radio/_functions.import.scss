@@ -1,8 +1,4 @@
-@forward "@material/animation/variables" as mdc-animation-*;
-@forward "@material/density/variables" as mdc-density-*;
-@forward "@material/theme/constants" as mdc-theme-*;
-@forward "@material/theme/variables" as mdc-theme-*;
-@forward "variables" as mdc-radio-*;
-@forward "@material/animation/functions" as mdc-animation-*;
-@forward "@material/theme/functions" as mdc-theme-*;
-@forward "functions" as mdc-radio-*;
+@forward "@material/animation" as mdc-animation-*;
+@forward "@material/density" as mdc-density-* hide mdc-density-prop-value;
+@forward "@material/theme" as mdc-theme-* hide mdc-theme-core-styles, mdc-theme-prop;
+@forward "./index" as mdc-radio-* hide $mdc-radio-ripple-target, mdc-radio-core-styles, mdc-radio-without-ripple, mdc-radio-ripple, mdc-radio-unchecked-stroke-color, mdc-radio-checked-stroke-color, mdc-radio-ink-color, mdc-radio-disabled-unchecked-stroke-color, mdc-radio-disabled-checked-stroke-color, mdc-radio-disabled-ink-color, mdc-radio-focus-indicator-color, mdc-radio-touch-target, mdc-radio-density, mdc-radio-ripple-size, mdc-radio-touch-target-reset-, mdc-radio-if-enabled-, mdc-radio-if-enabled-unchecked-, mdc-radio-if-enabled-checked-, mdc-radio-if-disabled-, mdc-radio-if-disabled-unchecked-, mdc-radio-if-disabled-checked-, mdc-radio-ink-color-, mdc-radio-stroke-color-;

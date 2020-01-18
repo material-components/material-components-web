@@ -1,1 +1,1 @@
-@forward "variables" as mdc-grid-list-*;
+@forward "./index" as mdc-grid-list-* hide mdc-grid-list-core-styles, mdc-grid-list-tile-aspect, mdc-grid-list-tile-gutter;

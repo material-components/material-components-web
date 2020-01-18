@@ -1,4 +1,2 @@
-@forward "@material/theme/constants" as mdc-theme-*;
-@forward "@material/theme/variables" as mdc-theme-*;
-@forward "@material/theme/functions" as mdc-theme-*;
-@forward "variables" as mdc-snackbar-*;
+@forward "@material/theme" as mdc-theme-* hide mdc-theme-core-styles, mdc-theme-prop;
+@forward "./index" as mdc-snackbar-* hide mdc-snackbar-core-styles, mdc-snackbar-fill-color, mdc-snackbar-label-ink-color, mdc-snackbar-shape-radius, mdc-snackbar-min-width, mdc-snackbar-max-width, mdc-snackbar-elevation, mdc-snackbar-viewport-margin, mdc-snackbar-z-index, mdc-snackbar-position-leading, mdc-snackbar-layout-stacked;

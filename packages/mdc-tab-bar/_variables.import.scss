@@ -1,6 +1,4 @@
-@forward "@material/density/variables" as mdc-density-*;
-@forward "@material/theme/constants" as mdc-theme-*;
-@forward "@material/theme/variables" as mdc-theme-*;
-@forward "@material/tab/variables" as mdc-tab-*;
-@forward "@material/theme/functions" as mdc-theme-*;
-@forward "variables" as mdc-tab-bar-*;
+@forward "@material/density" as mdc-density-* hide mdc-density-prop-value;
+@forward "@material/theme" as mdc-theme-* hide mdc-theme-core-styles, mdc-theme-prop;
+@forward "@material/tab" as mdc-tab-* hide mdc-tab-core-styles, mdc-tab-without-ripple, mdc-tab-ripple, mdc-tab-horizontal-padding, mdc-tab-text-label-color, mdc-tab-icon-color, mdc-tab-states-color, mdc-tab-ink-color, mdc-tab-active-text-label-color, mdc-tab-active-icon-color, mdc-tab-active-states-color, mdc-tab-parent-positioning, mdc-tab-fixed-width, mdc-tab-height, mdc-tab-text-transform, mdc-tab-base-, mdc-tab-ripple-, mdc-tab-content-, mdc-tab-stacked-, mdc-tab-active-;
+@forward "./index" as mdc-tab-bar-* hide mdc-tab-bar-core-styles, mdc-tab-bar-width, mdc-tab-bar-density, mdc-tab-bar-stacked-density, mdc-tab-bar-tab-scroller-transition;

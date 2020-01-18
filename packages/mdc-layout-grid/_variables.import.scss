@@ -1,1 +1,1 @@
-@forward "variables" as mdc-layout-grid-*;
+@forward "./index" as mdc-layout-grid-* hide mdc-layout-grid-media-query-, mdc-layout-grid-cell-span-, mdc-layout-grid-layout-grid, mdc-layout-grid-inner, mdc-layout-grid-cell, mdc-layout-grid-cell-order, mdc-layout-grid-cell-align, mdc-layout-grid-fixed-column-width, mdc-layout-grid-breakpoint-min, mdc-layout-grid-breakpoint-max;

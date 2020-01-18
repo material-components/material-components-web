@@ -1,1 +1,1 @@
-@forward "variables" as mdc-fab-*;
+@forward "./index" as mdc-fab-* hide $mdc-fab-ripple-target, $mdc-fab-icon-enter-delay-, $mdc-fab-icon-enter-duration-, mdc-fab-core-styles, mdc-fab-without-ripple, mdc-fab-ripple, mdc-fab-accessible, mdc-fab-container-color, mdc-fab-icon-size, mdc-fab-ink-color, mdc-fab-extended-fluid, mdc-fab-extended-padding, mdc-fab-extended-label-padding, mdc-fab-shape-radius, mdc-fab-extended-shape-radius, mdc-fab-base-, mdc-fab-mini-, mdc-fab-extended-, mdc-fab-icon-, mdc-fab-label-, mdc-fab-icon-overrides-, mdc-fab-exited-;
