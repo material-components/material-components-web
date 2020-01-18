@@ -36,11 +36,11 @@ describe('MDCSliderFoundation - pointer events', () => {
   createTestSuiteForPointerEvents('pointerdown', 'pointermove', 'pointerup');
   createTestSuiteForPointerEvents(
       'touchstart', 'touchmove', 'touchend',
-      (pageX: number) => ({targetTouches: [{pageX}]}));
+      (clientX: number) => ({targetTouches: [{clientX}]}));
 
   function createTestSuiteForPointerEvents(
       downEvt: string, moveEvt: string, upEvt: string,
-      pageXObj: Function = (pageX: number) => ({pageX})) {
+      clientXObj: Function = (clientX: number) => ({clientX})) {
     it(`on ${
            downEvt} sets the value of the slider using the X coordinate of the event`,
        () => {
@@ -50,7 +50,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(50));
+         rootHandlers[downEvt](clientXObj(50));
          jasmine.clock().tick(1);
 
          expect(foundation.getValue()).toEqual(50);
@@ -71,7 +71,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(50));
+         rootHandlers[downEvt](clientXObj(50));
          jasmine.clock().tick(1);
 
          expect(foundation.getValue()).toEqual(40);
@@ -93,7 +93,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(25));
+         rootHandlers[downEvt](clientXObj(25));
          jasmine.clock().tick(1);
 
          expect(foundation.getValue()).toEqual(75);
@@ -112,7 +112,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(50));
+         rootHandlers[downEvt](clientXObj(50));
          jasmine.clock().tick(1);
 
          expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.ACTIVE);
@@ -128,7 +128,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(50));
+         rootHandlers[downEvt](clientXObj(50));
          jasmine.clock().tick(1);
 
          expect(mockAdapter.addClass)
@@ -145,7 +145,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         thumbContainerHandlers[downEvt](pageXObj(2));
+         thumbContainerHandlers[downEvt](clientXObj(2));
          jasmine.clock().tick(1);
 
          expect(mockAdapter.addClass)
@@ -162,7 +162,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(2));
+         rootHandlers[downEvt](clientXObj(2));
          jasmine.clock().tick(1);
 
          // Sanity check
@@ -181,7 +181,7 @@ describe('MDCSliderFoundation - pointer events', () => {
       foundation.init();
       jasmine.clock().tick(1);
 
-      rootHandlers[downEvt](pageXObj(50));
+      rootHandlers[downEvt](clientXObj(50));
       jasmine.clock().tick(1);
 
       expect(mockAdapter.notifyInput).toHaveBeenCalled();
@@ -199,7 +199,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(50));
+         rootHandlers[downEvt](clientXObj(50));
          jasmine.clock().tick(1);
 
          expect(mockAdapter.setMarkerValue).toHaveBeenCalledWith(isA(Number));
@@ -215,7 +215,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(50));
+         rootHandlers[downEvt](clientXObj(50));
          jasmine.clock().tick(1);
 
          expect(mockAdapter.registerBodyInteractionHandler)
@@ -238,7 +238,7 @@ describe('MDCSliderFoundation - pointer events', () => {
       const valueBeforeEvent = foundation.getValue();
       foundation.setDisabled(true);
 
-      rootHandlers[downEvt](pageXObj(50));
+      rootHandlers[downEvt](clientXObj(50));
       jasmine.clock().tick(1);
 
       expect(foundation.getValue()).toEqual(valueBeforeEvent);
@@ -259,8 +259,8 @@ describe('MDCSliderFoundation - pointer events', () => {
       foundation.init();
       jasmine.clock().tick(1);
 
-      rootHandlers[downEvt](pageXObj(49));
-      bodyHandlers[moveEvt]({preventDefault, ...pageXObj(50)});
+      rootHandlers[downEvt](clientXObj(49));
+      bodyHandlers[moveEvt]({preventDefault, ...clientXObj(50)});
       jasmine.clock().tick(1);
 
       expect(preventDefault).toHaveBeenCalled();
@@ -276,10 +276,10 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(49));
+         rootHandlers[downEvt](clientXObj(49));
          bodyHandlers[moveEvt]({
            preventDefault: () => {},
-           ...pageXObj(50),
+           ...clientXObj(50),
          });
          jasmine.clock().tick(1);
 
@@ -298,10 +298,10 @@ describe('MDCSliderFoundation - pointer events', () => {
       foundation.init();
       jasmine.clock().tick(1);
 
-      rootHandlers[downEvt](pageXObj(49));
+      rootHandlers[downEvt](clientXObj(49));
       bodyHandlers[moveEvt]({
         preventDefault: () => {},
-        ...pageXObj(50),
+        ...clientXObj(50),
       });
       jasmine.clock().tick(1);
 
@@ -322,10 +322,10 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(49));
+         rootHandlers[downEvt](clientXObj(49));
          bodyHandlers[moveEvt]({
            preventDefault: () => {},
-           ...pageXObj(50),
+           ...clientXObj(50),
          });
          jasmine.clock().tick(1);
 
@@ -344,7 +344,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(50));
+         rootHandlers[downEvt](clientXObj(50));
          jasmine.clock().tick(1);
          bodyHandlers[upEvt]();
 
@@ -363,7 +363,7 @@ describe('MDCSliderFoundation - pointer events', () => {
          foundation.init();
          jasmine.clock().tick(1);
 
-         rootHandlers[downEvt](pageXObj(50));
+         rootHandlers[downEvt](clientXObj(50));
          jasmine.clock().tick(1);
          bodyHandlers[upEvt]();
 
@@ -384,7 +384,7 @@ describe('MDCSliderFoundation - pointer events', () => {
       foundation.init();
       jasmine.clock().tick(1);
 
-      rootHandlers[downEvt](pageXObj(50));
+      rootHandlers[downEvt](clientXObj(50));
       jasmine.clock().tick(1);
       bodyHandlers[upEvt]();
 
