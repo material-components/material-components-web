@@ -21,7 +21,4 @@
 //
 
 @use "./mixins";
-
-.mdc-text-field__icon {
-  @include mixins.icon_;
-}
+@include mixins.icon-core-styles;

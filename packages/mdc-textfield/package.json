@@ -23,6 +23,7 @@
     "@material/base": "^4.0.0",
     "@material/density": "^4.0.0",
     "@material/dom": "^4.0.0",
+    "@material/feature-targeting": "^4.0.0",
     "@material/floating-label": "^4.0.0",
     "@material/line-ripple": "^4.0.0",
     "@material/notched-outline": "^4.0.0",

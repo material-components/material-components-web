@@ -20,16 +20,55 @@
 // THE SOFTWARE.
 //
 
+@use "../functions";
 @use "@material/theme/mixins";
+@use "@material/typography/mixins" as typography-mixins;
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 // Public mixins
+
+@mixin helper-text-core-styles($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+
+  // postcss-bem-linter: define text-field-helper-text
+
+  .mdc-text-field-helper-text {
+    @include typography-mixins.typography(caption, $query: $query);
+    @include typography-mixins.baseline-top(16px, $query: $query);
+
+    @include feature-targeting-mixins.targets($feat-structure) {
+      margin: 0;
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    @include feature-targeting-mixins.targets($feat-animation) {
+      transition: functions.transition(opacity);
+    }
+  }
+
+  .mdc-text-field-helper-text--persistent {
+    @include feature-targeting-mixins.targets($feat-animation) {
+      transition: none;
+    }
+
+    @include feature-targeting-mixins.targets($feat-structure) {
+      opacity: 1;
+      will-change: initial;
+    }
+  }
+
+  // postcss-bem-linter: end
+}
 
 ///
 /// Customizes the color of the helper text following an enabled text-field.
 /// @param {Color} $color - The desired helper text color.
 ///
-@mixin helper-text-color($color) {
+@mixin helper-text-color($color, $query: feature-targeting-functions.all()) {
   &:not(.mdc-text-field--disabled) {
-    @include helper-text-color_($color);
+    @include helper-text-color_($color, $query);
   }
 }
 
@@ -37,28 +76,36 @@
 /// Customizes the color of the helper text following a disabled text-field.
 /// @param {Color} $color - The desired helper text color.
 ///
-@mixin disabled-helper-text-color($color) {
+@mixin disabled-helper-text-color($color, $query: feature-targeting-functions.all()) {
   &.mdc-text-field--disabled {
-    @include helper-text-color_($color);
+    @include helper-text-color_($color, $query);
   }
 }
 
-@mixin helper-text-validation-color($color) {
+@mixin helper-text-validation-color($color, $query: feature-targeting-functions.all()) {
   &:not(.mdc-text-field--disabled) {
-    @include helper-text-validation-color_($color);
+    @include helper-text-validation-color_($color, $query);
   }
 }
 
 // Private mixins
 
-@mixin helper-text-color_($color) {
+@mixin helper-text-color_($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+
   + .mdc-text-field-helper-line .mdc-text-field-helper-text {
-    @include mixins.prop(color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include mixins.prop(color, $color);
+    }
   }
 }
 
-@mixin helper-text-validation-color_($color) {
+@mixin helper-text-validation-color_($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+
   &.mdc-text-field--invalid + .mdc-text-field-helper-line .mdc-text-field-helper-text--validation-msg {
-    @include mixins.prop(color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include mixins.prop(color, $color);
+    }
   }
 }

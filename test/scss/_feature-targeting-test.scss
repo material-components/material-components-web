@@ -26,6 +26,10 @@
 @import "@material/tab-scroller/mixins";
 @import "@material/tab-indicator/mixins";
 @import "@material/tab/mixins";
+@import "@material/textfield/mixins";
+@import "@material/textfield/character-counter/mixins";
+@import "@material/textfield/helper-text/mixins";
+@import "@material/textfield/icon/mixins";
 @import "@material/theme/mixins";
 @import "@material/touch-target/mixins";
 @import "@material/typography/mixins";
@@ -315,6 +319,51 @@
     @include mdc-tab-bar-density(0, $query: $query);
     @include mdc-tab-bar-stacked-density(0, $query: $query);
     @include mdc-tab-bar-tab-scroller-transition(0, $query: $query);
+
+    // Text field
+    @include mdc-text-field-core-styles($query: $query);
+    @include mdc-text-field-without-ripple($query: $query);
+    @include mdc-text-field-ripple($query: $query);
+    @include mdc-text-field-density(0, $query: $query);
+    @include mdc-text-field-outlined-density(0, $query: $query);
+    @include mdc-text-field-outlined-with-leading-icon-density(0, $query: $query);
+    @include mdc-text-field-height(42px, $query: $query);
+    @include mdc-text-field-outlined-height(42px, $query: $query);
+    @include mdc-text-field-outlined-with-leading-icon-height(42px, $query: $query);
+    @include mdc-text-field-shape-radius(42px, $query: $query);
+    @include mdc-text-field-textarea-shape-radius(42px, $query: $query);
+    @include mdc-text-field-ink-color(red, $query: $query);
+    @include mdc-text-field-disabled-ink-color(red, $query: $query);
+    @include mdc-text-field-placeholder-color(red, $query: $query);
+    @include mdc-text-field-disabled-placeholder-color(red, $query: $query);
+    @include mdc-text-field-fill-color(red, $query: $query);
+    @include mdc-text-field-disabled-fill-color(red, $query: $query);
+    @include mdc-text-field-bottom-line-color(red, $query: $query);
+    @include mdc-text-field-disabled-bottom-line-color(red, $query: $query);
+    @include mdc-text-field-hover-bottom-line-color(red, $query: $query);
+    @include mdc-text-field-line-ripple-color(red, $query: $query);
+    @include mdc-text-field-label-color(red, $query: $query);
+    @include mdc-text-field-disabled-label-color(red, $query: $query);
+    @include mdc-text-field-outline-color(red, $query: $query);
+    @include mdc-text-field-hover-outline-color(red, $query: $query);
+    @include mdc-text-field-focused-outline-color(red, $query: $query);
+    @include mdc-text-field-disabled-outline-color(red, $query: $query);
+    @include mdc-text-field-caret-color(red, $query: $query);
+
+    @include mdc-text-field-character-counter-core-styles($query: $query);
+    @include mdc-text-field-character-counter-color(red, $query: $query);
+    @include mdc-text-field-disabled-character-counter-color(red, $query: $query);
+    @include mdc-text-field-character-counter-position(100%, 100%, $query: $query);
+
+    @include mdc-text-field-helper-text-core-styles($query: $query);
+    @include mdc-text-field-helper-text-color(red, $query: $query);
+    @include mdc-text-field-disabled-helper-text-color(red, $query: $query);
+    @include mdc-text-field-helper-text-validation-color(red, $query: $query);
+
+    @include mdc-text-field-icon-core-styles($query: $query);
+    @include mdc-text-field-leading-icon-color(red, $query: $query);
+    @include mdc-text-field-trailing-icon-color(red, $query: $query);
+    @include mdc-text-field-disabled-icon-color(red, $query: $query);
 
     // Theme
     @include mdc-theme-core-styles($query: $query);
