@@ -37,56 +37,9 @@ testFoundation('does nothing if component if isSurfaceDisabled is true',
 
     td.when(adapter.isSurfaceDisabled()).thenReturn(true);
 
-    handlers.mousedown();
+    handlers.pointerdown();
 
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
-  });
-
-testFoundation('adds activation classes on mousedown', ({foundation, adapter, clock}) => {
-  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
-  foundation.init();
-  clock.runToFrame();
-
-  handlers.mousedown();
-  clock.runToFrame();
-  td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
-});
-
-testFoundation('sets FG position from the coords to the center within surface on mousedown',
-  ({foundation, adapter, clock}) => {
-    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
-    const left = 50;
-    const top = 50;
-    const width = 200;
-    const height = 100;
-    const maxSize = Math.max(width, height);
-    const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
-    const pageX = 100;
-    const pageY = 75;
-
-    td.when(adapter.computeBoundingRect()).thenReturn({width, height, left, top});
-    foundation.init();
-    clock.runToFrame();
-
-    handlers.mousedown({pageX, pageY});
-    clock.runToFrame();
-
-    const startPosition = {
-      x: pageX - left - (initialSize / 2),
-      y: pageY - top - (initialSize / 2),
-    };
-
-    const endPosition = {
-      x: (width / 2) - (initialSize / 2),
-      y: (height / 2) - (initialSize / 2),
-    };
-
-    td.verify(adapter.updateCssVariable(
-      strings.VAR_FG_TRANSLATE_START, `${startPosition.x}px, ${startPosition.y}px`
-    ));
-    td.verify(adapter.updateCssVariable(
-      strings.VAR_FG_TRANSLATE_END, `${endPosition.x}px, ${endPosition.y}px`
-    ));
   });
 
 testFoundation('adds activation classes on touchstart', ({foundation, adapter, clock}) => {
@@ -307,19 +260,6 @@ testFoundation('sets FG position to center on non-pointer activation', ({foundat
     `${position.x}px, ${position.y}px`));
 });
 
-testFoundation('does not redundantly add classes on touchstart followed by mousedown',
-  ({foundation, adapter, clock}) => {
-    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
-    foundation.init();
-    clock.runToFrame();
-
-    handlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
-    clock.runToFrame();
-    handlers.mousedown();
-    clock.runToFrame();
-    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
-  });
-
 testFoundation('does not redundantly add classes on touchstart followed by pointerstart',
   ({foundation, adapter, clock}) => {
     const handlers = captureHandlers(adapter, 'registerInteractionHandler');
@@ -340,11 +280,11 @@ testFoundation('removes deactivation classes on activate to ensure ripples can b
     foundation.init();
     clock.runToFrame();
 
-    handlers.mousedown();
+    handlers.pointerdown();
     clock.runToFrame();
-    documentHandlers.mouseup();
+    documentHandlers.pointerup();
     clock.runToFrame();
-    handlers.mousedown();
+    handlers.pointerdown();
     clock.runToFrame();
 
     td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
@@ -360,8 +300,8 @@ testFoundation('will not activate multiple ripples on same frame if one surface 
     secondRipple.foundation.init();
     clock.runToFrame();
 
-    firstHandlers.mousedown();
-    secondHandlers.mousedown();
+    firstHandlers.pointerdown();
+    secondHandlers.pointerdown();
     clock.runToFrame();
 
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
@@ -380,10 +320,10 @@ testFoundation('will not activate multiple ripples on same frame for parent surf
 
     firstHandlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
     secondHandlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
-    // Simulated mouse events on touch devices always happen after a delay, not on the same frame
+    // Simulated pointer events on touch devices always happen after a delay, not on the same frame
     clock.runToFrame();
-    firstHandlers.mousedown();
-    secondHandlers.mousedown();
+    firstHandlers.pointerdown();
+    secondHandlers.pointerdown();
     clock.runToFrame();
 
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
@@ -400,8 +340,8 @@ testFoundation('will activate multiple ripples on same frame for surfaces withou
     secondRipple.foundation.init();
     clock.runToFrame();
 
-    firstHandlers.mousedown();
-    secondHandlers.mousedown();
+    firstHandlers.pointerdown();
+    secondHandlers.pointerdown();
     clock.runToFrame();
 
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
@@ -415,7 +355,7 @@ testFoundation('displays the foreground ripple on activation when unbounded', ({
   foundation.init();
   clock.runToFrame();
 
-  handlers.mousedown({pageX: 0, pageY: 0});
+  handlers.pointerdown({pageX: 0, pageY: 0});
   clock.runToFrame();
 
   td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));

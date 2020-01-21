@@ -86,7 +86,7 @@ test('#supportsCssVariables returns false when CSS is not an object', () => {
 });
 
 test('#getNormalizedEventCoords maps event coords into the relative coordinates of the given rect', () => {
-  const ev = {type: 'mousedown', pageX: 70, pageY: 70};
+  const ev = {type: 'pointerdown', pageX: 70, pageY: 70};
   const pageOffset = {x: 10, y: 10};
   const clientRect = {left: 50, top: 50};
 
