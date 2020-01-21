@@ -394,24 +394,6 @@ describe('MDCRippleFoundation', () => {
                 `${Math.round((height / 2) - (initialSize / 2))}px`);
       });
 
-  //   testFoundation(
-  //       '#layout debounces calls within the same frame',
-  //       ({foundation}) => {
-  //         foundation.layout();
-  //         foundation.layout();
-  //         foundation.layout();
-  //         expect(clock.countTimers()).toEqual(1);
-  //       });
-  //
-  //   testFoundation(
-  //       '#layout resets debounce latch when layout frame is run',
-  //       ({foundation}: {foundation: MDCRippleFoundation}) => {
-  //         foundation.layout();
-  //         jasmine.clock().tick(1);
-  //         foundation.layout();
-  //         expect(clock.countTimers()).toEqual(1);
-  //       });
-
   testFoundation(
       '#setUnbounded adds unbounded class when unbounded is truthy',
       ({adapter,
