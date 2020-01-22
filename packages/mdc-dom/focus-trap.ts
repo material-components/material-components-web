@@ -67,7 +67,7 @@ export class FocusTrap {
    * elements redirect focus to the first/last children elements of the tabbable region,
    * ensuring that focus is trapped within that region.
    */
-  wrapTabFocus_(el: HTMLElement) {
+  private wrapTabFocus_(el: HTMLElement) {
     const sentinelStart = this.createSentinel_();
     const sentinelEnd = this.createSentinel_();
 
@@ -86,7 +86,7 @@ export class FocusTrap {
    * Focuses on `initialFocusEl` if defined and a child of the root element.
    * Otherwise, focuses on the first focusable child element of the root.
    */
-  focusInitialElement_(initialFocusEl?: HTMLElement) {
+  private focusInitialElement_(initialFocusEl?: HTMLElement) {
     const focusableElements = this.getFocusableElements_(this.el);
     const focusIndex = Math.max(
       initialFocusEl ? focusableElements.indexOf(initialFocusEl) : 0,
@@ -97,7 +97,7 @@ export class FocusTrap {
   /**
    * Focuses first focusable child element of `el`.
    */
-  focusFirst_(el: HTMLElement) {
+  private focusFirst_(el: HTMLElement) {
     const focusableEls = this.getFocusableElements_(el);
     if (focusableEls.length > 0) {
       focusableEls[0].focus();
@@ -107,14 +107,14 @@ export class FocusTrap {
   /**
    * Focuses last focusable child element of `el`.
    */
-  focusLast_(el: HTMLElement) {
+  private focusLast_(el: HTMLElement) {
     const focusableEls = this.getFocusableElements_(el);
     if (focusableEls.length > 0) {
       focusableEls[focusableEls.length - 1].focus();
     }
   }
 
-  getFocusableElements_(root: HTMLElement): HTMLElement[] {
+  private getFocusableElements_(root: HTMLElement): HTMLElement[] {
     const focusableEls = Array.from(
       root.querySelectorAll('[autofocus], [tabindex], a, input, textarea, select, button')) as HTMLElement[];
     return focusableEls.filter((el) => {
@@ -138,7 +138,7 @@ export class FocusTrap {
     });
   }
 
-  createSentinel_() {
+  private createSentinel_() {
     const sentinel = document.createElement('div');
     sentinel.setAttribute('tabindex', '0');
     // Don't announce in screen readers.
