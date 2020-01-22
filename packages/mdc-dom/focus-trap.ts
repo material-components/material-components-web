@@ -24,9 +24,10 @@
 const FOCUS_SENTINEL_CLASS = 'mdc-focus-sentinel';
 
 /**
- * Utility to trap focus in a given element, e.g. for modal components such as dialogs.
- * Also tracks the previously focused element, and restores focus to that element when
- * releasing focus.
+ * Utility to trap focus in a given element, e.g. for modal components such
+ * as dialogs.
+ * Also tracks the previously focused element, and restores focus to that
+ * element when releasing focus.
  */
 export class FocusTrap {
   // Previously focused element before trapping focus.
