@@ -131,7 +131,7 @@ const mochaConfig = {
     'emitWarning': false,
     'thresholds': {
       statements: 95,
-      branches: 95,
+      branches: 92.5,
       lines: 95,
       functions: 95,
     },
