@@ -36,7 +36,7 @@ Function Signature | Description
 `matches(element: Element, selector: string) => boolean` | Returns true if the given element matches the given CSS selector.
 `estimateScrollWidth(element: Element) => number`  | Returns the true optical width of the element if visible or an estimation if hidden by a parent element with `display: none;`.
 
-### Event Functions
+## Event Functions
 
 External frameworks and libraries can use the following event utility methods.
 
@@ -45,3 +45,13 @@ Method Signature | Description
 `util.applyPassive(globalObj = window, forceRefresh = false) => object` | Determine whether the current browser supports passive event listeners
 
 > _NOTE_: The function `util.applyPassive` cache its results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
+
+## Focus Trap
+
+The `FocusTrap` utility traps focus within a given element. It is intended for usage from MDC-internal
+components like dialog and modal drawer.
+
+Method Signature | Description
+--- | ---
+`trapFocus() => void` | Traps focus in the root element. Also focuses on `initialFocusEl` if set; otherwise, sets initial focus to the first focusable child element.
+`releaseFocus() => void` | Releases focus from the root element. Also restores focus to the previously focused element.

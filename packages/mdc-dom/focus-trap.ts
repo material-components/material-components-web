@@ -35,8 +35,8 @@ export class FocusTrap {
   constructor(private el: HTMLElement, private options: FocusOptions = {}) {}
 
   /**
-   * Traps focus in `el`. Also focuses on either `initialFocusEl` if set, or
-   * the first focusable child element of `el`.
+   * Traps focus in `el`. Also focuses on either `initialFocusEl` if set; otherwises
+   * sets initial focus to the first focusable child element.
    */
   trapFocus() {
     this.elFocusedBeforeTrapFocus = document.activeElement as HTMLElement;
@@ -48,8 +48,7 @@ export class FocusTrap {
   }
 
   /**
-   * Releases focus from `el`. Also focuses the previously focused element,
-   * if it exists.
+   * Releases focus from `el`. Also restores focus to the previously focused element.
    */
   releaseFocus() {
     this.el.querySelectorAll(`.${FOCUS_SENTINEL_CLASS}`).forEach((sentinelEl) => {
