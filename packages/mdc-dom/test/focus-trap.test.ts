@@ -75,7 +75,7 @@ describe('FocusTrap', () => {
     });
   });
 
-  it('traps focus in the given container element', async () => {
+  it('traps focus in the given container element', () => {
     const {container1, container2} = setUp();
     const focusTrap1 = new FocusTrap(container1);
     focusTrap1.trapFocus();
@@ -86,7 +86,7 @@ describe('FocusTrap', () => {
     expectFocusTrapped(container2, 'con2a', 'con2b');
   });
 
-  it('releases focus from the given container element', async () => {
+  it('releases focus from the given container element', () => {
     const {container1} = setUp();
     const focusTrap1 = new FocusTrap(container1);
     focusTrap1.trapFocus();
