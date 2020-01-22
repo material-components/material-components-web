@@ -1,0 +1,56 @@
+@use "../mixins" as text-field;
+@use "../character-counter/mixins" as character-counter;
+@use "../helper-text/mixins" as helper-text;
+@use "../icon/mixins" as icon;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include text-field.core-styles($query: $query);
+    @include text-field.without-ripple($query: $query);
+    @include text-field.ripple($query: $query);
+    @include text-field.density(0, $query: $query);
+    @include text-field.outlined-density(0, $query: $query);
+    @include text-field.outlined-with-leading-icon-density(0, $query: $query);
+    @include text-field.height(42px, $query: $query);
+    @include text-field.outlined-height(42px, $query: $query);
+    @include text-field.outlined-with-leading-icon-height(42px, $query: $query);
+    @include text-field.shape-radius(42px, $query: $query);
+    @include text-field.textarea-shape-radius(42px, $query: $query);
+    @include text-field.ink-color(red, $query: $query);
+    @include text-field.disabled-ink-color(red, $query: $query);
+    @include text-field.placeholder-color(red, $query: $query);
+    @include text-field.disabled-placeholder-color(red, $query: $query);
+    @include text-field.fill-color(red, $query: $query);
+    @include text-field.disabled-fill-color(red, $query: $query);
+    @include text-field.bottom-line-color(red, $query: $query);
+    @include text-field.disabled-bottom-line-color(red, $query: $query);
+    @include text-field.hover-bottom-line-color(red, $query: $query);
+    @include text-field.line-ripple-color(red, $query: $query);
+    @include text-field.label-color(red, $query: $query);
+    @include text-field.disabled-label-color(red, $query: $query);
+    @include text-field.outline-color(red, $query: $query);
+    @include text-field.hover-outline-color(red, $query: $query);
+    @include text-field.focused-outline-color(red, $query: $query);
+    @include text-field.disabled-outline-color(red, $query: $query);
+    @include text-field.caret-color(red, $query: $query);
+
+    @include character-counter.character-counter-core-styles($query: $query);
+    @include character-counter.character-counter-color(red, $query: $query);
+    @include character-counter.disabled-character-counter-color(red, $query: $query);
+    @include character-counter.character-counter-position(100%, 100%, $query: $query);
+
+    @include helper-text.helper-text-core-styles($query: $query);
+    @include helper-text.helper-text-color(red, $query: $query);
+    @include helper-text.disabled-helper-text-color(red, $query: $query);
+    @include helper-text.helper-text-validation-color(red, $query: $query);
+
+    @include icon.icon-core-styles($query: $query);
+    @include icon.leading-icon-color(red, $query: $query);
+    @include icon.trailing-icon-color(red, $query: $query);
+    @include icon.disabled-icon-color(red, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

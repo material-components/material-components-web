@@ -1,0 +1,13 @@
+@use "../mixins" as linear-progress;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include linear-progress.core-styles($query: $query);
+    @include linear-progress.bar-color(red, $query: $query);
+    @include linear-progress.buffer-color(red, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

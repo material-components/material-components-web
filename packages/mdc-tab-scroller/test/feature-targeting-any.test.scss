@@ -1,0 +1,11 @@
+@use "../mixins" as tab-scroller;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include tab-scroller.core-styles($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

@@ -1,0 +1,15 @@
+@use "../mixins" as tab;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include tab.core-styles($query: $query);
+    @include tab.without-ripple($query: $query);
+    @include tab.ripple($query: $query);
+    @include tab.height(0, $query: $query);
+    @include tab.text-transform(uppercase, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

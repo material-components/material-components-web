@@ -1,0 +1,21 @@
+@use "../mixins" as snackbar;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include snackbar.core-styles($query: $query);
+    @include snackbar.fill-color(red, $query: $query);
+    @include snackbar.label-ink-color(red, $query: $query);
+    @include snackbar.shape-radius(1337, $query: $query);
+    @include snackbar.min-width(1337, $query: $query);
+    @include snackbar.max-width(1337, $query: $query);
+    @include snackbar.elevation(13, $query: $query);
+    @include snackbar.viewport-margin(1337, $query: $query);
+    @include snackbar.z-index(1337, $query: $query);
+    @include snackbar.position-leading($query: $query);
+    @include snackbar.layout-stacked($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

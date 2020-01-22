@@ -1,0 +1,11 @@
+@use "../mixins" as shape;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include shape.radius(1px 2px, true, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

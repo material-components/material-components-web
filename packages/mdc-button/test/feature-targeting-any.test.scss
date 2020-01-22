@@ -1,4 +1,4 @@
-@use "@material/button/mixins" as button;
+@use "../mixins" as button;
 @use "@material/feature-targeting/functions" as feature;
 
 @mixin test($query) {
