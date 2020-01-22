@@ -84,8 +84,8 @@ function setupTestWithMocks() {
   const MockFoundationCtor = td.constructor(MDCDialogFoundation);
   const mockFoundation = new MockFoundationCtor();
   const mockFocusTrapInstance = td.object({
-    activate: () => {},
-    deactivate: () => {},
+    trapFocus: () => {},
+    releaseFocus: () => {},
   });
 
   const component = new MDCDialog(root, mockFoundation, () => mockFocusTrapInstance);
@@ -412,20 +412,20 @@ test(`adapter#notifyClosed emits ${strings.CLOSED_EVENT} with action`, () => {
   td.verify(handler(td.matchers.contains({detail: {action}})));
 });
 
-test('adapter#trapFocus calls activate() on a properly configured focus trap instance', () => {
+test('adapter#trapFocus calls trapFocus() on a properly configured focus trap instance', () => {
   const {component, mockFocusTrapInstance} = setupTestWithMocks();
   component.initialize();
   component.getDefaultFoundation().adapter_.trapFocus();
 
-  td.verify(mockFocusTrapInstance.activate());
+  td.verify(mockFocusTrapInstance.trapFocus());
 });
 
-test('adapter#releaseFocus calls deactivate() on a properly configured focus trap instance', () => {
+test('adapter#releaseFocus calls releaseFocus() on a properly configured focus trap instance', () => {
   const {component, mockFocusTrapInstance} = setupTestWithMocks();
   component.initialize();
   component.getDefaultFoundation().adapter_.releaseFocus();
 
-  td.verify(mockFocusTrapInstance.deactivate());
+  td.verify(mockFocusTrapInstance.releaseFocus());
 });
 
 test('adapter#isContentScrollable returns false when there is no content element', () => {
