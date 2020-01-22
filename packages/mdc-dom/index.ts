@@ -22,6 +22,7 @@
  */
 
 import * as events from './events';
+import * as focusTrap from './focus-trap';
 import * as ponyfill from './ponyfill';
 
-export {events, ponyfill};
+export {events, focusTrap, ponyfill};
