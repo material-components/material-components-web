@@ -69,7 +69,7 @@ function setUp() {
 
 describe('FocusTrap', () => {
   afterEach(() => {
-    document.querySelectorAll('#root').forEach((el) => {
+    [].slice.call(document.querySelectorAll('#root')).forEach((el) => {
       document.body.removeChild(el);
     })
   });

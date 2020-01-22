@@ -51,7 +51,8 @@ export class FocusTrap {
    * Releases focus from `el`. Also restores focus to the previously focused element.
    */
   releaseFocus() {
-    this.el.querySelectorAll(`.${FOCUS_SENTINEL_CLASS}`).forEach((sentinelEl) => {
+    [].slice.call(this.el.querySelectorAll(`.${FOCUS_SENTINEL_CLASS}`))
+    .forEach((sentinelEl: HTMLElement) => {
       sentinelEl.parentElement!.removeChild(sentinelEl);
     });
 
@@ -114,7 +115,7 @@ export class FocusTrap {
   }
 
   private getFocusableElements_(root: HTMLElement): HTMLElement[] {
-    const focusableEls = Array.from(
+    const focusableEls = [].slice.call(
       root.querySelectorAll('[autofocus], [tabindex], a, input, textarea, select, button')) as HTMLElement[];
     return focusableEls.filter((el) => {
       const isDisabledOrHidden =
