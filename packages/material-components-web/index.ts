@@ -31,7 +31,6 @@ import * as dom from '@material/dom/index';
 import * as drawer from '@material/drawer/index';
 import * as floatingLabel from '@material/floating-label/index';
 import * as formField from '@material/form-field/index';
-import * as gridList from '@material/grid-list/index';
 import * as iconButton from '@material/icon-button/index';
 import * as lineRipple from '@material/line-ripple/index';
 import * as linearProgress from '@material/linear-progress/index';
@@ -61,7 +60,6 @@ autoInit.register('MDCDialog', dialog.MDCDialog);
 autoInit.register('MDCDrawer', drawer.MDCDrawer);
 autoInit.register('MDCFloatingLabel', floatingLabel.MDCFloatingLabel);
 autoInit.register('MDCFormField', formField.MDCFormField);
-autoInit.register('MDCGridList', gridList.MDCGridList);
 autoInit.register('MDCIconButtonToggle', iconButton.MDCIconButtonToggle);
 autoInit.register('MDCLineRipple', lineRipple.MDCLineRipple);
 autoInit.register('MDCLinearProgress', linearProgress.MDCLinearProgress);
@@ -91,7 +89,6 @@ export {
   drawer,
   floatingLabel,
   formField,
-  gridList,
   iconButton,
   lineRipple,
   linearProgress,

@@ -7,7 +7,6 @@
 @import "@material/fab/mixins";
 @import "@material/floating-label/mixins";
 @import "@material/form-field/mixins";
-@import "@material/grid-list/mixins";
 @import "@material/icon-button/mixins";
 @import "@material/image-list/mixins";
 @import "@material/linear-progress/mixins";
@@ -174,11 +173,6 @@
 
     // Form Field
     @include mdc-form-field-core-styles($query: $query);
-
-    // Grid List
-    @include mdc-grid-list-core-styles($query: $query);
-    @include mdc-grid-list-tile-aspect(1, $query: $query);
-    @include mdc-grid-list-tile-gutter(0, $query: $query);
 
     // Icon Button
     @include mdc-icon-button-core-styles($query: $query);
