@@ -40,7 +40,9 @@ export class FocusTrap {
    * otherwises sets initial focus to the first focusable child element.
    */
   trapFocus() {
-    this.elFocusedBeforeTrapFocus = document.activeElement as HTMLElement;
+    this.elFocusedBeforeTrapFocus =
+        document.activeElement instanceof HTMLElement ?
+        document.activeElement : null;
     this.wrapTabFocus_(this.el);
 
     if (!this.options.skipInitialFocus) {
