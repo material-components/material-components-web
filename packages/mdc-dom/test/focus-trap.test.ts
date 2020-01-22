@@ -94,9 +94,6 @@ describe('FocusTrap', () => {
 
     focusTrap1.releaseFocus();
     expect(container1.querySelectorAll('.mdc-focus-sentinel').length).toBe(0);
-    // Since no previously focused element, focus should remain on the first
-    // child of `container1`.
-    expect(document.activeElement!.id).toBe('con1a');
   });
 
   it('restores focus to previously focused element', () => {
