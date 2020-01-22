@@ -35,8 +35,8 @@ export class FocusTrap {
   constructor(private el: HTMLElement, private options: FocusOptions = {}) {}
 
   /**
-   * Traps focus in `el`. Also focuses on either `initialFocusEl` if set; otherwises
-   * sets initial focus to the first focusable child element.
+   * Traps focus in `el`. Also focuses on either `initialFocusEl` if set;
+   * otherwises sets initial focus to the first focusable child element.
    */
   trapFocus() {
     this.elFocusedBeforeTrapFocus = document.activeElement as HTMLElement;
@@ -48,7 +48,8 @@ export class FocusTrap {
   }
 
   /**
-   * Releases focus from `el`. Also restores focus to the previously focused element.
+   * Releases focus from `el`. Also restores focus to the previously focused
+   * element.
    */
   releaseFocus() {
     [].slice.call(this.el.querySelectorAll(`.${FOCUS_SENTINEL_CLASS}`))
@@ -62,10 +63,11 @@ export class FocusTrap {
   }
 
   /**
-   * Wraps tab focus within `el` by adding two hidden sentinel divs which are used to mark
-   * the beginning and the end of the tabbable region. When focused, these sentinel
-   * elements redirect focus to the first/last children elements of the tabbable region,
-   * ensuring that focus is trapped within that region.
+   * Wraps tab focus within `el` by adding two hidden sentinel divs which are
+   * used to mark the beginning and the end of the tabbable region. When
+   * focused, these sentinel elements redirect focus to the first/last
+   * children elements of the tabbable region, ensuring that focus is trapped
+   * within that region.
    */
   private wrapTabFocus_(el: HTMLElement) {
     const sentinelStart = this.createSentinel_();
