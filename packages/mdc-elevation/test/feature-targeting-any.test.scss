@@ -1,0 +1,18 @@
+@use "../mixins" as elevation;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include elevation.core-styles($query: $query);
+    @include elevation.overlay-common($query: $query);
+    @include elevation.elevation(0, $query: $query);
+    @include elevation.shadow(none, $query: $query);
+    @include elevation.overlay-dimensions(100%, $query: $query);
+    @include elevation.overlay-surface-position($query: $query);
+    @include elevation.overlay-fill-color(red, $query: $query);
+    @include elevation.overlay-opacity(99%, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

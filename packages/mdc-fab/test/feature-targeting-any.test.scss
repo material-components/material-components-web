@@ -1,0 +1,22 @@
+@use "../mixins" as fab;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include fab.core-styles($query: $query);
+    @include fab.without-ripple($query: $query);
+    @include fab.ripple($query: $query);
+    @include fab.accessible(red, $query: $query);
+    @include fab.container-color(red, $query: $query);
+    @include fab.icon-size(0, $query: $query);
+    @include fab.ink-color(red, $query: $query);
+    @include fab.extended-fluid($query: $query);
+    @include fab.extended-padding(0, 0, $query: $query);
+    @include fab.extended-label-padding(0, $query: $query);
+    @include fab.shape-radius(0, $query: $query);
+    @include fab.extended-shape-radius(0, $rtl-reflexive: false, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

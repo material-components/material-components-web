@@ -1,0 +1,23 @@
+@use "../mixins" as switch;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include switch.core-styles($query: $query);
+    @include switch.density(-1, $query: $query);
+    @include switch.toggled-on-color(on-surface, $query: $query);
+    @include switch.toggled-off-color(on-surface, $query: $query);
+    @include switch.toggled-on-ripple-color(on-surface, $query: $query);
+    @include switch.toggled-off-ripple-color(on-surface, $query: $query);
+    @include switch.toggled-on-track-color(on-surface, $query: $query);
+    @include switch.toggled-on-thumb-color(on-surface, $query: $query);
+    @include switch.toggled-off-track-color(on-surface, $query: $query);
+    @include switch.toggled-off-thumb-color(on-surface, $query: $query);
+    @include switch.ripple($query: $query);
+    @include switch.ripple-size(0, $query: $query);
+    @include switch.without-ripple($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

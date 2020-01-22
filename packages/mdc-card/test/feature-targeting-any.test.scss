@@ -1,0 +1,17 @@
+@use "../mixins" as card;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include card.core-styles($query: $query);
+    @include card.fill-color(red, $query: $query);
+    @include card.outline(red, $query: $query);
+    @include card.shape-radius(0, $query: $query);
+    @include card.media-aspect-ratio(1, 1, $query: $query);
+    @include card.ripple($query: $query);
+    @include card.without-ripple($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());
