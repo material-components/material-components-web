@@ -24,9 +24,9 @@
 
 import {cssClasses, numbers, strings} from '../../mdc-ripple/constants';
 import {MDCRippleFoundation} from '../../mdc-ripple/foundation';
-import {captureHandlers} from '../../../testing/helpers/foundation';
+import {captureHandlers, checkNumTimesSpyCalledWithArgs} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {checkNumTimesSpyCalledWithStrArgs, setupTest, testFoundation} from './helpers';
+import {setupTest, testFoundation} from './helpers';
 
 describe('MDCRippleFoundation - Activation Logic', () => {
   setUpMdcTestEnvironment();
@@ -219,7 +219,7 @@ describe('MDCRippleFoundation - Activation Logic', () => {
         jasmine.clock().tick(1);
 
         handlers['keydown']();
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.addClass, [cssClasses.FG_ACTIVATION], 1);
       });
 
@@ -325,7 +325,7 @@ describe('MDCRippleFoundation - Activation Logic', () => {
         foundation.activate();
         jasmine.clock().tick(1);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.addClass, [cssClasses.FG_ACTIVATION], 2);
       });
 
@@ -377,7 +377,7 @@ describe('MDCRippleFoundation - Activation Logic', () => {
         handlers['mousedown']();
         jasmine.clock().tick(1);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.addClass, [cssClasses.FG_ACTIVATION], 1);
       });
 
@@ -394,7 +394,7 @@ describe('MDCRippleFoundation - Activation Logic', () => {
         handlers['pointerdown']();
         jasmine.clock().tick(1);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.addClass, [cssClasses.FG_ACTIVATION], 1);
       });
 
