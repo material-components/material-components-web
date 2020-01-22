@@ -450,15 +450,6 @@ function checkOneClassMemberAccessibility(
   const isPublicAccess = accessibility !== 'private' && accessibility !== 'protected';
   const isPublicName = !name.endsWith('_');
 
-  if (!isPublicAccess && isPublicName) {
-    logLinterViolation(
-        inputFilePath,
-        loc,
-        `Non-public member '${name}' is missing a trailing underscore in its name.`,
-    );
-    return;
-  }
-
   if (isPublicAccess && !isPublicName) {
     logLinterViolation(
         inputFilePath,
