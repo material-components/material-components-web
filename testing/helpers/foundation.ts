@@ -172,3 +172,27 @@ function getUnequalArrayMessage(
 
   return `Found ${messages.join('; ')}`;
 }
+
+/**
+ * Checks if the spy was called with specific arguments a certain number of
+ * times. This is intended for tests that are particularly concerned with the
+ * number of times one specific invocation occurred (i.e. ripple debouncing
+ * tests), and for which combining Jasmine's `toHaveBeenCalledWith` followed by
+ * `toHaveBeenCalledTimes` is insufficient because `toHaveBeenCalledTimes`
+ * potentially counts other invocations with arguments we don't care about.
+ *
+ * Note: This performs SHALLOW equality comparisons only and doesn't support
+ * matchers (i.e. jasmine.any()).
+ */
+export function checkNumTimesSpyCalledWithArgs(
+    spy: jasmine.Spy, args: any[], count: number) {
+  expect(spy.calls.allArgs()
+             .filter((x: any[]) => arraysShallowEqual(x, args))
+             .length)
+      .toEqual(count);
+}
+
+function arraysShallowEqual(expected: any[], actual: any[]) {
+  return expected.length === actual.length &&
+      expected.every((el, i) => el === actual[i]);
+}

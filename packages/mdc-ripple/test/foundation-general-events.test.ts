@@ -24,10 +24,10 @@
 
 import {cssClasses, strings} from '../../mdc-ripple/constants';
 import {MDCRippleFoundation} from '../../mdc-ripple/foundation';
-import {captureHandlers} from '../../../testing/helpers/foundation';
+import {captureHandlers, checkNumTimesSpyCalledWithArgs} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 
-import {checkNumTimesSpyCalledWithStrArgs, testFoundation} from './helpers';
+import {testFoundation} from './helpers';
 
 describe('MDCRippleFoundation - General Events', () => {
   setUpMdcTestEnvironment();
@@ -90,7 +90,7 @@ describe('MDCRippleFoundation - General Events', () => {
         (resizeHandler as Function)();
         (resizeHandler as Function)();
         jasmine.clock().tick(1);
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.updateCssVariable, [strings.VAR_FG_SIZE, '120px'], 2);
       });
 
