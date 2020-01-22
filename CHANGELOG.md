@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0](https://github.com/material-components/material-components-web/compare/v4.0.0...v5.0.0) (2020-01-21)
+# [5.0.0](https://github.com/material-components/material-components-web/compare/v4.0.0...v5.0.0) (2020-01-22)
 
 
 * fix(linear-progress) support aria attributes (#5248) ([7084b40](https://github.com/material-components/material-components-web/commit/7084b40)), closes [#5248](https://github.com/material-components/material-components-web/issues/5248)
@@ -47,8 +47,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Code Refactoring
 
-* **touchtarget:** Rename mdc-touch-target-component => mdc… ([#5245](https://github.com/material-components/material-components-web/issues/5245)) ([afe0dd1](https://github.com/material-components/material-components-web/commit/afe0dd1))
 * migrate to the Sass module system ([#5453](https://github.com/material-components/material-components-web/issues/5453)) ([faa9af3](https://github.com/material-components/material-components-web/commit/faa9af3))
+* **grid-list:** Deprecate component ([#5499](https://github.com/material-components/material-components-web/issues/5499)) ([cf33f11](https://github.com/material-components/material-components-web/commit/cf33f11))
+* **touchtarget:** Rename mdc-touch-target-component => mdc… ([#5245](https://github.com/material-components/material-components-web/issues/5245)) ([afe0dd1](https://github.com/material-components/material-components-web/commit/afe0dd1))
 
 
 ### Features
@@ -86,16 +87,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-* Four variables and a mixin in mdc-textfield were renamed to use a mdc-text-field- prefix when depended on via @import (formerly mdc-required-text-field-label-asterisk_, now required-label-asterisk_).
+* **grid-list:** Per the deprecation notice for grid-list, this component has been
+removed from MDC-Web. Some of its functionalities are available in the MDC Image List package instead. It is recommended that you migrate to the mdc-image-list package to continue to receive new features and updates.
 * **text-field:** Redundant mixins `mdc-text-field-textarea-fill-color`, `mdc-text-field-textarea-stroke-color`, `mdc-text-field-fullwidth-bottom-line-color` removed. Instead, use `mdc-text-field-fill-color`, `mdc-text-field-outline-color`, and `mdc-text-field-bottom-line-color` respectively to achieve the same effect.
-* **switch:** Added setNativeControlAttr method in mdc-switch adapter.
-* **checkbox:** remove event listener for 'change' and add event listener for 'click'.
-
-- Add handleClick() method in foundation to handle click event.
-- Add setCheck() method into component to change check status.
-* **switch:** Switch DOM structure has changed. See switch README for details
-* **button:** Variable `$mdc-button-disabled-container-fill-color`
-renamed to `$mdc-button-disabled-container-color`.
 * **textfield:** icons must use `.mdc-text-field__icon--leading` or `.mdc-text-field__icon--trailing` classes. `mdc-text-field-icon-color()` mixin has been split into `mdc-text-field-leading-icon-color()` and `mdc-text-field-trailing-icon-color()`.
 
 * chore(textfield): use --leading/trailing modifiers for icons
@@ -113,11 +107,20 @@ renamed to `$mdc-button-disabled-container-color`.
 * chore(textfield): update component test with icon classes
 
 * chore(textfield): update foundation test for preventDefault error
+* **switch:** Added setNativeControlAttr method in mdc-switch adapter.
+* **checkbox:** remove event listener for 'change' and add event listener for 'click'.
+
+- Add handleClick() method in foundation to handle click event.
+- Add setCheck() method into component to change check status.
+* **switch:** Switch DOM structure has changed. See switch README for details
+* Four variables and a mixin in mdc-textfield were renamed to use a mdc-text-field- prefix when depended on via @import (formerly mdc-required-text-field-label-asterisk_, now required-label-asterisk_).
+* Removed `$edgeOptOut` option from `mdc-theme-prop()` Sass mixin.
 * **chips:** the handleInteraction and handleTrailingIconInteraction handlers have been removed from the MDCChipFoundation. The handleClick handler has been added to the MDCChipFoundation
 * Adds new adapter methods to MDCLinearProgressAdapter.
 * **elevation:** Functions moved into the _functions.scss file
 * **touchtarget:** Renames mixin from mdc-touch-target-component => mdc-touch-target-margin
-* Removed `$edgeOptOut` option from `mdc-theme-prop()` Sass mixin.
+* **button:** Variable `$mdc-button-disabled-container-fill-color`
+renamed to `$mdc-button-disabled-container-color`.
 
 
 
