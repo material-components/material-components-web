@@ -22,6 +22,7 @@
  */
 
 import {FocusTrap} from '../focus-trap';
+import {emitEvent} from '../../../testing/dom/events';
 
 function getFixture() {
   const wrapper = document.createElement('div');
@@ -74,7 +75,7 @@ describe('FocusTrap', () => {
     })
   });
 
-  it('traps focus in the given container element', () => {
+  it('traps focus in the given container element', async () => {
     const {container1, container2} = setUp();
     const focusTrap1 = new FocusTrap(container1);
     focusTrap1.trapFocus();
@@ -85,7 +86,7 @@ describe('FocusTrap', () => {
     expectFocusTrapped(container2, 'con2a', 'con2b');
   });
 
-  it('releases focus from the given container element', () => {
+  it('releases focus from the given container element', async () => {
     const {container1} = setUp();
     const focusTrap1 = new FocusTrap(container1);
     focusTrap1.trapFocus();
@@ -102,7 +103,7 @@ describe('FocusTrap', () => {
     const focusTrap = new FocusTrap(container2);
 
     // First, set focus to button.
-    button.focus();
+    emitEvent(button, 'focus');
     expect(document.activeElement).toBe(button);
     // Trap focus in `container2`.
     focusTrap.trapFocus();
@@ -139,7 +140,7 @@ describe('FocusTrap', () => {
     const focusTrap = new FocusTrap(container1, { skipInitialFocus: true });
 
     // First, set focus to button.
-    button.focus();
+    emitEvent(button, 'focus');
     expect(document.activeElement).toBe(button);
 
     focusTrap.trapFocus();
@@ -167,8 +168,8 @@ function expectFocusTrapped(el: HTMLElement, firstElementId: string, lastElement
   endFocusSentinel.addEventListener = fakeFocusHandler;
 
   // Focus on sentinels gets trapped inside the scope.
-  startFocusSentinel.focus();
+  emitEvent(startFocusSentinel, 'focus');
   expect(document.activeElement!.id).toBe(lastElementId);
-  endFocusSentinel.focus();
+  emitEvent(endFocusSentinel, 'focus');
   expect(document.activeElement!.id).toBe(firstElementId);
 }
