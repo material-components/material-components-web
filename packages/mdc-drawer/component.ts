@@ -149,8 +149,8 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       },
       notifyClose: () => this.emit(strings.CLOSE_EVENT, {}, true /* shouldBubble */),
       notifyOpen: () => this.emit(strings.OPEN_EVENT, {}, true /* shouldBubble */),
-      trapFocus: () => this.focusTrap_!.activate(),
-      releaseFocus: () => this.focusTrap_!.deactivate(),
+      trapFocus: () => this.focusTrap_!.trapFocus(),
+      releaseFocus: () => this.focusTrap_!.releaseFocus(),
     };
     // tslint:enable:object-literal-sort-keys
 

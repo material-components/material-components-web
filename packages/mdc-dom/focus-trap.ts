@@ -23,24 +23,54 @@
 
 const FOCUS_SENTINEL_CLASS = 'mdc-focus-sentinel';
 
-// TODO: ADD TSDOC!
+/**
+ * Utility to trap focus in a given element, e.g. for modal components such as dialogs.
+ * Also tracks the previously focused element, and restores focus to that element when
+ * releasing focus.
+ */
 export class FocusTrap {
-  constructor(private el: HTMLElement) {}
+  // Previously focused element before trapping focus.
+  private elFocusedBeforeTrapFocus: HTMLElement | null = null;
 
+  constructor(private el: HTMLElement, private options: FocusOptions = {}) {}
+
+  /**
+   * Traps focus in `el`. Also focuses on either `initialFocusEl` if set, or
+   * the first focusable child element of `el`.
+   */
   trapFocus() {
-    this.wrapFocus_(this.el);
+    this.elFocusedBeforeTrapFocus = document.activeElement as HTMLElement;
+    this.wrapTabFocus_(this.el);
+
+    if (!this.options.skipInitialFocus) {
+      this.focusInitialElement_(this.options.initialFocusEl);
+    }
   }
 
+  /**
+   * Releases focus from `el`. Also focuses the previously focused element,
+   * if it exists.
+   */
   releaseFocus() {
-    this.el.querySelectorAll(FOCUS_SENTINEL_CLASS).forEach((sentinelEl) => {
+    this.el.querySelectorAll(`.${FOCUS_SENTINEL_CLASS}`).forEach((sentinelEl) => {
       sentinelEl.parentElement!.removeChild(sentinelEl);
     });
-   }
 
-  wrapFocus_(el: HTMLElement) {
+    if (this.elFocusedBeforeTrapFocus) {
+      this.elFocusedBeforeTrapFocus.focus();
+    }
+  }
+
+  /**
+   * Wraps tab focus within `el` by adding two hidden sentinel divs which are used to mark
+   * the beginning and the end of the tabbable region. When focused, these sentinel
+   * elements redirect focus to the first/last children elements of the tabbable region,
+   * ensuring that focus is trapped within that region.
+   */
+  wrapTabFocus_(el: HTMLElement) {
     const sentinelStart = this.createSentinel_();
     const sentinelEnd = this.createSentinel_();
-    
+
     sentinelStart.addEventListener('focus', () => {
       this.focusLast_(el);
     })
@@ -52,6 +82,21 @@ export class FocusTrap {
     el.appendChild(sentinelEnd);
   }
 
+  /**
+   * Focuses on `initialFocusEl` if defined and a child of the root element.
+   * Otherwise, focuses on the first focusable child element of the root.
+   */
+  focusInitialElement_(initialFocusEl?: HTMLElement) {
+    const focusableElements = this.getFocusableElements_(this.el);
+    const focusIndex = Math.max(
+      initialFocusEl ? focusableElements.indexOf(initialFocusEl) : 0,
+      0);
+    focusableElements[focusIndex].focus();
+  }
+
+  /**
+   * Focuses first focusable child element of `el`.
+   */
   focusFirst_(el: HTMLElement) {
     const focusableEls = this.getFocusableElements_(el);
     if (focusableEls.length > 0) {
@@ -59,6 +104,9 @@ export class FocusTrap {
     }
   }
 
+  /**
+   * Focuses last focusable child element of `el`.
+   */
   focusLast_(el: HTMLElement) {
     const focusableEls = this.getFocusableElements_(el);
     if (focusableEls.length > 0) {
@@ -98,4 +146,14 @@ export class FocusTrap {
     sentinel.classList.add(FOCUS_SENTINEL_CLASS);
     return sentinel;
   }
+}
+
+export interface FocusOptions {
+  // The element to focus initially when trapping focus.
+  //  Must be a child of the root element.
+  initialFocusEl?: HTMLElement,
+
+  // Whether to skip initially focusing on any element when trapping focus.
+  // By default, focus is set on the first focusable child element of the root.
+  skipInitialFocus?: boolean,
 }

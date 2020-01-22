@@ -21,15 +21,19 @@
  * THE SOFTWARE.
  */
 
-import {FocusTrap} from '@material/dom/focus-trap';
+import {FocusOptions, FocusTrap} from '@material/dom/focus-trap';
 
 export type MDCDrawerFocusTrapFactory = (
-    element: HTMLElement | string,
+    element: HTMLElement,
+    options: FocusOptions,
 ) => FocusTrap;
 
 export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
     focusTrapFactory: MDCDrawerFocusTrapFactory,
 ): FocusTrap {
-  return focusTrapFactory(surfaceEl);
+  return focusTrapFactory(surfaceEl, {
+    // Component handles focusing on active nav item.
+    skipInitialFocus: true, 
+  });
 }
