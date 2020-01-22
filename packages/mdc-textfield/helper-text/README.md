@@ -52,13 +52,14 @@ indicate to assistive devices that the display of the helper text is dependent o
 the input element.
 
 ```html
-<div class="mdc-text-field">
-  <input type="text" id="username" class="mdc-text-field__input"
+<label class="mdc-text-field">
+  <input class="mdc-text-field__input" type="text"
+         aria-labelledby="my-label-id"
          aria-controls="username-helper-text"
          aria-describedby="username-helper-text">
-  <label for="username" class="mdc-floating-label">Username</label>
+  <span class="mdc-floating-label" id="my-label-id">Username</span>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 <div class="mdc-text-field-helper-line">
   <div id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">
     This will be displayed on your public profile
