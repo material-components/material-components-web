@@ -33,18 +33,9 @@ test('createFocusTrapInstance creates a properly configured focus trap instance 
   const focusTrapFactory = td.func('focusTrapFactory');
   const properlyConfiguredFocusTrapInstance = {};
   td.when(focusTrapFactory(rootEl, {
-    clickOutsideDeactivates: true,
-    escapeDeactivates: false,
-    initialFocus: undefined,
-    returnFocusOnDeactivate: false,
+    skipInitialFocus: true,
   })).thenReturn(properlyConfiguredFocusTrapInstance);
 
   const instance = util.createFocusTrapInstance(rootEl, focusTrapFactory);
   assert.equal(instance, properlyConfiguredFocusTrapInstance);
-});
-
-test('createFocusTrapInstance creates a properly configured focus trap instance with optional args omitted', () => {
-  const surface = bel`<div></div>`;
-  const instance = util.createFocusTrapInstance(surface);
-  assert.sameMembers(Object.keys(instance), ['activate', 'deactivate', 'pause', 'unpause']);
 });
