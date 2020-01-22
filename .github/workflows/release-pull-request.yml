@@ -33,10 +33,10 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Install dependencies
         run: |
-          npm install
+          yarn install
       - name: Bump version
         run: |
-          npx lerna version --conventional-commits --no-git-tag-version --no-push --yes
+          yarn lerna version --conventional-commits --no-git-tag-version --no-push --yes
       - name: Create PR
         uses: peter-evans/create-pull-request@v1.5.2
         env:

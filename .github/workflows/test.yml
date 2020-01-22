@@ -14,8 +14,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install
-      - run: npm run lint
+      - run: yarn install
+      - run: yarn run lint
   build-test:
     runs-on: ubuntu-latest
     steps:
@@ -23,18 +23,15 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install
-      - run: npm run dist
+      - run: yarn install
+      - run: yarn run dist
   site-generator-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
-        with:
-          # Node v8 is required.
-          node-version: 8
-      - run: npm install
-      - run: npm run test:site
+      - run: yarn install
+      - run: yarn run test:site
   unit-test:
     runs-on: ubuntu-latest
     steps:
@@ -42,12 +39,12 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install
+      - run: yarn install
       - name: Run unit tests
         run: |
           export SAUCE_BUILD_ID=mdc-tests-${GITHUB_EVENT_NAME}-${GITHUB_ACTION}-${GITHUB_SHA}
           export SAUCE_TUNNEL_ID=${SAUCE_BUILD_ID}-tunnel
-          npm run test:unit
+          yarn run test:unit
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
@@ -58,10 +55,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install
+      - run: yarn install
       - name: Run dependency tests
         run: |
-          npm run test:dependency
+          yarn run test:dependency
   sass-test:
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +66,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install
+      - run: yarn install
       - name: Run Sass tests
         run: |
-          npm run test:sass
+          yarn run test:sass

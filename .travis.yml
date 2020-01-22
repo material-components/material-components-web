@@ -20,7 +20,7 @@ before_install:
   - source scripts/travis-env-vars.sh
 
 install:
-  - if has_testable_files; then npm install; fi
+  - if has_testable_files; then yarn install; fi
   # Noisy output, but useful for debugging npm package dependency version issues:
   #- npm ls
 

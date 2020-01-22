@@ -26,7 +26,7 @@ set -e
 
 git clone https://github.com/material-components/material-components-site-generator.git .site-generator-tmp
 cd .site-generator-tmp
-yarn install
+npm install
 # Avoid Jekyll step which requires Ruby setup, just run JS portion to catch link/metadata errors
 sed -e 's/buildJekyll();//' -e "s/require(.*check-deps');//" scripts/build > scripts/build.nojekyll
 node scripts/build.nojekyll ..

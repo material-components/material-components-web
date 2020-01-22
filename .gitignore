@@ -28,7 +28,10 @@ packages/**/test/**.css
 # Individual CHANGELOG files
 packages/**/CHANGELOG.md
 
-#documentation
+# documentation
 docs.json
 methodDescriptionTable.md
 scripts/documentation/tsdoc.js
+
+# Do not use npm, use yarn
+package-lock.json

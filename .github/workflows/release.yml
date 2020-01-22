@@ -32,25 +32,25 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Install dependencies
         run: |
-          npm install
+          yarn install
       - name: Check if release tag is already created
         id: vars
         # Sets action's output parameter using `set-output`.
         # See https://help.github.com/en/github/automating-your-workflow-with-github-actions/development-tools-for-github-actions#set-an-output-parameter-set-output
         run: |
-          MDC_CURRENT_VERSION="v$(npm run version --silent)"
+          MDC_CURRENT_VERSION="v$(yarn run --silent version)"
           # If empty then set `mdc_version_changed` variable to `true`
           [[ -z $(git tag -l "$MDC_CURRENT_VERSION") ]] && echo "::set-output name=mdc_version_changed::true
       - name: Build packages
         if: steps.vars.outputs.mdc_version_changed == true
         run: |
-          npm run dist
+          yarn run dist
           node scripts/cp-pkgs.js
           node scripts/verify-pkg-main.js
       - name: Create release tag
         if: steps.vars.outputs.mdc_version_changed == true
         run: |
-          MDC_CURRENT_VERSION="v$(npm run version --silent)"
+          MDC_CURRENT_VERSION="v$(yarn run --silent version)"
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git tag "$MDC_CURRENT_VERSION"
@@ -60,6 +60,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to NPM registry
         if: steps.vars.outputs.mdc_version_changed == true
-        run: npx lerna publish from-package --yes
+        run: yarn lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

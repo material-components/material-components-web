@@ -1,5 +1,6 @@
 {
   "version": "4.0.0",
+  "npmClient": "yarn",
   "command": {
     "version": {
       "conventionalCommits": true

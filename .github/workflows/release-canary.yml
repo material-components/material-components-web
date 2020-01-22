@@ -32,19 +32,19 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Install dependencies
         run: |
-          npm install
+          yarn install
       - name: Build packages
         run: |
-          npm run dist
+          yarn run dist
           node scripts/cp-pkgs.js
           node scripts/verify-pkg-main.js
       - name: Create canary release
         run: |
-          npx lerna version premajor --no-git-tag-version --no-push --preid canary.$(git rev-parse --short HEAD) --yes --exact
+          yarn lerna version premajor --no-git-tag-version --no-push --preid canary.$(git rev-parse --short HEAD) --yes --exact
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -am "chore: Publish"
       - name: Publish to NPM registry with canary tag
-        run: npx lerna publish from-package --yes --dist-tag canary
+        run: yarn lerna publish from-package --yes --dist-tag canary
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
