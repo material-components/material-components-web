@@ -21,35 +21,41 @@
  * THE SOFTWARE.
  */
 
-import {FocusTrap} from '../focus-trap';
 import {emitEvent} from '../../../testing/dom/events';
+import {FocusTrap} from '../focus-trap';
+
+const FOCUS_SENTINEL_CLASS = 'mdc-dom-focus-sentinel';
 
 function getFixture() {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
     <div id="root">
       <button>Hello</button>
-      <div id="container1">
-        <div id="con1a" tabindex="0">a</div>
+      <div id="container1_innerDiv">
+        <div id="con1a" tabindex="0">1a</div>
         <div id="inner_container">
-          <div id="con1b" tabindex="0">b</div>
+          <div id="con1b" tabindex="0">1b</div>
         </div>
       </div>
-      <div id="container2">
-        <div id="con2a" tabindex="0">c</div>
-        <div id="con2b" tabindex="0">d</div>
+      <div id="container2_standard">
+        <div id="con2a" tabindex="0">2a</div>
+        <div id="con2b" tabindex="0">2b</div>
       </div>
-      <div id="container3">
-        <div id="con3a" tabindex="0" style="display: none">c</div>
-        <div id="con3b" tabindex="0">d</div>
+      <div id="container3_notVisibleElements">
+        <div id="con3a" tabindex="0" style="display: none">3a</div>
+        <div id="con3b" tabindex="0" style="visibility: hidden">3b</div>
+        <div id="con3c" tabindex="0">3c</div>
       </div>
-      <div id="container4">
+      <div id="container4_disabledOrHiddenElements">
         <input id="con4a" disabled>
         <input id="con4b" aria-disabled="true">
         <input id="con4c" disabled="false">
         <input id="con4d" hidden>
         <input id="con4d" aria-hidden="true">
         <input id="con4e" aria-disabled="false">
+      </div>
+      <div id="container5_noFocusableChild">
+        <div id="con5a">5a</div>
       </div>
     </div>`;
   const el = wrapper.firstElementChild as HTMLElement;
@@ -61,11 +67,15 @@ function setUp() {
   const root = getFixture();
   document.body.appendChild(root);
   const button = root.querySelector('button') as HTMLElement;
-  const container1 = root.querySelector('#container1') as HTMLElement;
-  const container2 = root.querySelector('#container2') as HTMLElement;
-  const container3 = root.querySelector('#container3') as HTMLElement;
-  const container4 = root.querySelector('#container4') as HTMLElement;
-  return {button, container1, container2, container3, container4};
+  const container1 = root.querySelector('#container1_innerDiv') as HTMLElement;
+  const container2 = root.querySelector('#container2_standard') as HTMLElement;
+  const container3 =
+      root.querySelector('#container3_notVisibleElements') as HTMLElement;
+  const container4 =
+      root.querySelector('#container4_disabledOrHiddenElements') as HTMLElement;
+  const container5 =
+      root.querySelector('#container5_noFocusableChild') as HTMLElement;
+  return {button, container1, container2, container3, container4, container5};
 }
 
 describe('FocusTrap', () => {
@@ -93,7 +103,8 @@ describe('FocusTrap', () => {
     expectFocusTrapped(container1, 'con1a', 'con1b');
 
     focusTrap1.releaseFocus();
-    expect(container1.querySelectorAll('.mdc-focus-sentinel').length).toBe(0);
+    expect(container1.querySelectorAll(`.${FOCUS_SENTINEL_CLASS}`).length)
+        .toBe(0);
   });
 
   it('restores focus to previously focused element', () => {
@@ -115,27 +126,28 @@ describe('FocusTrap', () => {
     const {container3} = setUp();
     const focusTrap = new FocusTrap(container3);
     focusTrap.trapFocus();
-    expect(document.activeElement!.id).toBe('con3b');
+    expect(document.activeElement!.id).toBe('con3c');
   });
 
-  it('sets initial focus to first non-hidden/non-disabled focusable element', () => {
-    const {container4} = setUp();
-    const focusTrap = new FocusTrap(container4);
-    focusTrap.trapFocus();
-    expect(document.activeElement!.id).toBe('con4e');
-  });
+  it('sets initial focus to first non-hidden/non-disabled focusable element',
+     () => {
+       const {container4} = setUp();
+       const focusTrap = new FocusTrap(container4);
+       focusTrap.trapFocus();
+       expect(document.activeElement!.id).toBe('con4e');
+     });
 
   it('sets initial focus to initialFocusEl', () => {
     const {container1} = setUp();
     const initialFocusEl = container1.querySelector('#con1b') as HTMLElement;
-    const focusTrap = new FocusTrap(container1, { initialFocusEl });
+    const focusTrap = new FocusTrap(container1, {initialFocusEl});
     focusTrap.trapFocus();
     expect(document.activeElement!.id).toBe('con1b');
   });
 
   it('does not set initial focus when skipInitialFocus=true', () => {
     const {button, container1} = setUp();
-    const focusTrap = new FocusTrap(container1, { skipInitialFocus: true });
+    const focusTrap = new FocusTrap(container1, {skipInitialFocus: true});
 
     // First, set focus to button.
     button.focus();
@@ -145,17 +157,25 @@ describe('FocusTrap', () => {
     // Focus should remain on button.
     expect(document.activeElement).toBe(button);
   });
+
+  it('throws an error when trapping focus in an element with 0 focusable elements',
+     () => {
+       const {container5} = setUp();
+       const focusTrap = new FocusTrap(container5);
+       expect(() => {
+         focusTrap.trapFocus();
+       })
+           .toThrow(jasmine.stringMatching(
+               /Element must have at least one focusable child/));
+     });
 });
 
 function expectFocusTrapped(
     el: HTMLElement, firstElementId: string, lastElementId: string) {
   expect(document.activeElement!.id).toBe(firstElementId);
-  const focusSentinels = el.querySelectorAll('.mdc-focus-sentinel');
+  const focusSentinels = el.querySelectorAll(`.${FOCUS_SENTINEL_CLASS}`);
   const startFocusSentinel = focusSentinels[0] as HTMLElement;
   const endFocusSentinel = focusSentinels[1] as HTMLElement;
-  // Sentinels are in the right part of the DOM tree.
-  expect(el.firstElementChild as HTMLElement).toBe(startFocusSentinel);
-  expect(el.lastElementChild as HTMLElement).toBe(endFocusSentinel);
 
   // Patch #addEventListener to make it synchronous for `focus` events.
   const fakeFocusHandler = (eventName: string, eventHandler: any) => {
