@@ -33,7 +33,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Install dependencies
         run: |
-          npm install
+          npm ci
       - name: Bump version
         run: |
           npx lerna version --conventional-commits --no-git-tag-version --no-push --yes
