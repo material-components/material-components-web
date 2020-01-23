@@ -85,27 +85,3 @@ export function createMockWindowForCssVariables() {
   };
   return mockWindow;
 }
-
-/**
- * Checks if the spy was called with specific arguments a certain number of
- * times. This backfills Jasmine's lack of functionality in counting the
- * number of invocations with specific arguments, not all invocations with any
- * arguments. This is intended for ripple tests only, since tests in this
- * component are particularly concerned with the number of times one specific
- * invocation occurred (i.e. debouncing tests), and because its foundation
- * makes calls with arguments we don't care about that should be
- * excluded in the call count. It performs shallow equality comparison, and is
- * unsuitable for arguments other than strings (i.e. jasmine.any()).
- */
-export function checkNumTimesSpyCalledWithStrArgs(
-    spy: jasmine.Spy, args: string[], count: number) {
-  expect(spy.calls.allArgs()
-             .filter((x: string[]) => strArraysEqualForTest(x, args))
-             .length)
-      .toEqual(count);
-}
-
-function strArraysEqualForTest(expected: any[], actual: any[]) {
-  return expected.length === actual.length &&
-      expected.every((el, i) => el === actual[i]);
-}

@@ -24,10 +24,10 @@
 
 import {cssClasses, numbers} from '../../mdc-ripple/constants';
 import {MDCRippleFoundation} from '../../mdc-ripple/foundation';
-import {captureHandlers} from '../../../testing/helpers/foundation';
+import {captureHandlers, checkNumTimesSpyCalledWithArgs} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 
-import {checkNumTimesSpyCalledWithStrArgs, testFoundation} from './helpers';
+import {testFoundation} from './helpers';
 
 const {DEACTIVATION_TIMEOUT_MS} = numbers;
 
@@ -54,7 +54,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         // during activation as well in order to support re-triggering the
         // ripple. We want to test that this is called a *second* time when
         // deactivating.
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 2);
         expect(adapter.addClass)
             .toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
@@ -81,7 +81,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         jasmine.clock().tick(1);
         jasmine.clock().tick(DEACTIVATION_TIMEOUT_MS);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 2);
         expect(adapter.addClass)
             .toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
@@ -108,7 +108,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         jasmine.clock().tick(1);
         jasmine.clock().tick(DEACTIVATION_TIMEOUT_MS);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 2);
         expect(adapter.addClass)
             .toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
@@ -135,7 +135,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         jasmine.clock().tick(1);
         jasmine.clock().tick(DEACTIVATION_TIMEOUT_MS);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 2);
         expect(adapter.addClass)
             .toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
@@ -162,7 +162,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         jasmine.clock().tick(1);
         jasmine.clock().tick(DEACTIVATION_TIMEOUT_MS);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 2);
         expect(adapter.addClass)
             .toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
@@ -189,7 +189,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         jasmine.clock().tick(1);
         jasmine.clock().tick(DEACTIVATION_TIMEOUT_MS);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 2);
         expect(adapter.addClass)
             .toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
@@ -239,7 +239,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         jasmine.clock().tick(1);
         jasmine.clock().tick(DEACTIVATION_TIMEOUT_MS);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 2);
         expect(adapter.addClass)
             .toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
@@ -266,7 +266,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         documentHandlers['mouseup']();
         jasmine.clock().tick(1);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 2);
         expect(adapter.addClass)
             .toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
@@ -307,9 +307,9 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         // - Once again during the second activation when the ripple was
         // re-triggered
         // - A third and final time when the deactivation UX timer runs
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 3);
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.addClass, [cssClasses.FG_DEACTIVATION], 1);
       });
 
@@ -335,7 +335,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
 
         // Sanity check that the foreground deactivation class removal was only
         // called once within the activation code.
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_DEACTIVATION], 1);
 
         // Trigger another activation
@@ -349,7 +349,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         // Verify that the foreground deactivation class removal was only called
         // twice: once within the original activation, and again within this
         // subsequent activation; NOT by means of any timers firing.
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_DEACTIVATION], 2);
       });
 
@@ -371,15 +371,15 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         // Test conditions slightly before the timeout lapses (subtracting ~2
         // frames due to runToFrame above)
         jasmine.clock().tick(DEACTIVATION_TIMEOUT_MS - 32);
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 1);
         expect(adapter.addClass)
             .not.toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
 
         jasmine.clock().tick(32);
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 2);
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_DEACTIVATION], 1);
       });
 
@@ -396,7 +396,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         jasmine.clock().tick(1);
         jasmine.clock().tick(DEACTIVATION_TIMEOUT_MS);
 
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 1);
         expect(adapter.addClass)
             .not.toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
@@ -425,9 +425,9 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
 
         // At this point, the deactivation UX should have run, since the initial
         // activation was triggered by a pointerdown event.
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.removeClass, [cssClasses.FG_ACTIVATION], 2);
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.addClass, [cssClasses.FG_DEACTIVATION], 1);
 
         // Also at this point, all of the document event handlers should have
@@ -441,7 +441,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         jasmine.clock().tick(1);
 
         // Verify that activation only happened once, at pointerdown
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.addClass, [cssClasses.FG_ACTIVATION], 1);
 
         documentHandlers['mouseup']();
@@ -452,7 +452,7 @@ describe('MDCRippleFoundation - Deactivation logic', () => {
         // ripple.
         handlers['mousedown']({pageX: 0, pageY: 0});
         jasmine.clock().tick(1);
-        checkNumTimesSpyCalledWithStrArgs(
+        checkNumTimesSpyCalledWithArgs(
             adapter.addClass, [cssClasses.FG_ACTIVATION], 2);
       });
 });

@@ -59,16 +59,16 @@
         </div>
 
         <div class="test-cell test-cell--light test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--outlined">
-            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input">
+          <label class="mdc-text-field mdc-text-field--outlined">
+            <input type="text" aria-labelledby="outlined-text-field-label" class="mdc-text-field__input test-text-field__input">
             <div class="mdc-notched-outline">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__notch">
-                <label for="outlined-text-field" class="mdc-floating-label">Label</label>
+                <span id="outlined-text-field-label" class="mdc-floating-label">Label</span>
               </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
-          </div>
+          </label>
         </div>
       </div>
     </main>

@@ -64,28 +64,28 @@ Leading and trailing icons can be applied to default or `mdc-text-field--outline
 In text field:
 
 ```html
-<div class="mdc-text-field mdc-text-field--with-leading-icon">
+<label class="mdc-text-field mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
-  <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-floating-label">Your Name</label>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
+  <span class="mdc-floating-label" id="my-label-id">Your Name</span>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 In outlined text field:
 
 ```html
-<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
+<label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
-  <input type="text" id="my-input" class="mdc-text-field__input">
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
-      <label for="my-input" class="mdc-floating-label">Your Name</label>
+      <span class="mdc-floating-label" id="my-label-id">Your Name</span>
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 ### Trailing icon
@@ -93,28 +93,28 @@ In outlined text field:
 In text field:
 
 ```html
-<div class="mdc-text-field mdc-text-field--with-trailing-icon">
-  <input type="text" id="my-input" class="mdc-text-field__input">
+<label class="mdc-text-field mdc-text-field--with-trailing-icon">
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
-  <label for="my-input" class="mdc-floating-label">Your Name</label>
+  <span class="mdc-floating-label" id="my-label-id">Your Name</span>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 In outlined text field:
 
 ```html
-<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
-  <input type="text" id="my-input" class="mdc-text-field__input">
+<label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
-      <label for="my-input" class="mdc-floating-label">Your Name</label>
+      <span class="mdc-floating-label" id="my-label-id">Your Name</span>
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 ### Leading and Trailing icons
@@ -122,30 +122,30 @@ In outlined text field:
 In text field:
 
 ```html
-<div class="mdc-text-field mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
+<label class="mdc-text-field mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading">phone</i>
-  <input type="text" id="my-input" class="mdc-text-field__input">
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
-  <label for="my-input" class="mdc-floating-label">Phone Number</label>
+  <span class="mdc-floating-label" id="my-label-id">Phone Number</span>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 In outlined text field:
 
 ```html
-<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
+<label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading">phone</i>
-  <input type="text" id="my-input" class="mdc-text-field__input">
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">clear</i>
   <div class="mdc-notched-outline">
    <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
-      <label for="my-input" class="mdc-floating-label">Phone Number</label>
+      <span class="mdc-floating-label" id="my-label-id">Phone Number</span>
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 ## Style Customization
