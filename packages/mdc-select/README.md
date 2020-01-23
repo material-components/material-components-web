@@ -149,7 +149,7 @@ same.
     <div class="mdc-notched-outline">
       <div class="mdc-notched-outline__leading"></div>
       <div class="mdc-notched-outline__notch">
-        <span id="outlined-select-label" class="mdc-floating-label">Pick a Food Group</span>
+        <label id="outlined-select-label" class="mdc-floating-label">Pick a Food Group</label>
       </div>
       <div class="mdc-notched-outline__trailing"></div>
     </div>

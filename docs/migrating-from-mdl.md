@@ -98,11 +98,11 @@ MDL:
 MDC Web:
 
 ```html
-<label class="mdc-text-field">
-  <input class="mdc-text-field__input" type="text" aria-labelledby="label">
-  <span id="label" class="mdc-floating-label">Input Label</span>
+<div class="mdc-text-field">
+  <input class="mdc-text-field__input" type="text" id="input">
+  <label for="input" class="mdc-floating-label">Input Label</label>
   <div class="mdc-line-ripple"></div>
-</label>
+</div>
 ```
 
 In MDC Web, the DOM you specify must be complete; unlike MDL, the library will not create any missing elements for you.
@@ -124,11 +124,11 @@ For every component that you want to automatically initialize, set the `data-mdc
 element, with the component’s class name as the value. For example:
 
 ```html
-<label class="mdc-text-field" data-mdc-auto-init="MDCTextField">
-  <input class="mdc-text-field__input" type="text" aria-labelledby="label">
-  <span id="label" class="mdc-floating-label">Input Label</span>
+<div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+  <input class="mdc-text-field__input" type="text" id="input">
+  <label for="input" class="mdc-floating-label">Input Label</label>
   <div class="mdc-line-ripple"></div>
-</label>
+</div>
 ```
 
 Auto-initialization needs to be triggered explicitly, but doing so is very straightforward.
