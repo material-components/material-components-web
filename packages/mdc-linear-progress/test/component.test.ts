@@ -75,7 +75,7 @@ describe('MDCLinearProgress', () => {
         root.querySelector(
             MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR) as
         HTMLElement;
-    expect('scaleX(0.5)').toEqual(primaryBar.style.transform);
+    expect('scaleX(0.5)').toEqual(primaryBar.style.transform as string);
     expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUENOW))
         .toEqual('0.5');
   });
@@ -87,7 +87,7 @@ describe('MDCLinearProgress', () => {
     const buffer =
         root.querySelector(
             MDCLinearProgressFoundation.strings.BUFFER_SELECTOR) as HTMLElement;
-    expect('scaleX(0.5)').toEqual(buffer.style.transform);
+    expect('scaleX(0.5)').toEqual(buffer.style.transform as string);
   });
 
   it('set reverse', () => {
