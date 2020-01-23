@@ -21,23 +21,19 @@
  * THE SOFTWARE.
  */
 
-import {default as createFocusTrap, FocusTarget, FocusTrap, Options} from 'focus-trap';
+import {FocusOptions, FocusTrap} from '@material/dom/focus-trap';
 
 export type MDCDialogFocusTrapFactory = (
-    element: HTMLElement | string,
-    userOptions?: Options,
+    element: HTMLElement,
+    options: FocusOptions,
 ) => FocusTrap;
 
 export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
-    focusTrapFactory: MDCDialogFocusTrapFactory = createFocusTrap as unknown as MDCDialogFocusTrapFactory,
-    initialFocusEl?: FocusTarget,
+    focusTrapFactory: MDCDialogFocusTrapFactory,
+    initialFocusEl?: HTMLElement,
 ): FocusTrap {
-  return focusTrapFactory(surfaceEl, {
-    clickOutsideDeactivates: true, // Allow handling of scrim clicks.
-    escapeDeactivates: false, // Foundation handles ESC key.
-    initialFocus: initialFocusEl,
-  });
+  return focusTrapFactory(surfaceEl, {initialFocusEl});
 }
 
 export function isScrollable(el: HTMLElement | null): boolean {

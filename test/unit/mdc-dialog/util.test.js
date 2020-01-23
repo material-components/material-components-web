@@ -34,19 +34,11 @@ test('createFocusTrapInstance creates a properly configured focus trap instance 
   const focusTrapFactory = td.func('focusTrapFactory');
   const properlyConfiguredFocusTrapInstance = {};
   td.when(focusTrapFactory(surface, {
-    initialFocus: yesBtn,
-    escapeDeactivates: false,
-    clickOutsideDeactivates: true,
+    initialFocusEl: yesBtn,
   })).thenReturn(properlyConfiguredFocusTrapInstance);
 
   const instance = util.createFocusTrapInstance(surface, focusTrapFactory, yesBtn);
   assert.equal(instance, properlyConfiguredFocusTrapInstance);
-});
-
-test('createFocusTrapInstance creates a properly configured focus trap instance with optional args omitted', () => {
-  const surface = bel`<div></div>`;
-  const instance = util.createFocusTrapInstance(surface);
-  assert.sameMembers(Object.keys(instance), ['activate', 'deactivate', 'pause', 'unpause']);
 });
 
 test('isScrollable returns false when element is null', () => {
