@@ -23,9 +23,9 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
+import {FocusTrap} from '@material/dom/focus-trap';
 import {MDCList, MDCListFactory} from '@material/list/component';
 import {MDCListFoundation} from '@material/list/foundation';
-import {default as createFocusTrap, FocusTrap} from 'focus-trap';
 import {MDCDrawerAdapter} from './adapter';
 import {MDCDismissibleDrawerFoundation} from './dismissible/foundation';
 import {MDCModalDrawerFoundation} from './modal/foundation';
@@ -78,7 +78,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   }
 
   initialize(
-      focusTrapFactory: MDCDrawerFocusTrapFactory = createFocusTrap as unknown as MDCDrawerFocusTrapFactory,
+      focusTrapFactory: MDCDrawerFocusTrapFactory = (el) => new FocusTrap(el),
       listFactory: MDCListFactory = (el) => new MDCList(el),
   ) {
     const listEl = this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`);
@@ -149,8 +149,8 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       },
       notifyClose: () => this.emit(strings.CLOSE_EVENT, {}, true /* shouldBubble */),
       notifyOpen: () => this.emit(strings.OPEN_EVENT, {}, true /* shouldBubble */),
-      trapFocus: () => this.focusTrap_!.activate(),
-      releaseFocus: () => this.focusTrap_!.deactivate(),
+      trapFocus: () => this.focusTrap_!.trapFocus(),
+      releaseFocus: () => this.focusTrap_!.releaseFocus(),
     };
     // tslint:enable:object-literal-sort-keys
 

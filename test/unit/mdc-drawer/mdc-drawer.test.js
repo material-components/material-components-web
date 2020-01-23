@@ -99,7 +99,7 @@ function setupTest(options = defaultSetupOptions) {
  * @return {{
  *   component: MDCDrawer,
  *   mockList: MDCList,
- *   mockFocusTrapInstance: {activate: function(), deactivate: function(), pause: function(), unpause: function()},
+ *   mockFocusTrapInstance: {trapFocus: function(), releaseFocus: function(), pause: function(), unpause: function()},
  *   root: HTMLElement,
  *   drawer: HTMLElement,
  *   mockFoundation: (MDCDismissibleDrawerFoundation|MDCModalDrawerFoundation),
@@ -113,8 +113,8 @@ function setupTestWithMocks(options = defaultSetupOptions) {
   const MockFoundationCtor = td.constructor(MockFoundationClass);
   const mockFoundation = new MockFoundationCtor();
   const mockFocusTrapInstance = td.object({
-    activate: () => {},
-    deactivate: () => {},
+    trapFocus: () => {},
+    releaseFocus: () => {},
   });
   const mockList = td.object({
     wrapFocus: () => {},
@@ -300,14 +300,14 @@ test('adapter#trapFocus traps focus on root element', () => {
   const {component, mockFocusTrapInstance} = setupTestWithMocks({variantClass: cssClasses.MODAL});
   component.getDefaultFoundation().adapter_.trapFocus();
 
-  td.verify(mockFocusTrapInstance.activate());
+  td.verify(mockFocusTrapInstance.trapFocus());
 });
 
 test('adapter#releaseFocus releases focus on root element after trap focus', () => {
   const {component, mockFocusTrapInstance} = setupTestWithMocks({variantClass: cssClasses.MODAL});
   component.getDefaultFoundation().adapter_.releaseFocus();
 
-  td.verify(mockFocusTrapInstance.deactivate());
+  td.verify(mockFocusTrapInstance.releaseFocus());
 });
 
 test('adapter#notifyOpen emits drawer open event', () => {
