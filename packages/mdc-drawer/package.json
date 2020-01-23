@@ -21,6 +21,7 @@
   "dependencies": {
     "@material/animation": "^5.0.0",
     "@material/base": "^5.0.0",
+    "@material/dom": "^5.0.0",
     "@material/elevation": "^5.0.0",
     "@material/feature-targeting": "^5.0.0",
     "@material/list": "^5.0.0",
@@ -29,7 +30,6 @@
     "@material/shape": "^5.0.0",
     "@material/theme": "^5.0.0",
     "@material/typography": "^5.0.0",
-    "focus-trap": "^5.0.0",
     "tslib": "^1.9.3"
   }
 }
