@@ -49,7 +49,7 @@ $ripple-target: ".mdc-button__ripple";
   }
 }
 
-// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// Test. This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // button styles. It is recommended that most users use `mdc-button-core-styles` instead.
 @mixin without-ripple($query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
