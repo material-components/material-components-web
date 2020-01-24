@@ -262,6 +262,18 @@
       height: 2px;
       overflow: hidden;
     }
+
+    &::after {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        content: "";
+      }
+    }
   }
 
   &__track {
@@ -434,17 +446,11 @@
 @mixin rail-color_($color, $opacity: variables.$baseline-rail-opacity, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
-  .mdc-slider__track-container {
+  .mdc-slider__track-container::after {
     @include feature-targeting-mixins.targets($feat-color) {
-      &::after {
-        @include theme-mixins.prop(background-color, $color);
+      @include theme-mixins.prop(background-color, $color);
 
-        display: block;
-        width: 100%;
-        height: 100%;
-        opacity: $opacity;
-        content: "";
-      }
+      opacity: $opacity;
     }
   }
 }
