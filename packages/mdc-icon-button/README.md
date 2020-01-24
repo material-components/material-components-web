@@ -79,7 +79,6 @@ Then instantiate an `MDCIconButtonToggle` on the root element.
 <button id="add-to-favorites"
    class="mdc-icon-button"
    aria-label="Add to favorites"
-   aria-hidden="true"
    aria-pressed="false">
    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
    <i class="material-icons mdc-icon-button__icon">favorite_border</i>
@@ -99,7 +98,6 @@ The icon button toggle can be used with SVGs.
 <button id="star-this-item"
    class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
-   aria-hidden="true"
    aria-pressed="true">
    <svg class="mdc-icon-button__icon">
      ...
@@ -118,7 +116,6 @@ The icon button toggle can be used with `img` tags.
 <button id="star-this-item"
    class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
-   aria-hidden="true"
    aria-pressed="true">
    <img src="" class="mdc-icon-button__icon"/>
    <img src="" class="mdc-icon-button__icon mdc-icon-button__icon--on"/>
