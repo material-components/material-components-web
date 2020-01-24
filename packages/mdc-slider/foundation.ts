@@ -467,6 +467,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     } else if (value > max) {
       value = max;
     }
+    value = value || 0; // coerce -0 to 0
     this.value_ = value;
     this.adapter_.setAttribute(strings.ARIA_VALUENOW, String(this.value_));
     this.updateUIForCurrentValue_();
