@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +21,26 @@
  * THE SOFTWARE.
  */
 
-import td from 'testdouble';
+import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {cssClasses} from '../constants';
+import {MDCFadingTabIndicatorFoundation} from '../fading-foundation';
 
-import {setupFoundationTest} from '../helpers/setup';
-import {MDCFadingTabIndicatorFoundation} from '../../../packages/mdc-tab-indicator/fading-foundation';
+describe('MDCFadingTabIndicatorFoundation', () => {
+  const setupTest = () => {
+    const {foundation, mockAdapter} =
+        setUpFoundationTest(MDCFadingTabIndicatorFoundation);
+    return {foundation, mockAdapter};
+  };
 
-suite('MDCFadingTabIndicatorFoundation');
+  it(`#activate adds the ${cssClasses.ACTIVE} class`, () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.activate();
+    expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.ACTIVE);
+  });
 
-const setupTest = () => setupFoundationTest(MDCFadingTabIndicatorFoundation);
-
-test(`#activate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
-});
-
-test(`#deactivate removes the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const foundation = new MDCFadingTabIndicatorFoundation();
-  const adapter = foundation.adapter_;
-  adapter.removeClass = td.func('removeClass');
-  foundation.deactivate();
-  td.verify(adapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
+  it(`#deactivate removes the ${cssClasses.ACTIVE} class`, () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.deactivate();
+    expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.ACTIVE);
+  });
 });
