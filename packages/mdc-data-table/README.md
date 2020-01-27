@@ -209,9 +209,9 @@ CSS Class | Description
 `mdc-data-table` | Mandatory. The root DOM element containing `table` and other supporting elements.
 `mdc-data-table__table` | Mandatory. Table element. Added to `table` HTML tag.
 `mdc-data-table__header-row` | Mandatory. Table header row element. Added to `thead > tr` HTML tag.
-`mdc-data-table__header-cell` | Mandatory. Table header cell element. Added to `thead > th > td` HTML tag.
-`mdc-data-table__header-cell--checkbox` | Optional. Table header cell element that contains `mdc-checkbox`. Added to `thead> th > td:first-child` HTML tag.
-`mdc-data-table__header-cell--numeric` | Optional. Table header cell element that maps to numeric cells. Added to `thead > th > td` HTML tag.
+`mdc-data-table__header-cell` | Mandatory. Table header cell element. Added to `thead > tr > th` HTML tag.
+`mdc-data-table__header-cell--checkbox` | Optional. Table header cell element that contains `mdc-checkbox`. Added to `thead > tr > th` HTML tag.
+`mdc-data-table__header-cell--numeric` | Optional. Table header cell element that maps to numeric cells. Added to `thead > tr > th` HTML tag.
 `mdc-data-table__content` | Mandatory. Table body element. Added to `tbody` HTML tag.
 `mdc-data-table__row` | Mandatory. Table row element. Added to `tbody > tr` HTML tag.
 `mdc-data-table__cell` | Mandatory. Table cell element. Added to `tbody > tr > td` HTML tag.
