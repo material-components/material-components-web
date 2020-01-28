@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {EventType} from '@material/base/types';
+import {EventType, SpecificEventListener} from '@material/base/types';
 import {applyPassive} from '@material/dom/events';
 import {matches} from '@material/dom/ponyfill';
 import {MDCRippleAdapter} from '@material/ripple/adapter';
@@ -104,15 +104,19 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
       ...MDCRipple.createAdapter(this),
       addClass: (className: string) => rippleSurface.classList.add(className),
       computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
-      deregisterInteractionHandler: (evtType: EventType, handler: EventListener) => {
+      deregisterInteractionHandler: <K extends EventType>(
+          evtType: K, handler: SpecificEventListener<K>) => {
         this.nativeControl_.removeEventListener(evtType, handler, applyPassive());
       },
       isSurfaceActive: () => matches(this.nativeControl_, ':active'),
       isUnbounded: () => true,
-      registerInteractionHandler: (evtType: EventType, handler: EventListener) => {
+      registerInteractionHandler: <K extends EventType>(
+          evtType: K, handler: SpecificEventListener<K>) => {
         this.nativeControl_.addEventListener(evtType, handler, applyPassive());
       },
-      removeClass: (className: string) => rippleSurface.classList.remove(className),
+      removeClass: (className: string) => {
+        rippleSurface.classList.remove(className);
+      },
       updateCssVariable: (varName: string, value: string) => {
         rippleSurface.style.setProperty(varName, value);
       },

@@ -33,16 +33,37 @@ export interface FoundationConstructor<F extends MDCFoundation> extends
 }
 
 /**
+ * @returns Method names of the given foundation class, including all MDC
+ *     superclasses.
+ */
+function getFoundationMethods<F extends MDCFoundation>(
+    // tslint:disable-next-line:enforce-name-casing
+    FoundationCtor: FoundationConstructor<F>,
+    foundationMethods: string[] = []): string[] {
+  const methods = foundationMethods;
+  for (const methodName of Object.getOwnPropertyNames(FoundationCtor.prototype)) {
+    methods.push(methodName);
+  }
+
+  // tslint:disable-next-line:enforce-name-casing
+  const BaseFoundationCtor = Object.getPrototypeOf(FoundationCtor);
+  if (BaseFoundationCtor === Function.prototype) {
+    return methods;
+  } else {
+    return getFoundationMethods(BaseFoundationCtor, methods);
+  }
+}
+
+/**
  * Creates a mockFoundation object with spy functions for each of the
  * foundation class' methods.
  */
 export function createMockFoundation<F extends MDCFoundation>(
-    FoundationClass: FoundationConstructor<F>) {
-  const mockFoundationMethods =
-      Object.getOwnPropertyNames(FoundationClass.prototype)
-          .concat(Object.getOwnPropertyNames(MDCFoundation.prototype));
+    // tslint:disable-next-line:enforce-name-casing
+    FoundationCtor: FoundationConstructor<F>) {
+  const mockFoundationMethods = getFoundationMethods(FoundationCtor);
   const mockFoundation =
-      jasmine.createSpyObj(FoundationClass.name, mockFoundationMethods);
+      jasmine.createSpyObj(FoundationCtor.name, mockFoundationMethods);
   return mockFoundation;
 }
 
@@ -51,15 +72,16 @@ export function createMockFoundation<F extends MDCFoundation>(
  * adapter class' methods.
  */
 export function createMockAdapter<F extends MDCFoundation>(
-    FoundationClass: FoundationConstructor<F>) {
+    // tslint:disable-next-line:enforce-name-casing
+    FoundationCtor: FoundationConstructor<F>) {
   const mockAdapterMethods = {};
-  Object.keys(FoundationClass.defaultAdapter).forEach((methodName) => {
-    const value = (FoundationClass.defaultAdapter as any)[methodName];
+  Object.keys(FoundationCtor.defaultAdapter).forEach((methodName) => {
+    const value = (FoundationCtor.defaultAdapter as any)[methodName];
     (mockAdapterMethods as any)[methodName] =
         typeof value === 'function' ? value() : value;
   });
   const mockAdapter =
-      jasmine.createSpyObj(FoundationClass.name, mockAdapterMethods);
+      jasmine.createSpyObj(FoundationCtor.name, mockAdapterMethods);
   return mockAdapter;
 }
 
@@ -71,8 +93,9 @@ export function createMockAdapter<F extends MDCFoundation>(
  * Every foundation test suite includes this verification.
  */
 export function verifyDefaultAdapter<F extends MDCFoundation>(
-    FoundationClass: FoundationConstructor<F>, expectedMethodNames: string[]) {
-  const defaultAdapter = FoundationClass.defaultAdapter as {
+    // tslint:disable-next-line:enforce-name-casing
+    FoundationCtor: FoundationConstructor<F>, expectedMethodNames: string[]) {
+  const defaultAdapter = FoundationCtor.defaultAdapter as {
     [key: string]: any;
   };
   const adapterKeys = Object.keys(defaultAdapter);
@@ -171,4 +194,28 @@ function getUnequalArrayMessage(
   }
 
   return `Found ${messages.join('; ')}`;
+}
+
+/**
+ * Checks if the spy was called with specific arguments a certain number of
+ * times. This is intended for tests that are particularly concerned with the
+ * number of times one specific invocation occurred (i.e. ripple debouncing
+ * tests), and for which combining Jasmine's `toHaveBeenCalledWith` followed by
+ * `toHaveBeenCalledTimes` is insufficient because `toHaveBeenCalledTimes`
+ * potentially counts other invocations with arguments we don't care about.
+ *
+ * Note: This performs SHALLOW equality comparisons only and doesn't support
+ * matchers (i.e. jasmine.any()).
+ */
+export function checkNumTimesSpyCalledWithArgs(
+    spy: jasmine.Spy, args: any[], count: number) {
+  expect(spy.calls.allArgs()
+             .filter((x: any[]) => arraysShallowEqual(x, args))
+             .length)
+      .toEqual(count);
+}
+
+function arraysShallowEqual(expected: any[], actual: any[]) {
+  return expected.length === actual.length &&
+      expected.every((el, i) => el === actual[i]);
 }

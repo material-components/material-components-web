@@ -135,6 +135,7 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(padding, 16px, variables.$padding);
 
+      width: 100%;
       flex-grow: 1;
       box-sizing: border-box;
       margin: 0;

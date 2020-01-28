@@ -1,0 +1,13 @@
+@use "../mixins" as touch-target;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include touch-target.wrapper($query: $query);
+    @include touch-target.touch-target($query: $query);
+    @include touch-target.margin(0, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

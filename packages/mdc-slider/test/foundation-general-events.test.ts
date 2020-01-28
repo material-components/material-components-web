@@ -48,7 +48,7 @@ describe('MDCSliderFoundation - General Events', () => {
     foundation.init();
     jasmine.clock().tick(1);
 
-    rootHandlers['mousedown']({pageX: 50});
+    rootHandlers['mousedown']({clientX: 50});
     jasmine.clock().tick(1);
     rootHandlers['focus']();
 
@@ -75,7 +75,7 @@ describe('MDCSliderFoundation - General Events', () => {
        foundation.init();
        jasmine.clock().tick(1);
 
-       rootHandlers['mousedown']({pageX: 50});
+       rootHandlers['mousedown']({clientX: 50});
        jasmine.clock().tick(1);
        rootHandlers['focus']();
        // Sanity check

@@ -27,7 +27,7 @@
  * supported.
  */
 export function emitEvent(
-    targetEl: Element|Window, eventName: string,
+    targetEl: Element|Window|Document, eventName: string,
     {bubbles, cancelable, detail}: CustomEventInit = {
       bubbles: false,
       cancelable: false,

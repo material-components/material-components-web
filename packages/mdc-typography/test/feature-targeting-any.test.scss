@@ -1,0 +1,16 @@
+@use "../mixins" as typography;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include typography.core-styles($query: $query);
+    @include typography.base($query: $query);
+    @include typography.typography(button, $query: $query);
+    @include typography.overflow-ellipsis($query: $query);
+    @include typography.baseline-top(0, $query: $query);
+    @include typography.baseline-bottom(0, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

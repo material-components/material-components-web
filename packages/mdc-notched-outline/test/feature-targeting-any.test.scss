@@ -1,0 +1,17 @@
+@use "../mixins" as notched-outline;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include notched-outline.core-styles($query: $query);
+    @include notched-outline.color(red, $query: $query);
+    @include notched-outline.stroke-width(1337px, $query: $query);
+    @include notched-outline.notch-offset(1337px, $query: $query);
+    @include notched-outline.shape-radius(42px, $query: $query);
+    @include notched-outline.floating-label-float-position(100%, $query: $query);
+    @include notched-outline.floating-label-float-position-absolute(100px, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

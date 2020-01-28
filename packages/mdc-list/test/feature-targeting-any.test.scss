@@ -1,0 +1,23 @@
+@use "../mixins" as list;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include list.core-styles($query: $query);
+    @include list.item-primary-text-ink-color(red, $query: $query);
+    @include list.item-secondary-text-ink-color(red, $query: $query);
+    @include list.item-graphic-fill-color(red, $query: $query);
+    @include list.item-graphic-ink-color(red, $query: $query);
+    @include list.item-meta-ink-color(red, $query: $query);
+    @include list.single-line-shape-radius(42, $rtl-reflexive: false, $density-scale: 0, $query: $query);
+    @include list.single-line-height(0, $query: $query);
+    @include list.single-line-density(0, $query: $query);
+    @include list.divider-color(red, $query: $query);
+    @include list.group-subheader-ink-color(red, $query: $query);
+    @include list.ripple($query: $query);
+    @include list.without-ripple($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());
