@@ -22,7 +22,10 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
 import {Direction, EventSource, jumpChipKeys, navigationKeys, strings as chipStrings} from '../chip/constants';
+import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail, MDCChipSelectionEventDetail} from '../chip/types';
+
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -37,6 +40,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   static get defaultAdapter(): MDCChipSetAdapter {
     return {
+      announceMessage: () => undefined,
       focusChipPrimaryActionAtIndex: () => undefined,
       focusChipTrailingActionAtIndex: () => undefined,
       getChipListCount: () => -1,
@@ -76,7 +80,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Handles a chip interaction event
    */
-  handleChipInteraction(chipId: string) {
+  handleChipInteraction(detail: MDCChipInteractionEventDetail) {
+    const {chipId} = detail;
     const index = this.adapter_.getIndexOfChipById(chipId);
     this.removeFocusFromChipsExcept_(index);
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
@@ -87,7 +92,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Handles a chip selection event, used to handle discrepancy when selection state is set directly on the Chip.
    */
-  handleChipSelection(chipId: string, selected: boolean, shouldIgnore: boolean) {
+  handleChipSelection(detail: MDCChipSelectionEventDetail) {
+    const {chipId, selected, shouldIgnore} = detail;
     // Early exit if we should ignore the event
     if (shouldIgnore) {
       return;
@@ -104,7 +110,12 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Handles the event when a chip is removed.
    */
-  handleChipRemoval(chipId: string) {
+  handleChipRemoval(detail: MDCChipRemovalEventDetail) {
+    const {chipId, removedAnnouncement} = detail;
+    if (removedAnnouncement) {
+      this.adapter_.announceMessage(removedAnnouncement);
+    }
+
     const index = this.adapter_.getIndexOfChipById(chipId);
     this.deselectAndNotifyClients_(chipId);
     this.adapter_.removeChipAtIndex(index);
@@ -118,7 +129,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Handles a chip navigation event.
    */
-  handleChipNavigation(chipId: string, key: string, source: EventSource) {
+  handleChipNavigation(detail: MDCChipNavigationEventDetail) {
+    const {chipId, key, source} = detail;
     const maxIndex = this.adapter_.getChipListCount() - 1;
     let index = this.adapter_.getIndexOfChipById(chipId);
     // Early exit if the index is out of range or the key is unusable

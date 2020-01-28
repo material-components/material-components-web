@@ -119,36 +119,49 @@ describe('MDCChipSet', () => {
       REMOVAL_EVENT,
       SELECTION_EVENT
     } = MDCChipFoundation.strings;
-    const evtData = {
-      chipId: 'chipA',
-      selected: true,
-      key: ARROW_LEFT_KEY,
-      source: 1,
-      shouldIgnore: false,
-    };
     const evt1 = document.createEvent('CustomEvent');
     const evt2 = document.createEvent('CustomEvent');
     const evt3 = document.createEvent('CustomEvent');
     const evt4 = document.createEvent('CustomEvent');
-    evt1.initCustomEvent(INTERACTION_EVENT, true, true, evtData);
-    evt2.initCustomEvent(REMOVAL_EVENT, true, true, evtData);
-    evt3.initCustomEvent(SELECTION_EVENT, true, true, evtData);
-    evt4.initCustomEvent(NAVIGATION_EVENT, true, true, evtData);
+    evt1.initCustomEvent(INTERACTION_EVENT, true, true, {
+      chipId: 'chipA',
+    });
+    evt2.initCustomEvent(REMOVAL_EVENT, true, true, {
+      chipId: 'chipA',
+      removedAnnouncement: 'Removed foo',
+    });
+    evt3.initCustomEvent(SELECTION_EVENT, true, true, {
+      chipId: 'chipA',
+      selected: true,
+      shouldIgnore: false,
+    });
+    evt4.initCustomEvent(NAVIGATION_EVENT, true, true, {
+      chipId: 'chipA',
+      key: ARROW_LEFT_KEY,
+      source: 1,
+    });
 
     root.dispatchEvent(evt1);
     root.dispatchEvent(evt2);
     root.dispatchEvent(evt3);
     root.dispatchEvent(evt4);
 
-    expect(mockFoundation.handleChipInteraction).toHaveBeenCalledWith('chipA');
+    expect(mockFoundation.handleChipInteraction).toHaveBeenCalledWith({
+      chipId: 'chipA'
+    });
     expect(mockFoundation.handleChipInteraction).toHaveBeenCalledTimes(1);
     expect(mockFoundation.handleChipSelection)
-        .toHaveBeenCalledWith('chipA', true, false);
+        .toHaveBeenCalledWith(
+            {chipId: 'chipA', selected: true, shouldIgnore: false});
     expect(mockFoundation.handleChipSelection).toHaveBeenCalledTimes(1);
-    expect(mockFoundation.handleChipRemoval).toHaveBeenCalledWith('chipA');
+    expect(mockFoundation.handleChipRemoval).toHaveBeenCalledWith({
+      chipId: 'chipA',
+      removedAnnouncement: 'Removed foo'
+    });
     expect(mockFoundation.handleChipRemoval).toHaveBeenCalledTimes(1);
     expect(mockFoundation.handleChipNavigation)
-        .toHaveBeenCalledWith('chipA', ARROW_LEFT_KEY, 1);
+        .toHaveBeenCalledWith(
+            {chipId: 'chipA', key: ARROW_LEFT_KEY, source: 1});
     expect(mockFoundation.handleChipNavigation).toHaveBeenCalledTimes(1);
   });
 
