@@ -48,7 +48,10 @@ npm install @material/snackbar
       Can't send photo. Retry in 5 seconds.
     </div>
     <div class="mdc-snackbar__actions">
-      <button type="button" class="mdc-button mdc-snackbar__action">Retry</button>
+      <button type="button" class="mdc-button mdc-snackbar__action">
+        <div class="mdc-button__ripple"></div>
+        <span class="mdc-button__label">Retry</span>
+      </button>
     </div>
   </div>
 </div>

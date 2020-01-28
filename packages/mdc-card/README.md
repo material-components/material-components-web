@@ -156,9 +156,11 @@ It's often used with [buttons](../mdc-button):
 ```html
 <div class="mdc-card__actions">
   <button class="mdc-button mdc-card__action mdc-card__action--button">
+    <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">Action 1</span>
   </button>
   <button class="mdc-button mdc-card__action mdc-card__action--button">
+    <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">Action 2</span>
   </button>
 </div>
@@ -188,8 +190,9 @@ To have a single action button take up the entire width of the action row, use t
 ```html
 <div class="mdc-card__actions mdc-card__actions--full-bleed">
   <a class="mdc-button mdc-card__action mdc-card__action--button" href="#">
+    <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">All Business Headlines</span>
-    <i class="material-icons" aria-hidden="true">arrow_forward</i>
+    <i class="material-icons mdc-button__icon" aria-hidden="true">arrow_forward</i>
   </a>
 </div>
 ```
@@ -201,9 +204,11 @@ elements:
 <div class="mdc-card__actions">
   <div class="mdc-card__action-buttons">
     <button class="mdc-button mdc-card__action mdc-card__action--button">
+      <div class="mdc-button__ripple"></div>
       <span class="mdc-button__label">Read</span>
     </button>
     <button class="mdc-button mdc-card__action mdc-card__action--button">
+      <div class="mdc-button__ripple"></div>
       <span class="mdc-button__label">Bookmark</span>
     </button>
   </div>
@@ -241,9 +246,11 @@ The following is an example incorporating all of the above elements:
   <div class="mdc-card__actions">
     <div class="mdc-card__action-buttons">
       <button class="mdc-button mdc-card__action mdc-card__action--button">
+        <div class="mdc-button__ripple"></div>
         <span class="mdc-button__label">Action 1</span>
       </button>
       <button class="mdc-button mdc-card__action mdc-card__action--button">
+        <div class="mdc-button__ripple"></div>
         <span class="mdc-button__label">Action 2</span>
       </button>
     </div>
