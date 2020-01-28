@@ -1143,11 +1143,6 @@
       @include rtl-mixins.reflexive-property(padding, variables.$input-padding, icon-variables.$icon-padding);
     }
   }
-
-  // Outlined uses 16px for text alignment when using a trailing icon.
-  &.mdc-text-field--outlined {
-    @include icon-mixins.trailing-icon-horizontal-position_(icon-variables.$icon-position, $query: $query);
-  }
 }
 
 @mixin dense-with-trailing-icon_($query: feature-targeting-functions.all()) {
