@@ -1,7 +1,4 @@
-@forward "@material/base/mixins" as mdc-base-*;
-@forward "@material/feature-targeting/variables" as mdc-feature-*;
-@forward "@material/feature-targeting/mixins" as mdc-feature-*;
-@forward "variables" as mdc-touch-target-*;
-@forward "@material/feature-targeting/functions" as mdc-feature-*;
-@forward "mixins" as mdc-* show mdc-touch-target;
-@forward "mixins" as mdc-touch-target-* hide mdc-touch-target-touch-target;
+@forward "@material/base" as mdc-base-*;
+@forward "@material/feature-targeting" as mdc-feature-*;
+@forward "./index" as mdc-touch-target-* hide mdc-touch-target-touch-target;
+@forward "./index" as mdc-*;

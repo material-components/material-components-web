@@ -1,1 +1,1 @@
-@forward "variables" as mdc-notched-outline-*;
+@forward "./index" as mdc-notched-outline-* hide mdc-notched-outline-core-styles, mdc-notched-outline-color, mdc-notched-outline-stroke-width, mdc-notched-outline-notch-offset, mdc-notched-outline-shape-radius, mdc-notched-outline-floating-label-float-position, mdc-notched-outline-floating-label-float-position-absolute, mdc-notched-outline-base-;

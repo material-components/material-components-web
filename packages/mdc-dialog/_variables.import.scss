@@ -1,1 +1,1 @@
-@forward "variables" as mdc-dialog-*;
+@forward "./index" as mdc-dialog-* hide mdc-dialog-core-styles, mdc-dialog-container-fill-color, mdc-dialog-scrim-color, mdc-dialog-title-ink-color, mdc-dialog-content-ink-color, mdc-dialog-scroll-divider-color, mdc-dialog-shape-radius, mdc-dialog-min-width, mdc-dialog-max-width, mdc-dialog-max-height, mdc-dialog-with-touch-target;

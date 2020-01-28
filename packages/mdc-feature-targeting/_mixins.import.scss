@@ -1,3 +1,1 @@
-@forward "variables" as mdc-feature-*;
-@forward "functions" as mdc-feature-*;
-@forward "mixins" as mdc-feature-*;
+@forward "./index" as mdc-feature-*;

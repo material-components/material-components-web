@@ -1,1 +1,1 @@
-@forward "variables" as mdc-touch-target-*;
+@forward "./index" as mdc-touch-target-* hide mdc-touch-target-wrapper, mdc-touch-target-touch-target, mdc-touch-target-margin;

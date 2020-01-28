@@ -1,2 +1,1 @@
-@forward "variables" as mdc-shape-*;
-@forward "functions" as mdc-shape-*;
+@forward "./index" as mdc-shape-* hide mdc-shape-radius;

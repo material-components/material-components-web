@@ -1,1 +1,1 @@
-@forward "variables" as mdc-density-*;
+@forward "./index" as mdc-density-* hide mdc-density-prop-value;

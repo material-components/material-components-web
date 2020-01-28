@@ -1,3 +1,2 @@
-@forward "variables" as mdc-rtl-*;
-@forward "mixins" as mdc-* show mdc-rtl;
-@forward "mixins" as mdc-rtl-* hide mdc-rtl-rtl;
+@forward "./index" as mdc-rtl-* hide mdc-rtl-rtl;
+@forward "./index" as mdc-*;
