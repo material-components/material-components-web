@@ -42,9 +42,7 @@ External frameworks and libraries can use the following event utility methods.
 
 Method Signature | Description
 --- | ---
-`util.applyPassive(globalObj = window, forceRefresh = false) => object` | Determine whether the current browser supports passive event listeners
-
-> _NOTE_: The function `util.applyPassive` cache its results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
+`util.applyPassive(globalObj = window) => object` | Determine whether the current browser supports passive event listeners
 
 ## Focus Trap
 

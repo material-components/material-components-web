@@ -22,31 +22,38 @@
  */
 
 /**
- * Stores result from applyPassive to avoid redundant processing to detect
- * passive event listener support.
- */
-let supportsPassive_: boolean | undefined;
-
-/**
  * Determine whether the current browser supports passive event listeners, and
  * if so, use them.
  */
-export function applyPassive(globalObj: Window = window, forceRefresh = false):
+export function applyPassive(globalObj: Window = window):
     boolean | EventListenerOptions {
-  if (supportsPassive_ === undefined || forceRefresh) {
-    let isSupported = false;
-    try {
-      globalObj.document.addEventListener('test', () => undefined, {
-        get passive() {
-          isSupported = true;
-          return isSupported;
-        },
-      });
-    } catch (e) {
-    } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
+  return supportsPassiveOption(globalObj) ?
+      {passive: true} as AddEventListenerOptions :
+      false;
+}
 
-    supportsPassive_ = isSupported;
+function supportsPassiveOption(globalObj: Window = window): boolean {
+  // See
+  // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+  let passiveSupported = false;
+
+  try {
+    const options = {
+      // This function will be called when the browser
+      // attempts to access the passive property.
+      get passive() {
+        passiveSupported = true;
+        return false;
+      }
+    };
+
+    const handler = () => {};
+    globalObj.document.addEventListener('test', handler, options);
+    globalObj.document.removeEventListener(
+        'test', handler, options as EventListenerOptions);
+  } catch (err) {
+    passiveSupported = false;
   }
 
-  return supportsPassive_ ? {passive: true} as EventListenerOptions : false;
+  return passiveSupported;
 }
