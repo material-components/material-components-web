@@ -24,11 +24,11 @@
 @use "./mixins";
 @use "./variables";
 @use "@material/animation/variables" as animation-variables;
-@use "@material/line-ripple/mdc-line-ripple";
-@use "@material/notched-outline/mdc-notched-outline";
-@use "@material/floating-label/mdc-floating-label";
+@use "@material/line-ripple/mdc-line-ripple"; // COPYBARA_COMMENT_THIS_LINE
+@use "@material/notched-outline/mdc-notched-outline"; // COPYBARA_COMMENT_THIS_LINE
+@use "@material/floating-label/mdc-floating-label"; // COPYBARA_COMMENT_THIS_LINE
 @use "@material/typography/mixins" as mixins2;
-@use "@material/ripple/common";
+@use "@material/ripple/common"; // COPYBARA_COMMENT_THIS_LINE
 @use "@material/ripple/mixins" as ripple-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "./icon/mdc-select-icon";
