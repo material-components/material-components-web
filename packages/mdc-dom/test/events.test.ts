@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2019 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,30 +21,37 @@
  * THE SOFTWARE.
  */
 
-import {assert} from 'chai';
+import {applyPassive} from '../events';
 
-import {applyPassive} from '../../../packages/mdc-dom/events.ts';
+describe('MDCDom - events', () => {
+  it('applyPassive returns an options object for browsers that support passive event listeners',
+     () => {
+       const mockWindow = {
+         document: {
+           addEventListener(
+               name: string, method: Function,
+               options: AddEventListenerOptions) {
+             const passive = options.passive;
+             return {passive, name, method};
+           },
+           removeEventListener() {},
+         },
+       } as unknown as Window;
+       expect(applyPassive(mockWindow)).toEqual({
+         passive: true
+       } as EventListenerOptions);
+     });
 
-suite('MDCDom - events');
-
-test('applyPassive returns an options object for browsers that support passive event listeners', () => {
-  const mockWindow = {
-    document: {
-      addEventListener: function(name, method, options) {
-        return options.passive;
-      },
-    },
-  };
-  assert.deepEqual(applyPassive(mockWindow, true), {passive: true});
-});
-
-test('applyPassive returns false for browsers that do not support passive event listeners', () => {
-  const mockWindow = {
-    document: {
-      addEventListener: function() {
-        throw new Error();
-      },
-    },
-  };
-  assert.isNotOk(applyPassive(mockWindow, true));
+  it('applyPassive returns false for browsers that do not support passive event listeners',
+     () => {
+       const mockWindow = {
+         document: {
+           addEventListener() {
+             throw new Error();
+           },
+           removeEventListener() {},
+         },
+       } as unknown as Window;
+       expect(applyPassive(mockWindow)).toBeFalsy();
+     });
 });
