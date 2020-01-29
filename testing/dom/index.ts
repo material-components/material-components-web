@@ -33,3 +33,14 @@ export const html =
       result += strings[strings.length - 1];
       return result;
     };
+
+/**
+ * @returns HTMLElement for given HTML content in string format.
+ */
+export function getFixture(content: string): HTMLElement {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = content;
+  const el = wrapper.firstElementChild as HTMLElement;
+  wrapper.removeChild(el);
+  return el;
+}

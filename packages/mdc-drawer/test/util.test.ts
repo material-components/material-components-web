@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,21 +21,28 @@
  * THE SOFTWARE.
  */
 
-import {assert} from 'chai';
-import bel from 'bel';
-import td from 'testdouble';
-import * as util from '../../../packages/mdc-drawer/util';
+import {getFixture} from '../../../testing/dom';
+import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+import * as util from '../util';
 
-suite('MDCDrawer - util');
+describe('MDCDrawer - util', () => {
+  setUpMdcTestEnvironment();
 
-test('createFocusTrapInstance creates a properly configured focus trap instance with all args specified', () => {
-  const rootEl = bel`<div></div>`;
-  const focusTrapFactory = td.func('focusTrapFactory');
-  const properlyConfiguredFocusTrapInstance = {};
-  td.when(focusTrapFactory(rootEl, {
-    skipInitialFocus: true,
-  })).thenReturn(properlyConfiguredFocusTrapInstance);
+  it('createFocusTrapInstance creates a properly configured focus trap instance with all args specified',
+     () => {
+       const rootEl = getFixture(`<div></div>`);
+       const focusTrapFactory = jasmine.createSpy('focusTrapFactory');
+       const properlyConfiguredFocusTrapInstance = {
+         trapFocus() {},
+         releaseFocus() {}
+       };
+       focusTrapFactory
+           .withArgs(rootEl, {
+             skipInitialFocus: true,
+           })
+           .and.returnValue(properlyConfiguredFocusTrapInstance);
 
-  const instance = util.createFocusTrapInstance(rootEl, focusTrapFactory);
-  assert.equal(instance, properlyConfiguredFocusTrapInstance);
+       const instance = util.createFocusTrapInstance(rootEl, focusTrapFactory);
+       expect(instance).toEqual(properlyConfiguredFocusTrapInstance);
+     });
 });
