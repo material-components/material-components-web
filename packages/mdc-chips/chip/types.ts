@@ -33,7 +33,7 @@ export interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDeta
 }
 
 export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
-  root: Element;
+  removedAnnouncement: string|null;
 }
 
 export interface MDCChipNavigationEventDetail extends MDCChipInteractionEventDetail {

@@ -119,36 +119,67 @@ describe('MDCChipSet', () => {
       REMOVAL_EVENT,
       SELECTION_EVENT
     } = MDCChipFoundation.strings;
-    const evtData = {
+
+    emitEvent(root, INTERACTION_EVENT, {
+      bubbles: true,
+      cancelable: true,
+      detail: {
+        chipId: 'chipA',
+      },
+    });
+
+    expect(mockFoundation.handleChipInteraction).toHaveBeenCalledWith({
+      chipId: 'chipA'
+    });
+    expect(mockFoundation.handleChipInteraction).toHaveBeenCalledTimes(1);
+
+    emitEvent(root, SELECTION_EVENT, {
+      bubbles: true,
+      cancelable: true,
+      detail: {
+        chipId: 'chipA',
+        selected: true,
+        shouldIgnore: false,
+      },
+    });
+
+    expect(mockFoundation.handleChipSelection).toHaveBeenCalledWith({
       chipId: 'chipA',
       selected: true,
+      shouldIgnore: false,
+    });
+    expect(mockFoundation.handleChipSelection).toHaveBeenCalledTimes(1);
+
+    emitEvent(root, REMOVAL_EVENT, {
+      bubbles: true,
+      cancelable: true,
+      detail: {
+        chipId: 'chipA',
+        removedAnnouncement: 'Removed foo',
+      },
+    });
+
+    expect(mockFoundation.handleChipRemoval).toHaveBeenCalledWith({
+      chipId: 'chipA',
+      removedAnnouncement: 'Removed foo'
+    });
+    expect(mockFoundation.handleChipRemoval).toHaveBeenCalledTimes(1);
+
+    emitEvent(root, NAVIGATION_EVENT, {
+      bubbles: true,
+      cancelable: true,
+      detail: {
+        chipId: 'chipA',
+        key: ARROW_LEFT_KEY,
+        source: 1,
+      },
+    });
+
+    expect(mockFoundation.handleChipNavigation).toHaveBeenCalledWith({
+      chipId: 'chipA',
       key: ARROW_LEFT_KEY,
       source: 1,
-      shouldIgnore: false,
-    };
-    const evt1 = document.createEvent('CustomEvent');
-    const evt2 = document.createEvent('CustomEvent');
-    const evt3 = document.createEvent('CustomEvent');
-    const evt4 = document.createEvent('CustomEvent');
-    evt1.initCustomEvent(INTERACTION_EVENT, true, true, evtData);
-    evt2.initCustomEvent(REMOVAL_EVENT, true, true, evtData);
-    evt3.initCustomEvent(SELECTION_EVENT, true, true, evtData);
-    evt4.initCustomEvent(NAVIGATION_EVENT, true, true, evtData);
-
-    root.dispatchEvent(evt1);
-    root.dispatchEvent(evt2);
-    root.dispatchEvent(evt3);
-    root.dispatchEvent(evt4);
-
-    expect(mockFoundation.handleChipInteraction).toHaveBeenCalledWith('chipA');
-    expect(mockFoundation.handleChipInteraction).toHaveBeenCalledTimes(1);
-    expect(mockFoundation.handleChipSelection)
-        .toHaveBeenCalledWith('chipA', true, false);
-    expect(mockFoundation.handleChipSelection).toHaveBeenCalledTimes(1);
-    expect(mockFoundation.handleChipRemoval).toHaveBeenCalledWith('chipA');
-    expect(mockFoundation.handleChipRemoval).toHaveBeenCalledTimes(1);
-    expect(mockFoundation.handleChipNavigation)
-        .toHaveBeenCalledWith('chipA', ARROW_LEFT_KEY, 1);
+    });
     expect(mockFoundation.handleChipNavigation).toHaveBeenCalledTimes(1);
   });
 

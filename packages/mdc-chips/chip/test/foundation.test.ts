@@ -64,6 +64,7 @@ describe('MDCChipFoundation', () => {
       'isRTL',
       'setPrimaryActionAttr',
       'setTrailingActionAttr',
+      'getAttribute',
     ]);
   });
 
@@ -239,6 +240,22 @@ describe('MDCChipFoundation', () => {
        foundation.handleTransitionEnd(mockEvt);
 
        expect(mockAdapter.notifyRemoval).toHaveBeenCalled();
+     });
+
+  it('#handleTransitionEnd notifies removal of chip with removal announcement if present',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const mockEvt = {
+         type: 'transitionend',
+         target: {},
+         propertyName: 'width',
+       };
+       mockAdapter.eventTargetHasClass.and.returnValue(true);
+       mockAdapter.getAttribute.and.returnValue('Removed foo');
+
+       foundation.handleTransitionEnd(mockEvt);
+
+       expect(mockAdapter.notifyRemoval).toHaveBeenCalledWith('Removed foo');
      });
 
   it('#handleTransitionEnd animates width if chip is exiting on chip opacity transition end',

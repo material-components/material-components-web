@@ -49,6 +49,7 @@ describe('MDCChipSetFoundation', () => {
       'isRTL',
       'getChipListCount',
       'removeFocusFromChipAtIndex',
+      'announceMessage',
     ]);
   });
 
@@ -132,16 +133,16 @@ describe('MDCChipSetFoundation', () => {
        const {foundation, mockAdapter} =
            setupChipNavigationTest(['chipA', 'chipB']);
        mockAdapter.hasClass.withArgs(cssClasses.FILTER).and.returnValue(true);
-       foundation.handleChipInteraction('chipA');
-       foundation.handleChipInteraction('chipB');
+       foundation.handleChipInteraction({chipId: 'chipA'});
+       foundation.handleChipInteraction({chipId: 'chipB'});
        expect(foundation.getSelectedChipIds().length).toEqual(2);
 
-       foundation.handleChipInteraction('chipB');
+       foundation.handleChipInteraction({chipId: 'chipB'});
        expect(mockAdapter.selectChipAtIndex)
            .toHaveBeenCalledWith(1, false, true);
        expect(foundation.getSelectedChipIds().length).toEqual(1);
 
-       foundation.handleChipInteraction('chipA');
+       foundation.handleChipInteraction({chipId: 'chipA'});
        expect(mockAdapter.selectChipAtIndex)
            .toHaveBeenCalledWith(0, false, true);
        expect(foundation.getSelectedChipIds().length).toEqual(0);
@@ -153,7 +154,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chipA', 'chipB']);
        mockAdapter.hasClass.withArgs(cssClasses.FILTER).and.returnValue(true);
 
-       foundation.handleChipInteraction('chipA');
+       foundation.handleChipInteraction({chipId: 'chipA'});
        expect(mockAdapter.selectChipAtIndex)
            .toHaveBeenCalledWith(0, true, /** notifies clients */ true);
      });
@@ -164,7 +165,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chipA', 'chipB']);
        mockAdapter.hasClass.withArgs(cssClasses.CHOICE).and.returnValue(true);
 
-       foundation.handleChipInteraction('chipA');
+       foundation.handleChipInteraction({chipId: 'chipA'});
        expect(mockAdapter.selectChipAtIndex)
            .toHaveBeenCalledWith(0, true, /** notifies clients */ true);
      });
@@ -175,7 +176,7 @@ describe('MDCChipSetFoundation', () => {
        mockAdapter.getChipListCount.and.returnValue(4);
        mockAdapter.getIndexOfChipById.and.returnValue(1);
 
-       foundation.handleChipInteraction('chipA');
+       foundation.handleChipInteraction({chipId: 'chipA'});
        expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(0);
        expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(2);
        expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(3);
@@ -186,7 +187,7 @@ describe('MDCChipSetFoundation', () => {
        const {foundation, mockAdapter} =
            setupChipNavigationTest(['chipA', 'chipB', 'chipC']);
 
-       foundation.handleChipInteraction('chipA');
+       foundation.handleChipInteraction({chipId: 'chipA'});
        expect(mockAdapter.selectChipAtIndex).not.toHaveBeenCalledWith(0, true);
      });
 
@@ -196,7 +197,8 @@ describe('MDCChipSetFoundation', () => {
 
        foundation['selectedChipIds_'] = [];
        foundation.select = jasmine.createSpy('');
-       foundation.handleChipSelection('chipA', true, false);
+       foundation.handleChipSelection(
+           {chipId: 'chipA', selected: true, shouldIgnore: false});
        expect(foundation.select).toHaveBeenCalledWith('chipA');
      });
 
@@ -206,7 +208,8 @@ describe('MDCChipSetFoundation', () => {
 
        foundation['selectedChipIds_'] = ['chipA'];
        foundation.select = jasmine.createSpy('');
-       foundation.handleChipSelection('chipA', true, false);
+       foundation.handleChipSelection(
+           {chipId: 'chipA', selected: true, shouldIgnore: false});
        expect(foundation.select).not.toHaveBeenCalledWith('chipA');
      });
 
@@ -215,7 +218,8 @@ describe('MDCChipSetFoundation', () => {
        const {foundation} = setupTest();
 
        foundation['selectedChipIds_'] = ['chipA'];
-       foundation.handleChipSelection('chipA', false, false);
+       foundation.handleChipSelection(
+           {chipId: 'chipA', selected: false, shouldIgnore: false});
        expect(foundation['selectedChipIds_'].length).toEqual(0);
      });
 
@@ -224,7 +228,8 @@ describe('MDCChipSetFoundation', () => {
        const {foundation} = setupTest();
 
        foundation['selectedChipIds_'] = ['chipB'];
-       foundation.handleChipSelection('chipA', false, false);
+       foundation.handleChipSelection(
+           {chipId: 'chipA', selected: false, shouldIgnore: false});
        expect(foundation['selectedChipIds_'].length).toEqual(1);
      });
 
@@ -233,7 +238,8 @@ describe('MDCChipSetFoundation', () => {
 
     foundation['selectedChipIds_'] = ['chipB'];
     foundation.select = jasmine.createSpy('');
-    foundation.handleChipSelection('chipA', true, true);
+    foundation.handleChipSelection(
+        {chipId: 'chipA', selected: true, shouldIgnore: true});
     expect(foundation.select).not.toHaveBeenCalledWith('chipA');
   });
 
@@ -243,10 +249,12 @@ describe('MDCChipSetFoundation', () => {
     foundation['selectedChipIds_'] = [];
     mockAdapter.getIndexOfChipById.and.returnValue(0);
 
-    foundation.handleChipSelection('chipA', true, /** shouldIgnore */ false);
+    foundation.handleChipSelection(
+        {chipId: 'chipA', selected: true, shouldIgnore: false});
     expect(mockAdapter.selectChipAtIndex)
         .toHaveBeenCalledWith(0, true, /** shouldNotify */ false);
-    foundation.handleChipSelection('chipA', false, /** shouldIgnore */ false);
+    foundation.handleChipSelection(
+        {chipId: 'chipA', selected: false, shouldIgnore: false});
     expect(mockAdapter.selectChipAtIndex)
         .toHaveBeenCalledWith(0, false, /** shouldNotify */ false);
   });
@@ -255,7 +263,7 @@ describe('MDCChipSetFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.getIndexOfChipById.and.returnValue(1);
 
-    foundation.handleChipRemoval('chipA');
+    foundation.handleChipRemoval({chipId: 'chipA', removedAnnouncement: null});
     expect(mockAdapter.removeChipAtIndex).toHaveBeenCalledWith(1);
   });
 
@@ -265,7 +273,8 @@ describe('MDCChipSetFoundation', () => {
        mockAdapter.getChipListCount.and.returnValue(4);
        mockAdapter.getIndexOfChipById.and.returnValue(1);
 
-       foundation.handleChipRemoval('chipA');
+       foundation.handleChipRemoval(
+           {chipId: 'chipA', removedAnnouncement: null});
        expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(0);
        expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(2);
      });
@@ -275,7 +284,7 @@ describe('MDCChipSetFoundation', () => {
     mockAdapter.getChipListCount.and.returnValue(4);
     mockAdapter.getIndexOfChipById.and.returnValue(1);
 
-    foundation.handleChipRemoval('chipA');
+    foundation.handleChipRemoval({chipId: 'chipA', removedAnnouncement: null});
     expect(mockAdapter.focusChipTrailingActionAtIndex).toHaveBeenCalledWith(1);
   });
 
@@ -298,7 +307,8 @@ describe('MDCChipSetFoundation', () => {
     const {foundation, mockAdapter} =
         setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-    foundation.handleChipNavigation('chip1', 'Space', EventSource.NONE);
+    foundation.handleChipNavigation(
+        {chipId: 'chip1', key: 'Space', source: EventSource.NONE});
     expect(mockAdapter.focusChipPrimaryActionAtIndex)
         .not.toHaveBeenCalledWith(jasmine.any(Number));
     expect(mockAdapter.focusChipTrailingActionAtIndex)
@@ -311,7 +321,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
        foundation.handleChipNavigation(
-           'chip1', 'ArrowRight', EventSource.PRIMARY);
+           {chipId: 'chip1', key: 'ArrowRight', source: EventSource.PRIMARY});
        expect(mockAdapter.focusChipPrimaryActionAtIndex)
            .toHaveBeenCalledWith(2);
      });
@@ -322,7 +332,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chip0', 'chip1', 'chip2', 'chip3']);
 
        foundation.handleChipNavigation(
-           'chip1', 'ArrowRight', EventSource.PRIMARY);
+           {chipId: 'chip1', key: 'ArrowRight', source: EventSource.PRIMARY});
        expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(0);
        expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(1);
        expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(3);
@@ -341,7 +351,8 @@ describe('MDCChipSetFoundation', () => {
          const {foundation, mockAdapter} =
              setupChipNavigationTest(['chip0', 'chip1', 'chip2', 'chip3']);
 
-         foundation.handleChipNavigation('chip1', key, EventSource.PRIMARY);
+         foundation.handleChipNavigation(
+             {chipId: 'chip1', source: EventSource.PRIMARY, key});
          expect(mockAdapter.removeFocusFromChipAtIndex)
              .toHaveBeenCalledWith(jasmine.any(Number));
          expect(mockAdapter.removeFocusFromChipAtIndex)
@@ -355,7 +366,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
 
        foundation.handleChipNavigation(
-           'chip1', 'ArrowRight', EventSource.PRIMARY);
+           {chipId: 'chip1', key: 'ArrowRight', source: EventSource.PRIMARY});
        expect(mockAdapter.focusChipTrailingActionAtIndex)
            .toHaveBeenCalledWith(0);
      });
@@ -366,7 +377,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
        foundation.handleChipNavigation(
-           'chip1', 'ArrowDown', EventSource.PRIMARY);
+           {chipId: 'chip1', key: 'ArrowDown', source: EventSource.PRIMARY});
        expect(mockAdapter.focusChipPrimaryActionAtIndex)
            .toHaveBeenCalledWith(2);
      });
@@ -377,7 +388,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
        foundation.handleChipNavigation(
-           'chip1', 'ArrowDown', EventSource.TRAILING);
+           {chipId: 'chip1', key: 'ArrowDown', source: EventSource.TRAILING});
        expect(mockAdapter.focusChipTrailingActionAtIndex)
            .toHaveBeenCalledWith(2);
      });
@@ -387,7 +398,8 @@ describe('MDCChipSetFoundation', () => {
        const {foundation, mockAdapter} =
            setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation('chip1', 'Home', EventSource.PRIMARY);
+       foundation.handleChipNavigation(
+           {chipId: 'chip1', key: 'Home', source: EventSource.PRIMARY});
        expect(mockAdapter.focusChipPrimaryActionAtIndex)
            .toHaveBeenCalledWith(0);
      });
@@ -396,7 +408,8 @@ describe('MDCChipSetFoundation', () => {
     const {foundation, mockAdapter} =
         setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-    foundation.handleChipNavigation('chip1', 'End', EventSource.PRIMARY);
+    foundation.handleChipNavigation(
+        {chipId: 'chip1', key: 'End', source: EventSource.PRIMARY});
     expect(mockAdapter.focusChipPrimaryActionAtIndex).toHaveBeenCalledWith(2);
   });
 
@@ -406,7 +419,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
        foundation.handleChipNavigation(
-           'chip2', 'ArrowRight', EventSource.PRIMARY);
+           {chipId: 'chip2', key: 'ArrowRight', source: EventSource.PRIMARY});
        expect(mockAdapter.focusChipPrimaryActionAtIndex)
            .not.toHaveBeenCalledWith(jasmine.any(Number));
        expect(mockAdapter.focusChipTrailingActionAtIndex)
@@ -419,7 +432,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
        foundation.handleChipNavigation(
-           'chip2', 'ArrowDown', EventSource.PRIMARY);
+           {chipId: 'chip2', key: 'ArrowDown', source: EventSource.PRIMARY});
        expect(mockAdapter.focusChipPrimaryActionAtIndex)
            .not.toHaveBeenCalledWith(jasmine.any(Number));
        expect(mockAdapter.focusChipTrailingActionAtIndex)
@@ -432,7 +445,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
        foundation.handleChipNavigation(
-           'chip1', 'ArrowLeft', EventSource.TRAILING);
+           {chipId: 'chip1', key: 'ArrowLeft', source: EventSource.TRAILING});
        expect(mockAdapter.focusChipTrailingActionAtIndex)
            .toHaveBeenCalledWith(0);
      });
@@ -443,7 +456,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
 
        foundation.handleChipNavigation(
-           'chip1', 'ArrowLeft', EventSource.TRAILING);
+           {chipId: 'chip1', key: 'ArrowLeft', source: EventSource.TRAILING});
        expect(mockAdapter.focusChipPrimaryActionAtIndex)
            .toHaveBeenCalledWith(2);
      });
@@ -454,7 +467,7 @@ describe('MDCChipSetFoundation', () => {
            setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
        foundation.handleChipNavigation(
-           'chip0', 'ArrowLeft', EventSource.PRIMARY);
+           {chipId: 'chip0', key: 'ArrowLeft', source: EventSource.PRIMARY});
        expect(mockAdapter.focusChipPrimaryActionAtIndex)
            .not.toHaveBeenCalledWith(jasmine.any(Number));
        expect(mockAdapter.focusChipTrailingActionAtIndex)
@@ -466,7 +479,8 @@ describe('MDCChipSetFoundation', () => {
        const {foundation, mockAdapter} =
            setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation('chip0', 'ArrowUp', EventSource.PRIMARY);
+       foundation.handleChipNavigation(
+           {chipId: 'chip0', key: 'ArrowUp', source: EventSource.PRIMARY});
        expect(mockAdapter.focusChipPrimaryActionAtIndex)
            .not.toHaveBeenCalledWith(jasmine.any(Number));
        expect(mockAdapter.focusChipTrailingActionAtIndex)
