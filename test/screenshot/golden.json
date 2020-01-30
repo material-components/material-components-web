@@ -207,30 +207,6 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/width.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-elevation/classes/baseline-large.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/03/27/14_53_21_982/spec/mdc-elevation/classes/baseline-large.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/03/27/14_53_21_982/spec/mdc-elevation/classes/baseline-large.html.windows_chrome_73.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-elevation/classes/baseline-large.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-elevation/classes/baseline-large.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-elevation/classes/baseline-small.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/03/27/14_53_21_982/spec/mdc-elevation/classes/baseline-small.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/03/27/14_53_21_982/spec/mdc-elevation/classes/baseline-small.html.windows_chrome_73.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-elevation/classes/baseline-small.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-elevation/classes/baseline-small.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-elevation/mixins/mixins.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-elevation/mixins/mixins.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-elevation/mixins/mixins.html.windows_chrome_69.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-elevation/mixins/mixins.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-elevation/mixins/mixins.html.windows_ie_11.png"
-    }
-  },
   "spec/mdc-fab/classes/baseline.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/10/14_25_41_111/spec/mdc-fab/classes/baseline.html?utm_source=golden_json",
     "screenshots": {
