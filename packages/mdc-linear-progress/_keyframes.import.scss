@@ -1,1 +1,1 @@
-@forward "keyframes" as mdc-linear-progress-*;
+@forward "./index" as mdc-linear-progress-* hide $mdc-linear-progress-baseline-buffer-color, $mdc-linear-progress-height, mdc-linear-progress-core-styles, mdc-linear-progress-bar-color, mdc-linear-progress-buffer-color, mdc-linear-progress-indeterminate-, mdc-linear-progress-reversed-, mdc-linear-progress-str-replace-;

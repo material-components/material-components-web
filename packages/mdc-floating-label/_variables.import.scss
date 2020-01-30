@@ -1,1 +1,1 @@
-@forward "variables" as mdc-floating-label-*;
+@forward "./index" as mdc-floating-label-* hide mdc-floating-label-core-styles, mdc-floating-label-ink-color, mdc-floating-label-fill-color, mdc-floating-label-shake-keyframes, mdc-floating-label-float-position, mdc-floating-label-shake-animation, mdc-floating-label-max-width;
