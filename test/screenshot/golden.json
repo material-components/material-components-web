@@ -479,14 +479,6 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2019/11/01/18_25_15_143/spec/mdc-select/mixins/shape-radius.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-shape/variables/override.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2020/01/14/18_50_51_450/spec/mdc-shape/variables/override.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2020/01/14/18_50_51_450/spec/mdc-shape/variables/override.html.windows_chrome_77.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2020/01/14/18_50_51_450/spec/mdc-shape/variables/override.html.windows_firefox_69.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2020/01/14/18_50_51_450/spec/mdc-shape/variables/override.html.windows_ie_11.png"
-    }
-  },
   "spec/mdc-typography/classes/baseline-large.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/10/17_42_51_602/spec/mdc-typography/classes/baseline-large.html?utm_source=golden_json",
     "screenshots": {
