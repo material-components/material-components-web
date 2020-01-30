@@ -310,6 +310,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   private removeChip_(evt: MouseEvent|KeyboardEvent) {
     evt.stopPropagation();
+    // Prevent default behavior for backspace on Firefox which causes a page
+    // navigation.
+    evt.preventDefault();
     if (this.shouldRemoveOnTrailingIconClick_) {
       this.beginExit();
     }
