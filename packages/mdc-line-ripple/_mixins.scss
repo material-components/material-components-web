@@ -34,39 +34,66 @@
   // postcss-bem-linter: define line-ripple
   .mdc-line-ripple {
     @include feature-targeting-mixins.targets($feat-structure) {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      transform: scaleX(0);
-      opacity: 0;
-      z-index: 2;
+      &::before,
+      &::after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        border-bottom-style: solid;
+        content: "";
+      }
+
+      &::before {
+        border-bottom-width: 1px;
+        z-index: 1;
+      }
+
+      &::after {
+        transform: scaleX(0);
+        border-bottom-width: 2px;
+        opacity: 0;
+        z-index: 2;
+      }
     }
 
     @include feature-targeting-mixins.targets($feat-animation) {
-      transition: functions.transition-value(transform), functions.transition-value(opacity);
+      &::after {
+        transition: functions.transition-value(transform), functions.transition-value(opacity);
+      }
     }
   }
 
-  .mdc-line-ripple--active {
+  .mdc-line-ripple--active::after {
     @include feature-targeting-mixins.targets($feat-structure) {
       transform: scaleX(1);
       opacity: 1;
     }
   }
 
-  .mdc-line-ripple--deactivating {
+  .mdc-line-ripple--deactivating::after {
     @include feature-targeting-mixins.targets($feat-structure) {
       opacity: 0;
     }
   }
 }
 
-@mixin color($color, $query: feature-targeting-functions.all()) {
+@mixin active-color($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
-    @include theme-mixins.prop(background-color, $color);
+    &::after {
+      @include theme-mixins.prop(border-bottom-color, $color);
+    }
+  }
+}
+
+@mixin inactive-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+
+  @include feature-targeting-mixins.targets($feat-color) {
+    &::before {
+      @include theme-mixins.prop(border-bottom-color, $color);
+    }
   }
 }

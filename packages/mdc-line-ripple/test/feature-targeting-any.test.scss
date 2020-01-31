@@ -4,7 +4,7 @@
 @mixin test($query) {
   .test {
     @include line-ripple.core-styles($query: $query);
-    @include line-ripple.color(red, $query: $query);
+    @include line-ripple.active-color(red, $query: $query);
   }
 }
 
