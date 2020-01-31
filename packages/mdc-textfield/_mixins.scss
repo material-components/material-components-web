@@ -95,16 +95,13 @@
   .mdc-text-field__input {
     // Exclude setting line-height to keep caret (text cursor) same height as the input text in iOS browser.
     @include typography-mixins.typography(subtitle1, $exclude-props: (line-height), $query: $query);
+    @include input-padding_($query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
       align-self: flex-end;
       box-sizing: border-box;
       width: 100%;
       height: 100%;
-      padding:
-        variables.$input-padding-top
-        variables.$input-padding
-        variables.$input-padding-bottom + variables.$input-border-bottom;
       border: none;
       border-radius: 0;
       background: none;
@@ -162,10 +159,7 @@
 
     // Vertically center aligns the text input placeholder and value for only filled variant.
     .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) & {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        padding-top: 16px;
-        padding-bottom: 16px + variables.$input-border-bottom;
-      }
+      @include input-no-label-padding_($query: $query);
     }
   }
 
@@ -389,15 +383,17 @@
 ///
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+/// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
+///     filled textfields at which to allow floating labels.
 ///
-@mixin density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin density($density-scale, $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label, $query: feature-targeting-functions.all()) {
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  @include height($height, $query: $query);
+  @include height($height, $minimum-height-for-filled-label: $minimum-height-for-filled-label, $query: $query);
 }
 
 ///
@@ -436,28 +432,28 @@
 /// Sets height of default text field variant.
 ///
 /// @param {Number} $height
+/// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
+///     filled textfields at which to allow floating labels.
 /// @access public
 ///
-@mixin height($height, $query: feature-targeting-functions.all()) {
+@mixin height($height, $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     height: $height;
   }
 
-  // Target only dense text field.
-  @if $height <= 40px {
-    // Target only IE 11.
-    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-      .mdc-text-field__input {
-        @include feature-targeting-mixins.targets($feat-structure) {
-          // Set line-height to the height of input element excluding padding & border.
-          line-height:
-            $height
-            - variables.$input-padding-top
-            - variables.$input-padding-bottom
-            - variables.$input-border-bottom;
+  @if $height < $minimum-height-for-filled-label {
+    // Filled text fields must be tall enough to display a label
+    &:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        .mdc-floating-label {
+          display: none;
         }
+      }
+
+      .mdc-text-field__input {
+        @include input-no-label-padding_($query: $query);
       }
     }
   }
@@ -741,6 +737,26 @@
 
 // Baseline
 
+@mixin input-padding_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    padding:
+      variables.$input-padding-top
+      variables.$input-padding
+      variables.$input-padding-bottom + variables.$input-border-bottom;
+  }
+}
+
+@mixin input-no-label-padding_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    padding-top: 0;
+    padding-bottom: variables.$input-border-bottom;
+  }
+}
+
 @mixin disabled_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
@@ -1016,9 +1032,9 @@
   }
 
   .mdc-text-field__input {
+    @include outlined-input-padding_($query: $query);
     @include feature-targeting-mixins.targets($feat-structure) {
       display: flex;
-      padding: 12px 16px 14px;
       border: none !important; // FF adds unwanted border in HC mode on windows.
       background-color: transparent;
       z-index: 1;
@@ -1033,6 +1049,15 @@
 
   &.mdc-text-field--focused {
     @include notched-outline-mixins.notch-offset(variables.$outlined-stroke-width, $query: $query);
+  }
+}
+
+@mixin outlined-input-padding_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    padding-top: variables.$outlined-input-padding-top;
+    padding-bottom: variables.$outlined-input-padding-bottom;
   }
 }
 
