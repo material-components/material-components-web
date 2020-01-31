@@ -25,6 +25,7 @@
     "@material/base": "^5.0.0",
     "@material/checkbox": "^5.0.0",
     "@material/density": "^5.0.0",
+    "@material/dom": "^5.0.0",
     "@material/elevation": "^5.0.0",
     "@material/feature-targeting": "^5.0.0",
     "@material/ripple": "^5.0.0",
