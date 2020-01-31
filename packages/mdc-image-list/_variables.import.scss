@@ -1,1 +1,1 @@
-@forward "variables" as mdc-image-list-*;
+@forward "./index" as mdc-image-list-* hide mdc-image-list-core-styles, mdc-image-list-aspect, mdc-image-list-shape-radius, mdc-image-list-standard-columns, mdc-image-list-masonry-columns;
