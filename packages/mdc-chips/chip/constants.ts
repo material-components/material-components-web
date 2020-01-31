@@ -33,6 +33,7 @@ export enum EventSource {
 }
 
 export const strings = {
+  ADDED_ANNOUNCEMENT_ATTRIBUTE: 'data-mdc-chip-added-announcement',
   ARIA_CHECKED: 'aria-checked',
   ARROW_DOWN_KEY: 'ArrowDown',
   ARROW_LEFT_KEY: 'ArrowLeft',
@@ -49,6 +50,7 @@ export const strings = {
   LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
   NAVIGATION_EVENT: 'MDCChip:navigation',
   PRIMARY_ACTION_SELECTOR: '.mdc-chip__primary-action',
+  REMOVED_ANNOUNCEMENT_ATTRIBUTE: 'data-mdc-chip-removed-announcement',
   REMOVAL_EVENT: 'MDCChip:removal',
   SELECTION_EVENT: 'MDCChip:selection',
   SPACEBAR_KEY: ' ',

@@ -79,4 +79,9 @@ export interface MDCChipSetAdapter {
    * @return the number of chips in the chip set.
    */
   getChipListCount(): number;
+
+  /**
+   * Announces the message via an aria-live region.
+   */
+  announceMessage(message: string): void;
 }
