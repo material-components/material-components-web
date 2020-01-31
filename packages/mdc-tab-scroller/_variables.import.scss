@@ -1,1 +1,1 @@
-@forward "variables" as mdc-tab-scroller-*;
+@forward "./index" as mdc-tab-scroller-* hide mdc-tab-scroller-transition, mdc-tab-scroller-core-styles, mdc-tab-scroller-scroll-content-;

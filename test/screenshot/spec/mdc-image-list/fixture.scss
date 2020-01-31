@@ -20,14 +20,14 @@
 // THE SOFTWARE.
 //
 
-@import "../../../../packages/mdc-image-list/mixins";
+@use "../../../../packages/mdc-image-list";
 
 $custom-image-list-shape-radius: 8px;
 
 .test-image-list--standard {
-  @include mdc-image-list-standard-columns(3);
+  @include mdc-image-list.standard-columns(3);
 }
 
 .custom-image-list--shape-radius {
-  @include mdc-image-list-shape-radius($custom-image-list-shape-radius);
+  @include mdc-image-list.shape-radius($custom-image-list-shape-radius);
 }

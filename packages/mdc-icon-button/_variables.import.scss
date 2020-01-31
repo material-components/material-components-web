@@ -1,2 +1,2 @@
-@forward "@material/density/variables" as mdc-density-*;
-@forward "variables" as mdc-icon-button-*;
+@forward "@material/density" as mdc-density-* hide mdc-density-prop-value;
+@forward "./index" as mdc-icon-button-* hide mdc-icon-button-core-styles, mdc-icon-button-without-ripple, mdc-icon-button-ripple, mdc-icon-button-density, mdc-icon-button-size, mdc-icon-button-icon-size, mdc-icon-button-ink-color, mdc-icon-button-disabled-ink-color, mdc-icon-button-base-, mdc-icon-button-ink-color-, mdc-icon-button-if-disabled-;
