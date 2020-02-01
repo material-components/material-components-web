@@ -55,9 +55,9 @@
   // postcss-bem-linter: define text-field
   .mdc-text-field {
     // Text Field intentionally omits press ripple, so each state needs to be specified individually.
-    @include ripple-mixins.states-base-color(variables.$ink-color, $query: $query);
-    @include ripple-mixins.states-hover-opacity(ripple-functions.states-opacity(variables.$ink-color, hover), $query: $query);
-    @include ripple-mixins.states-focus-opacity(ripple-functions.states-opacity(variables.$ink-color, focus), $query: $query);
+    @include ripple-mixins.states-base-color(variables.$ink-color, $query: $query, $ripple-target: variables.$ripple-target);
+    @include ripple-mixins.states-hover-opacity(ripple-functions.states-opacity(variables.$ink-color, hover), $query: $query, $ripple-target: variables.$ripple-target);
+    @include ripple-mixins.states-focus-opacity(ripple-functions.states-opacity(variables.$ink-color, focus), $query: $query, $ripple-target: variables.$ripple-target);
 
     // Height
     @include height(variables.$height, $query: $query);
@@ -373,8 +373,12 @@
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-text-field {
-    @include ripple-mixins.surface($query: $query);
-    @include ripple-mixins.radius-bounded($query: $query);
+    @include ripple-mixins.surface($query: $query, $ripple-target: variables.$ripple-target);
+    @include ripple-mixins.radius-bounded($query: $query, $ripple-target: variables.$ripple-target);
+  }
+
+  #{variables.$ripple-target} {
+    @include ripple-mixins.target-common($query: $query);
   }
 }
 
@@ -1024,7 +1028,7 @@
   @include outline-shape-radius(small, $query: $query);
   @include notched-outline-mixins.floating-label-float-position-absolute(variables.$outlined-label-position-y, $query: $query);
   @include notched-outline-mixins.notch-offset(notched-outline-variables.$border-width, $query: $query);
-  @include ripple-mixins.states-base-color(transparent, $query: $query);
+  @include ripple-mixins.states-base-color(transparent, $query: $query, $ripple-target: variables.$ripple-target);
   @include fill-color(transparent, $query: $query);
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -1227,7 +1231,7 @@
   }
 
   &:not(.mdc-text-field--textarea) {
-    @include ripple-mixins.states-base-color(transparent, $query: $query);
+    @include ripple-mixins.states-base-color(transparent, $query: $query, $ripple-target: variables.$ripple-target);
     @include fill-color(transparent, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -1272,7 +1276,7 @@
   @include focused-outline-color(primary, $query: $query);
   @include floating-label-mixins.shake-animation(textarea, $query: $query);
   @include outline-shape-radius(small, $query: $query);
-  @include ripple-mixins.states-base-color(transparent, $query: $query);
+  @include ripple-mixins.states-base-color(transparent, $query: $query, $ripple-target: variables.$ripple-target);
   @include fill-color(transparent, $query: $query);
   @include notched-outline-mixins.floating-label-float-position(variables.$textarea-label-position-y, $query: $query);
   @include character-counter-mixins.character-counter-position(16px, 13px, $query: $query);

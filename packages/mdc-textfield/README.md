@@ -33,6 +33,7 @@ npm install @material/textfield
 
 ```html
 <label class="mdc-text-field">
+  <div class="mdc-text-field__ripple"></div>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <span class="mdc-floating-label" id="my-label-id">Hint text</span>
   <div class="mdc-line-ripple"></div>
@@ -66,10 +67,12 @@ Full width text fields are useful for in-depth tasks or entering complex informa
 
 ```html
 <label class="mdc-text-field mdc-text-field--fullwidth">
+  <div class="mdc-text-field__ripple"></div>
   <input class="mdc-text-field__input"
          type="text"
          placeholder="Full-Width Text Field"
          aria-label="Full-Width Text Field">
+  <div class="mdc-line-ripple"></div>
 </label>
 ```
 
@@ -118,6 +121,7 @@ To disable the text field, add the `disabled` attribute to the `<input>` element
 
 ```html
 <label class="mdc-text-field mdc-text-field--disabled">
+  <div class="mdc-text-field__ripple"></div>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" disabled>
   <span class="mdc-floating-label" id="my-label-id">Disabled text field</span>
   <div class="mdc-line-ripple"></div>
@@ -133,6 +137,7 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 
 ```html
 <label class="mdc-text-field mdc-text-field--no-label">
+  <div class="mdc-text-field__ripple"></div>
   <input class="mdc-text-field__input" type="text" placeholder="Placeholder text" aria-label="Label">
   <div class="mdc-line-ripple"></div>
 </label>
@@ -170,6 +175,7 @@ which is immediate sibling of `.mdc-text-field`. See [here](helper-text/) for mo
 
 ```html
 <label class="mdc-text-field">
+  <div class="mdc-text-field__ripple"></div>
   <input class="mdc-text-field__input" type="text"
          aria-labelledby="my-label-id"
          aria-controls="my-helper-id"
@@ -190,6 +196,7 @@ See [here](character-counter/) for more information on using character counter.
 
 ```html
 <label class="mdc-text-field">
+  <div class="mdc-text-field__ripple"></div>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" maxlength="10">
   <span class="mdc-floating-label" id="my-label-id">My Label</span>
   <div class="mdc-line-ripple"></div>
@@ -233,6 +240,7 @@ by HTML5's form validation API.
 
 ```html
 <label class="mdc-text-field">
+  <div class="mdc-text-field__ripple"></div>
   <input class="mdc-text-field__input" type="password" aria-labelledby="my-label-id" required minlength="8">
   <span class="mdc-floating-label" id="my-label-id">Password</span>
   <div class="mdc-line-ripple"></div>
@@ -250,6 +258,7 @@ Un-styled Content (**FOUC**).
 
 ```html
 <label class="mdc-text-field">
+  <div class="mdc-text-field__ripple"></div>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" value="Pre-filled value">
   <span class="mdc-floating-label mdc-floating-label--float-above" id="my-label-id">
     Label in correct place
