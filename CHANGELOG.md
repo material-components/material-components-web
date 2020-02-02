@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0](https://github.com/material-components/material-components-web/compare/v4.0.0...v5.0.0) (2020-01-31)
+# [5.0.0](https://github.com/material-components/material-components-web/compare/v4.0.0...v5.0.0) (2020-02-02)
 
 
 * fix(linear-progress) support aria attributes (#5248) ([7084b40](https://github.com/material-components/material-components-web/commit/7084b40)), closes [#5248](https://github.com/material-components/material-components-web/issues/5248)
@@ -46,6 +46,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **textfield:** add placeholder mixins and fix disabled colors ([#5360](https://github.com/material-components/material-components-web/issues/5360)) ([0a40ced](https://github.com/material-components/material-components-web/commit/0a40ced))
 * **textfield:** add separate classes for leading/trailing icons ([#5367](https://github.com/material-components/material-components-web/issues/5367)) ([70c708d](https://github.com/material-components/material-components-web/commit/70c708d))
 * **textfield:** change root element to <label> ([#5439](https://github.com/material-components/material-components-web/issues/5439)) ([d8d9502](https://github.com/material-components/material-components-web/commit/d8d9502))
+* **textfield:** incorrect mixin forward path ([#5554](https://github.com/material-components/material-components-web/issues/5554)) ([3e782d8](https://github.com/material-components/material-components-web/commit/3e782d8))
 * **textfield:** outlined trailing icon's position ([#5496](https://github.com/material-components/material-components-web/issues/5496)) ([93e2288](https://github.com/material-components/material-components-web/commit/93e2288))
 * **textfield:** prevent placeholder styles from collapsing with minifiers ([d07c78d](https://github.com/material-components/material-components-web/commit/d07c78d))
 * add missing SASS dependencies ([#5337](https://github.com/material-components/material-components-web/issues/5337)) ([d2ae6e1](https://github.com/material-components/material-components-web/commit/d2ae6e1))
