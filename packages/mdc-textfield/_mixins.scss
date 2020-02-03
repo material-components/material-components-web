@@ -756,6 +756,12 @@
 
   @media screen and (-ms-high-contrast: active) {
     @include bottom-line-color_(GrayText, $query: $query);
+    @include placeholder-color_(GrayText, $query: $query);
+    @include label-ink-color_(GrayText, $query: $query);
+    @include helper-text-mixins.helper-text-color_(GrayText, $query: $query);
+    @include character-counter-mixins.character-counter-color_(GrayText, $query: $query);
+    @include icon-mixins.leading-icon-color_(GrayText, $query: $query);
+    @include icon-mixins.trailing-icon-color_(GrayText, $query: $query);
   }
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -942,6 +948,10 @@
 @mixin outlined-disabled_($query: feature-targeting-functions.all()) {
   @include notched-outline-mixins.color(variables.$outlined-disabled-border, $query: $query);
   @include fill-color_(transparent, $query);
+
+  @media screen and (-ms-high-contrast: active) {
+    @include notched-outline-mixins.color(GrayText, $query: $query);
+  }
 }
 
 @mixin outlined-invalid_($query: feature-targeting-functions.all()) {
