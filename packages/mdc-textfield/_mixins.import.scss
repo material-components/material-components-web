@@ -14,6 +14,6 @@
 @forward "@material/ripple" as mdc-ripple-* hide $mdc-ripple-states-wash-duration, mdc-ripple-states-base-color, mdc-ripple-states-opacities, mdc-ripple-states-hover-opacity, mdc-ripple-states-focus-opacity, mdc-ripple-states-focus-opacity-properties-, mdc-ripple-states-press-opacity, mdc-ripple-states, mdc-ripple-states-activated, mdc-ripple-states-selected, mdc-ripple-states-interactions-, mdc-ripple-states-opacity, mdc-ripple-states-opacities-;
 @forward "./icon" as mdc-text-field-*;
 @forward "./index" as mdc-text-field-*;
-@forward "./helper_text" as mdc-text-field-*;
-@forward "./character_counter" as mdc-text-field-*;
+@forward "./helper-text" as mdc-text-field-*;
+@forward "./character-counter" as mdc-text-field-*;
 @forward "@material/line-ripple" as mdc-line-ripple-*;
