@@ -270,29 +270,5 @@
       "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2020/01/14/18_50_51_450/spec/mdc-shape/variables/override.html.windows_firefox_69.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2020/01/14/18_50_51_450/spec/mdc-shape/variables/override.html.windows_ie_11.png"
     }
-  },
-  "spec/mdc-typography/classes/baseline-large.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/10/17_42_51_602/spec/mdc-typography/classes/baseline-large.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/08/08_47_39_000/spec/mdc-typography/classes/baseline-large.html.windows_chrome_68.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/10/17_42_51_602/spec/mdc-typography/classes/baseline-large.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/08/08_47_39_000/spec/mdc-typography/classes/baseline-large.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-typography/classes/baseline-small.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/10/17_42_51_602/spec/mdc-typography/classes/baseline-small.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/08/08_47_39_000/spec/mdc-typography/classes/baseline-small.html.windows_chrome_68.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/10/17_42_51_602/spec/mdc-typography/classes/baseline-small.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/08/08_47_39_000/spec/mdc-typography/classes/baseline-small.html.windows_ie_11.png"
-    }
-  },
-  "spec/mdc-typography/mixins/mixins.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/03/27/14_53_21_982/spec/mdc-typography/mixins/mixins.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@77": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/03/27/14_53_21_982/spec/mdc-typography/mixins/mixins.html.windows_chrome_73.png",
-      "desktop_windows_firefox@69": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/10/17_42_51_602/spec/mdc-typography/mixins/mixins.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/08/08_47_39_000/spec/mdc-typography/mixins/mixins.html.windows_ie_11.png"
-    }
   }
 }
