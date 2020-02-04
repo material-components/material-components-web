@@ -150,7 +150,7 @@ describe('MDCSelectIconFoundation', () => {
 
     mockAdapter.registerInteractionHandler
         .withArgs('click', jasmine.any(Function))
-        .and.callFake((evtType: string, handler: Function) => {
+        .and.callFake((_evtType: string, handler: Function) => {
           click = handler;
         });
 
