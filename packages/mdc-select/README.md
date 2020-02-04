@@ -118,11 +118,11 @@ The following is an example of the select component with all of the necessary ar
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" data-value="" role="option"></li>
+      <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="" role="option"></li>
       <li class="mdc-list-item" data-value="grains" role="option">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list-item mdc-list-item--disabled" data-value="vegetables" aria-selected="true" aria-disabled="true" role="option">
+      <li class="mdc-list-item mdc-list-item--disabled" data-value="vegetables" aria-disabled="true" role="option">
         Vegetables
       </li>
       <li class="mdc-list-item" data-value="fruit" role="option">
