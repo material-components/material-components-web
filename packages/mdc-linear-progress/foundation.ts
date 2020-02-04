@@ -23,10 +23,13 @@
 
 import {getCorrectPropertyName} from '@material/animation/util';
 import {MDCFoundation} from '@material/base/foundation';
+import {MDCProgressIndicatorFoundation} from '@material/progress-indicator/foundation';
 import {MDCLinearProgressAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter> {
+export class MDCLinearProgressFoundation extends
+    MDCFoundation<MDCLinearProgressAdapter> implements
+        MDCProgressIndicatorFoundation {
   static get cssClasses() {
     return cssClasses;
   }

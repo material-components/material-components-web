@@ -22,10 +22,12 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCProgressIndicator} from '@material/progress-indicator/component';
 import {MDCLinearProgressAdapter} from './adapter';
 import {MDCLinearProgressFoundation} from './foundation';
 
-export class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation> {
+export class MDCLinearProgress extends
+    MDCComponent<MDCLinearProgressFoundation> implements MDCProgressIndicator {
   static attachTo(root: Element) {
     return new MDCLinearProgress(root);
   }
