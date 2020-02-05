@@ -21,8 +21,28 @@
  * THE SOFTWARE.
  */
 
+const HEADLESS_LAUNCHERS = {
+  'ChromeHeadlessNoSandbox': {
+    base: 'ChromeHeadless',
+    flags: ['--no-sandbox'],
+  },
+  'FirefoxHeadless': {
+    base: 'Firefox',
+    flags: ['-headless'],
+  },
+};
+const SAUCE_LAUNCHERS = {
+  'sl-ie': {
+    base: 'SauceLabs',
+    browserName: 'internet explorer',
+    version: '11',
+    platform: 'Windows 10',
+  },
+};
 const USE_SAUCE = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 const PROGRESS = USE_SAUCE ? 'dots' : 'progress';
+const customLaunchers = Object.assign({}, USE_SAUCE ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
+const browsers = USE_SAUCE ? Object.keys(customLaunchers) : ['Chrome'];
 
 // Files to include in Jasmine tests.
 const FILES_TO_USE = [
@@ -41,6 +61,7 @@ const EXCLUDE_FILES = [
 
 module.exports = function(config) {
   config.set({
+    // Jasmine/TS config.
     basePath: '',
     files: FILES_TO_USE,
     exclude: EXCLUDE_FILES,
@@ -56,39 +77,7 @@ module.exports = function(config) {
             functions: 50,
             lines: 80,
             excludes: [
-              'adapter.ts',
-              'constants.ts',
               'testing/**/*.ts',
-              'packages/!(mdc-animation)/**/*',
-              'packages/!(mdc-auto-init)/**/*',
-              'packages/!(mdc-base)/**/*',
-              'packages/!(mdc-checkbox)/**/*',
-              'packages/!(mdc-chips)/**/*',
-              'packages/!(mdc-data-table)/**/*',
-              'packages/!(mdc-dialog)/**/*',
-              'packages/!(mdc-dom)/**/*',
-              'packages/!(mdc-drawer)/**/*',
-              'packages/!(mdc-floating-label)/**/*',
-              'packages/!(mdc-form-field)/**/*',
-              'packages/!(mdc-icon-button)/**/*',
-              'packages/!(mdc-line-ripple)/**/*',
-              'packages/!(mdc-linear-progress)/**/*',
-              'packages/!(mdc-list)/**/*',
-              'packages/!(mdc-menu)/**/*',
-              'packages/!(mdc-menu-surface)/**/*',
-              'packages/!(mdc-notched-outline)/**/*',
-              'packages/!(mdc-radio)/**/*',
-              'packages/!(mdc-ripple)/**/*',
-              'packages/!(mdc-select)/**/*',
-              'packages/!(mdc-slider)/**/*',
-              'packages/!(mdc-snackbar)/**/*',
-              'packages/!(mdc-switch)/**/*',
-              'packages/!(mdc-tab-bar)/**/*',
-              'packages/!(mdc-tab-indicator)/**/*',
-              'packages/!(mdc-tab-scroller)/**/*',
-              'packages/!(mdc-tab)/**/*',
-              'packages/!(mdc-textfield)/**/*',
-              'packages/!(mdc-top-app-bar)/**/*',
             ],
           },
         },
@@ -108,6 +97,17 @@ module.exports = function(config) {
       return obj;
     }, {}),
     reporters: [PROGRESS, 'karma-typescript'],
+
+    // Test runner config.
+    logLevel: config.LOG_INFO,
+    port: 9876,
+    colors: true,
+    browsers: browsers,
+    browserDisconnectTimeout: 40000,
+    browserNoActivityTimeout: 120000,
+    captureTimeout: 240000,
+    concurrency: USE_SAUCE ? 10 : Infinity,
+    customLaunchers: customLaunchers,
   });
 
   if (USE_SAUCE) {
