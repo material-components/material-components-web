@@ -3,10 +3,7 @@
   "description": "The Material Components for the web interface for Progress Indicators",
   "version": "4.0.0",
   "license": "MIT",
-  "main": "dist/mdc.progressIndicator.js",
-  "module": "index.js",
   "sideEffects": false,
-  "types": "dist/mdc.progressIndicator.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git",
