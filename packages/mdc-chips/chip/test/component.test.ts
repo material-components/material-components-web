@@ -33,7 +33,9 @@ const getFixture = () => {
   wrapper.innerHTML = `
   <div class="mdc-chip" role="row">
     <span role="gridcell">
-      <span role="button" tabindex="0" class="mdc-chip__text mdc-chip__primary-action">Chip content</span>
+      <span role="button" tabindex="0" class="mdc-chip__primary-action">
+        <span class="mdc-chip__text">Chip content</span>
+      </span>
     </span>
   </div>`;
 
@@ -53,8 +55,8 @@ const getFixtureWithCheckmark = () => {
       </svg>
     </div>
     <span role="gridcell">
-      <span role="checkbox" aria-checked="false" tabindex="0" class="mdc-chip__text mdc-chip__primary-action">
-        Chip content
+      <span role="checkbox" aria-checked="false" tabindex="0" class="mdc-chip__primary-action">
+        <span class="mdc-chip__text">Chip content</span>
       </span>
     </span>
   </div>`;
