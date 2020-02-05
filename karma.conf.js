@@ -62,6 +62,8 @@ const EXCLUDE_FILES = [
 module.exports = function(config) {
   config.set({
     // Jasmine/TS config.
+    // - jasmine: https://github.com/karma-runner/karma-jasmine
+    // - karma-typescript: https://github.com/monounity/karma-typescript#readme
     basePath: '',
     files: FILES_TO_USE,
     exclude: EXCLUDE_FILES,
