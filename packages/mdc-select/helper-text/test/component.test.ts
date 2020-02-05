@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {MDCSelectHelperText} from '../../mdc-select/helper-text/index';
-import {getFixture as createFixture} from '../../../testing/dom/index';
+import {getFixture as createFixture} from '../../../../testing/dom/index';
+import {MDCSelectHelperText} from '../index';
 
 const getFixture = () => createFixture(`
   <div class="mdc-select-helper-text"></div>
