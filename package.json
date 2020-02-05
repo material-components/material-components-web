@@ -33,11 +33,8 @@
     "test:sass": "jasmine --config=jasmine-node.json",
     "test:dependency": "./scripts/dependency-test.sh",
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh",
-    "test:unit": "npm run test:jasmineunit; jasmine_exit_code=$?; npm run test:mochaunit && exit \"$jasmine_exit_code\"",
-    "test:jasmineunit": "USE_JASMINE=true karma start --single-run",
-    "test:jasminewatch": "USE_JASMINE=true karma start --auto-watch",
-    "test:mochaunit": "karma start --single-run",
-    "test:mochawatch": "karma start --auto-watch",
+    "test:unit": "USE_JASMINE=true karma start --single-run",
+    "test:watch": "USE_JASMINE=true karma start --auto-watch",
     "version": "cat lerna.json | grep -e '^  \"version\": ' | awk '{print $2}' | sed 's/[\",]//g'"
   },
   "devDependencies": {
