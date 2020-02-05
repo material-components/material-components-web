@@ -73,15 +73,22 @@ const CSS_WHITELIST = [
   'density',
   'dom',
   'feature-targeting',
+  'progress-indicator',
   'rtl',
   'shape',
   'touch-target',
+];
+
+const JS_WHITELIST = [
+  'animation',
+  'progress-indicator',
 ];
 
 const NOT_AUTOINIT = [
   'auto-init',
   'base',
   'dom',
+  'progress-indicator',
   'tab', // Only makes sense in context of tab-bar
   'tab-indicator', // Only makes sense in context of tab-bar
   'tab-scroller', // Only makes sense in context of tab-bar
@@ -126,14 +133,17 @@ function checkDependencyAddedInWebpackConfig() {
 }
 
 function checkJSDependencyAddedInWebpackConfig() {
-  const jsconfig = WEBPACK_CONFIG.find((value) => {
-    return value.name === 'main-js-a-la-carte';
-  });
-  const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
-  assert.notEqual(typeof jsconfig.entry[nameCamel], 'undefined',
-    'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' javascript dependency is not added to webpack ' +
-    'configuration. Please add ' + nameCamel + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s js-components ' +
-    'entry before commit.');
+  const name = getPkgName();
+  if (JS_WHITELIST.indexOf(name) === -1) {
+    const jsconfig = WEBPACK_CONFIG.find((value) => {
+      return value.name === 'main-js-a-la-carte';
+    });
+    const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
+    assert.notEqual(typeof jsconfig.entry[nameCamel], 'undefined',
+      'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' javascript dependency is not added to webpack ' +
+      'configuration. Please add ' + nameCamel + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s js-components ' +
+      'entry before commit.');
+  }
 }
 
 function checkCSSDependencyAddedInWebpackConfig() {
@@ -162,10 +172,13 @@ function checkDependencyAddedInMDCPackage() {
 }
 
 function checkPkgDependencyAddedInMDCPackage() {
-  assert.notEqual(typeof MASTER_PACKAGE_JSON.dependencies[CLI_PACKAGE_JSON.name], 'undefined',
-    'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not a dependency for MDC Web. ' +
-    'Please add ' + CLI_PACKAGE_JSON.name +' to ' + MASTER_PACKAGE_JSON_RELATIVE_PATH +
-    '\' dependencies before commit.');
+  const name = getPkgName();
+  if (!CSS_WHITELIST.filter((x) => JS_WHITELIST.includes(x)).includes(name)) {
+    assert.notEqual(typeof MASTER_PACKAGE_JSON.dependencies[CLI_PACKAGE_JSON.name], 'undefined',
+      'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not a dependency for MDC Web. ' +
+      'Please add ' + CLI_PACKAGE_JSON.name +' to ' + MASTER_PACKAGE_JSON_RELATIVE_PATH +
+      '\' dependencies before commit.');
+  }
 }
 
 function checkCSSDependencyAddedInMDCPackage() {
@@ -185,10 +198,9 @@ function checkCSSDependencyAddedInMDCPackage() {
 }
 
 function checkJSDependencyAddedInMDCPackage() {
-  const NOT_IMPORTED = ['animation'];
   const name = getPkgName();
   if (typeof (CLI_PACKAGE_JSON.main) !== 'undefined' &&
-      NOT_IMPORTED.indexOf(name) === -1) {
+      JS_WHITELIST.indexOf(name) === -1) {
     const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_TS_RELATIVE_PATH), 'utf8');
     const ast = recast.parse(src, {
