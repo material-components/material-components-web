@@ -43,7 +43,7 @@ npm install @material/tab-scroller
 ### Styles
 
 ```scss
-@import "@material/tab-scroller/mdc-tab-scroller";
+@use "@material/tab-scroller/mdc-tab-scroller";
 ```
 
 ### JavaScript Instantiation
@@ -75,7 +75,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-tab-scroller-transition($duration-ms, $timing-function)` | Sets the scroll animation duration and, optionally, the timing function.
+`transition($duration-ms, $timing-function)` | Sets the scroll animation duration and, optionally, the timing function.
 
 ## `MDCTabScroller` Methods
 

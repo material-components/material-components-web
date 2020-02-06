@@ -52,7 +52,7 @@ npm install @material/switch
 ### Styles
 
 ```scss
-@import "@material/switch/mdc-switch";
+@use "@material/switch/mdc-switch";
 ```
 
 ### JavaScript Instantiation
@@ -121,17 +121,17 @@ Use the following mixins to customize _enabled_ switches. It is not currently po
 
 Mixin | Description
 --- | ---
-`mdc-switch-toggled-on-color($color)` | Sets the base color of the track, thumb, and ripple when the switch is toggled on.
-`mdc-switch-toggled-off-color($color)` | Sets the base color of the track, thumb, and ripple when the switch is toggled off.
-`mdc-switch-toggled-on-track-color($color)` | Sets color of the track when the switch is toggled on.
-`mdc-switch-toggled-off-track-color($color)` | Sets color of the track when the switch is toggled off.
-`mdc-switch-toggled-on-thumb-color($color)` | Sets color of the thumb when the switch is toggled on.
-`mdc-switch-toggled-off-thumb-color($color)` | Sets color of the thumb when the switch is toggled off.
-`mdc-switch-toggled-on-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled on.
-`mdc-switch-toggled-off-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled off.
-`mdc-switch-ripple-size($ripple-size)` | Sets the ripple size of the switch.
-`mdc-switch-density($density-scale)` | Sets density scale for switch. Supported density scales are `-5`, `-4`, `-3`, `-2`, `-1`, and `0` (default).
-`mdc-switch-ripple-states-opacity($opacity-map)` | Sets the opacity of the ripple surrounding the thumb in any of the `hover`, `focus`, or `press` states. The `opacity-map` can specify any of these states as keys. States not specified in the map resort to default opacity values.
+`toggled-on-color($color)` | Sets the base color of the track, thumb, and ripple when the switch is toggled on.
+`toggled-off-color($color)` | Sets the base color of the track, thumb, and ripple when the switch is toggled off.
+`toggled-on-track-color($color)` | Sets color of the track when the switch is toggled on.
+`toggled-off-track-color($color)` | Sets color of the track when the switch is toggled off.
+`toggled-on-thumb-color($color)` | Sets color of the thumb when the switch is toggled on.
+`toggled-off-thumb-color($color)` | Sets color of the thumb when the switch is toggled off.
+`toggled-on-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled on.
+`toggled-off-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled off.
+`ripple-size($ripple-size)` | Sets the ripple size of the switch.
+`density($density-scale)` | Sets density scale for switch. Supported density scales are `-5`, `-4`, `-3`, `-2`, `-1`, and `0` (default).
+`ripple-states-opacity($opacity-map)` | Sets the opacity of the ripple surrounding the thumb in any of the `hover`, `focus`, or `press` states. The `opacity-map` can specify any of these states as keys. States not specified in the map resort to default opacity values.
 
 ## `MDCSwitch` Properties and Methods
 

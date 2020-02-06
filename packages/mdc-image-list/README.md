@@ -59,20 +59,22 @@ The HTML structure for a Standard Image List is as follows:
 ### Styles
 
 ```scss
-@import "@material/image-list/mdc-image-list";
+@use "@material/image-list/mdc-image-list";
 ```
 
-The HTML structure above would be combined with an invocation of the `mdc-image-list-standard-columns` mixin,
+The HTML structure above would be combined with an invocation of the `standard-columns` mixin,
 to establish how many columns should be displayed per line:
 
 ```scss
+@use "@material/image-list";
+
 .my-image-list {
-  @include mdc-image-list-standard-columns(5);
+  @include image-list.standard-columns(5);
 }
 ```
 
 Images in a Standard Image list are constrained to 1:1 aspect ratio by default; this can be overridden using the
-`mdc-image-list-aspect` mixin documented below.
+`aspect` mixin documented below.
 
 ## Variants
 
@@ -102,7 +104,7 @@ should be displayed:
 
 ```scss
 .my-masonry-image-list {
-  @include mdc-image-list-masonry-columns(5);
+  @include image-listmasonry-columns(5);
 }
 ```
 
@@ -125,10 +127,10 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-image-list-aspect($width-height-ratio)` | Styles the aspect container elements within an Image List to conform to the given ratio, where 1 is 1:1, greater than 1 is wider, and less than 1 is taller.
-`mdc-image-list-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to image list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-image-list-standard-columns($column-count, $gutter-size)` | Styles a Standard Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
-`mdc-image-list-masonry-columns($column-count, $gutter-size)` | Styles a Masonry Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
+`aspect($width-height-ratio)` | Styles the aspect container elements within an Image List to conform to the given ratio, where 1 is 1:1, greater than 1 is wider, and less than 1 is taller.
+`shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to image list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`standard-columns($column-count, $gutter-size)` | Styles a Standard Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
+`masonry-columns($column-count, $gutter-size)` | Styles a Masonry Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
 
 > **Note:** Only one of the `mdc-image-list-...-columns` mixins should be used for any given Image List.
 > Use the mixin appropriate to the variant being used.
@@ -143,8 +145,11 @@ their actual rendered size. This can be restricted by using any of `min-width`, 
 List:
 
 ```scss
+@use "@material/image-list";
+
 .my-image-list {
-  @include mdc-image-list-standard-columns(5);
+  @include image-list.standard-columns(5);
+
   max-width: 960px;
 }
 ```
@@ -159,12 +164,12 @@ needs to be changed are styles:
 
 ```scss
 .my-image-list {
-  @include mdc-image-list-standard-columns(5);
+  @include image-list.standard-columns(5);
 }
 
 @media (max-width: 599px) {
   .my-image-list {
-    @include mdc-image-list-standard-columns(3);
+    @include image-list.standard-columns(3);
   }
 }
 ```

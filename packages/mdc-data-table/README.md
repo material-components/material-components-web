@@ -32,8 +32,8 @@ npm install @material/data-table
 ### Styles
 
 ```scss
-@import "@material/checkbox/mdc-checkbox"; // Required only for data table with row selection.
-@import "@material/data-table/mdc-data-table";
+@use "@material/checkbox/mdc-checkbox"; // Required only for data table with row selection.
+@use "@material/data-table/mdc-data-table";
 ```
 
 > *NOTE*: Styles for any components you intend to include within data-table (e.g. Checkboxes, Buttons etc.) must be
@@ -225,24 +225,24 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-data-table-fill-color($color)` | Sets the background color of data-table surface.
-`mdc-data-table-row-fill-color($color)` | Sets the background color of table row container.
-`mdc-data-table-header-row-fill-color($color)` | Sets the background color of table header row container.
-`mdc-data-table-selected-row-fill-color($color)` | Sets the background color of selected row container.
-`mdc-data-table-checked-icon-color($color)` | Sets the checked icon color.
-`mdc-data-table-divider-color($color)` | Sets the table rows divider color.
-`mdc-data-table-divider-size($size)` | Sets the table rows divider size.
-`mdc-data-table-row-hover-fill-color($color)` | Sets the background color of table row on hover.
-`mdc-data-table-header-row-text-color($color)` | Sets the header row text color.
-`mdc-data-table-row-text-color($color)` | Sets the row text color.
-`mdc-data-table-shape-radius($radius)` | Sets the rounded shape with given radius size. `$radius` can be single radius or list radius values up to 4 list size.
-`mdc-data-table-stroke-size($size)` | Sets the border size of data-table.
-`mdc-data-table-stroke-color($color)` | Sets the border color of data-table.
-`mdc-data-table-header-cell-height($height)` | Sets table header cell height.
-`mdc-data-table-cell-height($height)` | Sets table cell height.
-`mdc-data-table-cell-padding($leading-padding, $trailing-padding)` | Sets leading & trailing padding for all cells.
-`mdc-data-table-column-widths($width-list)` | Sets the custom widths for each table column.
-`mdc-data-table-density($density-scale)` | Sets density scale to data table. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`. Use corresponding density mixins of child components (such as Checkbox) to apply density scales which will be rendered inside data table as content.
+`fill-color($color)` | Sets the background color of data-table surface.
+`row-fill-color($color)` | Sets the background color of table row container.
+`header-row-fill-color($color)` | Sets the background color of table header row container.
+`selected-row-fill-color($color)` | Sets the background color of selected row container.
+`checked-icon-color($color)` | Sets the checked icon color.
+`divider-color($color)` | Sets the table rows divider color.
+`divider-size($size)` | Sets the table rows divider size.
+`row-hover-fill-color($color)` | Sets the background color of table row on hover.
+`header-row-text-color($color)` | Sets the header row text color.
+`row-text-color($color)` | Sets the row text color.
+`shape-radius($radius)` | Sets the rounded shape with given radius size. `$radius` can be single radius or list radius values up to 4 list size.
+`stroke-size($size)` | Sets the border size of data-table.
+`stroke-color($color)` | Sets the border color of data-table.
+`header-cell-height($height)` | Sets table header cell height.
+`cell-height($height)` | Sets table cell height.
+`cell-padding($leading-padding, $trailing-padding)` | Sets leading & trailing padding for all cells.
+`column-widths($width-list)` | Sets the custom widths for each table column.
+`density($density-scale)` | Sets density scale to data table. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`. Use corresponding density mixins of child components (such as Checkbox) to apply density scales which will be rendered inside data table as content.
 
 ## Accessibility
 

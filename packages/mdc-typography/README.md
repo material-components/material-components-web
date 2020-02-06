@@ -62,7 +62,7 @@ We recommend using Roboto from Google Fonts:
 ### Styles
 
 ```css
-@import "@material/typography/mdc-typography";
+@use "@material/typography/mdc-typography";
 ```
 
 ## Style Customization
@@ -94,13 +94,13 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-typography-base` | Sets the font to Roboto
+`base` | Sets the font to Roboto
 `mdc-typography($style)` | Applies one of the typography styles, including setting the font to Roboto
-`mdc-typography-overflow-ellipsis` | Truncates overflow text to one line with an ellipsis
-`mdc-typography-baseline-top($distance)` | Sets the baseline height of a text element from top.
-`mdc-typography-baseline-bottom($distance)` | Sets the distance from text baseline to bottom. This mixin should be combined with `mdc-typography-baseline-top` when setting baseline distance to following text element.
+`overflow-ellipsis` | Truncates overflow text to one line with an ellipsis
+`baseline-top($distance)` | Sets the baseline height of a text element from top.
+`baseline-bottom($distance)` | Sets the distance from text baseline to bottom. This mixin should be combined with `baseline-top` when setting baseline distance to following text element.
 
-> **A note about `mdc-typography-overflow-ellipsis`**, `mdc-typography-overflow-ellipsis` should only be used if the element is `display: block` or `display: inline-block`.
+> **A note about `overflow-ellipsis`**, `overflow-ellipsis` should only be used if the element is `display: block` or `display: inline-block`.
 
 #### `$style` Values
 
@@ -134,7 +134,7 @@ $mdc-typography-styles-button: (
   text-transform: none,
 );
 
-@import "@material/button/mdc-button";
+@use "@material/button/mdc-button";
 ```
 
 Example: Overriding the global `font-family` property. 
@@ -142,7 +142,7 @@ Example: Overriding the global `font-family` property.
 $mdc-typography-font-family: unquote("Arial, Helvetica, sans-serif");
 
 ...
-@import ...
+@use ...
 ```
 
 Example: Overriding the `font-family` property for `headline1` and `font-family` and `font-size` for `headline2`.
@@ -156,5 +156,5 @@ $mdc-typography-styles-headline2: (
 );
 
 ...
-@import ...
+@use ...
 ```

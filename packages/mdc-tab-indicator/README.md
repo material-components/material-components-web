@@ -41,7 +41,7 @@ npm install @material/tab-indicator
 ### Styles
 
 ```scss
-@import "@material/tab-indicator/mdc-tab-indicator";
+@use "@material/tab-indicator/mdc-tab-indicator";
 ```
 
 ### JavaScript Instantiation
@@ -134,12 +134,12 @@ To customize the tab indicator, use the following mixins.
 
 Mixin | Description
 --- | ---
-`mdc-tab-indicator-surface` | Mandatory. Must be applied to the parent element of the `mdc-tab-indicator`.
-`mdc-tab-indicator-underline-color($color)` | Customizes the color of the underline.
-`mdc-tab-indicator-icon-color($color)` | Customizes the color of the icon subelement.
-`mdc-tab-indicator-underline-height($height)` | Customizes the height of the underline.
-`mdc-tab-indicator-icon-height($height)` | Customizes the height of the icon subelement.
-`mdc-tab-indicator-underline-top-corner-radius($radius)` | Customizes the top left and top right border radius of the underline child element.
+`surface` | Mandatory. Must be applied to the parent element of the `mdc-tab-indicator`.
+`underline-color($color)` | Customizes the color of the underline.
+`icon-color($color)` | Customizes the color of the icon subelement.
+`underline-height($height)` | Customizes the height of the underline.
+`icon-height($height)` | Customizes the height of the icon subelement.
+`underline-top-corner-radius($radius)` | Customizes the top left and top right border radius of the underline child element.
 
 ## `MDCTabIndicator` Methods
 

@@ -38,7 +38,7 @@ npm install @material/floating-label
 ### Styles
 
 ```scss
-@import "@material/floating-label/mdc-floating-label";
+@use "@material/floating-label/mdc-floating-label";
 ```
 
 ### JavaScript Instantiation
@@ -63,12 +63,12 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-floating-label-ink-color($color)` | Customizes the ink color of the label.
-`mdc-floating-label-fill-color($color)` | Customizes the fill color of the label.
-`mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX, $scale)` | Generates a CSS `@keyframes` at-rule for an invalid label shake. Used in conjunction with the `mdc-floating-label-shake-animation` mixin.
-`mdc-floating-label-shake-animation($modifier)` | Applies shake keyframe animation to label.
-`mdc-floating-label-float-position($positionY, $positionX, $scale)` | Sets position of label when floating.
-`mdc-floating-label-max-width($max-width)` | Sets the max width of the label.
+`ink-color($color)` | Customizes the ink color of the label.
+`fill-color($color)` | Customizes the fill color of the label.
+`shake-keyframes($modifier, $positionY, $positionX, $scale)` | Generates a CSS `@keyframes` at-rule for an invalid label shake. Used in conjunction with the `shake-animation` mixin.
+`shake-animation($modifier)` | Applies shake keyframe animation to label.
+`float-position($positionY, $positionX, $scale)` | Sets position of label when floating.
+`max-width($max-width)` | Sets the max width of the label.
 
 ## `MDCFloatingLabel` Properties and Methods
 
