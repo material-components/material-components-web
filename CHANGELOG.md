@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0](https://github.com/material-components/material-components-web/compare/v4.0.0...v5.0.0) (2020-02-05)
+# [5.0.0](https://github.com/material-components/material-components-web/compare/v4.0.0...v5.0.0) (2020-02-06)
 
 
 * fix(linear-progress) support aria attributes (#5248) ([7084b40](https://github.com/material-components/material-components-web/commit/7084b40)), closes [#5248](https://github.com/material-components/material-components-web/issues/5248)
@@ -17,7 +17,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **checkbox:** change checkbox event type from change to click and add some logic for IE browser ([#5316](https://github.com/material-components/material-components-web/issues/5316)) ([2e491de](https://github.com/material-components/material-components-web/commit/2e491de)), closes [#4893](https://github.com/material-components/material-components-web/issues/4893)
 * **checkbox:** Disabled state colors in IE11 high contrast mode ([#5263](https://github.com/material-components/material-components-web/issues/5263)) ([d6a1d4b](https://github.com/material-components/material-components-web/commit/d6a1d4b))
 * **checkbox:** Replace unique-id with custom color hash functio… ([#5404](https://github.com/material-components/material-components-web/issues/5404)) ([7be9e4a](https://github.com/material-components/material-components-web/commit/7be9e4a))
-* add missing SASS dependencies ([#5337](https://github.com/material-components/material-components-web/issues/5337)) ([d2ae6e1](https://github.com/material-components/material-components-web/commit/d2ae6e1))
 * **checkbox:** update disabled color values ([#5209](https://github.com/material-components/material-components-web/issues/5209)) ([821871e](https://github.com/material-components/material-components-web/commit/821871e))
 * **chips:** Do not throw error if chip set becomes empty ([#5290](https://github.com/material-components/material-components-web/issues/5290)) ([f978109](https://github.com/material-components/material-components-web/commit/f978109))
 * **chips:** Fix browser back nav in FF when removing chip with… ([#5537](https://github.com/material-components/material-components-web/issues/5537)) ([a1a0deb](https://github.com/material-components/material-components-web/commit/a1a0deb))
@@ -46,13 +45,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **testing:** Revert change from [#5299](https://github.com/material-components/material-components-web/issues/5299). ([#5324](https://github.com/material-components/material-components-web/issues/5324)) ([5fb62be](https://github.com/material-components/material-components-web/commit/5fb62be))
 * **textfield:** add placeholder mixins and fix disabled colors ([#5360](https://github.com/material-components/material-components-web/issues/5360)) ([0a40ced](https://github.com/material-components/material-components-web/commit/0a40ced))
 * **textfield:** add separate classes for leading/trailing icons ([#5367](https://github.com/material-components/material-components-web/issues/5367)) ([70c708d](https://github.com/material-components/material-components-web/commit/70c708d))
-* Remove edge detection for CSS custom properties ([#5264](https://github.com/material-components/material-components-web/issues/5264)) ([fe444ac](https://github.com/material-components/material-components-web/commit/fe444ac))
 * **textfield:** change root element to <label> ([#5439](https://github.com/material-components/material-components-web/issues/5439)) ([d8d9502](https://github.com/material-components/material-components-web/commit/d8d9502))
 * **textfield:** hide filled-variant floating label at <52px ([#5553](https://github.com/material-components/material-components-web/issues/5553)) ([5ff3380](https://github.com/material-components/material-components-web/commit/5ff3380))
 * **textfield:** incorrect mixin forward path ([#5554](https://github.com/material-components/material-components-web/issues/5554)) ([3e782d8](https://github.com/material-components/material-components-web/commit/3e782d8))
+* **textfield:** move ripple to separate element ([c541ebe](https://github.com/material-components/material-components-web/commit/c541ebe))
 * **textfield:** outlined trailing icon's position ([#5496](https://github.com/material-components/material-components-web/issues/5496)) ([93e2288](https://github.com/material-components/material-components-web/commit/93e2288))
 * **textfield:** prevent placeholder styles from collapsing with minifiers ([d07c78d](https://github.com/material-components/material-components-web/commit/d07c78d))
 * **textfield:** use correct disabled colors for IE11 high contrast ([5353985](https://github.com/material-components/material-components-web/commit/5353985))
+* add missing SASS dependencies ([#5337](https://github.com/material-components/material-components-web/issues/5337)) ([d2ae6e1](https://github.com/material-components/material-components-web/commit/d2ae6e1))
+* Remove edge detection for CSS custom properties ([#5264](https://github.com/material-components/material-components-web/issues/5264)) ([fe444ac](https://github.com/material-components/material-components-web/commit/fe444ac))
 
 
 ### Code Refactoring
@@ -104,8 +105,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-* **textfield:** Filled textfields will no longer show a floating label at certain densities. This can be overridden by setting `$mdc-text-field-minimum-height-for-filled-label: 40px`
+* **textfield:** filled text fields must include a `<div class="mdc-text-field__ripple"></div>`
+
+PiperOrigin-RevId: 292641405
+
+Co-authored-by: Material Web Copybara Robot <59487319+material-web-copybara@users.noreply.github.com>
 * **text-field:** Redundant mixins `mdc-text-field-textarea-fill-color`, `mdc-text-field-textarea-stroke-color`, `mdc-text-field-fullwidth-bottom-line-color` removed. Instead, use `mdc-text-field-fill-color`, `mdc-text-field-outline-color`, and `mdc-text-field-bottom-line-color` respectively to achieve the same effect.
+* **chips:** Both `MDCChipAdapter` and `MDCChipSetAdapter` have new methods. `MDCChipSetFoundation` event handlers now accept the corresponding chip event detail interface as the sole argument. The `root` property has been removed from the `MDCChipRemovalEventDetail` interface.
 * **line-ripple:** `mdc-line-ripple-color()` mixin has been renamed to `mdc-line-ripple-active-color()`
 * **grid-list:** Per the deprecation notice for grid-list, this component has been
 removed from MDC-Web. Some of its functionalities are available in the MDC Image List package instead. It is recommended that you migrate to the mdc-image-list package to continue to receive new features and updates.
@@ -128,11 +134,8 @@ removed from MDC-Web. Some of its functionalities are available in the MDC Image
 
 * chore(textfield): update foundation test for preventDefault error
 * **switch:** Added setNativeControlAttr method in mdc-switch adapter.
-* **checkbox:** remove event listener for 'change' and add event listener for 'click'.
-
-- Add handleClick() method in foundation to handle click event.
-- Add setCheck() method into component to change check status.
-* **chips:** Both `MDCChipAdapter` and `MDCChipSetAdapter` have new methods. `MDCChipSetFoundation` event handlers now accept the corresponding chip event detail interface as the sole argument. The `root` property has been removed from the `MDCChipRemovalEventDetail` interface.
+* **textfield:** Filled textfields will no longer show a floating label at certain densities. This can be overridden by setting `$mdc-text-field-minimum-height-for-filled-label: 40px`
+* **switch:** Switch DOM structure has changed. See switch README for details
 * **button:** Variable `$mdc-button-disabled-container-fill-color`
 renamed to `$mdc-button-disabled-container-color`.
 * Removed `$edgeOptOut` option from `mdc-theme-prop()` Sass mixin.
@@ -140,7 +143,10 @@ renamed to `$mdc-button-disabled-container-color`.
 * Adds new adapter methods to MDCLinearProgressAdapter.
 * **elevation:** Functions moved into the _functions.scss file
 * **touchtarget:** Renames mixin from mdc-touch-target-component => mdc-touch-target-margin
-* **switch:** Switch DOM structure has changed. See switch README for details
+* **checkbox:** remove event listener for 'change' and add event listener for 'click'.
+
+- Add handleClick() method in foundation to handle click event.
+- Add setCheck() method into component to change check status.
 
 
 
