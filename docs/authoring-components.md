@@ -775,31 +775,22 @@ conventions, examples, and common TypeScript patterns you may not be used to, in
 ### Testing
 
 The following guidelines should be used to help write tests for MDC Web code. Our tests are written
-using [mocha](https://mochajs.org/) with the [qunit UI](https://mochajs.org/#qunit), and are driven by [karma](https://karma-runner.github.io/1.0/index.html). We use the [chai assert API](http://chaijs.com/api/assert/)
-for assertions, and [testdouble](https://github.com/testdouble/testdouble.js/) for mocking and stubbing.
+using the [Jasmine](https://jasmine.github.io/) testing framework and are driven by [Karma](https://karma-runner.github.io/1.0/index.html).
 
 #### Verify foundation's adapters
 When testing foundations, ensure that at least one of your test cases uses the
-`verifyDefaultAdapter` method defined with our [foundation helpers](../test/unit/helpers/foundation.js). This is done to ensure that adapter interfaces do not
+`verifyDefaultAdapter` method defined with our [foundation helpers](../testing/helpers/foundation.ts). This is done to ensure that adapter interfaces do not
 change unexpectedly.
 
 #### Use helper methods
-We have helper modules within [test/unit/helpers](../test/unit/helpers) for things like
+We have helper modules within [testing/helpers](../testing/helpers) for things like
 bootstrapping foundation tests, intercepting adapter methods used for listening to events, and
 dealing with `requestAnimationFrame`. We encourage you to make use of them in your code to make it
 as easy as possible to write tests!
 
-#### Use bel for DOM fixture
-We use the [bel](https://www.npmjs.com/package/bel) library to generate fixtures for our component/adapter tests. We've found it to
-be an easy and successful way to bootstrap fixtures without having to worry about maintaining HTML
-files or write unwieldy DOM API code.
+#### Use `getFixture` for DOM fixture
+To generate fixtures for component/adapter tests, use the [#getFixture](../testing/dom/index.ts) helper.
 
 #### Always clean up the DOM after every test
 This is important. _Before a test ends, ensure that any elements attached to the DOM have been
 removed_.
-
-#### Verify adapters via testdouble.
-We use [testdouble.js](https://github.com/testdouble/testdouble.js) as our de-facto mocking
-framework. A huge benefit to the component/foundation/adapter pattern is it makes testing the
-functionality of our components extremely easy. We encourage you to make use of testdouble stubs for
-adapters and use them to verify your foundation's behavior (note that this is what [our foundation setup code](../test/unit/helpers/setup.js#L21) does by default).
