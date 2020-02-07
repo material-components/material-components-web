@@ -1,0 +1,17 @@
+{
+  "mode": "file",
+  "out": "doc",
+  "theme": "minimal",
+  "ignoreCompilerErrors": "true",
+  "experimentalDecorators": "true",
+  "emitDecoratorMetadata": "true",
+  "target": "ES5",
+  "moduleResolution": "node",
+  "preserveConstEnums": "true",
+  "stripInternal": "true",
+  "suppressExcessPropertyErrors": "true",
+  "suppressImplicitAnyIndexErrors": "true",
+  "module": "commonjs",
+  "excludeExternals": true,
+  "exclude": ["**/node_modules/**", "**/test/**"]
+}
