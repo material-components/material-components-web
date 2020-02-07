@@ -39,8 +39,9 @@ npm install @material/linear-progress
 ## Basic Usage
 
 ### HTML Structure
+
 ```html
-<div role="progressbar" class="mdc-linear-progress">
+<div role="progressbar" class="mdc-linear-progress" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0">
   <div class="mdc-linear-progress__buffering-dots"></div>
   <div class="mdc-linear-progress__buffer"></div>
   <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
@@ -52,9 +53,22 @@ npm install @material/linear-progress
 </div>
 ```
 
+### Accessibility
+
+Progress bars conform to the [WAI-ARIA Progressbar Specification](https://www.w3.org/TR/wai-aria/#progressbar). The supported ARIA attributes for this progress bar are:
+
+| Attribute | Description |
+| --------- | ----------- |
+| `aria-label` | Label indicating how the progress bar should be announced to the user. |
+| `aria-valuemin` | The minimum numeric value of the progress bar, which should always be `0`. |
+| `aria-valuemax` | The maximum numeric value of the progress bar, which should always be `1`. |
+| `aria-valuenow` | A numeric value between `aria-valuemin` and `aria-valuemax` indicating the progress value of the primary progress bar. This attribute is removed in indeterminate progress bars. |
+
+Note that `aria-label`, `aria-valuemin`, and `aria-valuemax` are static and must be configured in the HTML. `aria-valuenow` is updated dynamically by the foundation when the progress value is updated in determinate progress bars.
+
 ### Styles
 ```scss
-@import "@material/linear-progress/mdc-linear-progress";
+@use "@material/linear-progress/mdc-linear-progress";
 ```
 
 ### JavaScript Instantiation
@@ -81,8 +95,8 @@ The provided modifiers are:
 
 Mixin | Description
 --- | ---
-`mdc-linear-progress-bar-color($color)` | Sets the color of the progress bar
-`mdc-linear-progress-buffer-color($color)` | Sets the color of the buffer bar and dots
+`bar-color($color)` | Sets the color of the progress bar
+`buffer-color($color)` | Sets the color of the buffer bar and dots
 
 ### Using the Foundation Class
 
@@ -93,11 +107,13 @@ The adapter for linear progress must provide the following functions, with corre
 | Method Signature | Description |
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
+| `removeAttribute(attributeName: string) => void` | Removes the specified attribute from the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns boolean indicating whether the root element has a given class. |
 | `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. |
 | `getPrimaryBar() => Element` | Returns the primary bar element. |
 | `getBuffer() => Element` | Returns the buffer element. |
+| `setAttribute(attributeName: string, value: string) => void` | Sets the specified attribute on the root element. |
 | `setStyle(el: Element, styleProperty: string, value: string) => void` | Sets the inline style on the given element. |
 
 ### MDCLinearProgressFoundation API

@@ -20,19 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/variables";
-@import "@material/theme/mixins";
-
-.mdc-text-field--with-leading-icon .mdc-text-field__icon,
-.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-.mdc-text-field__icon:not([tabindex]),
-.mdc-text-field__icon[tabindex="-1"] {
-  cursor: default;
-  pointer-events: none;
-}
+@use "./mixins";
+@include mixins.icon-core-styles;

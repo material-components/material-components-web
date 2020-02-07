@@ -282,15 +282,15 @@ It is not currently possible to customize the color of a _disabled_ slider.
 
 Mixin | Description
 --- | ---
-`mdc-slider-color-accessible($color)` | Sets the color of all slider elements and automatically sets an accessible ink color with high contrast for the value indicator pin
-`mdc-slider-highlight-color($color)` | Sets the color of the highlighted (aka "on") portion of the slider
-`mdc-slider-rail-color($color, $opacity)` | Sets the color (and optionally the opacity) of the rail
-`mdc-slider-rail-tick-mark-color($color)` | Sets the color of the tick marks on the rail
-`mdc-slider-thumb-color($color)` | Sets the color of the thumb (grab handle)
-`mdc-slider-focus-halo-color($color)` | Sets the color of the focus halo
-`mdc-slider-value-pin-fill-color-accessible($color)` | Sets the fill color of the value indicator pin and automatically sets an accessible ink color with high contrast
-`mdc-slider-value-pin-fill-color($color)` | Sets the fill color of the value indicator pin
-`mdc-slider-value-pin-ink-color($color)` | Sets the ink color of the value indicator pin
+`color-accessible($color)` | Sets the color of all slider elements and automatically sets an accessible ink color with high contrast for the value indicator pin
+`highlight-color($color)` | Sets the color of the highlighted (aka "on") portion of the slider
+`rail-color($color, $opacity)` | Sets the color (and optionally the opacity) of the rail
+`rail-tick-mark-color($color)` | Sets the color of the tick marks on the rail
+`thumb-color($color)` | Sets the color of the thumb (grab handle)
+`focus-halo-color($color)` | Sets the color of the focus halo
+`value-pin-fill-color-accessible($color)` | Sets the fill color of the value indicator pin and automatically sets an accessible ink color with high contrast
+`value-pin-fill-color($color)` | Sets the fill color of the value indicator pin
+`value-pin-ink-color($color)` | Sets the ink color of the value indicator pin
 
 #### Setting the correct background color for disabled slider thumbs
 

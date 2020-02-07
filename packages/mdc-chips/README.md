@@ -62,7 +62,7 @@ npm install @material/chips
 ### Styles
 
 ```scss
-@import "@material/chips/mdc-chips";
+@use "@material/chips/mdc-chips";
 ```
 
 ### JavaScript Instantiation
@@ -302,26 +302,26 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-chip-set-spacing($gap-size)` | Customizes the amount of space between each chip in the set
-`mdc-chip-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to chip with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink, icon and ripple colors to meet accessibility standards
-`mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
-`mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
-`mdc-chip-selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
-`mdc-chip-outline($width, $style, $color)` | Customizes the outline properties for a chip
-`mdc-chip-outline-width($width, $horizontal-padding)` | Customizes the outline width for a chip. `$horizontal-padding` is only required in cases where `mdc-chip-horizontal-padding` is also included with a custom value
-`mdc-chip-outline-style($style)` | Customizes the outline style for a chip
-`mdc-chip-outline-color($color)` | Customizes the outline color for a chip
-`mdc-chip-height($height)` | Customizes the height for a chip
-`mdc-chip-horizontal-padding($padding)` | Customizes the horizontal padding for a chip
-`mdc-chip-leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
-`mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
-`mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
-`mdc-chip-trailing-icon-size($size)` | Customizes the size of a trailing icon in a chip
-`mdc-chip-leading-icon-margin($left-margin, $right-margin)` | Customizes the margin of a leading icon in a chip
-`mdc-chip-trailing-icon-margin($left-margin, $right-margin)` | Customizes the margin of a trailing icon in a chip
-`mdc-chip-elevation-transition()` | Adds a MDC elevation transition to the chip. This should be used instead of setting transition with `mdc-elevation-transition-value()` directly when a box shadow transition is desired for a chip
-`mdc-chip-density($density-scale)` | Sets density scale for chip. Supported density scales  are `-2`, `-1` and `0` (default).
+`set-spacing($gap-size)` | Customizes the amount of space between each chip in the set
+`shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to chip with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink, icon and ripple colors to meet accessibility standards
+`fill-color($color)` | Customizes the background fill color for a chip
+`ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
+`selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
+`outline($width, $style, $color)` | Customizes the outline properties for a chip
+`outline-width($width, $horizontal-padding)` | Customizes the outline width for a chip. `$horizontal-padding` is only required in cases where `horizontal-padding` is also included with a custom value
+`outline-style($style)` | Customizes the outline style for a chip
+`outline-color($color)` | Customizes the outline color for a chip
+`height($height)` | Customizes the height for a chip
+`horizontal-padding($padding)` | Customizes the horizontal padding for a chip
+`leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
+`trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
+`leading-icon-size($size)` | Customizes the size of a leading icon in a chip
+`trailing-icon-size($size)` | Customizes the size of a trailing icon in a chip
+`leading-icon-margin($left-margin, $right-margin)` | Customizes the margin of a leading icon in a chip
+`trailing-icon-margin($left-margin, $right-margin)` | Customizes the margin of a trailing icon in a chip
+`elevation-transition()` | Adds a MDC elevation transition to the chip. This should be used instead of setting transition with `mdc-elevation-transition-value()` directly when a box shadow transition is desired for a chip
+`density($density-scale)` | Sets density scale for chip. Supported density scales  are `-2`, `-1` and `0` (default).
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 
@@ -360,7 +360,7 @@ Event Name | `event.detail` | Description
 --- | --- | ---
 `MDCChip:interaction` | `{chipId: string}` | Indicates the chip was interacted with (via click/tap or Enter key)
 `MDCChip:selection` | `{chipId: string, selected: boolean}` | Indicates the chip's selection state has changed (for choice/filter chips)
-`MDCChip:removal` | `{chipId: string, root: Element}` | Indicates the chip is ready to be removed from the DOM
+`MDCChip:removal` | `{chipId: string, removedAnnouncement: string|null}` | Indicates the chip is ready to be removed from the DOM
 `MDCChip:trailingIconInteraction` | `{chipId: string}` | Indicates the chip's trailing icon was interacted with (via click/tap or Enter key)
 `MDCChip:navigation` | `{chipId: string, key: string, source: FocusSource}` | Indicates a navigation event has occurred on a chip
 
@@ -410,6 +410,7 @@ Method Signature | Description
 `hasTrailingAction() => boolean` | Returns `true` if the chip has a trailing action element
 `setTrailingActionAttr(attr: string, value: string) => void` | Sets an attribute on the trailing action element to the given value, if the element exists
 `focusTrailingAction() => void` | Gives focus to the trailing action element if present
+`getAttribute(attr: string) => string|null` | Returns the string value of the attribute if it exists, otherwise `null`
 
 
 > \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
@@ -431,6 +432,7 @@ Method Signature | Description
 `isRTL() => boolean` | Returns `true` if the text direction is RTL
 `getChipListCount() => number` | Returns the number of chips inside the chip set
 `removeFocusFromChipAtIndex(index: number) => void` | Calls `MDCChip#removeFocus()` on the chip at the given `index`
+`announceMessage(message: string) => void` | Announces the message via [an `aria-live` region](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions)
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
@@ -468,10 +470,10 @@ Method Signature | Description
 --- | ---
 `getSelectedChipIds() => ReadonlyArray<string>` | Returns an array of the IDs of all selected chips
 `select(chipId: string) => void` | Selects the chip with the given id
-`handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
-`handleChipSelection(chipId: string, selected: boolean, chipSetShouldIgnore: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element. When `chipSetShouldIgnore` is true, the chip set does not process the event.
-`handleChipRemoval(chipId: string) => void` | Handles a custom `MDCChip:removal` event on the root element
-`handleChipNavigation(chipId: string, key: string) => void` | Handles a custom `MDCChip:navigation` event on the root element
+`handleChipInteraction(detail: MDCChipInteractionEventDetail) => void` | Handles a custom `MDCChip:interaction` event on the root element
+`handleChipSelection(detail: MDCChipSelectionEventDetail) => void` | Handles a custom `MDCChip:selection` event on the root element. When `chipSetShouldIgnore` is true, the chip set does not process the event.
+`handleChipRemoval(detail: MDCChipRemovalEventDetail) => void` | Handles a custom `MDCChip:removal` event on the root element
+`handleChipNavigation(detail: MDCChipNavigationEventDetail) => void` | Handles a custom `MDCChip:navigation` event on the root element
 
 #### `MDCChipSetFoundation` Event Handlers
 

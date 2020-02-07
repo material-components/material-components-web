@@ -20,12 +20,13 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/functions";
+@use "@material/animation/functions";
+@use "./variables";
 
-@function mdc-checkbox-transition-enter($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
-  @return mdc-animation-enter($property, $duration, $delay);
+@function transition-enter($property, $delay: 0ms, $duration: variables.$transition-duration) {
+  @return functions.enter($property, $duration, $delay);
 }
 
-@function mdc-checkbox-transition-exit($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
-  @return mdc-animation-exit-temporary($property, $duration, $delay);
+@function transition-exit($property, $delay: 0ms, $duration: variables.$transition-duration) {
+  @return functions.exit-temporary($property, $duration, $delay);
 }

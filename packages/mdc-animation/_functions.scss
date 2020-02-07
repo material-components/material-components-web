@@ -20,20 +20,20 @@
 // THE SOFTWARE.
 //
 
-@import "./variables";
+@use "./variables";
 
-@function mdc-animation-enter($name, $duration, $delay: 0ms) {
-  @return $name $duration $delay $mdc-animation-deceleration-curve-timing-function;
+@function enter($name, $duration, $delay: 0ms) {
+  @return $name $duration $delay variables.$deceleration-curve-timing-function;
 }
 
-@function mdc-animation-exit-permanent($name, $duration, $delay: 0ms) {
-  @return $name $duration $delay $mdc-animation-acceleration-curve-timing-function;
+@function exit-permanent($name, $duration, $delay: 0ms) {
+  @return $name $duration $delay variables.$acceleration-curve-timing-function;
 }
 
-@function mdc-animation-exit-temporary($name, $duration, $delay: 0ms) {
-  @return $name $duration $delay $mdc-animation-sharp-curve-timing-function;
+@function exit-temporary($name, $duration, $delay: 0ms) {
+  @return $name $duration $delay variables.$sharp-curve-timing-function;
 }
 
-@function mdc-animation-standard($name, $duration, $delay: 0ms) {
-  @return $name $duration $delay $mdc-animation-standard-curve-timing-function;
+@function standard($name, $duration, $delay: 0ms) {
+  @return $name $duration $delay variables.$standard-curve-timing-function;
 }

@@ -1,12 +1,10 @@
 name: MDC Test
 
 on:
-  pull_request:
   push:
     branches:
       - master
-      - develop
-      - feature/**
+  pull_request:
 
 jobs:
   lint:
@@ -18,3 +16,68 @@ jobs:
           node-version: 10
       - run: npm install
       - run: npm run lint
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - run: npm install
+      - run: npm run dist
+  site-generator-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          # Node v8 is required.
+          node-version: 8
+      - run: npm install
+      - run: npm run test:site
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - run: npm install
+      - name: Run unit tests
+        run: |
+          # Unit tests does not run on forked repositories because GitHub
+          # secrets (that includes Sauce access info) are not shared.
+          # TODO: Figure out a way to Set a warning or set status message
+
+          if [[ -z "$SAUCE_USERNAME$SAUCE_ACCESS_KEY" ]]; then
+            echo "Unit tests do not run on forked repos because of Sauce labs access"
+            exit 0
+          fi
+          export SAUCE_BUILD_ID=mdc-tests-${GITHUB_EVENT_NAME}-${GITHUB_ACTION}-${GITHUB_SHA}
+          export SAUCE_TUNNEL_ID=${SAUCE_BUILD_ID}-tunnel
+          npm run test:unit
+        env:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+  dependency-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - run: npm install
+      - name: Run dependency tests
+        run: |
+          npm run test:dependency
+  sass-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - run: npm install
+      - name: Run Sass tests
+        run: |
+          npm run test:sass

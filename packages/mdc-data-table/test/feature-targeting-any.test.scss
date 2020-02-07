@@ -1,0 +1,30 @@
+@use "../mixins" as data-table;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include data-table.core-styles($query: $query);
+    @include data-table.theme-baseline($query: $query);
+    @include data-table.fill-color(red, $query: $query);
+    @include data-table.header-row-fill-color(red, $query: $query);
+    @include data-table.row-fill-color(red, $query: $query);
+    @include data-table.selected-row-fill-color(red, $query: $query);
+    @include data-table.checked-icon-color(red, $query: $query);
+    @include data-table.divider-color(red, $query: $query);
+    @include data-table.divider-size(0, $query: $query);
+    @include data-table.row-hover-fill-color(red, $query: $query);
+    @include data-table.header-row-text-color(red, $query: $query);
+    @include data-table.row-text-color(red, $query: $query);
+    @include data-table.shape-radius(0, $query: $query);
+    @include data-table.stroke-size(0, $query: $query);
+    @include data-table.stroke-color(red, $query: $query);
+    @include data-table.header-cell-height(0, $query: $query);
+    @include data-table.cell-height(0, $query: $query);
+    @include data-table.cell-padding(0, $query: $query);
+    @include data-table.column-widths(0, $query: $query);
+    @include data-table.density(0, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

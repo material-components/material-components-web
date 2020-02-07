@@ -21,14 +21,7 @@
  * THE SOFTWARE.
  */
 
-const path = require('path');
-const webpackConfig = require('./webpack.config')[1];
-
-const USING_TRAVISCI = Boolean(process.env.TRAVIS);
-const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
-
 const HEADLESS_LAUNCHERS = {
-  /** See https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-348248951 */
   'ChromeHeadlessNoSandbox': {
     base: 'ChromeHeadless',
     flags: ['--no-sandbox'],
@@ -38,7 +31,6 @@ const HEADLESS_LAUNCHERS = {
     flags: ['-headless'],
   },
 };
-
 const SAUCE_LAUNCHERS = {
   'sl-ie': {
     base: 'SauceLabs',
@@ -47,114 +39,90 @@ const SAUCE_LAUNCHERS = {
     platform: 'Windows 10',
   },
 };
+const USE_SAUCE = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
+const PROGRESS = USE_SAUCE ? 'dots' : 'progress';
+const customLaunchers = Object.assign({}, USE_SAUCE ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
+const browsers = USE_SAUCE ? Object.keys(customLaunchers) : ['Chrome'];
 
-const customLaunchers = Object.assign({}, USING_SL ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
-const browsers = USING_TRAVISCI ? Object.keys(customLaunchers) : ['Chrome'];
-const istanbulInstrumenterLoader = {
-  use: [{
-    loader: 'istanbul-instrumenter-loader',
-    options: {esModules: true},
-  }],
-  exclude: [
-    /node_modules/,
-    /adapter.[jt]s$/,
-    /constants.[jt]s$/,
-  ],
-  include: path.resolve('./packages'),
-};
+// Files to include in Jasmine tests.
+const FILES_TO_USE = [
+  'packages/*/!(node_modules)/**/!(*.d).ts',
+  'packages/*/!(*.d).ts',
+  'testing/**/*.ts',
+];
+
+// Files to exclude in Jasmine tests.
+const EXCLUDE_FILES = [
+  'packages/**/*.scss.test.ts',
+  'testing/featuretargeting/**',
+  'testing/ts-node.register.js',
+  'scripts/**/*.ts',
+];
 
 module.exports = function(config) {
+  // Karma config options: http://karma-runner.github.io/4.0/config/configuration-file.html
   config.set({
     basePath: '',
-    // Refer https://github.com/karma-runner/karma-mocha
-    frameworks: ['mocha'],
-    files: [
-      // Refer https://github.com/babel/karma-babel-preprocessor
-      'node_modules/@babel/polyfill/dist/polyfill.js',
-      'test/unit/index.js',
-    ],
-    preprocessors: {
-      'test/unit/index.js': ['webpack', 'sourcemap'],
+    files: FILES_TO_USE,
+    exclude: EXCLUDE_FILES,
+    frameworks: ['jasmine', 'karma-typescript'],
+    // karma-typescript: https://github.com/monounity/karma-typescript/tree/master/packages/karma-typescript
+    karmaTypescriptConfig: {
+      exclude: EXCLUDE_FILES,
+      coverageOptions: {
+        threshold: {
+          global: {
+            // TODO: Raise threshold to at least 90% after more tests have been migrated.
+            statements: 80,
+            branches: 70,
+            functions: 50,
+            lines: 80,
+            excludes: [
+              'testing/**/*.ts',
+            ],
+          },
+        },
+      },
+      reports: {
+        html: 'coverage',
+        lcovonly: 'coverage',
+        json: {
+          directory: 'coverage',
+          filename: 'coverage.json',
+        },
+      },
+      tsconfig: './tsconfig-base.json',
     },
-    reporters: ['progress', 'coverage-istanbul'],
+    preprocessors: FILES_TO_USE.reduce((obj, file) => {
+      obj[file] = 'karma-typescript';
+      return obj;
+    }, {}),
+    reporters: [PROGRESS, 'karma-typescript'],
+
+    // Test runner config.
+    logLevel: config.LOG_INFO,
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
     browsers: browsers,
     browserDisconnectTimeout: 40000,
     browserNoActivityTimeout: 120000,
     captureTimeout: 240000,
-    concurrency: USING_SL ? 4 : Infinity,
+    concurrency: USE_SAUCE ? 10 : Infinity,
     customLaunchers: customLaunchers,
-
-    coverageIstanbulReporter: {
-      'dir': 'coverage',
-      'reports': ['html', 'lcovonly', 'json'],
-      'report-config': {
-        lcovonly: {subdir: '.'},
-        json: {subdir: '.', file: 'coverage.json'},
-      },
-      // 'emitWarning' causes the tests to fail if the thresholds are not met
-      'emitWarning': false,
-      'thresholds': {
-        statements: 95,
-        branches: 95,
-        lines: 95,
-        functions: 95,
-      },
-    },
-
-    client: {
-      mocha: {
-        reporter: 'html',
-        ui: 'qunit',
-
-        // Number of milliseconds to wait for an individual `test(...)` function to complete.
-        // The default is 2000.
-        timeout: 10000,
-      },
-    },
-
-    // Refer https://github.com/webpack-contrib/karma-webpack
-    webpack: Object.assign({}, webpackConfig, {
-      plugins: [], // Exclude UglifyJs plugin from test build.
-      mode: 'development',
-      module: Object.assign({}, webpackConfig.module, {
-        // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
-        // uncluttered source maps.
-        rules: webpackConfig.module.rules.concat(config.singleRun ? [Object.assign({
-          enforce: 'post',
-          test: /\.ts$/,
-        }, istanbulInstrumenterLoader), Object.assign({
-          test: /\.js$/,
-        }, istanbulInstrumenterLoader)] : []),
-      }),
-    }),
-
-    webpackMiddleware: {
-      noInfo: true,
-      stats: 'minimal',
-    },
   });
 
-  if (USING_SL) {
+  if (USE_SAUCE) {
     const sauceLabsConfig = {
       username: process.env.SAUCE_USERNAME,
       accessKey: process.env.SAUCE_ACCESS_KEY,
+      testName: 'Material Components Web Unit Tests - CI',
+      build: process.env.SAUCE_BUILD_ID,
+      tunnelIdentifier: process.env.SAUCE_TUNNEL_ID,
     };
-
-    if (USING_TRAVISCI) {
-      // See https://github.com/karma-runner/karma-sauce-launcher/issues/73
-      Object.assign(sauceLabsConfig, {
-        testName: 'Material Components Web Unit Tests - CI',
-        tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-        startConnect: false,
-      });
-    }
 
     config.set({
       sauceLabs: sauceLabsConfig,
-      // Attempt to de-flake Sauce Labs tests on TravisCI.
+      // Attempt to de-flake Sauce Labs tests.
       transports: ['polling'],
       browserDisconnectTolerance: 3,
     });

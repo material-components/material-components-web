@@ -64,7 +64,7 @@ function emit<T extends object>(evtType: string, evtData: T, shouldBubble = fals
 /**
  * Auto-initializes all MDC components on a page.
  */
-export function mdcAutoInit(root = document) {
+function mdcAutoInit(root = document) {
   const components = [];
   let nodes: Element[] = [].slice.call(root.querySelectorAll(`[${AUTO_INIT_ATTR}]`));
   nodes = nodes.filter((node) => node.getAttribute(AUTO_INIT_STATE_ATTR) !== INITIALIZED_STATE);
@@ -122,3 +122,4 @@ mdcAutoInit.deregisterAll = function() {
 
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 export default mdcAutoInit;
+export {mdcAutoInit};

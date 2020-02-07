@@ -51,7 +51,7 @@ npm install @material/card
 ### Styles
 
 ```css
-@import "@material/card/mdc-card";
+@use "@material/card/mdc-card";
 ```
 
 In order to remain general-purpose and support e.g. images spanning the full width of the card, MDC Card does not
@@ -150,15 +150,17 @@ and the [optional modifier classes](#css-classes).
 
 #### Actions
 
-This area is used for showing different actions the user can take, typically at the bottom of a card.
+This area is used to show different actions the user can take, typically at the bottom of a card.
 It's often used with [buttons](../mdc-button):
 
 ```html
 <div class="mdc-card__actions">
   <button class="mdc-button mdc-card__action mdc-card__action--button">
+    <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">Action 1</span>
   </button>
   <button class="mdc-button mdc-card__action mdc-card__action--button">
+    <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">Action 2</span>
   </button>
 </div>
@@ -188,8 +190,9 @@ To have a single action button take up the entire width of the action row, use t
 ```html
 <div class="mdc-card__actions mdc-card__actions--full-bleed">
   <a class="mdc-button mdc-card__action mdc-card__action--button" href="#">
+    <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">All Business Headlines</span>
-    <i class="material-icons" aria-hidden="true">arrow_forward</i>
+    <i class="material-icons mdc-button__icon" aria-hidden="true">arrow_forward</i>
   </a>
 </div>
 ```
@@ -201,9 +204,11 @@ elements:
 <div class="mdc-card__actions">
   <div class="mdc-card__action-buttons">
     <button class="mdc-button mdc-card__action mdc-card__action--button">
+      <div class="mdc-button__ripple"></div>
       <span class="mdc-button__label">Read</span>
     </button>
     <button class="mdc-button mdc-card__action mdc-card__action--button">
+      <div class="mdc-button__ripple"></div>
       <span class="mdc-button__label">Bookmark</span>
     </button>
   </div>
@@ -241,9 +246,11 @@ The following is an example incorporating all of the above elements:
   <div class="mdc-card__actions">
     <div class="mdc-card__action-buttons">
       <button class="mdc-button mdc-card__action mdc-card__action--button">
+        <div class="mdc-button__ripple"></div>
         <span class="mdc-button__label">Action 1</span>
       </button>
       <button class="mdc-button mdc-card__action mdc-card__action--button">
+        <div class="mdc-button__ripple"></div>
         <span class="mdc-button__label">Action 2</span>
       </button>
     </div>
@@ -280,7 +287,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-card-fill-color($color)` | Sets the fill color of a card.
-`mdc-card-outline($color, $thickness)` | Sets the color and thickness of a card's outline (but does _not_ remove its shadow).
-`mdc-card-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to card with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-card-media-aspect-ratio($x, $y)` | Maintains the given aspect ratio on a `mdc-card__media` subelement by dynamically scaling its height relative to its width.
+`fill-color($color)` | Sets the fill color of a card.
+`outline($color, $thickness)` | Sets the color and thickness of a card's outline (but does _not_ remove its shadow).
+`shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to card with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`media-aspect-ratio($x, $y)` | Maintains the given aspect ratio on a `mdc-card__media` subelement by dynamically scaling its height relative to its width.

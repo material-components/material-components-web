@@ -20,7 +20,10 @@
 // THE SOFTWARE.
 //
 
-@import "./variables";
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+@use "./variables";
 
 ///
 /// Returns component property value based on given density config and density scale.
@@ -76,28 +79,28 @@
 ///   )
 ///   // 48px
 ///
-@function mdc-density-prop-value($density-config, $density-scale, $property-name) {
-  @if (type-of($density-scale) == "string" and
-  index($list: $mdc-density-supported-scales, $value: $density-scale) == null) {
-    @error "mdc-density: Supported density scales #{$mdc-density-supported-scales}, but received #{$density-scale}.";
+@function prop-value($density-config, $density-scale, $property-name) {
+  @if (meta.type-of($density-scale) == "string" and
+  list.index($list: variables.$supported-scales, $value: $density-scale) == null) {
+    @error "mdc-density: Supported density scales #{variables.$supported-scales}, but received #{$density-scale}.";
   }
 
-  @if (index($list: $mdc-density-supported-properties, $value: $property-name) == null) {
-    @error "mdc-density: Supported density properties #{$mdc-density-supported-properties}," +
+  @if (list.index($list: variables.$supported-properties, $value: $property-name) == null) {
+    @error "mdc-density: Supported density properties #{variables.$supported-properties}," +
       "but received #{$property-name}.";
   }
 
   $value: null;
-  $property-scale-map: map-get($density-config, $property-name);
+  $property-scale-map: map.get($density-config, $property-name);
 
-  @if map-has-key($property-scale-map, $density-scale) {
-    $value: map-get($property-scale-map, $density-scale);
+  @if map.has-key($property-scale-map, $density-scale) {
+    $value: map.get($property-scale-map, $density-scale);
   } @else {
-    $value: map-get($property-scale-map, default) + $density-scale * $mdc-density-interval;
+    $value: map.get($property-scale-map, default) + $density-scale * variables.$interval;
   }
 
-  $min-value: map-get($property-scale-map, $mdc-density-minimum-scale);
-  $max-value: map-get($property-scale-map, $mdc-density-maximum-scale);
+  $min-value: map.get($property-scale-map, variables.$minimum-scale);
+  $max-value: map.get($property-scale-map, variables.$maximum-scale);
 
   @if ($value < $min-value or $value > $max-value) {
     @error "mdc-density: #{$property-name} must be between #{$min-value} and " +

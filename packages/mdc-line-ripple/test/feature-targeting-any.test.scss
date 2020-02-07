@@ -1,0 +1,12 @@
+@use "../mixins" as line-ripple;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include line-ripple.core-styles($query: $query);
+    @include line-ripple.active-color(red, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

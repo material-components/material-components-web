@@ -19,8 +19,8 @@
 //  THE SOFTWARE.
 //
 
-@import "@material/animation/variables";
+@use "@material/animation/variables";
 
-@function mdc-select-transition($property) {
-  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
+@function transition($property) {
+  @return #{$property} 180ms variables.$standard-curve-timing-function;
 }

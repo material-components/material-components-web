@@ -20,26 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "../functions";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
-
-// postcss-bem-linter: define text-field-helper-text
-
-.mdc-text-field-helper-text {
-  @include mdc-typography(caption);
-  @include mdc-typography-baseline-top(16px);
-
-  margin: 0;
-  transition: mdc-text-field-transition(opacity);
-  opacity: 0;
-  will-change: opacity;
-}
-
-.mdc-text-field-helper-text--persistent {
-  transition: none;
-  opacity: 1;
-  will-change: initial;
-}
-
-// postcss-bem-linter: end
+@use "./mixins";
+@include mixins.helper-text-core-styles;

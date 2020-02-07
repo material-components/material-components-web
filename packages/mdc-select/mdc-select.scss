@@ -20,82 +20,86 @@
 // THE SOFTWARE.
 //
 
-@import "./keyframes";
-@import "./mixins";
-@import "./variables";
-@import "@material/animation/variables";
-@import "@material/line-ripple/mdc-line-ripple";
-@import "@material/notched-outline/mdc-notched-outline";
-@import "@material/floating-label/mdc-floating-label";
-@import "@material/typography/mixins";
-@import "@material/ripple/common";
-@import "@material/ripple/mixins";
-@import "@material/rtl/mixins";
-@import "./icon/mdc-select-icon";
-@import "./helper-text/mdc-select-helper-text";
-@import "./helper-text/mixins";
+@use "./keyframes";
+@use "./mixins";
+@use "./variables";
+@use "@material/animation/variables" as animation-variables;
+@use "@material/line-ripple/mdc-line-ripple"; // COPYBARA_COMMENT_THIS_LINE
+@use "@material/notched-outline/mdc-notched-outline"; // COPYBARA_COMMENT_THIS_LINE
+@use "@material/floating-label/mdc-floating-label"; // COPYBARA_COMMENT_THIS_LINE
+@use "@material/typography/mixins" as mixins2;
+@use "@material/ripple/common"; // COPYBARA_COMMENT_THIS_LINE
+@use "@material/ripple/mixins" as ripple-mixins;
+@use "@material/rtl/mixins" as rtl-mixins;
+@use "./icon/mdc-select-icon";
+@use "./helper-text/mdc-select-helper-text";
+@use "./helper-text/mixins" as helper-text-mixins;
+@use "@material/floating-label/mixins" as floating-label-mixins;
+@use "@material/ripple/functions";
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/theme/variables" as theme-variables;
 
 // postcss-bem-linter: define select
 .mdc-select {
-  @include mdc-select-container-fill-color($mdc-select-fill-color);
-  @include mdc-select-ink-color($mdc-select-ink-color);
-  @include mdc-select-label-color($mdc-select-label-color);
-  @include mdc-select-bottom-line-color($mdc-select-bottom-line-idle-color);
-  @include mdc-select-helper-text-color($mdc-select-helper-text-color);
-  @include mdc-select-shape-radius(small);
+  @include mixins.container-fill-color(variables.$fill-color);
+  @include mixins.ink-color(variables.$ink-color);
+  @include mixins.label-color(variables.$label-color);
+  @include mixins.bottom-line-color(variables.$bottom-line-idle-color);
+  @include helper-text-mixins.helper-text-color(variables.$helper-text-color);
+  @include mixins.shape-radius(small);
 
   // Focused state colors
-  @include mdc-select-focused-bottom-line-color(primary);
-  @include mdc-select-focused-label-color($mdc-select-focused-label-color);
+  @include mixins.focused-bottom-line-color(primary);
+  @include mixins.focused-label-color(variables.$focused-label-color);
 
   // Hover state colors
-  @include mdc-select-hover-bottom-line-color($mdc-select-bottom-line-hover-color);
+  @include mixins.hover-bottom-line-color(variables.$bottom-line-hover-color);
 
   // Floating label private mixin
-  @include mdc-select-floating-label_;
+  @include mixins.floating-label_;
 
   position: relative; // Menu is absolutely positioned relative to this.
 
   &__dropdown-icon {
-    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-dropdown-opacity);
-    @include mdc-rtl-reflexive(left, auto, right, 8px);
+    @include mixins.dd-arrow-svg-bg_(variables.$dropdown-color, variables.$dropdown-opacity);
+    @include rtl-mixins.reflexive(left, auto, right, 8px);
 
     position: absolute;
     bottom: 16px;
     width: 24px;
     height: 24px;
-    transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
+    transition: transform variables.$dropdown-transition-duration animation-variables.$standard-curve-timing-function;
     pointer-events: none;
 
     .mdc-select--focused & {
-      @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
+      @include mixins.dd-arrow-svg-bg_(theme-variables.prop-value(primary), 1);
     }
 
     .mdc-select--activated & {
       transform: rotate(180deg) translateY(-5px);
-      transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
+      transition: transform variables.$dropdown-transition-duration animation-variables.$standard-curve-timing-function;
     }
   }
 }
 
 .mdc-select__anchor {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
+  @include ripple-mixins.surface;
+  @include ripple-mixins.radius-bounded;
   // Select intentionally omits press ripple, so each state needs to be specified individually.
-  @include mdc-states-base-color($mdc-select-ink-color);
-  @include mdc-states-hover-opacity(mdc-states-opacity($mdc-select-ink-color, hover));
-  @include mdc-states-focus-opacity(mdc-states-opacity($mdc-select-ink-color, focus));
-  @include mdc-floating-label-float-position($mdc-select-label-position-y);
+  @include ripple-mixins.states-base-color(variables.$ink-color);
+  @include ripple-mixins.states-hover-opacity(functions.states-opacity(variables.$ink-color, hover));
+  @include ripple-mixins.states-focus-opacity(functions.states-opacity(variables.$ink-color, focus));
+  @include floating-label-mixins.float-position(variables.$label-position-y);
 
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
-  height: $mdc-select-height;
+  height: variables.$height;
   overflow: hidden;
   /* @alternate */
   will-change: opacity, transform, color;
 
-  @include mdc-select-focused-line-ripple_ {
+  @include mixins.focused-line-ripple_ {
     &::after {
       transform: scale(1, 2);
       opacity: 1;
@@ -103,31 +107,31 @@
   }
 }
 
-@include mdc-select-helper-text_;
-@include mdc-select-text_();
+@include mixins.helper-text_;
+@include mixins.text_();
 
 .mdc-select--outlined {
-  @include mdc-select-outlined_;
+  @include mixins.outlined_;
 }
 
 .mdc-select--invalid {
-  @include mdc-select-label-color($mdc-select-error-color);
-  @include mdc-select-bottom-line-color($mdc-select-error-color);
-  @include mdc-select-focused-bottom-line-color($mdc-select-error-color);
-  @include mdc-select-focused-label-color($mdc-select-error-color);
-  @include mdc-select-helper-text-validation-color($mdc-select-error-color);
+  @include mixins.label-color(variables.$error-color);
+  @include mixins.bottom-line-color(variables.$error-color);
+  @include mixins.focused-bottom-line-color(variables.$error-color);
+  @include mixins.focused-label-color(variables.$error-color);
+  @include helper-text-mixins.helper-text-validation-color(variables.$error-color);
 
   // Hover state colors
-  @include mdc-select-hover-bottom-line-color($mdc-select-error-color);
+  @include mixins.hover-bottom-line-color(variables.$error-color);
 
   &.mdc-select--outlined {
-    @include mdc-select-outline-color($mdc-select-error-color);
-    @include mdc-select-hover-outline-color($mdc-select-error-color);
-    @include mdc-select-focused-outline-color($mdc-select-error-color);
+    @include mixins.outline-color(variables.$error-color);
+    @include mixins.hover-outline-color(variables.$error-color);
+    @include mixins.focused-outline-color(variables.$error-color);
   }
 
   .mdc-select__dropdown-icon {
-    @include mdc-select-dd-arrow-svg-bg_($mdc-select-error-color, 1);
+    @include mixins.dd-arrow-svg-bg_(variables.$error-color, 1);
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
@@ -144,29 +148,29 @@
 }
 
 .mdc-select--disabled {
-  @include mdc-select-disabled_;
+  @include mixins.disabled_;
 }
 
 .mdc-select--no-label {
-  @include mdc-select-no-label_;
+  @include mixins.no-label_;
 }
 
 .mdc-select--with-leading-icon {
-  @include mdc-select-with-leading-icon_;
+  @include mixins.with-leading-icon_;
 }
 
 .mdc-select__menu .mdc-list .mdc-list-item--selected {
-  @include mdc-theme-prop(color, on-surface);
-  @include mdc-states(on-surface);
+  @include theme-mixins.prop(color, on-surface);
+  @include ripple-mixins.states(on-surface);
 }
 
-@include mdc-floating-label-shake-keyframes(
+@include floating-label-mixins.shake-keyframes(
   select-outlined-leading-icon,
-  $mdc-select-outlined-label-position-y,
-  $mdc-select-outlined-with-leading-icon-label-position-x
+  variables.$outlined-label-position-y,
+  variables.$outlined-with-leading-icon-label-position-x
 );
-@include mdc-floating-label-shake-keyframes(
+@include floating-label-mixins.shake-keyframes(
   select-outlined-leading-icon-rtl,
-  $mdc-select-outlined-label-position-y,
-  -$mdc-select-outlined-with-leading-icon-label-position-x
+  variables.$outlined-label-position-y,
+  -(variables.$outlined-with-leading-icon-label-position-x)
 );

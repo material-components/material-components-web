@@ -34,11 +34,11 @@ npm install @material/density
 The styles for applying density to button component instance looks like this:
 
 ```scss
-@import "@material/button/mixins";
+@use "@material/button";
 
 .my-custom-button {
   // Sets button density scale to `-3`, i.e. button height to `24px`.
-  @include mdc-button-density(-3);
+  @include button.density(-3);
 }
 ```
 
@@ -69,7 +69,10 @@ Currently, the density system only allows negative numbers to customize for high
 The height or size of a component is calculated with the following formula:
 
 ```scss
-$height: $mdc-button-height + $mdc-density-interval * $density-scale
+@use "@material/button";
+@use "@material/density";
+
+$height: button.$height + density.$interval * $density-scale
 /// @example 36px + 4px * (-3) => 24px
 ```
 
@@ -85,8 +88,8 @@ Components that has different variants may have their own density mixin.
 
 For example, Tab Bar has two density mixins:
 
-  * `mdc-tab-bar-density()`: Density mixin for standard tab bar.
-  * `mdc-tab-bar-stacked-density()`: Density mixin for tab bar that has icon stacked on top of label.
+  * `tab-bar.density()`: Density mixin for standard tab bar.
+  * `tab-bar.stacked-density()`: Density mixin for tab bar that has icon stacked on top of label.
 
 Similarly, text field provides 3 different density mixins based on its variant.
 
@@ -105,13 +108,13 @@ be consumed directly by developers, use component's density mixin instead.
 
 Variable | Description
 --- | ---
-`$mdc-density-interval` | Density interval between each dense scale. This interval is used for numbered density scale to calculate dense height based on baseline component height.
-`$mdc-density-minimum-scale` | Minimum scale supported by density subsystem. This scale always maps to highest dense scale.
-`$mdc-density-maximum-scale` | Maximum scale supported by density subsystem. This scale always maps to lowest dense scale.
-`$mdc-density-supported-scales` | Supported density scale when density literal is used (For example, `minimum`).
+`$interval` | Density interval between each dense scale. This interval is used for numbered density scale to calculate dense height based on baseline component height.
+`$minimum-scale` | Minimum scale supported by density subsystem. This scale always maps to highest dense scale.
+`$maximum-scale` | Maximum scale supported by density subsystem. This scale always maps to lowest dense scale.
+`$supported-scales` | Supported density scale when density literal is used (For example, `minimum`).
 
 ### Sass Functions
 
 Function | Description
 --- | ---
-`mdc-density-prop-value($density-config, $density-scale, $property-name)` | Returns component property value based on given density config and density scale.
+`prop-value($density-config, $density-scale, $property-name)` | Returns component property value based on given density config and density scale.

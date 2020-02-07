@@ -20,29 +20,29 @@
 // THE SOFTWARE.
 //
 
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "@material/animation/functions";
-@import "@material/button/mixins";
-@import "@material/icon-button/mixins";
-@import "@material/ripple/mixins";
-@import "@material/rtl/mixins";
-@import "@material/typography/mixins";
-@import "@material/elevation/mixins";
-@import "@material/shape/mixins";
-@import "@material/theme/mixins";
-@import "./variables";
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/animation/functions" as animation-functions;
+@use "@material/button/mixins" as button-mixins;
+@use "@material/icon-button/mixins" as icon-button-mixins;
+@use "@material/ripple/mixins" as ripple-mixins;
+@use "@material/rtl/mixins" as rtl-mixins;
+@use "@material/typography/mixins" as typography-mixins;
+@use "@material/elevation/mixins" as elevation-mixins;
+@use "@material/shape/mixins" as shape-mixins;
+@use "@material/theme/mixins" as theme-mixins;
+@use "./variables";
 
-@mixin mdc-snackbar-core-styles($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-  $feat-animation: mdc-feature-create-target($query, animation);
+@mixin core-styles($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
 
   // postcss-bem-linter: define snackbar
   .mdc-snackbar {
-    @include mdc-snackbar-z-index($mdc-snackbar-z-index, $query: $query);
-    @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-narrow, $query: $query);
+    @include z-index(variables.$z-index, $query: $query);
+    @include viewport-margin(variables.$viewport-margin-narrow, $query: $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: none;
       position: fixed;
       right: 0;
@@ -68,32 +68,34 @@
   }
 
   @at-root {
-    @include mdc-snackbar-fill-color($mdc-snackbar-fill-color, $query: $query);
-    @include mdc-snackbar-label-ink-color($mdc-snackbar-label-ink-color, $query: $query);
-    @include mdc-snackbar-min-width($mdc-snackbar-min-width, $query: $query);
-    @include mdc-snackbar-max-width($mdc-snackbar-max-width, $query: $query);
-    @include mdc-snackbar-elevation($mdc-snackbar-elevation, $query: $query);
-    @include mdc-snackbar-shape-radius($mdc-snackbar-shape-radius, $query: $query);
+    @include fill-color(variables.$fill-color, $query: $query);
+    @include label-ink-color(variables.$label-ink-color, $query: $query);
+    @include min-width(variables.$min-width, $query: $query);
+    @include max-width(variables.$max-width, $query: $query);
+    @include elevation(variables.$elevation, $query: $query);
+    @include shape-radius(variables.$shape-radius, $query: $query);
   }
 
   .mdc-snackbar--opening,
   .mdc-snackbar--open,
   .mdc-snackbar--closing {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: flex;
     }
   }
 
   .mdc-snackbar--leading {
-    @include mdc-snackbar-position-leading($query: $query);
+    @include position-leading($query: $query);
   }
 
   .mdc-snackbar--stacked {
-    @include mdc-snackbar-layout-stacked($query: $query);
+    @include layout-stacked($query: $query);
   }
 
   .mdc-snackbar__surface {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(padding, 0, variables.$padding);
+
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -103,55 +105,58 @@
     }
 
     .mdc-snackbar--open & {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         transform: scale(1);
         opacity: 1;
         pointer-events: auto; // Allow mouse events on surface element while snackbar is open
       }
 
-      @include mdc-feature-targets($feat-animation) {
+      @include feature-targeting-mixins.targets($feat-animation) {
         transition:
-          mdc-animation-enter(opacity, $mdc-snackbar-enter-duration),
-          mdc-animation-enter(transform, $mdc-snackbar-enter-duration);
+          animation-functions.enter(opacity, variables.$enter-duration),
+          animation-functions.enter(transform, variables.$enter-duration);
       }
     }
 
     .mdc-snackbar--closing & {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         transform: scale(1);
       }
 
-      @include mdc-feature-targets($feat-animation) {
-        transition: mdc-animation-exit-permanent(opacity, $mdc-snackbar-exit-duration);
+      @include feature-targeting-mixins.targets($feat-animation) {
+        transition: animation-functions.exit-permanent(opacity, variables.$exit-duration);
       }
     }
   }
 
   .mdc-snackbar__label {
-    @include mdc-typography($mdc-snackbar-label-type-scale, $query: $query);
+    @include typography-mixins.typography(variables.$label-type-scale, $query: $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(padding, 16px, variables.$padding);
+
+      width: 100%;
       flex-grow: 1;
       box-sizing: border-box;
       margin: 0;
 
       // 14px top/bottom padding needed to make the height 48px.
-      padding: 14px 16px;
+      padding-top: 14px;
+      padding-bottom: 14px;
     }
   }
 
   // Used to prevent visual jank when announcing label text to screen readers.
   // See the `announce()` function in util.js for details.
   .mdc-snackbar__label::before {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: inline;
       content: attr(data-mdc-snackbar-label-text);
     }
   }
 
   .mdc-snackbar__actions {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-rtl-reflexive-property(margin, 0, $mdc-snackbar-padding);
+    @include feature-targeting-mixins.targets($feat-structure) {
 
       display: flex;
       flex-shrink: 0;
@@ -161,63 +166,63 @@
   }
 
   .mdc-snackbar__action {
-    @include mdc-button-ink-color($mdc-snackbar-action-ink-color, $query: $query);
-    @include mdc-states($mdc-snackbar-action-ink-color, $query: $query);
+    @include button-mixins.ink-color(variables.$action-ink-color, $query: $query);
+    @include ripple-mixins.states(variables.$action-ink-color, $query: $query);
   }
 
   .mdc-snackbar__dismiss {
-    @include mdc-icon-button-ink-color($mdc-snackbar-dismiss-ink-color, $query: $query);
+    @include icon-button-mixins.ink-color(variables.$dismiss-ink-color, $query: $query);
   }
 
   // Two selectors are needed to increase specificity above `.material-icons`.
   // stylelint-disable-next-line selector-class-pattern
   .mdc-snackbar__dismiss.mdc-snackbar__dismiss {
-    @include mdc-icon-button-icon-size($mdc-snackbar-dismiss-icon-size, $query: $query);
+    @include icon-button-mixins.icon-size(variables.$dismiss-icon-size, $query: $query);
   }
 
   .mdc-snackbar__action + .mdc-snackbar__dismiss {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-rtl-reflexive-property(margin, $mdc-snackbar-padding, 0);
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(margin, variables.$padding, 0);
     }
   }
   // postcss-bem-linter: end
 }
 
-@mixin mdc-snackbar-fill-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin fill-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-snackbar__surface {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(background-color, $color);
     }
   }
 }
 
-@mixin mdc-snackbar-label-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin label-ink-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-snackbar__label {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(color, $color);
     }
   }
 }
 
-@mixin mdc-snackbar-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+@mixin shape-radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
   .mdc-snackbar__surface {
-    @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
+    @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
   }
 }
 
-@mixin mdc-snackbar-min-width(
+@mixin min-width(
   $min-width,
-  $mobile-breakpoint: $mdc-snackbar-mobile-breakpoint,
-  $query: mdc-feature-all()
+  $mobile-breakpoint: variables.$mobile-breakpoint,
+  $query: feature-targeting-functions.all()
 ) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-snackbar__surface {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       min-width: $min-width;
 
       // The first media query ensures that snackbars are always 100% width on mobile devices, as required by the spec.
@@ -229,60 +234,67 @@
   }
 }
 
-@mixin mdc-snackbar-max-width($max-width, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin max-width($max-width, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-snackbar__surface {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       max-width: $max-width;
     }
   }
 }
 
-@mixin mdc-snackbar-elevation($z-index, $query: mdc-feature-all()) {
+@mixin elevation($z-index, $query: feature-targeting-functions.all()) {
   .mdc-snackbar__surface {
-    @include mdc-elevation($z-index, $query: $query);
+    @include elevation-mixins.elevation($z-index, $query: $query);
   }
 }
 
-@mixin mdc-snackbar-viewport-margin($margin, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin viewport-margin($margin, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     margin: $margin;
   }
 }
 
-@mixin mdc-snackbar-z-index($z-index, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin z-index($z-index, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     z-index: $z-index;
   }
 }
 
-@mixin mdc-snackbar-position-leading($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin position-leading($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     justify-content: flex-start;
   }
 }
 
-@mixin mdc-snackbar-layout-stacked($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin layout-stacked($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-snackbar__label {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(padding, 16px, 0);
+      padding-bottom: 12px;
+    }
+  }
 
   .mdc-snackbar__surface {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       flex-direction: column;
       align-items: flex-start;
     }
   }
 
   .mdc-snackbar__actions {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       align-self: flex-end;
-      margin-bottom: $mdc-snackbar-padding;
+      margin-bottom: variables.$padding;
     }
   }
 }

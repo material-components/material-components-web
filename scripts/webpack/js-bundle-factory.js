@@ -177,7 +177,6 @@ class JsBundleFactory {
         drawer: getAbsolutePath('/packages/mdc-drawer/index.ts'),
         floatingLabel: getAbsolutePath('/packages/mdc-floating-label/index.ts'),
         formField: getAbsolutePath('/packages/mdc-form-field/index.ts'),
-        gridList: getAbsolutePath('/packages/mdc-grid-list/index.ts'),
         iconButton: getAbsolutePath('/packages/mdc-icon-button/index.ts'),
         list: getAbsolutePath('/packages/mdc-list/index.ts'),
         lineRipple: getAbsolutePath('/packages/mdc-line-ripple/index.ts'),

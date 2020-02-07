@@ -1,0 +1,21 @@
+@use "../mixins" as dialog;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include dialog.core-styles($query: $query);
+    @include dialog.container-fill-color(red, $query: $query);
+    @include dialog.scrim-color(red, $query: $query);
+    @include dialog.title-ink-color(red, $query: $query);
+    @include dialog.content-ink-color(red, $query: $query);
+    @include dialog.scroll-divider-color(red, $query: $query);
+    @include dialog.shape-radius(0, $query: $query);
+    @include dialog.min-width(0, $query: $query);
+    @include dialog.max-width(0, 0, $query: $query);
+    @include dialog.max-height(0, 0, $query: $query);
+    @include dialog.with-touch-target($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

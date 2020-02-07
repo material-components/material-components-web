@@ -1,0 +1,2 @@
+@forward "@material/animation" as mdc-animation-* hide mdc-animation-enter, mdc-animation-exit-permanent, mdc-animation-exit-temporary, mdc-animation-standard;
+@forward "./index" as mdc-elevation-* hide mdc-elevation-core-styles, mdc-elevation-overlay-common, mdc-elevation-shadow, mdc-elevation-overlay-surface-position, mdc-elevation-overlay-dimensions, mdc-elevation-overlay-fill-color, mdc-elevation-overlay-opacity, mdc-elevation-elevation, mdc-elevation-overlay-selector-;

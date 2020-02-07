@@ -20,31 +20,34 @@
 // THE SOFTWARE.
 //
 
-@import "@material/base/mixins";
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "@material/theme/mixins";
-@import "@material/theme/variables";
-@import "./functions";
-@import "./variables";
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
+@use "@material/base/mixins" as base-mixins;
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/theme/variables" as theme-variables;
+@use "./functions";
+@use "./variables";
 
-@mixin mdc-elevation-core-styles($query: mdc-feature-all()) {
-  $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin core-styles($query: feature-targeting-functions.all()) {
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @for $z-value from 0 through 24 {
     .mdc-elevation--z#{$z-value} {
-      @include mdc-elevation($z-value, $query: $query);
+      @include elevation($z-value, $query: $query);
     }
   }
 
   .mdc-elevation-transition {
-    @include mdc-feature-targets($feat-animation) {
-      transition: mdc-elevation-transition-value();
+    @include feature-targeting-mixins.targets($feat-animation) {
+      transition: functions.transition-value();
     }
 
-    @include mdc-feature-targets($feat-structure) {
-      will-change: $mdc-elevation-property;
+    @include feature-targeting-mixins.targets($feat-structure) {
+      will-change: variables.$property;
     }
   }
 }
@@ -52,33 +55,29 @@
 ///
 /// Called once per application to set up the global default elevation styles.
 ///
-@mixin mdc-elevation-overlay-common($query: mdc-feature-all()) {
-  $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin overlay-common($query: feature-targeting-functions.all()) {
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-elevation-overlay-selector_ {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-base-emit-once("mdc-elevation/common/structure") {
+  @include overlay-selector_ {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include base-mixins.emit-once("mdc-elevation/common/structure") {
         position: absolute;
-        top: 50%;
-        /* @noflip */
-        left: 50%;
-        transform: translate(-50%, -50%);
         border-radius: inherit;
         opacity: 0;
         pointer-events: none;
       }
     }
 
-    @include mdc-feature-targets($feat-animation) {
-      @include mdc-base-emit-once("mdc-elevation/common/animation") {
-        transition: mdc-elevation-overlay-transition-value();
+    @include feature-targeting-mixins.targets($feat-animation) {
+      @include base-mixins.emit-once("mdc-elevation/common/animation") {
+        transition: functions.overlay-transition-value();
       }
     }
-  }
 
-  @include mdc-base-emit-once("mdc-elevation/common/color") {
-    @include mdc-elevation-overlay-fill-color($mdc-elevation-overlay-color, $query: $query);
+    @include base-mixins.emit-once("mdc-elevation/common/color") {
+      @include overlay-fill-color(variables.$overlay-color, $query: $query);
+    }
   }
 }
 
@@ -87,69 +86,81 @@
 ///
 /// @param {String} $box-shadow - The shadow to apply to the element.
 ///
-@mixin mdc-elevation-shadow($box-shadow, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin shadow($box-shadow, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
-  @include mdc-feature-targets($feat-color) {
+  @include feature-targeting-mixins.targets($feat-color) {
     /* @alternate */
     box-shadow: $box-shadow;
   }
 }
 
 ///
-/// Sets the elevation overlay parent required positioning.
+/// Sets the elevation overlay surface required positioning.
 ///
-@mixin mdc-elevation-overlay-parent($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin overlay-surface-position($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     /* @alternate */
     position: relative;
   }
 }
 
 ///
-/// Sets the elevation overlay size.
+/// Sets the dimensions of the elevation overlay, including positioning and sizing.
 ///
-/// @param {Number} $width - The width of the elevation overlay.
-/// @param {Number} $height [$width] - The height of the elevation overlay.
+/// @param {Number} $width - The width of the elevation overlay
+/// @param {Number} [$height] - The height of the elevation overlay
+/// @param {Boolean} [$has-content-sizing] - Set to false if the container has no content sizing
 ///
-@mixin mdc-elevation-overlay-size($width, $height: $width, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin overlay-dimensions($width, $height: $width, $has-content-sizing: true, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-elevation-overlay-selector_ {
-    @include mdc-feature-targets($feat-structure) {
+  @include overlay-selector_ {
+    @include feature-targeting-mixins.targets($feat-structure) {
       width: $width;
       height: $height;
+
+      @if $has-content-sizing {
+        top: 0;
+        /* @noflip */
+        left: 0;
+      } @else {
+        top: 50%;
+        /* @noflip */
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
     }
   }
 }
 
 ///
 /// Sets the elevation overlay fill color.
+/// Expected to be called directly on the elevation overlay element.
 ///
 /// @param {Color} $color - The color of the elevation overlay.
 ///
-@mixin mdc-elevation-overlay-fill-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin overlay-fill-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
-  @include mdc-elevation-overlay-selector_ {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color);
-    }
+  @include feature-targeting-mixins.targets($feat-color) {
+    @include theme-mixins.prop(background-color, $color);
   }
 }
 
 ///
 /// Sets the elevation overlay opacity.
+/// Expected to be called from a parent element.
 ///
 /// @param {Number} $opacity - The opacity of the elevation overlay.
 ///
-@mixin mdc-elevation-overlay-opacity($opacity, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin overlay-opacity($opacity, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
-  @include mdc-elevation-overlay-selector_ {
-    @include mdc-feature-targets($feat-color) {
+  @include overlay-selector_ {
+    @include feature-targeting-mixins.targets($feat-color) {
       opacity: $opacity;
     }
   }
@@ -159,8 +170,8 @@
 // The $z-value must be between 0 and 24.
 // If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
 // $opacity-boost.
-@mixin mdc-elevation($z-value, $color: $mdc-elevation-baseline-color, $opacity-boost: 0, $query: mdc-feature-all()) {
-  @if type-of($z-value) != number or not unitless($z-value) {
+@mixin elevation($z-value, $color: variables.$baseline-color, $opacity-boost: 0, $query: feature-targeting-functions.all()) {
+  @if meta.type-of($z-value) != number or not math.is-unitless($z-value) {
     @error "$z-value must be a unitless number, but received '#{$z-value}'";
   }
 
@@ -168,17 +179,17 @@
     @error "$z-value must be between 0 and 24, but received '#{$z-value}'";
   }
 
-  $feat-color: mdc-feature-create-target($query, color);
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
-  $color: mdc-theme-prop-value($color);
+  $color: theme-variables.prop-value($color);
 
-  $umbra-z-value: map-get($mdc-elevation-umbra-map, $z-value);
-  $penumbra-z-value: map-get($mdc-elevation-penumbra-map, $z-value);
-  $ambient-z-value: map-get($mdc-elevation-ambient-map, $z-value);
+  $umbra-z-value: map.get(variables.$umbra-map, $z-value);
+  $penumbra-z-value: map.get(variables.$penumbra-map, $z-value);
+  $ambient-z-value: map.get(variables.$ambient-map, $z-value);
 
-  $umbra-color: rgba($color, $mdc-elevation-umbra-opacity + $opacity-boost);
-  $penumbra-color: rgba($color, $mdc-elevation-penumbra-opacity + $opacity-boost);
-  $ambient-color: rgba($color, $mdc-elevation-ambient-opacity + $opacity-boost);
+  $umbra-color: rgba($color, variables.$umbra-opacity + $opacity-boost);
+  $penumbra-color: rgba($color, variables.$penumbra-opacity + $opacity-boost);
+  $ambient-color: rgba($color, variables.$ambient-opacity + $opacity-boost);
 
   $box-shadow: (
     #{"#{$umbra-z-value} #{$umbra-color}"},
@@ -186,7 +197,7 @@
     #{$ambient-z-value} $ambient-color,
   );
 
-  @include mdc-elevation-shadow($box-shadow, $query: $query);
+  @include shadow($box-shadow, $query: $query);
 }
 
 // Private
@@ -199,7 +210,7 @@
 /// @return {String}
 /// @access private
 ///
-@mixin mdc-elevation-overlay-selector_ {
+@mixin overlay-selector_ {
   .mdc-elevation-overlay {
     @content;
   }

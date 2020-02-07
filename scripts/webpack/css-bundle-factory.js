@@ -157,7 +157,6 @@ class CssBundleFactory {
         'mdc.fab': getAbsolutePath('/packages/mdc-fab/mdc-fab.scss'),
         'mdc.floating-label': getAbsolutePath('/packages/mdc-floating-label/mdc-floating-label.scss'),
         'mdc.form-field': getAbsolutePath('/packages/mdc-form-field/mdc-form-field.scss'),
-        'mdc.grid-list': getAbsolutePath('/packages/mdc-grid-list/mdc-grid-list.scss'),
         'mdc.icon-button': getAbsolutePath('/packages/mdc-icon-button/mdc-icon-button.scss'),
         'mdc.image-list': getAbsolutePath('/packages/mdc-image-list/mdc-image-list.scss'),
         'mdc.layout-grid': getAbsolutePath('/packages/mdc-layout-grid/mdc-layout-grid.scss'),

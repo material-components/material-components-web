@@ -57,8 +57,8 @@ We recommend using MDC Radio with [MDC Form Field](../mdc-form-field) for enhanc
 ### Styles
 
 ```scss
-@import "@material/form-field/mdc-form-field";
-@import "@material/radio/mdc-radio";
+@use "@material/form-field/mdc-form-field";
+@use "@material/radio/mdc-radio";
 ```
 
 ### JavaScript Instantiation
@@ -127,20 +127,16 @@ MDC Radio uses [MDC Theme](../mdc-theme)'s `secondary` color by default. Use the
 
 Mixin | Description
 --- | ---
-`mdc-radio-unchecked-stroke-color($color)` | Sets the stroke color of an unchecked, enabled radio button
-`mdc-radio-checked-stroke-color($color)` | Sets the stroke color of a checked, enabled radio button
-`mdc-radio-ink-color($color)` | Sets the ink color of an enabled radio button
-`mdc-radio-disabled-unchecked-stroke-color($color)` | Sets the stroke color of an unchecked, disabled radio button
-`mdc-radio-disabled-checked-stroke-color($color)` | Sets the stroke color of a checked, disabled radio button
-`mdc-radio-disabled-ink-color($color)` | Sets the ink color of a disabled radio button
-`mdc-radio-focus-indicator-color($color)` | Sets the color of the focus indicator
-`mdc-radio-touch-target($size, $ripple-size)` | Sets radio touch target size which can be more than the ripple size. Param `$ripple-size` is required for custom ripple size, defaults to `$mdc-radio-ripple-size`.
-`mdc-radio-ripple-size($size)` | Sets custom ripple size of radio.
-`mdc-radio-density($density-scale)` | Sets density scale for radio. Supported density scale values are `-3`, `-2`, `-1` and `0` (default).
-
-#### Caveat: Edge and CSS Custom Properties
-
-In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](../mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using any of the Sass mixins, you must pass in an actual color value for support in Edge.
+`unchecked-stroke-color($color)` | Sets the stroke color of an unchecked, enabled radio button
+`checked-stroke-color($color)` | Sets the stroke color of a checked, enabled radio button
+`ink-color($color)` | Sets the ink color of an enabled radio button
+`disabled-unchecked-stroke-color($color)` | Sets the stroke color of an unchecked, disabled radio button
+`disabled-checked-stroke-color($color)` | Sets the stroke color of a checked, disabled radio button
+`disabled-ink-color($color)` | Sets the ink color of a disabled radio button
+`focus-indicator-color($color)` | Sets the color of the focus indicator
+`touch-target($size, $ripple-size)` | Sets radio touch target size which can be more than the ripple size. Param `$ripple-size` is required for custom ripple size, defaults to `$ripple-size`.
+`ripple-size($size)` | Sets custom ripple size of radio.
+`density($density-scale)` | Sets density scale for radio. Supported density scale values are `-3`, `-2`, `-1` and `0` (default).
 
 ## `MDCRadio` Properties and Methods
 

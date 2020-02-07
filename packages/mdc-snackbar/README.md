@@ -48,7 +48,10 @@ npm install @material/snackbar
       Can't send photo. Retry in 5 seconds.
     </div>
     <div class="mdc-snackbar__actions">
-      <button type="button" class="mdc-button mdc-snackbar__action">Retry</button>
+      <button type="button" class="mdc-button mdc-snackbar__action">
+        <div class="mdc-button__ripple"></div>
+        <span class="mdc-button__label">Retry</span>
+      </button>
     </div>
   </div>
 </div>
@@ -57,7 +60,7 @@ npm install @material/snackbar
 ### Styles
 
 ```scss
-@import "@material/snackbar/mdc-snackbar";
+@use "@material/snackbar/mdc-snackbar";
 ```
 
 ### JavaScript Instantiation
@@ -84,9 +87,11 @@ Action buttons with long text should be positioned _below_ the label instead of 
 Alternatively, you can call the `mdc-snackbar-layout-stacked` mixin from Sass:
 
 ```scss
-@media (max-width: $mdc-snackbar-mobile-breakpoint) {
+@use "@material/snackbar";
+
+@media (max-width: snackbar.$mobile-breakpoint) {
   .my-snackbar {
-    @include mdc-snackbar-layout-stacked;
+    @include snackbar.layout-stacked;
   }
 }
 ```
@@ -106,21 +111,21 @@ On larger screens, they can optionally be displayed on the _leading_ edge of the
 Alternatively, you can call the `mdc-snackbar-position-leading` mixin from Sass:
 
 ```scss
-@media (min-width: $mdc-snackbar-mobile-breakpoint) {
+@media (min-width: snackbar.$mobile-breakpoint) {
   .my-snackbar {
-    @include mdc-snackbar-position-leading;
+    @include snackbar.position-leading;
   }
 }
 ```
 
 ### Wide (tablet and desktop only)
 
-To increase the margins between the snackbar and the viewport on larger screens, call the `mdc-snackbar-viewport-margin` mixin inside a media query:
+To increase the margins between the snackbar and the viewport on larger screens, call the `viewport-margin` mixin inside a media query:
 
 ```scss
-@media (min-width: $mdc-snackbar-mobile-breakpoint) {
+@media (min-width: snackbar.$mobile-breakpoint) {
   .my-snackbar {
-    @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-wide);
+    @include snackbar.viewport-margin(snackbar.$viewport-margin-wide);
   }
 }
 ```
@@ -146,16 +151,16 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-snackbar-fill-color($color)` | Sets the fill color of the snackbar.
-`mdc-snackbar-label-ink-color($color)` | Sets the color of the snackbar's label text.
-`mdc-snackbar-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to snackbar surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-snackbar-min-width($min-width, $mobile-breakpoint)` | Sets the `min-width` of the surface on tablet/desktop devices. On mobile, the width is automatically set to 100%.
-`mdc-snackbar-max-width($max-width)` | Sets the `max-width` of the snackbar.
-`mdc-snackbar-elevation($z-index)` | Sets the elevation of the snackbar.
-`mdc-snackbar-viewport-margin($margin)` | Sets the distance between the snackbar and the viewport.
-`mdc-snackbar-z-index($z-index)` | Sets the `z-index` of the snackbar.
-`mdc-snackbar-position-leading()` | Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
-`mdc-snackbar-layout-stacked()` | Positions the action button/icon below the label instead of alongside it.
+`fill-color($color)` | Sets the fill color of the snackbar.
+`label-ink-color($color)` | Sets the color of the snackbar's label text.
+`shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to snackbar surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`min-width($min-width, $mobile-breakpoint)` | Sets the `min-width` of the surface on tablet/desktop devices. On mobile, the width is automatically set to 100%.
+`max-width($max-width)` | Sets the `max-width` of the snackbar.
+`elevation($z-index)` | Sets the elevation of the snackbar.
+`viewport-margin($margin)` | Sets the distance between the snackbar and the viewport.
+`z-index($z-index)` | Sets the `z-index` of the snackbar.
+`position-leading()` | Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
+`layout-stacked()` | Positions the action button/icon below the label instead of alongside it.
 
 > **NOTE**: The `mdc-snackbar__action` and `mdc-snackbar__dismiss` elements can be further customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
 

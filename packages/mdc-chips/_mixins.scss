@@ -20,57 +20,63 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/functions";
-@import "@material/animation/variables";
-@import "@material/checkbox/functions";
-@import "@material/checkbox/variables";
-@import "@material/elevation/mixins";
-@import "@material/density/functions";
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "@material/ripple/mixins";
-@import "@material/rtl/mixins";
-@import "@material/theme/functions";
-@import "@material/theme/mixins";
-@import "@material/touch-target/mixins";
-@import "@material/typography/mixins";
-@import "@material/shape/mixins";
-@import "@material/shape/functions";
-@import "./variables";
+@use "sass:math";
+@use "@material/animation/functions";
+@use "@material/animation/variables" as animation-variables;
+@use "@material/checkbox/functions" as checkbox-functions;
+@use "@material/checkbox/variables" as checkbox-variables;
+@use "@material/elevation/mixins" as elevation-mixins;
+@use "@material/density/functions" as density-functions;
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/ripple/mixins" as ripple-mixins;
+@use "@material/rtl/mixins" as rtl-mixins;
+@use "@material/theme/functions" as theme-functions;
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/touch-target/mixins" as touch-target-mixins;
+@use "@material/typography/mixins" as typography-mixins;
+@use "@material/shape/mixins" as shape-mixins;
+@use "@material/shape/functions" as shape-functions;
+@use "./variables";
+@use "@material/elevation/functions" as elevation-functions;
+@use "@material/theme/variables" as theme-variables;
 
-$mdc-chip-ripple-target: ".mdc-chip__ripple";
+$ripple-target: ".mdc-chip__ripple";
 
-@mixin mdc-chip-core-styles($query: mdc-feature-all()) {
-  @include mdc-chip-without-ripple($query: $query);
-  @include mdc-chip-ripple($query: $query);
+@mixin core-styles($query: feature-targeting-functions.all()) {
+  @include without-ripple($query: $query);
+  @include ripple($query: $query);
 }
 
-@mixin mdc-chip-without-ripple($query: mdc-feature-all()) {
-  $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-color: mdc-feature-create-target($query, color);
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin without-ripple($query: feature-targeting-functions.all()) {
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-chip-leading-icon-color($mdc-chip-icon-color, $query: $query);
-  @include mdc-chip-trailing-icon-color($mdc-chip-icon-color, $query: $query);
-  @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size, $query: $query);
-  @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size, $query: $query);
-  @include mdc-chip-trailing-icon-margin($query: $query);
-  @include mdc-touch-target-wrapper($query);
+  @include leading-icon-color(variables.$icon-color, $query: $query);
+  @include trailing-icon-color(variables.$icon-color, $query: $query);
+  @include leading-icon-size(variables.$leading-icon-size, $query: $query);
+  @include trailing-icon-size(variables.$trailing-icon-size, $query: $query);
+  @include trailing-icon-margin($query: $query);
+  @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
+  @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-chip {
-    @include mdc-chip-shape-radius(50%, $query: $query);
-    @include mdc-chip-fill-color($mdc-chip-fill-color-default, $query: $query);
-    @include mdc-chip-ink-color-without-ripple_($mdc-chip-ink-color-default, $query: $query);
-    @include mdc-typography(body2, $query: $query);
-    @include mdc-chip-density($density-scale: 0, $query: $query);
-    @include mdc-chip-leading-icon-margin($query: $query);
+    @include shape-radius(50%, $query: $query);
+    @include fill-color(variables.$fill-color-default, $query: $query);
+    @include ink-color-without-ripple_(variables.$ink-color-default, $query: $query);
+    @include typography-mixins.typography(body2, $query: $query);
+    @include density($density-scale: 0, $query: $query);
+    @include leading-icon-margin($query: $query);
+    @include elevation-mixins.overlay-surface-position($query: $query);
+    @include elevation-mixins.overlay-dimensions(100%, $query: $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-flex;
-      position: relative;
+      // position: relative; already set in mdc-elevation-overlay-surface-position
       align-items: center;
       box-sizing: border-box;
-      padding: 0 $mdc-chip-horizontal-padding;
+      padding: 0 variables.$horizontal-padding;
       border-width: 0;
       outline: none;
       cursor: pointer;
@@ -83,34 +89,34 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     }
 
     &:hover {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(color, on-surface);
+      @include feature-targeting-mixins.targets($feat-color) {
+        @include theme-mixins.prop(color, on-surface);
       }
     }
 
     .mdc-chip__touch {
-      @include mdc-touch-target($query: $query);
+      @include touch-target-mixins.touch-target($query: $query);
     }
   }
 
   .mdc-chip--exit {
-    @include mdc-feature-targets($feat-color) {
-      transition: $mdc-chip-exit-transition;
+    @include feature-targeting-mixins.targets($feat-color) {
+      transition: variables.$exit-transition;
     }
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       opacity: 0;
     }
   }
 
   .mdc-chip__text {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       white-space: nowrap;
     }
   }
 
   .mdc-chip__icon {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       border-radius: 50%;
       outline: none;
       vertical-align: middle;
@@ -118,43 +124,43 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   }
 
   .mdc-chip__checkmark {
-    @include mdc-feature-targets($feat-structure) {
-      height: $mdc-chip-leading-icon-size;
+    @include feature-targeting-mixins.targets($feat-structure) {
+      height: variables.$leading-icon-size;
     }
   }
 
   .mdc-chip__checkmark-path {
-    @include mdc-feature-targets($feat-animation) {
+    @include feature-targeting-mixins.targets($feat-animation) {
       transition:
-        mdc-checkbox-transition-exit(
+        checkbox-functions.transition-exit(
           stroke-dashoffset,
-          $mdc-chip-checkmark-animation-delay,
-          $mdc-chip-checkmark-animation-duration
+          variables.$checkmark-animation-delay,
+          variables.$checkmark-animation-duration
         );
     }
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       stroke-width: 2px;
-      stroke-dashoffset: $mdc-checkbox-mark-path-length_;
-      stroke-dasharray: $mdc-checkbox-mark-path-length_;
+      stroke-dashoffset: checkbox-variables.$mark-path-length_;
+      stroke-dasharray: checkbox-variables.$mark-path-length_;
     }
   }
 
   .mdc-chip__text:focus {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       outline: none;
     }
   }
 
   .mdc-chip--selected .mdc-chip__checkmark-path {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       stroke-dashoffset: 0;
     }
   }
 
   .mdc-chip__icon--leading,
   .mdc-chip__icon--trailing {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       // Make these positioned elements, such that they're stacked above the
       // touch target element (`mdc-chip__touch`), so that clicks reach the
       // icons (e.g. for removable input chips).
@@ -166,12 +172,12 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 
   .mdc-chip-set--choice {
     .mdc-chip {
-      @include mdc-chip-selected-ink-color-without-ripple_(primary, $query: $query);
+      @include selected-ink-color-without-ripple_(primary, $query: $query);
     }
 
     .mdc-chip--selected {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(background-color, surface);
+      @include feature-targeting-mixins.targets($feat-color) {
+        @include theme-mixins.prop(background-color, surface);
       }
     }
   }
@@ -179,19 +185,19 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   // Add leading checkmark to filter chips with no leading icon
 
   .mdc-chip__checkmark-svg {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       width: 0;
-      height: $mdc-chip-leading-icon-size;
+      height: variables.$leading-icon-size;
     }
 
-    @include mdc-feature-targets($feat-animation) {
-      transition: width $mdc-chip-width-animation-duration $mdc-animation-standard-curve-timing-function;
+    @include feature-targeting-mixins.targets($feat-animation) {
+      transition: width variables.$width-animation-duration animation-variables.$standard-curve-timing-function;
     }
   }
 
   .mdc-chip--selected .mdc-chip__checkmark-svg {
-    @include mdc-feature-targets($feat-structure) {
-      width: $mdc-chip-leading-icon-size;
+    @include feature-targeting-mixins.targets($feat-structure) {
+      width: variables.$leading-icon-size;
     }
   }
 
@@ -199,31 +205,31 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 
   .mdc-chip-set--filter {
     .mdc-chip__icon--leading {
-      @include mdc-feature-targets($feat-animation) {
-        transition: opacity $mdc-chip-opacity-animation-duration linear;
-        transition-delay: $mdc-chip-leading-icon-delay;
+      @include feature-targeting-mixins.targets($feat-animation) {
+        transition: opacity variables.$opacity-animation-duration linear;
+        transition-delay: variables.$leading-icon-delay;
       }
 
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         opacity: 1;
       }
 
       + .mdc-chip__checkmark {
-        @include mdc-feature-targets($feat-animation) {
-          transition: opacity $mdc-chip-opacity-animation-duration linear;
+        @include feature-targeting-mixins.targets($feat-animation) {
+          transition: opacity variables.$opacity-animation-duration linear;
 
           // Delay the checkmark transition.
-          transition-delay: $mdc-chip-checkmark-with-leading-icon-delay;
+          transition-delay: variables.$checkmark-with-leading-icon-delay;
         }
 
-        @include mdc-feature-targets($feat-structure) {
+        @include feature-targeting-mixins.targets($feat-structure) {
           opacity: 0;
         }
 
         .mdc-chip__checkmark-svg {
           // stylelint-disable max-nesting-depth
 
-          @include mdc-feature-targets($feat-animation) {
+          @include feature-targeting-mixins.targets($feat-animation) {
             transition: width 0ms;
           }
 
@@ -233,12 +239,12 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     }
 
     .mdc-chip--selected .mdc-chip__icon--leading {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         opacity: 0;
       }
 
       + .mdc-chip__checkmark {
-        @include mdc-feature-targets($feat-structure) {
+        @include feature-targeting-mixins.targets($feat-structure) {
           // This ensures that the checkmark has zero width while the leading icon is still animating.
           width: 0;
           opacity: 1;
@@ -247,37 +253,37 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
     }
 
     .mdc-chip__icon--leading-hidden.mdc-chip__icon--leading {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         width: 0;
       }
 
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         // This ensures that the leading icon doesn't fade in while the checkmark is fading out.
         opacity: 0;
       }
 
       + .mdc-chip__checkmark {
-        @include mdc-feature-targets($feat-structure) {
-          width: $mdc-chip-leading-icon-size;
+        @include feature-targeting-mixins.targets($feat-structure) {
+          width: variables.$leading-icon-size;
         }
       }
     }
   }
 }
 
-@mixin mdc-chip-ripple($query: mdc-feature-all()) {
-  @include mdc-ripple-common($query);
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin ripple($query: feature-targeting-functions.all()) {
+  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-chip {
-    @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-chip-ripple-target);
-    @include mdc-ripple-radius-bounded($query: $query, $ripple-target: $mdc-chip-ripple-target);
-    @include mdc-chip-ink-color-ripple_($mdc-chip-ink-color-default, $query: $query);
+    @include ripple-mixins.surface($query: $query, $ripple-target: $ripple-target);
+    @include ripple-mixins.radius-bounded($query: $query, $ripple-target: $ripple-target);
+    @include ink-color-ripple_(variables.$ink-color-default, $query: $query);
 
-    #{$mdc-chip-ripple-target} {
-      @include mdc-ripple-target-common($query: $query);
+    #{$ripple-target} {
+      @include ripple-mixins.target-common($query: $query);
 
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         overflow: hidden;
       }
     }
@@ -285,16 +291,16 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 
   .mdc-chip-set--choice {
     .mdc-chip {
-      @include mdc-chip-selected-ink-color-ripple_(primary, $query: $query);
+      @include selected-ink-color-ripple_(primary, $query: $query);
     }
   }
 }
 
-@mixin mdc-chip-set-core-styles($query: mdc-feature-all()) {
-  $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin set-core-styles($query: feature-targeting-functions.all()) {
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-animation) {
+  @include feature-targeting-mixins.targets($feat-animation) {
     @keyframes mdc-chip-entry {
       from {
         transform: scale(.8);
@@ -309,9 +315,9 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   }
 
   .mdc-chip-set {
-    @include mdc-chip-set-spacing(8px, $query: $query);
+    @include set-spacing(8px, $query: $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: flex;
       flex-wrap: wrap;
       box-sizing: border-box;
@@ -319,163 +325,163 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   }
 
   .mdc-chip-set--input .mdc-chip {
-    @include mdc-feature-targets($feat-animation) {
-      animation: mdc-chip-entry 100ms $mdc-animation-deceleration-curve-timing-function;
+    @include feature-targeting-mixins.targets($feat-animation) {
+      animation: mdc-chip-entry 100ms animation-variables.$deceleration-curve-timing-function;
     }
   }
 }
 
-@mixin mdc-chip-shape-radius(
+@mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $density-scale: $mdc-chip-density-scale,
-  $query: mdc-feature-all()) {
+  $density-scale: variables.$density-scale,
+  $query: feature-targeting-functions.all()) {
 
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-chip-density-config,
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  @include mdc-shape-radius(
-    mdc-shape-resolve-percentage-radius($height, $radius),
+  @include shape-mixins.radius(
+    shape-functions.resolve-percentage-radius($height, $radius),
     $rtl-reflexive,
     $query: $query);
 
-  #{$mdc-chip-ripple-target} {
-    @include mdc-shape-radius(
-      mdc-shape-resolve-percentage-radius($height, $radius),
+  #{$ripple-target} {
+    @include shape-mixins.radius(
+      shape-functions.resolve-percentage-radius($height, $radius),
       $rtl-reflexive,
       $query: $query
     );
   }
 }
 
-@mixin mdc-chip-fill-color-accessible($color, $query: mdc-feature-all()) {
-  $fill-tone: mdc-theme-tone($color);
+@mixin fill-color-accessible($color, $query: feature-targeting-functions.all()) {
+  $fill-tone: theme-functions.tone($color);
 
-  @include mdc-chip-fill-color($color, $query: $query);
+  @include fill-color($color, $query: $query);
 
   @if ($fill-tone == "dark") {
-    @include mdc-chip-ink-color(text-primary-on-dark, $query: $query);
-    @include mdc-chip-selected-ink-color(text-primary-on-dark, $query: $query);
-    @include mdc-chip-leading-icon-color(text-primary-on-dark, $query: $query);
-    @include mdc-chip-trailing-icon-color(text-primary-on-dark, $query: $query);
+    @include ink-color(text-primary-on-dark, $query: $query);
+    @include selected-ink-color(text-primary-on-dark, $query: $query);
+    @include leading-icon-color(text-primary-on-dark, $query: $query);
+    @include trailing-icon-color(text-primary-on-dark, $query: $query);
   } @else {
-    @include mdc-chip-ink-color(text-primary-on-light, $query: $query);
-    @include mdc-chip-selected-ink-color(text-primary-on-light, $query: $query);
-    @include mdc-chip-leading-icon-color(text-primary-on-light, $query: $query);
-    @include mdc-chip-trailing-icon-color(text-primary-on-light, $query: $query);
+    @include ink-color(text-primary-on-light, $query: $query);
+    @include selected-ink-color(text-primary-on-light, $query: $query);
+    @include leading-icon-color(text-primary-on-light, $query: $query);
+    @include trailing-icon-color(text-primary-on-light, $query: $query);
   }
 }
 
-@mixin mdc-chip-fill-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin fill-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-theme-prop(background-color, $color);
+  @include feature-targeting-mixins.targets($feat-color) {
+    @include theme-mixins.prop(background-color, $color);
   }
 }
 
-@mixin mdc-chip-ink-color($color, $query: mdc-feature-all()) {
-  @include mdc-chip-ink-color-ripple_($color, $query: $query);
-  @include mdc-chip-ink-color-without-ripple_($color, $query: $query);
+@mixin ink-color($color, $query: feature-targeting-functions.all()) {
+  @include ink-color-ripple_($color, $query: $query);
+  @include ink-color-without-ripple_($color, $query: $query);
 }
 
-@mixin mdc-chip-ink-color-without-ripple_($color, $query) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin ink-color-without-ripple_($color, $query) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-theme-prop(color, $color);
+  @include feature-targeting-mixins.targets($feat-color) {
+    @include theme-mixins.prop(color, $color);
   }
 
   &:hover {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(color, $color);
     }
   }
 }
 
-@mixin mdc-chip-ink-color-ripple_($color, $query) {
-  @include mdc-states($color, true, $query: $query, $ripple-target: $mdc-chip-ripple-target);
+@mixin ink-color-ripple_($color, $query) {
+  @include ripple-mixins.states($color, true, $query: $query, $ripple-target: $ripple-target);
 }
 
-@mixin mdc-chip-selected-ink-color($color, $query: mdc-feature-all()) {
-  @include mdc-chip-selected-ink-color-ripple_($color, $query: $query);
-  @include mdc-chip-selected-ink-color-without-ripple_($color, $query: $query);
+@mixin selected-ink-color($color, $query: feature-targeting-functions.all()) {
+  @include selected-ink-color-ripple_($color, $query: $query);
+  @include selected-ink-color-without-ripple_($color, $query: $query);
 }
 
-@mixin mdc-chip-selected-ink-color-without-ripple_($color, $query) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin selected-ink-color-without-ripple_($color, $query) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   &.mdc-chip--selected {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(color, $color);
     }
 
-    @include mdc-chip-leading-icon-color($color, $query: $query);
+    @include leading-icon-color($color, $query: $query);
 
     &:hover {
-      @include mdc-feature-targets($feat-color) {
-        @include mdc-theme-prop(color, $color);
+      @include feature-targeting-mixins.targets($feat-color) {
+        @include theme-mixins.prop(color, $color);
       }
     }
   }
 
   .mdc-chip__checkmark-path {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(stroke, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(stroke, $color);
     }
   }
 }
 
-@mixin mdc-chip-selected-ink-color-ripple_($color, $query) {
+@mixin selected-ink-color-ripple_($color, $query) {
   &.mdc-chip {
-    @include mdc-states-selected(
-      $color, $has-nested-focusable-element: true, $query: $query, $ripple-target: $mdc-chip-ripple-target);
+    @include ripple-mixins.states-selected(
+      $color, $has-nested-focusable-element: true, $query: $query, $ripple-target: $ripple-target);
   }
 }
 
-@mixin mdc-chip-outline(
+@mixin outline(
   $width: 1px,
   $style: solid,
-  $color: mdc-theme-prop-value(on-surface),
-  $query: mdc-feature-all()) {
-  @include mdc-chip-outline-width($width, $query: $query);
-  @include mdc-chip-outline-style($style, $query: $query);
-  @include mdc-chip-outline-color($color, $query: $query);
+  $color: theme-variables.prop-value(on-surface),
+  $query: feature-targeting-functions.all()) {
+  @include outline-width($width, $query: $query);
+  @include outline-style($style, $query: $query);
+  @include outline-color($color, $query: $query);
 }
 
-@mixin mdc-chip-outline-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin outline-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-theme-prop(border-color, $color);
+  @include feature-targeting-mixins.targets($feat-color) {
+    @include theme-mixins.prop(border-color, $color);
   }
 }
 
-@mixin mdc-chip-outline-style($style, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin outline-style($style, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     border-style: $style;
   }
 }
 
-@mixin mdc-chip-outline-width($width, $horizontal-padding: $mdc-chip-horizontal-padding, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin outline-width($width, $horizontal-padding: variables.$horizontal-padding, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   // Note: Adjust padding to maintain consistent width with non-outlined chips
-  $horizontal-padding-value: max($horizontal-padding - $width, 0);
+  $horizontal-padding-value: math.max($horizontal-padding - $width, 0);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     padding-right: $horizontal-padding-value;
     padding-left: $horizontal-padding-value;
     border-width: $width;
   }
 
-  #{$mdc-chip-ripple-target} {
-    @include mdc-feature-targets($feat-structure) {
+  #{$ripple-target} {
+    @include feature-targeting-mixins.targets($feat-structure) {
       top: -$width;
       left: -$width;
       border: $width solid transparent;
@@ -483,74 +489,74 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
   }
 }
 
-@mixin mdc-chip-horizontal-padding($padding, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin horizontal-padding($padding, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     padding-right: $padding;
     padding-left: $padding;
   }
 }
 
-@mixin mdc-chip-height($height, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin height($height, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     height: $height;
   }
 }
 
-@mixin mdc-chip-set-spacing($gap-size, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin set-spacing($gap-size, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     padding: $gap-size / 2;
   }
 
   .mdc-chip {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       margin: $gap-size / 2;
     }
   }
 
   .mdc-chip--touch {
-    @include mdc-touch-target-margin(
-      $component-height: $mdc-chip-height, $query: $query);
+    @include touch-target-mixins.margin(
+      $component-height: variables.$height, $query: $query);
   }
 }
 
-@mixin mdc-chip-leading-icon-color($color, $opacity: $mdc-chip-icon-opacity, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin leading-icon-color($color, $opacity: variables.$icon-opacity, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-chip__icon--leading {
-    @include mdc-feature-targets($feat-color) {
-      color: rgba(mdc-theme-prop-value($color), $opacity);
+    @include feature-targeting-mixins.targets($feat-color) {
+      color: rgba(theme-variables.prop-value($color), $opacity);
     }
   }
 }
 
-@mixin mdc-chip-trailing-icon-color(
+@mixin trailing-icon-color(
   $color,
-  $opacity: $mdc-chip-icon-opacity,
-  $hover-opacity: $mdc-chip-trailing-icon-hover-opacity,
-  $focus-opacity: $mdc-chip-trailing-icon-focus-opacity,
-  $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+  $opacity: variables.$icon-opacity,
+  $hover-opacity: variables.$trailing-icon-hover-opacity,
+  $focus-opacity: variables.$trailing-icon-focus-opacity,
+  $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-chip__icon--trailing {
-    @include mdc-feature-targets($feat-color) {
-      color: rgba(mdc-theme-prop-value($color), $opacity);
+    @include feature-targeting-mixins.targets($feat-color) {
+      color: rgba(theme-variables.prop-value($color), $opacity);
     }
 
     &:hover {
-      @include mdc-feature-targets($feat-color) {
-        color: rgba(mdc-theme-prop-value($color), $hover-opacity);
+      @include feature-targeting-mixins.targets($feat-color) {
+        color: rgba(theme-variables.prop-value($color), $hover-opacity);
       }
     }
 
     &:focus {
-      @include mdc-feature-targets($feat-color) {
-        color: rgba(mdc-theme-prop-value($color), $focus-opacity);
+      @include feature-targeting-mixins.targets($feat-color) {
+        color: rgba(theme-variables.prop-value($color), $focus-opacity);
       }
     }
   }
@@ -560,67 +566,67 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 // overrides apply. Styles defined in the .material-icons CSS class are
 // loaded separately, so the order of CSS definitions is not guaranteed.
 
-@mixin mdc-chip-leading-icon-size($size, $query: mdc-feature-all()) {
+@mixin leading-icon-size($size, $query: feature-targeting-functions.all()) {
   .mdc-chip__icon.mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
-    @include mdc-chip-icon-size_($size, $query: $query);
+    @include icon-size_($size, $query: $query);
   }
 }
 
-@mixin mdc-chip-trailing-icon-size($size, $query: mdc-feature-all()) {
+@mixin trailing-icon-size($size, $query: feature-targeting-functions.all()) {
   .mdc-chip__icon.mdc-chip__icon--trailing {
-    @include mdc-chip-icon-size_($size, $query: $query);
+    @include icon-size_($size, $query: $query);
   }
 }
 
-@mixin mdc-chip-icon-size_($size, $query) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin icon-size_($size, $query) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     width: $size;
     height: $size;
     font-size: $size;
   }
 }
 
-@mixin mdc-chip-leading-icon-margin(
-  $left-margin: $mdc-chip-leading-icon-margin-left,
-  $right-margin: $mdc-chip-leading-icon-margin-right,
-  $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin leading-icon-margin(
+  $left-margin: variables.$leading-icon-margin-left,
+  $right-margin: variables.$leading-icon-margin-right,
+  $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   &.mdc-chip--selected .mdc-chip__checkmark,
   .mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-rtl-reflexive-property(margin, $left-margin, $right-margin);
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(margin, $left-margin, $right-margin);
     }
   }
 }
 
-@mixin mdc-chip-trailing-icon-margin(
-  $left-margin: $mdc-chip-trailing-icon-margin-left,
-  $right-margin: $mdc-chip-trailing-icon-margin-right,
-  $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin trailing-icon-margin(
+  $left-margin: variables.$trailing-icon-margin-left,
+  $right-margin: variables.$trailing-icon-margin-right,
+  $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-chip__icon--trailing {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-rtl-reflexive-property(margin, $left-margin, $right-margin);
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(margin, $left-margin, $right-margin);
     }
   }
 }
 
-@mixin mdc-chip-elevation-transition($query: mdc-feature-all()) {
-  $feat-animation: mdc-feature-create-target($query, animation);
+@mixin elevation-transition($query: feature-targeting-functions.all()) {
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
 
-  @include mdc-feature-targets($feat-animation) {
-    transition: mdc-elevation-transition-value();
+  @include feature-targeting-mixins.targets($feat-animation) {
+    transition: elevation-functions.transition-value();
   }
 
   &.mdc-chip--exit {
-    @include mdc-feature-targets($feat-animation) {
+    @include feature-targeting-mixins.targets($feat-animation) {
       transition:
-        mdc-elevation-transition-value(),
-        $mdc-chip-exit-transition;
+        elevation-functions.transition-value(),
+        variables.$exit-transition;
     }
   }
 }
@@ -631,17 +637,17 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 /// @param {Number | String} $density-scale - Density scale value for component.
 ///     Supported density scale values are `-2`, `-1`, `0`.
 ///
-@mixin mdc-chip-density($density-scale, $query: mdc-feature-all()) {
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-chip-density-config,
+@mixin density($density-scale, $query: feature-targeting-functions.all()) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  @include mdc-chip-height($height, $query: $query);
+  @include height($height, $query: $query);
 
   @if $density-scale != 0 {
-    @include mdc-chip-touch-target-reset_($query: $query);
+    @include touch-target-reset_($query: $query);
   }
 }
 
@@ -651,19 +657,19 @@ $mdc-chip-ripple-target: ".mdc-chip__ripple";
 /// don't have the same default a11y requirements.
 /// @access private
 ///
-@mixin mdc-chip-touch-target-reset_($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin touch-target-reset_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   // Selector is necessary here to override original specificity.
   &.mdc-chip--touch {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       margin-top: 0;
       margin-bottom: 0;
     }
   }
 
   .mdc-chip__touch {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: none;
     }
   }

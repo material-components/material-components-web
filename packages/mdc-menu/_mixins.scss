@@ -20,48 +20,53 @@
 // THE SOFTWARE.
 //
 
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "@material/rtl/mixins";
-@import "@material/list/mixins";
-@import "@material/list/variables";
-@import "@material/ripple/mixins";
-@import "./variables";
+@use "sass:math";
+@use "@material/elevation/mixins" as elevation-mixins;
+@use "@material/feature-targeting/functions";
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/rtl/mixins" as rtl-mixins;
+@use "@material/list/mixins" as list-mixins;
+@use "@material/list/variables" as list-variables;
+@use "@material/ripple/mixins" as ripple-mixins;
+@use "./variables";
 
-@mixin mdc-menu-core-styles($query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin core-styles($query: functions.all()) {
+  $feat-color: functions.create-target($query, color);
+  $feat-structure: functions.create-target($query, structure);
 
-  @include mdc-ripple-common($query);
+  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // Customize the menu-surface and contained list to match the mdc-menu styles.
   .mdc-menu {
-    @include mdc-list-item-meta-ink-color($mdc-menu-ink-color, $query);
-    @include mdc-list-item-graphic-ink-color($mdc-menu-ink-color, $query);
+    @include list-mixins.item-meta-ink-color(variables.$ink-color, $query);
+    @include list-mixins.item-graphic-ink-color(variables.$ink-color, $query);
 
-    @include mdc-feature-targets($feat-structure) {
-      min-width: $mdc-menu-min-width;
+    @include feature-targeting-mixins.targets($feat-structure) {
+      min-width: variables.$min-width;
     }
 
     // Include mdc-list selector to ensure list-inside-menu overrides default list styles
     .mdc-list {
-      @include mdc-list-item-primary-text-ink-color($mdc-menu-ink-color, $query);
+      @include list-mixins.item-primary-text-ink-color(variables.$ink-color, $query);
+      @include elevation-mixins.overlay-surface-position($query: $query);
+      @include elevation-mixins.overlay-dimensions(100%, $query: $query);
     }
 
     .mdc-list-divider {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         margin: 8px 0;
       }
     }
 
     .mdc-list-item {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         user-select: none;
       }
     }
 
     .mdc-list-item--disabled {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         cursor: auto;
       }
     }
@@ -69,7 +74,7 @@
     //stylelint-disable selector-no-qualifying-type
     a.mdc-list-item .mdc-list-item__text,
     a.mdc-list-item .mdc-list-item__graphic {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         pointer-events: none;
       }
     }
@@ -78,21 +83,21 @@
 
   // postcss-bem-linter: define menu
   .mdc-menu__selection-group {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       padding: 0;
       fill: currentColor;
     }
 
     .mdc-list-item {
-      @include mdc-feature-targets($feat-structure) {
-        @include mdc-rtl-reflexive-property(padding, 56px, $mdc-list-side-padding);
+      @include feature-targeting-mixins.targets($feat-structure) {
+        @include rtl-mixins.reflexive-property(padding, 56px, list-variables.$side-padding);
       }
     }
 
     // Extra specificity required to override `display` property on `mdc-list-item__graphic`.
     .mdc-menu__selection-group-icon {
-      @include mdc-feature-targets($feat-structure) {
-        @include mdc-rtl-reflexive-position(left, 16px);
+      @include feature-targeting-mixins.targets($feat-structure) {
+        @include rtl-mixins.reflexive-position(left, 16px);
 
         display: none;
         position: absolute;
@@ -106,18 +111,18 @@
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-menu-item--selected .mdc-menu__selection-group-icon {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: inline;
     }
   }
 }
 
-@mixin mdc-menu-width($width, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, color);
+@mixin width($width, $query: functions.all()) {
+  $feat-structure: functions.create-target($query, color);
 
-  @include mdc-feature-targets($feat-structure) {
-    @if unitless($width) {
-      width: $width * $mdc-menu-width-base;
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @if math.is-unitless($width) {
+      width: $width * variables.$width-base;
     } @else {
       width: $width;
     }

@@ -21,20 +21,20 @@
 //
 
 // Keep this in sync with constants.numbers.MIN_LEADING_STROKE_EDGE_POSITION
-$mdc-notched-outline-min-leading-stroke-edge-position: 12px !default;
+$min-leading-stroke-edge-position: 12px !default;
 // The gap between the stroke end and floating label
 // Keep this in sync with constants.numbers.NOTCH_GUTTER_SIZE
-$mdc-notched-outline-notch-gutter-size: 4px !default;
-$mdc-notched-outline-border-width: 1px !default;
-$mdc-notched-outline-leading-width: 12px !default;
-$mdc-notched-outline-padding: 4px !default;
+$notch-gutter-size: 4px !default;
+$border-width: 1px !default;
+$leading-width: 12px !default;
+$padding: 4px !default;
 // This variable keeps the before/after JS label centered in the notch when the font-size is changed.
-$mdc-notched-outline-label-adjust: 14% !default;
+$label-adjust: 14% !default;
 
 /// Label box height when it is floating above for notched upgraded. This value is used to put the label vertically in
 /// the middle when it is notched.
-$mdc-notched-outline-label-box-height: 13.5px !default;
+$label-box-height: 13.5px !default;
 
 /// Label adjust offset applied to floating label when it is notched. Since notch without upgraded has different font
 /// size we add additional offset value.
-$mdc-notched-outline-label-adjust-absolute: 2.5px !default;
+$label-adjust-absolute: 2.5px !default;

@@ -56,9 +56,11 @@ npm install @material/dialog
       </div>
       <footer class="mdc-dialog__actions">
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+          <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">No</span>
         </button>
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+          <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Yes</span>
         </button>
       </footer>
@@ -73,7 +75,7 @@ npm install @material/dialog
 ### Styles
 
 ```scss
-@import "@material/dialog/mdc-dialog";
+@use "@material/dialog/mdc-dialog";
 ```
 
 > *NOTE*: Styles for any components you intend to include within dialogs (e.g. List, Checkboxes, etc.) must also be
@@ -186,9 +188,11 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
       </div>
       <footer class="mdc-dialog__actions">
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+          <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Cancel</span>
         </button>
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
+          <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">OK</span>
         </button>
       </footer>
@@ -257,9 +261,11 @@ For example:
 ...
 <footer class="mdc-dialog__actions">
   <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+    <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">Cancel</span>
   </button>
   <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept" data-mdc-dialog-button-default>
+    <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">OK</span>
   </button>
 </footer>
@@ -323,15 +329,15 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-dialog-container-fill-color($color)` | Sets the fill color of the dialog.
-`mdc-dialog-scrim-color($color, $opacity)` | Sets the color of the scrim behind the dialog.
-`mdc-dialog-title-ink-color($color, $opacity)` | Sets the color of the dialog's title text.
-`mdc-dialog-content-ink-color($color, $opacity)` | Sets the color of the dialog's content text.
-`mdc-dialog-scroll-divider-color($color, $opacity)` | Sets the color of the dividers which display around scrollable content.
-`mdc-dialog-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to dialog surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-dialog-min-width($min-width)` | Sets the minimum width of the dialog (defaults to 280px).
-`mdc-dialog-max-width($max-width, $margin)` | Sets the maximum width of the dialog (defaults to 560px max width and 16px margins).
-`mdc-dialog-max-height($max-height, $margin)` | Sets the maximum height of the dialog (defaults to no max height and 16px margins).
+`container-fill-color($color)` | Sets the fill color of the dialog.
+`scrim-color($color, $opacity)` | Sets the color of the scrim behind the dialog.
+`title-ink-color($color, $opacity)` | Sets the color of the dialog's title text.
+`content-ink-color($color, $opacity)` | Sets the color of the dialog's content text.
+`scroll-divider-color($color, $opacity)` | Sets the color of the dividers which display around scrollable content.
+`shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to dialog surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`min-width($min-width)` | Sets the minimum width of the dialog (defaults to 280px).
+`max-width($max-width, $margin)` | Sets the maximum width of the dialog (defaults to 560px max width and 16px margins).
+`max-height($max-height, $margin)` | Sets the maximum height of the dialog (defaults to no max height and 16px margins).
 
 > *NOTE*: The `max-width` and `max-height` mixins only apply their maximum when the viewport is large enough to accommodate the specified value when accounting for the specified margin on either side. When the viewport is smaller, the dialog is sized such that the given margin is retained around the edges.
 
@@ -378,10 +384,10 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns whether the given class exists on the root element.
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
-`eventTargetMatches(target: EventTarget | null, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
-`trapFocus(initialFocusEl: HTMLElement|null) => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). Moves focus to `initialFocusEl`, if set.
+`eventTargetMatches(target: EventTarget \| null, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
+`trapFocus(initialFocusEl: HTMLElement \| null) => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). Moves focus to `initialFocusEl`, if set.
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
-`getInitialFocusEl() => HTMLElement|null` | Returns the `data-mdc-dialog-initial-focus` element to add focus to after the dialog has opened.
+`getInitialFocusEl() => HTMLElement \| null` | Returns the `data-mdc-dialog-initial-focus` element to add focus to after the dialog has opened.
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
 `areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
 `getActionFromEvent(event: Event) => string \| null` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target, or an ancestor of the target.

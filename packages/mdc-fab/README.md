@@ -65,7 +65,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ### Styles
 
 ```scss
-@import "@material/fab/mdc-fab";
+@use "@material/fab/mdc-fab";
 ```
 
 ### JavaScript Instantiation
@@ -118,8 +118,8 @@ MDC FAB uses [MDC Theme](../mdc-theme)'s `secondary` color by default. Use the f
 
 Mixin | Description
 --- | ---
-`mdc-fab-accessible($container-color)` | Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
-`mdc-fab-extended-fluid` | Makes the Extended FAB fluid to container, such as screen width or the layout grid. Exposed as a mixin to support use within `@media` queries.
+`accessible($container-color)` | Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
+`extended-fluid` | Makes the Extended FAB fluid to container, such as screen width or the layout grid. Exposed as a mixin to support use within `@media` queries.
 
 #### Advanced Sass Mixins
 
@@ -127,19 +127,15 @@ Mixin | Description
 
 Mixin | Description
 --- | ---
-`mdc-fab-container-color($color)` | Sets the container color to the given color
-`mdc-fab-icon-size($width, $height)` | Sets the icon `width`, `height`, and `font-size` properties to the specified `width` and `height`. `$height` is optional and will default to `$width` if omitted. The `font-size` will be set to the provided `$width` value.
-`mdc-fab-ink-color($color)` | Sets the ink color to the given color
-`mdc-fab-extended-padding($icon-padding, $label-padding)` | Sets the padding on both sides of the icon, and between the label and the edge of the FAB. In cases where there is no icon, `$label-padding` will apply to both sides.
-`mdc-fab-extended-label-padding($label-padding)` | Sets the label side padding for Extended FAB. Useful when styling an Extended FAB with no icon.
-`mdc-fab-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to only regular & mini FAB variants with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-fab-extended-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to only Extended FAB variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`container-color($color)` | Sets the container color to the given color
+`icon-size($width, $height)` | Sets the icon `width`, `height`, and `font-size` properties to the specified `width` and `height`. `$height` is optional and will default to `$width` if omitted. The `font-size` will be set to the provided `$width` value.
+`ink-color($color)` | Sets the ink color to the given color
+`extended-padding($icon-padding, $label-padding)` | Sets the padding on both sides of the icon, and between the label and the edge of the FAB. In cases where there is no icon, `$label-padding` will apply to both sides.
+`extended-label-padding($label-padding)` | Sets the label side padding for Extended FAB. Useful when styling an Extended FAB with no icon.
+`shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to only regular & mini FAB variants with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`extended-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to only Extended FAB variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
-
-#### Caveat: Edge and CSS Variables
-
-In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](../mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using the `mdc-fab-container-color` mixin, you must pass in an actual color value for support in Edge.
 
 ### Additional Information
 

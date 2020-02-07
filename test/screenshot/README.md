@@ -15,7 +15,8 @@ curl https://sdk.cloud.google.com | bash
 Create GCP service account key:
 
 - Go to the [Create Service Account Key Page](https://console.cloud.google.com/apis/credentials/serviceaccountkey).
-- Make sure you're logged into `material-components-web` project.
+- Make sure you're logged into the **Material Components Web Demo** project.
+  - If you can't find the project, check under the ["No organization" group](./gcp-no-organization-modal.png).
 - Choose Service account: Screenshot uploader, select JSON radio button and click 'Create' to download JSON file.
 - Add the following to your `~/.bash_profile` or `~/.bashrc` file:
 

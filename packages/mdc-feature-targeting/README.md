@@ -25,13 +25,12 @@ npm install @material/feature-targeting
 Authoring component styles:
 
 ```scss
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
+@use "@material/feature-targeting";
 
-@mixin my-component-core-styles($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin my-component-core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     // ...
   }
 }
@@ -40,31 +39,31 @@ Authoring component styles:
 Consuming component styles:
 
 ```scss
-@import "@material/feature-targeting/functions";
-@import "my-component-mixins";
+@use "@material/feature-targeting";
+@use "my-component-mixins";
 
 // To include all styles (using the default of mdc-feature-all() defined above):
 @include my-component-core-styles;
 
 // Or, to include a specific subset of styles:
 @include my-component-core-styles(structure);
-@include my-component-core-styles(mdc-feature-any(color, typography));
+@include my-component-core-styles(feature-targeting.any(color, typography));
 // The above two @includes and the following @include would produce equivalent results:
-@include my-component-core-styles(mdc-feature-without(animation));
+@include my-component-core-styles(feature-targeting.without(animation));
 ```
 
 ## Sass Mixins and Functions
 
 Mixin | Description
 --- | ---
-`mdc-feature-targets($feature-targets...)` | Conditionalizes content to only be emitted if the given feature target(s) is/are queried.
+`targets($feature-targets...)` | Conditionalizes content to only be emitted if the given feature target(s) is/are queried.
 
 Function | Description
 --- | ---
-`mdc-feature-create-target($feature-query, $targeted-feature)` | Returns a variable to be passed to `mdc-feature-targets` in order to filter emitted styles.
-`mdc-feature-all($feature-queries...)` | Returns a query object which will result in emitting `mdc-feature-targets` blocks that match _all_ of the specified features. Passing no arguments results in all blocks being emitted, which is the most common use case.
-`mdc-feature-any($feature-queries...)` | Returns a query object which will result in emitting `mdc-feature-targets` blocks that match _any_ of the specified features. Passing no arguments results in no blocks being emitted.
-`mdc-feature-without($feature-query)` | Returns a query object which will result in emitting `mdc-feature-targets` blocks that do _not_ match the specified feature.
+`create-target($feature-query, $targeted-feature)` | Returns a variable to be passed to `targets` in order to filter emitted styles.
+`all($feature-queries...)` | Returns a query object which will result in emitting `targets` blocks that match _all_ of the specified features. Passing no arguments results in all blocks being emitted, which is the most common use case.
+`any($feature-queries...)` | Returns a query object which will result in emitting `targets` blocks that match _any_ of the specified features. Passing no arguments results in no blocks being emitted.
+`without($feature-query)` | Returns a query object which will result in emitting `targets` blocks that do _not_ match the specified feature.
 
 `$feature-query` and `$feature-queries` refer to one or more of the values listed below under Supported Features.
 

@@ -32,12 +32,13 @@ npm install @material/theme
 You can define the theme color variables before importing any MDC Web components:
 
 ```scss
-$mdc-theme-primary: #fcb8ab;
-$mdc-theme-secondary: #feeae6;
-$mdc-theme-on-primary: #442b2d;
-$mdc-theme-on-secondary: #442b2d;
-
-@import "@material/button/mdc-button";
+@use "@material/theme" with (
+  $primary: #fcb8ab,
+  $secondary: #feeae6,
+  $on-primary: #442b2d,
+  $on-secondary: #442b2d,
+);
+@use "@material/button/mdc-button";
 ```
 
 We suggest you follow the Web Content Accessibility Guidelines 2.0 when picking the values for on-primary, on-secondary, etc. These values should be accessible on top of the corresponding value, e.g. primary and secondary.
@@ -104,7 +105,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-theme-prop($property, $style, $important, $edgeOptOut)` | Applies a theme color or a custom color to a CSS property, optionally with `!important`. If `$edgeOptOut` is `true` and a theme color is passed, the style will be wrapped in a `@supports` clause to exclude the style in Edge to avoid issues with its buggy CSS variable support.
+`prop($property, $style, $important)` | Applies a theme color or a custom color to a CSS property, optionally with `!important`.
 
 #### `mdc-theme-prop` Properties
 
@@ -135,9 +136,11 @@ Fields | Description
 
 For example, the following Sass...
 
-```
+```scss
+@use "@material/theme";
+
 .foo {
-  @include mdc-theme-prop(color, (
+  @include theme.prop(color, (
     varname: --foo-color,
     fallback: red,
   ));
@@ -160,7 +163,7 @@ The above output CSS will apply the `fallback` field's value for all supported b
 Calculates the luminance value (0 - 1) of a given color.
 
 ```scss
-@debug mdc-theme-luminance(#9c27b0); // 0.11654
+@debug theme.luminance(#9c27b0); // 0.11654
 ```
 
 #### `mdc-theme-contrast($back, $front)`
@@ -168,7 +171,7 @@ Calculates the luminance value (0 - 1) of a given color.
 Calculates the contrast ratio between two colors.
 
 ```scss
-@debug mdc-theme-contrast(#9c27b0, #000); // 3.33071
+@debug theme.contrast(#9c27b0, #000); // 3.33071
 ```
 
 #### `mdc-theme-tone($color)`
@@ -178,8 +181,8 @@ Determines whether the given color is "light" or "dark".
 If the input color is a string literal equal to `"light"` or `"dark"`, it will be returned verbatim.
 
 ```scss
-@debug mdc-theme-tone(#9c27b0); // dark
-@debug mdc-theme-tone(light);   // light
+@debug theme.tone(#9c27b0); // dark
+@debug theme.tone(light);   // light
 ```
 
 #### `mdc-theme-contrast-tone($color)`
@@ -187,25 +190,25 @@ If the input color is a string literal equal to `"light"` or `"dark"`, it will b
 Determines whether to use light or dark text on top of a given color.
 
 ```scss
-@debug mdc-theme-contrast-tone(#9c27b0); // light
+@debug theme.contrast-tone(#9c27b0); // light
 ```
 
 #### `mdc-theme-prop-value($style)`
 
 If `$style` is a color (a literal color value, `currentColor`, or a CSS custom property), it is returned verbatim.
-Otherwise, `$style` is treated as a theme property name, and the corresponding value from `$mdc-theme-property-values`
+Otherwise, `$style` is treated as a theme property name, and the corresponding value from `$property-values`
 is returned. If this also fails, an error is thrown.
 
-This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
+This is mainly useful in situations where `prop` cannot be used directly (e.g., `box-shadow`).
 
-Unlike the `mdc-theme-prop` mixin, this function does _not_ support CSS custom properties.
+Unlike the `prop` mixin, this function does _not_ support CSS custom properties.
 It only returns the raw color value of the specified theme property.
 
 > NOTE: This function is defined in `_variables.scss` instead of `_functions.scss` to avoid circular imports.
 
 ```scss
-@debug mdc-theme-prop-value(primary); // #3f51b5
-@debug mdc-theme-prop-value(blue);    // blue
+@debug theme.prop-value(primary); // #3f51b5
+@debug theme.prop-value(blue);    // blue
 ```
 
 #### `mdc-theme-accessible-ink-color($fill-color, $text-style: primary)`
@@ -214,14 +217,14 @@ Returns an accessible ink color that has sufficient contrast against the given f
 
 Params:
 
-- `$fill-color`: Supports the same values as `mdc-theme-prop-value`
-- `$text-style`: Value must be one of `primary`, `secondary`, `hint`, `disabled`, `icon` (see `$mdc-theme-text-colors`)
+- `$fill-color`: Supports the same values as `theme.prop-value`
+- `$text-style`: Value must be one of `primary`, `secondary`, `hint`, `disabled`, `icon` (see `$text-colors`)
 
 > NOTE: This function is defined in `_variables.scss` instead of `_functions.scss` to avoid circular imports.
 
 ```scss
-@debug mdc-theme-accessible-ink-color(secondary); // rgba(0, 0, 0, .87) (text-primary-on-light)
-@debug mdc-theme-accessible-ink-color(blue);      // white              (text-primary-on-dark)
+@debug theme.accessible-ink-color(secondary); // rgba(0, 0, 0, .87) (text-primary-on-light)
+@debug theme.accessible-ink-color(blue);      // white              (text-primary-on-dark)
 ```
 #### `mdc-theme-text-emphasis($emphasis)`
 
@@ -232,6 +235,6 @@ Params:
 - `$emphasis`: Type of emphasis such as `high`, `medium` & `disabled`.
 
 ```scss
-@debug mdc-theme-text-emphasis(high); // .87
-@debug mdc-theme-text-emphasis(disabled); // .38
+@debug theme.text-emphasis(high); // .87
+@debug theme.text-emphasis(disabled); // .38
 ```

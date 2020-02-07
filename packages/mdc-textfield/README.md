@@ -32,11 +32,12 @@ npm install @material/textfield
 ### HTML Structure
 
 ```html
-<div class="mdc-text-field">
-  <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
+<label class="mdc-text-field">
+  <div class="mdc-text-field__ripple"></div>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
+  <span class="mdc-floating-label" id="my-label-id">Hint text</span>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 > NOTE: For more details, see [MDC Line Ripple](../mdc-line-ripple/README.md)
@@ -45,7 +46,7 @@ npm install @material/textfield
 ### Styles
 
 ```scss
-@import "@material/textfield/mdc-text-field";
+@use "@material/textfield/mdc-text-field";
 ```
 
 ### JavaScript Instantiation
@@ -65,12 +66,14 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 Full width text fields are useful for in-depth tasks or entering complex information.
 
 ```html
-<div class="mdc-text-field mdc-text-field--fullwidth">
+<label class="mdc-text-field mdc-text-field--fullwidth">
+  <div class="mdc-text-field__ripple"></div>
   <input class="mdc-text-field__input"
          type="text"
          placeholder="Full-Width Text Field"
          aria-label="Full-Width Text Field">
-</div>
+  <div class="mdc-line-ripple"></div>
+</label>
 ```
 
 > _NOTE_: Do not use `mdc-text-field--outlined` to style a full width text field.
@@ -81,31 +84,31 @@ included as part of the DOM structure of a full width text field.
 ### Textarea
 
 ```html
-<div class="mdc-text-field mdc-text-field--textarea">
-  <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40"></textarea>
+<label class="mdc-text-field mdc-text-field--textarea">
+  <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8" cols="40"></textarea>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
-      <label for="textarea" class="mdc-floating-label">Textarea Label</label>
+      <label class="mdc-floating-label" id="my-label-id">Textarea Label</label>
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 ### Outlined
 
 ```html
-<div class="mdc-text-field mdc-text-field--outlined">
-  <input type="text" id="tf-outlined" class="mdc-text-field__input">
+<label class="mdc-text-field mdc-text-field--outlined">
+  <input type="text" class="mdc-text-field__input" aria-labelledby="my-label-id">
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
-      <label for="tf-outlined" class="mdc-floating-label">Your Name</label>
+      <span class="mdc-floating-label" id="my-label-id">Your Name</span>
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 See [here](../mdc-notched-outline/) for more information on using the notched outline sub-component.
@@ -117,11 +120,12 @@ See [here](../mdc-notched-outline/) for more information on using the notched ou
 To disable the text field, add the `disabled` attribute to the `<input>` element and add the `mdc-text-field--disabled` class to the `mdc-text-field` element.
 
 ```html
-<div class="mdc-text-field mdc-text-field--disabled">
-  <input type="text" id="disabled-text-field" class="mdc-text-field__input" disabled>
-  <label class="mdc-floating-label" for="disabled-text-field">Disabled text field</label>
+<label class="mdc-text-field mdc-text-field--disabled">
+  <div class="mdc-text-field__ripple"></div>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" disabled>
+  <span class="mdc-floating-label" id="my-label-id">Disabled text field</span>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 ### Text Field without label
@@ -132,34 +136,35 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 #### Filled
 
 ```html
-<div class="mdc-text-field mdc-text-field--no-label">
-  <input type="text" class="mdc-text-field__input" placeholder="Placeholder text" aria-label="Label">
+<label class="mdc-text-field mdc-text-field--no-label">
+  <div class="mdc-text-field__ripple"></div>
+  <input class="mdc-text-field__input" type="text" placeholder="Placeholder text" aria-label="Label">
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 #### Outlined
 
 ```html
-<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-  <input type="text" class="mdc-text-field__input" aria-label="Label">
+<label class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+  <input class="mdc-text-field__input" type="text" aria-label="Label">
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 #### Textarea
 
 ```html
-<div class="mdc-text-field mdc-text-field--textarea mdc-text-field--no-label">
+<label class="mdc-text-field mdc-text-field--textarea mdc-text-field--no-label">
   <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 ### Text Field with Helper Text
@@ -169,13 +174,17 @@ and disappears on input field blur by default, or it can be persistent. Helper t
 which is immediate sibling of `.mdc-text-field`. See [here](helper-text/) for more information on using helper text.
 
 ```html
-<div class="mdc-text-field">
-  <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-floating-label" for="my-text-field">My Label</label>
+<label class="mdc-text-field">
+  <div class="mdc-text-field__ripple"></div>
+  <input class="mdc-text-field__input" type="text"
+         aria-labelledby="my-label-id"
+         aria-controls="my-helper-id"
+         aria-describedby="my-helper-id">
+  <span class="mdc-floating-label" id="my-label-id">My Label</span>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 <div class="mdc-text-field-helper-line">
-  <div class="mdc-text-field-helper-text">helper text</div>
+  <div class="mdc-text-field-helper-text" id="my-helper-id" aria-hidden="true">helper text</div>
 </div>
 ```
 
@@ -186,11 +195,12 @@ Character counter should be rendered inside `.mdc-text-field-helper-line` elemen
 See [here](character-counter/) for more information on using character counter.
 
 ```html
-<div class="mdc-text-field">
-  <input type="text" id="my-text-field" class="mdc-text-field__input" maxlength="10">
-  <label class="mdc-floating-label" for="my-text-field">My Label</label>
+<label class="mdc-text-field">
+  <div class="mdc-text-field__ripple"></div>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" maxlength="10">
+  <span class="mdc-floating-label" id="my-label-id">My Label</span>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 <div class="mdc-text-field-helper-line">
   <div class="mdc-text-field-character-counter">0 / 10</div>
 </div>
@@ -202,17 +212,17 @@ The layout structure of character counter for multi-line text field (textarea) i
 inside of text field component.
 
 ```html
-<div class="mdc-text-field mdc-text-field--textarea">
+<label class="mdc-text-field mdc-text-field--textarea">
   <div class="mdc-text-field-character-counter">0 / 140</div>
-  <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40" maxlength="140"></textarea>
+  <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8" cols="40" maxlength="140"></textarea>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__notch">
-      <label for="textarea" class="mdc-floating-label">Textarea Label</label>
+      <span class="mdc-floating-label" id="my-label-id">Textarea Label</span>
     </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
-</div>
+</label>
 ```
 
 Helper text and Character counter are optional subcomponents of text field that can co-exist independently.
@@ -229,11 +239,12 @@ well as interaction targets. See [here](icon/) for more information on using ico
 by HTML5's form validation API.
 
 ```html
-<div class="mdc-text-field">
-  <input type="password" id="pw" class="mdc-text-field__input" required minlength=8>
-  <label for="pw" class="mdc-floating-label">Password</label>
+<label class="mdc-text-field">
+  <div class="mdc-text-field__ripple"></div>
+  <input class="mdc-text-field__input" type="password" aria-labelledby="my-label-id" required minlength="8">
+  <span class="mdc-floating-label" id="my-label-id">Password</span>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 `MDCTextFieldFoundation` automatically appends an asterisk to the label text if the required attribute is set.
@@ -246,13 +257,14 @@ ensure that the label moves out of the way of the text field's value and prevent
 Un-styled Content (**FOUC**).
 
 ```html
-<div class="mdc-text-field">
-  <input type="text" id="pre-filled" class="mdc-text-field__input" value="Pre-filled value">
-  <label class="mdc-floating-label mdc-floating-label--float-above" for="pre-filled">
+<label class="mdc-text-field">
+  <div class="mdc-text-field__ripple"></div>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" value="Pre-filled value">
+  <span class="mdc-floating-label mdc-floating-label--float-above" id="my-label-id">
     Label in correct place
-  </label>
+  </span>
   <div class="mdc-line-ripple"></div>
-</div>
+</label>
 ```
 
 ## Style Customization
@@ -271,6 +283,7 @@ CSS Class | Description
 `mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon.
 `mdc-text-field--focused` | Styles the text field as a text field in focus.
 `mdc-text-field--no-label` | Styles the text field that has no label.
+`mdc-text-field--end-aligned` | Styles the text field with an end-aligned input.
 `mdc-text-field-helper-line` | Styles the container of helper text and character counter elements.
 
 #### Deprecation Notice
@@ -291,55 +304,57 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 Mixin | Description
 --- | ---
-`mdc-text-field-ink-color($color)` | Customizes the color of the text entered into an enabled text field.
-`mdc-text-field-disabled-ink-color($color)` | Customizes the color of the entered text in a disabled text field.
-`mdc-text-field-label-color($color)` | Customizes the text color of the label in an enabled text field.
-`mdc-text-field-disabled-label-color($color)` | Customizes the text color of the label in a disabled text field.
-`mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.
+`ink-color($color)` | Customizes the color of the text entered into an enabled text field.
+`placeholder-color($color)` | Customizes the color of the placeholder in an enabled text field.
+`disabled-ink-color($color)` | Customizes the color of the entered text in a disabled text field.
+`disabled-placeholder-color($color)` | Customizes the color of the placeholder in a disabled text field.
+`label-color($color)` | Customizes the text color of the label in an enabled text field.
+`disabled-label-color($color)` | Customizes the text color of the label in a disabled text field.
+`caret-color($color)` | Customizes the color of the cursor caret of the text field.
 
 #### Mixins for Filled Text Field and Textarea
 
 Mixin | Description
 --- | ---
-`mdc-text-field-fill-color($color)` | Customizes the background color of the text field or textarea when enabled.
-`mdc-text-field-disabled-fill-color($color)` | Customizes the background color of the text field or textarea when disabled.
+`fill-color($color)` | Customizes the background color of the text field or textarea when enabled.
+`disabled-fill-color($color)` | Customizes the background color of the text field or textarea when disabled.
 
 #### Mixins for Filled Text Field Only
 
 Mixin | Description
 --- | ---
-`mdc-text-field-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color.
-`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color.
-`mdc-text-field-disabled-bottom-line-color($color)` | Customizes the disabled text field bottom line color.
-`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
-`mdc-text-field-density($density-scale)` | Sets density scale for default text field variant. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
-`mdc-text-field-height($height)` | Sets height of default text field variant.
+`shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`bottom-line-color($color)` | Customizes the text field bottom line color.
+`hover-bottom-line-color($color)` | Customizes the hover text field bottom line color.
+`disabled-bottom-line-color($color)` | Customizes the disabled text field bottom line color.
+`line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
+`density($density-scale)` | Sets density scale for default text field variant. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
+`height($height)` | Sets height of default text field variant.
 
 #### Mixins for Outlined Text Field and Textarea
 
 Mixin | Description
 --- | ---
-`mdc-text-field-focused-outline-color($color)` | Customizes the outline border color when the text field or textarea is focused.
-`mdc-text-field-hover-outline-color($color)` | Customizes the outline border color when the text field or textarea is hovered.
-`mdc-text-field-disabled-outline-color($color)` | Customizes the outline border color when the text field or textarea is disabled.
-`mdc-text-field-outline-color($color)` | Customizes the border color of the outlined text field or textarea.
+`focused-outline-color($color)` | Customizes the outline border color when the text field or textarea is focused.
+`hover-outline-color($color)` | Customizes the outline border color when the text field or textarea is hovered.
+`disabled-outline-color($color)` | Customizes the outline border color when the text field or textarea is disabled.
+`outline-color($color)` | Customizes the border color of the outlined text field or textarea.
 
 #### Mixins for Outlined Text Field Only
 
 Mixin | Description
 --- | ---
-`mdc-text-field-outline-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to outlined text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-text-field-outlined-density($density-scale)` | Sets density scale for outlined text field (Excluding outlined text field with leading icon). Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
-`mdc-text-field-outlined-height($height)` | Sets height of outlined text field variant (Excluding outlined text field with leading icon).
-`mdc-text-field-outlined-with-leading-icon-density($density-scale)` | Sets density scale for outlined text field with leading icon. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
-`mdc-text-field-outlined-with-leading-icon-height($height)` | Sets height of outlined text field with leading icon variant.
+`outline-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to outlined text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`outlined-density($density-scale)` | Sets density scale for outlined text field (Excluding outlined text field with leading icon). Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
+`outlined-height($height)` | Sets height of outlined text field variant (Excluding outlined text field with leading icon).
+`outlined-with-leading-icon-density($density-scale)` | Sets density scale for outlined text field with leading icon. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
+`outlined-with-leading-icon-height($height)` | Sets height of outlined text field with leading icon variant.
 
 #### Mixins for Textarea Only
 
 Mixin | Description
 --- | ---
-`mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to text area variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`textarea-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to text area variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 ## `MDCTextField` Properties and Methods
 

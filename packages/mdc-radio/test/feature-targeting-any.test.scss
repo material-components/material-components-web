@@ -1,0 +1,20 @@
+@use "../mixins" as radio;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include radio.core-styles($query: $query);
+    @include radio.unchecked-stroke-color(red, $query: $query);
+    @include radio.checked-stroke-color(red, $query: $query);
+    @include radio.ink-color(red, $query: $query);
+    @include radio.focus-indicator-color(red, $query: $query);
+    @include radio.ripple($query: $query);
+    @include radio.without-ripple($query: $query);
+    @include radio.touch-target(900px, $query: $query);
+    @include radio.density(-1, $query: $query);
+    @include radio.ripple-size(0, $query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

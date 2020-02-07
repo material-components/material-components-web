@@ -20,60 +20,9 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/variables";
-@import "@material/base/mixins";
-@import "@material/rtl/mixins";
-@import "@material/theme/variables";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
-@import "./mixins";
-@import "./variables";
+@use "@material/base/mixins" as base-mixins;
+@use "./mixins";
 
-// Floating Label is intended for use by multiple components, but its styles should only be emitted once when bundled
-@include mdc-base-emit-once("mdc-floating-label") {
-  // postcss-bem-linter: define floating-label
-  .mdc-floating-label {
-    @include mdc-typography(subtitle1);
-
-    position: absolute;
-    /* @noflip */
-    left: 0;
-    /* @noflip */
-    transform-origin: left top;
-    transition:
-      transform $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function,
-      color $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function;
-    /* @alternate */
-    line-height: 1.15rem;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: text;
-    overflow: hidden;
-    // Force the label into its own layer to prevent visible layer promotion adjustments
-    // when the ripple is activated behind it.
-    will-change: transform;
-
-    @include mdc-rtl {
-      /* @noflip */
-      right: 0;
-      /* @noflip */
-      left: auto;
-      /* @noflip */
-      transform-origin: right top;
-      /* @noflip */
-      text-align: right;
-    }
-  }
-
-  .mdc-floating-label--float-above {
-    cursor: auto;
-  }
-
-  @at-root {
-    @include mdc-floating-label-float-position($mdc-floating-label-position-y);
-    @include mdc-floating-label-shake-animation(standard);
-  }
-
-  @include mdc-floating-label-shake-keyframes(standard, $mdc-floating-label-position-y);
+@include base-mixins.emit-once("mdc-floating-label") {
+  @include mixins.core-styles;
 }

@@ -30,7 +30,9 @@
 
 const assert = require('assert');
 const fs = require('fs');
+const readDirRecursive = require('fs-readdir-recursive');
 const path = require('path');
+const childProcess = require('child_process');
 
 const {default: traverse} = require('babel-traverse');
 const parser = require('@babel/parser');
@@ -43,6 +45,7 @@ if (!CLI_PACKAGE_JSON_RELATIVE_PATH) {
   console.error(`Usage: node ${path.basename(process.argv[1])} packages/mdc-foo/package.json`);
   process.exit(1);
 }
+const PACKAGE_RELATIVE_PATH = CLI_PACKAGE_JSON_RELATIVE_PATH.replace('package.json', '');
 
 if (!new RegExp('packages/[^/]+/package.json$').test(CLI_PACKAGE_JSON_RELATIVE_PATH)) {
   console.error(`Invalid argument: "${CLI_PACKAGE_JSON_RELATIVE_PATH}" is not a valid path to a package.json file.`);
@@ -63,26 +66,33 @@ const MASTER_PACKAGE_JSON = require(path.resolve(MASTER_PACKAGE_JSON_RELATIVE_PA
 // These few MDC packages work as foundation or utility packages, and are not
 // directly included in webpack or the material-component-web module. But they
 // are necessary since other MDC packages depend on them.
-const CSS_WHITELIST = [
+const CSS_EXCLUDES = new Set([
   'base',
   'animation',
   'auto-init',
   'density',
   'dom',
   'feature-targeting',
+  'progress-indicator',
   'rtl',
   'shape',
   'touch-target',
-];
+]);
 
-const NOT_AUTOINIT = [
+const JS_EXCLUDES = new Set([
+  'animation',
+  'progress-indicator',
+]);
+
+const NOT_AUTOINIT = new Set([
   'auto-init',
   'base',
   'dom',
+  'progress-indicator',
   'tab', // Only makes sense in context of tab-bar
   'tab-indicator', // Only makes sense in context of tab-bar
   'tab-scroller', // Only makes sense in context of tab-bar
-];
+]);
 
 main();
 
@@ -94,6 +104,7 @@ function main() {
     } else {
       checkDependencyAddedInWebpackConfig();
       checkDependencyAddedInMDCPackage();
+      checkUsedDependenciesMatchDeclaredDependencies();
     }
   }
 }
@@ -122,6 +133,11 @@ function checkDependencyAddedInWebpackConfig() {
 }
 
 function checkJSDependencyAddedInWebpackConfig() {
+  const name = getPkgName();
+  if (JS_EXCLUDES.has(name)) {
+    return;
+  }
+
   const jsconfig = WEBPACK_CONFIG.find((value) => {
     return value.name === 'main-js-a-la-carte';
   });
@@ -134,16 +150,18 @@ function checkJSDependencyAddedInWebpackConfig() {
 
 function checkCSSDependencyAddedInWebpackConfig() {
   const name = getPkgName();
-  if (CSS_WHITELIST.indexOf(name) === -1) {
-    const cssconfig = WEBPACK_CONFIG.find((value) => {
-      return value.name === 'main-css-a-la-carte';
-    });
-    const nameMDC = CLI_PACKAGE_JSON.name.replace('@material/', 'mdc.');
-    assert.notEqual(typeof cssconfig.entry[nameMDC], 'undefined',
-      'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' css dependency not added to webpack ' +
-      'configuration. Please add ' + name + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s css ' +
-      'entry before commit.');
+  if (CSS_EXCLUDES.has(name)) {
+    return;
   }
+
+  const cssconfig = WEBPACK_CONFIG.find((value) => {
+    return value.name === 'main-css-a-la-carte';
+  });
+  const nameMDC = CLI_PACKAGE_JSON.name.replace('@material/', 'mdc.');
+  assert.notEqual(typeof cssconfig.entry[nameMDC], 'undefined',
+    'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' css dependency not added to webpack ' +
+    'configuration. Please add ' + name + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s css ' +
+    'entry before commit.');
 }
 
 function checkDependencyAddedInMDCPackage() {
@@ -158,6 +176,11 @@ function checkDependencyAddedInMDCPackage() {
 }
 
 function checkPkgDependencyAddedInMDCPackage() {
+  const name = getPkgName();
+  if (CSS_EXCLUDES.has(name) && JS_EXCLUDES.has(name)) {
+    return;
+  }
+
   assert.notEqual(typeof MASTER_PACKAGE_JSON.dependencies[CLI_PACKAGE_JSON.name], 'undefined',
     'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not a dependency for MDC Web. ' +
     'Please add ' + CLI_PACKAGE_JSON.name +' to ' + MASTER_PACKAGE_JSON_RELATIVE_PATH +
@@ -167,42 +190,44 @@ function checkPkgDependencyAddedInMDCPackage() {
 function checkCSSDependencyAddedInMDCPackage() {
   const name = getPkgName();
   const nameMDC = `mdc-${name}`;
-  if (CSS_WHITELIST.indexOf(name) === -1) {
-    const src = fs.readFileSync(path.join(process.env.PWD, MASTER_CSS_RELATIVE_PATH), 'utf8');
-    const cssRules = cssom.parse(src).cssRules;
-    const cssRule = path.join(CLI_PACKAGE_JSON.name, nameMDC);
-
-    assert.notEqual(typeof cssRules.find((value) => {
-      return value.href === cssRule;
-    }), 'undefined',
-    'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' +
-    'Please add ' + name + ' to ' + MASTER_CSS_RELATIVE_PATH + ' import rule before commit.');
+  if (CSS_EXCLUDES.has(name)) {
+    return;
   }
+
+  const src = fs.readFileSync(path.join(process.env.PWD, MASTER_CSS_RELATIVE_PATH), 'utf8');
+  const cssRules = cssom.parse(src).cssRules;
+  const cssRule = path.join(CLI_PACKAGE_JSON.name, nameMDC);
+
+  assert.notEqual(typeof cssRules.find((value) => {
+    return value.href === cssRule;
+  }), 'undefined',
+  'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' +
+  'Please add ' + name + ' to ' + MASTER_CSS_RELATIVE_PATH + ' import rule before commit.');
 }
 
 function checkJSDependencyAddedInMDCPackage() {
-  const NOT_IMPORTED = ['animation'];
   const name = getPkgName();
-  if (typeof (CLI_PACKAGE_JSON.main) !== 'undefined' &&
-      NOT_IMPORTED.indexOf(name) === -1) {
-    const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
-    const src = fs.readFileSync(path.join(process.env.PWD, MASTER_TS_RELATIVE_PATH), 'utf8');
-    const ast = recast.parse(src, {
-      parser: {
-        parse: (code) => parser.parse(code, {sourceType: 'module'}),
-      },
-    });
-    assert(checkComponentImportedAddedInMDCPackage(ast), 'FAILURE: Component ' +
-      CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' + 'Please add ' + nameCamel +
-      ' to '+ MASTER_TS_RELATIVE_PATH + ' import rule before commit.');
-    assert(checkComponentExportedAddedInMDCPackage(ast), 'FAILURE: Component ' +
-      CLI_PACKAGE_JSON.name + ' is not being exported in MDC Web. ' + 'Please add ' + nameCamel +
-      ' to '+ MASTER_TS_RELATIVE_PATH + ' export before commit.');
-    if (NOT_AUTOINIT.indexOf(name) === -1) {
-      assert(checkAutoInitAddedInMDCPackage(ast) > 0, 'FAILURE: Component ' +
-        CLI_PACKAGE_JSON.name + ' seems not being auto inited in MDC Web. ' + 'Please add ' +
-        nameCamel + ' to '+ MASTER_TS_RELATIVE_PATH + ' autoInit statement before commit.');
-    }
+  if (typeof (CLI_PACKAGE_JSON.main) === 'undefined' || JS_EXCLUDES.has(name)) {
+    return;
+  }
+
+  const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
+  const src = fs.readFileSync(path.join(process.env.PWD, MASTER_TS_RELATIVE_PATH), 'utf8');
+  const ast = recast.parse(src, {
+    parser: {
+      parse: (code) => parser.parse(code, {sourceType: 'module'}),
+    },
+  });
+  assert(checkComponentImportedAddedInMDCPackage(ast), 'FAILURE: Component ' +
+    CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' + 'Please add ' + nameCamel +
+    ' to '+ MASTER_TS_RELATIVE_PATH + ' import rule before commit.');
+  assert(checkComponentExportedAddedInMDCPackage(ast), 'FAILURE: Component ' +
+    CLI_PACKAGE_JSON.name + ' is not being exported in MDC Web. ' + 'Please add ' + nameCamel +
+    ' to '+ MASTER_TS_RELATIVE_PATH + ' export before commit.');
+  if (!NOT_AUTOINIT.has(name)) {
+    assert(checkAutoInitAddedInMDCPackage(ast) > 0, 'FAILURE: Component ' +
+      CLI_PACKAGE_JSON.name + ' seems not being auto inited in MDC Web. ' + 'Please add ' +
+      nameCamel + ' to '+ MASTER_TS_RELATIVE_PATH + ' autoInit statement before commit.');
   }
 }
 
@@ -269,6 +294,43 @@ function checkComponentExportedAddedInMDCPackage(ast) {
   return isExported;
 }
 
+/**
+ * Checks that all dependencies used in SASS and TypeScript files in the package
+ * match up with those declared in package.json.
+ *
+ * @throws {AssertionError} Will throw an error if dependencies do not strictly match.
+ */
+function checkUsedDependenciesMatchDeclaredDependencies() {
+  const files = readDirRecursive(
+    PACKAGE_RELATIVE_PATH,
+    (fileName) => {
+      return fileName[0] !== '.'
+        && fileName !== 'node_modules' && fileName !== 'test';
+    }
+  );
+
+  const usedDeps = new Set();
+  const importMatcher = RegExp('(@use|@import|from) ["\'](@material/[^/"\']+)', 'g');
+  files.forEach((file) => {
+    if (file.endsWith('.scss') || file.endsWith('.ts') && !file.endsWith('.d.ts')) {
+      const src = fs.readFileSync(path.join(PACKAGE_RELATIVE_PATH, file), 'utf8');
+      while ((dep = importMatcher.exec(src)) !== null) {
+        usedDeps.add(dep[2]);
+      }
+    }
+  });
+
+  const declaredDeps = new Set(
+    Object.keys(CLI_PACKAGE_JSON.dependencies ? CLI_PACKAGE_JSON.dependencies : [])
+      .filter((key) => key.startsWith('@material/')));
+
+  const usedButNotDeclared = [...usedDeps].filter((x) => !declaredDeps.has(x));
+  const declaredButNotUsed = [...declaredDeps].filter((x) => !usedDeps.has(x));
+
+  assert.equal(usedButNotDeclared.length, 0, getMissingDependencyMsg(usedButNotDeclared));
+  assert.equal(declaredButNotUsed.length, 0, getUnusedDependencyMsg(declaredButNotUsed));
+}
+
 function getPkgName() {
   let name = CLI_PACKAGE_JSON.name.split('/')[1];
   if (name === 'textfield') {
@@ -277,4 +339,41 @@ function getPkgName() {
     name = 'text-field';
   }
   return name;
+}
+
+function getMissingDependencyMsg(missingDeps) {
+  const missingDepsWithVersions = getPackageNamesWithVersions(missingDeps);
+
+  let msg = 'FAILURE: The following MDC dependencies were used in ' +
+    CLI_PACKAGE_JSON.name + ' but were not declared in its package.json:\n' +
+    missingDepsWithVersions.join('\n') +
+    '\n\nPlease add the missing dependencies to package.json manually, or by ' +
+    'running the following command(s) on the root of the repository:\n';
+
+  missingDepsWithVersions.forEach((dep) => {
+    msg += `npx lerna add ${dep} packages/${PACKAGE_RELATIVE_PATH.split('/')[1]}\n`;
+  });
+  return msg;
+}
+
+function getUnusedDependencyMsg(unusedDeps) {
+  let msg = 'FAILURE: The following MDC dependencies in package ' +
+    CLI_PACKAGE_JSON.name + ' are declared in its package.json but not used:\n' +
+    unusedDeps.join('\n') +
+    '\n\nPlease remove the unused dependencies in package.json manually, or ' +
+    'by running the following command(s) on the root of the repository:\n';
+
+  unusedDeps.forEach((dep) => {
+    msg += `npx lerna exec --scope ${CLI_PACKAGE_JSON.name} -- npm uninstall --no-shrinkwrap ${dep}\n`;
+  });
+  return msg;
+}
+
+function getPackageNamesWithVersions(packageNames) {
+  const packageNamesWithVersions = [];
+  packageNames.forEach((name) => {
+    const version = childProcess.execSync(`npm show ${name} version`).toString().replace('\n', '');
+    packageNamesWithVersions.push(`${name}@${version}`);
+  });
+  return packageNamesWithVersions;
 }

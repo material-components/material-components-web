@@ -18,59 +18,62 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@import "@material/density/functions";
-@import "@material/rtl/mixins";
-@import "@material/theme/mixins";
-@import "@material/shape/functions";
-@import "@material/shape/mixins";
-@import "@material/ripple/mixins";
-@import "@material/theme/functions";
-@import "@material/typography/mixins";
-@import "@material/typography/variables";
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "./variables";
+@use "sass:map";
+@use "@material/density/functions" as density-functions;
+@use "@material/rtl/mixins" as rtl-mixins;
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/shape/functions" as shape-functions;
+@use "@material/shape/mixins" as shape-mixins;
+@use "@material/ripple/mixins" as ripple-mixins;
+@use "@material/theme/functions" as theme-functions;
+@use "@material/typography/mixins" as typography-mixins;
+@use "@material/typography/variables" as typography-variables;
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "./variables";
+@use "@material/ripple/functions" as ripple-functions;
+@use "@material/theme/variables" as theme-variables;
 
 //
 // Public
 //
 
-@mixin mdc-list-core-styles($query: mdc-feature-all()) {
-  @include mdc-list-without-ripple($query);
-  @include mdc-list-ripple($query);
+@mixin core-styles($query: feature-targeting-functions.all()) {
+  @include without-ripple($query);
+  @include ripple($query);
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // list styles. It is recommended that most users use `mdc-list-core-styles` instead.
-@mixin mdc-list-without-ripple($query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-  $feat-structure: mdc-feature-create-target($query, structure);
-  $feat-typography: mdc-feature-create-target($query, typography);
+@mixin without-ripple($query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-typography: feature-targeting-functions.create-target($query, typography);
 
   $item-primary-text-baseline-height: 32px;
   $item-secondary-text-baseline-height: 20px;
   $dense-item-primary-text-baseline-height: 24px;
   $divider-color: if(
-    mdc-theme-tone($mdc-theme-background) == "dark",
-    $mdc-list-divider-color-on-dark-bg,
-    $mdc-list-divider-color-on-light-bg
+    theme-functions.tone(theme-variables.$background) == "dark",
+    variables.$divider-color-on-dark-bg,
+    variables.$divider-color-on-light-bg
   );
 
   .mdc-list {
-    @include mdc-list-base_($query);
+    @include base_($query);
   }
 
-  @include mdc-list-single-line-density($mdc-list-single-line-density-scale, $query: $query);
-  @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background, $query);
-  @include mdc-list-item-graphic-fill-color(transparent, $query);
-  @include mdc-list-item-graphic-ink-color(text-icon-on-background, $query);
-  @include mdc-list-item-meta-ink-color(text-hint-on-background, $query);
-  @include mdc-list-group-subheader-ink-color(text-primary-on-background, $query);
-  @include mdc-list-item-disabled-text-opacity($mdc-list-text-disabled-opacity, $query);
-  @include mdc-list-item-disabled-text-color($mdc-list-text-disabled-color, $query);
+  @include single-line-density(variables.$single-line-density-scale, $query: $query);
+  @include item-secondary-text-ink-color(text-secondary-on-background, $query);
+  @include item-graphic-fill-color(transparent, $query);
+  @include item-graphic-ink-color(text-icon-on-background, $query);
+  @include item-meta-ink-color(text-hint-on-background, $query);
+  @include group-subheader-ink-color(text-primary-on-background, $query);
+  @include item-disabled-text-opacity(variables.$text-disabled-opacity, $query);
+  @include item-disabled-text-color(variables.$text-disabled-color, $query);
 
   .mdc-list--dense {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       padding-top: 4px;
       padding-bottom: 4px;
       font-size: .812rem;
@@ -78,8 +81,8 @@
   }
 
   .mdc-list-item {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-list-item-base_;
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include item-base_;
     }
   }
 
@@ -87,13 +90,13 @@
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
   .mdc-list-item--selected,
   .mdc-list-item--activated {
-    @include mdc-list-item-primary-text-ink-color(primary, $query);
-    @include mdc-list-item-graphic-ink-color(primary, $query);
+    @include item-primary-text-ink-color(primary, $query);
+    @include item-graphic-ink-color(primary, $query);
   }
 
   .mdc-list-item__graphic {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-list-graphic-size_(24px);
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include graphic-size_(24px);
 
       flex-shrink: 0;
       align-items: center;
@@ -106,7 +109,7 @@
   // conjunction with mdc-list-item__graphic
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list .mdc-list-item__graphic {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-flex;
     }
   }
@@ -115,58 +118,58 @@
   .mdc-list-item__meta {
     // stylelint-disable selector-class-pattern
     &:not(.material-icons) {
-      @include mdc-typography(caption, $query);
+      @include typography-mixins.typography(caption, $query);
     }
     // stylelint-enable selector-class-pattern
 
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(margin, auto, 0, ".mdc-list-item");
     }
   }
 
   .mdc-list-item__text {
-    @include mdc-typography-overflow-ellipsis($query);
+    @include typography-mixins.overflow-ellipsis($query);
   }
 
   // Disable interaction on label elements that may automatically
   // toggle corresponding checkbox / radio input.
   .mdc-list-item__text[for] {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       pointer-events: none;
     }
   }
 
   .mdc-list-item__primary-text {
-    @include mdc-typography-overflow-ellipsis($query);
-    @include mdc-typography-baseline-top($item-primary-text-baseline-height, $query);
-    @include mdc-typography-baseline-bottom($item-secondary-text-baseline-height, $query);
+    @include typography-mixins.overflow-ellipsis($query);
+    @include typography-mixins.baseline-top($item-primary-text-baseline-height, $query);
+    @include typography-mixins.baseline-bottom($item-secondary-text-baseline-height, $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: block;
     }
 
     // stylelint-disable plugin/selector-bem-pattern
     .mdc-list--dense & {
-      @include mdc-typography-baseline-top($dense-item-primary-text-baseline-height, $query);
-      @include mdc-typography-baseline-bottom($item-secondary-text-baseline-height, $query);
+      @include typography-mixins.baseline-top($dense-item-primary-text-baseline-height, $query);
+      @include typography-mixins.baseline-bottom($item-secondary-text-baseline-height, $query);
     }
     // stylelint-enable plugin/selector-bem-pattern
   }
 
   .mdc-list-item__secondary-text {
-    @include mdc-typography(body2, $query);
-    @include mdc-typography-overflow-ellipsis($query);
-    @include mdc-typography-baseline-top($item-secondary-text-baseline-height, $query);
+    @include typography-mixins.typography(body2, $query);
+    @include typography-mixins.overflow-ellipsis($query);
+    @include typography-mixins.baseline-top($item-secondary-text-baseline-height, $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: block;
     }
 
     // stylelint-disable plugin/selector-bem-pattern
     .mdc-list--dense & {
-      @include mdc-typography-baseline-top($item-secondary-text-baseline-height, $query);
+      @include typography-mixins.baseline-top($item-secondary-text-baseline-height, $query);
 
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         font-size: inherit;
       }
     }
@@ -175,59 +178,59 @@
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list--dense .mdc-list-item {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       height: 40px;
     }
   }
 
   .mdc-list--dense .mdc-list-item__graphic {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-list-graphic-size_(20px);
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include graphic-size_(20px);
     }
   }
 
   .mdc-list--avatar-list .mdc-list-item {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       height: 56px;
     }
   }
 
   .mdc-list--avatar-list .mdc-list-item__graphic {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-list-graphic-size_(40px);
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include graphic-size_(40px);
 
       border-radius: 50%;
     }
   }
 
   .mdc-list--two-line .mdc-list-item__text {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       align-self: flex-start;
     }
   }
 
   .mdc-list--two-line .mdc-list-item {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       height: 72px;
     }
   }
 
   .mdc-list--two-line.mdc-list--dense .mdc-list-item,
   .mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       height: 60px;
     }
   }
 
   .mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-list-graphic-size_(36px);
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include graphic-size_(36px);
     }
   }
 
   // Only change mouse cursor for interactive list items which are not disabled.
   :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       cursor: pointer;
     }
   }
@@ -235,7 +238,7 @@
   // Override anchor tag styles for the use-case of a list being used for navigation
   // stylelint-disable selector-max-type,selector-no-qualifying-type
   a.mdc-list-item {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       color: inherit;
       text-decoration: none;
     }
@@ -243,7 +246,7 @@
   // stylelint-enable selector-max-type,selector-no-qualifying-type
 
   .mdc-list-divider {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       height: 0;
       margin: 0;
       border: none;
@@ -254,31 +257,31 @@
 
   // Note: ideally we'd be able to hoist this to the top-level `$feat-color`, but doing so
   // will cause the `border` declaration on `.mdc-list-divider` above to override it.
-  @include mdc-list-divider-color($divider-color, $query);
+  @include divider-color($divider-color, $query);
 
   .mdc-list-divider--padded {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       // Leave gaps on each side to match the padding on list items
-      margin: 0 $mdc-list-side-padding;
+      margin: 0 variables.$side-padding;
     }
   }
 
   .mdc-list-divider--inset {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-rtl-reflexive-box(margin, left, $mdc-list-text-offset, ".mdc-list-group");
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-box(margin, left, variables.$text-offset, ".mdc-list-group");
 
-      width: calc(100% - #{$mdc-list-text-offset});
+      width: calc(100% - #{variables.$text-offset});
     }
   }
 
   .mdc-list-divider--inset.mdc-list-divider--padded {
-    @include mdc-feature-targets($feat-structure) {
-      width: calc(100% - #{$mdc-list-text-offset} - #{$mdc-list-side-padding});
+    @include feature-targeting-mixins.targets($feat-structure) {
+      width: calc(100% - #{variables.$text-offset} - #{variables.$side-padding});
     }
   }
 
   .mdc-list-group {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       // Cancel top/bottom padding on individual lists within group
       .mdc-list {
         padding: 0;
@@ -288,82 +291,82 @@
 
   .mdc-list-group__subheader {
     $mdc-list-subheader-virtual-height: 3rem;
-    $mdc-list-subheader-leading: map-get(map-get($mdc-typography-styles, body1), line-height);
+    $mdc-list-subheader-leading: map.get(map.get(typography-variables.$styles, body1), line-height);
     $mdc-list-subheader-margin: ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
 
-    @include mdc-typography(subtitle1, $query);
+    @include typography-mixins.typography(subtitle1, $query);
 
-    @include mdc-feature-targets($feat-structure) {
-      margin: $mdc-list-subheader-margin $mdc-list-side-padding;
+    @include feature-targeting-mixins.targets($feat-structure) {
+      margin: $mdc-list-subheader-margin variables.$side-padding;
     }
   }
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // list styles. It is recommended that most users use `mdc-list-core-styles` instead.
-@mixin mdc-list-ripple($query: mdc-feature-all()) {
-  @include mdc-ripple-common($query);
+@mixin ripple($query: feature-targeting-functions.all()) {
+  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // List items should support states by default, but it should be possible to opt out.
   // Direct child combinator is necessary for non-interactive modifier on parent to not
   // match this selector.
   :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
-    @include mdc-list-item-interactive-ripple_($query);
+    @include item-interactive-ripple_($query);
   }
 
   // Set styles only for focus state on disabled list item.
   :not(.mdc-list--non-interactive) > .mdc-list-item--disabled {
-    @include mdc-ripple-surface($query: $query);
-    @include mdc-ripple-radius-bounded($query: $query);
-    @include mdc-states-base-color(mdc-theme-prop-value(on-surface), $query: $query);
-    @include mdc-states-focus-opacity(mdc-states-opacity(primary, focus), $query: $query);
+    @include ripple-mixins.surface($query: $query);
+    @include ripple-mixins.radius-bounded($query: $query);
+    @include ripple-mixins.states-base-color(theme-variables.prop-value(on-surface), $query: $query);
+    @include ripple-mixins.states-focus-opacity(ripple-functions.states-opacity(primary, focus), $query: $query);
   }
 }
 
-@mixin mdc-list-item-primary-text-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin item-primary-text-ink-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-theme-prop(color, $color);
+  @include feature-targeting-mixins.targets($feat-color) {
+    @include theme-mixins.prop(color, $color);
   }
 }
 
-@mixin mdc-list-item-secondary-text-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin item-secondary-text-ink-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-item__secondary-text {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(color, $color);
     }
   }
 }
 
-@mixin mdc-list-item-graphic-fill-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin item-graphic-fill-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-item__graphic {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(background-color, $color);
     }
   }
 }
 
-@mixin mdc-list-item-graphic-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin item-graphic-ink-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-item__graphic {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(color, $color);
     }
   }
 }
 
-@mixin mdc-list-item-meta-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin item-meta-ink-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-item__meta {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(color, $color);
     }
   }
 }
@@ -379,61 +382,65 @@
 ///
 /// @access public
 ///
-@mixin mdc-list-single-line-shape-radius(
+@mixin single-line-shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $density-scale: $mdc-list-single-line-density-scale,
-  $query: mdc-feature-all()) {
+  $density-scale: variables.$single-line-density-scale,
+  $query: feature-targeting-functions.all()) {
 
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-list-single-line-density-config,
+  $height: density-functions.prop-value(
+    $density-config: variables.$single-line-density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  $resolved-radius: mdc-shape-resolve-percentage-radius($height, $radius);
+  $resolved-radius: shape-functions.resolve-percentage-radius($height, $radius);
 
   .mdc-list-item {
-    @include mdc-shape-radius($resolved-radius, $rtl-reflexive, $query: $query);
+    @include shape-mixins.radius($resolved-radius, $rtl-reflexive, $query: $query);
   }
 }
 
-@mixin mdc-list-divider-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin divider-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-divider {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-bottom-color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(border-bottom-color, $color);
     }
   }
 }
 
-@mixin mdc-list-group-subheader-ink-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin group-subheader-ink-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-group__subheader {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(color, $color);
     }
   }
 }
 
-@mixin mdc-list-item-disabled-text-opacity($opacity, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin item-disabled-text-opacity($opacity, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-item--disabled .mdc-list-item__text {
-    @include mdc-feature-targets($feat-color) {
+    @include feature-targeting-mixins.targets($feat-color) {
       opacity: $opacity;
     }
   }
 }
 
-@mixin mdc-list-item-disabled-text-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin item-disabled-text-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
-  .mdc-list-item--disabled .mdc-list-item__text {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, $color);
+  .mdc-list-item--disabled {
+    .mdc-list-item__text,
+    .mdc-list-item__primary-text,
+    .mdc-list-item__secondary-text {
+      @include feature-targeting-mixins.targets($feat-color) {
+        @include theme-mixins.prop(color, $color);
+      }
     }
   }
 }
@@ -445,15 +452,15 @@
 ///
 /// @access public
 ///
-@mixin mdc-list-single-line-density($density-scale, $query: mdc-feature-all()) {
-  $height: mdc-density-prop-value(
-    $density-config: $mdc-list-single-line-density-config,
+@mixin single-line-density($density-scale, $query: feature-targeting-functions.all()) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$single-line-density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
   .mdc-list-item {
-    @include mdc-list-single-line-height($height, $query: $query);
+    @include single-line-height($height, $query: $query);
   }
 }
 
@@ -464,10 +471,10 @@
 ///
 /// @access public
 ///
-@mixin mdc-list-single-line-height($height, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin single-line-height($height, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     height: $height;
   }
 }
@@ -476,21 +483,21 @@
 // Private
 //
 
-@mixin mdc-list-base_($query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-  $feat-structure: mdc-feature-create-target($query, structure);
-  $feat-typography: mdc-feature-create-target($query, typography);
+@mixin base_($query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-typography: feature-targeting-functions.create-target($query, typography);
 
-  @include mdc-typography(subtitle1, $query);
+  @include typography-mixins.typography(subtitle1, $query);
 
-  @include mdc-feature-targets($feat-typography) {
+  @include feature-targeting-mixins.targets($feat-typography) {
     // According to the mocks and stickersheet, the line-height is
     // adjusted to 24px for text content, same as for body1.
     /* @alternate */
-    line-height: map-get(map-get($mdc-typography-styles, body1), line-height);
+    line-height: map.get(map.get(typography-variables.$styles, body1), line-height);
   }
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     margin: 0;
     padding: 8px 0;
     list-style-type: none;
@@ -500,15 +507,15 @@
     }
   }
 
-  @include mdc-list-item-primary-text-ink-color(text-primary-on-background, $query);
+  @include item-primary-text-ink-color(text-primary-on-background, $query);
 }
 
-@mixin mdc-list-item-base_ {
+@mixin item-base_ {
   display: flex;
   position: relative;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 $mdc-list-side-padding;
+  padding: 0 variables.$side-padding;
   overflow: hidden;
 
   &:focus {
@@ -517,23 +524,23 @@
 }
 
 // Ripple styles for an interactive list item (one that is enabled and inside an interactive list).
-@mixin mdc-list-item-interactive-ripple_($query: mdc-feature-all()) {
-  @include mdc-ripple-surface($query);
-  @include mdc-ripple-radius-bounded($query: $query);
-  @include mdc-states(mdc-theme-prop-value(on-surface), false, $query);
-  @include mdc-states-activated(primary, false, $query);
-  @include mdc-states-selected(primary, false, $query);
+@mixin item-interactive-ripple_($query: feature-targeting-functions.all()) {
+  @include ripple-mixins.surface($query);
+  @include ripple-mixins.radius-bounded($query: $query);
+  @include ripple-mixins.states(theme-variables.prop-value(on-surface), false, $query);
+  @include ripple-mixins.states-activated(primary, false, $query);
+  @include ripple-mixins.states-selected(primary, false, $query);
 }
 
 // Sets the width and height of the graphic element, as well as calculates the margins for
 // the graphic element such that the text is always offset by 72px, which is defined within
 // the spec.
-@mixin mdc-list-graphic-size_($size) {
+@mixin graphic-size_($size) {
   $text-offset: 72px;
-  $side-padding: $mdc-list-side-padding;
+  $side-padding: variables.$side-padding;
   $margin-value: $text-offset - $side-padding - $size;
 
-  @include mdc-rtl-reflexive-box(margin, right, $margin-value, ".mdc-list-item");
+  @include rtl-mixins.reflexive-box(margin, right, $margin-value, ".mdc-list-item");
 
   width: $size;
   height: $size;

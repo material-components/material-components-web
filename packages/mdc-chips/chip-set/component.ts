@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {announce} from '@material/dom/announce';
 import {MDCChip, MDCChipFactory} from '../chip/component';
 import {MDCChipFoundation} from '../chip/foundation';
 import {MDCChipInteractionEvent, MDCChipNavigationEvent, MDCChipRemovalEvent,
@@ -72,13 +73,14 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       }
     });
 
-    this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt.detail.chipId);
-    this.handleChipSelection_ = (evt) => {
-      this.foundation_.handleChipSelection(evt.detail.chipId, evt.detail.selected, evt.detail.shouldIgnore);
-    };
-    this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt.detail.chipId);
-    this.handleChipNavigation_ = (evt) => this.foundation_.handleChipNavigation(
-        evt.detail.chipId, evt.detail.key, evt.detail.source);
+    this.handleChipInteraction_ = (evt) =>
+        this.foundation_.handleChipInteraction(evt.detail);
+    this.handleChipSelection_ = (evt) =>
+        this.foundation_.handleChipSelection(evt.detail);
+    this.handleChipRemoval_ = (evt) =>
+        this.foundation_.handleChipRemoval(evt.detail);
+    this.handleChipNavigation_ = (evt) =>
+        this.foundation_.handleChipNavigation(evt.detail);
     this.listen(INTERACTION_EVENT, this.handleChipInteraction_);
     this.listen(SELECTION_EVENT, this.handleChipSelection_);
     this.listen(REMOVAL_EVENT, this.handleChipRemoval_);
@@ -110,6 +112,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {
+      announceMessage: (message) => {
+        announce(message);
+      },
       focusChipPrimaryActionAtIndex: (index) => {
         this.chips_[index].focusPrimaryAction();
       },
@@ -121,7 +126,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
         return this.findChipIndex_(chipId);
       },
       hasClass: (className) => this.root_.classList.contains(className),
-      isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      isRTL: () =>
+          window.getComputedStyle(this.root_).getPropertyValue('direction') ===
+          'rtl',
       removeChipAtIndex: (index) => {
         if (index >= 0 && index < this.chips_.length) {
           this.chips_[index].destroy();

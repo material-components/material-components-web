@@ -49,7 +49,7 @@ For a given button component:
 You would add an increased touch target as follows:
 
 ```html
-<div class="mdc-touch-target-wrapper>
+<div class="mdc-touch-target-wrapper">
   <button class="mdc-button mdc-button--touch">
     <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">My Accessible Button</span>
@@ -63,7 +63,7 @@ Note that the outer `mdc-touch-target-wrapper` element is only necessary if you 
 ### Styles
 
 ```css
-@import "@material/touch-target/mdc-touch-target";
+@use "@material/touch-target/mdc-touch-target";
 ```
 
 ## Style Customization
@@ -72,6 +72,6 @@ Note that the outer `mdc-touch-target-wrapper` element is only necessary if you 
 
 Mixin | Description
 --- | ---
-`mdc-touch-target-wrapper` | Applied to the wrapper touch target element.
-`mdc-touch-target` | Applied to the inner touch target element.
-`mdc-touch-target-margin` | Applied to the component root element. Adds margin to compensate for the increased touch target.
+`wrapper` | Applied to the wrapper touch target element.
+`touch-target` | Applied to the inner touch target element.
+`margin` | Applied to the component root element. Adds margin to compensate for the increased touch target.

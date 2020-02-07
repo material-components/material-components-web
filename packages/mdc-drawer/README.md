@@ -66,8 +66,8 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ### Styles
 
 ```scss
-@import "@material/drawer/mdc-drawer";
-@import "@material/list/mdc-list";
+@use "@material/drawer/mdc-drawer";
+@use "@material/list/mdc-list";
 ```
 
 ### JavaScript Instantiation
@@ -226,7 +226,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
     <header class="mdc-top-app-bar app-bar" id="app-bar">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
           <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
         </section>
       </div>
@@ -250,7 +250,7 @@ In cases where the drawer appears below the top app bar you will want to follow 
   <header class="mdc-top-app-bar app-bar" id="app-bar">
     <div class="mdc-top-app-bar__row">
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-        <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+        <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
         <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
       </section>
     </div>
@@ -384,22 +384,22 @@ Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-drawer-border-color($color)` | Sets border color of `mdc-drawer` surface.
-`mdc-drawer-divider-color($color)` | Sets divider color found between list groups.
-`mdc-drawer-fill-color-accessible($color)` | Sets the fill color to `$color`, and list item and icon ink colors to an accessible color relative to `$color`.
-`mdc-drawer-surface-fill-color($color)` | Sets the background color of `mdc-drawer`.
-`mdc-drawer-title-ink-color($color)` | Sets the ink color of `mdc-drawer__title`.
-`mdc-drawer-subtitle-ink-color` | Sets drawer subtitle and list subheader ink color.
-`mdc-drawer-item-icon-ink-color($color)` | Sets drawer list item graphic icon ink color.
-`mdc-drawer-item-text-ink-color($color)` | Sets drawer list item text ink color.
-`mdc-drawer-item-activated-icon-ink-color($color)` | Sets activated drawer list item icon ink color.
-`mdc-drawer-item-activated-text-ink-color($color)` | Sets activated drawer list item text ink color.
-`mdc-drawer-shape-radius($radius)` | Sets the rounded shape to drawer with given radius size. `$radius` can be single radius or list of 2 radius values for trailing-top and trailing-bottom. Automatically flips the radius values in RTL context.
-`mdc-drawer-item-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to drawer navigation item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to true.
-`mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
-`mdc-drawer-scrim-fill-color($color)` | Sets the fill color of `mdc-drawer-scrim`.
-`mdc-drawer-z-index($value)` | Sets the z index of drawer. Drawer stays on top of top app bar except for clipped variant of drawer.
-`mdc-drawer-width($width)` | Sets the width of the drawer. In the case of the dismissible variant, also sets margin required for `mdc-drawer-app-content`.
+`border-color($color)` | Sets border color of `mdc-drawer` surface.
+`divider-color($color)` | Sets divider color found between list groups.
+`fill-color-accessible($color)` | Sets the fill color to `$color`, and list item and icon ink colors to an accessible color relative to `$color`.
+`surface-fill-color($color)` | Sets the background color of `mdc-drawer`.
+`title-ink-color($color)` | Sets the ink color of `mdc-drawer__title`.
+`subtitle-ink-color` | Sets drawer subtitle and list subheader ink color.
+`item-icon-ink-color($color)` | Sets drawer list item graphic icon ink color.
+`item-text-ink-color($color)` | Sets drawer list item text ink color.
+`item-activated-icon-ink-color($color)` | Sets activated drawer list item icon ink color.
+`item-activated-text-ink-color($color)` | Sets activated drawer list item text ink color.
+`shape-radius($radius)` | Sets the rounded shape to drawer with given radius size. `$radius` can be single radius or list of 2 radius values for trailing-top and trailing-bottom. Automatically flips the radius values in RTL context.
+`item-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to drawer navigation item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to true.
+`activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
+`scrim-fill-color($color)` | Sets the fill color of `mdc-drawer-scrim`.
+`z-index($value)` | Sets the z index of drawer. Drawer stays on top of top app bar except for clipped variant of drawer.
+`width($width)` | Sets the width of the drawer. In the case of the dismissible variant, also sets margin required for `mdc-drawer-app-content`.
 
 ## Accessibility
 

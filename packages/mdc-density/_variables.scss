@@ -20,9 +20,9 @@
 // THE SOFTWARE.
 //
 
-$mdc-density-interval: 4px !default;
-$mdc-density-minimum-scale: minimum !default;
-$mdc-density-maximum-scale: maximum !default;
-$mdc-density-supported-scales: (default, minimum, maximum) !default;
-$mdc-density-supported-properties: (height, size) !default;
-$mdc-density-default-scale: 0 !default;
+$interval: 4px !default;
+$minimum-scale: minimum !default;
+$maximum-scale: maximum !default;
+$supported-scales: (default, minimum, maximum) !default;
+$supported-properties: (height, size) !default;
+$default-scale: 0 !default;

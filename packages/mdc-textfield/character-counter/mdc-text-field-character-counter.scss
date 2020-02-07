@@ -20,20 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "../functions";
-@import "@material/rtl/mixins";
-@import "@material/typography/mixins";
-
-// postcss-bem-linter: define text-field-character-counter
-
-.mdc-text-field-character-counter {
-  @include mdc-typography(caption);
-  @include mdc-typography-baseline-top(16px);
-  // Keep flex item align to trailing side on absence of helper text.
-  @include mdc-rtl-reflexive-box(margin, left, auto);
-  @include mdc-rtl-reflexive-box(padding, left, 16px);
-
-  white-space: nowrap;
-}
-
-// postcss-bem-linter: end
+@use "./mixins";
+@include mixins.character-counter-core-styles;

@@ -1,0 +1,8 @@
+{
+  "include": [
+    "packages/**/test/*scss.test.ts",
+    "testing/featuretargeting/**",
+  ],
+  "extends": "./tsconfig-base.json",
+  "types": ["node"]
+}

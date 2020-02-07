@@ -20,54 +20,55 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/functions";
-@import "@material/density/functions";
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "@material/ripple/mixins";
-@import "@material/ripple/variables";
-@import "@material/theme/mixins";
-@import "@material/theme/variables";
-@import "@material/touch-target/mixins";
-@import "@material/touch-target/variables";
-@import "./functions";
-@import "./variables";
+@use "sass:map";
+@use "@material/animation/functions" as functions2;
+@use "@material/density/functions" as density-functions;
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/ripple/mixins" as ripple-mixins;
+@use "@material/ripple/variables" as ripple-variables;
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/theme/variables" as variables2;
+@use "@material/touch-target/mixins" as touch-target-mixins;
+@use "@material/touch-target/variables" as touch-target-variables;
+@use "./functions";
+@use "./variables";
 
-$mdc-radio-ripple-target: ".mdc-radio__ripple";
+$ripple-target: ".mdc-radio__ripple";
 
-@mixin mdc-radio-core-styles($query: mdc-feature-all()) {
-  @include mdc-radio-without-ripple($query);
-  @include mdc-radio-ripple($query);
+@mixin core-styles($query: feature-targeting-functions.all()) {
+  @include without-ripple($query);
+  @include ripple($query);
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // radio styles. It is recommended that most users use `mdc-radio-core-styles` instead.
-@mixin mdc-radio-without-ripple($query: mdc-feature-all()) {
+@mixin without-ripple($query: feature-targeting-functions.all()) {
   // postcss-bem-linter: define radio
 
-  $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-color: mdc-feature-create-target($query, color);
-  $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-touch-target-wrapper($query);
+  @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-radio {
-    @include mdc-radio-unchecked-stroke-color($mdc-radio-unchecked-color, $query: $query);
-    @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color, $query: $query);
-    @include mdc-radio-ink-color($mdc-radio-baseline-theme-color, $query: $query);
-    @include mdc-radio-disabled-unchecked-stroke-color($mdc-radio-disabled-circle-color, $query: $query);
-    @include mdc-radio-disabled-checked-stroke-color($mdc-radio-disabled-circle-color, $query: $query);
-    @include mdc-radio-disabled-ink-color($mdc-radio-disabled-circle-color, $query: $query);
-    @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color, $query: $query);
-    @include mdc-radio-density($mdc-radio-density-scale, $query: $query);
+    @include unchecked-stroke-color(variables.$unchecked-color, $query: $query);
+    @include checked-stroke-color(variables.$baseline-theme-color, $query: $query);
+    @include ink-color(variables.$baseline-theme-color, $query: $query);
+    @include disabled-unchecked-stroke-color(variables.$disabled-circle-color, $query: $query);
+    @include disabled-checked-stroke-color(variables.$disabled-circle-color, $query: $query);
+    @include disabled-ink-color(variables.$disabled-circle-color, $query: $query);
+    @include focus-indicator-color(variables.$baseline-theme-color, $query: $query);
+    @include density(variables.$density-scale, $query: $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-block;
       position: relative;
       flex: 0 0 auto;
       box-sizing: content-box;
-      width: $mdc-radio-icon-size;
-      height: $mdc-radio-icon-size;
+      width: variables.$icon-size;
+      height: variables.$icon-size;
       cursor: pointer;
       /* @alternate */
       will-change: opacity, transform, border-color, color;
@@ -75,16 +76,16 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 
     // Container for radio circles and ripple.
     &__background {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         display: inline-block;
         position: relative;
         box-sizing: border-box;
-        width: $mdc-radio-icon-size;
-        height: $mdc-radio-icon-size;
+        width: variables.$icon-size;
+        height: variables.$icon-size;
       }
 
       &::before {
-        @include mdc-feature-targets($feat-structure) {
+        @include feature-targeting-mixins.targets($feat-structure) {
           position: absolute;
           transform: scale(0, 0);
           border-radius: 50%;
@@ -93,14 +94,14 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
           content: "";
         }
 
-        @include mdc-feature-targets($feat-animation) {
-          transition: mdc-radio-exit(opacity), mdc-radio-exit(transform);
+        @include feature-targeting-mixins.targets($feat-animation) {
+          transition: functions.exit(opacity), functions.exit(transform);
         }
       }
     }
 
     &__outer-circle {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         position: absolute;
         top: 0;
         left: 0;
@@ -112,13 +113,13 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
         border-radius: 50%;
       }
 
-      @include mdc-feature-targets($feat-animation) {
-        transition: mdc-radio-exit(border-color);
+      @include feature-targeting-mixins.targets($feat-animation) {
+        transition: functions.exit(border-color);
       }
     }
 
     &__inner-circle {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         position: absolute;
         top: 0;
         left: 0;
@@ -131,15 +132,15 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
         border-radius: 50%;
       }
 
-      @include mdc-feature-targets($feat-animation) {
+      @include feature-targeting-mixins.targets($feat-animation) {
         transition:
-          mdc-radio-exit(transform),
-          mdc-radio-exit(border-color);
+          functions.exit(transform),
+          functions.exit(border-color);
       }
     }
 
     &__native-control {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         position: absolute;
         margin: 0;
         padding: 0;
@@ -150,41 +151,41 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
     }
 
     &--touch {
-      @include mdc-touch-target-margin(
-        $component-height: $mdc-radio-ripple-size,
-        $component-width: $mdc-radio-ripple-size,
+      @include touch-target-mixins.margin(
+        $component-height: variables.$ripple-size,
+        $component-width: variables.$ripple-size,
         $query: $query);
-      @include mdc-radio-touch-target($size: $mdc-touch-target-height, $query: $query);
+      @include touch-target($size: touch-target-variables.$height, $query: $query);
     }
   }
 
   .mdc-radio__native-control:checked,
   .mdc-radio__native-control:disabled {
     + .mdc-radio__background {
-      @include mdc-feature-targets($feat-animation) {
+      @include feature-targeting-mixins.targets($feat-animation) {
         transition:
-          mdc-radio-enter(opacity),
-          mdc-radio-enter(transform);
+          functions.enter(opacity),
+          functions.enter(transform);
       }
 
       .mdc-radio__outer-circle {
-        @include mdc-feature-targets($feat-animation) {
-          transition: mdc-radio-enter(border-color);
+        @include feature-targeting-mixins.targets($feat-animation) {
+          transition: functions.enter(border-color);
         }
       }
 
       .mdc-radio__inner-circle {
-        @include mdc-feature-targets($feat-animation) {
+        @include feature-targeting-mixins.targets($feat-animation) {
           transition:
-            mdc-radio-enter(transform),
-            mdc-radio-enter(border-color);
+            functions.enter(transform),
+            functions.enter(border-color);
         }
       }
     }
   }
 
   .mdc-radio--disabled {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       cursor: default;
       pointer-events: none;
     }
@@ -193,14 +194,14 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   .mdc-radio__native-control:checked {
     + .mdc-radio__background {
       .mdc-radio__inner-circle {
-        @include mdc-feature-targets($feat-structure) {
+        @include feature-targeting-mixins.targets($feat-structure) {
           transform: scale(.5);
         }
 
-        @include mdc-feature-targets($feat-animation) {
+        @include feature-targeting-mixins.targets($feat-animation) {
           transition:
-            mdc-radio-enter(transform),
-            mdc-radio-enter(border-color);
+            functions.enter(transform),
+            functions.enter(border-color);
         }
       }
     }
@@ -209,7 +210,7 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
   .mdc-radio__native-control:disabled,
   [aria-disabled="true"] .mdc-radio__native-control {
     + .mdc-radio__background {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         cursor: default;
       }
     }
@@ -217,15 +218,15 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 
   .mdc-radio__native-control:focus {
     + .mdc-radio__background::before {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         transform: scale(1);
-        opacity: map-get($mdc-ripple-dark-ink-opacities, focus);
+        opacity: map.get(ripple-variables.$dark-ink-opacities, focus);
       }
 
-      @include mdc-feature-targets($feat-animation) {
+      @include feature-targeting-mixins.targets($feat-animation) {
         transition:
-          mdc-radio-enter(opacity),
-          mdc-radio-enter(transform);
+          functions.enter(opacity),
+          functions.enter(transform);
       }
     }
   }
@@ -235,28 +236,28 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // radio styles. It is recommended that most users use `mdc-radio-core-styles` instead.
-@mixin mdc-radio-ripple($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin ripple($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-ripple-common($query);
+  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-radio {
-    @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-radio-ripple-target);
-    @include mdc-ripple-radius-unbounded($query: $query, $ripple-target: $mdc-radio-ripple-target);
-    @include mdc-states(
-      $color: $mdc-radio-baseline-theme-color, $query: $query, $ripple-target: $mdc-radio-ripple-target);
+    @include ripple-mixins.surface($query: $query, $ripple-target: $ripple-target);
+    @include ripple-mixins.radius-unbounded($query: $query, $ripple-target: $ripple-target);
+    @include ripple-mixins.states(
+      $color: variables.$baseline-theme-color, $query: $query, $ripple-target: $ripple-target);
 
     &.mdc-ripple-upgraded--background-focused {
       .mdc-radio__background::before {
-        @include mdc-feature-targets($feat-structure) {
+        @include feature-targeting-mixins.targets($feat-structure) {
           content: none;
         }
       }
     }
   }
 
-  #{$mdc-radio-ripple-target} {
-    @include mdc-ripple-target-common($query: $query);
+  #{$ripple-target} {
+    @include ripple-mixins.target-common($query: $query);
   }
 }
 
@@ -264,9 +265,9 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// Sets the stroke color of an unchecked, enabled radio button.
 /// @param {Color} $color - The desired stroke color.
 ///
-@mixin mdc-radio-unchecked-stroke-color($color, $query: mdc-feature-all()) {
-  @include mdc-radio-if-enabled-unchecked_ {
-    @include mdc-radio-stroke-color_($color, $query: $query);
+@mixin unchecked-stroke-color($color, $query: feature-targeting-functions.all()) {
+  @include if-enabled-unchecked_ {
+    @include stroke-color_($color, $query: $query);
   }
 }
 
@@ -274,9 +275,9 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// Sets the stroke color of a checked, enabled radio button.
 /// @param {Color} $color - The desired stroke color.
 ///
-@mixin mdc-radio-checked-stroke-color($color, $query: mdc-feature-all()) {
-  @include mdc-radio-if-enabled-checked_ {
-    @include mdc-radio-stroke-color_($color, $query:$query);
+@mixin checked-stroke-color($color, $query: feature-targeting-functions.all()) {
+  @include if-enabled-checked_ {
+    @include stroke-color_($color, $query:$query);
   }
 }
 
@@ -284,9 +285,9 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// Sets the ink color of an enabled radio button.
 /// @param {Color} $color - The desired ink color.
 ///
-@mixin mdc-radio-ink-color($color, $query: mdc-feature-all()) {
-  @include mdc-radio-if-enabled_ {
-    @include mdc-radio-ink-color_($color, $query: $query);
+@mixin ink-color($color, $query: feature-targeting-functions.all()) {
+  @include if-enabled_ {
+    @include ink-color_($color, $query: $query);
   }
 }
 
@@ -294,9 +295,9 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// Sets the stroke color of an unchecked, disabled radio button.
 /// @param {Color} $color - The desired stroke color.
 ///
-@mixin mdc-radio-disabled-unchecked-stroke-color($color, $query: mdc-feature-all()) {
-  @include mdc-radio-if-disabled-unchecked_ {
-    @include mdc-radio-stroke-color_($color, $query: $query);
+@mixin disabled-unchecked-stroke-color($color, $query: feature-targeting-functions.all()) {
+  @include if-disabled-unchecked_ {
+    @include stroke-color_($color, $query: $query);
   }
 }
 
@@ -304,9 +305,9 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// Sets the stroke color of a checked, disabled radio button.
 /// @param {Color} $color - The desired stroke color.
 ///
-@mixin mdc-radio-disabled-checked-stroke-color($color, $query: mdc-feature-all()) {
-  @include mdc-radio-if-disabled-checked_ {
-    @include mdc-radio-stroke-color_($color, $query: $query);
+@mixin disabled-checked-stroke-color($color, $query: feature-targeting-functions.all()) {
+  @include if-disabled-checked_ {
+    @include stroke-color_($color, $query: $query);
   }
 }
 
@@ -314,18 +315,18 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// Sets the ink color of a disabled radio button.
 /// @param {Color} $color - The desired ink color
 ///
-@mixin mdc-radio-disabled-ink-color($color, $query: mdc-feature-all()) {
-  @include mdc-radio-if-disabled_ {
-    @include mdc-radio-ink-color_($color, $query: $query);
+@mixin disabled-ink-color($color, $query: feature-targeting-functions.all()) {
+  @include if-disabled_ {
+    @include ink-color_($color, $query: $query);
   }
 }
 
-@mixin mdc-radio-focus-indicator-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin focus-indicator-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-radio__background::before {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(background-color, $color);
     }
   }
 }
@@ -337,15 +338,15 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// @param {Number} $size Size of touch target (Native input) in `px`.
 /// @param {Number} $ripple-size Size of ripple in `px`. Required only for custom ripple size.
 ///
-@mixin mdc-radio-touch-target(
-  $size: $mdc-radio-ripple-size,
-  $ripple-size: $mdc-radio-ripple-size,
-  $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin touch-target(
+  $size: variables.$ripple-size,
+  $ripple-size: variables.$ripple-size,
+  $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
   $offset: ($ripple-size - $size) / 2;
 
   .mdc-radio__native-control {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       top: $offset;
       right: $offset;
       left: $offset;
@@ -361,19 +362,19 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values
 ///     `-3`, `-2`, `-1`, `0`.
 ///
-@mixin mdc-radio-density($density-scale, $query: mdc-feature-all()) {
-  $size: mdc-density-prop-value(
-    $density-config: $mdc-radio-density-config,
+@mixin density($density-scale, $query: feature-targeting-functions.all()) {
+  $size: density-functions.prop-value(
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: size,
   );
 
-  @include mdc-radio-ripple-size($size, $query: $query);
+  @include ripple-size($size, $query: $query);
   // Sets touch target size same as ripple size.
-  @include mdc-radio-touch-target($size: $size, $ripple-size: $size, $query: $query);
+  @include touch-target($size: $size, $ripple-size: $size, $query: $query);
 
   @if $density-scale != 0 {
-    @include mdc-radio-touch-target-reset_($query: $query);
+    @include touch-target-reset_($query: $query);
   }
 }
 
@@ -382,16 +383,16 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 ///
 /// @param {Number} $size - Ripple size in `px`.
 ///
-@mixin mdc-radio-ripple-size($size, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-  $padding: ($size - $mdc-radio-icon-size) / 2;
+@mixin ripple-size($size, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $padding: ($size - variables.$icon-size) / 2;
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     padding: $padding;
   }
 
   .mdc-radio__background::before {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       top: -$padding;
       left: -$padding;
       width: $size;
@@ -406,10 +407,10 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// don't have the same default a11y requirements.
 /// @access private
 ///
-@mixin mdc-radio-touch-target-reset_($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin touch-target-reset_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     margin: 0;
   }
 }
@@ -419,7 +420,7 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// enabled state.
 /// @access private
 ///
-@mixin mdc-radio-if-enabled_ {
+@mixin if-enabled_ {
   .mdc-radio__native-control:enabled + {
     @content;
   }
@@ -430,7 +431,7 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// enabled & unchecked state.
 /// @access private
 ///
-@mixin mdc-radio-if-enabled-unchecked_ {
+@mixin if-enabled-unchecked_ {
   .mdc-radio__native-control:enabled:not(:checked) + {
     @content;
   }
@@ -441,7 +442,7 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// enabled & checked state.
 /// @access private
 ///
-@mixin mdc-radio-if-enabled-checked_ {
+@mixin if-enabled-checked_ {
   .mdc-radio__native-control:enabled:checked + {
     @content;
   }
@@ -452,7 +453,7 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// disabled state.
 /// @access private
 ///
-@mixin mdc-radio-if-disabled_ {
+@mixin if-disabled_ {
   [aria-disabled="true"] .mdc-radio__native-control,
   .mdc-radio__native-control:disabled {
     + {
@@ -466,7 +467,7 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// disabled & unchecked state.
 /// @access private
 ///
-@mixin mdc-radio-if-disabled-unchecked_ {
+@mixin if-disabled-unchecked_ {
   [aria-disabled="true"] .mdc-radio__native-control,
   .mdc-radio__native-control:disabled {
     &:not(:checked) + {
@@ -480,7 +481,7 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// disabled & checked state.
 /// @access private
 ///
-@mixin mdc-radio-if-disabled-checked_ {
+@mixin if-disabled-checked_ {
   [aria-disabled="true"] .mdc-radio__native-control,
   .mdc-radio__native-control:disabled {
     &:checked + {
@@ -494,12 +495,12 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// that qualifies state such as `mdc-radio-if-enabled_`
 /// @access private
 ///
-@mixin mdc-radio-ink-color_($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin ink-color_($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-radio__background .mdc-radio__inner-circle {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(border-color, $color);
     }
   }
 }
@@ -509,12 +510,12 @@ $mdc-radio-ripple-target: ".mdc-radio__ripple";
 /// that qualifies state such as `mdc-radio-if-enabled_`
 /// @access private
 ///
-@mixin mdc-radio-stroke-color_($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin stroke-color_($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-radio__background .mdc-radio__outer-circle {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(border-color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(border-color, $color);
     }
   }
 }

@@ -22,10 +22,12 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCProgressIndicator} from '@material/progress-indicator/component';
 import {MDCLinearProgressAdapter} from './adapter';
 import {MDCLinearProgressFoundation} from './foundation';
 
-export class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation> {
+export class MDCLinearProgress extends
+    MDCComponent<MDCLinearProgressFoundation> implements MDCProgressIndicator {
   static attachTo(root: Element) {
     return new MDCLinearProgress(root);
   }
@@ -63,7 +65,13 @@ export class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation>
       getBuffer: () => this.root_.querySelector(MDCLinearProgressFoundation.strings.BUFFER_SELECTOR),
       getPrimaryBar: () => this.root_.querySelector(MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR),
       hasClass: (className: string) => this.root_.classList.contains(className),
+      removeAttribute: (attributeName: string) => {
+        this.root_.removeAttribute(attributeName);
+      },
       removeClass: (className: string) => this.root_.classList.remove(className),
+      setAttribute: (attributeName: string, value: string) => {
+        this.root_.setAttribute(attributeName, value);
+      },
       setStyle: (el: HTMLElement, styleProperty: string, value: string) => el.style.setProperty(styleProperty, value),
     };
     return new MDCLinearProgressFoundation(adapter);

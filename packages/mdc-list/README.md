@@ -55,7 +55,7 @@ npm install @material/list
 ### Styles
 
 ```scss
-@import "@material/list/mdc-list";
+@use "@material/list/mdc-list";
 ```
 
 ### JavaScript
@@ -403,18 +403,18 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-list-item-primary-text-ink-color($color)` | Sets the ink color of the primary text of the list item.
-`mdc-list-item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text of the list item.
-`mdc-list-item-graphic-fill-color($color)` | Sets background ink color of the graphic element within list item.
-`mdc-list-item-graphic-ink-color($color)` | Sets ink color of the graphic element within list item.
-`mdc-list-item-meta-ink-color($color)` | Sets ink color of the meta element within list item.
-`mdc-list-single-line-shape-radius($radius, $rtl-reflexive, $density-scale)` | Sets the rounded shape to list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false. Set `$density-scale` only when custom density is applied, defaults to `$mdc-list-single-line-density-scale`.
-`mdc-list-divider-color($color)` | Sets divider ink color.
-`mdc-list-group-subheader-ink-color($color)` | Sets ink color of subheader text within list group.
-`mdc-list-item-disabled-text-color($color`) | Sets the color of the text when the list item is disabled.
-`mdc-list-item-disabled-text-opacity($opacity`) | Sets the opacity of the text when the list item is disabled.
-`mdc-list-single-line-density($density-scale)` | Sets density scale to single line list variant. Supported density scales are `-4`, `-3`, `-2`, `-1` and  `0`.
-`mdc-list-single-line-height($height)` | Sets height to single line list variant.
+`item-primary-text-ink-color($color)` | Sets the ink color of the primary text of the list item.
+`item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text of the list item.
+`item-graphic-fill-color($color)` | Sets background ink color of the graphic element within list item.
+`item-graphic-ink-color($color)` | Sets ink color of the graphic element within list item.
+`item-meta-ink-color($color)` | Sets ink color of the meta element within list item.
+`single-line-shape-radius($radius, $rtl-reflexive, $density-scale)` | Sets the rounded shape to list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false. Set `$density-scale` only when custom density is applied, defaults to `$mdc-list-single-line-density-scale`.
+`divider-color($color)` | Sets divider ink color.
+`group-subheader-ink-color($color)` | Sets ink color of subheader text within list group.
+`item-disabled-text-color($color`) | Sets the color of the text when the list item is disabled.
+`item-disabled-text-opacity($opacity`) | Sets the opacity of the text when the list item is disabled.
+`single-line-density($density-scale)` | Sets density scale to single line list variant. Supported density scales are `-4`, `-3`, `-2`, `-1` and  `0`.
+`single-line-height($height)` | Sets height to single line list variant.
 
 ### Accessibility
 

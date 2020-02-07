@@ -42,9 +42,8 @@ npm install @material/switch
 <div class="mdc-switch">
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
-    <div class="mdc-switch__thumb">
-        <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
-    </div>
+    <div class="mdc-switch__thumb"></div>
+    <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="false">
   </div>
 </div>
 <label for="basic-switch">off/on</label>
@@ -53,7 +52,7 @@ npm install @material/switch
 ### Styles
 
 ```scss
-@import "@material/switch/mdc-switch";
+@use "@material/switch/mdc-switch";
 ```
 
 ### JavaScript Instantiation
@@ -78,9 +77,8 @@ Add the `mdc-switch--disabled` class to the `mdc-switch` element, and the `disab
 <div class="mdc-switch mdc-switch--disabled">
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
-    <div class="mdc-switch__thumb">
-      <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" disabled>
-    </div>
+    <div class="mdc-switch__thumb"></div>
+    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="false" disabled>
   </div>
 </div>
 <label for="another-basic-switch">off/on</label>
@@ -94,9 +92,8 @@ Add the `mdc-switch--checked` class to the `mdc-switch` element, and the `checke
 <div class="mdc-switch mdc-switch--checked">
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
-    <div class="mdc-switch__thumb">
-      <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" checked>
-    </div>
+    <div class="mdc-switch__thumb"></div>
+    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="true" checked>
   </div>
 </div>
 <label for="another-basic-switch">off/on</label>
@@ -124,17 +121,17 @@ Use the following mixins to customize _enabled_ switches. It is not currently po
 
 Mixin | Description
 --- | ---
-`mdc-switch-toggled-on-color($color)` | Sets the base color of the track, thumb, and ripple when the switch is toggled on.
-`mdc-switch-toggled-off-color($color)` | Sets the base color of the track, thumb, and ripple when the switch is toggled off.
-`mdc-switch-toggled-on-track-color($color)` | Sets color of the track when the switch is toggled on.
-`mdc-switch-toggled-off-track-color($color)` | Sets color of the track when the switch is toggled off.
-`mdc-switch-toggled-on-thumb-color($color)` | Sets color of the thumb when the switch is toggled on.
-`mdc-switch-toggled-off-thumb-color($color)` | Sets color of the thumb when the switch is toggled off.
-`mdc-switch-toggled-on-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled on.
-`mdc-switch-toggled-off-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled off.
-`mdc-switch-ripple-size($ripple-size)` | Sets the ripple size of the switch.
-`mdc-switch-density($density-scale)` | Sets density scale for switch. Supported density scales are `-5`, `-4`, `-3`, `-2`, `-1`, and `0` (default).
-`mdc-switch-ripple-states-opacity($opacity-map)` | Sets the opacity of the ripple surrounding the thumb in any of the `hover`, `focus`, or `press` states. The `opacity-map` can specify any of these states as keys. States not specified in the map resort to default opacity values.
+`toggled-on-color($color)` | Sets the base color of the track, thumb, and ripple when the switch is toggled on.
+`toggled-off-color($color)` | Sets the base color of the track, thumb, and ripple when the switch is toggled off.
+`toggled-on-track-color($color)` | Sets color of the track when the switch is toggled on.
+`toggled-off-track-color($color)` | Sets color of the track when the switch is toggled off.
+`toggled-on-thumb-color($color)` | Sets color of the thumb when the switch is toggled on.
+`toggled-off-thumb-color($color)` | Sets color of the thumb when the switch is toggled off.
+`toggled-on-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled on.
+`toggled-off-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled off.
+`ripple-size($ripple-size)` | Sets the ripple size of the switch.
+`density($density-scale)` | Sets density scale for switch. Supported density scales are `-5`, `-4`, `-3`, `-2`, `-1`, and `0` (default).
+`ripple-states-opacity($opacity-map)` | Sets the opacity of the ripple surrounding the thumb in any of the `hover`, `focus`, or `press` states. The `opacity-map` can specify any of these states as keys. States not specified in the map resort to default opacity values.
 
 ## `MDCSwitch` Properties and Methods
 
@@ -155,6 +152,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `setNativeControlChecked(checked: boolean)` | Sets the checked state of the native control. |
 | `setNativeControlDisabled(disabled: boolean)` | Sets the disabled state of the native control. |
+| `setNativeControlAttr(attr: string, value: string)` | Sets an HTML attribute to the given value on the native input element. |
 
 ### `MDCSwitchFoundation`
 

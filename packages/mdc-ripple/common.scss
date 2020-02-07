@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-ripple-common;
+@use "./mixins";
+@include mixins.common;

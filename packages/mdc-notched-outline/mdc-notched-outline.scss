@@ -20,85 +20,10 @@
 // THE SOFTWARE.
 //
 
-@import "@material/base/mixins";
-@import "@material/rtl/mixins";
-@import "./mixins";
-@import "./variables";
+@use "@material/base/mixins" as base-mixins;
+@use "./mixins";
 
 // Notched Outline is intended for use by multiple components, but its styles should only be emitted once when bundled
-@include mdc-base-emit-once("mdc-notched-outline") {
-  .mdc-notched-outline {
-    display: flex;
-    position: absolute;
-    right: 0;
-    left: 0;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    /* @noflip */
-    text-align: left;
-    pointer-events: none;
-
-    @include mdc-rtl {
-      /* @noflip */
-      text-align: right;
-    }
-
-    &__leading,
-    &__notch,
-    &__trailing {
-      box-sizing: border-box;
-      height: 100%;
-      border-top: $mdc-notched-outline-border-width solid;
-      border-bottom: $mdc-notched-outline-border-width solid;
-      pointer-events: none;
-    }
-
-    &__leading {
-      @include mdc-rtl-reflexive-property(border, $mdc-notched-outline-border-width solid, none);
-
-      width: $mdc-notched-outline-leading-width;
-    }
-
-    &__trailing {
-      @include mdc-rtl-reflexive-property(border, none, $mdc-notched-outline-border-width solid);
-
-      flex-grow: 1;
-    }
-
-    &__notch {
-      flex: 0 0 auto;
-      width: auto;
-      max-width: calc(100% - #{$mdc-notched-outline-leading-width} * 2);
-    }
-
-    .mdc-floating-label {
-      display: inline-block;
-      position: relative;
-      max-width: 100%;
-    }
-
-    .mdc-floating-label--float-above {
-      text-overflow: clip;
-    }
-
-    &--upgraded .mdc-floating-label--float-above {
-      max-width: calc(100% / .75);
-    }
-  }
-
-  .mdc-notched-outline--notched {
-    .mdc-notched-outline__notch {
-      @include mdc-rtl-reflexive-box(padding, right, 8px);
-
-      border-top: none;
-    }
-  }
-
-  .mdc-notched-outline--no-label {
-    .mdc-notched-outline__notch {
-      padding: 0;
-    }
-  }
+@include base-mixins.emit-once("mdc-notched-outline") {
+  @include mixins.core-styles;
 }

@@ -49,7 +49,7 @@ npm install @material/icon-button
 ### Styles
 
 ```scss
-@import "@material/icon-button/mdc-icon-button";
+@use "@material/icon-button/mdc-icon-button";
 ```
 
 ### JavaScript Instantiation
@@ -79,7 +79,6 @@ Then instantiate an `MDCIconButtonToggle` on the root element.
 <button id="add-to-favorites"
    class="mdc-icon-button"
    aria-label="Add to favorites"
-   aria-hidden="true"
    aria-pressed="false">
    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
    <i class="material-icons mdc-icon-button__icon">favorite_border</i>
@@ -99,7 +98,6 @@ The icon button toggle can be used with SVGs.
 <button id="star-this-item"
    class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
-   aria-hidden="true"
    aria-pressed="true">
    <svg class="mdc-icon-button__icon">
      ...
@@ -118,7 +116,6 @@ The icon button toggle can be used with `img` tags.
 <button id="star-this-item"
    class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
-   aria-hidden="true"
    aria-pressed="true">
    <img src="" class="mdc-icon-button__icon"/>
    <img src="" class="mdc-icon-button__icon mdc-icon-button__icon--on"/>
@@ -163,11 +160,11 @@ To customize an icon button's color and properties, you can use the following mi
 
 Mixin | Description
 --- | ---
-`mdc-icon-button-density($density-scale)` | Sets density scale for icon button. Supported density scales range from `-5` to `0`, (`0` being the default).
-`mdc-icon-button-size($size)` | Sets the padding for the icon button based on overall size.
-`mdc-icon-button-icon-size($width, $height, $padding)` | Sets the width, height, font-size and padding for the icon and ripple. `$height` is optional and defaults to `$width`. `$padding` is optional and defaults to `max($width, $height)/2`. `font-size` is set to `max($width, $height)`.
-`mdc-icon-button-ink-color($color)` | Sets the font color and the ripple color to the provided color value.
-`mdc-icon-button-disabled-ink-color($color)` | Sets the font color to the provided color value for a disabled icon button.
+`density($density-scale)` | Sets density scale for icon button. Supported density scales range from `-5` to `0`, (`0` being the default).
+`size($size)` | Sets the padding for the icon button based on overall size.
+`icon-size($width, $height, $padding)` | Sets the width, height, font-size and padding for the icon and ripple. `$height` is optional and defaults to `$width`. `$padding` is optional and defaults to `max($width, $height)/2`. `font-size` is set to `max($width, $height)`.
+`ink-color($color)` | Sets the font color and the ripple color to the provided color value.
+`disabled-ink-color($color)` | Sets the font color to the provided color value for a disabled icon button.
 
 ## `MDCIconButtonToggle` Properties and Methods
 

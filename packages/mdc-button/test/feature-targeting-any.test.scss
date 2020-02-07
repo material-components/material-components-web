@@ -1,0 +1,25 @@
+@use "../mixins" as button;
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include button.core-styles($query: $query);
+    @include button.filled-accessible(red, $query: $query);
+    @include button.container-fill-color(red, $query: $query);
+    @include button.outline-color(red, $query: $query);
+    @include button.icon-color(red, $query: $query);
+    @include button.ink-color(red, $query: $query);
+    @include button.shape-radius(0, $query: $query);
+    @include button.horizontal-padding(0, $query: $query);
+    @include button.outline-width(0, $query: $query);
+    @include button.ripple($query: $query);
+    @include button.without-ripple($query: $query);
+    @include button.theme-baseline($query: $query);
+    @include button.density(-1, $query: $query);
+    @include button.height(0, $query: $query);
+    @include button.label-overlow-ellipsis($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());

@@ -20,28 +20,31 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/functions";
-@import "@material/button/variables";
-@import "@material/elevation/mixins";
-@import "@material/feature-targeting/functions";
-@import "@material/feature-targeting/mixins";
-@import "@material/rtl/mixins";
-@import "@material/shape/mixins";
-@import "@material/theme/mixins";
-@import "@material/theme/variables"; // for mdc-theme-prop-value
-@import "@material/touch-target/variables";
-@import "@material/typography/mixins";
-@import "./variables";
+@use "sass:math";
+@use "@material/animation/functions" as animation-functions;
+@use "@material/button/variables" as button-variables;
+@use "@material/elevation/mixins" as elevation-mixins;
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/rtl/mixins" as rtl-mixins;
+@use "@material/shape/mixins" as shape-mixins;
+@use "@material/theme/mixins" as theme-mixins;
+@use "@material/theme/variables" as theme-variables; // for mdc-theme-prop-value
+@use "@material/touch-target/variables" as touch-target-variables;
+@use "@material/typography/mixins" as typography-mixins;
+@use "./variables";
 
-@mixin mdc-dialog-core-styles($query: mdc-feature-all()) {
-  $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin core-styles($query: feature-targeting-functions.all()) {
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // postcss-bem-linter: define dialog
 
   .mdc-dialog,
   .mdc-dialog__scrim {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       position: fixed;
       top: 0;
       left: 0;
@@ -54,25 +57,25 @@
   }
 
   .mdc-dialog {
-    @include mdc-dialog-container-fill-color(surface, $query: $query);
-    @include mdc-dialog-scrim-color($mdc-dialog-scrim-color, $query: $query);
-    @include mdc-dialog-title-ink-color($mdc-dialog-title-ink-color, $query: $query);
-    @include mdc-dialog-content-ink-color($mdc-dialog-content-ink-color, $query: $query);
-    @include mdc-dialog-scroll-divider-color($mdc-dialog-scroll-divider-color, $query: $query);
-    @include mdc-dialog-min-width($mdc-dialog-min-width, $query: $query);
-    @include mdc-dialog-max-width($mdc-dialog-max-width, $mdc-dialog-margin, $query: $query);
-    @include mdc-dialog-max-height(null, $mdc-dialog-margin, $query: $query);
-    @include mdc-dialog-shape-radius(medium, $query: $query);
+    @include container-fill-color(surface, $query: $query);
+    @include scrim-color(variables.$scrim-color, $query: $query);
+    @include title-ink-color(variables.$title-ink-color, $query: $query);
+    @include content-ink-color(variables.$content-ink-color, $query: $query);
+    @include scroll-divider-color(variables.$scroll-divider-color, $query: $query);
+    @include min-width(variables.$min-width, $query: $query);
+    @include max-width(variables.$max-width, variables.$margin, $query: $query);
+    @include max-height(null, variables.$margin, $query: $query);
+    @include shape-radius(medium, $query: $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
       display: none;
-      z-index: $mdc-dialog-z-index;
+      z-index: variables.$z-index;
     }
   }
 
   .mdc-dialog__scrim {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       opacity: 0;
       z-index: -1;
     }
@@ -81,7 +84,7 @@
   // This wrapper element is needed to make max-height work in IE 11.
   // See https://github.com/philipwalton/flexbugs/issues/216
   .mdc-dialog__container {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: flex;
       flex-direction: row; // IE 11
       align-items: center;
@@ -97,9 +100,11 @@
   }
 
   .mdc-dialog__surface {
-    @include mdc-elevation(24, $query: $query);
+    @include elevation-mixins.overlay-surface-position($query: $query);
+    @include elevation-mixins.overlay-dimensions(100%, $query: $query);
+    @include elevation-mixins.elevation(24, $query: $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: flex;
       flex-direction: column;
       flex-grow: 0; // IE 11
@@ -111,7 +116,7 @@
       // IE 11: Otherwise, scrolling content in `mdc-dialog__content` overflows.
       overflow-y: auto;
 
-      @include mdc-rtl(".mdc-dialog") {
+      @include rtl-mixins.rtl(".mdc-dialog") {
         /* @noflip */
         text-align: right;
       }
@@ -119,19 +124,19 @@
   }
 
   .mdc-dialog__title {
-    @include mdc-typography-baseline-top(40px, $query: $query);
-    @include mdc-typography(headline6, $query: $query);
+    @include typography-mixins.baseline-top(40px, $query: $query);
+    @include typography-mixins.typography(headline6, $query: $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: block;
       position: relative;
       flex-shrink: 0;
       box-sizing: border-box;
       margin: 0;
-      padding: 0 24px $mdc-dialog-title-bottom-padding;
+      padding: 0 24px variables.$title-bottom-padding;
       border-bottom: 1px solid transparent;
 
-      @include mdc-rtl(".mdc-dialog") {
+      @include rtl-mixins.rtl(".mdc-dialog") {
         /* @noflip */
         text-align: right;
       }
@@ -140,17 +145,17 @@
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-dialog--scrollable .mdc-dialog__title {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       // Adjust bottom padding to make title height align to spec when divider is present.
       // (Titles for alert dialogs w/o dividers align based on text baseline. All spec values are divisible by 4.)
-      padding-bottom: $mdc-dialog-title-bottom-padding + 6px;
+      padding-bottom: variables.$title-bottom-padding + 6px;
     }
   }
 
   .mdc-dialog__content {
-    @include mdc-typography(body1, $query: $query);
+    @include typography-mixins.typography(body1, $query: $query);
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       flex-grow: 1;
       box-sizing: border-box;
       margin: 0;
@@ -161,14 +166,14 @@
 
     // The content element already has top/bottom padding, so we need to suppress margins on its first/last children.
     > :first-child {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         margin-top: 0;
       }
     }
 
     // The content element already has top/bottom padding, so we need to suppress margins on its first/last children.
     > :last-child {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         margin-bottom: 0;
       }
     }
@@ -176,7 +181,7 @@
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-dialog__title + .mdc-dialog__content {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       // Eliminate padding to bring as close to spec as possible, relying on title padding.
       // (Spec seems inconsistent RE title/body spacing on alert vs. simple variants.)
       padding-top: 0;
@@ -185,7 +190,7 @@
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-dialog--scrollable .mdc-dialog__content {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       // Reduce and equalize vertical paddings when scrollable dividers are present
       // (Note: this is intentionally after title + content to take precedence)
       padding-top: 8px;
@@ -195,7 +200,7 @@
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-dialog__content .mdc-list:first-child:last-child {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       // Override default .mdc-list padding for content consisting exclusively of a MDC List
       padding: 6px 0 0; // Top padding balances with title height
     }
@@ -203,14 +208,14 @@
 
   // stylelint-disable-next-line plugin/selector-bem-pattern, selector-max-specificity
   .mdc-dialog--scrollable .mdc-dialog__content .mdc-list:first-child:last-child {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       // Override default .mdc-list padding for content consisting exclusively of a MDC List
       padding: 0;
     }
   }
 
   .mdc-dialog__actions {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: flex;
       position: relative;
       flex-shrink: 0;
@@ -220,12 +225,12 @@
       box-sizing: border-box;
       min-height: 52px;
       margin: 0;
-      padding: $mdc-dialog-actions-padding;
+      padding: variables.$actions-padding;
       border-top: 1px solid transparent;
     }
 
     .mdc-dialog--stacked & {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         flex-direction: column;
         align-items: flex-end;
       }
@@ -233,29 +238,29 @@
   }
 
   .mdc-dialog__button {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-rtl-reflexive-box(margin, left, 8px);
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-box(margin, left, 8px);
     }
 
     &:first-child {
-      @include mdc-feature-targets($feat-structure) {
-        @include mdc-rtl-reflexive-box(margin, left, 0);
+      @include feature-targeting-mixins.targets($feat-structure) {
+        @include rtl-mixins.reflexive-box(margin, left, 0);
       }
     }
 
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       max-width: 100%; // Prevent long text from overflowing parent element in IE 11
       /* @noflip */
       text-align: right;
 
-      @include mdc-rtl(".mdc-dialog") {
+      @include rtl-mixins.rtl(".mdc-dialog") {
         /* @noflip */
         text-align: left;
       }
     }
 
     .mdc-dialog--stacked &:not(:first-child) {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         margin-top: 12px;
       }
     }
@@ -264,21 +269,21 @@
   .mdc-dialog--open,
   .mdc-dialog--opening,
   .mdc-dialog--closing {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       display: flex;
     }
   }
 
   .mdc-dialog--opening {
     .mdc-dialog__scrim {
-      @include mdc-feature-targets($feat-animation) {
+      @include feature-targeting-mixins.targets($feat-animation) {
         transition: opacity 150ms linear;
       }
     }
 
     .mdc-dialog__container {
-      @include mdc-feature-targets($feat-animation) {
-        transition: opacity 75ms linear, mdc-animation-enter(transform, 150ms);
+      @include feature-targeting-mixins.targets($feat-animation) {
+        transition: opacity 75ms linear, animation-functions.enter(transform, 150ms);
       }
     }
   }
@@ -286,13 +291,13 @@
   .mdc-dialog--closing {
     .mdc-dialog__scrim,
     .mdc-dialog__container {
-      @include mdc-feature-targets($feat-animation) {
+      @include feature-targeting-mixins.targets($feat-animation) {
         transition: opacity 75ms linear;
       }
     }
 
     .mdc-dialog__container {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         // Dialog container scales up while opening, but should remain scaled up while closing
         transform: scale(1);
       }
@@ -301,13 +306,13 @@
 
   .mdc-dialog--open {
     .mdc-dialog__scrim {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         opacity: 1;
       }
     }
 
     .mdc-dialog__container {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         transform: scale(1);
         opacity: 1;
       }
@@ -318,91 +323,91 @@
 
   // Class applied to body while dialog is open, to prevent scrolling behind the dialog
   .mdc-dialog-scroll-lock {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       overflow: hidden;
     }
   }
 }
 
-@mixin mdc-dialog-container-fill-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin container-fill-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-dialog__surface {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(background-color, $color);
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(background-color, $color);
     }
   }
 }
 
-@mixin mdc-dialog-scrim-color($color, $opacity: $mdc-dialog-scrim-opacity, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin scrim-color($color, $opacity: variables.$scrim-opacity, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-dialog__scrim {
-    @include mdc-feature-targets($feat-color) {
-      background-color: rgba(mdc-theme-prop-value($color), $opacity);
+    @include feature-targeting-mixins.targets($feat-color) {
+      background-color: rgba(theme-variables.prop-value($color), $opacity);
     }
   }
 }
 
-@mixin mdc-dialog-title-ink-color($color, $opacity: $mdc-dialog-title-ink-opacity, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin title-ink-color($color, $opacity: variables.$title-ink-opacity, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-dialog__title {
-    @include mdc-feature-targets($feat-color) {
-      color: rgba(mdc-theme-prop-value($color), $opacity);
+    @include feature-targeting-mixins.targets($feat-color) {
+      color: rgba(theme-variables.prop-value($color), $opacity);
     }
   }
 }
 
-@mixin mdc-dialog-content-ink-color($color, $opacity: $mdc-dialog-content-ink-opacity, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
+@mixin content-ink-color($color, $opacity: variables.$content-ink-opacity, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-dialog__content {
-    @include mdc-feature-targets($feat-color) {
-      color: rgba(mdc-theme-prop-value($color), $opacity);
+    @include feature-targeting-mixins.targets($feat-color) {
+      color: rgba(theme-variables.prop-value($color), $opacity);
     }
   }
 }
 
-@mixin mdc-dialog-scroll-divider-color(
+@mixin scroll-divider-color(
   $color,
-  $opacity: $mdc-dialog-scroll-divider-opacity,
-  $query: mdc-feature-all()
+  $opacity: variables.$scroll-divider-opacity,
+  $query: feature-targeting-functions.all()
 ) {
-  $feat-color: mdc-feature-create-target($query, color);
+  $feat-color: feature-targeting-functions.create-target($query, color);
 
   &.mdc-dialog--scrollable .mdc-dialog__title,
   &.mdc-dialog--scrollable .mdc-dialog__actions {
-    @include mdc-feature-targets($feat-color) {
-      border-color: rgba(mdc-theme-prop-value($color), $opacity);
+    @include feature-targeting-mixins.targets($feat-color) {
+      border-color: rgba(theme-variables.prop-value($color), $opacity);
     }
   }
 }
 
-@mixin mdc-dialog-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin shape-radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-dialog__surface {
-    @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
+    @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
   }
 }
 
-@mixin mdc-dialog-min-width($min-width, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin min-width($min-width, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-dialog__surface {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       min-width: $min-width;
     }
   }
 }
 
-@mixin mdc-dialog-max-width($max-width, $margin, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin max-width($max-width, $margin, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
   $max-size-calc-expr: calc(100vw - #{$margin * 2});
 
   .mdc-dialog__surface {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       @if $max-width {
         $max-width-breakpoint: $max-width + ($margin * 2);
 
@@ -422,12 +427,12 @@
   }
 }
 
-@mixin mdc-dialog-max-height($max-height, $margin, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin max-height($max-height, $margin, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
   $max-size-calc-expr: calc(100% - #{$margin * 2});
 
   .mdc-dialog__surface {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       @if $max-height {
         $max-height-breakpoint: $max-height + ($margin * 2);
 
@@ -452,7 +457,7 @@
     // scrolling content overflows. So, reset height if surface height
     // is fixed.
     .mdc-dialog__container {
-      @include mdc-feature-targets($feat-structure) {
+      @include feature-targeting-mixins.targets($feat-structure) {
         /* stylelint-disable */
         // Disable stylelint here, as nesting depth > 3 is required to
         // work around IE 11.
@@ -471,16 +476,16 @@
 }
 
 // Applied to dialogs that have buttons with an increased touch target.
-@mixin mdc-dialog-with-touch-target($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin with-touch-target($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
   $touch-target-margin:
-    ($mdc-touch-target-height - $mdc-button-height) / 2;
-  $vertical-padding: max(0, $mdc-dialog-actions-padding - $touch-target-margin);
+    (touch-target-variables.$height - button-variables.$height) / 2;
+  $vertical-padding: math.max(0, variables.$actions-padding - $touch-target-margin);
 
   // Buttons with an increased touch target have added vertical margin, so
   // decrease the actions element padding to compensate.
   .mdc-dialog__actions {
-    @include mdc-feature-targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       padding-top: $vertical-padding;
       padding-bottom: $vertical-padding;
 

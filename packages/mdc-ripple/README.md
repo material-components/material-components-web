@@ -48,26 +48,28 @@ CSS Class | Description
 
 In order to fully style the ripple effect for different states (hover/focus/pressed), the following mixins must be included:
 
-* `mdc-ripple-surface`, for base styles
-* Either `mdc-ripple-radius-bounded` or `mdc-ripple-radius-unbounded`, to appropriately size the ripple on the surface
-* Either the basic or advanced `mdc-states` mixins, as explained below
+* `surface`, for base styles
+* Either `radius-bounded` or `radius-unbounded`, to appropriately size the ripple on the surface
+* Either the basic or advanced `states` mixins, as explained below
 
 ##### Using basic states mixins
 ```css
+@use "@material/ripple";
+
 .my-surface {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
-  @include mdc-states;
+  @include ripple.surface;
+  @include ripple.radius-bounded;
+  @include ripple.states;
 }
 ```
 
 ##### Using advanced states mixins
 ```css
 .my-surface {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
-  @include mdc-states-base-color(black);
-  @include mdc-states-opacities((hover: .1, focus: .3, press: .4));
+  @include ripple.surface;
+  @include ripple.radius-bounded;
+  @include ripple.states-base-color(black);
+  @include ripple.states-opacities((hover: .1, focus: .3, press: .4));
 }
 ```
 
@@ -77,23 +79,23 @@ These APIs use pseudo-elements for the ripple effect: `::before` for the backgro
 
 Mixin | Description
 --- | ---
-`mdc-ripple-surface` | Mandatory. Adds base styles for a ripple surface
-`mdc-ripple-radius-bounded($radius)` | Adds styles for the radius of the ripple effect,<br>for bounded ripple surfaces
-`mdc-ripple-radius-unbounded($radius)` | Adds styles for the radius of the ripple effect,<br>for unbounded ripple surfaces
+`surface` | Mandatory. Adds base styles for a ripple surface
+`radius-bounded($radius)` | Adds styles for the radius of the ripple effect,<br>for bounded ripple surfaces
+`radius-unbounded($radius)` | Adds styles for the radius of the ripple effect,<br>for unbounded ripple surfaces
 
-> _NOTE_: It is mandatory to include _either_ `mdc-ripple-radius-bounded` or `mdc-ripple-radius-unbounded`. In both cases, `$radius` is optional and defaults to `100%`.
+> _NOTE_: It is mandatory to include _either_ `radius-bounded` or `radius-unbounded`. In both cases, `$radius` is optional and defaults to `100%`.
 
 #### Basic States Mixins
 
 Mixin | Description
 --- | ---
-`mdc-states($color, $has-nested-focusable-element)` | Mandatory. Adds state and ripple styles in the given color
-`mdc-states-activated($color, $has-nested-focusable-element)` | Optional. Adds state and ripple styles for activated states in the given color
-`mdc-states-selected($color, $has-nested-focusable-element)` | Optional. Adds state and ripple styles for selected states in the given color
+`states($color, $has-nested-focusable-element)` | Mandatory. Adds state and ripple styles in the given color
+`states-activated($color, $has-nested-focusable-element)` | Optional. Adds state and ripple styles for activated states in the given color
+`states-selected($color, $has-nested-focusable-element)` | Optional. Adds state and ripple styles for selected states in the given color
 
 > _NOTE_: Each of the mixins above adds ripple styles using the indicated color, deciding opacity values based on whether the passed color is light or dark.
 
-> _NOTE_: The `mdc-states-activated` and `mdc-states-selected` mixins add the appropriate state styles to the root element containing `&--activated` or `&--selected` modifier classes respectively.
+> _NOTE_: The `states-activated` and `states-selected` mixins add the appropriate state styles to the root element containing `&--activated` or `&--selected` modifier classes respectively.
 
 > _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
 
@@ -106,18 +108,18 @@ These mixins can also be used to emit activated or selected styles, by applying 
 
 Mixin | Description
 --- | ---
-`mdc-states-base-color($color)` | Mandatory. Sets up base state styles using the provided color
-`mdc-states-opacities($opacity-map, $has-nested-focusable-element)` | Sets the opacity of the ripple in any of the `hover`, `focus`, or `press` states. The `opacity-map` can specify one or more of these states as keys. States not specified in the map resort to default opacity values.
+`states-base-color($color)` | Mandatory. Sets up base state styles using the provided color
+`states-opacities($opacity-map, $has-nested-focusable-element)` | Sets the opacity of the ripple in any of the `hover`, `focus`, or `press` states. The `opacity-map` can specify one or more of these states as keys. States not specified in the map resort to default opacity values.
 
 > _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
 
-> _DEPRECATED_: The individual mixins `mdc-states-hover-opacity($opacity)`, `mdc-states-focus-opacity($opacity, $has-nested-focusable-element)`, and `mdc-states-press-opacity($opacity)` are deprecated in favor of the unified `mdc-states-opacities($opacity-map, $has-nested-focusable-element)` mixin above.
+> _DEPRECATED_: The individual mixins `states-hover-opacity($opacity)`, `states-focus-opacity($opacity, $has-nested-focusable-element)`, and `states-press-opacity($opacity)` are deprecated in favor of the unified `states-opacities($opacity-map, $has-nested-focusable-element)` mixin above.
 
 #### Sass Functions
 
 Function | Description
 --- | ---
-`mdc-states-opacity($color, $state)` | Returns the appropriate default opacity to apply to the given color in the given state (hover, focus, press, selected, or activated)
+`states-opacity($color, $state)` | Returns the appropriate default opacity to apply to the given color in the given state (hover, focus, press, selected, or activated)
 
 ### `MDCRipple`
 
@@ -172,7 +174,7 @@ Method Signature | Description
 | `computeBoundingRect() => ClientRect` | Returns the ClientRect for the surface |
 | `getWindowPageOffset() => {x: number, y: number}` | Returns the `page{X,Y}Offset` values for the window object |
 
-> _NOTE_: When implementing `browserSupportsCssVars`, please take the [Edge](#caveat-edge) and [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you.
+> _NOTE_: When implementing `browserSupportsCssVars`, please take the [Safari 9](#caveat-safari) considerations into account. We provide a `supportsCssVariables` function within the `util.js` which we recommend using, as it handles this for you.
 
 ### `MDCRippleFoundation`
 
@@ -307,17 +309,6 @@ Method Signature | Description
 > _NOTE_: The function `util.supportsCssVariables` cache its results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
 
 ## Caveats
-
-### Caveat: Edge
-
-> TL;DR ripples are disabled in Edge because of issues with its support of CSS variables in pseudo elements.
-
-Edge introduced CSS variables in version 15. Unfortunately, there are
-[known issues](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/)
-involving its implementation for pseudo-elements, which cause ripples to behave incorrectly.
-We feature-detect Edge's buggy behavior as it pertains to `::before`, and do not initialize ripples if the bug is
-observed. Earlier versions of Edge (and IE) do not support CSS variables at all,
-and as such ripples are never initialized.
 
 ### Caveat: Safari 9
 
