@@ -50,7 +50,7 @@ npm install @material/menu-surface
 ### Styles
 
 ```css
-@import "@material/menu-surface/mdc-menu-surface";
+@use "@material/menu-surface/mdc-menu-surface";
 ```
 
 ### JavaScript Instantiation
@@ -143,9 +143,9 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-menu-surface-ink-color($color)` | Sets the `color` property of the `mdc-menu-surface`.
-`mdc-menu-surface-fill-color($color)` | Sets the `background-color` property of the `mdc-menu-surface`.
-`mdc-menu-surface-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to menu surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`ink-color($color)` | Sets the `color` property of the `mdc-menu-surface`.
+`fill-color($color)` | Sets the `background-color` property of the `mdc-menu-surface`.
+`shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to menu surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 ## Constants & Types
 

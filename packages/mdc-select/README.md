@@ -77,10 +77,10 @@ The select requires that you set the `width` of the `mdc-select__anchor` element
 When using the select, you will also need to load the Menu and List components' styles.
 
 ```scss
-@import "@material/list/mdc-list";
-@import "@material/menu-surface/mdc-menu-surface";
-@import "@material/menu/mdc-menu";
-@import "@material/select/mdc-select";
+@use "@material/list/mdc-list";
+@use "@material/menu-surface/mdc-menu-surface";
+@use "@material/menu/mdc-menu";
+@use "@material/select/mdc-select";
 
 .demo-width-class {
   width: 400px;
@@ -364,18 +364,18 @@ Mixins should be included in the context of a custom class applied to the compon
 
 Mixin | Description
 --- | ---
-`mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select.
-`mdc-select-container-fill-color($color)` | Customizes the background color of the select.
-`mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state.
-`mdc-select-focused-label-color($color)` | Customizes the label color of the select when focused.
-`mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
-`mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
-`mdc-select-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed select variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-select-hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
-`mdc-select-outline-color($color)` | Customizes the color of the notched outline.
-`mdc-select-outline-shape-radius($radius, $rtl-reflexive)` | Sets the border radius of of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-select-focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
-`mdc-select-hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
+`ink-color($color)` | Customizes the color of the selected item displayed in the select.
+`container-fill-color($color)` | Customizes the background color of the select.
+`label-color($color)` | Customizes the label color of the select in the unfocused state.
+`focused-label-color($color)` | Customizes the label color of the select when focused.
+`bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
+`focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
+`shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed select variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
+`outline-color($color)` | Customizes the color of the notched outline.
+`outline-shape-radius($radius, $rtl-reflexive)` | Sets the border radius of of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
+`hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
 
 > _NOTE_: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 

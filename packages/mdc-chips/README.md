@@ -62,7 +62,7 @@ npm install @material/chips
 ### Styles
 
 ```scss
-@import "@material/chips/mdc-chips";
+@use "@material/chips/mdc-chips";
 ```
 
 ### JavaScript Instantiation
@@ -302,26 +302,26 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-chip-set-spacing($gap-size)` | Customizes the amount of space between each chip in the set
-`mdc-chip-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to chip with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink, icon and ripple colors to meet accessibility standards
-`mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
-`mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
-`mdc-chip-selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
-`mdc-chip-outline($width, $style, $color)` | Customizes the outline properties for a chip
-`mdc-chip-outline-width($width, $horizontal-padding)` | Customizes the outline width for a chip. `$horizontal-padding` is only required in cases where `mdc-chip-horizontal-padding` is also included with a custom value
-`mdc-chip-outline-style($style)` | Customizes the outline style for a chip
-`mdc-chip-outline-color($color)` | Customizes the outline color for a chip
-`mdc-chip-height($height)` | Customizes the height for a chip
-`mdc-chip-horizontal-padding($padding)` | Customizes the horizontal padding for a chip
-`mdc-chip-leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
-`mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
-`mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
-`mdc-chip-trailing-icon-size($size)` | Customizes the size of a trailing icon in a chip
-`mdc-chip-leading-icon-margin($left-margin, $right-margin)` | Customizes the margin of a leading icon in a chip
-`mdc-chip-trailing-icon-margin($left-margin, $right-margin)` | Customizes the margin of a trailing icon in a chip
-`mdc-chip-elevation-transition()` | Adds a MDC elevation transition to the chip. This should be used instead of setting transition with `mdc-elevation-transition-value()` directly when a box shadow transition is desired for a chip
-`mdc-chip-density($density-scale)` | Sets density scale for chip. Supported density scales  are `-2`, `-1` and `0` (default).
+`set-spacing($gap-size)` | Customizes the amount of space between each chip in the set
+`shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to chip with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink, icon and ripple colors to meet accessibility standards
+`fill-color($color)` | Customizes the background fill color for a chip
+`ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
+`selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
+`outline($width, $style, $color)` | Customizes the outline properties for a chip
+`outline-width($width, $horizontal-padding)` | Customizes the outline width for a chip. `$horizontal-padding` is only required in cases where `horizontal-padding` is also included with a custom value
+`outline-style($style)` | Customizes the outline style for a chip
+`outline-color($color)` | Customizes the outline color for a chip
+`height($height)` | Customizes the height for a chip
+`horizontal-padding($padding)` | Customizes the horizontal padding for a chip
+`leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
+`trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
+`leading-icon-size($size)` | Customizes the size of a leading icon in a chip
+`trailing-icon-size($size)` | Customizes the size of a trailing icon in a chip
+`leading-icon-margin($left-margin, $right-margin)` | Customizes the margin of a leading icon in a chip
+`trailing-icon-margin($left-margin, $right-margin)` | Customizes the margin of a trailing icon in a chip
+`elevation-transition()` | Adds a MDC elevation transition to the chip. This should be used instead of setting transition with `mdc-elevation-transition-value()` directly when a box shadow transition is desired for a chip
+`density($density-scale)` | Sets density scale for chip. Supported density scales  are `-2`, `-1` and `0` (default).
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 

@@ -68,7 +68,7 @@ Note that `aria-label`, `aria-valuemin`, and `aria-valuemax` are static and must
 
 ### Styles
 ```scss
-@import "@material/linear-progress/mdc-linear-progress";
+@use "@material/linear-progress/mdc-linear-progress";
 ```
 
 ### JavaScript Instantiation
@@ -95,8 +95,8 @@ The provided modifiers are:
 
 Mixin | Description
 --- | ---
-`mdc-linear-progress-bar-color($color)` | Sets the color of the progress bar
-`mdc-linear-progress-buffer-color($color)` | Sets the color of the buffer bar and dots
+`bar-color($color)` | Sets the color of the progress bar
+`buffer-color($color)` | Sets the color of the buffer bar and dots
 
 ### Using the Foundation Class
 

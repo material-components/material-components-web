@@ -68,8 +68,8 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ### Styles
 
 ```scss
-@import "@material/top-app-bar/mdc-top-app-bar";
-@import "@material/icon-button/mdc-icon-button";
+@use "@material/top-app-bar/mdc-top-app-bar";
+@use "@material/icon-button/mdc-icon-button";
 ```
 
 ### JavaScript Instantiation
@@ -188,11 +188,11 @@ Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-top-app-bar-ink-color($color)` | Sets the ink color of the top app bar.
-`mdc-top-app-bar-icon-ink-color($color)` | Sets the ink color of the top app bar icons.
-`mdc-top-app-bar-fill-color($color)` | Sets the fill color of the top app bar.
-`mdc-top-app-bar-fill-color-accessible($color)` | Sets the fill color of the top app bar and automatically sets a high-contrast ink color.
-`mdc-top-app-bar-short-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to short top app bar variant (when it is collapsed) with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to true.
+`ink-color($color)` | Sets the ink color of the top app bar.
+`icon-ink-color($color)` | Sets the ink color of the top app bar icons.
+`fill-color($color)` | Sets the fill color of the top app bar.
+`fill-color-accessible($color)` | Sets the fill color of the top app bar and automatically sets a high-contrast ink color.
+`short-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to short top app bar variant (when it is collapsed) with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to true.
 
 ## `MDCTopAppBar` Properties and Methods
 

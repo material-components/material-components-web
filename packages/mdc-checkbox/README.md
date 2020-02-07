@@ -66,8 +66,8 @@ We recommend using MDC Checkbox with [MDC Form Field](../mdc-form-field) for enh
 ### Styles
 
 ```scss
-@import "@material/form-field/mdc-form-field";
-@import "@material/checkbox/mdc-checkbox";
+@use "@material/form-field/mdc-form-field";
+@use "@material/checkbox/mdc-checkbox";
 ```
 
 ### JavaScript Instantiation
@@ -148,13 +148,13 @@ MDC Checkbox uses [MDC Theme](../mdc-theme)'s `secondary` color by default for "
 
 Mixin | Description
 --- | ---
-`mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color, $generate-keyframes)` | Sets stroke & fill colors for both marked and unmarked state of enabled checkbox. Set $generate-keyframes to false to prevent the mixin from generating @keyframes.
-`mdc-checkbox-disabled-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color)` | Sets stroke & fill colors for both marked and unmarked state of disabled checkbox.
-`mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons for an enabled checkbox
-`mdc-checkbox-disabled-ink-color($color)` | Sets the ink color of the checked and indeterminate icons for a disabled checkbox
-`mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator (ripple) when checkbox is selected or is in indeterminate state.
-`mdc-checkbox-ripple-size($ripple-size)` | Sets the ripple size of the checkbox.
-`mdc-checkbox-density($density-scale)` | Sets density scale for checkbox, Supported density scales are `-3`, `-2`, `-1`, and `0` (default).
+`container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color, $generate-keyframes)` | Sets stroke & fill colors for both marked and unmarked state of enabled checkbox. Set $generate-keyframes to false to prevent the mixin from generating @keyframes.
+`disabled-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color)` | Sets stroke & fill colors for both marked and unmarked state of disabled checkbox.
+`ink-color($color)` | Sets the ink color of the checked and indeterminate icons for an enabled checkbox
+`disabled-ink-color($color)` | Sets the ink color of the checked and indeterminate icons for a disabled checkbox
+`focus-indicator-color($color)` | Sets the color of the focus indicator (ripple) when checkbox is selected or is in indeterminate state.
+`ripple-size($ripple-size)` | Sets the ripple size of the checkbox.
+`density($density-scale)` | Sets density scale for checkbox, Supported density scales are `-3`, `-2`, `-1`, and `0` (default).
 
 The ripple effect for the Checkbox component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
