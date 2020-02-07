@@ -84,7 +84,7 @@ Action buttons with long text should be positioned _below_ the label instead of 
 </div>
 ```
 
-Alternatively, you can call the `mdc-snackbar-layout-stacked` mixin from Sass:
+Alternatively, you can call the `layout-stacked` mixin from Sass:
 
 ```scss
 @use "@material/snackbar";
@@ -108,7 +108,7 @@ On larger screens, they can optionally be displayed on the _leading_ edge of the
 </div>
 ```
 
-Alternatively, you can call the `mdc-snackbar-position-leading` mixin from Sass:
+Alternatively, you can call the `position-leading` mixin from Sass:
 
 ```scss
 @media (min-width: snackbar.$mobile-breakpoint) {
