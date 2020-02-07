@@ -38,6 +38,9 @@
 
 $ripple-target: ".mdc-button__ripple";
 
+///
+/// Button core styles.
+///
 @mixin core-styles($query: feature-targeting-functions.all()) {
   @include without-ripple($query);
   @include ripple($query);
