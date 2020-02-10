@@ -46,7 +46,7 @@ const isValidCwd = (
 
 if (!isValidCwd) {
   console.error(
-    'Invalid CWD. Please ensure you are running this from the root of the repo, and that you have run `npm run dist`'
+    'Invalid CWD. Please ensure you are running this from the root of the repo, and that you have run `npm run dist`',
   );
   process.exit(1);
 }
@@ -101,7 +101,7 @@ async function cpAsset(asset) {
     () => console.log(`cp ${asset} -> ${destDir}`),
     (err) => {
       throw err;
-    }
+    },
   );
 }
 

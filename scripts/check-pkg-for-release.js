@@ -303,7 +303,7 @@ function checkUsedDependenciesMatchDeclaredDependencies() {
     (fileName) => {
       return fileName[0] !== '.'
         && fileName !== 'node_modules' && fileName !== 'test';
-    }
+    },
   );
 
   const usedDeps = new Set();
