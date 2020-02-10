@@ -57,6 +57,7 @@
     "cross-env": "^5.0.0",
     "css-loader": "^2.0.0",
     "dart-sass": "^1.24.3",
+    "del": "^4.0.0",
     "dom-events": "^0.1.1",
     "dts-bundle": "^0.7.3",
     "eslint": "^5.1.0",
@@ -87,6 +88,7 @@
     "lerna": "^3.6.0",
     "lolex": "3.1.0",
     "mini-css-extract-plugin": "^0.7.0",
+    "mkdirp": "^0.5.1",
     "mocha": "^6.0.0",
     "npm-run-all": "^4.1.1",
     "postcss-loader": "^3.0.0",
@@ -124,9 +126,5 @@
     "plugins": [
       "transform-object-assign"
     ]
-  },
-  "dependencies": {
-    "del": "^5.1.0",
-    "mkdirp": "^1.0.3"
   }
 }
