@@ -350,6 +350,10 @@ $query: feature-targeting-functions.all()) {
   }
 }
 
+///
+/// Sets horizontal padding to the given number.
+/// @param {Number} $padding
+///
 @mixin horizontal-padding($padding, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
