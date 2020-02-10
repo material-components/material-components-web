@@ -24,7 +24,7 @@ of having too many open pull requests.
 ### Check The Obvious
 
 *  Do tests pass?
-*  Are there corresponding (internal) screenshot tests?
+*  Are there corresponding [screenshot tests](../../test/screenshot)?
 *  Do types of the methods/variables/objects/etc. follow our [best practices and conventions](../code/best_practices.md#typescript)?
 
 If the tests are failing, or the demo does not work, request changes from the
