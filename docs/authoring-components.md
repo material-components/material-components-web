@@ -465,17 +465,14 @@ energy nitpicking on pull requests.
 
 ### File Structure
 
-- Source files: Reside under `packages/`.
-- Test files: Reside under `packages/<mdc-component>/test/`.
+All source files for a component reside under `packages/`. All test files reside under `test/unit`,
+which mirrors the `packages/` directory. Screenshot tests for packages reside under `test/screenshot/spec`.
 
 A typical component within our codebase looks like so:
 
 ```
-packages/
-  ├── mdc-component/
-      ├── test/
-          ├── foundation.test.ts # Unit tests for the component's foundation
-          ├── mdc-component.test.ts # Unit tests for the component
+packages
+  ├── mdc-component
       ├── README.md # Usage instructions and API documentation
       ├── adapter.ts # Adapter interface implemented by framework wrappers and the vanilla component
       ├── foundation.ts # Framework-agnostic business logic used by wrapper libraries and the vanilla component
@@ -486,6 +483,17 @@ packages/
       ├── util.ts # (optional) Framework-agnostic helper functions (e.g., feature detection)
       ├── mdc-component.scss # The main source file for the component's CSS
       └── package.json # The components package file
+test/unit
+  ├── mdc-component
+      ├── foundation.test.js # Unit tests for the component's foundation
+      ├── mdc-component.test.js # Unit tests for the component's
+test/screenshot
+  ├── spec
+      ├── mdc-component
+          ├── classes
+              ├── baseline.html # component usage in the happy path case. Other variants would go under ./classes.
+          ├── mixins
+              ├── ink-color.html # component using a sass mixin for customization.
 ```
 
 **Every component _must_ have these files before we will accept a PR for them.**
