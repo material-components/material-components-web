@@ -36,9 +36,6 @@
 
 $ripple-target: ".mdc-radio__ripple";
 
-///
-/// Radio core styles.
-///
 @mixin core-styles($query: feature-targeting-functions.all()) {
   @include without-ripple($query);
   @include ripple($query);
