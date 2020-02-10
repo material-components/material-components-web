@@ -102,13 +102,3 @@ This'll initialize text field component on a single `.mdc-text-field` element.
 ## Need help?
 
 We're constantly trying to improve our components. If Github Issues don't fit your needs, then please visit us on our [Discord Channel](https://discord.gg/material-components).
-
-## Thank you
-
-Third-party services that we use and are thankful to:
-
-- [Travis CI](https://travis-ci.com/) for CI.
-- [Sauce Labs](https://saucelabs.com/) for unit testing.
-- [CrossBrowserTesting](https://crossbrowsertesting.com/) for [screenshot testing](test/screenshot/).
-
-<a href="https://crossbrowsertesting.com/"><img src="test/screenshot/static/images/cbt-logo.png" alt="CrossBrowserTesting logo" width="180" /></a>
