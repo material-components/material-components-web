@@ -1,7 +1,7 @@
 {
   "name": "@material/tab-bar",
   "description": "The Material Components for the web tab bar component",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -19,12 +19,12 @@
     "directory": "packages/mdc-tab-bar"
   },
   "dependencies": {
-    "@material/animation": "^4.0.0",
-    "@material/base": "^4.0.0",
-    "@material/density": "^4.0.0",
-    "@material/feature-targeting": "^4.0.0",
-    "@material/tab": "^4.0.0",
-    "@material/tab-scroller": "^4.0.0",
+    "@material/animation": "^5.0.0",
+    "@material/base": "^5.0.0",
+    "@material/density": "^5.0.0",
+    "@material/feature-targeting": "^5.0.0",
+    "@material/tab": "^5.0.0",
+    "@material/tab-scroller": "^5.0.0",
     "tslib": "^1.9.3"
   },
   "publishConfig": {
