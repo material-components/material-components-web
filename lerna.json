@@ -6,7 +6,8 @@
     },
     "publish": {
       "ignoreChanges": [
-        "*.md"
+        "*.md",
+        "*.txt"
       ]
     }
   },

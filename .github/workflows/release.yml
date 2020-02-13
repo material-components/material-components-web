@@ -40,7 +40,7 @@ jobs:
         run: |
           MDC_CURRENT_VERSION="v$(npm run version --silent)"
           # If empty then set `mdc_version_changed` variable to `true`
-          [[ -z $(git tag -l "$MDC_CURRENT_VERSION") ]] && echo "::set-output name=mdc_version_changed::true
+          [[ -z $(git tag -l "$MDC_CURRENT_VERSION") ]] && echo "::set-output name=mdc_version_changed::true"
       - name: Build packages
         if: steps.vars.outputs.mdc_version_changed == true
         run: |
