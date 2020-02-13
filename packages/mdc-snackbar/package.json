@@ -1,7 +1,7 @@
 {
   "name": "@material/snackbar",
   "description": "The Material Components for the web snackbar component",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -18,18 +18,18 @@
     "directory": "packages/mdc-snackbar"
   },
   "dependencies": {
-    "@material/animation": "^4.0.0",
-    "@material/base": "^4.0.0",
-    "@material/button": "^4.0.0",
-    "@material/dom": "^4.0.0",
-    "@material/elevation": "^4.0.0",
-    "@material/feature-targeting": "^4.0.0",
-    "@material/icon-button": "^4.0.0",
-    "@material/ripple": "^4.0.0",
-    "@material/rtl": "^4.0.0",
-    "@material/shape": "^4.0.0",
-    "@material/theme": "^4.0.0",
-    "@material/typography": "^4.0.0",
+    "@material/animation": "^5.0.0",
+    "@material/base": "^5.0.0",
+    "@material/button": "^5.0.0",
+    "@material/dom": "^5.0.0",
+    "@material/elevation": "^5.0.0",
+    "@material/feature-targeting": "^5.0.0",
+    "@material/icon-button": "^5.0.0",
+    "@material/ripple": "^5.0.0",
+    "@material/rtl": "^5.0.0",
+    "@material/shape": "^5.0.0",
+    "@material/theme": "^5.0.0",
+    "@material/typography": "^5.0.0",
     "tslib": "^1.9.3"
   }
 }
