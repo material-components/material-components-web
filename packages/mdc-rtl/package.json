@@ -1,7 +1,7 @@
 {
   "name": "@material/rtl",
   "description": "Material Components for the web RTL Scss helpers",
-  "version": "5.0.0",
+  "version": "4.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
