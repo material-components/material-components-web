@@ -132,14 +132,14 @@ Mixin | Description
 `standard-columns($column-count, $gutter-size)` | Styles a Standard Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
 `masonry-columns($column-count, $gutter-size)` | Styles a Masonry Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
 
-> **Note:** Only one of the `mdc-image-list-...-columns` mixins should be used for any given Image List.
+> **Note:** Only one of the `*-columns` mixins should be used for any given Image List.
 > Use the mixin appropriate to the variant being used.
 
 ### Additional Information
 
 #### Constraining width
 
-The `mdc-image-list-...-columns` mixins will grow and shrink items based on the Image List's overall width. Depending on
+The `*-columns` mixins will grow and shrink items based on the Image List's overall width. Depending on
 placement, this could be directly related to the viewport width, and images could become exceedingly large compared to
 their actual rendered size. This can be restricted by using any of `min-width`, `width`, or `max-width` on the Image
 List:

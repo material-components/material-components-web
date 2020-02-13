@@ -37,7 +37,6 @@ const childProcess = require('child_process');
 const {default: traverse} = require('babel-traverse');
 const parser = require('@babel/parser');
 const camelCase = require('camel-case');
-const cssom = require('cssom');
 const recast = require('recast');
 
 const CLI_PACKAGE_JSON_RELATIVE_PATH = process.argv[2];
@@ -195,14 +194,12 @@ function checkCSSDependencyAddedInMDCPackage() {
   }
 
   const src = fs.readFileSync(path.join(process.env.PWD, MASTER_CSS_RELATIVE_PATH), 'utf8');
-  const cssRules = cssom.parse(src).cssRules;
+  const cssRules = src.match(/@material[a-z-\/]+/g);
   const cssRule = path.join(CLI_PACKAGE_JSON.name, nameMDC);
 
-  assert.notEqual(typeof cssRules.find((value) => {
-    return value.href === cssRule;
-  }), 'undefined',
-  'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' +
-  'Please add ' + name + ' to ' + MASTER_CSS_RELATIVE_PATH + ' import rule before commit.');
+  assert.notEqual(cssRules.indexOf(cssRule), -1,
+    'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' +
+    'Please add ' + name + ' to ' + MASTER_CSS_RELATIVE_PATH + ' import rule before commit.');
 }
 
 function checkJSDependencyAddedInMDCPackage() {
@@ -306,7 +303,7 @@ function checkUsedDependenciesMatchDeclaredDependencies() {
     (fileName) => {
       return fileName[0] !== '.'
         && fileName !== 'node_modules' && fileName !== 'test';
-    }
+    },
   );
 
   const usedDeps = new Set();

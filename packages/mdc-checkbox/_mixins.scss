@@ -40,6 +40,9 @@
 
 $ripple-target: ".mdc-checkbox__ripple";
 
+///
+/// Checkbox core styles.
+///
 @mixin core-styles($query: feature-targeting-functions.all()) {
   @include without-ripple($query);
   @include ripple($query);

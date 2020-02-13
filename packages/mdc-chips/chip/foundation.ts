@@ -71,9 +71,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     };
   }
 
-  /**
-   * Whether a trailing icon click should immediately trigger exit/removal of the chip.
-   */
+  /** Whether a trailing icon click should immediately trigger exit/removal of the chip. */
   private shouldRemoveOnTrailingIconClick_ = true;
 
   constructor(adapter?: Partial<MDCChipAdapter>) {

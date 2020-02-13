@@ -46,13 +46,17 @@ npm install @material/chips
   <div class="mdc-chip" role="row">
     <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
-      <span role="button" tabindex="0" class="mdc-chip__text">Chip One</span>
+      <span role="button" tabindex="0" class="mdc-chip__primary-action">
+        <span class="mdc-chip__text">Chip One</span>
+      </span>
     </span>
   </div>
   <div class="mdc-chip" role="row">
     <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
-      <span role="button" tabindex="-1" class="mdc-chip__text">Chip Two</span>
+      <span role="button" tabindex="-1" class="mdc-chip__primary-action">
+        <span class="mdc-chip__text">Chip Two</span>
+      </span>
     </span>
   </div>
   ...
@@ -98,7 +102,9 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
   <div class="mdc-chip__ripple"></div>
   <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
   <span role="gridcell">
-    <span role="button" tabindex="0" class="mdc-chip__text">Add to calendar</span>
+    <span role="button" tabindex="0" class="mdc-chip__primary-action">
+      <span class="mdc-chip__text">Add to calendar</span>
+    </span>
   </span>
 </div>
 ```
@@ -111,7 +117,9 @@ A trailing icon comes with the functionality to remove the chip from the set. If
 <div class="mdc-chip" role="row">
   <div class="mdc-chip__ripple"></div>
   <span role="gridcell">
-    <span role="button" tabindex="0" class="mdc-chip__text">Jane Smith</span>
+    <span role="button" tabindex="0" class="mdc-chip__primary-action">
+      <span class="mdc-chip__text">Jane Smith</span>
+    </span>
   </span>
   <span role="gridcell">
     <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="-1" role="button">cancel</i>
@@ -144,9 +152,11 @@ Filter chips are a variant of chips which allow multiple selection from a set of
       </svg>
     </span>
     <span role="gridcell">
-      <span role="checkbox" tabindex="0" aria-checked="false" class="mdc-chip__text">Filterable content</span>
+      <span role="checkbox" tabindex="0" aria-checked="false" class="mdc-chip__primary-action">
+        <span class="mdc-chip__text">Filterable content</span>
+      </span>
     </span>
-  </button>
+  </div>
   ...
 </div>
 ```
@@ -165,7 +175,9 @@ To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` elemen
       </svg>
     </span>
     <span role="gridcell">
-      <span role="checkbox" tabindex="0" aria-checked="false" class="mdc-chip__text">Filterable content</span>
+      <span role="checkbox" tabindex="0" aria-checked="false" class="mdc-chip__primary-action">
+        <span class="mdc-chip__text">Filterable content</span>
+      </span>
     </span>
   </div>
   ...
@@ -223,7 +235,9 @@ To display a pre-selected filter or choice chip, add the class `mdc-chip--select
   <div class="mdc-chip mdc-chip--selected" role="row">
     <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
-      <span role="radio" tabindex="0" aria-checked="true" class="mdc-chip__text">Add to calendar</span>
+      <span role="radio" tabindex="0" aria-checked="true" class="mdc-chip__primary-action">
+        <span class="mdc-chip__text">Add to calendar</span>
+      </span>
     </span>
   </div>
 </div>
@@ -243,7 +257,9 @@ To pre-select filter chips that have a leading icon, also add the class `mdc-chi
       </svg>
     </span>
     <span role="gridcell">
-      <span role="checkbox" tabindex="0" aria-checked="true" class="mdc-chip__text">Filterable content</span>
+      <span role="checkbox" tabindex="0" aria-checked="true" class="mdc-chip__primary-action">
+        <span class="mdc-chip__text">Filterable content</span>
+      </span>
     </span>
   </div>
 </div>
@@ -258,13 +274,15 @@ To meet this requirement, add the following to your chip:
 
 ```html
 <div class="mdc-touch-target-wrapper">
-  <button class="mdc-chip mdc-chip--touch">
+  <div class="mdc-chip mdc-chip--touch">
     <div class="mdc-chip__ripple"></div>
     <span role="gridcell">
-      <span role="button" tabindex="0" class="mdc-chip__text">Chip One</span>
+      <span role="button" tabindex="0" class="mdc-chip__primary-action">
+        <div class="mdc-chip__touch"></div>
+        <span class="mdc-chip__text">Chip One</span>
+      </span>
     </span>
-    <div class="mdc-chip__touch"></div>
-  </button>
+  </div>
 </div>
 ```
 

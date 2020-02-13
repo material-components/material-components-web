@@ -53,7 +53,8 @@ jobs:
           MDC_CURRENT_VERSION="v$(npm run version --silent)"
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git tag "$MDC_CURRENT_VERSION"
+          export changelog=$(npx conventional-changelog --preset angular)
+          git tag -a "$MDC_CURRENT_VERSION" -m "$changelog"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
           git push origin "$MDC_CURRENT_VERSION"
         env:

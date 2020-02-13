@@ -69,28 +69,6 @@ module.exports = function(config) {
     // karma-typescript: https://github.com/monounity/karma-typescript/tree/master/packages/karma-typescript
     karmaTypescriptConfig: {
       exclude: EXCLUDE_FILES,
-      coverageOptions: {
-        threshold: {
-          global: {
-            // TODO: Raise threshold to at least 90% after more tests have been migrated.
-            statements: 80,
-            branches: 70,
-            functions: 50,
-            lines: 80,
-            excludes: [
-              'testing/**/*.ts',
-            ],
-          },
-        },
-      },
-      reports: {
-        html: 'coverage',
-        lcovonly: 'coverage',
-        json: {
-          directory: 'coverage',
-          filename: 'coverage.json',
-        },
-      },
       tsconfig: './tsconfig-base.json',
     },
     preprocessors: FILES_TO_USE.reduce((obj, file) => {

@@ -64,6 +64,9 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       @include native-control_;
     }
+    @include feature-targeting-mixins.targets($feat-animation) {
+      transition: functions.transition(transform);
+    }
   }
 
   .mdc-switch__track {

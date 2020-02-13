@@ -1,4 +1,3 @@
 *.ts
 !*.d.ts
-*_test.d.ts
-test/**/*
+test/**

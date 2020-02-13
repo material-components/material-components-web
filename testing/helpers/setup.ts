@@ -28,7 +28,8 @@ import {createMockAdapter, FoundationConstructor} from './foundation';
 export function setUpFoundationTest<F extends MDCFoundation>(
     FoundationClass: FoundationConstructor<F>) {
   const mockAdapter = createMockAdapter(FoundationClass);
-  const foundation = new FoundationClass(mockAdapter);
+  // TODO(b/149489603): Remove `any` cast.
+  const foundation = new FoundationClass(mockAdapter) as any;
   return {foundation, mockAdapter};
 }
 

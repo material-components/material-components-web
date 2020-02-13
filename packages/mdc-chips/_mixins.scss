@@ -146,7 +146,7 @@ $ripple-target: ".mdc-chip__ripple";
     }
   }
 
-  .mdc-chip__text:focus {
+  .mdc-chip__primary-action:focus {
     @include feature-targeting-mixins.targets($feat-structure) {
       outline: none;
     }

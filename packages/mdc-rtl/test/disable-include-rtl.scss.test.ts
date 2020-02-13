@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,24 +21,13 @@
  * THE SOFTWARE.
  */
 
-'use strict';
+import * as fs from 'fs';
+import * as path from 'path';
 
-const BuildCommand = require('./build');
-const Controller = require('../lib/controller');
-
-class DemoCommand {
-  /**
-   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
-   */
-  async runAsync() {
-    const buildCommand = new BuildCommand();
-    const controller = new Controller();
-
-    await buildCommand.runAsync();
-
-    const reportData = await controller.initForDemo();
-    await controller.uploadAllAssets(reportData);
-  }
-}
-
-module.exports = DemoCommand;
+describe('disable-include-rtl.test.scss', () => {
+  it('emits no [dir=rtl] selectors when `include` is disabled (false)', () => {
+    const filePath = path.join(__dirname, 'disable-include-rtl.test.css');
+    const css = fs.readFileSync(filePath, 'utf8').trim();
+    expect(css).not.toContain('[dir=rtl]');
+  });
+});

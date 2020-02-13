@@ -75,7 +75,7 @@ function logError(message) {
 if (!isValidCwd) {
   console.error(
     'Invalid CWD. Please ensure you are running this from the root of the repo, and that you have run ' +
-    '`npm run dist` and `node scripts/cp-pkgs.js`'
+    '`npm run dist` and `node scripts/cp-pkgs.js`',
   );
   process.exit(1);
 }
