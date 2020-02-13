@@ -1,7 +1,7 @@
 {
   "name": "@material/radio",
   "description": "The Material Components for the web radio component",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -18,14 +18,14 @@
     "directory": "packages/mdc-radio"
   },
   "dependencies": {
-    "@material/animation": "^5.0.0",
-    "@material/base": "^5.0.0",
-    "@material/density": "^5.0.0",
-    "@material/dom": "^5.0.0",
-    "@material/feature-targeting": "^5.0.0",
-    "@material/ripple": "^5.0.0",
-    "@material/theme": "^5.0.0",
-    "@material/touch-target": "^5.0.0",
+    "@material/animation": "^6.0.0",
+    "@material/base": "^6.0.0",
+    "@material/density": "^6.0.0",
+    "@material/dom": "^6.0.0",
+    "@material/feature-targeting": "^6.0.0",
+    "@material/ripple": "^6.0.0",
+    "@material/theme": "^6.0.0",
+    "@material/touch-target": "^6.0.0",
     "tslib": "^1.9.3"
   }
 }
