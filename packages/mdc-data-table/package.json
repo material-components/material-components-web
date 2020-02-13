@@ -1,6 +1,6 @@
 {
   "name": "@material/data-table",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "The Material Components Web data table component",
   "license": "MIT",
   "keywords": [
@@ -17,17 +17,17 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^4.0.0",
-    "@material/base": "^4.0.0",
-    "@material/checkbox": "^4.0.0",
-    "@material/density": "^4.0.0",
-    "@material/dom": "^4.0.0",
-    "@material/elevation": "^4.0.0",
-    "@material/feature-targeting": "^4.0.0",
-    "@material/rtl": "^4.0.0",
-    "@material/shape": "^4.0.0",
-    "@material/theme": "^4.0.0",
-    "@material/typography": "^4.0.0",
+    "@material/animation": "^5.0.0",
+    "@material/base": "^5.0.0",
+    "@material/checkbox": "^5.0.0",
+    "@material/density": "^5.0.0",
+    "@material/dom": "^5.0.0",
+    "@material/elevation": "^5.0.0",
+    "@material/feature-targeting": "^5.0.0",
+    "@material/rtl": "^5.0.0",
+    "@material/shape": "^5.0.0",
+    "@material/theme": "^5.0.0",
+    "@material/typography": "^5.0.0",
     "tslib": "^1.10.0"
   },
   "publishConfig": {
