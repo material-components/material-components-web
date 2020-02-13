@@ -53,6 +53,7 @@
     "chai": "^4.0.2",
     "cli-table": "^0.3.1",
     "codecov": "^3.0.0",
+    "conventional-changelog-cli": "^2.0.31",
     "cp-file": "^7.0.0",
     "cross-env": "^5.0.0",
     "css-loader": "^2.0.0",

@@ -34,9 +34,19 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
+      - name: Generate changelog
+        id: generate_changelog
+        # Needs escaping new-line characters to prevent truncating multi-line output
+        # See https://github.community/t5/GitHub-Actions/set-output-Truncates-Multiline-Strings/td-p/37870
+        run: |
+          changelog=$(npx conventional-changelog --preset angular)
+          changelog="${changelog//'%'/'%25'}"
+          changelog="${changelog//$'\n'/'%0A'}"
+          changelog="${changelog//$'\r'/'%0D'}"
+          echo "::set-output name=changelog::$changelog"
       - name: Bump version
         run: |
-          npx lerna version --conventional-commits --no-git-tag-version --no-push --yes
+          npx lerna version --conventional-commits --no-git-tag-version --no-changelog --no-push --yes
       - name: Create PR
         uses: peter-evans/create-pull-request@v1.5.2
         env:
@@ -46,11 +56,16 @@ jobs:
           COMMIT_AUTHOR_NAME: GitHub Action
           PULL_REQUEST_TITLE: "chore: Release"
           PULL_REQUEST_BODY: |
-            This PR was opened by [release][1] GitHub action.
-            When you're ready to do a release, you can merge this and release
-            action will automatically publishes to npm registry.
-            If you're not ready to do a release yet, that's fine, whenever you
-            add more commits to master, this PR will be updated.
+            > This PR was opened by [release][1] GitHub action.
+            > When you're ready to do a release, you can merge this and release
+            > action will automatically publishes to npm registry.
+            > If you're not ready to do a release yet, that's fine, whenever you
+            > add more commits to master, this PR will be updated.
+
+            # Changelog
+            -----------
+
+            ${{ steps.generate_changelog.outputs.changelog }}
 
             [1]: http://github.com/material-components/material-components-web/tree/master/.github/workflows/release-pull-request.yml
           PULL_REQUEST_BRANCH: chore/release
