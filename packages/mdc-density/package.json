@@ -1,7 +1,7 @@
 {
   "name": "@material/density",
   "description": "Density utilities for Material Components for the web",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "license": "MIT",
   "keywords": [
     "material components",

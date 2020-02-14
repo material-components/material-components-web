@@ -1,7 +1,7 @@
 {
   "name": "@material/floating-label",
   "description": "The Material Components for the web floating-label component",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -22,13 +22,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@material/animation": "^5.0.0",
-    "@material/base": "^5.0.0",
-    "@material/dom": "^5.0.0",
-    "@material/feature-targeting": "^5.0.0",
-    "@material/rtl": "^5.0.0",
-    "@material/theme": "^5.0.0",
-    "@material/typography": "^5.0.0",
+    "@material/animation": "^5.0.1",
+    "@material/base": "^5.0.1",
+    "@material/dom": "^5.0.1",
+    "@material/feature-targeting": "^5.0.1",
+    "@material/rtl": "^5.0.1",
+    "@material/theme": "^5.0.1",
+    "@material/typography": "^5.0.1",
     "tslib": "^1.9.3"
   }
 }
