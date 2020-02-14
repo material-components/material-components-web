@@ -7,7 +7,7 @@
     "publish": {
       "ignoreChanges": [
         "*.md",
-        "*.increment1"
+        "*.increment2"
       ]
     }
   },
