@@ -333,7 +333,7 @@ Modal drawers are elevated above most of the app's UI and don't affect the scree
   <aside class="mdc-drawer mdc-drawer--modal">
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page" tabindex="0">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
           <span class="mdc-list-item__text">Inbox</span>
         </a>
