@@ -1,3 +1,5 @@
+NOTE: Changelog is moved to [release](https://github.com/material-components/material-components-web/releases) page.
+
 # Change Log
 
 All notable changes to this project will be documented in this file.
