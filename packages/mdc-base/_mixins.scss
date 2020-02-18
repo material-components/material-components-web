@@ -1,4 +1,3 @@
-@use "sass:list";
 //
 // Copyright 2018 Google Inc.
 //
@@ -20,6 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+
+@use "sass:list";
 
 // This variable is not intended to be overridden externally; it uses !default to avoid being reset
 // every time this file is imported.
