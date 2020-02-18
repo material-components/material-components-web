@@ -1,7 +1,7 @@
 {
   "name": "@material/progress-indicator",
   "description": "The Material Components for the web interface for Progress Indicators",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "license": "MIT",
   "sideEffects": false,
   "repository": {
