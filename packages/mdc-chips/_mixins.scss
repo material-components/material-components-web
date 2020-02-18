@@ -43,6 +43,7 @@
 
 $ripple-target: ".mdc-chip__ripple";
 
+/// Chips core styles
 @mixin core-styles($query: feature-targeting-functions.all()) {
   @include without-ripple($query: $query);
   @include ripple($query: $query);
