@@ -22,11 +22,12 @@
 
 @use "sass:list";
 @use "sass:map";
-@use "@material/feature-targeting/functions";
-@use "@material/feature-targeting/mixins";
+@use "sass:string";
+@use "@material/feature-targeting" as feature-targeting;
+@use "@material/theme";
 @use "./variables";
 
-@mixin core-styles($query: functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   .mdc-typography {
     @include base($query: $query);
   }
@@ -38,48 +39,75 @@
   }
 }
 
-@mixin base($query: functions.all()) {
-  $feat-typography: functions.create-target($query, typography);
+@mixin base($query: feature-targeting.all()) {
+  $feat-typography: feature-targeting.create-target($query, typography);
 
-  @include mixins.targets($feat-typography) {
-    @each $key, $value in variables.$base {
-      #{$key}: $value;
-    }
+  @include smooth-font($query: $query);
+  @include feature-targeting.targets($feat-typography) {
+    @include theme.prop(font-family, (
+      varname: --mdc-typography-font-family,
+      fallback: map.get(variables.$base, 'font-family')
+    ));
   }
 }
 
-@mixin typography($style, $query: functions.all(), $exclude-props: ()) {
-  $feat-typography: functions.create-target($query, typography);
+@mixin typography($style, $query: feature-targeting.all(), $exclude-props: ()) {
+  $feat-typography: feature-targeting.create-target($query, typography);
   $style-props: map.get(variables.$styles, $style);
 
   @if not map.has-key(variables.$styles, $style) {
     @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{map.keys(variables.$styles)}";
   }
 
-  @include mixins.targets($feat-typography) {
+  @include smooth-font($query: $query);
+  @include feature-targeting.targets($feat-typography) {
     @each $key, $value in $style-props {
       @if list.index($exclude-props, $key) == null {
-        #{$key}: $value;
+        $fallback: $value;
+        @if $key == "font-family" {
+          // Each style has its own font-family custom property, but should
+          // fallback to a generic font-family property. This allows
+          // customizing the font-family for all styles or only specific ones.
+          $fallback: (
+            varname: --mdc-typography-font-family,
+            fallback: $fallback
+          );
+        }
+
+        @include theme.prop($key, (
+          varname: --mdc-typography-#{$style}-#{$key},
+          fallback: $fallback
+        ));
       }
     }
   }
 }
 
-// Element must be `display: block` or `display: inline-block` for this to work.
-@mixin overflow-ellipsis($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+/// Applies antialiasing via font-smoothing to text.
+@mixin smooth-font($query: feature-targeting.all()) {
+  $feat-typography: feature-targeting.create-target($query, typography);
 
-  @include mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-typography) {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+// Element must be `display: block` or `display: inline-block` for this to work.
+@mixin overflow-ellipsis($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
   }
 }
 
-@mixin baseline-top($distance, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin baseline-top($distance, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: block;
     margin-top: 0;
     /* @alternate */
@@ -87,7 +115,7 @@
   }
 
   &::before {
-    @include mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include baseline-strut_($distance);
 
       vertical-align: 0;
@@ -95,15 +123,15 @@
   }
 }
 
-@mixin baseline-bottom($distance, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin baseline-bottom($distance, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     margin-bottom: -1 * $distance;
   }
 
   &::after {
-    @include mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include baseline-strut_($distance);
 
       vertical-align: -1 * $distance;

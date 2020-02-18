@@ -27,9 +27,7 @@
 $font-family: string.unquote("Roboto, sans-serif") !default;
 
 $base: (
-  font-family: $font-family,
-  -moz-osx-font-smoothing: grayscale,
-  -webkit-font-smoothing: antialiased,
+  font-family: $font-family
 ) !default;
 
 $font-weight-values: (
