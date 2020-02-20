@@ -35,29 +35,29 @@ import path from 'path';
 // NOTE: This assumes it is run from the top-level directory (which is always the case when using npm run)
 const projectRoot = process.cwd();
 
-const tryAccess = (scssPath: string) => {
-  const fullPath = path.join(projectRoot, scssPath);
-  try {
-    fs.accessSync(fullPath);
-    return fullPath;
-  } catch (e) {
-    return undefined;
-  }
-};
+// const tryAccess = (scssPath: string) => {
+//   const fullPath = path.join(projectRoot, scssPath);
+//   try {
+//     fs.accessSync(fullPath);
+//     return fullPath;
+//   } catch (e) {
+//     return undefined;
+//   }
+// };
 
-const materialImporter = (url: string) => {
-  if (url.startsWith('@material')) {
-    // Support omission of .scss extension
-    const normalizedUrl = url.endsWith('.scss') ? url : `${url}.scss`;
-    // Convert @material/foo to packages/mdc-foo to load directly from packages folder in repository
-    const scssPath = normalizedUrl.replace('@material/', 'packages/mdc-');
-    // Support omission of leading _ for partials
-    const resolved = tryAccess(scssPath) ||
-      tryAccess(path.join(path.dirname(scssPath), `_${path.basename(scssPath)}`));
-    return {file: resolved || url};
-  }
-  return {file: url};
-}
+// const materialImporter = (url: string) => {
+//   if (url.startsWith('@material')) {
+//     // Support omission of .scss extension
+//     const normalizedUrl = url.endsWith('.scss') ? url : `${url}.scss`;
+//     // Convert @material/foo to packages/mdc-foo to load directly from packages folder in repository
+//     const scssPath = normalizedUrl.replace('@material/', 'packages/mdc-');
+//     // Support omission of leading _ for partials
+//     const resolved = tryAccess(scssPath) ||
+//       tryAccess(path.join(path.dirname(scssPath), `_${path.basename(scssPath)}`));
+//     return {file: resolved || url};
+//   }
+//   return {file: url};
+// }
 
 interface RenderOptions {
   outFile: string,
@@ -69,7 +69,8 @@ interface RenderOptions {
 const render = (filePath: string, options: Partial<RenderOptions> = {}): string => {
   const result = sass.renderSync({
     file: filePath,
-    importer: materialImporter,
+    // importer: materialImporter,
+    includePaths: [path.join(projectRoot, 'packages/material-components-web/node_modules')],
     outFile: options.outFile || null,
   });
   return result.css.toString('utf8').trim();

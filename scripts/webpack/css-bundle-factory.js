@@ -212,6 +212,7 @@ class CssBundleFactory {
       },
       {
         loader: 'sass-loader',
+        webpackImporter: false,
         options: {
           sourceMap: true,
           includePaths: [getAbsolutePath('/packages/material-components-web/node_modules')],
