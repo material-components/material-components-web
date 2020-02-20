@@ -69,7 +69,7 @@ const CSS_EXCLUDES = new Set([
   'base',
   'animation',
   'auto-init',
-  'circular-progress', // TODO: remove once component is complete
+  'circular-progress', // TODO(b/149941300): remove once component is complete
   'density',
   'dom',
   'feature-targeting',
@@ -81,14 +81,14 @@ const CSS_EXCLUDES = new Set([
 
 const JS_EXCLUDES = new Set([
   'animation',
-  'circular-progress', // TODO: remove once component is complete
+  'circular-progress', // TODO(b/149941300): remove once component is complete
   'progress-indicator',
 ]);
 
 const NOT_AUTOINIT = new Set([
   'auto-init',
   'base',
-  'circular-progress', // TODO: remove once component is complete
+  'circular-progress', // TODO(b/149941300): remove once component is complete
   'dom',
   'progress-indicator',
   'tab', // Only makes sense in context of tab-bar
