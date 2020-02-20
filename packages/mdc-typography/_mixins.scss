@@ -23,11 +23,12 @@
 @use "sass:list";
 @use "sass:map";
 @use "sass:string";
-@use "@material/feature-targeting" as feature-targeting;
-@use "@material/theme";
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/theme/mixins" as theme-mixins;
 @use "./variables";
 
-@mixin core-styles($query: feature-targeting.all()) {
+@mixin core-styles($query: feature-targeting-functions.all()) {
   .mdc-typography {
     @include base($query: $query);
   }
@@ -39,20 +40,20 @@
   }
 }
 
-@mixin base($query: feature-targeting.all()) {
-  $feat-typography: feature-targeting.create-target($query, typography);
+@mixin base($query: feature-targeting-functions.all()) {
+  $feat-typography: feature-targeting-functions.create-target($query, typography);
 
   @include smooth-font($query: $query);
-  @include feature-targeting.targets($feat-typography) {
-    @include theme.prop(font-family, (
+  @include feature-targeting-mixins.targets($feat-typography) {
+    @include theme-mixins.prop(font-family, (
       varname: --mdc-typography-font-family,
       fallback: map.get(variables.$base, 'font-family')
     ));
   }
 }
 
-@mixin typography($style, $query: feature-targeting.all(), $exclude-props: ()) {
-  $feat-typography: feature-targeting.create-target($query, typography);
+@mixin typography($style, $query: feature-targeting-functions.all(), $exclude-props: ()) {
+  $feat-typography: feature-targeting-functions.create-target($query, typography);
   $style-props: map.get(variables.$styles, $style);
 
   @if not map.has-key(variables.$styles, $style) {
@@ -60,7 +61,7 @@
   }
 
   @include smooth-font($query: $query);
-  @include feature-targeting.targets($feat-typography) {
+  @include feature-targeting-mixins.targets($feat-typography) {
     @each $key, $value in $style-props {
       @if list.index($exclude-props, $key) == null {
         $fallback: $value;
@@ -74,7 +75,7 @@
           );
         }
 
-        @include theme.prop($key, (
+        @include theme-mixins.prop($key, (
           varname: --mdc-typography-#{$style}-#{$key},
           fallback: $fallback
         ));
@@ -84,30 +85,30 @@
 }
 
 /// Applies antialiasing via font-smoothing to text.
-@mixin smooth-font($query: feature-targeting.all()) {
-  $feat-typography: feature-targeting.create-target($query, typography);
+@mixin smooth-font($query: feature-targeting-functions.all()) {
+  $feat-typography: feature-targeting-functions.create-target($query, typography);
 
-  @include feature-targeting.targets($feat-typography) {
+  @include feature-targeting-mixins.targets($feat-typography) {
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
   }
 }
 
 // Element must be `display: block` or `display: inline-block` for this to work.
-@mixin overflow-ellipsis($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
+@mixin overflow-ellipsis($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include feature-targeting.targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
   }
 }
 
-@mixin baseline-top($distance, $query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
+@mixin baseline-top($distance, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include feature-targeting.targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     display: block;
     margin-top: 0;
     /* @alternate */
@@ -115,7 +116,7 @@
   }
 
   &::before {
-    @include feature-targeting.targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       @include baseline-strut_($distance);
 
       vertical-align: 0;
@@ -123,15 +124,15 @@
   }
 }
 
-@mixin baseline-bottom($distance, $query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
+@mixin baseline-bottom($distance, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include feature-targeting.targets($feat-structure) {
+  @include feature-targeting-mixins.targets($feat-structure) {
     margin-bottom: -1 * $distance;
   }
 
   &::after {
-    @include feature-targeting.targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
       @include baseline-strut_($distance);
 
       vertical-align: -1 * $distance;
