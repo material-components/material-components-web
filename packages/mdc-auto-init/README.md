@@ -33,10 +33,10 @@ properly.
 
 ```html
 <label class="mdc-text-field" data-mdc-auto-init="MDCTextField">
-  <div class="mdc-text-field__ripple"></div>
+  <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="label">
   <span id="label" class="mdc-floating-label">Input Label</span>
-  <div class="mdc-line-ripple"></div>
+  <span class="mdc-line-ripple"></span>
 </label>
 
 <!-- at the bottom of the page -->
@@ -54,10 +54,10 @@ using a property whose name is the value of `data-mdc-auto-init`. For example, g
 
 ```html
 <label class="mdc-text-field" data-mdc-auto-init="MDCTextField">
-  <div class="mdc-text-field__ripple"></div>
+  <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="label">
   <span id="label" class="mdc-floating-label">Input Label</span>
-  <div class="mdc-line-ripple"></div>
+  <span class="mdc-line-ripple"></span>
 </label>
 ```
 

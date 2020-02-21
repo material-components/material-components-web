@@ -52,7 +52,7 @@ The select requires that you set the `width` of the `mdc-select__anchor` element
     <i class="mdc-select__dropdown-icon"></i>
     <div class="mdc-select__selected-text"></div>
     <span class="mdc-floating-label">Pick a Food Group</span>
-    <div class="mdc-line-ripple"></div>
+    <span class="mdc-line-ripple"></span>
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
@@ -113,7 +113,7 @@ The following is an example of the select component with all of the necessary ar
     <i class="mdc-select__dropdown-icon"></i>
     <div id="demo-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-selected-text">Vegetables</div>
     <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-    <div class="mdc-line-ripple"></div>
+    <span class="mdc-line-ripple"></span>
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
@@ -146,13 +146,13 @@ same.
   <div class="mdc-select__anchor">
     <i class="mdc-select__dropdown-icon"></i>
     <div id="demo-selected-text" class="mdc-select__selected-text" aria-labelledby="outlined-select-label"></div>
-    <div class="mdc-notched-outline">
-      <div class="mdc-notched-outline__leading"></div>
-      <div class="mdc-notched-outline__notch">
+    <span class="mdc-notched-outline">
+      <span class="mdc-notched-outline__leading"></span>
+      <span class="mdc-notched-outline__notch">
         <span id="outlined-select-label" class="mdc-floating-label">Pick a Food Group</span>
-      </div>
-      <div class="mdc-notched-outline__trailing"></div>
-    </div>
+      </span>
+      <span class="mdc-notched-outline__trailing"></span>
+    </span>
   </div>
 
   <!-- Other elements from the select remain. -->
@@ -174,7 +174,7 @@ to set the selected item. The select also needs the text from the selected eleme
     <i class="mdc-select__dropdown-icon"></i>
     <div class="mdc-select__selected-text">Vegetables</div>
     <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-    <div class="mdc-line-ripple"></div>
+    <span class="mdc-line-ripple"></span>
   </div>
 
   <div class="mdc-select__menu demo-width-class mdc-menu mdc-menu-surface">
@@ -215,7 +215,7 @@ and set the `aria-required` attribute on the `mdc-select__selected-text` element
     <i class="mdc-select__dropdown-icon"></i>
     <div class="mdc-select__selected-text" aria-required="true"></div>
     <span class="mdc-floating-label">Pick a Food Group</span>
-    <div class="mdc-line-ripple"></div>
+    <span class="mdc-line-ripple"></span>
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -237,7 +237,7 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
     <i class="mdc-select__dropdown-icon"></i>
     <div class="mdc-select__selected-text" aria-disabled="true"></div>
     <span class="mdc-floating-label">Pick a Food Group</span>
-    <div class="mdc-line-ripple"></div>
+    <span class="mdc-line-ripple"></span>
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -301,7 +301,7 @@ structure.
   <div class="mdc-select__anchor demo-width-class">
     <i class="mdc-select__dropdown-icon"></i>
     <div class="mdc-select__selected-text"></div>
-    <div class="mdc-line-ripple"></div>
+    <span class="mdc-line-ripple"></span>
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
@@ -328,10 +328,10 @@ structure.
   <div class="mdc-select__anchor demo-width-class">
     <i class="mdc-select__dropdown-icon"></i>
     <div class="mdc-select__selected-text"></div>
-    <div class="mdc-notched-outline">
-      <div class="mdc-notched-outline__leading"></div>
-      <div class="mdc-notched-outline__trailing"></div>
-    </div>
+    <span class="mdc-notched-outline">
+      <span class="mdc-notched-outline__leading"></span>
+      <span class="mdc-notched-outline__trailing"></span>
+    </span>
   </div>
 
   <!-- Other elements from the select remain. -->

@@ -27,11 +27,11 @@ import {MDCNotchedOutline} from '../../mdc-notched-outline/index';
 const getFixture = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
-    <div class="mdc-notched-outline">
-      <div class="mdc-notched-outline__leading"></div>
-      <div class="mdc-notched-outline__notch"></div>
-      <div class="mdc-notched-outline__trailing"></div>
-    </div>
+    <span class="mdc-notched-outline">
+      <span class="mdc-notched-outline__leading"></span>
+      <span class="mdc-notched-outline__notch"></span>
+      <span class="mdc-notched-outline__trailing"></span>
+    </span>
   `;
   const el = wrapper.firstElementChild as HTMLElement;
   wrapper.removeChild(el);

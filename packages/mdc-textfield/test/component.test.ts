@@ -40,7 +40,7 @@ const getFixture = () => {
       <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
       <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
       <span class="mdc-floating-label" id="my-label">My Label</span>
-      <div class="mdc-line-ripple"></div>
+      <span class="mdc-line-ripple"></span>
     </label>
   `;
   const el = wrapper.firstElementChild as HTMLElement;
@@ -256,7 +256,7 @@ describe('MDCTextField', () => {
   it('#constructor instantiates an outline on the `.mdc-notched-outline` element if present',
      () => {
        const wrapper = document.createElement('div');
-       wrapper.innerHTML = `<div class="mdc-notched-outline"></div>`;
+       wrapper.innerHTML = `<span class="mdc-notched-outline"></span>`;
        const child = wrapper.firstElementChild as HTMLElement;
        wrapper.removeChild(child);
 
@@ -410,7 +410,7 @@ describe('MDCTextField', () => {
 
   it('#destroy cleans up the outline if present', () => {
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = `<div class="mdc-notched-outline"></div>`;
+    wrapper.innerHTML = `<span class="mdc-notched-outline"></span>`;
     const child = wrapper.firstElementChild as HTMLElement;
     wrapper.removeChild(child);
 

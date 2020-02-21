@@ -32,7 +32,7 @@ npm install @material/line-ripple
 ### HTML Structure
 
 ```html
-<div class="mdc-line-ripple"></div>
+<span class="mdc-line-ripple"></span>
 ```
 
 ### Styles

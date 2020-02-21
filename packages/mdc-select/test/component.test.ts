@@ -90,7 +90,7 @@ function getFixture() {
         <div class="mdc-select__selected-text"></div>
         <i class="mdc-select__dropdown-icon"></i>
         <span class="mdc-floating-label">Pick a Food Group</span>
-        <div class="mdc-line-ripple"></div>
+        <span class="mdc-line-ripple"></span>
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -116,13 +116,13 @@ function getOutlineFixture() {
         <i class="mdc-select__icon material-icons">code</i>
         <div class="mdc-select__selected-text"></div>
         <i class="mdc-select__dropdown-icon"></i>
-        <div class="mdc-notched-outline">
-          <div class="mdc-notched-outline__leading"></div>
-          <div class="mdc-notched-outline__notch">
+        <span class="mdc-notched-outline">
+          <span class="mdc-notched-outline__leading"></span>
+          <span class="mdc-notched-outline__notch">
             <span class="mdc-floating-label">Pick a Food Group</span>
-          </div>
-          <div class="mdc-notched-outline__trailing"></div>
-        </div>
+          </span>
+          <span class="mdc-notched-outline__trailing"></span>
+        </span>
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -415,7 +415,7 @@ describe('MDCSelect', () => {
       <div class="mdc-select__anchor">
         <div class="mdc-select__selected-text"></div>
         <label class="mdc-floating-label">Pick a Food Group</label>
-        <div class="mdc-line-ripple"></div>
+        <span class="mdc-line-ripple"></span>
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -442,7 +442,7 @@ describe('MDCSelect', () => {
       <div class="mdc-select__anchor">
         <div class="mdc-select__selected-text"></div>
         <label class="mdc-floating-label">Pick a Food Group</label>
-        <div class="mdc-line-ripple"></div>
+        <span class="mdc-line-ripple"></span>
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -575,7 +575,7 @@ describe('MDCSelect', () => {
     <div class="mdc-select">
       <div class="mdc-select__anchor">
         <div class="mdc-select__selected-text"></div>
-        <div class="mdc-line-ripple"></div>
+        <span class="mdc-line-ripple"></span>
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
