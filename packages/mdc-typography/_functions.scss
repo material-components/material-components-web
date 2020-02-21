@@ -1,6 +1,3 @@
-@use "sass:map";
-@use "sass:string";
-
 //
 // Copyright 2018 Google Inc.
 //
@@ -22,6 +19,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+
+@use "sass:map";
+@use "sass:string";
 
 @function get-global-variable_($style) {
   @if $style == "headline1" {
