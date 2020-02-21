@@ -28,7 +28,7 @@ import {createMockFoundation} from '../../../testing/helpers/foundation';
 const getFixture = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
-    <div class="mdc-line-ripple"></div>
+    <span class="mdc-line-ripple"></span>
   `;
   const el = wrapper.firstElementChild as HTMLElement;
   wrapper.removeChild(el);
