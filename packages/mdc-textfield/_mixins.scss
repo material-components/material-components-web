@@ -21,6 +21,7 @@
 //
 
 @use "sass:list";
+@use "sass:map";
 @use "@material/density/functions" as density-functions;
 @use "@material/floating-label/mixins" as floating-label-mixins;
 @use "@material/line-ripple/mixins" as line-ripple-mixins;
@@ -82,6 +83,9 @@
     // Floating Label
     @include floating-label_($query);
 
+    // Typography
+    @include input-typography(subtitle1, $query: $query);
+
     @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-flex;
       position: relative;
@@ -93,8 +97,6 @@
   }
 
   .mdc-text-field__input {
-    // Exclude setting line-height to keep caret (text cursor) same height as the input text in iOS browser.
-    @include typography-mixins.typography(subtitle1, $exclude-props: (line-height), $query: $query);
     @include input-padding_($query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -561,6 +563,22 @@
 
 @mixin textarea-shape-radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
   @include notched-outline-mixins.shape-radius($radius, $rtl-reflexive, $query: $query);
+}
+
+///
+/// Customizes the typography of the text entered into a text field.
+/// @param {String | Map} $style - The desired typography scale style, or a map
+///     of typography properties and values to apply
+///
+@mixin input-typography($style, $query: feature-targeting-functions.all()) {
+  .mdc-text-field__input {
+    @if meta.type($style) == "Map" {
+      @include typography-mixins.typography-styles($style, $query: $query);
+    } @else {
+      // Exclude setting line-height to keep caret (text cursor) same height as the input text in iOS browser.
+      @include typography-mixins.typography($style, $exclude-props: (line-height), $query: $query);
+    }
+  }
 }
 
 ///

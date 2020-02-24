@@ -20,8 +20,31 @@
 // THE SOFTWARE.
 //
 
+@use "sass:list";
 @use "sass:map";
 @use "sass:string";
+
+/// Retrieves typography-related properties from the provided Map.
+///
+/// @param {Map} $style-props - a Map of style properties to filter.
+/// @return {Map} a Map of filtered typography-only styles.
+@function get-typography-properties_($style-props) {
+  $typography-props: ();
+  $text-properties: hypens, letter-spacing, line-break, overflow-wrap, white-space, word-break, word-spacing;
+
+  @each $key, $value in $style-props {
+    @if (
+      string.index($key, "font") == 1 or
+      string.index($key, "text") == 1 or
+      string.index($key, "line-height") == 1 or
+      list.index($text-properties, $key) != null
+    ) {
+      $typography-props: map.merge($typography-props, (#{$key}: $value));
+    }
+  }
+
+  @return $typography-props;
+}
 
 @function set-styles_($base-styles, $scale-styles, $override-styles) {
   @each $style, $style-props in $scale-styles {

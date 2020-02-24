@@ -26,6 +26,7 @@
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/theme/mixins" as theme-mixins;
+@use "./functions";
 @use "./variables";
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
@@ -80,6 +81,22 @@
           fallback: $fallback
         ));
       }
+    }
+  }
+}
+
+/// Applies typography-related styles in the provided Map. Non-typography
+/// properties in the Map will be excluded.
+///
+/// @param {Map} $style-props - a Map of property key and values to apply
+@mixin typography-styles($style-props, $query: feature-targeting-functions.all()) {
+  $feat-typography: feature-targeting-functions.create-target($query, typography);
+
+  @include feature-targeting-mixins.targets($feat-typography) {
+    $typography-props: functions.get-typography-properties_($style-props);
+
+    @each $key, $value in $typography-props {
+      #{$key}: $value;
     }
   }
 }
