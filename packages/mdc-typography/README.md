@@ -146,11 +146,14 @@ These styles can be used as the `$style` argument for the `mdc-typography` mixin
 
 #### Overriding Styles
 
-All styles can be overridden using CSS custom properties or Sass global variables.
+All styles can be overridden using CSS custom properties or Sass module/global variables.
 
-When using Sass global variables, they must be defined _before_ the component is imported by setting a global 
-variable named `$mdc-typography-styles-{style}`. The variable should be assigned a map that contains all the properties
-you want to override for a particular style.
+When using Sass **module** variables, the module must be configured _before_ any other `@use` 
+statements with a variable named `$styles-{style}`. The variable should be assigned to a map 
+that contains all the properties you want to override for a particular style.
+
+When using Sass **global** variables, they must be defined _before_ the component is imported by setting a global 
+variable named `$mdc-typography-styles-{style}`.
 
 **Example:** Overriding the button `font-size` and `text-transform` properties.
 
@@ -163,6 +166,20 @@ html {
 }
 ```
 
+Sass module variables:
+
+```scss
+@use "@material/typography" with (
+  $styles-button: (
+    font-size: 16px,
+    text-transform: none,
+  )
+);
+
+@use "@material/button";
+@include button.core-styles;
+```
+
 Sass global variables:
 
 ```scss
@@ -171,7 +188,7 @@ $mdc-typography-styles-button: (
   text-transform: none,
 );
 
-@use "@material/button/mdc-button";
+@import "@material/button/mdc-button";
 ```
 
 **Example:** Overriding the global `font-family` property.
@@ -184,13 +201,23 @@ html {
 }
 ```
 
+Sass module variables:
+
+```scss
+@use "@material/typography" with (
+  $font-family: unquote("Arial, Helvetica, sans-serif")
+);
+
+@use "@material/button";
+@include button.core-styles;
+```
+
 Sass global variables:
 
 ```scss
 $mdc-typography-font-family: unquote("Arial, Helvetica, sans-serif");
 
-...
-@use ...
+@import "@material/button/mdc-button";
 ```
 
 **Example:** Overriding the `font-family` property for `headline1` and `font-family` and `font-size` for `headline2`.
@@ -205,6 +232,22 @@ html {
 }
 ```
 
+Sass module variables:
+
+```scss
+@use "@material/typography" with (
+  $styles-headline1: (
+    $font-family: unquote("Arial, Helvetica, sans-serif")
+  ),
+  $styles-headline2: (
+    $font-family: unquote("Arial, Helvetica, sans-serif"),
+    $font-size: 3.25rem
+  )
+);
+
+@use ...
+```
+
 Sass global variables:
 
 ```scss
@@ -216,6 +259,5 @@ $mdc-typography-styles-headline2: (
   font-size: 3.25rem
 );
 
-...
-@use ...
+@import ...
 ```
