@@ -112,7 +112,7 @@
       transition: functions.transition(opacity);
     }
 
-    &::placeholder {
+    @include placeholder-selector_ {
       @include feature-targeting-mixins.targets($feat-animation) {
         transition: functions.transition(opacity, $duration: 67ms);
       }
@@ -124,16 +124,18 @@
 
     // Always show placeholder for text fields that has no
     // label and show only on focused state when label is present.
-    .mdc-text-field--fullwidth &::placeholder,
-    .mdc-text-field--no-label &::placeholder,
-    .mdc-text-field--focused &::placeholder {
-      @include feature-targeting-mixins.targets($feat-animation) {
-        transition-delay: 40ms;
-        transition-duration: 110ms;
-      }
+    .mdc-text-field--fullwidth &,
+    .mdc-text-field--no-label &,
+    .mdc-text-field--focused & {
+      @include placeholder-selector_ {
+        @include feature-targeting-mixins.targets($feat-animation) {
+          transition-delay: 40ms;
+          transition-duration: 110ms;
+        }
 
-      @include feature-targeting-mixins.targets($feat-structure) {
-        opacity: 1;
+        @include feature-targeting-mixins.targets($feat-structure) {
+          opacity: 1;
+        }
       }
     }
 
@@ -1373,27 +1375,9 @@
 @mixin placeholder-color_($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
-  // GSS will combine selectors with the same content, and some browsers have a
-  // CSS quirk where it drops a rule if it does not recognize one of the
-  // selectors.
-  // To avoid GSS combining the ::placeholder and :-ms-input-placeholder
-  // selectors, we wrap them in `@media all`.
-  // TODO(b/142329051)
-  @media all {
-    // ::placeholder needs to be wrapped because IE11 will drop other selectors
-    // using the same color
-    .mdc-text-field__input::placeholder {
-      @include feature-targeting-mixins.targets($feat-color) {
-        @include theme-mixins.prop(color, $color);
-      }
-    }
-  }
-
-  @media all {
-    // :-ms-input-placeholder needs to be wrapped because Firefox will drop
-    // other selectors using the same color
-    .mdc-text-field__input:-ms-input-placeholder {
-      @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting-mixins.targets($feat-color) {
+    .mdc-text-field__input {
+      @include placeholder-selector_ {
         @include theme-mixins.prop(color, $color);
       }
     }
@@ -1436,6 +1420,33 @@
     @include floating-label-mixins.ink-color($color, $query: $query);
   }
 }
+
+// Selectors
+
+@mixin placeholder-selector_ {
+  // GSS will combine selectors with the same content, and some browsers have a
+  // CSS quirk where it drops a rule if it does not recognize one of the
+  // selectors.
+  // To avoid GSS combining the ::placeholder and :-ms-input-placeholder
+  // selectors, we wrap them in `@media all`.
+  // TODO(b/142329051)
+  @media all {
+    // ::placeholder needs to be wrapped because IE11 will drop other selectors
+    // with the same content
+    &::placeholder {
+      @content;
+    }
+  }
+
+  @media all {
+    // :-ms-input-placeholder needs to be wrapped because Firefox will drop
+    // other selectors with the same content
+    &:-ms-input-placeholder {
+      @content;
+    }
+  }
+}
+
 
 // State qualifiers
 
