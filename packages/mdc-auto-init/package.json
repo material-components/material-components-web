@@ -1,7 +1,7 @@
 {
   "name": "@material/auto-init",
   "description": "Declarative, easy-to-use auto-initialization for Material Components for the web",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "main": "dist/mdc.autoInit.js",
   "module": "index.js",
   "sideEffects": false,
@@ -13,7 +13,7 @@
     "directory": "packages/mdc-auto-init"
   },
   "dependencies": {
-    "@material/base": "^5.0.0",
+    "@material/base": "^5.1.0",
     "tslib": "^1.9.3"
   }
 }
