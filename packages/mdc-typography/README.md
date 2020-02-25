@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "Typographic scale that handles a set of type sizes"
 iconId: typography
-path: /catalog/typography/
+path: /catalog/typography/ test
 -->
 
 # Typography
