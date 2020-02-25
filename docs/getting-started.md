@@ -13,8 +13,8 @@ To try Material Components for the web with minimal setup, load the precompiled 
 
 ```html
 <head>
-  <link href="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.js"></script>
+  <link href="https://unpkg.com/material-components-web@v5.1.0/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@v5.1.0/dist/material-components-web.min.js"></script>
 </head>
 ```
 
