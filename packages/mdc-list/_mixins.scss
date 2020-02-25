@@ -292,7 +292,7 @@
   .mdc-list-group__subheader {
     $mdc-list-subheader-virtual-height: 3rem;
     $mdc-list-subheader-leading: map.get(map.get(typography-variables.$styles, body1), line-height);
-    $mdc-list-subheader-margin: ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
+    $mdc-list-subheader-margin: calc((#{$mdc-list-subheader-virtual-height} - #{$mdc-list-subheader-leading}) / 2);
 
     @include typography-mixins.typography(subtitle1, $query);
 
