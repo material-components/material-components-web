@@ -76,14 +76,23 @@
 }
 
 @function get-var-fallback_($style) {
-  @return map.get($style, "fallback");
+  $fallback: map.get($style, "fallback");
+  @if is-var-with-fallback_($fallback) {
+    @return get-var-fallback_($fallback);
+  } @else {
+    @return $fallback;
+  }
 }
 
 @function var_($style) {
   $var: map.get($style, "varname");
-  $fallback: get-var-fallback_($style);
+  $fallback: map.get($style, "fallback");
 
-  @return var(#{$var}, $fallback);
+  @if is-var-with-fallback_($fallback) {
+    @return var(#{$var}, var_($fallback));
+  } @else {
+    @return var(#{$var}, $fallback);
+  }
 }
 
 ///

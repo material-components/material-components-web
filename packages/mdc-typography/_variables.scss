@@ -26,10 +26,23 @@
 
 $font-family: string.unquote("Roboto, sans-serif") !default;
 
+// Override styles
+$styles-headline1: () !default;
+$styles-headline2: () !default;
+$styles-headline3: () !default;
+$styles-headline4: () !default;
+$styles-headline5: () !default;
+$styles-headline6: () !default;
+$styles-subtitle1: () !default;
+$styles-subtitle2: () !default;
+$styles-body1: () !default;
+$styles-body2: () !default;
+$styles-caption: () !default;
+$styles-button: () !default;
+$styles-overline: () !default;
+
 $base: (
-  font-family: $font-family,
-  -moz-osx-font-smoothing: grayscale,
-  -webkit-font-smoothing: antialiased,
+  font-family: $font-family
 ) !default;
 
 $font-weight-values: (
@@ -148,5 +161,20 @@ $styles: functions.set-styles_(
       text-decoration: none,
       text-transform: uppercase
     ),
+  ),
+  (
+    headline1: $styles-headline1,
+    headline2: $styles-headline2,
+    headline3: $styles-headline3,
+    headline4: $styles-headline4,
+    headline5: $styles-headline5,
+    headline6: $styles-headline6,
+    subtitle1: $styles-subtitle1,
+    subtitle2: $styles-subtitle2,
+    body1: $styles-body1,
+    body2: $styles-body2,
+    caption: $styles-caption,
+    button: $styles-button,
+    overline: $styles-overline,
   )
 ) !default;

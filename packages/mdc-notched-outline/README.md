@@ -33,13 +33,13 @@ npm install @material/notched-outline
 ### HTML Structure
 
 ```html
-<div class="mdc-notched-outline">
-  <div class="mdc-notched-outline__leading"></div>
-  <div class="mdc-notched-outline__notch">
+<span class="mdc-notched-outline">
+  <span class="mdc-notched-outline__leading"></span>
+  <span class="mdc-notched-outline__notch">
     <span class="mdc-floating-label">Label</span>
-  </div>
-  <div class="mdc-notched-outline__trailing"></div>
-</div>
+  </span>
+  <span class="mdc-notched-outline__trailing"></span>
+</span>
 ```
 
 > Note that the [MDC Floating Label](../mdc-floating-label/README.md) component is placed inside the notch element when
