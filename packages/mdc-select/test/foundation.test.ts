@@ -99,6 +99,10 @@ describe('MDCSelectFoundation', () => {
 
     mockAdapter.getSelectedMenuItem.and.returnValue(listItem);
     mockAdapter.hasLabel.and.returnValue(true);
+    mockAdapter.getMenuItemValues.and.returnValue(['foo', 'bar']);
+    mockAdapter.getMenuItemTextAtIndex.withArgs(0).and.returnValue('foo');
+    mockAdapter.getMenuItemTextAtIndex.withArgs(1).and.returnValue('bar');
+    mockAdapter.getMenuItemCount.and.returnValue(3);
 
     const foundation = new MDCSelectFoundation(mockAdapter, foundationMap);
     return {foundation, mockAdapter, leadingIcon, helperText};
@@ -186,7 +190,6 @@ describe('MDCSelectFoundation', () => {
 
   it(`#handleMenuOpened adds ${cssClasses.ACTIVATED} class name`, () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getMenuItemValues.and.returnValue(['foo', 'bar']);
     foundation.handleMenuOpened();
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.ACTIVATED);
     expect(mockAdapter.addClass).toHaveBeenCalledTimes(1);
@@ -194,7 +197,6 @@ describe('MDCSelectFoundation', () => {
 
   it('#handleMenuOpened focuses last selected element', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getMenuItemValues.and.returnValue(['foo', 'bar']);
     (foundation as any).selectedIndex_ = 2;
     foundation.handleMenuOpened();
     expect(mockAdapter.focusMenuItemAtIndex).toHaveBeenCalledWith(2);
@@ -607,9 +609,6 @@ describe('MDCSelectFoundation', () => {
 
   it('#setSelectedIndex', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getMenuItemTextAtIndex.withArgs(0).and.returnValue('foo');
-    mockAdapter.getMenuItemTextAtIndex.withArgs(1).and.returnValue('bar');
-    mockAdapter.getMenuItemCount.and.returnValue(3);
 
     foundation.setSelectedIndex(1);
     expect(mockAdapter.addClassAtIndex)
@@ -632,6 +631,19 @@ describe('MDCSelectFoundation', () => {
         .toHaveBeenCalledWith(0, cssClasses.SELECTED_ITEM_CLASS);
     expect(mockAdapter.removeAttributeAtIndex)
         .toHaveBeenCalledWith(0, strings.ARIA_SELECTED_ATTR);
+
+    expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(3);
+  });
+
+  it('#setValue', () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    foundation.setValue('bar');
+    expect(mockAdapter.addClassAtIndex)
+        .toHaveBeenCalledWith(1, cssClasses.SELECTED_ITEM_CLASS);
+    expect(mockAdapter.setAttributeAtIndex)
+        .toHaveBeenCalledWith(1, strings.ARIA_SELECTED_ATTR, 'true');
+    expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(1);
   });
 
   it('#setValid true sets aria-invalid to false and removes invalid class',
