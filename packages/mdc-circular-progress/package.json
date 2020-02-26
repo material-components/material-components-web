@@ -1,0 +1,25 @@
+{
+  "name": "@material/circular-progress",
+  "description": "The Material Components for the web circular progress component",
+  "version": "5.0.0",
+  "license": "MIT",
+  "keywords": [
+    "material components",
+    "material design",
+    "circular-progress"
+  ],
+  "main": "dist/mdc.circular-progress.js",
+  "module": "./index.js",
+  "sideEffects": false,
+  "types": "dist/mdc.circular-progress.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-circular-progress"
+  },
+  "dependencies": {
+    "@material/base": "^5.0.0",
+    "@material/progress-indicator": "^5.0.0",
+    "tslib": "^1.9.3"
+  }
+}
