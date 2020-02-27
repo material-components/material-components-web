@@ -51,9 +51,9 @@ export interface MDCMenuAdapter {
   removeAttributeFromElementAtIndex(index: number, attr: string): void;
 
   /**
-   * @return true if the element contains the className.
+   * @return true if the element at index contains the className.
    */
-  elementContainsClass(element: Element, className: string): boolean;
+  elementAtIndexContainsClass(index: number, className: string): boolean;
 
   /**
    * Closes the menu-surface.

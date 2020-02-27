@@ -427,16 +427,15 @@ describe('MDCMenu', () => {
        const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
        firstItem.classList.add('foo');
        const containsFoo = (component.getDefaultFoundation() as any)
-                               .adapter_.elementContainsClass(firstItem, 'foo');
+                               .adapter_.elementAtIndexContainsClass(0, 'foo');
        expect(containsFoo).toBe(true);
      });
 
   it('adapter#elementContainsClass returns false if the class does not exist on the element',
      () => {
-       const {root, component} = setupTest();
-       const firstItem = root.querySelector('.mdc-list-item');
+       const {component} = setupTest();
        const containsFoo = (component.getDefaultFoundation() as any)
-                               .adapter_.elementContainsClass(firstItem, 'foo');
+                               .adapter_.elementAtIndexContainsClass(0, 'foo');
        expect(containsFoo).toBe(false);
      });
 

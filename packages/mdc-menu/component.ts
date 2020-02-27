@@ -218,20 +218,29 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         const list = this.items;
         list[index].removeAttribute(attr);
       },
-      elementContainsClass: (element, className) => element.classList.contains(className),
-      closeSurface: (skipRestoreFocus: boolean) => this.menuSurface_.close(skipRestoreFocus),
+      elementAtIndexContainsClass: (index, className) =>
+          this.items[index].classList.contains(className),
+      closeSurface: (skipRestoreFocus: boolean) =>
+          this.menuSurface_.close(skipRestoreFocus),
       getElementIndex: (element) => this.items.indexOf(element),
-      notifySelected: (evtData) => this.emit<MDCMenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
-        index: evtData.index,
-        item: this.items[evtData.index],
-      }),
+      notifySelected: (evtData) =>
+          this.emit<MDCMenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
+            index: evtData.index,
+            item: this.items[evtData.index],
+          }),
       getMenuItemCount: () => this.items.length,
       focusItemAtIndex: (index) => (this.items[index] as HTMLElement).focus(),
-      focusListRoot: () => (this.root_.querySelector(strings.LIST_SELECTOR) as HTMLElement).focus(),
-      isSelectableItemAtIndex: (index) => !!closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`),
+      focusListRoot: () =>
+          (this.root_.querySelector(strings.LIST_SELECTOR) as HTMLElement)
+              .focus(),
+      isSelectableItemAtIndex: (index) =>
+          !!closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`),
       getSelectedSiblingOfItemAtIndex: (index) => {
-        const selectionGroupEl = closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`) as HTMLElement;
-        const selectedItemEl = selectionGroupEl.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
+        const selectionGroupEl =
+            closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`) as
+            HTMLElement;
+        const selectedItemEl = selectionGroupEl.querySelector(
+            `.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedItemEl ? this.items.indexOf(selectedItemEl) : -1;
       },
     };

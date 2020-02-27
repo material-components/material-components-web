@@ -53,7 +53,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       removeClassFromElementAtIndex: () => undefined,
       addAttributeToElementAtIndex: () => undefined,
       removeAttributeFromElementAtIndex: () => undefined,
-      elementContainsClass: () => false,
+      elementAtIndexContainsClass: () => false,
       closeSurface: () => undefined,
       getElementIndex: () => -1,
       notifySelected: () => undefined,
@@ -89,7 +89,9 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
   handleItemAction(listItem: Element) {
     const index = this.adapter_.getElementIndex(listItem);
-    if (index < 0) {
+    if (index < 0 ||
+        this.adapter_.elementAtIndexContainsClass(
+            index, listCssClasses.LIST_ITEM_DISABLED_CLASS)) {
       return;
     }
 
