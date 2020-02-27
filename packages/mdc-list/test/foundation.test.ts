@@ -610,6 +610,22 @@ describe('MDCListFoundation', () => {
        expect(mockAdapter.notifyAction).toHaveBeenCalledTimes(2);
      });
 
+  it('#handleKeydown space key does not call notifyAction for disabled element',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const target = {tagName: 'A', classList: ['mdc-list-item']};
+       const event = {key: 'Space', target, preventDefault: () => {}};
+
+       mockAdapter.getFocusedElementIndex.and.returnValue(0);
+       mockAdapter.getListItemCount.and.returnValue(3);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(0, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+       foundation.handleKeydown(event, true, 0);
+
+       expect(mockAdapter.notifyAction).not.toHaveBeenCalled();
+     });
+
   it('#handleKeydown enter key does not call notifyAction for anchor element',
      () => {
        const {foundation, mockAdapter} = setupTest();
@@ -896,6 +912,19 @@ describe('MDCListFoundation', () => {
     expect(mockAdapter.notifyAction).toHaveBeenCalledWith(1);
     expect(mockAdapter.notifyAction).toHaveBeenCalledTimes(1);
   });
+
+  it('#handleClick does not notify of action when clicked on disabled list item.',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+
+       mockAdapter.getListItemCount.and.returnValue(3);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+           .and.returnValue(true);
+       foundation.handleClick(1, false);
+
+       expect(mockAdapter.notifyAction).not.toHaveBeenCalled();
+     });
 
   it('#handleClick when singleSelection=true on a list item should cause the list item to be selected',
      () => {

@@ -223,6 +223,10 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         }
         this.preventDefaultEvent_(evt);
 
+        if (this.adapter_.listItemAtIndexHasClass(
+                currentIndex, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
+          return;
+        }
         if (this.isSelectableList_()) {
           this.setSelectedIndexOnAction_(currentIndex);
         }
@@ -247,14 +251,18 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       return;
     }
 
+    this.setTabindexAtIndex_(index);
+    this.focusedItemIndex_ = index;
+
+    if (this.adapter_.listItemAtIndexHasClass(
+            index, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
+      return;
+    }
     if (this.isSelectableList_()) {
       this.setSelectedIndexOnAction_(index, toggleCheckbox);
     }
 
     this.adapter_.notifyAction(index);
-
-    this.setTabindexAtIndex_(index);
-    this.focusedItemIndex_ = index;
   }
 
   /**
@@ -468,10 +476,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * User interaction should not toggle list item(s) when disabled.
    */
   private setSelectedIndexOnAction_(index: number, toggleCheckbox = true) {
-    if (this.adapter_.listItemAtIndexHasClass(index, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
-      return;
-    }
-
     if (this.isCheckboxList_) {
       this.toggleCheckboxAtIndex_(index, toggleCheckbox);
     } else {
