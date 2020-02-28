@@ -124,11 +124,10 @@
   }
 
   .mdc-dialog__title {
-    @include typography-mixins.baseline-top(40px, $query: $query);
+    @include typography-mixins.text-baseline($top: 40px, $display: block, $query: $query);
     @include typography-mixins.typography(headline6, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
-      display: block;
       position: relative;
       flex-shrink: 0;
       box-sizing: border-box;

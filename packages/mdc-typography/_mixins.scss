@@ -105,15 +105,94 @@
   }
 }
 
-@mixin baseline-top($distance, $query: feature-targeting-functions.all()) {
+/// Sets a container's baseline that text content will align to.
+///
+/// If the `$display` is set to a flexbox display, only `$top` baseline may be
+/// set. A separate element must be added as a child of the container with a
+/// `$bottom` baseline.
+///
+/// @param {Number} $top - the distance from the top of the container to the
+///     text's baseline.
+/// @param {Number} $bottom - the distance from the text's baseline to the
+///     bottom of the container.
+/// @param {String} $display - the display type of the container. May be `flex`,
+///     `inline-flex`, `block`, or `inline-block`.
+@mixin baseline($top: 0, $bottom: 0, $display: block, $query: feature-targeting-functions.all()) {
+  $validDisplayTypes: (flex, inline-flex, block, inline-block);
+
+  @if list.index($validDisplayTypes, $display) == null {
+    @error "mdc-typography: invalid display specified! #{$display} must be one of #{$validDisplayTypes}";
+  }
+
+  $isFlexbox: $display == "flex" or $display == "inline-flex";
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    display: block;
-    margin-top: 0;
-    /* @alternate */
-    line-height: normal;
+    display: $display;
+
+    @if $isFlexbox {
+      align-items: baseline;
+    }
   }
+
+  @if $top > 0 {
+    @include _baseline-top($top, $query: $query);
+  }
+
+  @if $bottom > 0 {
+    @if $isFlexbox {
+      @error "mdc-typography: invalid baseline with display type. #{$display} cannot specifiy $bottom. Add a separate child element with its own $bottom.";
+    }
+
+    @include _baseline-bottom($bottom, $query: $query);
+  }
+}
+
+/// Sets the baseline of flow text content.
+///
+/// Separate `$top` and `$bottom` baselines may be specified. You should ensure
+/// that the `$top` baseline matches the previous text content's $bottom
+/// baseline to ensure text is positioned appropriately.
+///
+/// See go/css-baseline for reference on how this mixin works.
+///
+/// This is intended for text flow content only (e.g. `<h1>`, `<p>`, `<span>`,
+/// or `<div>` with only text content). Use `baseline()` to set the baseline of
+/// containers that are flexbox or have non-flow content children.
+///
+/// @param {Number} $top - the distance from the top of the container to the
+///     text's baseline.
+/// @param {Number} $bottom - the distance from the text's baseline to the
+///     bottom of the container.
+/// @param {Boolean} $lineHeight - the line-height to use for the text. This
+///     is the distance between baselines of multiple lines of text.
+/// @param {String} $display - the display type of the container. May be `block`
+///     or `inline-block`.
+@mixin text-baseline($top: 0, $bottom: 0, $display: block, $lineHeight: normal, $query: feature-targeting-functions.all()) {
+  $validDisplayTypes: (block, inline-block);
+
+  @if list.index($validDisplayTypes, $display) == null {
+    @error "mdc-typography: invalid display specified! #{$display} must be one of #{$validDisplayTypes}";
+  }
+
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include baseline($display: $display, $top: $top, $bottom: $bottom, $query: $query);
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @if $top > 0 {
+      margin-top: 0;
+      /* @alternate */
+      line-height: #{$lineHeight};
+    }
+
+    @if $bottom > 0 {
+      margin-bottom: -1 * $bottom;
+    }
+  }
+}
+
+@mixin _baseline-top($distance, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   &::before {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -124,12 +203,8 @@
   }
 }
 
-@mixin baseline-bottom($distance, $query: feature-targeting-functions.all()) {
+@mixin _baseline-bottom($distance, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    margin-bottom: -1 * $distance;
-  }
 
   &::after {
     @include feature-targeting-mixins.targets($feat-structure) {

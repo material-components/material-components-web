@@ -141,17 +141,20 @@
 
   .mdc-list-item__primary-text {
     @include typography-mixins.overflow-ellipsis($query);
-    @include typography-mixins.baseline-top($item-primary-text-baseline-height, $query);
-    @include typography-mixins.baseline-bottom($item-secondary-text-baseline-height, $query);
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      display: block;
-    }
+    @include typography-mixins.text-baseline(
+      $top: $item-primary-text-baseline-height,
+      $bottom: $item-secondary-text-baseline-height,
+      $display: block,
+      $query: $query
+    );
 
     // stylelint-disable plugin/selector-bem-pattern
     .mdc-list--dense & {
-      @include typography-mixins.baseline-top($dense-item-primary-text-baseline-height, $query);
-      @include typography-mixins.baseline-bottom($item-secondary-text-baseline-height, $query);
+      @include typography-mixins.text-baseline(
+        $top: $dense-item-primary-text-baseline-height,
+        $bottom: $item-secondary-text-baseline-height,
+        $query: $query
+      );
     }
     // stylelint-enable plugin/selector-bem-pattern
   }
@@ -159,16 +162,14 @@
   .mdc-list-item__secondary-text {
     @include typography-mixins.typography(body2, $query);
     @include typography-mixins.overflow-ellipsis($query);
-    @include typography-mixins.baseline-top($item-secondary-text-baseline-height, $query);
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      display: block;
-    }
+    @include typography-mixins.text-baseline(
+      $top: $item-secondary-text-baseline-height,
+      $display: block,
+      $query: $query
+    );
 
     // stylelint-disable plugin/selector-bem-pattern
     .mdc-list--dense & {
-      @include typography-mixins.baseline-top($item-secondary-text-baseline-height, $query);
-
       @include feature-targeting-mixins.targets($feat-structure) {
         font-size: inherit;
       }

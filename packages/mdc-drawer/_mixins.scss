@@ -141,13 +141,12 @@
 
   .mdc-drawer__title {
     @include typography-mixins.typography(headline6, $query: $query);
-    @include typography-mixins.baseline-top(36px, $query: $query);
-    @include typography-mixins.baseline-bottom(20px, $query: $query);
+    @include typography-mixins.text-baseline($top: 36px, $bottom: 20px, $query: $query);
   }
 
   .mdc-drawer__subtitle {
     @include typography-mixins.typography(body2, $query: $query);
-    @include typography-mixins.baseline-top(20px, $query: $query);
+    @include typography-mixins.text-baseline($top: 20px, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
       margin-bottom: 0;
@@ -440,7 +439,7 @@
   // postcss-bem-linter: ignore
   .mdc-list-group__subheader {
     @include typography-mixins.typography(body2, $query: $query);
-    @include typography-mixins.baseline-top(24px, $query: $query);
+    @include typography-mixins.text-baseline($top: 24px, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
       margin: 0;

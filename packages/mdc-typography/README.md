@@ -118,11 +118,11 @@ CSS Custom property | Description
 Mixin | Description
 --- | ---
 `base` | Sets the font to Roboto
-`mdc-typography($style)` | Applies one of the typography styles, including setting the font to Roboto
+`typography($style)` | Applies one of the typography styles, including setting the font to Roboto
 `smooth-font` | Adds antialiasing for typography
 `overflow-ellipsis` | Truncates overflow text to one line with an ellipsis
-`baseline-top($distance)` | Sets the baseline height of a text element from top.
-`baseline-bottom($distance)` | Sets the distance from text baseline to bottom. This mixin should be combined with `baseline-top` when setting baseline distance to following text element.
+`baseline($top, $bottom, $display)`| Sets a container's baseline that text content will align to.
+`text-baseline($top, $bottom, $display)`| Sets the baseline of flow text content.
 
 > **A note about `overflow-ellipsis`**, `overflow-ellipsis` should only be used if the element is `display: block` or `display: inline-block`.
 

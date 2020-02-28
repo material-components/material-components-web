@@ -26,7 +26,7 @@
 // postcss-bem-linter: define select-helper-text
 .mdc-select-helper-text {
   @include mixins.typography(caption);
-  @include mixins.baseline-top(16px);
+  @include mixins.text-baseline(16px);
 
   margin: 0;
   transition: functions.transition(opacity);

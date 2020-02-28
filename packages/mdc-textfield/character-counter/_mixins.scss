@@ -35,7 +35,7 @@
 
   .mdc-text-field-character-counter {
     @include typography-mixins.typography(caption, $query: $query);
-    @include typography-mixins.baseline-top(16px, $query: $query);
+    @include typography-mixins.text-baseline($top: 16px, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
       // Keep flex item align to trailing side on absence of helper text.
