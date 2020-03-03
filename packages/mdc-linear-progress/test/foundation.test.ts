@@ -40,13 +40,14 @@ describe('MDCLinearProgressFoundation', () => {
   it('defaultAdapter returns a complete adapter implementation', () => {
     verifyDefaultAdapter(MDCLinearProgressFoundation, [
       'addClass',
+      'getPrimaryBar',
       'forceLayout',
+      'getBuffer',
       'hasClass',
       'removeAttribute',
       'removeClass',
       'setAttribute',
-      'setBufferBarStyle',
-      'setPrimaryBarStyle',
+      'setStyle',
     ]);
   });
 
@@ -61,14 +62,18 @@ describe('MDCLinearProgressFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
            .and.returnValue(false);
+       const primaryBar = {};
+       mockAdapter.getPrimaryBar.and.returnValue(primaryBar);
+       const buffer = {};
+       mockAdapter.getBuffer.and.returnValue(buffer);
        foundation.init();
        foundation.setDeterminate(false);
        expect(mockAdapter.addClass)
            .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
-       expect(mockAdapter.setPrimaryBarStyle)
-           .toHaveBeenCalledWith('transform', 'scaleX(1)');
-       expect(mockAdapter.setBufferBarStyle)
-           .toHaveBeenCalledWith('flex-basis', '100%');
+       expect(mockAdapter.setStyle)
+           .toHaveBeenCalledWith(primaryBar, 'transform', 'scaleX(1)');
+       expect(mockAdapter.setStyle)
+           .toHaveBeenCalledWith(buffer, 'transform', 'scaleX(1)');
        expect(mockAdapter.removeAttribute)
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW);
      });
@@ -96,13 +101,15 @@ describe('MDCLinearProgressFoundation', () => {
   it('#setDeterminate restores previous progress value after toggled from false to true',
      () => {
        const {foundation, mockAdapter} = setupTest();
+       const primaryBar = {};
+       mockAdapter.getPrimaryBar.and.returnValue(primaryBar);
        foundation.init();
        foundation.setProgress(0.123);
        foundation.setDeterminate(false);
        foundation.setDeterminate(true);
 
        checkNumTimesSpyCalledWithArgs(
-           mockAdapter.setPrimaryBarStyle, ['transform', 'scaleX(0.123)'], 2);
+           mockAdapter.setStyle, [primaryBar, 'transform', 'scaleX(0.123)'], 2);
        checkNumTimesSpyCalledWithArgs(
            mockAdapter.setAttribute, [strings.ARIA_VALUENOW, '0.123'], 2);
      });
@@ -110,23 +117,27 @@ describe('MDCLinearProgressFoundation', () => {
   it('#setDeterminate restores previous buffer value after toggled from false to true',
      () => {
        const {foundation, mockAdapter} = setupTest();
+       const buffer = {};
+       mockAdapter.getBuffer.and.returnValue(buffer);
        foundation.init();
        foundation.setBuffer(0.123);
        foundation.setDeterminate(false);
        foundation.setDeterminate(true);
        checkNumTimesSpyCalledWithArgs(
-           mockAdapter.setBufferBarStyle, ['flex-basis', '12.3%'], 2);
+           mockAdapter.setStyle, [buffer, 'transform', 'scaleX(0.123)'], 2);
      });
 
   it('#setDeterminate updates progress value set while determinate is false after determinate is true',
      () => {
        const {foundation, mockAdapter} = setupTest();
+       const primaryBar = {};
+       mockAdapter.getPrimaryBar.and.returnValue(primaryBar);
        foundation.init();
        foundation.setDeterminate(false);
        foundation.setProgress(0.123);
        foundation.setDeterminate(true);
-       expect(mockAdapter.setPrimaryBarStyle)
-           .toHaveBeenCalledWith('transform', 'scaleX(0.123)');
+       expect(mockAdapter.setStyle)
+           .toHaveBeenCalledWith(primaryBar, 'transform', 'scaleX(0.123)');
        expect(mockAdapter.setAttribute)
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0.123');
      });
@@ -135,10 +146,12 @@ describe('MDCLinearProgressFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
         .and.returnValue(false);
+    const primaryBar = {};
+    mockAdapter.getPrimaryBar.and.returnValue(primaryBar);
     foundation.init();
     foundation.setProgress(0.5);
-    expect(mockAdapter.setPrimaryBarStyle)
-        .toHaveBeenCalledWith('transform', 'scaleX(0.5)');
+    expect(mockAdapter.setStyle)
+        .toHaveBeenCalledWith(primaryBar, 'transform', 'scaleX(0.5)');
     expect(mockAdapter.setAttribute)
         .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0.5');
   });
@@ -147,29 +160,35 @@ describe('MDCLinearProgressFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
         .and.returnValue(true);
+    const primaryBar = {};
+    mockAdapter.getPrimaryBar.and.returnValue(primaryBar);
     foundation.init();
     foundation.setProgress(0.5);
-    expect(mockAdapter.setPrimaryBarStyle).not.toHaveBeenCalled();
+    expect(mockAdapter.setStyle).not.toHaveBeenCalled();
     expect(mockAdapter.setAttribute).not.toHaveBeenCalled();
   });
 
-  it('#setBuffer sets flex-basis', () => {
+  it('#setBuffer sets transform', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
         .and.returnValue(false);
+    const buffer = {};
+    mockAdapter.getBuffer.and.returnValue(buffer);
     foundation.init();
     foundation.setBuffer(0.5);
-    expect(mockAdapter.setBufferBarStyle)
-        .toHaveBeenCalledWith('flex-basis', '50%');
+    expect(mockAdapter.setStyle)
+        .toHaveBeenCalledWith(buffer, 'transform', 'scaleX(0.5)');
   });
 
   it('#setBuffer on indeterminate does nothing', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
         .and.returnValue(true);
+    const buffer = {};
+    mockAdapter.getBuffer.and.returnValue(buffer);
     foundation.init();
     foundation.setBuffer(0.5);
-    expect(mockAdapter.setBufferBarStyle).not.toHaveBeenCalled();
+    expect(mockAdapter.setStyle).not.toHaveBeenCalled();
   });
 
   it('#setReverse adds class', () => {

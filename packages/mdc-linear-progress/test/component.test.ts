@@ -29,10 +29,8 @@ function getFixture() {
   wrapper.innerHTML = `
     <div role="progressbar" class="mdc-linear-progress" aria-label="Unit Test Progress Bar" aria-valuemin="0"
       aria-valuemax="1" aria-valuenow="0">
-      <div class="mdc-linear-progress__buffer">
-        <div class="mdc-linear-progress__buffer-bar"></div>
-        <div class="mdc-linear-progress__buffer-dots"></div>
-      </div>
+      <div class="mdc-linear-progress__buffering-dots"></div>
+      <div class="mdc-linear-progress__buffer"></div>
       <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
         <span class="mdc-linear-progress__bar-inner"></span>
       </div>
@@ -91,12 +89,11 @@ describe('MDCLinearProgress', () => {
     component.buffer = 0.5;
     const buffer =
         root.querySelector(
-            MDCLinearProgressFoundation.strings.BUFFER_BAR_SELECTOR) as
-        HTMLElement;
+            MDCLinearProgressFoundation.strings.BUFFER_SELECTOR) as HTMLElement;
     // External GitHub TS compiler insists that `buffer.style.transform` could
     // be null
     // tslint:disable-next-line:no-unnecessary-type-assertion
-    expect('50%').toEqual(buffer.style.flexBasis as string);
+    expect('scaleX(0.5)').toEqual(buffer.style.transform as string);
   });
 
   it('set reverse', () => {

@@ -29,7 +29,6 @@ export const cssClasses = {
 
 export const strings = {
   ARIA_VALUENOW: 'aria-valuenow',
-  BUFFER_BAR_SELECTOR: '.mdc-linear-progress__buffer-bar',
-  FLEX_BASIS: 'flex-basis',
+  BUFFER_SELECTOR: '.mdc-linear-progress__buffer',
   PRIMARY_BAR_SELECTOR: '.mdc-linear-progress__primary-bar',
 };

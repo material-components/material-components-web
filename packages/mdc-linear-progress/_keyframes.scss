@@ -112,11 +112,8 @@
 
 @mixin buffering-keyframes_ {
   @keyframes mdc-linear-progress-buffering {
-    from {
-      // Normally the buffer dots start from the left and overflow to the right.
-      // We rotate by 180deg so that the buffer dots start on the right when
-      // in non-reversed mode and overflow to the left.
-      transform: rotate(180deg) translateX(-10px);
+    to {
+      transform: translateX(-10px);
     }
   }
 }
@@ -168,8 +165,8 @@
 
 @mixin buffering-reverse-keyframes_ {
   @keyframes mdc-linear-progress-buffering-reverse {
-    from {
-      transform: translateX(-10px);
+    to {
+      transform: translateX(10px);
     }
   }
 }
