@@ -34,7 +34,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 
 ```html
 <!-- Required styles for MDC Web -->
-<link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+<link rel="stylesheet" href="https://unpkg.com/material-components-web@5.1.0/dist/material-components-web.min.css" integrity="sha384-XNhFFO7C/b7hOWhv7Rj4QQwqRL3BbbaWiRo7gUA09nxjtWA7Ko6zz3oeUjYYNSBe" crossorigin="anonymous">
 
 <!-- Render textfield component -->
 <label class="mdc-text-field">
@@ -44,7 +44,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 </label>
 
 <!-- Required MDC Web JavaScript library -->
-<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+<script src="<script src="https://unpkg.com/material-components-web@5.1.0/dist/material-components-web.min.js" integrity="sha384-NkRHpf+ZcNXepmoCmr8IcGpFusyfk9p3sX1i7ScaSUwz/fMdeQkZipi+bLYwJYtW" crossorigin="anonymous"></script>"></script>
 <!-- Instantiate single textfield component rendered in the document -->
 <script>
   mdc.textField.MDCTextField.attachTo(document.querySelector('.mdc-text-field'));
