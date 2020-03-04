@@ -136,9 +136,14 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     }
 
     const isRTL = this.adapter_.isRTL();
-    const shouldIncrement = key === chipStrings.ARROW_RIGHT_KEY && !isRTL
-        || key === chipStrings.ARROW_LEFT_KEY && isRTL
-        || key === chipStrings.ARROW_DOWN_KEY;
+    const isLeftKey = key === chipStrings.ARROW_LEFT_KEY ||
+        key === chipStrings.IE_ARROW_LEFT_KEY;
+    const isRightKey = key === chipStrings.ARROW_RIGHT_KEY ||
+        key === chipStrings.IE_ARROW_RIGHT_KEY;
+    const isDownKey = key === chipStrings.ARROW_DOWN_KEY ||
+        key === chipStrings.IE_ARROW_DOWN_KEY;
+    const shouldIncrement =
+        !isRTL && isRightKey || isRTL && isLeftKey || isDownKey;
     const isHome = key === chipStrings.HOME_KEY;
     const isEnd = key === chipStrings.END_KEY;
     if (shouldIncrement) {
@@ -182,7 +187,11 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   private getDirection_(key: string): Direction {
     const isRTL = this.adapter_.isRTL();
-    if (key === chipStrings.ARROW_LEFT_KEY && !isRTL || key === chipStrings.ARROW_RIGHT_KEY && isRTL) {
+    const isLeftKey = key === chipStrings.ARROW_LEFT_KEY ||
+        key === chipStrings.IE_ARROW_LEFT_KEY;
+    const isRightKey = key === chipStrings.ARROW_RIGHT_KEY ||
+        key === chipStrings.IE_ARROW_RIGHT_KEY;
+    if (!isRTL && isLeftKey || isRTL && isRightKey) {
       return Direction.LEFT;
     }
 

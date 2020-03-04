@@ -286,7 +286,11 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   private getDirection_(key: string): Direction {
     const isRTL = this.adapter_.isRTL();
-    if (key === strings.ARROW_LEFT_KEY && !isRTL || key === strings.ARROW_RIGHT_KEY && isRTL) {
+    const isLeftKey =
+        key === strings.ARROW_LEFT_KEY || key === strings.IE_ARROW_LEFT_KEY;
+    const isRightKey =
+        key === strings.ARROW_RIGHT_KEY || key === strings.IE_ARROW_RIGHT_KEY;
+    if (!isRTL && isLeftKey || isRTL && isRightKey) {
       return Direction.LEFT;
     }
 
@@ -331,7 +335,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   private shouldRemoveChip_(evt: KeyboardEvent): boolean {
     const isDeletable = this.adapter_.hasClass(cssClasses.DELETABLE);
-    return isDeletable && (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY);
+    return isDeletable &&
+        (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY ||
+         evt.key === strings.IE_DELETE_KEY);
   }
 
   private setSelected_(selected: boolean) {

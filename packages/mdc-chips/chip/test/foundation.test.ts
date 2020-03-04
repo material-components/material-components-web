@@ -466,8 +466,10 @@ describe('MDCChipFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
 
     [strings.ARROW_UP_KEY,
+     strings.IE_ARROW_UP_KEY,
      strings.HOME_KEY,
      strings.ARROW_DOWN_KEY,
+     strings.IE_ARROW_DOWN_KEY,
      strings.END_KEY,
     ].forEach((key) => {
       const mockEvt = {
@@ -485,7 +487,7 @@ describe('MDCChipFoundation', () => {
     const {foundation} = setupTest();
     const mockEvt = {
       type: 'keydown',
-      key: 'ArrowLeft',
+      key: strings.ARROW_LEFT_KEY,
       preventDefault: jasmine.createSpy('.preventDefault'),
     };
 
@@ -535,124 +537,149 @@ describe('MDCChipFoundation', () => {
     };
   }
 
-  it('#handleKeydown ArrowLeft from focused text emits appropriate event',
-     () => {
-       const {foundation, mockAdapter} = setupNavigationTest({
-         fromPrimaryAction: true,
+  [strings.ARROW_LEFT_KEY, strings.IE_ARROW_LEFT_KEY].forEach((key) => {
+    it(`#handleKeydown ${key} from focused text emits appropriate event`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest({
+           fromPrimaryAction: true,
+         });
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.notifyNavigation)
+             .toHaveBeenCalledWith(key, EventSource.PRIMARY);
        });
-       foundation.handleKeydown(mockKeyboardEvent('ArrowLeft'));
-       expect(mockAdapter.notifyNavigation)
-           .toHaveBeenCalledWith('ArrowLeft', EventSource.PRIMARY);
-     });
-
-  it('#handleKeydown ArrowRight from focused text emits appropriate event',
-     () => {
-       const {foundation, mockAdapter} = setupNavigationTest({
-         fromPrimaryAction: true,
-       });
-       foundation.handleKeydown(mockKeyboardEvent('ArrowRight'));
-       expect(mockAdapter.notifyNavigation)
-           .toHaveBeenCalledWith('ArrowRight', EventSource.PRIMARY);
-     });
-
-  it('#handleKeydown ArrowLeft from focused text emits appropriate event in RTL',
-     () => {
-       const {foundation, mockAdapter} = setupNavigationTest({
-         fromPrimaryAction: true,
-         isRTL: true,
-       });
-       foundation.handleKeydown(mockKeyboardEvent('ArrowLeft'));
-       expect(mockAdapter.notifyNavigation)
-           .toHaveBeenCalledWith('ArrowLeft', EventSource.PRIMARY);
-     });
-
-  it('#handleKeydown ArrowRight from focused text emits appropriate event in RTL',
-     () => {
-       const {foundation, mockAdapter} = setupNavigationTest({
-         fromPrimaryAction: true,
-         isRTL: true,
-       });
-       foundation.handleKeydown(mockKeyboardEvent('ArrowRight'));
-       expect(mockAdapter.notifyNavigation)
-           .toHaveBeenCalledWith('ArrowRight', EventSource.PRIMARY);
-     });
-
-  it('#handleKeydown ArrowRight from focused trailing action emits appropriate event',
-     () => {
-       const {foundation, mockAdapter} = setupNavigationTest({
-         fromTrailingAction: true,
-       });
-       foundation.handleKeydown(mockKeyboardEvent('ArrowRight'));
-       expect(mockAdapter.notifyNavigation)
-           .toHaveBeenCalledWith('ArrowRight', EventSource.NONE);
-     });
-
-  it('#handleKeydown ArrowLeft from focused trailing action emits appropriate event in RTL',
-     () => {
-       const {foundation, mockAdapter} = setupNavigationTest({
-         fromTrailingAction: true,
-         isRTL: true,
-       });
-       foundation.handleKeydown(mockKeyboardEvent('ArrowLeft'));
-       expect(mockAdapter.notifyNavigation)
-           .toHaveBeenCalledWith('ArrowLeft', EventSource.NONE);
-     });
-
-  it('#handleKeydown ArrowRight from focused text with trailing icon focuses trailing icon',
-     () => {
-       const {foundation, mockAdapter} = setupNavigationTest(
-           {fromPrimaryAction: true, hasTrailingAction: true});
-       foundation.handleKeydown(mockKeyboardEvent('ArrowRight'));
-       expect(mockAdapter.setTrailingActionAttr)
-           .toHaveBeenCalledWith('tabindex', '0');
-       expect(mockAdapter.setPrimaryActionAttr)
-           .toHaveBeenCalledWith('tabindex', '-1');
-       expect(mockAdapter.focusTrailingAction).toHaveBeenCalled();
-     });
-
-  it('#handleKeydown ArrowLeft from focused text with trailing icon focuses trailing icon in RTL',
-     () => {
-       const {foundation, mockAdapter} = setupNavigationTest({
-         fromPrimaryAction: true,
-         isRTL: true,
-         hasTrailingAction: true,
-       });
-       foundation.handleKeydown(mockKeyboardEvent('ArrowLeft'));
-       expect(mockAdapter.setTrailingActionAttr)
-           .toHaveBeenCalledWith('tabindex', '0');
-       expect(mockAdapter.setPrimaryActionAttr)
-           .toHaveBeenCalledWith('tabindex', '-1');
-       expect(mockAdapter.focusTrailingAction).toHaveBeenCalled();
-     });
-
-  it('#handleKeydown ArrowLeft from focused trailing icon focuses text', () => {
-    const {foundation, mockAdapter} = setupNavigationTest(
-        {hasTrailingAction: true, fromTrailingAction: true});
-    foundation.handleKeydown(mockKeyboardEvent('ArrowLeft'));
-    expect(mockAdapter.setTrailingActionAttr)
-        .toHaveBeenCalledWith('tabindex', '-1');
-    expect(mockAdapter.setPrimaryActionAttr)
-        .toHaveBeenCalledWith('tabindex', '0');
-    expect(mockAdapter.focusPrimaryAction).toHaveBeenCalled();
   });
 
-  it('#handleKeydown ArrowRight from focused trailing icon focuses text in RTL',
-     () => {
-       const {foundation, mockAdapter} = setupNavigationTest(
-           {hasTrailingAction: true, fromTrailingAction: true, isRTL: true});
-       foundation.handleKeydown(mockKeyboardEvent('ArrowRight'));
-       expect(mockAdapter.setTrailingActionAttr)
-           .toHaveBeenCalledWith('tabindex', '-1');
-       expect(mockAdapter.setPrimaryActionAttr)
-           .toHaveBeenCalledWith('tabindex', '0');
-       expect(mockAdapter.focusPrimaryAction).toHaveBeenCalled();
-     });
+  [strings.ARROW_RIGHT_KEY, strings.IE_ARROW_RIGHT_KEY].forEach((key) => {
+    it(`#handleKeydown ${key} from focused text emits appropriate event`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest({
+           fromPrimaryAction: true,
+         });
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.notifyNavigation)
+             .toHaveBeenCalledWith(key, EventSource.PRIMARY);
+       });
+  });
+
+  [strings.ARROW_LEFT_KEY, strings.IE_ARROW_LEFT_KEY].forEach((key) => {
+    it(`#handleKeydown ${key} from focused text emits appropriate event in RTL`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest({
+           fromPrimaryAction: true,
+           isRTL: true,
+         });
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.notifyNavigation)
+             .toHaveBeenCalledWith(key, EventSource.PRIMARY);
+       });
+  });
+
+  [strings.ARROW_RIGHT_KEY, strings.IE_ARROW_RIGHT_KEY].forEach((key) => {
+    it(`#handleKeydown ${key} from focused text emits appropriate event in RTL`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest({
+           fromPrimaryAction: true,
+           isRTL: true,
+         });
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.notifyNavigation)
+             .toHaveBeenCalledWith(key, EventSource.PRIMARY);
+       });
+  });
+
+  [strings.ARROW_RIGHT_KEY, strings.IE_ARROW_RIGHT_KEY].forEach((key) => {
+    it(`#handleKeydown ${
+           key} from focused trailing action emits appropriate event`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest({
+           fromTrailingAction: true,
+         });
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.notifyNavigation)
+             .toHaveBeenCalledWith(key, EventSource.NONE);
+       });
+  });
+
+  [strings.ARROW_LEFT_KEY, strings.IE_ARROW_LEFT_KEY].forEach((key) => {
+    it(`#handleKeydown ${
+           key} from focused trailing action emits appropriate event in RTL`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest({
+           fromTrailingAction: true,
+           isRTL: true,
+         });
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.notifyNavigation)
+             .toHaveBeenCalledWith(key, EventSource.NONE);
+       });
+  });
+
+  [strings.ARROW_RIGHT_KEY, strings.IE_ARROW_RIGHT_KEY].forEach((key) => {
+    it(`#handleKeydown ${
+           key} from focused text with trailing icon focuses trailing icon`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest(
+             {fromPrimaryAction: true, hasTrailingAction: true});
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.setTrailingActionAttr)
+             .toHaveBeenCalledWith('tabindex', '0');
+         expect(mockAdapter.setPrimaryActionAttr)
+             .toHaveBeenCalledWith('tabindex', '-1');
+         expect(mockAdapter.focusTrailingAction).toHaveBeenCalled();
+       });
+  });
+
+  [strings.ARROW_LEFT_KEY, strings.IE_ARROW_LEFT_KEY].forEach((key) => {
+    it(`#handleKeydown ${
+           key} from focused text with trailing icon focuses trailing icon in RTL`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest({
+           fromPrimaryAction: true,
+           isRTL: true,
+           hasTrailingAction: true,
+         });
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.setTrailingActionAttr)
+             .toHaveBeenCalledWith('tabindex', '0');
+         expect(mockAdapter.setPrimaryActionAttr)
+             .toHaveBeenCalledWith('tabindex', '-1');
+         expect(mockAdapter.focusTrailingAction).toHaveBeenCalled();
+       });
+  });
+
+  [strings.ARROW_LEFT_KEY, strings.IE_ARROW_LEFT_KEY].forEach((key) => {
+    it(`#handleKeydown ${key} from focused trailing icon focuses text`, () => {
+      const {foundation, mockAdapter} = setupNavigationTest(
+          {hasTrailingAction: true, fromTrailingAction: true});
+      foundation.handleKeydown(mockKeyboardEvent(key));
+      expect(mockAdapter.setTrailingActionAttr)
+          .toHaveBeenCalledWith('tabindex', '-1');
+      expect(mockAdapter.setPrimaryActionAttr)
+          .toHaveBeenCalledWith('tabindex', '0');
+      expect(mockAdapter.focusPrimaryAction).toHaveBeenCalled();
+    });
+  });
+
+  [strings.ARROW_RIGHT_KEY, strings.IE_ARROW_RIGHT_KEY].forEach((key) => {
+    it(`#handleKeydown ${key} from focused trailing icon focuses text in RTL`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest(
+             {hasTrailingAction: true, fromTrailingAction: true, isRTL: true});
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.setTrailingActionAttr)
+             .toHaveBeenCalledWith('tabindex', '-1');
+         expect(mockAdapter.setPrimaryActionAttr)
+             .toHaveBeenCalledWith('tabindex', '0');
+         expect(mockAdapter.focusPrimaryAction).toHaveBeenCalled();
+       });
+  });
 
   /**
    * Verify deletability when class is present
    */
-  ['Backspace',
-   'Delete',
+  [strings.BACKSPACE_KEY,
+   strings.DELETE_KEY,
+   strings.IE_DELETE_KEY,
   ].forEach((key) => {
     it(`#handleKeydown ${
            key} adds the chip exit class when deletable class is present on root`,
@@ -668,8 +695,9 @@ describe('MDCChipFoundation', () => {
   /**
    * Verify no deletability when class is absent
    */
-  ['Backspace',
-   'Delete',
+  [strings.BACKSPACE_KEY,
+   strings.DELETE_KEY,
+   strings.IE_DELETE_KEY,
   ].forEach((key) => {
     it(`#handleKeydown ${
            key} adds the chip exit class when deletable class is present on root`,

@@ -22,7 +22,7 @@
  */
 
 
-import {EventSource} from '../../../mdc-chips/chip/constants';
+import {EventSource, strings} from '../../../mdc-chips/chip/constants';
 import {MDCChipSetFoundation} from '../../../mdc-chips/chip-set/foundation';
 import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
@@ -315,35 +315,44 @@ describe('MDCChipSetFoundation', () => {
         .not.toHaveBeenCalledWith(jasmine.any(Number));
   });
 
-  it('#handleChipNavigation "ArrowRight" focuses the next chip primary action',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+  [strings.ARROW_RIGHT_KEY, strings.IE_ARROW_RIGHT_KEY].forEach((key) => {
+    it(`#handleChipNavigation "${key}" focuses the next chip primary action`,
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip1', key: 'ArrowRight', source: EventSource.PRIMARY});
-       expect(mockAdapter.focusChipPrimaryActionAtIndex)
-           .toHaveBeenCalledWith(2);
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip1', key, source: EventSource.PRIMARY});
+         expect(mockAdapter.focusChipPrimaryActionAtIndex)
+             .toHaveBeenCalledWith(2);
+       });
+  });
 
-  it('#handleChipNavigation "ArrowRight" removes focus from all chips except the next one',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2', 'chip3']);
+  [strings.ARROW_RIGHT_KEY, strings.IE_ARROW_RIGHT_KEY].forEach((key) => {
+    it(`#handleChipNavigation "${
+           key}" removes focus from all chips except the next one`,
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2', 'chip3']);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip1', key: 'ArrowRight', source: EventSource.PRIMARY});
-       expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(0);
-       expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(1);
-       expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(3);
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip1', key, source: EventSource.PRIMARY});
+         expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(0);
+         expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(1);
+         expect(mockAdapter.removeFocusFromChipAtIndex).toHaveBeenCalledWith(3);
+       });
+  });
 
-  ['ArrowLeft',
-   'ArrowRight',
-   'ArrowUp',
-   'ArrowDown',
-   'Home',
-   'End',
+  [strings.ARROW_LEFT_KEY,
+   strings.IE_ARROW_LEFT_KEY,
+   strings.ARROW_RIGHT_KEY,
+   strings.IE_ARROW_RIGHT_KEY,
+   strings.ARROW_UP_KEY,
+   strings.IE_ARROW_UP_KEY,
+   strings.ARROW_DOWN_KEY,
+   strings.IE_ARROW_DOWN_KEY,
+   strings.HOME_KEY,
+   strings.END_KEY,
   ].forEach((key) => {
     it(`#handleChipNavigation "${
            key}" removes focus from N-1 chips (all except the next)`,
@@ -360,46 +369,56 @@ describe('MDCChipSetFoundation', () => {
        });
   });
 
-  it('#handleChipNavigation "ArrowRight" focuses the previous chip trailing action in RTL',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
+  [strings.ARROW_RIGHT_KEY, strings.IE_ARROW_RIGHT_KEY].forEach((key) => {
+    it(`#handleChipNavigation "${
+           key}" focuses the previous chip trailing action in RTL`,
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip1', key: 'ArrowRight', source: EventSource.PRIMARY});
-       expect(mockAdapter.focusChipTrailingActionAtIndex)
-           .toHaveBeenCalledWith(0);
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip1', key, source: EventSource.PRIMARY});
+         expect(mockAdapter.focusChipTrailingActionAtIndex)
+             .toHaveBeenCalledWith(0);
+       });
+  });
 
-  it('#handleChipNavigation "ArrowDown" focuses the next chip primary action',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+  [strings.ARROW_DOWN_KEY, strings.IE_ARROW_DOWN_KEY].forEach((key) => {
+    it(`#handleChipNavigation "${key}" focuses the next chip primary action`,
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip1', key: 'ArrowDown', source: EventSource.PRIMARY});
-       expect(mockAdapter.focusChipPrimaryActionAtIndex)
-           .toHaveBeenCalledWith(2);
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip1', key, source: EventSource.PRIMARY});
+         expect(mockAdapter.focusChipPrimaryActionAtIndex)
+             .toHaveBeenCalledWith(2);
+       });
+  });
 
-  it('#handleChipNavigation "ArrowDown" from the trailing action focuses the next chip trailing action',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+  [strings.ARROW_DOWN_KEY, strings.IE_ARROW_DOWN_KEY].forEach((key) => {
+    it('#handleChipNavigation "${key}" from the trailing action focuses the next chip trailing action',
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip1', key: 'ArrowDown', source: EventSource.TRAILING});
-       expect(mockAdapter.focusChipTrailingActionAtIndex)
-           .toHaveBeenCalledWith(2);
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip1', key, source: EventSource.TRAILING});
+         expect(mockAdapter.focusChipTrailingActionAtIndex)
+             .toHaveBeenCalledWith(2);
+       });
+  });
 
   it('#handleChipNavigation "Home" focuses the first chip primary action',
      () => {
        const {foundation, mockAdapter} =
            setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip1', key: 'Home', source: EventSource.PRIMARY});
+       foundation.handleChipNavigation({
+         chipId: 'chip1',
+         key: strings.HOME_KEY,
+         source: EventSource.PRIMARY
+       });
        expect(mockAdapter.focusChipPrimaryActionAtIndex)
            .toHaveBeenCalledWith(0);
      });
@@ -409,81 +428,97 @@ describe('MDCChipSetFoundation', () => {
         setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
     foundation.handleChipNavigation(
-        {chipId: 'chip1', key: 'End', source: EventSource.PRIMARY});
+        {chipId: 'chip1', key: strings.END_KEY, source: EventSource.PRIMARY});
     expect(mockAdapter.focusChipPrimaryActionAtIndex).toHaveBeenCalledWith(2);
   });
 
-  it('#handleChipNavigation "ArrowRight" from the last chip does not focus any chip action',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+  [strings.ARROW_RIGHT_KEY, strings.IE_ARROW_RIGHT_KEY].forEach((key) => {
+    it(`#handleChipNavigation "${
+           key}" from the last chip does not focus any chip action`,
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip2', key: 'ArrowRight', source: EventSource.PRIMARY});
-       expect(mockAdapter.focusChipPrimaryActionAtIndex)
-           .not.toHaveBeenCalledWith(jasmine.any(Number));
-       expect(mockAdapter.focusChipTrailingActionAtIndex)
-           .not.toHaveBeenCalledWith(jasmine.any(Number));
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip2', key, source: EventSource.PRIMARY});
+         expect(mockAdapter.focusChipPrimaryActionAtIndex)
+             .not.toHaveBeenCalledWith(jasmine.any(Number));
+         expect(mockAdapter.focusChipTrailingActionAtIndex)
+             .not.toHaveBeenCalledWith(jasmine.any(Number));
+       });
+  });
 
-  it('#handleChipNavigation "ArrowDown" from the last chip does not focus any chip action',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+  [strings.ARROW_DOWN_KEY, strings.IE_ARROW_DOWN_KEY].forEach((key) => {
+    it(`#handleChipNavigation "{$key}" from the last chip does not focus any chip action`,
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip2', key: 'ArrowDown', source: EventSource.PRIMARY});
-       expect(mockAdapter.focusChipPrimaryActionAtIndex)
-           .not.toHaveBeenCalledWith(jasmine.any(Number));
-       expect(mockAdapter.focusChipTrailingActionAtIndex)
-           .not.toHaveBeenCalledWith(jasmine.any(Number));
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip2', key, source: EventSource.PRIMARY});
+         expect(mockAdapter.focusChipPrimaryActionAtIndex)
+             .not.toHaveBeenCalledWith(jasmine.any(Number));
+         expect(mockAdapter.focusChipTrailingActionAtIndex)
+             .not.toHaveBeenCalledWith(jasmine.any(Number));
+       });
+  });
 
-  it('#handleChipNavigation "ArrowLeft" focuses the previous chip trailing action',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+  [strings.ARROW_LEFT_KEY, strings.IE_ARROW_LEFT_KEY].forEach((key) => {
+    it(`#handleChipNavigation "{$key}" focuses the previous chip trailing action`,
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip1', key: 'ArrowLeft', source: EventSource.TRAILING});
-       expect(mockAdapter.focusChipTrailingActionAtIndex)
-           .toHaveBeenCalledWith(0);
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip1', key, source: EventSource.TRAILING});
+         expect(mockAdapter.focusChipTrailingActionAtIndex)
+             .toHaveBeenCalledWith(0);
+       });
+  });
 
-  it('#handleChipNavigation "ArrowLeft" focuses the next chip primary action in RTL',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
+  [strings.ARROW_LEFT_KEY, strings.IE_ARROW_LEFT_KEY].forEach((key) => {
+    it(`#handleChipNavigation "${
+           key}" focuses the next chip primary action in RTL`,
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip1', key: 'ArrowLeft', source: EventSource.TRAILING});
-       expect(mockAdapter.focusChipPrimaryActionAtIndex)
-           .toHaveBeenCalledWith(2);
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip1', key, source: EventSource.TRAILING});
+         expect(mockAdapter.focusChipPrimaryActionAtIndex)
+             .toHaveBeenCalledWith(2);
+       });
+  });
 
-  it('#handleChipNavigation "ArrowLeft" from the first chip does not focus any chip action',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+  [strings.ARROW_LEFT_KEY, strings.IE_ARROW_LEFT_KEY].forEach((key) => {
+    it(`#handleChipNavigation "${
+           key}" from the first chip does not focus any chip action`,
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip0', key: 'ArrowLeft', source: EventSource.PRIMARY});
-       expect(mockAdapter.focusChipPrimaryActionAtIndex)
-           .not.toHaveBeenCalledWith(jasmine.any(Number));
-       expect(mockAdapter.focusChipTrailingActionAtIndex)
-           .not.toHaveBeenCalledWith(jasmine.any(Number));
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip0', key, source: EventSource.PRIMARY});
+         expect(mockAdapter.focusChipPrimaryActionAtIndex)
+             .not.toHaveBeenCalledWith(jasmine.any(Number));
+         expect(mockAdapter.focusChipTrailingActionAtIndex)
+             .not.toHaveBeenCalledWith(jasmine.any(Number));
+       });
+  });
 
-  it('#handleChipNavigation "ArrowUp" from the first chip does not focus any chip',
-     () => {
-       const {foundation, mockAdapter} =
-           setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+  [strings.ARROW_UP_KEY, strings.IE_ARROW_UP_KEY].forEach((key) => {
+    it(`#handleChipNavigation "${
+           key}" from the first chip does not focus any chip`,
+       () => {
+         const {foundation, mockAdapter} =
+             setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-       foundation.handleChipNavigation(
-           {chipId: 'chip0', key: 'ArrowUp', source: EventSource.PRIMARY});
-       expect(mockAdapter.focusChipPrimaryActionAtIndex)
-           .not.toHaveBeenCalledWith(jasmine.any(Number));
-       expect(mockAdapter.focusChipTrailingActionAtIndex)
-           .not.toHaveBeenCalledWith(jasmine.any(Number));
-     });
+         foundation.handleChipNavigation(
+             {chipId: 'chip0', key, source: EventSource.PRIMARY});
+         expect(mockAdapter.focusChipPrimaryActionAtIndex)
+             .not.toHaveBeenCalledWith(jasmine.any(Number));
+         expect(mockAdapter.focusChipTrailingActionAtIndex)
+             .not.toHaveBeenCalledWith(jasmine.any(Number));
+       });
+  });
 });
