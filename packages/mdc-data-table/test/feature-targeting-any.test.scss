@@ -23,6 +23,8 @@
     @include data-table.cell-padding(0, $query: $query);
     @include data-table.column-widths(0, $query: $query);
     @include data-table.density(0, $query: $query);
+    @include data-table.sort-icon-color(red, $query: $query);
+    @include data-table.sort-icon-active-color(red, $query: $query);
   }
 }
 

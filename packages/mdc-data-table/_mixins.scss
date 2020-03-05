@@ -22,11 +22,12 @@
 
 @use "sass:list";
 @use "@material/animation/functions";
+@use "@material/checkbox/mixins" as checkbox-mixins;
+@use "@material/density/functions" as density-functions;
 @use "@material/elevation/mixins";
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/checkbox/mixins" as checkbox-mixins;
-@use "@material/density/functions" as density-functions;
+@use "@material/icon-button/mixins" as icon-button-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/shape/mixins" as shape-mixins;
 @use "@material/theme/mixins" as theme-mixins;
@@ -37,6 +38,7 @@
 @mixin core-styles($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $feat-typography: feature-targeting-functions.create-target($query, typography);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
 
   // postcss-bem-linter: define data-table
 
@@ -65,6 +67,8 @@
         $trailing-padding: variables.$cell-trailing-padding,
         $query: $query
       );
+      @include sort-icon-color(variables.$sort-icon-color, $query: $query);
+      @include sort-icon-active-color(variables.$sort-icon-active-color, $query: $query);
     }
 
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -123,6 +127,7 @@
       text-align: left;
       text-overflow: ellipsis;
       overflow: hidden;
+      outline: none;
 
       @include rtl-mixins.rtl {
         /* @noflip */
@@ -142,6 +147,77 @@
         text-align: left;
       }
     }
+  }
+
+  .mdc-data-table__sort-icon-button {
+    @include icon-button-mixins.density(
+      $density-scale: variables.$sort-icon-density-scale,
+      $query: $query);
+
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-box(margin, left, 4px);
+    }
+
+    .mdc-data-table__header-cell--numeric & {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        @include rtl-mixins.reflexive-box(margin, right, 4px);
+      }
+    }
+
+    @include feature-targeting-mixins.targets($feat-animation) {
+      transition: functions.standard(transform, $duration: 150ms);
+    }
+
+    .mdc-data-table__header-cell--sorted-descending & {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        transform: rotate(-180deg);
+      }
+    }
+
+    @include feature-targeting-mixins.targets($feat-structure) {
+      opacity: 0;
+    }
+
+    .mdc-data-table__header-cell:hover &,
+    .mdc-data-table__header-cell--sorted & {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        opacity: 1;
+      }
+    }
+  }
+
+  .mdc-data-table__header-cell-wrapper {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  .mdc-data-table__header-cell--with-sort {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      cursor: pointer;
+    }
+  }
+}
+
+/// Sets the color of sort icon button when it is in idle state.
+/// (icon showed on header cell focus)
+/// @param {String} $color - Color of sort icon button
+@mixin sort-icon-color($color, $query: mdc-feature-all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+
+  .mdc-data-table__sort-icon-button {
+    @include icon-button-mixins.ink-color($color, $query: $query);
+  }
+}
+
+/// Sets the color of sort icon button when it is activated (sorted).
+/// @param {String} $color - Color of sort icon button
+@mixin sort-icon-active-color($color, $query: mdc-feature-all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+
+  .mdc-data-table__header-cell--sorted .mdc-data-table__sort-icon-button {
+    @include icon-button-mixins.ink-color($color, $query: $query);
   }
 }
 

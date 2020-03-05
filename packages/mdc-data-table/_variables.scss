@@ -27,7 +27,6 @@ $fill-color: surface !default;
 $header-row-fill-color: inherit !default;
 $row-fill-color: inherit !default;
 $selected-row-fill-color: rgba(theme-variables.prop-value(primary), .04) !default;
-
 $checked-icon-color: primary !default;
 $divider-color: rgba(theme-variables.prop-value(on-surface), .12) !default;
 $divider-size: 1px !default;
@@ -36,6 +35,10 @@ $checkbox-touch-dimension: 48px !default;
 
 $header-row-text-color: rgba(theme-variables.prop-value(on-surface), .87) !default;
 $row-text-color: rgba(theme-variables.prop-value(on-surface), .87) !default;
+
+$sort-icon-color: rgba(theme-variables.prop-value(on-surface), .6) !default;
+$sort-icon-active-color: rgba(theme-variables.prop-value(on-surface), .87) !default;
+$sort-icon-density-scale: -5 !default;
 
 $shape-radius: medium !default;
 $stroke-size: 1px !default;

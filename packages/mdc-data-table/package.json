@@ -24,6 +24,7 @@
     "@material/dom": "^5.1.0",
     "@material/elevation": "^5.1.0",
     "@material/feature-targeting": "^5.1.0",
+    "@material/icon-button": "^5.1.0",
     "@material/rtl": "^5.1.0",
     "@material/shape": "^5.1.0",
     "@material/theme": "^5.1.0",

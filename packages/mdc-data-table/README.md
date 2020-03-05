@@ -200,6 +200,75 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
 </div>
 ```
 
+### Data table with column sorting
+
+```html
+<div class="mdc-data-table">
+  <table class="mdc-data-table__table" aria-label="Dessert calories">
+    <thead>
+      <tr>
+        <th
+          class="mdc-data-table__header-cell mdc-data-table__header-cell--with-sort"
+          role="columnheader"
+          scope="col"
+        >
+          <div class="mdc-data-table__header-cell-wrapper">
+            <div class="mdc-data-table__header-cell-label">
+              Dessert
+            </div>
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_downward</button>
+          </div>
+        </th>
+        <th
+          class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric mdc-data-table__header-cell--with-sort mdc-data-table__header-cell--sorted"
+          role="columnheader"
+          scope="col"
+          aria-sort="ascending"
+        >
+          <div class="mdc-data-table__header-cell-wrapper">
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_downward</button>
+            <div class="mdc-data-table__header-cell-label">
+              Carbs (g)
+            </div>
+          </div>
+        </th>
+        <th
+          class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric mdc-data-table__header-cell--with-sort"
+          role="columnheader"
+          scope="col"
+        >
+          <div class="mdc-data-table__header-cell-wrapper">
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_downward</button>
+            <div class="mdc-data-table__header-cell-label">
+              Protein (g)
+            </div>
+          </div>
+        </th>
+        <th
+          class="mdc-data-table__header-cell"
+          role="columnheader"
+          scope="col"
+        >
+          Comments
+        </th>
+      </tr>
+    </thead>
+    <tbody class="mdc-data-table__content">
+      <tr class="mdc-data-table__row">
+        <td class="mdc-data-table__cell">Frozen yogurt</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
+          24
+        </td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
+          4.0
+        </td>
+        <td class="mdc-data-table__cell">Super tasty</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
 ## Style Customization
 
 ### CSS Classes
@@ -243,6 +312,8 @@ Mixin | Description
 `cell-padding($leading-padding, $trailing-padding)` | Sets leading & trailing padding for all cells.
 `column-widths($width-list)` | Sets the custom widths for each table column.
 `density($density-scale)` | Sets density scale to data table. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`. Use corresponding density mixins of child components (such as Checkbox) to apply density scales which will be rendered inside data table as content.
+`sort-icon-color($color)` | Sets the color of sort icon button when it is in idle state (icon showed on header cell focus).
+`sort-icon-active-color($color)` | Sets the color of sort icon button when it is activated (sorted).
 
 ## Accessibility
 
