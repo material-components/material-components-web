@@ -1,4 +1,5 @@
-[![Version](https://img.shields.io/npm/v/material-components-web.svg)](https://www.npmjs.com/package/material-components-web)
+[![Build Status](https://img.shields.io/travis/material-components/material-components-web/master.svg)](https://travis-ci.org/material-components/material-components-web/)
+[![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
 
 # Material Components for the web
@@ -6,96 +7,116 @@
 Material Components for the web (MDC Web) helps developers execute [Material Design](https://www.material.io).
 Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional web projects.
 
+Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/), and has 3 high-level goals:
+
+- Production-ready components consumable in an a-la-carte fashion
+- Best-in-class performance and adherence to the [Material Design guidelines](https://material.io/guidelines)
+- Seamless integration with other JS frameworks and libraries
+  - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
+  - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc)
+  - [Angular MDC](https://github.com/trimox/angular-mdc-web)
+  - [Blox Material](https://blox.src.zone/material): Angular Integration Library.
+  - [Vue MDC Adapter](https://github.com/stasson/vue-mdc-adapter): MDC Web Integration for Vue.js (using [foundation/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
+  - [Material Components Vue](https://github.com/matsp/material-components-vue): MDC Web Integration for Vue.js (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
+  - More coming soon! Feel free to submit a pull request adding your library to this list, so long as you meet our [criteria](docs/integrating-into-frameworks.md).
+
 MDC Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.
-
-Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/). In addition to implementing the [Material Design guidelines](https://material.io/design), it provides more flexible theming customization, not only in terms of color, but also typography, shape, states, and more. It is also specifically [architected](docs/code/architecture.md) for adaptability to various [major web frameworks](docs/framework-wrappers.md).
-
-> NOTE: Material Components Web tends to release breaking changes on a monthly basis, but follows
-> [semver](https://semver.org/) so you can control when you incorporate them.
-> We typically follow a 2-week release schedule which includes one major release per month with breaking changes,
-> and intermediate patch releases with bug fixes.
-
-## Important links
-
-- [Getting Started Guide](docs/getting-started.md)
-- [Demos](https://material-components.github.io/material-components-web-catalog)
-- [MDC Web on other frameworks](docs/framework-wrappers.md)
-- [Examples using MDC Web](docs/examples.md)
-- [Contributing](CONTRIBUTING.md)
-- [Material Design Guidelines](https://material.io/design) (external site)
-- [Supported browsers](docs/supported-browsers.md)
-- [All Components](packages/)
-- [Changelog](./CHANGELOG.md)
-- [Roadmap](./ROADMAP.md)
 
 ## Quick start
 
-### Using via CDN
+> Note: This guide assumes you have npm installed locally.
 
-```html
-<!-- Required styles for MDC Web -->
-<link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+### Include CSS for a component
 
-<!-- Render textfield component -->
-<label class="mdc-text-field">
-  <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
-  <span class="mdc-floating-label" id="my-label">Label</span>
-  <div class="mdc-line-ripple"></div>
-</label>
+> Note: This guide assumes you have webpack configured to compile Sass into CSS. See this [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
 
-<!-- Required MDC Web JavaScript library -->
-<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-<!-- Instantiate single textfield component rendered in the document -->
-<script>
-  mdc.textField.MDCTextField.attachTo(document.querySelector('.mdc-text-field'));
-</script>
-```
-
-> Please see [quick start demo](https://codepen.io/abhiomkar/pen/gQWarJ) on codepen for full example.
-
-### Using NPM
-
-> This guide assumes you have webpack configured to compile Sass into CSS. To configure webpack, please see the full [getting started guide](docs/getting-started.md). You can also see the final code and result in the [Material Starter Kit](https://glitch.com/~material-starter-kit).
-
-Install textfield node module to your project.
+To include the Sass files for the Material Design button, install the Node dependency:
 
 ```
-npm install @material/textfield
+npm install @material/button
 ```
 
-#### HTML
-
-Sample usage of text field component. Please see [MDC Textfield](packages/mdc-textfield) component page for more options.
-
-```html
-<label class="mdc-text-field">
-  <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
-  <span class="mdc-floating-label" id="my-label">Label</span>
-  <div class="mdc-line-ripple"></div>
-</label>
-```
-
-#### CSS
-
-Load styles required for text field component.
+Then import the Sass files for @material/button into your application. You can also use Sass mixins to customize the button:
 
 ```scss
-@import "@material/textfield/mdc-text-field";
+@use "@material/button/mdc-button";
+@use "@material/button;
+@use "@material/ripple;
+
+.foo-button {
+  @include button.ink-color(teal);
+  @include ripple.states(teal);
+}
+```
+@material/button has [documentation](packages/mdcbutton/README.md) about the required HTML of a button. Update your application's HTML to include this HTML, and add the foo-button class onto the element:
+
+```html
+<button class="foo-button mdc-button">
+  <div class="mdc-button__ripple"></div>
+  <div class="mdc-button__label">Button</div>
+</button>
 ```
 
-#### JavaScript
+You also need to configure the sass-loader to understand the @material syntax. Update your webpack.config.js by changing `{ loader: 'sass-loader' }` to:
 
-Import `MDCTextField` module to instantiate text field component.
-
-```js
-import {MDCTextField} from '@material/textfield/index';
-const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
+```javascript
+{
+  loader: 'sass-loader',
+  options: {
+    importer: function(url, prev) {
+      if(url.indexOf('@material') === 0) {
+        var filePath = url.split('@material')[1];
+        var nodeModulePath = `./node_modules/@material/${filePath}`;
+        return { file: require('path').resolve(nodeModulePath) };
+      }
+      return { file: url };
+    }
+  }
+}
 ```
 
-This'll initialize text field component on a single `.mdc-text-field` element.
+This will produce a customized Material Design button!
 
-> Please see [quick start demo](https://glitch.com/~mdc-web-quick-start) on glitch for full example.
+![Button](docs/button.png)
 
-## Need help?
+### Include JavaScript for a component
 
-We're constantly trying to improve our components. If Github Issues don't fit your needs, then please visit us on our [Discord Channel](https://discord.gg/material-components).
+> Note: This guide assumes you have webpack configured to compile ES2015 into JavaScript. See this [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
+
+To include the ES2015 files for the Material Design ripple, install the Node dependency:
+
+```
+npm install @material/ripple
+```
+
+Then import the ES2015 file for @material/ripple into your application, and initialize an MDCRipple with a DOM element:
+
+```javascript
+import {MDCRipple} from '@material/ripple';
+const ripple = new MDCRipple(document.querySelector('.foo-button'));
+```
+
+This will produce a Material Design ripple on the button!
+
+![Button with Ripple](docs/button_with_ripple.png)
+
+## Useful Links
+
+- [Getting Started Guide](docs/getting-started.md)
+- [All Components](packages/)
+- [Demos](demos/)
+- [Contributing](CONTRIBUTING.md)
+- [Material.io](https://www.material.io) (external site)
+- [Material Design Guidelines](https://material.io/guidelines) (external site)
+
+## Browser Support
+
+We officially support the last two versions of every major browser. Specifically, we test on the following browsers:
+
+- Chrome
+- Safari
+- Firefox
+- IE 11/Edge
+- Opera
+- Mobile Safari
+- Chrome on Android
