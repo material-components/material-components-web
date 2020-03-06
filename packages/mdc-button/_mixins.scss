@@ -74,7 +74,7 @@ $ripple-target: ".mdc-button__ripple";
       }
     }
 
-    .mdc-button__touch {
+    .mdc-button__touch .mdc-test {
       @include touch-target-mixins.touch-target($query: $query);
     }
 
