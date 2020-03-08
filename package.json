@@ -35,6 +35,8 @@
     "@babel/traverse": "^7.3.4",
     "@babel/types": "^7.3.4",
     "@documentalist/compiler": "^2.1.1",
+    "@sass-collective/sass-em": "^1.1.0",
+    "@sass-collective/sass-rem": "^1.1.0",
     "@types/babel__traverse": "^7.0.6",
     "@types/glob": "^7.1.1",
     "@types/jasmine": "^3.5.0",

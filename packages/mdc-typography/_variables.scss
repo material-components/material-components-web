@@ -22,6 +22,8 @@
 
 @use "sass:map";
 @use "sass:string";
+@use "@sass-collective/sass-em";
+@use "@sass-collective/sass-rem";
 @use "./functions";
 
 $font-family: string.unquote("Roboto, sans-serif") !default;
@@ -58,106 +60,106 @@ $styles: functions.set-styles_(
   $base,
   (
     headline1: (
-      font-size: 6rem, // 96sp
-      line-height: 6rem,
+      font-size: sass-rem.rem(96), // 96sp
+      line-height: sass-rem.rem(96),
       font-weight: map.get($font-weight-values, light),
-      letter-spacing: functions.get-letter-spacing_(-1.5, 6),
+      letter-spacing: sass-em.em(-1.5, 96),
       text-decoration: inherit,
       text-transform: inherit
     ),
     headline2: (
-      font-size: 3.75rem, // 60sp
-      line-height: 3.75rem,
+      font-size: sass-rem.rem(60), // 60sp
+      line-height: sass-rem.rem(60),
       font-weight: map.get($font-weight-values, light),
-      letter-spacing: functions.get-letter-spacing_(-.5, 3.75),
+      letter-spacing: sass-em.em(-.5, 60),
       text-decoration: inherit,
       text-transform: inherit
     ),
     headline3: (
-      font-size: 3rem, // 48sp
-      line-height: 3.125rem, // 50sp
+      font-size: sass-rem.rem(48), // 48sp
+      line-height: sass-rem.rem(50), // 50sp
       font-weight: map.get($font-weight-values, regular),
       letter-spacing: normal,
       text-decoration: inherit,
       text-transform: inherit
     ),
     headline4: (
-      font-size: 2.125rem, // 34sp
-      line-height: 2.5rem, // 40sp
+      font-size: sass-rem.rem(34), // 34sp
+      line-height: sass-rem.rem(40), // 40sp
       font-weight: map.get($font-weight-values, regular),
-      letter-spacing: functions.get-letter-spacing_(.25, 2.125),
+      letter-spacing: sass-em.em(.25, 34),
       text-decoration: inherit,
       text-transform: inherit
     ),
     headline5: (
-      font-size: 1.5rem, // 24sp
-      line-height: 2rem, // 32sp
+      font-size: sass-rem.rem(24), // 24sp
+      line-height: sass-rem.rem(32), // 32sp
       font-weight: map.get($font-weight-values, regular),
       letter-spacing: normal,
       text-decoration: inherit,
       text-transform: inherit
     ),
     headline6: (
-      font-size: 1.25rem, // 20sp
-      line-height: 2rem, // 32sp
+      font-size: sass-rem.rem(20), // 20sp
+      line-height: sass-rem.rem(32), // 32sp
       font-weight: map.get($font-weight-values, medium),
-      letter-spacing: functions.get-letter-spacing_(.25, 1.25),
+      letter-spacing: sass-em.em(.25, 20),
       text-decoration: inherit,
       text-transform: inherit
     ),
     subtitle1: (
-      font-size: 1rem, // 16sp
-      line-height: 1.75rem, // 28sp
+      font-size: sass-rem.rem(16), // 16sp
+      line-height: sass-rem.rem(28), // 28sp
       font-weight: map.get($font-weight-values, regular),
-      letter-spacing: functions.get-letter-spacing_(.15, 1),
+      letter-spacing: sass-em.em(.15, 16),
       text-decoration: inherit,
       text-transform: inherit
     ),
     subtitle2: (
-      font-size: .875rem, // 14sp
-      line-height: 1.375rem, // 22sp
+      font-size: sass-rem.rem(14), // 14sp
+      line-height: sass-rem.rem(22), // 22sp
       font-weight: map.get($font-weight-values, medium),
-      letter-spacing: functions.get-letter-spacing_(.1, .875),
+      letter-spacing: sass-em.em(.1, 14),
       text-decoration: inherit,
       text-transform: inherit
     ),
     body1: (
-      font-size: 1rem, // 16sp
-      line-height: 1.5rem, // 24sp
+      font-size: sass-rem.rem(16), // 16sp
+      line-height: sass-rem.rem(24), // 24sp
       font-weight: map.get($font-weight-values, regular),
-      letter-spacing: functions.get-letter-spacing_(.5, 1),
+      letter-spacing: sass-em.em(.5, 16),
       text-decoration: inherit,
       text-transform: inherit
     ),
     body2: (
-      font-size: .875rem, // 14sp
-      line-height: 1.25rem, // 20sp
+      font-size: sass-rem.rem(14), // 14sp
+      line-height: sass-rem.rem(20), // 20sp
       font-weight: map.get($font-weight-values, regular),
-      letter-spacing: functions.get-letter-spacing_(.25, .875),
+      letter-spacing: sass-em.em(.25, 14),
       text-decoration: inherit,
       text-transform: inherit
     ),
     caption: (
-      font-size: .75rem, // 12sp
-      line-height: 1.25rem, // 20sp
+      font-size: sass-rem.rem(12), // 12sp
+      line-height: sass-rem.rem(20), // 20sp
       font-weight: map.get($font-weight-values, regular),
-      letter-spacing: functions.get-letter-spacing_(.4, .75),
+      letter-spacing: sass-em.em(.4, 12),
       text-decoration: inherit,
       text-transform: inherit
     ),
     button: (
-      font-size: .875rem, // 14sp
-      line-height: 2.25rem, // 36sp
+      font-size: sass-rem.rem(14), // 14sp
+      line-height: sass-rem.rem(36), // 36sp
       font-weight: map.get($font-weight-values, medium),
-      letter-spacing: functions.get-letter-spacing_(1.25, .875),
+      letter-spacing: sass-em.em(1.25, 14),
       text-decoration: none,
       text-transform: uppercase
     ),
     overline: (
-      font-size: .75rem, // 12sp
-      line-height: 2rem, // 32sp
+      font-size: sass-rem.rem(12), // 12sp
+      line-height: sass-rem.rem(32), // 32sp
       font-weight: map.get($font-weight-values, medium),
-      letter-spacing: functions.get-letter-spacing_(2, .75),
+      letter-spacing: sass-em.em(2, 12),
       text-decoration: none,
       text-transform: uppercase
     ),

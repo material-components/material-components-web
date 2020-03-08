@@ -27,6 +27,7 @@
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/animation/variables" as animation-variables;
 @use "@material/typography/mixins" as typography-mixins;
+@use "@sass-collective/sass-rem";
 @use "./variables";
 
 @mixin core-styles($query: functions.all()) {
@@ -43,7 +44,7 @@
       left: 0;
       /* @noflip */
       transform-origin: left top;
-      line-height: 1.15rem;
+      line-height: sass-rem.rem(18.4);
       text-align: left;
       text-overflow: ellipsis;
       white-space: nowrap;

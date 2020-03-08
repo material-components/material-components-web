@@ -1,8 +1,9 @@
 @use "sass:string";
+@use "@sass-collective/sass-rem";
 
 $mdc-typography-font-family: string.unquote("Arial");
 $mdc-typography-styles-headline1: (
-  font-size: 1rem
+  font-size: sass-rem.rem(16)
 );
 
 @import '../mdc-typography';

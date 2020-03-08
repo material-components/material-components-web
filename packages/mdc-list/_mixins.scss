@@ -33,6 +33,7 @@
 @use "./variables";
 @use "@material/ripple/functions" as ripple-functions;
 @use "@material/theme/variables" as theme-variables;
+@use "@sass-collective/sass-rem";
 
 //
 // Public
@@ -76,7 +77,7 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       padding-top: 4px;
       padding-bottom: 4px;
-      font-size: .812rem;
+      font-size: sass-rem.rem(13);
     }
   }
 
@@ -291,7 +292,7 @@
   }
 
   .mdc-list-group__subheader {
-    $mdc-list-subheader-virtual-height: 3rem;
+    $mdc-list-subheader-virtual-height: sass-rem.rem(48);
     $mdc-list-subheader-leading: map.get(map.get(typography-variables.$styles, body1), line-height);
     $mdc-list-subheader-margin: calc((#{$mdc-list-subheader-virtual-height} - #{$mdc-list-subheader-leading}) / 2);
 

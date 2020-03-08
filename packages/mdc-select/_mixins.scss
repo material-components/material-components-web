@@ -35,6 +35,7 @@
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/theme/variables" as theme-variables;
 @use "@material/typography/mixins" as typography-mixins;
+@use "@sass-collective/sass-rem";
 
 // Public
 
@@ -391,7 +392,7 @@
   }
 
   .mdc-floating-label {
-    line-height: 1.15rem;
+    line-height: sass-rem.rem(18.4);
     pointer-events: auto;
   }
 }

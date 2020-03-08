@@ -41,6 +41,7 @@
 @use "./variables";
 @use "./functions";
 @use "@material/rtl/mixins" as rtl-mixins;
+@use "@sass-collective/sass-rem";
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   @include ripple($query);
@@ -847,12 +848,12 @@
 
   .mdc-floating-label {
     @include feature-targeting-mixins.targets($feat-typography) {
-      font-size: .813rem;
+      font-size: sass-rem.rem(13);
     }
 
     &--float-above {
       @include feature-targeting-mixins.targets($feat-typography) {
-        font-size: .813rem;
+        font-size: sass-rem.rem(13);
       }
     }
   }
@@ -1309,7 +1310,7 @@
     }
 
     @include feature-targeting-mixins.targets($feat-typography) {
-      line-height: 1.75rem; // 28sp
+      line-height: sass-rem.rem(28); // 28sp
     }
   }
 
