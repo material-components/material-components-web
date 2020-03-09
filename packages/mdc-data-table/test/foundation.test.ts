@@ -23,31 +23,38 @@
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
-import {cssClasses, strings} from '../constants';
+import {cssClasses, SortValue, strings} from '../constants';
 import {MDCDataTableFoundation} from '../foundation';
 
 describe('MDCDataTableFoundation', () => {
   it('default adapter returns a complete adapter implementation', () => {
     verifyDefaultAdapter(MDCDataTableFoundation, [
-      'isRowsSelectable',
-      'registerHeaderRowCheckbox',
-      'registerRowCheckboxes',
+      'addClassAtRowIndex',
+      'getAttributeByHeaderCellIndex',
+      'getHeaderCellCount',
+      'getHeaderCellElements',
+      'getRowCount',
       'getRowElements',
+      'getRowIdAtIndex',
+      'getRowIndexByChildElement',
+      'getSelectedRowCount',
       'isCheckboxAtRowIndexChecked',
       'isHeaderRowCheckboxChecked',
-      'getRowCount',
-      'getSelectedRowCount',
-      'addClassAtRowIndex',
-      'removeClassAtRowIndex',
-      'setAttributeAtRowIndex',
-      'getRowIndexByChildElement',
-      'setHeaderRowCheckboxIndeterminate',
-      'setHeaderRowCheckboxChecked',
-      'getRowIdAtIndex',
-      'setRowCheckboxCheckedAtIndex',
+      'isRowsSelectable',
       'notifyRowSelectionChanged',
       'notifySelectedAll',
+      'notifySortAction',
       'notifyUnselectedAll',
+      'registerHeaderRowCheckbox',
+      'registerRowCheckboxes',
+      'removeClassAtRowIndex',
+      'removeClassNameByHeaderCellIndex',
+      'setAttributeAtRowIndex',
+      'setAttributeByHeaderCellIndex',
+      'setClassNameByHeaderCellIndex',
+      'setHeaderRowCheckboxChecked',
+      'setHeaderRowCheckboxIndeterminate',
+      'setRowCheckboxCheckedAtIndex',
     ]);
   });
 
@@ -314,5 +321,112 @@ describe('MDCDataTableFoundation', () => {
          rowIndex: 2,
          selected: false,
        });
+     });
+
+  it('#handleSortAction Sets header cell in ascending sorted state by default on sort action',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.getAttributeByHeaderCellIndex.withArgs(2, strings.ARIA_SORT)
+           .and.returnValue(null);
+       mockAdapter.getHeaderCellCount.and.returnValue(5);
+
+       const mockHeaderCell = document.createElement('div');
+       foundation.handleSortAction({
+         columnId: 'testColId-u2',
+         columnIndex: 2,
+         headerCell: mockHeaderCell,
+       });
+
+       expect(mockAdapter.setClassNameByHeaderCellIndex)
+           .toHaveBeenCalledWith(2, cssClasses.HEADER_CELL_SORTED);
+       expect(mockAdapter.setAttributeByHeaderCellIndex)
+           .toHaveBeenCalledWith(2, strings.ARIA_SORT, SortValue.ASCENDING);
+       expect(mockAdapter.notifySortAction).toHaveBeenCalledWith({
+         columnId: 'testColId-u2',
+         columnIndex: 2,
+         headerCell: mockHeaderCell,
+         sortValue: SortValue.ASCENDING,
+       });
+     });
+
+  it('#handleSortAction Sets header cell in descending sorted state when currently sorted in ascending order on sort action',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.getAttributeByHeaderCellIndex.withArgs(2, strings.ARIA_SORT)
+           .and.returnValue(SortValue.ASCENDING);
+       mockAdapter.getHeaderCellCount.and.returnValue(5);
+
+       const mockHeaderCell = document.createElement('div');
+       foundation.handleSortAction({
+         columnId: 'testColId-u2',
+         columnIndex: 2,
+         headerCell: mockHeaderCell,
+       });
+
+       expect(mockAdapter.setClassNameByHeaderCellIndex)
+           .toHaveBeenCalledWith(2, cssClasses.HEADER_CELL_SORTED);
+       expect(mockAdapter.setAttributeByHeaderCellIndex)
+           .toHaveBeenCalledWith(2, strings.ARIA_SORT, SortValue.DESCENDING);
+       expect(mockAdapter.setClassNameByHeaderCellIndex)
+           .toHaveBeenCalledWith(2, cssClasses.HEADER_CELL_SORTED_DESCENDING);
+       expect(mockAdapter.notifySortAction).toHaveBeenCalledWith({
+         columnId: 'testColId-u2',
+         columnIndex: 2,
+         headerCell: mockHeaderCell,
+         sortValue: SortValue.DESCENDING,
+       });
+     });
+
+  it('#handleSortAction Sets header cell in ascending sorted state when currently sorted in descending order on sort action',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.getAttributeByHeaderCellIndex.withArgs(2, strings.ARIA_SORT)
+           .and.returnValue(SortValue.DESCENDING);
+       mockAdapter.getHeaderCellCount.and.returnValue(5);
+
+       const mockHeaderCell = document.createElement('div');
+       foundation.handleSortAction({
+         columnId: 'testColId-u2',
+         columnIndex: 2,
+         headerCell: mockHeaderCell,
+       });
+
+       expect(mockAdapter.setClassNameByHeaderCellIndex)
+           .toHaveBeenCalledWith(2, cssClasses.HEADER_CELL_SORTED);
+       expect(mockAdapter.setAttributeByHeaderCellIndex)
+           .toHaveBeenCalledWith(2, strings.ARIA_SORT, SortValue.ASCENDING);
+       expect(mockAdapter.removeClassNameByHeaderCellIndex)
+           .toHaveBeenCalledWith(2, cssClasses.HEADER_CELL_SORTED_DESCENDING);
+       expect(mockAdapter.notifySortAction).toHaveBeenCalledWith({
+         columnId: 'testColId-u2',
+         columnIndex: 2,
+         headerCell: mockHeaderCell,
+         sortValue: SortValue.ASCENDING,
+       });
+     });
+
+  it('#handleSortAction Resets sort states of other header cells when sorted on target header cell',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.getAttributeByHeaderCellIndex.withArgs(2, strings.ARIA_SORT)
+           .and.returnValue(null);
+       mockAdapter.getHeaderCellCount.and.returnValue(5);
+
+       const mockHeaderCell = document.createElement('div');
+       foundation.handleSortAction({
+         columnId: 'testColId-u2',
+         columnIndex: 2,
+         headerCell: mockHeaderCell,
+       });
+
+       expect(mockAdapter.removeClassNameByHeaderCellIndex)
+           .toHaveBeenCalledWith(
+               jasmine.any(Number), cssClasses.HEADER_CELL_SORTED);
+       expect(mockAdapter.removeClassNameByHeaderCellIndex)
+           .toHaveBeenCalledWith(
+               jasmine.any(Number), cssClasses.HEADER_CELL_SORTED_DESCENDING);
+       expect(mockAdapter.setAttributeByHeaderCellIndex)
+           .toHaveBeenCalledWith(
+               jasmine.any(Number), strings.ARIA_SORT, SortValue.NONE);
      });
 });

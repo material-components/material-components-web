@@ -21,8 +21,32 @@
  * THE SOFTWARE.
  */
 
+import {SortValue} from './constants';
+
 export interface MDCDataTableRowSelectionChangedEventDetail {
   rowIndex: number;
   rowId: string | null;
   selected: boolean;
+}
+
+/**
+ * Event data required for sort action callback - `handleSortAction()`.
+ * Component must send this data to foundation when sort action triggered on
+ * sortable header cell.
+ */
+export interface SortActionEventData {
+  columnId: string|null;
+  columnIndex: number;
+  headerCell: HTMLElement;
+}
+
+/**
+ * Event detail triggered by foundation on sort action. This event detail is
+ * used to trigger DOM event by component.
+ */
+export interface SortActionEventDetail {
+  columnId: string|null;
+  columnIndex: number;
+  headerCell: HTMLElement;
+  sortValue: SortValue;
 }

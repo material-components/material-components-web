@@ -29,7 +29,7 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 
-import {MDCDataTableRowSelectionChangedEventDetail} from './types';
+import {MDCDataTableRowSelectionChangedEventDetail, SortActionEventDetail} from './types';
 
 export interface MDCDataTableAdapter {
   /**
@@ -156,4 +156,42 @@ export interface MDCDataTableAdapter {
    * @param checked True to set checked.
    */
   setRowCheckboxCheckedAtIndex(rowIndex: number, checked: boolean): void;
+
+  /**
+   * @return Total count of header cells.
+   */
+  getHeaderCellCount(): number;
+
+  /**
+   * @return Array of header cell elements.
+   */
+  getHeaderCellElements(): Element[];
+
+  /**
+   * @return Attribute value for given header cell index.
+   */
+  getAttributeByHeaderCellIndex(columnIndex: number, attribute: string): string
+      |null;
+
+  /**
+   * Sets attribute of a header cell by index.
+   */
+  setAttributeByHeaderCellIndex(
+      columnIndex: number, attribute: string, value: string): void;
+
+  /**
+   * Sets class name of a header cell by index.
+   */
+  setClassNameByHeaderCellIndex(columnIndex: number, className: string): void;
+
+  /**
+   * Removes a class name of a header cell by index.
+   */
+  removeClassNameByHeaderCellIndex(columnIndex: number, className: string):
+      void;
+
+  /**
+   * Notifies when column is sorted.
+   */
+  notifySortAction(data: SortActionEventDetail): void;
 }

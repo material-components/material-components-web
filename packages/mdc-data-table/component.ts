@@ -100,19 +100,27 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-    const adapter: MDCDataTableAdapter = {
-      addClassAtRowIndex: (rowIndex: number, className: string) => this.getRows()[rowIndex].classList.add(className),
+    const adapter: Partial<MDCDataTableAdapter> = {
+      addClassAtRowIndex: (rowIndex: number, className: string) => {
+          this.getRows()[rowIndex].classList.add(className);
+      },
       getRowCount: () => this.getRows().length,
-      getRowElements: () => [].slice.call(this.root_.querySelectorAll(strings.ROW_SELECTOR)),
-      getRowIdAtIndex: (rowIndex: number) => this.getRows()[rowIndex].getAttribute(strings.DATA_ROW_ID_ATTR),
+      getRowElements: () => [].slice.call(
+          this.root_.querySelectorAll(strings.ROW_SELECTOR)),
+      getRowIdAtIndex: (rowIndex: number) =>
+          this.getRows()[rowIndex].getAttribute(strings.DATA_ROW_ID_ATTR),
       getRowIndexByChildElement: (el: Element) => {
         return this.getRows().indexOf((closest(el, strings.ROW_SELECTOR) as HTMLElement));
       },
-      getSelectedRowCount: () => this.root_.querySelectorAll(strings.ROW_SELECTED_SELECTOR).length,
-      isCheckboxAtRowIndexChecked: (rowIndex: number) => this.rowCheckboxList_[rowIndex].checked,
+      getSelectedRowCount: () =>
+          this.root_.querySelectorAll(strings.ROW_SELECTED_SELECTOR).length,
+      isCheckboxAtRowIndexChecked: (rowIndex: number) =>
+          this.rowCheckboxList_[rowIndex].checked,
       isHeaderRowCheckboxChecked: () => this.headerRowCheckbox_.checked,
-      isRowsSelectable: () => !!this.root_.querySelector(strings.ROW_CHECKBOX_SELECTOR),
-      notifyRowSelectionChanged: (data: MDCDataTableRowSelectionChangedEventDetail) => {
+      isRowsSelectable: () =>
+          !!this.root_.querySelector(strings.ROW_CHECKBOX_SELECTOR),
+      notifyRowSelectionChanged: (
+          data: MDCDataTableRowSelectionChangedEventDetail) => {
         this.emit(events.ROW_SELECTION_CHANGED, {
           row: this.getRowByIndex_(data.rowIndex),
           rowId: this.getRowIdByIndex_(data.rowIndex),
@@ -121,8 +129,12 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
         },
         /** shouldBubble */ true);
       },
-      notifySelectedAll: () => this.emit(events.SELECTED_ALL, {}, /** shouldBubble */ true),
-      notifyUnselectedAll: () => this.emit(events.UNSELECTED_ALL, {}, /** shouldBubble */ true),
+      notifySelectedAll: () => {
+          this.emit(events.SELECTED_ALL, {}, /** shouldBubble */ true);
+      },
+      notifyUnselectedAll: () => {
+          this.emit(events.UNSELECTED_ALL, {}, /** shouldBubble */ true);
+      },
       registerHeaderRowCheckbox: () => {
         if (this.headerRowCheckbox_) {
           this.headerRowCheckbox_.destroy();
@@ -145,9 +157,10 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
       removeClassAtRowIndex: (rowIndex: number, className: string) => {
         this.getRows()[rowIndex].classList.remove(className);
       },
-      setAttributeAtRowIndex: (rowIndex: number, attr: string, value: string) => {
-        this.getRows()[rowIndex].setAttribute(attr, value);
-      },
+      setAttributeAtRowIndex:
+          (rowIndex: number, attr: string, value: string) => {
+            this.getRows()[rowIndex].setAttribute(attr, value);
+          },
       setHeaderRowCheckboxChecked: (checked: boolean) => {
         this.headerRowCheckbox_.checked = checked;
       },

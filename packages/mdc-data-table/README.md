@@ -370,6 +370,13 @@ Method Signature | Description
 `setHeaderRowCheckboxChecked(checked: boolean) => void` | Sets header row checkbox checked or unchecked.
 `setHeaderRowCheckboxIndeterminate(indeterminate: boolean) => void` | Sets header row checkbox to indeterminate.
 `setRowCheckboxCheckedAtIndex(rowIndex: number, checked: boolean) => void` | Sets row checkbox to checked or unchecked at given row index.
+`getHeaderCellCount(): number;` | Returns total count of header cells.
+`getHeaderCellElements(): Element[];` | Returns array of header cell elements.
+`getAttributeByHeaderCellIndex(columnIndex: number, attribute: string) => string` | Returns attribute value for given header cell index.
+`setAttributeByHeaderCellIndex(columnIndex: number, attribute: string, value: string) => void` | Sets attribute of a header cell by index.
+`setClassNameByHeaderCellIndex(columnIndex: number, className: string) => void` | Sets class name of a header cell by index.
+`removeClassNameByHeaderCellIndex(columnIndex: number, className: string) => void` | Removes a class name of a header cell by index.
+`notifySortAction(data: SortActionEventDetail) => void` | Notifies when column is sorted.
 
 ### `MDCDataTableFoundation`
 
@@ -382,3 +389,5 @@ Method Signature | Description
 `getSelectedRowIds() => Array<string \| null>` | Returns array of selected row ids.
 `handleHeaderRowCheckboxChange() => void` | Handles header row checkbox change event.
 `handleRowCheckboxChange(event: Event) => void` | Handles change event originated from row checkboxes.
+`getHeaderCells() => Elements[]` | Returns array of header cell elements.
+`handleSortAction(eventData: SortActionEventData) => void` | Handles sort action on sortable header cell.
