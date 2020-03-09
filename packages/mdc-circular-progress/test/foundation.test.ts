@@ -40,20 +40,19 @@ describe('MDCCircularProgressFoundation', () => {
   it('defaultAdapter returns a complete adapter implementation', () => {
     verifyDefaultAdapter(MDCCircularProgressFoundation, [
       'addClass',
-      'forceLayout',
-      'getDetermCircleAttribute',
+      'getDeterminateCircleAttribute',
       'hasClass',
       'removeAttribute',
       'removeClass',
       'setAttribute',
-      'setDetermCircleAttribute',
+      'setDeterminateCircleAttribute',
     ]);
   });
 
   const setupTest = () => {
     const {foundation, mockAdapter} =
         setUpFoundationTest(MDCCircularProgressFoundation);
-    mockAdapter.getDetermCircleAttribute.withArgs(strings.RADIUS)
+    mockAdapter.getDeterminateCircleAttribute.withArgs(strings.RADIUS)
         .and.returnValue(7);
     return {foundation, mockAdapter};
   };
@@ -78,11 +77,11 @@ describe('MDCCircularProgressFoundation', () => {
     foundation.setDeterminate(true);
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
-    expect(mockAdapter.setDetermCircleAttribute)
+    expect(mockAdapter.setDeterminateCircleAttribute)
         .toHaveBeenCalledWith(strings.STROKE_DASHOFFSET, jasmine.any(String));
   });
 
-  it('#setDeterminate calls setDetermCircleAttribute and sets ARIA_VALUENOW',
+  it('#setDeterminate calls setDeterminateCircleAttribute and sets ARIA_VALUENOW',
      () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
@@ -91,7 +90,7 @@ describe('MDCCircularProgressFoundation', () => {
        foundation.setDeterminate(true);
        expect(mockAdapter.setAttribute)
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0');
-       expect(mockAdapter.setDetermCircleAttribute)
+       expect(mockAdapter.setDeterminateCircleAttribute)
            .toHaveBeenCalledWith(
                strings.STROKE_DASHOFFSET, jasmine.any(String));
      });
@@ -118,7 +117,7 @@ describe('MDCCircularProgressFoundation', () => {
 
        expect(mockAdapter.setAttribute)
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0.123');
-       expect(mockAdapter.setDetermCircleAttribute)
+       expect(mockAdapter.setDeterminateCircleAttribute)
            .toHaveBeenCalledWith(
                strings.STROKE_DASHOFFSET, jasmine.any(String));
      });
@@ -139,7 +138,7 @@ describe('MDCCircularProgressFoundation', () => {
         .and.returnValue(true);
     foundation.init();
     foundation.setProgress(0.5);
-    expect(mockAdapter.setDetermCircleAttribute).not.toHaveBeenCalled();
+    expect(mockAdapter.setDeterminateCircleAttribute).not.toHaveBeenCalled();
     expect(mockAdapter.setAttribute).not.toHaveBeenCalled();
   });
 

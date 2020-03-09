@@ -30,11 +30,10 @@
  */
 export interface MDCCircularProgressAdapter {
   addClass(className: string): void;
-  forceLayout(): void;
-  getDetermCircleAttribute(attributeName: string): string|null;
+  getDeterminateCircleAttribute(attributeName: string): string|null;
   hasClass(className: string): boolean;
   removeClass(className: string): void;
   removeAttribute(attributeName: string): void;
   setAttribute(attributeName: string, value: string): void;
-  setDetermCircleAttribute(attributeName: string, value: string): void;
+  setDeterminateCircleAttribute(attributeName: string, value: string): void;
 }

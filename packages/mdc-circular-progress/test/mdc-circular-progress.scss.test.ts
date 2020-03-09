@@ -21,14 +21,12 @@
  * THE SOFTWARE.
  */
 
-export const cssClasses = {
-  INDETERMINATE_CLASS: 'mdc-circular-progress--indeterminate',
-  CLOSED_CLASS: 'mdc-circular-progress--closed',
-};
+import 'jasmine';
+import * as path from 'path';
+import {expectStylesWithNoFeaturesToBeEmpty} from '../../../testing/featuretargeting';
 
-export const strings = {
-  DETERMINATE_CIRCLE_SELECTOR: '.mdc-circular-progress__determinate-circle',
-  ARIA_VALUENOW: 'aria-valuenow',
-  RADIUS: 'r',
-  STROKE_DASHOFFSET: 'stroke-dashoffset',
-};
+
+describe('mdc-circular-progress.scss', () => {
+  expectStylesWithNoFeaturesToBeEmpty(
+      path.join(__dirname, 'feature-targeting-any.test.css'));
+});

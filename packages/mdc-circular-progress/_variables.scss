@@ -1,0 +1,48 @@
+//
+// Copyright 2019 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+/// size parameters
+$default-size: large;
+$container-side-length: (
+  large: 48px,
+  medium: 36px,
+  small: 24px,
+);
+$stroke-width: (
+  large: 4px,
+  medium: 3px,
+  small: 2.5px,
+);
+
+$color: primary !default;
+/// the rotation position of the arcs that corresponds to their fully contracted state
+$base-angle: 135deg;
+/// amount of circle the arc takes up
+$arc-size: 270deg;
+/// time it takes to expand and contract arc
+$arc-time: 1333ms;
+/// time for inactive indicator to disappear
+$shrink-time: 400ms;
+/// how much the start location of the arc should rotate each time, 216 gives
+/// us a 5 pointed star shape (it's 360/5 * 3)
+$arc-start-rotation-interval: 216deg;
+$timing-function: cubic-bezier(.4, 0, .2, 1);

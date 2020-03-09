@@ -29,11 +29,11 @@ import {MDCCircularProgressFoundation} from './foundation';
 export class MDCCircularProgress extends
     MDCComponent<MDCCircularProgressFoundation> implements
         MDCProgressIndicator {
-  private determCircle_!: HTMLElement;
+  private determinateCircle_!: HTMLElement;
 
   initialize() {
-    this.determCircle_ = this.root_.querySelector<HTMLElement>(
-        MDCCircularProgressFoundation.strings.DETERM_CIRCLE_SELECTOR)!;
+    this.determinateCircle_ = this.root_.querySelector<HTMLElement>(
+        MDCCircularProgressFoundation.strings.DETERMINATE_CIRCLE_SELECTOR)!;
   }
 
   static attachTo(root: Element) {
@@ -66,9 +66,8 @@ export class MDCCircularProgress extends
     // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCCircularProgressAdapter = {
       addClass: (className: string) => this.root_.classList.add(className),
-      forceLayout: () => (this.root_ as HTMLElement).offsetWidth,
-      getDetermCircleAttribute: (attributeName: string) =>
-          this.determCircle_.getAttribute(attributeName),
+      getDeterminateCircleAttribute: (attributeName: string) =>
+          this.determinateCircle_.getAttribute(attributeName),
       hasClass: (className: string) => this.root_.classList.contains(className),
       removeClass: (className: string) =>
           this.root_.classList.remove(className),
@@ -76,8 +75,8 @@ export class MDCCircularProgress extends
           this.root_.removeAttribute(attributeName),
       setAttribute: (attributeName: string, value: string) =>
           this.root_.setAttribute(attributeName, value),
-      setDetermCircleAttribute: (attributeName: string, value: string) =>
-          this.determCircle_.setAttribute(attributeName, value),
+      setDeterminateCircleAttribute: (attributeName: string, value: string) =>
+          this.determinateCircle_.setAttribute(attributeName, value),
     };
     return new MDCCircularProgressFoundation(adapter);
   }

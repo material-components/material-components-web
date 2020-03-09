@@ -40,13 +40,12 @@ export class MDCCircularProgressFoundation extends
   static get defaultAdapter(): MDCCircularProgressAdapter {
     return {
       addClass: () => undefined,
-      forceLayout: () => undefined,
-      getDetermCircleAttribute: () => null,
+      getDeterminateCircleAttribute: () => null,
       hasClass: () => false,
       removeClass: () => undefined,
       removeAttribute: () => undefined,
       setAttribute: () => undefined,
-      setDetermCircleAttribute: () => undefined,
+      setDeterminateCircleAttribute: () => undefined,
     };
   }
 
@@ -70,7 +69,8 @@ export class MDCCircularProgressFoundation extends
           strings.ARIA_VALUENOW, this.progress_.toString());
     }
 
-    this.radius_ = Number(this.adapter_.getDetermCircleAttribute(strings.RADIUS));
+    this.radius_ =
+        Number(this.adapter_.getDeterminateCircleAttribute(strings.RADIUS));
   }
 
   isClosed() {
@@ -95,7 +95,7 @@ export class MDCCircularProgressFoundation extends
       const unfilledArcLength =
           (1 - this.progress_) * (2 * Math.PI * this.radius_);
 
-      this.adapter_.setDetermCircleAttribute(
+      this.adapter_.setDeterminateCircleAttribute(
           strings.STROKE_DASHOFFSET, `${unfilledArcLength}`);
       this.adapter_.setAttribute(
           strings.ARIA_VALUENOW, this.progress_.toString());
