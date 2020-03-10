@@ -73,10 +73,17 @@ export class MDCCircularProgressFoundation extends
         Number(this.adapter_.getDeterminateCircleAttribute(strings.RADIUS));
   }
 
+  /**
+   * @return Returns whether the progress indicator is hidden.
+   */
   isClosed() {
     return this.isClosed_;
   }
 
+  /**
+   * Sets whether the progress indicator is in determinate mode.
+   * @param isDeterminate Whether the indicator should be determinate.
+   */
   setDeterminate(isDeterminate: boolean) {
     this.isDeterminate_ = isDeterminate;
 
@@ -89,6 +96,12 @@ export class MDCCircularProgressFoundation extends
     }
   }
 
+  /**
+   * Sets the current progress value. In indeterminate mode, this has no
+   * visual effect but will be reflected if the indicator is switched to
+   * determinate mode.
+   * @param value The current progress value, which must be between 0 and 1.
+   */
   setProgress(value: number) {
     this.progress_ = value;
     if (this.isDeterminate_) {
@@ -102,11 +115,17 @@ export class MDCCircularProgressFoundation extends
     }
   }
 
+  /**
+   * Shows the progress indicator.
+   */
   open() {
     this.isClosed_ = false;
     this.adapter_.removeClass(cssClasses.CLOSED_CLASS);
   }
 
+  /**
+   * Hides the progress indicator
+   */
   close() {
     this.isClosed_ = true;
     this.adapter_.addClass(cssClasses.CLOSED_CLASS);
