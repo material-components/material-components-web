@@ -22,12 +22,16 @@
 
 @use "./variables";
 
+/// Keyframes for the persistent rotation of the outermost container
+/// @access private
 @mixin container-rotate-keyframes_ {
   @keyframes mdc-circular-progress-container-rotate {
     to { transform: rotate(360deg); }
   }
 }
 
+/// Keyframes for the rotation of the spinner layer
+/// @access private
 @mixin spinner-layer-rotate-keyframes_ {
   @keyframes mdc-circular-progress-spinner-layer-rotate {
     @for $i from 1 through 8 {
@@ -38,6 +42,9 @@
   }
 }
 
+/// Keyframes for the fade-in and fade-out of the first color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
 @mixin color-1-fade-in-out-keyframes_ {
   @keyframes mdc-circular-progress-color-1-fade-in-out {
     from { opacity: .99; }
@@ -49,6 +56,9 @@
   }
 }
 
+/// Keyframes for the fade-in and fade-out of the second color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
 @mixin color-2-fade-in-out-keyframes_ {
   @keyframes mdc-circular-progress-color-2-fade-in-out {
     from { opacity: 0; }
@@ -59,6 +69,9 @@
   }
 }
 
+/// Keyframes for the fade-in and fade-out of the third color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
 @mixin color-3-fade-in-out-keyframes_ {
   @keyframes mdc-circular-progress-color-3-fade-in-out {
     from { opacity: 0; }
@@ -69,6 +82,9 @@
   }
 }
 
+/// Keyframes for the fade-in and fade-out of the fourth color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
 @mixin color-4-fade-in-out-keyframes_ {
   @keyframes mdc-circular-progress-color-4-fade-in-out {
     from { opacity: 0; }
@@ -79,6 +95,9 @@
   }
 }
 
+/// Keyframes for the expansion and contraction of the arc for the
+/// left semi-circle.
+/// @access private
 @mixin left-spin-keyframes_ {
   @keyframes mdc-circular-progress-left-spin {
     from { transform: rotate(265deg); }
@@ -87,6 +106,9 @@
   }
 }
 
+/// Keyframes for the expansion and contraction of the arc for the
+/// right semi-circle.
+/// @access private
 @mixin right-spin-keyframes_ {
   @keyframes mdc-circular-progress-right-spin {
     from { transform: rotate(-265deg); }

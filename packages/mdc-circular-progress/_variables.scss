@@ -1,5 +1,5 @@
 //
-// Copyright 2019 Google Inc.
+// Copyright 2020 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,8 @@
 // THE SOFTWARE.
 //
 
+$color: primary !default;
+
 /// size parameters
 $default-size: large;
 $container-side-length: (
@@ -33,16 +35,16 @@ $stroke-width: (
   small: 2.5px,
 );
 
-$color: primary !default;
-/// the rotation position of the arcs that corresponds to their fully contracted state
+/// The rotation position of the arcs that corresponds to their fully contracted state
 $base-angle: 135deg;
-/// amount of circle the arc takes up
+/// Amount of circle the arc takes up
 $arc-size: 270deg;
-/// time it takes to expand and contract arc
+/// Time it takes to expand and contract arc
 $arc-time: 1333ms;
-/// time for inactive indicator to disappear
+/// Time for inactive indicator to disappear
 $shrink-time: 400ms;
-/// how much the start location of the arc should rotate each time, 216 gives
+/// How much the start location of the arc should rotate each time; 216 gives
 /// us a 5 pointed star shape (it's 360/5 * 3)
 $arc-start-rotation-interval: 216deg;
+/// The timing function used for the core spinner animations.
 $timing-function: cubic-bezier(.4, 0, .2, 1);

@@ -1,5 +1,5 @@
 //
-// Copyright 2019 Google Inc.
+// Copyright 2020 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -172,18 +172,27 @@
 
 // Public mixins
 
+/// Customizes the stroke-color of the indicator. Applies to the
+/// determinate variant, and also the indeterminate variant unless the
+/// four-color mixin is applied.
+/// @param {Color} $color - The desired stroke color.
+/// @see {mixin} indeterminate-colors
 @mixin color($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-circular-progress__determinate-circle,
   .mdc-circular-progress__indeterminate-circle-graphic {
-
     @include feature-targeting-mixins.targets($feat-color) {
       @include theme-mixins.prop("stroke", $color);
     }
   }
 }
 
+/// Applies four animated stroke-colors to the indeterminate indicator.
+/// Applicable to the indeterminate variant only and overrides any single color
+/// currently set.
+/// @param {List} $colors - A list of four desired colors.
+/// @see {mixin} color
 @mixin indeterminate-colors($colors, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
@@ -202,6 +211,11 @@
 
 // Private mixins
 
+/// Sets the container size of the indicator and the stroke width appropriate
+/// for the size according to Material Design guidelines. The dimensions are
+/// predefined for one of three discrete sizes listed below only.
+/// @param {String} $size - Choose from small, medium, or large.
+/// @access private
 @mixin size_($size, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
@@ -226,6 +240,8 @@
   }
 }
 
+/// Sets the animations for the indicator in indeterminate mode.
+/// @access private
 @mixin indeterminate-active-animations_($query: feature-targeting-functions.all()) {
   $feat-animation: feature-targeting-functions.create-target($query, animation);
 
