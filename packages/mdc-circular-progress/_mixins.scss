@@ -256,14 +256,29 @@
     }
   }
 
+  $spinner-rotate-animation:
+    mdc-circular-progress-spinner-layer-rotate
+    4 * variables.$arc-time
+    variables.$timing-function
+    infinite both;
+
+  .mdc-circular-progress__spinner-layer {
+    @include feature-targeting-mixins.targets($feat-animation) {
+      animation: $spinner-rotate-animation;
+    }
+  }
+
   @for $i from 1 through 4 {
+    $color-fade-in-out-animation:
+      mdc-circular-progress-color-#{$i}-fade-in-out
+      4 * variables.$arc-time
+      variables.$timing-function
+      infinite both;
+
     .mdc-circular-progress__color-#{$i} {
       @include feature-targeting-mixins.targets($feat-animation) {
         animation:
-          mdc-circular-progress-spinner-layer-rotate 4 * variables.$arc-time variables.$timing-function
-          infinite both,
-          mdc-circular-progress-color-#{$i}-fade-in-out 4 * variables.$arc-time variables.$timing-function
-          infinite both;
+          $spinner-rotate-animation, $color-fade-in-out-animation;
       }
     }
   }
