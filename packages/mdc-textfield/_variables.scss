@@ -76,6 +76,7 @@ $height: 56px !default;
 $minimum-height: 40px !default;
 $minimum-height-for-filled-label: 52px !default;
 $maximum-height: $height !default;
+$padding-horizontal: 16px !default;
 $density-scale: density-variables.$default-scale !default;
 $density-config: (
   height: (
@@ -95,10 +96,9 @@ $outlined-with-leading-icon-label-position-x: 0 !default;
 $outlined-dense-with-leading-icon-label-position-x: 21px !default;
 $textarea-label-position-y: 130% !default;
 $helper-line-padding: 16px !default;
-$input-padding: 16px !default;
-$input-padding-top: 20px !default;
-$input-padding-bottom: 6px !default;
-$outlined-input-padding-top: 12px !default;
-$outlined-input-padding-bottom: 14px !default;
-$input-border-bottom: 1px !default;
+$filled-baseline-top: 40px !default;
+$input-height: 28px !default;
+$textarea-input-margin-top: 8px !default;
+$textarea-input-handle-margin: 1px !default;
+$textarea-input-padding-bottom: 16px !default;
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.

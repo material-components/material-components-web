@@ -59,7 +59,7 @@
     @include ripple-mixins.states-hover-opacity(ripple-functions.states-opacity(variables.$ink-color, hover), $query: $query, $ripple-target: variables.$ripple-target);
     @include ripple-mixins.states-focus-opacity(ripple-functions.states-opacity(variables.$ink-color, focus), $query: $query, $ripple-target: variables.$ripple-target);
 
-    // Height
+    // Height and baseline
     @include height(variables.$height, $query: $query);
 
     // Shape
@@ -84,6 +84,7 @@
 
     @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-flex;
+      padding: 0 variables.$padding-horizontal;
       position: relative;
       box-sizing: border-box;
       overflow: hidden;
@@ -95,17 +96,15 @@
   .mdc-text-field__input {
     // Exclude setting line-height to keep caret (text cursor) same height as the input text in iOS browser.
     @include typography-mixins.typography(subtitle1, $exclude-props: (line-height), $query: $query);
-    @include input-padding_($query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
-      align-self: flex-end;
-      box-sizing: border-box;
       width: 100%;
-      height: 100%;
+      height: variables.$input-height;
       border: none;
       border-radius: 0;
       background: none;
       appearance: none;
+      padding: 0;
     }
 
     @include feature-targeting-mixins.targets($feat-animation) {
@@ -157,11 +156,6 @@
       @include feature-targeting-mixins.targets($feat-structure) {
         z-index: auto !important;
       }
-    }
-
-    // Vertically center aligns the text input placeholder and value for only filled variant.
-    .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) & {
-      @include input-no-label-padding_($query: $query);
     }
   }
 
@@ -440,28 +434,42 @@
 /// @param {Number} $height
 /// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
 ///     filled textfields at which to allow floating labels.
+/// @param {Number} $filled-baseline-top The baseline from the top of the field
+///.    that the input should be aligned to for a filled variant with a label
 /// @access public
 ///
-@mixin height($height, $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label, $query: feature-targeting-functions.all()) {
+@mixin height(
+  $height,
+  $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label,
+  $filled-baseline-top: variables.$filled-baseline-top,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-
   @include feature-targeting-mixins.targets($feat-structure) {
     height: $height;
   }
 
+  // Filled variant is aligned to baseline...
+  @include typography-mixins.baseline($top: $filled-baseline-top, $display: inline-flex, $query: $query);
+  // ...unless it is too small to display a label
   @if $height < $minimum-height-for-filled-label {
-    // Filled text fields must be tall enough to display a label
-    &:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
-      @include feature-targeting-mixins.targets($feat-structure) {
+    @include center-aligned_($query: $query);
+
+    @include feature-targeting-mixins.targets($feat-structure) {
+      &:not(.mdc-text-field--outlined) {
         .mdc-floating-label {
           display: none;
         }
       }
-
-      .mdc-text-field__input {
-        @include input-no-label-padding_($query: $query);
-      }
     }
+  }
+
+  // Outlined and no-label variants are always centered
+  &.mdc-text-field--outlined,
+  &.mdc-text-field--fullwidth,
+  &.mdc-text-field--textarea,
+  &.mdc-text-field--no-label {
+    @include center-aligned_($query: $query);
   }
 }
 
@@ -482,7 +490,8 @@
   }
 
   @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
-  @include height($height, $query: $query);
+  // Avoid unnecessary rules for filled variant since this is outlined
+  @include height($height, $minimum-height-for-filled-label: 0, $query: $query);
 }
 
 ///
@@ -525,8 +534,8 @@
   @include rtl-mixins.rtl {
     @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
   }
-
-  @include height($height, $query: $query);
+  // Avoid unnecessary rules for filled variant since this is outlined
+  @include height($height, $minimum-height-for-filled-label: 0, $query: $query);
 }
 
 ///
@@ -743,23 +752,17 @@
 
 // Baseline
 
-@mixin input-padding_($query: feature-targeting-functions.all()) {
+// Removes filled baseline alignment
+@mixin center-aligned_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    padding:
-      variables.$input-padding-top
-      variables.$input-padding
-      variables.$input-padding-bottom + variables.$input-border-bottom;
-  }
-}
+    align-items: center;
 
-@mixin input-no-label-padding_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    padding-top: 0;
-    padding-bottom: variables.$input-border-bottom;
+    // Remove baseline-top pseudo element
+    &::before {
+      display: none;
+    }
   }
 }
 
@@ -900,10 +903,8 @@
   }
 
   @if ($resolved-radius > notched-outline-variables.$leading-width) {
-    .mdc-text-field__input {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(padding, $resolved-radius + notched-outline-variables.$padding, 0);
-      }
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(padding, $resolved-radius + notched-outline-variables.$padding, 0);
     }
 
     + .mdc-text-field-helper-line {
@@ -1038,7 +1039,6 @@
   }
 
   .mdc-text-field__input {
-    @include outlined-input-padding_($query: $query);
     @include feature-targeting-mixins.targets($feat-structure) {
       display: flex;
       border: none !important; // FF adds unwanted border in HC mode on windows.
@@ -1055,15 +1055,6 @@
 
   &.mdc-text-field--focused {
     @include notched-outline-mixins.notch-offset(variables.$outlined-stroke-width, $query: $query);
-  }
-}
-
-@mixin outlined-input-padding_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    padding-top: variables.$outlined-input-padding-top;
-    padding-bottom: variables.$outlined-input-padding-bottom;
   }
 }
 
@@ -1088,10 +1079,8 @@
 
   @include icon-mixins.leading-icon-horizontal-position_(icon-variables.$icon-position, $query: $query);
 
-  .mdc-text-field__input {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, icon-variables.$icon-padding, variables.$input-padding);
-    }
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.reflexive-property(padding, icon-variables.$icon-padding, variables.$padding-horizontal);
   }
 
   .mdc-floating-label {
@@ -1106,10 +1095,8 @@
 
   @include icon-mixins.leading-icon-horizontal-position_(icon-variables.$dense-icon-position, $query: $query);
 
-  .mdc-text-field__input {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, icon-variables.$dense-icon-padding, variables.$input-padding);
-    }
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.reflexive-property(padding, icon-variables.$dense-icon-padding, variables.$padding-horizontal);
   }
 
   .mdc-floating-label {
@@ -1168,10 +1155,8 @@
 
   @include icon-mixins.trailing-icon-horizontal-position_(icon-variables.$trailing-icon-position, $query: $query);
 
-  .mdc-text-field__input {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, variables.$input-padding, icon-variables.$icon-padding);
-    }
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.reflexive-property(padding, variables.$padding-horizontal, icon-variables.$icon-padding);
   }
 }
 
@@ -1180,10 +1165,8 @@
 
   @include icon-mixins.trailing-icon-horizontal-position_(icon-variables.$dense-icon-position, $query: $query);
 
-  .mdc-text-field__input {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, variables.$input-padding, icon-variables.$dense-icon-padding);
-    }
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.reflexive-property(padding, variables.$padding-horizontal, icon-variables.$dense-icon-padding);
   }
 }
 
@@ -1196,11 +1179,9 @@
     $query: $query
   );
 
-  .mdc-text-field__input {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      padding-right: icon-variables.$icon-padding;
-      padding-left: icon-variables.$icon-padding;
-    }
+  @include feature-targeting-mixins.targets($feat-structure) {
+    padding-right: icon-variables.$icon-padding;
+    padding-left: icon-variables.$icon-padding;
   }
 }
 
@@ -1213,11 +1194,9 @@
     $query: $query
   );
 
-  .mdc-text-field__input {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      padding-right: icon-variables.$dense-icon-padding;
-      padding-left: icon-variables.$dense-icon-padding;
-    }
+  @include feature-targeting-mixins.targets($feat-structure) {
+    padding-right: icon-variables.$dense-icon-padding;
+    padding-left: icon-variables.$dense-icon-padding;
   }
 }
 
@@ -1229,6 +1208,7 @@
   @include disabled-bottom-line-color(variables.$bottom-line-idle, $query: $query);
 
   @include feature-targeting-mixins.targets($feat-structure) {
+    padding: 0;
     width: 100%;
   }
 
@@ -1237,13 +1217,7 @@
     @include fill-color(transparent, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
-      display: block;
-    }
-
-    .mdc-text-field__input {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        padding: 0 0 variables.$input-border-bottom;
-      }
+      display: flex;
     }
   }
 
@@ -1283,7 +1257,6 @@
   @include notched-outline-mixins.floating-label-float-position(variables.$textarea-label-position-y, $query: $query);
   @include character-counter-mixins.character-counter-position(16px, 13px, $query: $query);
 
-  $padding-inset: 16px;
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $feat-animation: feature-targeting-functions.create-target($query, animation);
   $feat-typography: feature-targeting-functions.create-target($query, typography);
@@ -1292,6 +1265,7 @@
     display: inline-flex;
     width: auto;
     height: auto;
+    padding: 0; // see below for explanation
     overflow: visible;
   }
 
@@ -1301,11 +1275,18 @@
 
   .mdc-text-field__input {
     @include feature-targeting-mixins.targets($feat-structure) {
-      align-self: auto;
+      align-self: stretch;
       box-sizing: border-box;
       height: auto;
-      margin: $padding-inset / 2 1px 1px 0;
-      padding: 0 $padding-inset $padding-inset;
+      // Top margin is used to keep the text from overlapping the floating label
+      // when scrolling
+      margin-top: variables.$textarea-input-margin-top;
+      // Bottom and left/right margins are used to add space for the resize handle
+      margin-bottom: variables.$textarea-input-handle-margin;
+      @include rtl-mixins.reflexive-box(margin, right, variables.$textarea-input-handle-margin);
+      // Textarea has horizontal padding instead of the container. This allows the
+      // resize handle to extend to the edge of the container.
+      padding: 0 variables.$padding-horizontal variables.$textarea-input-padding-bottom;
     }
 
     @include feature-targeting-mixins.targets($feat-typography) {

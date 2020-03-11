@@ -267,6 +267,34 @@ Un-styled Content (**FOUC**).
 </label>
 ```
 
+## Baseline Alignment
+
+By default, text fields will be aligned with other elements relative to their
+baseline. The input text's baseline is used to determine where a text field
+should be aligned to and is different between variants. To force alignment to
+the text field's container instead of its baseline, align the element using
+flexbox.
+
+```html
+<div>
+  <label class="mdc-text-field mdc-text-field--outlined">
+    <input type="text" class="mdc-text-field__input" value="Baseline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </label>
+  <span>Text that is aligned with the text field's value</span>
+</div>
+
+<div style="display: flex; flex-direction: row; align-items: flex-end;">
+  <label class="mdc-text-field mdc-text-field--outlined">
+    <input type="text" class="mdc-text-field__input" value="Baseline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </label>
+  <span>Text that is aligned to the bottom of the text field's outline</span>
+</div>
+```
+
 ## Style Customization
 
 ### CSS Classes

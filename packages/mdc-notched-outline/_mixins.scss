@@ -259,6 +259,7 @@
   @include feature-targeting-mixins.targets($feat-structure) {
     display: flex;
     position: absolute;
+    top: 0;
     right: 0;
     left: 0;
     box-sizing: border-box;
