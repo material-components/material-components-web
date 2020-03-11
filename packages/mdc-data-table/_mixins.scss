@@ -178,6 +178,7 @@
       opacity: 0;
     }
 
+    &:focus,
     .mdc-data-table__header-cell:hover &,
     .mdc-data-table__header-cell--sorted & {
       @include feature-targeting-mixins.targets($feat-structure) {
