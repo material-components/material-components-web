@@ -23,6 +23,7 @@
     "@material/button": "^5.1.0",
     "@material/card": "^5.1.0",
     "@material/checkbox": "^5.1.0",
+    "@material/circular-progress": "5.1.0",
     "@material/chips": "^5.1.0",
     "@material/data-table": "^5.1.0",
     "@material/density": "^5.1.0",
