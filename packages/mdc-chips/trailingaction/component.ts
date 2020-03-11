@@ -32,6 +32,13 @@ import {strings} from './constants';
 import {MDCChipTrailingActionFoundation} from './foundation';
 import {MDCChipTrailingActionInteractionEventDetail, MDCChipTrailingActionNavigationEventDetail} from './types';
 
+/**
+ * Creates a trailing action component on the given element.
+ */
+export type MDCChipTrailingActionFactory =
+    (el: Element, foundation?: MDCChipTrailingActionFoundation) =>
+        MDCChipTrailingAction;
+
 export class MDCChipTrailingAction extends
     MDCComponent<MDCChipTrailingActionFoundation> implements
         MDCRippleCapableSurface {
