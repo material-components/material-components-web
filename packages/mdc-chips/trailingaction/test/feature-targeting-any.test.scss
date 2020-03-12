@@ -1,0 +1,17 @@
+@use "../mixins" as trailingaction;
+@use "@material/feature-targeting/functions" as feature-functions;
+
+@mixin test($query) {
+  .test {
+    @include trailingaction.core-styles($query: $query);
+    @include trailingaction.color(red, $query: $query);
+    @include trailingaction.size(0, $query: $query);
+    @include trailingaction.horizontal-spacing(10px, 10px, $query: $query);
+    @include trailingaction.touch-target-width(10px, $query: $query);
+    @include trailingaction.ripple($query: $query);
+    @include trailingaction.without-ripple($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature-functions.any());
