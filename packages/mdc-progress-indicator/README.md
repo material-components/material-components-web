@@ -8,7 +8,7 @@ path: /catalog/progress-indicator/
 -->
 
 # Progress Indicators
-The MDC Progress Indicator component exposes common foundation and component interfaces for a progress indicator. Components that implement these interfaces include [linear progress](https://github.com/material-components/material-components-web/tree/master/packages/mdc-linear-progress) and circular progress (WIP).
+The MDC Progress Indicator component exposes common foundation and component interfaces for a progress indicator. Components that implement these interfaces include [linear progress](https://github.com/material-components/material-components-web/tree/master/packages/mdc-linear-progress) and [circular progress](https://github.com/material-components/material-components-web/tree/master/packages/mdc-circular-progress).
 [Material Design progress & activity requirements](https://material.io/go/design-progress-indicators).
 
 ## Installation

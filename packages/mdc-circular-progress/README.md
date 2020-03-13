@@ -1,4 +1,291 @@
+<!--docs:
+title: "Circular Progress"
+layout: detail
+section: components
+excerpt: "Material Design-styled circular progress indicators."
+iconId: progress_activity
+path: /catalog/circular-progress/
+-->
+
 # Circular Progress
 
-The [Circular Progress component](https://material.io/components/progress-indicators/#circular-progress-indicators) is yet to be completed, please follow the [tracking issue](https://github.com/material-components/material-components-web/issues/30) for more information.
+The MDC Circular Progress component is a spec-aligned circular progress indicator component adhering to the
+[Material Design progress & activity requirements](https://material.io/go/design-progress-indicators).
 
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/go/design-progress-indicators">Guidelines</a>
+  </li>
+</ul>
+
+## Installation
+
+```
+npm install @material/circular-progress
+```
+
+## Basic Usage
+
+### HTML Structure
+
+```html
+<div class="mdc-circular-progress mdc-circular-progress--large" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
+  <div class="mdc-circular-progress__determinate-container">
+    <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097"/>
+    </svg>
+  </div>
+  <div class="mdc-circular-progress__indeterminate-container">
+    <div class="mdc-circular-progress__spinner-layer">
+      <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+        </svg>
+      </div><div class="mdc-circular-progress__gap-patch">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+        </svg>
+      </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+```
+> _IMPORTANT_: Do not introduce space between the adjacent `</div><div>` tags above. Doing so will produce unwanted visual artifacts.
+
+### Accessibility
+
+Progress bars conform to the [WAI-ARIA Progressbar Specification](https://www.w3.org/TR/wai-aria/#progressbar). The supported ARIA attributes for this progress bar are:
+
+| Attribute | Description |
+| --------- | ----------- |
+| `aria-label` | Label indicating how the progress bar should be announced to the user. |
+| `aria-valuemin` | The minimum numeric value of the progress bar, which should always be `0`. |
+| `aria-valuemax` | The maximum numeric value of the progress bar, which should always be `1`. |
+| `aria-valuenow` | A numeric value between `aria-valuemin` and `aria-valuemax` indicating the progress value of the primary progress bar. This attribute is removed in indeterminate progress bars. |
+
+Note that `aria-label`, `aria-valuemin`, and `aria-valuemax` are static and must be configured in the HTML. `aria-valuenow` is updated dynamically by the foundation when the progress value is updated in determinate progress bars.
+
+### Styles
+```scss
+@use "@material/circular-progress/mdc-circular-progress";
+```
+
+### JavaScript Instantiation
+
+```js
+import { MDCCircularProgress } from '@material/circular-progress';
+
+const circularProgress = new MDCCircularProgress(document.querySelector('.mdc-circular-progress'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Variants
+
+### Sizing
+
+To set the stroke-width and container size strictly to one of three sizes defined by guidelines, replace each SVG of the baseline element with the following and apply the appropriate `mdc-circular-progress--{size}` modifier class (see CSS Modifiers section).
+
+#### Large (default)
+Add the `.mdc-circular-progress--large` class and use the following inner SVGs.
+```html
+<!--Detrerminate-->
+<svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097"/>
+</svg>
+<!--Indeterminate-->
+<svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+</svg>
+```
+
+##### Full Example
+See [baseline template](#HTML-Structure) above.
+
+#### Medium
+Add the `.mdc-circular-progress--medium` class and replace SVG's from baseline template with the following.
+```html
+<!--Detrerminate-->
+<svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <circle class="mdc-circular-progress__determinate-circle" cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="78.54"/>
+</svg>
+<!--Indeterminate-->
+<svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27"/>
+</svg>
+```
+##### Full Example
+```html
+<div class="mdc-circular-progress mdc-circular-progress--medium" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
+  <div class="mdc-circular-progress__determinate-container">
+    <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <circle class="mdc-circular-progress__determinate-circle" cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="78.54"/>
+    </svg>
+  </div>
+  <div class="mdc-circular-progress__indeterminate-container">
+    <div class="mdc-circular-progress__spinner-layer">
+      <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27"/>
+        </svg>
+      </div><div class="mdc-circular-progress__gap-patch">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27"/>
+        </svg>
+      </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+#### Small
+Add the `.mdc-circular-progress--small` class and replace SVG's from baseline template with the following.
+```html
+<!--Detrerminate-->
+<svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <circle class="mdc-circular-progress__determinate-circle" cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="54.978"/>
+</svg>
+<!--Indeterminate-->
+<svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/>
+</svg>
+```
+##### Full Example
+```html
+<div class="mdc-circular-progress mdc-circular-progress--small" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
+  <div class="mdc-circular-progress__determinate-container">
+    <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <circle class="mdc-circular-progress__determinate-circle" cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="54.978"/>
+    </svg>
+  </div>
+  <div class="mdc-circular-progress__indeterminate-container">
+    <div class="mdc-circular-progress__spinner-layer">
+      <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/>
+        </svg>
+      </div><div class="mdc-circular-progress__gap-patch">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/>
+        </svg>
+      </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+```
+### Four-Colored
+
+You may choose to have the indicator in inderminate state animate through 4 colors. The template for the four-colored indicator is like that of the [baseline](#HTML-Structure), except the spinner layer is replicated 4 times, 1 for each color. See [Sass-Mixins](#Sass-Mixins) for how to customize the four colors.
+This is done instead of animating the color property to reduce browser repaints.
+
+```html
+<div class="mdc-circular-progress" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
+  <div class="mdc-circular-progress__determinate-container">
+    <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097"/>
+    </svg>
+  </div>
+  <div class="mdc-circular-progress__indeterminate-container">
+    <div class="mdc-circular-progress__spinner-layer mdc-circular-progress__color-1">
+      <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+        </svg>
+      </div><div class="mdc-circular-progress__gap-patch">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+        </svg>
+      </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+        <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="mdc-circular-progress__spinner-layer mdc-circular-progress__color-2">
+      <!-- Same as above -->
+    </div>
+
+    <div class="mdc-circular-progress__spinner-layer mdc-circular-progress__color-3">
+      <!-- Same as above -->
+    </div>
+
+    <div class="mdc-circular-progress__spinner-layer mdc-circular-progress__color-4">
+      <!-- Same as above -->
+    </div>
+  </div>
+</div>
+```
+
+### CSS Modifiers
+
+The provided modifiers are:
+
+| Class                 | Description                                             |
+| --------------------- | ------------------------------------------------------- |
+| `mdc-circular-progress--large`   | Sets the stroke and container sizes for the large variant. See note. |
+| `mdc-circular-progress--medium`   | Sets the stroke and container sizes for the medium-sized variant. See note. |
+| `mdc-circular-progress--size`   | Sets the stroke and container sizes for the small variant. See note. |
+| `mdc-circular-progress--indeterminate`   | Puts the circular progress indicator in an indeterminate state. |
+| `mdc-circular-progress--closed`  | Hides the circular progress indicator. |
+
+> _NOTE_: Each size modifier class **must** be used with a separate inner SVG template to ensure optimal ratio of the stroke width to container size as specified in Material Design guidelines.
+
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`color($color)` | Customizes the stroke-color of the indicator. Applies to the determinate variant, and also the indeterminate variant unless the four-color mixin is applied.
+`indeterminate-colors($colors)` | Applies four animated stroke-colors to the indeterminate indicator. Applicable to the indeterminate variant only and overrides any single color currently set. Takes a list of exacty four colors.
+
+### Using the Foundation Class
+
+MDC Circular Progress ships with an `MDCCircularProgressFoundation` class that external frameworks and libraries can
+use to integrate the component. As with all foundation classes, an adapter object must be provided.
+The adapter for circular progress must provide the following functions, with correct signatures:
+
+| Method Signature | Description |
+| --- | --- |
+| `addClass(className: string) => void` | Adds a class to the root element. |
+| `getDeterminateCircleAttribute(attributeName: string) => void` | Gets the specified attribute from the determinate circle element. |
+| `hasClass(className: string) => boolean` | Returns boolean indicating whether the root element has a given class. |
+| `removeClass(className: string) => void` | Removes a class from the root element. |
+| `removeAttribute(attributeName: string) => void` | Removes the specified attribute from the root element. |
+| `setAttribute(attributeName: string, value: string) => void` | Sets the specified attribute on the root element. |
+| `setDeterminateCircleAttribute(attributeName: string, value: string) => void` | Sets the specified attribute on the determinate circle element. |
+
+### MDCCircularProgressFoundation API
+
+MDC Circular Progress Foundation exposes the following methods:
+
+| Method Signature | Description |
+| --- | --- |
+| `setDeterminate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state. |
+| `setProgress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
+| `open() => void` | Puts the component in the open state. |
+| `close() => void` | Puts the component in the closed state. |
+
+### MDCCircularProgress API
+
+MDC Circular Progress exposes the following methods:
+
+| Method Signature | Description |
+| --- | --- |
+| `set determinate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state. |
+| `set progress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
+| `open() => void` | Puts the component in the open state. |
+| `close() => void` | Puts the component in the closed state. |
