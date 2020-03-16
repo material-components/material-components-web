@@ -120,20 +120,19 @@
     }
   }
 
-  // stylelint-disable-next-line selector-max-type
-  &--open {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      display: inline-block;
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
   &--animating-open {
     @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-block;
       transform: scale(.8);
       opacity: 0;
+    }
+  }
+
+  &--open {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      display: inline-block;
+      transform: scale(1);
+      opacity: 1;
     }
   }
 

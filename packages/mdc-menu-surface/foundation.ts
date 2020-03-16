@@ -176,9 +176,9 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     }
 
     this.animationRequestId_ = requestAnimationFrame(() => {
-      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
       this.dimensions_ = this.adapter_.getInnerDimensions();
       this.autoPosition_();
+      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
       if (this.isQuickOpen_) {
         this.adapter_.notifyOpen();
       } else {
