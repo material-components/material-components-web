@@ -21,10 +21,10 @@
 //
 
 @use "@material/rtl/mixins" as rtl-mixins;
-@use "@material/theme/variables";
 @use "@material/theme/mixins" as theme-mixins;
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "./variables";
 
 // Public mixins
 
@@ -62,6 +62,21 @@
   &.mdc-text-field--disabled {
     @include leading-icon-color_($color, $query);
     @include trailing-icon-color_($color, $query);
+  }
+}
+
+/// Sets the size of the leading and trailing icons.
+///
+/// @param {Number} $size - the size of the icon in px
+/// @param {Number} $baseline-size - baseline size of the icon, used to
+///     calculate the relative scale of the icon to the new size
+@mixin size($size, $baseline-size: variables.$icon-size, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    .mdc-text-field__icon {
+      transform: translateY(-50%) scale($size / $baseline-size);
+    }
   }
 }
 

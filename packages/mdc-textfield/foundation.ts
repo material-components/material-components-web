@@ -203,9 +203,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     }
 
     if (openNotch) {
-      const isDense = this.adapter_.hasClass(cssClasses.DENSE);
-      const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
-      const labelWidth = this.adapter_.getLabelWidth() * labelScale;
+      const labelWidth = this.adapter_.getLabelWidth() * numbers.LABEL_SCALE;
       this.adapter_.notchOutline(labelWidth);
     } else {
       this.adapter_.closeOutline();

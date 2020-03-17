@@ -180,10 +180,6 @@
     @include outlined-disabled_($query);
   }
 
-  .mdc-text-field--outlined.mdc-text-field--dense {
-    @include outlined-dense_($query);
-  }
-
   .mdc-text-field--with-leading-icon {
     @include with-leading-icon_($query);
   }
@@ -192,41 +188,12 @@
     @include outlined-with-leading-icon_($query);
   }
 
-  .mdc-text-field--with-leading-icon.mdc-text-field--outlined.mdc-text-field--dense {
-    @include outlined-dense-with-leading-icon_($query);
-  }
-
   .mdc-text-field--with-trailing-icon {
     @include with-trailing-icon_($query);
   }
 
   .mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon {
     @include with-both-icons_($query);
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field--dense .mdc-text-field__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      bottom: 16px;
-      transform: scale(.8);
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-
-  .mdc-text-field--with-leading-icon.mdc-text-field--dense {
-    @include dense-with-leading-icon_($query);
-  }
-
-  .mdc-text-field--with-trailing-icon.mdc-text-field--dense {
-    @include dense-with-trailing-icon_($query);
-  }
-
-  .mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon.mdc-text-field--dense {
-    @include dense-with-both-icons_($query);
-  }
-
-  .mdc-text-field--dense {
-    @include dense_($query);
   }
 
   @include required-label-asterisk_ {
@@ -255,12 +222,6 @@
       display: flex;
       justify-content: space-between;
       box-sizing: border-box;
-    }
-
-    .mdc-text-field--dense + & {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        margin-bottom: 4px;
-      }
     }
 
     .mdc-text-field + & {
@@ -311,22 +272,8 @@
   }
 
   @include floating-label-mixins.shake-keyframes(
-    text-field-dense,
-    variables.$dense-label-position-y,
-    0%,
-    variables.$dense-label-scale,
-    $query: $query
-  );
-  @include floating-label-mixins.shake-keyframes(
     text-field-outlined,
     variables.$outlined-label-position-y,
-    $query: $query
-  );
-  @include floating-label-mixins.shake-keyframes(
-    text-field-outlined-dense,
-    variables.$outlined-dense-label-position-y,
-    0%,
-    variables.$dense-label-scale,
     $query: $query
   );
   @include floating-label-mixins.shake-keyframes(
@@ -336,23 +283,9 @@
     $query: $query
   );
   @include floating-label-mixins.shake-keyframes(
-    text-field-outlined-leading-icon-dense,
-    variables.$outlined-dense-label-position-y,
-    variables.$outlined-dense-with-leading-icon-label-position-x,
-    variables.$dense-label-scale,
-    $query: $query
-  );
-  @include floating-label-mixins.shake-keyframes(
     text-field-outlined-leading-icon-rtl,
     variables.$outlined-label-position-y,
     -(variables.$outlined-with-leading-icon-label-position-x),
-    $query: $query
-  );
-  @include floating-label-mixins.shake-keyframes(
-    text-field-outlined-leading-icon-dense-rtl,
-    variables.$outlined-dense-label-position-y,
-    -(variables.$outlined-dense-with-leading-icon-label-position-x),
-    variables.$dense-label-scale,
     $query: $query
   );
   @include floating-label-mixins.shake-keyframes(
@@ -394,6 +327,10 @@
   );
 
   @include height($height, $minimum-height-for-filled-label: $minimum-height-for-filled-label, $query: $query);
+  // TODO(b/148806980): fix icon density in this bug to break screenshots once
+  // @if $density-scale < 0 {
+  //   @include icon-mixins.size(icon-variables.$dense-icon-size);
+  // }
 }
 
 ///
@@ -410,6 +347,10 @@
   );
 
   @include outlined-height($height, $query: $query);
+  // TODO(b/148806980): fix icon density in this bug to break screenshots once
+  // @if $density-scale < 0 {
+  //   @include icon-mixins.size(icon-variables.$dense-icon-size);
+  // }
 }
 
 ///
@@ -426,6 +367,10 @@
   );
 
   @include outlined-with-leading-icon-height($height, $query: $query);
+  // TODO(b/148806980): fix icon density in this bug to break screenshots once
+  // @if $density-scale < 0 {
+  //   @include icon-mixins.size(icon-variables.$dense-icon-size);
+  // }
 }
 
 ///
@@ -830,37 +775,6 @@
   }
 }
 
-@mixin dense_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target($query, typography);
-
-  @include floating-label-mixins.float-position(
-    variables.$dense-label-position-y,
-    0%,
-    variables.$dense-label-scale,
-    $query: $query
-  );
-  @include floating-label-mixins.shake-animation(text-field-dense, $query: $query);
-
-  .mdc-text-field__input {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      padding: 12px 12px 0;
-    }
-  }
-
-  .mdc-floating-label {
-    @include feature-targeting-mixins.targets($feat-typography) {
-      font-size: .813rem;
-    }
-
-    &--float-above {
-      @include feature-targeting-mixins.targets($feat-typography) {
-        font-size: .813rem;
-      }
-    }
-  }
-}
-
 @mixin required-label-asterisk_() {
   .mdc-text-field__input:required ~ {
     .mdc-floating-label::after,
@@ -987,40 +901,6 @@
   @include notched-outline-mixins.stroke-width(variables.$outlined-stroke-width, $query: $query);
 }
 
-@mixin outlined-dense_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include notched-outline-mixins.floating-label-float-position(
-    variables.$outlined-dense-label-position-y,
-    0%,
-    variables.$dense-label-scale,
-    $query: $query
-  );
-  @include floating-label-mixins.shake-animation(text-field-outlined-dense, $query: $query);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    height: 48px;
-  }
-
-  .mdc-text-field__input {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      padding: 12px 12px 7px;
-    }
-  }
-
-  .mdc-floating-label {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      top: 14px;
-    }
-  }
-
-  .mdc-text-field__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      top: 12px;
-    }
-  }
-}
-
 @mixin outlined_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
@@ -1090,22 +970,6 @@
   }
 }
 
-@mixin dense-with-leading-icon_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include icon-mixins.leading-icon-horizontal-position_(icon-variables.$dense-icon-position, $query: $query);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(padding, icon-variables.$dense-icon-padding, variables.$padding-horizontal);
-  }
-
-  .mdc-floating-label {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, icon-variables.$dense-icon-padding);
-    }
-  }
-}
-
 @mixin outlined-with-leading-icon_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
@@ -1128,28 +992,6 @@
   }
 }
 
-@mixin outlined-dense-with-leading-icon_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include notched-outline-mixins.floating-label-float-position(
-    variables.$outlined-dense-label-position-y,
-    variables.$outlined-dense-with-leading-icon-label-position-x,
-    variables.$dense-label-scale,
-    $query: $query
-  );
-  @include floating-label-mixins.shake-animation(text-field-outlined-leading-icon-dense, $query: $query);
-
-  @include rtl-mixins.rtl {
-    @include floating-label-mixins.shake-animation(text-field-outlined-leading-icon-dense-rtl, $query: $query);
-  }
-
-  .mdc-floating-label {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, icon-variables.$dense-icon-padding - notched-outline-variables.$leading-width);
-    }
-  }
-}
-
 @mixin with-trailing-icon_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
@@ -1157,16 +999,6 @@
 
   @include feature-targeting-mixins.targets($feat-structure) {
     @include rtl-mixins.reflexive-property(padding, variables.$padding-horizontal, icon-variables.$icon-padding);
-  }
-}
-
-@mixin dense-with-trailing-icon_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include icon-mixins.trailing-icon-horizontal-position_(icon-variables.$dense-icon-position, $query: $query);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(padding, variables.$padding-horizontal, icon-variables.$dense-icon-padding);
   }
 }
 
@@ -1182,21 +1014,6 @@
   @include feature-targeting-mixins.targets($feat-structure) {
     padding-right: icon-variables.$icon-padding;
     padding-left: icon-variables.$icon-padding;
-  }
-}
-
-@mixin dense-with-both-icons_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include icon-mixins.icon-horizontal-position-two-icons_(
-    icon-variables.$dense-icon-position,
-    icon-variables.$dense-icon-position,
-    $query: $query
-  );
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    padding-right: icon-variables.$dense-icon-padding;
-    padding-left: icon-variables.$dense-icon-padding;
   }
 }
 

@@ -306,18 +306,12 @@ CSS Class | Description
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field.
 `mdc-text-field--textarea` | Indicates the text field is a `<textarea>`.
 `mdc-text-field--disabled` | Styles the text field as a disabled text field.
-`mdc-text-field--dense` | Styles the text field as a dense text field.\*
 `mdc-text-field--with-leading-icon` | Styles the text field as a text field with a leading icon.
 `mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon.
 `mdc-text-field--focused` | Styles the text field as a text field in focus.
 `mdc-text-field--no-label` | Styles the text field that has no label.
 `mdc-text-field--end-aligned` | Styles the text field with an end-aligned input.
 `mdc-text-field-helper-line` | Styles the container of helper text and character counter elements.
-
-#### Deprecation Notice
-
-\*The `--dense` variant of the text field will be removed in an upcoming release.
-See [github issue](https://github.com/material-components/material-components-web/issues/4142) for details.
 
 ### Sass Mixins
 

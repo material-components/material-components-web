@@ -602,23 +602,10 @@ describe('MDCTextFieldFoundation', () => {
     mockAdapter.getLabelWidth.and.returnValue(LABEL_WIDTH);
     mockAdapter.hasLabel.and.returnValue(true);
     mockAdapter.hasOutline.and.returnValue(true);
-    mockAdapter.hasClass.withArgs(cssClasses.DENSE).and.returnValue(false);
 
     foundation.notchOutline(true);
     expect(mockAdapter.notchOutline)
         .toHaveBeenCalledWith(LABEL_WIDTH * numbers.LABEL_SCALE);
-  });
-
-  it('#notchOutline updates width of the outline element when dense', () => {
-    const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getLabelWidth.and.returnValue(LABEL_WIDTH);
-    mockAdapter.hasLabel.and.returnValue(true);
-    mockAdapter.hasOutline.and.returnValue(true);
-    mockAdapter.hasClass.withArgs(cssClasses.DENSE).and.returnValue(true);
-
-    foundation.notchOutline(true);
-    expect(mockAdapter.notchOutline)
-        .toHaveBeenCalledWith(LABEL_WIDTH * numbers.DENSE_LABEL_SCALE);
   });
 
   const setupBareBonesTest = () => {

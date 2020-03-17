@@ -32,7 +32,6 @@ const strings = {
 };
 
 const cssClasses = {
-  DENSE: 'mdc-text-field--dense',
   DISABLED: 'mdc-text-field--disabled',
   FOCUSED: 'mdc-text-field--focused',
   FULLWIDTH: 'mdc-text-field--fullwidth',
@@ -47,7 +46,6 @@ const cssClasses = {
 };
 
 const numbers = {
-  DENSE_LABEL_SCALE: 0.923,
   LABEL_SCALE: 0.75,
 };
 
