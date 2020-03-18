@@ -216,7 +216,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
             <div class="mdc-data-table__header-cell-label">
               Dessert
             </div>
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_downward</button>
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
           </div>
         </th>
         <th
@@ -226,7 +226,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
           aria-sort="ascending"
         >
           <div class="mdc-data-table__header-cell-wrapper">
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_downward</button>
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
             <div class="mdc-data-table__header-cell-label">
               Carbs (g)
             </div>
@@ -238,7 +238,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
           scope="col"
         >
           <div class="mdc-data-table__header-cell-wrapper">
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_downward</button>
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
             <div class="mdc-data-table__header-cell-label">
               Protein (g)
             </div>
