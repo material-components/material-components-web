@@ -96,12 +96,20 @@ export class MDCLinearProgressFoundation extends
     this.setBufferBarProgress_(1);
   }
 
+  isDeterminate() {
+    return this.isDeterminate_;
+  }
+
   setProgress(value: number) {
     this.progress_ = value;
     if (this.isDeterminate_) {
       this.setPrimaryBarProgress_(value);
       this.adapter_.setAttribute(strings.ARIA_VALUENOW, value.toString());
     }
+  }
+
+  getProgress() {
+    return this.progress_;
   }
 
   setBuffer(value: number) {

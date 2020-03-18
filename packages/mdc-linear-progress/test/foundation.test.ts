@@ -56,13 +56,14 @@ describe('MDCLinearProgressFoundation', () => {
     return {foundation, mockAdapter};
   };
 
-  it('#setDeterminate false adds class, resets transforms, and removes aria-valuenow',
+  it('#setDeterminate false updates state, adds class, resets transforms, and removes aria-valuenow',
      () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
            .and.returnValue(false);
        foundation.init();
        foundation.setDeterminate(false);
+       expect(foundation.isDeterminate()).toBe(false);
        expect(mockAdapter.addClass)
            .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
        expect(mockAdapter.setPrimaryBarStyle)
@@ -73,12 +74,13 @@ describe('MDCLinearProgressFoundation', () => {
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW);
      });
 
-  it('#setDeterminate removes class', () => {
+  it('#setDeterminate updates state and removes class', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
         .and.returnValue(false);
     foundation.init();
     foundation.setDeterminate(true);
+    expect(foundation.isDeterminate()).toBe(true);
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
   });
@@ -131,12 +133,13 @@ describe('MDCLinearProgressFoundation', () => {
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0.123');
      });
 
-  it('#setProgress sets transform and aria-valuenow', () => {
+  it('#setProgress updates state, sets transform and aria-valuenow', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
         .and.returnValue(false);
     foundation.init();
     foundation.setProgress(0.5);
+    expect(foundation.getProgress()).toEqual(0.5);
     expect(mockAdapter.setPrimaryBarStyle)
         .toHaveBeenCalledWith('transform', 'scaleX(0.5)');
     expect(mockAdapter.setAttribute)
