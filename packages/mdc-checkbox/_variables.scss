@@ -25,10 +25,10 @@
 @use "@material/theme/variables" as theme-variables;
 @use "@material/density/variables" as density-variables;
 
-$mark-color: theme-variables.prop-value(on-primary) !default;
+$baseline-theme-color: secondary !default;
+$mark-color: theme-variables.prop-value(on-secondary) !default;
 $border-color: rgba(theme-variables.prop-value(on-surface), .54) !default;
 $disabled-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
-$baseline-theme-color: secondary !default;
 
 $ripple-size: 40px !default;
 $icon-size: 18px !default;
