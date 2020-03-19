@@ -252,12 +252,13 @@ by HTML5's form validation API.
 ### Pre-filled
 
 When dealing with JS-driven text fields that already have values, you'll want to ensure that you
-render `mdc-floating-label` with the `mdc-floating-label--float-above` modifier class. This will
+render `mdc-text-field` with the `mdc-text-field--label-floating` modifier class, as well as
+`mdc-floating-label` with the `mdc-floating-label--float-above` modifier class. This will
 ensure that the label moves out of the way of the text field's value and prevents a Flash Of
 Un-styled Content (**FOUC**).
 
 ```html
-<label class="mdc-text-field">
+<label class="mdc-text-field mdc-text-field--label-floating">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" value="Pre-filled value">
   <span class="mdc-floating-label mdc-floating-label--float-above" id="my-label-id">
