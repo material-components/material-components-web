@@ -29,10 +29,17 @@ easy to scan, so that users can look for patterns and insights.
 npm install @material/data-table
 ```
 
+Install linear progress seperately if data table has progress state:
+
+```
+npm install @material/linear-progress
+```
+
 ### Styles
 
 ```scss
 @use "@material/checkbox/mdc-checkbox"; // Required only for data table with row selection.
+@use "@material/linear-progress/mdc-linear-progress"; // Required only if data table has progress state.
 @use "@material/data-table/mdc-data-table";
 ```
 
@@ -269,6 +276,58 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
 </div>
 ```
 
+### Data Table in progress state
+
+```html
+<div class="mdc-data-table mdc-data-table--in-progress">
+  <table class="mdc-data-table__table" aria-label="Dessert calories">
+    <thead>
+      <tr class="mdc-data-table__header-row">
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Dessert</th>
+        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Carbs (g)</th>
+        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Protein (g)</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
+      </tr>
+    </thead>
+    <tbody class="mdc-data-table__content" aria-busy="true">
+      <tr class="mdc-data-table__row">
+        <td class="mdc-data-table__cell">Frozen yogurt</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.0</td>
+        <td class="mdc-data-table__cell">Super tasty</td>
+      </tr>
+      <tr class="mdc-data-table__row">
+        <td class="mdc-data-table__cell">Ice cream sandwich</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">37</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.33333333333</td>
+        <td class="mdc-data-table__cell">I like ice cream more</td>
+      </tr>
+      <tr class="mdc-data-table__row">
+        <td class="mdc-data-table__cell">Eclair</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">6.0</td>
+        <td class="mdc-data-table__cell">New filing flavor</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="mdc-data-table__progress-indicator">
+    <div class="mdc-data-table__scrim"></div>
+    <div class="mdc-linear-progress mdc-linear-progress--indeterminate" role="progressbar" aria-label="Data is being loaded...">
+      <div class="mdc-linear-progress__buffer">
+        <div class="mdc-linear-progress__buffer-bar"></div>
+        <div class="mdc-linear-progress__buffer-dots"></div>
+      </div>
+      <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+      </div>
+      <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
 ## Style Customization
 
 ### CSS Classes
@@ -289,6 +348,9 @@ CSS Class | Description
 `mdc-data-table__header-row-checkbox` | Optional. Checkbox element rendered inside table header row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row-checkbox` | Optional. Checkbox element rendered inside table row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row--selected` | Optional. Modifier class added to `mdc-data-table__row` when table row is selected.
+`mdc-data-table--in-progress` | Optional. Modifier class added to root element (`mdc-data-table`) when table is in progress (loading) state.
+`mdc-data-table__progress-indicator` | Optional. Progress indicator shown blocking the table content (`tbody`) when table is in progress (loading) state.
+`mdc-data-table__scrim` | Optional. Backdrop that is shown on top of table content and below the linear progress indicator when table is in progress (loading) state.
 
 ### Sass Mixins
 
