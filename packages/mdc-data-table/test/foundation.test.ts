@@ -29,6 +29,8 @@ import {MDCDataTableFoundation} from '../foundation';
 describe('MDCDataTableFoundation', () => {
   it('default adapter returns a complete adapter implementation', () => {
     verifyDefaultAdapter(MDCDataTableFoundation, [
+      'addClass',
+      'removeClass',
       'addClassAtRowIndex',
       'getAttributeByHeaderCellIndex',
       'getHeaderCellCount',
@@ -428,5 +430,25 @@ describe('MDCDataTableFoundation', () => {
        expect(mockAdapter.setAttributeByHeaderCellIndex)
            .toHaveBeenCalledWith(
                jasmine.any(Number), strings.ARIA_SORT, SortValue.NONE);
+     });
+
+  it('#showProgress Adds class name that makes the progress indicator visibile',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+
+       foundation.showProgress();
+
+       expect(mockAdapter.addClass)
+           .toHaveBeenCalledWith(cssClasses.IN_PROGRESS);
+     });
+
+  it('#hideProgress Removes class name that makes progress indicator hidden',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+
+       foundation.hideProgress();
+
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(cssClasses.IN_PROGRESS);
      });
 });

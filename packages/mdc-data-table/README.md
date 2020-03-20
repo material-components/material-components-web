@@ -413,6 +413,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
+`addClass(className: string) => void` | Adds CSS class name to root element.
+`removeClass(className: string) => void` | Removes CSS class name from root element.
 `addClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Adds a class name to row element at given row index excluding header row.
 `getRowCount() => number` | Returns row count excluding header row.
 `getRowElements() => HTMLElement[]` | Returns array of row elements excluding header row.
@@ -453,3 +455,5 @@ Method Signature | Description
 `handleRowCheckboxChange(event: Event) => void` | Handles change event originated from row checkboxes.
 `getHeaderCells() => Elements[]` | Returns array of header cell elements.
 `handleSortAction(eventData: SortActionEventData) => void` | Handles sort action on sortable header cell.
+`showProgress() => void` | Shows progress indicator when data table is in loading state.
+`removeProgress() => void` | Hides progress indicator when data table is finished loading.

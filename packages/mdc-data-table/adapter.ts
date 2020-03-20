@@ -21,6 +21,9 @@
  * THE SOFTWARE.
  */
 
+
+import {MDCDataTableRowSelectionChangedEventDetail, SortActionEventDetail} from './types';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -28,10 +31,21 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-
-import {MDCDataTableRowSelectionChangedEventDetail, SortActionEventDetail} from './types';
-
 export interface MDCDataTableAdapter {
+  /**
+   * Adds CSS class name to root element.
+   *
+   * @param className CSS class name to add to root element.
+   */
+  addClass(className: string): void;
+
+  /**
+   * Removes CSS class name from root element.
+   *
+   * @param className CSS class name to add to root element.
+   */
+  removeClass(className: string): void;
+
   /**
    * Adds a class name to row element at given row index excluding header row.
    *

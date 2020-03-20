@@ -34,6 +34,7 @@ export const cssClasses = {
   HEADER_CELL_WITH_SORT: 'mdc-data-table__header-cell--with-sort',
   HEADER_ROW: 'mdc-data-table__header-row',
   HEADER_ROW_CHECKBOX: 'mdc-data-table__header-row-checkbox',
+  IN_PROGRESS: 'mdc-data-table--in-progress',
   ROOT: 'mdc-data-table',
   ROW: 'mdc-data-table__row',
   ROW_CHECKBOX: 'mdc-data-table__row-checkbox',

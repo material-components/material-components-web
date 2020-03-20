@@ -30,6 +30,8 @@ import {SortActionEventData} from './types';
 export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   static get defaultAdapter(): MDCDataTableAdapter {
     return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
       addClassAtRowIndex: () => undefined,
       getAttributeByHeaderCellIndex: () => '',
       getHeaderCellCount: () => 0,
@@ -229,6 +231,20 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       headerCell,
       sortValue,
     });
+  }
+
+  /**
+   * Shows progress indicator when data table is in loading state.
+   */
+  showProgress() {
+    this.adapter_.addClass(cssClasses.IN_PROGRESS);
+  }
+
+  /**
+   * Hides progress indicator when data table is finished loading.
+   */
+  hideProgress() {
+    this.adapter_.removeClass(cssClasses.IN_PROGRESS);
   }
 
   /**
