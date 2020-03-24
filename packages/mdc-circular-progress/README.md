@@ -239,7 +239,7 @@ The provided modifiers are:
 | --------------------- | ------------------------------------------------------- |
 | `mdc-circular-progress--large`   | Sets the stroke and container sizes for the large variant. See note. |
 | `mdc-circular-progress--medium`   | Sets the stroke and container sizes for the medium-sized variant. See note. |
-| `mdc-circular-progress--size`   | Sets the stroke and container sizes for the small variant. See note. |
+| `mdc-circular-progress--small`   | Sets the stroke and container sizes for the small variant. See note. |
 | `mdc-circular-progress--indeterminate`   | Puts the circular progress indicator in an indeterminate state. |
 | `mdc-circular-progress--closed`  | Hides the circular progress indicator. |
 
