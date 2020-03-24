@@ -443,10 +443,10 @@ Disabled list item will be included in the keyboard navigation. Please see [Focu
 
 Key | Action
 --- | ---
-`ArrowUp` | When the list is in a vertical orientation, it will cause the previous list item to receive focus.
-`ArrowDown` | When the list is in a vertical orientation, it will cause the next list item to receive focus.
-`ArrowLeft` | When the list is in a horizontal orientation (default), it will cause the previous list item to receive focus.
-`ArrowRight` | When the list is in a horizontal orientation (default), it will cause the next list item to receive focus.
+`ArrowUp` | When the list is in a vertical orientation (default), it will cause the previous list item to receive focus.
+`ArrowDown` | When the list is in a vertical orientation (default), it will cause the next list item to receive focus.
+`ArrowLeft` | When the list is in a horizontal orientation, it will cause the previous list item to receive focus.
+`ArrowRight` | When the list is in a horizontal orientation, it will cause the next list item to receive focus.
 `Home` | Will cause the first list item in the list to receive focus.
 `End` | Will cause the last list item in the list to receive focus.
 `Space` | Will cause the currently focused list item to become selected/deselected if `singleSelection=true`.
