@@ -150,6 +150,16 @@ describe('MDCChip', () => {
     expect(mockFoundation.handleKeydown)
         .toHaveBeenCalledWith(jasmine.anything());
     expect(mockFoundation.handleKeydown).toHaveBeenCalledTimes(1);
+
+    emitEvent(root, 'focusin');
+    expect(mockFoundation.handleFocusIn)
+        .toHaveBeenCalledWith(jasmine.anything());
+    expect(mockFoundation.handleFocusIn).toHaveBeenCalledTimes(1);
+
+    emitEvent(root, 'focusout');
+    expect(mockFoundation.handleFocusOut)
+        .toHaveBeenCalledWith(jasmine.anything());
+    expect(mockFoundation.handleFocusOut).toHaveBeenCalledTimes(1);
   });
 
   it('#initialSyncWithDOM sets up interaction event handler on trailing icon if present',
@@ -179,6 +189,14 @@ describe('MDCChip', () => {
 
     emitEvent(root, 'keydown');
     expect(mockFoundation.handleKeydown)
+        .not.toHaveBeenCalledWith(jasmine.anything());
+
+    emitEvent(root, 'focusin');
+    expect(mockFoundation.handleFocusIn)
+        .not.toHaveBeenCalledWith(jasmine.anything());
+
+    emitEvent(root, 'focusout');
+    expect(mockFoundation.handleFocusOut)
         .not.toHaveBeenCalledWith(jasmine.anything());
   });
 

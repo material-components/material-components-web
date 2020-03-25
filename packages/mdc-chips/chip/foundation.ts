@@ -204,6 +204,24 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
   }
 
+  handleFocusIn(evt: FocusEvent) {
+    // Early exit if the event doesn't come from the primary action
+    if (!this.eventFromPrimaryAction_(evt)) {
+      return;
+    }
+
+    this.adapter_.addClass(cssClasses.PRIMARY_ACTION_FOCUSED);
+  }
+
+  handleFocusOut(evt: FocusEvent) {
+    // Early exit if the event doesn't come from the primary action
+    if (!this.eventFromPrimaryAction_(evt)) {
+      return;
+    }
+
+    this.adapter_.removeClass(cssClasses.PRIMARY_ACTION_FOCUSED);
+  }
+
   /**
    * Handles an interaction event on the trailing icon element. This is used to
    * prevent the ripple from activating on interaction with the trailing icon.
@@ -356,6 +374,11 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   private notifyIgnoredSelection_(selected: boolean) {
     this.adapter_.notifySelection(selected, true);
+  }
+
+  private eventFromPrimaryAction_(evt: Event) {
+    return this.adapter_.eventTargetHasClass(
+        evt.target, cssClasses.PRIMARY_ACTION);
   }
 }
 

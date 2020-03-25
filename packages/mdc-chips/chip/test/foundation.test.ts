@@ -508,6 +508,62 @@ describe('MDCChipFoundation', () => {
            .not.toHaveBeenCalledWith(jasmine.any(String));
      });
 
+  it(`#handleFocusIn adds class ${
+         cssClasses
+             .PRIMARY_ACTION_FOCUSED} when the event comes from the primary action`,
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.eventTargetHasClass.and.returnValue(true);
+       const mockFocusIn = {
+         type: 'focusin',
+       };
+
+       foundation.handleFocusIn(mockFocusIn);
+       expect(mockAdapter.addClass)
+           .toHaveBeenCalledWith(cssClasses.PRIMARY_ACTION_FOCUSED);
+     });
+
+  it('#handleFocusIn adds no class when the event does not come from the primary action',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.eventTargetHasClass.and.returnValue(false);
+       const mockFocusIn = {
+         type: 'focusin',
+       };
+
+       foundation.handleFocusIn(mockFocusIn);
+       expect(mockAdapter.addClass)
+           .not.toHaveBeenCalledWith(cssClasses.PRIMARY_ACTION_FOCUSED);
+     });
+
+  it(`#handleFocusOut removes class ${
+         cssClasses
+             .PRIMARY_ACTION_FOCUSED} when the event comes from the primary action`,
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.eventTargetHasClass.and.returnValue(true);
+       const mockFocusOut = {
+         type: 'focusout',
+       };
+
+       foundation.handleFocusOut(mockFocusOut);
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(cssClasses.PRIMARY_ACTION_FOCUSED);
+     });
+
+  it('#handleFocusOut removes no class when the event does not come from the primary action',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.eventTargetHasClass.and.returnValue(false);
+       const mockFocusOut = {
+         type: 'focusout',
+       };
+
+       foundation.handleFocusOut(mockFocusOut);
+       expect(mockAdapter.removeClass)
+           .not.toHaveBeenCalledWith(cssClasses.PRIMARY_ACTION_FOCUSED);
+     });
+
   function setupNavigationTest({
     fromPrimaryAction = false,
     hasTrailingAction = false,

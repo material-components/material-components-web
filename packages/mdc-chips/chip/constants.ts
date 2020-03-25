@@ -72,6 +72,7 @@ export const cssClasses = {
   HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
   LEADING_ICON: 'mdc-chip__icon--leading',
   PRIMARY_ACTION: 'mdc-chip__primary-action',
+  PRIMARY_ACTION_FOCUSED: 'mdc-chip--primary-action-focused',
   SELECTED: 'mdc-chip--selected',
   TEXT: 'mdc-chip__text',
   TRAILING_ACTION: 'mdc-chip__trailing-action',

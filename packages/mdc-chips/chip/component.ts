@@ -94,6 +94,10 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
   private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
   private handleTrailingIconInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
+  private handleFocusIn_!:
+      SpecificEventListener<'focusin'>;  // assigned in initialSyncWIthDOM()
+  private handleFocusOut_!:
+      SpecificEventListener<'focusout'>;  // assigned in initialSyncWIthDOM()
 
   initialize(rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation)) {
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
@@ -117,12 +121,20 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     this.handleTrailingIconInteraction_ = (evt: MouseEvent | KeyboardEvent) =>
         this.foundation_.handleTrailingIconInteraction(evt);
     this.handleKeydown_ = (evt: KeyboardEvent) => this.foundation_.handleKeydown(evt);
+    this.handleFocusIn_ = (evt: FocusEvent) => {
+      this.foundation_.handleFocusIn(evt);
+    };
+    this.handleFocusOut_ = (evt: FocusEvent) => {
+      this.foundation_.handleFocusOut(evt);
+    };
 
     INTERACTION_EVENTS.forEach((evtType) => {
       this.listen(evtType, this.handleInteraction_);
     });
     this.listen('transitionend', this.handleTransitionEnd_);
     this.listen('keydown', this.handleKeydown_);
+    this.listen('focusin', this.handleFocusIn_);
+    this.listen('focusout', this.handleFocusOut_);
 
     if (this.trailingIcon_) {
       INTERACTION_EVENTS.forEach((evtType) => {
@@ -139,6 +151,8 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     });
     this.unlisten('transitionend', this.handleTransitionEnd_);
     this.unlisten('keydown', this.handleKeydown_);
+    this.unlisten('focusin', this.handleFocusIn_);
+    this.unlisten('focusout', this.handleFocusOut_);
 
     if (this.trailingIcon_) {
       INTERACTION_EVENTS.forEach((evtType) => {
