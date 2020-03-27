@@ -50,8 +50,20 @@
         @include rtl-mixins.reflexive-property(padding, variables.$item-spacing, 0);
 
         order: 0;
+      }
+    }
 
-        &:not(.mdc-form-field--space-between) {
+    &:not(.mdc-form-field--space-between) {
+      > label {
+        @include feature-targeting-mixins.targets($feat-structure) {
+          @include rtl-mixins.reflexive-property(margin, 0, auto);
+        }
+      }
+    }
+
+    &.mdc-form-field--space-between {
+      > label {
+        @include feature-targeting-mixins.targets($feat-structure) {
           @include rtl-mixins.reflexive-property(margin, auto, 0);
         }
       }
@@ -65,8 +77,21 @@
         @include rtl-mixins.reflexive-property(padding, 0, variables.$item-spacing);
 
         order: -1;
+      }
+    }
 
-        &:not(.mdc-form-field--space-between) {
+    
+    &:not(.mdc-form-field--space-between) {
+      > label {
+        @include feature-targeting-mixins.targets($feat-structure) {
+          @include rtl-mixins.reflexive-property(margin, auto, 0);
+        }
+      }
+    }
+
+    &.mdc-form-field--space-between {
+      > label {
+        @include feature-targeting-mixins.targets($feat-structure) {
           @include rtl-mixins.reflexive-property(margin, 0, auto);
         }
       }
