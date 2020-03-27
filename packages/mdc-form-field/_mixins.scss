@@ -65,5 +65,18 @@
         order: -1;
       }
     }
+    &.mdc-form-field--space-between {
+      > label {
+        margin-left: 0;
+      }
+    }
+  }
+
+  .mdc-form-field--space-between {
+    justify-content: space-between;
+
+    > label {
+      margin-right: 0;
+    }
   }
 }
