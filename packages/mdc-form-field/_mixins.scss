@@ -60,14 +60,6 @@
         }
       }
     }
-
-    &.mdc-form-field--space-between {
-      > label {
-        @include feature-targeting-mixins.targets($feat-structure) {
-          @include rtl-mixins.reflexive-property(margin, auto, 0);
-        }
-      }
-    }
   }
 
   .mdc-form-field--align-end {
@@ -85,14 +77,6 @@
       > label {
         @include feature-targeting-mixins.targets($feat-structure) {
           @include rtl-mixins.reflexive-property(margin, auto, 0);
-        }
-      }
-    }
-
-    &.mdc-form-field--space-between {
-      > label {
-        @include feature-targeting-mixins.targets($feat-structure) {
-          @include rtl-mixins.reflexive-property(margin, 0, auto);
         }
       }
     }
