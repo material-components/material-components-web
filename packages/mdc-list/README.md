@@ -461,7 +461,7 @@ Property | Value Type | Description
 `listElements` | `Array<Element>` (read-only) | Returns all list item elements including disabled list items.
 `wrapFocus` | `boolean` (write-only) | Proxies to the foundation's `setWrapFocus()` method.
 `singleSelection` | `boolean` (write-only) | Proxies to the foundation's `setSingleSelection()` method.
-`selectedIndex` | `boolean` | Proxies to the foundation's `getSelectedIndex()` and `setSelectedIndex()` methods.
+`selectedIndex` | `MDCListIndex` | Proxies to the foundation's `getSelectedIndex()` and `setSelectedIndex()` methods.
 
 Method Signature | Description
 --- | ---
