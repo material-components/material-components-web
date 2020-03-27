@@ -21,7 +21,6 @@
 //
 
 @use "@material/density/variables" as density-variables;
-@use "@material/theme/variables" as theme-variables;
 
 $track-width: 32px !default;
 $track-height: 14px !default;
@@ -45,10 +44,10 @@ $thumb-offset: 4px !default;
 $thumb-active-margin:
   $track-width - $thumb-diameter + $thumb-offset * 2 !default;
 
-$toggled-off-thumb-color: theme-variables.prop-value(surface) !default;
-$toggled-off-track-color: theme-variables.prop-value(on-surface) !default;
+$toggled-off-thumb-color: surface !default;
+$toggled-off-track-color: on-surface !default;
 $toggled-off-ripple-color: #9e9e9e !default;
-$disabled-thumb-color: theme-variables.prop-value(surface) !default;
-$disabled-track-color: theme-variables.prop-value(on-surface) !default;
+$disabled-thumb-color: surface !default;
+$disabled-track-color: on-surface !default;
 
 $baseline-theme-color: secondary !default;
