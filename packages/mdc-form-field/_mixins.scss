@@ -80,7 +80,7 @@
       }
     }
 
-    
+
     &:not(.mdc-form-field--space-between) {
       > label {
         @include feature-targeting-mixins.targets($feat-structure) {
