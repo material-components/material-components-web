@@ -47,17 +47,10 @@
     // stylelint-disable-next-line selector-max-type
     > label {
       @include feature-targeting-mixins.targets($feat-structure) {
+        @include rtl-mixins.reflexive-property(margin, 0, auto);
         @include rtl-mixins.reflexive-property(padding, variables.$item-spacing, 0);
 
         order: 0;
-      }
-    }
-
-    &:not(.mdc-form-field--space-between) {
-      > label {
-        @include feature-targeting-mixins.targets($feat-structure) {
-          @include rtl-mixins.reflexive-property(margin, 0, auto);
-        }
       }
     }
   }
@@ -66,17 +59,10 @@
     // stylelint-disable-next-line selector-max-type
     > label {
       @include feature-targeting-mixins.targets($feat-structure) {
+        @include rtl-mixins.reflexive-property(margin, auto, 0);
         @include rtl-mixins.reflexive-property(padding, 0, variables.$item-spacing);
 
         order: -1;
-      }
-    }
-
-    &:not(.mdc-form-field--space-between) {
-      > label {
-        @include feature-targeting-mixins.targets($feat-structure) {
-          @include rtl-mixins.reflexive-property(margin, auto, 0);
-        }
       }
     }
   }
@@ -84,6 +70,20 @@
   .mdc-form-field--space-between {
     @include feature-targeting-mixins.targets($feat-structure) {
       justify-content: space-between;
+    }
+    // stylelint-disable-next-line selector-max-type
+    > label {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        @include rtl-mixins.reflexive-property(margin, auto, initial);
+      }
+    }
+    &.mdc-form-field--align-end {
+      // stylelint-disable-next-line selector-max-type
+      > label {
+        @include feature-targeting-mixins.targets($feat-structure) {
+          @include rtl-mixins.reflexive-property(margin, initial, auto);
+        }
+      }
     }
   }
 }
