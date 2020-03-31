@@ -71,17 +71,15 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       justify-content: space-between;
     }
+
     // stylelint-disable-next-line selector-max-type
     > label {
       @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(margin, auto, initial);
-      }
-    }
-    &.mdc-form-field--align-end {
-      // stylelint-disable-next-line selector-max-type
-      > label {
-        @include feature-targeting-mixins.targets($feat-structure) {
-          @include rtl-mixins.reflexive-property(margin, initial, auto);
+        margin: initial;
+
+        @include rtl-mixins.rtl {
+          // RTL needed for specificity
+          margin: initial;
         }
       }
     }
