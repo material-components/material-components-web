@@ -73,6 +73,14 @@ export class MDCCircularProgressFoundation extends
         Number(this.adapter_.getDeterminateCircleAttribute(strings.RADIUS));
   }
 
+  isDeterminate() {
+    return this.isDeterminate_;
+  }
+
+  getProgress() {
+    return this.progress_;
+  }
+
   /**
    * @return Returns whether the progress indicator is hidden.
    */

@@ -52,7 +52,7 @@
     26% { opacity: 0; }
     89% { opacity: 0; }
     90% { opacity: .99; }
-    100% { opacity: .99; }
+    to  { opacity: .99; }
   }
 }
 
@@ -66,6 +66,7 @@
     25% { opacity: .99; }
     50% { opacity: .99; }
     51% { opacity: 0; }
+    to  { opacity: 0; }
   }
 }
 
@@ -79,6 +80,7 @@
     50% { opacity: .99; }
     75% { opacity: .99; }
     76% { opacity: 0; }
+    to  { opacity: 0; }
   }
 }
 
@@ -91,7 +93,7 @@
     65% { opacity: 0; }
     75% { opacity: .99; }
     90% { opacity: .99; }
-    100% { opacity: 0; }
+    to  { opacity: 0; }
   }
 }
 

@@ -63,6 +63,7 @@ describe('MDCCircularProgressFoundation', () => {
         .and.returnValue(false);
     foundation.init();
     foundation.setDeterminate(false);
+    expect(foundation.isDeterminate()).toBe(false);
     expect(mockAdapter.addClass)
         .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
     expect(mockAdapter.removeAttribute)
@@ -75,6 +76,7 @@ describe('MDCCircularProgressFoundation', () => {
         .and.returnValue(true);
     foundation.init();
     foundation.setDeterminate(true);
+    expect(foundation.isDeterminate()).toBe(true);
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
     expect(mockAdapter.setDeterminateCircleAttribute)
@@ -128,6 +130,7 @@ describe('MDCCircularProgressFoundation', () => {
         .and.returnValue(false);
     foundation.init();
     foundation.setProgress(0.5);
+    expect(foundation.getProgress()).toEqual(0.5);
     expect(mockAdapter.setAttribute)
         .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0.5');
   });

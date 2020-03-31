@@ -99,7 +99,7 @@
 
   .mdc-circular-progress__determinate-circle {
     @include feature-targeting-mixins.targets($feat-animation) {
-      transition: mdc-animation-enter(stroke-dashoffset, 500ms);
+      transition: animation-functions.enter(stroke-dashoffset, 500ms);
     }
   }
 
