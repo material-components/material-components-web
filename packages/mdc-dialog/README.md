@@ -54,7 +54,7 @@ npm install @material/dialog
       <div class="mdc-dialog__content" id="my-dialog-content">
         Dialog body text goes here.
       </div>
-      <footer class="mdc-dialog__actions">
+      <div class="mdc-dialog__actions">
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">No</span>
@@ -63,7 +63,7 @@ npm install @material/dialog
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Yes</span>
         </button>
-      </footer>
+      </div>
     </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
@@ -186,7 +186,7 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
           <!-- ... -->
         </ul>
       </div>
-      <footer class="mdc-dialog__actions">
+      <div class="mdc-dialog__actions">
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Cancel</span>
@@ -195,7 +195,7 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">OK</span>
         </button>
-      </footer>
+      </div>
     </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
@@ -259,7 +259,7 @@ To indicate that a button represents the default action, add the `data-mdc-dialo
 For example:
 ```html
 ...
-<footer class="mdc-dialog__actions">
+<div class="mdc-dialog__actions">
   <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
     <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">Cancel</span>
@@ -268,7 +268,7 @@ For example:
     <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">OK</span>
   </button>
-</footer>
+</div>
 ...
 ```
 

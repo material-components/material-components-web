@@ -46,7 +46,7 @@ function getFixture() {
             <section class="mdc-dialog__content">
               Let Google help apps determine location.
             </section>
-            <footer class="mdc-dialog__actions">
+            <div class="mdc-dialog__actions">
               <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel" type="button">
                 <span class="mdc-button__label">Cancel</span>
               </button>
@@ -56,7 +56,7 @@ function getFixture() {
               <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" type="button">
                 <span class="mdc-button__label">Yes</span>
               </button>
-            </footer>
+            </div>
           </div>
         </div>
         <div class="mdc-dialog__scrim"></div>
