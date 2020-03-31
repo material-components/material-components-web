@@ -52,25 +52,6 @@
     @include stroke-size(variables.$stroke-size, $query: $query);
     @include stroke-color(variables.$stroke-color, $query: $query);
 
-    @at-root {
-      @include row-fill-color(variables.$row-fill-color, $query: $query);
-      @include header-row-fill-color(variables.$header-row-fill-color, $query: $query);
-      @include selected-row-fill-color(variables.$selected-row-fill-color, $query: $query);
-      @include divider-color(variables.$divider-color, $query: $query);
-      @include divider-size(variables.$divider-size, $query: $query);
-      @include row-hover-fill-color(variables.$row-hover-fill-color, $query: $query);
-      @include header-row-text-color(variables.$header-row-text-color, $query: $query);
-      @include row-text-color(variables.$row-text-color, $query: $query);
-      @include density(variables.$default-density-scale, $query: $query);
-      @include cell-padding(
-        $leading-padding: variables.$cell-leading-padding,
-        $trailing-padding: variables.$cell-trailing-padding,
-        $query: $query
-      );
-      @include sort-icon-color(variables.$sort-icon-color, $query: $query);
-      @include sort-icon-active-color(variables.$sort-icon-active-color, $query: $query);
-    }
-
     @include feature-targeting-mixins.targets($feat-structure) {
       -webkit-overflow-scrolling: touch; // Lets it scroll lazy (iOS)
       display: inline-flex;
@@ -80,6 +61,26 @@
       position: relative;
     }
   }
+
+  // Note that we don't output the color styles inside the `@at-root`,
+  // because it makes it difficult to consume by projects that wrap their
+  // themes in a class (e.g. `.my-theme { @include mdc-data-table-core-style() }`).
+  @include row-fill-color(variables.$row-fill-color, $query: $query);
+  @include header-row-fill-color(variables.$header-row-fill-color, $query: $query);
+  @include selected-row-fill-color(variables.$selected-row-fill-color, $query: $query);
+  @include divider-color(variables.$divider-color, $query: $query);
+  @include divider-size(variables.$divider-size, $query: $query);
+  @include row-hover-fill-color(variables.$row-hover-fill-color, $query: $query);
+  @include header-row-text-color(variables.$header-row-text-color, $query: $query);
+  @include row-text-color(variables.$row-text-color, $query: $query);
+  @include density(variables.$default-density-scale, $query: $query);
+  @include cell-padding(
+    $leading-padding: variables.$cell-leading-padding,
+    $trailing-padding: variables.$cell-trailing-padding,
+    $query: $query
+  );
+  @include sort-icon-color(variables.$sort-icon-color, $query: $query);
+  @include sort-icon-active-color(variables.$sort-icon-active-color, $query: $query);
 
   .mdc-data-table__table {
     @include feature-targeting-mixins.targets($feat-structure) {
