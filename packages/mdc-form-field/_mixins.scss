@@ -79,7 +79,7 @@
 
         @include rtl-mixins.rtl {
           // RTL needed for specificity
-          margin: initial;
+          margin: 0;
         }
       }
     }
