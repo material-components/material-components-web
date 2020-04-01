@@ -75,7 +75,7 @@
     // stylelint-disable-next-line selector-max-type
     > label {
       @include feature-targeting-mixins.targets($feat-structure) {
-        margin: initial;
+        margin: 0;
 
         @include rtl-mixins.rtl {
           // RTL needed for specificity
