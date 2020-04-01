@@ -66,4 +66,22 @@
       }
     }
   }
+
+  .mdc-form-field--space-between {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      justify-content: space-between;
+    }
+
+    // stylelint-disable-next-line selector-max-type
+    > label {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        margin: 0;
+
+        @include rtl-mixins.rtl {
+          // RTL needed for specificity
+          margin: 0;
+        }
+      }
+    }
+  }
 }
