@@ -1,35 +1,58 @@
 <!--docs:
-title: "Text Field"
+title: "Text field"
 layout: detail
 section: components
+excerpt: "MDC Web text field"
 iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
-# Text Field
+# Text field
 
-Text fields allow users to input, edit, and select text.
+[Text fields](https://material.io/components/text-fields) let users enter and edit text.
 
-## Design & API Documentation
+For more information, see the [API](#api) documentation.
 
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-text-fields">Material Design guidelines: Text Fields</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/text-field">Demo</a>
-  </li>
-</ul>
+The text field class consists of the following types:
 
-## Installation
+* [Filled text](#filled-text)
+* [Outlined text](#outlined-text)
+
+<img src="images/text-field-generic.png" alt="Text field examples of both filled and outlined types, and each type showing both inactive and focused states.">
+
+## Using text fields
+
+Text fields allow users to enter text into a UI. They typically appear in forms and dialogs.
+
+### Installation
 
 ```
 npm install @material/textfield
 ```
 
-## Basic Usage
+### Styles
 
-### HTML Structure
+```scss
+@use "@material/textfield";
+
+@include textfield.core-styles;
+```
+
+### JavaScript instantiation
+
+```js
+import {MDCTextField} from '@material/textfield';
+
+const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
+```
+
+**Note: See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.**
+
+## Filled text
+
+[Filled text fields](https://material.io/components/text-fields/#filled-text-field) have more visual emphasis than outlined text fields, making them stand out when surrounded by other content and components.
+
+### Filled text example
 
 ```html
 <label class="mdc-text-field">
@@ -40,63 +63,11 @@ npm install @material/textfield
 </label>
 ```
 
-> NOTE: For more details, see [MDC Line Ripple](../mdc-line-ripple/README.md)
-> and [MDC Floating Label](../mdc-floating-label/README.md).
+## Outlined text
 
-### Styles
+[Outlined text fields](https://material.io/components/text-fields/#outlined-text-field) have less visual emphasis than filled text fields. When they appear in places like forms, where many text fields are placed together, their reduced emphasis helps simplify the layout.
 
-```scss
-@use "@material/textfield/mdc-text-field";
-```
-
-### JavaScript Instantiation
-
-```js
-import {MDCTextField} from '@material/textfield';
-
-const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
-```
-
-> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
-
-## Variants
-
-### Full Width
-
-Full width text fields are useful for in-depth tasks or entering complex information.
-
-```html
-<label class="mdc-text-field mdc-text-field--fullwidth">
-  <span class="mdc-text-field__ripple"></span>
-  <input class="mdc-text-field__input"
-         type="text"
-         placeholder="Full-Width Text Field"
-         aria-label="Full-Width Text Field">
-  <span class="mdc-line-ripple"></span>
-</label>
-```
-
-> _NOTE_: Do not use `mdc-text-field--outlined` to style a full width text field.
-
-> _NOTE_: Do not use `mdc-floating-label` within `mdc-text-field--fullwidth`. Labels should not be
-included as part of the DOM structure of a full width text field.
-
-### Textarea
-
-```html
-<label class="mdc-text-field mdc-text-field--textarea">
-  <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8" cols="40"></textarea>
-  <span class="mdc-notched-outline">
-    <span class="mdc-notched-outline__leading"></span>
-    <span class="mdc-notched-outline__notch">
-      <label class="mdc-floating-label" id="my-label-id">Textarea Label</label>
-    </span>
-    <span class="mdc-notched-outline__trailing"></span>
-  </span>
-</label>
-```
-
-### Outlined
+### Outlined text example
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined">
@@ -113,22 +84,43 @@ included as part of the DOM structure of a full width text field.
 
 See [here](../mdc-notched-outline/) for more information on using the notched outline sub-component.
 
-> _NOTE_: Do not use `mdc-line-ripple` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Line Ripple should not be included as part of the DOM structure of an outlined text field.
+**Note: Do not use `mdc-line-ripple` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Line Ripple should not be included as part of the DOM structure of an outlined text field.**
 
-### Disabled
+## Other variations
 
-To disable the text field, add the `disabled` attribute to the `<input>` element and add the `mdc-text-field--disabled` class to the `mdc-text-field` element.
+### Full width
+
+Full width text fields are useful for in-depth tasks or entering complex information.
 
 ```html
-<label class="mdc-text-field mdc-text-field--disabled">
+<label class="mdc-text-field mdc-text-field--fullwidth">
   <span class="mdc-text-field__ripple"></span>
-  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" disabled>
-  <span class="mdc-floating-label" id="my-label-id">Disabled text field</span>
+  <input class="mdc-text-field__input"
+         type="text"
+         placeholder="Full-Width Text Field"
+         aria-label="Full-Width Text Field">
   <span class="mdc-line-ripple"></span>
 </label>
 ```
 
-### Text Field without label
+**Note: Do not use `mdc-text-field--outlined` to style a full width text field.**
+
+**Note: Do not use `mdc-floating-label` within `mdc-text-field--fullwidth`. Labels should not be
+included as part of the DOM structure of a full width text field.**
+
+### Textarea
+
+```html
+<label class="mdc-text-field mdc-text-field--textarea mdc-text-field--no-label">
+  <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
+  <span class="mdc-notched-outline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
+</label>
+```
+
+### Text field without label
 
 A text field doesn’t require a label if a separate but clear label indicator is already displayed adjacent to the text field.
 Add class name `mdc-text-field--no-label` and remove the label element from the structure.
@@ -167,7 +159,20 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 </label>
 ```
 
-### Text Field with Helper Text
+### Disabled text field
+
+To disable the text field, add the `disabled` attribute to the `<input>` element and add the `mdc-text-field--disabled` class to the `mdc-text-field` element.
+
+```html
+<label class="mdc-text-field mdc-text-field--disabled">
+  <span class="mdc-text-field__ripple"></span>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" disabled>
+  <span class="mdc-floating-label" id="my-label-id">Disabled text field</span>
+  <span class="mdc-line-ripple"></span>
+</label>
+```
+
+### Text field with helper text
 
 The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
 and disappears on input field blur by default, or it can be persistent. Helper text should be rendered inside `.mdc-text-field-helper-line` element
@@ -188,7 +193,7 @@ which is immediate sibling of `.mdc-text-field`. See [here](helper-text/) for mo
 </div>
 ```
 
-### Text Field with Character Counter
+### Text field with character counter
 
 Character counter is used if there is a character limit. It displays the ratio of characters used and the total character limit.
 Character counter should be rendered inside `.mdc-text-field-helper-line` element which is immediate sibling of `.mdc-text-field`.
@@ -206,7 +211,7 @@ See [here](character-counter/) for more information on using character counter.
 </div>
 ```
 
-### Multi-line Text Field (Textarea) with Character Counter
+### Multi-line text field (textarea) with character counter
 
 The layout structure of character counter for multi-line text field (textarea) is slightly different since it is rendered
 inside of text field component.
@@ -228,12 +233,14 @@ inside of text field component.
 Helper text and Character counter are optional subcomponents of text field that can co-exist independently.
 It is recommended that `.mdc-text-field` and `.mdc-text-field-helper-line` elements have same width for correct layout.
 
-### Text Field with Leading and Trailing Icons
+### Text field with leading and trailing icons
 
 Leading and trailing icons can be added within the default or outlined variant of MDC Text Field as visual indicators as
 well as interaction targets. See [here](icon/) for more information on using icons.
 
-### HTML5 Validation
+## Other features
+
+### HTML5 validation
 
 `MDCTextFieldFoundation` provides validity styling by using the `:invalid` and `:required` attributes provided
 by HTML5's form validation API.
@@ -268,7 +275,7 @@ Un-styled Content (**FOUC**).
 </label>
 ```
 
-## Baseline Alignment
+### Baseline alignment
 
 By default, text fields will be aligned with other elements relative to their
 baseline. The input text's baseline is used to determine where a text field
@@ -296,9 +303,9 @@ flexbox.
 </div>
 ```
 
-## Style Customization
+## API
 
-### CSS Classes
+### CSS classes
 
 CSS Class | Description
 --- | ---
@@ -307,6 +314,7 @@ CSS Class | Description
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field.
 `mdc-text-field--textarea` | Indicates the text field is a `<textarea>`.
 `mdc-text-field--disabled` | Styles the text field as a disabled text field.
+`mdc-text-field--dense` | Styles the text field as a dense text field.\*
 `mdc-text-field--with-leading-icon` | Styles the text field as a text field with a leading icon.
 `mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon.
 `mdc-text-field--focused` | Styles the text field as a text field in focus.
@@ -314,7 +322,12 @@ CSS Class | Description
 `mdc-text-field--end-aligned` | Styles the text field with an end-aligned input.
 `mdc-text-field-helper-line` | Styles the container of helper text and character counter elements.
 
-### Sass Mixins
+#### Deprecation notice
+
+\*The `--dense` variant of the text field will be removed in an upcoming release.
+See [github issue](https://github.com/material-components/material-components-web/issues/4142) for details.
+
+### Sass mixins
 
 To customize the colors of any part of the text-field, use the following mixins. We recommend you apply
 these mixins within CSS selectors like `.foo-text-field:not(.mdc-text-field--focused)` to select your unfocused text fields,
@@ -323,7 +336,7 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 > _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
 
-#### Mixins for all Text Fields
+#### Mixins for all text fields
 
 Mixin | Description
 --- | ---
@@ -335,14 +348,14 @@ Mixin | Description
 `disabled-label-color($color)` | Customizes the text color of the label in a disabled text field.
 `caret-color($color)` | Customizes the color of the cursor caret of the text field.
 
-#### Mixins for Filled Text Field and Textarea
+#### Mixins for filled text field and textarea
 
 Mixin | Description
 --- | ---
 `fill-color($color)` | Customizes the background color of the text field or textarea when enabled.
 `disabled-fill-color($color)` | Customizes the background color of the text field or textarea when disabled.
 
-#### Mixins for Filled Text Field Only
+#### Mixins for filled text field only
 
 Mixin | Description
 --- | ---
@@ -354,7 +367,7 @@ Mixin | Description
 `density($density-scale)` | Sets density scale for default text field variant. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
 `height($height)` | Sets height of default text field variant.
 
-#### Mixins for Outlined Text Field and Textarea
+#### Mixins for outlined text field and textarea
 
 Mixin | Description
 --- | ---
@@ -363,7 +376,7 @@ Mixin | Description
 `disabled-outline-color($color)` | Customizes the outline border color when the text field or textarea is disabled.
 `outline-color($color)` | Customizes the border color of the outlined text field or textarea.
 
-#### Mixins for Outlined Text Field Only
+#### Mixins for outlined text field only
 
 Mixin | Description
 --- | ---
@@ -373,13 +386,13 @@ Mixin | Description
 `outlined-with-leading-icon-density($density-scale)` | Sets density scale for outlined text field with leading icon. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
 `outlined-with-leading-icon-height($height)` | Sets height of outlined text field with leading icon variant.
 
-#### Mixins for Textarea Only
+#### Mixins for textarea only
 
 Mixin | Description
 --- | ---
 `textarea-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to text area variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
-## `MDCTextField` Properties and Methods
+## `MDCTextField` properties and methods
 
 Property | Value Type | Description
 --- | --- | ---
@@ -409,7 +422,7 @@ Method Signature | Description
 `focus() => void` | Focuses the `input` or `textarea` element.
 `layout() => void` | Adjusts the dimensions and positions for all sub-elements.
 
-## Usage Within Frameworks
+## Usage within frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Text Field for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
