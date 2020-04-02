@@ -18,7 +18,7 @@
     "lint:js": "eslint scripts webpack.config.js karma.conf.js",
     "lint:ts": "tslint --exclude \"**/*.d.ts\" --exclude \"packages/**/test/*.ts\" \"packages/test/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
     "lint": "npm-run-all --parallel lint:*",
-    "postinstall": "lerna bootstrap",
+    "postinstall": "lerna bootstrap --no-ci",
     "pretest": "npm run lint",
     "test": "npm run test:unit && npm run test:dependency && npm run build && npm run clean",
     "test:sass": "jasmine --config=jasmine-node.json",
