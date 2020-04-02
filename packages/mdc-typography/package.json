@@ -1,7 +1,7 @@
 {
   "name": "@material/typography",
   "description": "Typography classes, mixins, and variables for Material Components for the web",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,7 +15,7 @@
     "directory": "packages/mdc-typography"
   },
   "dependencies": {
-    "@material/feature-targeting": "^5.1.0",
-    "@material/theme": "^5.1.0"
+    "@material/feature-targeting": "^5.1.1",
+    "@material/theme": "^5.1.1"
   }
 }

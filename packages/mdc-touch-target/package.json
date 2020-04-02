@@ -1,7 +1,7 @@
 {
   "name": "@material/touch-target",
   "description": "Touch target mixins and variables for Material Components for the web",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,8 +15,8 @@
     "directory": "packages/mdc-touch-target"
   },
   "dependencies": {
-    "@material/base": "^5.1.0",
-    "@material/feature-targeting": "^5.1.0"
+    "@material/base": "^5.1.1",
+    "@material/feature-targeting": "^5.1.1"
   },
   "publishConfig": {
     "access": "public"
