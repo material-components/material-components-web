@@ -7,7 +7,7 @@ iconId: toolbar
 path: /catalog/top-app-bar/
 -->
 
-# Top App Bar
+# Top app bar
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
@@ -17,59 +17,34 @@ path: /catalog/top-app-bar/
   </a>
 </div>-->
 
-MDC Top App Bar acts as a container for items such as application title, navigation icon, and action items.
+The top app bar provides content and actions related to the current screen. It’s used for branding, screen titles, navigation, and actions.
 
-## Design & API Documentation
+There are two types of top app bar:
 
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-app-bar-top">Material Design guidelines: Top app bar</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/top-app-bar">Demo</a>
-  </li>
-</ul>
+1. [Regular top app bar](#regular-top-app-bar)
+1. [Contextual action bar](#contextual-action-bar)
 
-## Installation
+A regular top app bar can transform into a contextual action bar.
+
+![Regular app bar: purple background, white text and icons](images/regular-app-bar.png)
+![Contextual app bar: black background, white text and icons](images/contextual-app-bar.png)
+
+## Using the top app bar
+
+### Installation
 
 ```
 npm install @material/top-app-bar
 ```
 
-## Basic Usage
-
-### HTML Structure
-
-```html
-<header class="mdc-top-app-bar">
-  <div class="mdc-top-app-bar__row">
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
-      <span class="mdc-top-app-bar__title">Title</span>
-    </section>
-  </div>
-</header>
-```
-
-> NOTE: Please see note below about `mdc-icon-button` in the [Top App Bar With Action Items](#top-app-bar-with-action-items) section.
-
-#### Menu Icons
-
-We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
-
-```html
-<head>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-</head>
-```
-
-However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
-
 ### Styles
 
 ```scss
-@use "@material/top-app-bar/mdc-top-app-bar";
-@use "@material/icon-button/mdc-icon-button";
+@use "@material/top-app-bar";
+@use "@material/icon-button";
+
+@include top-app-bar.core-styles;
+@include icon-button.core-styles;
 ```
 
 ### JavaScript Instantiation
@@ -82,29 +57,69 @@ const topAppBarElement = document.querySelector('.mdc-top-app-bar');
 const topAppBar = new MDCTopAppBar(topAppBarElement);
 ```
 
-> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+**Note: See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.**
 
-## Variants
+## Regular top app bar
 
-### Top App Bar With Action Items
+The top app bar provides content and actions related to the current screen. It’s used for branding, screen titles, navigation, and actions.
 
-Top app bars can contain action items which are placed on the side opposite the navigation icon. You must also attach the `mdc-icon-button` class to both the `mdc-top-app-bar__navigation-icon` and the `mdc-top-app-bar__action-item` elements in order to get the correct styles applied. For further documentation on icons, please see the [mdc-icon-button docs](../mdc-icon-button/README.md).
+### Regular top app bar example
 
 ```html
 <header class="mdc-top-app-bar">
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
-      <span class="mdc-top-app-bar__title">Title</span>
+      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Open navigation menu">menu</button>
+      <span class="mdc-top-app-bar__title">Page title</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download">file_download</button>
-      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Print this page">print</button>
-      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Bookmark this page">bookmark</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Favorite">favorite</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Search">search</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Options">more_vert</button>
     </section>
   </div>
 </header>
 ```
+
+#### Menu icons
+
+Top app bars can contain action items which are placed on the side opposite the navigation icon. You must also attach the `mdc-icon-button` class to both the `mdc-top-app-bar__navigation-icon` and the `mdc-top-app-bar__action-item` elements in order to get the correct styles applied. 
+
+For further documentation on icons, please see the [mdc-icon-button docs](../mdc-icon-button/README.md).
+
+## Contextual action bar
+
+A top app bar can transform into a contextual action bar to provide contextual actions to selected items. For example, upon user selection of photos from a gallery, the top app bar transforms to a contextual app bar with actions related to the selected photos.
+
+When a top app bar transforms into a contextual action bar, the following changes occur:
+
+* The bar color changes
+* Navigation icon is replaced with a close icon
+* Top app bar title text converts to contextual action bar text
+* Top app bar actions are replaced with contextual actions
+* Upon closing, the contextual action bar transforms back into a top app bar.
+
+### Contextual action bar example
+
+The following example shows a contextual action bar with a contextual title, a close icon, two contextual action icons, and an overflow menu:
+
+```html
+<header class="mdc-top-app-bar">
+  <div class="mdc-top-app-bar__row">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Close">close</button>
+      <span class="mdc-top-app-bar__title">Contextual title</span>
+    </section>
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Share">share</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Delete">delete</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Open menu">more_vert</button>
+    </section>
+  </div>
+</header>
+````
+
+## Other Variants
 
 ### Short
 
@@ -124,9 +139,9 @@ Short top app bars are top app bars that can collapse to the navigation icon sid
 </header>
 ```
 
-> Short top app bars should be used with no more than 1 action item.
+**Note: Short top app bars should be used with no more than 1 action item.**
 
-### Short - Always Closed
+### Short - always closed
 
 Short top app bars can be configured to always appear collapsed by applying the `mdc-top-app-bar--short-collapsed` before instantiating the component :
 
@@ -166,9 +181,9 @@ The dense top app bar is shorter.
 </header>
 ```
 
-## Style Customization
+## Style customization
 
-### CSS Classes
+### CSS classes
 
 Class | Description
 --- | ---
@@ -184,7 +199,7 @@ Class | Description
 `mdc-top-app-bar--short-collapsed` | Class used to indicate the short top app bar is collapsed.
 `mdc-top-app-bar--short-fixed-adjust` | Class used to style the content below the short top app bar to prevent the top app bar from covering it.
 
-### Sass Mixins
+### Sass mixins
 
 Mixin | Description
 --- | ---
@@ -194,7 +209,7 @@ Mixin | Description
 `fill-color-accessible($color)` | Sets the fill color of the top app bar and automatically sets a high-contrast ink color.
 `short-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to short top app bar variant (when it is collapsed) with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to true.
 
-## `MDCTopAppBar` Properties and Methods
+## `MDCTopAppBar` properties and methods
 
 Method Signature | Description
 --- | ---
@@ -206,7 +221,7 @@ Event Name | Event Data Structure | Description
 --- | --- | ---
 `MDCTopAppBar:nav` | None | Emits when the navigation icon is clicked.
 
-## Usage within Web Frameworks
+## Usage within web frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Top App Bar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
