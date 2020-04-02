@@ -2,28 +2,28 @@
 title: "Data Tables"
 layout: detail
 section: components
-excerpt: "Material Design-styled tables."
+excerpt: "Data tables display information in a grid-like format of rows and columns."
 iconId: data_table
 path: /catalog/data-tables/
 -->
 
-# Data Table
+# Data tables
 
-Data tables display information in a grid-like format of rows and columns. They organize information in a way that's
-easy to scan, so that users can look for patterns and insights.
+[Data tables](https://material.io/components/data-tables/#) display sets of data across rows and columns.
 
-## Design & API Documentation
+![Data table with 5 rows: 1 header row, 4 rows, one column of checkboxes](images/data-table-hero.png)
 
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-data-tables">Material Design guidelines: Data tables</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/data-table">Demo</a>
-  </li>
-</ul>
+## Using data tables
 
-## Installation
+Data tables display information in a grid-like format of rows and columns. They organize information in a way that’s easy to scan, so that users can look for patterns and insights.
+
+Data tables can contain:
+
+* Interactive components (such as chips, buttons, or menus)
+* Non-interactive elements (such as badges)
+* Tools to query and manipulate data
+
+### Installation
 
 ```
 npm install @material/data-table
@@ -38,15 +38,19 @@ npm install @material/linear-progress
 ### Styles
 
 ```scss
-@use "@material/checkbox/mdc-checkbox"; // Required only for data table with row selection.
-@use "@material/linear-progress/mdc-linear-progress"; // Required only if data table has progress state.
-@use "@material/data-table/mdc-data-table";
+@use "@material/checkbox"; // Required only for data table with row selection.
+@use "@material/linear-progress"; // Required only if data table has progress state.
+@use "@material/data-table";
+
+@include checkbox.core-styles;
+@include linear-progress.core-styles;
+@include data-table.core-styles;
 ```
 
-> *NOTE*: Styles for any components you intend to include within data-table (e.g. Checkboxes, Buttons etc.) must be
-> imported.
+**Note: Styles for any components you intend to include within data-table (e.g. Checkboxes, Buttons etc.) must be
+loaded.**
 
-### JavaScript Instantiation
+### JavaScript instantiation
 
 ```js
 import {MDCDataTable} from '@material/data-table';
@@ -59,9 +63,11 @@ const dataTable = new MDCDataTable(document.querySelector('.mdc-data-table'));
 
 MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox and all row checkboxes. Make sure to set required class names to instantiate checkbox component. We suggest to use `layout` API when rows are added or removed from data table to register new checkbox components.
 
-## Basic Usage
+### Making data tables accessible
 
-### HTML Structure
+Please refer to the [WAI-ARIA Authoring Practices for table](https://www.w3.org/TR/wai-aria-practices-1.1/#table) for the ARIA recommended role, states and properties required for table element.
+
+## Data tables
 
 ```html
 <div class="mdc-data-table">
@@ -97,7 +103,8 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
   </table>
 </div>
 ```
-## Variants
+
+## Other variants
 
 ### Data table with row selection
 
@@ -276,7 +283,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
 </div>
 ```
 
-### Data Table in progress state
+### Data table with in-progress state
 
 ```html
 <div class="mdc-data-table mdc-data-table--in-progress">
@@ -328,9 +335,9 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
 </div>
 ```
 
-## Style Customization
+## Style customization
 
-### CSS Classes
+### CSS classes
 
 CSS Class | Description
 --- | ---
@@ -352,7 +359,7 @@ CSS Class | Description
 `mdc-data-table__progress-indicator` | Optional. Progress indicator shown blocking the table content (`tbody`) when table is in progress (loading) state.
 `mdc-data-table__scrim` | Optional. Backdrop that is shown on top of table content and below the linear progress indicator when table is in progress (loading) state.
 
-### Sass Mixins
+### Sass mixins
 
 Mixin | Description
 --- | ---
@@ -377,10 +384,6 @@ Mixin | Description
 `sort-icon-color($color)` | Sets the color of sort icon button when it is in idle state (icon showed on header cell focus).
 `sort-icon-active-color($color)` | Sets the color of sort icon button when it is activated (sorted).
 
-## Accessibility
-
-Please refer [WAI-ARIA Authoring Practices for table](https://www.w3.org/TR/wai-aria-practices-1.1/#table) for ARIA recommended role, states & properties required for table element.
-
 ## Events
 
 Please use MDCDataTable's constants file to access these event constants.
@@ -396,7 +399,7 @@ Event constant | Event name | Description
 `SELECTED_ALL` | `MDCDataTable:selectedAll` | Event emitted when header row checkbox is checked.
 `UNSELECTED_ALL` | `MDCDataTable:unselectedAll` | Event emitted when header row checkbox is unchecked.
 
-## `MDCDataTable` Properties and Methods
+## `MDCDataTable` properties and methods
 
 Method Signature | Description
 --- | ---
@@ -405,7 +408,7 @@ Method Signature | Description
 `getSelectedRowIds() => Array<string \| null>` | Returns array of selected row ids.
 `setSelectedRowIds(rowIds: string[])` | Sets selected row ids. Overwrites previously selected rows.
 
-## Usage within Web Frameworks
+## Usage within web frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Data Table for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
