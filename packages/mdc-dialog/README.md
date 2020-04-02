@@ -7,7 +7,7 @@ iconId: dialog
 path: /catalog/dialogs/
 -->
 
-# Dialog
+# Dialogs
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
@@ -18,68 +18,36 @@ path: /catalog/dialogs/
 
 Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks.
 
-## Design & API Documentation
+There are four types of dialogs:
 
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-dialogs">Material Design guidelines: Dialogs</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/dialog">Demo</a>
-  </li>
-</ul>
+1. [Alert](#alert-dialog)
+1. [Simple](#simple-dialog)
+1. [Confirmation](#confirmation-dialog)
+1. [Full-screen](#full-screen-dialog)
 
-## Installation
+## Using dialogs
+
+A dialog is a type of modal window that appears in front of app content to provide critical information or ask for a decision. Dialogs disable all app functionality when they appear, and remain on screen until confirmed, dismissed, or a required action has been taken.
+
+Dialogs are purposefully interruptive, so they should be used sparingly.
+
+For additional guidance, refer to the [Material guidelines](https://material.io/go/design-dialogs).
+
+### Installation
 
 ```
 npm install @material/dialog
 ```
 
-## Basic Usage
-
-### HTML Structure
-
-```html
-<div class="mdc-dialog">
-  <div class="mdc-dialog__container">
-    <div class="mdc-dialog__surface"
-      role="alertdialog"
-      aria-modal="true"
-      aria-labelledby="my-dialog-title"
-      aria-describedby="my-dialog-content">
-      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-     -->Dialog Title<!--
-   --></h2>
-      <div class="mdc-dialog__content" id="my-dialog-content">
-        Dialog body text goes here.
-      </div>
-      <div class="mdc-dialog__actions">
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-          <div class="mdc-button__ripple"></div>
-          <span class="mdc-button__label">No</span>
-        </button>
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
-          <div class="mdc-button__ripple"></div>
-          <span class="mdc-button__label">Yes</span>
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="mdc-dialog__scrim"></div>
-</div>
-```
-
-> *NOTE*: Titles cannot contain leading whitespace due to how `mdc-typography-baseline-top()` works.
-
 ### Styles
 
 ```scss
-@use "@material/dialog/mdc-dialog";
+@use "@material/dialog";
+
+@include dialog.core-styles;
 ```
 
-> *NOTE*: Styles for any components you intend to include within dialogs (e.g. List, Checkboxes, etc.) must also be
-> imported.
+**Note: Styles for any components you intend to include within dialogs (e.g. List, Checkboxes, etc.) must also be imported.**
 
 ### JavaScript Instantiation
 
@@ -88,14 +56,14 @@ import {MDCDialog} from '@material/dialog';
 const dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
 ```
 
-> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+**Note: See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.**
 
-MDC Dialog makes no assumptions about what will be added to the `mdc-dialog__content` element. Any List, Checkboxes,
+MDC Dialog makes no assumptions about what will be added to the `mdc-dialog__content` element. Any list, checkboxes,
 etc. must also be instantiated. If your dialog contains any layout-sensitive components, you should wait until
 `MDCDialog:opened` is emitted to instantiate them (or call `layout` on them) so that the dialog's transition finishes
 first.
 
-For example, to instantiate an MDC List inside of a Simple or Confirmation Dialog:
+For example, to instantiate an MDC List inside of a simple or confirmation dialog:
 
 ```js
 import {MDCList} from '@material/list';
@@ -106,14 +74,75 @@ dialog.listen('MDCDialog:opened', () => {
 });
 ```
 
-> *NOTE*: Mispositioned or incorrectly-sized elements (e.g. ripples, floating labels, notched outlines) are a strong
-> indication that child components are being instantiated before the dialog has finished opening.
+**Note: Mispositioned or incorrectly-sized elements (e.g. ripples, floating labels, notched outlines) are a strong
+indication that child components are being instantiated before the dialog has finished opening.**
 
-## Variants
+### Making dialogs accessible
 
-### Simple Dialog
+##### Using `aria-hidden` as a fallback for `aria-modal`
 
-The Simple Dialog contains a list of potential actions. It does not contain buttons.
+`aria-modal` is part of the ARIA 1.1 specification, and indicates to screen readers that they should confine themselves to a single element. We recommend adding `aria-modal="true"` to the root element of its DOM structure.
+
+However, not all user agents and screen readers properly interpret this attribute.
+
+The fallback is to use `aria-hidden` using `aria-hidden="true"` to all static content beneath the dialog when the dialog is open. This will be easiest to achieve if all non-modal elements are under a single common ancestor under the body, so that `aria-hidden` can be applied to one element.
+
+```js
+dialog.listen('MDCDialog:opened', function() {
+  // Assuming contentElement references a common parent element with the rest of the page's content
+  contentElement.setAttribute('aria-hidden', 'true');
+});
+dialog.listen('MDCDialog:closing', function() {
+  contentElement.removeAttribute('aria-hidden');
+});
+```
+
+**Note: The example above intentionally listens to the opened (not opening) event and the closing (not closed) event in order to avoid additional jumping between elements by screen readers due to one element becoming hidden before others become visible.**
+
+## Alert dialog
+
+Alert dialogs interrupt users with urgent information, details, or actions.
+
+<img src="images/alert-dialog.png" alt="Alert dialog: discard" width=250px>
+
+### Alert dialog example
+
+```html
+<div class="mdc-dialog">
+  <div class="mdc-dialog__container">
+    <div class="mdc-dialog__surface"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="my-dialog-title"
+      aria-describedby="my-dialog-content">
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        Discard draft?
+      </div>
+      <div class="mdc-dialog__actions">
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Cancel</span>
+        </button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="discard">
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Discard</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mdc-dialog__scrim"></div>
+</div>
+```
+
+## Simple dialog
+
+Simple dialogs can display items that are immediately actionable when selected. They don’t have text buttons.
+
+As simple dialogs are interruptive, they should be used sparingly. Alternatively, dropdown menus provide options in a non-modal, less disruptive way.
+
+<img src="images/simple-dialog.png" alt="Simple dialog: selection" width=250px>
+
+### Simple dialog example
 
 ```html
 <div class="mdc-dialog">
@@ -144,12 +173,17 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
 </div>
 ```
 
-> Note the inclusion of the `mdc-list--avatar-list` class, which aligns with the Simple Dialog spec.
+**Note: Note the inclusion of the `mdc-list--avatar-list` class, which aligns with the Simple Dialog spec.**
 
-### Confirmation Dialog
+## Confirmation dialog
 
-The Confirmation Dialog contains a list of choices, and buttons to confirm or cancel. Choices are accompanied by
-radio buttons (indicating single selection) or checkboxes (indicating multiple selection).
+Confirmation dialogs give users the ability to provide final confirmation of a choice before committing to it, so they have a chance to change their minds if necessary.
+
+If the user confirms a choice, it’s carried out. Otherwise, the user can dismiss the dialog. For example, users can listen to multiple ringtones but only make a final selection upon tapping “OK.”
+
+<img src="images/confirmation-dialog.png" alt="Confirmation dialog: selection confirmation" width=250px>
+
+### Confirmation dialog example
 
 ```html
 <div class="mdc-dialog">
@@ -202,13 +236,21 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
 </div>
 ```
 
-> *NOTE*: In the example above, the Cancel button intentionally has the `close` action to align with the behavior of
-> clicking the scrim or pressing the Escape key, allowing all interactions involving dismissal without taking an action
-> to be detected the same way.
+**Note: In the example above, the Cancel button intentionally has the `close` action to align with the behavior of
+clicking the scrim or pressing the Escape key, allowing all interactions involving dismissal without taking an action
+to be detected the same way.**
 
-### Additional Information
+## Full-screen dialog
 
-#### Dialog Actions
+Full-screen dialogs group a series of tasks, such as creating a calendar entry with the event title, date, location, and time. Because they take up the entire screen, full-screen dialogs are the only dialogs over which other dialogs can appear.
+
+MDC Web does not yet support full-screen dialogs.
+
+<img src="images/full-screen-dialog.png" alt="Full-screen dialog: event" width=250px>
+
+## Additional Information
+
+### Dialog actions
 
 All dialog variants support the concept of dialog actions. Any element within a dialog may include the
 `data-mdc-dialog-action` attribute to indicate that interacting with it should close the dialog with the specified action.
@@ -230,7 +272,7 @@ Any action buttons within the dialog which equate strictly to a dismissal with n
 `close` action; this will make it easy to handle all such interactions consistently, while separately handling other
 actions.
 
-#### Action Button Arrangement
+### Action button arrangement
 
 As indicated in the [Dialog design article](https://material.io/design/components/dialogs.html#anatomy), buttons within
 the `mdc-dialog__actions` element are arranged horizontally by default, with the confirming action _last_.
@@ -249,7 +291,7 @@ This will also be disabled if the `mdc-dialog--stacked` modifier class is applie
 component is instantiated, but note that dialog action button labels are recommended to be short enough to fit on a
 single line if possible.
 
-#### Default Action Button
+### Default action button
 
 MDC Dialog supports indicating that one of its action buttons represents the default action, triggered by pressing the
 Enter key. This can be used e.g. for single-choice Confirmation Dialogs to accelerate the process of making a selection,
@@ -272,42 +314,15 @@ For example:
 ...
 ```
 
-#### Actions and Selections
+### Actions and selections
 
 Dialogs which require making a choice via selection controls should initially disable any button which performs an
 action if no choice is selected by default. MDC Dialog does not include built-in logic for this, since it aims to remain
 as unopinionated as possible regarding dialog contents, aside from relaying information on which action is taken.
 
-#### Accessibility
+## Style customizations
 
-##### Using `aria-hidden` as a fallback for `aria-modal`
-
-`aria-modal` is part of the ARIA 1.1 specification, and indicates to screen readers that they should confine themselves
-to a single element. MDC Dialog recommends adding `aria-modal="true"` to the root element of its DOM structure; however,
-not all user agents and screen readers properly honor this attribute.
-
-The fallback is to apply `aria-hidden="true"` to all static content behind the dialog, when the dialog is open. This will
-be easiest to achieve if all non-modal elements are under a single common ancestor under the body, so that `aria-hidden`
-can be applied to one element.
-
-```js
-dialog.listen('MDCDialog:opened', function() {
-  // Assuming contentElement references a common parent element with the rest of the page's content
-  contentElement.setAttribute('aria-hidden', 'true');
-});
-
-dialog.listen('MDCDialog:closing', function() {
-  contentElement.removeAttribute('aria-hidden');
-});
-```
-
-> Note: The example above intentionally listens to the **opened** (not opening) event and the **closing** (not closed)
-> event in order to avoid additional jumping between elements by screen readers due to one element becoming hidden
-> before others become visible.
-
-## Style Customization
-
-### CSS Classes
+### CSS classes
 
 CSS Class | Description
 --- | ---
@@ -325,7 +340,7 @@ CSS Class | Description
 `mdc-dialog--scrollable` | Optional. Applied automatically when the dialog has overflowing content to warrant scrolling.
 `mdc-dialog--stacked` | Optional. Applied automatically when the dialog's action buttons can't fit on a single line and must be stacked.
 
-### Sass Mixins
+### Sass mixins
 
 Mixin | Description
 --- | ---
@@ -339,15 +354,16 @@ Mixin | Description
 `max-width($max-width, $margin)` | Sets the maximum width of the dialog (defaults to 560px max width and 16px margins).
 `max-height($max-height, $margin)` | Sets the maximum height of the dialog (defaults to no max height and 16px margins).
 
-> *NOTE*: The `max-width` and `max-height` mixins only apply their maximum when the viewport is large enough to accommodate the specified value when accounting for the specified margin on either side. When the viewport is smaller, the dialog is sized such that the given margin is retained around the edges.
+**Note: The `max-width` and `max-height` mixins only apply their maximum when the viewport is large enough to accommodate the specified value when accounting for the specified margin on either side. When the viewport is smaller, the dialog is sized such that the given margin is retained around the edges.**
 
-## Other Customizations
+## Other customizations
+
 Data Attributes | Description
 --- | ---
 `data-mdc-dialog-button-default` | Optional. Add to a button to indicate that it is the default action button (see Default Action Button section above).
 `data-mdc-dialog-initial-focus` | Optional. Add to an element to indicate that it is the element to initially focus on after the dialog has opened.
 
-## `MDCDialog` Properties and Methods
+## `MDCDialog` properties and methods
 
 Property | Value Type | Description
 --- | --- | ---
@@ -371,7 +387,7 @@ Event Name | `event.detail` | Description
 `MDCDialog:closing` | `{action: string?}` | Indicates when the dialog begins its closing animation. `action` represents the action which closed the dialog.
 `MDCDialog:closed` | `{action: string?}` | Indicates when the dialog finishes its closing animation. `action` represents the action which closed the dialog.
 
-## Usage within Web Frameworks
+## Usage within web frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Dialog for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
@@ -416,7 +432,7 @@ Method Signature | Description
 `handleKeydown(event: KeyboardEvent)` | Handles `keydown` events on or within the dialog's root element.
 `handleDocumentKeydown(event: Event)` | Handles `keydown` events on or within the document while the dialog is open.
 
-#### Event Handlers
+#### Event handlers
 
 When wrapping the Dialog foundation, the following events must be bound to the indicated foundation methods:
 
@@ -428,7 +444,7 @@ Event | Target | Foundation Handler | Register | Deregister
 `resize` | `window` | `layout` | On `MDCDialog:opening` | On `MDCDialog:closing`
 `orientationchange` | `window` | `layout` | On `MDCDialog:opening` | On `MDCDialog:closing`
 
-### The Util API
+### The `util` API
 
 External frameworks and libraries can use the following utility methods from the `util` module when implementing their own component.
 
@@ -438,7 +454,7 @@ Method Signature | Description
 `isScrollable(el: Element \| null) => boolean` | Determines if the given element is scrollable.
 `areTopsMisaligned(els: Element[]) => boolean` | Determines if two or more of the given elements have different `offsetTop` values.
 
-### Handling Focus Trapping
+### Handling focus trapping
 
 In order for dialogs to be fully accessible, they must conform to the guidelines outlined in:
 
@@ -466,8 +482,7 @@ a focus trapping solution for your component code.**
 
 [focus-trap]: https://github.com/davidtheclark/focus-trap
 
-> NOTE: iOS platform doesn't seem to register currently focused element via `document.activeElement` which causes releasing
-> focus to last focused element fail.
+**Note: iOS platform doesn't seem to register currently focused element via `document.activeElement` which causes releasing focus to last focused element fail.**
 
 #### `createFocusTrapInstance()`
 
