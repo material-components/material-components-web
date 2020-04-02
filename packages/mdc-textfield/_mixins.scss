@@ -82,9 +82,16 @@
     // Floating Label
     @include floating-label_($query);
 
+    // Structural
+    @include padding-horizontal_(
+      variables.$padding-horizontal,
+      0,
+      0,
+      $query: $query
+    );
+
     @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-flex;
-      padding: 0 variables.$padding-horizontal;
       position: relative;
       box-sizing: border-box;
       overflow: hidden;
@@ -99,12 +106,18 @@
 
     @include feature-targeting-mixins.targets($feat-structure) {
       width: 100%;
+      min-width: 0; // Fixes flex issues on Firefox
       height: variables.$input-height;
       border: none;
       border-radius: 0;
       background: none;
       appearance: none;
       padding: 0;
+
+      // Remove built-in trailing clear icon on IE11
+      &::-ms-clear {
+        display: none;
+      }
     }
 
     @include feature-targeting-mixins.targets($feat-animation) {
@@ -186,14 +199,6 @@
 
   .mdc-text-field--with-leading-icon.mdc-text-field--outlined {
     @include outlined-with-leading-icon_($query);
-  }
-
-  .mdc-text-field--with-trailing-icon {
-    @include with-trailing-icon_($query);
-  }
-
-  .mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon {
-    @include with-both-icons_($query);
   }
 
   @include required-label-asterisk_ {
@@ -327,7 +332,7 @@
   );
 
   @include height($height, $minimum-height-for-filled-label: $minimum-height-for-filled-label, $query: $query);
-  // TODO(b/148806980): fix icon density in this bug to break screenshots once
+  // TODO(b/151839219): resize icons and adjust label position
   // @if $density-scale < 0 {
   //   @include icon-mixins.size(icon-variables.$dense-icon-size);
   // }
@@ -347,7 +352,7 @@
   );
 
   @include outlined-height($height, $query: $query);
-  // TODO(b/148806980): fix icon density in this bug to break screenshots once
+  // TODO(b/151839219): resize icons and adjust label position
   // @if $density-scale < 0 {
   //   @include icon-mixins.size(icon-variables.$dense-icon-size);
   // }
@@ -367,7 +372,7 @@
   );
 
   @include outlined-with-leading-icon-height($height, $query: $query);
-  // TODO(b/148806980): fix icon density in this bug to break screenshots once
+  // TODO(b/151839219): resize icons and adjust label position
   // @if $density-scale < 0 {
   //   @include icon-mixins.size(icon-variables.$dense-icon-size);
   // }
@@ -412,8 +417,8 @@
   // Outlined and no-label variants are always centered
   &.mdc-text-field--outlined,
   &.mdc-text-field--fullwidth,
-  &.mdc-text-field--textarea,
-  &.mdc-text-field--no-label {
+  &.mdc-text-field--no-label,
+  &.mdc-text-field--textarea {
     @include center-aligned_($query: $query);
   }
 }
@@ -697,14 +702,90 @@
 
 // Baseline
 
+/// Adds horizontal padding to the text field
+///
+/// @param {Number} $padding - left and right-side padding
+/// @param {Number} $left-with-leading-icon - left-side padding when a leading
+///     icon is present
+/// @param {Number} $right-with-trailing-icon - right-side padding when a
+///     trailing icon is present
+@mixin padding-horizontal_(
+  $padding,
+  $left-with-leading-icon,
+  $right-with-trailing-icon,
+  $query: feature-targeting-functions.all()
+) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    padding: 0 $padding;
+
+    &.mdc-text-field--with-leading-icon {
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $left-with-leading-icon,
+        $padding
+      );
+    }
+
+    &.mdc-text-field--with-trailing-icon {
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $padding,
+        $right-with-trailing-icon
+      );
+    }
+
+    &.mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon {
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $left-with-leading-icon,
+        $right-with-trailing-icon
+      );
+    }
+  }
+}
+
 // Removes filled baseline alignment
 @mixin center-aligned_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    align-items: center;
+    // In order for a flexbox container to participate in baseline alignment,
+    // it follows these rules to determine where its baseline is:
+    // https://www.w3.org/TR/css-flexbox-1/#flex-baselines
+    //
+    // In order to avoid leading icons "controlling" the baseline (since they
+    // are the first child), flexbox will generate a baseline from any child
+    // flex items that participate in baseline alignment.
+    //
+    // Icons are set to "align-self: center", while all other children are
+    // aligned to baseline. The next problem is deciding which child is
+    // used to determine the baseline.
+    //
+    // According to spec, the item with the largest distance between its
+    // baseline and the edge of the cross axis is placed flush with that edge,
+    // making it the baseline of the container.
+    // https://www.w3.org/TR/css-flexbox-1/#baseline-participation
+    //
+    // For the filled variant, the pseudo ::before strut is the "largest"
+    // child since the input has a height of 28px and the strut is 40px. We
+    // can emulate center alignment and force the baseline to use the input
+    // text by making the input the full height of the container and removing
+    // the baseline strut.
 
-    // Remove baseline-top pseudo element
+    // TODO: IE11 does not respect this, and makes the leading icon (if present)
+    // the baseline.
+    .mdc-text-field__input {
+      height: 100%;
+    }
+
+    &.mdc-text-field--textarea {
+      .mdc-text-field__input {
+        height: auto;
+      }
+    }
+
     &::before {
       display: none;
     }
@@ -862,16 +943,17 @@
     }
 
     &--with-leading-icon {
+      $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
       .mdc-floating-label {
         @include feature-targeting-mixins.targets($feat-structure) {
-          @include rtl-mixins.reflexive-position(left, (icon-variables.$icon-padding - notched-outline-variables.$leading-width));
+          @include rtl-mixins.reflexive-position(left, ($icon-padding - notched-outline-variables.$leading-width));
         }
 
         &--float-above {
           @include feature-targeting-mixins.targets($feat-structure) {
             @include rtl-mixins.reflexive-position(
               left,
-              (icon-variables.$icon-padding - notched-outline-variables.$leading-width) + notched-outline-variables.$padding
+              ($icon-padding - notched-outline-variables.$leading-width) + notched-outline-variables.$padding
             );
           }
         }
@@ -957,15 +1039,11 @@
 @mixin with-leading-icon_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include icon-mixins.leading-icon-horizontal-position_(icon-variables.$icon-position, $query: $query);
-
   @include feature-targeting-mixins.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(padding, icon-variables.$icon-padding, variables.$padding-horizontal);
-  }
+    $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
 
-  .mdc-floating-label {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, icon-variables.$icon-padding);
+    .mdc-floating-label {
+      @include rtl-mixins.reflexive-position(left, $icon-padding);
     }
   }
 }
@@ -973,7 +1051,6 @@
 @mixin outlined-with-leading-icon_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include icon-mixins.leading-icon-horizontal-position_(icon-variables.$icon-position, $query: $query);
   @include notched-outline-mixins.floating-label-float-position-absolute(
     variables.$outlined-label-position-y,
     32px,
@@ -987,33 +1064,13 @@
 
   .mdc-floating-label {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, icon-variables.$icon-padding - notched-outline-variables.$leading-width);
+      $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
+
+      @include rtl-mixins.reflexive-position(
+        left,
+        $icon-padding - notched-outline-variables.$leading-width
+      );
     }
-  }
-}
-
-@mixin with-trailing-icon_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include icon-mixins.trailing-icon-horizontal-position_(icon-variables.$trailing-icon-position, $query: $query);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(padding, variables.$padding-horizontal, icon-variables.$icon-padding);
-  }
-}
-
-@mixin with-both-icons_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include icon-mixins.icon-horizontal-position-two-icons_(
-    icon-variables.$icon-position,
-    icon-variables.$trailing-icon-position,
-    $query: $query
-  );
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    padding-right: icon-variables.$icon-padding;
-    padding-left: icon-variables.$icon-padding;
   }
 }
 
@@ -1079,7 +1136,7 @@
   $feat-typography: feature-targeting-functions.create-target($query, typography);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    display: inline-flex;
+    align-items: center;
     width: auto;
     height: auto;
     padding: 0; // see below for explanation
@@ -1094,7 +1151,6 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       align-self: stretch;
       box-sizing: border-box;
-      height: auto;
       // Top margin is used to keep the text from overlapping the floating label
       // when scrolling
       margin-top: variables.$textarea-input-margin-top;
