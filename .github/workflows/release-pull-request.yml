@@ -22,6 +22,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: master
+      - name: Sync with origin
+        run: |
+          git pull --rebase origin master
       - name: Setup node
         uses: actions/setup-node@v1
         with:
@@ -41,11 +44,11 @@ jobs:
           author: GitHub Action <action@users.noreply.github.com>
           title: "chore: Release"
           body: |
-            > This PR was opened by [release][1] GitHub action.
-            > When you're ready to do a release, you can merge this and release
-            > action will automatically publishes to npm registry.
-            > If you're not ready to do a release yet, that's fine, whenever you
-            > add more commits to master, this PR will be updated.
+            This PR was opened by [release][1] GitHub action.
+            When you're ready to do a release, you can merge this and release
+            action will automatically publishes to npm registry.
+            If you're not ready to do a release yet, that's fine, whenever you
+            add more commits to master, this PR will be updated.
 
             [1]: http://github.com/material-components/material-components-web/tree/master/.github/workflows/release-pull-request.yml
           branch: chore/release

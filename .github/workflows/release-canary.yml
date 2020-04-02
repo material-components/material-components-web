@@ -21,6 +21,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: master
+      - name: Sync with origin
+        run: |
+          git pull --rebase origin master
       - name: Setup node
         uses: actions/setup-node@v1
         with:
