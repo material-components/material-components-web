@@ -234,7 +234,7 @@
 /// Sets the color of sort icon button when it is in idle state.
 /// (icon showed on header cell focus)
 /// @param {String} $color - Color of sort icon button
-@mixin sort-icon-color($color, $query: mdc-feature-all()) {
+@mixin sort-icon-color($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-data-table__sort-icon-button {
@@ -244,7 +244,7 @@
 
 /// Sets the color of sort icon button when it is activated (sorted).
 /// @param {String} $color - Color of sort icon button
-@mixin sort-icon-active-color($color, $query: mdc-feature-all()) {
+@mixin sort-icon-active-color($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-data-table__header-cell--sorted .mdc-data-table__sort-icon-button {
