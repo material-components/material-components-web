@@ -45,7 +45,7 @@ $stroke-size: 1px !default;
 $stroke-color: rgba(theme-variables.prop-value(on-surface), .12) !default;
 
 $cell-height: 52px !default;
-$header-cell-height: 56px !default; // $cell-height + 4
+$header-cell-height: get-header-cell-height($cell-height) !default;
 $cell-leading-padding: 16px !default;
 $cell-trailing-padding: 16px !default;
 
@@ -59,3 +59,11 @@ $density-config: (
     minimum: $minimum-cell-height,
   )
 );
+
+@function get-header-cell-height($height) {
+  @if (index('px', unit($height)) != null) {
+    @return $height + 4px;
+  } @else {
+    @return $height;
+  }
+}
