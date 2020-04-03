@@ -2,7 +2,7 @@
 title: "Lists"
 layout: detail
 section: components
-excerpt: "Lists present multiple line items vertically as a single continuous element."
+excerpt: "Lists are continuous, vertical indexes of text or images."
 iconId: list
 path: /catalog/lists/
 -->
@@ -16,46 +16,29 @@ path: /catalog/lists/
   </a>
 </div>-->
 
-Lists are continuous, vertical indexes of text or images.
+[Lists](https://material.io/components/lists/) are continuous, vertical indexes of text or images.
 
-## Design & API Documentation
+There are three list types:
+1. [Single-line list](#single-line-list)
+1. [Two-line list](#two-line-list)
+1. [Three-line list](#three-line-list)
 
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/design/components/lists.html">Material Design guidelines: Lists</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/list">Demo</a>
-  </li>
-</ul>
+![Composite image of the three list types](images/lists-types.png)
 
-## Installation
+## Using lists
+
+### Installation
+
 ```
 npm install @material/list
-```
-
-## Basic Usage
-
-### HTML Structure
-
-```html
-<ul class="mdc-list">
-  <li class="mdc-list-item" tabindex="0">
-    <span class="mdc-list-item__text">Single-line item</span>
-  </li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__text">Single-line item</span>
-  </li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__text">Single-line item</span>
-  </li>
-</ul>
 ```
 
 ### Styles
 
 ```scss
-@use "@material/list/mdc-list";
+@use "@material/list";
+
+@include list.core-styles;
 ```
 
 ### JavaScript
@@ -79,13 +62,70 @@ import {MDCRipple} from '@material/ripple';
 const listItemRipples = list.listElements.map((listItemEl) => new MDCRipple(listItemEl));
 ```
 
-## Variants
+### Making lists accessible
 
-### Two-Line List
+The MDCList JavaScript component implements the WAI-ARIA best practices for
+[listbox](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox). This includes overriding the default tab behavior
+within the list component.
 
-You can use the `mdc-list--two-line` combined with some extra markup around the text to style a list
-in the double line list style as defined by
-[the spec](https://material.io/design/components/lists.html#specs) (see "Double line").
+The `tabindex` should be set to `0` for first list item element or selected list item element, remaining list item elements should not have `tabindex` set.
+
+Use `role="listbox"` only for single selection list, without this role the `ul` element is implicitely `role="list"`.
+Do not use `aria-orientation` attribute for standard list (i.e., `role="list"`), use component's `vertical` property to set the orientation
+to vertical.
+
+Single selection list supports `aria-selected` and `aria-current` attributes. List automatically detects the presence of these attributes
+and sets it to next selected list item based on which ARIA attribute you use (i.e., `aria-selected` or `aria-current`). Please see WAI-ARIA [aria-current](https://www.w3.org/TR/wai-aria-1.1/#aria-current) article for recommended usage and available attribute values.
+
+As the user navigates through the list, any `button` and `a` elements within the list will receive `tabindex="-1"` when
+the list item is not focused. When the list item receives focus, the aforementioned elements will receive
+`tabIndex="0"`. This allows for the user to tab through list item elements and then tab to the first element after the
+list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements. If
+`singleSelection=true`, the list will allow the user to use the `Space` or `Enter` keys to select or deselect a list
+item. The MDCList will perform the following actions for each key press. Since list interaction will toggle a radio
+button or checkbox within the list item, the list will not toggle `tabindex` for those elements.
+
+Disabled list item will be included in the keyboard navigation. Please see [Focusability of disabled controls](https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_disabled_controls) section in ARIA practices article.
+
+Key | Action
+--- | ---
+`ArrowUp` | When the list is in a vertical orientation (default), it will cause the previous list item to receive focus.
+`ArrowDown` | When the list is in a vertical orientation (default), it will cause the next list item to receive focus.
+`ArrowLeft` | When the list is in a horizontal orientation, it will cause the previous list item to receive focus.
+`ArrowRight` | When the list is in a horizontal orientation, it will cause the next list item to receive focus.
+`Home` | Will cause the first list item in the list to receive focus.
+`End` | Will cause the last list item in the list to receive focus.
+`Space` | Will cause the currently focused list item to become selected/deselected if `singleSelection=true`.
+`Enter` | Will cause the currently focused list item to become selected/deselected if `singleSelection=true`.
+
+## Single-line list
+
+Single-line list items contain a maximum of one line of text.
+
+### Single-line list example
+
+```html
+<ul class="mdc-list">
+  <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+</ul>
+```
+
+## Two-line list
+
+Two-line list items contain a maximum of two lines of text.
+
+### Two-line list example
+
+Use the `mdc-list--two-line` combined with some extra markup around the
+text to style a two-line list.
 
 ```html
 <ul class="mdc-list mdc-list--two-line">
@@ -110,7 +150,15 @@ in the double line list style as defined by
 </ul>
 ```
 
-> NOTE: Make sure there are no white-space characters before primary and secondary text content.
+**Note: Make sure there are no white-space characters before primary and secondary text content.**
+
+### Three-line list
+
+Three-line list items contains a maximum of three lines of text.
+
+MDC Web does not currently support three-line lists.
+
+## Other Variants
 
 ### List Groups
 
@@ -167,7 +215,7 @@ MDC List contains an `mdc-list-divider` class which can be used as full-width or
 </ul>
 ```
 
-> NOTE: the role="separator" attribute on the list divider. It is important to include this so that assistive technology can be made aware that this is a presentational element and is not meant to be included as an item in a list. Note that separator is indeed a valid role for li elements.
+**Note: The role="separator" attribute on the list divider. It is important to include this so that assistive technology can be made aware that this is a presentational element and is not meant to be included as an item in a list. Note that separator is indeed a valid role for li elements.**
 
 OR
 
@@ -393,11 +441,11 @@ CSS Class | Description
 `mdc-list-divider--padded` | Optional, leaves gaps on each side of divider to match padding of `list-item__meta`.
 `mdc-list-divider--inset` | Optional, increases the leading margin of the divider so that it does not intersect the avatar column.
 
-> NOTE: The `mdc-list-divider` class can be used between list items *OR* between two lists (see respective examples under [List Dividers](#list-dividers)).
+**Note: The `mdc-list-divider` class can be used between list items *OR* between two lists (see respective examples under [List Dividers](#list-dividers)).**
 
-> NOTE: In Material Design, the selected and activated states apply in different, mutually-exclusive situations:
-> * *Selected* state should be applied on the `.mdc-list-item` when it is likely to frequently change due to user choice. E.g., selecting one or more photos to share in Google Photos.
-> * *Activated* state is more permanent than selected state, and will **NOT** change soon relative to the lifetime of the page. Common examples are navigation components such as the list within a navigation drawer.
+**Note: In Material Design, the selected and activated states apply in different, mutually-exclusive situations:**
+* *Selected* state should be applied on the `.mdc-list-item` when it is likely to frequently change due to user choice. E.g., selecting one or more photos to share in Google Photos.
+* *Activated* state is more permanent than selected state, and will **NOT** change soon relative to the lifetime of the page. Common examples are navigation components such as the list within a navigation drawer.
 
 ### Sass Mixins
 
@@ -415,43 +463,6 @@ Mixin | Description
 `item-disabled-text-opacity($opacity`) | Sets the opacity of the text when the list item is disabled.
 `single-line-density($density-scale)` | Sets density scale to single line list variant. Supported density scales are `-4`, `-3`, `-2`, `-1` and  `0`.
 `single-line-height($height)` | Sets height to single line list variant.
-
-### Accessibility
-
-The MDCList JavaScript component implements the WAI-ARIA best practices for
-[Listbox](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox). This includes overriding the default tab behavior
-within the list component.
-
-The `tabindex` should be set to `0` for first list item element or selected list item element, remaining list item elements should not have `tabindex` set.
-
-Use `role="listbox"` only for single selection list, without this role the `ul` element is implicitely `role="list"`.
-Do not use `aria-orientation` attribute for standard list (i.e., `role="list"`), use component's `vertical` property to set the orientation
-to vertical.
-
-Single selection list supports `aria-selected` and `aria-current` attributes. List automatically detects the presence of these attributes
-and sets it to next selected list item based on which ARIA attribute you use (i.e., `aria-selected` or `aria-current`). Please see WAI-ARIA [aria-current](https://www.w3.org/TR/wai-aria-1.1/#aria-current) article for recommended usage and available attribute values.
-
-As the user navigates through the list, any `button` and `a` elements within the list will receive `tabindex="-1"` when
-the list item is not focused. When the list item receives focus, the aforementioned elements will receive
-`tabIndex="0"`. This allows for the user to tab through list item elements and then tab to the first element after the
-list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements. If
-`singleSelection=true`, the list will allow the user to use the `Space` or `Enter` keys to select or deselect a list
-item. The MDCList will perform the following actions for each key press. Since list interaction will toggle a radio
-button or checkbox within the list item, the list will not toggle `tabindex` for those elements.
-
-Disabled list item will be included in the keyboard navigation. Please see [Focusability of disabled controls](https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_disabled_controls) section in ARIA practices article.
-
-Key | Action
---- | ---
-`ArrowUp` | When the list is in a vertical orientation (default), it will cause the previous list item to receive focus.
-`ArrowDown` | When the list is in a vertical orientation (default), it will cause the next list item to receive focus.
-`ArrowLeft` | When the list is in a horizontal orientation, it will cause the previous list item to receive focus.
-`ArrowRight` | When the list is in a horizontal orientation, it will cause the next list item to receive focus.
-`Home` | Will cause the first list item in the list to receive focus.
-`End` | Will cause the last list item in the list to receive focus.
-`Space` | Will cause the currently focused list item to become selected/deselected if `singleSelection=true`.
-`Enter` | Will cause the currently focused list item to become selected/deselected if `singleSelection=true`.
-
 
 ## `MDCList` Properties and Methods
 
