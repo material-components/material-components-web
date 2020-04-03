@@ -142,6 +142,9 @@ module.exports = [{
             options: {
               // Prefer Dart Sass
               implementation: require('sass'),
+
+              // See https://github.com/webpack-contrib/sass-loader/issues/804
+              webpackImporter: false,
             },
           },
         ]
@@ -188,6 +191,9 @@ We also need to configure sass-loader to understand the `@material` imports used
   options: {
     // Prefer Dart Sass
     implementation: require('sass'),
+
+    // See https://github.com/webpack-contrib/sass-loader/issues/804
+    webpackImporter: false,
     sassOptions: {
       includePaths: ['./node_modules']
     },
@@ -237,6 +243,9 @@ Then add `postcss-loader`, using `autoprefixer` as a plugin:
     },
     // Prefer Dart Sass
     implementation: require('sass'),
+
+    // See https://github.com/webpack-contrib/sass-loader/issues/804
+    webpackImporter: false,
   }
 },
 ```
@@ -339,6 +348,9 @@ module.exports = {
             options: {
               // Prefer Dart Sass
               implementation: require('sass'),
+
+              // See https://github.com/webpack-contrib/sass-loader/issues/804
+              webpackImporter: false,
               sassOptions: {
                 includePaths: ['./node_modules'],
               },
