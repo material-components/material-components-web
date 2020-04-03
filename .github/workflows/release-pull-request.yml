@@ -22,9 +22,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: master
-      - name: Sync with origin
+          fetch-depth: 0
+      - name: Fetch all tags
         run: |
-          git pull --rebase origin master
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: Setup node
         uses: actions/setup-node@v1
         with:
@@ -41,7 +42,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: Release"
-          author: GitHub Action <action@users.noreply.github.com>
+          author: Material Web Team <material-web-action@google.com>
           title: "chore: Release"
           body: |
             This PR was opened by [release][1] GitHub action.
