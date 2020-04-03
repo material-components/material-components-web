@@ -50,6 +50,11 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-block;
       position: relative;
+      /* @noflip */
+      direction: ltr;
+    }
+
+    @include feature-targeting-mixins.targets($feat-animation) {
       transition: animation-functions.exit-temporary(opacity, 250ms);
     }
   }
@@ -107,6 +112,7 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       position: absolute;
       top: 0;
+      /* @noflip */
       left: 47.5%;
       box-sizing: border-box;
       width: 5%;
@@ -116,6 +122,7 @@
 
     .mdc-circular-progress__indeterminate-circle-graphic {
       @include feature-targeting-mixins.targets($feat-structure) {
+        /* @noflip */
         left: -900%;
         width: 2000%;
         transform: rotate(180deg);
@@ -142,6 +149,7 @@
   .mdc-circular-progress__circle-right {
     .mdc-circular-progress__indeterminate-circle-graphic {
       @include feature-targeting-mixins.targets($feat-structure) {
+        /* @noflip */
         left: -100%;
       }
     }
