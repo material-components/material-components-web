@@ -84,6 +84,15 @@
   @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
 }
 
+// Used by filled variants of GM components to conditionally flatten the top
+// corners of the menu.
+@mixin flatten-top-when-opened-below {
+  .mdc-menu-surface--is-open-below {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+}
+
 //
 // Private
 //

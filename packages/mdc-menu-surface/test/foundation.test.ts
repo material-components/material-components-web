@@ -799,6 +799,26 @@ describe('MDCMenuSurfaceFoundation', () => {
       });
 
   testFoundation(
+      '#open adds the open-below class to the menu surface, from small anchor in top of viewport',
+      ({foundation, mockAdapter}) => {
+        initAnchorLayout(mockAdapter, smallTopLeft);
+        foundation.open();
+        jasmine.clock().tick(1);  // Run to frame.
+        expect(mockAdapter.addClass)
+            .toHaveBeenCalledWith(cssClasses.IS_OPEN_BELOW);
+      });
+
+  testFoundation(
+      '#open does not add the open-below class to the menu surface, from small anchor in bottom of viewport',
+      ({foundation, mockAdapter}) => {
+        initAnchorLayout(mockAdapter, smallBottomLeft);
+        foundation.open();
+        jasmine.clock().tick(1);  // Run to frame.
+        expect(mockAdapter.addClass)
+            .not.toHaveBeenCalledWith(cssClasses.IS_OPEN_BELOW);
+      });
+
+  testFoundation(
       '#close adds the animation class to start an animation',
       ({foundation, mockAdapter}) => {
         foundation.close();

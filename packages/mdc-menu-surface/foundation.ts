@@ -203,6 +203,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
     requestAnimationFrame(() => {
       this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
+      this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
       if (this.isQuickOpen_) {
         this.adapter_.notifyClose();
       } else {
@@ -269,6 +270,11 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     this.adapter_.setTransformOrigin(`${horizontalAlignment} ${verticalAlignment}`);
     this.adapter_.setPosition(position);
     this.adapter_.setMaxHeight(maxMenuSurfaceHeight ? maxMenuSurfaceHeight + 'px' : '');
+
+    // If it is opened from the top then add is-open-below class
+    if (!this.hasBit_(corner, CornerBit.BOTTOM)) {
+      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
+    }
   }
 
   /**

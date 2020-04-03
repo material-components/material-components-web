@@ -26,6 +26,7 @@ const cssClasses = {
   ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
   ANIMATING_OPEN: 'mdc-menu-surface--animating-open',
   FIXED: 'mdc-menu-surface--fixed',
+  IS_OPEN_BELOW: 'mdc-menu-surface--is-open-below',
   OPEN: 'mdc-menu-surface--open',
   ROOT: 'mdc-menu-surface',
 };
