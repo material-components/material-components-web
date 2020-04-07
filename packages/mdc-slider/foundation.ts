@@ -496,9 +496,11 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       translatePx = this.rect_.width - translatePx;
     }
 
-    const transformProp = getCorrectPropertyName(window, 'transform');
+    // Accessing `window` without a `typeof` check will throw on Node environments.
+    const hasWindow = typeof window !== 'undefined';
+    const transformProp = hasWindow ? getCorrectPropertyName(window, 'transform') : 'transform';
     const transitionendEvtName =
-        getCorrectEventName(window, 'transitionend') as EventType;
+        hasWindow ? getCorrectEventName(window, 'transitionend') as EventType : 'transitionend';
 
     if (this.inTransit_) {
       const onTransitionEnd = () => {
