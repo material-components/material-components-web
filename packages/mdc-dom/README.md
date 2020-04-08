@@ -62,3 +62,11 @@ Method Signature | Description
 --- | ---
 `announce(message: string, priority?: AnnouncerPriority) => void` | Announces the message via an `aria-live` region with the given priority (defaults to polite)
 <!-- TODO(b/148462294): Remove once only exported members are required in docs `say()` --> <!-- | --> <!-- DO NOT USE -->
+
+## Keyboard
+
+The `keyboard` utility provides helper methods for normalizing `KeyboardEvent` keys across browsers. It is intended for usage from MDC-internal components.
+
+Method Signature | Description
+`normalizeKey(evt: KeyboardEvent) => string` | Returns a normalized string derived from `KeyboardEvent`'s `keyCode` property to be standard across browsers.
+`isNavigationEvent(evt: KeyboardEvent) => boolean` | Returns `true` if the event is a navigation event (Page Up, Page Down, Home, End, Left, Up, Right, Down).
