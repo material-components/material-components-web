@@ -22,8 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-
-import {navigationKeys, strings as chipStrings} from '../chip/constants';
+import {isNavigationEvent, KEY, normalizeKey} from '@material/dom/keyboard';
 
 import {MDCChipTrailingActionAdapter} from './adapter';
 import {InteractionTrigger, strings} from './constants';
@@ -55,13 +54,15 @@ export class MDCChipTrailingActionFoundation extends
 
   handleKeydown(evt: KeyboardEvent) {
     evt.stopPropagation();
-    if (this.shouldNotifyInteraction_(evt)) {
-      this.adapter_.notifyInteraction(this.getTriggerFromKeyboard_(evt));
+    const key = normalizeKey(evt);
+    if (this.shouldNotifyInteractionFromKey_(key)) {
+      const trigger = this.getTriggerFromKey_(key);
+      this.adapter_.notifyInteraction(trigger);
       return;
     }
 
-    if (this.shouldNotifyNavigation_(evt)) {
-      this.adapter_.notifyNavigation(evt.key);
+    if (isNavigationEvent(evt)) {
+      this.adapter_.notifyNavigation(key);
       return;
     }
   }
@@ -79,35 +80,27 @@ export class MDCChipTrailingActionFoundation extends
     return this.adapter_.getAttribute(strings.ARIA_HIDDEN) !== 'true';
   }
 
-  private shouldNotifyInteraction_(evt: KeyboardEvent): boolean {
-    const isFromActionKey = evt.key === chipStrings.ENTER_KEY ||
-        evt.key === chipStrings.SPACEBAR_KEY;
-    const isFromDeleteKey = evt.key === chipStrings.BACKSPACE_KEY ||
-        evt.key === chipStrings.DELETE_KEY ||
-        evt.key === chipStrings.IE_DELETE_KEY;
+  private shouldNotifyInteractionFromKey_(key: string): boolean {
+    const isFromActionKey = key === KEY.ENTER || key === KEY.SPACEBAR;
+    const isFromDeleteKey = key === KEY.BACKSPACE || key === KEY.DELETE;
 
     return isFromActionKey || isFromDeleteKey;
   }
 
-  private shouldNotifyNavigation_(evt: KeyboardEvent): boolean {
-    return navigationKeys.has(evt.key);
-  }
-
-  private getTriggerFromKeyboard_(evt: KeyboardEvent): InteractionTrigger {
-    if (evt.key === chipStrings.SPACEBAR_KEY) {
+  private getTriggerFromKey_(key: string): InteractionTrigger {
+    if (key === KEY.SPACEBAR) {
       return InteractionTrigger.SPACEBAR_KEY;
     }
 
-    if (evt.key === chipStrings.ENTER_KEY) {
+    if (key === KEY.ENTER) {
       return InteractionTrigger.ENTER_KEY;
     }
 
-    if (evt.key === chipStrings.DELETE_KEY ||
-        evt.key === chipStrings.IE_DELETE_KEY) {
+    if (key === KEY.DELETE) {
       return InteractionTrigger.DELETE_KEY;
     }
 
-    if (evt.key === chipStrings.BACKSPACE_KEY) {
+    if (key === KEY.BACKSPACE) {
       return InteractionTrigger.BACKSPACE_KEY;
     }
 

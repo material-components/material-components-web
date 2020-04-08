@@ -22,9 +22,10 @@
  */
 
 
+import {KEY} from '@material/dom/keyboard';
+
 import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
-import {strings as chipStrings} from '../../chip/constants';
 import {InteractionTrigger, strings} from '../constants';
 import {MDCChipTrailingActionFoundation} from '../foundation';
 
@@ -94,26 +95,22 @@ describe('MDCChipTrailingActionFoundation', () => {
   });
 
   [{
-    key: chipStrings.SPACEBAR_KEY,
+    key: KEY.SPACEBAR,
     trigger: InteractionTrigger.SPACEBAR_KEY,
   },
    {
-     key: chipStrings.ENTER_KEY,
+     key: KEY.ENTER,
      trigger: InteractionTrigger.ENTER_KEY,
    },
    {
-     key: chipStrings.BACKSPACE_KEY,
+     key: KEY.BACKSPACE,
      trigger: InteractionTrigger.BACKSPACE_KEY,
    },
    {
-     key: chipStrings.DELETE_KEY,
-     trigger: InteractionTrigger.DELETE_KEY,
-   },
-   {
-     key: chipStrings.IE_DELETE_KEY,
+     key: KEY.DELETE,
      trigger: InteractionTrigger.DELETE_KEY,
    }].forEach(({key, trigger}) => {
-    it(`#handleKeydown notifies interaction on "${key}" with "${trigger}"`,
+    it(`#handleKeydown notifies interaction on key "${key}" with "${trigger}"`,
        () => {
          const {foundation, mockAdapter} = setupTest();
          foundation.handleKeydown(mockKeyDown(key));
@@ -121,16 +118,12 @@ describe('MDCChipTrailingActionFoundation', () => {
        });
   });
 
-  [chipStrings.ARROW_UP_KEY,
-   chipStrings.ARROW_DOWN_KEY,
-   chipStrings.ARROW_RIGHT_KEY,
-   chipStrings.ARROW_LEFT_KEY,
-   chipStrings.IE_ARROW_UP_KEY,
-   chipStrings.IE_ARROW_DOWN_KEY,
-   chipStrings.IE_ARROW_RIGHT_KEY,
-   chipStrings.IE_ARROW_LEFT_KEY,
+  [KEY.ARROW_UP,
+   KEY.ARROW_DOWN,
+   KEY.ARROW_RIGHT,
+   KEY.ARROW_LEFT,
   ].forEach((key) => {
-    it(`#handleKeydown notifies navigation on "${key}" key down`, () => {
+    it(`#handleKeydown notifies navigation on key "${key}" keydown`, () => {
       const {foundation, mockAdapter} = setupTest();
       foundation.handleKeydown(mockKeyDown(key));
       expect(mockAdapter.notifyNavigation).toHaveBeenCalledWith(key);
