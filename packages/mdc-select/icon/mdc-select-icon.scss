@@ -21,12 +21,4 @@
 
 @use "./mixins";
 
-.mdc-select--with-leading-icon {
-  @include mixins.icon_;
-}
-
-.mdc-select__icon:not([tabindex]),
-.mdc-select__icon[tabindex="-1"] {
-  cursor: default;
-  pointer-events: none;
-}
+@include mixins.icon-core-styles;

@@ -21,6 +21,7 @@
   "dependencies": {
     "@material/animation": "^5.1.0",
     "@material/base": "^5.1.0",
+    "@material/feature-targeting": "^5.1.0",
     "@material/floating-label": "^5.1.0",
     "@material/line-ripple": "^5.1.0",
     "@material/menu": "^5.1.0",
