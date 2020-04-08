@@ -233,6 +233,24 @@ inside of text field component.
 Helper text and Character counter are optional subcomponents of text field that can co-exist independently.
 It is recommended that `.mdc-text-field` and `.mdc-text-field-helper-line` elements have same width for correct layout.
 
+### Text field with prefix and suffix text
+
+Prefix and suffix text can add context to a text field, such as a currency symbol prefix or a unit of mass suffix. 
+A prefix, suffix, or both can be added within the default or outlined variants of text fields.
+
+```html
+<label class="mdc-text-field">
+  <span class="mdc-text-field__ripple"></span>
+  <span class="mdc-text-field__affix mdc-text-field__affix--prefix">$</span>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
+  <span class="mdc-text-field__affix mdc-text-field__affix--suffix">.00</span>
+  <span class="mdc-floating-label" id="my-label-id">Currency Value</span>
+  <span class="mdc-line-ripple"></span>
+</label>
+```
+
+**Note: Do not use `mdc-text-field--affix` within `mdc-text-field--textarea`.**
+
 ### Text field with leading and trailing icons
 
 Leading and trailing icons can be added within the default or outlined variant of MDC Text Field as visual indicators as
@@ -319,6 +337,7 @@ CSS Class | Description
 `mdc-text-field--focused` | Styles the text field as a text field in focus.
 `mdc-text-field--no-label` | Styles the text field that has no label.
 `mdc-text-field--end-aligned` | Styles the text field with an end-aligned input.
+`mdc-text-field--label-floating` | Styles the text field with a floating label and pre-filled or focused value.
 `mdc-text-field-helper-line` | Styles the container of helper text and character counter elements.
 
 ### Sass mixins
@@ -341,6 +360,10 @@ Mixin | Description
 `label-color($color)` | Customizes the text color of the label in an enabled text field.
 `disabled-label-color($color)` | Customizes the text color of the label in a disabled text field.
 `caret-color($color)` | Customizes the color of the cursor caret of the text field.
+`prefix-color($color)` | Customizes the color of the prefix text of an enabled text field.
+`disabled-prefix-color($color)` | Customizes the color of the prefix text of a disabled text field.
+`suffix-color($color)` | Customizes the color of the suffix text of an enabled text field.
+`disabled-suffix-color($color)` | Customizes the color of the suffix text of a disabled text field.
 
 #### Mixins for filled text field and textarea
 
@@ -400,6 +423,8 @@ Property | Value Type | Description
 `trailingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
 `leadingIconContent` | `string` (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
 `trailingIconContent` | `string` (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
+`prefixText` | `string` | Gets or sets the text content of the prefix, if it exists.
+`suffixText` | `string` | Gets or sets the text content of the suffix, if it exists.
 
 In addition to the above, the following properties proxy to the `input` element's properties of the same name:
 

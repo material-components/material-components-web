@@ -28,6 +28,8 @@ const strings = {
   LEADING_ICON_SELECTOR: '.mdc-text-field__icon--leading',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   OUTLINE_SELECTOR: '.mdc-notched-outline',
+  PREFIX_SELECTOR: '.mdc-text-field__affix--prefix',
+  SUFFIX_SELECTOR: '.mdc-text-field__affix--suffix',
   TRAILING_ICON_SELECTOR: '.mdc-text-field__icon--trailing'
 };
 

@@ -78,6 +78,8 @@
     @include icon-mixins.leading-icon-color(variables.$icon-color, $query: $query);
     @include icon-mixins.trailing-icon-color(variables.$icon-color, $query: $query);
     @include fill-color(variables.$background, $query: $query);
+    @include prefix-color(variables.$affix-color, $query: $query);
+    @include suffix-color(variables.$affix-color, $query: $query);
 
     // Floating Label
     @include floating-label_($query);
@@ -101,13 +103,10 @@
   }
 
   .mdc-text-field__input {
-    // Exclude setting line-height to keep caret (text cursor) same height as the input text in iOS browser.
-    @include typography-mixins.typography(subtitle1, $exclude-props: (line-height), $query: $query);
-
+    @include _text($query: $query);
     @include feature-targeting-mixins.targets($feat-structure) {
       width: 100%;
       min-width: 0; // Fixes flex issues on Firefox
-      height: variables.$input-height;
       border: none;
       border-radius: 0;
       background: none;
@@ -118,10 +117,6 @@
       &::-ms-clear {
         display: none;
       }
-    }
-
-    @include feature-targeting-mixins.targets($feat-animation) {
-      transition: functions.transition(opacity);
     }
 
     @include placeholder-selector_ {
@@ -169,6 +164,31 @@
       @include feature-targeting-mixins.targets($feat-structure) {
         z-index: auto !important;
       }
+    }
+  }
+
+  .mdc-text-field__affix {
+    @include _affix($query: $query);
+
+    .mdc-text-field--label-floating &,
+    .mdc-text-field--no-label & {
+      @include _affix-visible($query: $query);
+    }
+  }
+
+  .mdc-text-field__affix--prefix {
+    @include _prefix($query: $query);
+
+    .mdc-text-field--end-aligned & {
+      @include _prefix-end-aligned($query: $query);
+    }
+  }
+
+  .mdc-text-field__affix--suffix {
+    @include _suffix($query: $query);
+
+    .mdc-text-field--end-aligned & {
+      @include _suffix-end-aligned($query: $query);
     }
   }
 
@@ -698,6 +718,46 @@
   }
 }
 
+///
+/// Customizes the color of the prefix text for an enabled text field.
+/// @param {Color} $color - The desired prefix text color.
+///
+@mixin prefix-color($color, $query: feature-targeting-functions.all()) {
+  @include if-enabled_ {
+    @include _prefix-color($color, $query: $query);
+  }
+}
+
+///
+/// Customizes the color of the prefix text for a disabled text field.
+/// @param {Color} $color - The desired prefix text color.
+///
+@mixin disabled-prefix-color($color, $query: feature-targeting-functions.all()) {
+  @include if-disabled_ {
+    @include _prefix-color($color, $query: $query);
+  }
+}
+
+///
+/// Customizes the color of the suffix text for an enabled text field.
+/// @param {Color} $color - The desired suffix text color.
+///
+@mixin suffix-color($color, $query: feature-targeting-functions.all()) {
+  @include if-enabled_ {
+    @include _suffix-color($color, $query: $query);
+  }
+}
+
+///
+/// Customizes the color of the suffix text for a disabled text field.
+/// @param {Color} $color - The desired suffix text color.
+///
+@mixin disabled-suffix-color($color, $query: feature-targeting-functions.all()) {
+  @include if-disabled_ {
+    @include _suffix-color($color, $query: $query);
+  }
+}
+
 // Private mixins
 
 // Baseline
@@ -804,6 +864,8 @@
   @include icon-mixins.leading-icon-color_(variables.$disabled-icon, $query: $query);
   @include icon-mixins.trailing-icon-color_(variables.$disabled-icon, $query: $query);
   @include fill-color_(variables.$disabled-background, $query: $query);
+  @include _prefix-color(variables.$disabled-affix-color, $query: $query);
+  @include _suffix-color(variables.$disabled-affix-color, $query: $query);
 
   @media screen and (-ms-high-contrast: active) {
     @include bottom-line-color_(GrayText, $query: $query);
@@ -813,6 +875,8 @@
     @include character-counter-mixins.character-counter-color_(GrayText, $query: $query);
     @include icon-mixins.leading-icon-color_(GrayText, $query: $query);
     @include icon-mixins.trailing-icon-color_(GrayText, $query: $query);
+    @include _prefix-color(GrayText, $query: $query);
+    @include _suffix-color(GrayText, $query: $query);
   }
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -1194,6 +1258,74 @@
   }
 }
 
+// Text, Prefix and Suffix
+
+// Common styles for the text of the text field, including the prefix, suffix,
+// and input.
+@mixin _text($query: feature-targeting-functions.all()) {
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  // Exclude setting line-height to keep caret (text cursor) same height as the input text in iOS browser.
+  @include typography-mixins.typography(subtitle1, $exclude-props: (line-height), $query: $query);
+  @include feature-targeting-mixins.targets($feat-structure) {
+    height: variables.$input-height;
+  }
+
+  @include feature-targeting-mixins.targets($feat-animation) {
+    transition: functions.transition(opacity);
+  }
+}
+
+@mixin _affix($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include _text($query: $query);
+  @include feature-targeting-mixins.targets($feat-structure) {
+    opacity: 0;
+  }
+}
+
+@mixin _affix-visible($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    opacity: 1;
+  }
+}
+
+@mixin _prefix($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.reflexive-box(padding, right, variables.$prefix-padding);
+  }
+}
+
+@mixin _prefix-end-aligned($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.reflexive-box(padding, right, variables.$prefix-end-aligned-padding);
+  }
+}
+
+@mixin _suffix($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.reflexive-box(padding, left, variables.$suffix-padding);
+  }
+}
+
+@mixin _suffix-end-aligned($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.reflexive-box(padding, left, variables.$suffix-end-aligned-padding);
+  }
+}
+
 // End aligned
 @mixin end-aligned_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
@@ -1272,6 +1404,26 @@
 @mixin label-ink-color_($color, $query: feature-targeting-functions.all()) {
   .mdc-floating-label {
     @include floating-label-mixins.ink-color($color, $query: $query);
+  }
+}
+
+@mixin _prefix-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+
+  @include feature-targeting-mixins.targets($feat-color) {
+    .mdc-text-field__affix--prefix {
+      @include theme-mixins.prop(color, $color);
+    }
+  }
+}
+
+@mixin _suffix-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+
+  @include feature-targeting-mixins.targets($feat-color) {
+    .mdc-text-field__affix--suffix {
+      @include theme-mixins.prop(color, $color);
+    }
   }
 }
 
