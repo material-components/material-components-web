@@ -31,7 +31,7 @@ import {cssClasses as characterCounterCssClasses} from '../../mdc-textfield/char
 import {cssClasses as helperTextCssClasses} from '../../mdc-textfield/helper-text/constants';
 import {MDCTextField, MDCTextFieldCharacterCounter, MDCTextFieldFoundation, MDCTextFieldHelperText, MDCTextFieldIcon,} from '../../mdc-textfield/index';
 
-const {cssClasses} = MDCTextFieldFoundation;
+const {cssClasses, strings} = MDCTextFieldFoundation;
 
 const getFixture = () => {
   const wrapper = document.createElement('div');
@@ -66,6 +66,36 @@ const getHelperLineWithCharacterCounter = () => {
     <div class="${cssClasses.HELPER_LINE}">
       <div class="${characterCounterCssClasses.ROOT}">helper text</div>
     </div>
+  `;
+  const el = wrapper.firstElementChild as HTMLElement;
+  wrapper.removeChild(el);
+  return el;
+};
+
+const getFixtureWithPrefix = () => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `
+    <label class="mdc-text-field">
+      <span class="mdc-text-field__affix mdc-text-field__affix--prefix">$</span>
+      <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
+      <span class="mdc-floating-label" id="my-label">My Label</span>
+      <span class="mdc-line-ripple"></span>
+    </label>
+  `;
+  const el = wrapper.firstElementChild as HTMLElement;
+  wrapper.removeChild(el);
+  return el;
+};
+
+const getFixtureWithSuffix = () => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `
+    <label class="mdc-text-field">
+      <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
+      <span class="mdc-text-field__affix mdc-text-field__affix--suffix">/100</span>
+      <span class="mdc-floating-label" id="my-label">My Label</span>
+      <span class="mdc-line-ripple"></span>
+    </label>
   `;
   const el = wrapper.firstElementChild as HTMLElement;
   wrapper.removeChild(el);
@@ -800,5 +830,51 @@ describe('MDCTextField', () => {
     expect(component.step).toEqual('8');
     component.step = '10';
     expect(component.step).toEqual('10');
+  });
+
+  it('get prefixText returns prefix textContent, or null without a prefix',
+     () => {
+       const root = getFixture();
+       const component = new MDCTextField(root);
+       expect(component.prefixText).toEqual(null);
+       const prefixRoot = getFixtureWithPrefix();
+       const prefixComponent = new MDCTextField(prefixRoot);
+       expect(prefixComponent.prefixText).toEqual('$');
+     });
+
+  it('set prefixText changes prefix textContent, if it exists', () => {
+    const root = getFixture();
+    const component = new MDCTextField(root);
+    component.prefixText = 'foo' as string | null;
+    expect(component.prefixText).toEqual(null);
+    const prefixRoot = getFixtureWithPrefix();
+    const prefixComponent = new MDCTextField(prefixRoot);
+    prefixComponent.prefixText = 'foo';
+    expect(prefixComponent.prefixText).toEqual('foo');
+    const prefixEl = prefixRoot.querySelector(strings.PREFIX_SELECTOR)!;
+    expect(prefixEl.textContent).toEqual('foo');
+  });
+
+  it('get suffixText returns suffix textContent, or null without a suffix',
+     () => {
+       const root = getFixture();
+       const component = new MDCTextField(root);
+       expect(component.suffixText).toEqual(null);
+       const suffixRoot = getFixtureWithSuffix();
+       const suffixComponent = new MDCTextField(suffixRoot);
+       expect(suffixComponent.suffixText).toEqual('/100');
+     });
+
+  it('set suffixText changes suffix textContent, if it exists', () => {
+    const root = getFixture();
+    const component = new MDCTextField(root);
+    component.suffixText = 'foo' as string | null;
+    expect(component.suffixText).toEqual(null);
+    const suffixRoot = getFixtureWithSuffix();
+    const suffixComponent = new MDCTextField(suffixRoot);
+    suffixComponent.suffixText = 'foo';
+    expect(suffixComponent.suffixText).toEqual('foo');
+    const suffixEl = suffixRoot.querySelector(strings.SUFFIX_SELECTOR)!;
+    expect(suffixEl.textContent).toEqual('foo');
   });
 });

@@ -49,11 +49,13 @@ $helper-text-color: rgba(theme-variables.prop-value(on-surface), .6) !default;
 $icon-color: rgba(theme-variables.prop-value(on-surface), .54) !default;
 $focused-label-color: rgba(theme-variables.prop-value(primary), .87) !default;
 $placeholder-ink-color: rgba(theme-variables.prop-value(on-surface), .54) !default;
+$affix-color: rgba(theme-variables.prop-value(on-surface), .6) !default;
 
 $disabled-label-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
 $disabled-ink-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
 $disabled-placeholder-ink-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
 $disabled-helper-text-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
+$disabled-affix-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
 
 $background: color.mix(theme-variables.prop-value(on-surface), theme-variables.prop-value(surface), 4%) !default;
 $disabled-background: color.mix(theme-variables.prop-value(on-surface), theme-variables.prop-value(surface), 2%) !default;
@@ -98,3 +100,8 @@ $textarea-input-margin-top: 8px !default;
 $textarea-input-handle-margin: 1px !default;
 $textarea-input-padding-bottom: 16px !default;
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.
+
+$prefix-padding: 2px !default;
+$prefix-end-aligned-padding: 12px !default;
+$suffix-padding: 12px !default;
+$suffix-end-aligned-padding: 2px !default;
