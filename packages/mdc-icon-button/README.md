@@ -151,6 +151,7 @@ Mixin | Description
 `icon-size($width, $height, $padding)` | Sets the width, height, font-size and padding for the icon and ripple. `$height` is optional and defaults to `$width`. `$padding` is optional and defaults to `max($width, $height)/2`. `font-size` is set to `max($width, $height)`.
 `ink-color($color)` | Sets the font color and the ripple color to the provided color value.
 `disabled-ink-color($color)` | Sets the font color to the provided color value for a disabled icon button.
+`flip-icon-in-rtl()` | Flips icon only in RTL context.
 
 ### `MDCIconButtonToggle` properties and methods
 

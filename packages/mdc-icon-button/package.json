@@ -24,6 +24,7 @@
     "@material/density": "^5.1.0",
     "@material/feature-targeting": "^5.1.0",
     "@material/ripple": "^5.1.0",
+    "@material/rtl": "^5.1.0",
     "@material/theme": "^5.1.0",
     "tslib": "^1.9.3"
   },
