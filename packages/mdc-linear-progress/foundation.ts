@@ -151,8 +151,11 @@ export class MDCLinearProgressFoundation extends
 
   private setPrimaryBarProgress_(progressValue: number) {
     const value = `scaleX(${progressValue})`;
-    this.adapter_.setPrimaryBarStyle(
-        getCorrectPropertyName(window, 'transform'), value);
+
+    // Accessing `window` without a `typeof` check will throw on Node environments.
+    const transformProp = typeof window !== 'undefined' ?
+        getCorrectPropertyName(window, 'transform') : 'transform';
+    this.adapter_.setPrimaryBarStyle(transformProp, value);
   }
 
   private setBufferBarProgress_(progressValue: number) {
