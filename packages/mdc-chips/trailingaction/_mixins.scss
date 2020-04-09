@@ -103,8 +103,10 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
 @mixin color($color, $query: feature-functions.all()) {
   $feat-color: feature-functions.create-target($query, color);
 
-  @include feature-mixins.targets($feat-color) {
-    @include theme.prop(color, $color);
+  .mdc-chip-trailing-action {
+    @include feature-mixins.targets($feat-color) {
+      @include theme.prop(color, $color);
+    }
   }
 }
 
@@ -128,8 +130,10 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
 @mixin horizontal-spacing($left, $right, $query: feature-functions.all()) {
   $feat-structure: feature-functions.create-target($query, structure);
 
-  @include feature-mixins.targets($feat-structure) {
-    @include rtl.reflexive-property(margin, $left, $right);
+  .mdc-chip-trailing-action {
+    @include feature-mixins.targets($feat-structure) {
+      @include rtl.reflexive-property(margin, $left, $right);
+    }
   }
 }
 

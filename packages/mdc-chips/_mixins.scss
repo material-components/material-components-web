@@ -40,6 +40,7 @@
 @use "./variables";
 @use "@material/elevation/functions" as elevation-functions;
 @use "@material/theme/variables" as theme-variables;
+@use "./trailingaction/mixins" as trailing-action-mixins;
 
 $ripple-target: ".mdc-chip__ripple";
 
@@ -543,6 +544,9 @@ $ripple-target: ".mdc-chip__ripple";
   $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
+  @include trailing-action-mixins.color($color, $query: $query);
+
+  // TODO(b/151980552): Remove the following block
   .mdc-chip__icon--trailing {
     @include feature-targeting-mixins.targets($feat-color) {
       color: rgba(theme-variables.prop-value($color), $opacity);
@@ -573,6 +577,9 @@ $ripple-target: ".mdc-chip__ripple";
 }
 
 @mixin trailing-icon-size($size, $query: feature-targeting-functions.all()) {
+  @include trailing-action-mixins.size($size, $query: $query);
+
+  // TODO(b/151980552): Remove the following block
   .mdc-chip__icon.mdc-chip__icon--trailing {
     @include icon-size_($size, $query: $query);
   }
@@ -608,6 +615,9 @@ $ripple-target: ".mdc-chip__ripple";
   $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
+  @include trailing-action-mixins.horizontal-spacing($left-margin, $right-margin, $query: $query);
+
+  // TODO(b/151980552): Remove the following block
   .mdc-chip__icon--trailing {
     @include feature-targeting-mixins.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(margin, $left-margin, $right-margin);
