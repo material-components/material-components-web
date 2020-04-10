@@ -234,6 +234,7 @@
     @include typography-mixins.typography(body2, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
+      box-sizing: border-box;
       display: flex;
       justify-content: flex-end;
     }
