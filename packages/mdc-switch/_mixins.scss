@@ -272,13 +272,12 @@
 @mixin track_($query: feature-targeting-functions.all()) {
   $feat-animation: feature-targeting-functions.create-target($query, animation);
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-color: feature-targeting-functions.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     box-sizing: border-box;
     width: variables.$track-width;
     height: variables.$track-height;
-    border: 1px solid;
+    border: 1px solid transparent;
     border-radius: variables.$track-height / 2;
     opacity: .38;
   }
@@ -288,10 +287,6 @@
       functions.transition(opacity),
       functions.transition(background-color),
       functions.transition(border-color);
-  }
-
-  @include feature-targeting-mixins.targets($feat-color) {
-    @include theme-mixins.prop(border-color, transparent);
   }
 }
 
