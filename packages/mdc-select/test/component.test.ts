@@ -85,7 +85,6 @@ function getFixture() {
   return createFixture(`
     <div class="mdc-select mdc-select--with-leading-icon">
       <div class="mdc-select__anchor">
-        <input type="hidden" name="select">
         <i class="mdc-select__icon material-icons">code</i>
         <div class="mdc-select__selected-text"></div>
         <i class="mdc-select__dropdown-icon"></i>
@@ -112,7 +111,6 @@ function getOutlineFixture() {
   return createFixture(`
     <div class="mdc-select mdc-select--outlined mdc-select--with-leading-icon">
       <div class="mdc-select__anchor">
-        <input type="hidden" name="select">
         <i class="mdc-select__icon material-icons">code</i>
         <div class="mdc-select__selected-text"></div>
         <i class="mdc-select__dropdown-icon"></i>
@@ -142,7 +140,7 @@ function getOutlineFixture() {
 
 function getHelperTextFixture(root = getFixture()) {
   const containerDiv = document.createElement('div');
-  root.querySelector('.mdc-select__selected-text')!.setAttribute(
+  root.querySelector(strings.SELECT_ANCHOR_SELECTOR)!.setAttribute(
       'aria-controls', 'test-helper-text');
   containerDiv.appendChild(root);
   containerDiv.appendChild(createFixture(
@@ -165,7 +163,7 @@ function setupTest(
       fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
   const container = hasHelperText ? getHelperTextFixture(fixture) : null;
   const selectedText =
-      fixture.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
+      fixture.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLInputElement;
   const labelEl = fixture.querySelector(strings.LABEL_SELECTOR) as HTMLElement;
   const bottomLineEl =
       fixture.querySelector(strings.LINE_RIPPLE_SELECTOR) as HTMLElement;
@@ -261,28 +259,27 @@ describe('MDCSelect', () => {
     component.disabled = true;
     checkNumTimesSpyCalledWithArgs(mockFoundation.setDisabled, [true], 1);
     component.disabled = false;
-    // Called once at initialization, once when setting to false
-    checkNumTimesSpyCalledWithArgs(mockFoundation.setDisabled, [false], 2);
+    checkNumTimesSpyCalledWithArgs(mockFoundation.setDisabled, [false], 1);
   });
 
   it('#get/set required true', () => {
-    const {fixture, component, selectedText} = setupTest();
+    const {fixture, component, anchor} = setupTest();
     expect(component.required).toBe(false);
 
     component.required = true;
     expect(component.required).toBe(true);
     expect(fixture.classList.contains(cssClasses.REQUIRED)).toBe(true);
-    expect(selectedText.getAttribute('aria-required')).toBe('true');
+    expect(anchor.getAttribute('aria-required')).toBe('true');
   });
 
   it('#get/set required false', () => {
-    const {fixture, component, selectedText} = setupTest();
+    const {fixture, component, anchor} = setupTest();
     expect(component.required).toBe(false);
 
     component.required = false;
     expect(component.required).toBe(false);
     expect(fixture.classList.contains(cssClasses.REQUIRED)).toBe(false);
-    expect(selectedText.getAttribute('aria-required')).toBe('false');
+    expect(anchor.getAttribute('aria-required')).toBe('false');
   });
 
   it('#get value', () => {
@@ -472,7 +469,7 @@ describe('MDCSelect', () => {
     const component = MDCSelect.attachTo(fixture);
     jasmine.clock().tick(1);
 
-    expect((component as any).ripple_).toEqual(jasmine.any(MDCRipple));
+    expect((component as any).ripple).toEqual(jasmine.any(MDCRipple));
     const anchor =
         fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
     expect(anchor.classList.contains(MDCRippleFoundation.cssClasses.ROOT))
@@ -484,7 +481,7 @@ describe('MDCSelect', () => {
      () => {
        const root = getOutlineFixture();
        const component = new MDCSelect(root);
-       expect((component as any).outline_)
+       expect((component as any).outline)
            .toEqual(jasmine.any(MDCNotchedOutline));
      });
 
@@ -498,14 +495,12 @@ describe('MDCSelect', () => {
     MDCSelect.attachTo(fixture);
     jasmine.clock().tick(1);
 
-    const selectedText =
-        fixture.querySelector('.mdc-select__selected-text') as HTMLElement;
-
-    emitEvent(selectedText, 'focus');
-    jasmine.clock().tick(1);
-
     const anchor =
         fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
+
+    emitEvent(anchor, 'focus');
+    jasmine.clock().tick(1);
+
     expect(anchor.classList.contains(MDCRippleFoundation.cssClasses.BG_FOCUSED))
         .toBe(true);
   });
@@ -533,7 +528,7 @@ describe('MDCSelect', () => {
 
   it('#destroy cleans up the outline if present', () => {
     const {component, outline} = setupTest();
-    (component as any).outline_ = outline;
+    (component as any).outline = outline;
     component.destroy();
     expect(outline.destroy).toHaveBeenCalled();
   });
@@ -542,7 +537,7 @@ describe('MDCSelect', () => {
      () => {
        const hasOutline = true;
        const {component} = setupTest(hasOutline);
-       expect((component as any).ripple_).toBe(undefined);
+       expect((component as any).ripple).toBe(undefined);
        expect(() => {
          component.destroy();
        }).not.toThrow();
@@ -789,61 +784,59 @@ describe('MDCSelect', () => {
     const adapter = (component.getDefaultFoundation() as any).adapter_;
 
     const textToSet = 'foo';
-    expect(selectedText.textContent).not.toEqual(textToSet);
+    expect(selectedText.value).not.toEqual(textToSet);
     adapter.setSelectedText(textToSet);
-    expect(selectedText.textContent).toEqual(textToSet);
+    expect(selectedText.value).toEqual(textToSet);
     document.body.removeChild(fixture);
   });
 
-  it('adapter#isSelectedTextFocused', () => {
+  it('adapter#isSelectAnchorFocused', () => {
     const hasMockFoundation = true;
     const hasMockMenu = true;
     const hasOutline = false;
     const hasLabel = true;
-    const {fixture, component, selectedText} =
+    const {fixture, component, anchor} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    selectedText.tabIndex = 0;
-    selectedText.focus();
+    anchor.tabIndex = 0;
+    anchor.focus();
     const adapter = (component.getDefaultFoundation() as any).adapter_;
 
-    expect(adapter.isSelectedTextFocused()).toBe(true);
+    expect(adapter.isSelectAnchorFocused()).toBe(true);
     document.body.removeChild(fixture);
   });
 
-  it('adapter#getSelectedTextAttr sets the select text content correctly',
-     () => {
-       const hasMockFoundation = true;
-       const hasMockMenu = true;
-       const hasOutline = false;
-       const hasLabel = true;
-       const {fixture, component, selectedText} =
-           setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-       document.body.appendChild(fixture);
-       const adapter = (component.getDefaultFoundation() as any).adapter_;
+  it('adapter#getSelectAnchorAttr gets the attribute content correctly', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {fixture, component, anchor} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    document.body.appendChild(fixture);
+    const adapter = (component.getDefaultFoundation() as any).adapter_;
 
-       expect(selectedText.hasAttribute('foo')).toBe(false);
-       selectedText.setAttribute('foo', '1');
-       expect(adapter.getSelectedTextAttr('foo')).toEqual('1');
-       document.body.removeChild(fixture);
-     });
+    expect(anchor.hasAttribute('foo')).toBe(false);
+    anchor.setAttribute('foo', '1');
+    expect(adapter.getSelectAnchorAttr('foo')).toEqual('1');
+    document.body.removeChild(fixture);
+  });
 
-  it('adapter#setSelectedTextAttr sets the select text content correctly',
-     () => {
-       const hasMockFoundation = true;
-       const hasMockMenu = true;
-       const hasOutline = false;
-       const hasLabel = true;
-       const {fixture, component, selectedText} =
-           setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-       document.body.appendChild(fixture);
-       const adapter = (component.getDefaultFoundation() as any).adapter_;
+  it('adapter#setSelectAnchorAttr sets the attribute content correctly', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {fixture, component, anchor} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    document.body.appendChild(fixture);
+    const adapter = (component.getDefaultFoundation() as any).adapter_;
 
-       expect(selectedText.hasAttribute('foo')).toBe(false);
-       adapter.setSelectedTextAttr('foo', '1');
-       expect(selectedText.getAttribute('foo')).toEqual('1');
-       document.body.removeChild(fixture);
-     });
+    expect(anchor.hasAttribute('foo')).toBe(false);
+    adapter.setSelectAnchorAttr('foo', '1');
+    expect(anchor.getAttribute('foo')).toEqual('1');
+    document.body.removeChild(fixture);
+  });
 
   it('adapter#openMenu causes the menu to open', () => {
     const hasMockFoundation = true;
@@ -1021,42 +1014,42 @@ describe('MDCSelect', () => {
   });
 
   it('focus event triggers foundation.handleFocus()', () => {
-    const {selectedText, mockFoundation} = setupWithMockFoundation();
-    emitEvent(selectedText, 'focus');
+    const {anchor, mockFoundation} = setupWithMockFoundation();
+    emitEvent(anchor, 'focus');
     expect(mockFoundation.handleFocus).toHaveBeenCalledTimes(1);
   });
 
   it('blur event triggers foundation.handleBlur()', () => {
-    const {selectedText, mockFoundation} = setupWithMockFoundation();
-    emitEvent(selectedText, 'blur');
+    const {anchor, mockFoundation} = setupWithMockFoundation();
+    emitEvent(anchor, 'blur');
     expect(mockFoundation.handleBlur).toHaveBeenCalledTimes(1);
   });
 
   it('#destroy removes the change handler', () => {
-    const {component, selectedText, mockFoundation} = setupWithMockFoundation();
+    const {component, anchor, mockFoundation} = setupWithMockFoundation();
     component.destroy();
-    emitEvent(selectedText, 'change');
+    emitEvent(anchor, 'change');
     expect(mockFoundation.handleChange).not.toHaveBeenCalled();
   });
 
   it('#destroy removes the focus handler', () => {
-    const {component, selectedText, mockFoundation} = setupWithMockFoundation();
+    const {component, anchor, mockFoundation} = setupWithMockFoundation();
     component.destroy();
-    emitEvent(selectedText, 'focus');
+    emitEvent(anchor, 'focus');
     expect(mockFoundation.handleFocus).not.toHaveBeenCalled();
   });
 
   it('#destroy removes the blur handler', () => {
-    const {component, selectedText, mockFoundation} = setupWithMockFoundation();
+    const {component, anchor, mockFoundation} = setupWithMockFoundation();
     component.destroy();
-    emitEvent(selectedText, 'blur');
+    emitEvent(anchor, 'blur');
     expect(mockFoundation.handleBlur).not.toHaveBeenCalled();
   });
 
   it('#destroy removes the click handler', () => {
-    const {component, selectedText, mockFoundation} = setupWithMockFoundation();
+    const {component, anchor, mockFoundation} = setupWithMockFoundation();
     component.destroy();
-    emitEvent(selectedText, 'click');
+    emitEvent(anchor, 'click');
     expect(mockFoundation.handleClick).not.toHaveBeenCalled();
   });
 
@@ -1097,25 +1090,26 @@ describe('MDCSelect', () => {
      });
 
   it('#destroy removes the click listener', () => {
-    const {component, selectedText} = setupTest();
-    (component as any).foundation_.handleClick = jasmine.createSpy('');
+    const {component, anchor} = setupTest();
+    (component as any).foundation_.handleClick =
+        jasmine.createSpy('handleClick');
     component.destroy();
-    emitEvent(selectedText, 'click');
+    emitEvent(anchor, 'click');
     expect((component as any).foundation_.handleClick).not.toHaveBeenCalled();
   });
 
-  it('click on the selectedText calls foundation.handleClick()', () => {
-    const {component, selectedText} = setupTest();
+  it('click on the anchor calls foundation.handleClick()', () => {
+    const {component, anchor} = setupTest();
     (component as any).foundation_.handleClick = jasmine.createSpy('');
-    emitEvent(selectedText, 'click');
+    emitEvent(anchor, 'click');
     expect((component as any).foundation_.handleClick).toHaveBeenCalled();
   });
 
-  it('click on the selectedText focuses on the selectedText element', () => {
-    const {selectedText} = setupTest();
-    selectedText.focus = jasmine.createSpy('');
-    emitEvent(selectedText, 'click');
-    expect(selectedText.focus).toHaveBeenCalledTimes(1);
+  it('click on the anchor focuses on the anchor element', () => {
+    const {anchor} = setupTest();
+    anchor.focus = jasmine.createSpy('focus');
+    emitEvent(anchor, 'click');
+    expect(anchor.focus).toHaveBeenCalledTimes(1);
   });
 
   it('menu surface opened event causes the first element (if no element is selected) to be focused',
@@ -1178,11 +1172,11 @@ describe('MDCSelect', () => {
     document.body.removeChild(fixture);
   });
 
-  it('keydown event is added to selected-text when initialized', () => {
+  it('keydown event is added to select anchor when initialized', () => {
     const {fixture, mockFoundation} = setupWithMockFoundation();
     document.body.appendChild(fixture);
     emitEvent(
-        fixture.querySelector('.mdc-select__selected-text') as HTMLElement,
+        fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement,
         'keydown');
     expect(mockFoundation.handleKeydown)
         .toHaveBeenCalledWith(jasmine.anything());
@@ -1190,12 +1184,12 @@ describe('MDCSelect', () => {
     document.body.removeChild(fixture);
   });
 
-  it('keydown event is removed from selected-text when destroyed', () => {
+  it('keydown event is removed from select anchor when destroyed', () => {
     const {fixture, mockFoundation, component} = setupWithMockFoundation();
     document.body.appendChild(fixture);
     component.destroy();
     emitEvent(
-        fixture.querySelector('.mdc-select__selected-text') as HTMLElement,
+        fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement,
         'keydown');
     expect(mockFoundation.handleKeydown)
         .not.toHaveBeenCalledWith(jasmine.anything());
@@ -1233,7 +1227,7 @@ describe('MDCSelect', () => {
      () => {
        const root = getFixture();
        const component = new MDCSelect(root);
-       expect((component as any).leadingIcon_)
+       expect((component as any).leadingIcon)
            .toEqual(jasmine.any(MDCSelectIcon));
        expect(root.classList.contains(cssClasses.WITH_LEADING_ICON)).toBe(true);
      });
@@ -1247,7 +1241,7 @@ describe('MDCSelect', () => {
     const {container, component} = setupTest(
         hasLabel, hasOutline, hasMockFoundation, hasMockMenu, hasHelperText);
 
-    expect((component as any).helperText_).toEqual(jasmine.any(FakeHelperText));
+    expect((component as any).helperText).toEqual(jasmine.any(FakeHelperText));
     document.body.removeChild(container as HTMLElement);
   });
 
@@ -1260,7 +1254,7 @@ describe('MDCSelect', () => {
 
        const component = new MDCSelect(
            containerDiv.querySelector('.mdc-select') as HTMLElement);
-       expect((component as any).helperText_).toBe(undefined);
+       expect((component as any).helperText).toBe(undefined);
        document.body.removeChild(containerDiv as HTMLElement);
      });
 

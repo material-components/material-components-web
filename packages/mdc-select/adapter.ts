@@ -107,19 +107,19 @@ export interface MDCSelectAdapter {
   setSelectedText(text: string): void;
 
   /**
-   * Returns whether the selected text element is focused.
+   * Returns whether the select anchor is focused.
    */
-  isSelectedTextFocused(): boolean;
+  isSelectAnchorFocused(): boolean;
 
   /**
-   * Gets the given attribute on the selected text element.
+   * Gets the given attribute on the select anchor element.
    */
-  getSelectedTextAttr(attr: string): string | null;
+  getSelectAnchorAttr(attr: string): string|null;
 
   /**
-   * Sets the given attribute on the selected text element.
+   * Sets the given attribute on the select anchor element.
    */
-  setSelectedTextAttr(attr: string, value: string): void;
+  setSelectAnchorAttr(attr: string, value: string): void;
 
   // Menu-related methods ======================================================
   /**
