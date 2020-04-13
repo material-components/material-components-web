@@ -198,19 +198,20 @@
 /// Customizes ripple opacities in `hover`, `focus`, or `press` states
 /// @param {map} $opacity-map - map specifying custom opacity of zero or more states
 /// @param {bool} $has-nested-focusable-element - whether the component contains a focusable element in the root
+/// @param {string} $ripple-target - the optional selector for the ripple element
 ///
-@mixin states-opacities($opacity-map: (), $has-nested-focusable-element: false, $query: feature-targeting-functions.all()) {
+@mixin states-opacities($opacity-map: (), $has-nested-focusable-element: false, $ripple-target: "&", $query: feature-targeting-functions.all()) {
   // Ensure sufficient specificity to override base state opacities
   @if map.has-key($opacity-map, hover) {
-    @include states-hover-opacity(map.get($opacity-map, hover), $query: $query);
+    @include states-hover-opacity(map.get($opacity-map, hover), $ripple-target: $ripple-target, $query: $query);
   }
 
   @if map.has-key($opacity-map, focus) {
-    @include states-focus-opacity(map.get($opacity-map, focus), $has-nested-focusable-element, $query: $query);
+    @include states-focus-opacity(map.get($opacity-map, focus), $ripple-target: $ripple-target, $has-nested-focusable-element: $has-nested-focusable-element, $query: $query);
   }
 
   @if map.has-key($opacity-map, press) {
-    @include states-press-opacity(map.get($opacity-map, press), $query: $query);
+    @include states-press-opacity(map.get($opacity-map, press), $ripple-target: $ripple-target, $query: $query);
   }
 }
 
@@ -456,20 +457,13 @@
     @include states-base-color($color, $query);
   }
 
-  @include states-hover-opacity(
-    $opacity: functions.states-opacity($color, hover) + $opacity-modifier,
-    $query: $query,
-    $ripple-target: $ripple-target);
-  @include states-focus-opacity(
-    $opacity: functions.states-opacity($color, focus) + $opacity-modifier,
-    $has-nested-focusable-element: $has-nested-focusable-element,
-    $query: $query,
-    $ripple-target: $ripple-target,
+  $opacity-map: (
+    hover: functions.states-opacity($color, hover) + $opacity-modifier,
+    focus: functions.states-opacity($color, focus) + $opacity-modifier,
+    press: functions.states-opacity($color, press) + $opacity-modifier,
   );
-  @include states-press-opacity(
-    $opacity: functions.states-opacity($color, press) + $opacity-modifier,
-    $query: $query,
-    $ripple-target: $ripple-target);
+
+  @include states-opacities($opacity-map, $has-nested-focusable-element: $has-nested-focusable-element, $ripple-target: $ripple-target, $query: $query);
 }
 
 // Wraps content in the `ripple-target` selector if it exists.
