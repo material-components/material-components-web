@@ -268,8 +268,6 @@ describe('MDCMenuSurfaceFoundation', () => {
       ({foundation, mockAdapter}) => {
         foundation.setQuickOpen(true);
         foundation.open();
-        jasmine.clock().tick(1);  // Run to frame.
-        jasmine.clock().tick(1);  // Run to frame.
         expect(mockAdapter.notifyOpen).toHaveBeenCalled();
       });
 
@@ -877,8 +875,6 @@ describe('MDCMenuSurfaceFoundation', () => {
       ({foundation, mockAdapter}) => {
         foundation.setQuickOpen(true);
         foundation.close();
-        jasmine.clock().tick(1);  // Run to frame.
-        jasmine.clock().tick(1);  // Run to frame.
         expect(mockAdapter.notifyClose).toHaveBeenCalled();
       });
 
@@ -888,7 +884,6 @@ describe('MDCMenuSurfaceFoundation', () => {
         mockAdapter.isFocused.and.returnValue(true);
         foundation.setQuickOpen(true);
         foundation.close();
-        jasmine.clock().tick(1);  // Run to frame.
         expect(mockAdapter.restoreFocus).toHaveBeenCalled();
       });
 
@@ -900,7 +895,6 @@ describe('MDCMenuSurfaceFoundation', () => {
             .and.returnValue(true);
         foundation.setQuickOpen(true);
         foundation.close();
-        jasmine.clock().tick(1);  // Run to frame.
         expect(mockAdapter.restoreFocus).toHaveBeenCalled();
       });
 
@@ -912,7 +906,6 @@ describe('MDCMenuSurfaceFoundation', () => {
             .and.returnValue(false);
         foundation.setQuickOpen(true);
         foundation.close();
-        jasmine.clock().tick(1);  // Run to frame.
         expect(mockAdapter.restoreFocus).not.toHaveBeenCalled();
       });
 

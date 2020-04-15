@@ -171,54 +171,62 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   open() {
     this.adapter_.saveFocus();
 
-    if (!this.isQuickOpen_) {
-      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
-    }
-
-    this.animationRequestId_ = requestAnimationFrame(() => {
+    if (this.isQuickOpen_) {
+      this.isOpen_ = true;
       this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
       this.dimensions_ = this.adapter_.getInnerDimensions();
       this.autoPosition_();
-      if (this.isQuickOpen_) {
-        this.adapter_.notifyOpen();
-      } else {
+      this.adapter_.notifyOpen();
+    } else {
+
+      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
+      this.animationRequestId_ = requestAnimationFrame(() => {
+        this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
+        this.dimensions_ = this.adapter_.getInnerDimensions();
+        this.autoPosition_();
         this.openAnimationEndTimerId_ = setTimeout(() => {
           this.openAnimationEndTimerId_ = 0;
           this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
           this.adapter_.notifyOpen();
         }, numbers.TRANSITION_OPEN_DURATION);
-      }
-    });
+      });
 
-    this.isOpen_ = true;
+      this.isOpen_ = true;
+    }
   }
 
   /**
    * Closes the menu surface.
    */
   close(skipRestoreFocus = false) {
-    if (!this.isQuickOpen_) {
-      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
-    }
+    if (this.isQuickOpen_) {
+      this.isOpen_ = false;
+      if (!skipRestoreFocus) {
+        this.maybeRestoreFocus_();
+      }
 
-    requestAnimationFrame(() => {
       this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
       this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
-      if (this.isQuickOpen_) {
-        this.adapter_.notifyClose();
-      } else {
+      this.adapter_.notifyClose();
+
+    } else {
+      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
+      requestAnimationFrame(() => {
+        this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
+        this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
         this.closeAnimationEndTimerId_ = setTimeout(() => {
           this.closeAnimationEndTimerId_ = 0;
           this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
           this.adapter_.notifyClose();
         }, numbers.TRANSITION_CLOSE_DURATION);
-      }
-    });
+      });
 
-    this.isOpen_ = false;
-    if (!skipRestoreFocus) {
-      this.maybeRestoreFocus_();
+      this.isOpen_ = false;
+      if (!skipRestoreFocus) {
+        this.maybeRestoreFocus_();
+      }
     }
+
   }
 
   /** Handle clicks and close if not within menu-surface element. */
