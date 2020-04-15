@@ -31,7 +31,6 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   static get defaultAdapter(): MDCDataTableAdapter {
     return {
       addClass: () => undefined,
-      removeClass: () => undefined,
       addClassAtRowIndex: () => undefined,
       getAttributeByHeaderCellIndex: () => '',
       getHeaderCellCount: () => 0,
@@ -41,6 +40,8 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       getRowIdAtIndex: () => '',
       getRowIndexByChildElement: () => 0,
       getSelectedRowCount: () => 0,
+      getTableBodyHeight: () => '',
+      getTableHeaderHeight: () => '',
       isCheckboxAtRowIndexChecked: () => false,
       isHeaderRowCheckboxChecked: () => false,
       isRowsSelectable: () => false,
@@ -50,6 +51,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       notifyUnselectedAll: () => undefined,
       registerHeaderRowCheckbox: () => undefined,
       registerRowCheckboxes: () => undefined,
+      removeClass: () => undefined,
       removeClassAtRowIndex: () => undefined,
       removeClassNameByHeaderCellIndex: () => undefined,
       setAttributeAtRowIndex: () => undefined,
@@ -57,6 +59,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       setClassNameByHeaderCellIndex: () => undefined,
       setHeaderRowCheckboxChecked: () => undefined,
       setHeaderRowCheckboxIndeterminate: () => undefined,
+      setProgressIndicatorStyles: () => undefined,
       setRowCheckboxCheckedAtIndex: () => undefined,
     };
   }
@@ -123,6 +126,18 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
     }
 
     this.setHeaderRowCheckboxState_();
+  }
+
+  /**
+   * @return Returns array of all row ids.
+   */
+  getRowIds(): Array<string|null> {
+    const rowIds = [];
+    for (let rowIndex = 0; rowIndex < this.adapter_.getRowCount(); rowIndex++) {
+      rowIds.push(this.adapter_.getRowIdAtIndex(rowIndex));
+    }
+
+    return rowIds;
   }
 
   /**
@@ -234,9 +249,17 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   }
 
   /**
-   * Shows progress indicator when data table is in loading state.
+   * Shows progress indicator blocking only the table body content when in
+   * loading state.
    */
   showProgress() {
+    const height = this.adapter_.getTableBodyHeight();
+    const top = this.adapter_.getTableHeaderHeight();
+
+    this.adapter_.setProgressIndicatorStyles({
+      height,
+      top,
+    });
     this.adapter_.addClass(cssClasses.IN_PROGRESS);
   }
 

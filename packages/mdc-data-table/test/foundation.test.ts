@@ -30,7 +30,6 @@ describe('MDCDataTableFoundation', () => {
   it('default adapter returns a complete adapter implementation', () => {
     verifyDefaultAdapter(MDCDataTableFoundation, [
       'addClass',
-      'removeClass',
       'addClassAtRowIndex',
       'getAttributeByHeaderCellIndex',
       'getHeaderCellCount',
@@ -40,6 +39,8 @@ describe('MDCDataTableFoundation', () => {
       'getRowIdAtIndex',
       'getRowIndexByChildElement',
       'getSelectedRowCount',
+      'getTableBodyHeight',
+      'getTableHeaderHeight',
       'isCheckboxAtRowIndexChecked',
       'isHeaderRowCheckboxChecked',
       'isRowsSelectable',
@@ -49,6 +50,7 @@ describe('MDCDataTableFoundation', () => {
       'notifyUnselectedAll',
       'registerHeaderRowCheckbox',
       'registerRowCheckboxes',
+      'removeClass',
       'removeClassAtRowIndex',
       'removeClassNameByHeaderCellIndex',
       'setAttributeAtRowIndex',
@@ -56,6 +58,7 @@ describe('MDCDataTableFoundation', () => {
       'setClassNameByHeaderCellIndex',
       'setHeaderRowCheckboxChecked',
       'setHeaderRowCheckboxIndeterminate',
+      'setProgressIndicatorStyles',
       'setRowCheckboxCheckedAtIndex',
     ]);
   });
@@ -138,10 +141,23 @@ describe('MDCDataTableFoundation', () => {
        expect(mockAdapter.setHeaderRowCheckboxChecked).toHaveBeenCalledTimes(1);
      });
 
+  it('#getHeaderCells should return array of header cell elements', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.getHeaderCells();
+    expect(mockAdapter.getHeaderCellElements).toHaveBeenCalledTimes(1);
+  });
+
   it('#getRows should return array of row elements', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.getRows();
     expect(mockAdapter.getRowElements).toHaveBeenCalledTimes(1);
+  });
+
+  it('#getRowIds should return array of row ids', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getRowCount.and.returnValue(5);
+    foundation.getRowIds();
+    expect(mockAdapter.getRowIdAtIndex).toHaveBeenCalledTimes(5);
   });
 
   it('#setSelectedRowIds Sets the row checkbox checked by id and sets selected class name to row',
@@ -435,9 +451,13 @@ describe('MDCDataTableFoundation', () => {
   it('#showProgress Adds class name that makes the progress indicator visibile',
      () => {
        const {foundation, mockAdapter} = setupTest();
+       mockAdapter.getTableHeaderHeight.and.returnValue('20px');
+       mockAdapter.getTableBodyHeight.and.returnValue('100px');
 
        foundation.showProgress();
 
+       expect(mockAdapter.setProgressIndicatorStyles)
+           .toHaveBeenCalledWith({height: '100px', top: '20px'});
        expect(mockAdapter.addClass)
            .toHaveBeenCalledWith(cssClasses.IN_PROGRESS);
      });

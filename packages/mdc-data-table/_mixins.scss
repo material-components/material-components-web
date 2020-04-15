@@ -414,13 +414,6 @@
       height: $height;
     }
   }
-
-  .mdc-data-table__progress-indicator {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      height: calc(100% - #{$height});
-      top: $height;
-    }
-  }
 }
 
 @mixin cell-height($height, $query: feature-targeting-functions.all()) {

@@ -50,3 +50,12 @@ export interface SortActionEventDetail {
   headerCell: HTMLElement;
   sortValue: SortValue;
 }
+
+/**
+ * Styles used to dynamically set dimensions of progress indicator based on
+ * table header & body.
+ */
+export interface ProgressIndicatorStyles {
+  height: string;
+  top: string;
+}

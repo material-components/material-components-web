@@ -22,7 +22,7 @@
  */
 
 
-import {MDCDataTableRowSelectionChangedEventDetail, SortActionEventDetail} from './types';
+import {MDCDataTableRowSelectionChangedEventDetail, ProgressIndicatorStyles, SortActionEventDetail} from './types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -208,4 +208,19 @@ export interface MDCDataTableAdapter {
    * Notifies when column is sorted.
    */
   notifySortAction(data: SortActionEventDetail): void;
+
+  /**
+   * @return Returns computed styles height of table's body element.
+   */
+  getTableBodyHeight(): string;
+
+  /**
+   * @return Returns computed styles height of table's header element.
+   */
+  getTableHeaderHeight(): string;
+
+  /**
+   * Sets progress indicator CSS styles to position it on top of table body.
+   */
+  setProgressIndicatorStyles(styles: ProgressIndicatorStyles): void;
 }
