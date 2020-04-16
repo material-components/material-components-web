@@ -9,13 +9,6 @@ path: /catalog/buttons/
 
 # Buttons
 
-<!--<div class="article__asset">
-  <a class="article__asset-link test-increment1"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/button">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/buttons.png" width="363" alt="Buttons screenshot">
-  </a>
-</div>-->
-
 [Buttons](https://material.io/components/buttons/) allow users to take actions, and make choices, with a single tap.
 
 There are four types of buttons:

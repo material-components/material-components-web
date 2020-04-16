@@ -9,13 +9,6 @@ path: /catalog/dialogs/
 
 # Dialogs
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/dialog">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/dialogs.png" width="714" alt="Dialogs screenshot">
-  </a>
-</div>-->
-
 Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks.
 
 There are four types of dialogs:

@@ -9,13 +9,6 @@ path: /catalog/cards/
 
 # Cards
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/card">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/cards.png" width="328" alt="Cards screenshot">
-  </a>
-</div>-->
-
 [Cards](https://material.io/components/cards/) contain content and actions about a single subject.
 
 For additional information, see the [API](#api).

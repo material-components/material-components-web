@@ -9,13 +9,6 @@ path: /catalog/lists/
 
 # Lists
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/list">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/lists.png" width="365" alt="Lists screenshot">
-  </a>
-</div>-->
-
 [Lists](https://material.io/components/lists/) are continuous, vertical indexes of text or images.
 
 There are three list types:

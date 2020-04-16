@@ -9,14 +9,6 @@ path: /catalog/top-app-bar/
 
 # Top app bar
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/top-app-bar">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/top-app-bar.png"
-         width="494" alt="Top App Bar screenshot">
-  </a>
-</div>-->
-
 The top app bar provides content and actions related to the current screen. It’s used for branding, screen titles, navigation, and actions.
 
 There are two types of top app bar:
