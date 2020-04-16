@@ -338,6 +338,7 @@ CSS Class | Description
 `mdc-text-field--no-label` | Styles the text field that has no label.
 `mdc-text-field--end-aligned` | Styles the text field with an end-aligned input.
 `mdc-text-field--label-floating` | Styles the text field with a floating label and pre-filled or focused value.
+`mdc-text-field--ltr-text` | Styles the text field's text elements (input, prefix, and suffix) as LTR even when the direction is RTL. Useful for RTL languages that use LTR for fractional notations.
 `mdc-text-field-helper-line` | Styles the container of helper text and character counter elements.
 
 ### Sass mixins

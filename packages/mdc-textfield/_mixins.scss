@@ -296,6 +296,14 @@
     @include end-aligned_($query);
   }
 
+  .mdc-text-field--ltr-text {
+    @include _ltr-text($query);
+
+    &.mdc-text-field--end-aligned {
+      @include _ltr-text-end-aligned($query);
+    }
+  }
+
   @include floating-label-mixins.shake-keyframes(
     text-field-outlined,
     variables.$outlined-label-position-y,
@@ -1342,6 +1350,88 @@
       @include feature-targeting-mixins.targets($feat-structure) {
         /* @noflip */
         text-align: left;
+      }
+    }
+  }
+}
+
+// Forces input, prefix, and suffix to be LTR when in an RTL environment. Other
+// elements such as labels and icons will remain RTL.
+@mixin _ltr-text($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.rtl {
+      .mdc-text-field__input,
+      .mdc-text-field__affix {
+        /* @noflip */
+        direction: ltr;
+      }
+
+      .mdc-text-field__affix--prefix {
+        /* @noflip */
+        padding-left: 0;
+        /* @noflip */
+        padding-right: variables.$prefix-padding;
+      }
+
+      .mdc-text-field__affix--suffix {
+        /* @noflip */
+        padding-left: variables.$suffix-padding;
+        /* @noflip */
+        padding-right: 0;
+      }
+
+      // Need to specify an order for all elements since icons maintain their
+      // original positions. We can't just reverse the container.
+      .mdc-text-field__icon--leading {
+        order: 1;
+      }
+
+      .mdc-text-field__affix--suffix {
+        order: 2;
+      }
+
+      .mdc-text-field__input {
+        order: 3;
+      }
+
+      .mdc-text-field__affix--prefix {
+        order: 4;
+      }
+
+      .mdc-text-field__icon--trailing {
+        order: 5;
+      }
+    }
+  }
+}
+
+// Forces input, prefix, and suffix that are already forced to LTR to also be
+// end-aligned. This mixin should be used alongside the styles provided in
+// _ltr-text().
+@mixin _ltr-text-end-aligned($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.rtl {
+      .mdc-text-field__input {
+        // IE11 does not support text-align: end, so we need to duplicate
+        // the LTR end-aligned style here.
+        /* @noflip */
+        text-align: right;
+      }
+
+      .mdc-text-field__affix--prefix {
+        // padding-left: 0 provided by _ltr-text mixin
+        /* @noflip */
+        padding-right: variables.$prefix-end-aligned-padding;
+      }
+
+      .mdc-text-field__affix--suffix {
+        /* @noflip */
+        padding-left: variables.$suffix-end-aligned-padding;
+        // padding-right: 0 provided by _ltr-text mixin
       }
     }
   }
