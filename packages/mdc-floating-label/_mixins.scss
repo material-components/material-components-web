@@ -167,3 +167,23 @@
     max-width: $max-width;
   }
 }
+
+///
+/// Sets the CSS transition for the floating animation.
+///
+/// @param {Number} $duration-ms - Duration (in ms) of the animation.
+/// @param {String} $timing-function - Optionally overrides the default animation timing function.
+///
+@mixin float-transition(
+  $duration-ms,
+  $timing-function: animation-variables.$standard-curve-timing-function,
+  $query: functions.all()
+) {
+  $feat-animation: functions.create-target($query, animation);
+
+  @include feature-targeting-mixins.targets($feat-animation) {
+    transition:
+      color $duration-ms $timing-function,
+      transform $duration-ms $timing-function;
+  }
+}

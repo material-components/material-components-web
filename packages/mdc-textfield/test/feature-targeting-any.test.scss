@@ -34,6 +34,7 @@
     @include text-field.focused-outline-color(red, $query: $query);
     @include text-field.disabled-outline-color(red, $query: $query);
     @include text-field.caret-color(red, $query: $query);
+    @include text-field.floating-label-float-transition(250ms, linear, $query: $query);
 
     @include character-counter.character-counter-core-styles($query: $query);
     @include character-counter.character-counter-color(red, $query: $query);

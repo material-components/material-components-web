@@ -982,6 +982,18 @@
   }
 }
 
+///
+/// Sets the CSS transition for the floating label's "float" animation.
+///
+/// @param {Number} $duration-ms - Duration (in ms) of the animation.
+/// @param {String} $timing-function - Optionally overrides the default animation timing function.
+///
+@mixin floating-label-float-transition($duration-ms, $timing-function: null, $query: feature-targeting-functions.all()) {
+  .mdc-floating-label {
+    @include floating-label-mixins.float-transition($duration-ms, $timing-function, $query: $query);
+  }
+}
+
 @mixin floating-label_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 

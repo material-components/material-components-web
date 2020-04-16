@@ -69,6 +69,7 @@ Mixin | Description
 `shake-animation($modifier)` | Applies shake keyframe animation to label.
 `float-position($positionY, $positionX, $scale)` | Sets position of label when floating.
 `max-width($max-width)` | Sets the max width of the label.
+`float-transition($duration-ms, $timing-function)` | Customizes the duration and optional timing function for the "float" transition.
 
 ## `MDCFloatingLabel` Properties and Methods
 

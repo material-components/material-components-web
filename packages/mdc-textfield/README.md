@@ -365,6 +365,7 @@ Mixin | Description
 `disabled-prefix-color($color)` | Customizes the color of the prefix text of a disabled text field.
 `suffix-color($color)` | Customizes the color of the suffix text of an enabled text field.
 `disabled-suffix-color($color)` | Customizes the color of the suffix text of a disabled text field.
+`floating-label-float-transition($duration-ms, $timing-function)` | Customizes the duration and optional timing function for the floating label's "float" transition.
 
 #### Mixins for filled text field and textarea
 

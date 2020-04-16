@@ -10,6 +10,7 @@
     @include floating-label.float-position(100%, $query: $query);
     @include floating-label.shake-animation(standard, $query: $query);
     @include floating-label.max-width(100%, $query: $query);
+    @include floating-label.float-transition(250ms, linear, $query: $query);
   }
 }
 
