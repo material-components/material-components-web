@@ -37,6 +37,9 @@ export interface MDCIconButtonToggleAdapter {
 
   hasClass(className: string): boolean;
 
+  /** Returns the given attribute value on the root element. */
+  getAttr(attrName: string): string|null;
+
   setAttr(attrName: string, attrValue: string): void;
 
   notifyChange(evtData: MDCIconButtonToggleEventDetail): void;

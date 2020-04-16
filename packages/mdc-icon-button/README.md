@@ -129,6 +129,24 @@ The icon button toggle can be used with `img` tags.
 </button>
 ```
 
+### Icon button toggle with toggled aria label
+
+Some designs may call for the aria label to change depending on the icon button
+state. In this case, specify the `data-aria-label-on` (aria label in on state)
+and `aria-data-label-off` (aria label in off state) attributes, and omit the
+`aria-pressed` attribute.
+
+```html
+<button id="add-to-favorites"
+   class="mdc-icon-button"
+   aria-label="Add to favorites"
+   data-aria-label-on="Remove from favorites"
+   data-aria-label-off="Add to favorites">
+   <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+   <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+</button>
+```
+
 ## API
 
 ### CSS classes

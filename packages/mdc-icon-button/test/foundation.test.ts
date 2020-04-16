@@ -42,6 +42,7 @@ describe('MDCIconButtonToggleFoundation', () => {
       'addClass',
       'removeClass',
       'hasClass',
+      'getAttr',
       'setAttr',
       'notifyChange',
     ]);
@@ -53,7 +54,7 @@ describe('MDCIconButtonToggleFoundation', () => {
     return {foundation, mockAdapter};
   };
 
-  it(`isOn is false if hasClass(${cssClasses.ICON_BUTTON_ON}) returns false`,
+  it(`#isOn is false if hasClass(${cssClasses.ICON_BUTTON_ON}) returns false`,
      () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.ICON_BUTTON_ON)
@@ -61,7 +62,7 @@ describe('MDCIconButtonToggleFoundation', () => {
        expect(foundation.isOn()).toBe(false);
      });
 
-  it(`isOn is true if hasClass(${cssClasses.ICON_BUTTON_ON}) returns true`,
+  it(`#isOn is true if hasClass(${cssClasses.ICON_BUTTON_ON}) returns true`,
      () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.ICON_BUTTON_ON)
@@ -132,5 +133,61 @@ describe('MDCIconButtonToggleFoundation', () => {
     expect(mockAdapter.setAttr)
         .toHaveBeenCalledWith(strings.ARIA_PRESSED, 'false');
     expect(mockAdapter.setAttr).toHaveBeenCalledTimes(1);
+  });
+
+  describe('Variant with toggled aria label', () => {
+    it('#init throws an error if `aria-label-on` and `aria-label-off` are ' +
+           'set, but `aria-pressed` is also set',
+       () => {
+         const {foundation, mockAdapter} = setupTest();
+
+         mockAdapter.getAttr.withArgs(strings.DATA_ARIA_LABEL_ON)
+             .and.returnValue('on label');
+         mockAdapter.getAttr.withArgs(strings.DATA_ARIA_LABEL_OFF)
+             .and.returnValue('off label');
+         mockAdapter.getAttr.withArgs(strings.ARIA_PRESSED)
+             .and.returnValue('false');
+
+         expect(foundation.init).toThrow();
+       });
+
+    it('#toggle sets aria label correctly when toggled on', () => {
+      const {foundation, mockAdapter} = initWithToggledAriaLabel({isOn: false});
+
+      mockAdapter.getAttr.withArgs(strings.DATA_ARIA_LABEL_ON)
+          .and.returnValue('on label');
+      mockAdapter.getAttr.withArgs(strings.DATA_ARIA_LABEL_OFF)
+          .and.returnValue('off label');
+      foundation.toggle(true);
+      expect(mockAdapter.setAttr)
+          .toHaveBeenCalledWith(strings.ARIA_LABEL, 'on label');
+    });
+
+    it('#toggle sets aria label correctly when toggled off', () => {
+      const {foundation, mockAdapter} = initWithToggledAriaLabel({isOn: false});
+
+      mockAdapter.getAttr.withArgs(strings.DATA_ARIA_LABEL_ON)
+          .and.returnValue('on label');
+      mockAdapter.getAttr.withArgs(strings.DATA_ARIA_LABEL_OFF)
+          .and.returnValue('off label');
+      foundation.toggle(false);
+      expect(mockAdapter.setAttr)
+          .toHaveBeenCalledWith(strings.ARIA_LABEL, 'off label');
+    });
+
+    const initWithToggledAriaLabel = ({isOn}: {isOn: boolean}) => {
+      const {foundation, mockAdapter} = setupTest();
+
+      mockAdapter.getAttr.withArgs(strings.DATA_ARIA_LABEL_ON)
+          .and.returnValue('on label');
+      mockAdapter.getAttr.withArgs(strings.DATA_ARIA_LABEL_OFF)
+          .and.returnValue('off label');
+      mockAdapter.getAttr.withArgs(strings.ARIA_PRESSED).and.returnValue(null);
+      mockAdapter.hasClass.withArgs(cssClasses.ICON_BUTTON_ON)
+          .and.returnValue(isOn);
+      foundation.init();
+
+      return {foundation, mockAdapter};
+    };
   });
 });

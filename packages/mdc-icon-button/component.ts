@@ -57,9 +57,14 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     const adapter: MDCIconButtonToggleAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      notifyChange: (evtData) => this.emit<MDCIconButtonToggleEventDetail>(strings.CHANGE_EVENT, evtData),
+      notifyChange: (evtData) => {
+        this.emit<MDCIconButtonToggleEventDetail>(
+            strings.CHANGE_EVENT, evtData);
+      },
       removeClass: (className) => this.root_.classList.remove(className),
-      setAttr: (attrName, attrValue) => this.root_.setAttribute(attrName, attrValue),
+      getAttr: (attrName) => this.root_.getAttribute(attrName),
+      setAttr: (attrName, attrValue) =>
+          this.root_.setAttribute(attrName, attrValue),
     };
     return new MDCIconButtonToggleFoundation(adapter);
   }
