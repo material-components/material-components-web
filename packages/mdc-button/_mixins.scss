@@ -385,6 +385,13 @@ $query: feature-targeting-functions.all()) {
       border: $outline-width solid transparent;
     }
   }
+
+  .mdc-button__touch {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      left: -$outline-width;
+      width: calc(100% + 2 * #{$outline-width});
+    }
+  }
 }
 
 ///
