@@ -107,6 +107,34 @@ describe('MDCMenuSurface', () => {
     expect(mockFoundation.open).toHaveBeenCalled();
   });
 
+  it('#open calling open on button click does not close quick menu', () => {
+    const {root} = setupTest();
+    // not using mock as this case fails on integration rather than unit
+    const component = new MDCMenuSurface(root);
+    const button = document.createElement('button');
+    const listener = () => {
+      component.open();
+    };
+    let numTimesClosedCalled = 0;
+
+    button.addEventListener('click', listener);
+    root.addEventListener(strings.CLOSED_EVENT, () => {
+      numTimesClosedCalled += 1;
+    });
+    component.quickOpen = true;
+    document.body.appendChild(button);
+
+
+    expect(numTimesClosedCalled).toEqual(0);
+    emitEvent(button, 'click', {bubbles: true});
+    document.body.removeChild(button);
+
+    expect(component.isOpen()).toEqual(true);
+    expect(numTimesClosedCalled).toEqual(0);
+
+    component.destroy();
+  });
+
   it(`${strings.OPENED_EVENT} causes the body click handler to be registered`,
      () => {
        const {root, mockFoundation} = setupTest();

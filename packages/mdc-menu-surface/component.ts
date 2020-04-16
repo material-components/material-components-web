@@ -61,7 +61,10 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
     this.handleBodyClick_ = (evt) => this.foundation_.handleBodyClick(evt);
 
-    this.registerBodyClickListener_ = () => document.body.addEventListener('click', this.handleBodyClick_);
+    // capture so that no race between handleBodyClick and quickOpen when
+    // menusurface opened on button click which registers this listener
+    this.registerBodyClickListener_ = () => document.body.addEventListener(
+        'click', this.handleBodyClick_, {capture: true});
     this.deregisterBodyClickListener_ = () => document.body.removeEventListener('click', this.handleBodyClick_);
 
     this.listen('keydown', this.handleKeydown_);
