@@ -250,6 +250,21 @@
   }
 }
 
+///
+/// Sets the max-width for the notch
+///
+/// @param {Number} $max-width Max-width for the notch
+///
+@mixin notch-max-width($max-width, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  :not(.mdc-notched-outline--notched) .mdc-notched-outline__notch {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      max-width: $max-width;
+    }
+  }
+}
+
 //
 // Private
 //

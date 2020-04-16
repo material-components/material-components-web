@@ -1134,14 +1134,15 @@
     @include floating-label-mixins.shake-animation(text-field-outlined-leading-icon-rtl, $query: $query);
   }
 
+  $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
+  $notch-truncation: $icon-padding + notched-outline-variables.$leading-width;
+  $left-spacing: $icon-padding - notched-outline-variables.$leading-width;
+
+  @include notched-outline-mixins.notch-max-width(calc(100% - #{$notch-truncation}), $query: $query);
+
   .mdc-floating-label {
     @include feature-targeting-mixins.targets($feat-structure) {
-      $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
-
-      @include rtl-mixins.reflexive-position(
-        left,
-        $icon-padding - notched-outline-variables.$leading-width
-      );
+      @include rtl-mixins.reflexive-position(left, $left-spacing);
     }
   }
 }
