@@ -512,3 +512,40 @@ Method Signature | Description
 `autoCompleteFocus() => void` | Activates the Text Field's focus state in cases when the input value is changed programmatically (i.e., without user action).
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
+
+### Using Sass mixins to reduce generated styles
+
+By default, we recommend importing styles for the MDC text-field using the `core-styles` mixin
+(as seen in the styles section above). This mixin generates styles for all available features
+of the textfield. 
+
+This might not be desired in projects that only use a subset of features which are available
+for the text-field. In those cases, you can avoid unused CSS by replacing the `core-styles` mixin
+with more fine-grained includes to individual features of the MDC text-field. For example:
+
+```scss
+@use "@material/textfield";
+
+// Required. This contains the core styles for the text-field.
+@include textfield.base();
+
+// Optional features that can be configured.
+@include textfield.icons();
+@include textfield.helper-text();
+```
+
+Here is a list of all available features and their mixins:
+
+
+| Mixin Name | Description |
+| --- | --- |
+| `affix` | Styles for displaying prefixes and suffixes in a textfield |
+| `form-field-compatibility` | Styles so that a textfield can be used in a `mdc-form-field` |
+| `fullwidth` | Supports full-width textfields |
+| `fullwidth-textarea` | Supports fullwidth textfields that use a textarea | 
+| `helper-text` | Predefined styles for displaying a helper text (e.g. character counter) |
+| `icons` | Supports leading and trailing icons |
+| `outlined-with-icons` | Supports icons within outlined textfields |
+| `outlined` | Supports textfields in outlined appearance |
+| `text-alignment-classes` | Predefined classes for aligning contents in the textfield |
+| `textarea` | Supports textareas in a textfield |
