@@ -111,6 +111,30 @@ Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only 
 <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
 ```
 
+### Indeterminate
+
+Note that `data-indeterminate="true"` is necessary on the input element for initial render, or in a CSS-only mode. Checkboxes that use the Javascript component can modify the `indeterminate` property at runtime.
+
+```html
+<div class="mdc-checkbox">
+  <input type="checkbox"
+         id="basic-indeterminate-checkbox"
+         class="mdc-checkbox__native-control"
+         data-indeterminate="true"/>
+  <div class="mdc-checkbox__background">
+    <svg class="mdc-checkbox__checkmark"
+         viewBox="0 0 24 24">
+      <path class="mdc-checkbox__checkmark-path"
+            fill="none"
+            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+    </svg>
+    <div class="mdc-checkbox__mixedmark"></div>
+  </div>
+  <div class="mdc-checkbox__ripple"></div>
+</div>
+<label for="basic-indeterminate-checkbox" id="basic-indeterminate-checkbox-label">This is my indeterminate checkbox</label>
+```
+
 ## Additional Information
 
 ### Accessibility

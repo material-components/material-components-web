@@ -136,7 +136,8 @@ $ripple-target: ".mdc-checkbox__ripple";
   }
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control[data-indeterminate="true"] ~ .mdc-checkbox__background {
     @include feature-targeting-mixins.targets($feat-animation) {
       @include background--marked_;
     }
@@ -188,8 +189,8 @@ $ripple-target: ".mdc-checkbox__ripple";
       }
     }
   }
-
-  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control[data-indeterminate="true"] ~ .mdc-checkbox__background {
     .mdc-checkbox__checkmark {
       @include checkmark--indeterminate_($query);
     }
@@ -396,7 +397,8 @@ $ripple-target: ".mdc-checkbox__ripple";
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background::before,
-  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background::before {
+  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background::before,
+  .mdc-checkbox__native-control[data-indeterminate="true"] ~ .mdc-checkbox__background::before {
     @include feature-targeting-mixins.targets($feat-color) {
       @include theme-mixins.prop(background-color, $color);
     }
@@ -573,7 +575,7 @@ $ripple-target: ".mdc-checkbox__ripple";
 /// @access private
 ///
 @mixin if-unmarked-enabled_ {
-  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate) ~ {
+  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate):not([data-indeterminate="true"]) ~ {
     @content;
   }
 }
@@ -587,7 +589,7 @@ $ripple-target: ".mdc-checkbox__ripple";
   // Note: we must use `[disabled]` instead of `:disabled` below because Edge does not always recalculate the style
   // property when the `:disabled` pseudo-class is followed by a sibling combinator. See:
   // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
-  .mdc-checkbox__native-control[disabled]:not(:checked):not(:indeterminate) ~ {
+  .mdc-checkbox__native-control[disabled]:not(:checked):not(:indeterminate):not([data-indeterminate="true"]) ~ {
     @content;
   }
 }
@@ -599,7 +601,8 @@ $ripple-target: ".mdc-checkbox__ripple";
 ///
 @mixin if-marked-enabled_ {
   .mdc-checkbox__native-control:enabled:checked,
-  .mdc-checkbox__native-control:enabled:indeterminate {
+  .mdc-checkbox__native-control:enabled:indeterminate,
+  .mdc-checkbox__native-control[data-indeterminate="true"]:enabled {
     ~ {
       @content;
     }
@@ -616,7 +619,8 @@ $ripple-target: ".mdc-checkbox__ripple";
   // property when the `:disabled` pseudo-class is followed by a sibling combinator. See:
   // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
   .mdc-checkbox__native-control[disabled]:checked,
-  .mdc-checkbox__native-control[disabled]:indeterminate {
+  .mdc-checkbox__native-control[disabled]:indeterminate,
+  .mdc-checkbox__native-control[data-indeterminate="true"][disabled] {
     ~ {
       @content;
     }
