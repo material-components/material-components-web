@@ -32,10 +32,9 @@ npm install @material/top-app-bar
 ### Styles
 
 ```scss
-@use "@material/top-app-bar";
 @use "@material/icon-button";
+@use "@material/top-app-bar/mdc-top-app-bar";
 
-@include top-app-bar.core-styles;
 @include icon-button.core-styles;
 ```
 
