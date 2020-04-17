@@ -332,12 +332,13 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     let corner = Corner.TOP_LEFT;
 
     const {viewportDistance, anchorSize, surfaceSize} = this.measurements_;
+    const {MARGIN_TO_EDGE} = MDCMenuSurfaceFoundation.numbers;
 
     const isBottomAligned = this.hasBit_(this.anchorCorner_, CornerBit.BOTTOM);
-    const availableTop = isBottomAligned ? viewportDistance.top + anchorSize.height + this.anchorMargin_.bottom
-        : viewportDistance.top + this.anchorMargin_.top;
-    const availableBottom = isBottomAligned ? viewportDistance.bottom - this.anchorMargin_.bottom
-        : viewportDistance.bottom + anchorSize.height - this.anchorMargin_.top;
+    const availableTop = isBottomAligned ? viewportDistance.top - MARGIN_TO_EDGE + anchorSize.height + this.anchorMargin_.bottom
+        : viewportDistance.top - MARGIN_TO_EDGE + this.anchorMargin_.top;
+    const availableBottom = isBottomAligned ? viewportDistance.bottom - MARGIN_TO_EDGE - this.anchorMargin_.bottom
+        : viewportDistance.bottom - MARGIN_TO_EDGE + anchorSize.height - this.anchorMargin_.top;
 
     const topOverflow = surfaceSize.height - availableTop;
     const bottomOverflow = surfaceSize.height - availableBottom;
