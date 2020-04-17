@@ -136,7 +136,7 @@
   }
 
   @if $top > 0 {
-    @include _baseline-top($top, $query: $query);
+    @include baseline-top($top, $query: $query);
   }
 
   @if $bottom > 0 {
@@ -144,7 +144,7 @@
       @error "mdc-typography: invalid baseline with display type. #{$display} cannot specifiy $bottom. Add a separate child element with its own $bottom.";
     }
 
-    @include _baseline-bottom($bottom, $query: $query);
+    @include baseline-bottom($bottom, $query: $query);
   }
 }
 
@@ -191,7 +191,12 @@
   }
 }
 
-@mixin _baseline-top($distance, $query: feature-targeting-functions.all()) {
+/// Creates a baseline strut from the top of a container. This mixin is for
+/// advanced users, prefer `baseline()`.
+///
+/// @param {Number} $distance - The distance from the top of the container to
+///     the text's baseline.
+@mixin baseline-top($distance, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   &::before {
@@ -203,7 +208,12 @@
   }
 }
 
-@mixin _baseline-bottom($distance, $query: feature-targeting-functions.all()) {
+/// Creates a baseline strut from the baseline to the bottom of a container.
+/// This mixin is for advanced users, prefer `baseline()`.
+///
+/// @param {Number} $distance - The distance from the text's baseline to the
+///     bottom of the container.
+@mixin baseline-bottom($distance, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   &::after {

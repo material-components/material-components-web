@@ -89,9 +89,13 @@ $density-config: (
 ) !default;
 $label-position-y: floating-label-variables.$position-y !default;
 $label-offset: 16px !default;
+// TODO(b/154350788): Remove this variable, it's not used internally but it is
+// externally in Angular
+/// @deprecated this variable will be removed in the future.
+/// Use get-outlined-label-position-y($height) instead
 $outlined-label-position-y:
     get-outlined-label-position-y($height) !default;
-$outlined-with-leading-icon-label-position-x: 0 !default;
+$outlined-with-leading-icon-label-position-x: 32px !default;
 $textarea-label-position-y: 130% !default;
 $helper-line-padding: 16px !default;
 $filled-baseline-top: 40px !default;

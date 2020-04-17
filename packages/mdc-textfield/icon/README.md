@@ -58,7 +58,7 @@ Leading and trailing icons can be applied to default or `mdc-text-field--outline
 In text field:
 
 ```html
-<label class="mdc-text-field mdc-text-field--with-leading-icon">
+<label class="mdc-text-field mdc-text-field--filled mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <span class="mdc-floating-label" id="my-label-id">Your Name</span>
@@ -87,7 +87,7 @@ In outlined text field:
 In text field:
 
 ```html
-<label class="mdc-text-field mdc-text-field--with-trailing-icon">
+<label class="mdc-text-field mdc-text-field--filled mdc-text-field--with-trailing-icon">
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
   <span class="mdc-floating-label" id="my-label-id">Your Name</span>
@@ -116,7 +116,7 @@ In outlined text field:
 In text field:
 
 ```html
-<label class="mdc-text-field mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
+<label class="mdc-text-field mdc-text-field--filled mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading">phone</i>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>

@@ -36,7 +36,7 @@ const {cssClasses, strings} = MDCTextFieldFoundation;
 const getFixture = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
-    <label class="mdc-text-field mdc-text-field--with-leading-icon">
+    <label class="mdc-text-field mdc-text-field--filled mdc-text-field--with-leading-icon">
       <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
       <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
       <span class="mdc-floating-label" id="my-label">My Label</span>
@@ -75,7 +75,7 @@ const getHelperLineWithCharacterCounter = () => {
 const getFixtureWithPrefix = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
-    <label class="mdc-text-field">
+    <label class="mdc-text-field mdc-text-field--filled">
       <span class="mdc-text-field__affix mdc-text-field__affix--prefix">$</span>
       <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
       <span class="mdc-floating-label" id="my-label">My Label</span>
@@ -90,7 +90,7 @@ const getFixtureWithPrefix = () => {
 const getFixtureWithSuffix = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
-    <label class="mdc-text-field">
+    <label class="mdc-text-field mdc-text-field--filled">
       <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
       <span class="mdc-text-field__affix mdc-text-field__affix--suffix">/100</span>
       <span class="mdc-floating-label" id="my-label">My Label</span>
@@ -299,9 +299,9 @@ describe('MDCTextField', () => {
   it('#constructor handles undefined optional sub-elements gracefully', () => {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = `
-      <div class="mdc-text-field">
+      <label class="mdc-text-field mdc-text-field--filled">
         <input type="text" class="mdc-text-field__input" id="my-text-field">
-      </div>
+      </label>
     `;
     const root = wrapper.firstElementChild as HTMLElement;
     wrapper.removeChild(root);
@@ -322,9 +322,9 @@ describe('MDCTextField', () => {
      () => {
        const wrapper = document.createElement('div');
        wrapper.innerHTML = `
-         <div class="mdc-text-field">
+         <label class="mdc-text-field mdc-text-field--filled">
            <input type="text" class="mdc-text-field__input" id="my-text-field">
-         </div>
+         </label>
        `;
        const root = wrapper.firstElementChild as HTMLElement;
        wrapper.removeChild(root);
@@ -454,9 +454,9 @@ describe('MDCTextField', () => {
   it('#destroy handles undefined optional sub-elements gracefully', () => {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = `
-      <div class="mdc-text-field">
+      <label class="mdc-text-field mdc-text-field--filled">
         <input type="text" class="mdc-text-field__input" id="my-text-field">
-      </div>
+      </label>
     `;
     const root = wrapper.firstElementChild as HTMLElement;
     wrapper.removeChild(root);

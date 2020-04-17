@@ -55,7 +55,7 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 ### Filled text example
 
 ```html
-<label class="mdc-text-field">
+<label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <span class="mdc-floating-label" id="my-label-id">Hint text</span>
@@ -93,7 +93,7 @@ See [here](../mdc-notched-outline/) for more information on using the notched ou
 Full width text fields are useful for in-depth tasks or entering complex information.
 
 ```html
-<label class="mdc-text-field mdc-text-field--fullwidth">
+<label class="mdc-text-field mdc-text-field--filled mdc-text-field--fullwidth">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input"
          type="text"
@@ -128,7 +128,7 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 #### Filled
 
 ```html
-<label class="mdc-text-field mdc-text-field--no-label">
+<label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" placeholder="Placeholder text" aria-label="Label">
   <span class="mdc-line-ripple"></span>
@@ -164,7 +164,7 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 To disable the text field, add the `disabled` attribute to the `<input>` element and add the `mdc-text-field--disabled` class to the `mdc-text-field` element.
 
 ```html
-<label class="mdc-text-field mdc-text-field--disabled">
+<label class="mdc-text-field mdc-text-field--filled mdc-text-field--disabled">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" disabled>
   <span class="mdc-floating-label" id="my-label-id">Disabled text field</span>
@@ -179,7 +179,7 @@ and disappears on input field blur by default, or it can be persistent. Helper t
 which is immediate sibling of `.mdc-text-field`. See [here](helper-text/) for more information on using helper text.
 
 ```html
-<label class="mdc-text-field">
+<label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text"
          aria-labelledby="my-label-id"
@@ -200,7 +200,7 @@ Character counter should be rendered inside `.mdc-text-field-helper-line` elemen
 See [here](character-counter/) for more information on using character counter.
 
 ```html
-<label class="mdc-text-field">
+<label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" maxlength="10">
   <span class="mdc-floating-label" id="my-label-id">My Label</span>
@@ -239,7 +239,7 @@ Prefix and suffix text can add context to a text field, such as a currency symbo
 A prefix, suffix, or both can be added within the default or outlined variants of text fields.
 
 ```html
-<label class="mdc-text-field">
+<label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
   <span class="mdc-text-field__affix mdc-text-field__affix--prefix">$</span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
@@ -264,7 +264,7 @@ well as interaction targets. See [here](icon/) for more information on using ico
 by HTML5's form validation API.
 
 ```html
-<label class="mdc-text-field">
+<label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="password" aria-labelledby="my-label-id" required minlength="8">
   <span class="mdc-floating-label" id="my-label-id">Password</span>
@@ -283,7 +283,7 @@ ensure that the label moves out of the way of the text field's value and prevent
 Un-styled Content (**FOUC**).
 
 ```html
-<label class="mdc-text-field mdc-text-field--label-floating">
+<label class="mdc-text-field mdc-text-field--filled mdc-text-field--label-floating">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" value="Pre-filled value">
   <span class="mdc-floating-label mdc-floating-label--float-above" id="my-label-id">
@@ -328,6 +328,7 @@ flexbox.
 CSS Class | Description
 --- | ---
 `mdc-text-field` | Mandatory.
+`mdc-text-field--filled` | Styles the text field as a filled text field.
 `mdc-text-field--outlined` | Styles the text field as an outlined text field.
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field.
 `mdc-text-field--textarea` | Indicates the text field is a `<textarea>`.

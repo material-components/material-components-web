@@ -98,7 +98,7 @@ MDL:
 MDC Web:
 
 ```html
-<label class="mdc-text-field">
+<label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="label">
   <span id="label" class="mdc-floating-label">Input Label</span>
@@ -125,7 +125,7 @@ For every component that you want to automatically initialize, set the `data-mdc
 element, with the component’s class name as the value. For example:
 
 ```html
-<label class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+<label class="mdc-text-field mdc-text-field--filled" data-mdc-auto-init="MDCTextField">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="label">
   <span id="label" class="mdc-floating-label">Input Label</span>

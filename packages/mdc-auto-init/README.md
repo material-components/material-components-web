@@ -32,7 +32,7 @@ attribute to the root element with its value set to the component's JavaScript c
 properly.
 
 ```html
-<label class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+<label class="mdc-text-field mdc-text-field--filled" data-mdc-auto-init="MDCTextField">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="label">
   <span id="label" class="mdc-floating-label">Input Label</span>
@@ -53,7 +53,7 @@ When `mdc-auto-init` attaches a component to an element, it assign that instance
 using a property whose name is the value of `data-mdc-auto-init`. For example, given
 
 ```html
-<label class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+<label class="mdc-text-field mdc-text-field--filled" data-mdc-auto-init="MDCTextField">
   <span class="mdc-text-field__ripple"></span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="label">
   <span id="label" class="mdc-floating-label">Input Label</span>
@@ -73,7 +73,7 @@ document.querySelector('.mdc-text-field').MDCTextField.disabled = true;
 If you decide to add new components into the DOM after the initial `mdc.autoInit()`, you can make subsequent calls to `mdc.autoInit()`. This will not reinitialize existing components. This works since mdc-auto-init will add the `data-mdc-auto-init-state="initialized"` attribute, which tracks if the component has already been initialized. After calling `mdc.autoInit()` your component will then look like:
 
 ```html
-<label class="mdc-text-field" data-mdc-auto-init="MDCTextField" data-mdc-auto-init-state="initialized">
+<label class="mdc-text-field mdc-text-field--filled" data-mdc-auto-init="MDCTextField" data-mdc-auto-init-state="initialized">
   ...
 </label>
 ```
@@ -108,7 +108,7 @@ mdcAutoInit.register('My amazing text field!!!', MDCTextField);
 ```
 
 ```html
-<label class="mdc-text-field" data-mdc-auto-init="My amazing text field!!!">
+<label class="mdc-text-field mdc-text-field--filled" data-mdc-auto-init="My amazing text field!!!">
   <!-- ... -->
 </label>
 <script>window.mdc.autoInit();</script>

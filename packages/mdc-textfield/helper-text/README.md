@@ -46,7 +46,7 @@ indicate to assistive devices that the display of the helper text is dependent o
 the input element.
 
 ```html
-<label class="mdc-text-field">
+<label class="mdc-text-field mdc-text-field--filled">
   <input class="mdc-text-field__input" type="text"
          aria-labelledby="my-label-id"
          aria-controls="username-helper-text"

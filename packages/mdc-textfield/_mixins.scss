@@ -49,84 +49,18 @@
 
 @mixin without-ripple($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
 
+  // Baseline
   // postcss-bem-linter: define text-field
   .mdc-text-field {
-    // Text Field intentionally omits press ripple, so each state needs to be specified individually.
-    @include ripple-mixins.states-base-color(variables.$ink-color, $query: $query, $ripple-target: variables.$ripple-target);
-    @include ripple-mixins.states-hover-opacity(ripple-functions.states-opacity(variables.$ink-color, hover), $query: $query, $ripple-target: variables.$ripple-target);
-    @include ripple-mixins.states-focus-opacity(ripple-functions.states-opacity(variables.$ink-color, focus), $query: $query, $ripple-target: variables.$ripple-target);
-
-    // Height and baseline
-    @include height(variables.$height, $query: $query);
-
-    // Shape
-    @include shape-radius(small, $query: $query);
-
-    // Colors
-    @include label-color(variables.$label, $query: $query);
-    @include ink-color(variables.$ink-color, $query: $query);
-    @include placeholder-color(variables.$placeholder-ink-color, $query: $query);
-    @include caret-color(primary, $query: $query);
-    @include bottom-line-color(variables.$bottom-line-idle, $query: $query);
-    @include hover-bottom-line-color(variables.$bottom-line-hover, $query: $query);
-    @include line-ripple-color_(primary, $query: $query);
-    @include helper-text-mixins.helper-text-color(variables.$helper-text-color, $query: $query);
-    @include character-counter-mixins.character-counter-color(variables.$helper-text-color, $query: $query);
-    @include icon-mixins.leading-icon-color(variables.$icon-color, $query: $query);
-    @include icon-mixins.trailing-icon-color(variables.$icon-color, $query: $query);
-    @include fill-color(variables.$background, $query: $query);
-    @include prefix-color(variables.$affix-color, $query: $query);
-    @include suffix-color(variables.$affix-color, $query: $query);
-
-    // Floating Label
-    @include floating-label_($query);
-
-    // Structural
-    @include padding-horizontal_(
-      variables.$padding-horizontal,
-      0,
-      0,
-      $query: $query
-    );
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      display: inline-flex;
-      position: relative;
-      box-sizing: border-box;
-      overflow: hidden;
-      /* @alternate */
-      will-change: opacity, transform, color;
-    }
+    @include _base($query);
   }
 
   .mdc-text-field__input {
-    @include _text($query: $query);
-    @include feature-targeting-mixins.targets($feat-structure) {
-      width: 100%;
-      min-width: 0; // Fixes flex issues on Firefox
-      border: none;
-      border-radius: 0;
-      background: none;
-      appearance: none;
-      padding: 0;
-
-      // Remove built-in trailing clear icon on IE11
-      &::-ms-clear {
-        display: none;
-      }
-    }
+    @include _input($query);
 
     @include placeholder-selector_ {
-      @include feature-targeting-mixins.targets($feat-animation) {
-        transition: functions.transition(opacity, $duration: 67ms);
-      }
-
-      @include feature-targeting-mixins.targets($feat-structure) {
-        opacity: 0;
-      }
+      @include _input-placeholder($query);
     }
 
     // Always show placeholder for text fields that has no
@@ -135,34 +69,7 @@
     .mdc-text-field--no-label &,
     .mdc-text-field--focused & {
       @include placeholder-selector_ {
-        @include feature-targeting-mixins.targets($feat-animation) {
-          transition-delay: 40ms;
-          transition-duration: 110ms;
-        }
-
-        @include feature-targeting-mixins.targets($feat-structure) {
-          opacity: 1;
-        }
-      }
-    }
-
-    &:focus {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        outline: none;
-      }
-    }
-
-    // Remove red outline on firefox
-    &:invalid {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        box-shadow: none;
-      }
-    }
-
-    // Keep Chrome autofill behind the notched outline
-    &:-webkit-autofill {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        z-index: auto !important;
+        @include _input-placeholder-visible($query);
       }
     }
   }
@@ -201,32 +108,21 @@
     }
   }
 
+  // Variants
+
+  .mdc-text-field--filled {
+    @include _filled($query);
+
+    &.mdc-text-field--no-label {
+      @include _filled-no-label($query);
+    }
+  }
+
   .mdc-text-field--outlined {
     @include outlined_($query);
   }
 
-  .mdc-text-field--outlined.mdc-text-field--focused {
-    @include outlined-focused_($query);
-  }
-
-  .mdc-text-field--outlined.mdc-text-field--disabled {
-    @include outlined-disabled_($query);
-  }
-
-  .mdc-text-field--with-leading-icon {
-    @include with-leading-icon_($query);
-  }
-
-  .mdc-text-field--with-leading-icon.mdc-text-field--outlined {
-    @include outlined-with-leading-icon_($query);
-  }
-
-  @include required-label-asterisk_ {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      margin-left: 1px;
-      content: "*";
-    }
-  }
+  // Other Variations
 
   .mdc-text-field--textarea {
     @include textarea_($query);
@@ -236,8 +132,21 @@
     @include fullwidth_($query);
   }
 
-  .mdc-text-field--fullwidth.mdc-text-field--invalid {
-    @include fullwidth-invalid_($query);
+  .mdc-text-field--with-leading-icon {
+    &.mdc-text-field--filled {
+      @include with-leading-icon_($query);
+    }
+
+    &.mdc-text-field--outlined {
+      @include outlined-with-leading-icon_($query);
+    }
+  }
+
+  @include required-label-asterisk_ {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      margin-left: 1px;
+      content: "*";
+    }
   }
 
   // postcss-bem-linter: define text-field-helper-text
@@ -268,6 +177,7 @@
   }
   // stylelint-enable selector-max-type
 
+  // States
   .mdc-text-field--focused {
     @include focused_($query);
   }
@@ -276,20 +186,12 @@
     @include invalid_($query);
   }
 
-  .mdc-text-field--textarea.mdc-text-field--invalid {
-    @include textarea-invalid_($query);
-  }
-
-  .mdc-text-field--outlined.mdc-text-field--invalid {
-    @include outlined-invalid_($query);
-  }
-
   .mdc-text-field--disabled {
     @include disabled_($query);
-  }
 
-  .mdc-text-field--textarea.mdc-text-field--disabled {
-    @include textarea-disabled_($query);
+    &.mdc-text-field--filled {
+      @include _disabled-filled($query);
+    }
   }
 
   .mdc-text-field--end-aligned {
@@ -303,30 +205,6 @@
       @include _ltr-text-end-aligned($query);
     }
   }
-
-  @include floating-label-mixins.shake-keyframes(
-    text-field-outlined,
-    variables.$outlined-label-position-y,
-    $query: $query
-  );
-  @include floating-label-mixins.shake-keyframes(
-    text-field-outlined-leading-icon,
-    variables.$outlined-label-position-y,
-    variables.$outlined-with-leading-icon-label-position-x,
-    $query: $query
-  );
-  @include floating-label-mixins.shake-keyframes(
-    text-field-outlined-leading-icon-rtl,
-    variables.$outlined-label-position-y,
-    -(variables.$outlined-with-leading-icon-label-position-x),
-    $query: $query
-  );
-  @include floating-label-mixins.shake-keyframes(
-    textarea,
-    variables.$textarea-label-position-y,
-    0%,
-    $query: $query
-  );
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles
@@ -334,7 +212,7 @@
 @mixin ripple($query: feature-targeting-functions.all()) {
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
-  .mdc-text-field {
+  .mdc-text-field--filled {
     @include ripple-mixins.surface($query: $query, $ripple-target: variables.$ripple-target);
     @include ripple-mixins.radius-bounded($query: $query, $ripple-target: variables.$ripple-target);
   }
@@ -412,14 +290,11 @@
 /// @param {Number} $height
 /// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
 ///     filled textfields at which to allow floating labels.
-/// @param {Number} $filled-baseline-top The baseline from the top of the field
-///.    that the input should be aligned to for a filled variant with a label
 /// @access public
 ///
 @mixin height(
   $height,
   $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label,
-  $filled-baseline-top: variables.$filled-baseline-top,
   $query: feature-targeting-functions.all()
 ) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
@@ -427,27 +302,8 @@
     height: $height;
   }
 
-  // Filled variant is aligned to baseline...
-  @include typography-mixins.baseline($top: $filled-baseline-top, $display: inline-flex, $query: $query);
-  // ...unless it is too small to display a label
   @if $height < $minimum-height-for-filled-label {
-    @include center-aligned_($query: $query);
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      &:not(.mdc-text-field--outlined) {
-        .mdc-floating-label {
-          display: none;
-        }
-      }
-    }
-  }
-
-  // Outlined and no-label variants are always centered
-  &.mdc-text-field--outlined,
-  &.mdc-text-field--fullwidth,
-  &.mdc-text-field--no-label,
-  &.mdc-text-field--textarea {
-    @include center-aligned_($query: $query);
+    @include _filled-no-label($query: $query);
   }
 }
 
@@ -455,38 +311,79 @@
 /// Sets height of outlined text field variant (Excluding outlined text field with leading icon).
 ///
 /// @param {Number} $height
+/// @param {String} $keyframe-suffix - Optional suffix to use for generated
+///     floating label keyframes
 /// @access public
 ///
-@mixin outlined-height($height, $query: feature-targeting-functions.all()) {
-  $keyframe-suffix: text-field-outlined-#{$height};
+@mixin outlined-height(
+  $height,
+  $keyframe-suffix: text-field-outlined-#{$height},
+  $query: feature-targeting-functions.all()
+) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
   $positionY: variables.get-outlined-label-position-y($height);
 
+  // Floating label position
   @include notched-outline-mixins.floating-label-float-position-absolute($positionY, $query: $query);
 
+  // Floating label animation
+  @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
   @at-root {
     @include floating-label-mixins.shake-keyframes($keyframe-suffix, $positionY, $query: $query);
   }
 
-  @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
-  // Avoid unnecessary rules for filled variant since this is outlined
-  @include height($height, $minimum-height-for-filled-label: 0, $query: $query);
+  @include feature-targeting-mixins.targets($feat-structure) {
+    height: $height;
+  }
 }
 
 ///
 /// Sets height of outlined text field with leading icon variant.
 ///
 /// @param {Number} $height
+/// @param {String} $keyframe-suffix - Optional suffix to use for generated
+///     floating label keyframes
 /// @access public
 ///
-@mixin outlined-with-leading-icon-height($height, $query: feature-targeting-functions.all()) {
-  $keyframe-suffix: text-field-outlined-with-leading-icon-#{$height};
-  $positionY: variables.get-outlined-label-position-y($height);
+@mixin outlined-with-leading-icon-height(
+  $height,
+  $keyframe-suffix: null,
+  $query: feature-targeting-functions.all()
+) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  // For specificity
+  // This extra specificity is needed because textfield applies the below mixin
+  // already to two selectors (outlined + with-leading-icon). To override
+  // them with a new label position and animation, another selector is needed.
   &.mdc-text-field--outlined {
-    @include notched-outline-mixins.floating-label-float-position-absolute($positionY, 32px, $query: $query);
+    @include _outlined-with-leading-icon-floating-label-position-animation($height, $keyframe-suffix, $query);
   }
 
+  @include feature-targeting-mixins.targets($feat-structure) {
+    height: $height;
+  }
+}
+
+// Mixin that sets the floating label position and animations for a given height.
+// This mixin is separate to allow outlined-with-leading-icon-height() to
+// provide greater specificity over the default mixin that adds styles for
+// outlined with leading icons.
+@mixin _outlined-with-leading-icon-floating-label-position-animation(
+  $height,
+  $keyframe-suffix: text-field-outlined-with-leading-icon-#{$height},
+  $query: feature-targeting-functions.all()
+) {
+  $positionY: variables.get-outlined-label-position-y($height);
+
+  // Floating label position
+  @include notched-outline-mixins.floating-label-float-position-absolute(
+    $positionY,
+    variables.$outlined-with-leading-icon-label-position-x,
+    $query: $query
+  );
+
+  // Floating label animation
+  @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
   @at-root {
     @include floating-label-mixins.shake-keyframes(
       $keyframe-suffix,
@@ -496,10 +393,10 @@
     );
   }
 
-  @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
-
   $keyframe-suffix-rtl: #{$keyframe-suffix}-rtl;
-
+  @include rtl-mixins.rtl {
+    @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
+  }
   @at-root {
     @include floating-label-mixins.shake-keyframes(
       $keyframe-suffix-rtl,
@@ -508,12 +405,6 @@
       $query: $query
     );
   }
-
-  @include rtl-mixins.rtl {
-    @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
-  }
-  // Avoid unnecessary rules for filled variant since this is outlined
-  @include height($height, $minimum-height-for-filled-label: 0, $query: $query);
 }
 
 ///
@@ -766,177 +657,6 @@
   }
 }
 
-// Private mixins
-
-// Baseline
-
-/// Adds horizontal padding to the text field
-///
-/// @param {Number} $padding - left and right-side padding
-/// @param {Number} $left-with-leading-icon - left-side padding when a leading
-///     icon is present
-/// @param {Number} $right-with-trailing-icon - right-side padding when a
-///     trailing icon is present
-@mixin padding-horizontal_(
-  $padding,
-  $left-with-leading-icon,
-  $right-with-trailing-icon,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    padding: 0 $padding;
-
-    &.mdc-text-field--with-leading-icon {
-      @include rtl-mixins.reflexive-property(
-        padding,
-        $left-with-leading-icon,
-        $padding
-      );
-    }
-
-    &.mdc-text-field--with-trailing-icon {
-      @include rtl-mixins.reflexive-property(
-        padding,
-        $padding,
-        $right-with-trailing-icon
-      );
-    }
-
-    &.mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon {
-      @include rtl-mixins.reflexive-property(
-        padding,
-        $left-with-leading-icon,
-        $right-with-trailing-icon
-      );
-    }
-  }
-}
-
-// Removes filled baseline alignment
-@mixin center-aligned_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    // In order for a flexbox container to participate in baseline alignment,
-    // it follows these rules to determine where its baseline is:
-    // https://www.w3.org/TR/css-flexbox-1/#flex-baselines
-    //
-    // In order to avoid leading icons "controlling" the baseline (since they
-    // are the first child), flexbox will generate a baseline from any child
-    // flex items that participate in baseline alignment.
-    //
-    // Icons are set to "align-self: center", while all other children are
-    // aligned to baseline. The next problem is deciding which child is
-    // used to determine the baseline.
-    //
-    // According to spec, the item with the largest distance between its
-    // baseline and the edge of the cross axis is placed flush with that edge,
-    // making it the baseline of the container.
-    // https://www.w3.org/TR/css-flexbox-1/#baseline-participation
-    //
-    // For the filled variant, the pseudo ::before strut is the "largest"
-    // child since the input has a height of 28px and the strut is 40px. We
-    // can emulate center alignment and force the baseline to use the input
-    // text by making the input the full height of the container and removing
-    // the baseline strut.
-
-    // TODO: IE11 does not respect this, and makes the leading icon (if present)
-    // the baseline.
-    .mdc-text-field__input {
-      height: 100%;
-    }
-
-    &.mdc-text-field--textarea {
-      .mdc-text-field__input {
-        height: auto;
-      }
-    }
-
-    &::before {
-      display: none;
-    }
-  }
-}
-
-@mixin disabled_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include bottom-line-color_(variables.$disabled-border, $query: $query);
-  @include ink-color_(variables.$disabled-ink-color, $query: $query);
-  @include placeholder-color_(variables.$disabled-placeholder-ink-color, $query: $query);
-  @include label-ink-color_(variables.$disabled-label-color, $query: $query);
-  @include helper-text-mixins.helper-text-color_(variables.$disabled-helper-text-color, $query: $query);
-  @include character-counter-mixins.character-counter-color_(variables.$disabled-helper-text-color, $query: $query);
-  @include icon-mixins.leading-icon-color_(variables.$disabled-icon, $query: $query);
-  @include icon-mixins.trailing-icon-color_(variables.$disabled-icon, $query: $query);
-  @include fill-color_(variables.$disabled-background, $query: $query);
-  @include _prefix-color(variables.$disabled-affix-color, $query: $query);
-  @include _suffix-color(variables.$disabled-affix-color, $query: $query);
-
-  @media screen and (-ms-high-contrast: active) {
-    @include bottom-line-color_(GrayText, $query: $query);
-    @include placeholder-color_(GrayText, $query: $query);
-    @include label-ink-color_(GrayText, $query: $query);
-    @include helper-text-mixins.helper-text-color_(GrayText, $query: $query);
-    @include character-counter-mixins.character-counter-color_(GrayText, $query: $query);
-    @include icon-mixins.leading-icon-color_(GrayText, $query: $query);
-    @include icon-mixins.trailing-icon-color_(GrayText, $query: $query);
-    @include _prefix-color(GrayText, $query: $query);
-    @include _suffix-color(GrayText, $query: $query);
-  }
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    pointer-events: none;
-  }
-
-  .mdc-floating-label {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      cursor: default;
-    }
-  }
-}
-
-@mixin invalid_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include bottom-line-color(variables.$error, $query: $query);
-  @include hover-bottom-line-color(variables.$error, $query: $query);
-  @include line-ripple-color(variables.$error, $query: $query);
-  @include label-color(variables.$error, $query: $query);
-  @include helper-text-mixins.helper-text-validation-color(variables.$error, $query: $query);
-  @include caret-color(variables.$error, $query: $query);
-  @include icon-mixins.trailing-icon-color(variables.$error, $query: $query);
-
-  + .mdc-text-field-helper-line .mdc-text-field-helper-text--validation-msg {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      opacity: 1;
-    }
-  }
-}
-
-@mixin focused_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include label-color(variables.$focused-label-color, $query: $query);
-
-  + .mdc-text-field-helper-line .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      opacity: 1;
-    }
-  }
-}
-
-@mixin required-label-asterisk_() {
-  .mdc-text-field__input:required ~ {
-    .mdc-floating-label::after,
-    .mdc-notched-outline .mdc-floating-label::after {
-      @content;
-    }
-  }
-}
-
 ///
 /// Sets shape radius of outlined text field variant.
 ///
@@ -994,91 +714,212 @@
   }
 }
 
+// Private mixins
+
+// Base shared styles
+@mixin _base($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  // Shape
+  @include shape-radius(small, $query: $query);
+
+  // Colors
+  @include label-color(variables.$label, $query: $query);
+  @include ink-color(variables.$ink-color, $query: $query);
+  @include placeholder-color(variables.$placeholder-ink-color, $query: $query);
+  @include caret-color(primary, $query: $query);
+  @include helper-text-mixins.helper-text-color(variables.$helper-text-color, $query: $query);
+  @include character-counter-mixins.character-counter-color(variables.$helper-text-color, $query: $query);
+  @include icon-mixins.leading-icon-color(variables.$icon-color, $query: $query);
+  @include icon-mixins.trailing-icon-color(variables.$icon-color, $query: $query);
+  @include prefix-color(variables.$affix-color, $query: $query);
+  @include suffix-color(variables.$affix-color, $query: $query);
+
+  // Floating Label
+  @include floating-label_($query);
+
+  // Structural
+  @include padding-horizontal_(
+    variables.$padding-horizontal,
+    0,
+    0,
+    $query: $query
+  );
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    // display and align-items are necessary to make the text field participate
+    // in baseline alignment, even though some variants are "centered". Those
+    // variants should use the _baseline-center-aligned() mixin
+    display: inline-flex;
+    align-items: baseline;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    /* @alternate */
+    will-change: opacity, transform, color;
+  }
+}
+
+// This mixin adds styles to visually center the text within the text field.
+// Sibling text will align to the baseline and appear centered next to the
+// text field.
+@mixin _baseline-center-aligned($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    // In order for a flexbox container to participate in baseline alignment,
+    // it follows these rules to determine where its baseline is:
+    // https://www.w3.org/TR/css-flexbox-1/#flex-baselines
+    //
+    // In order to avoid leading icons "controlling" the baseline (since they
+    // are the first child), flexbox will generate a baseline from any child
+    // flex items that participate in baseline alignment.
+    //
+    // Icons are set to "align-self: center", while all other children are
+    // aligned to baseline. The next problem is deciding which child is
+    // used to determine the baseline.
+    //
+    // According to spec, the item with the largest distance between its
+    // baseline and the edge of the cross axis is placed flush with that edge,
+    // making it the baseline of the container.
+    // https://www.w3.org/TR/css-flexbox-1/#baseline-participation
+    //
+    // For the filled variant, the pseudo ::before strut is the "largest"
+    // child since the input has a height of 28px and the strut is 40px. We
+    // can emulate center alignment and force the baseline to use the input
+    // text by making the input the full height of the container and removing
+    // the baseline strut.
+
+    // IE11 does not respect this, and makes the leading icon (if present) the
+    // baseline. This is a gap with IE11 that we have accepted.
+    .mdc-text-field__input {
+      height: 100%;
+    }
+  }
+}
+
+/// Adds horizontal padding to the text field
+///
+/// @param {Number} $padding - left and right-side padding
+/// @param {Number} $left-with-leading-icon - left-side padding when a leading
+///     icon is present
+/// @param {Number} $right-with-trailing-icon - right-side padding when a
+///     trailing icon is present
+@mixin padding-horizontal_(
+  $padding,
+  $left-with-leading-icon,
+  $right-with-trailing-icon,
+  $query: feature-targeting-functions.all()
+) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    padding: 0 $padding;
+
+    &.mdc-text-field--with-leading-icon {
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $left-with-leading-icon,
+        $padding
+      );
+    }
+
+    &.mdc-text-field--with-trailing-icon {
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $padding,
+        $right-with-trailing-icon
+      );
+    }
+
+    &.mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon {
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $left-with-leading-icon,
+        $right-with-trailing-icon
+      );
+    }
+  }
+}
+
 @mixin floating-label_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-floating-label {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, variables.$label-offset);
-
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
     }
   }
+}
 
-  // Include these mixins to override above `transform` property.
-  //TODO: Remove these from here when floating label is center aligned in all position - this lowers specificity.
-  @include floating-label-mixins.float-position(variables.$label-position-y, $query: $query);
+// Filled
 
-  &--textarea {
-    .mdc-floating-label {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-position(left, notched-outline-variables.$padding);
-      }
+@mixin _filled($query: feature-targeting-functions.all()) {
+  // Text Field intentionally omits press ripple, so each state needs to be specified individually.
+  @include ripple-mixins.states-base-color(variables.$ink-color, $query: $query, $ripple-target: variables.$ripple-target);
+  @include ripple-mixins.states-hover-opacity(ripple-functions.states-opacity(variables.$ink-color, hover), $query: $query, $ripple-target: variables.$ripple-target);
+  @include ripple-mixins.states-focus-opacity(ripple-functions.states-opacity(variables.$ink-color, focus), $query: $query, $ripple-target: variables.$ripple-target);
+
+  @include height(variables.$height, $query: $query);
+  @include typography-mixins.baseline-top(variables.$filled-baseline-top, $query: $query);
+  @include fill-color(variables.$background, $query: $query);
+  @include bottom-line-color(variables.$bottom-line-idle, $query: $query);
+  @include hover-bottom-line-color(variables.$bottom-line-hover, $query: $query);
+  @include line-ripple-color_(primary, $query: $query);
+  @include _filled-floating-label($query);
+}
+
+@mixin _filled-floating-label($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-floating-label {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-position(left, variables.$label-offset);
     }
   }
 
-  &--outlined {
+  @include floating-label-mixins.float-position(variables.$label-position-y, $query: $query);
+}
+
+// Filled variant with no label. This variant centers the text elements and
+// hides the label and is used with there is explicitly no label provided or
+// when the height of the text field is too small for a label to be allowed.
+@mixin _filled-no-label($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include _baseline-center-aligned($query);
+  @include feature-targeting-mixins.targets($feat-structure) {
     .mdc-floating-label {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-position(left, notched-outline-variables.$padding);
-      }
+      display: none;
     }
 
-    &--with-leading-icon {
-      $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
-      .mdc-floating-label {
-        @include feature-targeting-mixins.targets($feat-structure) {
-          @include rtl-mixins.reflexive-position(left, ($icon-padding - notched-outline-variables.$leading-width));
-        }
-
-        &--float-above {
-          @include feature-targeting-mixins.targets($feat-structure) {
-            @include rtl-mixins.reflexive-position(
-              left,
-              ($icon-padding - notched-outline-variables.$leading-width) + notched-outline-variables.$padding
-            );
-          }
-        }
-      }
+    &::before {
+      // Remove baseline-top strut
+      display: none;
     }
   }
 }
 
 // Outlined
 
-@mixin outlined-disabled_($query: feature-targeting-functions.all()) {
-  @include notched-outline-mixins.color(variables.$outlined-disabled-border, $query: $query);
-  @include fill-color_(transparent, $query);
-
-  @media screen and (-ms-high-contrast: active) {
-    @include notched-outline-mixins.color(GrayText, $query: $query);
-  }
-}
-
-@mixin outlined-invalid_($query: feature-targeting-functions.all()) {
-  @include outline-color(variables.$error, $query: $query);
-  @include hover-outline-color(variables.$error, $query: $query);
-  @include focused-outline-color(variables.$error, $query: $query);
-}
-
-@mixin outlined-focused_($query: feature-targeting-functions.all()) {
-  @include notched-outline-mixins.stroke-width(variables.$outlined-stroke-width, $query: $query);
-}
-
 @mixin outlined_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
+  @include outlined-height(
+    $height: variables.$height,
+    $keyframe-suffix: text-field-outlined,
+    $query: $query
+  );
+  @include _baseline-center-aligned($query: $query);
   @include outline-color(variables.$outlined-idle-border, $query: $query);
   @include hover-outline-color(variables.$outlined-hover-border, $query: $query);
   @include focused-outline-color(primary, $query: $query);
-  @include floating-label-mixins.shake-animation(text-field-outlined, $query: $query);
   @include outline-shape-radius(small, $query: $query);
-  @include notched-outline-mixins.floating-label-float-position-absolute(variables.$outlined-label-position-y, $query: $query);
   @include notched-outline-mixins.notch-offset(notched-outline-variables.$border-width, $query: $query);
   @include ripple-mixins.states-base-color(transparent, $query: $query, $ripple-target: variables.$ripple-target);
-  @include fill-color(transparent, $query: $query);
+  @include _outlined-floating-label($query);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     overflow: visible;
@@ -1086,6 +927,7 @@
 
   .mdc-text-field__input {
     @include feature-targeting-mixins.targets($feat-structure) {
+      // TODO(b/154349735): Investigate the neccessity of these styles
       display: flex;
       border: none !important; // FF adds unwanted border in HC mode on windows.
       background-color: transparent;
@@ -1104,17 +946,100 @@
   }
 }
 
-@mixin hover-outline-color_($color, $query: feature-targeting-functions.all()) {
-  &:not(.mdc-text-field--focused):hover {
-    .mdc-notched-outline {
-      @include notched-outline-mixins.color($color, $query: $query);
+@mixin _outlined-floating-label($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-floating-label {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-position(left, notched-outline-variables.$padding);
     }
   }
 }
 
-@mixin focused-outline-color_($color, $query: feature-targeting-functions.all()) {
-  &.mdc-text-field--focused {
-    @include notched-outline-mixins.color($color, $query: $query);
+// States
+
+@mixin disabled_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include ink-color_(variables.$disabled-ink-color, $query: $query);
+  @include placeholder-color_(variables.$disabled-placeholder-ink-color, $query: $query);
+  @include label-ink-color_(variables.$disabled-label-color, $query: $query);
+  @include helper-text-mixins.helper-text-color_(variables.$disabled-helper-text-color, $query: $query);
+  @include character-counter-mixins.character-counter-color_(variables.$disabled-helper-text-color, $query: $query);
+  @include icon-mixins.leading-icon-color_(variables.$disabled-icon, $query: $query);
+  @include icon-mixins.trailing-icon-color_(variables.$disabled-icon, $query: $query);
+  @include _prefix-color(variables.$disabled-affix-color, $query: $query);
+  @include _suffix-color(variables.$disabled-affix-color, $query: $query);
+
+  // Mixins that are ok to include since they target variant-specific elements
+  @include bottom-line-color_(variables.$disabled-border, $query: $query);
+  @include notched-outline-mixins.color(variables.$outlined-disabled-border, $query: $query);
+
+  @media screen and (-ms-high-contrast: active) {
+    @include placeholder-color_(GrayText, $query: $query);
+    @include label-ink-color_(GrayText, $query: $query);
+    @include helper-text-mixins.helper-text-color_(GrayText, $query: $query);
+    @include character-counter-mixins.character-counter-color_(GrayText, $query: $query);
+    @include icon-mixins.leading-icon-color_(GrayText, $query: $query);
+    @include icon-mixins.trailing-icon-color_(GrayText, $query: $query);
+    @include _prefix-color(GrayText, $query: $query);
+    @include _suffix-color(GrayText, $query: $query);
+
+    // Mixins that are ok to include since they target variant-specific elements
+    @include bottom-line-color_(GrayText, $query: $query);
+    @include notched-outline-mixins.color(GrayText, $query: $query);
+  }
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    pointer-events: none;
+  }
+
+  .mdc-floating-label {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      cursor: default;
+    }
+  }
+}
+
+@mixin _disabled-filled($query: feature-targeting-functions.all()) {
+  @include fill-color_(variables.$disabled-background, $query: $query);
+}
+
+@mixin invalid_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include hover-bottom-line-color(variables.$error, $query: $query);
+  @include line-ripple-color(variables.$error, $query: $query);
+  @include label-color(variables.$error, $query: $query);
+  @include helper-text-mixins.helper-text-validation-color(variables.$error, $query: $query);
+  @include caret-color(variables.$error, $query: $query);
+  @include icon-mixins.trailing-icon-color(variables.$error, $query: $query);
+
+  // Mixins that are ok to include since they target variant-specific elements
+  @include bottom-line-color(variables.$error, $query: $query);
+  @include outline-color(variables.$error, $query: $query);
+  @include hover-outline-color(variables.$error, $query: $query);
+  @include focused-outline-color(variables.$error, $query: $query);
+
+  + .mdc-text-field-helper-line .mdc-text-field-helper-text--validation-msg {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin focused_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include label-color(variables.$focused-label-color, $query: $query);
+
+  // Mixins that are ok to include since they target variant-specific elements
+  @include notched-outline-mixins.stroke-width(variables.$outlined-stroke-width, $query: $query);
+
+  + .mdc-text-field-helper-line .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      opacity: 1;
+    }
   }
 }
 
@@ -1135,28 +1060,26 @@
 @mixin outlined-with-leading-icon_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include notched-outline-mixins.floating-label-float-position-absolute(
-    variables.$outlined-label-position-y,
-    32px,
-    $query: $query
-  );
-  @include floating-label-mixins.shake-animation(text-field-outlined-leading-icon, $query: $query);
-
-  @include rtl-mixins.rtl {
-    @include floating-label-mixins.shake-animation(text-field-outlined-leading-icon-rtl, $query: $query);
-  }
-
+  // Resting label position
   $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
-  $notch-truncation: $icon-padding + notched-outline-variables.$leading-width;
   $left-spacing: $icon-padding - notched-outline-variables.$leading-width;
-
-  @include notched-outline-mixins.notch-max-width(calc(100% - #{$notch-truncation}), $query: $query);
 
   .mdc-floating-label {
     @include feature-targeting-mixins.targets($feat-structure) {
       @include rtl-mixins.reflexive-position(left, $left-spacing);
     }
   }
+
+  // Notch width
+  $notch-truncation: $icon-padding + notched-outline-variables.$leading-width;
+  @include notched-outline-mixins.notch-max-width(calc(100% - #{$notch-truncation}), $query: $query);
+
+  // Floating label position and animation
+  @include _outlined-with-leading-icon-floating-label-position-animation(
+    $height: variables.$height,
+    $keyframe-suffix: text-field-outlined-leading-icon,
+    $query: $query
+  );
 }
 
 // Full Width
@@ -1172,6 +1095,7 @@
   }
 
   &:not(.mdc-text-field--textarea) {
+    @include _filled-no-label($query);
     @include ripple-mixins.states-base-color(transparent, $query: $query, $ripple-target: variables.$ripple-target);
     @include fill-color(transparent, $query: $query);
 
@@ -1187,21 +1111,7 @@
   }
 }
 
-@mixin fullwidth-invalid_($query: feature-targeting-functions.all()) {
-  @include bottom-line-color(variables.$error, $query);
-}
-
 // Textarea
-@mixin textarea-disabled_($query: feature-targeting-functions.all()) {
-  @include outlined-disabled_($query);
-  @include fill-color_(variables.$textarea-disabled-background, $query, true);
-}
-
-@mixin textarea-invalid_($query: feature-targeting-functions.all()) {
-  @include outline-color(variables.$error, $query: $query);
-  @include hover-outline-color(variables.$error, $query: $query);
-  @include focused-outline-color(variables.$error, $query: $query);
-}
 
 @mixin textarea_($query: feature-targeting-functions.all()) {
   // Note: The refactor to add the filled textarea style will result in a lot of the specificity issues that the
@@ -1209,12 +1119,11 @@
   @include outline-color(variables.$outlined-idle-border, $query: $query);
   @include hover-outline-color(variables.$outlined-hover-border, $query: $query);
   @include focused-outline-color(primary, $query: $query);
-  @include floating-label-mixins.shake-animation(textarea, $query: $query);
   @include outline-shape-radius(small, $query: $query);
   @include ripple-mixins.states-base-color(transparent, $query: $query, $ripple-target: variables.$ripple-target);
   @include fill-color(transparent, $query: $query);
-  @include notched-outline-mixins.floating-label-float-position(variables.$textarea-label-position-y, $query: $query);
   @include character-counter-mixins.character-counter-position(16px, 13px, $query: $query);
+  @include _textarea-floating-label($query);
 
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $feat-animation: feature-targeting-functions.create-target($query, animation);
@@ -1234,6 +1143,7 @@
 
   .mdc-text-field__input {
     @include feature-targeting-mixins.targets($feat-structure) {
+      height: auto;
       align-self: stretch;
       box-sizing: border-box;
       // Top margin is used to keep the text from overlapping the floating label
@@ -1258,12 +1168,18 @@
       padding-bottom: 0;
     }
   }
+}
 
+@mixin _textarea-floating-label($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  // Resting label position
   .mdc-floating-label {
     @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-position(left, notched-outline-variables.$padding);
+
       top: 17px;
       width: auto;
-      pointer-events: none;
     }
 
     // Resets center aligning the floating label.
@@ -1274,9 +1190,17 @@
     }
   }
 
-  &.mdc-text-field--focused {
-    @include outlined-focused_($query);
-  }
+  // Floating label position
+  @include notched-outline-mixins.floating-label-float-position(variables.$textarea-label-position-y, $query: $query);
+
+  // Floating label animation
+  @include floating-label-mixins.shake-animation(textarea, $query: $query);
+  @include floating-label-mixins.shake-keyframes(
+    textarea,
+    variables.$textarea-label-position-y,
+    0%,
+    $query: $query
+  );
 }
 
 // Text, Prefix and Suffix
@@ -1295,6 +1219,67 @@
 
   @include feature-targeting-mixins.targets($feat-animation) {
     transition: functions.transition(opacity);
+  }
+}
+
+@mixin _input($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include _text($query: $query);
+  @include feature-targeting-mixins.targets($feat-structure) {
+    width: 100%;
+    min-width: 0; // Fixes flex issues on Firefox
+    border: none;
+    border-radius: 0;
+    background: none;
+    appearance: none;
+    padding: 0;
+
+    // Remove built-in trailing clear icon on IE11
+    &::-ms-clear {
+      display: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    // Remove red outline on firefox
+    &:invalid {
+      box-shadow: none;
+    }
+
+    // Keep Chrome autofill behind the notched outline
+    &:-webkit-autofill {
+      z-index: auto !important;
+    }
+  }
+}
+
+@mixin _input-placeholder($query: feature-targeting-functions.all()) {
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-animation) {
+    transition: functions.transition(opacity, $duration: 67ms);
+  }
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    opacity: 0;
+  }
+}
+
+@mixin _input-placeholder-visible($query: feature-targeting-functions.all()) {
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-animation) {
+    transition-delay: 40ms;
+    transition-duration: 110ms;
+  }
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    opacity: 1;
   }
 }
 
@@ -1505,6 +1490,20 @@
   }
 }
 
+@mixin hover-outline-color_($color, $query: feature-targeting-functions.all()) {
+  &:not(.mdc-text-field--focused):hover {
+    .mdc-notched-outline {
+      @include notched-outline-mixins.color($color, $query: $query);
+    }
+  }
+}
+
+@mixin focused-outline-color_($color, $query: feature-targeting-functions.all()) {
+  &.mdc-text-field--focused {
+    @include notched-outline-mixins.color($color, $query: $query);
+  }
+}
+
 @mixin label-ink-color_($color, $query: feature-targeting-functions.all()) {
   .mdc-floating-label {
     @include floating-label-mixins.ink-color($color, $query: $query);
@@ -1532,6 +1531,15 @@
 }
 
 // Selectors
+
+@mixin required-label-asterisk_() {
+  .mdc-text-field__input:required ~ {
+    .mdc-floating-label::after,
+    .mdc-notched-outline .mdc-floating-label::after {
+      @content;
+    }
+  }
+}
 
 @mixin placeholder-selector_ {
   // GSS will combine selectors with the same content, and some browsers have a
