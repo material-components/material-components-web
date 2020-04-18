@@ -76,6 +76,22 @@ By default, the input will be positioned before the label. You can position the 
 </div>
 ```
 
+### Nowrap
+
+If the label text is too long for a single line, it will wrap the text by default. You can force the text to stay on a single line and ellipse the overflow text by adding the `mdc-form-field--nowrap` class:
+
+```html
+<div class="mdc-form-field mdc-form-field--nowrap">
+  <div class="mdc-checkbox">
+    <input type="checkbox" id="my-checkbox" class="mdc-checkbox__native-control"/>
+    <div class="mdc-checkbox__background">
+      ...
+    </div>
+  </div>
+  <label for="my-checkbox">This some really really really long text</label>
+</div>
+```
+
 ## `MDCFormField` Properties and Methods
 
 Property | Value Type | Description

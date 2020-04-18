@@ -55,6 +55,16 @@
     }
   }
 
+  .mdc-form-field--nowrap {
+    > label {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+  }
+
   .mdc-form-field--align-end {
     // stylelint-disable-next-line selector-max-type
     > label {
