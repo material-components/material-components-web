@@ -46,42 +46,8 @@ The select requires that you set the `width` of the `mdc-select__anchor` element
 
 ### HTML
 
-```html
-<div class="mdc-select">
-  <div class="mdc-select__anchor demo-width-class">
-    <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text"></div>
-    <span class="mdc-floating-label">Pick a Food Group</span>
-    <span class="mdc-line-ripple"></span>
-  </div>
-
-  <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
-    <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
-      <li class="mdc-list-item" data-value="grains">
-        <span class="mdc-list-item__text">
-          Bread, Cereal, Rice, and Pasta
-        </span>
-      </li>
-      <li class="mdc-list-item" data-value="vegetables">
-        <span class="mdc-list-item__text">
-          Vegetables
-        </span>
-      </li>
-      <li class="mdc-list-item" data-value="fruit">
-        <span class="mdc-list-item__text">
-          Fruit
-        </span>
-      </li>
-    </ul>
-  </div>
-</div>
-```
-
-#### Accessibility Requirements
-
-To meet WCAG and ARIA standards, and to be compatible with assistive technology like screen readers, follow the WAI-ARIA recommendations for
-[Collapsible Dropdown Listbox](https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html).
+The HTML for the select component follows the WAI-ARIA recommendations for
+[Collapsible Dropdown Listboxes](https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html) in order to meet WCAG and ARIA accessibility standards, and to be compatible with assistive technology like screen readers.
 
 The following example applies ARIA attributes that provide the semantic structure required for assistive technology:
 
@@ -89,7 +55,13 @@ The following example applies ARIA attributes that provide the semantic structur
 <div class="mdc-select">
   <div class="mdc-select__anchor">
     <i class="mdc-select__dropdown-icon"></i>
-    <div id="demo-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-selected-text">Vegetables</div>
+     <div id="demo-selected-text" 
+      class="mdc-select__selected-text"
+      role="button"
+      aria-haspopup="listbox"
+      aria-labelledby="demo-label demo-selected-text">
+      Vegetables <!-- This element is the menu's "trigger" -->
+    </div>
     <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
