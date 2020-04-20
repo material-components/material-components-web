@@ -40,6 +40,10 @@ function setupTest() {
   return {foundation, mockAdapter};
 }
 
+interface WithIsOpen {
+  isOpen_: boolean;
+}
+
 // Various anchor dimensions.
 interface AnchorDimension {
   height: number;
@@ -277,6 +281,15 @@ describe('MDCMenuSurfaceFoundation', () => {
         foundation.setQuickOpen(true);
         foundation.open();
         expect(mockAdapter.notifyOpen).toHaveBeenCalled();
+      });
+
+  testFoundation(
+      '#open does not emit event when already closed',
+      ({foundation, mockAdapter}) => {
+        foundation.setQuickOpen(true);
+        foundation.open();
+        foundation.open();
+        expect(mockAdapter.notifyOpen).toHaveBeenCalledTimes(1);
       });
 
   /** Testing various layout cases for autopositioning */
@@ -839,6 +852,7 @@ describe('MDCMenuSurfaceFoundation', () => {
   testFoundation(
       '#close adds the animation class to start an animation',
       ({foundation, mockAdapter}) => {
+        (foundation as unknown as WithIsOpen).isOpen_ = true;
         foundation.close();
         expect(mockAdapter.addClass)
             .toHaveBeenCalledWith(cssClasses.ANIMATING_CLOSED);
@@ -858,6 +872,7 @@ describe('MDCMenuSurfaceFoundation', () => {
   testFoundation(
       '#close removes the open class from the menu surface',
       ({foundation, mockAdapter}) => {
+        (foundation as unknown as WithIsOpen).isOpen_ = true;
         foundation.close();
         jasmine.clock().tick(1);  // Run to frame.
         jasmine.clock().tick(1);  // Run to frame.
@@ -867,6 +882,7 @@ describe('MDCMenuSurfaceFoundation', () => {
   testFoundation(
       '#close removes the animation class at the end of the animation',
       ({foundation, mockAdapter}) => {
+        (foundation as unknown as WithIsOpen).isOpen_ = true;
         foundation.close();
         jasmine.clock().tick(1);  // Run to frame.
         jasmine.clock().tick(1);  // Run to frame.
@@ -882,6 +898,7 @@ describe('MDCMenuSurfaceFoundation', () => {
   testFoundation(
       '#close emits the close event at the end of the animation',
       ({foundation, mockAdapter}) => {
+        (foundation as unknown as WithIsOpen).isOpen_ = true;
         foundation.close();
         jasmine.clock().tick(1);  // Run to frame.
         jasmine.clock().tick(1);  // Run to frame.
@@ -893,14 +910,24 @@ describe('MDCMenuSurfaceFoundation', () => {
   testFoundation(
       '#close emits the close event when quickOpen is true',
       ({foundation, mockAdapter}) => {
+        (foundation as unknown as WithIsOpen).isOpen_ = true;
         foundation.setQuickOpen(true);
         foundation.close();
         expect(mockAdapter.notifyClose).toHaveBeenCalled();
       });
 
   testFoundation(
+      '#close does not emit event when already closed',
+      ({foundation, mockAdapter}) => {
+        foundation.setQuickOpen(true);
+        foundation.close();
+        expect(mockAdapter.notifyClose).toHaveBeenCalledTimes(0);
+      });
+
+  testFoundation(
       '#close causes restoreFocus to be called if the menu-surface has focus',
       ({foundation, mockAdapter}) => {
+        (foundation as unknown as WithIsOpen).isOpen_ = true;
         mockAdapter.isFocused.and.returnValue(true);
         foundation.setQuickOpen(true);
         foundation.close();
@@ -910,6 +937,7 @@ describe('MDCMenuSurfaceFoundation', () => {
   testFoundation(
       '#close causes restoreFocus to be called if an element within the menu-surface has focus',
       ({foundation, mockAdapter}) => {
+        (foundation as unknown as WithIsOpen).isOpen_ = true;
         mockAdapter.isFocused.and.returnValue(false);
         mockAdapter.isElementInContainer.withArgs(jasmine.anything())
             .and.returnValue(true);
@@ -967,6 +995,7 @@ describe('MDCMenuSurfaceFoundation', () => {
        const target = {};
        const event = {target, key: 'Escape'};
 
+       (foundation as unknown as WithIsOpen).isOpen_ = true;
        foundation.init();
        foundation.handleKeydown(event);
        jasmine.clock().tick(1);  // Run to frame.

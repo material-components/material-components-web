@@ -189,6 +189,10 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
    * Open the menu surface.
    */
   open() {
+    if (this.isOpen_) {
+      return;
+    }
+
     this.adapter_.saveFocus();
 
     if (this.isQuickOpen_) {
@@ -219,6 +223,10 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
    * Closes the menu surface.
    */
   close(skipRestoreFocus = false) {
+    if (!this.isOpen_) {
+      return;
+    }
+
     if (this.isQuickOpen_) {
       this.isOpen_ = false;
       if (!skipRestoreFocus) {
