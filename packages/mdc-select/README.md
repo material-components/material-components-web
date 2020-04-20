@@ -89,7 +89,7 @@ The following example applies ARIA attributes that provide the semantic structur
 <div class="mdc-select">
   <div class="mdc-select__anchor">
     <i class="mdc-select__dropdown-icon"></i>
-    <div id="demo-select-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-select-text">Vegetables</div>
+    <div id="demo-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-selected-text">Vegetables</div>
     <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
