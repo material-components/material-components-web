@@ -21,6 +21,10 @@
  * THE SOFTWARE.
  */
 
+// Style preference for trailing underscores.
+// tslint:disable:strip-private-property-underscore
+// tslint:disable:strip-private-method-underscore
+
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
@@ -95,6 +99,22 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   private animationRequestId_ = 0;
 
   private anchorCorner_: Corner = Corner.TOP_START;
+
+  /**
+   * Corner of the menu surface to which menu surface is attached to anchor.
+   *
+   *  Anchor corner --->+----------+
+   *                    |  ANCHOR  |
+   *                    +----------+
+   *  Origin corner --->+--------------+
+   *                    |              |
+   *                    |              |
+   *                    | MENU SURFACE |
+   *                    |              |
+   *                    |              |
+   *                    +--------------+
+   */
+  private readonly originCorner_: Corner = Corner.TOP_LEFT;
   private anchorMargin_: MDCMenuDistance = {top: 0, right: 0, bottom: 0, left: 0};
   private position_: MDCMenuPoint = {x: 0, y: 0};
 
@@ -325,43 +345,75 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   }
 
   /**
-   * Computes the corner of the anchor from which to animate and position the menu surface.
+   * Computes the corner of the anchor from which to animate and position the
+   * menu surface.
+   *
+   * Only LEFT or RIGHT bit is used to position the menu surface ignoring RTL
+   * context. E.g., menu surface will be positioned from right side on TOP_END.
    */
   private getOriginCorner_(): Corner {
-    // Defaults: open from the top left.
-    let corner = Corner.TOP_LEFT;
+    let corner = this.originCorner_;
 
     const {viewportDistance, anchorSize, surfaceSize} = this.measurements_;
     const {MARGIN_TO_EDGE} = MDCMenuSurfaceFoundation.numbers;
 
-    const isBottomAligned = this.hasBit_(this.anchorCorner_, CornerBit.BOTTOM);
-    const availableTop = isBottomAligned ? viewportDistance.top - MARGIN_TO_EDGE + anchorSize.height + this.anchorMargin_.bottom
-        : viewportDistance.top - MARGIN_TO_EDGE + this.anchorMargin_.top;
-    const availableBottom = isBottomAligned ? viewportDistance.bottom - MARGIN_TO_EDGE - this.anchorMargin_.bottom
-        : viewportDistance.bottom - MARGIN_TO_EDGE + anchorSize.height - this.anchorMargin_.top;
+    const isAnchoredToBottom =
+        this.hasBit_(this.anchorCorner_, CornerBit.BOTTOM);
 
-    const topOverflow = surfaceSize.height - availableTop;
-    const bottomOverflow = surfaceSize.height - availableBottom;
-    if (bottomOverflow > 0 && topOverflow < bottomOverflow) {
+    let availableTop;
+    let availableBottom;
+    if (isAnchoredToBottom) {
+      availableTop = viewportDistance.top - MARGIN_TO_EDGE + anchorSize.height +
+          this.anchorMargin_.bottom;
+      availableBottom =
+          viewportDistance.bottom - MARGIN_TO_EDGE - this.anchorMargin_.bottom;
+    } else {
+      availableTop =
+          viewportDistance.top - MARGIN_TO_EDGE + this.anchorMargin_.top;
+      availableBottom = viewportDistance.bottom - MARGIN_TO_EDGE +
+          anchorSize.height - this.anchorMargin_.top;
+    }
+
+    const isAvailableBottom = availableBottom - surfaceSize.height > 0;
+    if (!isAvailableBottom && availableTop >= availableBottom) {
+      // Attach bottom side of surface to the anchor.
       corner = this.setBit_(corner, CornerBit.BOTTOM);
     }
 
     const isRtl = this.adapter_.isRtl();
     const isFlipRtl = this.hasBit_(this.anchorCorner_, CornerBit.FLIP_RTL);
-    const avoidHorizontalOverlap = this.hasBit_(this.anchorCorner_, CornerBit.RIGHT);
-    const isAlignedRight = (avoidHorizontalOverlap && !isRtl) ||
-        (!avoidHorizontalOverlap && isFlipRtl && isRtl);
-    const availableLeft = isAlignedRight ? viewportDistance.left + anchorSize.width + this.anchorMargin_.right :
-        viewportDistance.left + this.anchorMargin_.left;
-    const availableRight = isAlignedRight ? viewportDistance.right - this.anchorMargin_.right :
-        viewportDistance.right + anchorSize.width - this.anchorMargin_.left;
+    const hasRightBit = this.hasBit_(this.anchorCorner_, CornerBit.RIGHT);
 
-    const leftOverflow = surfaceSize.width - availableLeft;
-    const rightOverflow = surfaceSize.width - availableRight;
+    // Whether surface attached to right side of anchor element.
+    let isAnchoredToRight = false;
 
-    if ((leftOverflow < 0 && isAlignedRight && isRtl) ||
-        (avoidHorizontalOverlap && !isAlignedRight && leftOverflow < 0) ||
-        (rightOverflow > 0 && leftOverflow < rightOverflow)) {
+    // Anchored to start
+    if (isRtl && isFlipRtl) {
+      isAnchoredToRight = !hasRightBit;
+    } else {
+      // Anchored to right
+      isAnchoredToRight = hasRightBit;
+    }
+
+    let availableLeft;
+    let availableRight;
+    if (isAnchoredToRight) {
+      availableLeft =
+          viewportDistance.left + anchorSize.width + this.anchorMargin_.right;
+      availableRight = viewportDistance.right - this.anchorMargin_.right;
+    } else {
+      availableLeft = viewportDistance.left + this.anchorMargin_.left;
+      availableRight =
+          viewportDistance.right + anchorSize.width - this.anchorMargin_.left;
+    }
+
+    const isAvailableLeft = availableLeft - surfaceSize.width > 0;
+    const isAvailableRight = availableRight - surfaceSize.width > 0;
+
+    if (isAvailableLeft && isAnchoredToRight && isRtl ||
+        (isAvailableLeft && !isAnchoredToRight && hasRightBit) ||
+        (!isAvailableRight && availableLeft >= availableRight)) {
+      // Attach right side of surface to the anchor.
       corner = this.setBit_(corner, CornerBit.RIGHT);
     }
 
