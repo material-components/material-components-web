@@ -114,7 +114,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
    *                    |              |
    *                    +--------------+
    */
-  private readonly originCorner_: Corner = Corner.TOP_LEFT;
+  private originCorner_: Corner = Corner.TOP_START;
   private anchorMargin_: MDCMenuDistance = {top: 0, right: 0, bottom: 0, left: 0};
   private position_: MDCMenuPoint = {x: 0, y: 0};
 
@@ -149,6 +149,13 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
    */
   setAnchorCorner(corner: Corner) {
     this.anchorCorner_ = corner;
+  }
+
+  /**
+   * Flip menu corner horizontally.
+   */
+  flipCornerHorizontally() {
+    this.originCorner_ = this.originCorner_ ^ CornerBit.RIGHT;
   }
 
   /**
@@ -417,8 +424,16 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
     const isAvailableLeft = availableLeft - surfaceSize.width > 0;
     const isAvailableRight = availableRight - surfaceSize.width > 0;
+    const isOriginCornerAlignedToEnd =
+        this.hasBit_(corner, CornerBit.FLIP_RTL) &&
+        this.hasBit_(corner, CornerBit.RIGHT);
 
-    if (isAvailableLeft && isAnchoredToRight && isRtl ||
+    if (isAvailableRight && isOriginCornerAlignedToEnd && isRtl ||
+        !isAvailableLeft && isOriginCornerAlignedToEnd) {
+      // Attach left side of surface to the anchor.
+      corner = this.unsetBit_(corner, CornerBit.RIGHT);
+    } else if (
+        isAvailableLeft && isAnchoredToRight && isRtl ||
         (isAvailableLeft && !isAnchoredToRight && hasRightBit) ||
         (!isAvailableRight && availableLeft >= availableRight)) {
       // Attach right side of surface to the anchor.
@@ -552,6 +567,10 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
   private setBit_(corner: Corner, bit: CornerBit): Corner {
     return corner | bit; // tslint:disable-line:no-bitwise
+  }
+
+  private unsetBit_(corner: Corner, bit: CornerBit): Corner {
+    return corner ^ bit;
   }
 
   /**
