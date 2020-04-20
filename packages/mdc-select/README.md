@@ -78,6 +78,45 @@ The select requires that you set the `width` of the `mdc-select__anchor` element
 </div>
 ```
 
+#### Accessibility Requirements
+
+To meet WCAG and ARIA standards, and to be compatible with assistive technology like screen readers, follow the WAI-ARIA recommendations for
+[Collapsible Dropdown Listbox](https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html).
+
+The following example applies ARIA attributes that provide the semantic structure required for assistive technology:
+
+```html
+<div class="mdc-select">
+  <div class="mdc-select__anchor">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div id="demo-select-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-select-text">Vegetables</div>
+    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
+    <span class="mdc-line-ripple"></span>
+  </div>
+
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+    <ul class="mdc-list" role="listbox" aria-labelledby="demo-label">
+      <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="" role="option"></li>
+      <li class="mdc-list-item" data-value="grains" role="option">
+        <span class="mdc-list-item__text">
+          Bread, Cereal, Rice, and Pasta
+        </span>
+      </li>
+      <li class="mdc-list-item mdc-list-item--disabled" data-value="vegetables" aria-disabled="true" role="option">
+        <span class="mdc-list-item__text">
+          Vegetables
+        </span>
+      </li>
+      <li class="mdc-list-item" data-value="fruit" role="option">
+        <span class="mdc-list-item__text">
+          Fruit
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+```
+
 ### Styles
 
 When using the select, you will also need to load the Menu and List components' styles.
@@ -107,43 +146,7 @@ select.listen('MDCSelect:change', () => {
 
 See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
-#### Accessibility (a11y)
 
-In order to have an accessible component for users, it's recommended that you follow the WAI-ARIA example for
-[Collapsible Dropdown Listbox](https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html).
-The following is an example of the select component with all of the necessary aria attributes.
-
-```html
-<div class="mdc-select">
-  <div class="mdc-select__anchor">
-    <i class="mdc-select__dropdown-icon"></i>
-    <div id="demo-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-selected-text">Vegetables</div>
-    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-    <span class="mdc-line-ripple"></span>
-  </div>
-
-  <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
-    <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="" role="option"></li>
-      <li class="mdc-list-item" data-value="grains" role="option">
-        <span class="mdc-list-item__text">
-          Bread, Cereal, Rice, and Pasta
-        </span>
-      </li>
-      <li class="mdc-list-item mdc-list-item--disabled" data-value="vegetables" aria-disabled="true" role="option">
-        <span class="mdc-list-item__text">
-          Vegetables
-        </span>
-      </li>
-      <li class="mdc-list-item" data-value="fruit" role="option">
-        <span class="mdc-list-item__text">
-          Fruit
-        </span>
-      </li>
-    </ul>
-  </div>
-</div>
-```
 
 ## Variants
 
