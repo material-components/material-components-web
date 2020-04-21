@@ -213,8 +213,28 @@ See [here](character-counter/) for more information on using character counter.
 
 ### Multi-line text field (textarea) with character counter
 
-The layout structure of character counter for multi-line text field (textarea) is slightly different since it is rendered
-inside of text field component.
+A character counter can be associated with a textarea by including it in the
+helper line. In this case, the counter will appear below the textarea, adjacent
+to any helper text.
+
+```html
+<label class="mdc-text-field mdc-text-field--textarea">
+  <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8"
+    cols="40" maxlength="140"></textarea>
+  <span class="mdc-notched-outline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__notch">
+      <span class="mdc-floating-label" id="my-label-id">Textarea Label</span>
+    </span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
+</label>
+<div class="mdc-text-field-helper-line">
+  <div class="mdc-text-field-character-counter">0 / 140</div>
+</div>
+```
+Alternatively, the character counter can be placed in the textarea's body by
+inserting the character counter at the top of the textarea container.
 
 ```html
 <label class="mdc-text-field mdc-text-field--textarea">
