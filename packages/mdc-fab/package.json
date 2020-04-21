@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@material/animation": "^5.1.0",
+    "@material/dom": "^5.1.0",
     "@material/elevation": "^5.1.0",
     "@material/feature-targeting": "^5.1.0",
     "@material/ripple": "^5.1.0",

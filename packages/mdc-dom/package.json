@@ -16,6 +16,7 @@
     "access": "public"
   },
   "dependencies": {
-    "tslib": "^1.9.3"
+    "tslib": "^1.9.3",
+    "@material/feature-targeting": "^5.1.0"
   }
 }
