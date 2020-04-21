@@ -23,6 +23,7 @@
 @use "sass:list";
 @use "@material/density/functions" as density-functions;
 @use "@material/floating-label/mixins" as floating-label-mixins;
+@use "@material/floating-label/variables" as floating-label-variables;
 @use "@material/line-ripple/mixins" as line-ripple-mixins;
 @use "@material/notched-outline/mixins" as notched-outline-mixins;
 @use "@material/notched-outline/variables" as notched-outline-variables;
@@ -139,6 +140,22 @@
 
     &.mdc-text-field--outlined {
       @include outlined-with-leading-icon_($query);
+    }
+  }
+
+  .mdc-text-field--with-trailing-icon {
+    &.mdc-text-field--filled {
+      @include _with-trailing-icon($query);
+    }
+
+    &.mdc-text-field--outlined {
+      @include _outlined-with-trailing-icon($query);
+    }
+  }
+
+  .mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon {
+    &.mdc-text-field--filled {
+      @include _with-leading-and-trailing-icon($query);
     }
   }
 
@@ -1048,12 +1065,45 @@
 @mixin with-leading-icon_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
-    $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
+  $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
 
-    .mdc-floating-label {
+  .mdc-floating-label {
+    @include _truncate-floating-label-max-width($icon-padding, $query: $query);
+    @include feature-targeting-mixins.targets($feat-structure) {
       @include rtl-mixins.reflexive-position(left, $icon-padding);
     }
+  }
+
+  $truncation: $icon-padding + variables.$padding-horizontal;
+
+  .mdc-floating-label--float-above {
+    @include _truncate-floating-label-floated-max-width($truncation, $query: $query);
+  }
+}
+
+@mixin _with-trailing-icon($query: feature-targeting-functions.all()) {
+  $truncation: icon-variables.$trailing-icon-padding-left + icon-variables.$icon-size + icon-variables.$trailing-icon-padding-right + variables.$label-offset;
+
+  .mdc-floating-label {
+    @include _truncate-floating-label-max-width($truncation, $query: $query);
+  }
+
+  .mdc-floating-label--float-above {
+    @include _truncate-floating-label-floated-max-width($truncation, $query: $query);
+  }
+}
+
+@mixin _with-leading-and-trailing-icon($query: feature-targeting-functions.all()) {
+  $leading-icon: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
+  $trailing-icon: icon-variables.$trailing-icon-padding-left + icon-variables.$icon-size + icon-variables.$trailing-icon-padding-right;
+  $truncation: $leading-icon + $trailing-icon;
+
+  .mdc-floating-label {
+    @include _truncate-floating-label-max-width($truncation, $query: $query);
+  }
+
+  .mdc-floating-label--float-above {
+    @include _truncate-floating-label-floated-max-width($truncation, $query: $query);
   }
 }
 
@@ -1072,7 +1122,7 @@
 
   // Notch width
   $notch-truncation: $icon-padding + notched-outline-variables.$leading-width;
-  @include notched-outline-mixins.notch-max-width(calc(100% - #{$notch-truncation}), $query: $query);
+  @include _truncate-notched-outline-max-width($notch-truncation, $query: $query);
 
   // Floating label position and animation
   @include _outlined-with-leading-icon-floating-label-position-animation(
@@ -1080,6 +1130,46 @@
     $keyframe-suffix: text-field-outlined-leading-icon,
     $query: $query
   );
+}
+
+///
+/// Applied to the outlined text field with a trailing icon
+///
+@mixin _outlined-with-trailing-icon($query: feature-targeting-functions.all()) {
+  // Resting label position
+  $icon-padding: icon-variables.$trailing-icon-padding-left + icon-variables.$icon-size + icon-variables.$trailing-icon-padding-right;
+  // Notch width
+  $notch-truncation: $icon-padding + notched-outline-variables.$leading-width;
+
+  @include _truncate-notched-outline-max-width($notch-truncation, $query: $query);
+}
+
+///
+/// Truncates the max-width of the notched outline by the given amount
+///
+/// @param {Number} $truncation - Amount to truncate the notched outline max-width
+///
+@mixin _truncate-notched-outline-max-width($truncation, $query: feature-targeting-functions.all()) {
+  @include notched-outline-mixins.notch-max-width(calc(100% - #{$truncation}), $query: $query);
+}
+
+///
+/// Truncates the max-width of the floating label by the given amount
+///
+/// @param {Number} $truncation - Amount to truncate the floating label max-width
+///
+@mixin _truncate-floating-label-max-width($truncation, $query: feature-targeting-functions.all()) {
+  @include floating-label-mixins.max-width(calc(100% - #{$truncation}), $query: $query);
+}
+
+///
+/// Truncates the max-width of the floating label by the given amount while scaling by the given scale value
+///
+/// @param {Number} $truncation - Amount to truncate the floating label max-width
+///
+@mixin _truncate-floating-label-floated-max-width($truncation, $query: feature-targeting-functions.all()) {
+  $scale: floating-label-variables.$float-scale;
+  @include floating-label-mixins.max-width(calc(100% / #{$scale} - #{$truncation} / #{$scale}), $query: $query);
 }
 
 // Full Width

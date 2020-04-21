@@ -106,7 +106,7 @@
 }
 
 @mixin shake-keyframes(
-  $modifier, $positionY, $positionX: 0%, $scale: .75, $query: functions.all()) {
+  $modifier, $positionY, $positionX: 0%, $scale: variables.$float-scale, $query: functions.all()) {
   $feat-animation: functions.create-target($query, animation);
 
   @include feature-targeting-mixins.targets($feat-animation) {
@@ -132,7 +132,7 @@
   }
 }
 
-@mixin float-position($positionY, $positionX: 0%, $scale: .75, $query: functions.all()) {
+@mixin float-position($positionY, $positionX: 0%, $scale: variables.$float-scale, $query: functions.all()) {
   $feat-structure: functions.create-target($query, structure);
 
   .mdc-floating-label--float-above {
