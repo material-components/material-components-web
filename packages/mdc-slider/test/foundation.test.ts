@@ -111,24 +111,30 @@ describe('MDCSliderFoundation', () => {
     mockAdapter.computeBoundingRect.and.returnValue({width: 0, left: 0});
     foundation.init();
 
-    expect(mockAdapter.registerInteractionHandler)
-        .toHaveBeenCalledWith('mousedown', isA(Function));
-    expect(mockAdapter.registerInteractionHandler)
-        .toHaveBeenCalledWith('pointerdown', isA(Function));
-    expect(mockAdapter.registerInteractionHandler)
-        .toHaveBeenCalledWith('touchstart', isA(Function));
+    const hasPointer = !!window.PointerEvent;
+
+    if (hasPointer) {
+      expect(mockAdapter.registerInteractionHandler)
+          .toHaveBeenCalledWith('pointerdown', isA(Function));
+      expect(mockAdapter.registerThumbContainerInteractionHandler)
+          .toHaveBeenCalledWith('pointerdown', isA(Function));
+    } else {
+      expect(mockAdapter.registerInteractionHandler)
+          .toHaveBeenCalledWith('mousedown', isA(Function));
+      expect(mockAdapter.registerInteractionHandler)
+          .toHaveBeenCalledWith('touchstart', isA(Function));
+      expect(mockAdapter.registerThumbContainerInteractionHandler)
+          .toHaveBeenCalledWith('mousedown', isA(Function));
+      expect(mockAdapter.registerThumbContainerInteractionHandler)
+          .toHaveBeenCalledWith('touchstart', isA(Function));
+    }
+
     expect(mockAdapter.registerInteractionHandler)
         .toHaveBeenCalledWith('keydown', isA(Function));
     expect(mockAdapter.registerInteractionHandler)
         .toHaveBeenCalledWith('focus', isA(Function));
     expect(mockAdapter.registerInteractionHandler)
         .toHaveBeenCalledWith('blur', isA(Function));
-    expect(mockAdapter.registerThumbContainerInteractionHandler)
-        .toHaveBeenCalledWith('mousedown', isA(Function));
-    expect(mockAdapter.registerThumbContainerInteractionHandler)
-        .toHaveBeenCalledWith('pointerdown', isA(Function));
-    expect(mockAdapter.registerThumbContainerInteractionHandler)
-        .toHaveBeenCalledWith('touchstart', isA(Function));
     expect(mockAdapter.registerResizeHandler)
         .toHaveBeenCalledWith(isA(Function));
   });
@@ -180,24 +186,30 @@ describe('MDCSliderFoundation', () => {
 
        foundation.destroy();
 
-       expect(mockAdapter.deregisterInteractionHandler)
-           .toHaveBeenCalledWith('mousedown', isA(Function));
-       expect(mockAdapter.deregisterInteractionHandler)
+       const hasPointer = !!window.PointerEvent;
+
+       if (hasPointer) {
+         expect(mockAdapter.deregisterInteractionHandler)
            .toHaveBeenCalledWith('pointerdown', isA(Function));
-       expect(mockAdapter.deregisterInteractionHandler)
-           .toHaveBeenCalledWith('touchstart', isA(Function));
+         expect(mockAdapter.deregisterThumbContainerInteractionHandler)
+           .toHaveBeenCalledWith('pointerdown', isA(Function));
+       } else {
+         expect(mockAdapter.deregisterInteractionHandler)
+             .toHaveBeenCalledWith('mousedown', isA(Function));
+         expect(mockAdapter.deregisterInteractionHandler)
+             .toHaveBeenCalledWith('touchstart', isA(Function));
+         expect(mockAdapter.deregisterThumbContainerInteractionHandler)
+             .toHaveBeenCalledWith('mousedown', isA(Function));
+         expect(mockAdapter.deregisterThumbContainerInteractionHandler)
+             .toHaveBeenCalledWith('touchstart', isA(Function));
+       }
+
        expect(mockAdapter.deregisterInteractionHandler)
            .toHaveBeenCalledWith('keydown', isA(Function));
        expect(mockAdapter.deregisterInteractionHandler)
            .toHaveBeenCalledWith('focus', isA(Function));
        expect(mockAdapter.deregisterInteractionHandler)
            .toHaveBeenCalledWith('blur', isA(Function));
-       expect(mockAdapter.deregisterThumbContainerInteractionHandler)
-           .toHaveBeenCalledWith('mousedown', isA(Function));
-       expect(mockAdapter.deregisterThumbContainerInteractionHandler)
-           .toHaveBeenCalledWith('pointerdown', isA(Function));
-       expect(mockAdapter.deregisterThumbContainerInteractionHandler)
-           .toHaveBeenCalledWith('touchstart', isA(Function));
        expect(mockAdapter.deregisterResizeHandler)
            .toHaveBeenCalledWith(isA(Function));
      });

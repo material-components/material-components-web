@@ -32,11 +32,16 @@ describe('MDCSliderFoundation - pointer events', () => {
 
   const TRANSITION_END_EVT = getCorrectEventName(window, 'transitionend');
 
-  createTestSuiteForPointerEvents('mousedown', 'mousemove', 'mouseup');
-  createTestSuiteForPointerEvents('pointerdown', 'pointermove', 'pointerup');
-  createTestSuiteForPointerEvents(
-      'touchstart', 'touchmove', 'touchend',
-      (clientX: number) => ({targetTouches: [{clientX}]}));
+  const hasPointer = !!window.PointerEvent;
+
+  if (hasPointer) {
+    createTestSuiteForPointerEvents('pointerdown', 'pointermove', 'pointerup');
+  } else {
+    createTestSuiteForPointerEvents('mousedown', 'mousemove', 'mouseup');
+    createTestSuiteForPointerEvents(
+        'touchstart', 'touchmove', 'touchend',
+        (clientX: number) => ({targetTouches: [{clientX}]}));
+  }
 
   function createTestSuiteForPointerEvents(
       downEvt: string, moveEvt: string, upEvt: string,
@@ -218,14 +223,18 @@ describe('MDCSliderFoundation - pointer events', () => {
          rootHandlers[downEvt](clientXObj(50));
          jasmine.clock().tick(1);
 
+         if (hasPointer) {
+           expect(mockAdapter.registerBodyInteractionHandler)
+               .toHaveBeenCalledWith('pointerup', isA(Function));
+         } else {
+           expect(mockAdapter.registerBodyInteractionHandler)
+               .toHaveBeenCalledWith('mouseup', isA(Function));
+           expect(mockAdapter.registerBodyInteractionHandler)
+               .toHaveBeenCalledWith('touchend', isA(Function));
+         }
+
          expect(mockAdapter.registerBodyInteractionHandler)
              .toHaveBeenCalledWith(moveEvt, isA(Function));
-         expect(mockAdapter.registerBodyInteractionHandler)
-             .toHaveBeenCalledWith('mouseup', isA(Function));
-         expect(mockAdapter.registerBodyInteractionHandler)
-             .toHaveBeenCalledWith('pointerup', isA(Function));
-         expect(mockAdapter.registerBodyInteractionHandler)
-             .toHaveBeenCalledWith('touchend', isA(Function));
        });
 
     it(`on ${downEvt} does nothing if the component is disabled`, () => {
@@ -367,14 +376,17 @@ describe('MDCSliderFoundation - pointer events', () => {
          jasmine.clock().tick(1);
          bodyHandlers[upEvt]();
 
+         if (hasPointer) {
+           expect(mockAdapter.deregisterBodyInteractionHandler)
+               .toHaveBeenCalledWith('pointerup', isA(Function));
+         } else {
+           expect(mockAdapter.deregisterBodyInteractionHandler)
+               .toHaveBeenCalledWith('mouseup', isA(Function));
+           expect(mockAdapter.deregisterBodyInteractionHandler)
+               .toHaveBeenCalledWith('touchend', isA(Function));
+         }
          expect(mockAdapter.deregisterBodyInteractionHandler)
              .toHaveBeenCalledWith(moveEvt, isA(Function));
-         expect(mockAdapter.deregisterBodyInteractionHandler)
-             .toHaveBeenCalledWith('mouseup', isA(Function));
-         expect(mockAdapter.deregisterBodyInteractionHandler)
-             .toHaveBeenCalledWith('pointerup', isA(Function));
-         expect(mockAdapter.deregisterBodyInteractionHandler)
-             .toHaveBeenCalledWith('touchend', isA(Function));
        });
 
     it(`on body ${upEvt} notifies the client of a change event`, () => {

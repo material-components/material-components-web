@@ -36,8 +36,11 @@ type MoveEventMap = {
   readonly[K in DownEventType]: MoveEventType;
 };
 
-const DOWN_EVENTS: DownEventType[] = ['mousedown', 'pointerdown', 'touchstart'];
-const UP_EVENTS: UpEventType[] = ['mouseup', 'pointerup', 'touchend'];
+const hasPointer = !!window.PointerEvent;
+const DOWN_EVENTS: DownEventType[] =
+    hasPointer ? ['pointerdown'] : ['mousedown', 'touchstart'];
+const UP_EVENTS: UpEventType[] =
+    hasPointer ? ['pointerup'] : ['mouseup', 'touchend'];
 
 const MOVE_EVENT_MAP: MoveEventMap = {
   mousedown: 'mousemove',
