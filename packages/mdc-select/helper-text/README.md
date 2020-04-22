@@ -61,9 +61,7 @@ the display of the helper text is dependent on the interaction with the MDCSelec
   <span id="select-label" class="mdc-floating-label">Pick a Food Group</span>
   <div class="mdc-line-ripple"></div>
 </div>
-<p id="my-helper-text" class="mdc-select-helper-text">
-  Helper text
-</p>
+<p id="my-helper-text" class="mdc-select-helper-text">Helper text</p>
 ```
 
 When using our JS component, if the browser sees that the input element has an `aria-controls`

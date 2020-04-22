@@ -32,6 +32,11 @@
 
   .mdc-select--with-leading-icon {
     @include icon_($query: $query);
+    @include icon-horizontal-margins_(
+      $left: variables.$icon-horizontal-margin,
+      $right: variables.$icon-horizontal-margin,
+      $query: $query);
+    @include icon-color(on-surface, $query: $query);
   }
 
   .mdc-select__icon:not([tabindex]),
@@ -55,13 +60,9 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $feat-color: feature-targeting-functions.create-target($query, color);
 
-  @include icon-color(on-surface, $query: $query);
-
   .mdc-select__icon {
     @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-block;
-      position: absolute;
-      bottom: 16px;
       box-sizing: border-box;
       width: variables.$icon-size;
       height: variables.$icon-size;
@@ -70,6 +71,8 @@
       text-decoration: none;
       cursor: pointer;
       user-select: none;
+      flex-shrink: 0;
+      align-self: center;
     }
 
     @include feature-targeting-mixins.targets($feat-color) {
@@ -89,19 +92,15 @@
   }
 }
 
-@mixin icon-horizontal-position_($iconPosition, $inputPadding, $query: feature-targeting-functions.all()) {
+@mixin icon-horizontal-margins_($left, $right, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-
   .mdc-select__icon {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, $iconPosition);
-    }
-  }
-
-  // Move the input's position, to allow room for the icon
-  .mdc-select__selected-text {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, $inputPadding /* left */, variables.$icon-right-padding /* right */);
+      @include rtl-mixins.reflexive-property(
+        margin,
+        $left,
+        $right
+      );
     }
   }
 }

@@ -57,9 +57,9 @@ describe('MDCSelectFoundation', () => {
       'setRippleCenter',
       'notifyChange',
       'setSelectedText',
-      'isSelectedTextFocused',
-      'getSelectedTextAttr',
-      'setSelectedTextAttr',
+      'isSelectAnchorFocused',
+      'getSelectAnchorAttr',
+      'setSelectAnchorAttr',
       'openMenu',
       'closeMenu',
       'getAnchorElement',
@@ -197,7 +197,7 @@ describe('MDCSelectFoundation', () => {
 
   it('#handleMenuOpened focuses last selected element', () => {
     const {foundation, mockAdapter} = setupTest();
-    (foundation as any).selectedIndex_ = 2;
+    (foundation as any).selectedIndex = 2;
     foundation.handleMenuOpened();
     expect(mockAdapter.focusMenuItemAtIndex).toHaveBeenCalledWith(2);
     expect(mockAdapter.focusMenuItemAtIndex).toHaveBeenCalledTimes(1);
@@ -210,16 +210,16 @@ describe('MDCSelectFoundation', () => {
         mockAdapter.removeClass, [cssClasses.ACTIVATED], 1);
   });
 
-  it('#handleMenuClosed sets isMenuOpen_ to false', () => {
+  it('#handleMenuClosed sets isMenuOpen to false', () => {
     const {foundation} = setupTest();
     foundation.handleMenuClosed();
-    expect((foundation as any).isMenuOpen_).toBe(false);
+    expect((foundation as any).isMenuOpen).toBe(false);
   });
 
   it('#handleMenuClosed set aria-expanded attribute to false', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.handleMenuClosed();
-    expect(mockAdapter.setSelectedTextAttr)
+    expect(mockAdapter.setSelectAnchorAttr)
         .toHaveBeenCalledWith('aria-expanded', 'false');
   });
 
@@ -370,16 +370,16 @@ describe('MDCSelectFoundation', () => {
   it('#handleFocus calls adapter.activateBottomLine() if isMenuOpen_=true',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       (foundation as any).isMenuOpen_ = true;
+       (foundation as any).isMenuOpen = true;
        foundation.handleFocus();
        expect(mockAdapter.activateBottomLine).toHaveBeenCalledTimes(1);
      });
 
-  it('#handleBlur calls foundation.updateLabel_()', () => {
+  it('#handleBlur calls foundation.updateLabel()', () => {
     const {foundation} = setupTest();
-    (foundation as any).updateLabel_ = jasmine.createSpy('');
+    (foundation as any).updateLabel = jasmine.createSpy('');
     foundation.handleBlur();
-    expect((foundation as any).updateLabel_).toHaveBeenCalledTimes(1);
+    expect((foundation as any).updateLabel).toHaveBeenCalledTimes(1);
   });
 
   it('#handleBlur calls adapter.deactivateBottomLine()', () => {
@@ -391,7 +391,7 @@ describe('MDCSelectFoundation', () => {
   it('#handleBlur does not call deactivateBottomLine if isMenuOpen_=true',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       (foundation as any).isMenuOpen_ = true;
+       (foundation as any).isMenuOpen = true;
        foundation.handleBlur();
        expect(mockAdapter.deactivateBottomLine).not.toHaveBeenCalled();
      });
@@ -406,7 +406,7 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.getMenuItemAttr
            .withArgs(jasmine.anything(), strings.VALUE_ATTR)
            .and.returnValue('foo');
-       (foundation as any).selectedIndex_ = 0;
+       (foundation as any).selectedIndex = 0;
        foundation.handleBlur();
        expect(helperText.setValidity).toHaveBeenCalledWith(true);
        expect(helperText.setValidity).toHaveBeenCalledTimes(1);
@@ -414,14 +414,14 @@ describe('MDCSelectFoundation', () => {
 
   it('#handleClick does nothing if isMenuOpen_=true', () => {
     const {foundation, mockAdapter} = setupTest();
-    (foundation as any).isMenuOpen_ = true;
+    (foundation as any).isMenuOpen = true;
     foundation.handleClick(0);
     expect(mockAdapter.setRippleCenter).not.toHaveBeenCalledWith(0);
   });
 
   it('#handleClick sets the ripple center if isMenuOpen_=false', () => {
     const {foundation, mockAdapter} = setupTest();
-    (foundation as any).isMenuOpen_ = false;
+    (foundation as any).isMenuOpen = false;
     foundation.handleClick(0);
     expect(mockAdapter.setRippleCenter).toHaveBeenCalledWith(0);
     expect(mockAdapter.setRippleCenter).toHaveBeenCalledTimes(1);
@@ -431,7 +431,7 @@ describe('MDCSelectFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
-       (foundation as any).isMenuOpen_ = false;
+       (foundation as any).isMenuOpen = false;
        foundation.handleClick(0);
        expect(mockAdapter.openMenu).toHaveBeenCalledTimes(1);
      });
@@ -439,7 +439,7 @@ describe('MDCSelectFoundation', () => {
   it('#handleClick sets the aria-expanded', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.handleClick(0);
-    expect(mockAdapter.setSelectedTextAttr)
+    expect(mockAdapter.setSelectAnchorAttr)
         .toHaveBeenCalledWith('aria-expanded', 'true');
   });
 
@@ -452,30 +452,30 @@ describe('MDCSelectFoundation', () => {
            .and.returnValue(true);
        foundation.handleKeydown(event);
        event.key = 'Space';
-       (foundation as any).isMenuOpen_ = false;
+       (foundation as any).isMenuOpen = false;
        foundation.handleKeydown(event);
        event.key = 'ArrowUp';
-       (foundation as any).isMenuOpen_ = false;
+       (foundation as any).isMenuOpen = false;
        foundation.handleKeydown(event);
        event.key = 'ArrowDown';
-       (foundation as any).isMenuOpen_ = false;
+       (foundation as any).isMenuOpen = false;
        foundation.handleKeydown(event);
        event.key = '';
        event.keyCode = 13;  // Enter
-       (foundation as any).isMenuOpen_ = false;
+       (foundation as any).isMenuOpen = false;
        foundation.handleKeydown(event);
        event.keyCode = 32;  // Space
-       (foundation as any).isMenuOpen_ = false;
+       (foundation as any).isMenuOpen = false;
        foundation.handleKeydown(event);
        event.keyCode = 38;  // Up
-       (foundation as any).isMenuOpen_ = false;
+       (foundation as any).isMenuOpen = false;
        foundation.handleKeydown(event);
        event.keyCode = 40;  // Down
-       (foundation as any).isMenuOpen_ = false;
+       (foundation as any).isMenuOpen = false;
        foundation.handleKeydown(event);
        expect(mockAdapter.openMenu).toHaveBeenCalledTimes(8);
        checkNumTimesSpyCalledWithArgs(
-           mockAdapter.setSelectedTextAttr, ['aria-expanded', 'true'], 8);
+           mockAdapter.setSelectAnchorAttr, ['aria-expanded', 'true'], 8);
        expect(preventDefault).toHaveBeenCalledTimes(8);
      });
 
@@ -510,7 +510,7 @@ describe('MDCSelectFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     const preventDefault = jasmine.createSpy('');
     const event = {key: 'Enter', preventDefault} as any;
-    (foundation as any).isMenuOpen_ = true;
+    (foundation as any).isMenuOpen = true;
     foundation.handleKeydown(event);
     event.key = 'Space';
     foundation.handleKeydown(event);
@@ -650,7 +650,7 @@ describe('MDCSelectFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        foundation.setValid(true);
-       expect(mockAdapter.setSelectedTextAttr)
+       expect(mockAdapter.setSelectAnchorAttr)
            .toHaveBeenCalledWith('aria-invalid', 'false');
        expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.INVALID);
      });
@@ -658,7 +658,7 @@ describe('MDCSelectFoundation', () => {
   it('#setValid false sets aria-invalid to true and adds invalid class', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.setValid(false);
-    expect(mockAdapter.setSelectedTextAttr)
+    expect(mockAdapter.setSelectAnchorAttr)
         .toHaveBeenCalledWith('aria-invalid', 'true');
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.INVALID);
   });
@@ -667,7 +667,7 @@ describe('MDCSelectFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.REQUIRED).and.returnValue(true);
     mockAdapter.hasClass.withArgs(cssClasses.DISABLED).and.returnValue(false);
-    (foundation as any).selectedIndex_ = -1;
+    (foundation as any).selectedIndex = -1;
 
     expect(foundation.isValid()).toBe(false);
   });
@@ -681,7 +681,7 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.getMenuItemAttr
            .withArgs(jasmine.anything(), strings.VALUE_ATTR)
            .and.returnValue('');
-       (foundation as any).selectedIndex_ = 0;
+       (foundation as any).selectedIndex = 0;
 
        expect(foundation.isValid()).toBe(false);
      });
@@ -692,7 +692,7 @@ describe('MDCSelectFoundation', () => {
     mockAdapter.hasClass.withArgs(cssClasses.DISABLED).and.returnValue(false);
     mockAdapter.getMenuItemAttr.withArgs(jasmine.anything(), strings.VALUE_ATTR)
         .and.returnValue('foo');
-    (foundation as any).selectedIndex_ = 0;
+    (foundation as any).selectedIndex = 0;
 
     expect(foundation.isValid()).toBe(true);
   });
@@ -700,33 +700,33 @@ describe('MDCSelectFoundation', () => {
   it('#setRequired adds/removes ${cssClasses.REQUIRED} class name', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.setRequired(true);
-    expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.REQUIRED);
-    expect(mockAdapter.addClass).toHaveBeenCalledTimes(1);
+    checkNumTimesSpyCalledWithArgs(
+        mockAdapter.addClass, [cssClasses.REQUIRED], 1);
     foundation.setRequired(false);
-    expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.REQUIRED);
-    expect(mockAdapter.removeClass).toHaveBeenCalledTimes(1);
+    checkNumTimesSpyCalledWithArgs(
+        mockAdapter.removeClass, [cssClasses.REQUIRED], 1);
   });
 
   it('#setRequired sets aria-required through adapter', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.setRequired(true);
-    expect(mockAdapter.setSelectedTextAttr)
+    expect(mockAdapter.setSelectAnchorAttr)
         .toHaveBeenCalledWith('aria-required', 'true');
     foundation.setRequired(false);
-    expect(mockAdapter.setSelectedTextAttr)
+    expect(mockAdapter.setSelectAnchorAttr)
         .toHaveBeenCalledWith('aria-required', 'false');
   });
 
   it('#getRequired returns true if aria-required is true', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getSelectedTextAttr.withArgs('aria-required')
+    mockAdapter.getSelectAnchorAttr.withArgs('aria-required')
         .and.returnValue('true');
     expect(foundation.getRequired()).toBe(true);
   });
 
   it('#getRequired returns false if aria-required is false', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getSelectedTextAttr.withArgs('aria-required')
+    mockAdapter.getSelectAnchorAttr.withArgs('aria-required')
         .and.returnValue('false');
     expect(foundation.getRequired()).toBe(false);
   });

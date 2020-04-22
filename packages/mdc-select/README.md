@@ -49,8 +49,9 @@ The select requires that you set the `width` of the `mdc-select__anchor` element
 ```html
 <div class="mdc-select">
   <div class="mdc-select__anchor demo-width-class">
+    <span class="mdc-select__ripple"></span>
+    <input type="text" disabled readonly class="mdc-select__selected-text">
     <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text"></div>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -115,9 +116,13 @@ The following is an example of the select component with all of the necessary ar
 
 ```html
 <div class="mdc-select">
-  <div class="mdc-select__anchor">
+  <div class="mdc-select__anchor"
+       role="button"
+       aria-haspopup="listbox"
+       aria-labelledby="demo-label demo-selected-text">
+    <span class="mdc-select__ripple"></span>
+    <input type="text" disabled readonly id="demo-selected-text" class="mdc-select__selected-text" value="Vegetables">
     <i class="mdc-select__dropdown-icon"></i>
-    <div id="demo-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-selected-text">Vegetables</div>
     <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -155,9 +160,10 @@ same.
 
 ```html
 <div class="mdc-select mdc-select--outlined">
-  <div class="mdc-select__anchor">
+  <div class="mdc-select__anchor" aria-labelledby="outlined-select-label">
+    <span class="mdc-select__ripple"></span>
+    <input type="text" disabled readonly id="demo-selected-text" class="mdc-select__selected-text">
     <i class="mdc-select__dropdown-icon"></i>
-    <div id="demo-selected-text" class="mdc-select__selected-text" aria-labelledby="outlined-select-label"></div>
     <span class="mdc-notched-outline">
       <span class="mdc-notched-outline__leading"></span>
       <span class="mdc-notched-outline__notch">
@@ -183,8 +189,9 @@ to set the selected item. The select also needs the text from the selected eleme
 ```html
 <div class="mdc-select">
   <div class="mdc-select__anchor demo-width-class">
+    <span class="mdc-select__ripple"></span>
+    <input type="text" disabled readonly class="mdc-select__selected-text" value="Vegetables">
     <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text">Vegetables</div>
     <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -225,13 +232,14 @@ the list with an empty `data-value` attribute.
 #### Required select
 
 To style a select menu as required and enable validation, add the `mdc-select--required` class to the `mdc-select` element
-and set the `aria-required` attribute on the `mdc-select__selected-text` element to be `"true"`.
+and set the `aria-required` attribute on the `mdc-select__anchor` element to be `"true"`.
 
 ```html
 <div class="mdc-select mdc-select--required">
-  <div class="mdc-select__anchor">
+  <span class="mdc-select__ripple"></span>
+  <div class="mdc-select__anchor" aria-required="true">
+    <input type="text" disabled readonly class="mdc-select__selected-text">
     <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text" aria-required="true"></div>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -251,9 +259,10 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
 
 ```html
 <div class="mdc-select mdc-select--disabled">
-  <div class="mdc-select__anchor">
+  <div class="mdc-select__anchor" aria-disabled="true">
+    <span class="mdc-select__ripple"></span>
+    <input type="text" disabled readonly class="mdc-select__selected-text">
     <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text" aria-disabled="true"></div>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -323,8 +332,9 @@ structure.
 ```html
 <div class="mdc-select mdc-select--no-label">
   <div class="mdc-select__anchor demo-width-class">
+    <span class="mdc-select__ripple"></span>
+    <input type="text" disabled readonly class="mdc-select__selected-text">
     <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text"></div>
     <span class="mdc-line-ripple"></span>
   </div>
 
@@ -356,8 +366,9 @@ structure.
 ```html
 <div class="mdc-select mdc-select--outlined mdc-select--no-label">
   <div class="mdc-select__anchor demo-width-class">
+    <span class="mdc-select__ripple"></span>
+    <input type="text" disabled readonly class="mdc-select__selected-text">
     <i class="mdc-select__dropdown-icon"></i>
-    <div class="mdc-select__selected-text"></div>
     <span class="mdc-notched-outline">
       <span class="mdc-notched-outline__leading"></span>
       <span class="mdc-notched-outline__trailing"></span>
@@ -399,13 +410,14 @@ Mixin | Description
 `label-color($color)` | Customizes the label color of the select in the unfocused state.
 `focused-label-color($color)` | Customizes the label color of the select when focused.
 `bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
+`hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
 `focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 `shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed select variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
 `outline-color($color)` | Customizes the color of the notched outline.
 `outline-shape-radius($radius, $rtl-reflexive)` | Sets the border radius of of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
 `hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
+`height($height)` | Sets height of the filled select variant.
 
 > _NOTE_: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 
@@ -455,9 +467,9 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
 | `notifyChange(value: string) => void` | Emits the `MDCSelect:change` event when an element is selected. |
 | `setSelectedText(text: string) => void` | Sets the text content of the selectedText element to the given string. |
-| `isSelectedTextFocused() => boolean` | Returns whether the selected text element is focused. |
-| `getSelectedTextAttr(attr: string) => string` | Gets the given attribute on the selected text element. |
-| `setSelectedTextAttr(attr: string, value: string) => void` | Sets the given attribute on the selected text element. |
+| `isSelectAnchorFocused() => boolean` | Returns whether the select anchor element is focused. |
+| `getSelectAnchorAttr(attr: string) => string` | Gets the given attribute on the select anchor element. |
+| `setSelectAnchorAttr(attr: string, value: string) => void` | Sets the given attribute on the select anchor element. |
 | `openMenu() => void` | Causes the menu element in the select to open. |
 | `closeMenu() => void` | Causes the menu element in the select to close. |
 | `getAnchorElement() => Element` | Returns the select anchor element. |
