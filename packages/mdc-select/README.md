@@ -42,13 +42,13 @@ The select uses an [`MDCMenu`](../mdc-menu) component instance to contain the li
 
 > _NOTE_: The `data-value` attribute _must_ be present on each option.
 
-The select requires that you set the `width` of the `mdc-select__anchor` element as well as setting the width of the `mdc-select__menu` element to match. This is best done through the use of another class (e.g. `demo-width-class` in the example HTML and CSS below).
+The select requires that you set the `width` of the `mdc-select` element as well as setting the width of the `mdc-select__menu` element to match. This is best done through the use of another class (e.g. `demo-width-class` in the example HTML and CSS below).
 
 ### HTML
 
 ```html
-<div class="mdc-select">
-  <div class="mdc-select__anchor demo-width-class">
+<div class="mdc-select demo-width-class">
+  <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly class="mdc-select__selected-text">
     <i class="mdc-select__dropdown-icon"></i>
@@ -178,6 +178,11 @@ same.
 </div>
 ```
 
+### Fullwidth Select
+
+The Select Fullwidth variant takes up the entirety of the width of its parent container. To use this variant, place the
+`mdc-select--fullwidth` modifier class on the root element.
+
 ### Additional Information
 
 #### Select with pre-selected option
@@ -187,8 +192,8 @@ to set the selected item. The select also needs the text from the selected eleme
 `mdc-select__selected-text` element.
 
 ```html
-<div class="mdc-select">
-  <div class="mdc-select__anchor demo-width-class">
+<div class="mdc-select demo-width-class">
+  <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly class="mdc-select__selected-text" value="Vegetables">
     <i class="mdc-select__dropdown-icon"></i>
@@ -330,8 +335,8 @@ structure.
 #### Filled
 
 ```html
-<div class="mdc-select mdc-select--no-label">
-  <div class="mdc-select__anchor demo-width-class">
+<div class="mdc-select mdc-select--no-label demo-width-class">
+  <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly class="mdc-select__selected-text">
     <i class="mdc-select__dropdown-icon"></i>
@@ -364,8 +369,8 @@ structure.
 #### Outlined
 
 ```html
-<div class="mdc-select mdc-select--outlined mdc-select--no-label">
-  <div class="mdc-select__anchor demo-width-class">
+<div class="mdc-select mdc-select--outlined mdc-select--no-label demo-width-class">
+  <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly class="mdc-select__selected-text">
     <i class="mdc-select__dropdown-icon"></i>
@@ -395,6 +400,7 @@ structure.
 | `mdc-select--activated` | Optional. Styles the activated state of select. This class will be added automatically when menu is opened.
 | `mdc-select--disabled` | Optional. Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
 | `mdc-select--outlined` | Optional. Styles the select as outlined select. |
+| `mdc-select--fullwidth` | Optional. Styles the select as fullwidth select. |
 | `mdc-select--with-leading-icon` | Styles the select as a select with a leading icon. |
 | `mdc-select--no-label` | Styles the select as a select without a label. |
 > _NOTE_: To further customize the [MDCMenu](./../mdc-menu) or the [MDCList](./../mdc-list) component contained within the select, please refer to their respective documentation.

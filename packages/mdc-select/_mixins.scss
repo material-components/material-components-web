@@ -78,6 +78,7 @@
     );
 
     @include feature-targeting-mixins.targets($feat-structure) {
+      display: inline-block;
       position: relative; // Menu is absolutely positioned relative to this.
     }
 
@@ -120,7 +121,6 @@
     @include floating-label-mixins.float-position(variables.$label-position-y, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
-      display: inline-flex;
       position: relative;
       box-sizing: border-box;
       overflow: hidden;
@@ -141,6 +141,10 @@
 
   @include helper-text_($query: $query);
   @include text_($query: $query);
+
+  .mdc-select--fullwidth {
+    @include fullwidth_($query: $query);
+  }
 
   .mdc-select--outlined {
     @include outlined_($query: $query);
@@ -645,6 +649,17 @@
   }
 }
 
+///
+/// Sets the select to take the full width of its parent container.
+///
+@mixin fullwidth_($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    width: 100%;
+  }
+}
+
 @mixin helper-text_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
@@ -723,7 +738,7 @@
   }
 
   // Filled variant is aligned to baseline...
-  @include typography-mixins.baseline($top: $filled-baseline-top, $display: inline-flex, $query: $query);
+  @include typography-mixins.baseline($top: $filled-baseline-top, $display: flex, $query: $query);
   // ...unless it is too small to display a label
   @if $height < $minimum-height-for-filled-label {
     @include center-aligned_($query: $query);
