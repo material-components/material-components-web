@@ -29,21 +29,13 @@ Data tables can contain:
 npm install @material/data-table
 ```
 
-Install linear progress seperately if data table has progress state:
-
-```
-npm install @material/linear-progress
-```
-
 ### Styles
 
 ```scss
 @use "@material/checkbox"; // Required only for data table with row selection.
-@use "@material/linear-progress"; // Required only if data table has progress state.
 @use "@material/data-table";
 
 @include checkbox.core-styles;
-@include linear-progress.core-styles;
 @include data-table.core-styles;
 ```
 
@@ -214,127 +206,6 @@ Please refer to the [WAI-ARIA Authoring Practices for table](https://www.w3.org/
 </div>
 ```
 
-### Data table with column sorting
-
-```html
-<div class="mdc-data-table">
-  <table class="mdc-data-table__table" aria-label="Dessert calories">
-    <thead>
-      <tr>
-        <th
-          class="mdc-data-table__header-cell mdc-data-table__header-cell--with-sort"
-          role="columnheader"
-          scope="col"
-        >
-          <div class="mdc-data-table__header-cell-wrapper">
-            <div class="mdc-data-table__header-cell-label">
-              Dessert
-            </div>
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
-          </div>
-        </th>
-        <th
-          class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric mdc-data-table__header-cell--with-sort mdc-data-table__header-cell--sorted"
-          role="columnheader"
-          scope="col"
-          aria-sort="ascending"
-        >
-          <div class="mdc-data-table__header-cell-wrapper">
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
-            <div class="mdc-data-table__header-cell-label">
-              Carbs (g)
-            </div>
-          </div>
-        </th>
-        <th
-          class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric mdc-data-table__header-cell--with-sort"
-          role="columnheader"
-          scope="col"
-        >
-          <div class="mdc-data-table__header-cell-wrapper">
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
-            <div class="mdc-data-table__header-cell-label">
-              Protein (g)
-            </div>
-          </div>
-        </th>
-        <th
-          class="mdc-data-table__header-cell"
-          role="columnheader"
-          scope="col"
-        >
-          Comments
-        </th>
-      </tr>
-    </thead>
-    <tbody class="mdc-data-table__content">
-      <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell">Frozen yogurt</td>
-        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
-          24
-        </td>
-        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
-          4.0
-        </td>
-        <td class="mdc-data-table__cell">Super tasty</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-```
-
-### Data table with in-progress state
-
-```html
-<div class="mdc-data-table mdc-data-table--in-progress">
-  <table class="mdc-data-table__table" aria-label="Dessert calories">
-    <thead>
-      <tr class="mdc-data-table__header-row">
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Dessert</th>
-        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Carbs (g)</th>
-        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Protein (g)</th>
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
-      </tr>
-    </thead>
-    <tbody class="mdc-data-table__content" aria-busy="true">
-      <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell">Frozen yogurt</td>
-        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
-        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.0</td>
-        <td class="mdc-data-table__cell">Super tasty</td>
-      </tr>
-      <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell">Ice cream sandwich</td>
-        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">37</td>
-        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.33333333333</td>
-        <td class="mdc-data-table__cell">I like ice cream more</td>
-      </tr>
-      <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell">Eclair</td>
-        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
-        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">6.0</td>
-        <td class="mdc-data-table__cell">New filing flavor</td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="mdc-data-table__progress-indicator">
-    <div class="mdc-data-table__scrim"></div>
-    <div class="mdc-linear-progress mdc-linear-progress--indeterminate" role="progressbar" aria-label="Data is being loaded...">
-      <div class="mdc-linear-progress__buffer">
-        <div class="mdc-linear-progress__buffer-bar"></div>
-        <div class="mdc-linear-progress__buffer-dots"></div>
-      </div>
-      <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
-        <span class="mdc-linear-progress__bar-inner"></span>
-      </div>
-      <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
-        <span class="mdc-linear-progress__bar-inner"></span>
-      </div>
-    </div>
-  </div>
-</div>
-```
-
 ## Style customization
 
 ### CSS classes
@@ -355,9 +226,6 @@ CSS Class | Description
 `mdc-data-table__header-row-checkbox` | Optional. Checkbox element rendered inside table header row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row-checkbox` | Optional. Checkbox element rendered inside table row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row--selected` | Optional. Modifier class added to `mdc-data-table__row` when table row is selected.
-`mdc-data-table--in-progress` | Optional. Modifier class added to root element (`mdc-data-table`) when table is in progress (loading) state.
-`mdc-data-table__progress-indicator` | Optional. Progress indicator shown blocking the table content (`tbody`) when table is in progress (loading) state.
-`mdc-data-table__scrim` | Optional. Backdrop that is shown on top of table content and below the linear progress indicator when table is in progress (loading) state.
 
 ### Sass mixins
 
@@ -381,8 +249,6 @@ Mixin | Description
 `cell-padding($leading-padding, $trailing-padding)` | Sets leading & trailing padding for all cells.
 `column-widths($width-list)` | Sets the custom widths for each table column.
 `density($density-scale)` | Sets density scale to data table. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`. Use corresponding density mixins of child components (such as Checkbox) to apply density scales which will be rendered inside data table as content.
-`sort-icon-color($color)` | Sets the color of sort icon button when it is in idle state (icon showed on header cell focus).
-`sort-icon-active-color($color)` | Sets the color of sort icon button when it is activated (sorted).
 
 ## Events
 
@@ -443,7 +309,6 @@ Method Signature | Description
 `setAttributeByHeaderCellIndex(columnIndex: number, attribute: string, value: string) => void` | Sets attribute of a header cell by index.
 `setClassNameByHeaderCellIndex(columnIndex: number, className: string) => void` | Sets class name of a header cell by index.
 `removeClassNameByHeaderCellIndex(columnIndex: number, className: string) => void` | Removes a class name of a header cell by index.
-`notifySortAction(data: SortActionEventDetail) => void` | Notifies when column is sorted.
 
 ### `MDCDataTableFoundation`
 
@@ -457,6 +322,3 @@ Method Signature | Description
 `handleHeaderRowCheckboxChange() => void` | Handles header row checkbox change event.
 `handleRowCheckboxChange(event: Event) => void` | Handles change event originated from row checkboxes.
 `getHeaderCells() => Elements[]` | Returns array of header cell elements.
-`handleSortAction(eventData: SortActionEventData) => void` | Handles sort action on sortable header cell.
-`showProgress() => void` | Shows progress indicator when data table is in loading state.
-`removeProgress() => void` | Hides progress indicator when data table is finished loading.
