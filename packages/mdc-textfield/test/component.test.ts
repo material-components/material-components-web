@@ -195,7 +195,7 @@ describe('MDCTextField', () => {
        expect(component.ripple).toEqual(null);
      });
 
-  it('#constructor when given a `mdc-text-field--box` element, initializes a default ripple when no ' +
+  it('#constructor when given a `mdc-text-field--filled` element, initializes a default ripple when no ' +
          'ripple factory given',
      () => {
        const root = getFixture();
