@@ -96,14 +96,15 @@ $label-offset: 16px !default;
 $outlined-label-position-y:
     get-outlined-label-position-y($height) !default;
 $outlined-with-leading-icon-label-position-x: 32px !default;
-$textarea-label-position-y: 130% !default;
+$textarea-outlined-label-position-y: 130% !default;
 $helper-line-padding: 16px !default;
 $filled-baseline-top: 40px !default;
 $input-height: 28px !default;
-$textarea-input-margin-top: 8px !default;
+$textarea-line-height: 1.75rem !default; // 28dp TODO(b/154640465): spec says 24dp baseline
 $textarea-input-internal-counter-margin-bottom: 28px !default;
 $textarea-input-handle-margin: 1px !default;
-$textarea-input-padding-bottom: 16px !default;
+$textarea-outlined-input-margin-top: 8px !default;
+$textarea-outlined-input-padding-bottom: 16px !default; // visually ~24dp from textarea baseline
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.
 
 $prefix-padding: 2px !default;

@@ -1269,17 +1269,17 @@
     box-sizing: border-box;
     // Top margin is used to keep the text from overlapping the floating label
     // when scrolling
-    margin-top: variables.$textarea-input-margin-top;
+    margin-top: variables.$textarea-outlined-input-margin-top;
     // Bottom and left/right margins are used to add space for the resize handle
     margin-bottom: variables.$textarea-input-handle-margin;
     @include rtl-mixins.reflexive-box(margin, right, variables.$textarea-input-handle-margin);
     // Textarea has horizontal padding instead of the container. This allows the
     // resize handle to extend to the edge of the container.
-    padding: 0 variables.$padding-horizontal variables.$textarea-input-padding-bottom;
+    padding: 0 variables.$padding-horizontal variables.$textarea-outlined-input-padding-bottom;
   }
 
   @include feature-targeting-mixins.targets($feat-typography) {
-    line-height: 1.75rem; // 28sp
+    line-height: variables.$textarea-line-height;
   }
 }
 
@@ -1301,13 +1301,13 @@
   @include notched-outline-mixins.notch-offset(0, $query: $query);
 
   // Floating label position
-  @include notched-outline-mixins.floating-label-float-position(variables.$textarea-label-position-y, $query: $query);
+  @include notched-outline-mixins.floating-label-float-position(variables.$textarea-outlined-label-position-y, $query: $query);
 
   // Floating label animation
   @include floating-label-mixins.shake-animation(textarea, $query: $query);
   @include floating-label-mixins.shake-keyframes(
     textarea,
-    variables.$textarea-label-position-y,
+    variables.$textarea-outlined-label-position-y,
     0%,
     $query: $query
   );
