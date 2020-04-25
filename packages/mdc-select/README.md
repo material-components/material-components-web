@@ -42,7 +42,7 @@ The select uses an [`MDCMenu`](../mdc-menu) component instance to contain the li
 
 > _NOTE_: The `data-value` attribute _must_ be present on each option.
 
-The select requires that you set the `width` of the `mdc-select` element as well as setting the width of the `mdc-select__menu` element to match. This is best done through the use of another class (e.g. `demo-width-class` in the example HTML and CSS below).
+The select requires that you set the `width` of the `mdc-select` element. This is best done through the use of another class (e.g. `demo-width-class` in the example HTML and CSS below).
 
 ### HTML
 
@@ -56,7 +56,7 @@ The select requires that you set the `width` of the `mdc-select` element as well
     <span class="mdc-line-ripple"></span>
   </div>
 
-  <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
     <ul class="mdc-list">
       <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
       <li class="mdc-list-item" data-value="grains">
@@ -78,6 +78,10 @@ The select requires that you set the `width` of the `mdc-select` element as well
   </div>
 </div>
 ```
+
+> _NOTE_: The menu width matches the width of the select by default. To set
+menu to its natural width, remove `mdc-menu-surface--fullwidth` from the menu
+surface.
 
 ### Styles
 
@@ -343,7 +347,7 @@ structure.
     <span class="mdc-line-ripple"></span>
   </div>
 
-  <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
     <ul class="mdc-list">
       <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
       <li class="mdc-list-item" data-value="grains">
@@ -381,7 +385,7 @@ structure.
   </div>
 
   <!-- Other elements from the select remain. -->
-  <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">...</div>
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">...</div>
 </div>
 ```
 

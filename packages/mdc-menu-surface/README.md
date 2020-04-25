@@ -138,6 +138,7 @@ CSS Class | Description
 `mdc-menu-surface--animating-closed` | Indicates the menu surface is currently animating closed. This class is removed once the animation completes.
 `mdc-menu-surface--anchor` | Used to indicate which element the menu should be anchored to.
 `mdc-menu-surface--fixed` | Used to indicate that the menu is using fixed positioning.
+`mdc-menu-surface--fullwidth`| Sets the menu-surface's width to match that of its parent anchor. Do not use with `mdc-menu-surface--fixed` or if hoisting to body.
 
 ### Sass Mixins
 

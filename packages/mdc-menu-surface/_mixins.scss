@@ -61,6 +61,12 @@
       position: fixed;
     }
   }
+
+  .mdc-menu-surface--fullwidth {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      width: 100%;
+    }
+  }
   // postcss-bem-linter: end
 }
 
