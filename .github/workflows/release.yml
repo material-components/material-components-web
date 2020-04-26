@@ -33,11 +33,15 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
+      - name: Read version created by Lerna.js
+        id: lerna_version
+        run: |
+          echo "::set-output name=version::v$(npm run version --silent)"
       - name: Check if release tag is already created
         id: vars
         run: |
-          MDC_CURRENT_VERSION="v$(npm run version --silent)"
-          if [[ -z $(git tag -l "$MDC_CURRENT_VERSION") ]]; then
+          lerna_version=${{ steps.lerna_version.outputs.version }}
+          if [[ -z $(git tag -l "$lerna_version") ]]; then
             echo "Proceeding to create new release"
           else
             echo "New release already created, exiting."
@@ -48,16 +52,15 @@ jobs:
           npm run dist
           node scripts/cp-pkgs.js
           node scripts/verify-pkg-main.js
-      - name: Create release tag
-        run: |
           git reset --hard
-          MDC_CURRENT_VERSION="v$(npm run version --silent)"
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          npx conventional-changelog --preset angular
-          git tag "$MDC_CURRENT_VERSION"
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          git push origin "$MDC_CURRENT_VERSION"
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.lerna_version.outputs.version }}
+          release_name: ${{ steps.lerna_version.outputs.version }}
+          body: |
+            See CHANGELOG file to see what's changed in new release.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to NPM registry
