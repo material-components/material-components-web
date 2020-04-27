@@ -17,7 +17,7 @@
     @include button.theme-baseline($query: $query);
     @include button.density(-1, $query: $query);
     @include button.height(0, $query: $query);
-    @include button.label-overflow-ellipsis($query: $query);
+    @include button.label-overlow-ellipsis($query: $query);
   }
 }
 
