@@ -397,7 +397,7 @@ $query: feature-targeting-functions.all()) {
 ///
 /// Sets the button label to overflow as ellipsis
 ///
-@mixin label-overlow-ellipsis($query: feature-targeting-functions.all()) {
+@mixin label-overflow-ellipsis($query: feature-targeting-functions.all()) {
   .mdc-button__label {
     @include typography-mixins.overflow-ellipsis($query: $query);
   }
