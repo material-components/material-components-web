@@ -397,10 +397,20 @@ $query: feature-targeting-functions.all()) {
 ///
 /// Sets the button label to overflow as ellipsis
 ///
-@mixin label-overlow-ellipsis($query: feature-targeting-functions.all()) {
+@mixin label-overflow-ellipsis($query: feature-targeting-functions.all()) {
   .mdc-button__label {
     @include typography-mixins.overflow-ellipsis($query: $query);
   }
+}
+
+///
+/// Sets the button label to overflow as ellipsis
+///
+/// This is a misspelling of label-overflow-ellipsis that has been kept to
+/// prevent breaking existing users. Please migrate to label-overflow-ellipsis.
+///
+@mixin label-overlow-ellipsis($query: feature-targeting-functions.all()) {
+  @include label-overflow-ellipsis($query: $query);
 }
 
 @mixin base_($query) {
