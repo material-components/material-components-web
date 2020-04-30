@@ -190,6 +190,7 @@ describe('MDCSelectFoundation', () => {
 
   it(`#handleMenuOpened adds ${cssClasses.ACTIVATED} class name`, () => {
     const {foundation, mockAdapter} = setupTest();
+    foundation.init();
     foundation.handleMenuOpened();
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.ACTIVATED);
     expect(mockAdapter.addClass).toHaveBeenCalledTimes(1);
@@ -197,6 +198,7 @@ describe('MDCSelectFoundation', () => {
 
   it('#handleMenuOpened focuses last selected element', () => {
     const {foundation, mockAdapter} = setupTest();
+    foundation.init();
     (foundation as any).selectedIndex = 2;
     foundation.handleMenuOpened();
     expect(mockAdapter.focusMenuItemAtIndex).toHaveBeenCalledWith(2);
@@ -306,52 +308,20 @@ describe('MDCSelectFoundation', () => {
            .not.toHaveBeenCalledWith(jasmine.anything());
      });
 
-  it('#handleChange calls adapter.notifyChange() if didChange is true', () => {
+  it('#handleChange calls adapter.notifyChange()', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getMenuItemAttr.withArgs(jasmine.anything(), strings.VALUE_ATTR)
-        .and.returnValue('value');
 
     foundation.handleChange();
     expect(mockAdapter.notifyChange).toHaveBeenCalledWith(jasmine.anything());
     expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(1);
   });
 
-  it('#handleFocus calls adapter.floatLabel(true)', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    foundation.handleFocus();
-    expect(mockAdapter.floatLabel).toHaveBeenCalledWith(true);
-    expect(mockAdapter.floatLabel).toHaveBeenCalledTimes(1);
-  });
-
-  it('#handleFocus does not call adapter.floatLabel() if no label is present',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       mockAdapter.hasLabel.and.returnValue(false);
-
-       foundation.handleFocus();
-       expect(mockAdapter.floatLabel)
-           .not.toHaveBeenCalledWith(jasmine.anything());
-     });
-
-  it('#handleFocus calls foundation.notchOutline(true)', () => {
+  it('#handleFocus calls foundation.layout()', () => {
     const {foundation} = setupTest();
-    foundation.notchOutline = jasmine.createSpy('');
+    foundation.layout = jasmine.createSpy('layout');
     foundation.handleFocus();
-    expect(foundation.notchOutline).toHaveBeenCalledWith(true);
-    expect(foundation.notchOutline).toHaveBeenCalledTimes(1);
+    expect(foundation.layout).toHaveBeenCalledTimes(1);
   });
-
-  it('#handleFocus does not call foundation.notchOutline() if no label is present',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       foundation.notchOutline = jasmine.createSpy('');
-       mockAdapter.hasLabel.and.returnValue(false);
-
-       foundation.handleFocus();
-       expect(foundation.notchOutline)
-           .not.toHaveBeenCalledWith(jasmine.anything());
-     });
 
   it('#handleFocus calls adapter.activateBottomLine()', () => {
     const {foundation, mockAdapter} = setupTest();
@@ -375,11 +345,11 @@ describe('MDCSelectFoundation', () => {
        expect(mockAdapter.activateBottomLine).toHaveBeenCalledTimes(1);
      });
 
-  it('#handleBlur calls foundation.updateLabel()', () => {
+  it('#handleBlur calls foundation.layout()', () => {
     const {foundation} = setupTest();
-    (foundation as any).updateLabel = jasmine.createSpy('');
+    (foundation as any).layout = jasmine.createSpy('');
     foundation.handleBlur();
-    expect((foundation as any).updateLabel).toHaveBeenCalledTimes(1);
+    expect((foundation as any).layout).toHaveBeenCalledTimes(1);
   });
 
   it('#handleBlur calls adapter.deactivateBottomLine()', () => {
@@ -531,31 +501,72 @@ describe('MDCSelectFoundation', () => {
     expect(preventDefault).not.toHaveBeenCalled();
   });
 
-  it('#layout calls notchOutline(true) if value is not an empty string', () => {
+  it('#layout notches outline and floats label if unfocused and value is nonempty',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.notchOutline = jasmine.createSpy('');
+       mockAdapter.getMenuItemAttr
+           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
+           .and.returnValue('blah');
+       foundation.layout();
+       expect(foundation.notchOutline).toHaveBeenCalledWith(true);
+       expect(mockAdapter.floatLabel).toHaveBeenCalledWith(true);
+     });
+
+  it('#layout un-notches outline and un-floats label if unfocused and value is empty',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.notchOutline = jasmine.createSpy('');
+       foundation.layout();
+       expect(foundation.notchOutline).toHaveBeenCalledWith(false);
+       expect(mockAdapter.floatLabel).toHaveBeenCalledWith(false);
+     });
+
+  it('#layout notches outline and floats label if select is focused', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.notchOutline = jasmine.createSpy('');
-    mockAdapter.getMenuItemAttr.withArgs(jasmine.anything(), strings.VALUE_ATTR)
-        .and.returnValue(' ');
+    mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
     foundation.layout();
     expect(foundation.notchOutline).toHaveBeenCalledWith(true);
-    expect(foundation.notchOutline).toHaveBeenCalledTimes(1);
+    expect(mockAdapter.floatLabel).toHaveBeenCalledWith(true);
   });
 
-  it('#layout calls notchOutline(false) if value is an empty string', () => {
-    const {foundation} = setupTest();
-    foundation.notchOutline = jasmine.createSpy('');
-    foundation.layout();
-    expect(foundation.notchOutline).toHaveBeenCalledWith(false);
-    expect(foundation.notchOutline).toHaveBeenCalledTimes(1);
-  });
+  it('#layout does not notch outline nor floats label if label does not exist',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.notchOutline = jasmine.createSpy('');
+       mockAdapter.hasLabel.and.returnValue(false);
+       foundation.layout();
+       expect(foundation.notchOutline).not.toHaveBeenCalled();
+       expect(mockAdapter.floatLabel).not.toHaveBeenCalled();
+     });
 
-  it('#layout does not call notchOutline() if label does not exist', () => {
+  it('#layoutOptions refetches menu item values to cache', () => {
     const {foundation, mockAdapter} = setupTest();
-    foundation.notchOutline = jasmine.createSpy('');
-    mockAdapter.hasLabel.and.returnValue(false);
-    foundation.layout();
-    expect(foundation.notchOutline)
-        .not.toHaveBeenCalledWith(jasmine.anything());
+    foundation.layoutOptions();
+    expect(mockAdapter.getMenuItemValues).toHaveBeenCalled();
+  });
+
+  it('#layoutOptions reinitializes selected nonempty value', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.init();
+    mockAdapter.getMenuItemValues.and.returnValue(['zero', 'one', 'two']);
+    mockAdapter.getMenuItemAttr.withArgs(jasmine.anything(), strings.VALUE_ATTR)
+        .and.returnValue('two');
+
+    foundation.layoutOptions();
+    expect(foundation.getSelectedIndex()).toEqual(2);
+  });
+
+  it('#layoutOptions reinitializes selected empty value', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.init();
+    mockAdapter.getMenuItemValues.and.returnValue(['', 'one', 'two']);
+    mockAdapter.getMenuItemAttr.withArgs(jasmine.anything(), strings.VALUE_ATTR)
+        .and.returnValue('');
+
+    foundation.layoutOptions();
+    expect(foundation.getSelectedIndex()).toEqual(0);
   });
 
   it('#setLeadingIconAriaLabel sets the aria-label of the leading icon element',
@@ -637,7 +648,7 @@ describe('MDCSelectFoundation', () => {
 
   it('#setValue', () => {
     const {foundation, mockAdapter} = setupTest();
-
+    foundation.init();
     foundation.setValue('bar');
     expect(mockAdapter.addClassAtIndex)
         .toHaveBeenCalledWith(1, cssClasses.SELECTED_ITEM_CLASS);
@@ -741,4 +752,30 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.setMenuAnchorCorner)
         .toHaveBeenCalledWith(jasmine.anything());
   });
+
+  it('#init calls layoutOptions', () => {
+    const {foundation} = setupTest();
+    foundation.layoutOptions = jasmine.createSpy('');
+    foundation.init();
+    expect(foundation.layoutOptions).toHaveBeenCalledTimes(1);
+  });
+
+  it('#init emits no change events when value is preselected', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getMenuItemAttr.withArgs(jasmine.anything(), strings.VALUE_ATTR)
+        .and.returnValue('foo');
+    foundation.init();
+    expect(mockAdapter.notifyChange).not.toHaveBeenCalled();
+  });
+
+  it('#init computes whether to notch outline exactly once when value is preselected',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.notchOutline = jasmine.createSpy('notchOutline');
+       mockAdapter.getMenuItemAttr
+           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
+           .and.returnValue('foo');
+       foundation.init();
+       expect(foundation.notchOutline).toHaveBeenCalledTimes(1);
+     });
 });

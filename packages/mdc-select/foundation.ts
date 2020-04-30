@@ -92,7 +92,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   // Index of the currently selected menu item.
   private selectedIndex: number = numbers.UNSET_INDEX;
   // VALUE_ATTR values of the menu items.
-  private readonly menuItemValues: string[];
+  private menuItemValues: string[] = [];
   // Disabled state
   private disabled = false;
   // isMenuOpen is used to track the state of the menu by listening to the
@@ -111,9 +111,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
     this.leadingIcon = foundationMap.leadingIcon;
     this.helperText = foundationMap.helperText;
-
-    this.menuItemValues = this.adapter_.getMenuItemValues();
-    this.setDisabled(this.adapter_.hasClass(cssClasses.DISABLED));
   }
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
@@ -126,27 +123,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       return;
     }
 
-    const previouslySelectedIndex = this.selectedIndex;
-    this.selectedIndex = index;
-
-    if (this.selectedIndex === numbers.UNSET_INDEX) {
-      this.adapter_.setSelectedText('');
-    } else {
-      this.adapter_.setSelectedText(
-          this.adapter_.getMenuItemTextAtIndex(this.selectedIndex).trim());
-    }
-
-    if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
-      this.adapter_.removeClassAtIndex(previouslySelectedIndex, cssClasses.SELECTED_ITEM_CLASS);
-      this.adapter_.removeAttributeAtIndex(previouslySelectedIndex, strings.ARIA_SELECTED_ATTR);
-    }
-    if (this.selectedIndex !== numbers.UNSET_INDEX) {
-      this.adapter_.addClassAtIndex(
-          this.selectedIndex, cssClasses.SELECTED_ITEM_CLASS);
-      this.adapter_.setAttributeAtIndex(
-          this.selectedIndex, strings.ARIA_SELECTED_ATTR, 'true');
-    }
-    this.layout();
+    this.removeSelectionAtIndex(this.selectedIndex);
+    this.setSelectionAtIndex(index);
 
     if (closeMenu) {
       this.adapter_.closeMenu();
@@ -199,15 +177,33 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
   }
 
+  /**
+   * Re-calculates if the notched outline should be notched and if the label
+   * should float.
+   */
   layout() {
     if (this.adapter_.hasLabel()) {
-      const openNotch = this.getValue().length > 0;
-      this.notchOutline(openNotch);
+      const optionHasValue = this.getValue().length > 0;
+      const isFocused = this.adapter_.hasClass(cssClasses.FOCUSED);
+      const shouldFloatAndNotch = optionHasValue || isFocused;
+
+      this.notchOutline(shouldFloatAndNotch);
+      this.adapter_.floatLabel(shouldFloatAndNotch);
     }
   }
 
+  /**
+   * Synchronizes the list of options with the state of the foundation. Call
+   * this whenever menu options are dynamically updated.
+   */
+  layoutOptions() {
+    this.menuItemValues = this.adapter_.getMenuItemValues();
+    const selectedIndex = this.menuItemValues.indexOf(this.getValue());
+    this.setSelectionAtIndex(selectedIndex);
+  }
+
   handleMenuOpened() {
-    if (this.adapter_.getMenuItemValues().length === 0) {
+    if (this.menuItemValues.length === 0) {
       return;
     }
 
@@ -233,7 +229,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * Handles value changes, via change event or programmatic updates.
    */
   handleChange() {
-    this.updateLabel();
+    this.layout();
     this.adapter_.notifyChange(this.getValue());
 
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
@@ -254,11 +250,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    */
   handleFocus() {
     this.adapter_.addClass(cssClasses.FOCUSED);
-
-    if (this.adapter_.hasLabel()) {
-      this.notchOutline(true);
-      this.adapter_.floatLabel(true);
-    }
+    this.layout();
 
     this.adapter_.activateBottomLine();
     if (this.helperText) {
@@ -381,29 +373,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
     this.adapter_.setMenuWrapFocus(false);
 
-    const value = this.getValue();
-    if (value) {
-      this.setValue(value);
-    }
-
-    // Initially sync floating label
-    this.updateLabel();
-  }
-
-  /**
-   * Notches the outline and floats the label when appropriate.
-   */
-  private updateLabel() {
-    const value = this.getValue();
-    const optionHasValue = value.length > 0;
-
-    if (this.adapter_.hasLabel()) {
-      this.notchOutline(optionHasValue);
-
-      if (!this.adapter_.hasClass(cssClasses.FOCUSED)) {
-        this.adapter_.floatLabel(optionHasValue);
-      }
-    }
+    this.setDisabled(this.adapter_.hasClass(cssClasses.DISABLED));
+    this.layoutOptions();
+    this.layout();
   }
 
   /**
@@ -411,7 +383,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    */
   private blur() {
     this.adapter_.removeClass(cssClasses.FOCUSED);
-    this.updateLabel();
+    this.layout();
     this.adapter_.deactivateBottomLine();
 
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
@@ -420,6 +392,28 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       if (this.helperText) {
         this.helperText.setValidity(this.isValid());
       }
+    }
+  }
+
+  private setSelectionAtIndex(index: number) {
+    this.selectedIndex = index;
+
+    if (index === numbers.UNSET_INDEX) {
+      this.adapter_.setSelectedText('');
+      return;
+    }
+
+    this.adapter_.setSelectedText(
+        this.adapter_.getMenuItemTextAtIndex(index).trim());
+    this.adapter_.addClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
+    this.adapter_.setAttributeAtIndex(
+        index, strings.ARIA_SELECTED_ATTR, 'true');
+  }
+
+  private removeSelectionAtIndex(index: number) {
+    if (index !== numbers.UNSET_INDEX) {
+      this.adapter_.removeClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
+      this.adapter_.removeAttributeAtIndex(index, strings.ARIA_SELECTED_ATTR);
     }
   }
 }

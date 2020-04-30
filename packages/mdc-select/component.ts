@@ -170,7 +170,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened);
     this.menu.listen(
         menuConstants.strings.SELECTED_EVENT, this.handleMenuItemAction);
-    this.foundation_.init();
   }
 
   destroy() {
@@ -276,10 +275,19 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   /**
-   * Recomputes the outline SVG path for the outline element.
+   * Re-calculates if the notched outline should be notched and if the label
+   * should float.
    */
   layout() {
     this.foundation_.layout();
+  }
+
+  /**
+   * Synchronizes the list of options with the state of the foundation. Call
+   * this whenever menu options are dynamically updated.
+   */
+  layoutOptions() {
+    this.foundation_.layoutOptions();
   }
 
   getDefaultFoundation() {

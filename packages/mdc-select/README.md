@@ -447,6 +447,11 @@ Property | Type | Description
 `helperTextContent` | `string` (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
 `ripple` | `MDCRipple` | Ripple instance attached to outlined select variant, or `null` for all other variants.
 
+Method Signature | Description
+--- | ---
+`layout() => void` | Re-calculates if the notched outline should be notched and if the label should float. Proxies to the foundation's `layout()` method.
+`layoutOptions() => void` | Synchronizes the list of options with the state of the foundation. Proxies to the foundation's `layoutOptions()` method. Call this whenever menu options are dynamically updated.
+
 ### Events
 
 Event Name | Data | Description
@@ -520,7 +525,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setRequired(isRequired: boolean) => void` | Sets the required state through the adapter. |
 | `getRequired() => boolean` | Gets the required state through the adapter. |
 | `init() => void` | Initializes the foundation. |
-| `layout() => void` | Handles determining if the notched outline should be notched. |
+| `layout() => void` | Re-calculates if the notched outline should be notched and if the label should float. |
+| `layoutOptions() => void` | Synchronizes the list of options with the state of the foundation. Call this whenever menu options are dynamically updated. |
 | `setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon. |
 | `setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon. |
 | `setHelperTextContent(content: string) => void` | Sets the content of the helper text. |

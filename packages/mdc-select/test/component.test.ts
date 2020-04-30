@@ -227,7 +227,7 @@ describe('MDCSelect', () => {
     const hasLabel = true;
     const {component, menuSurface} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-    expect(component.selectedIndex).toEqual(-1);
+    expect(component.selectedIndex).toEqual(0);
     component.selectedIndex = 1;
     expect(component.selectedIndex).toEqual(1);
     menuSurface.parentElement!.removeChild(menuSurface);
@@ -240,7 +240,7 @@ describe('MDCSelect', () => {
     const hasLabel = true;
     const {component, menuSurface} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-    expect(component.selectedIndex).toEqual(-1);
+    expect(component.selectedIndex).toEqual(0);
     component.selectedIndex = 1;
     component.selectedIndex = 2;
     expect(component.selectedIndex).toEqual(2);
@@ -307,6 +307,28 @@ describe('MDCSelect', () => {
     component.value = 'orange';
     expect(mockFoundation.setValue).toHaveBeenCalledWith('orange');
     expect(mockFoundation.setValue).toHaveBeenCalledTimes(1);
+  });
+
+  it('#layout calls foundation.layout', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {component, mockFoundation} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    component.layout();
+    expect(mockFoundation.layout).toHaveBeenCalled();
+  });
+
+  it('#layoutOptions calls foundation.layoutOptions', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {component, mockFoundation} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    component.layoutOptions();
+    expect(mockFoundation.layoutOptions).toHaveBeenCalled();
   });
 
   it('#get valid forwards to foundation', () => {
@@ -408,28 +430,55 @@ describe('MDCSelect', () => {
   it('#initialSyncWithDOM sets the selected index if an option has the selected class',
      () => {
        const fixture = createFixture(`
-    <div class="mdc-select">
-      <div class="mdc-select__anchor">
-        <div class="mdc-select__selected-text"></div>
-        <label class="mdc-floating-label">Pick a Food Group</label>
-        <span class="mdc-line-ripple"></span>
-      </div>
+        <div class="mdc-select">
+          <div class="mdc-select__anchor">
+            <div class="mdc-select__selected-text"></div>
+            <label class="mdc-floating-label">Pick a Food Group</label>
+            <span class="mdc-line-ripple"></span>
+          </div>
 
-      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-        <ul class="mdc-list">
-          <li class="mdc-list-item" data-value=""></li>
-          <li class="mdc-list-item mdc-list-item--selected" data-value="orange">
-            Orange
-          </li>
-          <li class="mdc-list-item" data-value="apple">
-            Apple
-          </li>
-        </ul>
-      </div>
-    </div>
-  `);
+          <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+            <ul class="mdc-list">
+              <li class="mdc-list-item" data-value=""></li>
+              <li class="mdc-list-item mdc-list-item--selected" data-value="orange">
+                Orange
+              </li>
+              <li class="mdc-list-item" data-value="apple">
+                Apple
+              </li>
+            </ul>
+          </div>
+        </div>
+      `);
        const component = new MDCSelect(fixture, /* foundation */ undefined);
        expect(component.selectedIndex).toEqual(1);
+     });
+
+  it('#initialSyncWithDOM sets the selected index if empty option has the selected class',
+     () => {
+       const fixture = createFixture(`
+        <div class="mdc-select">
+          <div class="mdc-select__anchor">
+            <div class="mdc-select__selected-text"></div>
+            <label class="mdc-floating-label">Pick a Food Group</label>
+            <span class="mdc-line-ripple"></span>
+          </div>
+
+          <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+            <ul class="mdc-list">
+              <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
+              <li class="mdc-list-item" data-value="orange">
+                Orange
+              </li>
+              <li class="mdc-list-item" data-value="apple">
+                Apple
+              </li>
+            </ul>
+          </div>
+        </div>
+      `);
+       const component = new MDCSelect(fixture, /* foundation */ undefined);
+       expect(component.selectedIndex).toEqual(0);
      });
 
   it('#initialSyncWithDOM disables the select if the disabled class is found',
