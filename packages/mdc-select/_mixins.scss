@@ -640,7 +640,6 @@
   .mdc-floating-label {
     @include feature-targeting-mixins.targets($feat-structure) {
       line-height: 1.15rem;
-      pointer-events: auto;
     }
   }
 
