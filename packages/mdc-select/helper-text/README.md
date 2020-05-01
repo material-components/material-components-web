@@ -9,7 +9,7 @@ path: /catalog/input-controls/select-menus/helper-text/
 
 # Select helper text
 
-Helper text gives context about a select, such as how the selection will be used. It should be visible either persistently or only on focus.
+Helper text gives context about a select, such as how the selection will be used. It should be visible either persistently or only on invalid state.
 
 ## Basic usage
 
@@ -42,24 +42,40 @@ We recommend doing this as well as it will help indicate to assistive devices th
 the display of the helper text is dependent on the interaction with the MDCSelect component.
 
 ```html
-<div class="mdc-select custom-enhanced-select-width">
-  <div id="selected-text" class="mdc-select__selected-text"
-      aria-controls="my-helper-text" aria-describedby="my-helper-text"></div>
-  <div class="mdc-select__menu mdc-menu mdc-menu-surface custom-enhanced-select-width" role="listbox">
+<div class="mdc-select">
+  <div class="mdc-select__anchor"
+       role="button"
+       aria-haspopup="listbox"
+       aria-labelledby="demo-label demo-selected-text"
+       aria-controls="my-helper-text"
+       aria-describedby="my-helper-text">
+    <span class="mdc-select__ripple"></span>
+    <input type="text" disabled readonly id="demo-selected-text" class="mdc-select__selected-text" value="Vegetables">
+    <i class="mdc-select__dropdown-icon"></i>
+    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
+    <span class="mdc-line-ripple"></span>
+  </div>
+
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
-      <li class="mdc-list-item" data-value="grains" aria-selected="true">
-        Bread, Cereal, Rice, and Pasta
+      <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="" role="option"></li>
+      <li class="mdc-list-item" data-value="grains" role="option">
+        <span class="mdc-list-item__text">
+          Bread, Cereal, Rice, and Pasta
+        </span>
       </li>
-      <li class="mdc-list-item" data-value="vegetables">
-        Vegetables
+      <li class="mdc-list-item mdc-list-item--disabled" data-value="vegetables" aria-disabled="true" role="option">
+        <span class="mdc-list-item__text">
+          Vegetables
+        </span>
       </li>
-      <li class="mdc-list-item" data-value="fruit">
-        Fruit
+      <li class="mdc-list-item" data-value="fruit" role="option">
+        <span class="mdc-list-item__text">
+          Fruit
+        </span>
       </li>
     </ul>
   </div>
-  <span id="select-label" class="mdc-floating-label">Pick a Food Group</span>
-  <div class="mdc-line-ripple"></div>
 </div>
 <p id="my-helper-text" class="mdc-select-helper-text">Helper text</p>
 ```
@@ -76,16 +92,16 @@ MDCSelectHelperText API, which is described below.
 
 CSS Class | Description
 --- | ---
-`mdc-select-helper-text` | Mandatory.
-`mdc-select-helper-text--persistent` | Makes the helper text permanently visible.
-`mdc-select-helper-text--validation-msg` | Indicates the helper text is a validation message.
+`mdc-select-helper-text` | Mandatory. By default non-validation helper text is always visible.
+`mdc-select-helper-text--validation-msg` | Indicates the helper text is a validation message. By default validation message is hidden unless the select is invalid.
+`mdc-select-helper-text--validation-msg-persistent` | When the helper text is serving as a validation message, make it permanently visible regardless of the select's validity.
 
 ### Sass mixins
 
 Mixin | Description
 --- | ---
 `mdc-select-helper-text-color($color)` | Customizes the color of the helper text following a select.
-`mdc-select-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
+`mdc-select-helper-text-validation-color($color)` | Customizes the color of the helper text validation message when the select is invalid.
 
 ## `MDCSelectHelperText` properties and methods
 
@@ -113,7 +129,7 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `setContent(content: string) => void` | Sets the content of the helper text.
-`setPersistent(isPersistent: boolean) => void` | Sets the helper text as persistent.
-`setValidation(isValidation: boolean) => void` | Sets the helper text as a validation message.
+`setValidation(isValidation: boolean) => void` | Sets the helper text as a validation message. By default, validation messages are hidden when the select is valid and visible when the select is invalid.
+`setValidationMsgPersistent(isPersistent: boolean) => void` | This keeps the validation message visible even if the select is valid, though it will be displayed in the normal (grey) color.
 `showToScreenReader() => void` | Makes the helper text visible to the screen reader.
 `setValidity(inputIsValid: boolean) => void` | Sets the validity of the helper text based on the input validity.

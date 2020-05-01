@@ -62,24 +62,32 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
   }
 
   /**
-   *  Sets the persistency of the helper text.
-   */
-  setPersistent(isPersistent: boolean) {
-    if (isPersistent) {
-      this.adapter_.addClass(cssClasses.HELPER_TEXT_PERSISTENT);
-    } else {
-      this.adapter_.removeClass(cssClasses.HELPER_TEXT_PERSISTENT);
-    }
-  }
-
-  /**
-   * @param isValidation True to make the helper text act as an error validation message.
+   * Sets the helper text to act as a validation message.
+   * By default, validation messages are hidden when the select is valid and
+   * visible when the select is invalid.
+   *
+   * @param isValidation True to make the helper text act as an error validation
+   *     message.
    */
   setValidation(isValidation: boolean) {
     if (isValidation) {
       this.adapter_.addClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     } else {
       this.adapter_.removeClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+    }
+  }
+
+  /**
+   * Sets the persistency of the validation helper text.
+   * This keeps the validation message visible even if the select is valid,
+   * though it will be displayed in the normal (grey) color.
+   */
+  setValidationMsgPersistent(isPersistent: boolean) {
+    if (isPersistent) {
+      this.adapter_.addClass(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
+    } else {
+      this.adapter_.removeClass(
+          cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
     }
   }
 
@@ -94,9 +102,12 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
    * Sets the validity of the helper text based on the select validity.
    */
   setValidity(selectIsValid: boolean) {
-    const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
-    const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !selectIsValid;
+    const helperTextIsPersistentValidationMsg = this.adapter_.hasClass(
+        cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
+    const helperTextIsValidationMsg =
+        this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+    const validationMsgNeedsDisplay =
+        helperTextIsValidationMsg && !selectIsValid;
 
     if (validationMsgNeedsDisplay) {
       this.adapter_.setAttr(strings.ROLE, 'alert');
@@ -104,7 +115,7 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
       this.adapter_.removeAttr(strings.ROLE);
     }
 
-    if (!helperTextIsPersistent && !validationMsgNeedsDisplay) {
+    if (!validationMsgNeedsDisplay && !helperTextIsPersistentValidationMsg) {
       this.hide_();
     }
   }

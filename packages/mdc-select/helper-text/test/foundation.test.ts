@@ -60,15 +60,18 @@ describe('MDCSelectHelperTextFoundation', () => {
     expect(mockAdapter.setContent).toHaveBeenCalledWith('foo');
   });
 
-  it('#setPersistent toggles the persistent class', () => {
-    const {foundation, mockAdapter} = setupTest();
-    foundation.setPersistent(true);
-    expect(mockAdapter.addClass)
-        .toHaveBeenCalledWith(cssClasses.HELPER_TEXT_PERSISTENT);
-    foundation.setPersistent(false);
-    expect(mockAdapter.removeClass)
-        .toHaveBeenCalledWith(cssClasses.HELPER_TEXT_PERSISTENT);
-  });
+  it('#setValidationMsgPersistent toggles the persistent validation class',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.setValidationMsgPersistent(true);
+       expect(mockAdapter.addClass)
+           .toHaveBeenCalledWith(
+               cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
+       foundation.setValidationMsgPersistent(false);
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(
+               cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
+     });
 
   it('#setValidation toggles the validation class', () => {
     const {foundation, mockAdapter} = setupTest();
@@ -91,7 +94,8 @@ describe('MDCSelectHelperTextFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const inputIsValid = false;
-       mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_PERSISTENT)
+       mockAdapter.hasClass
+           .withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT)
            .and.returnValue(false);
        mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
            .and.returnValue(true);
@@ -102,7 +106,8 @@ describe('MDCSelectHelperTextFoundation', () => {
   it('#setValidity removes role="alert" if input is valid', () => {
     const {foundation, mockAdapter} = setupTest();
     const inputIsValid = true;
-    mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_PERSISTENT)
+    mockAdapter.hasClass
+        .withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT)
         .and.returnValue(false);
     mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
         .and.returnValue(true);
@@ -113,7 +118,8 @@ describe('MDCSelectHelperTextFoundation', () => {
   it('#setValidity sets aria-hidden="true" on helper text by default', () => {
     const {foundation, mockAdapter} = setupTest();
     const inputIsValid = true;
-    mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_PERSISTENT)
+    mockAdapter.hasClass
+        .withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT)
         .and.returnValue(false);
     mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
         .and.returnValue(false);
@@ -121,11 +127,12 @@ describe('MDCSelectHelperTextFoundation', () => {
     expect(mockAdapter.setAttr).toHaveBeenCalledWith('aria-hidden', 'true');
   });
 
-  it('#setValidity does not set aria-hidden on helper text when it is persistent',
+  it('#setValidity does not set aria-hidden on helper text when it is persistent validation',
      () => {
        const {foundation, mockAdapter} = setupTest();
        const inputIsValid = true;
-       mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_PERSISTENT)
+       mockAdapter.hasClass
+           .withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT)
            .and.returnValue(true);
        mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
            .and.returnValue(false);
@@ -138,7 +145,8 @@ describe('MDCSelectHelperTextFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const inputIsValid = false;
-       mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_PERSISTENT)
+       mockAdapter.hasClass
+           .withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT)
            .and.returnValue(false);
        mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
            .and.returnValue(true);
@@ -151,7 +159,8 @@ describe('MDCSelectHelperTextFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const inputIsValid = true;
-       mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_PERSISTENT)
+       mockAdapter.hasClass
+           .withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT)
            .and.returnValue(false);
        mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
            .and.returnValue(true);
