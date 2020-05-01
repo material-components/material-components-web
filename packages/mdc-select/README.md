@@ -51,7 +51,10 @@ The select requires that you set the `width` of the `mdc-select` element. This i
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly class="mdc-select__selected-text">
-    <i class="mdc-select__dropdown-icon"></i>
+    <span class="mdc-select__dropdown-icon">
+      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
+      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+    </span>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -126,7 +129,10 @@ The following is an example of the select component with all of the necessary ar
        aria-labelledby="demo-label demo-selected-text">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly id="demo-selected-text" class="mdc-select__selected-text" value="Vegetables">
-    <i class="mdc-select__dropdown-icon"></i>
+    <span class="mdc-select__dropdown-icon">
+      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
+      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+    </span>
     <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -167,7 +173,10 @@ same.
   <div class="mdc-select__anchor" aria-labelledby="outlined-select-label">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly id="demo-selected-text" class="mdc-select__selected-text">
-    <i class="mdc-select__dropdown-icon"></i>
+    <span class="mdc-select__dropdown-icon">
+      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
+      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+    </span>
     <span class="mdc-notched-outline">
       <span class="mdc-notched-outline__leading"></span>
       <span class="mdc-notched-outline__notch">
@@ -200,7 +209,10 @@ to set the selected item. The select also needs the text from the selected eleme
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly class="mdc-select__selected-text" value="Vegetables">
-    <i class="mdc-select__dropdown-icon"></i>
+    <span class="mdc-select__dropdown-icon">
+      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
+      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+    </span>
     <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -248,7 +260,10 @@ and set the `aria-required` attribute on the `mdc-select__anchor` element to be 
   <span class="mdc-select__ripple"></span>
   <div class="mdc-select__anchor" aria-required="true">
     <input type="text" disabled readonly class="mdc-select__selected-text">
-    <i class="mdc-select__dropdown-icon"></i>
+    <span class="mdc-select__dropdown-icon">
+      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
+      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+    </span>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -271,7 +286,10 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
   <div class="mdc-select__anchor" aria-disabled="true">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly class="mdc-select__selected-text">
-    <i class="mdc-select__dropdown-icon"></i>
+    <span class="mdc-select__dropdown-icon">
+      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
+      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+    </span>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -343,7 +361,10 @@ structure.
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly class="mdc-select__selected-text">
-    <i class="mdc-select__dropdown-icon"></i>
+    <span class="mdc-select__dropdown-icon">
+      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
+      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+    </span>
     <span class="mdc-line-ripple"></span>
   </div>
 
@@ -377,7 +398,10 @@ structure.
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <input type="text" disabled readonly class="mdc-select__selected-text">
-    <i class="mdc-select__dropdown-icon"></i>
+    <span class="mdc-select__dropdown-icon">
+      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
+      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+    </span>
     <span class="mdc-notched-outline">
       <span class="mdc-notched-outline__leading"></span>
       <span class="mdc-notched-outline__trailing"></span>

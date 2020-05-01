@@ -207,8 +207,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       return;
     }
 
-    this.adapter_.addClass(cssClasses.ACTIVATED);
-
     // Menu should open to the last selected element, should open to first menu item otherwise.
     const focusItemIndex = this.selectedIndex >= 0 ? this.selectedIndex : 0;
     this.adapter_.focusMenuItemAtIndex(focusItemIndex);
@@ -274,6 +272,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
     this.adapter_.setRippleCenter(normalizedX);
 
+    this.adapter_.addClass(cssClasses.ACTIVATED);
     this.adapter_.openMenu();
     this.isMenuOpen = true;
     this.adapter_.setSelectAnchorAttr('aria-expanded', 'true');
@@ -290,6 +289,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const arrowDown = event.key === 'ArrowDown' || event.keyCode === 40;
 
     if (this.adapter_.hasClass(cssClasses.FOCUSED) && (isEnter || isSpace || arrowUp || arrowDown)) {
+      this.adapter_.addClass(cssClasses.ACTIVATED);
       this.adapter_.openMenu();
       this.isMenuOpen = true;
       this.adapter_.setSelectAnchorAttr('aria-expanded', 'true');

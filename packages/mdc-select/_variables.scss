@@ -40,7 +40,7 @@ $anchor-padding-right: 0 !default;
 $outlined-stroke-width: 2px !default;
 
 $ink-color: rgba(variables.prop-value(on-surface), .87) !default;
-$dropdown-color: variables.prop-value(on-surface) !default;
+$dropdown-icon-color: rgba(variables.prop-value(on-surface), .54) !default;
 $icon-color: rgba(variables.prop-value(on-surface), .54) !default;
 $label-color: rgba(variables.prop-value(on-surface), .6) !default;
 $focused-label-color: rgba(variables.prop-value(primary), .87) !default;
@@ -50,14 +50,12 @@ $helper-text-color: rgba(variables.prop-value(on-surface), .6) !default;
 
 $fill-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 4%) !default;
 
-$dropdown-opacity: .54 !default;
-
 // Disabled Styles
 $disabled-label-color: rgba(variables.prop-value(on-surface), .38) !default;
 $disabled-icon-color: rgba(variables.prop-value(on-surface), .38) !default;
 $disabled-ink-color: rgba(variables.prop-value(on-surface), .38) !default;
 $disabled-fill-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 2%) !default;
-$disabled-dropdown-opacity: .38 !default;
+$disabled-dropdown-icon-color: rgba(variables.prop-value(on-surface), .38) !default;
 
 $outlined-idle-border: rgba(variables.prop-value(on-surface), .38) !default;
 $outlined-hover-border: rgba(variables.prop-value(on-surface), .87) !default;
@@ -71,6 +69,12 @@ $outlined-label-position-y: get-outlined-label-position-y($height) !default;
 $outlined-with-leading-icon-label-position-x: 32px !default;
 
 $dropdown-transition-duration: 150ms !default;
+// Transition durartions to active state
+$icon-active-fade-out-duration: .33 * $dropdown-transition-duration !default;
+$icon-active-fade-in-duration: .67 * $dropdown-transition-duration !default;
+// Transition durartions to inactive state
+$icon-inactive-fade-out-duration: .5 * $dropdown-transition-duration !default;
+$icon-inactive-fade-in-duration: .5 * $dropdown-transition-duration !default;
 
 // Error colors
 $error-color: error !default;

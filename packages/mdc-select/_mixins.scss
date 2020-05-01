@@ -83,35 +83,31 @@
     }
 
     &__dropdown-icon {
-      @include dd-arrow-svg-bg_(variables.$dropdown-color, variables.$dropdown-opacity, $query: $query);
+      @include _dropdown-icon-base($query: $query);
+      @include _dropdown-icon-color(variables.$dropdown-icon-color, $query: $query);
+      @include _dropdown-icon-inactive($query: $query);
 
       @include feature-targeting-mixins.targets($feat-structure) {
         @include rtl-mixins.reflexive-property(margin,
           icon-variables.$icon-horizontal-margin,
           icon-variables.$icon-horizontal-margin);
+        display: inline-flex;
+        position: relative;
         width: 24px;
         height: 24px;
         align-self: center;
+        align-items: center;
+        justify-content: center;
         flex-shrink: 0;
         pointer-events: none;
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
-        transition: transform variables.$dropdown-transition-duration animation-variables.$standard-curve-timing-function;
-      }
-
       .mdc-select--focused & {
-        @include dd-arrow-svg-bg_(theme-variables.prop-value(primary), 1, $query: $query);
+        @include _dropdown-icon-color(primary, $query: $query);
       }
 
       .mdc-select--activated & {
-        @include feature-targeting-mixins.targets($feat-structure) {
-          transform: rotate(180deg) translateY(-5px);
-        }
-
-        @include feature-targeting-mixins.targets($feat-animation) {
-          transition: transform variables.$dropdown-transition-duration animation-variables.$standard-curve-timing-function;
-        }
+        @include _dropdown-icon-active($query: $query);
       }
     }
   }
@@ -167,7 +163,7 @@
     }
 
     .mdc-select__dropdown-icon {
-      @include dd-arrow-svg-bg_(variables.$error-color, 1, $query: $query);
+      @include _dropdown-icon-color(variables.$error-color, $query: $query);
     }
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
@@ -405,18 +401,94 @@
   }
 }
 
-@mixin dd-arrow-svg-bg_($fill-hex-number, $opacity, $query: feature-targeting-functions.all()) {
-  // Lookup color and remove leading #.
-  $fill-hex-number: theme-variables.prop-value($fill-hex-number);
-  $fill-hex-number: string.slice(string.unquote("#{$fill-hex-number}"), 2);
-
+///
+/// Sets base dropdown icon styles.
+/// @access private
+///
+@mixin _dropdown-icon-base($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
-    // stylelint-disable-next-line function-url-quotes
-    background: url('data:image/svg+xml,%3Csvg%20width%3D%2210px%22%20height%3D%225px%22%20viewBox%3D%227%2010%2010%205%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Shape%22%20stroke%3D%22none%22%20fill%3D%22%23#{$fill-hex-number}%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22#{$opacity}%22%20points%3D%227%2010%2012%2015%2017%2010%22%3E%3C%2Fpolygon%3E%0A%3C%2Fsvg%3E')
-      no-repeat
-      center;
+  .mdc-select__dropdown-icon-active,
+  .mdc-select__dropdown-icon-inactive {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+}
+
+///
+/// Sets the dropdown icon to the specified color.
+/// @access private
+///
+@mixin _dropdown-icon-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+
+  @include feature-targeting-mixins.targets($feat-color) {
+    @include theme-mixins.prop(color, $color);
+  }
+}
+
+///
+/// Sets styles for transitioning the dropdown icon to inactive state.
+/// @access private
+///
+@mixin _dropdown-icon-inactive($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+
+  .mdc-select__dropdown-icon-inactive {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      opacity: 1;
+    }
+
+    @include feature-targeting-mixins.targets($feat-animation) {
+      transition:
+        opacity variables.$icon-inactive-fade-in-duration linear variables.$icon-inactive-fade-out-duration;
+    }
+  }
+
+  .mdc-select__dropdown-icon-active {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      opacity: 0;
+    }
+
+    @include feature-targeting-mixins.targets($feat-animation) {
+      transition:
+        opacity variables.$icon-inactive-fade-out-duration linear;
+    }
+  }
+}
+
+///
+/// Sets styles for transitioning the dropdown icon to activated state.
+/// @access private
+///
+@mixin _dropdown-icon-active($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting-functions.create-target($query, animation);
+
+  .mdc-select__dropdown-icon-inactive {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      opacity: 0;
+    }
+
+    @include feature-targeting-mixins.targets($feat-animation) {
+      transition:
+        opacity variables.$icon-active-fade-out-duration linear;
+    }
+  }
+
+  .mdc-select__dropdown-icon-active {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      opacity: 1;
+    }
+
+    @include feature-targeting-mixins.targets($feat-animation) {
+      transition:
+        opacity variables.$icon-active-fade-in-duration linear variables.$icon-active-fade-out-duration;
+    }
   }
 }
 
@@ -553,7 +625,7 @@
   }
 
   .mdc-select__dropdown-icon {
-    @include dd-arrow-svg-bg_(variables.$dropdown-color, variables.$disabled-dropdown-opacity, $query: $query);
+    @include _dropdown-icon-color(variables.$disabled-dropdown-icon-color, $query: $query);
   }
 
   .mdc-line-ripple {
