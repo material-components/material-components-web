@@ -403,16 +403,6 @@ $query: feature-targeting-functions.all()) {
   }
 }
 
-///
-/// Sets the button label to overflow as ellipsis
-///
-/// This is a misspelling of label-overflow-ellipsis that has been kept to
-/// prevent breaking existing users. Please migrate to label-overflow-ellipsis.
-///
-@mixin label-overlow-ellipsis($query: feature-targeting-functions.all()) {
-  @include label-overflow-ellipsis($query: $query);
-}
-
 @mixin base_($query) {
   $feat-color: feature-targeting-functions.create-target($query, color);
   $feat-structure: feature-targeting-functions.create-target($query, structure);
