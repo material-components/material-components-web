@@ -236,12 +236,13 @@ to any helper text.
 </div>
 ```
 Alternatively, the character counter can be placed in the textarea's body by
-inserting the character counter at the top of the textarea container.
+inserting the character counter below the textarea and adding the
+`mdc-text-field--with-internal-counter` modifier class to the text field.
 
 ```html
-<label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea">
-  <div class="mdc-text-field-character-counter">0 / 140</div>
+<label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--with-internal-counter">
   <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8" cols="40" maxlength="140"></textarea>
+  <span class="mdc-text-field-character-counter">0 / 140</span>
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__notch">
@@ -362,6 +363,7 @@ CSS Class | Description
 `mdc-text-field--end-aligned` | Styles the text field with an end-aligned input.
 `mdc-text-field--label-floating` | Styles the text field with a floating label and pre-filled or focused value.
 `mdc-text-field--ltr-text` | Styles the text field's text elements (input, prefix, and suffix) as LTR even when the direction is RTL. Useful for RTL languages that use LTR for fractional notations.
+`mdc-text-field--with-internal-counter` | Styles the text area as a text area with an internal character counter.
 `mdc-text-field-helper-line` | Styles the container of helper text and character counter elements.
 
 ### Sass mixins

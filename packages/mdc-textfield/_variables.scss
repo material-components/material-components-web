@@ -96,15 +96,35 @@ $label-offset: 16px !default;
 $outlined-label-position-y:
     get-outlined-label-position-y($height) !default;
 $outlined-with-leading-icon-label-position-x: 32px !default;
-$textarea-outlined-label-position-y: 130% !default;
+$textarea-outlined-label-position-y: 24.75px !default; // visually ~4dp from top to baseline
 $helper-line-padding: 16px !default;
 $filled-baseline-top: 40px !default;
 $input-height: 28px !default;
-$textarea-line-height: 1.75rem !default; // 28dp TODO(b/154640465): spec says 24dp baseline
-$textarea-input-internal-counter-margin-bottom: 28px !default;
+$textarea-label-top: 18px !default; // visually ~32dp from top to label baseline
+$textarea-line-height: 1.5rem !default; // 24dp from baseline to baseline
 $textarea-input-handle-margin: 1px !default;
-$textarea-outlined-input-margin-top: 8px !default;
-$textarea-outlined-input-padding-bottom: 16px !default; // visually ~24dp from textarea baseline
+// Outlined textarea's first line should be placed at the same position as
+// outlined textfield, and should look identical if it is 1 row. Since textfield
+// is centered and font metrics vary for where the baseline is, the best way to
+// ensure textarea and textfield align is with padding. At 56px height with a
+// 24px line-height, a centered textfield has 16px of top and bottom padding.
+// Textarea should use this to position itself.
+$textarea-outlined-input-margin-top: 16px !default;
+$textarea-outlined-input-margin-bottom: 16px !default;
+$textarea-outlined-density-config: (
+  margin-top: (
+    default: $textarea-outlined-input-margin-top,
+    maximum: $textarea-outlined-input-margin-top,
+    minimum: $textarea-outlined-input-margin-top - 8 // remove 1/2 of scale to -4
+  ),
+  margin-bottom: (
+    default: $textarea-outlined-input-margin-bottom,
+    maximum: $textarea-outlined-input-margin-bottom,
+    minimum: $textarea-outlined-input-margin-bottom - 8 // remove 1/2 of scale to -4
+  )
+) !default;
+$textarea-internal-counter-input-margin-bottom: 2px !default; // visually ~20dp from baseline to counter baseline
+$textarea-internal-counter-baseline-bottom: 16px !default;
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.
 
 $prefix-padding: 2px !default;
