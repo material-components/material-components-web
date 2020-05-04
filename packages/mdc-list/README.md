@@ -415,7 +415,6 @@ The `selectedIndex` (that proxies foundation's `setSelectedState()`) accepts lis
 CSS Class | Description
 --- | ---
 `mdc-list` | Mandatory, for the list element.
-`mdc-list--non-interactive` | Optional, disables interactivity affordances.
 `mdc-list--dense` | Optional, styles the density of the list, making it appear more compact.
 `mdc-list--avatar-list` | Optional, configures the leading tiles of each row to display images instead of icons. This will make the graphics of the list items larger.
 `mdc-list--two-line` | Optional, modifier to style list with two lines (primary and secondary lines).

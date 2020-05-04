@@ -222,8 +222,8 @@
     }
   }
 
-  // Only change mouse cursor for interactive list items which are not disabled.
-  :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
+  // Only change mouse cursor for list items which are not disabled.
+  :not(.mdc-list-item--disabled).mdc-list-item {
     @include feature-targeting-mixins.targets($feat-structure) {
       cursor: pointer;
     }
@@ -302,14 +302,12 @@
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // List items should support states by default, but it should be possible to opt out.
-  // Direct child combinator is necessary for non-interactive modifier on parent to not
-  // match this selector.
-  :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
+  :not(.mdc-list-item--disabled).mdc-list-item {
     @include item-interactive-ripple_($query);
   }
 
   // Set styles only for focus state on disabled list item.
-  :not(.mdc-list--non-interactive) > .mdc-list-item--disabled {
+  .mdc-list-item--disabled {
     @include ripple-mixins.surface($query: $query);
     @include ripple-mixins.radius-bounded($query: $query);
     @include ripple-mixins.states-base-color(theme-variables.prop-value(on-surface), $query: $query);
