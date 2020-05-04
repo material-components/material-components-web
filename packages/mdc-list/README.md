@@ -452,8 +452,9 @@ Mixin | Description
 `single-line-shape-radius($radius, $rtl-reflexive, $density-scale)` | Sets the rounded shape to list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false. Set `$density-scale` only when custom density is applied, defaults to `$mdc-list-single-line-density-scale`.
 `divider-color($color)` | Sets divider ink color.
 `group-subheader-ink-color($color)` | Sets ink color of subheader text within list group.
-`item-disabled-text-color($color`) | Sets the color of the text when the list item is disabled.
-`item-disabled-text-opacity($opacity`) | Sets the opacity of the text when the list item is disabled.
+`item-selected-text-color($color)` | Sets the color of the text when the list item is selected/activated.
+`item-disabled-text-color($color)` | Sets the color of the text when the list item is disabled.
+`item-disabled-text-opacity($opacity)` | Sets the opacity of the text when the list item is disabled.
 `single-line-density($density-scale)` | Sets density scale to single line list variant. Supported density scales are `-4`, `-3`, `-2`, `-1` and  `0`.
 `single-line-height($height)` | Sets height to single line list variant.
 
