@@ -122,6 +122,7 @@ Mixin | Description
 `smooth-font` | Adds antialiasing for typography
 `overflow-ellipsis` | Truncates overflow text to one line with an ellipsis
 `baseline($top, $bottom, $display)`| Sets a container's baseline that text content will align to.
+`zero-width-prefix` | Adds an invisible, zero-width prefix to a container's text. This ensures that the baseline is always where the text would be, instead of defaulting to the container bottom when text is empty. Do not use this mixin if the `baseline` mixin is already applied.
 `text-baseline($top, $bottom, $display)`| Sets the baseline of flow text content.
 
 > **A note about `overflow-ellipsis`**, `overflow-ellipsis` should only be used if the element is `display: block` or `display: inline-block`.

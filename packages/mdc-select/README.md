@@ -50,10 +50,25 @@ The select requires that you set the `width` of the `mdc-select` element. This i
 <div class="mdc-select demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
-    <input type="text" disabled readonly class="mdc-select__selected-text">
+    <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
-      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
-      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+      <svg
+          width="10px"
+          height="5px"
+          viewBox="7 10 10 5">
+        <polygon
+            class="mdc-select__dropdown-icon-inactive"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 10 12 15 17 10">
+        </polygon>
+        <polygon
+            class="mdc-select__dropdown-icon-active"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 15 12 10 17 15">
+        </polygon>
+      </svg>
     </span>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
@@ -128,10 +143,25 @@ The following is an example of the select component with all of the necessary ar
        aria-haspopup="listbox"
        aria-labelledby="demo-label demo-selected-text">
     <span class="mdc-select__ripple"></span>
-    <input type="text" disabled readonly id="demo-selected-text" class="mdc-select__selected-text" value="Vegetables">
+    <span id="demo-selected-text" class="mdc-select__selected-text">Vegetables</span>
     <span class="mdc-select__dropdown-icon">
-      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
-      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+      <svg
+          width="10px"
+          height="5px"
+          viewBox="7 10 10 5">
+        <polygon
+            class="mdc-select__dropdown-icon-inactive"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 10 12 15 17 10">
+        </polygon>
+        <polygon
+            class="mdc-select__dropdown-icon-active"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 15 12 10 17 15">
+        </polygon>
+      </svg>
     </span>
     <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
@@ -172,10 +202,25 @@ same.
 <div class="mdc-select mdc-select--outlined">
   <div class="mdc-select__anchor" aria-labelledby="outlined-select-label">
     <span class="mdc-select__ripple"></span>
-    <input type="text" disabled readonly id="demo-selected-text" class="mdc-select__selected-text">
+    <span id="demo-selected-text" class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
-      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
-      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+      <svg
+          width="10px"
+          height="5px"
+          viewBox="7 10 10 5">
+        <polygon
+            class="mdc-select__dropdown-icon-inactive"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 10 12 15 17 10">
+        </polygon>
+        <polygon
+            class="mdc-select__dropdown-icon-active"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 15 12 10 17 15">
+        </polygon>
+      </svg>
     </span>
     <span class="mdc-notched-outline">
       <span class="mdc-notched-outline__leading"></span>
@@ -208,10 +253,25 @@ to set the selected item. The select also needs the text from the selected eleme
 <div class="mdc-select demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
-    <input type="text" disabled readonly class="mdc-select__selected-text" value="Vegetables">
+    <span class="mdc-select__selected-text">Vegetables</span>
     <span class="mdc-select__dropdown-icon">
-      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
-      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+      <svg
+          width="10px"
+          height="5px"
+          viewBox="7 10 10 5">
+        <polygon
+            class="mdc-select__dropdown-icon-inactive"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 10 12 15 17 10">
+        </polygon>
+        <polygon
+            class="mdc-select__dropdown-icon-active"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 15 12 10 17 15">
+        </polygon>
+      </svg>
     </span>
     <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
@@ -259,10 +319,25 @@ and set the `aria-required` attribute on the `mdc-select__anchor` element to be 
 <div class="mdc-select mdc-select--required">
   <span class="mdc-select__ripple"></span>
   <div class="mdc-select__anchor" aria-required="true">
-    <input type="text" disabled readonly class="mdc-select__selected-text">
+    <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
-      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
-      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+      <svg
+          width="10px"
+          height="5px"
+          viewBox="7 10 10 5">
+        <polygon
+            class="mdc-select__dropdown-icon-inactive"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 10 12 15 17 10">
+        </polygon>
+        <polygon
+            class="mdc-select__dropdown-icon-active"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 15 12 10 17 15">
+        </polygon>
+      </svg>
     </span>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
@@ -285,10 +360,25 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
 <div class="mdc-select mdc-select--disabled">
   <div class="mdc-select__anchor" aria-disabled="true">
     <span class="mdc-select__ripple"></span>
-    <input type="text" disabled readonly class="mdc-select__selected-text">
+    <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
-      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
-      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+      <svg
+          width="10px"
+          height="5px"
+          viewBox="7 10 10 5">
+        <polygon
+            class="mdc-select__dropdown-icon-inactive"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 10 12 15 17 10">
+        </polygon>
+        <polygon
+            class="mdc-select__dropdown-icon-active"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 15 12 10 17 15">
+        </polygon>
+      </svg>
     </span>
     <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
@@ -360,10 +450,25 @@ structure.
 <div class="mdc-select mdc-select--no-label demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
-    <input type="text" disabled readonly class="mdc-select__selected-text">
+    <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
-      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
-      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+      <svg
+          width="10px"
+          height="5px"
+          viewBox="7 10 10 5">
+        <polygon
+            class="mdc-select__dropdown-icon-inactive"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 10 12 15 17 10">
+        </polygon>
+        <polygon
+            class="mdc-select__dropdown-icon-active"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 15 12 10 17 15">
+        </polygon>
+      </svg>
     </span>
     <span class="mdc-line-ripple"></span>
   </div>
@@ -397,10 +502,25 @@ structure.
 <div class="mdc-select mdc-select--outlined mdc-select--no-label demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
-    <input type="text" disabled readonly class="mdc-select__selected-text">
+    <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
-      <i class="material-icons mdc-select__dropdown-icon-inactive">arrow_drop_down</i>
-      <i class="material-icons mdc-select__dropdown-icon-active">arrow_drop_up</i>
+      <svg
+          width="10px"
+          height="5px"
+          viewBox="7 10 10 5">
+        <polygon
+            class="mdc-select__dropdown-icon-inactive"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 10 12 15 17 10">
+        </polygon>
+        <polygon
+            class="mdc-select__dropdown-icon-active"
+            stroke="none"
+            fill-rule="evenodd"
+            points="7 15 12 10 17 15">
+        </polygon>
+      </svg>
     </span>
     <span class="mdc-notched-outline">
       <span class="mdc-notched-outline__leading"></span>

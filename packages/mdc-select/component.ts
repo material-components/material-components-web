@@ -53,7 +53,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private menu!: MDCMenu;  // assigned in menuSetup()
 
   private selectAnchor!: HTMLElement;       // assigned in initialize()
-  private selectedText!: HTMLInputElement;  // assigned in initialize()
+  private selectedText!: HTMLElement;       // assigned in initialize()
 
   private menuElement!: Element;                  // assigned in menuSetup()
   private leadingIcon?: MDCSelectIcon;            // assigned in initialize()
@@ -86,8 +86,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   ) {
     this.selectAnchor =
         this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
-    this.selectedText = this.root_.querySelector(
-                            strings.SELECTED_TEXT_SELECTOR) as HTMLInputElement;
+    this.selectedText =
+        this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
 
     if (!this.selectedText) {
       throw new Error(
@@ -335,7 +335,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       getMenuItemAttr: (menuItem: Element, attr: string) =>
           menuItem.getAttribute(attr),
       setSelectedText: (text: string) => {
-        this.selectedText.value = text;
+        this.selectedText.textContent = text;
       },
       isSelectAnchorFocused: () => document.activeElement === this.selectAnchor,
       getSelectAnchorAttr: (attr: string) =>

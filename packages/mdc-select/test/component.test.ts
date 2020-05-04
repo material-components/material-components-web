@@ -163,7 +163,7 @@ function setupTest(
       fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
   const container = hasHelperText ? getHelperTextFixture(fixture) : null;
   const selectedText =
-      fixture.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLInputElement;
+      fixture.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
   const labelEl = fixture.querySelector(strings.LABEL_SELECTOR) as HTMLElement;
   const bottomLineEl =
       fixture.querySelector(strings.LINE_RIPPLE_SELECTOR) as HTMLElement;
@@ -833,9 +833,9 @@ describe('MDCSelect', () => {
     const adapter = (component.getDefaultFoundation() as any).adapter_;
 
     const textToSet = 'foo';
-    expect(selectedText.value).not.toEqual(textToSet);
+    expect(selectedText.textContent).not.toEqual(textToSet);
     adapter.setSelectedText(textToSet);
-    expect(selectedText.value).toEqual(textToSet);
+    expect(selectedText.textContent).toEqual(textToSet);
     document.body.removeChild(fixture);
   });
 

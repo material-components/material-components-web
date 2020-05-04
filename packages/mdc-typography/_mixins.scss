@@ -225,6 +225,20 @@
   }
 }
 
+/// Adds an invisible, zero-width prefix to a container's text.
+/// This ensures that the baseline is always where the text would be, instead
+/// of defaulting to the container bottom when text is empty. Do not use this
+/// mixin if the `baseline` mixin is already applied.
+@mixin zero-width-prefix($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  &::before {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      content: '\200b';
+    }
+  }
+}
+
 @mixin baseline-strut_($distance) {
   display: inline-block;
   width: 0;
