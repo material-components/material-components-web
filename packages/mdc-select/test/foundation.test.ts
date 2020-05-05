@@ -102,7 +102,7 @@ describe('MDCSelectFoundation', () => {
     mockAdapter.getMenuItemValues.and.returnValue(['foo', 'bar']);
     mockAdapter.getMenuItemTextAtIndex.withArgs(0).and.returnValue('foo');
     mockAdapter.getMenuItemTextAtIndex.withArgs(1).and.returnValue('bar');
-    mockAdapter.getMenuItemCount.and.returnValue(3);
+    mockAdapter.getMenuItemCount.and.returnValue(2);
 
     const foundation = new MDCSelectFoundation(mockAdapter, foundationMap);
     return {foundation, mockAdapter, leadingIcon, helperText};
@@ -417,10 +417,9 @@ describe('MDCSelectFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('');
        const event = {key: 'Enter', preventDefault} as any;
-       mockAdapter.hasClass.withArgs('mdc-select--focused')
-           .and.returnValue(true);
+       mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
        foundation.handleKeydown(event);
-       event.key = 'Space';
+       event.key = 'Spacebar';
        (foundation as any).isMenuOpen = false;
        foundation.handleKeydown(event);
        event.key = 'ArrowUp';
@@ -456,10 +455,9 @@ describe('MDCSelectFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('');
        const event = {key: 'Enter', preventDefault} as any;
-       mockAdapter.hasClass.withArgs('mdc-select--focused')
-           .and.returnValue(false);
+       mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(false);
        foundation.handleKeydown(event);
-       event.key = 'Space';
+       event.key = 'Spacebar';
        foundation.handleKeydown(event);
        event.key = 'ArrowUp';
        foundation.handleKeydown(event);
@@ -484,7 +482,7 @@ describe('MDCSelectFoundation', () => {
     const event = {key: 'Enter', preventDefault} as any;
     (foundation as any).isMenuOpen = true;
     foundation.handleKeydown(event);
-    event.key = 'Space';
+    event.key = 'Spacebar';
     foundation.handleKeydown(event);
     event.key = 'ArrowUp';
     foundation.handleKeydown(event);
@@ -502,6 +500,80 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.openMenu).not.toHaveBeenCalled();
     expect(preventDefault).not.toHaveBeenCalled();
   });
+
+  it('#handleKeydown arrowUp decrements selected index when select is focused',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const preventDefault = jasmine.createSpy('');
+
+       mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
+       mockAdapter.getMenuItemValues.and.returnValue(['zero', 'one', 'two']);
+       mockAdapter.getMenuItemCount.and.returnValue(3);
+       mockAdapter.getMenuItemAttr
+           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
+           .and.returnValue('two');
+       foundation.init();
+
+       const event = {key: 'ArrowUp', preventDefault} as any;
+       foundation.handleKeydown(event);
+       expect(foundation.getSelectedIndex()).toEqual(1);
+
+       foundation['isMenuOpen'] = false;
+       event.key = '';
+       event.keyCode = 38;  // Up
+       foundation.handleKeydown(event);
+       expect(foundation.getSelectedIndex()).toEqual(0);
+
+       // Further ArrowUps should be no-ops once we're at first item
+       foundation['isMenuOpen'] = false;
+       event.key = 'ArrowUp';
+       event.keyCode = undefined;
+       foundation.handleKeydown(event);
+
+       event.key = '';
+       event.keyCode = 38;  // Up
+       foundation.handleKeydown(event);
+
+       expect(foundation.getSelectedIndex()).toEqual(0);
+       expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(2);
+     });
+
+  it('#handleKeydown arrowDown increments selected index when select is focused',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const preventDefault = jasmine.createSpy('');
+
+       mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
+       mockAdapter.getMenuItemValues.and.returnValue(['zero', 'one', 'two']);
+       mockAdapter.getMenuItemCount.and.returnValue(3);
+       mockAdapter.getMenuItemAttr
+           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
+           .and.returnValue('zero');
+       foundation.init();
+
+       const event = {key: 'ArrowDown', preventDefault} as any;
+       foundation.handleKeydown(event);
+       expect(foundation.getSelectedIndex()).toEqual(1);
+
+       foundation['isMenuOpen'] = false;
+       event.key = '';
+       event.keyCode = 40;  // Down
+       foundation.handleKeydown(event);
+       expect(foundation.getSelectedIndex()).toEqual(2);
+
+       // Further ArrowDowns should be no-ops once we're at last item
+       foundation['isMenuOpen'] = false;
+       event.key = 'ArrowDown';
+       event.keyCode = undefined;
+       foundation.handleKeydown(event);
+
+       event.key = '';
+       event.keyCode = 40;  // Down
+       foundation.handleKeydown(event);
+
+       expect(foundation.getSelectedIndex()).toEqual(2);
+       expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(2);
+     });
 
   it('#layout notches outline and floats label if unfocused and value is nonempty',
      () => {

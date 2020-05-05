@@ -21,6 +21,7 @@
   "dependencies": {
     "@material/animation": "^6.0.0",
     "@material/base": "^6.0.0",
+    "@material/dom": "^6.0.0",
     "@material/feature-targeting": "^6.0.0",
     "@material/floating-label": "^6.0.0",
     "@material/line-ripple": "^6.0.0",

@@ -22,6 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {normalizeKey} from '@material/dom/keyboard';
 import {Corner} from '@material/menu-surface/constants';
 
 import {MDCSelectAdapter} from './adapter';
@@ -283,12 +284,20 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       return;
     }
 
-    const isEnter = event.key === 'Enter' || event.keyCode === 13;
-    const isSpace = event.key === 'Space' || event.keyCode === 32;
-    const arrowUp = event.key === 'ArrowUp' || event.keyCode === 38;
-    const arrowDown = event.key === 'ArrowDown' || event.keyCode === 40;
+    const isEnter = normalizeKey(event) === 'Enter';
+    const isSpace = normalizeKey(event) === 'Spacebar';
+    const arrowUp = normalizeKey(event) === 'ArrowUp';
+    const arrowDown = normalizeKey(event) === 'ArrowDown';
 
     if (this.adapter_.hasClass(cssClasses.FOCUSED) && (isEnter || isSpace || arrowUp || arrowDown)) {
+      if (arrowUp && this.selectedIndex > 0) {
+        this.setSelectedIndex(this.selectedIndex - 1);
+      } else if (
+          arrowDown &&
+          this.selectedIndex < this.adapter_.getMenuItemCount() - 1) {
+        this.setSelectedIndex(this.selectedIndex + 1);
+      }
+
       this.adapter_.addClass(cssClasses.ACTIVATED);
       this.adapter_.openMenu();
       this.isMenuOpen = true;
