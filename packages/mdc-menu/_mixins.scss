@@ -41,11 +41,7 @@
   .mdc-menu {
     @include list-mixins.item-meta-ink-color(variables.$ink-color, $query);
     @include list-mixins.item-graphic-ink-color(variables.$ink-color, $query);
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      min-width: variables.$min-width;
-    }
-
+    @include min-width(variables.$min-width, $query: $query);
     // Include mdc-list selector to ensure list-inside-menu overrides default list styles
     .mdc-list {
       @include list-mixins.item-primary-text-ink-color(variables.$ink-color, $query);
@@ -118,7 +114,7 @@
 }
 
 @mixin width($width, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, color);
+  $feat-structure: functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     @if math.is-unitless($width) {
@@ -126,5 +122,15 @@
     } @else {
       width: $width;
     }
+  }
+}
+
+/// Sets the min-width of the menu.
+/// @param {Number} $min-width - the desired min-width.
+@mixin min-width($min-width, $query: functions.all()) {
+  $feat-structure: functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    min-width: $min-width;
   }
 }

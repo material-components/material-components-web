@@ -38,6 +38,7 @@ $anchor-padding-left: 16px !default;
 $anchor-padding-left-with-leading-icon: 0 !default;
 $anchor-padding-right: 0 !default;
 $outlined-stroke-width: 2px !default;
+$min-width: 200px !default;
 
 $ink-color: rgba(variables.prop-value(on-surface), .87) !default;
 $dropdown-icon-color: rgba(variables.prop-value(on-surface), .54) !default;

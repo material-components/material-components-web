@@ -27,6 +27,7 @@
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/floating-label/mixins" as floating-label-mixins;
 @use "@material/line-ripple/mixins" as line-ripple-mixins;
+@use "@material/menu/mixins" as menu-mixins;
 @use "@material/notched-outline/mixins" as notched-outline-mixins;
 @use "@material/notched-outline/variables" as notched-outline-variables;
 @use "@material/ripple/mixins" as ripple-mixins;
@@ -76,6 +77,7 @@
       $right: variables.$anchor-padding-right,
       $query: $query
     );
+    @include min-width(variables.$min-width, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-block;
@@ -122,7 +124,6 @@
       overflow: hidden;
       outline: none;
       cursor: pointer;
-      min-width: 200px;
     }
 
     @include focused-line-ripple_ {
@@ -232,6 +233,22 @@
 
   .mdc-select__menu .mdc-list .mdc-list-item--selected {
     @include ripple-mixins.states(on-surface, $query: $query);
+  }
+}
+
+/// Sets the min-width of the select and its menu.
+/// @param {Number} $min-width - The desired min-width.
+@mixin min-width($min-width, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-select__anchor {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      min-width: $min-width;
+    }
+  }
+
+  .mdc-select__menu {
+    @include menu-mixins.min-width($min-width, $query: $query);
   }
 }
 

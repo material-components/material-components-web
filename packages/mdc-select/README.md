@@ -572,6 +572,7 @@ Mixin | Description
 `focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
 `hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
 `height($height)` | Sets height of the filled select variant.
+`min-width($min-width)` | Sets the min-width of the select and its menu.
 
 > _NOTE_: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 
