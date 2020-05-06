@@ -188,7 +188,7 @@
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-dialog--scrollable .mdc-dialog__content {
+   .mdc-dialog--scrollable .mdc-dialog__title + .mdc-dialog__content {
     @include feature-targeting-mixins.targets($feat-structure) {
       // Reduce and equalize vertical paddings when scrollable dividers are present
       // (Note: this is intentionally after title + content to take precedence)
