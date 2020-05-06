@@ -74,6 +74,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   /** Whether a trailing icon click should immediately trigger exit/removal of the chip. */
   private shouldRemoveOnTrailingIconClick_ = true;
 
+  /** Whether the primary action should receive focus on click. */
+  private shouldFocusPrimaryActionOnClick_ = true;
+
   constructor(adapter?: Partial<MDCChipAdapter>) {
     super({...MDCChipFoundation.defaultAdapter, ...adapter});
   }
@@ -100,6 +103,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) {
     this.shouldRemoveOnTrailingIconClick_ = shouldRemove;
+  }
+
+  setShouldFocusPrimaryActionOnClick(shouldFocus: boolean) {
+    this.shouldFocusPrimaryActionOnClick_ = shouldFocus;
   }
 
   getDimensions(): ClientRect {
@@ -141,10 +148,12 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Handles an interaction event on the root element.
    */
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
-    if (this.shouldHandleInteraction_(evt)) {
-      this.adapter_.notifyInteraction();
-      this.focusPrimaryAction_();
+    if (!this.shouldHandleInteraction_(evt)) {
+      return;
     }
+
+    this.adapter_.notifyInteraction();
+    this.focusPrimaryAction_(this.shouldFocusPrimaryActionOnClick_);
   }
 
   /**
@@ -315,9 +324,11 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return Direction.RIGHT;
   }
 
-  private focusPrimaryAction_() {
+  private focusPrimaryAction_(shouldFocus: boolean = true) {
     this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '0');
-    this.adapter_.focusPrimaryAction();
+    if (shouldFocus) {
+      this.adapter_.focusPrimaryAction();
+    }
     this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
   }
 

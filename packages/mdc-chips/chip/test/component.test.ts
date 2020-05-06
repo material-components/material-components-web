@@ -546,6 +546,13 @@ describe('MDCChip', () => {
         .toHaveBeenCalledWith(false);
   });
 
+  it('#set setShouldFocusPrimaryActionOnClick proxies to foundation', () => {
+    const {component, mockFoundation} = setupMockFoundationTest();
+    component.setShouldFocusPrimaryActionOnClick = false;
+    expect(mockFoundation.setShouldFocusPrimaryActionOnClick)
+        .toHaveBeenCalledWith(false);
+  });
+
   it('#setSelectedFromChipSet proxies to the same foundation method', () => {
     const {component, mockFoundation} = setupMockFoundationTest();
     component.setSelectedFromChipSet(true, false);

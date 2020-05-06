@@ -68,6 +68,13 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
   }
 
+  /**
+   * Sets whether a clicking on the chip should focus the primary action.
+   */
+  set setShouldFocusPrimaryActionOnClick(shouldFocus: boolean) {
+    this.foundation_.setShouldFocusPrimaryActionOnClick(shouldFocus);
+  }
+
   get ripple(): MDCRipple {
     return this.ripple_;
   }

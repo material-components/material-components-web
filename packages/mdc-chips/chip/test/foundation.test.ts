@@ -225,6 +225,20 @@ describe('MDCChipFoundation', () => {
           .toHaveBeenCalledWith(strings.TAB_INDEX, '-1');
       expect(mockAdapter.focusPrimaryAction).toHaveBeenCalled();
     });
+
+    it(`#handleInteraction(${
+           evt}) does not focus the primary action when configured`,
+       () => {
+         const {foundation, mockAdapter} = setupTest();
+         foundation.setShouldFocusPrimaryActionOnClick(false);
+
+         foundation.handleInteraction(evt);
+         expect(mockAdapter.setPrimaryActionAttr)
+             .toHaveBeenCalledWith(strings.TAB_INDEX, '0');
+         expect(mockAdapter.setTrailingActionAttr)
+             .toHaveBeenCalledWith(strings.TAB_INDEX, '-1');
+         expect(mockAdapter.focusPrimaryAction).not.toHaveBeenCalled();
+       });
   });
 
   it('#handleTransitionEnd notifies removal of chip on width transition end',
