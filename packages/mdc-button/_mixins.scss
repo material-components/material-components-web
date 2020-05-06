@@ -143,8 +143,7 @@ $ripple-target: ".mdc-button__ripple";
     @include ripple-mixins.surface($query: $query, $ripple-target: $ripple-target);
     @include ripple-mixins.radius-bounded(
       $query: $query, $ripple-target: $ripple-target);
-    @include ripple-mixins.states(
-      $color: primary, $query: $query, $ripple-target: $ripple-target);
+    @include ripple-states($color: primary, $query: $query);
 
     #{$ripple-target} {
       @include feature-targeting-mixins.targets($feat-structure) {
@@ -170,9 +169,16 @@ $ripple-target: ".mdc-button__ripple";
 
   .mdc-button--raised,
   .mdc-button--unelevated {
-    @include ripple-mixins.states(
-      $color: on-primary, $query: $query, $ripple-target: $ripple-target);
+    @include ripple-states($color: on-primary, $query: $query);
   }
+}
+
+///
+/// Sets ripple color for button.
+///
+@mixin ripple-states($color, $query: feature-targeting-functions.all()) {
+  @include ripple-mixins.states(
+    $color: $color, $query: $query, $ripple-target: $ripple-target);
 }
 
 @mixin filled-accessible($container-fill-color, $query: feature-targeting-functions.all()) {
@@ -182,12 +188,10 @@ $ripple-target: ".mdc-button__ripple";
 
   @if ($fill-tone == "dark") {
     @include ink-color(text-primary-on-dark, $query);
-    @include ripple-mixins.states(
-      $color: text-primary-on-dark, $query: $query, $ripple-target: $ripple-target);
+    @include ripple-states($color: text-primary-on-dark, $query: $query);
   } @else {
     @include ink-color(text-primary-on-light, $query);
-    @include ripple-mixins.states(
-      $color: text-primary-on-light, $query: $query, $ripple-target: $ripple-target);
+    @include ripple-states($color: text-primary-on-light, $query: $query);
   }
 }
 
