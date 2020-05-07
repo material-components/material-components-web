@@ -34,7 +34,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ### Styles
 
 ```scss
-@import "@material/select/icon/mdc-select-icon";
+@use "@material/select/icon/mdc-select-icon";
 ```
 
 ### JavaScript instantiation
@@ -89,7 +89,8 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-select-icon-color($color)` | Customizes the color for the leading icon.
+`icon-color($color)` | Customizes the color for the leading icon.
+`disabled-icon-color($color)` | Customizes the color for the leading icon when disabled.
 
 ## `MDCSelectIcon` properties and methods
 

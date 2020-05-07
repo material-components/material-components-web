@@ -561,16 +561,23 @@ Mixin | Description
 --- | ---
 `ink-color($color)` | Customizes the color of the selected item displayed in the select.
 `container-fill-color($color)` | Customizes the background color of the select.
+`disabled-container-fill-color($color)` | Customizes the background color of the select when disabled.
+`dropdown-icon-color($color)` | Customizes the dropdown icon color of the select.
+`focused-dropdown-icon-color($color)` | Customizes the dropdown icon color of the select when focused.
+`disabled-dropdown-icon-color($color)` | Customizes the dropdown icon color of the select when disabled.
 `label-color($color)` | Customizes the label color of the select in the unfocused state.
 `focused-label-color($color)` | Customizes the label color of the select when focused.
+`disabled-label-color($color)` | Customizes the label color of the select when disabled.
 `bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
 `focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
+`disabled-bottom-line-color($color)` | Customizes the color of the bottom line when the select is disabled.
 `shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed select variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `outline-color($color)` | Customizes the color of the notched outline.
-`outline-shape-radius($radius, $rtl-reflexive)` | Sets the border radius of of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
 `hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
+`disabled-outline-color($color)` | Customizes the color of the notched outline when the select is disabled.
+`outline-shape-radius($radius, $rtl-reflexive)` | Sets the border radius of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `height($height)` | Sets height of the filled select variant.
 `min-width($min-width)` | Sets the min-width of the select and its menu.
 

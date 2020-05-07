@@ -53,16 +53,16 @@ $fill-color: color.mix(variables.prop-value(on-surface), variables.prop-value(su
 
 // Disabled Styles
 $disabled-label-color: rgba(variables.prop-value(on-surface), .38) !default;
-$disabled-icon-color: rgba(variables.prop-value(on-surface), .38) !default;
-$disabled-ink-color: rgba(variables.prop-value(on-surface), .38) !default;
+$disabled-icon-color: rgba(variables.prop-value(on-surface), .38) !default;$disabled-ink-color: rgba(variables.prop-value(on-surface), .38) !default;
 $disabled-fill-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 2%) !default;
+$disabled-fill-border: rgba(variables.prop-value(on-surface), .06) !default;
+$disabled-helper-text-color: rgba(variables.prop-value(on-surface), .38) !default;
+$disabled-bottom-line-color: rgba(variables.prop-value(on-surface), .06) !default;
 $disabled-dropdown-icon-color: rgba(variables.prop-value(on-surface), .38) !default;
+$disabled-outline-color: rgba(variables.prop-value(on-surface), .06) !default;
 
 $outlined-idle-border: rgba(variables.prop-value(on-surface), .38) !default;
 $outlined-hover-border: rgba(variables.prop-value(on-surface), .87) !default;
-
-// should be .06 after mdc-select opacity is applied
-$outlined-disabled-border: rgba(variables.prop-value(on-surface), .16) !default;
 
 $label-position-y: 106% !default;
 $outline-label-offset: 16px !default;

@@ -23,7 +23,7 @@ Helper text gives context about a select, such as how the selection will be used
 ### Styles
 
 ```scss
-@import "@material/select/helper-text/mdc-select-helper-text";
+@use "@material/select/helper-text/mdc-select-helper-text";
 ```
 
 ### JavaScript instantiation
@@ -100,8 +100,9 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-select-helper-text-color($color)` | Customizes the color of the helper text following a select.
-`mdc-select-helper-text-validation-color($color)` | Customizes the color of the helper text validation message when the select is invalid.
+`helper-text-color($color)` | Customizes the color of the helper text following a select.
+`disabled-helper-text-color($color)` | Customizes the color of the helper text following a select when disabled.
+`helper-text-validation-color($color)` | Customizes the color of the helper text validation message when the select is invalid.
 
 ## `MDCSelectHelperText` properties and methods
 

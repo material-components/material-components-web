@@ -64,6 +64,12 @@
   }
 }
 
+@mixin disabled-helper-text-color($color, $query: feature-targeting-functions.all()) {
+  &.mdc-select--disabled {
+    @include helper-text-color_($color, $query: $query);
+  }
+}
+
 @mixin helper-text-validation-color($color, $query: feature-targeting-functions.all()) {
   &:not(.mdc-select--disabled) {
     @include helper-text-validation-color_($color, $query: $query);

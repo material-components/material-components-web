@@ -36,7 +36,6 @@
       $left: variables.$icon-horizontal-margin,
       $right: variables.$icon-horizontal-margin,
       $query: $query);
-    @include icon-color(on-surface, $query: $query);
   }
 
   .mdc-select__icon:not([tabindex]),
@@ -54,6 +53,12 @@
   }
 }
 
+@mixin disabled-icon-color($color, $query: feature-targeting-functions.all()) {
+  &.mdc-select--disabled {
+    @include icon-color_($color, $query: $query);
+  }
+}
+
 // Private mixins
 
 @mixin icon_($query: feature-targeting-functions.all()) {
@@ -67,7 +72,6 @@
       width: variables.$icon-size;
       height: variables.$icon-size;
       border: none;
-      opacity: variables.$icon-opacity;
       text-decoration: none;
       cursor: pointer;
       user-select: none;
