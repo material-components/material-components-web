@@ -63,7 +63,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`active-color($color)` | Customizes the color of the line ripple when active.\
+`active-color($color)` | Customizes the color of the line ripple when active.
 `inactive-color($color)` | Customizes the color of the line ripple when inactive.
 
 ## `MDCLineRipple` Properties and Methods
