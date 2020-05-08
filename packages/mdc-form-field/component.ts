@@ -35,17 +35,9 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
     return new MDCFormField(root);
   }
 
-  private input_?: MDCFormFieldInput;
+  input?: MDCFormFieldInput;
 
-  set input(input: MDCFormFieldInput | undefined) {
-    this.input_ = input;
-  }
-
-  get input(): MDCFormFieldInput | undefined {
-    return this.input_;
-  }
-
-  private get label_(): Element | null {
+  private labelEl(): Element|null {
     const {LABEL_SELECTOR} = MDCFormFieldFoundation.strings;
     return this.root_.querySelector(LABEL_SELECTOR);
   }
@@ -55,23 +47,25 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCFormFieldAdapter = {
       activateInputRipple: () => {
-        if (this.input_ && this.input_.ripple) {
-          this.input_.ripple.activate();
+        if (this.input && this.input.ripple) {
+          this.input.ripple.activate();
         }
       },
       deactivateInputRipple: () => {
-        if (this.input_ && this.input_.ripple) {
-          this.input_.ripple.deactivate();
+        if (this.input && this.input.ripple) {
+          this.input.ripple.deactivate();
         }
       },
       deregisterInteractionHandler: (evtType, handler) => {
-        if (this.label_) {
-          (this.label_ as HTMLElement).removeEventListener(evtType, handler);
+        const labelEl = this.labelEl();
+        if (labelEl) {
+          (labelEl as HTMLElement).removeEventListener(evtType, handler);
         }
       },
       registerInteractionHandler: (evtType, handler) => {
-        if (this.label_) {
-          (this.label_ as HTMLElement).addEventListener(evtType, handler);
+        const labelEl = this.labelEl();
+        if (labelEl) {
+          (labelEl as HTMLElement).addEventListener(evtType, handler);
         }
       },
     };

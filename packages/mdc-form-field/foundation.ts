@@ -43,25 +43,29 @@ export class MDCFormFieldFoundation extends MDCFoundation<MDCFormFieldAdapter> {
     };
   }
 
-  private readonly clickHandler_: () => void;
+  private readonly click: () => void;
 
   constructor(adapter?: Partial<MDCFormFieldAdapter>) {
     super({...MDCFormFieldFoundation.defaultAdapter, ...adapter});
 
-    this.clickHandler_ = () => this.handleClick_();
+    this.click = () => {
+      this.handleClick();
+    };
   }
 
   init() {
-    this.adapter_.registerInteractionHandler('click', this.clickHandler_);
+    this.adapter_.registerInteractionHandler('click', this.click);
   }
 
   destroy() {
-    this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
+    this.adapter_.deregisterInteractionHandler('click', this.click);
   }
 
-  private handleClick_() {
+  private handleClick() {
     this.adapter_.activateInputRipple();
-    requestAnimationFrame(() => this.adapter_.deactivateInputRipple());
+    requestAnimationFrame(() => {
+      this.adapter_.deactivateInputRipple();
+    });
   }
 }
 
