@@ -139,6 +139,23 @@ describe('MDCSliderFoundation', () => {
         .toHaveBeenCalledWith(isA(Function));
   });
 
+  it('#init disables touch action if pointerevents are supported', () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    mockAdapter.computeBoundingRect.and.returnValue({width: 0, left: 0});
+    foundation.init();
+
+    const hasPointer = !!window.PointerEvent;
+
+    if (hasPointer) {
+      expect(mockAdapter.addClass)
+          .toHaveBeenCalledWith(cssClasses.DISABLE_TOUCH_ACTION);
+    } else {
+      expect(mockAdapter.addClass)
+          .not.toHaveBeenCalledWith(cssClasses.DISABLE_TOUCH_ACTION);
+    }
+  });
+
   it('#init checks if slider is discrete and if display track markers', () => {
     const {foundation, mockAdapter} = setupTest();
 

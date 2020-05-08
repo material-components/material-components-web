@@ -46,6 +46,12 @@
   .mdc-slider {
     @include color-accessible(secondary, $query: $query);
 
+    &--disable-touch-action {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        touch-action: none;
+      }
+    }
+
     &--disabled {
       $disabled-color: #9a9a9a;
 

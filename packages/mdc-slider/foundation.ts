@@ -160,6 +160,16 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
           evtName, this.thumbContainerPointerHandler_);
     });
 
+    if (hasPointerEventSupport) {
+      /*
+       * When pointermove happens, if too much sliding happens, the browser
+       * believes you are panning in the x direction and stops firing
+       * pointermove events and supplies its own gestures. (similar to
+       * preventing default on touchmove)
+       */
+      this.adapter_.addClass(cssClasses.DISABLE_TOUCH_ACTION);
+    }
+
     this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
