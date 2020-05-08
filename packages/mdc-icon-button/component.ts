@@ -37,17 +37,20 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
 
   protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  private readonly ripple_: MDCRipple = this.createRipple_();
-  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+  private readonly rippleComponent: MDCRipple = this.createRipple();
+  private handleClick!:
+      SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
 
   initialSyncWithDOM() {
-    this.handleClick_ = () => this.foundation_.handleClick();
-    this.listen('click', this.handleClick_);
+    this.handleClick = () => {
+      this.foundation_.handleClick();
+    };
+    this.listen('click', this.handleClick);
   }
 
   destroy() {
-    this.unlisten('click', this.handleClick_);
-    this.ripple_.destroy();
+    this.unlisten('click', this.handleClick);
+    this.ripple.destroy();
     super.destroy();
   }
 
@@ -70,7 +73,7 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
   }
 
   get ripple(): MDCRipple {
-    return this.ripple_;
+    return this.rippleComponent;
   }
 
   get on(): boolean {
@@ -81,7 +84,7 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     this.foundation_.toggle(isOn);
   }
 
-  private createRipple_(): MDCRipple {
+  private createRipple(): MDCRipple {
     const ripple = new MDCRipple(this.root_);
     ripple.unbounded = true;
     return ripple;
