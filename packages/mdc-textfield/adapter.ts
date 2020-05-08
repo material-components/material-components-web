@@ -122,6 +122,12 @@ export interface MDCTextFieldLabelAdapter {
    * @return width of label in pixels.
    */
   getLabelWidth(): number;
+
+  /**
+   * Only implement if label exists.
+   * Styles the label as required.
+   */
+  setLabelRequired(isRequired: boolean): void;
 }
 
 export interface MDCTextFieldLineRippleAdapter {

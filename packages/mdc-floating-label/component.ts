@@ -49,6 +49,14 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
     this.foundation_.float(shouldFloat);
   }
 
+  /**
+   * Styles the label as required.
+   * @param isRequired If true, adds an asterisk to the label, indicating that it is required.
+   */
+  setRequired(isRequired: boolean) {
+    this.foundation_.setRequired(isRequired);
+  }
+
   getWidth(): number {
     return this.foundation_.getWidth();
   }

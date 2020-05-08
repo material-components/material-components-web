@@ -96,6 +96,19 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
     }
   }
 
+  /**
+   * Styles the label as required.
+   * @param isRequired If true, adds an asterisk to the label, indicating that it is required.
+   */
+  setRequired(isRequired: boolean) {
+    const {LABEL_REQUIRED} = MDCFloatingLabelFoundation.cssClasses;
+    if (isRequired) {
+      this.adapter_.addClass(LABEL_REQUIRED);
+    } else {
+      this.adapter_.removeClass(LABEL_REQUIRED);
+    }
+  }
+
   private handleShakeAnimationEnd_() {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     this.adapter_.removeClass(LABEL_SHAKE);

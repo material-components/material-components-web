@@ -181,13 +181,6 @@
     }
   }
 
-  @include required-label-asterisk_ {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      margin-left: 1px;
-      content: "*";
-    }
-  }
-
   // postcss-bem-linter: define text-field-helper-text
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field-helper-line {
@@ -1712,15 +1705,6 @@
 }
 
 // Selectors
-
-@mixin required-label-asterisk_() {
-  .mdc-text-field__input:required ~ {
-    .mdc-floating-label::after,
-    .mdc-notched-outline .mdc-floating-label::after {
-      @content;
-    }
-  }
-}
 
 @mixin placeholder-selector_ {
   // GSS will combine selectors with the same content, and some browsers have a

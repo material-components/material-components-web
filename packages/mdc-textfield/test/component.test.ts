@@ -158,9 +158,11 @@ describe('MDCTextField', () => {
   class FakeLabel {
     readonly destroy: jasmine.Spy;
     readonly shake: jasmine.Spy;
+    readonly setRequired: jasmine.Spy;
     constructor() {
       this.destroy = jasmine.createSpy('.destroy');
       this.shake = jasmine.createSpy('.shake');
+      this.setRequired = jasmine.createSpy('.setRequired');
     }
   }
 

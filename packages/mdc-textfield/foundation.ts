@@ -84,6 +84,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
       setLineRippleTransformOrigin: () => undefined,
       shakeLabel: () => undefined,
       floatLabel: () => undefined,
+      setLabelRequired: () => undefined,
       hasLabel: () => false,
       getLabelWidth: () => 0,
       hasOutline: () => false,
@@ -132,6 +133,10 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   init() {
+    if (this.adapter_.hasLabel() && this.getNativeInput_().required) {
+      this.adapter_.setLabelRequired(true);
+    }
+
     if (this.adapter_.isFocused()) {
       this.inputFocusHandler_();
     } else if (this.adapter_.hasLabel() && this.shouldFloat) {
@@ -185,6 +190,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     attributesList.some((attributeName) => {
       if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
         this.styleValidity_(true);
+        this.adapter_.setLabelRequired(this.getNativeInput_().required);
         return true;
       }
       return false;
@@ -490,6 +496,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     return nativeInput || {
       disabled: false,
       maxLength: -1,
+      required: false,
       type: 'input',
       validity: {
         badInput: false,

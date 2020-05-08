@@ -80,6 +80,18 @@
     }
   }
 
+  .mdc-floating-label--required {
+    &::after {
+      @include _required-content($query);
+    }
+
+    @include rtl-mixins.rtl {
+      &::after {
+        @include _required-content-rtl($query);
+      }
+    }
+  }
+
   @at-root {
     @include float-position(variables.$position-y, $query: $query);
     @include shake-animation(standard, $query: $query);
@@ -185,5 +197,30 @@
     transition:
       color $duration-ms $timing-function,
       transform $duration-ms $timing-function;
+  }
+}
+
+@mixin _required-content($query: functions.all()) {
+  $feat-structure: functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    /* @noflip */
+    margin-left: 1px;
+    /* @noflip */
+    margin-right: 0px;
+    content: "*";
+  }
+}
+
+// Need to specify LTR/RTL manually since rtl mixins will add ::after[dir=rtl]
+// selector and that breaks some browsers
+@mixin _required-content-rtl($query: functions.all()) {
+  $feat-structure: functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    /* @noflip */
+    margin-left: 0;
+    /* @noflip */
+    margin-right: 1px;
   }
 }

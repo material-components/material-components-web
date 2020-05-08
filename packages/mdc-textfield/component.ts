@@ -419,6 +419,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
       getLabelWidth: () => this.label_ ? this.label_.getWidth() : 0,
       hasLabel: () => Boolean(this.label_),
       shakeLabel: (shouldShake) => this.label_ && this.label_.shake(shouldShake),
+      setLabelRequired: (isRequired) => this.label_ && this.label_.setRequired(isRequired),
     };
   }
 
