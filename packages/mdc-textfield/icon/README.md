@@ -156,9 +156,10 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-text-field-leading-icon-color($color)` | Customizes the color for the leading icon in an enabled text-field.
-`mdc-text-field-trailing-icon-color($color)` | Customizes the color for the trailing icon in an enabled text-field.
-`mdc-text-field-disabled-icon-color($color)` | Customizes the color for the leading/trailing icons in a disabled text-field.
+`leading-icon-color($color)` | Customizes the color for the leading icon in an enabled text-field.
+`trailing-icon-color($color)` | Customizes the color for the trailing icon in an enabled text-field.
+`disabled-icon-color($color)` | Customizes the color for the leading/trailing icons in a disabled text-field.
+`size($size)` | Sets the size of the leading and trailing icons.
 
 ## `MDCTextFieldIcon` properties and methods
 
