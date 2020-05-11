@@ -162,6 +162,7 @@
     @include focused-label-color(variables.$error-color, $query: $query);
     @include helper-text-mixins.helper-text-validation-color(variables.$error-color, $query: $query);
     @include dropdown-icon-color(variables.$error-color, $query: $query);
+    @include focused-dropdown-icon-color(variables.$error-color, $query: $query);
 
     // Hover state colors
     @include hover-bottom-line-color(variables.$error-color, $query: $query);
@@ -170,17 +171,6 @@
       @include outline-color(variables.$error-color, $query: $query);
       @include hover-outline-color(variables.$error-color, $query: $query);
       @include focused-outline-color(variables.$error-color, $query: $query);
-    }
-
-    .mdc-select__dropdown-icon {
-      @include _dropdown-icon-color(variables.$error-color, $query: $query);
-    }
-
-    // stylelint-disable-next-line plugin/selector-bem-pattern
-    + .mdc-select-helper-text--validation-msg {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        opacity: 1;
-      }
     }
   }
 
