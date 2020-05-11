@@ -89,6 +89,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
+`size($size)` | Customizes the size (both width and height) of the icon.
 `icon-color($color)` | Customizes the color for the leading icon.
 `disabled-icon-color($color)` | Customizes the color for the leading icon when disabled.
 

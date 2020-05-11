@@ -47,6 +47,21 @@
   }
 }
 
+///
+/// Customizes the size (both width and height) of the icon.
+/// @param {Number} $size - the intended icon size.
+///
+@mixin size($size, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    .mdc-select__icon {
+      width: $size;
+      height: $size;
+    }
+  }
+}
+
 @mixin icon-color($color, $query: feature-targeting-functions.all()) {
   &:not(.mdc-select--disabled) {
     @include icon-color_($color, $query: $query);
@@ -69,8 +84,6 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-block;
       box-sizing: border-box;
-      width: variables.$icon-size;
-      height: variables.$icon-size;
       border: none;
       text-decoration: none;
       cursor: pointer;
