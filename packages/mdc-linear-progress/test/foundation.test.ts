@@ -63,7 +63,7 @@ describe('MDCLinearProgressFoundation', () => {
            .and.returnValue(false);
        foundation.init();
        foundation.setDeterminate(false);
-       expect(foundation.isDeterminate()).toBe(false);
+       expect(foundation.getDeterminate()).toBe(false);
        expect(mockAdapter.addClass)
            .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
        expect(mockAdapter.setPrimaryBarStyle)
@@ -80,7 +80,7 @@ describe('MDCLinearProgressFoundation', () => {
         .and.returnValue(false);
     foundation.init();
     foundation.setDeterminate(true);
-    expect(foundation.isDeterminate()).toBe(true);
+    expect(foundation.getDeterminate()).toBe(true);
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
   });

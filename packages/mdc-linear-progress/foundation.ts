@@ -51,35 +51,37 @@ export class MDCLinearProgressFoundation extends
     };
   }
 
-  private isDeterminate_!: boolean;
-  private isReversed_!: boolean;
-  private progress_!: number;
-  private buffer_!: number;
+  private isDeterminate!: boolean;
+  private isReversed!: boolean;
+  private progress!: number;
+  private buffer!: number;
 
   constructor(adapter?: Partial<MDCLinearProgressAdapter>) {
     super({...MDCLinearProgressFoundation.defaultAdapter, ...adapter});
   }
 
   init() {
-    this.isDeterminate_ = !this.adapter_.hasClass(cssClasses.INDETERMINATE_CLASS);
-    this.isReversed_ = this.adapter_.hasClass(cssClasses.REVERSED_CLASS);
-    this.progress_ = 0;
-    this.buffer_ = 1;
+    this.isDeterminate =
+        !this.adapter_.hasClass(cssClasses.INDETERMINATE_CLASS);
+    this.isReversed = this.adapter_.hasClass(cssClasses.REVERSED_CLASS);
+    this.progress = 0;
+    this.buffer = 1;
   }
 
   setDeterminate(isDeterminate: boolean) {
-    this.isDeterminate_ = isDeterminate;
+    this.isDeterminate = isDeterminate;
 
-    if (this.isDeterminate_) {
+    if (this.isDeterminate) {
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
-      this.adapter_.setAttribute(strings.ARIA_VALUENOW, this.progress_.toString());
-      this.setPrimaryBarProgress_(this.progress_);
-      this.setBufferBarProgress_(this.buffer_);
+      this.adapter_.setAttribute(
+          strings.ARIA_VALUENOW, this.progress.toString());
+      this.setPrimaryBarProgress(this.progress);
+      this.setBufferBarProgress(this.buffer);
 
       return;
     }
 
-    if (this.isReversed_) {
+    if (this.isReversed) {
       // Adding/removing REVERSED_CLASS starts a translate animation, while
       // adding INDETERMINATE_CLASS starts a scale animation. Here, we reset
       // the translate animation in order to keep it in sync with the new
@@ -92,37 +94,37 @@ export class MDCLinearProgressFoundation extends
 
     this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
     this.adapter_.removeAttribute(strings.ARIA_VALUENOW);
-    this.setPrimaryBarProgress_(1);
-    this.setBufferBarProgress_(1);
+    this.setPrimaryBarProgress(1);
+    this.setBufferBarProgress(1);
   }
 
-  isDeterminate() {
-    return this.isDeterminate_;
+  getDeterminate() {
+    return this.isDeterminate;
   }
 
   setProgress(value: number) {
-    this.progress_ = value;
-    if (this.isDeterminate_) {
-      this.setPrimaryBarProgress_(value);
+    this.progress = value;
+    if (this.isDeterminate) {
+      this.setPrimaryBarProgress(value);
       this.adapter_.setAttribute(strings.ARIA_VALUENOW, value.toString());
     }
   }
 
   getProgress() {
-    return this.progress_;
+    return this.progress;
   }
 
   setBuffer(value: number) {
-    this.buffer_ = value;
-    if (this.isDeterminate_) {
-      this.setBufferBarProgress_(value);
+    this.buffer = value;
+    if (this.isDeterminate) {
+      this.setBufferBarProgress(value);
     }
   }
 
   setReverse(isReversed: boolean) {
-    this.isReversed_ = isReversed;
+    this.isReversed = isReversed;
 
-    if (!this.isDeterminate_) {
+    if (!this.isDeterminate) {
       // Adding INDETERMINATE_CLASS starts a scale animation, while
       // adding/removing REVERSED_CLASS starts a translate animation. Here, we
       // reset the scale animation in order to keep it in sync with the new
@@ -133,7 +135,7 @@ export class MDCLinearProgressFoundation extends
       this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
     }
 
-    if (this.isReversed_) {
+    if (this.isReversed) {
       this.adapter_.addClass(cssClasses.REVERSED_CLASS);
       return;
     }
@@ -149,7 +151,7 @@ export class MDCLinearProgressFoundation extends
     this.adapter_.addClass(cssClasses.CLOSED_CLASS);
   }
 
-  private setPrimaryBarProgress_(progressValue: number) {
+  private setPrimaryBarProgress(progressValue: number) {
     const value = `scaleX(${progressValue})`;
 
     // Accessing `window` without a `typeof` check will throw on Node environments.
@@ -158,7 +160,7 @@ export class MDCLinearProgressFoundation extends
     this.adapter_.setPrimaryBarStyle(transformProp, value);
   }
 
-  private setBufferBarProgress_(progressValue: number) {
+  private setBufferBarProgress(progressValue: number) {
     const value = `${progressValue * 100}%`;
     this.adapter_.setBufferBarStyle(strings.FLEX_BASIS, value);
   }
