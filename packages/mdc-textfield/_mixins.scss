@@ -151,6 +151,21 @@
     }
   }
 
+  // Resizer element does not need to be under mdc-text-field--textarea, that
+  // just adds specificity
+  .mdc-text-field__resizer {
+    @include _textarea-resizer($query);
+
+    .mdc-text-field--outlined & {
+      @include _textarea-outlined-resizer($query);
+
+      .mdc-text-field__input,
+      .mdc-text-field-character-counter {
+        @include _textarea-outlined-resizer-children($query);
+      }
+    }
+  }
+
   .mdc-text-field--fullwidth {
     @include fullwidth_($query);
   }
@@ -332,6 +347,12 @@
 ///
 @mixin outlined-textarea-density($density-scale, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $textfield-height: density-functions.prop-value(
+    $density-config: variables.$density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
   $margin-top: density-functions.prop-value(
     $density-config: variables.$textarea-outlined-density-config,
     $density-scale: $density-scale / 2,
@@ -347,6 +368,12 @@
   // The distance between the textarea and internal counter should not be
   // affected
   &.mdc-text-field--outlined {
+    .mdc-text-field__resizer {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        min-height: $textfield-height;
+      }
+    }
+
     .mdc-text-field__input {
       @include feature-targeting-mixins.targets($feat-structure) {
         margin-top: $margin-top;
@@ -359,6 +386,24 @@
         // Space between textarea and internal counter should not be affected
         @include _textarea-input-with-internal-counter($query);
       }
+    }
+  }
+}
+
+///
+/// Sets the minimum number of rows for a textarea a textarea may be resized to.
+///
+/// For IE11 this mixin can be used instead of the rows attribute.
+///
+/// @param {Number} $rows - The minimum number of rows for a textarea.
+/// @param {Number} $line-height - The line-height of the textarea.
+///
+@mixin textarea-min-rows($rows, $line-height: variables.$textarea-line-height, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-text-field__input {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      min-height: $rows * $line-height;
     }
   }
 }
@@ -1253,7 +1298,7 @@
     }
   }
 
-  &.mdc-text-field--textarea .mdc-text-field__input {
+  &.mdc-text-field--textarea .mdc-text-field__resizer {
     @include feature-targeting-mixins.targets($feat-structure) {
       resize: vertical;
     }
@@ -1277,6 +1322,74 @@
 
   @include feature-targeting-mixins.targets($feat-animation) {
     transition: none;
+  }
+}
+
+@mixin _textarea-resizer($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    align-self: stretch;
+    display: inline-flex;
+    flex-direction: column;
+    flex-grow: 1;
+    max-height: 100%;
+    max-width: 100%;
+    min-height: variables.$height;
+    // stylelint-disable declaration-block-no-duplicate-properties
+    // "stretch" is the preferred rule here. It will allow the textarea to grow
+    // to the min/max width of the container, but if an explicit width is set,
+    // it cannot be resized horizontally.
+    // Stretch is still a working draft. Chrome and Firefox have it implemented
+    // with "available" prefixes. fit-content is another good target for
+    // Safari since it works in almost all use cases except when an explicit
+    // width is set (the user can make the textarea smaller than the container).
+    // None of this matters for IE11, which doesn't support resize.
+    min-width: fit-content;
+    /* @alternate */
+    min-width: -moz-available;
+    /* @alternate */
+    min-width: -webkit-fit-available;
+    // stylelint-enable declaration-block-no-duplicate-properties
+    overflow: hidden;
+    resize: both;
+  }
+}
+
+@mixin _textarea-outlined-resizer($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  // Shift the resizer element left/up by a margin amount to make space for the
+  // resize handle. For outlined elements, the resize handle directly touches
+  // the outline and is hard to see.
+  // Using a margin affects the width and positioning of the overall component
+  // and underlying textarea, which is why a transform is used instead.
+  $x: -1 * variables.$textarea-input-handle-margin;
+  $y: -1 * variables.$textarea-input-handle-margin;
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    transform: translateX($x) translateY($y);
+
+    @include rtl-mixins.rtl {
+      // Flip the horizontal shifting direction for RTL
+      transform: translateX(-1 * $x) translateY($y);
+    }
+  }
+}
+
+@mixin _textarea-outlined-resizer-children($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  // See above. After shifting the resize wrapper element, all of its children
+  // should be shifted in the opposite direction (right and down) to compensate.
+  $x: variables.$textarea-input-handle-margin;
+  $y: variables.$textarea-input-handle-margin;
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    transform: translateX($x) translateY($y);
+
+    @include rtl-mixins.rtl {
+      // Flip the horizontal shifting direction for RTL
+      transform: translateX(-1 * $x) translateY($y);
+    }
   }
 }
 
@@ -1309,8 +1422,7 @@
     overflow-x: hidden; // https://bugzilla.mozilla.org/show_bug.cgi?id=33654
     overflow-y: auto;
     box-sizing: border-box;
-    // left/right margins are used to add space for the resize handle
-    @include rtl-mixins.reflexive-box(margin, right, variables.$textarea-input-handle-margin);
+    resize: none;
     // Textarea has horizontal padding instead of the container. This allows the
     // resize handle to extend to the edge of the container.
     padding: 0 variables.$padding-horizontal;
@@ -1326,6 +1438,7 @@
 
   @include typography-mixins.baseline-bottom(variables.$textarea-internal-counter-baseline-bottom, $query: $query);
   @include feature-targeting-mixins.targets($feat-structure) {
+    align-self: flex-end;
     // Needed since padding is on the textarea and not the container
     padding: 0 variables.$padding-horizontal;
 

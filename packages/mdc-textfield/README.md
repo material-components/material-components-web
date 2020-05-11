@@ -112,7 +112,9 @@ included as part of the DOM structure of a full width text field.**
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--no-label">
-  <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
+  <span class="mdc-text-field__resizer">
+    <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
+  </span>
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__trailing"></span>
@@ -121,6 +123,8 @@ included as part of the DOM structure of a full width text field.**
 ```
 
 **Note: Only the `mdc-text-field--outlined` variant of textarea is currently supported.**
+
+**Note: The `mdc-text-field__resizer` element may be omitted for a non-resizable textarea.**
 
 ### Text field without label
 
@@ -153,7 +157,9 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--no-label">
-  <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
+  <span class="mdc-text-field__resizer">
+    <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
+  </span>
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__trailing"></span>
@@ -221,8 +227,10 @@ to any helper text.
 
 ```html
 <label class="mdc-text-field mdc-text-field--textarea">
-  <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8"
-    cols="40" maxlength="140"></textarea>
+  <span class="mdc-text-field__resizer">
+    <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8" 
+      cols="40" maxlength="140"></textarea>
+  </span>
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__notch">
@@ -241,8 +249,10 @@ inserting the character counter below the textarea and adding the
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--with-internal-counter">
-  <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8" cols="40" maxlength="140"></textarea>
-  <span class="mdc-text-field-character-counter">0 / 140</span>
+  <span class="mdc-text-field__resizer">
+    <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8" cols="40" maxlength="140"></textarea>
+    <span class="mdc-text-field-character-counter">0 / 140</span>
+  </span>
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__notch">
@@ -435,6 +445,8 @@ Mixin | Description
 Mixin | Description
 --- | ---
 `textarea-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to text area variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`outlined-textarea-density($density-scale)` | Sets density scale for outlined textarea. Supported density scale values `-4`, `-3`, `-2`, `-1`, `0`.
+`textarea-min-rows($rows)` | Sets the minimum number of rows for a textarea a textarea may be resized to.
 
 ## `MDCTextField` properties and methods
 
