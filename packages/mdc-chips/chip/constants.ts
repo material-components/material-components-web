@@ -22,14 +22,14 @@
  */
 
 export enum Direction {
-  RIGHT,
-  LEFT,
+  LEFT = 'left',
+  RIGHT = 'right',
 }
 
 export enum EventSource {
-  PRIMARY,
-  TRAILING,
-  NONE,
+  PRIMARY = 'primary',
+  TRAILING = 'trailing',
+  NONE = 'none',
 }
 
 export const strings = {
@@ -60,7 +60,7 @@ export const strings = {
   SELECTION_EVENT: 'MDCChip:selection',
   SPACEBAR_KEY: ' ',
   TAB_INDEX: 'tabindex',
-  TRAILING_ACTION_SELECTOR: '.mdc-chip__trailing-action',
+  TRAILING_ACTION_SELECTOR: '.mdc-chip-trailing-action',
   TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
 };

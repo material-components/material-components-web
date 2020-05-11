@@ -129,19 +129,20 @@ export interface MDCChipAdapter {
   focusPrimaryAction(): void;
 
   /**
-   * @return true if the chip has a trailing action.
-   */
-  hasTrailingAction(): boolean;
-
-  /**
-   * Sets the attribute on the trailing action if it exists.
-   */
-  setTrailingActionAttr(attr: string, value: string): void;
-
-  /**
-   * Gives focus to the trailing action.
+   * Sets focus to the trailing action.
    */
   focusTrailingAction(): void;
+
+  /**
+   * Removes focus from the trailing action.
+   */
+  removeTrailingActionFocus(): void;
+
+  /**
+   * Returns true if the trailing action is navigable.
+   * Should return the value of MDCChipTrailingAction#isNavigable() or false.
+   */
+  isTrailingActionNavigable(): boolean;
 
   /**
    * @return true if the text direction is right-to-left.

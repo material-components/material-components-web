@@ -22,6 +22,9 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+
+import {MDCChipTrailingActionNavigationEvent} from '../trailingaction/types';
+
 import {MDCChipAdapter} from './adapter';
 import {cssClasses, Direction, EventSource, jumpChipKeys, navigationKeys, strings} from './constants';
 
@@ -33,6 +36,11 @@ const emptyClientRect = {
   top: 0,
   width: 0,
 };
+
+enum FocusBehavior {
+  SHOULD_FOCUS,
+  SHOULD_NOT_FOCUS,
+}
 
 export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   static get strings() {
@@ -56,8 +64,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       getRootBoundingClientRect: () => emptyClientRect,
       hasClass: () => false,
       hasLeadingIcon: () => false,
-      hasTrailingAction: () => false,
       isRTL: () => false,
+      isTrailingActionNavigable: () => false,
       notifyInteraction: () => undefined,
       notifyNavigation: () => undefined,
       notifyRemoval: () => undefined,
@@ -65,16 +73,20 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       notifyTrailingIconInteraction: () => undefined,
       removeClass: () => undefined,
       removeClassFromLeadingIcon: () => undefined,
+      removeTrailingActionFocus: () => undefined,
       setPrimaryActionAttr: () => undefined,
       setStyleProperty: () => undefined,
-      setTrailingActionAttr: () => undefined,
     };
   }
 
   /** Whether a trailing icon click should immediately trigger exit/removal of the chip. */
   private shouldRemoveOnTrailingIconClick_ = true;
 
-  /** Whether the primary action should receive focus on click. */
+  /**
+   * Whether the primary action should receive focus on click. Should only be
+   * set to true for clients who programmatically give focus to a different
+   * element on the page when a chip is clicked (like a menu).
+   */
   private shouldFocusPrimaryActionOnClick_ = true;
 
   constructor(adapter?: Partial<MDCChipAdapter>) {
@@ -144,16 +156,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.adapter_.addClass(cssClasses.CHIP_EXIT);
   }
 
-  /**
-   * Handles an interaction event on the root element.
-   */
-  handleInteraction(evt: MouseEvent | KeyboardEvent) {
-    if (!this.shouldHandleInteraction_(evt)) {
-      return;
-    }
-
+  handleClick() {
     this.adapter_.notifyInteraction();
-    this.focusPrimaryAction_(this.shouldFocusPrimaryActionOnClick_);
+    this.setPrimaryActionFocusable_(this.getFocusBehavior_());
   }
 
   /**
@@ -187,7 +192,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
 
     if (shouldHandle && widthIsAnimating) {
-      this.removeFocus_();
+      this.removeFocus();
       const removedAnnouncement =
           this.adapter_.getAttribute(strings.REMOVED_ANNOUNCEMENT_ATTRIBUTE);
 
@@ -205,11 +210,13 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       && !this.adapter_.hasClass(cssClasses.SELECTED);
 
     if (shouldHideLeadingIcon) {
-      return this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+      return;
     }
 
     if (shouldShowLeadingIcon) {
-      return this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+      this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+      return;
     }
   }
 
@@ -235,80 +242,105 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Handles an interaction event on the trailing icon element. This is used to
    * prevent the ripple from activating on interaction with the trailing icon.
    */
-  handleTrailingIconInteraction(evt: MouseEvent | KeyboardEvent) {
-    if (this.shouldHandleInteraction_(evt)) {
-      this.adapter_.notifyTrailingIconInteraction();
-      this.removeChip_(evt);
-    }
+  handleTrailingActionInteraction() {
+    this.adapter_.notifyTrailingIconInteraction();
+    this.removeChip_();
   }
 
   /**
    * Handles a keydown event from the root element.
    */
   handleKeydown(evt: KeyboardEvent) {
-    if (this.shouldRemoveChip_(evt)) {
-      return this.removeChip_(evt);
+    if (this.shouldNotifyInteraction_(evt)) {
+      this.adapter_.notifyInteraction();
+      this.setPrimaryActionFocusable_(this.getFocusBehavior_());
+      return;
     }
 
-    const key = evt.key;
+    if (this.isDeleteAction_(evt)) {
+      evt.preventDefault();
+      this.removeChip_();
+      return;
+    }
+
     // Early exit if the key is not usable
-    if (!navigationKeys.has(key)) {
+    if (!navigationKeys.has(evt.key)) {
       return;
     }
 
     // Prevent default behavior for movement keys which could include scrolling
     evt.preventDefault();
-    this.focusNextAction_(evt);
+    this.focusNextAction_(evt.key, EventSource.PRIMARY);
   }
 
+  handleTrailingActionNavigation(evt: MDCChipTrailingActionNavigationEvent) {
+    return this.focusNextAction_(evt.detail.key, EventSource.TRAILING);
+  }
+
+  /**
+   * Called by the chip set to remove focus from the chip actions.
+   */
   removeFocus() {
     this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
-    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
+    this.adapter_.removeTrailingActionFocus();
   }
 
+  /**
+   * Called by the chip set to focus the primary action.
+   *
+   */
   focusPrimaryAction() {
-    this.focusPrimaryAction_();
+    this.setPrimaryActionFocusable_(FocusBehavior.SHOULD_FOCUS);
   }
 
+  /**
+   * Called by the chip set to focus the trailing action (if present), otherwise
+   * gives focus to the trailing action.
+   */
   focusTrailingAction() {
-    if (!this.adapter_.hasTrailingAction()) {
-      return this.focusPrimaryAction_();
-    }
-    this.focusTrailingAction_();
-  }
-
-  private focusNextAction_(evt: KeyboardEvent) {
-    const key = evt.key;
-    const hasTrailingAction = this.adapter_.hasTrailingAction();
-    const dir = this.getDirection_(key);
-    const source = this.getEvtSource_(evt);
-    // Early exit if the key should jump keys or the chip only has one action (i.e. no trailing action)
-    if (jumpChipKeys.has(key) || !hasTrailingAction) {
-      this.adapter_.notifyNavigation(key, source);
+    const trailingActionIsNavigable = this.adapter_.isTrailingActionNavigable();
+    if (trailingActionIsNavigable) {
+      this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
+      this.adapter_.focusTrailingAction();
       return;
     }
 
+    this.focusPrimaryAction();
+  }
+
+  private setPrimaryActionFocusable_(focusBehavior: FocusBehavior) {
+    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '0');
+    if (focusBehavior === FocusBehavior.SHOULD_FOCUS) {
+      this.adapter_.focusPrimaryAction();
+    }
+    this.adapter_.removeTrailingActionFocus();
+  }
+
+  private getFocusBehavior_(): FocusBehavior {
+    if (this.shouldFocusPrimaryActionOnClick_) {
+      return FocusBehavior.SHOULD_FOCUS;
+    }
+    return FocusBehavior.SHOULD_NOT_FOCUS;
+  }
+
+  private focusNextAction_(key: string, source: EventSource) {
+    const isTrailingActionNavigable = this.adapter_.isTrailingActionNavigable();
+    const dir = this.getDirection_(key);
+
+    // Early exit if the key should jump chips
+    if (jumpChipKeys.has(key) || !isTrailingActionNavigable) {
+      return this.adapter_.notifyNavigation(key, source);
+    }
+
     if (source === EventSource.PRIMARY && dir === Direction.RIGHT) {
-      return this.focusTrailingAction_();
+      return this.focusTrailingAction();
     }
 
     if (source === EventSource.TRAILING && dir === Direction.LEFT) {
-      return this.focusPrimaryAction_();
+      return this.focusPrimaryAction();
     }
 
     this.adapter_.notifyNavigation(key, EventSource.NONE);
-  }
-
-  private getEvtSource_(evt: KeyboardEvent): EventSource {
-    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.PRIMARY_ACTION)) {
-      return EventSource.PRIMARY;
-    }
-
-    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRAILING_ACTION)) {
-      return EventSource.TRAILING;
-    }
-
-    return EventSource.NONE;
   }
 
   private getDirection_(key: string): Direction {
@@ -324,45 +356,17 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return Direction.RIGHT;
   }
 
-  private focusPrimaryAction_(shouldFocus: boolean = true) {
-    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '0');
-    if (shouldFocus) {
-      this.adapter_.focusPrimaryAction();
-    }
-    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
-  }
-
-  private focusTrailingAction_() {
-    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '0');
-    this.adapter_.focusTrailingAction();
-    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
-  }
-
-  private removeFocus_() {
-    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
-    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
-  }
-
-  private removeChip_(evt: MouseEvent|KeyboardEvent) {
-    evt.stopPropagation();
-    // Prevent default behavior for backspace on Firefox which causes a page
-    // navigation.
-    evt.preventDefault();
+  private removeChip_() {
     if (this.shouldRemoveOnTrailingIconClick_) {
       this.beginExit();
     }
   }
 
-  private shouldHandleInteraction_(evt: MouseEvent|KeyboardEvent): boolean {
-    if (evt.type === 'click') {
-      return true;
-    }
-
-    const keyEvt = evt as KeyboardEvent;
-    return keyEvt.key === strings.ENTER_KEY || keyEvt.key === strings.SPACEBAR_KEY;
+  private shouldNotifyInteraction_(evt: KeyboardEvent): boolean {
+    return evt.key === strings.ENTER_KEY || evt.key === strings.SPACEBAR_KEY;
   }
 
-  private shouldRemoveChip_(evt: KeyboardEvent): boolean {
+  private isDeleteAction_(evt: KeyboardEvent): boolean {
     const isDeletable = this.adapter_.hasClass(cssClasses.DELETABLE);
     return isDeletable &&
         (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY ||
