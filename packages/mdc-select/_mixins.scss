@@ -96,7 +96,7 @@
     @include icon-mixins.size(icon-variables.$icon-size, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
-      display: inline-block;
+      display: inline-flex;
       position: relative; // Menu is absolutely positioned relative to this.
     }
 
@@ -129,6 +129,7 @@
     @include floating-label-mixins.float-position(variables.$label-position-y, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
+      width: 100%;
       position: relative;
       box-sizing: border-box;
       overflow: hidden;
@@ -146,7 +147,6 @@
     }
   }
 
-  @include helper-text_($query: $query);
   @include text_($query: $query);
 
   .mdc-select--fullwidth {
@@ -224,19 +224,13 @@
   }
 }
 
-/// Sets the min-width of the select and its menu.
+/// Sets the min-width of the select.
 /// @param {Number} $min-width - The desired min-width.
 @mixin min-width($min-width, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  .mdc-select__anchor {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      min-width: $min-width;
-    }
-  }
-
-  .mdc-select__menu {
-    @include menu-mixins.min-width($min-width, $query: $query);
+  @include feature-targeting-mixins.targets($feat-structure) {
+    min-width: $min-width;
   }
 }
 
@@ -737,20 +731,6 @@
 
   @include feature-targeting-mixins.targets($feat-structure) {
     width: 100%;
-  }
-}
-
-@mixin helper-text_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  .mdc-select-helper-text {
-    // stylelint-disable plugin/selector-bem-pattern
-    .mdc-select__anchor + & {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        margin-right: 16px;
-        margin-left: 16px;
-      }
-    }
   }
 }
 
