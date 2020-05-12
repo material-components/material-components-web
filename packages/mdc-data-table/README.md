@@ -74,19 +74,19 @@ Please refer to the [WAI-ARIA Authoring Practices for table](https://www.w3.org/
     </thead>
     <tbody class="mdc-data-table__content">
       <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell">Frozen yogurt</td>
+        <th class="mdc-data-table__cell" scope="row">Frozen yogurt</th>
         <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
         <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.0</td>
         <td class="mdc-data-table__cell">Super tasty</td>
       </tr>
       <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell">Ice cream sandwich</td>
+        <th class="mdc-data-table__cell" scope="row">Ice cream sandwich</th>
         <td class="mdc-data-table__cell mdc-data-table__cell--numeric">37</td>
         <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.33333333333</td>
         <td class="mdc-data-table__cell">I like ice cream more</td>
       </tr>
       <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell">Eclair</td>
+        <th class="mdc-data-table__cell" scope="row">Eclair</th>
         <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
         <td class="mdc-data-table__cell mdc-data-table__cell--numeric">6.0</td>
         <td class="mdc-data-table__cell">New filing flavor</td>
@@ -107,17 +107,18 @@ Please refer to the [WAI-ARIA Authoring Practices for table](https://www.w3.org/
       <tr class="mdc-data-table__header-row">
         <th class="mdc-data-table__header-cell mdc-data-table__header-cell--checkbox" role="columnheader" scope="col">
           <div class="mdc-checkbox mdc-data-table__header-row-checkbox mdc-checkbox--selected">
-            <input type="checkbox" class="mdc-checkbox__native-control" aria-label="Checkbox for header row selection"/>
+            <input type="checkbox" class="mdc-checkbox__native-control" aria-label="Toggle all rows"/>
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
               </svg>
               <div class="mdc-checkbox__mixedmark"></div>
             </div>
+            <div class="mdc-checkbox__ripple"></div>
           </div>
         </th>
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Status</th>
         <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Signal name</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Status</th>
         <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Severity</th>
         <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Stage</th>
         <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Time</th>
@@ -135,10 +136,11 @@ Please refer to the [WAI-ARIA Authoring Practices for table](https://www.w3.org/
               </svg>
               <div class="mdc-checkbox__mixedmark"></div>
             </div>
+            <div class="mdc-checkbox__ripple"></div>
           </div>
         </td>
+        <th class="mdc-data-table__cell" scope="row" id="u0">Arcus watch slowdown</th>
         <td class="mdc-data-table__cell">Online</td>
-        <td class="mdc-data-table__cell" id="u0">Arcus watch slowdown</td>
         <td class="mdc-data-table__cell">Medium</td>
         <td class="mdc-data-table__cell">Triaged</td>
         <td class="mdc-data-table__cell mdc-data-table__cell--numeric">0:33</td>
@@ -154,10 +156,11 @@ Please refer to the [WAI-ARIA Authoring Practices for table](https://www.w3.org/
               </svg>
               <div class="mdc-checkbox__mixedmark"></div>
             </div>
+            <div class="mdc-checkbox__ripple"></div>
           </div>
         </td>
+        <th class="mdc-data-table__cell" scope="row" id="u1">monarch: prod shared ares-managed-features-provider-heavy</th>
         <td class="mdc-data-table__cell">Offline</td>
-        <td class="mdc-data-table__cell" id="u1">monarch: prod shared ares-managed-features-provider-heavy</td>
         <td class="mdc-data-table__cell">Huge</td>
         <td class="mdc-data-table__cell">Triaged</td>
         <td class="mdc-data-table__cell mdc-data-table__cell--numeric">0:33</td>
@@ -173,10 +176,11 @@ Please refer to the [WAI-ARIA Authoring Practices for table](https://www.w3.org/
               </svg>
               <div class="mdc-checkbox__mixedmark"></div>
             </div>
+            <div class="mdc-checkbox__ripple"></div>
           </div>
         </td>
+        <th class="mdc-data-table__cell" scope="row" id="u2">monarch: prod shared ares-managed-features-provider-heavy</th>
         <td class="mdc-data-table__cell">Online</td>
-        <td class="mdc-data-table__cell" id="u2">monarch: prod shared ares-managed-features-provider-heavy</td>
         <td class="mdc-data-table__cell">Minor</td>
         <td class="mdc-data-table__cell">Not triaged</td>
         <td class="mdc-data-table__cell mdc-data-table__cell--numeric">0:33</td>
@@ -192,10 +196,11 @@ Please refer to the [WAI-ARIA Authoring Practices for table](https://www.w3.org/
               </svg>
               <div class="mdc-checkbox__mixedmark"></div>
             </div>
+            <div class="mdc-checkbox__ripple"></div>
           </div>
         </td>
+        <th class="mdc-data-table__cell" scope="row" id="u3">Arcus watch slowdown</th>
         <td class="mdc-data-table__cell">Online</td>
-        <td class="mdc-data-table__cell" id="u3">Arcus watch slowdown</td>
         <td class="mdc-data-table__cell">Negligible</td>
         <td class="mdc-data-table__cell">Triaged</td>
         <td class="mdc-data-table__cell mdc-data-table__cell--numeric">0:33</td>

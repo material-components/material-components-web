@@ -103,8 +103,9 @@
 
     @include feature-targeting-mixins.targets($feat-structure) {
       box-sizing: border-box;
-      text-overflow: ellipsis;
       overflow: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
     }
   }
 
