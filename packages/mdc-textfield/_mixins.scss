@@ -138,6 +138,10 @@
       .mdc-text-field__input {
         @include _textarea-outlined-input($query);
       }
+
+      .mdc-floating-label {
+        @include _textarea-outlined-floating-label($query);
+      }
     }
 
     &.mdc-text-field--with-internal-counter {
@@ -347,27 +351,60 @@
 ///
 @mixin outlined-textarea-density($density-scale, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $keyframe-suffix: text-field-outlined-#{$density-scale};
+  $label-top: density-functions.prop-value(
+    $density-config: variables.$textarea-outlined-label-density-config,
+    $density-scale: $density-scale / 2,
+    $property-name: top,
+  );
   $textfield-height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
-
   $margin-top: density-functions.prop-value(
     $density-config: variables.$textarea-outlined-density-config,
     $density-scale: $density-scale / 2,
     $property-name: margin-top,
   );
-
   $margin-bottom: density-functions.prop-value(
     $density-config: variables.$textarea-outlined-density-config,
     $density-scale: $density-scale / 2,
     $property-name: margin-bottom,
   );
 
-  // The distance between the textarea and internal counter should not be
-  // affected
+  // Textarea mixins require two modifier classes since two are used internally
+  // for styles (textarea and outlined). An extra class is added for the public
+  // mixin so that only a single public class is needed for specificity.
   &.mdc-text-field--outlined {
+    // Adjust the floating position and animation/keyframes of the floating
+    // label by the new position of the resting label
+    $label-top-difference: variables.$textarea-outlined-label-top - $label-top;
+
+    // Floating label position
+    @include notched-outline-mixins.floating-label-float-position-absolute(
+      variables.$textarea-outlined-label-position-y - $label-top-difference,
+      $query: $query
+    );
+
+    // Floating label animation
+    @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
+    @at-root {
+      @include floating-label-mixins.shake-keyframes(
+        $keyframe-suffix,
+        variables.$textarea-outlined-label-position-y - $label-top-difference,
+        0%,
+        $query: $query
+      );
+    }
+
+    // Resting label position
+    .mdc-floating-label {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        top: $label-top;
+      }
+    }
+
     .mdc-text-field__resizer {
       @include feature-targeting-mixins.targets($feat-structure) {
         min-height: $textfield-height;
@@ -1315,6 +1352,7 @@
 
   @include feature-targeting-mixins.targets($feat-structure) {
     flex-direction: column;
+    align-items: center;
     width: auto;
     height: auto;
     padding: 0; // see below for explanation
@@ -1471,20 +1509,28 @@
 
   // Floating label animation
   @include floating-label-mixins.shake-animation(textarea-outlined, $query: $query);
-  @include floating-label-mixins.shake-keyframes(
-    textarea-outlined,
-    variables.$textarea-outlined-label-position-y,
-    0%,
-    $query: $query
-  );
+  @at-root {
+    @include floating-label-mixins.shake-keyframes(
+      textarea-outlined,
+      variables.$textarea-outlined-label-position-y,
+      0%,
+      $query: $query
+    );
+  }
+}
+
+@mixin _textarea-outlined-floating-label($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    top: variables.$textarea-outlined-label-top;
+  }
 }
 
 @mixin _textarea-outlined-input($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    // Top margin is used to keep the text from overlapping the floating label
-    // when scrolling
     margin-top: variables.$textarea-outlined-input-margin-top;
     margin-bottom: variables.$textarea-outlined-input-margin-bottom;
   }

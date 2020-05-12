@@ -100,7 +100,8 @@ $textarea-outlined-label-position-y: 24.75px !default; // visually ~4dp from top
 $helper-line-padding: 16px !default;
 $filled-baseline-top: 40px !default;
 $input-height: 28px !default;
-$textarea-label-top: 18px !default; // visually ~32dp from top to label baseline
+$textarea-label-top: 19px !default; // visually ~32dp from top to label baseline
+$textarea-outlined-label-top: $textarea-label-top - notched-outline-variables.$border-width !default;
 $textarea-line-height: 1.5rem !default; // 24dp from baseline to baseline
 $textarea-input-handle-margin: 1px !default;
 // Outlined textarea's first line should be placed at the same position as
@@ -121,6 +122,13 @@ $textarea-outlined-density-config: (
     default: $textarea-outlined-input-margin-bottom,
     maximum: $textarea-outlined-input-margin-bottom,
     minimum: $textarea-outlined-input-margin-bottom - 8 // remove 1/2 of scale to -4
+  )
+) !default;
+$textarea-outlined-label-density-config: (
+  top: (
+    default: $textarea-outlined-label-top,
+    maximum: $textarea-outlined-label-top,
+    minimum: $textarea-outlined-label-top - 8 // remove 1/2 of scale to -4
   )
 ) !default;
 $textarea-internal-counter-input-margin-bottom: 2px !default; // visually ~20dp from baseline to counter baseline
