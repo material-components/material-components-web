@@ -192,8 +192,9 @@
 
   .mdc-data-table__header-cell-wrapper {
     @include feature-targeting-mixins.targets($feat-structure) {
-      display: inline-flex;
       align-items: center;
+      display: inline-flex;
+      vertical-align: middle;
     }
   }
 
