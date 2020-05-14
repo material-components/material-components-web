@@ -62,6 +62,8 @@
     @include title-ink-color(variables.$title-ink-color, $query: $query);
     @include content-ink-color(variables.$content-ink-color, $query: $query);
     @include scroll-divider-color(variables.$scroll-divider-color, $query: $query);
+    // Note: the top padding is only 20px for dialogs without titles; see below for override.
+    @include content-padding(20px, 24px, 20px, 24px, $query: $query);
     @include min-width(variables.$min-width, $query: $query);
     @include max-width(variables.$max-width, variables.$margin, $query: $query);
     @include max-height(null, variables.$margin, $query: $query);
@@ -158,7 +160,6 @@
       flex-grow: 1;
       box-sizing: border-box;
       margin: 0;
-      padding: 20px 24px; // Note: the top padding is only 20px for dialogs without titles; see below for override
       overflow: auto;
       -webkit-overflow-scrolling: touch;
     }
@@ -364,6 +365,16 @@
   .mdc-dialog__content {
     @include feature-targeting-mixins.targets($feat-color) {
       color: rgba(theme-variables.prop-value($color), $opacity);
+    }
+  }
+}
+
+@mixin content-padding($padding-top, $padding-right, $padding-bottom, $padding-left, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-dialog__content {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      padding: $padding-top $padding-right $padding-bottom $padding-left;
     }
   }
 }

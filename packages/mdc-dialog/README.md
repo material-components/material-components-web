@@ -341,6 +341,7 @@ Mixin | Description
 `scrim-color($color, $opacity)` | Sets the color of the scrim behind the dialog.
 `title-ink-color($color, $opacity)` | Sets the color of the dialog's title text.
 `content-ink-color($color, $opacity)` | Sets the color of the dialog's content text.
+`content-padding($padding-top, $padding-right, $padding-bottom, $padding-left)` | Sets the padding of the dialog's content.
 `scroll-divider-color($color, $opacity)` | Sets the color of the dividers which display around scrollable content.
 `shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to dialog surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `min-width($min-width)` | Sets the minimum width of the dialog (defaults to 280px).
