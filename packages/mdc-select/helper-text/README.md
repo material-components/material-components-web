@@ -103,6 +103,7 @@ Mixin | Description
 `helper-text-color($color)` | Customizes the color of the helper text following a select.
 `disabled-helper-text-color($color)` | Customizes the color of the helper text following a select when disabled.
 `helper-text-validation-color($color)` | Customizes the color of the helper text validation message when the select is invalid.
+`hover-helper-text-validation-color($color)` | Customizes the color of the helper text validation message when the select is invalid and hovered.
 
 ## `MDCSelectHelperText` properties and methods
 

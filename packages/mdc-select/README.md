@@ -563,10 +563,14 @@ Mixin | Description
 `container-fill-color($color)` | Customizes the background color of the select.
 `disabled-container-fill-color($color)` | Customizes the background color of the select when disabled.
 `dropdown-icon-color($color)` | Customizes the dropdown icon color of the select.
+`hover-dropdown-icon-color($color)` | Customizes the dropdown icon color of the select when hovered.
 `focused-dropdown-icon-color($color)` | Customizes the dropdown icon color of the select when focused.
 `disabled-dropdown-icon-color($color)` | Customizes the dropdown icon color of the select when disabled.
 `label-color($color)` | Customizes the label color of the select in the unfocused state.
+`hover-label-color($color)` | Customizes the label color of the select when hovered.
 `focused-label-color($color)` | Customizes the label color of the select when focused.
+`label-floating-color($color)` | Customizes the label color of the select when the label is floated, but the select is not necessarily focused.
+`hover-label-floating-color($color)` | Customizes the label color of the select when hovered and label is floated.
 `disabled-label-color($color)` | Customizes the label color of the select when disabled.
 `bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.

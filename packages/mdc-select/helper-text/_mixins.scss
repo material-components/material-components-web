@@ -77,6 +77,12 @@
   }
 }
 
+@mixin hover-helper-text-validation-color($color, $query: feature-targeting-functions.all()) {
+  &:not(.mdc-select--disabled):not(.mdc-select--focused):hover {
+    @include helper-text-validation-color_($color, $query: $query);
+  }
+}
+
 // Private mixins
 
 @mixin helper-text-color_($color, $query: feature-targeting-functions.all()) {

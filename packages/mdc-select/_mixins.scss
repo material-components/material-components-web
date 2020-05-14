@@ -270,6 +270,14 @@
   }
 }
 
+@mixin hover-dropdown-icon-color($color, $query: feature-targeting-functions.all()) {
+  @include _if-enabled {
+    &:not(.mdc-select--focused):hover {
+      @include _dropdown-icon-color($color, $query: $query);
+    }
+  }
+}
+
 @mixin focused-dropdown-icon-color($color, $query: feature-targeting-functions.all()) {
   @include _if-enabled {
     &.mdc-select--focused {
@@ -281,6 +289,22 @@
 @mixin focused-label-color($color, $query: feature-targeting-functions.all()) {
   @include _if-enabled {
     &.mdc-select--focused .mdc-floating-label {
+      @include floating-label-mixins.ink-color(theme-variables.prop-value($color), $query: $query);
+    }
+  }
+}
+
+@mixin label-floating-color($color, $query: feature-targeting-functions.all()) {
+  @include _if-enabled {
+    .mdc-floating-label--float-above {
+      @include floating-label-mixins.ink-color(theme-variables.prop-value($color), $query: $query);
+    }
+  }
+}
+
+@mixin hover-label-floating-color($color, $query: feature-targeting-functions.all()) {
+  @include _if-enabled {
+    &:not(.mdc-select--focused):hover .mdc-floating-label--float-above {
       @include floating-label-mixins.ink-color(theme-variables.prop-value($color), $query: $query);
     }
   }
@@ -316,6 +340,14 @@
   @include _if-enabled {
     .mdc-floating-label {
       @include floating-label-mixins.ink-color($color, $query: $query);
+    }
+  }
+}
+
+@mixin hover-label-color($color, $query: feature-targeting-functions.all()) {
+  @include _if-enabled {
+    &:not(.mdc-select--focused):hover .mdc-floating-label {
+      @include floating-label-mixins.ink-color(theme-variables.prop-value($color), $query: $query);
     }
   }
 }
