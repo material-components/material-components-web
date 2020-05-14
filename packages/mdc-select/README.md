@@ -78,13 +78,19 @@ The select requires that you set the `width` of the `mdc-select` element. This i
     <ul class="mdc-list">
       <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
       <li class="mdc-list-item" data-value="grains">
-        <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+        <span class="mdc-list-item__text">
+          Bread, Cereal, Rice, and Pasta
+        </span>
       </li>
       <li class="mdc-list-item" data-value="vegetables">
-        <span class="mdc-list-item__text">Vegetables</span>
+        <span class="mdc-list-item__text">
+          Vegetables
+        </span>
       </li>
       <li class="mdc-list-item" data-value="fruit">
-        <span class="mdc-list-item__text">Fruit</span>
+        <span class="mdc-list-item__text">
+          Fruit
+        </span>
       </li>
     </ul>
   </div>
@@ -165,13 +171,19 @@ The following is an example of the select component with all of the necessary ar
     <ul class="mdc-list">
       <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="" role="option"></li>
       <li class="mdc-list-item" data-value="grains" role="option">
-        <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+        <span class="mdc-list-item__text">
+          Bread, Cereal, Rice, and Pasta
+        </span>
       </li>
       <li class="mdc-list-item mdc-list-item--disabled" data-value="vegetables" aria-disabled="true" role="option">
-        <span class="mdc-list-item__text">Vegetables</span>
+        <span class="mdc-list-item__text">
+          Vegetables
+        </span>
       </li>
       <li class="mdc-list-item" data-value="fruit" role="option">
-        <span class="mdc-list-item__text">Fruit</span>
+        <span class="mdc-list-item__text">
+          Fruit
+        </span>
       </li>
     </ul>
   </div>
@@ -268,13 +280,19 @@ to set the selected item. The select also needs the text from the selected eleme
     <ul class="mdc-list">
       <li class="mdc-list-item" data-value=""></li>
       <li class="mdc-list-item" data-value="grains">
-        <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+        <span class="mdc-list-item__text">
+          Bread, Cereal, Rice, and Pasta
+        </span>
       </li>
       <li class="mdc-list-item mdc-list-item--selected" data-value="vegetables" aria-selected="true">
-        <span class="mdc-list-item__text">Vegetables</span>
+        <span class="mdc-list-item__text">
+          Vegetables
+        </span>
       </li>
       <li class="mdc-list-item" data-value="fruit">
-        <span class="mdc-list-item__text">Fruit</span>
+        <span class="mdc-list-item__text">
+          Fruit
+        </span>
       </li>
     </ul>
   </div>
@@ -389,13 +407,19 @@ programmatically select a disabled list item.
     <ul class="mdc-list">
       <li class="mdc-list-item" data-value=""></li>
       <li class="mdc-list-item" data-value="grains">
-        <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+        <span class="mdc-list-item__text">
+          Bread, Cereal, Rice, and Pasta
+        </span>
       </li>
       <li class="mdc-list-item mdc-list-item--selected mdc-list-item--disabled" data-value="vegetables">
-        <span class="mdc-list-item__text">Vegetables</span>
+        <span class="mdc-list-item__text">
+          Vegetables
+        </span>
       </li>
       <li class="mdc-list-item" data-value="fruit">
-        <span class="mdc-list-item__text">Fruit</span>
+        <span class="mdc-list-item__text">
+          Fruit
+        </span>
       </li>
     </ul>
   </div>
@@ -452,13 +476,19 @@ structure.
     <ul class="mdc-list">
       <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
       <li class="mdc-list-item" data-value="grains">
-        <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+        <span class="mdc-list-item__text">
+          Bread, Cereal, Rice, and Pasta
+        </span>
       </li>
       <li class="mdc-list-item" data-value="vegetables">
-        <span class="mdc-list-item__text">Vegetables</span>
+        <span class="mdc-list-item__text">
+          Vegetables
+        </span>
       </li>
       <li class="mdc-list-item" data-value="fruit">
-        <span class="mdc-list-item__text">Fruit</span>
+        <span class="mdc-list-item__text">
+          Fruit
+        </span>
       </li>
     </ul>
   </div>
