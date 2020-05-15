@@ -201,7 +201,6 @@ same.
 ```html
 <div class="mdc-select mdc-select--outlined">
   <div class="mdc-select__anchor" aria-labelledby="outlined-select-label">
-    <span class="mdc-select__ripple"></span>
     <span id="demo-selected-text" class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -501,7 +500,6 @@ structure.
 ```html
 <div class="mdc-select mdc-select--outlined mdc-select--no-label demo-width-class">
   <div class="mdc-select__anchor">
-    <span class="mdc-select__ripple"></span>
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
