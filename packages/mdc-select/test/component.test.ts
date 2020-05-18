@@ -331,6 +331,18 @@ describe('MDCSelect', () => {
     expect(mockFoundation.layoutOptions).toHaveBeenCalled();
   });
 
+  it('#set useDefaultValidation forwards to foundation', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = false;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {component, mockFoundation} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+
+    component.useDefaultValidation = false;
+    expect(mockFoundation.setUseDefaultValidation).toHaveBeenCalled();
+  });
+
   it('#get valid forwards to foundation', () => {
     const hasMockFoundation = true;
     const hasMockMenu = false;

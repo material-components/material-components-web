@@ -101,6 +101,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   // the menu is still closing, but isMenuOpen returns false only after the menu
   // has closed
   private isMenuOpen = false;
+  // By default, select is invalid if it is required but no value is selected.
+  private useDefaultValidation = true;
+  private customValidity = true;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
@@ -232,7 +235,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter_.notifyChange(this.getValue());
 
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
-    if (isRequired) {
+    if (isRequired && this.useDefaultValidation) {
       this.setValid(this.isValid());
       if (this.helperText) {
         this.helperText.setValidity(this.isValid());
@@ -342,7 +345,15 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
   }
 
+  setUseDefaultValidation(useDefaultValidation: boolean) {
+    this.useDefaultValidation = useDefaultValidation;
+  }
+
   setValid(isValid: boolean) {
+    if (!this.useDefaultValidation) {
+      this.customValidity = isValid;
+    }
+
     this.adapter_.setSelectAnchorAttr('aria-invalid', (!isValid).toString());
     if (isValid) {
       this.adapter_.removeClass(cssClasses.INVALID);
@@ -352,13 +363,15 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   isValid() {
-    if (this.adapter_.hasClass(cssClasses.REQUIRED) && !this.adapter_.hasClass(cssClasses.DISABLED)) {
+    if (this.useDefaultValidation &&
+        this.adapter_.hasClass(cssClasses.REQUIRED) &&
+        !this.adapter_.hasClass(cssClasses.DISABLED)) {
       // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
       // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
       return this.selectedIndex !== numbers.UNSET_INDEX &&
           (this.selectedIndex !== 0 || Boolean(this.getValue()));
     }
-    return true;
+    return this.customValidity;
   }
 
   setRequired(isRequired: boolean) {
@@ -396,7 +409,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter_.deactivateBottomLine();
 
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
-    if (isRequired) {
+    if (isRequired && this.useDefaultValidation) {
       this.setValid(this.isValid());
       if (this.helperText) {
         this.helperText.setValidity(this.isValid());

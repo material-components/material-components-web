@@ -247,6 +247,16 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   /**
+   * Enables or disables the default validation scheme where a required select
+   * must be non-empty. Set to false for custom validation.
+   * @param useDefaultValidation Set this to false to ignore default
+   *     validation scheme.
+   */
+  set useDefaultValidation(useDefaultValidation: boolean) {
+    this.foundation_.setUseDefaultValidation(useDefaultValidation);
+  }
+
+  /**
    * Sets the current invalid state of the select.
    */
   set valid(isValid: boolean) {

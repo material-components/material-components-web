@@ -599,6 +599,7 @@ Property | Type | Description
 `value` | `string` | The `value`/`data-value` of the currently selected option.
 `selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element.
 `disabled` | `boolean` | Whether or not the component is disabled. Setting this sets the disabled state on the component.
+`useDefaultValidation` | `boolean` | Whether or not to use the default validation scheme where a required select must be non-empty. Set to false for custom validation.
 `valid` | `boolean` | Whether or not the component is in a valid state. Setting this updates styles on the component, but does not affect the native validity state.
 `required` | `boolean` | Whether or not the component is required. Setting this updates the `required` or `aria-required` attribute on the component and enables validation.
 `leadingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
@@ -679,7 +680,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setSelectedIndex(index: number) => void` | Handles setting the `mdc-select__selected-text` element and closing the menu. Also causes the label to float and outline to notch if needed. |
 | `getValue() => string` | Handles getting the value through the adapter. |
 | `setValue() => string` | Sets the selected index to the index of the menu item with the given value. |
-| `setValid(isValid: boolean) => void` | Sets the valid state through the adapter. |
+| `setUseDefaultValidation(useDefaultValidation: boolean) => void` | Enables or disables the default validation scheme where a required select must be non-empty. Set to false for custom validation.|
+| `setValid(isValid: boolean) => void` | Sets the valid state through the adapter. Note that default validation scheme where a required select is invalid if empty will still be honored subsequently unless `setUseDefaultValidation(false)` is also called.|
 | `isValid() => boolean` | Gets the valid state through the adapter's `checkValidity` API. |
 | `setRequired(isRequired: boolean) => void` | Sets the required state through the adapter. |
 | `getRequired() => boolean` | Gets the required state through the adapter. |
