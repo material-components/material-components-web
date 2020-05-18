@@ -75,7 +75,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       setMenuAnchorCorner: () => undefined,
       setMenuWrapFocus: () => undefined,
       setAttributeAtIndex: () => undefined,
-      removeAttributeAtIndex: () => undefined,
       focusMenuItemAtIndex: () => undefined,
       getMenuItemCount: () => 0,
       getMenuItemValues: () => [],
@@ -435,7 +434,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   private removeSelectionAtIndex(index: number) {
     if (index !== numbers.UNSET_INDEX) {
       this.adapter_.removeClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
-      this.adapter_.removeAttributeAtIndex(index, strings.ARIA_SELECTED_ATTR);
+      this.adapter_.setAttributeAtIndex(
+          index, strings.ARIA_SELECTED_ATTR, 'false');
     }
   }
 }

@@ -652,7 +652,6 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setMenuAnchorCorner(anchorCorner: Corner) => void` | Sets the menu anchor corner. |
 | `setMenuWrapFocus(wrapFocus: boolean) => void` | Sets whether the menu should wrap focus. |
 | `setAttributeAtIndex(index: number, attributeName: string, attributeValue: string) => void` | Sets the attribute on the menu item at the given index. |
-| `removeAttributeAtIndex(index: number, attributeName: string) => void` | Removes the attribute on the menu item at the given index. |
 | `focusMenuItemAtIndex(index: number) => void` | Focuses the menu item at the given index. |
 | `getMenuItemValues() => string[]` | Returns an array representing the VALUE_ATTR attributes of each menu item. |
 | `getMenuItemCount() => number` | Returns the number of menu items. |

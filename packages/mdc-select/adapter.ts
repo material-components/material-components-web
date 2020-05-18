@@ -158,11 +158,6 @@ export interface MDCSelectAdapter {
   setAttributeAtIndex(index: number, attributeName: string, attributeValue: string): void;
 
   /**
-   * Removes the attribute on the menu item at the given index.
-   */
-  removeAttributeAtIndex(index: number, attributeName: string): void;
-
-  /**
    * Focuses the menu item element at the given index.
    */
   focusMenuItemAtIndex(index: number): void;

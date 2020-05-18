@@ -67,7 +67,6 @@ describe('MDCSelectFoundation', () => {
       'setMenuAnchorCorner',
       'setMenuWrapFocus',
       'setAttributeAtIndex',
-      'removeAttributeAtIndex',
       'focusMenuItemAtIndex',
       'getMenuItemCount',
       'getMenuItemValues',
@@ -704,8 +703,8 @@ describe('MDCSelectFoundation', () => {
     foundation.setSelectedIndex(0);
     expect(mockAdapter.removeClassAtIndex)
         .toHaveBeenCalledWith(1, cssClasses.SELECTED_ITEM_CLASS);
-    expect(mockAdapter.removeAttributeAtIndex)
-        .toHaveBeenCalledWith(1, strings.ARIA_SELECTED_ATTR);
+    expect(mockAdapter.setAttributeAtIndex)
+        .toHaveBeenCalledWith(1, strings.ARIA_SELECTED_ATTR, 'false');
     expect(mockAdapter.addClassAtIndex)
         .toHaveBeenCalledWith(0, cssClasses.SELECTED_ITEM_CLASS);
     expect(mockAdapter.setAttributeAtIndex)
@@ -714,8 +713,8 @@ describe('MDCSelectFoundation', () => {
     foundation.setSelectedIndex(-1);
     expect(mockAdapter.removeClassAtIndex)
         .toHaveBeenCalledWith(0, cssClasses.SELECTED_ITEM_CLASS);
-    expect(mockAdapter.removeAttributeAtIndex)
-        .toHaveBeenCalledWith(0, strings.ARIA_SELECTED_ATTR);
+    expect(mockAdapter.setAttributeAtIndex)
+        .toHaveBeenCalledWith(0, strings.ARIA_SELECTED_ATTR, 'false');
 
     expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(3);
   });
