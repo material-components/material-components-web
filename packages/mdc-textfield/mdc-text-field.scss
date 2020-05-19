@@ -24,7 +24,4 @@
 @use "@material/floating-label/mdc-floating-label"; // COPYBARA_COMMENT_THIS_LINE
 @use "@material/line-ripple/mdc-line-ripple"; // COPYBARA_COMMENT_THIS_LINE
 @use "@material/notched-outline/mdc-notched-outline"; // COPYBARA_COMMENT_THIS_LINE
-@use "./helper-text/mdc-text-field-helper-text";
-@use "./character-counter/mdc-text-field-character-counter";
-@use "./icon/mdc-text-field-icon";
 @include mixins.core-styles;

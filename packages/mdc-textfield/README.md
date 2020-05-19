@@ -33,6 +33,9 @@ npm install @material/textfield
 ### Styles
 
 ```scss
+@use "@material/floating-label/mdc-floating-label";
+@use "@material/line-ripple/mdc-line-ripple";
+@use "@material/notched-outline/mdc-notched-outline";
 @use "@material/textfield";
 
 @include textfield.core-styles;

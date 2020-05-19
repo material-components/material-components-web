@@ -46,6 +46,9 @@
 @mixin core-styles($query: feature-targeting-functions.all()) {
   @include ripple($query);
   @include without-ripple($query);
+  @include helper-text-mixins.helper-text-core-styles($query);
+  @include character-counter-mixins.character-counter-core-styles($query);
+  @include icon-mixins.icon-core-styles($query);
 }
 
 @mixin without-ripple($query: feature-targeting-functions.all()) {
