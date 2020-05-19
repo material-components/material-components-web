@@ -2,6 +2,7 @@
 plugins:
   - stylelint-scss
 rules:
+  at-rule-name-case: lower
   # This list is to be verified with tests in `e2e_test.js`, in order to verify that each rule is
   # functioning, and that this file does not contain typos.
   block-closing-brace-newline-after:
@@ -16,10 +17,15 @@ rules:
   declaration-block-no-duplicate-properties: true
   declaration-block-no-redundant-longhand-properties: true
   declaration-block-no-shorthand-property-overrides: true
-  declaration-block-trailing-semicolon: always
+  # TODO(b/150767072): This forces nested shorthand properties to have a trailing semi-colon, which
+  # is never required, and looks different from any other block (placing a `;` after a `}`.
+  # Likely need a fork of this rule in stylelint-scss.
+  # declaration-block-trailing-semicolon: always
   function-calc-no-unspaced-operator: true
+  function-name-case: lower
   function-url-no-scheme-relative: true
   function-url-quotes: never
+  media-feature-name-case: lower
   # Need to check if units are required for some flex properties in some browsers.
   # length-zero-no-unit
   no-duplicate-at-import-rules: true
@@ -27,7 +33,7 @@ rules:
   no-extra-semicolons: true
   # In MDC, @keyframe's are defined in a separate file.
   # no-unknown-animations: true
-  number-leading-zero: never
+  property-case: lower
   # Requires known-css-parser, not yet imported into third_party.
   # property-no-unknown: true
   rule-empty-line-before:
@@ -36,12 +42,20 @@ rules:
       - after-comment
       - first-nested
       - inside-block
+  selector-pseudo-class-case: lower
   selector-pseudo-class-no-unknown: true
+  selector-pseudo-element-case: lower
   selector-pseudo-element-no-unknown:
     - true
     - ignorePseudoElements:
         ng-deep
-  scss/at-rule-no-unknown: true
+  selector-type-case: lower
+  scss/at-rule-no-unknown:
+    - true
+    - ignoreAtRules:
+      # Allow GSS at-rules.
+      - "provide"
+      - "require"
   # No config allows this:
   #
   # ```scss
@@ -52,7 +66,9 @@ rules:
   # Possibly solved with request at https://github.com/kristerkari/stylelint-scss/issues/172.
   # scss/dollar-variable-colon-space-after: always
   scss/dollar-variable-colon-space-before: never
-  scss/operator-no-unspaced: true
+  # Disable until a few bugs are worked out, e.g.
+  # https://github.com/kristerkari/stylelint-scss/issues/452, b/146236561, b/148542732
+  # scss/operator-no-unspaced: true
   shorthand-property-no-redundant-values: true
   # TODO: Enable this when not conflicting with other sass file changes.
   # string-quotes: single
@@ -61,4 +77,5 @@ rules:
     - true
     - ignoreUnits:
       - /^[-+][\d$(]/
-  value-keyword-case: lower
+  # This lint rule is enforced on map keys, which we may not want now, and has caused confusion.
+  # value-keyword-case: lower
