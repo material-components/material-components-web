@@ -95,7 +95,7 @@ To set the stroke-width and container size strictly to one of three sizes define
 #### Large (default)
 Add the `.mdc-circular-progress--large` class and use the following inner SVGs.
 ```html
-<!--Detrerminate-->
+<!--Determinate-->
 <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
   <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097"/>
 </svg>
@@ -111,7 +111,7 @@ See [baseline template](#HTML-Structure) above.
 #### Medium
 Add the `.mdc-circular-progress--medium` class and replace SVG's from baseline template with the following.
 ```html
-<!--Detrerminate-->
+<!--Determinate-->
 <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
   <circle class="mdc-circular-progress__determinate-circle" cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="78.54"/>
 </svg>
@@ -151,7 +151,7 @@ Add the `.mdc-circular-progress--medium` class and replace SVG's from baseline t
 #### Small
 Add the `.mdc-circular-progress--small` class and replace SVG's from baseline template with the following.
 ```html
-<!--Detrerminate-->
+<!--Determinate-->
 <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
   <circle class="mdc-circular-progress__determinate-circle" cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="54.978"/>
 </svg>
