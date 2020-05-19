@@ -110,6 +110,13 @@ $ripple-target: ".mdc-chip__ripple";
     }
   }
 
+  .mdc-chip__cell {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
   .mdc-chip__text {
     @include feature-targeting-mixins.targets($feat-structure) {
       white-space: nowrap;
