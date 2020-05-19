@@ -22,10 +22,10 @@
  */
 
 import {getCorrectPropertyName} from '../../mdc-animation/index';
-import {cssClasses, numbers, strings} from '../../mdc-slider/constants';
-import {MDCSliderFoundation} from '../../mdc-slider/foundation';
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+import {cssClasses, numbers, strings} from '../constants';
+import {MDCSliderFoundation} from '../foundation';
 
 const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
 

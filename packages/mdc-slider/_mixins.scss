@@ -179,7 +179,11 @@
   }
 }
 
-@mixin rail-color($color, $opacity: variables.$baseline-rail-opacity, $query: feature-targeting-functions.all()) {
+@mixin rail-color(
+  $color,
+  $opacity: variables.$baseline-rail-opacity,
+  $query: feature-targeting-functions.all()
+) {
   &:not(.mdc-slider--disabled) {
     @include rail-color_($color, $opacity, $query: $query);
   }
@@ -233,9 +237,16 @@
   }
 }
 
-@mixin value-pin-fill-color-accessible($color, $query: feature-targeting-functions.all()) {
+@mixin value-pin-fill-color-accessible(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $color-value: theme-variables.prop-value($color);
-  $ink-color: if(theme-functions.tone($color-value) == "light", text-primary-on-light, text-primary-on-dark);
+  $ink-color: if(
+    theme-functions.tone($color-value) == 'light',
+    text-primary-on-light,
+    text-primary-on-dark
+  );
 
   @include value-pin-fill-color($color, $query: $query);
   @include value-pin-ink-color($ink-color, $query: $query);
@@ -277,7 +288,7 @@
         display: block;
         width: 100%;
         height: 100%;
-        content: "";
+        content: '';
       }
     }
   }
@@ -289,7 +300,7 @@
       height: 100%;
       transform-origin: left top;
 
-      @include rtl-mixins.rtl(".mdc-slider") {
+      @include rtl-mixins.rtl('.mdc-slider') {
         transform-origin: right top;
       }
     }
@@ -311,7 +322,7 @@
       margin-left: -1px;
       visibility: hidden;
 
-      @include rtl-mixins.rtl(".mdc-slider") {
+      @include rtl-mixins.rtl('.mdc-slider') {
         margin-right: -1px;
         margin-left: 0;
       }
@@ -322,7 +333,7 @@
         display: block;
         width: 2px;
         height: 2px;
-        content: "";
+        content: '';
       }
     }
   }
@@ -336,7 +347,7 @@
         display: block;
         width: 2px;
         height: 2px;
-        content: "";
+        content: '';
       }
 
       // stylelint-disable-next-line selector-max-type
@@ -378,7 +389,8 @@
     }
 
     @include feature-targeting-mixins.targets($feat-animation) {
-      transition: transform 100ms ease-out, fill 100ms ease-out, stroke 100ms ease-out;
+      transition: transform 100ms ease-out, fill 100ms ease-out,
+        stroke 100ms ease-out;
     }
   }
 }
@@ -396,7 +408,8 @@
     }
 
     @include feature-targeting-mixins.targets($feat-animation) {
-      transition: transform 266.67ms ease-out, opacity 266.67ms ease-out, background-color 266.67ms ease-out;
+      transition: transform 266.67ms ease-out, opacity 266.67ms ease-out,
+        background-color 266.67ms ease-out;
     }
   }
 }
@@ -449,7 +462,11 @@
   }
 }
 
-@mixin rail-color_($color, $opacity: variables.$baseline-rail-opacity, $query: feature-targeting-functions.all()) {
+@mixin rail-color_(
+  $color,
+  $opacity: variables.$baseline-rail-opacity,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-slider__track-container::after {
@@ -461,7 +478,10 @@
   }
 }
 
-@mixin rail-tick-mark-color_($color, $query: feature-targeting-functions.all()) {
+@mixin rail-tick-mark-color_(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-slider__track-marker-container {

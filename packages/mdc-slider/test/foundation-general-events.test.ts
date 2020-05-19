@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {cssClasses} from '../../mdc-slider/constants';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+import {cssClasses} from '../constants';
 
 import {setupEventTest as setupTest, TRANSFORM_PROP} from './helpers';
 
