@@ -97,6 +97,7 @@ $outlined-label-position-y:
     get-outlined-label-position-y($height) !default;
 $outlined-with-leading-icon-label-position-x: 32px !default;
 $textarea-outlined-label-position-y: 24.75px !default; // visually ~4dp from top to baseline
+$textarea-filled-label-position-y: 10.25px !default; // visually ~20dp from top to label baseline
 $helper-line-padding: 16px !default;
 $filled-baseline-top: 40px !default;
 $input-height: 28px !default;
@@ -129,6 +130,36 @@ $textarea-outlined-label-density-config: (
     default: $textarea-outlined-label-top,
     maximum: $textarea-outlined-label-top,
     minimum: $textarea-outlined-label-top - 8 // remove 1/2 of scale to -4
+  )
+) !default;
+$textarea-filled-input-margin-top: 23px !default; // visually ~40dp from top to baseline
+$textarea-filled-input-margin-bottom: 9px !default; // visually ~16dp from baseline to bottom
+$textarea-filled-density-config: (
+  margin-bottom: (
+    default: $textarea-filled-input-margin-bottom,
+    maximum: $textarea-filled-input-margin-bottom,
+    minimum: $textarea-filled-input-margin-bottom - 4 // scale to -1
+  )
+) !default;
+$textarea-filled-label-density-config: (
+  top: (
+    default: $textarea-label-top,
+    maximum: $textarea-label-top,
+    minimum: $textarea-label-top - 2 // remove 1/2 of scale to -1
+  )
+) !default;
+$textarea-filled-no-label-input-margin-top: 16px !default; // see above explanation for outlined textarea margin
+$textarea-filled-no-label-input-margin-bottom: 16px !default; // see above explanation for outlined textarea margin
+$textarea-filled-no-label-density-config: (
+  margin-top: (
+    default: $textarea-filled-no-label-input-margin-top,
+    maximum: $textarea-filled-no-label-input-margin-top,
+    minimum: $textarea-filled-no-label-input-margin-top - 8 // remove 1/2 of scale to -4
+  ),
+  margin-bottom: (
+    default: $textarea-filled-no-label-input-margin-bottom,
+    maximum: $textarea-filled-no-label-input-margin-bottom,
+    minimum: $textarea-filled-no-label-input-margin-bottom - 8 // remove 1/2 of scale to -4
   )
 ) !default;
 $textarea-internal-counter-input-margin-bottom: 2px !default; // visually ~20dp from baseline to counter baseline

@@ -113,6 +113,20 @@ included as part of the DOM structure of a full width text field.**
 
 ### Textarea
 
+#### Filled
+
+```html
+<label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea mdc-text-field--no-label">
+  <span class="mdc-text-field__ripple"></span>
+  <span class="mdc-text-field__resizer">
+    <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
+  </span>
+  <span class="mdc-line-ripple"></span>
+</label>
+```
+
+#### Outlined
+
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--no-label">
   <span class="mdc-text-field__resizer">
@@ -124,8 +138,6 @@ included as part of the DOM structure of a full width text field.**
   </span>
 </label>
 ```
-
-**Note: Only the `mdc-text-field--outlined` variant of textarea is currently supported.**
 
 **Note: The `mdc-text-field__resizer` element may be omitted for a non-resizable textarea.**
 

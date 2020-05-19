@@ -135,6 +135,20 @@
       @include _textarea-input($query);
     }
 
+    &.mdc-text-field--filled {
+      @include _textarea-filled($query);
+
+      .mdc-text-field__input {
+        @include _textarea-filled-input($query);
+      }
+
+      &.mdc-text-field--no-label {
+        .mdc-text-field__input {
+          @include _textarea-filled-no-label-input($query);
+        }
+      }
+    }
+
     &.mdc-text-field--outlined {
       @include _textarea-outlined($query);
 
@@ -162,6 +176,15 @@
   // just adds specificity
   .mdc-text-field__resizer {
     @include _textarea-resizer($query);
+
+    .mdc-text-field--filled & {
+      @include _textarea-filled-resizer($query);
+
+      .mdc-text-field__input,
+      .mdc-text-field-character-counter {
+        @include _textarea-filled-resizer-children($query);
+      }
+    }
 
     .mdc-text-field--outlined & {
       @include _textarea-outlined-resizer($query);
@@ -344,6 +367,121 @@
   // @if $density-scale < 0 {
   //   @include icon-mixins.size(icon-variables.$dense-icon-size);
   // }
+}
+
+///
+/// Sets density scale for filled textarea.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+///
+@mixin filled-textarea-density($density-scale, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $textfield-height: density-functions.prop-value(
+    $density-config: variables.$density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+  $no-label-margin-top: density-functions.prop-value(
+    $density-config: variables.$textarea-filled-no-label-density-config,
+    $density-scale: $density-scale / 2,
+    $property-name: margin-top,
+  );
+  $no-label-margin-bottom: density-functions.prop-value(
+    $density-config: variables.$textarea-filled-no-label-density-config,
+    $density-scale: $density-scale / 2,
+    $property-name: margin-bottom,
+  );
+
+  // Textarea mixins require two modifier classes since two are used internally
+  // for styles (textarea and filled). An extra class is added for the public
+  // mixin so that only a single public class is needed for specificity.
+  &.mdc-text-field--filled {
+    .mdc-text-field__resizer {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        min-height: $textfield-height;
+      }
+    }
+
+    @if $density-scale >= -1 {
+      $keyframe-suffix: text-field-filled-#{$density-scale};
+      $label-top: density-functions.prop-value(
+        $density-config: variables.$textarea-filled-label-density-config,
+        $density-scale: $density-scale / 2,
+        $property-name: top,
+      );
+
+      // Adjust the floating position and animation/keyframes of the floating
+      // label by the new position of the resting label
+      $label-top-difference: variables.$textarea-outlined-label-top - $label-top;
+
+      // Floating label position
+      @include floating-label-mixins.float-position(
+        variables.$textarea-filled-label-position-y - $label-top-difference,
+        $query: $query
+      );
+
+      // Floating label animation
+      @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
+      @at-root {
+        @include floating-label-mixins.shake-keyframes(
+          $keyframe-suffix,
+          variables.$textarea-filled-label-position-y - $label-top-difference,
+          0%,
+          $query: $query
+        );
+      }
+
+      // Resting label position
+      .mdc-floating-label {
+        @include feature-targeting-mixins.targets($feat-structure) {
+          top: $label-top;
+        }
+      }
+
+      $margin-bottom: density-functions.prop-value(
+        $density-config: variables.$textarea-filled-density-config,
+        $density-scale: $density-scale,
+        $property-name: margin-bottom,
+      );
+
+      .mdc-text-field__input {
+        @include feature-targeting-mixins.targets($feat-structure) {
+          margin-bottom: $margin-bottom;
+        }
+      }
+    } @else {
+      // The textarea is too dense to show a floating label
+      .mdc-floating-label {
+        @include feature-targeting-mixins.targets($feat-structure) {
+          display: none;
+        }
+      }
+
+      .mdc-text-field__input {
+        @include feature-targeting-mixins.targets($feat-structure) {
+          margin-top: $no-label-margin-top;
+          margin-bottom: $no-label-margin-bottom;
+        }
+      }
+    }
+
+    &.mdc-text-field--no-label {
+      .mdc-text-field__input {
+        @include feature-targeting-mixins.targets($feat-structure) {
+          margin-top: $no-label-margin-top;
+          margin-bottom: $no-label-margin-bottom;
+        }
+      }
+    }
+
+    &.mdc-text-field--with-internal-counter {
+      .mdc-text-field__input {
+        // Space between textarea and internal counter should not be affected
+        @include _textarea-input-with-internal-counter($query);
+      }
+    }
+  }
 }
 
 ///
@@ -1397,6 +1535,31 @@
   }
 }
 
+@mixin _textarea-filled-resizer($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  // Shift the resizer element up by a margin amount to make space for the
+  // resize handle. For filled elements, the resize handle directly touches
+  // the bottom line and is hard to see.
+  // Using a margin affects the width and positioning of the overall component
+  // and underlying textarea, which is why a transform is used instead.
+  $y: -1 * variables.$textarea-input-handle-margin;
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    transform: translateY($y);
+  }
+}
+
+@mixin _textarea-filled-resizer-children($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  // See above. After shifting the resize wrapper element, all of its children
+  // should be shifted in the opposite direction (down) to compensate.
+  $y: variables.$textarea-input-handle-margin;
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    transform: translateY($y);
+  }
+}
+
 @mixin _textarea-outlined-resizer($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   // Shift the resizer element left/up by a margin amount to make space for the
@@ -1499,12 +1662,50 @@
 }
 
 @mixin _textarea-filled($query: feature-targeting-functions.all()) {
-  // TODO(b/142325760)
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    &::before {
+      // <textarea> does not align to baseline when it does not have a value,
+      // unlike <input>, so we have to use padding to fake it instead
+      display: none;
+    }
+  }
+
+  // Floating label position
+  @include floating-label-mixins.float-position(variables.$textarea-filled-label-position-y, $query: $query);
+
+  // Floating label animation
+  @include floating-label-mixins.shake-animation(textarea-filled, $query: $query);
+  @at-root {
+    @include floating-label-mixins.shake-keyframes(
+      textarea-filled,
+      variables.$textarea-filled-label-position-y,
+      0%,
+      $query: $query
+    );
+  }
+}
+
+@mixin _textarea-filled-input($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    margin-top: variables.$textarea-filled-input-margin-top;
+    margin-bottom: variables.$textarea-filled-input-margin-bottom;
+  }
+}
+
+@mixin _textarea-filled-no-label-input($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    margin-top: variables.$textarea-filled-no-label-input-margin-top;
+    margin-bottom: variables.$textarea-filled-no-label-input-margin-bottom;
+  }
 }
 
 @mixin _textarea-outlined($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
   @include notched-outline-mixins.notch-offset(0, $query: $query);
 
   // Floating label position
