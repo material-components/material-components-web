@@ -219,6 +219,7 @@ Property | Value Type | Description
 `items` | Array<Element> | Proxies to the list to query for all `.mdc-list-item` elements.
 `quickOpen` | Boolean | Proxies to the menu surface `quickOpen` property.
 `wrapFocus` | Boolean | Proxies to list's `wrapFocus` property.
+`hasTypeahead` | Boolean | Proxies to the list's `hasTypeahead` property.
 
 Method Signature | Description
 --- | ---
@@ -226,13 +227,14 @@ Method Signature | Description
 `setAnchorMargin(Partial<MDCMenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
 `setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
-`setSelectedIndex(index: number) => void | Sets the list item to the selected state at the specified index.
+`setSelectedIndex(index: number) => void` | Sets the list item to the selected state at the specified index.
 `setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
 `setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
 `getOptionByIndex(index: number) => Element \| null` | Returns the list item at the `index` specified.
 `getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 `setEnabled(index: number, isEnabled: boolean) => void` | Sets the enabled state to `isEnabled` for the menu item at given `index`.
+`layout() => void` | Proxies to the list's layout method.
 
 > See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.
 

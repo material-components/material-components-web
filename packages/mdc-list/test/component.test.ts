@@ -79,6 +79,41 @@ function getFixtureWithDisabledItems() {
   return el;
 }
 
+function getTwoLineFixture() {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `
+      <ul class="mdc-list mdc-list--two-line">
+        <li class="mdc-list-item" tabindex="0">
+          <span class="mdc-list-item__text">
+            <span class="mdc-list-item__primary-text">Fruit</span>
+            <span class="mdc-list-item__secondary-text">Secondary fruit</span>
+          </span>
+        </li>
+        <li class="mdc-list-item" tabindex="0">
+          <span class="mdc-list-item__text">
+            <span class="mdc-list-item__primary-text">Potato</span>
+            <span class="mdc-list-item__secondary-text">Secondary potato</span>
+          </span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">
+            <span class="mdc-list-item__primary-text">Pasta</span>
+            <span class="mdc-list-item__secondary-text">Secondary pasta</span>
+          </span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">
+            <span class="mdc-list-item__primary-text">Pizza</span>
+            <span class="mdc-list-item__secondary-text">Secondary pizza</span>
+          </span>
+        </li>
+      </ul>
+    `;
+  const el = wrapper.firstElementChild as HTMLElement;
+  wrapper.removeChild(el);
+  return el;
+}
+
 function setupTest(root = getFixture()) {
   const mockFoundation = createMockFoundation(MDCListFoundation);
   const component = new MDCList(root, mockFoundation);
@@ -622,6 +657,26 @@ describe('MDCList', () => {
                   .adapter_.listItemAtIndexHasClass(
                       0, cssClasses.LIST_ITEM_DISABLED_CLASS))
            .toBe(false);
+       document.body.removeChild(root);
+     });
+
+  it('adapter#getPrimaryTextAtIndex returns the appropriate text for one line list',
+     () => {
+       const {root, component} = setupTest();
+       document.body.appendChild(root);
+       expect((component.getDefaultFoundation() as any)
+                  .adapter_.getPrimaryTextAtIndex(2))
+           .toEqual('Pasta');
+       document.body.removeChild(root);
+     });
+
+  it('adapter#getPrimaryTextAtIndex returns the appropriate text for two line list',
+     () => {
+       const {root, component} = setupTest(getTwoLineFixture());
+       document.body.appendChild(root);
+       expect((component.getDefaultFoundation() as any)
+                  .adapter_.getPrimaryTextAtIndex(2))
+           .toEqual('Pasta');
        document.body.removeChild(root);
      });
 });

@@ -115,6 +115,26 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   /**
+   * Sets whether the menu has typeahead functionality.
+   * @param value Whether typeahead is enabled.
+   */
+  set hasTypeahead(value: boolean) {
+    if (this.list_) {
+      this.list_.hasTypeahead = value;
+    }
+  }
+
+  /**
+   * Layout the underlying list element in the case of any dynamic updates
+   * to its structure.
+   */
+  layout() {
+    if (this.list_) {
+      this.list_.layout();
+    }
+  }
+
+  /**
    * Return the items within the menu. Note that this only contains the set of elements within
    * the items container that are proper list items, and not supplemental / presentational DOM
    * elements.

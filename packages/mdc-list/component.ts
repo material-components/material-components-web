@@ -44,6 +44,14 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     this.foundation_.setWrapFocus(value);
   }
 
+  /**
+   * Sets whether typeahead functionality is enabled on the list.
+   * @param hasTypeahead Whether typeahead is enabled.
+   */
+  set hasTypeahead(hasTypeahead: boolean) {
+    this.foundation_.setHasTypeahead(hasTypeahead);
+  }
+
   set singleSelection(isSingleSelectionList: boolean) {
     this.foundation_.setSingleSelection(isSingleSelectionList);
   }
@@ -154,9 +162,22 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
           element.focus();
         }
       },
-      getAttributeForElementIndex: (index, attr) => this.listElements[index].getAttribute(attr),
-      getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement!),
+      getAttributeForElementIndex: (index, attr) =>
+          this.listElements[index].getAttribute(attr),
+      getFocusedElementIndex: () =>
+          this.listElements.indexOf(document.activeElement!),
       getListItemCount: () => this.listElements.length,
+      getPrimaryTextAtIndex: (index) => {
+        const primaryText = this.listElements[index].querySelector(
+            `.${cssClasses.LIST_ITEM_PRIMARY_TEXT_CLASS}`);
+        if (primaryText) {
+          return primaryText.textContent || '';
+        }
+
+        const singleLineText = this.listElements[index].querySelector(
+            `.${cssClasses.LIST_ITEM_TEXT_CLASS}`);
+        return (singleLineText && singleLineText.textContent) || '';
+      },
       hasCheckboxAtIndex: (index) => {
         const listItem = this.listElements[index];
         return !!listItem.querySelector(strings.CHECKBOX_SELECTOR);
@@ -174,7 +195,8 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
         return this.root_.contains(document.activeElement);
       },
       isRootFocused: () => document.activeElement === this.root_,
-      listItemAtIndexHasClass: (index, className) => this.listElements[index].classList.contains(className),
+      listItemAtIndexHasClass: (index, className) =>
+          this.listElements[index].classList.contains(className),
       notifyAction: (index) => {
         this.emit<MDCListActionEventDetail>(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },

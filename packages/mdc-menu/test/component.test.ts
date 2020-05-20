@@ -85,6 +85,7 @@ function getFixtureWithMultipleSelectionGroups(open = false) {
 class FakeList {
   destroy: Function = jasmine.createSpy('.destroy');
   itemsContainer: Function = jasmine.createSpy('.root_');
+  layout: Function = jasmine.createSpy('layout');
   wrapFocus: boolean = true;
   listElements: HTMLElement[];
 
@@ -219,6 +220,13 @@ describe('MDCMenu', () => {
 
     component.wrapFocus = false;
     expect(list.wrapFocus).toBe(false);
+  });
+
+  it('layout proxies to MDCList#layout method', () => {
+    const {component, list} = setupTestWithFakes();
+
+    component.layout();
+    expect(list.layout).toHaveBeenCalled();
   });
 
   it('setAnchorCorner proxies to the MDCMenuSurface#setAnchorCorner method',

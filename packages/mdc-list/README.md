@@ -464,6 +464,7 @@ Property | Value Type | Description
 `vertical` | `boolean` (write-only) | Proxies to the foundation's `setVerticalOrientation()` method.
 `listElements` | `Array<Element>` (read-only) | Returns all list item elements including disabled list items.
 `wrapFocus` | `boolean` (write-only) | Proxies to the foundation's `setWrapFocus()` method.
+`hasTypeahead` | `boolean` (write-only) | Proxies to the foundation's `setHasTypeahead()` method.
 `singleSelection` | `boolean` (write-only) | Proxies to the foundation's `setSingleSelection()` method.
 `selectedIndex` | `MDCListIndex` | Proxies to the foundation's `getSelectedIndex()` and `setSelectedIndex()` methods.
 
@@ -554,6 +555,7 @@ Method Signature | Description
 `isFocusInsideList() => boolean` | Returns true if the current focused element is inside list root.
 `isRootFocused() => boolean` | Returns true if root element is focused.
 `listItemAtIndexHasClass(index: number, className: string) => boolean` | Returns true if list item at `index` has class `className`.
+`getPrimaryTextAtIndex(index: number)` | Returns the primary text content of the list item at index.
 
 ### `MDCListFoundation`
 
@@ -574,3 +576,5 @@ Method Signature | Description
 `focusFirstElement() => number` | Handles focusing the first element in a list. Returns focused element index.
 `focusLastElement() => number` | Handles focusing the last element in a list. Returns focused element index.
 `setEnabled(itemIndex: number, isEnabled: Boolean) => void` | Updates the list item's disabled state.
+`setHasTypeahead(hasTypeahead: Boolean) => void` | Sets whether typeahead is enabled on the list.
+`isTypeaheadInProgress() => Boolean` | Returns whether typeahead is currently matching a user-specified prefix.

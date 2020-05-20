@@ -298,6 +298,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
    */
   layoutOptions() {
     this.foundation_.layoutOptions();
+    this.menu.layout();
   }
 
   getDefaultFoundation() {
@@ -318,6 +319,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private menuSetup(menuFactory: MDCMenuFactory) {
     this.menuElement = this.root_.querySelector(strings.MENU_SELECTOR)!;
     this.menu = menuFactory(this.menuElement);
+    this.menu.hasTypeahead = true;
   }
 
   private createRipple(): MDCRipple {

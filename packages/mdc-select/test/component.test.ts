@@ -68,6 +68,7 @@ class FakeMenu {
   setAnchorCorner: jasmine.Spy = jasmine.createSpy('.setAnchorCorner');
   listen: jasmine.Spy = jasmine.createSpy('.listen');
   unlisten: jasmine.Spy = jasmine.createSpy('.listen');
+  layout: jasmine.Spy = jasmine.createSpy('.layout');
 
   open: boolean = false;
   wrapFocus: boolean = false;

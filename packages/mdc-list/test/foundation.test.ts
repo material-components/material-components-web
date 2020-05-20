@@ -31,6 +31,18 @@ function setupTest() {
   return {foundation, mockAdapter};
 }
 
+function setupTypeaheadTest() {
+  const {foundation, mockAdapter} = setUpFoundationTest(MDCListFoundation);
+  const itemTextList = ['bravo', 'z aa', 'ba', 'baa', 'bab', 'z ac', 'a'];
+  for (let i = 0; i < itemTextList.length; i++) {
+    mockAdapter.getPrimaryTextAtIndex.withArgs(i).and.returnValue(
+        itemTextList[i]);
+  }
+  mockAdapter.getListItemCount.and.returnValue(itemTextList.length);
+  foundation.setHasTypeahead(true);
+  return {foundation, mockAdapter};
+}
+
 describe('MDCListFoundation', () => {
   setUpMdcTestEnvironment();
 
@@ -64,6 +76,7 @@ describe('MDCListFoundation', () => {
       'isFocusInsideList',
       'getAttributeForElementIndex',
       'isRootFocused',
+      'getPrimaryTextAtIndex',
     ]);
   });
 
@@ -532,7 +545,7 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('preventDefault');
        const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Space', target, preventDefault};
+       const event = {key: 'Spacebar', target, preventDefault};
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -578,7 +591,7 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('preventDefault');
        const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Space', target, preventDefault};
+       const event = {key: 'Spacebar', target, preventDefault};
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -597,7 +610,7 @@ describe('MDCListFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const target = {tagName: 'A', classList: ['mdc-list-item']};
-       const event = {key: 'Space', target, preventDefault: () => {}};
+       const event = {key: 'Spacebar', target, preventDefault: () => {}};
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -614,7 +627,7 @@ describe('MDCListFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const target = {tagName: 'A', classList: ['mdc-list-item']};
-       const event = {key: 'Space', target, preventDefault: () => {}};
+       const event = {key: 'Spacebar', target, preventDefault: () => {}};
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -706,7 +719,7 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('preventDefault');
        const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Space', target, preventDefault};
+       const event = {key: 'Spacebar', target, preventDefault};
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -726,7 +739,7 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('preventDefault');
        const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Space', target, preventDefault};
+       const event = {key: 'Spacebar', target, preventDefault};
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -746,7 +759,7 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('preventDefault');
        const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Space', target, preventDefault};
+       const event = {key: 'Spacebar', target, preventDefault};
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -767,7 +780,7 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('preventDefault');
        const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Space', target, preventDefault};
+       const event = {key: 'Spacebar', target, preventDefault};
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -789,7 +802,7 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('preventDefault');
        const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Space', target, preventDefault};
+       const event = {key: 'Spacebar', target, preventDefault};
 
        mockAdapter.getFocusedElementIndex.and.returnValue(1);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -1303,4 +1316,238 @@ describe('MDCListFoundation', () => {
            .toHaveBeenCalledWith(3, strings.ARIA_DISABLED, 'true');
        expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
      });
+
+  describe('typeahead', () => {
+    it('#layout initializes typeahead state when typeahead enabled', () => {
+      const {foundation, mockAdapter} = setupTypeaheadTest();
+
+      // State is synchronized when typeahead is first turned on, but in this
+      // test we only care about re-initialization.
+      mockAdapter.getPrimaryTextAtIndex.calls.reset();
+      foundation.layout();
+
+      expect(mockAdapter.getPrimaryTextAtIndex).toHaveBeenCalled();
+    });
+
+    it('slow typing when root focused jumps to first matching item', () => {
+      const {foundation, mockAdapter} = setupTypeaheadTest();
+
+      mockAdapter.isRootFocused.and.returnValue(true);
+      const event = {key: 'B', preventDefault: jasmine.createSpy()};
+
+      foundation.handleKeydown(event, false, -1);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
+    });
+
+    it('slow typing when first item focused yields correct focus jump order',
+       () => {
+         const {foundation, mockAdapter} = setupTypeaheadTest();
+
+         mockAdapter.isRootFocused.and.returnValue(false);
+         const event = {
+           key: 'B',
+           preventDefault: jasmine.createSpy(),
+           target: {tagName: 'span'}
+         };
+         // start with focus on first item
+         foundation.focusedItemIndex_ = 0;
+
+         foundation.handleKeydown(event, true, 0);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
+
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+         foundation.handleKeydown(event, true, 2);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(3);
+
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+         foundation.handleKeydown(event, true, 3);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(4);
+
+         // wrap around
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+         foundation.handleKeydown(event, true, 4);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
+       });
+
+    it('slow typing when middle item focused yields correct focus jump order',
+       () => {
+         const {foundation, mockAdapter} = setupTypeaheadTest();
+
+         mockAdapter.isRootFocused.and.returnValue(false);
+         const event = {
+           key: 'B',
+           preventDefault: jasmine.createSpy(),
+           target: {tagName: 'span'}
+         };
+         foundation.focusedItemIndex_ = 3;
+
+         foundation.handleKeydown(event, true, 3);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(4);
+
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+         foundation.handleKeydown(event, true, 4);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
+
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+         foundation.handleKeydown(event, true, 0);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
+       });
+
+    it('slow typing with focus changing between keypresses does not' +
+           ' interfere with typeahead state',
+       () => {
+         const {foundation, mockAdapter} = setupTypeaheadTest();
+
+         mockAdapter.isRootFocused.and.returnValue(false);
+         const event = {
+           key: 'B',
+           preventDefault: jasmine.createSpy(),
+           target: {tagName: 'span'}
+         };
+         foundation.focusedItemIndex_ = 0;
+
+         foundation.handleKeydown(event, true, 0);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
+
+         foundation.focusedItemIndex_ = 5;
+
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+         foundation.handleKeydown(event, true, 5);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
+       });
+
+    it('slow typing with different keys yields correct focus jump order',
+       () => {
+         const {foundation, mockAdapter} = setupTypeaheadTest();
+
+         mockAdapter.isRootFocused.and.returnValue(false);
+         const event = {
+           key: 'B',
+           preventDefault: jasmine.createSpy(),
+           target: {tagName: 'span'}
+         };
+         // start with focus on first item
+         foundation.focusedItemIndex_ = 0;
+
+         foundation.handleKeydown(event, true, 0);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
+
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+         event.key = 'A';
+         foundation.handleKeydown(event, true, 2);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(6);
+
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+         event.key = 'T';
+         foundation.handleKeydown(event, true, 2);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(6);
+
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+         event.key = 'Z';
+         foundation.handleKeydown(event, true, 6);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(1);
+       });
+
+    it('fast typing yields correct focus jump order', () => {
+      const {foundation, mockAdapter} = setupTypeaheadTest();
+
+      mockAdapter.isRootFocused.and.returnValue(false);
+      const event = {
+        key: 'B',
+        preventDefault: jasmine.createSpy(),
+        target: {tagName: 'span'}
+      };
+      foundation.focusedItemIndex_ = 0;
+
+      foundation.handleKeydown(event, true, 0);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
+
+      event.key = 'A';
+      foundation.handleKeydown(event, true, 2);
+      expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalledWith(3);
+
+      event.key = 'B';
+      foundation.handleKeydown(event, true, 2);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(4);
+    });
+
+    it('fast typing with spaces in text yields correct focus jump order',
+       () => {
+         const {foundation, mockAdapter} = setupTypeaheadTest();
+
+         mockAdapter.isRootFocused.and.returnValue(false);
+         const event = {
+           key: 'Z',
+           preventDefault: jasmine.createSpy(),
+           target: {tagName: 'span'}
+         };
+         foundation.focusedItemIndex_ = 0;
+
+         foundation.handleKeydown(event, true, 0);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(1);
+
+         event.key = 'Spacebar';
+         foundation.handleKeydown(event, true, 1);
+         expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalledWith(5);
+
+         event.key = 'A';
+         foundation.handleKeydown(event, true, 1);
+         expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalledWith(5);
+
+         event.key = 'C';
+         foundation.handleKeydown(event, true, 1);
+         expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(5);
+       });
+
+
+    it('slow, then fast typing yields correct focus jump order', () => {
+      const {foundation, mockAdapter} = setupTypeaheadTest();
+
+      mockAdapter.isRootFocused.and.returnValue(false);
+      const event = {
+        key: 'A',
+        preventDefault: jasmine.createSpy(),
+        target: {tagName: 'span'}
+      };
+      // start with focus on first item
+      foundation.focusedItemIndex_ = 0;
+
+      foundation.handleKeydown(event, true, 0);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(6);
+
+      jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+
+      event.key = 'B';
+      foundation.handleKeydown(event, true, 6);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
+
+      event.key = 'A';
+      foundation.handleKeydown(event, true, 0);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
+    });
+
+    it('no matches cause focus to stay put', () => {
+      const {foundation, mockAdapter} = setupTypeaheadTest();
+
+      mockAdapter.isRootFocused.and.returnValue(false);
+      const event = {
+        key: 'M',
+        preventDefault: jasmine.createSpy(),
+        target: {tagName: 'span'}
+      };
+      // start with focus on first item
+      foundation.focusedItemIndex_ = 0;
+
+      foundation.handleKeydown(event, true, 0);
+      jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+
+      event.key = 'I';
+      foundation.handleKeydown(event, true, 0);
+
+      event.key = 'O';
+      foundation.handleKeydown(event, true, 0);
+
+      expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalled();
+    });
+  });
 });
