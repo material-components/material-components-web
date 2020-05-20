@@ -5,7 +5,7 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "lib": ["es5", "es6", "dom"],
+    "lib": ["es5", "es6", "es2017", "dom"],
     "moduleResolution": "node",
     "newLine": "lf",
     "noEmitOnError": false,
