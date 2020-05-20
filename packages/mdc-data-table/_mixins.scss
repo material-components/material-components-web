@@ -56,11 +56,13 @@
     @include stroke-color(variables.$stroke-color, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
-      -webkit-overflow-scrolling: touch; // Lets it scroll lazy (iOS)
+      // Makes the table scroll smoothly in iOS.
+      // NOTE: Root element should not be scrollable, added this for backward
+      // compatibility.
+      -webkit-overflow-scrolling: touch;
       display: inline-flex;
       flex-direction: column;
       box-sizing: border-box;
-      overflow-x: auto;
       position: relative;
     }
   }
@@ -102,7 +104,10 @@
 
   .mdc-data-table__table-container {
     @include feature-targeting-mixins.targets($feat-structure) {
+      // Makes the table scroll smoothly in iOS.
+      -webkit-overflow-scrolling: touch;
       overflow-x: auto;
+      width: 100%;
     }
   }
 
