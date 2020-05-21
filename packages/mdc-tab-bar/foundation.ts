@@ -92,21 +92,22 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   }
 
   activateTab(index: number) {
-    const previousActiveIndex = this.adapter_.getPreviousActiveTabIndex();
+    const previousActiveIndex = this.adapter.getPreviousActiveTabIndex();
     if (!this.indexIsInRange_(index) || index === previousActiveIndex) {
       return;
     }
 
     let previousClientRect;
     if (previousActiveIndex !== -1) {
-      this.adapter_.deactivateTabAtIndex(previousActiveIndex);
-      previousClientRect = this.adapter_.getTabIndicatorClientRectAtIndex(previousActiveIndex);
+      this.adapter.deactivateTabAtIndex(previousActiveIndex);
+      previousClientRect =
+          this.adapter.getTabIndicatorClientRectAtIndex(previousActiveIndex);
     }
 
-    this.adapter_.activateTabAtIndex(index, previousClientRect);
+    this.adapter.activateTabAtIndex(index, previousClientRect);
     this.scrollIntoView(index);
 
-    this.adapter_.notifyTabActivated(index);
+    this.adapter.notifyTabActivated(index);
   }
 
   handleKeyDown(evt: KeyboardEvent) {
@@ -128,16 +129,17 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
         return;
       }
 
-      const index = this.determineTargetFromKey_(this.adapter_.getPreviousActiveTabIndex(), key);
-      this.adapter_.setActiveTab(index);
+      const index = this.determineTargetFromKey_(
+          this.adapter.getPreviousActiveTabIndex(), key);
+      this.adapter.setActiveTab(index);
       this.scrollIntoView(index);
     } else {
-      const focusedTabIndex = this.adapter_.getFocusedTabIndex();
+      const focusedTabIndex = this.adapter.getFocusedTabIndex();
       if (this.isActivationKey_(key)) {
-        this.adapter_.setActiveTab(focusedTabIndex);
+        this.adapter.setActiveTab(focusedTabIndex);
       } else {
         const index = this.determineTargetFromKey_(focusedTabIndex, key);
-        this.adapter_.focusTabAtIndex(index);
+        this.adapter.focusTabAtIndex(index);
         this.scrollIntoView(index);
       }
     }
@@ -147,7 +149,7 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
    * Handles the MDCTab:interacted event
    */
   handleTabInteraction(evt: MDCTabInteractionEvent) {
-    this.adapter_.setActiveTab(this.adapter_.getIndexOfTabById(evt.detail.tabId));
+    this.adapter.setActiveTab(this.adapter.getIndexOfTabById(evt.detail.tabId));
   }
 
   /**
@@ -162,13 +164,13 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
 
     // Always scroll to 0 if scrolling to the 0th index
     if (index === 0) {
-      return this.adapter_.scrollTo(0);
+      return this.adapter.scrollTo(0);
     }
 
     // Always scroll to the max value if scrolling to the Nth index
     // MDCTabScroller.scrollTo() will never scroll past the max possible value
-    if (index === this.adapter_.getTabListLength() - 1) {
-      return this.adapter_.scrollTo(this.adapter_.getScrollContentWidth());
+    if (index === this.adapter.getTabListLength() - 1) {
+      return this.adapter.scrollTo(this.adapter.getScrollContentWidth());
     }
 
     if (this.isRTL_()) {
@@ -185,7 +187,7 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
    */
   private determineTargetFromKey_(origin: number, key: string): number {
     const isRTL = this.isRTL_();
-    const maxIndex = this.adapter_.getTabListLength() - 1;
+    const maxIndex = this.adapter.getTabListLength() - 1;
     const shouldGoToEnd = key === strings.END_KEY;
     const shouldDecrement = key === strings.ARROW_LEFT_KEY && !isRTL || key === strings.ARROW_RIGHT_KEY && isRTL;
     const shouldIncrement = key === strings.ARROW_RIGHT_KEY && !isRTL || key === strings.ARROW_LEFT_KEY && isRTL;
@@ -223,7 +225,7 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
       scrollPosition: number,
       barWidth: number,
   ): number {
-    const nextTabDimensions = this.adapter_.getTabDimensionsAtIndex(nextIndex);
+    const nextTabDimensions = this.adapter.getTabDimensionsAtIndex(nextIndex);
     const relativeContentLeft = nextTabDimensions.contentLeft - scrollPosition - barWidth;
     const relativeContentRight = nextTabDimensions.contentRight - scrollPosition;
     const leftIncrement = relativeContentRight - numbers.EXTRA_SCROLL_AMOUNT;
@@ -251,7 +253,7 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
       barWidth: number,
       scrollContentWidth: number,
   ): number {
-    const nextTabDimensions = this.adapter_.getTabDimensionsAtIndex(nextIndex);
+    const nextTabDimensions = this.adapter.getTabDimensionsAtIndex(nextIndex);
     const relativeContentLeft = scrollContentWidth - nextTabDimensions.contentLeft - scrollPosition;
     const relativeContentRight = scrollContentWidth - nextTabDimensions.contentRight - scrollPosition - barWidth;
     const leftIncrement = relativeContentRight + numbers.EXTRA_SCROLL_AMOUNT;
@@ -370,14 +372,14 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
    * @param index The index to test
    */
   private indexIsInRange_(index: number) {
-    return index >= 0 && index < this.adapter_.getTabListLength();
+    return index >= 0 && index < this.adapter.getTabListLength();
   }
 
   /**
    * Returns the view's RTL property
    */
   private isRTL_(): boolean {
-    return this.adapter_.isRTL();
+    return this.adapter.isRTL();
   }
 
   /**
@@ -385,9 +387,9 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
    * @param index The index of the tab to scroll into view
    */
   private scrollIntoView_(index: number) {
-    const scrollPosition = this.adapter_.getScrollPosition();
-    const barWidth = this.adapter_.getOffsetWidth();
-    const tabDimensions = this.adapter_.getTabDimensionsAtIndex(index);
+    const scrollPosition = this.adapter.getScrollPosition();
+    const barWidth = this.adapter.getOffsetWidth();
+    const tabDimensions = this.adapter.getTabDimensionsAtIndex(index);
     const nextIndex = this.findAdjacentTabIndexClosestToEdge_(index, tabDimensions, scrollPosition, barWidth);
 
     if (!this.indexIsInRange_(nextIndex)) {
@@ -395,7 +397,7 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
     }
 
     const scrollIncrement = this.calculateScrollIncrement_(index, nextIndex, scrollPosition, barWidth);
-    this.adapter_.incrementScroll(scrollIncrement);
+    this.adapter.incrementScroll(scrollIncrement);
   }
 
   /**
@@ -403,10 +405,10 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
    * @param index The tab index to make visible
    */
   private scrollIntoViewRTL_(index: number) {
-    const scrollPosition = this.adapter_.getScrollPosition();
-    const barWidth = this.adapter_.getOffsetWidth();
-    const tabDimensions = this.adapter_.getTabDimensionsAtIndex(index);
-    const scrollWidth = this.adapter_.getScrollContentWidth();
+    const scrollPosition = this.adapter.getScrollPosition();
+    const barWidth = this.adapter.getOffsetWidth();
+    const tabDimensions = this.adapter.getTabDimensionsAtIndex(index);
+    const scrollWidth = this.adapter.getScrollContentWidth();
     const nextIndex = this.findAdjacentTabIndexClosestToEdgeRTL_(
         index, tabDimensions, scrollPosition, barWidth, scrollWidth);
 
@@ -415,7 +417,7 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
     }
 
     const scrollIncrement = this.calculateScrollIncrementRTL_(index, nextIndex, scrollPosition, barWidth, scrollWidth);
-    this.adapter_.incrementScroll(scrollIncrement);
+    this.adapter.incrementScroll(scrollIncrement);
   }
 }
 
