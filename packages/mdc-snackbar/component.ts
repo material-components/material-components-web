@@ -54,17 +54,17 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 
   initialSyncWithDOM() {
-    this.surfaceEl_ = this.root_.querySelector(SURFACE_SELECTOR)!;
-    this.labelEl_ = this.root_.querySelector(LABEL_SELECTOR)!;
-    this.actionEl_ = this.root_.querySelector(ACTION_SELECTOR)!;
+    this.surfaceEl_ = this.root.querySelector(SURFACE_SELECTOR)!;
+    this.labelEl_ = this.root.querySelector(LABEL_SELECTOR)!;
+    this.actionEl_ = this.root.querySelector(ACTION_SELECTOR)!;
 
-    this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
+    this.handleKeyDown_ = (evt) => this.foundation.handleKeyDown(evt);
     this.handleSurfaceClick_ = (evt) => {
       const target = evt.target as Element;
       if (this.isActionButton_(target)) {
-        this.foundation_.handleActionButtonClick(evt);
+        this.foundation.handleActionButtonClick(evt);
       } else if (this.isActionIcon_(target)) {
-        this.foundation_.handleActionIconClick(evt);
+        this.foundation.handleActionIconClick(evt);
       }
     };
 
@@ -79,7 +79,7 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 
   open() {
-    this.foundation_.open();
+    this.foundation.open();
   }
 
   /**
@@ -88,42 +88,44 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
    *     client-specific values may also be used if desired.
    */
   close(reason = '') {
-    this.foundation_.close(reason);
+    this.foundation.close(reason);
   }
 
   getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSnackbarAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
+      addClass: (className) => this.root.classList.add(className),
       announce: () => this.announce_(this.labelEl_),
-      notifyClosed: (reason) => this.emit<MDCSnackbarCloseEventDetail>(CLOSED_EVENT, reason ? {reason} : {}),
-      notifyClosing: (reason) => this.emit<MDCSnackbarCloseEventDetail>(CLOSING_EVENT, reason ? {reason} : {}),
+      notifyClosed: (reason) => this.emit<MDCSnackbarCloseEventDetail>(
+          CLOSED_EVENT, reason ? {reason} : {}),
+      notifyClosing: (reason) => this.emit<MDCSnackbarCloseEventDetail>(
+          CLOSING_EVENT, reason ? {reason} : {}),
       notifyOpened: () => this.emit(OPENED_EVENT, {}),
       notifyOpening: () => this.emit(OPENING_EVENT, {}),
-      removeClass: (className) => this.root_.classList.remove(className),
+      removeClass: (className) => this.root.classList.remove(className),
     };
     return new MDCSnackbarFoundation(adapter);
   }
 
   get timeoutMs(): number {
-    return this.foundation_.getTimeoutMs();
+    return this.foundation.getTimeoutMs();
   }
 
   set timeoutMs(timeoutMs: number) {
-    this.foundation_.setTimeoutMs(timeoutMs);
+    this.foundation.setTimeoutMs(timeoutMs);
   }
 
   get closeOnEscape(): boolean {
-    return this.foundation_.getCloseOnEscape();
+    return this.foundation.getCloseOnEscape();
   }
 
   set closeOnEscape(closeOnEscape: boolean) {
-    this.foundation_.setCloseOnEscape(closeOnEscape);
+    this.foundation.setCloseOnEscape(closeOnEscape);
   }
 
   get isOpen(): boolean {
-    return this.foundation_.isOpen();
+    return this.foundation.isOpen();
   }
 
   get labelText(): string {
