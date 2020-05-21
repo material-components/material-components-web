@@ -48,7 +48,7 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
   }
 
   set disabled(disabled: boolean) {
-    this.foundation_.setDisabled(disabled);
+    this.foundation.setDisabled(disabled);
   }
 
   get value() {
@@ -77,9 +77,10 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCRadioAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+      addClass: (className) => this.root.classList.add(className),
+      removeClass: (className) => this.root.classList.remove(className),
+      setNativeControlDisabled: (disabled) => this.nativeControl_.disabled =
+          disabled,
     };
     return new MDCRadioFoundation(adapter);
   }
@@ -100,12 +101,13 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
       isUnbounded: () => true,
     };
     // tslint:enable:object-literal-sort-keys
-    return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
+    return new MDCRipple(this.root, new MDCRippleFoundation(adapter));
   }
 
   private get nativeControl_(): HTMLInputElement {
     const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
-    const el = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
+    const el =
+        this.root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
     if (!el) {
       throw new Error(`Radio component requires a ${NATIVE_CONTROL_SELECTOR} element`);
     }

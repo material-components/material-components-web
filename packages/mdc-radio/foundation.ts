@@ -48,11 +48,11 @@ export class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
 
   setDisabled(disabled: boolean) {
     const {DISABLED} = MDCRadioFoundation.cssClasses;
-    this.adapter_.setNativeControlDisabled(disabled);
+    this.adapter.setNativeControlDisabled(disabled);
     if (disabled) {
-      this.adapter_.addClass(DISABLED);
+      this.adapter.addClass(DISABLED);
     } else {
-      this.adapter_.removeClass(DISABLED);
+      this.adapter.removeClass(DISABLED);
     }
   }
 }
