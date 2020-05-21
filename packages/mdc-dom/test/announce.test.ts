@@ -29,9 +29,11 @@ describe('announce', () => {
 
   afterEach(() => {
     const liveRegions = document.querySelectorAll('[aria-live]');
-    [].slice.call(liveRegions).forEach((el: Element) => {
-      el.parentNode!.removeChild(el);
-    });
+    for (let i = 0; i < liveRegions.length; i++) {
+      const liveRegion = liveRegions[i];
+      if (!liveRegion.parentNode) continue;
+      liveRegion.parentNode.removeChild(liveRegion);
+    }
   });
 
   it('creates an aria-live="polite" region by default', () => {
@@ -79,5 +81,14 @@ describe('announce', () => {
     jasmine.clock().tick(1);
     const liveRegion = document.querySelector('[aria-live="polite"]');
     expect(liveRegion!.textContent).toEqual('3');
+  });
+
+  it('clears out the message on click', () => {
+    announce('hello');
+    jasmine.clock().tick(1);
+    const liveRegion = document.querySelector('[aria-live="polite"]');
+    expect(liveRegion!.textContent).toEqual('hello');
+    document.documentElement.click();
+    expect(liveRegion!.textContent).toEqual('');
   });
 });
