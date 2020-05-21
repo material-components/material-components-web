@@ -75,7 +75,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   }
 
   init() {
-    if (this.adapter_.hasClass(cssClasses.STACKED)) {
+    if (this.adapter.hasClass(cssClasses.STACKED)) {
       this.setAutoStackButtons(false);
     }
   }
@@ -98,20 +98,20 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
   open() {
     this.isOpen_ = true;
-    this.adapter_.notifyOpening();
-    this.adapter_.addClass(cssClasses.OPENING);
+    this.adapter.notifyOpening();
+    this.adapter.addClass(cssClasses.OPENING);
 
     // Wait a frame once display is no longer "none", to establish basis for animation
     this.runNextAnimationFrame_(() => {
-      this.adapter_.addClass(cssClasses.OPEN);
-      this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
+      this.adapter.addClass(cssClasses.OPEN);
+      this.adapter.addBodyClass(cssClasses.SCROLL_LOCK);
 
       this.layout();
 
       this.animationTimer_ = setTimeout(() => {
         this.handleAnimationTimerEnd_();
-        this.adapter_.trapFocus(this.adapter_.getInitialFocusEl());
-        this.adapter_.notifyOpened();
+        this.adapter.trapFocus(this.adapter.getInitialFocusEl());
+        this.adapter.notifyOpened();
       }, numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
     });
   }
@@ -123,19 +123,19 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     }
 
     this.isOpen_ = false;
-    this.adapter_.notifyClosing(action);
-    this.adapter_.addClass(cssClasses.CLOSING);
-    this.adapter_.removeClass(cssClasses.OPEN);
-    this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
+    this.adapter.notifyClosing(action);
+    this.adapter.addClass(cssClasses.CLOSING);
+    this.adapter.removeClass(cssClasses.OPEN);
+    this.adapter.removeBodyClass(cssClasses.SCROLL_LOCK);
 
     cancelAnimationFrame(this.animationFrame_);
     this.animationFrame_ = 0;
 
     clearTimeout(this.animationTimer_);
     this.animationTimer_ = setTimeout(() => {
-      this.adapter_.releaseFocus();
+      this.adapter.releaseFocus();
       this.handleAnimationTimerEnd_();
-      this.adapter_.notifyClosed(action);
+      this.adapter.notifyClosed(action);
     }, numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
   }
 
@@ -179,12 +179,13 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
   /** Handles click on the dialog root element. */
   handleClick(evt: MouseEvent) {
-    const isScrim = this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR);
+    const isScrim =
+        this.adapter.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR);
     // Check for scrim click first since it doesn't require querying ancestors.
     if (isScrim && this.scrimClickAction_ !== '') {
       this.close(this.scrimClickAction_);
     } else {
-      const action = this.adapter_.getActionFromEvent(evt);
+      const action = this.adapter.getActionFromEvent(evt);
       if (action) {
         this.close(action);
       }
@@ -197,17 +198,17 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     if (!isEnter) {
       return;
     }
-    const action = this.adapter_.getActionFromEvent(evt);
+    const action = this.adapter.getActionFromEvent(evt);
     if (action) {
       // Action button callback is handled in `handleClick`,
       // since space/enter keydowns on buttons trigger click events.
       return;
     }
 
-    const isDefault = !this.adapter_.eventTargetMatches(
+    const isDefault = !this.adapter.eventTargetMatches(
         evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR);
     if (isEnter && isDefault) {
-      this.adapter_.clickDefaultButton();
+      this.adapter.clickDefaultButton();
     }
   }
 
@@ -228,8 +229,8 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
   private handleAnimationTimerEnd_() {
     this.animationTimer_ = 0;
-    this.adapter_.removeClass(cssClasses.OPENING);
-    this.adapter_.removeClass(cssClasses.CLOSING);
+    this.adapter.removeClass(cssClasses.OPENING);
+    this.adapter.removeClass(cssClasses.CLOSING);
   }
 
   /**
@@ -246,25 +247,25 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
   private detectStackedButtons_() {
     // Remove the class first to let us measure the buttons' natural positions.
-    this.adapter_.removeClass(cssClasses.STACKED);
+    this.adapter.removeClass(cssClasses.STACKED);
 
-    const areButtonsStacked = this.adapter_.areButtonsStacked();
+    const areButtonsStacked = this.adapter.areButtonsStacked();
 
     if (areButtonsStacked) {
-      this.adapter_.addClass(cssClasses.STACKED);
+      this.adapter.addClass(cssClasses.STACKED);
     }
 
     if (areButtonsStacked !== this.areButtonsStacked_) {
-      this.adapter_.reverseButtons();
+      this.adapter.reverseButtons();
       this.areButtonsStacked_ = areButtonsStacked;
     }
   }
 
   private detectScrollableContent_() {
     // Remove the class first to let us measure the natural height of the content.
-    this.adapter_.removeClass(cssClasses.SCROLLABLE);
-    if (this.adapter_.isContentScrollable()) {
-      this.adapter_.addClass(cssClasses.SCROLLABLE);
+    this.adapter.removeClass(cssClasses.SCROLLABLE);
+    if (this.adapter.isContentScrollable()) {
+      this.adapter.addClass(cssClasses.SCROLLABLE);
     }
   }
 }
