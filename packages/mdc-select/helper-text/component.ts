@@ -33,8 +33,9 @@ export class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundat
     return new MDCSelectHelperText(root);
   }
 
-  get foundation(): MDCSelectHelperTextFoundation {
-    return this.foundation_;
+  // Provided for access by MDCSelect component
+  get foundationForSelect(): MDCSelectHelperTextFoundation {
+    return this.foundation;
   }
 
   getDefaultFoundation() {

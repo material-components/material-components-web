@@ -30,26 +30,26 @@ class FakeComponent extends MDCComponent<MDCFoundation> {
   initializeComesBeforeFoundation!: boolean;
   synced!: boolean;
 
-  get root() {
-    return this.root_;
+  get _root() {
+    return this.root;
   }
 
-  get foundation() {
-    return this.foundation_;
+  get _foundation() {
+    return this.foundation;
   }
 
   getDefaultFoundation() {
     const defaultFoundation = {
       isDefaultFoundation: true,
       init: jasmine.createSpy('init'),
-      rootElementAtTimeOfCall: this.root_,
+      rootElementAtTimeOfCall: this.root,
     } as any;
     return defaultFoundation;
   }
 
   initialize(...args: unknown[]) {
     this.initializeArgs = args;
-    this.initializeComesBeforeFoundation = !this.foundation_;
+    this.initializeComesBeforeFoundation = !this.foundation;
   }
 
   initialSyncWithDOM() {
@@ -69,7 +69,7 @@ describe('MDCComponent', () => {
      () => {
        const root = document.createElement('div');
        const f = new FakeComponent(root);
-       expect(f.root).toEqual(root);
+       expect(f._root).toEqual(root);
      });
 
   it('takes an optional foundation constructor param and assigns it to the "foundation_" property',
@@ -77,14 +77,14 @@ describe('MDCComponent', () => {
        const root = document.createElement('div');
        const foundation = {init: () => {}} as any;
        const f = new FakeComponent(root, foundation);
-       expect(f.foundation).toEqual(foundation);
+       expect(f._foundation).toEqual(foundation);
      });
 
   it('assigns the result of "getDefaultFoundation()" to "foundation_" by default',
      () => {
        const root = document.createElement('div');
        const f = new FakeComponent(root);
-       expect((f.foundation as any).isDefaultFoundation).toBeTruthy();
+       expect((f._foundation as any).isDefaultFoundation).toBeTruthy();
      });
 
   it('calls the foundation\'s init() method within the constructor', () => {
@@ -212,6 +212,6 @@ describe('MDCComponent', () => {
      () => {
        const root = document.createElement('div');
        const f = new FakeComponent(root);
-       expect((f.foundation as any).rootElementAtTimeOfCall).toEqual(root);
+       expect((f._foundation as any).rootElementAtTimeOfCall).toEqual(root);
      });
 });

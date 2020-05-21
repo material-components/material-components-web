@@ -456,10 +456,17 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
    */
   private getFoundationMap_(): Partial<MDCTextFieldFoundationMap> {
     return {
-      characterCounter: this.characterCounter_ ? this.characterCounter_.foundation : undefined,
-      helperText: this.helperText_ ? this.helperText_.foundation : undefined,
-      leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
-      trailingIcon: this.trailingIcon_ ? this.trailingIcon_.foundation : undefined,
+      characterCounter: this.characterCounter_ ?
+          this.characterCounter_.foundationForTextField :
+          undefined,
+      helperText: this.helperText_ ? this.helperText_.foundationForTextField :
+                                     undefined,
+      leadingIcon: this.leadingIcon_ ?
+          this.leadingIcon_.foundationForTextField :
+          undefined,
+      trailingIcon: this.trailingIcon_ ?
+          this.trailingIcon_.foundationForTextField :
+          undefined,
     };
   }
 

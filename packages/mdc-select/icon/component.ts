@@ -32,8 +32,9 @@ export class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
     return new MDCSelectIcon(root);
   }
 
-  get foundation(): MDCSelectIconFoundation {
-    return this.foundation_;
+  // Provided for access by MDCSelect component
+  get foundationForSelect(): MDCSelectIconFoundation {
+    return this.foundation;
   }
 
   getDefaultFoundation() {

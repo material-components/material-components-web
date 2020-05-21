@@ -33,8 +33,9 @@ export class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextF
     return new MDCTextFieldHelperText(root);
   }
 
-  get foundation(): MDCTextFieldHelperTextFoundation {
-    return this.foundation_;
+  // Provided for access by MDCTextField component
+  get foundationForTextField(): MDCTextFieldHelperTextFoundation {
+    return this.foundation;
   }
 
   getDefaultFoundation() {

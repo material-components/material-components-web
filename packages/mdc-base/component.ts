@@ -33,20 +33,32 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
     return new MDCComponent(root, new MDCFoundation({}));
   }
 
-  protected root_: Element;
-  protected foundation_: FoundationType;
+  protected foundation: FoundationType;
+
+  // TODO(b/157223372): Remove once complete
+  protected get root_(): Element {
+    return this.root;
+  }
+
+  // TODO(b/157223372): Remove once complete
+  protected get foundation_(): FoundationType {
+    return this.foundation;
+  }
+
+  // TODO(b/157223372): Remove once complete
+  protected set foundation_(f: FoundationType) {
+    this.foundation = f;
+  }
 
   constructor(
-      root: Element,
-      foundation?: FoundationType,
-      ...args: Array<unknown>
-  ) {
-    this.root_ = root;
+      protected root: Element, foundation?: FoundationType,
+      ...args: Array<unknown>) {
     this.initialize(...args);
     // Note that we initialize foundation here and not within the constructor's default param so that
     // this.root_ is defined and can be used within the foundation class.
-    this.foundation_ = foundation === undefined ? this.getDefaultFoundation() : foundation;
-    this.foundation_.init();
+    this.foundation =
+        foundation === undefined ? this.getDefaultFoundation() : foundation;
+    this.foundation.init();
     this.initialSyncWithDOM();
   }
 
@@ -74,7 +86,7 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
   destroy() {
     // Subclasses may implement this method to release any resources / deregister any listeners they have
     // attached. An example of this might be deregistering a resize event from the window object.
-    this.foundation_.destroy();
+    this.foundation.destroy();
   }
 
   /**
@@ -86,7 +98,7 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
   listen<E extends Event>(
     evtType: string, handler: CustomEventListener<E>, options?: AddEventListenerOptions | boolean): void;
   listen(evtType: string, handler: EventListener, options?: AddEventListenerOptions | boolean) {
-    this.root_.addEventListener(evtType, handler, options);
+    this.root.addEventListener(evtType, handler, options);
   }
 
   /**
@@ -98,7 +110,7 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
   unlisten<E extends Event>(
     evtType: string, handler: CustomEventListener<E>, options?: AddEventListenerOptions | boolean): void;
   unlisten(evtType: string, handler: EventListener, options?: AddEventListenerOptions | boolean) {
-    this.root_.removeEventListener(evtType, handler, options);
+    this.root.removeEventListener(evtType, handler, options);
   }
 
   /**
@@ -116,7 +128,7 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
       evt.initCustomEvent(evtType, shouldBubble, false, evtData);
     }
 
-    this.root_.dispatchEvent(evt);
+    this.root.dispatchEvent(evt);
   }
 }
 

@@ -469,8 +469,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
    */
   private getFoundationMap(): Partial<MDCSelectFoundationMap> {
     return {
-      helperText: this.helperText ? this.helperText.foundation : undefined,
-      leadingIcon: this.leadingIcon ? this.leadingIcon.foundation : undefined,
+      helperText: this.helperText ? this.helperText.foundationForSelect :
+                                    undefined,
+      leadingIcon: this.leadingIcon ? this.leadingIcon.foundationForSelect :
+                                      undefined,
     };
   }
 }
