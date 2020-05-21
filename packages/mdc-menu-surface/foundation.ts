@@ -128,11 +128,11 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   init() {
     const {ROOT, OPEN} = MDCMenuSurfaceFoundation.cssClasses;
 
-    if (!this.adapter_.hasClass(ROOT)) {
+    if (!this.adapter.hasClass(ROOT)) {
       throw new Error(`${ROOT} class required in root element.`);
     }
 
-    if (this.adapter_.hasClass(OPEN)) {
+    if (this.adapter.hasClass(OPEN)) {
       this.isOpen_ = true;
     }
   }
@@ -200,25 +200,25 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
       return;
     }
 
-    this.adapter_.saveFocus();
+    this.adapter.saveFocus();
 
     if (this.isQuickOpen_) {
       this.isOpen_ = true;
-      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
-      this.dimensions_ = this.adapter_.getInnerDimensions();
+      this.adapter.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
+      this.dimensions_ = this.adapter.getInnerDimensions();
       this.autoPosition_();
-      this.adapter_.notifyOpen();
+      this.adapter.notifyOpen();
     } else {
-
-      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
+      this.adapter.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
       this.animationRequestId_ = requestAnimationFrame(() => {
-        this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
-        this.dimensions_ = this.adapter_.getInnerDimensions();
+        this.adapter.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
+        this.dimensions_ = this.adapter.getInnerDimensions();
         this.autoPosition_();
         this.openAnimationEndTimerId_ = setTimeout(() => {
           this.openAnimationEndTimerId_ = 0;
-          this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
-          this.adapter_.notifyOpen();
+          this.adapter.removeClass(
+              MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
+          this.adapter.notifyOpen();
         }, numbers.TRANSITION_OPEN_DURATION);
       });
 
@@ -240,19 +240,23 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
         this.maybeRestoreFocus_();
       }
 
-      this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
-      this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
-      this.adapter_.notifyClose();
+      this.adapter.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
+      this.adapter.removeClass(
+          MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
+      this.adapter.notifyClose();
 
     } else {
-      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
+      this.adapter.addClass(
+          MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
       requestAnimationFrame(() => {
-        this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
-        this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
+        this.adapter.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
+        this.adapter.removeClass(
+            MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
         this.closeAnimationEndTimerId_ = setTimeout(() => {
           this.closeAnimationEndTimerId_ = 0;
-          this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
-          this.adapter_.notifyClose();
+          this.adapter.removeClass(
+              MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
+          this.adapter.notifyClose();
         }, numbers.TRANSITION_CLOSE_DURATION);
       });
 
@@ -267,7 +271,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   /** Handle clicks and close if not within menu-surface element. */
   handleBodyClick(evt: MouseEvent) {
     const el = evt.target as Element;
-    if (this.adapter_.isElementInContainer(el)) {
+    if (this.adapter.isElementInContainer(el)) {
       return;
     }
     this.close();
@@ -310,13 +314,15 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
       this.adjustPositionForHoistedElement_(position);
     }
 
-    this.adapter_.setTransformOrigin(`${horizontalAlignment} ${verticalAlignment}`);
-    this.adapter_.setPosition(position);
-    this.adapter_.setMaxHeight(maxMenuSurfaceHeight ? maxMenuSurfaceHeight + 'px' : '');
+    this.adapter.setTransformOrigin(
+        `${horizontalAlignment} ${verticalAlignment}`);
+    this.adapter.setPosition(position);
+    this.adapter.setMaxHeight(
+        maxMenuSurfaceHeight ? maxMenuSurfaceHeight + 'px' : '');
 
     // If it is opened from the top then add is-open-below class
     if (!this.hasBit_(corner, CornerBit.BOTTOM)) {
-      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
+      this.adapter.addClass(MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
     }
   }
 
@@ -324,10 +330,10 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
    * @return Measurements used to position menu surface popup.
    */
   private getAutoLayoutMeasurements_(): AutoLayoutMeasurements {
-    let anchorRect = this.adapter_.getAnchorDimensions();
-    const bodySize = this.adapter_.getBodyDimensions();
-    const viewportSize = this.adapter_.getWindowDimensions();
-    const windowScroll = this.adapter_.getWindowScroll();
+    let anchorRect = this.adapter.getAnchorDimensions();
+    const bodySize = this.adapter.getBodyDimensions();
+    const viewportSize = this.adapter.getWindowDimensions();
+    const windowScroll = this.adapter.getWindowScroll();
 
     if (!anchorRect) {
       // tslint:disable:object-literal-sort-keys Positional properties are more readable when they're grouped together
@@ -395,7 +401,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
       corner = this.setBit_(corner, CornerBit.BOTTOM);
     }
 
-    const isRtl = this.adapter_.isRtl();
+    const isRtl = this.adapter.isRtl();
     const isFlipRtl = this.hasBit_(this.anchorCorner_, CornerBit.FLIP_RTL);
     const hasRightBit = this.hasBit_(this.anchorCorner_, CornerBit.RIGHT);
 
@@ -554,10 +560,11 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
    * focused on or within the menu surface when it is closed.
    */
   private maybeRestoreFocus_() {
-    const isRootFocused = this.adapter_.isFocused();
-    const childHasFocus = document.activeElement && this.adapter_.isElementInContainer(document.activeElement);
+    const isRootFocused = this.adapter.isFocused();
+    const childHasFocus = document.activeElement &&
+        this.adapter.isElementInContainer(document.activeElement);
     if (isRootFocused || childHasFocus) {
-      this.adapter_.restoreFocus();
+      this.adapter.restoreFocus();
     }
   }
 
