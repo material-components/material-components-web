@@ -35,16 +35,16 @@ export class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
    * @override
    */
   handleTargetScroll() {
-    const currentScroll = this.adapter_.getViewportScrollY();
+    const currentScroll = this.adapter.getViewportScrollY();
 
     if (currentScroll <= 0) {
       if (this.wasScrolled_) {
-        this.adapter_.removeClass(cssClasses.FIXED_SCROLLED_CLASS);
+        this.adapter.removeClass(cssClasses.FIXED_SCROLLED_CLASS);
         this.wasScrolled_ = false;
       }
     } else {
       if (!this.wasScrolled_) {
-        this.adapter_.addClass(cssClasses.FIXED_SCROLLED_CLASS);
+        this.adapter.addClass(cssClasses.FIXED_SCROLLED_CLASS);
         this.wasScrolled_ = true;
       }
     }

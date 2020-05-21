@@ -72,13 +72,13 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
     super(adapter);
 
-    this.lastScrollPosition_ = this.adapter_.getViewportScrollY();
-    this.topAppBarHeight_ = this.adapter_.getTopAppBarHeight();
+    this.lastScrollPosition_ = this.adapter.getViewportScrollY();
+    this.topAppBarHeight_ = this.adapter.getTopAppBarHeight();
   }
 
   destroy() {
     super.destroy();
-    this.adapter_.setStyle('top', '');
+    this.adapter.setStyle('top', '');
   }
 
   /**
@@ -86,7 +86,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * @override
    */
   handleTargetScroll() {
-    const currentScrollPosition = Math.max(this.adapter_.getViewportScrollY(), 0);
+    const currentScrollPosition = Math.max(this.adapter.getViewportScrollY(), 0);
     const diff = currentScrollPosition - this.lastScrollPosition_;
     this.lastScrollPosition_ = currentScrollPosition;
 
@@ -169,7 +169,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
         offset = -numbers.MAX_TOP_APP_BAR_HEIGHT;
       }
 
-      this.adapter_.setStyle('top', offset + 'px');
+      this.adapter.setStyle('top', offset + 'px');
     }
   }
 
@@ -178,7 +178,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * top app bar height changes.
    */
   private throttledResizeHandler_() {
-    const currentHeight = this.adapter_.getTopAppBarHeight();
+    const currentHeight = this.adapter.getTopAppBarHeight();
     if (this.topAppBarHeight_ !== currentHeight) {
       this.wasDocked_ = false;
 
