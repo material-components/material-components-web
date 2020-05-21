@@ -63,11 +63,11 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
   handleClick() {
     // It's up to the parent component to keep track of the active Tab and
     // ensure we don't activate a Tab that's already active.
-    this.adapter_.notifyInteracted();
+    this.adapter.notifyInteracted();
   }
 
   isActive(): boolean {
-    return this.adapter_.hasClass(cssClasses.ACTIVE);
+    return this.adapter.hasClass(cssClasses.ACTIVE);
   }
 
   /**
@@ -81,12 +81,12 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
    * Activates the Tab
    */
   activate(previousIndicatorClientRect?: ClientRect) {
-    this.adapter_.addClass(cssClasses.ACTIVE);
-    this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
-    this.adapter_.setAttr(strings.TABINDEX, '0');
-    this.adapter_.activateIndicator(previousIndicatorClientRect);
+    this.adapter.addClass(cssClasses.ACTIVE);
+    this.adapter.setAttr(strings.ARIA_SELECTED, 'true');
+    this.adapter.setAttr(strings.TABINDEX, '0');
+    this.adapter.activateIndicator(previousIndicatorClientRect);
     if (this.focusOnActivate_) {
-      this.adapter_.focus();
+      this.adapter.focus();
     }
   }
 
@@ -99,20 +99,20 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
       return;
     }
 
-    this.adapter_.removeClass(cssClasses.ACTIVE);
-    this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
-    this.adapter_.setAttr(strings.TABINDEX, '-1');
-    this.adapter_.deactivateIndicator();
+    this.adapter.removeClass(cssClasses.ACTIVE);
+    this.adapter.setAttr(strings.ARIA_SELECTED, 'false');
+    this.adapter.setAttr(strings.TABINDEX, '-1');
+    this.adapter.deactivateIndicator();
   }
 
   /**
    * Returns the dimensions of the Tab
    */
   computeDimensions(): MDCTabDimensions {
-    const rootWidth = this.adapter_.getOffsetWidth();
-    const rootLeft = this.adapter_.getOffsetLeft();
-    const contentWidth = this.adapter_.getContentOffsetWidth();
-    const contentLeft = this.adapter_.getContentOffsetLeft();
+    const rootWidth = this.adapter.getOffsetWidth();
+    const rootLeft = this.adapter.getOffsetLeft();
+    const contentWidth = this.adapter.getContentOffsetWidth();
+    const contentLeft = this.adapter.getContentOffsetLeft();
 
     return {
       contentLeft: rootLeft + contentLeft,
