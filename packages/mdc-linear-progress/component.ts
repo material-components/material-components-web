@@ -33,27 +33,27 @@ export class MDCLinearProgress extends
   }
 
   set determinate(value: boolean) {
-    this.foundation_.setDeterminate(value);
+    this.foundation.setDeterminate(value);
   }
 
   set progress(value: number) {
-    this.foundation_.setProgress(value);
+    this.foundation.setProgress(value);
   }
 
   set buffer(value: number) {
-    this.foundation_.setBuffer(value);
+    this.foundation.setBuffer(value);
   }
 
   set reverse(value: boolean) {
-    this.foundation_.setReverse(value);
+    this.foundation.setReverse(value);
   }
 
   open() {
-    this.foundation_.open();
+    this.foundation.open();
   }
 
   close() {
-    this.foundation_.close();
+    this.foundation.close();
   }
 
   getDefaultFoundation() {
@@ -61,34 +61,34 @@ export class MDCLinearProgress extends
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCLinearProgressAdapter = {
       addClass: (className: string) => {
-        this.root_.classList.add(className);
+        this.root.classList.add(className);
       },
       forceLayout: () => {
-        this.root_.getBoundingClientRect();
+        this.root.getBoundingClientRect();
       },
       setBufferBarStyle: (styleProperty: string, value: string) => {
-        const bufferBar = this.root_.querySelector<HTMLElement>(
+        const bufferBar = this.root.querySelector<HTMLElement>(
             MDCLinearProgressFoundation.strings.BUFFER_BAR_SELECTOR);
         if (bufferBar) {
           bufferBar.style.setProperty(styleProperty, value);
         }
       },
       setPrimaryBarStyle: (styleProperty: string, value: string) => {
-        const primaryBar = this.root_.querySelector<HTMLElement>(
+        const primaryBar = this.root.querySelector<HTMLElement>(
             MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR);
         if (primaryBar) {
           primaryBar.style.setProperty(styleProperty, value);
         }
       },
-      hasClass: (className: string) => this.root_.classList.contains(className),
+      hasClass: (className: string) => this.root.classList.contains(className),
       removeAttribute: (attributeName: string) => {
-        this.root_.removeAttribute(attributeName);
+        this.root.removeAttribute(attributeName);
       },
       removeClass: (className: string) => {
-        this.root_.classList.remove(className);
+        this.root.classList.remove(className);
       },
       setAttribute: (attributeName: string, value: string) => {
-        this.root_.setAttribute(attributeName, value);
+        this.root.setAttribute(attributeName, value);
       },
     };
     return new MDCLinearProgressFoundation(adapter);
