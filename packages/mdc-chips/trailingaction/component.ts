@@ -67,15 +67,15 @@ export class MDCChipTrailingAction extends
     // methods, we need a separate, strongly typed adapter variable.
     const rippleAdapter: MDCRippleAdapter = MDCRipple.createAdapter(this);
     this.ripple_ =
-        rippleFactory(this.root_, new MDCRippleFoundation(rippleAdapter));
+        rippleFactory(this.root, new MDCRippleFoundation(rippleAdapter));
   }
 
   initialSyncWithDOM() {
     this.handleClick_ = (evt: MouseEvent) => {
-      this.foundation_.handleClick(evt);
+      this.foundation.handleClick(evt);
     };
     this.handleKeydown_ = (evt: KeyboardEvent) => {
-      this.foundation_.handleKeydown(evt);
+      this.foundation.handleKeydown(evt);
     };
 
     this.listen('click', this.handleClick_);
@@ -95,9 +95,10 @@ export class MDCChipTrailingAction extends
     // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipTrailingActionAdapter = {
       focus: () => {
-        this.root_.focus();
+        // TODO(b/157231863): Migate MDCComponent#root to HTMLElement
+        (this.root as HTMLElement).focus();
       },
-      getAttribute: (attr) => this.root_.getAttribute(attr),
+      getAttribute: (attr) => this.root.getAttribute(attr),
       notifyInteraction: (trigger) =>
           this.emit<MDCChipTrailingActionInteractionEventDetail>(
               strings.INTERACTION_EVENT, {trigger}, true /* shouldBubble */),
@@ -106,21 +107,21 @@ export class MDCChipTrailingAction extends
             strings.NAVIGATION_EVENT, {key}, true /* shouldBubble */);
       },
       setAttribute: (attr, value) => {
-        this.root_.setAttribute(attr, value);
+        this.root.setAttribute(attr, value);
       },
     };
     return new MDCChipTrailingActionFoundation(adapter);
   }
 
   isNavigable() {
-    return this.foundation_.isNavigable();
+    return this.foundation.isNavigable();
   }
 
   focus() {
-    this.foundation_.focus();
+    this.foundation.focus();
   }
 
   removeFocus() {
-    this.foundation_.removeFocus();
+    this.foundation.removeFocus();
   }
 }

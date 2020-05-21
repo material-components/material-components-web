@@ -94,7 +94,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   isSelected() {
-    return this.adapter_.hasClass(cssClasses.SELECTED);
+    return this.adapter.hasClass(cssClasses.SELECTED);
   }
 
   setSelected(selected: boolean) {
@@ -122,12 +122,13 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   getDimensions(): ClientRect {
-    const getRootRect = () => this.adapter_.getRootBoundingClientRect();
-    const getCheckmarkRect = () => this.adapter_.getCheckmarkBoundingClientRect();
+    const getRootRect = () => this.adapter.getRootBoundingClientRect();
+    const getCheckmarkRect = () =>
+        this.adapter.getCheckmarkBoundingClientRect();
 
     // When a chip has a checkmark and not a leading icon, the bounding rect changes in size depending on the current
     // size of the checkmark.
-    if (!this.adapter_.hasLeadingIcon()) {
+    if (!this.adapter.hasLeadingIcon()) {
       const checkmarkRect = getCheckmarkRect();
       if (checkmarkRect) {
         const rootRect = getRootRect();
@@ -153,11 +154,11 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Begins the exit animation which leads to removal of the chip.
    */
   beginExit() {
-    this.adapter_.addClass(cssClasses.CHIP_EXIT);
+    this.adapter.addClass(cssClasses.CHIP_EXIT);
   }
 
   handleClick() {
-    this.adapter_.notifyInteraction();
+    this.adapter.notifyInteraction();
     this.setPrimaryActionFocusable_(this.getFocusBehavior_());
   }
 
@@ -166,26 +167,27 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    */
   handleTransitionEnd(evt: TransitionEvent) {
     // Handle transition end event on the chip when it is about to be removed.
-    const shouldHandle = this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHIP_EXIT);
+    const shouldHandle =
+        this.adapter.eventTargetHasClass(evt.target, cssClasses.CHIP_EXIT);
     const widthIsAnimating = evt.propertyName === 'width';
     const opacityIsAnimating = evt.propertyName === 'opacity';
 
     if (shouldHandle && opacityIsAnimating) {
       // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
-      const chipWidth = this.adapter_.getComputedStyleValue('width');
+      const chipWidth = this.adapter.getComputedStyleValue('width');
 
       // On the next frame (once we get the computed width), explicitly set the chip's width
       // to its current pixel width, so we aren't transitioning out of 'auto'.
       requestAnimationFrame(() => {
-        this.adapter_.setStyleProperty('width', chipWidth);
+        this.adapter.setStyleProperty('width', chipWidth);
 
         // To mitigate jitter, start transitioning padding and margin before width.
-        this.adapter_.setStyleProperty('padding', '0');
-        this.adapter_.setStyleProperty('margin', '0');
+        this.adapter.setStyleProperty('padding', '0');
+        this.adapter.setStyleProperty('margin', '0');
 
         // On the next frame (once width is explicitly set), transition width to 0.
         requestAnimationFrame(() => {
-          this.adapter_.setStyleProperty('width', '0');
+          this.adapter.setStyleProperty('width', '0');
         });
       });
       return;
@@ -194,9 +196,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     if (shouldHandle && widthIsAnimating) {
       this.removeFocus();
       const removedAnnouncement =
-          this.adapter_.getAttribute(strings.REMOVED_ANNOUNCEMENT_ATTRIBUTE);
+          this.adapter.getAttribute(strings.REMOVED_ANNOUNCEMENT_ATTRIBUTE);
 
-      this.adapter_.notifyRemoval(removedAnnouncement);
+      this.adapter.notifyRemoval(removedAnnouncement);
     }
 
     // Handle a transition end event on the leading icon or checkmark, since the transition end event bubbles.
@@ -204,18 +206,20 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       return;
     }
 
-    const shouldHideLeadingIcon = this.adapter_.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON)
-      && this.adapter_.hasClass(cssClasses.SELECTED);
-    const shouldShowLeadingIcon = this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHECKMARK)
-      && !this.adapter_.hasClass(cssClasses.SELECTED);
+    const shouldHideLeadingIcon =
+        this.adapter.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON) &&
+        this.adapter.hasClass(cssClasses.SELECTED);
+    const shouldShowLeadingIcon =
+        this.adapter.eventTargetHasClass(evt.target, cssClasses.CHECKMARK) &&
+        !this.adapter.hasClass(cssClasses.SELECTED);
 
     if (shouldHideLeadingIcon) {
-      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+      this.adapter.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
       return;
     }
 
     if (shouldShowLeadingIcon) {
-      this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+      this.adapter.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
       return;
     }
   }
@@ -226,7 +230,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       return;
     }
 
-    this.adapter_.addClass(cssClasses.PRIMARY_ACTION_FOCUSED);
+    this.adapter.addClass(cssClasses.PRIMARY_ACTION_FOCUSED);
   }
 
   handleFocusOut(evt: FocusEvent) {
@@ -235,7 +239,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       return;
     }
 
-    this.adapter_.removeClass(cssClasses.PRIMARY_ACTION_FOCUSED);
+    this.adapter.removeClass(cssClasses.PRIMARY_ACTION_FOCUSED);
   }
 
   /**
@@ -243,7 +247,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * prevent the ripple from activating on interaction with the trailing icon.
    */
   handleTrailingActionInteraction() {
-    this.adapter_.notifyTrailingIconInteraction();
+    this.adapter.notifyTrailingIconInteraction();
     this.removeChip_();
   }
 
@@ -252,7 +256,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    */
   handleKeydown(evt: KeyboardEvent) {
     if (this.shouldNotifyInteraction_(evt)) {
-      this.adapter_.notifyInteraction();
+      this.adapter.notifyInteraction();
       this.setPrimaryActionFocusable_(this.getFocusBehavior_());
       return;
     }
@@ -281,8 +285,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Called by the chip set to remove focus from the chip actions.
    */
   removeFocus() {
-    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
-    this.adapter_.removeTrailingActionFocus();
+    this.adapter.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
+    this.adapter.removeTrailingActionFocus();
   }
 
   /**
@@ -298,10 +302,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * gives focus to the trailing action.
    */
   focusTrailingAction() {
-    const trailingActionIsNavigable = this.adapter_.isTrailingActionNavigable();
+    const trailingActionIsNavigable = this.adapter.isTrailingActionNavigable();
     if (trailingActionIsNavigable) {
-      this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
-      this.adapter_.focusTrailingAction();
+      this.adapter.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
+      this.adapter.focusTrailingAction();
       return;
     }
 
@@ -309,11 +313,11 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   private setPrimaryActionFocusable_(focusBehavior: FocusBehavior) {
-    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '0');
+    this.adapter.setPrimaryActionAttr(strings.TAB_INDEX, '0');
     if (focusBehavior === FocusBehavior.SHOULD_FOCUS) {
-      this.adapter_.focusPrimaryAction();
+      this.adapter.focusPrimaryAction();
     }
-    this.adapter_.removeTrailingActionFocus();
+    this.adapter.removeTrailingActionFocus();
   }
 
   private getFocusBehavior_(): FocusBehavior {
@@ -324,12 +328,12 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   private focusNextAction_(key: string, source: EventSource) {
-    const isTrailingActionNavigable = this.adapter_.isTrailingActionNavigable();
+    const isTrailingActionNavigable = this.adapter.isTrailingActionNavigable();
     const dir = this.getDirection_(key);
 
     // Early exit if the key should jump chips
     if (jumpChipKeys.has(key) || !isTrailingActionNavigable) {
-      return this.adapter_.notifyNavigation(key, source);
+      return this.adapter.notifyNavigation(key, source);
     }
 
     if (source === EventSource.PRIMARY && dir === Direction.RIGHT) {
@@ -340,11 +344,11 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       return this.focusPrimaryAction();
     }
 
-    this.adapter_.notifyNavigation(key, EventSource.NONE);
+    this.adapter.notifyNavigation(key, EventSource.NONE);
   }
 
   private getDirection_(key: string): Direction {
-    const isRTL = this.adapter_.isRTL();
+    const isRTL = this.adapter.isRTL();
     const isLeftKey =
         key === strings.ARROW_LEFT_KEY || key === strings.IE_ARROW_LEFT_KEY;
     const isRightKey =
@@ -367,7 +371,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   private isDeleteAction_(evt: KeyboardEvent): boolean {
-    const isDeletable = this.adapter_.hasClass(cssClasses.DELETABLE);
+    const isDeletable = this.adapter.hasClass(cssClasses.DELETABLE);
     return isDeletable &&
         (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY ||
          evt.key === strings.IE_DELETE_KEY);
@@ -375,24 +379,24 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   private setSelected_(selected: boolean) {
     if (selected) {
-      this.adapter_.addClass(cssClasses.SELECTED);
-      this.adapter_.setPrimaryActionAttr(strings.ARIA_CHECKED, 'true');
+      this.adapter.addClass(cssClasses.SELECTED);
+      this.adapter.setPrimaryActionAttr(strings.ARIA_CHECKED, 'true');
     } else {
-      this.adapter_.removeClass(cssClasses.SELECTED);
-      this.adapter_.setPrimaryActionAttr(strings.ARIA_CHECKED, 'false');
+      this.adapter.removeClass(cssClasses.SELECTED);
+      this.adapter.setPrimaryActionAttr(strings.ARIA_CHECKED, 'false');
     }
   }
 
   private notifySelection_(selected: boolean) {
-    this.adapter_.notifySelection(selected, false);
+    this.adapter.notifySelection(selected, false);
   }
 
   private notifyIgnoredSelection_(selected: boolean) {
-    this.adapter_.notifySelection(selected, true);
+    this.adapter.notifySelection(selected, true);
   }
 
   private eventFromPrimaryAction_(evt: Event) {
-    return this.adapter_.eventTargetHasClass(
+    return this.adapter.eventTargetHasClass(
         evt.target, cssClasses.PRIMARY_ACTION);
   }
 }

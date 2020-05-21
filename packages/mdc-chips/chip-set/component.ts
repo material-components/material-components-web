@@ -48,7 +48,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
    * @return An array of the IDs of all selected chips.
    */
   get selectedChipIds(): ReadonlyArray<string> {
-    return this.foundation_.getSelectedChipIds();
+    return this.foundation.getSelectedChipIds();
   }
 
   private chips_!: MDCChip[]; // assigned in initialize()
@@ -69,18 +69,18 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   initialSyncWithDOM() {
     this.chips_.forEach((chip) => {
       if (chip.id && chip.selected) {
-        this.foundation_.select(chip.id);
+        this.foundation.select(chip.id);
       }
     });
 
     this.handleChipInteraction_ = (evt) =>
-        this.foundation_.handleChipInteraction(evt.detail);
+        this.foundation.handleChipInteraction(evt.detail);
     this.handleChipSelection_ = (evt) =>
-        this.foundation_.handleChipSelection(evt.detail);
+        this.foundation.handleChipSelection(evt.detail);
     this.handleChipRemoval_ = (evt) =>
-        this.foundation_.handleChipRemoval(evt.detail);
+        this.foundation.handleChipRemoval(evt.detail);
     this.handleChipNavigation_ = (evt) =>
-        this.foundation_.handleChipNavigation(evt.detail);
+        this.foundation.handleChipNavigation(evt.detail);
     this.listen(INTERACTION_EVENT, this.handleChipInteraction_);
     this.listen(SELECTION_EVENT, this.handleChipSelection_);
     this.listen(REMOVAL_EVENT, this.handleChipRemoval_);
@@ -125,10 +125,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       getIndexOfChipById: (chipId) => {
         return this.findChipIndex_(chipId);
       },
-      hasClass: (className) => this.root_.classList.contains(className),
-      isRTL: () =>
-          window.getComputedStyle(this.root_).getPropertyValue('direction') ===
-          'rtl',
+      hasClass: (className) => this.root.classList.contains(className),
+      isRTL: () => window.getComputedStyle(this.root).getPropertyValue(
+                       'direction') === 'rtl',
       removeChipAtIndex: (index) => {
         if (index >= 0 && index < this.chips_.length) {
           this.chips_[index].destroy();
@@ -153,7 +152,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
    */
   private instantiateChips_(chipFactory: MDCChipFactory): MDCChip[] {
     const chipElements: Element[] =
-        [].slice.call(this.root_.querySelectorAll(CHIP_SELECTOR));
+        [].slice.call(this.root.querySelectorAll(CHIP_SELECTOR));
     return chipElements.map((el) => {
       el.id = el.id || `mdc-chip-${++idCounter}`;
       return chipFactory(el);
