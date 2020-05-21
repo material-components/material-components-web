@@ -94,13 +94,13 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   layout() {
-    if (this.adapter_.getListItemCount() === 0) {
+    if (this.adapter.getListItemCount() === 0) {
       return;
     }
 
-    if (this.adapter_.hasCheckboxAtIndex(0)) {
+    if (this.adapter.hasCheckboxAtIndex(0)) {
       this.isCheckboxList_ = true;
-    } else if (this.adapter_.hasRadioAtIndex(0)) {
+    } else if (this.adapter.hasRadioAtIndex(0)) {
       this.isRadioList_ = true;
     }
 
@@ -179,7 +179,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   handleFocusIn(_: FocusEvent, listItemIndex: number) {
     if (listItemIndex >= 0) {
       this.focusedItemIndex_ = listItemIndex;
-      this.adapter_.setTabIndexForListItemChildren(listItemIndex, '0');
+      this.adapter.setTabIndexForListItemChildren(listItemIndex, '0');
     }
   }
 
@@ -188,7 +188,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    */
   handleFocusOut(_: FocusEvent, listItemIndex: number) {
     if (listItemIndex >= 0) {
-      this.adapter_.setTabIndexForListItemChildren(listItemIndex, '-1');
+      this.adapter.setTabIndexForListItemChildren(listItemIndex, '-1');
     }
 
     /**
@@ -196,7 +196,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
      * is moved to next element.
      */
     setTimeout(() => {
-      if (!this.adapter_.isFocusInsideList()) {
+      if (!this.adapter.isFocusInsideList()) {
         this.setTabindexToFirstSelectedItem_();
       }
     }, 0);
@@ -216,7 +216,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     const isEnter = normalizeKey(event) === 'Enter';
     const isSpace = normalizeKey(event) === 'Spacebar';
 
-    if (this.adapter_.isRootFocused()) {
+    if (this.adapter.isRootFocused()) {
       if (isArrowUp || isEnd) {
         event.preventDefault();
         this.focusLastElement();
@@ -231,7 +231,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       return;
     }
 
-    let currentIndex = this.adapter_.getFocusedElementIndex();
+    let currentIndex = this.adapter.getFocusedElementIndex();
     if (currentIndex === -1) {
       currentIndex = listItemIndex;
       if (currentIndex < 0) {
@@ -262,7 +262,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         }
         this.preventDefaultEvent_(event);
 
-        if (this.adapter_.listItemAtIndexHasClass(
+        if (this.adapter.listItemAtIndexHasClass(
                 currentIndex, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
           return;
         }
@@ -274,7 +274,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
           if (this.isSelectableList_()) {
             this.setSelectedIndexOnAction_(currentIndex);
           }
-          this.adapter_.notifyAction(currentIndex);
+          this.adapter.notifyAction(currentIndex);
         }
       }
     } else if (this.hasTypeahead && event.key.length === 1) {
@@ -294,7 +294,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.setTabindexAtIndex_(index);
     this.focusedItemIndex_ = index;
 
-    if (this.adapter_.listItemAtIndexHasClass(
+    if (this.adapter.listItemAtIndexHasClass(
             index, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
       return;
     }
@@ -302,14 +302,14 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       this.setSelectedIndexOnAction_(index, toggleCheckbox);
     }
 
-    this.adapter_.notifyAction(index);
+    this.adapter.notifyAction(index);
   }
 
   /**
    * Focuses the next element on the list.
    */
   focusNextElement(index: number) {
-    const count = this.adapter_.getListItemCount();
+    const count = this.adapter.getListItemCount();
     let nextIndex = index + 1;
     if (nextIndex >= count) {
       if (this.wrapFocus_) {
@@ -331,7 +331,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     let prevIndex = index - 1;
     if (prevIndex < 0) {
       if (this.wrapFocus_) {
-        prevIndex = this.adapter_.getListItemCount() - 1;
+        prevIndex = this.adapter.getListItemCount() - 1;
       } else {
         // Return early because first item is already focused.
         return index;
@@ -347,7 +347,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   focusLastElement() {
-    const lastIndex = this.adapter_.getListItemCount() - 1;
+    const lastIndex = this.adapter.getListItemCount() - 1;
     this.focusItemAtIndex(lastIndex);
     return lastIndex;
   }
@@ -362,11 +362,15 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
 
     if (isEnabled) {
-      this.adapter_.removeClassForElementIndex(itemIndex, cssClasses.LIST_ITEM_DISABLED_CLASS);
-      this.adapter_.setAttributeForElementIndex(itemIndex, strings.ARIA_DISABLED, 'false');
+      this.adapter.removeClassForElementIndex(
+          itemIndex, cssClasses.LIST_ITEM_DISABLED_CLASS);
+      this.adapter.setAttributeForElementIndex(
+          itemIndex, strings.ARIA_DISABLED, 'false');
     } else {
-      this.adapter_.addClassForElementIndex(itemIndex, cssClasses.LIST_ITEM_DISABLED_CLASS);
-      this.adapter_.setAttributeForElementIndex(itemIndex, strings.ARIA_DISABLED, 'true');
+      this.adapter.addClassForElementIndex(
+          itemIndex, cssClasses.LIST_ITEM_DISABLED_CLASS);
+      this.adapter.setAttributeForElementIndex(
+          itemIndex, strings.ARIA_DISABLED, 'true');
     }
   }
 
@@ -393,9 +397,10 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
 
     if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
-      this.adapter_.removeClassForElementIndex(this.selectedIndex_ as number, selectedClassName);
+      this.adapter.removeClassForElementIndex(
+          this.selectedIndex_ as number, selectedClassName);
     }
-    this.adapter_.addClassForElementIndex(index, selectedClassName);
+    this.adapter.addClassForElementIndex(index, selectedClassName);
     this.setAriaForSingleSelectionAtIndex_(index);
 
     this.selectedIndex_ = index;
@@ -408,44 +413,49 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     // Detect the presence of aria-current and get the value only during list initialization when it is in unset state.
     if (this.selectedIndex_ === numbers.UNSET_INDEX) {
       this.ariaCurrentAttrValue_ =
-            this.adapter_.getAttributeForElementIndex(index, strings.ARIA_CURRENT);
+          this.adapter.getAttributeForElementIndex(index, strings.ARIA_CURRENT);
     }
 
     const isAriaCurrent = this.ariaCurrentAttrValue_ !== null;
     const ariaAttribute = isAriaCurrent ? strings.ARIA_CURRENT : strings.ARIA_SELECTED;
 
     if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, ariaAttribute, 'false');
+      this.adapter.setAttributeForElementIndex(
+          this.selectedIndex_ as number, ariaAttribute, 'false');
     }
 
     const ariaAttributeValue = isAriaCurrent ? this.ariaCurrentAttrValue_ : 'true';
-    this.adapter_.setAttributeForElementIndex(index, ariaAttribute, ariaAttributeValue as string);
+    this.adapter.setAttributeForElementIndex(
+        index, ariaAttribute, ariaAttributeValue as string);
   }
 
   /**
    * Toggles radio at give index. Radio doesn't change the checked state if it is already checked.
    */
   private setRadioAtIndex_(index: number) {
-    this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, true);
+    this.adapter.setCheckedCheckboxOrRadioAtIndex(index, true);
 
     if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, strings.ARIA_CHECKED, 'false');
+      this.adapter.setAttributeForElementIndex(
+          this.selectedIndex_ as number, strings.ARIA_CHECKED, 'false');
     }
 
-    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, 'true');
+    this.adapter.setAttributeForElementIndex(
+        index, strings.ARIA_CHECKED, 'true');
 
     this.selectedIndex_ = index;
   }
 
   private setCheckboxAtIndex_(index: number[]) {
-    for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
+    for (let i = 0; i < this.adapter.getListItemCount(); i++) {
       let isChecked = false;
       if (index.indexOf(i) >= 0) {
         isChecked = true;
       }
 
-      this.adapter_.setCheckedCheckboxOrRadioAtIndex(i, isChecked);
-      this.adapter_.setAttributeForElementIndex(i, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
+      this.adapter.setCheckedCheckboxOrRadioAtIndex(i, isChecked);
+      this.adapter.setAttributeForElementIndex(
+          i, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
     }
 
     this.selectedIndex_ = index;
@@ -455,12 +465,13 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     if (this.focusedItemIndex_ === numbers.UNSET_INDEX && index !== 0) {
       // If no list item was selected set first list item's tabindex to -1.
       // Generally, tabindex is set to 0 on first list item of list that has no preselected items.
-      this.adapter_.setAttributeForElementIndex(0, 'tabindex', '-1');
+      this.adapter.setAttributeForElementIndex(0, 'tabindex', '-1');
     } else if (this.focusedItemIndex_ >= 0 && this.focusedItemIndex_ !== index) {
-      this.adapter_.setAttributeForElementIndex(this.focusedItemIndex_, 'tabindex', '-1');
+      this.adapter.setAttributeForElementIndex(
+          this.focusedItemIndex_, 'tabindex', '-1');
     }
 
-    this.adapter_.setAttributeForElementIndex(index, 'tabindex', '0');
+    this.adapter.setAttributeForElementIndex(index, 'tabindex', '0');
   }
 
   /**
@@ -506,7 +517,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private isIndexInRange_(index: number) {
-    const listSize = this.adapter_.getListItemCount();
+    const listSize = this.adapter.getListItemCount();
     return index >= 0 && index < listSize;
   }
 
@@ -523,14 +534,15 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private toggleCheckboxAtIndex_(index: number, toggleCheckbox: boolean) {
-    let isChecked = this.adapter_.isCheckboxCheckedAtIndex(index);
+    let isChecked = this.adapter.isCheckboxCheckedAtIndex(index);
 
     if (toggleCheckbox) {
       isChecked = !isChecked;
-      this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
+      this.adapter.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
     }
 
-    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
+    this.adapter.setAttributeForElementIndex(
+        index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
 
     // If none of the checkbox items are selected and selectedIndex is not initialized then provide a default value.
     let selectedIndexes = this.selectedIndex_ === numbers.UNSET_INDEX ? [] : (this.selectedIndex_ as number[]).slice();
@@ -546,7 +558,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
   private focusItemAtIndex(index: number) {
     this.setTabindexAtIndex_(index);
-    this.adapter_.focusItemAtIndex(index);
+    this.adapter.focusItemAtIndex(index);
     this.focusedItemIndex_ = index;
   }
 
@@ -558,8 +570,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.sortedIndexByFirstChar.clear();
 
     // Aggregate item text to index mapping
-    for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
-      const textAtIndex = this.adapter_.getPrimaryTextAtIndex(i).trim();
+    for (let i = 0; i < this.adapter.getListItemCount(); i++) {
+      const textAtIndex = this.adapter.getPrimaryTextAtIndex(i).trim();
       if (!textAtIndex) {
         continue;
       }
@@ -569,7 +581,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         this.sortedIndexByFirstChar.set(firstChar, []);
       }
       this.sortedIndexByFirstChar.get(firstChar)!.push({
-        text: this.adapter_.getPrimaryTextAtIndex(i).toLowerCase(),
+        text: this.adapter.getPrimaryTextAtIndex(i).toLowerCase(),
         index: i
       });
     }
