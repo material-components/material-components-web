@@ -36,14 +36,14 @@ export class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
    * Called when drawer finishes open animation.
    */
   protected opened_() {
-    this.adapter_.trapFocus();
+    this.adapter.trapFocus();
   }
 
   /**
    * Called when drawer finishes close animation.
    */
   protected closed_() {
-    this.adapter_.releaseFocus();
+    this.adapter.releaseFocus();
   }
 }
 
