@@ -25,11 +25,7 @@ import {MDCTabScrollerAdapter} from './adapter';
 import {MDCTabScrollerAnimation} from './types';
 
 export abstract class MDCTabScrollerRTL {
-  protected readonly adapter_: MDCTabScrollerAdapter;
-
-  constructor(adapter: MDCTabScrollerAdapter) {
-    this.adapter_ = adapter;
-  }
+  constructor(protected readonly adapter: MDCTabScrollerAdapter) {}
 
   abstract getScrollPositionRTL(translateX: number): number;
 

@@ -26,13 +26,13 @@ import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './types';
 
 export class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
   getScrollPositionRTL(translateX: number): number {
-    const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
+    const currentScrollLeft = this.adapter.getScrollAreaScrollLeft();
     // Scroll values on most browsers are ints instead of floats so we round
     return Math.round(currentScrollLeft - translateX);
   }
 
   scrollToRTL(scrollX: number): MDCTabScrollerAnimation {
-    const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
+    const currentScrollLeft = this.adapter.getScrollAreaScrollLeft();
     const clampedScrollLeft = this.clampScrollValue_(scrollX);
     return {
       finalScrollPosition: clampedScrollLeft,
@@ -41,7 +41,7 @@ export class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
   }
 
   incrementScrollRTL(scrollX: number): MDCTabScrollerAnimation {
-    const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
+    const currentScrollLeft = this.adapter.getScrollAreaScrollLeft();
     const clampedScrollLeft = this.clampScrollValue_(currentScrollLeft + scrollX);
     return {
       finalScrollPosition: clampedScrollLeft,
@@ -54,8 +54,8 @@ export class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
   }
 
   private calculateScrollEdges_(): MDCTabScrollerHorizontalEdges {
-    const contentWidth = this.adapter_.getScrollContentOffsetWidth();
-    const rootWidth = this.adapter_.getScrollAreaOffsetWidth();
+    const contentWidth = this.adapter.getScrollContentOffsetWidth();
+    const rootWidth = this.adapter.getScrollAreaOffsetWidth();
     return {
       left: contentWidth - rootWidth,
       right: 0,
