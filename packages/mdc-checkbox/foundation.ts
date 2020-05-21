@@ -65,7 +65,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   init() {
     this.currentCheckState_ = this.determineCheckState_();
     this.updateAriaChecked_();
-    this.adapter_.addClass(cssClasses.UPGRADED);
+    this.adapter.addClass(cssClasses.UPGRADED);
   }
 
   destroy() {
@@ -73,11 +73,11 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 
   setDisabled(disabled: boolean) {
-    this.adapter_.setNativeControlDisabled(disabled);
+    this.adapter.setNativeControlDisabled(disabled);
     if (disabled) {
-      this.adapter_.addClass(cssClasses.DISABLED);
+      this.adapter.addClass(cssClasses.DISABLED);
     } else {
-      this.adapter_.removeClass(cssClasses.DISABLED);
+      this.adapter.removeClass(cssClasses.DISABLED);
     }
   }
 
@@ -92,7 +92,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     clearTimeout(this.animEndLatchTimer_);
 
     this.animEndLatchTimer_ = setTimeout(() => {
-      this.adapter_.removeClass(this.currentAnimationClass_);
+      this.adapter.removeClass(this.currentAnimationClass_);
       this.enableAnimationEndHandler_ = false;
     }, numbers.ANIM_END_LATCH_MS);
   }
@@ -105,7 +105,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 
   private transitionCheckState_() {
-    if (!this.adapter_.hasNativeControl()) {
+    if (!this.adapter.hasNativeControl()) {
       return;
     }
     const oldState = this.currentCheckState_;
@@ -120,17 +120,17 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     const {TRANSITION_STATE_UNCHECKED} = strings;
     const {SELECTED} = cssClasses;
     if (newState === TRANSITION_STATE_UNCHECKED) {
-      this.adapter_.removeClass(SELECTED);
+      this.adapter.removeClass(SELECTED);
     } else {
-      this.adapter_.addClass(SELECTED);
+      this.adapter.addClass(SELECTED);
     }
 
     // Check to ensure that there isn't a previously existing animation class, in case for example
     // the user interacted with the checkbox before the animation was finished.
     if (this.currentAnimationClass_.length > 0) {
       clearTimeout(this.animEndLatchTimer_);
-      this.adapter_.forceLayout();
-      this.adapter_.removeClass(this.currentAnimationClass_);
+      this.adapter.forceLayout();
+      this.adapter.removeClass(this.currentAnimationClass_);
     }
 
     this.currentAnimationClass_ = this.getTransitionAnimationClass_(oldState, newState);
@@ -138,8 +138,9 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
 
     // Check for parentNode so that animations are only run when the element is attached
     // to the DOM.
-    if (this.adapter_.isAttachedToDOM() && this.currentAnimationClass_.length > 0) {
-      this.adapter_.addClass(this.currentAnimationClass_);
+    if (this.adapter.isAttachedToDOM() &&
+        this.currentAnimationClass_.length > 0) {
+      this.adapter.addClass(this.currentAnimationClass_);
       this.enableAnimationEndHandler_ = true;
     }
   }
@@ -151,10 +152,11 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
       TRANSITION_STATE_UNCHECKED,
     } = strings;
 
-    if (this.adapter_.isIndeterminate()) {
+    if (this.adapter.isIndeterminate()) {
       return TRANSITION_STATE_INDETERMINATE;
     }
-    return this.adapter_.isChecked() ? TRANSITION_STATE_CHECKED : TRANSITION_STATE_UNCHECKED;
+    return this.adapter.isChecked() ? TRANSITION_STATE_CHECKED :
+                                      TRANSITION_STATE_UNCHECKED;
   }
 
   private getTransitionAnimationClass_(oldState: string, newState: string): string {
@@ -190,13 +192,13 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
 
   private updateAriaChecked_() {
     // Ensure aria-checked is set to mixed if checkbox is in indeterminate state.
-    if (this.adapter_.isIndeterminate()) {
-      this.adapter_.setNativeControlAttr(
+    if (this.adapter.isIndeterminate()) {
+      this.adapter.setNativeControlAttr(
           strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
     } else {
       // The on/off state does not need to keep track of aria-checked, since
       // the screenreader uses the checked property on the checkbox element.
-      this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
+      this.adapter.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
     }
   }
 }
