@@ -43,7 +43,7 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
 
   initialSyncWithDOM() {
     this.handleClick = () => {
-      this.foundation_.handleClick();
+      this.foundation.handleClick();
     };
     this.listen('click', this.handleClick);
   }
@@ -58,16 +58,16 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCIconButtonToggleAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      hasClass: (className) => this.root_.classList.contains(className),
+      addClass: (className) => this.root.classList.add(className),
+      hasClass: (className) => this.root.classList.contains(className),
       notifyChange: (evtData) => {
         this.emit<MDCIconButtonToggleEventDetail>(
             strings.CHANGE_EVENT, evtData);
       },
-      removeClass: (className) => this.root_.classList.remove(className),
-      getAttr: (attrName) => this.root_.getAttribute(attrName),
+      removeClass: (className) => this.root.classList.remove(className),
+      getAttr: (attrName) => this.root.getAttribute(attrName),
       setAttr: (attrName, attrValue) =>
-          this.root_.setAttribute(attrName, attrValue),
+          this.root.setAttribute(attrName, attrValue),
     };
     return new MDCIconButtonToggleFoundation(adapter);
   }
@@ -77,15 +77,15 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
   }
 
   get on(): boolean {
-    return this.foundation_.isOn();
+    return this.foundation.isOn();
   }
 
   set on(isOn: boolean) {
-    this.foundation_.toggle(isOn);
+    this.foundation.toggle(isOn);
   }
 
   private createRipple(): MDCRipple {
-    const ripple = new MDCRipple(this.root_);
+    const ripple = new MDCRipple(this.root);
     ripple.unbounded = true;
     return ripple;
   }
