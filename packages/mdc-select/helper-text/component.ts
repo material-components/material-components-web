@@ -43,13 +43,13 @@ export class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundat
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCSelectHelperTextAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      removeAttr: (attr) => this.root_.removeAttribute(attr),
+      addClass: (className) => this.root.classList.add(className),
+      removeClass: (className) => this.root.classList.remove(className),
+      hasClass: (className) => this.root.classList.contains(className),
+      setAttr: (attr, value) => this.root.setAttribute(attr, value),
+      removeAttr: (attr) => this.root.removeAttribute(attr),
       setContent: (content) => {
-        this.root_.textContent = content;
+        this.root.textContent = content;
       },
     };
     // tslint:enable:object-literal-sort-keys
