@@ -84,7 +84,7 @@ export interface MDCTextFieldInputAdapter {
   getNativeInput(): MDCTextFieldNativeInputElement | null;
 
   /**
-   * @return true if the textfield is focused. We achieve this via `document.activeElement === this.root_`.
+   * @return true if the textfield is focused. We achieve this via `document.activeElement === this.root`.
    */
   isFocused(): boolean;
 

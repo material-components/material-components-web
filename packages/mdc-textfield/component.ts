@@ -75,20 +75,20 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
       labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
       outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
   ) {
-    this.input_ = this.root_.querySelector<HTMLInputElement>(strings.INPUT_SELECTOR)!;
+    this.input_ = this.root.querySelector<HTMLInputElement>(strings.INPUT_SELECTOR)!;
 
-    const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
+    const labelElement = this.root.querySelector(strings.LABEL_SELECTOR);
     this.label_ = labelElement ? labelFactory(labelElement) : null;
 
-    const lineRippleElement = this.root_.querySelector(strings.LINE_RIPPLE_SELECTOR);
+    const lineRippleElement = this.root.querySelector(strings.LINE_RIPPLE_SELECTOR);
     this.lineRipple_ = lineRippleElement ? lineRippleFactory(lineRippleElement) : null;
 
-    const outlineElement = this.root_.querySelector(strings.OUTLINE_SELECTOR);
+    const outlineElement = this.root.querySelector(strings.OUTLINE_SELECTOR);
     this.outline_ = outlineElement ? outlineFactory(outlineElement) : null;
 
     // Helper text
     const helperTextStrings = MDCTextFieldHelperTextFoundation.strings;
-    const nextElementSibling = this.root_.nextElementSibling;
+    const nextElementSibling = this.root.nextElementSibling;
     const hasHelperLine = (nextElementSibling && nextElementSibling.classList.contains(cssClasses.HELPER_LINE));
     const helperTextEl =
         hasHelperLine && nextElementSibling && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
@@ -96,7 +96,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
 
     // Character counter
     const characterCounterStrings = MDCTextFieldCharacterCounterFoundation.strings;
-    let characterCounterEl = this.root_.querySelector(characterCounterStrings.ROOT_SELECTOR);
+    let characterCounterEl = this.root.querySelector(characterCounterStrings.ROOT_SELECTOR);
     // If character counter is not found in root element search in sibling element.
     if (!characterCounterEl && hasHelperLine && nextElementSibling) {
       characterCounterEl = nextElementSibling.querySelector(characterCounterStrings.ROOT_SELECTOR);
@@ -105,17 +105,17 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
 
     // Leading icon
     const leadingIconEl =
-        this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+        this.root.querySelector(strings.LEADING_ICON_SELECTOR);
     this.leadingIcon_ = leadingIconEl ? iconFactory(leadingIconEl) : null;
 
     // Trailing icon
     const trailingIconEl =
-        this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
+        this.root.querySelector(strings.TRAILING_ICON_SELECTOR);
     this.trailingIcon_ = trailingIconEl ? iconFactory(trailingIconEl) : null;
 
     // Prefix and Suffix
-    this.prefix_ = this.root_.querySelector(strings.PREFIX_SELECTOR);
-    this.suffix_ = this.root_.querySelector(strings.SUFFIX_SELECTOR);
+    this.prefix_ = this.root.querySelector(strings.PREFIX_SELECTOR);
+    this.suffix_ = this.root.querySelector(strings.SUFFIX_SELECTOR);
 
     this.ripple = this.createRipple_(rippleFactory);
   }
@@ -157,36 +157,36 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   get value(): string {
-    return this.foundation_.getValue();
+    return this.foundation.getValue();
   }
 
   /**
    * @param value The value to set on the input.
    */
   set value(value: string) {
-    this.foundation_.setValue(value);
+    this.foundation.setValue(value);
   }
 
   get disabled(): boolean {
-    return this.foundation_.isDisabled();
+    return this.foundation.isDisabled();
   }
 
   /**
    * @param disabled Sets the Text Field disabled or enabled.
    */
   set disabled(disabled: boolean) {
-    this.foundation_.setDisabled(disabled);
+    this.foundation.setDisabled(disabled);
   }
 
   get valid(): boolean {
-    return this.foundation_.isValid();
+    return this.foundation.isValid();
   }
 
   /**
    * @param valid Sets the Text Field valid or invalid.
    */
   set valid(valid: boolean) {
-    this.foundation_.setValid(valid);
+    this.foundation.setValid(valid);
   }
 
   get required(): boolean {
@@ -275,35 +275,35 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
    * Sets the helper text element content.
    */
   set helperTextContent(content: string) {
-    this.foundation_.setHelperTextContent(content);
+    this.foundation.setHelperTextContent(content);
   }
 
   /**
    * Sets the aria label of the leading icon.
    */
   set leadingIconAriaLabel(label: string) {
-    this.foundation_.setLeadingIconAriaLabel(label);
+    this.foundation.setLeadingIconAriaLabel(label);
   }
 
   /**
    * Sets the text content of the leading icon.
    */
   set leadingIconContent(content: string) {
-    this.foundation_.setLeadingIconContent(content);
+    this.foundation.setLeadingIconContent(content);
   }
 
   /**
    * Sets the aria label of the trailing icon.
    */
   set trailingIconAriaLabel(label: string) {
-    this.foundation_.setTrailingIconAriaLabel(label);
+    this.foundation.setTrailingIconAriaLabel(label);
   }
 
   /**
    * Sets the text content of the trailing icon.
    */
   set trailingIconContent(content: string) {
-    this.foundation_.setTrailingIconContent(content);
+    this.foundation.setTrailingIconContent(content);
   }
 
   /**
@@ -311,7 +311,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
    * @param useNativeValidation Set this to false to ignore native input validation.
    */
   set useNativeValidation(useNativeValidation: boolean) {
-    this.foundation_.setUseNativeValidation(useNativeValidation);
+    this.foundation.setUseNativeValidation(useNativeValidation);
   }
 
   /**
@@ -357,8 +357,8 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {
-    const openNotch = this.foundation_.shouldFloat;
-    this.foundation_.notchOutline(openNotch);
+    const openNotch = this.foundation.shouldFloat;
+    this.foundation.notchOutline(openNotch);
   }
 
   getDefaultFoundation() {
@@ -379,9 +379,9 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   private getRootAdapterMethods_(): MDCTextFieldRootAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
+      addClass: (className) => this.root.classList.add(className),
+      removeClass: (className) => this.root.classList.remove(className),
+      hasClass: (className) => this.root.classList.contains(className),
       registerTextFieldInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
       deregisterTextFieldInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),
       registerValidationAttributeChangeHandler: (handler) => {
@@ -471,8 +471,8 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   private createRipple_(rippleFactory: MDCRippleFactory): MDCRipple | null {
-    const isTextArea = this.root_.classList.contains(cssClasses.TEXTAREA);
-    const isOutlined = this.root_.classList.contains(cssClasses.OUTLINED);
+    const isTextArea = this.root.classList.contains(cssClasses.TEXTAREA);
+    const isOutlined = this.root.classList.contains(cssClasses.OUTLINED);
 
     if (isTextArea || isOutlined) {
       return null;
@@ -489,6 +489,6 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
         this.input_.removeEventListener(evtType, handler, applyPassive()),
     };
     // tslint:enable:object-literal-sort-keys
-    return rippleFactory(this.root_, new MDCRippleFoundation(adapter));
+    return rippleFactory(this.root, new MDCRippleFoundation(adapter));
   }
 }
