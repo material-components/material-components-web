@@ -32,7 +32,7 @@ export class MDCCircularProgress extends
   private determinateCircle_!: HTMLElement;
 
   initialize() {
-    this.determinateCircle_ = this.root_.querySelector<HTMLElement>(
+    this.determinateCircle_ = this.root.querySelector<HTMLElement>(
         MDCCircularProgressFoundation.strings.DETERMINATE_CIRCLE_SELECTOR)!;
   }
 
@@ -45,7 +45,7 @@ export class MDCCircularProgress extends
    * @param isDeterminate Whether the indicator should be determinate.
    */
   set determinate(value: boolean) {
-    this.foundation_.setDeterminate(value);
+    this.foundation.setDeterminate(value);
   }
 
   /**
@@ -55,28 +55,28 @@ export class MDCCircularProgress extends
    * @param value The current progress value, which must be between 0 and 1.
    */
   set progress(value: number) {
-    this.foundation_.setProgress(value);
+    this.foundation.setProgress(value);
   }
 
   /**
    * Whether the progress indicator is hidden.
    */
   get isClosed() {
-    return this.foundation_.isClosed();
+    return this.foundation.isClosed();
   }
 
   /**
    * Shows the progress indicator.
    */
   open() {
-    this.foundation_.open();
+    this.foundation.open();
   }
 
   /**
    * Hides the progress indicator.
    */
   close() {
-    this.foundation_.close();
+    this.foundation.close();
   }
 
   getDefaultFoundation() {
@@ -84,16 +84,15 @@ export class MDCCircularProgress extends
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCCircularProgressAdapter = {
-      addClass: (className: string) => this.root_.classList.add(className),
+      addClass: (className: string) => this.root.classList.add(className),
       getDeterminateCircleAttribute: (attributeName: string) =>
           this.determinateCircle_.getAttribute(attributeName),
-      hasClass: (className: string) => this.root_.classList.contains(className),
-      removeClass: (className: string) =>
-          this.root_.classList.remove(className),
+      hasClass: (className: string) => this.root.classList.contains(className),
+      removeClass: (className: string) => this.root.classList.remove(className),
       removeAttribute: (attributeName: string) =>
-          this.root_.removeAttribute(attributeName),
+          this.root.removeAttribute(attributeName),
       setAttribute: (attributeName: string, value: string) =>
-          this.root_.setAttribute(attributeName, value),
+          this.root.setAttribute(attributeName, value),
       setDeterminateCircleAttribute: (attributeName: string, value: string) =>
           this.determinateCircle_.setAttribute(attributeName, value),
     };
