@@ -66,8 +66,8 @@ export class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutline
       notchWidth += numbers.NOTCH_ELEMENT_PADDING; // Add padding from left/right.
     }
 
-    this.adapter_.setNotchWidthProperty(notchWidth);
-    this.adapter_.addClass(OUTLINE_NOTCHED);
+    this.adapter.setNotchWidthProperty(notchWidth);
+    this.adapter.addClass(OUTLINE_NOTCHED);
   }
 
   /**
@@ -75,8 +75,8 @@ export class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutline
    */
   closeNotch() {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
-    this.adapter_.removeClass(OUTLINE_NOTCHED);
-    this.adapter_.removeNotchWidthProperty();
+    this.adapter.removeClass(OUTLINE_NOTCHED);
+    this.adapter.removeNotchWidthProperty();
   }
 }
 
