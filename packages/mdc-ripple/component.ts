@@ -83,15 +83,15 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
   }
 
   activate() {
-    this.foundation_.activate();
+    this.foundation.activate();
   }
 
   deactivate() {
-    this.foundation_.deactivate();
+    this.foundation.deactivate();
   }
 
   layout() {
-    this.foundation_.layout();
+    this.foundation.layout();
   }
 
   getDefaultFoundation() {
@@ -99,7 +99,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
   }
 
   initialSyncWithDOM() {
-    const root = this.root_ as HTMLElement;
+    const root = this.root as HTMLElement;
     this.unbounded = 'mdcRippleIsUnbounded' in root.dataset;
   }
 
@@ -110,6 +110,6 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
    * That's why this function exists.
    */
   private setUnbounded_() {
-    this.foundation_.setUnbounded(Boolean(this.unbounded_));
+    this.foundation.setUnbounded(Boolean(this.unbounded_));
   }
 }
