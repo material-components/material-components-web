@@ -39,7 +39,7 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
 
   private labelEl(): Element|null {
     const {LABEL_SELECTOR} = MDCFormFieldFoundation.strings;
-    return this.root_.querySelector(LABEL_SELECTOR);
+    return this.root.querySelector(LABEL_SELECTOR);
   }
 
   getDefaultFoundation() {

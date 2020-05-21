@@ -54,17 +54,17 @@ export class MDCFormFieldFoundation extends MDCFoundation<MDCFormFieldAdapter> {
   }
 
   init() {
-    this.adapter_.registerInteractionHandler('click', this.click);
+    this.adapter.registerInteractionHandler('click', this.click);
   }
 
   destroy() {
-    this.adapter_.deregisterInteractionHandler('click', this.click);
+    this.adapter.deregisterInteractionHandler('click', this.click);
   }
 
   private handleClick() {
-    this.adapter_.activateInputRipple();
+    this.adapter.activateInputRipple();
     requestAnimationFrame(() => {
-      this.adapter_.deactivateInputRipple();
+      this.adapter.deactivateInputRipple();
     });
   }
 }
