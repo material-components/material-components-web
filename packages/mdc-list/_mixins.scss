@@ -398,10 +398,13 @@
     $property-name: height,
   );
 
-  $resolved-radius: shape-functions.resolve-percentage-radius($height, $radius);
-
   .mdc-list-item {
-    @include shape-mixins.radius($resolved-radius, $rtl-reflexive, $query: $query);
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height: $height,
+      $query: $query
+    );
   }
 }
 

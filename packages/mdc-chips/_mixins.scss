@@ -63,7 +63,7 @@ $ripple-target: ".mdc-chip__ripple";
   @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-chip {
-    @include shape-radius(50%, $query: $query);
+    @include shape-radius(variables.$shape-radius, $query: $query);
     @include fill-color(variables.$fill-color-default, $query: $query);
     @include ink-color-without-ripple_(variables.$ink-color-default, $query: $query);
     @include typography-mixins.typography(body2, $query: $query);
@@ -345,14 +345,16 @@ $ripple-target: ".mdc-chip__ripple";
   );
 
   @include shape-mixins.radius(
-    shape-functions.resolve-percentage-radius($height, $radius),
+    $radius,
     $rtl-reflexive,
+    $component-height: $height,
     $query: $query);
 
   #{$ripple-target} {
     @include shape-mixins.radius(
-      shape-functions.resolve-percentage-radius($height, $radius),
+      $radius,
       $rtl-reflexive,
+      $component-height: $height,
       $query: $query
     );
   }
