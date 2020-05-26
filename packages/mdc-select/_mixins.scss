@@ -28,6 +28,7 @@
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/floating-label/mixins" as floating-label-mixins;
 @use "@material/line-ripple/mixins" as line-ripple-mixins;
+@use "@material/list/mixins" as list-mixins;
 @use "@material/menu/mixins" as menu-mixins;
 @use "@material/menu-surface/mixins" as menu-surface-mixins;
 @use "@material/notched-outline/mixins" as notched-outline-mixins;
@@ -823,6 +824,7 @@
   );
 
   @include height($height, $minimum-height-for-filled-label: $minimum-height-for-filled-label, $query: $query);
+  @include list-mixins.single-line-density($density-scale, $query: $query);
 }
 
 ///
@@ -839,6 +841,7 @@
   );
 
   @include outlined-height($height, $query: $query);
+  @include list-mixins.single-line-density($density-scale, $query: $query);
 }
 
 ///
@@ -855,6 +858,7 @@
   );
 
   @include outlined-with-leading-icon-height($height, $query: $query);
+  @include list-mixins.single-line-density($density-scale, $query: $query);
 }
 
 ///

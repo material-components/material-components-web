@@ -26,6 +26,7 @@
     "@material/feature-targeting": "^6.0.0",
     "@material/floating-label": "^6.0.0",
     "@material/line-ripple": "^6.0.0",
+    "@material/list": "^6.0.0",
     "@material/menu": "^6.0.0",
     "@material/menu-surface": "^6.0.0",
     "@material/notched-outline": "^6.0.0",
