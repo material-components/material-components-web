@@ -90,8 +90,10 @@
 
   @if is-var-with-fallback_($fallback) {
     @return var(#{$var}, var_($fallback));
-  } @else {
+  } @else if $fallback != null {
     @return var(#{$var}, $fallback);
+  } @else {
+    @return var(#{$var});
   }
 }
 
@@ -106,6 +108,10 @@
 ///
 @function color-hash($color) {
   @if is-var-with-fallback_($color) {
+    @if (map.get($color, "fallback") == null) {
+      @return map.get($color, "varname");
+    }
+
     $color: map.get($color, "fallback");
   }
 
