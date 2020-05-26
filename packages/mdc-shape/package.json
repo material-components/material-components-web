@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@material/feature-targeting": "^6.0.0",
-    "@material/rtl": "^6.0.0"
+    "@material/rtl": "^6.0.0",
+    "@material/theme": "^6.0.0"
   }
 }

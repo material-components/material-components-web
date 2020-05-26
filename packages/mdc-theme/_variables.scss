@@ -23,6 +23,7 @@
 @use "sass:map";
 @use "sass:meta";
 @use "./functions";
+@use "./custom-properties";
 
 //
 // Main theme colors for your brand.
@@ -118,6 +119,10 @@ $property-values: (
   text-icon-on-dark: ink-color-for-fill_(icon, dark)
 ) !default;
 
+// @deprecated use theme.property() and _REALLY_ evaluate if you need to strip
+// custom property support. If the answer is yes, use
+// custom-properties.is-custom-prop() to check if the value is a custom prop,
+// then manually get custom-properties.get-fallback().
 // If `$style` is a color (a literal color value, `currentColor`, or a CSS custom property), it is returned verbatim.
 // Otherwise, `$style` is treated as a theme property name, and the corresponding value from
 // `$mdc-theme-property-values` is returned. If this also fails, an error is thrown.
@@ -131,8 +136,8 @@ $property-values: (
 //
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
 @function prop-value($style) {
-  @if functions.is-var-with-fallback_($style) {
-    @return functions.get-var-fallback_($style);
+  @if custom-properties.is-custom-prop($style) {
+    @return custom-properties.get-fallback($style);
   }
 
   @if is-valid-theme-prop-value_($style) {

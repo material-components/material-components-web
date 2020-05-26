@@ -21,29 +21,74 @@
 //
 
 @use "sass:list";
+@use "sass:meta";
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
+@use "@material/theme/mixins" as theme;
 @use "./variables";
 @use "./functions";
 
-@mixin radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
+@mixin radius($radius, $rtl-reflexive: false, $component-height: null, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
+    $has-multiple-corners: meta.type-of($radius) == "list" and list.length($radius) > 1;
     // Even if $rtl-reflexive is true, only emit RTL styles if we can't easily tell that the given radius is symmetrical
-    $needs-flip: $rtl-reflexive and list.length($radius) > 1;
-
-    @if ($needs-flip) {
-      /* @noflip */
+    $needs-flip: $rtl-reflexive and $has-multiple-corners;
+    $radius: functions.resolve-radius($radius, $component-height: $component-height);
+    @if not $has-multiple-corners {
+      @include theme.property(border-radius, $radius);
+    } @else {
+      $gss: (noflip: $needs-flip);
+      $radii: functions.unpack-radius($radius);
+      @include theme.property(
+        border-top-left-radius,
+        list.nth($radii, 1),
+        $gss: $gss
+      );
+      @include theme.property(
+        border-top-right-radius,
+        list.nth($radii, 2),
+        $gss: $gss
+      );
+      @include theme.property(
+        border-bottom-right-radius,
+        list.nth($radii, 3),
+        $gss: $gss
+      );
+      @include theme.property(
+        border-bottom-left-radius,
+        list.nth($radii, 4),
+        $gss: $gss
+      );
     }
-
-    border-radius: functions.prop-value($radius);
 
     @if ($needs-flip) {
       @include rtl-mixins.rtl {
-        /* @noflip */
-        border-radius: functions.flip-radius(functions.prop-value($radius));
+        // If it needs to be flipped, it will always have multiple corners
+        $gss: (noflip: true);
+        $radii: functions.flip-radius(functions.unpack-radius($radius));
+        @include theme.property(
+          border-top-left-radius,
+          list.nth($radii, 1),
+          $gss: $gss
+        );
+        @include theme.property(
+          border-top-right-radius,
+          list.nth($radii, 2),
+          $gss: $gss
+        );
+        @include theme.property(
+          border-bottom-right-radius,
+          list.nth($radii, 3),
+          $gss: $gss
+        );
+        @include theme.property(
+          border-bottom-left-radius,
+          list.nth($radii, 4),
+          $gss: $gss
+        );
       }
     }
   }

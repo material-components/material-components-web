@@ -67,7 +67,7 @@
     @include min-width(variables.$min-width, $query: $query);
     @include max-width(variables.$max-width, variables.$margin, $query: $query);
     @include max-height(null, variables.$margin, $query: $query);
-    @include shape-radius(medium, $query: $query);
+    @include shape-radius(variables.$shape-radius, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
       // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.

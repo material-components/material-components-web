@@ -51,7 +51,7 @@
   @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-card {
-    @include shape-radius(medium, $query: $query);
+    @include shape-radius(variables.$shape-radius, $query: $query);
     @include fill-color(surface, $query);
     @include elevation-mixins.overlay-surface-position($query: $query);
     @include elevation-mixins.overlay-dimensions(100%, $query: $query);

@@ -213,6 +213,9 @@ $ripple-target: ".mdc-fab__ripple";
 
 @mixin shape-radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
   &:not(.mdc-fab--extended) {
+    // Do not specify $component-height for shape radius. FABs are circular,
+    // which means they can use percentage border radius without resolving to
+    // a component height.
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
 
     #{$ripple-target} {
@@ -222,16 +225,20 @@ $ripple-target: ".mdc-fab__ripple";
 }
 
 @mixin extended-shape-radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
+  // Extended FABs _do_ need a $component-height since they are not circular.
+  // Percentage radii must be resolved.
   @include shape-mixins.radius(
-    shape-functions.resolve-percentage-radius(variables.$extended-height, $radius),
+    $radius,
     $rtl-reflexive,
+    $component-height: variables.$extended-height,
     $query: $query
   );
 
   #{$ripple-target} {
     @include shape-mixins.radius(
-      shape-functions.resolve-percentage-radius(variables.$extended-height, $radius),
+      $radius,
       $rtl-reflexive,
+      $component-height: variables.$extended-height,
       $query: $query
     );
   }
@@ -244,7 +251,7 @@ $icon-enter-duration_: 180ms;
   @include elevation-mixins.overlay-surface-position($query: $query);
   @include elevation-mixins.overlay-dimensions(100%, $query: $query);
   @include elevation-mixins.elevation(6, $query: $query);
-  @include shape-radius(50%, $query: $query);
+  @include shape-radius(variables.$shape-radius, $query: $query);
 
   $feat-animation: feature-targeting-functions.create-target($query, animation);
   $feat-structure: feature-targeting-functions.create-target($query, structure);
@@ -334,7 +341,7 @@ $icon-enter-duration_: 180ms;
 
 @mixin extended_($query: feature-targeting-functions.all()) {
   @include typography-mixins.typography(button, $query: $query);
-  @include extended-shape-radius(50%, $query: $query);
+  @include extended-shape-radius(variables.$shape-radius, $query: $query);
   @include extended-padding(variables.$extended-icon-padding, variables.$extended-label-padding, $query: $query);
 
   $feat-structure: feature-targeting-functions.create-target($query, structure);

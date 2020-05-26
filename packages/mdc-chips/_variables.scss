@@ -29,6 +29,7 @@ $fill-color-default: color.mix(theme-variables.prop-value(on-surface), theme-var
 $ink-color-default: rgba(theme-variables.prop-value(on-surface), .87) !default;
 $horizontal-padding: 12px !default;
 $height: 32px !default;
+$shape-radius: 50% !default;
 
 $minimum-height: 24px !default;
 $maximum-height: $height !default;

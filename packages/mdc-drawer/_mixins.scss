@@ -21,6 +21,7 @@
 //
 
 @use "sass:list";
+@use "sass:meta";
 @use "@material/feature-targeting/functions";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/animation/functions" as functions2;
@@ -54,8 +55,8 @@
     @include item-text-ink-color(variables.$item-inactive-ink-color, $query: $query);
     @include item-activated-icon-ink-color(variables.$item-activated-ink-color, $query: $query);
     @include item-activated-text-ink-color(variables.$item-activated-ink-color, $query: $query);
-    @include shape-radius(large, $query: $query);
-    @include item-shape-radius(4px, $query: $query);
+    @include shape-radius(variables.$shape-radius, $query: $query);
+    @include item-shape-radius(variables.$item-shape-radius, $query: $query);
     @include z-index(variables.$z-index, $query: $query);
     @include width(variables.$width, $query: $query);
 
@@ -281,9 +282,11 @@
 }
 
 @mixin shape-radius($radius, $query: functions.all()) {
-  @if list.length($radius) > 2 {
+  // Check type since $radius may be a custom property Map
+  $is-list: meta.type-of($radius) == "list";
+  @if $is-list and list.length($radius) > 2 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
-  } @else if list.length($radius) == 2 {
+  } @else if $is-list and list.length($radius) == 2 {
     $radius: 0 list.nth($radius, 1) list.nth($radius, 2) 0;
   } @else {
     $radius: 0 $radius $radius 0;

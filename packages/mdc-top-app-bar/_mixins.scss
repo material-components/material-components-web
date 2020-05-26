@@ -21,6 +21,7 @@
 //
 
 @use "sass:list";
+@use "sass:meta";
 @use "@material/animation/variables" as animation-variables;
 @use "@material/ripple/mixins" as ripple-mixins;
 @use "@material/theme/variables" as theme-variables; // for mdc-theme-accessible-ink-color
@@ -56,7 +57,7 @@
 }
 
 @mixin short-shape-radius($radius, $rtl-reflexive: true) {
-  @if list.length($radius) > 1 {
+  @if meta.type-of($radius) == "list" and list.length($radius) > 1 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   }
 
@@ -66,8 +67,9 @@
 
   #{$selector} {
     @include shape-mixins.radius(
-      functions.resolve-percentage-radius(variables.$dense-row-height, $radius),
-      $rtl-reflexive
+      $radius,
+      $rtl-reflexive,
+      $component-height: variables.$dense-row-height
     );
   }
 }
