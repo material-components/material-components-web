@@ -67,7 +67,7 @@ describe('MDCRipple', () => {
        const root = getFixture();
        const component = MDCRipple.attachTo(root);
        expect(Object.keys(MDCRipple.createAdapter({root})))
-           .toEqual(Object.keys(component['foundation_']['adapter_']));
+           .toEqual(Object.keys(component['foundation']['adapter_']));
      });
 
   function setupTest() {
@@ -91,23 +91,23 @@ describe('MDCRipple', () => {
 
   it('activate() delegates to the foundation', () => {
     const {component} = setupTest();
-    component['foundation_'].activate = jasmine.createSpy('');
+    component['foundation'].activate = jasmine.createSpy('');
     component.activate();
-    expect(component['foundation_'].activate).toHaveBeenCalled();
+    expect(component['foundation'].activate).toHaveBeenCalled();
   });
 
   it('deactivate() delegates to the foundation', () => {
     const {component} = setupTest();
-    component['foundation_'].deactivate = jasmine.createSpy('');
+    component['foundation'].deactivate = jasmine.createSpy('');
     component.deactivate();
-    expect(component['foundation_'].deactivate).toHaveBeenCalled();
+    expect(component['foundation'].deactivate).toHaveBeenCalled();
   });
 
   it('layout() delegates to the foundation', () => {
     const {component} = setupTest();
-    component['foundation_'].layout = jasmine.createSpy('');
+    component['foundation'].layout = jasmine.createSpy('');
     component.layout();
-    expect(component['foundation_'].layout).toHaveBeenCalled();
+    expect(component['foundation'].layout).toHaveBeenCalled();
   });
 
   it('adapter#browserSupportsCssVars delegates to util', () => {
@@ -259,7 +259,7 @@ describe('MDCRipple', () => {
 
   it(`handleFocus() adds class ${cssClasses.BG_FOCUSED}`, () => {
     const {root, component} = setupTest();
-    component['foundation_'].handleFocus();
+    component['foundation'].handleFocus();
     jasmine.clock().tick(1);
     expect(root.classList.contains(cssClasses.BG_FOCUSED)).toBe(true);
   });
@@ -267,7 +267,7 @@ describe('MDCRipple', () => {
   it(`handleBlur() removes class ${cssClasses.BG_FOCUSED}`, () => {
     const {root, component} = setupTest();
     root.classList.add(cssClasses.BG_FOCUSED);
-    component['foundation_'].handleBlur();
+    component['foundation'].handleBlur();
     jasmine.clock().tick(1);
     expect(root.classList.contains(cssClasses.BG_FOCUSED)).toBe(false);
   });

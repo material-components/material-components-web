@@ -197,14 +197,14 @@ describe('MDCTopAppBar', () => {
        const root = fixture.querySelector(strings.ROOT_SELECTOR) as HTMLElement;
        const component = new MDCTopAppBar(
            root, undefined, () => new FakeRipple());
-       expect((component as any).foundation_ instanceof MDCTopAppBarFoundation)
+       expect((component as any).foundation instanceof MDCTopAppBarFoundation)
            .toBe(true);
        expect(
-           (component as any).foundation_ instanceof
+           (component as any).foundation instanceof
            MDCShortTopAppBarFoundation)
            .toBe(false);
        expect(
-           (component as any).foundation_ instanceof
+           (component as any).foundation instanceof
            MDCFixedTopAppBarFoundation)
            .toBe(false);
      });
@@ -217,11 +217,11 @@ describe('MDCTopAppBar', () => {
        const component = new MDCTopAppBar(
            root, undefined, () => new FakeRipple());
        expect(
-           (component as any).foundation_ instanceof
+           (component as any).foundation instanceof
            MDCShortTopAppBarFoundation)
            .toBe(false);
        expect(
-           (component as any).foundation_ instanceof
+           (component as any).foundation instanceof
            MDCFixedTopAppBarFoundation)
            .toBe(true);
      });
@@ -234,11 +234,11 @@ describe('MDCTopAppBar', () => {
        const component = new MDCTopAppBar(
            root, undefined, () => new FakeRipple());
        expect(
-           (component as any).foundation_ instanceof
+           (component as any).foundation instanceof
            MDCShortTopAppBarFoundation)
            .toBe(true);
        expect(
-           (component as any).foundation_ instanceof
+           (component as any).foundation instanceof
            MDCFixedTopAppBarFoundation)
            .toBe(false);
      });

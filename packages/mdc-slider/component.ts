@@ -40,43 +40,43 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   private trackMarkerContainer_!: HTMLElement;  // assigned in initialize()
 
   get value(): number {
-    return this.foundation_.getValue();
+    return this.foundation.getValue();
   }
 
   set value(value: number) {
-    this.foundation_.setValue(value);
+    this.foundation.setValue(value);
   }
 
   get min(): number {
-    return this.foundation_.getMin();
+    return this.foundation.getMin();
   }
 
   set min(min: number) {
-    this.foundation_.setMin(min);
+    this.foundation.setMin(min);
   }
 
   get max(): number {
-    return this.foundation_.getMax();
+    return this.foundation.getMax();
   }
 
   set max(max: number) {
-    this.foundation_.setMax(max);
+    this.foundation.setMax(max);
   }
 
   get step(): number {
-    return this.foundation_.getStep();
+    return this.foundation.getStep();
   }
 
   set step(step: number) {
-    this.foundation_.setStep(step);
+    this.foundation.setStep(step);
   }
 
   get disabled(): boolean {
-    return this.foundation_.isDisabled();
+    return this.foundation.isDisabled();
   }
 
   set disabled(disabled: boolean) {
-    this.foundation_.setDisabled(disabled);
+    this.foundation.setDisabled(disabled);
   }
 
   initialize() {
@@ -181,11 +181,11 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     this.disabled =
         (this.root.hasAttribute(strings.ARIA_DISABLED) &&
          this.root.getAttribute(strings.ARIA_DISABLED) !== 'false');
-    this.foundation_.setupTrackMarker();
+    this.foundation.setupTrackMarker();
   }
 
   layout() {
-    this.foundation_.layout();
+    this.foundation.layout();
   }
 
   stepUp(amount = (this.step || 1)) {

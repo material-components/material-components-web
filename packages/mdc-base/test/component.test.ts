@@ -72,7 +72,7 @@ describe('MDCComponent', () => {
        expect(f._root).toEqual(root);
      });
 
-  it('takes an optional foundation constructor param and assigns it to the "foundation_" property',
+  it('takes an optional foundation constructor param and assigns it to the "foundation" property',
      () => {
        const root = document.createElement('div');
        const foundation = {init: () => {}} as any;
@@ -80,7 +80,7 @@ describe('MDCComponent', () => {
        expect(f._foundation).toEqual(foundation);
      });
 
-  it('assigns the result of "getDefaultFoundation()" to "foundation_" by default',
+  it('assigns the result of "getDefaultFoundation()" to "foundation" by default',
      () => {
        const root = document.createElement('div');
        const f = new FakeComponent(root);

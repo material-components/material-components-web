@@ -373,7 +373,7 @@ describe('MDCTextField', () => {
         () => lineRipple, () => helperText, () => characterCounter, () => icon,
         () => label, () => outline);
 
-    const foundation = component['foundation_'];
+    const foundation = component['foundation'];
     const adapter = foundation['adapter_'];
 
     return {
@@ -659,7 +659,7 @@ describe('MDCTextField', () => {
          }
        });
 
-       component['foundation_']['adapter_']
+       component['foundation']['adapter_']
            .registerValidationAttributeChangeHandler(handler);
        (root.querySelector('.mdc-text-field__input') as HTMLInputElement)
            .required = true;
@@ -672,7 +672,7 @@ describe('MDCTextField', () => {
        const observer = new MutationObserver(() => undefined);
        observer.disconnect = disconnect;
 
-       component['foundation_']['adapter_']
+       component['foundation']['adapter_']
            .deregisterValidationAttributeChangeHandler(observer);
        expect(disconnect).toHaveBeenCalled();
      });

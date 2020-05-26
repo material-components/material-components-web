@@ -586,9 +586,9 @@ describe('MDCDialog', () => {
 
   it('#layout proxies to foundation', () => {
     const {component} = setupTest();
-    (component as any).foundation_.layout =
-        jasmine.createSpy('component.foundation_.layout');
+    (component as any).foundation.layout =
+        jasmine.createSpy('component.foundation.layout');
     component.layout();
-    expect((component as any).foundation_.layout).toHaveBeenCalled();
+    expect((component as any).foundation.layout).toHaveBeenCalled();
   });
 });

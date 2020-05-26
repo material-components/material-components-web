@@ -61,7 +61,7 @@ describe('MDCTabScroller', () => {
   it('#destroy() calls super.destroy()', () => {
     const {component} = setupTest();
     const mockFoundation = jasmine.createSpyObj('foundation', ['destroy']);
-    (component as any).foundation_ = mockFoundation;
+    (component as any).foundation = mockFoundation;
     component.destroy();
     expect(mockFoundation.destroy).toHaveBeenCalledTimes(1);
   });

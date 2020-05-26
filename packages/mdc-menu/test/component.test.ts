@@ -360,7 +360,7 @@ describe('MDCMenu', () => {
 
     document.body.appendChild(root);
     (component as any)
-        .list_.foundation_.handleKeydown(
+        .list_.foundation.handleKeydown(
             fakeEnterKeyEvent, /* isRootListItem */ true,
             /* listItemIndex */ 0);
     document.body.removeChild(root);

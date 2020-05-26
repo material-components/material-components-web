@@ -152,16 +152,16 @@ describe('MDCCheckbox', () => {
 
   it('checkbox change event calls #foundation.handleChange', () => {
     const {cb, component} = setupTest();
-    (component as any).foundation_.handleChange = jasmine.createSpy();
+    (component as any).foundation.handleChange = jasmine.createSpy();
     emitEvent(cb, 'change');
-    expect((component as any).foundation_.handleChange).toHaveBeenCalled();
+    expect((component as any).foundation.handleChange).toHaveBeenCalled();
   });
 
   it('root animationend event calls #foundation.handleAnimationEnd', () => {
     const {root, component} = setupTest();
-    (component as any).foundation_.handleAnimationEnd = jasmine.createSpy();
+    (component as any).foundation.handleAnimationEnd = jasmine.createSpy();
     emitEvent(root, 'animationend');
-    expect((component as any).foundation_.handleAnimationEnd)
+    expect((component as any).foundation.handleAnimationEnd)
         .toHaveBeenCalled();
   });
 
@@ -180,18 +180,18 @@ describe('MDCCheckbox', () => {
 
   it('checkbox change event handler is destroyed on #destroy', () => {
     const {cb, component} = setupTest();
-    (component as any).foundation_.handleChange = jasmine.createSpy();
+    (component as any).foundation.handleChange = jasmine.createSpy();
     component.destroy();
     emitEvent(cb, 'change');
-    expect((component as any).foundation_.handleChange).not.toHaveBeenCalled();
+    expect((component as any).foundation.handleChange).not.toHaveBeenCalled();
   });
 
   it('root animationend event handler is destroyed on #destroy', () => {
     const {root, component} = setupTest();
-    (component as any).foundation_.handleAnimationEnd = jasmine.createSpy();
+    (component as any).foundation.handleAnimationEnd = jasmine.createSpy();
     component.destroy();
     emitEvent(root, 'animationend');
-    expect((component as any).foundation_.handleAnimationEnd)
+    expect((component as any).foundation.handleAnimationEnd)
         .not.toHaveBeenCalled();
   });
 

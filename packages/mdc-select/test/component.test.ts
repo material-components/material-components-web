@@ -469,11 +469,11 @@ describe('MDCSelect', () => {
 
   it('#set helperTextContent calls foundation.setHelperTextContent', () => {
     const {component} = setupTest();
-    (component as any).foundation_.setHelperTextContent = jasmine.createSpy('');
+    (component as any).foundation.setHelperTextContent = jasmine.createSpy('');
     component.helperTextContent = 'hello_world';
-    expect((component as any).foundation_.setHelperTextContent)
+    expect((component as any).foundation.setHelperTextContent)
         .toHaveBeenCalledWith('hello_world');
-    expect((component as any).foundation_.setHelperTextContent)
+    expect((component as any).foundation.setHelperTextContent)
         .toHaveBeenCalledTimes(1);
   });
 
@@ -1295,18 +1295,18 @@ describe('MDCSelect', () => {
 
   it('#destroy removes the click listener', () => {
     const {component, anchor} = setupTest();
-    (component as any).foundation_.handleClick =
+    (component as any).foundation.handleClick =
         jasmine.createSpy('handleClick');
     component.destroy();
     emitEvent(anchor, 'click');
-    expect((component as any).foundation_.handleClick).not.toHaveBeenCalled();
+    expect((component as any).foundation.handleClick).not.toHaveBeenCalled();
   });
 
   it('click on the anchor calls foundation.handleClick()', () => {
     const {component, anchor} = setupTest();
-    (component as any).foundation_.handleClick = jasmine.createSpy('');
+    (component as any).foundation.handleClick = jasmine.createSpy('');
     emitEvent(anchor, 'click');
-    expect((component as any).foundation_.handleClick).toHaveBeenCalled();
+    expect((component as any).foundation.handleClick).toHaveBeenCalled();
   });
 
   it('click on the anchor focuses on the anchor element', () => {
