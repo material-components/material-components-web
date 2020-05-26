@@ -106,7 +106,7 @@ To meet this requirement, add the following to your button:
 <img src="images/outlined-button.png" alt="Outlined button example">
 
 ```html
-<button class="mdc-button--outlined">
+<button class="mdc-button mdc-button--outlined">
   <div class="mdc-button__ripple"></div>
   <span class="mdc-button__label">Outlined Button</span>
 </button>
