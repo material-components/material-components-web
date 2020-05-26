@@ -66,7 +66,7 @@ describe('MDCRipple', () => {
      () => {
        const root = getFixture();
        const component = MDCRipple.attachTo(root);
-       expect(Object.keys(MDCRipple.createAdapter({root_: root})))
+       expect(Object.keys(MDCRipple.createAdapter({root})))
            .toEqual(Object.keys(component['foundation_']['adapter_']));
      });
 

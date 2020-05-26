@@ -178,7 +178,7 @@ describe('MDCTextField', () => {
        const root = getFixture();
        const component = new MDCTextField(
            root, undefined, (el: HTMLElement) => new FakeRipple(el));
-       expect(component.ripple!.root_).toEqual(root);
+       expect(component.root).toEqual(root);
      });
 
   it('#constructor does not instantiate a ripple when ${cssClasses.OUTLINED} class is present',
@@ -711,7 +711,7 @@ describe('MDCTextField', () => {
     const icon = root.querySelector('.mdc-text-field__icon') as HTMLElement;
     const component = new MDCTextField(root);
     document.body.appendChild(root);
-    component.root_.click();
+    root.click();
     const input = (component as any).input_ as HTMLInputElement;
     expect(document.activeElement).toBe(input, 'input should be focused');
     input.blur();

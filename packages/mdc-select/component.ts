@@ -328,7 +328,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
-      ...MDCRipple.createAdapter({root_: this.selectAnchor}),
+      ...MDCRipple.createAdapter({root: this.selectAnchor}),
       registerInteractionHandler: (evtType, handler) => {
         this.selectAnchor.addEventListener(evtType, handler);
       },
