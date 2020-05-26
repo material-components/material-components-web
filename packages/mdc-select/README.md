@@ -47,7 +47,7 @@ The select requires that you set the `width` of the `mdc-select` element. This i
 ### HTML
 
 ```html
-<div class="mdc-select demo-width-class">
+<div class="mdc-select mdc-select--filled demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <span class="mdc-select__selected-text"></span>
@@ -237,7 +237,7 @@ to set the selected item. The select also needs the text from the selected eleme
 `mdc-select__selected-text` element.
 
 ```html
-<div class="mdc-select demo-width-class">
+<div class="mdc-select mdc-select--filled demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <span class="mdc-select__selected-text">Vegetables</span>
@@ -297,7 +297,7 @@ To style a select menu as required and enable validation, add the `mdc-select--r
 and set the `aria-required` attribute on the `mdc-select__anchor` element to be `"true"`.
 
 ```html
-<div class="mdc-select mdc-select--required">
+<div class="mdc-select mdc-select--filled mdc-select--required">
   <span class="mdc-select__ripple"></span>
   <div class="mdc-select__anchor" aria-required="true">
     <span class="mdc-select__selected-text"></span>
@@ -338,7 +338,7 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
 `aria-disabled` attribute on the `mdc-select__selected-text` element to be `"true"`.
 
 ```html
-<div class="mdc-select mdc-select--disabled">
+<div class="mdc-select mdc-select--filled mdc-select--disabled">
   <div class="mdc-select__anchor" aria-disabled="true">
     <span class="mdc-select__ripple"></span>
     <span class="mdc-select__selected-text"></span>
@@ -380,7 +380,7 @@ Disabled list items are removed from the list items index and are ignored entire
 programmatically select a disabled list item.
 
 ```html
-<div class="mdc-select">
+<div class="mdc-select mdc-select--filled">
   <div class="mdc-select__anchor">
     ...
   </div>
@@ -422,7 +422,7 @@ structure.
 #### Filled
 
 ```html
-<div class="mdc-select mdc-select--no-label demo-width-class">
+<div class="mdc-select mdc-select--filled mdc-select--no-label demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <span class="mdc-select__selected-text"></span>

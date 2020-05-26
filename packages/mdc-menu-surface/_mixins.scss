@@ -92,10 +92,14 @@
 
 // Used by filled variants of GM components to conditionally flatten the top
 // corners of the menu.
-@mixin flatten-top-when-opened-below {
+@mixin flatten-top-when-opened-below($query: functions.all()) {
   .mdc-menu-surface--is-open-below {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
+    $feat-structure: functions.create-target($query, structure);
+
+    @include feature-targeting-mixins.targets($feat-structure) {
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+    }
   }
 }
 

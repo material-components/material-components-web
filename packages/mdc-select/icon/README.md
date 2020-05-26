@@ -53,10 +53,10 @@ Leading icons can be applied to default or `mdc-select--outlined` Selects. To ad
 
 ### Leading icon
 
-In select:
+In filled select:
 
 ```html
-<div class="mdc-select mdc-select--with-leading-icon">
+<div class="mdc-select mdc-select--filled mdc-select--with-leading-icon">
   <div class="mdc-select__anchor">
     <i class="material-icons mdc-select__icon" tabindex="0" role="button">event</i>
     ...

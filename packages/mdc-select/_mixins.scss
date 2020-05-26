@@ -29,6 +29,7 @@
 @use "@material/floating-label/mixins" as floating-label-mixins;
 @use "@material/line-ripple/mixins" as line-ripple-mixins;
 @use "@material/menu/mixins" as menu-mixins;
+@use "@material/menu-surface/mixins" as menu-surface-mixins;
 @use "@material/notched-outline/mixins" as notched-outline-mixins;
 @use "@material/notched-outline/variables" as notched-outline-variables;
 @use "@material/ripple/mixins" as ripple-mixins;
@@ -191,6 +192,10 @@
 
   .mdc-select--with-leading-icon {
     @include with-leading-icon_($query: $query);
+  }
+
+  .mdc-select--filled {
+    @include menu-surface-mixins.flatten-top-when-opened-below($query: $query);
   }
 
   .mdc-select__menu .mdc-list .mdc-list-item--selected {

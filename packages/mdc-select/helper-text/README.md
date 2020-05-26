@@ -42,7 +42,7 @@ We recommend doing this as well as it will help indicate to assistive devices th
 the display of the helper text is dependent on the interaction with the MDCSelect component.
 
 ```html
-<div class="mdc-select">
+<div class="mdc-select mdc-select--filled">
   <div class="mdc-select__anchor"
        role="button"
        aria-haspopup="listbox"
