@@ -31,6 +31,10 @@
 @mixin icon-core-styles($query: feature-targeting-functions.all()) {
   .mdc-text-field__icon {
     @include icon_($query: $query);
+
+    svg {
+      @include _icon-svg($query: $query);
+    }
   }
 
   .mdc-text-field__icon--leading {
@@ -103,6 +107,17 @@
       cursor: default;
       pointer-events: none;
     }
+  }
+}
+
+@mixin _icon-svg($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    // SVG children can cause misalignment when displayed as inline since
+    // line-height will be inherited and cause additional vertical space.
+    // Setting the display to block prevents this.
+    display: block;
   }
 }
 
