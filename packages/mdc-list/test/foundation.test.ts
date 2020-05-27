@@ -1550,6 +1550,33 @@ describe('MDCListFoundation', () => {
       expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalled();
     });
 
+    it('ignores disabled items properly', () => {
+      const {foundation, mockAdapter} = setupTypeaheadTest();
+
+      mockAdapter.isRootFocused.and.returnValue(false);
+      const event = {
+        key: 'Z',
+        preventDefault: jasmine.createSpy(),
+        target: {tagName: 'span'}
+      };
+      // start with focus on first item
+      foundation.focusedItemIndex_ = 0;
+
+      mockAdapter.listItemAtIndexHasClass
+          .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+          .and.returnValue(true);
+
+      foundation.handleKeydown(event, true, 0);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(5);
+      jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+
+      mockAdapter.listItemAtIndexHasClass
+          .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+          .and.returnValue(false);
+      foundation.handleKeydown(event, true, 0);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(1);
+    });
+
     it('programmatic typeahead invocation returns correct matching items',
        () => {
          const {foundation, mockAdapter} = setupTypeaheadTest();
