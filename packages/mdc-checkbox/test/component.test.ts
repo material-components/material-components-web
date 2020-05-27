@@ -211,14 +211,14 @@ describe('MDCCheckbox', () => {
 
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBeTruthy();
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBeFalsy();
   });
 
@@ -226,7 +226,7 @@ describe('MDCCheckbox', () => {
      () => {
        const {cb, component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.setNativeControlAttr('aria-checked', 'mixed');
+           .adapter.setNativeControlAttr('aria-checked', 'mixed');
        expect(cb.getAttribute('aria-checked')).toEqual('mixed');
      });
 
@@ -235,7 +235,7 @@ describe('MDCCheckbox', () => {
        const {cb, component} = setupTest();
        cb.setAttribute('aria-checked', 'mixed');
        (component.getDefaultFoundation() as any)
-           .adapter_.removeNativeControlAttr('aria-checked');
+           .adapter.removeNativeControlAttr('aria-checked');
        expect(cb.hasAttribute('aria-checked')).toBe(false);
      });
 
@@ -250,7 +250,7 @@ describe('MDCCheckbox', () => {
          configurable: true,
        });
 
-       (component.getDefaultFoundation() as any).adapter_.forceLayout();
+       (component.getDefaultFoundation() as any).adapter.forceLayout();
        expect(mockGetter).toHaveBeenCalled();
      });
 
@@ -259,7 +259,7 @@ describe('MDCCheckbox', () => {
        const {root, component} = setupTest();
        document.body.appendChild(root);
        expect(
-           (component.getDefaultFoundation() as any).adapter_.isAttachedToDOM())
+           (component.getDefaultFoundation() as any).adapter.isAttachedToDOM())
            .toBeTruthy();
        document.body.removeChild(root);
      });
@@ -268,7 +268,7 @@ describe('MDCCheckbox', () => {
      () => {
        const {component} = setupTest();
        expect(
-           (component.getDefaultFoundation() as any).adapter_.isAttachedToDOM())
+           (component.getDefaultFoundation() as any).adapter.isAttachedToDOM())
            .toBeFalsy();
      });
 
@@ -277,7 +277,7 @@ describe('MDCCheckbox', () => {
        const {cb, component} = setupTest();
        cb.indeterminate = true;
        expect(
-           (component.getDefaultFoundation() as any).adapter_.isIndeterminate())
+           (component.getDefaultFoundation() as any).adapter.isIndeterminate())
            .toBe(true);
      });
 
@@ -286,28 +286,28 @@ describe('MDCCheckbox', () => {
        const {cb, component} = setupTest();
        cb.indeterminate = false;
        expect(
-           (component.getDefaultFoundation() as any).adapter_.isIndeterminate())
+           (component.getDefaultFoundation() as any).adapter.isIndeterminate())
            .toBe(false);
      });
 
   it('#adapter.isChecked returns true when checkbox is checked', () => {
     const {cb, component} = setupTest();
     cb.checked = true;
-    expect((component.getDefaultFoundation() as any).adapter_.isChecked())
+    expect((component.getDefaultFoundation() as any).adapter.isChecked())
         .toBe(true);
   });
 
   it('#adapter.isChecked returns false when checkbox is not checked', () => {
     const {cb, component} = setupTest();
     cb.checked = false;
-    expect((component.getDefaultFoundation() as any).adapter_.isChecked())
+    expect((component.getDefaultFoundation() as any).adapter.isChecked())
         .toBe(false);
   });
 
   it('#adapter.hasNativeControl returns true when checkbox exists', () => {
     const {component} = setupTest();
     expect(
-        (component.getDefaultFoundation() as any).adapter_.hasNativeControl())
+        (component.getDefaultFoundation() as any).adapter.hasNativeControl())
         .toBe(true);
   });
 
@@ -315,7 +315,7 @@ describe('MDCCheckbox', () => {
      () => {
        const {cb, component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.setNativeControlDisabled(true);
+           .adapter.setNativeControlDisabled(true);
        expect(cb.disabled).toBe(true);
      });
 
@@ -323,7 +323,7 @@ describe('MDCCheckbox', () => {
      () => {
        const {cb, component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.setNativeControlDisabled(false);
+           .adapter.setNativeControlDisabled(false);
        expect(cb.disabled).toBe(false);
      });
 });

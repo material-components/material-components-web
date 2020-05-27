@@ -113,14 +113,14 @@ describe('MDCRadio', () => {
 
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
 
@@ -131,7 +131,7 @@ describe('MDCRadio', () => {
            root.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
 
        (component.getDefaultFoundation() as any)
-           .adapter_.setNativeControlDisabled(true);
+           .adapter.setNativeControlDisabled(true);
        expect(radio.disabled).toBe(true);
      });
 
@@ -143,7 +143,7 @@ describe('MDCRadio', () => {
        radio.disabled = true;
 
        (component.getDefaultFoundation() as any)
-           .adapter_.setNativeControlDisabled(false);
+           .adapter.setNativeControlDisabled(false);
        expect(radio.disabled).toBe(false);
      });
 });

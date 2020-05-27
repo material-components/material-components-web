@@ -201,24 +201,24 @@ describe('MDCDrawer', () => {
 
   it('adapter#addClass adds class to drawer', () => {
     const {component, drawer} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('test-class');
+    (component.getDefaultFoundation() as any).adapter.addClass('test-class');
     expect(drawer.classList.contains('test-class')).toBe(true);
   });
 
   it('adapter#removeClass removes class from drawer', () => {
     const {component, drawer} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('test-class');
+    (component.getDefaultFoundation() as any).adapter.addClass('test-class');
 
     (component.getDefaultFoundation() as any)
-        .adapter_.removeClass('test-class');
+        .adapter.removeClass('test-class');
     expect(drawer.classList.contains('test-class')).toBe(false);
   });
 
   it('adapter#hasClass returns true when class is on drawer element', () => {
     const {component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('test-class');
+    (component.getDefaultFoundation() as any).adapter.addClass('test-class');
     const hasClass = (component.getDefaultFoundation() as any)
-                         .adapter_.hasClass('test-class');
+                         .adapter.hasClass('test-class');
     expect(hasClass).toBe(true);
   });
 
@@ -226,7 +226,7 @@ describe('MDCDrawer', () => {
      () => {
        const {component} = setupTest();
        const hasClass = (component.getDefaultFoundation() as any)
-                            .adapter_.hasClass('test-class');
+                            .adapter.hasClass('test-class');
        expect(hasClass).toBe(false);
      });
 
@@ -236,7 +236,7 @@ describe('MDCDrawer', () => {
        const mockEventTarget = getFixture(`<div class="foo">bar</div>`);
 
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.elementHasClass(mockEventTarget, 'foo'))
+                  .adapter.elementHasClass(mockEventTarget, 'foo'))
            .toBe(true);
      });
 
@@ -247,12 +247,12 @@ describe('MDCDrawer', () => {
     document.body.appendChild(root);
     button.focus();
 
-    (component.getDefaultFoundation() as any).adapter_.saveFocus();
+    (component.getDefaultFoundation() as any).adapter.saveFocus();
     (root.querySelector(
          `.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`) as
      HTMLElement)
         .focus();
-    (component.getDefaultFoundation() as any).adapter_.restoreFocus();
+    (component.getDefaultFoundation() as any).adapter.restoreFocus();
 
     expect(button).toEqual(document.activeElement as HTMLElement);
     document.body.removeChild(button);
@@ -269,9 +269,9 @@ describe('MDCDrawer', () => {
        document.body.appendChild(root);
        navButtonEl.focus();
 
-       (component.getDefaultFoundation() as any).adapter_.saveFocus();
+       (component.getDefaultFoundation() as any).adapter.saveFocus();
        otherButtonEl.focus();
-       (component.getDefaultFoundation() as any).adapter_.restoreFocus();
+       (component.getDefaultFoundation() as any).adapter.restoreFocus();
 
        expect(navButtonEl).not.toBe(document.activeElement as HTMLElement);
        document.body.removeChild(navButtonEl);
@@ -292,7 +292,7 @@ describe('MDCDrawer', () => {
                `.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`) as
            HTMLElement;
        navItem.focus();
-       (component.getDefaultFoundation() as any).adapter_.restoreFocus();
+       (component.getDefaultFoundation() as any).adapter.restoreFocus();
 
        expect(navItem).toEqual(document.activeElement as HTMLElement);
        document.body.removeChild(button);
@@ -302,7 +302,7 @@ describe('MDCDrawer', () => {
   it('adapter#trapFocus traps focus on root element', () => {
     const {component, mockFocusTrapInstance} =
         setupTestWithMocks({variantClass: cssClasses.MODAL});
-    (component.getDefaultFoundation() as any).adapter_.trapFocus();
+    (component.getDefaultFoundation() as any).adapter.trapFocus();
 
     expect(mockFocusTrapInstance.trapFocus).toHaveBeenCalled();
   });
@@ -311,7 +311,7 @@ describe('MDCDrawer', () => {
      () => {
        const {component, mockFocusTrapInstance} =
            setupTestWithMocks({variantClass: cssClasses.MODAL});
-       (component.getDefaultFoundation() as any).adapter_.releaseFocus();
+       (component.getDefaultFoundation() as any).adapter.releaseFocus();
 
        expect(mockFocusTrapInstance.releaseFocus).toHaveBeenCalled();
      });
@@ -322,7 +322,7 @@ describe('MDCDrawer', () => {
     const handler = jasmine.createSpy('openHandler');
 
     component.listen(strings.OPEN_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyOpen();
+    (component.getDefaultFoundation() as any).adapter.notifyOpen();
 
     expect(handler).toHaveBeenCalledWith(jasmine.anything());
   });
@@ -333,7 +333,7 @@ describe('MDCDrawer', () => {
     const handler = jasmine.createSpy('closeHandler');
 
     component.listen(strings.CLOSE_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyClose();
+    (component.getDefaultFoundation() as any).adapter.notifyClose();
 
     expect(handler).toHaveBeenCalledWith(jasmine.anything());
   });
@@ -343,7 +343,7 @@ describe('MDCDrawer', () => {
        const {component, root} = setupTest();
        document.body.appendChild(root);
        (component.getDefaultFoundation() as any)
-           .adapter_.focusActiveNavigationItem();
+           .adapter.focusActiveNavigationItem();
 
        const activatedNavigationItemEl = root.querySelector(
            `.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
@@ -363,7 +363,7 @@ describe('MDCDrawer', () => {
        activatedNavigationItemEl.classList.remove(
            MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
        (component.getDefaultFoundation() as any)
-           .adapter_.focusActiveNavigationItem();
+           .adapter.focusActiveNavigationItem();
 
        expect(document.activeElement).toEqual(prevActiveElement);
        document.body.removeChild(root);

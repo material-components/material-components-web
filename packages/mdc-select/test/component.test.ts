@@ -707,14 +707,14 @@ describe('MDCSelect', () => {
 
   it('adapter#addClass adds a class to the root element', () => {
     const {component, fixture} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(fixture.classList.contains('foo')).toBe(true);
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {component, fixture} = setupTest();
     fixture.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(fixture.classList.contains('foo')).toBe(false);
   });
 
@@ -723,7 +723,7 @@ describe('MDCSelect', () => {
        const {component, fixture} = setupTest();
        fixture.classList.add('foo');
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasClass('foo'))
+           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
@@ -772,7 +772,7 @@ describe('MDCSelect', () => {
     const component = new MDCSelect(fixture);
     expect(
         () => (component.getDefaultFoundation() as any)
-                  .adapter_.floatLabel('foo'))
+                  .adapter.floatLabel('foo'))
         .not.toThrow();
   });
 
@@ -823,25 +823,25 @@ describe('MDCSelect', () => {
        const component = new MDCSelect(fixture);
        expect(
            () => (component.getDefaultFoundation() as any)
-                     .adapter_.activateBottomLine())
+                     .adapter.activateBottomLine())
            .not.toThrow();
        expect(
            () => (component.getDefaultFoundation() as any)
-                     .adapter_.deactivateBottomLine())
+                     .adapter.deactivateBottomLine())
            .not.toThrow();
      });
 
   it('adapter#floatLabel adds a class to the label', () => {
     const {component, label} = setupTest();
 
-    (component.getDefaultFoundation() as any).adapter_.floatLabel('foo');
+    (component.getDefaultFoundation() as any).adapter.floatLabel('foo');
     expect(label.float).toHaveBeenCalledWith('foo');
   });
 
   it('adapter#activateBottomLine adds active class to the bottom line', () => {
     const {component, bottomLine} = setupTest();
 
-    (component.getDefaultFoundation() as any).adapter_.activateBottomLine();
+    (component.getDefaultFoundation() as any).adapter.activateBottomLine();
     expect(bottomLine.activate).toHaveBeenCalled();
   });
 
@@ -850,7 +850,7 @@ describe('MDCSelect', () => {
        const {component, bottomLine} = setupTest();
 
        (component.getDefaultFoundation() as any)
-           .adapter_.deactivateBottomLine();
+           .adapter.deactivateBottomLine();
        expect(bottomLine.deactivate).toHaveBeenCalled();
      });
 
@@ -859,7 +859,7 @@ describe('MDCSelect', () => {
     const {component, outline} = setupTest(hasOutline);
 
     (component.getDefaultFoundation() as any)
-        .adapter_.notchOutline(LABEL_WIDTH);
+        .adapter.notchOutline(LABEL_WIDTH);
     expect(outline.notch).toHaveBeenCalledWith(LABEL_WIDTH);
     expect(outline.notch).toHaveBeenCalledTimes(1);
   });
@@ -870,14 +870,14 @@ describe('MDCSelect', () => {
        const {component, outline} = setupTest(hasOutline);
 
        (component.getDefaultFoundation() as any)
-           .adapter_.notchOutline(LABEL_WIDTH);
+           .adapter.notchOutline(LABEL_WIDTH);
        expect(outline.notch).not.toHaveBeenCalledWith(LABEL_WIDTH);
      });
 
   it('adapter#closeOutline closes the outline if there is an outline', () => {
     const hasOutline = true;
     const {component, outline} = setupTest(hasOutline);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     adapter.closeOutline();
     expect(outline.closeNotch).toHaveBeenCalled();
   });
@@ -885,7 +885,7 @@ describe('MDCSelect', () => {
   it('adapter#closeOutline does nothing if there is no outline', () => {
     const hasOutline = false;
     const {component, outline} = setupTest(hasOutline);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.closeOutline();
     expect(outline.closeNotch).not.toHaveBeenCalled();
@@ -893,7 +893,7 @@ describe('MDCSelect', () => {
 
   it('adapter#getLabelWidth returns the width of the label', () => {
     const {component} = setupTest();
-    expect((component.getDefaultFoundation() as any).adapter_.getLabelWidth())
+    expect((component.getDefaultFoundation() as any).adapter.getLabelWidth())
         .toEqual(LABEL_WIDTH);
   });
 
@@ -902,7 +902,7 @@ describe('MDCSelect', () => {
     const hasLabel = false;
     const {component} = setupTest(hasOutline, hasLabel);
 
-    expect((component.getDefaultFoundation() as any).adapter_.getLabelWidth())
+    expect((component.getDefaultFoundation() as any).adapter.getLabelWidth())
         .toEqual(0);
   });
 
@@ -916,7 +916,7 @@ describe('MDCSelect', () => {
 
     const index = 1;
     const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     menuItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
 
     expect(adapter.getSelectedMenuItem()).toEqual(menuItem);
@@ -935,7 +935,7 @@ describe('MDCSelect', () => {
     const valueToSet = 'foo';
 
     expect(menuItem.getAttribute(strings.VALUE_ATTR)).not.toEqual(valueToSet);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     adapter.setAttributeAtIndex(index, strings.VALUE_ATTR, valueToSet);
 
     expect(menuItem.getAttribute(strings.VALUE_ATTR)).toEqual(valueToSet);
@@ -954,7 +954,7 @@ describe('MDCSelect', () => {
     const attrToRemove = 'foo';
     menuItem.setAttribute(attrToRemove, '0');
 
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     adapter.removeAttributeAtIndex(index, attrToRemove);
 
     expect(menuItem.hasAttribute(attrToRemove)).toBe(false);
@@ -970,7 +970,7 @@ describe('MDCSelect', () => {
     document.body.appendChild(fixture);
     const index = 1;
     const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.focusMenuItemAtIndex(index);
     expect(document.activeElement).toEqual(menuItem);
@@ -985,7 +985,7 @@ describe('MDCSelect', () => {
     const {fixture, component, selectedText} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     const textToSet = 'foo';
     expect(selectedText.textContent).not.toEqual(textToSet);
@@ -1004,7 +1004,7 @@ describe('MDCSelect', () => {
     document.body.appendChild(fixture);
     anchor.tabIndex = 0;
     anchor.focus();
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     expect(adapter.isSelectAnchorFocused()).toBe(true);
     document.body.removeChild(fixture);
@@ -1018,7 +1018,7 @@ describe('MDCSelect', () => {
     const {fixture, component, anchor} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     expect(anchor.hasAttribute('foo')).toBe(false);
     anchor.setAttribute('foo', '1');
@@ -1034,7 +1034,7 @@ describe('MDCSelect', () => {
     const {fixture, component, anchor} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     expect(anchor.hasAttribute('foo')).toBe(false);
     adapter.setSelectAnchorAttr('foo', '1');
@@ -1050,7 +1050,7 @@ describe('MDCSelect', () => {
     const {fixture, component, mockMenu} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     adapter.openMenu();
     expect(mockMenu.open).toBe(true);
     document.body.removeChild(fixture);
@@ -1064,7 +1064,7 @@ describe('MDCSelect', () => {
     const {fixture, component, mockMenu} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     adapter.openMenu();
     adapter.closeMenu();
     expect(mockMenu.open).toBe(false);
@@ -1079,7 +1079,7 @@ describe('MDCSelect', () => {
     const {fixture, component, anchor} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     expect(adapter.getAnchorElement()).toEqual(anchor);
     document.body.removeChild(fixture);
@@ -1093,7 +1093,7 @@ describe('MDCSelect', () => {
     const {fixture, component, mockMenu, anchor} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.setMenuAnchorElement(anchor);
     expect(mockMenu.setAnchorElement).toHaveBeenCalledWith(anchor);
@@ -1108,7 +1108,7 @@ describe('MDCSelect', () => {
     const {fixture, component, mockMenu} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.setMenuAnchorCorner(Corner.BOTTOM_START);
     expect(mockMenu.setAnchorCorner).toHaveBeenCalledWith(Corner.BOTTOM_START);
@@ -1123,7 +1123,7 @@ describe('MDCSelect', () => {
     const {fixture, component, mockMenu} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.setMenuWrapFocus(false);
     expect(mockMenu.wrapFocus).toBe(false);
@@ -1142,7 +1142,7 @@ describe('MDCSelect', () => {
            setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
        document.body.appendChild(fixture);
 
-       const adapter = (component.getDefaultFoundation() as any).adapter_;
+       const adapter = (component.getDefaultFoundation() as any).adapter;
        expect(adapter.getMenuItemCount()).toEqual(3);
 
        document.body.removeChild(fixture);
@@ -1157,7 +1157,7 @@ describe('MDCSelect', () => {
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
 
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     expect(adapter.getMenuItemValues()).toEqual(['', 'orange', 'apple']);
 
     document.body.removeChild(fixture);
@@ -1173,7 +1173,7 @@ describe('MDCSelect', () => {
 
     const index = 1;
     const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     expect(adapter.getMenuItemAttr(menuItem, strings.VALUE_ATTR))
         .toEqual('orange');
@@ -1188,7 +1188,7 @@ describe('MDCSelect', () => {
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
 
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     const index = 1;
     const menuItem = document.querySelectorAll('.mdc-list-item')[index];
 
@@ -1207,7 +1207,7 @@ describe('MDCSelect', () => {
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
 
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     const index = 1;
     const menuItem = document.querySelectorAll('.mdc-list-item')[index];
 

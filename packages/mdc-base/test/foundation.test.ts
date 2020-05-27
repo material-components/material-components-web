@@ -46,7 +46,7 @@ describe('MDCFoundation', () => {
     expect(MDCFoundation.defaultAdapter).toEqual({});
   });
 
-  it('takes an adapter object in its constructor, assigns it to "adapter_"',
+  it('takes an adapter object in its constructor, assigns it to "adapter"',
      () => {
        const adapter = {adapter: true};
        const f = new FakeFoundation(adapter);

@@ -154,14 +154,14 @@ describe('MDCTabBar', () => {
 
   it('#adapter.scrollTo calls scrollTo of the child tab scroller', () => {
     const {component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.scrollTo(123);
+    (component.getDefaultFoundation() as any).adapter.scrollTo(123);
     expect((component as any).tabScroller_.scrollTo).toHaveBeenCalledWith(123);
   });
 
   it('#adapter.incrementScroll calls incrementScroll of the child tab scroller',
      () => {
        const {component} = setupTest();
-       (component.getDefaultFoundation() as any).adapter_.incrementScroll(123);
+       (component.getDefaultFoundation() as any).adapter.incrementScroll(123);
        expect((component as any).tabScroller_.incrementScroll)
            .toHaveBeenCalledWith(123);
      });
@@ -169,7 +169,7 @@ describe('MDCTabBar', () => {
   it('#adapter.getScrollPosition calls getScrollPosition of the child tab scroller',
      () => {
        const {component} = setupTest();
-       (component.getDefaultFoundation() as any).adapter_.getScrollPosition();
+       (component.getDefaultFoundation() as any).adapter.getScrollPosition();
        expect((component as any).tabScroller_.getScrollPosition)
            .toHaveBeenCalledTimes(1);
      });
@@ -178,7 +178,7 @@ describe('MDCTabBar', () => {
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.getScrollContentWidth();
+           .adapter.getScrollContentWidth();
        expect((component as any).tabScroller_.getScrollContentWidth)
            .toHaveBeenCalledTimes(1);
      });
@@ -188,7 +188,7 @@ describe('MDCTabBar', () => {
        const {component, root} = setupTest();
        expect(
            (component.getDefaultFoundation() as any)
-               .adapter_.getOffsetWidth() === (root as HTMLElement).offsetWidth)
+               .adapter.getOffsetWidth() === (root as HTMLElement).offsetWidth)
            .toBe(true);
      });
 
@@ -196,7 +196,7 @@ describe('MDCTabBar', () => {
     const {component, root} = setupTest();
     document.body.appendChild(root);
     document.body.setAttribute('dir', 'rtl');
-    expect((component.getDefaultFoundation() as any).adapter_.isRTL() === true)
+    expect((component.getDefaultFoundation() as any).adapter.isRTL() === true)
         .toBe(true);
     document.body.removeChild(root);
     document.body.removeAttribute('dir');
@@ -206,7 +206,7 @@ describe('MDCTabBar', () => {
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.activateTabAtIndex(2, {});
+           .adapter.activateTabAtIndex(2, {});
        expect((component as any).tabList_[2].activate).toHaveBeenCalledWith({});
        expect((component as any).tabList_[2].activate).toHaveBeenCalledTimes(1);
      });
@@ -215,7 +215,7 @@ describe('MDCTabBar', () => {
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.deactivateTabAtIndex(1);
+           .adapter.deactivateTabAtIndex(1);
        expect((component as any).tabList_[1].deactivate)
            .toHaveBeenCalledTimes(1);
      });
@@ -224,7 +224,7 @@ describe('MDCTabBar', () => {
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.getTabIndicatorClientRectAtIndex(0);
+           .adapter.getTabIndicatorClientRectAtIndex(0);
        expect((component as any).tabList_[0].computeIndicatorClientRect)
            .toHaveBeenCalledTimes(1);
      });
@@ -233,7 +233,7 @@ describe('MDCTabBar', () => {
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.getTabDimensionsAtIndex(0);
+           .adapter.getTabDimensionsAtIndex(0);
        expect((component as any).tabList_[0].computeDimensions)
            .toHaveBeenCalledTimes(1);
      });
@@ -244,7 +244,7 @@ describe('MDCTabBar', () => {
        (component as any).tabList_[1].active = true;
        expect(
            (component.getDefaultFoundation() as any)
-               .adapter_.getPreviousActiveTabIndex() === 1)
+               .adapter.getPreviousActiveTabIndex() === 1)
            .toBe(true);
      });
 
@@ -253,7 +253,7 @@ describe('MDCTabBar', () => {
     const tab = (component as any).tabList_[2];
     expect(
         (component.getDefaultFoundation() as any)
-            .adapter_.getIndexOfTabById(tab.id) === 2)
+            .adapter.getIndexOfTabById(tab.id) === 2)
         .toBe(true);
   });
 
@@ -261,7 +261,7 @@ describe('MDCTabBar', () => {
     const {component} = setupTest();
     expect(
         (component.getDefaultFoundation() as any)
-            .adapter_.getTabListLength() === 3)
+            .adapter.getTabListLength() === 3)
         .toBe(true);
   });
 
@@ -273,7 +273,7 @@ describe('MDCTabBar', () => {
        root.addEventListener(
            MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT, handler);
        (component.getDefaultFoundation() as any)
-           .adapter_.notifyTabActivated(66);
+           .adapter.notifyTabActivated(66);
        expect(handler).toHaveBeenCalledWith(
            jasmine.objectContaining({detail: {index: 66}}));
      });

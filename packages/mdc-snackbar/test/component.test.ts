@@ -257,14 +257,14 @@ describe('MDCSnackbar', () => {
 
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
 
@@ -274,7 +274,7 @@ describe('MDCSnackbar', () => {
     const handler = jasmine.createSpy('notifyOpeningHandler');
 
     component.listen(strings.OPENING_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyOpening();
+    (component.getDefaultFoundation() as any).adapter.notifyOpening();
     component.unlisten(strings.OPENING_EVENT, handler);
 
     expect(handler).toHaveBeenCalledWith(jasmine.anything());
@@ -286,7 +286,7 @@ describe('MDCSnackbar', () => {
     const handler = jasmine.createSpy('notifyOpenedHandler');
 
     component.listen(strings.OPENED_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyOpened();
+    (component.getDefaultFoundation() as any).adapter.notifyOpened();
     component.unlisten(strings.OPENED_EVENT, handler);
 
     expect(handler).toHaveBeenCalledWith(jasmine.anything());
@@ -301,7 +301,7 @@ describe('MDCSnackbar', () => {
        const handler = jasmine.createSpy('notifyClosingHandler');
 
        component.listen(strings.CLOSING_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter_.notifyClosing('');
+       (component.getDefaultFoundation() as any).adapter.notifyClosing('');
        component.unlisten(strings.CLOSING_EVENT, handler);
 
        expect(handler).toHaveBeenCalledWith(
@@ -315,7 +315,7 @@ describe('MDCSnackbar', () => {
     const handler = jasmine.createSpy('notifyClosingHandler');
 
     component.listen(strings.CLOSING_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyClosing(reason);
+    (component.getDefaultFoundation() as any).adapter.notifyClosing(reason);
     component.unlisten(strings.CLOSING_EVENT, handler);
 
     expect(handler).toHaveBeenCalledWith(
@@ -330,7 +330,7 @@ describe('MDCSnackbar', () => {
        const handler = jasmine.createSpy('notifyClosedHandler');
 
        component.listen(strings.CLOSED_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter_.notifyClosed('');
+       (component.getDefaultFoundation() as any).adapter.notifyClosed('');
        component.unlisten(strings.CLOSED_EVENT, handler);
 
        expect(handler).toHaveBeenCalledWith(
@@ -344,7 +344,7 @@ describe('MDCSnackbar', () => {
     const handler = jasmine.createSpy('notifyClosedHandler');
 
     component.listen(strings.CLOSED_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyClosed(reason);
+    (component.getDefaultFoundation() as any).adapter.notifyClosed(reason);
     component.unlisten(strings.CLOSED_EVENT, handler);
 
     expect(handler).toHaveBeenCalledWith(

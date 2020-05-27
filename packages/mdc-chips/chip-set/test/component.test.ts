@@ -237,7 +237,7 @@ describe('MDCChipSet', () => {
        const {root, component} = setupTest();
        root.classList.add('foo');
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasClass('foo'))
+           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
@@ -245,7 +245,7 @@ describe('MDCChipSet', () => {
      () => {
        const {component} = setupTest();
        const chip = component.chips[0];
-       (component.getDefaultFoundation() as any).adapter_.removeChipAtIndex(0);
+       (component.getDefaultFoundation() as any).adapter.removeChipAtIndex(0);
        expect(component.chips.length).toEqual(2);
        expect(chip.destroy).toHaveBeenCalled();
        expect(chip.remove).toHaveBeenCalled();
@@ -254,7 +254,7 @@ describe('MDCChipSet', () => {
   it('#adapter.removeChipAtIndex does nothing if the given object is not in the chip set',
      () => {
        const {component} = setupTest();
-       (component.getDefaultFoundation() as any).adapter_.removeChipAtIndex(-1);
+       (component.getDefaultFoundation() as any).adapter.removeChipAtIndex(-1);
        expect(component.chips.length).toEqual(3);
      });
 
@@ -263,21 +263,21 @@ describe('MDCChipSet', () => {
        const {component} = setupTest();
        const chip = component.chips[0];
        (component.getDefaultFoundation() as any)
-           .adapter_.selectChipAtIndex(0, true, true);
+           .adapter.selectChipAtIndex(0, true, true);
        expect(chip.setSelectedFromChipSet).toHaveBeenCalledWith(true, true);
      });
 
   it('#adapter.getChipListCount returns the number of chips', () => {
     const {component} = setupTest();
     expect(
-        (component.getDefaultFoundation() as any).adapter_.getChipListCount())
+        (component.getDefaultFoundation() as any).adapter.getChipListCount())
         .toEqual(3);
   });
 
   it('#adapter.getIndexOfChipById returns the index of the chip', () => {
     const {component} = setupTest();
     expect((component.getDefaultFoundation() as any)
-               .adapter_.getIndexOfChipById('chip1'))
+               .adapter.getIndexOfChipById('chip1'))
         .toEqual(0);
   });
 
@@ -285,7 +285,7 @@ describe('MDCChipSet', () => {
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.focusChipPrimaryActionAtIndex(0);
+           .adapter.focusChipPrimaryActionAtIndex(0);
        expect(component.chips[0].focusPrimaryAction).toHaveBeenCalledTimes(1);
      });
 
@@ -293,7 +293,7 @@ describe('MDCChipSet', () => {
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.focusChipTrailingActionAtIndex(0);
+           .adapter.focusChipTrailingActionAtIndex(0);
        expect(component.chips[0].focusTrailingAction).toHaveBeenCalledTimes(1);
      });
 
@@ -301,7 +301,7 @@ describe('MDCChipSet', () => {
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.removeFocusFromChipAtIndex(0);
+           .adapter.removeFocusFromChipAtIndex(0);
        expect(component.chips[0].removeFocus).toHaveBeenCalledTimes(1);
      });
 
@@ -309,7 +309,7 @@ describe('MDCChipSet', () => {
     const {component, root} = setupTest();
     document.documentElement.appendChild(root);
     document.documentElement.setAttribute('dir', 'rtl');
-    expect((component.getDefaultFoundation() as any).adapter_.isRTL())
+    expect((component.getDefaultFoundation() as any).adapter.isRTL())
         .toBe(true);
     document.documentElement.removeAttribute('dir');
     document.documentElement.removeChild(root);
@@ -318,7 +318,7 @@ describe('MDCChipSet', () => {
   it('#adapter.isRTL returns false if the text direction is not RTL', () => {
     const {component, root} = setupTest();
     document.documentElement.appendChild(root);
-    expect((component.getDefaultFoundation() as any).adapter_.isRTL())
+    expect((component.getDefaultFoundation() as any).adapter.isRTL())
         .toBe(false);
     document.documentElement.removeChild(root);
   });

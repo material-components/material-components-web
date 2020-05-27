@@ -67,7 +67,7 @@ describe('MDCRipple', () => {
        const root = getFixture();
        const component = MDCRipple.attachTo(root);
        expect(Object.keys(MDCRipple.createAdapter({root})))
-           .toEqual(Object.keys(component['foundation']['adapter_']));
+           .toEqual(Object.keys(component['foundation']['adapter']));
      });
 
   function setupTest() {
@@ -113,14 +113,14 @@ describe('MDCRipple', () => {
   it('adapter#browserSupportsCssVars delegates to util', () => {
     const {component} = setupTest();
     expect((component.getDefaultFoundation() as any)
-               .adapter_.browserSupportsCssVars(window))
+               .adapter.browserSupportsCssVars(window))
         .toEqual(util.supportsCssVariables(window));
   });
 
   it('adapter#isUnbounded delegates to unbounded getter', () => {
     const {component} = setupTest();
     component.unbounded = true;
-    expect((component.getDefaultFoundation() as any).adapter_.isUnbounded())
+    expect((component.getDefaultFoundation() as any).adapter.isUnbounded())
         .toBe(true);
   });
 
@@ -129,20 +129,20 @@ describe('MDCRipple', () => {
        const {component} = setupTest();
        component.disabled = true;
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.isSurfaceDisabled())
+                  .adapter.isSurfaceDisabled())
            .toBe(true);
      });
 
   it('adapter#addClass adds a class to the root', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('adapter#removeClass removes a class from the root', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
 
@@ -153,10 +153,10 @@ describe('MDCRipple', () => {
        const notChild = getFixture();
        root.appendChild(child);
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.containsEventTarget(child))
+                  .adapter.containsEventTarget(child))
            .toBe(true);
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.containsEventTarget(notChild))
+                  .adapter.containsEventTarget(notChild))
            .toBe(false);
      });
 
@@ -165,7 +165,7 @@ describe('MDCRipple', () => {
        const {root, component} = setupTest();
        const handler = jasmine.createSpy('interactionHandler');
        (component.getDefaultFoundation() as any)
-           .adapter_.registerInteractionHandler('foo', handler);
+           .adapter.registerInteractionHandler('foo', handler);
        emitEvent(root, 'foo');
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
@@ -176,7 +176,7 @@ describe('MDCRipple', () => {
        const handler = jasmine.createSpy('interactionHandler');
        root.addEventListener('foo', handler);
        (component.getDefaultFoundation() as any)
-           .adapter_.deregisterInteractionHandler('foo', handler);
+           .adapter.deregisterInteractionHandler('foo', handler);
        emitEvent(root, 'foo');
        expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
      });
@@ -186,7 +186,7 @@ describe('MDCRipple', () => {
        const {component} = setupTest();
        const handler = jasmine.createSpy('interactionHandler');
        (component.getDefaultFoundation() as any)
-           .adapter_.registerDocumentInteractionHandler('foo', handler);
+           .adapter.registerDocumentInteractionHandler('foo', handler);
        emitEvent(document.documentElement, 'foo');
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
@@ -197,7 +197,7 @@ describe('MDCRipple', () => {
        const handler = jasmine.createSpy('interactionHandler');
        root.addEventListener('foo', handler);
        (component.getDefaultFoundation() as any)
-           .adapter_.deregisterDocumentInteractionHandler('foo', handler);
+           .adapter.deregisterDocumentInteractionHandler('foo', handler);
        emitEvent(document.documentElement, 'foo');
        expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
      });
@@ -207,7 +207,7 @@ describe('MDCRipple', () => {
        const {component} = setupTest();
        const handler = jasmine.createSpy('resizeHandler');
        (component.getDefaultFoundation() as any)
-           .adapter_.registerResizeHandler(handler);
+           .adapter.registerResizeHandler(handler);
        emitEvent(window, 'resize');
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
        window.removeEventListener('resize', handler);
@@ -219,7 +219,7 @@ describe('MDCRipple', () => {
        const handler = jasmine.createSpy('resizeHandler');
        window.addEventListener('resize', handler);
        (component.getDefaultFoundation() as any)
-           .adapter_.deregisterResizeHandler(handler);
+           .adapter.deregisterResizeHandler(handler);
        emitEvent(window, 'resize');
        expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
        // Just to be safe
@@ -231,7 +231,7 @@ describe('MDCRipple', () => {
        () => {
          const {root, component} = setupTest();
          (component.getDefaultFoundation() as any)
-             .adapter_.updateCssVariable('--foo', 'red');
+             .adapter.updateCssVariable('--foo', 'red');
          expect(root.style.getPropertyValue('--foo')).toEqual('red');
        });
   }
@@ -241,7 +241,7 @@ describe('MDCRipple', () => {
        const {root, component} = setupTest();
        document.body.appendChild(root);
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.computeBoundingRect())
+                  .adapter.computeBoundingRect())
            .toEqual(root.getBoundingClientRect());
        document.body.removeChild(root);
      });
@@ -250,7 +250,7 @@ describe('MDCRipple', () => {
      () => {
        const {component} = setupTest();
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.getWindowPageOffset())
+                  .adapter.getWindowPageOffset())
            .toEqual({
              x: window.pageXOffset,
              y: window.pageYOffset,

@@ -314,7 +314,7 @@ describe('MDCTextField', () => {
   it('default adapter methods handle sub-elements when present', () => {
     const root = getFixture();
     const component = new MDCTextField(root);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     expect(adapter.hasClass('foo')).toBe(false);
     expect(adapter.getLabelWidth()).toBeGreaterThan(0);
     expect(() => adapter.floatLabel).not.toThrow();
@@ -332,7 +332,7 @@ describe('MDCTextField', () => {
        wrapper.removeChild(root);
 
        const component = new MDCTextField(root);
-       const adapter = (component.getDefaultFoundation() as any).adapter_;
+       const adapter = (component.getDefaultFoundation() as any).adapter;
        expect(adapter.getLabelWidth()).toEqual(0);
        expect(adapter.hasLabel()).toBe(false);
        expect(adapter.hasOutline()).toBe(false);
@@ -374,7 +374,7 @@ describe('MDCTextField', () => {
         () => label, () => outline);
 
     const foundation = component['foundation'];
-    const adapter = foundation['adapter_'];
+    const adapter = foundation['adapter'];
 
     return {
       root,
@@ -584,7 +584,7 @@ describe('MDCTextField', () => {
 
   it('#adapter.addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBeTruthy();
   });
 
@@ -598,7 +598,7 @@ describe('MDCTextField', () => {
   it('#adapter.removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBeFalsy();
   });
 
@@ -609,7 +609,7 @@ describe('MDCTextField', () => {
            root.querySelector('.mdc-text-field__input') as HTMLInputElement;
        const handler = jasmine.createSpy('eventHandler');
        (component.getDefaultFoundation() as any)
-           .adapter_.registerInputInteractionHandler('click', handler);
+           .adapter.registerInputInteractionHandler('click', handler);
        emitEvent(input, 'click');
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
@@ -623,7 +623,7 @@ describe('MDCTextField', () => {
 
        input.addEventListener('click', handler);
        (component.getDefaultFoundation() as any)
-           .adapter_.deregisterInputInteractionHandler('click', handler);
+           .adapter.deregisterInputInteractionHandler('click', handler);
        emitEvent(input, 'click');
        expect(handler).not.toHaveBeenCalled();
      });
@@ -633,7 +633,7 @@ describe('MDCTextField', () => {
        const {root, component} = setupTest();
        const handler = jasmine.createSpy('TextFieldInteractionHandler');
        (component.getDefaultFoundation() as any)
-           .adapter_.registerTextFieldInteractionHandler('click', handler);
+           .adapter.registerTextFieldInteractionHandler('click', handler);
        emitEvent(root, 'click');
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
@@ -644,7 +644,7 @@ describe('MDCTextField', () => {
        const handler = jasmine.createSpy('TextFieldInteractionHandler');
        root.addEventListener('click', handler);
        (component.getDefaultFoundation() as any)
-           .adapter_.registerTextFieldInteractionHandler('click', handler);
+           .adapter.registerTextFieldInteractionHandler('click', handler);
        emitEvent(root, 'click');
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
@@ -659,7 +659,7 @@ describe('MDCTextField', () => {
          }
        });
 
-       component['foundation']['adapter_']
+       component['foundation']['adapter']
            .registerValidationAttributeChangeHandler(handler);
        (root.querySelector('.mdc-text-field__input') as HTMLInputElement)
            .required = true;
@@ -672,21 +672,21 @@ describe('MDCTextField', () => {
        const observer = new MutationObserver(() => undefined);
        observer.disconnect = disconnect;
 
-       component['foundation']['adapter_']
+       component['foundation']['adapter']
            .deregisterValidationAttributeChangeHandler(observer);
        expect(disconnect).toHaveBeenCalled();
      });
 
   it('#adapter.getNativeInput returns the component input element', () => {
     const {root, component} = setupTest();
-    expect((component.getDefaultFoundation() as any).adapter_.getNativeInput())
+    expect((component.getDefaultFoundation() as any).adapter.getNativeInput())
         .toEqual(root.querySelector('.mdc-text-field__input'));
   });
 
   it('#adapter.activateLineRipple calls the activate method on the line ripple',
      () => {
        const {component, lineRipple} = setupTest();
-       (component.getDefaultFoundation() as any).adapter_.activateLineRipple();
+       (component.getDefaultFoundation() as any).adapter.activateLineRipple();
        expect(lineRipple.activate).toHaveBeenCalled();
      });
 
@@ -694,7 +694,7 @@ describe('MDCTextField', () => {
      () => {
        const {component, lineRipple} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.deactivateLineRipple();
+           .adapter.deactivateLineRipple();
        expect(lineRipple.deactivate).toHaveBeenCalled();
      });
 
@@ -702,7 +702,7 @@ describe('MDCTextField', () => {
      () => {
        const {component, lineRipple} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.setLineRippleTransformOrigin(100);
+           .adapter.setLineRippleTransformOrigin(100);
        expect(lineRipple.setRippleCenter).toHaveBeenCalledWith(100);
      });
 

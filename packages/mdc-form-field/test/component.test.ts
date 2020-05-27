@@ -67,7 +67,7 @@ describe('MDCFormField', () => {
        const label = root.querySelector('label') as HTMLElement;
 
        (component.getDefaultFoundation() as any)
-           .adapter_.registerInteractionHandler('click', handler);
+           .adapter.registerInteractionHandler('click', handler);
        emitEvent(label, 'click');
 
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
@@ -81,7 +81,7 @@ describe('MDCFormField', () => {
        label.addEventListener('click', handler);
 
        (component.getDefaultFoundation() as any)
-           .adapter_.deregisterInteractionHandler('click', handler);
+           .adapter.deregisterInteractionHandler('click', handler);
        emitEvent(label, 'click');
 
        expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
@@ -93,7 +93,7 @@ describe('MDCFormField', () => {
     const input = {ripple};
 
     component.input = input;
-    (component.getDefaultFoundation() as any).adapter_.activateInputRipple();
+    (component.getDefaultFoundation() as any).adapter.activateInputRipple();
 
     expect(ripple.activate).toHaveBeenCalled();
   });
@@ -103,7 +103,7 @@ describe('MDCFormField', () => {
 
     expect(
         () => (component.getDefaultFoundation() as any)
-                  .adapter_.activateInputRipple)
+                  .adapter.activateInputRipple)
         .not.toThrow();
   });
 
@@ -116,7 +116,7 @@ describe('MDCFormField', () => {
 
        expect(
            () => (component.getDefaultFoundation() as any)
-                     .adapter_.activateInputRipple)
+                     .adapter.activateInputRipple)
            .not.toThrow();
      });
 
@@ -128,7 +128,7 @@ describe('MDCFormField', () => {
 
        component.input = input;
        (component.getDefaultFoundation() as any)
-           .adapter_.deactivateInputRipple();
+           .adapter.deactivateInputRipple();
 
        expect(ripple.deactivate).toHaveBeenCalled();
      });
@@ -139,7 +139,7 @@ describe('MDCFormField', () => {
 
        expect(
            () => (component.getDefaultFoundation() as any)
-                     .adapter_.deactivateInputRipple)
+                     .adapter.deactivateInputRipple)
            .not.toThrow();
      });
 
@@ -152,7 +152,7 @@ describe('MDCFormField', () => {
 
        expect(
            () => (component.getDefaultFoundation() as any)
-                     .adapter_.deactivateInputRipple)
+                     .adapter.deactivateInputRipple)
            .not.toThrow();
      });
 });

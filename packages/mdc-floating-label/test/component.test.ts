@@ -72,20 +72,20 @@ describe('MDCFloatingLabel', () => {
 
   it('#adapter.addClass adds a class to the element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('#adapter.removeClass removes a class from the element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
 
   it('#adapter.getWidth returns the width of the label element', () => {
     const {root, component} = setupTest();
-    expect((component.getDefaultFoundation() as any).adapter_.getWidth())
+    expect((component.getDefaultFoundation() as any).adapter.getWidth())
         .toEqual(root.offsetWidth);
   });
 });

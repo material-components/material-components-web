@@ -47,10 +47,6 @@ export class MDCFoundation<AdapterType extends {} = {}> {
     return {};
   }
 
-  protected get adapter_(): AdapterType {
-    return this.adapter;
-  }
-
   constructor(protected adapter: AdapterType = {} as AdapterType) {}
 
   init() {

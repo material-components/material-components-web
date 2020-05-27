@@ -248,7 +248,7 @@ describe('MDCTopAppBar', () => {
        const {root, component} = setupTest();
        root.classList.add('foo');
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasClass('foo'))
+           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
@@ -256,34 +256,34 @@ describe('MDCTopAppBar', () => {
      () => {
        const {component} = setupTest();
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasClass('foo'))
+           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(false);
      });
 
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
 
   it('adapter#setStyle sets a style attribute on the root element', () => {
     const {root, component} = setupTest();
     expect(root.style.getPropertyValue('top') === '1px').toBe(false);
-    (component.getDefaultFoundation() as any).adapter_.setStyle('top', '1px');
+    (component.getDefaultFoundation() as any).adapter.setStyle('top', '1px');
     expect(root.style.getPropertyValue('top') === '1px').toBe(true);
   });
 
   it('adapter#getViewportScrollY returns scroll distance', () => {
     const {component} = setupTest();
     expect(
-        (component.getDefaultFoundation() as any).adapter_.getViewportScrollY())
+        (component.getDefaultFoundation() as any).adapter.getViewportScrollY())
         .toEqual(window.pageYOffset);
   });
 
@@ -293,7 +293,7 @@ describe('MDCTopAppBar', () => {
        const mockContent = {addEventListener: () => {}, scrollTop: 20} as any;
        component.setScrollTarget(mockContent);
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.getViewportScrollY())
+                  .adapter.getViewportScrollY())
            .toEqual(mockContent.scrollTop);
      });
 
@@ -301,7 +301,7 @@ describe('MDCTopAppBar', () => {
      () => {
        const {root, component} = setupTest();
        const adapterReturn = (component.getDefaultFoundation() as any)
-                                 .adapter_.getTotalActionItems();
+                                 .adapter.getTotalActionItems();
        const actual =
            root.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length;
        expect(adapterReturn).toEqual(actual);
@@ -312,7 +312,7 @@ describe('MDCTopAppBar', () => {
     const callback = jasmine.createSpy('');
     component.listen(strings.NAVIGATION_EVENT, callback);
     (component.getDefaultFoundation() as any)
-        .adapter_.notifyNavigationIconClicked();
+        .adapter.notifyNavigationIconClicked();
     expect(callback).toHaveBeenCalledWith(jasmine.any(Object));
     expect(callback).toHaveBeenCalledTimes(1);
   });

@@ -150,13 +150,13 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 
   init() {
-    this.isDiscrete_ = this.adapter_.hasClass(cssClasses.IS_DISCRETE);
-    this.hasTrackMarker_ = this.adapter_.hasClass(cssClasses.HAS_TRACK_MARKER);
+    this.isDiscrete_ = this.adapter.hasClass(cssClasses.IS_DISCRETE);
+    this.hasTrackMarker_ = this.adapter.hasClass(cssClasses.HAS_TRACK_MARKER);
 
     DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.registerInteractionHandler(
+      this.adapter.registerInteractionHandler(
           evtName, this.interactionStartHandler_);
-      this.adapter_.registerThumbContainerInteractionHandler(
+      this.adapter.registerThumbContainerInteractionHandler(
           evtName, this.thumbContainerPointerHandler_);
     });
 
@@ -167,13 +167,13 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
        * pointermove events and supplies its own gestures. (similar to
        * preventing default on touchmove)
        */
-      this.adapter_.addClass(cssClasses.DISABLE_TOUCH_ACTION);
+      this.adapter.addClass(cssClasses.DISABLE_TOUCH_ACTION);
     }
 
-    this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
-    this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
-    this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.registerResizeHandler(this.resizeHandler_);
+    this.adapter.registerInteractionHandler('keydown', this.keydownHandler_);
+    this.adapter.registerInteractionHandler('focus', this.focusHandler_);
+    this.adapter.registerInteractionHandler('blur', this.blurHandler_);
+    this.adapter.registerResizeHandler(this.resizeHandler_);
 
     this.layout();
 
@@ -185,27 +185,27 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
   destroy() {
     DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.deregisterInteractionHandler(
+      this.adapter.deregisterInteractionHandler(
           evtName, this.interactionStartHandler_);
-      this.adapter_.deregisterThumbContainerInteractionHandler(
+      this.adapter.deregisterThumbContainerInteractionHandler(
           evtName, this.thumbContainerPointerHandler_);
     });
 
-    this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
-    this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
-    this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+    this.adapter.deregisterInteractionHandler('keydown', this.keydownHandler_);
+    this.adapter.deregisterInteractionHandler('focus', this.focusHandler_);
+    this.adapter.deregisterInteractionHandler('blur', this.blurHandler_);
+    this.adapter.deregisterResizeHandler(this.resizeHandler_);
   }
 
   setupTrackMarker() {
     if (this.isDiscrete_ && this.hasTrackMarker_ && this.getStep() !== 0) {
-      this.adapter_.setTrackMarkers(
+      this.adapter.setTrackMarkers(
           this.getStep(), this.getMax(), this.getMin());
     }
   }
 
   layout() {
-    this.rect_ = this.adapter_.computeBoundingRect();
+    this.rect_ = this.adapter.computeBoundingRect();
     this.updateUIForCurrentValue_();
   }
 
@@ -228,7 +228,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     }
     this.max_ = max;
     this.setValue_(this.value_, false, true);
-    this.adapter_.setAttribute(strings.ARIA_VALUEMAX, String(this.max_));
+    this.adapter.setAttribute(strings.ARIA_VALUEMAX, String(this.max_));
     this.setupTrackMarker();
   }
 
@@ -243,7 +243,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     }
     this.min_ = min;
     this.setValue_(this.value_, false, true);
-    this.adapter_.setAttribute(strings.ARIA_VALUEMIN, String(this.min_));
+    this.adapter.setAttribute(strings.ARIA_VALUEMIN, String(this.min_));
     this.setupTrackMarker();
   }
 
@@ -271,13 +271,13 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.disabled_ = disabled;
     this.toggleClass_(cssClasses.DISABLED, this.disabled_);
     if (this.disabled_) {
-      this.savedTabIndex_ = this.adapter_.getTabIndex();
-      this.adapter_.setAttribute(strings.ARIA_DISABLED, 'true');
-      this.adapter_.removeAttribute('tabindex');
+      this.savedTabIndex_ = this.adapter.getTabIndex();
+      this.adapter.setAttribute(strings.ARIA_DISABLED, 'true');
+      this.adapter.removeAttribute('tabindex');
     } else {
-      this.adapter_.removeAttribute(strings.ARIA_DISABLED);
+      this.adapter.removeAttribute(strings.ARIA_DISABLED);
       if (!isNaN(this.savedTabIndex_)) {
-        this.adapter_.setAttribute('tabindex', String(this.savedTabIndex_));
+        this.adapter.setAttribute('tabindex', String(this.savedTabIndex_));
       }
     }
   }
@@ -307,17 +307,17 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     // https://github.com/material-components/material-components-web/issues/1192)
     const upHandler = () => {
       this.handleUp_();
-      this.adapter_.deregisterBodyInteractionHandler(
+      this.adapter.deregisterBodyInteractionHandler(
           moveEventType, moveHandler);
       UP_EVENTS.forEach(
-          (evtName) => this.adapter_.deregisterBodyInteractionHandler(
+          (evtName) => this.adapter.deregisterBodyInteractionHandler(
               evtName, upHandler));
     };
 
-    this.adapter_.registerBodyInteractionHandler(moveEventType, moveHandler);
+    this.adapter.registerBodyInteractionHandler(moveEventType, moveHandler);
     UP_EVENTS.forEach(
         (evtName) =>
-            this.adapter_.registerBodyInteractionHandler(evtName, upHandler));
+            this.adapter.registerBodyInteractionHandler(evtName, upHandler));
     this.setValueFromEvt_(downEvent);
   }
 
@@ -334,7 +334,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    */
   private handleUp_() {
     this.setActive_(false);
-    this.adapter_.notifyChange();
+    this.adapter.notifyChange();
   }
 
   /**
@@ -364,7 +364,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     const {max_: max, min_: min} = this;
     const xPos = clientX - this.rect_.left;
     let pctComplete = xPos / this.rect_.width;
-    if (this.adapter_.isRTL()) {
+    if (this.adapter.isRTL()) {
       pctComplete = 1 - pctComplete;
     }
     // Fit the percentage complete between the range [min,max]
@@ -385,9 +385,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     // Prevent page from scrolling due to key presses that would normally scroll
     // the page
     evt.preventDefault();
-    this.adapter_.addClass(cssClasses.FOCUS);
+    this.adapter.addClass(cssClasses.FOCUS);
     this.setValue_(value, true);
-    this.adapter_.notifyChange();
+    this.adapter.notifyChange();
   }
 
   /**
@@ -427,7 +427,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private getValueForKeyId_(keyId: string): number {
     const {max_: max, min_: min, step_: step} = this;
     let delta = step || (max - min) / 100;
-    const valueNeedsToBeFlipped = this.adapter_.isRTL() &&
+    const valueNeedsToBeFlipped = this.adapter.isRTL() &&
         (keyId === KEY_IDS.ARROW_LEFT || keyId === KEY_IDS.ARROW_RIGHT);
     if (valueNeedsToBeFlipped) {
       delta = -delta;
@@ -457,12 +457,12 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     if (this.preventFocusState_) {
       return;
     }
-    this.adapter_.addClass(cssClasses.FOCUS);
+    this.adapter.addClass(cssClasses.FOCUS);
   }
 
   private handleBlur_() {
     this.preventFocusState_ = false;
-    this.adapter_.removeClass(cssClasses.FOCUS);
+    this.adapter.removeClass(cssClasses.FOCUS);
   }
 
   /**
@@ -485,13 +485,13 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     }
     value = value || 0; // coerce -0 to 0
     this.value_ = value;
-    this.adapter_.setAttribute(strings.ARIA_VALUENOW, String(this.value_));
+    this.adapter.setAttribute(strings.ARIA_VALUENOW, String(this.value_));
     this.updateUIForCurrentValue_();
 
     if (shouldFireInput) {
-      this.adapter_.notifyInput();
+      this.adapter.notifyInput();
       if (this.isDiscrete_) {
-        this.adapter_.setMarkerValue(value);
+        this.adapter.setMarkerValue(value);
       }
     }
   }
@@ -508,7 +508,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     const {max_: max, min_: min, value_: value} = this;
     const pctComplete = (value - min) / (max - min);
     let translatePx = pctComplete * this.rect_.width;
-    if (this.adapter_.isRTL()) {
+    if (this.adapter.isRTL()) {
       translatePx = this.rect_.width - translatePx;
     }
 
@@ -519,10 +519,10 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     if (this.inTransit_) {
       const onTransitionEnd = () => {
         this.setInTransit_(false);
-        this.adapter_.deregisterThumbContainerInteractionHandler(
+        this.adapter.deregisterThumbContainerInteractionHandler(
             transitionendEvtName, onTransitionEnd);
       };
-      this.adapter_.registerThumbContainerInteractionHandler(
+      this.adapter.registerThumbContainerInteractionHandler(
           transitionendEvtName, onTransitionEnd);
     }
 
@@ -531,9 +531,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       // but IE cannot handle calcs in transforms correctly.
       // See: https://goo.gl/NC2itk
       // Also note that the -50% offset is used to center the slider thumb.
-      this.adapter_.setThumbContainerStyleProperty(
+      this.adapter.setThumbContainerStyleProperty(
           transformProp, `translateX(${translatePx}px) translateX(-50%)`);
-      this.adapter_.setTrackStyleProperty(
+      this.adapter.setTrackStyleProperty(
           transformProp, `scaleX(${pctComplete})`);
     });
   }
@@ -559,9 +559,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    */
   private toggleClass_(className: string, shouldBePresent: boolean) {
     if (shouldBePresent) {
-      this.adapter_.addClass(className);
+      this.adapter.addClass(className);
     } else {
-      this.adapter_.removeClass(className);
+      this.adapter.removeClass(className);
     }
   }
 }

@@ -262,12 +262,12 @@ describe('MDCSlider', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
 
-    expect((component.getDefaultFoundation() as any).adapter_.hasClass('foo')).toBe(true);
+    expect((component.getDefaultFoundation() as any).adapter.hasClass('foo')).toBe(true);
   });
 
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
 
     expect(root.className).toContain('foo');
   });
@@ -275,7 +275,7 @@ describe('MDCSlider', () => {
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
 
     expect(root.className).not.toContain('foo');
   });
@@ -284,12 +284,12 @@ describe('MDCSlider', () => {
     const {root, component} = setupTest();
     root.setAttribute('data-foo', 'bar');
 
-    expect((component.getDefaultFoundation() as any).adapter_.getAttribute('data-foo')).toEqual('bar');
+    expect((component.getDefaultFoundation() as any).adapter.getAttribute('data-foo')).toEqual('bar');
   });
 
   it('adapter#setAttribute sets an attribute on the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.setAttribute('data-foo', 'bar');
+    (component.getDefaultFoundation() as any).adapter.setAttribute('data-foo', 'bar');
 
     expect(root.getAttribute('data-foo')).toEqual('bar');
   });
@@ -297,7 +297,7 @@ describe('MDCSlider', () => {
   it('adapter#removeAttribute removes an attribute from the root element', () => {
     const {root, component} = setupTest();
     root.setAttribute('data-foo', 'bar');
-    (component.getDefaultFoundation() as any).adapter_.removeAttribute('data-foo');
+    (component.getDefaultFoundation() as any).adapter.removeAttribute('data-foo');
 
     expect(root.hasAttribute('data-foo')).toBe(false);
   });
@@ -305,7 +305,7 @@ describe('MDCSlider', () => {
   it('adapter#computeBoundingRect computes the client rect on the root element', () => {
     const {root, component} = setupTest();
     expect(
-      (component.getDefaultFoundation() as any).adapter_.computeBoundingRect()).toEqual(root.getBoundingClientRect()
+      (component.getDefaultFoundation() as any).adapter.computeBoundingRect()).toEqual(root.getBoundingClientRect()
     );
   });
 
@@ -313,14 +313,14 @@ describe('MDCSlider', () => {
     const {root, component} = setupTest();
     expect(root.tabIndex).toEqual(0, 'sanity check');
 
-    expect((component.getDefaultFoundation() as any).adapter_.getTabIndex()).toEqual(root.tabIndex);
+    expect((component.getDefaultFoundation() as any).adapter.getTabIndex()).toEqual(root.tabIndex);
   });
 
   it('adapter#registerInteractionHandler adds an event listener to the root element', () => {
     const {root, component} = setupTest();
     const handler = jasmine.createSpy('interactionHandler');
 
-    (component.getDefaultFoundation() as any).adapter_.registerInteractionHandler('click', handler);
+    (component.getDefaultFoundation() as any).adapter.registerInteractionHandler('click', handler);
     emitEvent(root, 'click');
 
     expect(handler).toHaveBeenCalledWith(jasmine.anything());
@@ -331,7 +331,7 @@ describe('MDCSlider', () => {
     const handler = jasmine.createSpy('interactionHandler');
 
     root.addEventListener('click', handler);
-    (component.getDefaultFoundation() as any).adapter_.deregisterInteractionHandler('click', handler);
+    (component.getDefaultFoundation() as any).adapter.deregisterInteractionHandler('click', handler);
     emitEvent(root, 'click');
 
     expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
@@ -342,7 +342,7 @@ describe('MDCSlider', () => {
     const thumbContainer = root.querySelector(strings.THUMB_CONTAINER_SELECTOR) as HTMLElement;
     const handler = jasmine.createSpy('interactionHandler');
 
-    (component.getDefaultFoundation() as any).adapter_.registerThumbContainerInteractionHandler('click', handler);
+    (component.getDefaultFoundation() as any).adapter.registerThumbContainerInteractionHandler('click', handler);
     emitEvent(thumbContainer, 'click');
 
     expect(handler).toHaveBeenCalledWith(jasmine.anything());
@@ -355,7 +355,7 @@ describe('MDCSlider', () => {
     const handler = jasmine.createSpy('interactionHandler');
 
     thumbContainer.addEventListener('click', handler);
-    (component.getDefaultFoundation() as any).adapter_.deregisterThumbContainerInteractionHandler('click', handler);
+    (component.getDefaultFoundation() as any).adapter.deregisterThumbContainerInteractionHandler('click', handler);
     emitEvent(thumbContainer, 'click');
 
     expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
@@ -365,7 +365,7 @@ describe('MDCSlider', () => {
     const {component} = setupTest();
     const handler = jasmine.createSpy('interactionHandler');
 
-    (component.getDefaultFoundation() as any).adapter_.registerBodyInteractionHandler('click', handler);
+    (component.getDefaultFoundation() as any).adapter.registerBodyInteractionHandler('click', handler);
     emitEvent(document.body, 'click');
     document.body.removeEventListener('click', handler);
 
@@ -377,7 +377,7 @@ describe('MDCSlider', () => {
     const handler = jasmine.createSpy('interactionHandler');
 
     document.body.addEventListener('click', handler);
-    (component.getDefaultFoundation() as any).adapter_.deregisterBodyInteractionHandler('click', handler);
+    (component.getDefaultFoundation() as any).adapter.deregisterBodyInteractionHandler('click', handler);
     emitEvent(document.body, 'click');
     // Just in case deregisterBodyInteractionHandler doesn't work as expected
     document.body.removeEventListener('click', handler);
@@ -389,7 +389,7 @@ describe('MDCSlider', () => {
     const {component} = setupTest();
     const handler = jasmine.createSpy('resizeHandler');
 
-    (component.getDefaultFoundation() as any).adapter_.registerResizeHandler(handler);
+    (component.getDefaultFoundation() as any).adapter.registerResizeHandler(handler);
     emitEvent(window, 'resize');
     window.removeEventListener('resize', handler);
 
@@ -401,7 +401,7 @@ describe('MDCSlider', () => {
     const handler = jasmine.createSpy('resizeHandler');
 
     window.addEventListener('resize', handler);
-    (component.getDefaultFoundation() as any).adapter_.deregisterResizeHandler(handler);
+    (component.getDefaultFoundation() as any).adapter.deregisterResizeHandler(handler);
     emitEvent(window, 'resize');
     // Just in case deregisterResizeHandler doesn't work as expected
     window.removeEventListener('resize', handler);
@@ -414,7 +414,7 @@ describe('MDCSlider', () => {
     const handler = jasmine.createSpy('inputHandler');
 
     root.addEventListener(strings.INPUT_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyInput();
+    (component.getDefaultFoundation() as any).adapter.notifyInput();
 
     expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({
       detail: component,
@@ -426,7 +426,7 @@ describe('MDCSlider', () => {
     const handler = jasmine.createSpy('changeHandler');
 
     root.addEventListener(strings.CHANGE_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyChange();
+    (component.getDefaultFoundation() as any).adapter.notifyChange();
 
     expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({
       detail: component,
@@ -440,7 +440,7 @@ describe('MDCSlider', () => {
     const div = document.createElement('div');
     div.style.backgroundColor = 'black';
 
-    (component.getDefaultFoundation() as any).adapter_.setThumbContainerStyleProperty('background-color', 'black');
+    (component.getDefaultFoundation() as any).adapter.setThumbContainerStyleProperty('background-color', 'black');
 
     expect(thumbContainer.style.backgroundColor).toEqual(div.style.backgroundColor);
   });
@@ -452,7 +452,7 @@ describe('MDCSlider', () => {
     const div = document.createElement('div');
     div.style.backgroundColor = 'black';
 
-    (component.getDefaultFoundation() as any).adapter_.setTrackStyleProperty('background-color', 'black');
+    (component.getDefaultFoundation() as any).adapter.setTrackStyleProperty('background-color', 'black');
 
     expect(track.style.backgroundColor).toEqual(div.style.backgroundColor);
   });
@@ -461,7 +461,7 @@ describe('MDCSlider', () => {
     const {root, component} = setupTest();
     const pinValueMarker = root.querySelector(strings.PIN_VALUE_MARKER_SELECTOR) as HTMLElement;
 
-    (component.getDefaultFoundation() as any).adapter_.setMarkerValue(10);
+    (component.getDefaultFoundation() as any).adapter.setMarkerValue(10);
 
     expect(pinValueMarker.innerHTML).toEqual('10');
   });
@@ -473,7 +473,7 @@ describe('MDCSlider', () => {
     wrapper.appendChild(root);
     document.body.appendChild(wrapper);
 
-    expect((component.getDefaultFoundation() as any).adapter_.isRTL()).toBe(true);
+    expect((component.getDefaultFoundation() as any).adapter.isRTL()).toBe(true);
 
     document.body.removeChild(wrapper);
   });
@@ -485,7 +485,7 @@ describe('MDCSlider', () => {
     wrapper.appendChild(root);
     document.body.appendChild(wrapper);
 
-    expect((component.getDefaultFoundation() as any).adapter_.isRTL()).toBe(false);
+    expect((component.getDefaultFoundation() as any).adapter.isRTL()).toBe(false);
 
     document.body.removeChild(wrapper);
   });

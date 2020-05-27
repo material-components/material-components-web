@@ -191,7 +191,7 @@ function setupTest() {
   const component = new MDCDataTable(root);
   // This is an intentionally reference to adapter instance for testing.
   // tslint:disable-next-line:no-any
-  const adapter = (component.getDefaultFoundation() as any).adapter_;
+  const adapter = (component.getDefaultFoundation() as any).adapter;
   return {root, component, adapter};
 }
 
