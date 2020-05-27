@@ -50,9 +50,6 @@ export class MDCChipTrailingAction extends
     return new MDCChipTrailingAction(root);
   }
 
-  // Public visibility for this property is required by MDCRippleCapableSurface.
-  root_!: HTMLElement;  // assigned in MDCComponent constructor
-
   private ripple_!: MDCRipple;  // assigned in initialize()
   private handleClick_!:
       SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()

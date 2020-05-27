@@ -40,8 +40,6 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
   anchorElement!: Element | null; // assigned in initialSyncWithDOM()
 
-  protected root_!: HTMLElement; // assigned in MDCComponent constructor
-
   private previousFocus_?: HTMLElement | SVGElement | null;
 
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()

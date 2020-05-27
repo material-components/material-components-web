@@ -32,8 +32,6 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     return new MDCSlider(root);
   }
 
-  protected root_!: HTMLElement;  // assigned in MDCComponent constructor
-
   private thumbContainer_!: HTMLElement;        // assigned in initialize()
   private track_!: HTMLElement;                 // assigned in initialize()
   private pinValueMarker_!: HTMLElement;        // assigned in initialize()

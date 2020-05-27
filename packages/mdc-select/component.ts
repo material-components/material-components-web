@@ -45,9 +45,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     return new MDCSelect(root);
   }
 
-  // Root container for select (anchor) element and menu.
-  protected root_!: HTMLElement; // assigned in MDCComponent constructor
-
   private ripple!: MDCRipple|null;
 
   private menu!: MDCMenu;  // assigned in menuSetup()

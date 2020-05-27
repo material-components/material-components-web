@@ -40,9 +40,6 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
 
   id!: string; // assigned in initialize();
 
-  // Public visibility for this property is required by MDCRippleCapableSurface.
-  root_!: HTMLElement; // assigned in MDCComponent constructor
-
   private ripple_!: MDCRipple; // assigned in initialize();
   private tabIndicator_!: MDCTabIndicator; // assigned in initialize();
   private content_!: HTMLElement; // assigned in initialize();

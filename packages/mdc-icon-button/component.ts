@@ -35,8 +35,6 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     return new MDCIconButtonToggle(root);
   }
 
-  protected root_!: HTMLElement; // assigned in MDCComponent constructor
-
   private readonly rippleComponent: MDCRipple = this.createRipple();
   private handleClick!:
       SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
