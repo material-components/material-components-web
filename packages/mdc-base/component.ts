@@ -35,16 +35,6 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
 
   protected foundation: FoundationType;
 
-  // TODO(b/157223372): Remove once complete
-  protected get foundation_(): FoundationType {
-    return this.foundation;
-  }
-
-  // TODO(b/157223372): Remove once complete
-  protected set foundation_(f: FoundationType) {
-    this.foundation = f;
-  }
-
   constructor(
       public root: Element, foundation?: FoundationType, ...args: unknown[]) {
     this.initialize(...args);
