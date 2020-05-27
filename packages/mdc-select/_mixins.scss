@@ -96,6 +96,7 @@
     );
     @include min-width(variables.$min-width, $query: $query);
     @include icon-mixins.size(icon-variables.$icon-size, $query: $query);
+    @include _dropdown-icon-size(icon-variables.$icon-size, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-flex;
@@ -112,8 +113,6 @@
           icon-variables.$icon-horizontal-margin);
         display: inline-flex;
         position: relative;
-        width: 24px;
-        height: 24px;
         align-self: center;
         align-items: center;
         justify-content: center;
@@ -517,6 +516,31 @@
       left: 0;
     }
   }
+
+  .mdc-select__dropdown-icon-graphic {
+    $svg-natural-width: 10px;
+    $svg-natural-height: 5px;
+
+    @include feature-targeting-mixins.targets($feat-structure) {
+      width: $svg-natural-width/icon-variables.$icon-size * 100%;
+      height: $svg-natural-height/icon-variables.$icon-size * 100%;
+    }
+  }
+}
+
+///
+/// Sets the dropdown icon to the specified size.
+/// @access private
+///
+@mixin _dropdown-icon-size($size, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-select__dropdown-icon {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      width: $size;
+      height: $size;
+    }
+  }
 }
 
 ///
@@ -595,6 +619,22 @@
   }
 }
 
+///
+/// Sets the leading padding for option text.
+/// @access private
+///
+@mixin _option-text-leading-padding($padding, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-select__menu .mdc-list-item__text {
+    // TODO(b/151457624): Replace this mixin by a dummy list icon and apply the
+    // `list.icon-margin` mixin instead once it lands.
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-box(padding, left, $padding);
+    }
+  }
+}
+
 @mixin outline-color_($color, $query: feature-targeting-functions.all()) {
   @include notched-outline-mixins.color($color, $query: $query);
 }
@@ -643,18 +683,13 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include _leading-icon-floating-label-position(icon-variables.$icon-size, $query: $query);
+  @include _option-text-leading-padding(32px, $query: $query);
 
   &.mdc-select--outlined {
     @include _outlined-with-leading-icon-floating-label-position-animation(
       variables.$height,
       icon-variables.$icon-size,
       $query: $query);
-  }
-
-  .mdc-select__menu .mdc-list-item__text {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(padding, left, 32px);
-    }
   }
 }
 
@@ -904,6 +939,9 @@
   }
 
   @if $height < variables.$height {
+    @include _dropdown-icon-size(icon-variables.$dense-icon-size, $query: $query);
+    @include _option-text-leading-padding(28px, $query: $query);
+
     &.mdc-select--with-leading-icon .mdc-select__anchor {
       @include icon-mixins.size(icon-variables.$dense-icon-size, $query: $query);
       @include _leading-icon-floating-label-position(icon-variables.$dense-icon-size, $query: $query);
@@ -955,6 +993,10 @@
       height: $height;
     }
   }
+
+  @if $height < variables.$height {
+    @include _dropdown-icon-size(icon-variables.$dense-icon-size, $query: $query);
+  }
 }
 
 ///
@@ -973,6 +1015,7 @@
 
   .mdc-select__anchor {
     @if $height < variables.$height {
+      @include _dropdown-icon-size(icon-variables.$dense-icon-size, $query: $query);
       @include icon-mixins.size(icon-variables.$dense-icon-size, $query: $query);
       @include _outlined-with-leading-icon-floating-label-position-animation(
         $height,
@@ -991,6 +1034,10 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       height: $height;
     }
+  }
+
+  @if $height < variables.$height {
+    @include _option-text-leading-padding(28px, $query: $query);
   }
 }
 

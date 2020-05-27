@@ -53,8 +53,7 @@ The select requires that you set the `width` of the `mdc-select` element. This i
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
-          width="10px"
-          height="5px"
+          class="mdc-select__dropdown-icon-graphic"
           viewBox="7 10 10 5">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
@@ -140,8 +139,7 @@ The following is an example of the select component with all of the necessary ar
     <span id="demo-selected-text" class="mdc-select__selected-text">Vegetables</span>
     <span class="mdc-select__dropdown-icon">
       <svg
-          width="10px"
-          height="5px"
+          class="mdc-select__dropdown-icon-graphic"
           viewBox="7 10 10 5">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
@@ -192,8 +190,7 @@ same.
     <span id="demo-selected-text" class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
-          width="10px"
-          height="5px"
+          class="mdc-select__dropdown-icon-graphic"
           viewBox="7 10 10 5">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
@@ -243,8 +240,7 @@ to set the selected item. The select also needs the text from the selected eleme
     <span class="mdc-select__selected-text">Vegetables</span>
     <span class="mdc-select__dropdown-icon">
       <svg
-          width="10px"
-          height="5px"
+          class="mdc-select__dropdown-icon-graphic"
           viewBox="7 10 10 5">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
@@ -303,8 +299,7 @@ and set the `aria-required` attribute on the `mdc-select__anchor` element to be 
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
-          width="10px"
-          height="5px"
+          class="mdc-select__dropdown-icon-graphic"
           viewBox="7 10 10 5">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
@@ -344,8 +339,7 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
-          width="10px"
-          height="5px"
+          class="mdc-select__dropdown-icon-graphic"
           viewBox="7 10 10 5">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
@@ -428,8 +422,7 @@ structure.
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
-          width="10px"
-          height="5px"
+          class="mdc-select__dropdown-icon-graphic"
           viewBox="7 10 10 5">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
@@ -473,8 +466,7 @@ structure.
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
-          width="10px"
-          height="5px"
+          class="mdc-select__dropdown-icon-graphic"
           viewBox="7 10 10 5">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
