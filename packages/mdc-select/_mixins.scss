@@ -522,8 +522,8 @@
     $svg-natural-height: 5px;
 
     @include feature-targeting-mixins.targets($feat-structure) {
-      width: $svg-natural-width/icon-variables.$icon-size * 100%;
-      height: $svg-natural-height/icon-variables.$icon-size * 100%;
+      width: $svg-natural-width / icon-variables.$icon-size * 100%;
+      height: $svg-natural-height / icon-variables.$icon-size * 100%;
     }
   }
 }
