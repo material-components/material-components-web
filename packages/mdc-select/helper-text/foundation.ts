@@ -99,31 +99,47 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
   }
 
   /**
-   * Sets the validity of the helper text based on the select validity.
+   * When acting as a validation message, shows/hides the helper text and
+   * triggers alerts as necessary based on the select's validity.
    */
   setValidity(selectIsValid: boolean) {
-    const helperTextIsPersistentValidationMsg =
-        this.adapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
-    const helperTextIsValidationMsg =
+    const isValidationMsg =
         this.adapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay =
-        helperTextIsValidationMsg && !selectIsValid;
 
-    if (validationMsgNeedsDisplay) {
-      this.adapter.setAttr(strings.ROLE, 'alert');
-    } else {
-      this.adapter.removeAttr(strings.ROLE);
+    if (!isValidationMsg) {
+      // Non-validating helper-text is always displayed and does not participate
+      // in validation logic.
+      return;
     }
 
-    if (!validationMsgNeedsDisplay && !helperTextIsPersistentValidationMsg) {
-      this.hide_();
+    const isPersistentValidationMsg =
+        this.adapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
+
+    // Validating helper text is displayed if select is invalid, unless it is
+    // set as persistent, in which case it always displays.
+    const msgShouldDisplay = !selectIsValid || isPersistentValidationMsg;
+    if (msgShouldDisplay) {
+      this.showToScreenReader();
+
+      // In addition to displaying, also trigger an alert if the select
+      // has become invalid.
+      if (!selectIsValid) {
+        this.adapter.setAttr(strings.ROLE, 'alert');
+      } else {
+        this.adapter.removeAttr(strings.ROLE);
+      }
+      return;
     }
+
+    // Hide everything.
+    this.adapter.removeAttr(strings.ROLE);
+    this.hide();
   }
 
   /**
    * Hides the help text from screen readers.
    */
-  private hide_() {
+  private hide() {
     this.adapter.setAttr(strings.ARIA_HIDDEN, 'true');
   }
 }

@@ -320,14 +320,6 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.activateBottomLine).toHaveBeenCalledTimes(1);
   });
 
-  it('#handleFocus calls helperText.showToScreenReader', () => {
-    const hasIcon = true;
-    const hasHelperText = true;
-    const {foundation, helperText} = setupTest(hasIcon, hasHelperText);
-    foundation.handleFocus();
-    expect(helperText.showToScreenReader).toHaveBeenCalledTimes(1);
-  });
-
   it('#handleFocus calls adapter.activateBottomLine() if isMenuOpen_=true',
      () => {
        const {foundation, mockAdapter} = setupTest();

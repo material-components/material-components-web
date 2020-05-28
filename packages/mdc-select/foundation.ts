@@ -253,9 +253,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.layout();
 
     this.adapter.activateBottomLine();
-    if (this.helperText) {
-      this.helperText.showToScreenReader();
-    }
   }
 
   /**
