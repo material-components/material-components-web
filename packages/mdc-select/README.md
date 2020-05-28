@@ -542,10 +542,12 @@ Mixin | Description
 `hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
 `disabled-outline-color($color)` | Customizes the color of the notched outline when the select is disabled.
 `outline-shape-radius($radius, $rtl-reflexive)` | Sets the border radius of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`density($density-scale)` | Sets density scale for the default (non-outlined) select variant.
+`filled-density($density-scale)` | Sets density scale for the filled select variant (Excluding filled select with leading icon).
+`filled-with-leading-icon-density($density-scale)` | Sets density scale for filled select with leading icon.
 `outlined-density($density-scale)` | Sets density scale for outlined select (Excluding outlined select with leading icon).
 `outlined-with-leading-icon-density($density-scale)` | Sets density scale for outlined select with leading icon.
-`height($height)` | Sets height of the filled select variant.
+`filled-height($height)` | Sets height of the filled select variant (Excluding filled select with leading icon).
+`filled-with-leading-icon-height($height)` | Sets height of filled select with leading icon variant.
 `outlined-height($height)` | Sets height of outlined select variant (Excluding outlined select with leading icon).
 `outlined-with-leading-icon-height($height)` | Sets height of outlined select with leading icon variant.
 `min-width($min-width)` | Sets the min-width of the select.

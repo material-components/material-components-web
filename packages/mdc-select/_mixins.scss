@@ -86,7 +86,7 @@
     @include floating-label_($query: $query);
 
     // structural
-    @include height(variables.$height, $query: $query);
+    @include filled-height(variables.$height, $query: $query);
     @include shape-radius(small, $query: $query);
     @include padding-horizontal_(
       $left: variables.$anchor-padding-left,
@@ -844,21 +844,40 @@
 }
 
 ///
-/// Sets density scale for default select variant.
+/// Sets density scale for filled select variant.
 ///
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
 /// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
 ///     filled selects at which to allow floating labels.
 ///
-@mixin density($density-scale, $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label, $query: feature-targeting-functions.all()) {
+@mixin filled-density($density-scale, $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label, $query: feature-targeting-functions.all()) {
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  @include height($height, $minimum-height-for-filled-label: $minimum-height-for-filled-label, $query: $query);
+  @include filled-height($height, $minimum-height-for-filled-label: $minimum-height-for-filled-label, $query: $query);
+  @include list-mixins.single-line-density($density-scale, $query: $query);
+}
+
+///
+/// Sets density scale for filled select variant with leading icon.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+/// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
+///     filled selects at which to allow floating labels.
+///
+@mixin filled-with-leading-icon-density($density-scale, $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label, $query: feature-targeting-functions.all()) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include filled-with-leading-icon-height($height, $minimum-height-for-filled-label: $minimum-height-for-filled-label, $query: $query);
   @include list-mixins.single-line-density($density-scale, $query: $query);
 }
 
@@ -906,7 +925,7 @@
 ///     that the input should be aligned to for a filled variant with a label
 /// @access public
 ///
-@mixin height(
+@mixin filled-height(
   $height,
   $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label,
   $filled-baseline-top: variables.$filled-baseline-top,
@@ -940,9 +959,37 @@
 
   @if $height < variables.$height {
     @include _dropdown-icon-size(icon-variables.$dense-icon-size, $query: $query);
+  }
+}
+
+///
+/// Sets height of filled select variant with leading icon.
+///
+/// @param {Number} $height
+/// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
+///     filled selects at which to allow floating labels.
+/// @param {Number} $filled-baseline-top The baseline from the top of the anchor
+///     that the input should be aligned to for a filled variant with a label
+/// @access public
+///
+@mixin filled-with-leading-icon-height(
+  $height,
+  $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label,
+  $filled-baseline-top: variables.$filled-baseline-top,
+  $query: feature-targeting-functions.all()
+) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include filled-height($height,
+    $minimum-height-for-filled-label: $minimum-height-for-filled-label,
+    $filled-baseline-top: $filled-baseline-top,
+    $query: $query
+  );
+
+  @if $height < variables.$height {
     @include _option-text-leading-padding(28px, $query: $query);
 
-    &.mdc-select--with-leading-icon .mdc-select__anchor {
+    .mdc-select__anchor {
       @include icon-mixins.size(icon-variables.$dense-icon-size, $query: $query);
       @include _leading-icon-floating-label-position(icon-variables.$dense-icon-size, $query: $query);
     }
