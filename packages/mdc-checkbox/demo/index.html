@@ -1,0 +1,121 @@
+<div class="test-container test-baseline">
+  <main class="test-viewport test-viewport--mobile">
+    <div class="test-layout">
+      <div class="test-cell test-cell--checkbox">
+        <div class="mdc-checkbox">
+          <input type="checkbox"
+                 class="mdc-checkbox__native-control"
+                 id="checkbox-unchecked" />
+          <div class="mdc-checkbox__background">
+            <svg class="mdc-checkbox__checkmark"
+                 viewBox="0 0 24 24">
+              <path class="mdc-checkbox__checkmark-path"
+                    fill="none"
+                    d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+            </svg>
+            <div class="mdc-checkbox__mixedmark"></div>
+          </div>
+          <div class="mdc-checkbox__ripple"></div>
+        </div>
+      </div>
+
+      <div class="test-cell test-cell--checkbox">
+        <div class="mdc-checkbox mdc-checkbox--selected">
+          <input type="checkbox"
+                 checked
+                 class="mdc-checkbox__native-control"
+                 id="checkbox-checked" />
+          <div class="mdc-checkbox__background">
+            <svg class="mdc-checkbox__checkmark"
+                 viewBox="0 0 24 24">
+              <path class="mdc-checkbox__checkmark-path"
+                    fill="none"
+                    d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+            </svg>
+            <div class="mdc-checkbox__mixedmark"></div>
+          </div>
+          <div class="mdc-checkbox__ripple"></div>
+        </div>
+      </div>
+
+      <div class="test-cell test-cell--checkbox">
+        <div class="mdc-checkbox mdc-checkbox--selected">
+          <input type="checkbox"
+                 checked
+                 class="mdc-checkbox__native-control"
+                 id="checkbox-indeterminate" data-indeterminate="true" />
+          <div class="mdc-checkbox__background">
+            <svg class="mdc-checkbox__checkmark"
+                 viewBox="0 0 24 24">
+              <path class="mdc-checkbox__checkmark-path"
+                    fill="none"
+                    d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+            </svg>
+            <div class="mdc-checkbox__mixedmark"></div>
+          </div>
+          <div class="mdc-checkbox__ripple"></div>
+        </div>
+      </div>
+
+      <div class="test-cell test-cell--checkbox">
+        <div class="mdc-checkbox mdc-checkbox--disabled">
+          <input type="checkbox"
+                 disabled
+                 class="mdc-checkbox__native-control"
+                 id="checkbox-unchecked-disabled"/>
+          <div class="mdc-checkbox__background">
+            <svg class="mdc-checkbox__checkmark"
+                 viewBox="0 0 24 24">
+              <path class="mdc-checkbox__checkmark-path"
+                    fill="none"
+                    d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+            </svg>
+            <div class="mdc-checkbox__mixedmark"></div>
+          </div>
+          <div class="mdc-checkbox__ripple"></div>
+        </div>
+      </div>
+
+      <div class="test-cell test-cell--checkbox">
+        <div class="mdc-checkbox mdc-checkbox--selected mdc-checkbox--disabled">
+          <input type="checkbox"
+                 disabled
+                 checked
+                 class="mdc-checkbox__native-control"
+                 id="checkbox-checked-disabled"/>
+          <div class="mdc-checkbox__background">
+            <svg class="mdc-checkbox__checkmark"
+                 viewBox="0 0 24 24">
+              <path class="mdc-checkbox__checkmark-path"
+                    fill="none"
+                    d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+            </svg>
+            <div class="mdc-checkbox__mixedmark"></div>
+          </div>
+          <div class="mdc-checkbox__ripple"></div>
+        </div>
+      </div>
+
+      <div class="test-cell test-cell--checkbox">
+        <div class="mdc-checkbox mdc-checkbox--selected mdc-checkbox--disabled">
+          <input type="checkbox"
+                 disabled
+                 class="mdc-checkbox__native-control"
+                 id="checkbox-indeterminate-disabled" data-indeterminate="true" />
+          <div class="mdc-checkbox__background">
+            <svg class="mdc-checkbox__checkmark"
+                 viewBox="0 0 24 24">
+              <path class="mdc-checkbox__checkmark-path"
+                    fill="none"
+                    d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+            </svg>
+            <div class="mdc-checkbox__mixedmark"></div>
+          </div>
+          <div class="mdc-checkbox__ripple"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="./index.ts" type="module"></script>
