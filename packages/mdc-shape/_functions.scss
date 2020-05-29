@@ -252,7 +252,7 @@
 @function _resolve-radius-percentage($percentage, $component-height) {
   // Converts the percentage to number without unit. Example: 50% => 50.
   $percentage: $percentage / ($percentage * 0 + 1);
-  @return $component-height * ($percentage / 100);;
+  @return $component-height * ($percentage / 100);
 }
 
 // @deprecated use `_resolve-radius-percentage()` directly
