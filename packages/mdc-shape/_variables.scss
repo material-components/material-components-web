@@ -25,9 +25,18 @@ $small-component-radius: 4px !default;
 $medium-component-radius: 4px !default;
 $large-component-radius: 0 !default;
 
-// Shape category mapping.
-$category-values: (
-  small: $small-component-radius,
-  medium: $medium-component-radius,
-  large: $large-component-radius,
+// Shape keyword mapping
+$category-keywords: (
+  small: (
+    varname: --mdc-shape-small,
+    fallback: $small-component-radius
+  ),
+  medium: (
+    varname: --mdc-shape-medium,
+    fallback: $medium-component-radius
+  ),
+  large: (
+    varname: --mdc-shape-large,
+    fallback: $large-component-radius
+  )
 ) !default;

@@ -42,7 +42,7 @@
     @include elevation-mixins.elevation($z-value: 8, $query: $query);
     @include fill-color(surface, $query);
     @include ink-color(on-surface, $query);
-    @include shape-radius(medium, false, $query);
+    @include shape-radius(variables.$shape-radius, false, $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(transform-origin, top left, top right);

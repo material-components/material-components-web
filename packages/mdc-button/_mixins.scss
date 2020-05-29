@@ -61,7 +61,7 @@ $ripple-target: ".mdc-button__ripple";
   // postcss-bem-linter: define button
   .mdc-button {
     @include base_($query);
-    @include shape-radius(small, $query: $query);
+    @include shape-radius(variables.$shape-radius, $query: $query);
     @include container-fill-color(transparent, $query);
     @include disabled-container-fill-color(transparent, $query);
     // The icon CSS class overrides styles defined in the .material-icons CSS
@@ -335,22 +335,32 @@ $ripple-target: ".mdc-button__ripple";
   }
 }
 
-@mixin shape-radius($radius,
-$rtl-reflexive: false,
-$density-scale: variables.$density-scale,
-$query: feature-targeting-functions.all()) {
-
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: variables.$density-scale,
+  $query: feature-targeting-functions.all()
+) {
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
-  $resolved-radius: shape-functions.resolve-percentage-radius($height, $radius);
 
-  @include shape-mixins.radius($resolved-radius, $rtl-reflexive, $query: $query);
+  @include shape-mixins.radius(
+    $radius,
+    $rtl-reflexive,
+    $component-height: $height,
+    $query: $query
+  );
 
   #{$ripple-target} {
-    @include shape-mixins.radius($resolved-radius, $rtl-reflexive, $query: $query);
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height: $height,
+      $query: $query
+    );
   }
 }
 

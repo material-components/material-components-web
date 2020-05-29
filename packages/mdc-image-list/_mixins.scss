@@ -79,7 +79,7 @@
   }
 
   @include aspect(1, $query: $query);
-  @include shape-radius(0, $query: $query);
+  @include shape-radius(variables.$shape-radius, $query: $query);
 
   .mdc-image-list__supporting {
     @include feature-targeting-mixins.targets($feat-color) {
