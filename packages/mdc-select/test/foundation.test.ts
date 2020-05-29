@@ -60,6 +60,7 @@ describe('MDCSelectFoundation', () => {
       'isSelectAnchorFocused',
       'getSelectAnchorAttr',
       'setSelectAnchorAttr',
+      'removeSelectAnchorAttr',
       'openMenu',
       'closeMenu',
       'getAnchorElement',
@@ -135,6 +136,19 @@ describe('MDCSelectFoundation', () => {
     const {foundation, leadingIcon} = setupTest();
     foundation.setDisabled(true);
     expect(leadingIcon.setDisabled).toHaveBeenCalledWith(true);
+  });
+
+  it('#setDisabled false adds tabindex 0', () => {
+    const {mockAdapter, foundation} = setupTest();
+    foundation.setDisabled(false);
+    expect(mockAdapter.setSelectAnchorAttr)
+        .toHaveBeenCalledWith('tabindex', '0');
+  });
+
+  it('#setDisabled true removes tabindex attr', () => {
+    const {mockAdapter, foundation} = setupTest();
+    foundation.setDisabled(true);
+    expect(mockAdapter.removeSelectAnchorAttr).toHaveBeenCalledWith('tabindex');
   });
 
   it('#notchOutline updates the width of the outline element', () => {
@@ -370,6 +384,14 @@ describe('MDCSelectFoundation', () => {
     (foundation as any).isMenuOpen = true;
     foundation.handleClick(0);
     expect(mockAdapter.setRippleCenter).not.toHaveBeenCalledWith(0);
+  });
+
+  it('#handleClick does nothing if disabled', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation['disabled'] = true;
+    foundation.handleClick(0);
+    expect(mockAdapter.setRippleCenter).not.toHaveBeenCalled();
+    expect(mockAdapter.addClass).not.toHaveBeenCalled();
   });
 
   it('#handleClick sets the ripple center if isMenuOpen_=false', () => {

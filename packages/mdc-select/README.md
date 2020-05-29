@@ -609,6 +609,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `isSelectAnchorFocused() => boolean` | Returns whether the select anchor element is focused. |
 | `getSelectAnchorAttr(attr: string) => string` | Gets the given attribute on the select anchor element. |
 | `setSelectAnchorAttr(attr: string, value: string) => void` | Sets the given attribute on the select anchor element. |
+| `removeSelectAnchorAttr(attr: string) => void` | Removes the given attribute on the select anchor element. |
 | `openMenu() => void` | Causes the menu element in the select to open. |
 | `closeMenu() => void` | Causes the menu element in the select to close. |
 | `getAnchorElement() => Element` | Returns the select anchor element. |

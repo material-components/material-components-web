@@ -121,6 +121,11 @@ export interface MDCSelectAdapter {
    */
   setSelectAnchorAttr(attr: string, value: string): void;
 
+  /**
+   * Removes the given attribute on the select anchor element.
+   */
+  removeSelectAnchorAttr(attr: string): void;
+
   // Menu-related methods ======================================================
   /**
    * Opens the menu.

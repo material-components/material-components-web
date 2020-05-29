@@ -68,6 +68,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       isSelectAnchorFocused: () => false,
       getSelectAnchorAttr: () => '',
       setSelectAnchorAttr: () => undefined,
+      removeSelectAnchorAttr: () => undefined,
       openMenu: () => undefined,
       closeMenu: () => undefined,
       getAnchorElement: () => null,
@@ -166,7 +167,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       this.leadingIcon.setDisabled(this.disabled);
     }
 
-    this.adapter.setSelectAnchorAttr('tabindex', this.disabled ? '-1' : '0');
+    if (this.disabled) {
+      // Prevent click events from focusing select. Simply pointer-events: none
+      // is not enough since screenreader clicks may bypass this.
+      this.adapter.removeSelectAnchorAttr('tabindex');
+    } else {
+      this.adapter.setSelectAnchorAttr('tabindex', '0');
+    }
+
     this.adapter.setSelectAnchorAttr('aria-disabled', this.disabled.toString());
   }
 
@@ -266,7 +274,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   handleClick(normalizedX: number) {
-    if (this.isMenuOpen) {
+    if (this.disabled || this.isMenuOpen) {
       return;
     }
     this.adapter.setRippleCenter(normalizedX);
@@ -278,7 +286,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   handleKeydown(event: KeyboardEvent) {
-    if (this.isMenuOpen) {
+    if (this.isMenuOpen || !this.adapter.hasClass(cssClasses.FOCUSED)) {
       return;
     }
 
@@ -287,8 +295,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const arrowUp = normalizeKey(event) === 'ArrowUp';
     const arrowDown = normalizeKey(event) === 'ArrowDown';
 
-    if (this.adapter.hasClass(cssClasses.FOCUSED) &&
-        (isEnter || isSpace || arrowUp || arrowDown)) {
+    if (isEnter || isSpace || arrowUp || arrowDown) {
       if (arrowUp && this.selectedIndex > 0) {
         this.setSelectedIndex(this.selectedIndex - 1);
       } else if (
