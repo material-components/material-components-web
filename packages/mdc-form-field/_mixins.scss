@@ -35,7 +35,7 @@
     @include typography-mixins.typography(body2, $query);
 
     @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(color, text-primary-on-background);
+      @include theme-mixins.prop(color, text-high-on-background);
     }
 
     @include feature-targeting-mixins.targets($feat-structure) {
