@@ -1,14 +1,17 @@
 # Local Development
 
-Use this document to run demos for local development of Material Components Web project.
+Use this document to run demos for local development of Material Components Web
+project.
 
 ## Create demo assets
 
-Create `demo/` folder inside component package folder that you're working on. For example, `packages/mdc-checkbox/demo/`
+Create `demo/` folder inside component package folder that you're working on.
+For example, `packages/mdc-checkbox/demo/`
 
 ### HTML
 
-Add HTML structure to required to render component (Copy HTML structure from component README files).
+Add HTML structure required to render component (Copy HTML structure from
+component README files).
 
 Sample HTML structure for checkbox:
 
@@ -39,7 +42,8 @@ We'll create demo `index.ts` file in following steps.
 
 ### Sass
 
-Include Sass files required to style target components using relative path (relative to `demo/` folder).
+Include Sass files required to style target components using relative path
+(relative to `demo/` folder).
 
 ```scss
 @use "../../mdc-form-field/mdc-form-field";
@@ -64,7 +68,8 @@ if (checkboxEl && formFieldEl) {
 
 ## Run dev server
 
-We'll use [Parcel.js](https://parceljs.org) bundler to compile & run dev server. Use `index.html` created above as entry point to parcel bundler CLI.
+We'll use [Parcel.js](https://parceljs.org) bundler to compile & run dev server.
+Use `index.html` created above as entry point to parcel bundler CLI.
 
 ```shell
 npm i
