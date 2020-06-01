@@ -43,3 +43,45 @@ export function emitEvent(
   }
   targetEl.dispatchEvent(event);
 }
+
+/** Creates mouse event, with IE11 support. */
+export function createMouseEvent(
+    eventName: string, eventInit: MouseEventInit = {}) {
+  const eventDefaults = {
+    bubbles: false,
+    cancelable: false,
+    screenX: 0,
+    screenY: 0,
+    clientX: 0,
+    clientY: 0,
+    ctrlKey: false,
+    altKey: false,
+    shiftKey: false,
+    metaKey: false,
+    button: 0,
+    relatedTarget: null,
+  };
+
+  let event;
+  if (typeof (MouseEvent) === 'function') {
+    eventInit = {...eventDefaults, ...eventInit};
+    event = new MouseEvent(eventName, eventInit);
+  } else {
+    // IE11 support.
+    event = document.createEvent('MouseEvent');
+    event.initMouseEvent(
+        eventName, eventInit.bubbles || eventDefaults.bubbles,
+        eventInit.cancelable || eventDefaults.cancelable, window, 0,
+        eventInit.screenX || eventDefaults.screenX,
+        eventInit.screenY || eventDefaults.screenX,
+        eventInit.clientX || eventDefaults.clientX,
+        eventInit.clientY || eventDefaults.clientY,
+        eventInit.ctrlKey || eventDefaults.ctrlKey,
+        eventInit.altKey || eventDefaults.altKey,
+        eventInit.shiftKey || eventDefaults.shiftKey,
+        eventInit.metaKey || eventDefaults.metaKey,
+        eventInit.button || eventDefaults.button,
+        eventInit.relatedTarget || eventDefaults.relatedTarget);
+  }
+  return event;
+}
