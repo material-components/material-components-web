@@ -277,6 +277,10 @@
     &.mdc-text-field--filled {
       @include _disabled-filled($query);
     }
+
+    .mdc-text-field__input {
+      @include _disabled-input($query);
+    }
   }
 
   .mdc-text-field--end-aligned {
@@ -1292,8 +1296,28 @@
   }
 }
 
+@mixin _disabled-input($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    // disabled inputs should still allow users to interact with them to select
+    // text and scroll for textareas
+    pointer-events: auto;
+  }
+}
+
 @mixin _disabled-filled($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
   @include fill-color_(variables.$disabled-background, $query: $query);
+
+  #{variables.$ripple-target} {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      // prevent ripple from displaying on hover when some interactible
+      // elements like input and resize handles are hovered
+      display: none;
+    }
+  }
 }
 
 @mixin invalid_($query: feature-targeting-functions.all()) {

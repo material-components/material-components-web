@@ -240,6 +240,10 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * animation will animate out from the user's click location.
    */
   setTransformOrigin(evt: TouchEvent | MouseEvent): void {
+    if (this.isDisabled() || this.adapter.hasOutline()) {
+      return;
+    }
+
     const touches = (evt as TouchEvent).touches;
     const targetEvent = touches ? touches[0] : evt;
     const targetClientRect = (targetEvent.target as Element).getBoundingClientRect();
