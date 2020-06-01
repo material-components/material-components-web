@@ -20,20 +20,20 @@
 // THE SOFTWARE.
 //
 
-@use "sass:list";
-@use "@material/animation/functions";
-@use "@material/checkbox/mixins" as checkbox-mixins;
-@use "@material/density/functions" as density-functions;
-@use "@material/elevation/mixins";
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/icon-button/mixins" as icon-button-mixins;
-@use "@material/rtl/mixins" as rtl-mixins;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/theme/variables" as variables2; // for mdc-theme-prop-value.
-@use "@material/typography/mixins" as typography-mixins;
-@use "./variables";
+@use 'sass:list';
+@use '@material/animation/functions';
+@use '@material/checkbox/mixins' as checkbox-mixins;
+@use '@material/density/functions' as density-functions;
+@use '@material/elevation/mixins';
+@use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/icon-button/mixins' as icon-button-mixins;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/variables' as variables2; // for mdc-theme-prop-value.
+@use '@material/typography/mixins' as typography-mixins;
+@use './variables';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);

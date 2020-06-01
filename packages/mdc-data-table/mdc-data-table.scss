@@ -20,6 +20,6 @@
 // THE SOFTWARE.
 //
 
-@use "./mixins";
+@use './mixins';
 @include mixins.core-styles;
 @include mixins.theme-baseline;
