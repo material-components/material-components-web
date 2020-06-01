@@ -447,6 +447,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         this.label && this.label.float(shouldFloat);
       },
       getLabelWidth: () => this.label ? this.label.getWidth() : 0,
+      setLabelRequired: (isRequired: boolean) => {
+        this.label && this.label.setRequired(isRequired);
+      },
     };
     // tslint:enable:object-literal-sort-keys
   }

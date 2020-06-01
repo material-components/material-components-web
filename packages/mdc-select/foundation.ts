@@ -59,6 +59,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       hasLabel: () => false,
       floatLabel: () => undefined,
       getLabelWidth: () => 0,
+      setLabelRequired: () => undefined,
       hasOutline: () => false,
       notchOutline: () => undefined,
       closeOutline: () => undefined,
@@ -196,9 +197,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       const optionHasValue = this.getValue().length > 0;
       const isFocused = this.adapter.hasClass(cssClasses.FOCUSED);
       const shouldFloatAndNotch = optionHasValue || isFocused;
+      const isRequired = this.adapter.hasClass(cssClasses.REQUIRED);
 
       this.notchOutline(shouldFloatAndNotch);
       this.adapter.floatLabel(shouldFloatAndNotch);
+      this.adapter.setLabelRequired(isRequired);
     }
   }
 
@@ -384,6 +387,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       this.adapter.removeClass(cssClasses.REQUIRED);
     }
     this.adapter.setSelectAnchorAttr('aria-required', isRequired.toString());
+    this.adapter.setLabelRequired(isRequired);
   }
 
   getRequired() {

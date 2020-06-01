@@ -41,6 +41,7 @@ const LABEL_WIDTH = 100;
 class FakeLabel {
   float: jasmine.Spy = jasmine.createSpy('label.float');
   getWidth: jasmine.Spy = jasmine.createSpy('label.getWidth');
+  setRequired: jasmine.Spy = jasmine.createSpy('label.setRequired');
 
   constructor() {
     this.getWidth.and.returnValue(LABEL_WIDTH);

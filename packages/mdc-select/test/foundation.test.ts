@@ -50,6 +50,7 @@ describe('MDCSelectFoundation', () => {
       'getSelectedMenuItem',
       'hasLabel',
       'floatLabel',
+      'setLabelRequired',
       'getLabelWidth',
       'hasOutline',
       'notchOutline',
@@ -628,6 +629,14 @@ describe('MDCSelectFoundation', () => {
        expect(mockAdapter.floatLabel).not.toHaveBeenCalled();
      });
 
+  it('#layout sets label as required if select is required', () => {
+     const {foundation, mockAdapter} = setupTest();
+     mockAdapter.hasLabel.and.returnValue(true);
+     mockAdapter.hasClass.withArgs(cssClasses.REQUIRED).and.returnValue(true);
+     foundation.layout();
+     expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(true);
+   });
+
   it('#layoutOptions refetches menu item values to cache', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.layoutOptions();
@@ -863,6 +872,15 @@ describe('MDCSelectFoundation', () => {
     foundation.setRequired(false);
     expect(mockAdapter.setSelectAnchorAttr)
         .toHaveBeenCalledWith('aria-required', 'false');
+  });
+
+  it('#setRequired sets label as required', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.setRequired(true);
+    expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(true);
+    mockAdapter.setLabelRequired.calls.reset();
+    foundation.setRequired(false);
+    expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(false);
   });
 
   it('#getRequired returns true if aria-required is true', () => {

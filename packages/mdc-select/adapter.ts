@@ -77,6 +77,11 @@ export interface MDCSelectAdapter {
   getLabelWidth(): number;
 
   /**
+   * Styles the label as required, if the label exists.
+   */
+  setLabelRequired(isRequired: boolean): void;
+
+  /**
    * Returns true if outline element exists, false if it doesn't.
    */
   hasOutline(): boolean;
