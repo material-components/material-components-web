@@ -299,7 +299,7 @@
     .mdc-dialog__container {
       @include feature-targeting-mixins.targets($feat-structure) {
         // Dialog container scales up while opening, but should remain scaled up while closing
-        transform: scale(1);
+        transform: none;
       }
     }
   }
@@ -313,7 +313,7 @@
 
     .mdc-dialog__container {
       @include feature-targeting-mixins.targets($feat-structure) {
-        transform: scale(1);
+        transform: none;
         opacity: 1;
       }
     }
