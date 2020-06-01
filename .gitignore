@@ -12,6 +12,7 @@ node_modules/
 
 # Build output
 /build/
+/dist/
 /coverage/
 packages/*/dist
 packages/**/*.js
