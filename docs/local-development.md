@@ -13,7 +13,7 @@ For example, `packages/mdc-checkbox/demo/`
 Add HTML structure required to render component (Copy HTML structure from
 component README files).
 
-Sample HTML structure for checkbox:
+**index.html** (Sample HTML structure for checkbox):
 
 ```html
 <div class="mdc-form-field">
@@ -45,6 +45,8 @@ We'll create demo `index.ts` file in following steps.
 Include Sass files required to style target components using relative path
 (relative to `demo/` folder).
 
+**index.scss**:
+
 ```scss
 @use "../../mdc-form-field/mdc-form-field";
 @use "../mdc-checkbox";
@@ -52,9 +54,15 @@ Include Sass files required to style target components using relative path
 
 ### TypeScript
 
+Add TypeScript code to initialize components and to add any additional
+TypeScript code for the demo.
+
+**index.ts**:
+
 ```ts
 import {MDCFormField} from '../../mdc-form-field/component';
 import {MDCCheckbox} from '../component';
+import './index.scss';
 
 const checkboxEl = document.querySelector<HTMLElement>('.mdc-checkbox');
 const formFieldEl = document.querySelector<HTMLElement>('.mdc-form-field');
@@ -65,6 +73,8 @@ if (checkboxEl && formFieldEl) {
   formField.input = checkbox;
 }
 ```
+
+`index.scss` is the demo Sass file created in above section.
 
 ## Run dev server
 
