@@ -70,6 +70,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       getSelectAnchorAttr: () => '',
       setSelectAnchorAttr: () => undefined,
       removeSelectAnchorAttr: () => undefined,
+      addMenuClass: () => undefined,
+      removeMenuClass: () => undefined,
       openMenu: () => undefined,
       closeMenu: () => undefined,
       getAnchorElement: () => null,
@@ -363,8 +365,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter.setSelectAnchorAttr('aria-invalid', (!isValid).toString());
     if (isValid) {
       this.adapter.removeClass(cssClasses.INVALID);
+      this.adapter.removeMenuClass(cssClasses.MENU_INVALID);
     } else {
       this.adapter.addClass(cssClasses.INVALID);
+      this.adapter.addMenuClass(cssClasses.MENU_INVALID);
     }
   }
 

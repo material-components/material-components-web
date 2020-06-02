@@ -356,6 +356,12 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       removeSelectAnchorAttr: (attr: string) => {
         this.selectAnchor.removeAttribute(attr);
       },
+      addMenuClass: (className: string) => {
+        this.menuElement.classList.add(className);
+      },
+      removeMenuClass: (className: string) => {
+        this.menuElement.classList.remove(className);
+      },
       openMenu: () => {
         this.menu.open = true;
       },

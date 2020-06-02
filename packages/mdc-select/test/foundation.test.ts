@@ -62,6 +62,8 @@ describe('MDCSelectFoundation', () => {
       'getSelectAnchorAttr',
       'setSelectAnchorAttr',
       'removeSelectAnchorAttr',
+      'addMenuClass',
+      'removeMenuClass',
       'openMenu',
       'closeMenu',
       'getAnchorElement',
@@ -753,13 +755,15 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(1);
   });
 
-  it('#setValid true sets aria-invalid to false and removes invalid class',
+  it('#setValid true sets aria-invalid to false and removes invalid classes',
      () => {
        const {foundation, mockAdapter} = setupTest();
        foundation.setValid(true);
        expect(mockAdapter.setSelectAnchorAttr)
            .toHaveBeenCalledWith('aria-invalid', 'false');
        expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.INVALID);
+       expect(mockAdapter.removeMenuClass)
+           .toHaveBeenCalledWith(cssClasses.MENU_INVALID);
      });
 
   it('#setValid false sets aria-invalid to true and adds invalid class', () => {
@@ -768,6 +772,8 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.setSelectAnchorAttr)
         .toHaveBeenCalledWith('aria-invalid', 'true');
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.INVALID);
+    expect(mockAdapter.addMenuClass)
+        .toHaveBeenCalledWith(cssClasses.MENU_INVALID);
   });
 
   it('#isValid returns false if using default validity check and no index is selected',

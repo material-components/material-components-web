@@ -133,6 +133,16 @@ export interface MDCSelectAdapter {
 
   // Menu-related methods ======================================================
   /**
+   * Adds class to the menu element.
+   */
+  addMenuClass(className: string): void;
+
+  /**
+   * Removes a class from the menu element.
+   */
+  removeMenuClass(className: string): void;
+
+  /**
    * Opens the menu.
    */
   openMenu(): void;
