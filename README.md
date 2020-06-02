@@ -37,10 +37,11 @@ Material Components for the web is the successor to [Material Design Lite](https
 <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
 
 <!-- Render textfield component -->
-<label class="mdc-text-field">
+<label class="mdc-text-field mdc-text-field--filled">
+  <span class="mdc-text-field__ripple"></span>
   <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
   <span class="mdc-floating-label" id="my-label">Label</span>
-  <div class="mdc-line-ripple"></div>
+  <span class="mdc-line-ripple"></span>
 </label>
 
 <!-- Required Material Web JavaScript library -->
@@ -68,10 +69,11 @@ npm install @material/textfield
 Sample usage of text field component. Please see [Textfield](packages/mdc-textfield) component page for more options.
 
 ```html
-<label class="mdc-text-field">
+<label class="mdc-text-field mdc-text-field--filled">
+  <span class="mdc-text-field__ripple"></span>
   <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
   <span class="mdc-floating-label" id="my-label">Label</span>
-  <div class="mdc-line-ripple"></div>
+  <span class="mdc-line-ripple"></span>
 </label>
 ```
 
@@ -88,7 +90,7 @@ Load styles required for text field component.
 Import `MDCTextField` module to instantiate text field component.
 
 ```js
-import {MDCTextField} from '@material/textfield/index';
+import {MDCTextField} from '@material/textfield';
 const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 ```
 
