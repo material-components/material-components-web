@@ -1,5 +1,5 @@
 //
-// Copyright 2019 Google Inc.
+// Copyright 2020 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,4 +20,7 @@
 // THE SOFTWARE.
 //
 
-@forward './data-table-theme' show $fill-color, $header-row-fill-color, $row-fill-color, $selected-row-fill-color, $checked-icon-color, $divider-color, $divider-size, $row-hover-fill-color, $checkbox-touch-dimension, $header-row-text-color, $row-text-color, $sort-icon-color, $sort-icon-active-color, $sort-icon-density-scale, $shape-radius, $stroke-size, $stroke-color, $cell-height, $header-cell-height, $cell-leading-padding, $cell-trailing-padding, $minimum-cell-height, $maximum-cell-height, $default-density-scale;
+@use './data-table';
+
+@include data-table.core-styles;
+@include data-table.theme-baseline;

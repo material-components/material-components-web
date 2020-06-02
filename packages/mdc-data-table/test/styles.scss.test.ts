@@ -26,7 +26,7 @@ import 'jasmine';
 import * as path from 'path';
 import {expectStylesWithNoFeaturesToBeEmpty} from '../../../testing/featuretargeting';
 
-describe('mdc-data-table.scss', () => {
+describe('mdc-data-table styles', () => {
   expectStylesWithNoFeaturesToBeEmpty(
       path.join(__dirname, 'feature-targeting-any.test.css'));
 });
