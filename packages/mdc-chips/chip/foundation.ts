@@ -66,6 +66,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       hasLeadingIcon: () => false,
       isRTL: () => false,
       isTrailingActionNavigable: () => false,
+      notifyEditFinish: () => undefined,
+      notifyEditStart: () => undefined,
       notifyInteraction: () => undefined,
       notifyNavigation: () => undefined,
       notifyRemoval: () => undefined,
@@ -95,6 +97,14 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   isSelected() {
     return this.adapter.hasClass(cssClasses.SELECTED);
+  }
+
+  isEditable() {
+    return this.adapter.hasClass(cssClasses.EDITABLE);
+  }
+
+  isEditing() {
+    return this.adapter.hasClass(cssClasses.EDITING);
   }
 
   setSelected(selected: boolean) {
@@ -160,6 +170,12 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   handleClick() {
     this.adapter.notifyInteraction();
     this.setPrimaryActionFocusable_(this.getFocusBehavior_());
+  }
+
+  handleDoubleClick() {
+    if (this.isEditable()) {
+      this.startEditing();
+    }
   }
 
   /**
@@ -239,6 +255,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       return;
     }
 
+    if (this.isEditing()) {
+      this.finishEditing();
+    }
+
     this.adapter.removeClass(cssClasses.PRIMARY_ACTION_FOCUSED);
   }
 
@@ -255,6 +275,23 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Handles a keydown event from the root element.
    */
   handleKeydown(evt: KeyboardEvent) {
+    if (this.isEditing()) {
+      if (this.shouldFinishEditing(evt)) {
+        evt.preventDefault();
+        this.finishEditing();
+      }
+      // When editing, the foundation should only handle key events that finish
+      // the editing process.
+      return;
+    }
+
+    if (this.isEditable()) {
+      if (this.shouldStartEditing(evt)) {
+        evt.preventDefault();
+        this.startEditing();
+      }
+    }
+
     if (this.shouldNotifyInteraction_(evt)) {
       this.adapter.notifyInteraction();
       this.setPrimaryActionFocusable_(this.getFocusBehavior_());
@@ -366,6 +403,14 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
   }
 
+  private shouldStartEditing(evt: KeyboardEvent): boolean {
+    return this.eventFromPrimaryAction_(evt) && evt.key === strings.ENTER_KEY;
+  }
+
+  private shouldFinishEditing(evt: KeyboardEvent): boolean {
+    return evt.key === strings.ENTER_KEY;
+  }
+
   private shouldNotifyInteraction_(evt: KeyboardEvent): boolean {
     return evt.key === strings.ENTER_KEY || evt.key === strings.SPACEBAR_KEY;
   }
@@ -398,6 +443,16 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   private eventFromPrimaryAction_(evt: Event) {
     return this.adapter.eventTargetHasClass(
         evt.target, cssClasses.PRIMARY_ACTION);
+  }
+
+  private startEditing() {
+    this.adapter.addClass(cssClasses.EDITING);
+    this.adapter.notifyEditStart();
+  }
+
+  private finishEditing() {
+    this.adapter.removeClass(cssClasses.EDITING);
+    this.adapter.notifyEditFinish();
   }
 }
 

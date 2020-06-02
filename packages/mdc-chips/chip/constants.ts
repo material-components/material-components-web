@@ -69,6 +69,8 @@ export const cssClasses = {
   CHECKMARK: 'mdc-chip__checkmark',
   CHIP_EXIT: 'mdc-chip--exit',
   DELETABLE: 'mdc-chip--deletable',
+  EDITABLE: 'mdc-chip--editable',
+  EDITING: 'mdc-chip--editing',
   HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
   LEADING_ICON: 'mdc-chip__icon--leading',
   PRIMARY_ACTION: 'mdc-chip__primary-action',

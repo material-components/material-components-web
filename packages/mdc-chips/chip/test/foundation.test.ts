@@ -55,6 +55,8 @@ describe('MDCChipFoundation', () => {
       'hasLeadingIcon',
       'isRTL',
       'isTrailingActionNavigable',
+      'notifyEditFinish',
+      'notifyEditStart',
       'notifyInteraction',
       'notifyNavigation',
       'notifyRemoval',
@@ -79,14 +81,15 @@ describe('MDCChipFoundation', () => {
 
   it('#isSelected returns true if mdc-chip--selected class is present', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.hasClass.and.returnValue(true);
+    mockAdapter.hasClass.withArgs(cssClasses.SELECTED).and.returnValue(true);
     expect(foundation.isSelected()).toBe(true);
   });
 
   it('#isSelected returns false if mdc-chip--selected class is not present',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       mockAdapter.hasClass.and.returnValue(false);
+       mockAdapter.hasClass.withArgs(cssClasses.SELECTED)
+           .and.returnValue(false);
        expect(foundation.isSelected()).toBe(false);
      });
 
@@ -133,6 +136,33 @@ describe('MDCChipFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        foundation.setSelectedFromChipSet(true, true);
        expect(mockAdapter.notifySelection).toHaveBeenCalledWith(true, true);
+     });
+
+  it('#isEditable returns true if mdc-chip--editable class is present', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.EDITABLE).and.returnValue(true);
+    expect(foundation.isEditable()).toBe(true);
+  });
+
+  it('#isEditable returns false if mdc-chip--editable class is not present',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.hasClass.withArgs(cssClasses.EDITABLE)
+           .and.returnValue(false);
+       expect(foundation.isEditable()).toBe(false);
+     });
+
+  it('#isEditing returns true if mdc-chip--editing class is present', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.EDITING).and.returnValue(true);
+    expect(foundation.isEditing()).toBe(true);
+  });
+
+  it('#isEditing returns false if mdc-chip--editing class is not present',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.hasClass.withArgs(cssClasses.EDITING).and.returnValue(false);
+       expect(foundation.isEditing()).toBe(false);
      });
 
   it('#getDimensions returns adapter.getRootBoundingClientRect when there is no checkmark bounding rect',
@@ -215,6 +245,22 @@ describe('MDCChipFoundation', () => {
 
     foundation.handleClick();
     expect(mockAdapter.focusPrimaryAction).not.toHaveBeenCalled();
+  });
+
+  it('#handleDoubleClick() begins editing when editable', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.EDITABLE).and.returnValue(true);
+    foundation.handleDoubleClick();
+    expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.EDITING);
+    expect(mockAdapter.notifyEditStart).toHaveBeenCalled();
+  });
+
+  it('#handleDoubleClick() does nothing when not editable', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.EDITABLE).and.returnValue(false);
+    foundation.handleDoubleClick();
+    expect(mockAdapter.addClass).not.toHaveBeenCalled();
+    expect(mockAdapter.notifyEditStart).not.toHaveBeenCalled();
   });
 
   const validKeyDownTable = [
@@ -514,40 +560,73 @@ describe('MDCChipFoundation', () => {
            .not.toHaveBeenCalledWith(cssClasses.PRIMARY_ACTION_FOCUSED);
      });
 
+  function setupFocusOutTest(
+      {isEventFromPrimaryAction = false, isEditing = false} = {}) {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.eventTargetHasClass.and.returnValue(isEventFromPrimaryAction);
+    mockAdapter.hasClass.withArgs(cssClasses.EDITING)
+        .and.returnValue(isEditing);
+    return {mockAdapter, foundation};
+  }
+
   it(`#handleFocusOut removes class ${
          cssClasses
              .PRIMARY_ACTION_FOCUSED} when the event comes from the primary action`,
      () => {
-       const {foundation, mockAdapter} = setupTest();
-       mockAdapter.eventTargetHasClass.and.returnValue(true);
-       const mockFocusOut = {
-         type: 'focusout',
-       };
-
-       foundation.handleFocusOut(mockFocusOut);
+       const {mockAdapter, foundation} =
+           setupFocusOutTest({isEventFromPrimaryAction: true});
+       foundation.handleFocusOut({type: 'focusout'});
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(cssClasses.PRIMARY_ACTION_FOCUSED);
      });
 
-  it('#handleFocusOut removes no class when the event does not come from the primary action',
+  it(`#handleFocusOut finishes editing when the chip is being edited and the event comes from the primary action`,
      () => {
-       const {foundation, mockAdapter} = setupTest();
-       mockAdapter.eventTargetHasClass.and.returnValue(false);
-       const mockFocusOut = {
-         type: 'focusout',
-       };
+       const {mockAdapter, foundation} =
+           setupFocusOutTest({isEventFromPrimaryAction: true, isEditing: true});
+       foundation.handleFocusOut({type: 'focusout'});
+       expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.EDITING);
+       expect(mockAdapter.notifyEditFinish).toHaveBeenCalled();
+     });
 
-       foundation.handleFocusOut(mockFocusOut);
+  it(`#handleFocusOut does not finish editing when the chip is not being edited`,
+     () => {
+       const {mockAdapter, foundation} = setupFocusOutTest(
+           {isEventFromPrimaryAction: true, isEditing: false});
+       foundation.handleFocusOut({type: 'focusout'});
+       expect(mockAdapter.removeClass)
+           .not.toHaveBeenCalledWith(cssClasses.EDITING);
+       expect(mockAdapter.notifyEditFinish).not.toHaveBeenCalled();
+     });
+
+  it('#handleFocusOut does nothing when the event does not come from the primary action',
+     () => {
+       const {mockAdapter, foundation} =
+           setupFocusOutTest({isEventFromPrimaryAction: false});
+       foundation.handleFocusOut({type: 'focusout'});
        expect(mockAdapter.removeClass)
            .not.toHaveBeenCalledWith(cssClasses.PRIMARY_ACTION_FOCUSED);
      });
 
-  function setupNavigationTest(
-      {isTrailingActionNavigable = false, isRTL = false} = {}) {
+  function setupNavigationTest({
+    isTrailingActionNavigable = false,
+    isRTL = false,
+    isDeletable = false,
+    isEditable = false,
+    isEditing = false,
+    isEventFromPrimaryAction = false
+  } = {}) {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.isTrailingActionNavigable.and.returnValue(
         isTrailingActionNavigable);
     mockAdapter.isRTL.and.returnValue(isRTL);
+    mockAdapter.hasClass.withArgs(cssClasses.DELETABLE)
+        .and.returnValue(isDeletable);
+    mockAdapter.hasClass.withArgs(cssClasses.EDITABLE)
+        .and.returnValue(isEditable);
+    mockAdapter.hasClass.withArgs(cssClasses.EDITING)
+        .and.returnValue(isEditing);
+    mockAdapter.eventTargetHasClass.and.returnValue(isEventFromPrimaryAction);
     return {mockAdapter, foundation};
   }
 
@@ -575,6 +654,14 @@ describe('MDCChipFoundation', () => {
     strings.BACKSPACE_KEY,
     strings.DELETE_KEY,
     strings.IE_DELETE_KEY,
+  ];
+
+  const startEditingNavigationTable = [
+    strings.ENTER_KEY,
+  ];
+
+  const finishEditingNavigationTable = [
+    strings.ENTER_KEY,
   ];
 
   for (const key of leftKeyNavigationTable) {
@@ -689,8 +776,8 @@ describe('MDCChipFoundation', () => {
     it(`#handleKeydown ${
            key} adds the chip exit class when deletable class is present on root`,
        () => {
-         const {foundation, mockAdapter} = setupTest();
-         mockAdapter.hasClass.and.returnValue(true);
+         const {foundation, mockAdapter} =
+             setupNavigationTest({isDeletable: true});
          foundation.handleKeydown(mockKeyboardEvent(key));
          expect(mockAdapter.addClass)
              .toHaveBeenCalledWith(cssClasses.CHIP_EXIT);
@@ -702,12 +789,74 @@ describe('MDCChipFoundation', () => {
     it(`#handleKeydown ${key} does not add the chip exit class` +
            ` when deletable class is absent from root`,
        () => {
-         const {foundation, mockAdapter} = setupTest();
-         mockAdapter.hasClass.and.returnValue(false);
+         const {foundation, mockAdapter} = setupNavigationTest();
          foundation.handleKeydown(mockKeyboardEvent(key));
          expect(mockAdapter.addClass)
              .not.toHaveBeenCalledWith(cssClasses.CHIP_EXIT);
        });
+  }
+
+  for (const key of startEditingNavigationTable) {
+    it(`#handleKeydown ${key} starts editing if editable and on primary action`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest({
+           isEditable: true,
+           isEventFromPrimaryAction: true,
+         });
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.EDITING);
+         expect(mockAdapter.notifyEditStart).toHaveBeenCalled();
+       });
+
+    it(`#handleKeydown ${key} does nothing if not editable`, () => {
+      const {foundation, mockAdapter} = setupNavigationTest({
+        isEventFromPrimaryAction: true,
+      });
+      foundation.handleKeydown(mockKeyboardEvent(key));
+      expect(mockAdapter.addClass).not.toHaveBeenCalledWith(cssClasses.EDITING);
+      expect(mockAdapter.notifyEditStart).not.toHaveBeenCalled();
+    });
+
+    it(`#handleKeydown ${key} does nothing if not on the primary action`,
+       () => {
+         const {foundation, mockAdapter} = setupNavigationTest({
+           isEditable: true,
+         });
+         foundation.handleKeydown(mockKeyboardEvent(key));
+         expect(mockAdapter.addClass)
+             .not.toHaveBeenCalledWith(cssClasses.EDITING);
+         expect(mockAdapter.notifyEditStart).not.toHaveBeenCalled();
+       });
+  }
+
+  for (const key of finishEditingNavigationTable) {
+    it(`#handleKeydown ${key} finishes editing if editing`, () => {
+      const {foundation, mockAdapter} = setupNavigationTest({
+        isEditing: true,
+      });
+      foundation.handleKeydown(mockKeyboardEvent(key));
+      expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.EDITING);
+      expect(mockAdapter.notifyEditFinish).toHaveBeenCalled();
+    });
+
+    it(`#handleKeydown ${key} does not finish editing if not editing`, () => {
+      const {foundation, mockAdapter} = setupNavigationTest();
+      foundation.handleKeydown(mockKeyboardEvent(key));
+      expect(mockAdapter.removeClass)
+          .not.toHaveBeenCalledWith(cssClasses.EDITING);
+      expect(mockAdapter.notifyEditFinish).not.toHaveBeenCalled();
+    });
+
+    it(`#handleKeydown ${key} does not start editing after finishing`, () => {
+      const {foundation, mockAdapter} = setupNavigationTest({
+        isEditable: true,
+        isEditing: true,
+        isEventFromPrimaryAction: true,
+      });
+      foundation.handleKeydown(mockKeyboardEvent(key));
+      expect(mockAdapter.addClass).not.toHaveBeenCalledWith(cssClasses.EDITING);
+      expect(mockAdapter.notifyEditStart).not.toHaveBeenCalled();
+    });
   }
 
   it('#focusPrimaryAction() gives focus to the primary action', () => {

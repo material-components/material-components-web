@@ -94,6 +94,16 @@ export interface MDCChipAdapter {
   notifyNavigation(key: string, source: EventSource): void;
 
   /**
+   * Emits when editing starts.
+   */
+  notifyEditStart(): void;
+
+  /**
+   * Emits when editing finishes.
+   */
+  notifyEditFinish(): void;
+
+  /**
    * @return The computed property value of the given style property on the root element.
    */
   getComputedStyleValue(propertyName: string): string;
