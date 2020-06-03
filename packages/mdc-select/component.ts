@@ -393,7 +393,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       getMenuItemValues: () => this.menu.items.map(
           (el) => el.getAttribute(strings.VALUE_ATTR) || ''),
       getMenuItemTextAtIndex: (index: number) =>
-          this.menu.items[index].textContent as string,
+          this.menu.getPrimaryTextAtIndex(index),
       addClassAtIndex: (index: number, className: string) => {
         this.menu.items[index].classList.add(className);
       },

@@ -376,6 +376,22 @@ describe('MDCList', () => {
     expect(0).toEqual(root.querySelectorAll('button:not([tabindex])').length);
   });
 
+  it('#getPrimaryText returns the appropriate text for one line list', () => {
+    const {root, component} = setupTest();
+    const item = root.querySelectorAll('.mdc-list-item')[2] as HTMLElement;
+    document.body.appendChild(root);
+    expect(component.getPrimaryText(item)).toEqual('Pasta');
+    document.body.removeChild(root);
+  });
+
+  it('#getPrimaryText returns the appropriate text for two line list', () => {
+    const {root, component} = setupTest(getTwoLineFixture());
+    const item = root.querySelectorAll('.mdc-list-item')[2] as HTMLElement;
+    document.body.appendChild(root);
+    expect(component.getPrimaryText(item)).toEqual('Pasta');
+    document.body.removeChild(root);
+  });
+
   it('vertical calls setVerticalOrientation on foundation', () => {
     const {component, mockFoundation} = setupTest();
     component.vertical = false;

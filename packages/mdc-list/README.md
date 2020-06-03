@@ -505,6 +505,7 @@ Property | Value Type | Description
 Method Signature | Description
 --- | ---
 `layout() => void` | Recalculates layout and orientation.
+`getPrimaryText(item: Element) => string` | Fetches the primary text in the given element.
 `initializeListType() => void` | Initialize `selectedIndex` value based on pre-selected checkbox list items, single selection or radio.
 `setEnabled(itemIndex: number, isEnabled: boolean) => void` | Updates the list item at `itemIndex` to the desired `isEnabled` state.
 

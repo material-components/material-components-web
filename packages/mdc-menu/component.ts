@@ -200,6 +200,18 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     }
   }
 
+  /**
+   * @param index A menu item's index.
+   * @return The primary text within the menu at the index specified.
+   */
+  getPrimaryTextAtIndex(index: number): string {
+    const item = this.getOptionByIndex(index);
+    if (item && this.list_) {
+      return this.list_.getPrimaryText(item) || '';
+    }
+    return '';
+  }
+
   setFixedPosition(isFixed: boolean) {
     this.menuSurface_.setFixedPosition(isFixed);
   }

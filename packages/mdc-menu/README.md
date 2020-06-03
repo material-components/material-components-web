@@ -231,6 +231,7 @@ Method Signature | Description
 `setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
 `setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
 `getOptionByIndex(index: number) => Element \| null` | Returns the list item at the `index` specified.
+`getPrimaryTextAtIndex(index: number) => string` | Returns the primary text at the `index` specified.
 `getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 `setEnabled(index: number, isEnabled: boolean) => void` | Sets the enabled state to `isEnabled` for the menu item at given `index`.

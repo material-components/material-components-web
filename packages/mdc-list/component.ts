@@ -112,6 +112,23 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   }
 
   /**
+   * Extracts the primary text from a list item.
+   * @param item The list item element.
+   * @return The primary text in the element.
+   */
+  getPrimaryText(item: Element): string {
+    const primaryText =
+        item.querySelector(`.${cssClasses.LIST_ITEM_PRIMARY_TEXT_CLASS}`);
+    if (primaryText) {
+      return primaryText.textContent || '';
+    }
+
+    const singleLineText =
+        item.querySelector(`.${cssClasses.LIST_ITEM_TEXT_CLASS}`);
+    return (singleLineText && singleLineText.textContent) || '';
+  }
+
+  /**
    * Initialize selectedIndex value based on pre-selected checkbox list items, single selection or radio.
    */
   initializeListType() {
@@ -171,17 +188,8 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       getFocusedElementIndex: () =>
           this.listElements.indexOf(document.activeElement!),
       getListItemCount: () => this.listElements.length,
-      getPrimaryTextAtIndex: (index) => {
-        const primaryText = this.listElements[index].querySelector(
-            `.${cssClasses.LIST_ITEM_PRIMARY_TEXT_CLASS}`);
-        if (primaryText) {
-          return primaryText.textContent || '';
-        }
-
-        const singleLineText = this.listElements[index].querySelector(
-            `.${cssClasses.LIST_ITEM_TEXT_CLASS}`);
-        return (singleLineText && singleLineText.textContent) || '';
-      },
+      getPrimaryTextAtIndex: (index) =>
+          this.getPrimaryText(this.listElements[index]),
       hasCheckboxAtIndex: (index) => {
         const listItem = this.listElements[index];
         return !!listItem.querySelector(strings.CHECKBOX_SELECTOR);
