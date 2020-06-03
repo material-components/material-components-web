@@ -22,7 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {normalizeKey} from '@material/dom/keyboard';
+import {KEY, normalizeKey} from '@material/dom/keyboard';
 import {Corner} from '@material/menu-surface/constants';
 
 import {MDCSelectAdapter} from './adapter';
@@ -295,10 +295,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       return;
     }
 
-    const isEnter = normalizeKey(event) === 'Enter';
-    const isSpace = normalizeKey(event) === 'Spacebar';
-    const arrowUp = normalizeKey(event) === 'ArrowUp';
-    const arrowDown = normalizeKey(event) === 'ArrowDown';
+    const isEnter = normalizeKey(event) === KEY.ENTER;
+    const isSpace = normalizeKey(event) === KEY.SPACEBAR;
+    const arrowUp = normalizeKey(event) === KEY.ARROW_UP;
+    const arrowDown = normalizeKey(event) === KEY.ARROW_DOWN;
 
     if (isEnter || isSpace || arrowUp || arrowDown) {
       if (arrowUp && this.selectedIndex > 0) {
