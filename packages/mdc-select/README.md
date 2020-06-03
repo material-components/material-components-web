@@ -603,6 +603,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `notchOutline(labelWidth: number) => void` | Switches the notched outline element to its "notched state." |
 | `closeOutline() => void` | Switches the notched outline element to its closed state. |
 | `setDisabled(isDisabled: boolean) => void` | Enables or disables the select. |
+| `openMenu() => void` | Opens the menu and applies activated styling. |
 | `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
 | `notifyChange(value: string) => void` | Emits the `MDCSelect:change` event when an element is selected. |
 | `setSelectedText(text: string) => void` | Sets the text content of the selectedText element to the given string. |

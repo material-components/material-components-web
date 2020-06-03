@@ -382,6 +382,25 @@ describe('MDCSelectFoundation', () => {
        expect(helperText.setValidity).toHaveBeenCalledTimes(1);
      });
 
+  it('#openMenu opens the menu', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.openMenu();
+    expect(mockAdapter.openMenu).toHaveBeenCalledTimes(1);
+  });
+
+  it('#openMenu sets aria-expanded', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.openMenu();
+    expect(mockAdapter.setSelectAnchorAttr)
+        .toHaveBeenCalledWith('aria-expanded', 'true');
+  });
+
+  it('#openMenu adds activated class', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.openMenu();
+    expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.ACTIVATED);
+  });
+
   it('#handleClick does nothing if isMenuOpen_=true', () => {
     const {foundation, mockAdapter} = setupTest();
     (foundation as any).isMenuOpen = true;

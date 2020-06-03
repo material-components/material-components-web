@@ -181,6 +181,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter.setSelectAnchorAttr('aria-disabled', this.disabled.toString());
   }
 
+  /** Opens the menu. */
+  openMenu() {
+    this.adapter.addClass(cssClasses.ACTIVATED);
+    this.adapter.openMenu();
+    this.isMenuOpen = true;
+    this.adapter.setSelectAnchorAttr('aria-expanded', 'true');
+  }
+
   /**
    * @param content Sets the content of the helper text.
    */
@@ -284,10 +292,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
     this.adapter.setRippleCenter(normalizedX);
 
-    this.adapter.addClass(cssClasses.ACTIVATED);
-    this.adapter.openMenu();
-    this.isMenuOpen = true;
-    this.adapter.setSelectAnchorAttr('aria-expanded', 'true');
+    this.openMenu();
   }
 
   handleKeydown(event: KeyboardEvent) {
@@ -309,10 +314,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
         this.setSelectedIndex(this.selectedIndex + 1);
       }
 
-      this.adapter.addClass(cssClasses.ACTIVATED);
-      this.adapter.openMenu();
-      this.isMenuOpen = true;
-      this.adapter.setSelectAnchorAttr('aria-expanded', 'true');
+      this.openMenu();
       event.preventDefault();
     }
   }
