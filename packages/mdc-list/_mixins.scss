@@ -18,6 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+@use "sass:list";
 @use "sass:map";
 @use "@material/density/functions" as density-functions;
 @use "@material/rtl/mixins" as rtl-mixins;
@@ -50,9 +51,6 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $feat-typography: feature-targeting-functions.create-target($query, typography);
 
-  $item-primary-text-baseline-height: 32px;
-  $item-secondary-text-baseline-height: 20px;
-  $dense-item-primary-text-baseline-height: 24px;
   $divider-color: if(
     theme-functions.tone(theme-variables.$background) == "dark",
     variables.$divider-color-on-dark-bg,
@@ -85,16 +83,88 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       @include item-base_;
     }
+
+    @include list-item-padding-variant(
+      variables.$textual-variant-config, $query);
+    @include list-item-height-variant(
+      variables.$textual-variant-config, $query);
+
+    .mdc-list--icon-list & {
+      @include list-item-padding-variant(
+        variables.$icon-variant-config, $query);
+      @include list-item-height-variant(
+        variables.$icon-variant-config, $query);
+    }
+
+    .mdc-list--avatar-list & {
+      @include list-item-padding-variant(
+        variables.$avatar-variant-config, $query);
+      @include list-item-height-variant(
+        variables.$avatar-variant-config, $query);
+    }
+
+    .mdc-list--thumbnail-list & {
+      @include list-item-padding-variant(
+        variables.$thumbnail-variant-config, $query);
+      @include list-item-height-variant(
+        variables.$thumbnail-variant-config, $query);
+    }
+
+    .mdc-list--image-list & {
+      @include list-item-padding-variant(
+        variables.$image-variant-config, $query);
+      @include list-item-height-variant(
+        variables.$image-variant-config, $query);
+    }
+
+    .mdc-list--video-list & {
+      @include list-item-padding-variant(
+        variables.$video-variant-config, $query);
+      @include list-item-height-variant(
+        variables.$video-variant-config, $query);
+    }
+  }
+
+  // This is included here to preserve expected specificity behavior (avatar
+  // graphic styles must take priority).
+  // TODO(b/157038316): regroup this with density styles when nesting is fixed.
+  .mdc-list--dense .mdc-list-item__graphic {
+    @include graphic-size-dense_(20px, $query);
   }
 
   .mdc-list-item__graphic {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include graphic-size_(24px);
-
       flex-shrink: 0;
       align-items: center;
       justify-content: center;
       fill: currentColor;
+    }
+
+    // TODO(b/156624966): this retains legacy spacing but should be updated.
+    @include graphic-size-variant(variables.$deprecated-graphic-config, $query);
+
+    .mdc-list--icon-list & {
+      @include graphic-size-variant(variables.$icon-variant-config, $query);
+    }
+
+    .mdc-list--avatar-list & {
+      @include graphic-size-variant(variables.$avatar-variant-config, $query);
+      @include feature-targeting-mixins.targets($feat-structure) {
+        border-radius: 50%;
+      }
+    }
+
+    .mdc-list--thumbnail-list & {
+      @include graphic-size-variant(
+        variables.$thumbnail-variant-config, $query);
+    }
+
+    .mdc-list--image-list & {
+      @include graphic-size-variant(variables.$image-variant-config, $query);
+    }
+
+    .mdc-list--video-list & {
+      @include graphic-size-variant(variables.$video-variant-config, $query);
     }
   }
 
@@ -135,17 +205,29 @@
   .mdc-list-item__primary-text {
     @include typography-mixins.overflow-ellipsis($query);
     @include typography-mixins.text-baseline(
-      $top: $item-primary-text-baseline-height,
-      $bottom: $item-secondary-text-baseline-height,
+      $top: variables.$item-primary-text-baseline-height,
+      $bottom: variables.$item-secondary-text-baseline-height,
       $display: block,
       $query: $query
     );
 
+    .mdc-list--video-list &,
+    .mdc-list--image-list &,
+    .mdc-list--thumbnail-list &,
+    .mdc-list--avatar-list &,
+    .mdc-list--icon-list & {
+      @include typography-mixins.text-baseline(
+        $top: variables.$item-primary-text-baseline-height-with-graphic,
+        $bottom: variables.$item-secondary-text-baseline-height,
+        $query: $query
+      );
+    }
+
     // stylelint-disable plugin/selector-bem-pattern
     .mdc-list--dense & {
       @include typography-mixins.text-baseline(
-        $top: $dense-item-primary-text-baseline-height,
-        $bottom: $item-secondary-text-baseline-height,
+        $top: variables.$dense-item-primary-text-baseline-height,
+        $bottom: variables.$item-secondary-text-baseline-height,
         $query: $query
       );
     }
@@ -156,7 +238,7 @@
     @include typography-mixins.typography(body2, $query);
     @include typography-mixins.overflow-ellipsis($query);
     @include typography-mixins.text-baseline(
-      $top: $item-secondary-text-baseline-height,
+      $top: variables.$item-secondary-text-baseline-height,
       $display: block,
       $query: $query
     );
@@ -177,35 +259,35 @@
     }
   }
 
-  .mdc-list--dense .mdc-list-item__graphic {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include graphic-size_(20px);
-    }
-  }
-
-  .mdc-list--avatar-list .mdc-list-item {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      height: 56px;
-    }
-  }
-
-  .mdc-list--avatar-list .mdc-list-item__graphic {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include graphic-size_(40px);
-
-      border-radius: 50%;
-    }
-  }
-
   .mdc-list--two-line .mdc-list-item__text {
     @include feature-targeting-mixins.targets($feat-structure) {
       align-self: flex-start;
     }
   }
 
-  .mdc-list--two-line .mdc-list-item {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      height: 72px;
+  .mdc-list--two-line {
+    .mdc-list-item {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        height: variables.$two-line-height;
+      }
+    }
+
+    &.mdc-list--video-list .mdc-list-item ,
+    &.mdc-list--image-list .mdc-list-item ,
+    &.mdc-list--thumbnail-list .mdc-list-item ,
+    &.mdc-list--avatar-list .mdc-list-item,
+    &.mdc-list--icon-list .mdc-list-item {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        height: variables.$two-line-graphic-height;
+      }
+    }
+
+    // Icons in multiline lists are the only graphic that isn't centered.
+    &.mdc-list--icon-list .mdc-list-item__graphic {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        align-self: flex-start;
+        margin-top: variables.$two-line-icon-top-margin;
+      }
     }
   }
 
@@ -217,9 +299,7 @@
   }
 
   .mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include graphic-size_(36px);
-    }
+    @include graphic-size-dense_(36px, $query);
   }
 
   // Only change mouse cursor for list items which are not disabled.
@@ -253,25 +333,56 @@
   // will cause the `border` declaration on `.mdc-list-divider` above to override it.
   @include divider-color($divider-color, $query);
 
+  // Deprecated. Use the specialized inset classes instead.
+  // Items are fully inset using padding.
   .mdc-list-divider--padded {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      // Leave gaps on each side to match the padding on list items
-      margin: 0 variables.$side-padding;
-    }
+    @include divider-inset-variant(
+      variables.$textual-variant-config, $use-padding: true, $query: $query);
   }
 
+  // Deprecated. Use the specialized inset classes instead.
+  // Items's leading, but not trailing, edge is inset to account for *avatar*
+  // width.
   .mdc-list-divider--inset {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, left, variables.$text-offset, ".mdc-list-group");
-
-      width: calc(100% - #{variables.$text-offset});
-    }
+    @include divider-inset-variant(
+      variables.$avatar-variant-config, $trailing: false, $query: $query);
   }
 
+  // Deprecated. Use the specialized inset classes instead.
+  // Item's leading and trailing edges are inset to account for *avatar* width.
   .mdc-list-divider--inset.mdc-list-divider--padded {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      width: calc(100% - #{variables.$text-offset} - #{variables.$side-padding});
-    }
+    @include divider-inset-variant(
+      variables.$avatar-variant-config, $query: $query);
+  }
+
+  .mdc-list {
+    @include divider-insets-variant(
+      variables.$textual-variant-config, $query: $query);
+  }
+
+  .mdc-list--icon-list {
+    @include divider-insets-variant(
+      variables.$icon-variant-config, $query: $query);
+  }
+
+  .mdc-list--avatar-list {
+    @include divider-insets-variant(
+      variables.$avatar-variant-config, $query: $query);
+  }
+
+  .mdc-list--thumbnail-list {
+    @include divider-insets-variant(
+      variables.$thumbnail-variant-config, $query: $query);
+  }
+
+  .mdc-list--image-list {
+    @include divider-insets-variant(
+      variables.$image-variant-config, $query: $query);
+  }
+
+  .mdc-list--video-list {
+    @include divider-insets-variant(
+      variables.$video-variant-config, $query: $query);
   }
 
   .mdc-list-group {
@@ -453,6 +564,206 @@
 }
 
 ///
+/// Establishes each list item's padding using a variant config.
+///
+/// @param {Map} $variant-config The list variant's configuration.
+///
+/// @access public
+///
+@mixin list-item-padding-variant(
+    $variant-config, $query: feature-targeting-functions.all()) {
+  $leading-padding: map.get($variant-config, leading-padding);
+  @include list-item-padding($leading-padding, $query);
+}
+
+///
+/// Establishes each list item's padding.
+///
+/// @param {Number} $leading-padding The item's leading padding.
+///
+/// @access public
+///
+@mixin list-item-padding(
+    $leading-padding, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(
+        padding, $leading-padding, variables.$trailing-padding);
+  }
+}
+
+///
+/// Establishes each list item's single line height using a variant config.
+///
+/// @param {Map} $variant-config The list variant's configuration.
+///
+/// @access public
+///
+@mixin list-item-height-variant(
+    $variant-config, $query: feature-targeting-functions.all()) {
+  $single-line-height: map.get($variant-config, single-line-height);
+  @include list-item-height($single-line-height, $query);
+}
+
+///
+/// Establishes each list item's height.
+///
+/// @param {Number} $height The item's height.
+///
+/// @access public
+///
+@mixin list-item-height($height, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    height: $height;
+  }
+}
+
+///
+/// Sets the trailing margin used by icons.
+///
+/// @param {Number} $margin The trailing margin applied to icons.
+///
+/// @access public
+///
+@mixin icon-margin($margin, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    .mdc-list-item__graphic {
+      @include rtl-mixins.reflexive-box(
+        margin, right, $margin);
+    }
+  }
+}
+
+///
+/// Sets divider inset sizes for each list variant.
+///
+/// @param {Map} $variant-config The list variant's configuration.
+///
+/// @access public
+///
+@mixin divider-insets-variant(
+    $variant-config, $query: feature-targeting-functions.all()) {
+  $leading-padding: map.get($variant-config, leading-padding);
+  $text-offset: map.get($variant-config, text-offset);
+  @include divider-insets($leading-padding, $text-offset, $query);
+}
+
+///
+/// Sets divider inset sizes for each list variant.
+///
+/// @param {Number} $leading-padding The item's leading padding.
+/// @param {Number} $text-offset The item's text offset.
+///
+/// @access public
+///
+@mixin divider-insets(
+    $leading-padding, $text-offset, $query: feature-targeting-functions.all()) {
+  .mdc-list-divider--inset-leading {
+    @include divider-inset(
+      $leading-padding, $text-offset, $trailing: false, $query: $query);
+  }
+
+  .mdc-list-divider--inset-trailing {
+    @include divider-inset(
+      $leading-padding, $text-offset, $leading: false, $query: $query);
+  }
+
+  .mdc-list-divider--inset-leading.mdc-list-divider--inset-trailing {
+    @include divider-inset($leading-padding, $text-offset, $query: $query);
+  }
+
+  .mdc-list-divider--inset-leading.mdc-list-divider--padding {
+    @include divider-inset(
+      $leading-padding, $text-offset, $trailing: false, $use-padding: true,
+      $query: $query);
+  }
+
+  .mdc-list-divider--inset-leading.mdc-list-divider--inset-trailing.mdc-list-divider--inset-padding {
+    @include divider-inset(
+      $leading-padding, $text-offset, $use-padding: true, $query: $query);
+  }
+}
+
+// Sets the width and height of the graphic element using a variant config.
+@mixin graphic-size-variant(
+    $variant-config, $query: feature-targeting-functions.all()) {
+  $leading-padding: map.get($variant-config, leading-padding);
+  $text-offset: map.get($variant-config, text-offset);
+  $width: map.get(map.get($variant-config, graphic-size), width);
+  $height: map.get(map.get($variant-config, graphic-size), height);
+
+  @include graphic-size(
+    $leading-padding, $text-offset, $width, $height, $query);
+}
+
+// Sets the width and height of the graphic element, as well as calculates the
+// trailing margin for the graphic element such that the text is always offset
+// from the item's leading edge by 72px, which is defined within the spec. If
+// height isn't specified, the graphic is assumed to be square.
+// TODO(b/155397992): restructure to use symmetric margins.
+@mixin graphic-size(
+    $leading-padding, $text-offset, $width, $height,
+    $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $margin-value: max(
+    $text-offset - $leading-padding - $width, $leading-padding);
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @include rtl-mixins.reflexive-box(
+      margin, right, $margin-value);
+    width: $width;
+    height: $height;
+  }
+}
+
+// Deprecated. Supports legacy density styles.
+@mixin graphic-size-dense_($size, $query: feature-targeting-functions.all()) {
+  @include graphic-size(
+    $leading-padding: 16px, $text-offset: 16px, $width: $size, $height: $size,
+    $query: $query);
+}
+
+///
+/// Computes the appropriate leading inset for a divider based on list type.
+///
+/// @param {String}  $variant-config The list variant configuration.
+/// @param {Boolean} $leading Whether to apply the leading inset.
+/// @param {Boolean} $trailing Whether to apply the trailing inset.
+/// @param {Boolean} $use-padding Whether to align with padding vs. text offset.
+///
+/// @access private
+///
+@mixin divider-inset-variant(
+    $variant-config, $leading: true, $trailing: true, $use-padding: false,
+    $query: feature-targeting-functions.all()) {
+  $leading-padding: map.get($variant-config, leading-padding);
+  $text-offset: map.get($variant-config, text-offset);
+
+  @include divider-inset(
+    $leading-padding, $text-offset, $leading, $trailing, $use-padding, $query);
+}
+
+@mixin divider-inset(
+    $leading-padding, $text-offset, $leading: true, $trailing: true,
+    $use-padding: false, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $trailing-inset: if($trailing, variables.$trailing-padding, 0);
+  $leading-inset:
+    if($leading, if($use-padding, $leading-padding, $text-offset), 0);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    @if $leading {
+      @include rtl-mixins.reflexive-box(margin, left, $leading-inset);
+    }
+    width: calc(100% - #{$leading-inset + $trailing-inset});
+  }
+}
+
+///
 /// Sets density scale to single line list variant.
 ///
 /// @param {Number} $density-scale Density scale for list. Supported density scales are `-4`, `-3`, `-2`, `-1` and  `0`.
@@ -522,8 +833,8 @@
   position: relative;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 variables.$side-padding;
   overflow: hidden;
+  padding: 0;
 
   &:focus {
     outline: none;
@@ -537,18 +848,4 @@
   @include ripple-mixins.states(theme-variables.prop-value(on-surface), false, $query);
   @include ripple-mixins.states-activated(primary, false, $query);
   @include ripple-mixins.states-selected(primary, false, $query);
-}
-
-// Sets the width and height of the graphic element, as well as calculates the margins for
-// the graphic element such that the text is always offset by 72px, which is defined within
-// the spec.
-@mixin graphic-size_($size) {
-  $text-offset: 72px;
-  $side-padding: variables.$side-padding;
-  $margin-value: $text-offset - $side-padding - $size;
-
-  @include rtl-mixins.reflexive-box(margin, right, $margin-value, ".mdc-list-item");
-
-  width: $size;
-  height: $size;
 }
