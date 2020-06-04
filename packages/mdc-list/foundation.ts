@@ -597,30 +597,47 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
   /**
    * Given the next desired character from the user, adds it to the typeahead
-   * buffer; then, beginning from the currently focused option, attempts to
-   * find the next option matching the buffer. Wraps around if at the
-   * end of options.
+   * buffer. Then, attempts to find the next option matching the buffer. Wraps
+   * around if at the end of options.
+   *
+   * @param nextChar The next character to add to the prefix buffer.
+   * @param startingIndex The index from which to start matching. Only relevant
+   *     when starting a new match sequence. To start a new match sequence,
+   *     clear the buffer using `clearTypeaheadBuffer`, or wait for the buffer
+   *     to clear after a set interval defined in list foundation. Defaults to
+   *     the currently focused index.
+   * @return The index of the matched item, or -1 if no match.
    */
-  private typeaheadMatchItem(nextChar: string) {
+  typeaheadMatchItem(
+      nextChar: string, startingIndex?: number, skipFocus = false): number {
     clearTimeout(this.typeaheadBufferClearTimeout);
 
     this.typeaheadBufferClearTimeout = setTimeout(() => {
-      this.typeaheadBuffer = '';
+      this.clearTypeaheadBuffer();
     }, numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
 
     this.typeaheadBuffer += nextChar;
 
+    startingIndex =
+        startingIndex !== undefined ? startingIndex : this.focusedItemIndex_;
     let index: number;
     if (this.typeaheadBuffer.length === 1) {
-      index = this.matchFirstChar();
+      index = this.matchFirstChar(startingIndex);
     } else {
       index = this.matchAllChars();
     }
 
-    if (index !== -1) {
+    if (index !== -1 && !skipFocus) {
       this.focusItemAtIndex(index);
     }
     return index;
+  }
+
+  /**
+   * Clears the typeahead buffer.
+   */
+  clearTypeaheadBuffer() {
+    this.typeaheadBuffer = '';
   }
 
   /**
@@ -628,7 +645,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * next option that begins with such character. Wraps around if at
    * end of options.
    */
-  private matchFirstChar(): number {
+  private matchFirstChar(startingIndex: number): number {
     const firstChar = this.typeaheadBuffer[0];
     const itemsMatchingFirstChar = this.sortedIndexByFirstChar.get(firstChar);
     if (!itemsMatchingFirstChar) {
@@ -636,28 +653,27 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
 
     // Has the same firstChar been recently matched?
-    // Also, did focus remain the same between key presses?
+    // Also, did starting index remain the same between key presses?
     // If both hold true, simply increment index.
     if (firstChar === this.currentFirstChar &&
         itemsMatchingFirstChar[this.sortedIndexCursor].index ===
-            this.focusedItemIndex_) {
+            startingIndex) {
       this.sortedIndexCursor =
           (this.sortedIndexCursor + 1) % itemsMatchingFirstChar.length;
 
       return itemsMatchingFirstChar[this.sortedIndexCursor].index;
     }
 
-    // If we're here, either firstChar changed, or focus was moved between
-    // keypresses thus invalidating the cursor.
+    // If we're here, either firstChar changed, or startingIndex has changed
+    // thus invalidating the cursor.
     this.currentFirstChar = firstChar;
     this.sortedIndexCursor = 0;
 
     // Advance cursor to first item matching the firstChar that is positioned
-    // after focused item. Cursor is unchanged if there's no such item.
+    // after starting item. Cursor is unchanged if there's no such item.
     for (let cursorPosition = 0; cursorPosition < itemsMatchingFirstChar.length;
          cursorPosition++) {
-      if (itemsMatchingFirstChar[cursorPosition].index >
-          this.focusedItemIndex_) {
+      if (itemsMatchingFirstChar[cursorPosition].index > startingIndex) {
         this.sortedIndexCursor = cursorPosition;
         break;
       }

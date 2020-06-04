@@ -67,12 +67,14 @@ class FakeMenu {
   hoistMenuToBody: jasmine.Spy = jasmine.createSpy('.hoistMenuToBody');
   setAnchorElement: jasmine.Spy = jasmine.createSpy('.setAnchorElement');
   setAnchorCorner: jasmine.Spy = jasmine.createSpy('.setAnchorCorner');
+  typeaheadMatchItem: jasmine.Spy = jasmine.createSpy('.typeaheadMatchItem');
   listen: jasmine.Spy = jasmine.createSpy('.listen');
   unlisten: jasmine.Spy = jasmine.createSpy('.listen');
   layout: jasmine.Spy = jasmine.createSpy('.layout');
 
   open: boolean = false;
   wrapFocus: boolean = false;
+  typeaheadInProgress: boolean = false;
 }
 
 class FakeIcon {
@@ -1215,6 +1217,39 @@ describe('MDCSelect', () => {
     adapter.removeClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
     expect(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS))
         .toBe(false);
+    document.body.removeChild(fixture);
+  });
+
+  it('adapter#isTypeaheadInProgress queries menu state', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {fixture, component, mockMenu} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    document.body.appendChild(fixture);
+    const adapter = (component.getDefaultFoundation() as any).adapter;
+
+    mockMenu.typeaheadInProgress = false;
+    expect(adapter.isTypeaheadInProgress()).toBe(false);
+    mockMenu.typeaheadInProgress = true;
+    expect(adapter.isTypeaheadInProgress()).toBe(true);
+    document.body.removeChild(fixture);
+  });
+
+  it('adapter#typeaheadMatchItem calls menu method', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {fixture, component, mockMenu} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    document.body.appendChild(fixture);
+    const adapter = (component.getDefaultFoundation() as any).adapter;
+    mockMenu.typeaheadMatchItem.and.returnValue(2);
+
+    expect(adapter.typeaheadMatchItem('a', 4)).toEqual(2);
+    expect(mockMenu.typeaheadMatchItem).toHaveBeenCalledWith('a', 4);
     document.body.removeChild(fixture);
   });
 

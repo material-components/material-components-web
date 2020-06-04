@@ -236,6 +236,7 @@ Method Signature | Description
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 `setEnabled(index: number, isEnabled: boolean) => void` | Sets the enabled state to `isEnabled` for the menu item at given `index`.
 `layout() => void` | Proxies to the list's layout method.
+`typeaheadMatchItem(nextChar: string) => number` | Adds a character to the typeahead buffer and returns index of the next item in the list matching the buffer.
 
 > See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.
 

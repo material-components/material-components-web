@@ -625,7 +625,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `getMenuItemTextAtIndex(index: number) => string` | Gets the text content of the menu item element at the given index. |
 | `addClassAtIndex(menuItem: Element, className: string) => void` | Adds the class name on the menu item at the given index. |
 | `removeClassAtIndex(menuItem: Element, className: string) => void` | Removes the class name on the menu item at the given index. |
-
+| `isTypeaheadInProgress() => boolean` | Returns whether typeahead is in progress in the menu. |
+| `typeaheadMatchItem: (nextChar: string, startingIndex: number) => number` | Adds a character to the list typeahead buffer and returns index of the next item in the list matching the buffer. |
 ### `MDCSelectFoundation`
 
 | Method Signature | Description |

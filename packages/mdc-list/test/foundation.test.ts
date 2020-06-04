@@ -1549,5 +1549,20 @@ describe('MDCListFoundation', () => {
 
       expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalled();
     });
+
+    it('programmatic typeahead invocation returns correct matching items',
+       () => {
+         const {foundation, mockAdapter} = setupTypeaheadTest();
+         expect(foundation.typeaheadMatchItem('b', 2, true)).toEqual(3);
+         expect(foundation.typeaheadMatchItem('a', 3, true)).toEqual(3);
+         expect(foundation.typeaheadMatchItem('b', 3, true)).toEqual(4);
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+
+         expect(foundation.typeaheadMatchItem('z', 2, true)).toEqual(5);
+         jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+         expect(foundation.typeaheadMatchItem('z', 5, true)).toEqual(1);
+
+         expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalled();
+       });
   });
 });

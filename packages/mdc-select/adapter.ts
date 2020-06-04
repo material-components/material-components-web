@@ -211,4 +211,15 @@ export interface MDCSelectAdapter {
    * Removes the class name on the menu item at the given index.
    */
   removeClassAtIndex(index: number, className: string): void;
+
+  /**
+   * Returns whether typeahead is in progress in the menu.
+   */
+  isTypeaheadInProgress(): boolean;
+
+  /**
+   * Adds a character to the list typeahead buffer and returns index of the
+   * next item in the list matching the buffer.
+   */
+  typeaheadMatchItem(nextChar: string, startingIndex: number): number;
 }

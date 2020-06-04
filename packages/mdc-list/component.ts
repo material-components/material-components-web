@@ -46,6 +46,13 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   }
 
   /**
+   * @return Whether typeahead is currently matching a user-specified prefix.
+   */
+  get typeaheadInProgress(): boolean {
+    return this.foundation.isTypeaheadInProgress();
+  }
+
+  /**
    * Sets whether typeahead functionality is enabled on the list.
    * @param hasTypeahead Whether typeahead is enabled.
    */
@@ -165,6 +172,21 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    */
   setEnabled(itemIndex: number, isEnabled: boolean) {
     this.foundation.setEnabled(itemIndex, isEnabled);
+  }
+
+  /**
+   * Given the next desired character from the user, adds it to the typeahead
+   * buffer. Then, attempts to find the next option matching the buffer. Wraps
+   * around if at the end of options.
+   *
+   * @param nextChar The next character to add to the prefix buffer.
+   * @param startingIndex The index from which to start matching. Defaults to
+   *     the currently focused index.
+   * @return The index of the matched item.
+   */
+  typeaheadMatchItem(nextChar: string, startingIndex?: number): number {
+    return this.foundation.typeaheadMatchItem(
+        nextChar, startingIndex, /** skipFocus */ true);
   }
 
   getDefaultFoundation() {

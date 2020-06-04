@@ -87,6 +87,8 @@ class FakeList {
   itemsContainer: jasmine.Spy = jasmine.createSpy('.root_');
   layout: jasmine.Spy = jasmine.createSpy('layout');
   wrapFocus: boolean = true;
+  typeaheadInProgress: boolean = false;
+  typeaheadMatchItem: jasmine.Spy = jasmine.createSpy('.typeaheadMatchItem');
   listElements: HTMLElement[];
   getPrimaryText: jasmine.Spy = jasmine.createSpy('.getPrimaryText');
 
@@ -221,6 +223,22 @@ describe('MDCMenu', () => {
 
     component.wrapFocus = false;
     expect(list.wrapFocus).toBe(false);
+  });
+
+  it('typeaheadInProgress proxies to MDCList#typeaheadInProgress property',
+     () => {
+       const {component, list} = setupTestWithFakes();
+
+       expect(component.typeaheadInProgress).toBeFalse();
+       list.typeaheadInProgress = true;
+       expect(component.typeaheadInProgress).toBeTrue();
+     });
+
+  it('typeaheadMatchItem proxies to MDCList#typeaheadMatchItem method', () => {
+    const {component, list} = setupTestWithFakes();
+
+    component.typeaheadMatchItem('a', 2);
+    expect(list.typeaheadMatchItem).toHaveBeenCalledWith('a', 2);
   });
 
   it('layout proxies to MDCList#layout method', () => {

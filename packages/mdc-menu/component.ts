@@ -127,6 +127,33 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   /**
+   * @return Whether typeahead logic is currently matching some user prefix.
+   */
+  get typeaheadInProgress() {
+    return this.list_ ? this.list_.typeaheadInProgress : false;
+  }
+
+  /**
+   * Given the next desired character from the user, adds it to the typeahead
+   * buffer. Then, attempts to find the next option matching the buffer. Wraps
+   * around if at the end of options.
+   *
+   * @param nextChar The next character to add to the prefix buffer.
+   * @param startingIndex The index from which to start matching. Only relevant
+   *     when starting a new match sequence. To start a new match sequence,
+   *     clear the buffer using `clearTypeaheadBuffer`, or wait for the buffer
+   *     to clear after a set interval defined in list foundation. Defaults to
+   *     the currently focused index.
+   * @return The index of the matched item, or -1 if no match.
+   */
+  typeaheadMatchItem(nextChar: string, startingIndex?: number): number {
+    if (this.list_) {
+      return this.list_.typeaheadMatchItem(nextChar, startingIndex);
+    }
+    return -1;
+  }
+
+  /**
    * Layout the underlying list element in the case of any dynamic updates
    * to its structure.
    */

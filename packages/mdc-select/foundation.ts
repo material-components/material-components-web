@@ -86,6 +86,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       getMenuItemAttr: () => '',
       addClassAtIndex: () => undefined,
       removeClassAtIndex: () => undefined,
+      isTypeaheadInProgress: () => false,
+      typeaheadMatchItem: () => -1,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -295,6 +297,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.openMenu();
   }
 
+  /**
+   * Handles keydown events on select element. Depending on the type of
+   * character typed, does typeahead matching or opens menu.
+   */
   handleKeydown(event: KeyboardEvent) {
     if (this.isMenuOpen || !this.adapter.hasClass(cssClasses.FOCUSED)) {
       return;
@@ -305,18 +311,33 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const arrowUp = normalizeKey(event) === KEY.ARROW_UP;
     const arrowDown = normalizeKey(event) === KEY.ARROW_DOWN;
 
-    if (isEnter || isSpace || arrowUp || arrowDown) {
-      if (arrowUp && this.selectedIndex > 0) {
-        this.setSelectedIndex(this.selectedIndex - 1);
-      } else if (
-          arrowDown &&
-          this.selectedIndex < this.adapter.getMenuItemCount() - 1) {
-        this.setSelectedIndex(this.selectedIndex + 1);
+    // Typeahead
+    if (event.key && event.key.length === 1 ||
+        isSpace && this.adapter.isTypeaheadInProgress()) {
+      const key = isSpace ? ' ' : event.key;
+      const typeaheadNextIndex =
+          this.adapter.typeaheadMatchItem(key, this.selectedIndex);
+      if (typeaheadNextIndex >= 0) {
+        this.setSelectedIndex(typeaheadNextIndex);
       }
-
-      this.openMenu();
       event.preventDefault();
+      return;
     }
+
+    if (!isEnter && !isSpace && !arrowUp && !arrowDown) {
+      return;
+    }
+
+    // Increment/decrement index as necessary and open menu.
+    if (arrowUp && this.selectedIndex > 0) {
+      this.setSelectedIndex(this.selectedIndex - 1);
+    } else if (
+        arrowDown && this.selectedIndex < this.adapter.getMenuItemCount() - 1) {
+      this.setSelectedIndex(this.selectedIndex + 1);
+    }
+
+    this.openMenu();
+    event.preventDefault();
   }
 
   /**

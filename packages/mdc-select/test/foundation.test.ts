@@ -78,6 +78,8 @@ describe('MDCSelectFoundation', () => {
       'getMenuItemAttr',
       'addClassAtIndex',
       'removeClassAtIndex',
+      'isTypeaheadInProgress',
+      'typeaheadMatchItem',
     ]);
   });
 
@@ -609,6 +611,51 @@ describe('MDCSelectFoundation', () => {
        expect(foundation.getSelectedIndex()).toEqual(2);
        expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(2);
      });
+
+  it('#handleKeydown with alphanumeric characters calls adapter.getTypeaheadNextIndex',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const preventDefault = jasmine.createSpy('');
+       const event = {key: 'a', preventDefault} as any;
+       mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
+
+       foundation.handleKeydown(event);
+       event.key = 'Z';
+       foundation.handleKeydown(event);
+       event.key = '1';
+       foundation.handleKeydown(event);
+
+       expect(mockAdapter.typeaheadMatchItem).toHaveBeenCalledTimes(3);
+       expect(preventDefault).toHaveBeenCalledTimes(3);
+     });
+
+  it('#handleKeydown with spacebar character when typeahead is in progress ' +
+         'calls adapter.getTypeaheadNextIndex',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const preventDefault = jasmine.createSpy('');
+       const event = {key: 'Spacebar', preventDefault} as any;
+       mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
+       mockAdapter.isTypeaheadInProgress.and.returnValue(true);
+       foundation.handleKeydown(event);
+
+       expect(mockAdapter.typeaheadMatchItem).toHaveBeenCalledTimes(1);
+       expect(preventDefault).toHaveBeenCalledTimes(1);
+     });
+
+  it('#handleKeydown sets selected index based on typeahead results', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const preventDefault = jasmine.createSpy('');
+    const event = {key: 'a', preventDefault} as any;
+    spyOn(foundation, 'setSelectedIndex');
+
+    mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
+    mockAdapter.typeaheadMatchItem.and.returnValue(2);
+
+    foundation.handleKeydown(event);
+
+    expect(foundation.setSelectedIndex).toHaveBeenCalledWith(2);
+  });
 
   it('#layout notches outline and floats label if unfocused and value is nonempty',
      () => {

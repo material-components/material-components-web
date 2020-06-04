@@ -400,6 +400,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       removeClassAtIndex: (index: number, className: string) => {
         this.menu.items[index].classList.remove(className);
       },
+      isTypeaheadInProgress: () => this.menu.typeaheadInProgress,
+      typeaheadMatchItem: (nextChar: string, startingIndex: number) =>
+          this.menu.typeaheadMatchItem(nextChar, startingIndex),
     };
     // tslint:enable:object-literal-sort-keys
   }

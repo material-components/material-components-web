@@ -498,6 +498,7 @@ Property | Value Type | Description
 `vertical` | `boolean` (write-only) | Proxies to the foundation's `setVerticalOrientation()` method.
 `listElements` | `Array<Element>` (read-only) | Returns all list item elements including disabled list items.
 `wrapFocus` | `boolean` (write-only) | Proxies to the foundation's `setWrapFocus()` method.
+`typeaheadInProgress` | `boolean` (read-only) | Proxies to foundation's `isTypeaheadInProgress` method.
 `hasTypeahead` | `boolean` (write-only) | Proxies to the foundation's `setHasTypeahead()` method.
 `singleSelection` | `boolean` (write-only) | Proxies to the foundation's `setSingleSelection()` method.
 `selectedIndex` | `MDCListIndex` | Proxies to the foundation's `getSelectedIndex()` and `setSelectedIndex()` methods.
@@ -613,3 +614,5 @@ Method Signature | Description
 `setEnabled(itemIndex: number, isEnabled: Boolean) => void` | Updates the list item's disabled state.
 `setHasTypeahead(hasTypeahead: Boolean) => void` | Sets whether typeahead is enabled on the list.
 `isTypeaheadInProgress() => Boolean` | Returns whether typeahead is currently matching a user-specified prefix.
+`typeaheadMatchItem(nextChar: string) => number` | Adds a character to the typeahead buffer and returns index of the next item in the list matching the buffer.
+`clearTypeaheadBuffer() => void` | Clears the typeahead buffer.

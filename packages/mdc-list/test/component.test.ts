@@ -234,6 +234,21 @@ describe('MDCList', () => {
        expect(mockFoundation.setEnabled).toHaveBeenCalledTimes(1);
      });
 
+  it('#getTypeaheadInProgress calls foundation method', () => {
+    const {component, mockFoundation} = setupTest();
+    component.typeaheadInProgress;
+    expect(mockFoundation.isTypeaheadInProgress).toHaveBeenCalled();
+  });
+
+  it('#typeaheadMatchItem calls foundation method with given index and starting index.',
+     () => {
+       const {component, mockFoundation} = setupTest();
+       component.typeaheadMatchItem('a', 2);
+       expect(mockFoundation.typeaheadMatchItem)
+           .toHaveBeenCalledWith('a', 2, true);
+       expect(mockFoundation.typeaheadMatchItem).toHaveBeenCalledTimes(1);
+     });
+
   it('adapter#getListItemCount returns correct number of list items', () => {
     const {root, component} = setupTest();
     document.body.appendChild(root);
