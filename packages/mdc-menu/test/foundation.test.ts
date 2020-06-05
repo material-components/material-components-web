@@ -136,6 +136,15 @@ describe('MDCMenuFoundation', () => {
     expect(mockAdapter.closeSurface).toHaveBeenCalledTimes(1);
   });
 
+  it('handleItemAction not closes the menu when isCloseAfterItemAction returns false', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const itemEl = document.createElement('li');
+    mockAdapter.getElementIndex.withArgs(itemEl).and.returnValue(0);
+    foundation.adapter.isCloseAfterItemAction = () => false;
+    foundation.handleItemAction(itemEl);
+    expect(mockAdapter.closeSurface).not.toHaveBeenCalled();
+  });
+
   it('handleItemAction item action emits selected event', () => {
     const {foundation, mockAdapter} = setupTest();
     const itemEl = document.createElement('li');
