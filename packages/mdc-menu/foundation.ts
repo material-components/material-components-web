@@ -42,6 +42,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
   private closeAnimationEndTimerId_ = 0;
   private defaultFocusState_ = DefaultFocusState.LIST_ROOT;
+  private isCloseAfterItemAction_ = true;
 
   /**
    * @see {@link MDCMenuAdapter} for typing information on parameters and return types.
@@ -62,7 +63,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       focusListRoot: () => undefined,
       getSelectedSiblingOfItemAtIndex: () => -1,
       isSelectableItemAtIndex: () => false,
-      isCloseAfterItemAction: () => true,
+      setCloseAfterItemAction: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -96,7 +97,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
     this.adapter.notifySelected({index});
 
-    if (this.adapter.isCloseAfterItemAction()) {
+    if (this.isCloseAfterItemAction_) {
       this.adapter.closeSurface();
 
       // Wait for the menu to close before adding/removing classes that affect styles.
@@ -190,6 +191,10 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     if (!isIndexInRange) {
       throw new Error('MDCMenuFoundation: No list item at specified index.');
     }
+  }
+
+  setCloseAfterItemAction(isCloseAfterItemAction: boolean) {
+    this.isCloseAfterItemAction_ = isCloseAfterItemAction;
   }
 }
 

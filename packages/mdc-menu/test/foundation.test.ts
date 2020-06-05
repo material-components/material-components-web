@@ -55,7 +55,7 @@ describe('MDCMenuFoundation', () => {
       'getMenuItemCount',
       'focusItemAtIndex',
       'focusListRoot',
-      'isCloseAfterItemAction',
+      'setCloseAfterItemAction',
     ]);
   });
 
@@ -140,7 +140,7 @@ describe('MDCMenuFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     const itemEl = document.createElement('li');
     mockAdapter.getElementIndex.withArgs(itemEl).and.returnValue(0);
-    foundation.adapter.isCloseAfterItemAction = () => false;
+    foundation.setCloseAfterItemAction(false);
     foundation.handleItemAction(itemEl);
     expect(mockAdapter.closeSurface).not.toHaveBeenCalled();
   });
