@@ -96,4 +96,9 @@ export interface MDCMenuAdapter {
    * @param index Index of the selectable menu item.
    */
   isSelectableItemAtIndex(index: number): boolean;
+
+  /**
+   * @return If return value is true, close menu after click item.
+   */
+  isCloseAfterItemAction(): boolean;
 }

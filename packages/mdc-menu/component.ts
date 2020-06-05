@@ -301,6 +301,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         const selectedItemEl = selectionGroupEl.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedItemEl ? this.items.indexOf(selectedItemEl) : -1;
       },
+      isCloseAfterItemAction: () => true,
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCMenuFoundation(adapter);

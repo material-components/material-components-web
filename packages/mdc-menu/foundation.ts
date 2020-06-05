@@ -62,6 +62,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       focusListRoot: () => undefined,
       getSelectedSiblingOfItemAtIndex: () => -1,
       isSelectableItemAtIndex: () => false,
+      isCloseAfterItemAction: () => true,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -94,16 +95,19 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     }
 
     this.adapter.notifySelected({index});
-    this.adapter.closeSurface();
 
-    // Wait for the menu to close before adding/removing classes that affect styles.
-    this.closeAnimationEndTimerId_ = setTimeout(() => {
-      // Recompute the index in case the menu contents have changed.
-      const recomputedIndex = this.adapter.getElementIndex(listItem);
-      if (this.adapter.isSelectableItemAtIndex(recomputedIndex)) {
-        this.setSelectedIndex(recomputedIndex);
-      }
-    }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
+    if (this.adapter.isCloseAfterItemAction()) {
+      this.adapter.closeSurface();
+
+      // Wait for the menu to close before adding/removing classes that affect styles.
+      this.closeAnimationEndTimerId_ = setTimeout(() => {
+        // Recompute the index in case the menu contents have changed.
+        const recomputedIndex = this.adapter.getElementIndex(listItem);
+        if (this.adapter.isSelectableItemAtIndex(recomputedIndex)) {
+          this.setSelectedIndex(recomputedIndex);
+        }
+      }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
+    }
   }
 
   handleMenuSurfaceOpened() {
