@@ -55,6 +55,7 @@ describe('MDCMenuFoundation', () => {
       'getMenuItemCount',
       'focusItemAtIndex',
       'focusListRoot',
+      'isCloseAfterItemAction',
     ]);
   });
 
