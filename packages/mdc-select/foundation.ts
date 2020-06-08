@@ -289,9 +289,15 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   handleClick(normalizedX: number) {
-    if (this.disabled || this.isMenuOpen) {
+    if (this.disabled) {
       return;
     }
+
+    if (this.isMenuOpen) {
+      this.adapter.closeMenu();
+      return;
+    }
+
     this.adapter.setRippleCenter(normalizedX);
 
     this.openMenu();
@@ -312,7 +318,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const arrowDown = normalizeKey(event) === KEY.ARROW_DOWN;
 
     // Typeahead
-    if (event.key && event.key.length === 1 ||
+    if (!isSpace && event.key && event.key.length === 1 ||
         isSpace && this.adapter.isTypeaheadInProgress()) {
       const key = isSpace ? ' ' : event.key;
       const typeaheadNextIndex =

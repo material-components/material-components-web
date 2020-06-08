@@ -339,7 +339,7 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.activateBottomLine).toHaveBeenCalledTimes(1);
   });
 
-  it('#handleFocus calls adapter.activateBottomLine() if isMenuOpen_=true',
+  it('#handleFocus calls adapter.activateBottomLine() if isMenuOpen=true',
      () => {
        const {foundation, mockAdapter} = setupTest();
        (foundation as any).isMenuOpen = true;
@@ -360,7 +360,7 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.deactivateBottomLine).toHaveBeenCalledTimes(1);
   });
 
-  it('#handleBlur does not call deactivateBottomLine if isMenuOpen_=true',
+  it('#handleBlur does not call deactivateBottomLine if isMenuOpen=true',
      () => {
        const {foundation, mockAdapter} = setupTest();
        (foundation as any).isMenuOpen = true;
@@ -403,11 +403,11 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.ACTIVATED);
   });
 
-  it('#handleClick does nothing if isMenuOpen_=true', () => {
+  it('#handleClick closes menu if isMenuOpen=true', () => {
     const {foundation, mockAdapter} = setupTest();
     (foundation as any).isMenuOpen = true;
     foundation.handleClick(0);
-    expect(mockAdapter.setRippleCenter).not.toHaveBeenCalledWith(0);
+    expect(mockAdapter.closeMenu).toHaveBeenCalled();
   });
 
   it('#handleClick does nothing if disabled', () => {
@@ -418,7 +418,7 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.addClass).not.toHaveBeenCalled();
   });
 
-  it('#handleClick sets the ripple center if isMenuOpen_=false', () => {
+  it('#handleClick sets the ripple center if isMenuOpen=false', () => {
     const {foundation, mockAdapter} = setupTest();
     (foundation as any).isMenuOpen = false;
     foundation.handleClick(0);
@@ -426,7 +426,7 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.setRippleCenter).toHaveBeenCalledTimes(1);
   });
 
-  it('#handleClick opens the menu if the select is focused and isMenuOpen_=false',
+  it('#handleClick opens the menu if the select is focused and isMenuOpen=false',
      () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
@@ -442,7 +442,7 @@ describe('MDCSelectFoundation', () => {
         .toHaveBeenCalledWith('aria-expanded', 'true');
   });
 
-  it('#handleClick adds activated class if isMenuOpen_=false', () => {
+  it('#handleClick adds activated class if isMenuOpen=false', () => {
     const {foundation, mockAdapter} = setupTest();
     (foundation as any).isMenuOpen = false;
     foundation.handleClick(0);
