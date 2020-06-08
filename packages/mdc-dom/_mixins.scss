@@ -42,3 +42,13 @@
     content: "";
   }
 }
+
+///
+/// Selects for high-contrast mode. Currently this only detects high-contrast
+/// mode in IE and Edge.
+///
+@mixin ie-high-contrast-mode {
+  @media screen and (-ms-high-contrast: active) {
+    @content;
+  }
+}

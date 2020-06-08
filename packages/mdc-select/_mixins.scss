@@ -24,6 +24,7 @@
 @use "sass:string";
 @use "@material/animation/variables" as animation-variables;
 @use "@material/density/functions" as density-functions;
+@use "@material/dom/mixins" as dom-mixins;
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/floating-label/mixins" as floating-label-mixins;
@@ -82,6 +83,17 @@
     @include disabled-ink-color(variables.$disabled-ink-color, $query: $query);
     @include helper-text-mixins.disabled-helper-text-color(variables.$disabled-helper-text-color, $query: $query);
     @include icon-mixins.disabled-icon-color(variables.$disabled-icon-color, $query: $query);
+
+    // High-contrast mode support
+     @include dom-mixins.ie-high-contrast-mode() {
+      @include disabled-ink-color(GrayText, $query: $query);
+      @include disabled-dropdown-icon-color(red, $query: $query);
+      @include disabled-label-color(GrayText, $query: $query);
+      @include disabled-bottom-line-color(GrayText, $query: $query);
+      @include disabled-outline-color(GrayText, $query: $query);
+      @include icon-mixins.disabled-icon-color(GrayText, $query: $query);
+      @include helper-text-mixins.disabled-helper-text-color(GrayText, $query: $query);
+    }
 
     // Floating label private mixin
     @include floating-label_($query: $query);
