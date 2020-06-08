@@ -27,6 +27,7 @@
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/floating-label/mixins" as floating-label-mixins;
+@use "@material/floating-label/variables" as floating-label-variables;
 @use "@material/line-ripple/mixins" as line-ripple-mixins;
 @use "@material/list/mixins" as list-mixins;
 @use "@material/menu/mixins" as menu-mixins;
@@ -677,6 +678,13 @@
     }
   }
 
+  &.mdc-select--filled {
+    @include _truncate-floating-label-max-width(
+      $leading-icon-size: 0,
+      $dropdown-icon-size: icon-variables.$icon-size,
+      $query: $query);
+  }
+
   &.mdc-select--outlined {
     .mdc-floating-label {
       @include feature-targeting-mixins.targets($feat-structure) {
@@ -692,10 +700,21 @@
   @include _leading-icon-floating-label-position(icon-variables.$icon-size, $query: $query);
   @include _option-side-padding(12px, $query: $query);
 
+  &.mdc-select--filled {
+    @include _truncate-floating-label-max-width(
+      $leading-icon-size: icon-variables.$icon-size,
+      $dropdown-icon-size: icon-variables.$icon-size,
+      $query: $query);
+  }
+
   &.mdc-select--outlined {
     @include _outlined-with-leading-icon-floating-label-position-animation(
       variables.$height,
       icon-variables.$icon-size,
+      $query: $query);
+    @include _truncate-notched-outline-max-width(
+      $leading-icon-size: icon-variables.$icon-size,
+      $dropdown-icon-size: icon-variables.$icon-size,
       $query: $query);
   }
 }
@@ -758,6 +777,11 @@
   @include disabled-container-fill-color(transparent, $query: $query);
   @include outline-shape-radius(small, $query: $query);
   @include container-fill-color(transparent, $query: $query);
+
+  @include _truncate-notched-outline-max-width(
+    $leading-icon-size: 0,
+    $dropdown-icon-size: icon-variables.$icon-size,
+    $query: $query);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     border: none;
@@ -966,6 +990,13 @@
 
   @if $height < variables.$height {
     @include _dropdown-icon-size(icon-variables.$dense-icon-size, $query: $query);
+
+    &.mdc-select--filled {
+      @include _truncate-floating-label-max-width(
+        $leading-icon-size: 0,
+        $dropdown-icon-size: icon-variables.$dense-icon-size,
+        $query: $query);
+    }
   }
 }
 
@@ -995,6 +1026,13 @@
 
   @if $height < variables.$height {
     @include icon-mixins.size(icon-variables.$dense-icon-size, $query: $query);
+
+    &.mdc-select--filled {
+      @include _truncate-floating-label-max-width(
+        $leading-icon-size: icon-variables.$dense-icon-size,
+        $dropdown-icon-size: icon-variables.$dense-icon-size,
+        $query: $query);
+    }
 
     .mdc-list-item__graphic {
       width: icon-variables.$dense-icon-size;
@@ -1054,6 +1092,13 @@
 
   @if $height < variables.$height {
     @include _dropdown-icon-size(icon-variables.$dense-icon-size, $query: $query);
+
+    &.mdc-select--outlined {
+      @include _truncate-notched-outline-max-width(
+        $leading-icon-size: 0,
+        $dropdown-icon-size: icon-variables.$dense-icon-size,
+        $query: $query);
+    }
   }
 }
 
@@ -1100,6 +1145,13 @@
     }
 
     @include icon-mixins.size(icon-variables.$dense-icon-size, $query: $query);
+
+    &.mdc-select--outlined {
+      @include _truncate-notched-outline-max-width(
+        $leading-icon-size: icon-variables.$dense-icon-size,
+        $dropdown-icon-size: icon-variables.$dense-icon-size,
+        $query: $query);
+    }
   }
 }
 
@@ -1203,5 +1255,58 @@
     &::before {
       display: none;
     }
+  }
+}
+
+///
+/// Truncates the max-width of the notched outline according to the sizes of
+/// the leading icon and dropdown icon.
+///
+/// @param {Number} $leading-icon-size - Size of leading icon.
+/// @param {Number} $dropdown-icon-size - Size of dropdown icon.
+///
+@mixin _truncate-notched-outline-max-width($leading-icon-size, $dropdown-icon-size, $query: feature-targeting-functions.all()) {
+  $truncation:
+    icon-variables.$icon-horizontal-margin * 2 +
+    $dropdown-icon-size +
+    notched-outline-variables.$leading-width;
+
+  @if $leading-icon-size > 0 {
+    $truncation: $truncation +
+      icon-variables.$icon-horizontal-margin +
+      $leading-icon-size;
+  }
+  .mdc-select__anchor {
+    @include notched-outline-mixins.notch-max-width(calc(100% - #{$truncation}), $query: $query);
+  }
+}
+
+///
+/// Truncates the max-width of the floating label according to sizes of the
+/// leading icon and dropdown icon.
+///
+/// @param {Number} $leading-icon-size - Size of leading icon.
+/// @param {Number} $dropdown-icon-size - Size of dropdown icon.
+///
+@mixin _truncate-floating-label-max-width($leading-icon-size, $dropdown-icon-size, $query: feature-targeting-functions.all()) {
+  $truncation:
+    icon-variables.$icon-horizontal-margin * 2 +
+    $dropdown-icon-size;
+
+  @if $leading-icon-size > 0 {
+    $truncation: $truncation +
+      icon-variables.$icon-horizontal-margin * 2 +
+      $leading-icon-size;
+  } @else {
+    $truncation: $truncation + variables.$outline-label-offset;
+  }
+
+  .mdc-floating-label {
+    @include floating-label-mixins.max-width(calc(100% - #{$truncation}), $query: $query);
+  }
+
+  .mdc-floating-label--float-above {
+    $scale: floating-label-variables.$float-scale;
+    @include floating-label-mixins.max-width(calc(100% / #{$scale} - #{$truncation} / #{$scale}), $query: $query);
   }
 }
