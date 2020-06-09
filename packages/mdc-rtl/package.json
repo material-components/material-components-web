@@ -13,5 +13,8 @@
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-rtl"
+  },
+  "dependencies": {
+    "@material/theme": "^6.0.0"
   }
 }
