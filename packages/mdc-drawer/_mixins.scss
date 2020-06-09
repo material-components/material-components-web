@@ -397,7 +397,7 @@
   $feat-structure: functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    width: $width;
+    @include theme-mixins.property(width, $width);
   }
 
   &.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content {
