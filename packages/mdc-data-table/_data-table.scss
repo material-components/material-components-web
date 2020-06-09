@@ -38,6 +38,7 @@
 @use '@material/theme/variables' as variables2; // for mdc-theme-prop-value.
 @use '@material/typography/mixins' as typography-mixins;
 @use './data-table-theme';
+@use './data-table-pagination';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
@@ -296,39 +297,7 @@
     }
   }
 
-  .mdc-data-table__pagination {
-    @include typography-mixins.typography(body2, $query: $query);
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      box-sizing: border-box;
-      display: flex;
-      justify-content: flex-end;
-    }
-  }
-
-  .mdc-data-table__pagination-trailing {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, left, 4px);
-
-      align-items: center;
-      display: flex;
-    }
-  }
-
-  .mdc-data-table__pagination-button {
-    @include icon-button-mixins.flip-icon-in-rtl($query: $query);
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, right, 4px);
-    }
-  }
-
-  .mdc-data-table__pagination-total {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, right, 36px);
-
-      white-space: nowrap;
-    }
-  }
+  @include data-table-pagination.core-styles($query: $query);
 }
 
 @mixin theme-baseline($query: feature-targeting-functions.all()) {

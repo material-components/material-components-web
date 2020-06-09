@@ -44,6 +44,10 @@ export const cssClasses = {
   ROW_CHECKBOX: 'mdc-data-table__row-checkbox',
   ROW_SELECTED: 'mdc-data-table__row--selected',
   SORT_ICON_BUTTON: 'mdc-data-table__sort-icon-button',
+  PAGINATION_ROWS_PER_PAGE_SELECT:
+      'mdc-data-table__pagination-rows-per-page-select',
+  PAGINATION_ROWS_PER_PAGE_LABEL:
+      'mdc-data-table__pagination-rows-per-page-label',
 };
 
 /**
