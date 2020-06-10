@@ -1,0 +1,66 @@
+@use "../../mdc-button";
+@use "../../mdc-theme/variables" as theme-variables;
+
+@include mdc-button.core-styles;
+@include mdc-button.theme-baseline;
+
+// Style for when element is on
+.seg-button__element--on {
+    @include mdc-button.ink-color(rgba(theme-variables.prop-value(primary), 1));
+    @include mdc-button.outline-color(rgba(theme-variables.prop-value(primary), 1));
+    @include mdc-button.container-fill-color(rgba(theme-variables.prop-value(primary), .08));
+
+    // Avoids double borders
+    +.seg-button__element {
+        border-left: hidden;
+    }
+}
+
+.seg-button-vanilla, .seg-button-auto {
+    font-size: 0;
+    display: inline-block;
+}
+
+// TODO: include test for element resizing besides the left/right border
+.seg-button__element {
+    height: 36px;
+    min-width: 48px;
+    padding-left: 12px;
+    padding-right: 12px;
+
+    // Style for when element is not on
+    &:not(.seg-button__element--on) {
+        @include mdc-button.ink-color(rgba(theme-variables.prop-value(on-surface), .6));
+        @include mdc-button.outline-color(rgba(theme-variables.prop-value(on-surface), .12));
+        @include mdc-button.container-fill-color(rgba(theme-variables.prop-value(surface), 1));
+    
+        // Avoids double borders
+        &:not(.seg-button__element--right) {
+            border-right: hidden;
+        }
+    }
+
+}
+
+.seg-button__element--left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.seg-button__element--inner {
+    border-radius: 0;
+}
+
+.seg-button__element--right {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.seg-button__icon {
+    width: 24px;
+    font-size: 18px;
+}
+
+.seg-button__icon + .seg-button__label{
+    padding-left: 6;
+}
