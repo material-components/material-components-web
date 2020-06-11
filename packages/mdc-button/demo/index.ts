@@ -1,19 +1,19 @@
 import './index.scss';
 
 //TODO: have list of currently active buttons
-class SegButtonVanilla {
+class MDCSegButtonVanilla {
     private root: HTMLElement;
-    private segButtonElements: SegButtonElement[] = [];
+    private mdcSegButtonElements: MDCSegButtonElement[] = [];
 
     constructor(root: HTMLElement) {
         this.root = root;
-        this.createSegButtonElements();
+        this.createMDCSegButtonElements();
     }
 
-    createSegButtonElements() {
-        this.root.querySelectorAll<HTMLElement>('.seg-button__element').forEach((el, index) => {
-            const segButtonElement = new SegButtonElement(el, index, this.root);
-            this.segButtonElements.push(segButtonElement);
+    createMDCSegButtonElements() {
+        this.root.querySelectorAll<HTMLElement>('.mdc-seg-button__element').forEach((el, index) => {
+            const mdcSegButtonElement = new MDCSegButtonElement(el, index, this.root);
+            this.mdcSegButtonElements.push(mdcSegButtonElement);
         });
     }
 
@@ -23,23 +23,23 @@ class SegButtonVanilla {
 
 }
 
-class SegButtonVanillaSingle {
+class MDCSegButtonVanillaSingle {
     private root: HTMLElement;
-    private segButtonElements: SegButtonElement[] = [];
+    private mdcSegButtonElements: MDCSegButtonElement[] = [];
 
     constructor(root: HTMLElement) {
         this.root = root;
-        this.createSegButtonElements();
+        this.createMDCSegButtonElements();
         this.root.addEventListener('toggled', (event) => {this.handleToggle(event)});
     }
 
-    createSegButtonElements() {
-        this.root.querySelectorAll<HTMLElement>('.seg-button__element').forEach((el, index) => {
-            const segButtonElement = new SegButtonElement(el, index, this.root);
-            this.segButtonElements.push(segButtonElement);
+    createMDCSegButtonElements() {
+        this.root.querySelectorAll<HTMLElement>('.mdc-seg-button__element').forEach((el, index) => {
+            const mdcSegButtonElement = new MDCSegButtonElement(el, index, this.root);
+            this.mdcSegButtonElements.push(mdcSegButtonElement);
         });
-        if (this.segButtonElements.length > 0) {
-            this.segButtonElements[0].setOn(true);
+        if (this.mdcSegButtonElements.length > 0) {
+            this.mdcSegButtonElements[0].setOn(true);
         }
     }
 
@@ -47,12 +47,12 @@ class SegButtonVanillaSingle {
     handleToggle(event) {
         const on = event.detail.on;
         const id = event.detail.id;
-        const otherElementsOn = this.segButtonElements.filter(element => element.isOn && element.getId() != id);
+        const otherElementsOn = this.mdcSegButtonElements.filter(element => element.isOn && element.getId() != id);
         if (on) {
             otherElementsOn.forEach(element => element.setOn(false));
         } else {
             if (otherElementsOn.length === 0) {
-                this.segButtonElements[id].setOn(true);
+                this.mdcSegButtonElements[id].setOn(true);
             }
         }
     }
@@ -62,29 +62,29 @@ class SegButtonVanillaSingle {
     }
 }
 
-class SegButtonAuto {
+class MDCSegButtonAuto {
     private root: HTMLElement;
-    private segButtonElements: SegButtonElement[] = [];
+    private mdcSegButtonElements: MDCSegButtonElement[] = [];
 
     constructor(root: HTMLElement) {
         this.root = root;
-        this.createSegButtonElements();
+        this.createMDCSegButtonElements();
     }
 
-    createSegButtonElements() {
-        this.root.querySelectorAll<HTMLElement>('.seg-button__element').forEach((el, index) => {
-            const segButtonElement = new SegButtonElement(el, index, this.root);
-            segButtonElement.addClass('mdc-button');
-            segButtonElement.addClass('mdc-button--outlined');
-            this.segButtonElements.push(segButtonElement);
+    createMDCSegButtonElements() {
+        this.root.querySelectorAll<HTMLElement>('.mdc-seg-button__element').forEach((el, index) => {
+            const mdcSegButtonElement = new MDCSegButtonElement(el, index, this.root);
+            mdcSegButtonElement.addClass('mdc-button');
+            mdcSegButtonElement.addClass('mdc-button--outlined');
+            this.mdcSegButtonElements.push(mdcSegButtonElement);
         });
-        for (let i = 0; i < this.segButtonElements.length; i++) {
+        for (let i = 0; i < this.mdcSegButtonElements.length; i++) {
             if (i == 0) {
-                this.segButtonElements[i].setPosition('LEFT');
-            } else if (i == this.segButtonElements.length - 1) {
-                this.segButtonElements[i].setPosition('RIGHT');
+                this.mdcSegButtonElements[i].setPosition('LEFT');
+            } else if (i == this.mdcSegButtonElements.length - 1) {
+                this.mdcSegButtonElements[i].setPosition('RIGHT');
             } else {
-                this.segButtonElements[i].setPosition('INNER');
+                this.mdcSegButtonElements[i].setPosition('INNER');
             }
         }
     }
@@ -97,7 +97,7 @@ class SegButtonAuto {
 
 
 
-class SegButtonElement {
+class MDCSegButtonElement {
     private root: HTMLElement;
     private id: number;
     private parentElement: HTMLElement;
@@ -110,14 +110,14 @@ class SegButtonElement {
     }
 
     get isOn(): boolean {
-        return this.root.classList.contains('seg-button__element--on');
+        return this.root.classList.contains('mdc-seg-button__element--on');
     }
 
     set isOn(on: boolean) {
         if (on) {
-            this.addClass('seg-button__element--on');
+            this.addClass('mdc-seg-button__element--on');
         } else {
-            this.removeClass('seg-button__element--on');
+            this.removeClass('mdc-seg-button__element--on');
         }
     }
 
@@ -149,16 +149,16 @@ class SegButtonElement {
 
     // TODO: don't use string
     setPosition(pos: string) {
-        this.removeClass('seg-button__element--left');
-        this.removeClass('seg-button__element--right');
-        this.removeClass('seg-button__element--inner');
+        this.removeClass('mdc-seg-button__element--left');
+        this.removeClass('mdc-seg-button__element--right');
+        this.removeClass('mdc-seg-button__element--inner');
 
         if (pos == 'LEFT') {
-            this.addClass('seg-button__element--left');
+            this.addClass('mdc-seg-button__element--left');
         } else if (pos == 'RIGHT') {
-            this.addClass('seg-button__element--right');
+            this.addClass('mdc-seg-button__element--right');
         } else if (pos == 'INNER') {
-            this.addClass('seg-button__element--inner');
+            this.addClass('mdc-seg-button__element--inner');
         } else {
             throw new Error('No class for ' + pos);
         }
@@ -176,21 +176,21 @@ class SegButtonElement {
 */
 
 
-const segButtonVanillaEls = document.querySelectorAll<HTMLElement>('.seg-button-vanilla');
+const mdcSegButtonVanillaEls = document.querySelectorAll<HTMLElement>('.mdc-seg-button-vanilla');
 
-if (segButtonVanillaEls) {
-    segButtonVanillaEls.forEach((segButtonEl) => {
-        if (segButtonEl.classList.contains('seg-button--single')) {
-            new SegButtonVanillaSingle(segButtonEl);
+if (mdcSegButtonVanillaEls) {
+    mdcSegButtonVanillaEls.forEach((mdcSegButtonEl) => {
+        if (mdcSegButtonEl.classList.contains('mdc-seg-button--single')) {
+            new MDCSegButtonVanillaSingle(mdcSegButtonEl);
         } else {
-            new SegButtonVanilla(segButtonEl);
+            new MDCSegButtonVanilla(mdcSegButtonEl);
         }
     });
 }
 
 
-const segButtonAutoEls = document.querySelectorAll<HTMLElement>('.seg-button-auto');
+const mdcSegButtonAutoEls = document.querySelectorAll<HTMLElement>('.mdc-seg-button-auto');
 
-if (segButtonAutoEls) {
-    segButtonAutoEls.forEach(segButtonEl => new SegButtonAuto(segButtonEl));
+if (mdcSegButtonAutoEls) {
+    mdcSegButtonAutoEls.forEach(mdcSegButtonEl => new MDCSegButtonAuto(mdcSegButtonEl));
 }
