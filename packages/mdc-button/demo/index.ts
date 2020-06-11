@@ -1,7 +1,8 @@
 import './index.scss';
 
+
 //TODO: have list of currently active buttons
-class MDCSegButtonVanilla {
+class MDCSegButton {
     private root: HTMLElement;
     private mdcSegButtonElements: MDCSegButtonElement[] = [];
 
@@ -23,7 +24,7 @@ class MDCSegButtonVanilla {
 
 }
 
-class MDCSegButtonVanillaSingle {
+class MDCSegButtonSingle {
     private root: HTMLElement;
     private mdcSegButtonElements: MDCSegButtonElement[] = [];
 
@@ -61,40 +62,6 @@ class MDCSegButtonVanillaSingle {
         return this.root;
     }
 }
-
-class MDCSegButtonAuto {
-    private root: HTMLElement;
-    private mdcSegButtonElements: MDCSegButtonElement[] = [];
-
-    constructor(root: HTMLElement) {
-        this.root = root;
-        this.createMDCSegButtonElements();
-    }
-
-    createMDCSegButtonElements() {
-        this.root.querySelectorAll<HTMLElement>('.mdc-seg-button__element').forEach((el, index) => {
-            const mdcSegButtonElement = new MDCSegButtonElement(el, index, this.root);
-            mdcSegButtonElement.addClass('mdc-button');
-            mdcSegButtonElement.addClass('mdc-button--outlined');
-            this.mdcSegButtonElements.push(mdcSegButtonElement);
-        });
-        for (let i = 0; i < this.mdcSegButtonElements.length; i++) {
-            if (i == 0) {
-                this.mdcSegButtonElements[i].setPosition('LEFT');
-            } else if (i == this.mdcSegButtonElements.length - 1) {
-                this.mdcSegButtonElements[i].setPosition('RIGHT');
-            } else {
-                this.mdcSegButtonElements[i].setPosition('INNER');
-            }
-        }
-    }
-
-    getElement() {
-        return this.root;
-    }
-
-}
-
 
 
 class MDCSegButtonElement {
@@ -147,23 +114,6 @@ class MDCSegButtonElement {
         this.root.classList.remove(className);
     }
 
-    // TODO: don't use string
-    setPosition(pos: string) {
-        this.removeClass('mdc-seg-button__element--left');
-        this.removeClass('mdc-seg-button__element--right');
-        this.removeClass('mdc-seg-button__element--inner');
-
-        if (pos == 'LEFT') {
-            this.addClass('mdc-seg-button__element--left');
-        } else if (pos == 'RIGHT') {
-            this.addClass('mdc-seg-button__element--right');
-        } else if (pos == 'INNER') {
-            this.addClass('mdc-seg-button__element--inner');
-        } else {
-            throw new Error('No class for ' + pos);
-        }
-    }
-
     getElement() {
         return this.root;
     }
@@ -172,7 +122,7 @@ class MDCSegButtonElement {
 
 
 /*
-    The below section is what instantiates the buttons groups.
+    The below section is what instantiates the buttons groups for demo
 */
 
 
@@ -181,16 +131,9 @@ const mdcSegButtonVanillaEls = document.querySelectorAll<HTMLElement>('.mdc-seg-
 if (mdcSegButtonVanillaEls) {
     mdcSegButtonVanillaEls.forEach((mdcSegButtonEl) => {
         if (mdcSegButtonEl.classList.contains('mdc-seg-button--single')) {
-            new MDCSegButtonVanillaSingle(mdcSegButtonEl);
+            new MDCSegButtonSingle(mdcSegButtonEl);
         } else {
-            new MDCSegButtonVanilla(mdcSegButtonEl);
+            new MDCSegButton(mdcSegButtonEl);
         }
     });
-}
-
-
-const mdcSegButtonAutoEls = document.querySelectorAll<HTMLElement>('.mdc-seg-button-auto');
-
-if (mdcSegButtonAutoEls) {
-    mdcSegButtonAutoEls.forEach(mdcSegButtonEl => new MDCSegButtonAuto(mdcSegButtonEl));
 }
