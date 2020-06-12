@@ -1350,7 +1350,7 @@ describe('MDCListFoundation', () => {
            target: {tagName: 'span'}
          };
          // start with focus on first item
-         foundation.focusedItemIndex_ = 0;
+         foundation.focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
@@ -1379,7 +1379,7 @@ describe('MDCListFoundation', () => {
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
          };
-         foundation.focusedItemIndex_ = 3;
+         foundation.focusedItemIndex = 3;
 
          foundation.handleKeydown(event, true, 3);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(4);
@@ -1404,12 +1404,12 @@ describe('MDCListFoundation', () => {
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
          };
-         foundation.focusedItemIndex_ = 0;
+         foundation.focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
 
-         foundation.focusedItemIndex_ = 5;
+         foundation.focusedItemIndex = 5;
 
          jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
          foundation.handleKeydown(event, true, 5);
@@ -1427,7 +1427,7 @@ describe('MDCListFoundation', () => {
            target: {tagName: 'span'}
          };
          // start with focus on first item
-         foundation.focusedItemIndex_ = 0;
+         foundation.focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
@@ -1457,7 +1457,7 @@ describe('MDCListFoundation', () => {
         preventDefault: jasmine.createSpy(),
         target: {tagName: 'span'}
       };
-      foundation.focusedItemIndex_ = 0;
+      foundation.focusedItemIndex = 0;
 
       foundation.handleKeydown(event, true, 0);
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
@@ -1481,7 +1481,7 @@ describe('MDCListFoundation', () => {
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
          };
-         foundation.focusedItemIndex_ = 0;
+         foundation.focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(1);
@@ -1510,7 +1510,7 @@ describe('MDCListFoundation', () => {
         target: {tagName: 'span'}
       };
       // start with focus on first item
-      foundation.focusedItemIndex_ = 0;
+      foundation.focusedItemIndex = 0;
 
       foundation.handleKeydown(event, true, 0);
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(6);
@@ -1536,7 +1536,7 @@ describe('MDCListFoundation', () => {
         target: {tagName: 'span'}
       };
       // start with focus on first item
-      foundation.focusedItemIndex_ = 0;
+      foundation.focusedItemIndex = 0;
 
       foundation.handleKeydown(event, true, 0);
       jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
@@ -1548,6 +1548,33 @@ describe('MDCListFoundation', () => {
       foundation.handleKeydown(event, true, 0);
 
       expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalled();
+    });
+
+    it('ignores disabled items properly', () => {
+      const {foundation, mockAdapter} = setupTypeaheadTest();
+
+      mockAdapter.isRootFocused.and.returnValue(false);
+      const event = {
+        key: 'Z',
+        preventDefault: jasmine.createSpy(),
+        target: {tagName: 'span'}
+      };
+      // start with focus on first item
+      foundation.focusedItemIndex = 0;
+
+      mockAdapter.listItemAtIndexHasClass
+          .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+          .and.returnValue(true);
+
+      foundation.handleKeydown(event, true, 0);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(5);
+      jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+
+      mockAdapter.listItemAtIndexHasClass
+          .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+          .and.returnValue(false);
+      foundation.handleKeydown(event, true, 0);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(1);
     });
 
     it('programmatic typeahead invocation returns correct matching items',
