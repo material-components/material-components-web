@@ -27,6 +27,7 @@ rules:
   no-extra-semicolons: true
   # In MDC, @keyframe's are defined in a separate file.
   # no-unknown-animations: true
+  number-leading-zero: never
   # Requires known-css-parser, not yet imported into third_party.
   # property-no-unknown: true
   rule-empty-line-before:

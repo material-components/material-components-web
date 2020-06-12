@@ -138,8 +138,8 @@ To meet this requirement, add the following to your button:
 </button>
 ```
 
-**Note**: `mdc-button--raised` is applied for a contained button with elevation,
-and `mdc-button--unelevated` is applied for a contained button flush with the surface.
+**Note: `mdc-button--raised` is applied for a contained button with elevation,
+and `mdc-button--unelevated` is applied for a contained button flush with the surface.**
 
 <b>Contained button with icon example</b>
 
@@ -223,7 +223,7 @@ putting the icon markup _after_ the `mdc-button__label` element.
 </button>
 ```
 
-> _NOTE_: The `mdc-button__label` element is _required_ in order for the trailing icon to be styled appropriately.
+**Note: The `mdc-button__label` element is _required_ in order for the trailing icon to be styled appropriately.**
 
 ### Disabled
 
@@ -305,7 +305,7 @@ CSS Class | Description
 `mdc-button__label` | Recommended.\* Indicates the element containing the button's text label.
 `mdc-button__icon` | Optional. Indicates the element containing the button's icon.
 
- **_NOTE_: The `mdc-button__label` element is required for buttons with a trailing icon, but it is currently optional for
+**Note: The `mdc-button__label` element is required for buttons with a trailing icon, but it is currently optional for
  buttons with no icon or a leading icon. In the latter cases, it is acceptable for the text label to simply exist
  directly within the `mdc-button` element.<br>
  However, the `mdc-button__label` class may become mandatory for all cases in the future so we recommended to
