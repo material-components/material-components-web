@@ -138,6 +138,7 @@
       align-items: center;
       justify-content: center;
       fill: currentColor;
+      object-fit: cover;
     }
 
     // TODO(b/156624966): this retains legacy spacing but should be updated.
