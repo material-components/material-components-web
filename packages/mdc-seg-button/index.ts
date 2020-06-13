@@ -63,20 +63,20 @@ export class MDCSegButtonSingle {
             this.mdcSegButtonElements.push(mdcSegButtonElement);
         });
         if (this.mdcSegButtonElements.length > 0) {
-            this.mdcSegButtonElements[0].setOn(true);
+            this.mdcSegButtonElements[0].setToggled(true);
         }
     }
 
 
     handleToggle(event) {
-        const on = event.detail.on;
+        const toggled = event.detail.toggled;
         const id = event.detail.id;
-        const otherElementsOn = this.mdcSegButtonElements.filter(element => element.isOn && element.getId() != id);
-        if (on) {
-            otherElementsOn.forEach(element => element.setOn(false));
+        const otherElementsToggled = this.mdcSegButtonElements.filter(element => element.isToggled && element.getId() != id);
+        if (toggled) {
+            otherElementsToggled.forEach(element => element.setToggled(false));
         } else {
-            if (otherElementsOn.length === 0) {
-                this.mdcSegButtonElements[id].setOn(true);
+            if (otherElementsToggled.length === 0) {
+                this.mdcSegButtonElements[id].setToggled(true);
             }
         }
     }
@@ -96,33 +96,33 @@ export class MDCSegButtonElement {
         this.root = root;
         this.id = id;
         this.parentElement = parentElement;
-        this.root.addEventListener('click', this.toggleOn);
+        this.root.addEventListener('click', this.handleToggle);
     }
 
-    get isOn(): boolean {
-        return this.root.classList.contains('mdc-seg-button__element--on');
+    get isToggled(): boolean {
+        return this.root.classList.contains('mdc-seg-button__element--toggled');
     }
 
-    set isOn(on: boolean) {
-        if (on) {
-            this.addClass('mdc-seg-button__element--on');
+    set isToggled(toggled: boolean) {
+        if (toggled) {
+            this.addClass('mdc-seg-button__element--toggled');
         } else {
-            this.removeClass('mdc-seg-button__element--on');
+            this.removeClass('mdc-seg-button__element--toggled');
         }
     }
 
-    getOn(): boolean {
-        return this.isOn;
+    getToggled(): boolean {
+        return this.isToggled;
     }
 
-    setOn(on: boolean) {
-        this.isOn = on;
+    setToggled(toggled: boolean) {
+        this.isToggled = toggled;
     }
 
-    toggleOn = () => {
-        this.isOn = !this.isOn;
+    handleToggle = () => {
+        this.isToggled = !this.isToggled;
         // Avoids race conditions
-        this.parentElement.dispatchEvent(new CustomEvent('toggled', {detail: {on: this.isOn, id: this.id}}));
+        this.parentElement.dispatchEvent(new CustomEvent('toggled', {detail: {toggled: this.isToggled, id: this.id}}));
     };
 
     getId(): number {

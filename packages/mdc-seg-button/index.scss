@@ -27,7 +27,7 @@
 @include mdc-button.theme-baseline;
 
 // Style for when element is on
-.mdc-seg-button__element--on {
+.mdc-seg-button__element--toggled {
     @include mdc-button.ink-color(rgba(theme-variables.prop-value(primary), 1));
     @include mdc-button.outline-color(rgba(theme-variables.prop-value(primary), 1));
     @include mdc-button.container-fill-color(rgba(theme-variables.prop-value(primary), .08));
@@ -53,7 +53,7 @@
     border-radius: 0;
 
     // Style for when element is not on
-    &:not(.mdc-seg-button__element--on) {
+    &:not(.mdc-seg-button__element--toggled) {
         @include mdc-button.ink-color(rgba(theme-variables.prop-value(on-surface), .6));
         @include mdc-button.outline-color(rgba(theme-variables.prop-value(on-surface), .12));
         @include mdc-button.container-fill-color(rgba(theme-variables.prop-value(surface), 1));
