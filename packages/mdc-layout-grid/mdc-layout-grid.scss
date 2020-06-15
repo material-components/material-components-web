@@ -63,11 +63,18 @@
 
       @include mixins.cell($size, variables.$default-column-span, $gutter);
 
-      @for $span from 1 through map.get(variables.$columns, $upper-breakpoint) {
-        // Span classes.
+      // Base span classes.
+      // Base spans should have less specificity than size-specific spans
+      @for $span from 0 through map.get(variables.$columns, $upper-breakpoint) {
+        &--span-#{$span} {
+          @include mixins.cell-span_($size, $span, $gutter);
+        }
+      }
+
+      // Size specific span classes.
+      @for $span from 0 through map.get(variables.$columns, $upper-breakpoint) {
         // stylelint-disable max-nesting-depth
-        @at-root .mdc-layout-grid__cell--span-#{$span},
-        .mdc-layout-grid__cell--span-#{$span}-#{$size} {
+        &--span-#{$span}-#{$size} {
           @include mixins.cell-span_($size, $span, $gutter);
         }
         // stylelint-enable max-nesting-depth
