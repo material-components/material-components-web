@@ -208,6 +208,16 @@
     }
   }
 
+  .mdc-data-table__header-cell--checkbox,
+  .mdc-data-table__cell--checkbox {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      // Set to lowest width to adapt to cell content. Cell width should adapt
+      // to row checkbox size when it is dense.
+      // NOTE: `min-width` does not seem to work on table cells.
+      width: 1px;
+    }
+  }
+
   .mdc-data-table__header-cell--numeric {
     @include feature-targeting-mixins.targets($feat-structure) {
       text-align: right;
