@@ -13,6 +13,7 @@
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-button"
   },
+  "sideEffects": false,
   "dependencies": {
     "@material/density": "^6.0.0",
     "@material/elevation": "^6.0.0",
