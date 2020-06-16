@@ -39,7 +39,25 @@
     left: 0;
     border: 1px solid transparent;
     border-radius: inherit;
-    content: "";
+    content: '';
+  }
+}
+
+///
+/// Visually hides text content for accessibility. This text should only be
+/// visible to screen reader users.
+/// See https://a11yproject.com/posts/how-to-hide-content/
+///
+@mixin visually-hidden($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap; /* added line */
+    width: 1px;
   }
 }
 

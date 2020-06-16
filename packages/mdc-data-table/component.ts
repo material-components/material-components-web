@@ -27,7 +27,7 @@ import {MDCCheckbox, MDCCheckboxFactory} from '@material/checkbox/component';
 import {closest} from '@material/dom/ponyfill';
 
 import {MDCDataTableAdapter} from './adapter';
-import {cssClasses, dataAttributes, events, selectors} from './constants';
+import {cssClasses, dataAttributes, events, messages, selectors, SortValue} from './constants';
 import {MDCDataTableFoundation} from './foundation';
 import {MDCDataTableRowSelectionChangedEventDetail} from './types';
 
@@ -257,6 +257,17 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
       setRowCheckboxCheckedAtIndex: (rowIndex: number, checked: boolean) => {
         this.rowCheckboxList[rowIndex].checked = checked;
       },
+      setSortStatusLabelByHeaderCellIndex: (
+          columnIndex: number, sortValue: SortValue) => {
+        const headerCell = this.getHeaderCells()[columnIndex];
+        const sortStatusLabel =
+            headerCell.querySelector<HTMLElement>(selectors.SORT_STATUS_LABEL);
+
+        if (!sortStatusLabel) return;
+
+        sortStatusLabel.textContent =
+            this.getSortStatusMessageBySortValue(sortValue);
+      },
     };
     return new MDCDataTableFoundation(adapter);
   }
@@ -285,5 +296,16 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     }
 
     this.foundation.handleSortAction({columnId, columnIndex, headerCell});
+  }
+
+  private getSortStatusMessageBySortValue(sortValue: SortValue): string {
+    switch (sortValue) {
+      case SortValue.ASCENDING:
+        return messages.SORTED_IN_ASCENDING;
+      case SortValue.DESCENDING:
+        return messages.SORTED_IN_DESCENDING;
+      default:
+        return '';
+    }
   }
 }

@@ -65,6 +65,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       setHeaderRowCheckboxIndeterminate: () => undefined,
       setProgressIndicatorStyles: () => undefined,
       setRowCheckboxCheckedAtIndex: () => undefined,
+      setSortStatusLabelByHeaderCellIndex: () => undefined,
     };
   }
 
@@ -214,6 +215,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
           index, cssClasses.HEADER_CELL_SORTED_DESCENDING);
       this.adapter.setAttributeByHeaderCellIndex(
           index, strings.ARIA_SORT, SortValue.NONE);
+      this.adapter.setSortStatusLabelByHeaderCellIndex(index, SortValue.NONE);
     }
 
     // Set appropriate sort attributes / classes on target header cell.
@@ -244,6 +246,8 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
           columnIndex, strings.ARIA_SORT, SortValue.ASCENDING);
       sortValue = SortValue.ASCENDING;
     }
+
+    this.adapter.setSortStatusLabelByHeaderCellIndex(columnIndex, sortValue);
 
     this.adapter.notifySortAction({
       columnId,

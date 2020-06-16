@@ -276,7 +276,10 @@ that needs to be sorted.
             <div class="mdc-data-table__header-cell-label">
               Dessert
             </div>
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button"
+                    aria-label="Sort by dessert" aria-describedby="dessert-status-label">arrow_upward</button>
+            <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="dessert-status-label">
+            </div>
           </div>
         </th>
         <th
@@ -287,10 +290,12 @@ that needs to be sorted.
           data-column-id="carbs"
         >
           <div class="mdc-data-table__header-cell-wrapper">
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button"
+                    aria-label="Sort by carbs" aria-describedby="carbs-status-label">arrow_upward</button>
             <div class="mdc-data-table__header-cell-label">
               Carbs (g)
             </div>
+            <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="carbs-status-label"></div>
           </div>
         </th>
         <th
@@ -301,10 +306,12 @@ that needs to be sorted.
           data-column-id="protein"
         >
           <div class="mdc-data-table__header-cell-wrapper">
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button"
+                    aria-label="Sort by protein" aria-describedby="protein-status-label">arrow_upward</button>
             <div class="mdc-data-table__header-cell-label">
               Protein (g)
             </div>
+            <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="protein-status-label"></div>
           </div>
         </th>
         <th
@@ -366,6 +373,7 @@ CSS Class | Description
 `mdc-data-table__header-cell-wrapper` | Mandatory. Container of header cell label and sort button, used to align header cell in center.
 `mdc-data-table__sort-icon-button` | Optional. Class name added to icon button used as sort icon button. This is sibling to header cell label.
 `mdc-data-table__header-cell-label` | Mandatory. Class name added to header cell label. Child to header cell wrapper element.
+`mdc-data-table__sort-status-label` | Optional. Class name added to sort status label which is visually hidden. Only visible to screen reader users.
 
 ### Sass mixins
 

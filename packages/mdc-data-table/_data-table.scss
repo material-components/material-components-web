@@ -28,6 +28,7 @@
 @use '@material/animation/functions';
 @use '@material/checkbox/mixins' as checkbox-mixins;
 @use '@material/density/functions' as density-functions;
+@use '@material/dom/mixins' as dom;
 @use '@material/elevation/mixins';
 @use '@material/feature-targeting/functions' as feature-targeting-functions;
 @use '@material/feature-targeting/mixins' as feature-targeting-mixins;
@@ -305,6 +306,10 @@
       top: 0;
       width: 100%;
     }
+  }
+
+  .mdc-data-table__sort-status-label {
+    @include dom.visually-hidden($query: $query);
   }
 
   @include data-table-pagination.core-styles($query: $query);
