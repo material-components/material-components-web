@@ -66,14 +66,17 @@ In filled select:
   <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
     <ul class="mdc-list" role="listbox">
       <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" role="option" data-value="grains">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic"></span>
         <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
       </li>
       <li class="mdc-list-item" role="option" data-value="vegetables">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic"></span>
         <span class="mdc-list-item__text">Vegetables</span>
       </li>
       <li class="mdc-list-item" role="option" data-value="fruit">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic"></span>
         <span class="mdc-list-item__text">Fruit</span>
       </li>

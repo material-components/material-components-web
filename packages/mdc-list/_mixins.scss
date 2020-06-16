@@ -420,11 +420,23 @@
 
   // Set styles only for focus state on disabled list item.
   .mdc-list-item--disabled {
-    @include ripple-mixins.surface($query: $query);
-    @include ripple-mixins.radius-bounded($query: $query);
-    @include ripple-mixins.states-base-color(theme-variables.prop-value(on-surface), $query: $query);
-    @include ripple-mixins.states-focus-opacity(ripple-functions.states-opacity(primary, focus), $query: $query);
+    @include ripple-mixins.surface($ripple-target: variables.$ripple-target, $query: $query);
+    @include ripple-mixins.radius-bounded($ripple-target: variables.$ripple-target, $query: $query);
+    @include ripple-mixins.states-base-color(theme-variables.prop-value(on-surface), $ripple-target: variables.$ripple-target, $query: $query);
+    @include ripple-mixins.states-focus-opacity(ripple-functions.states-opacity(primary, focus), $ripple-target: variables.$ripple-target, $query: $query);
+
+    #{variables.$ripple-target} {
+      @include ripple-mixins.target-common($query: $query);
+    }
   }
+}
+
+///
+/// Sets ripple color for a list item.
+///
+@mixin ripple-states($color, $query: feature-targeting-functions.all()) {
+  @include ripple-mixins.states(
+    $color: $color, $query: $query, $ripple-target: variables.$ripple-target);
 }
 
 /// Sets the text color of the list item in selected or activated state.
@@ -844,9 +856,13 @@
 
 // Ripple styles for an interactive list item (one that is enabled and inside an interactive list).
 @mixin item-interactive-ripple_($query: feature-targeting-functions.all()) {
-  @include ripple-mixins.surface($query);
-  @include ripple-mixins.radius-bounded($query: $query);
-  @include ripple-mixins.states(theme-variables.prop-value(on-surface), false, $query);
-  @include ripple-mixins.states-activated(primary, false, $query);
-  @include ripple-mixins.states-selected(primary, false, $query);
+  @include ripple-mixins.surface($ripple-target: variables.$ripple-target, $query: $query);
+  @include ripple-mixins.radius-bounded($ripple-target: variables.$ripple-target, $query: $query);
+  @include ripple-mixins.states(theme-variables.prop-value(on-surface), false, $ripple-target: variables.$ripple-target, $query: $query);
+  @include ripple-mixins.states-activated(primary, false, $ripple-target: variables.$ripple-target, $query: $query);
+  @include ripple-mixins.states-selected(primary, false, $ripple-target: variables.$ripple-target, $query: $query);
+
+  #{variables.$ripple-target} {
+    @include ripple-mixins.target-common($query: $query);
+  }
 }

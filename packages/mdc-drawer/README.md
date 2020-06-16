@@ -35,14 +35,17 @@ npm install @material/drawer
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
         <span class="mdc-list-item__text">Inbox</span>
       </a>
       <a class="mdc-list-item" href="#">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
         <span class="mdc-list-item__text">Outgoing</span>
       </a>
       <a class="mdc-list-item" href="#">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
         <span class="mdc-list-item__text">Drafts</span>
       </a>
@@ -96,18 +99,22 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
         <span class="mdc-list-item__text">Inbox</span>
       </a>
       <a class="mdc-list-item" href="#">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
         <span class="mdc-list-item__text">Star</span>
       </a>
       <a class="mdc-list-item" href="#">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
         <span class="mdc-list-item__text">Sent Mail</span>
       </a>
       <a class="mdc-list-item" href="#">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
         <span class="mdc-list-item__text">Drafts</span>
       </a>
@@ -115,14 +122,17 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
       <hr class="mdc-list-divider">
       <h6 class="mdc-list-group__subheader">Labels</h6>
       <a class="mdc-list-item" href="#">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
         <span class="mdc-list-item__text">Family</span>
       </a>
       <a class="mdc-list-item" href="#">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
         <span class="mdc-list-item__text">Friends</span>
       </a>
       <a class="mdc-list-item" href="#">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
         <span class="mdc-list-item__text">Work</span>
       </a>
@@ -144,14 +154,17 @@ Drawers can contain a header element which will not scroll with the rest of the 
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
         <span class="mdc-list-item__text">Inbox</span>
       </a>
       <a class="mdc-list-item" href="#">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
         <span class="mdc-list-item__text">Outgoing</span>
       </a>
       <a class="mdc-list-item" href="#">
+        <span class="mdc-list-item__ripple"></span>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
         <span class="mdc-list-item__text">Drafts</span>
       </a>
@@ -170,14 +183,17 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
           <span class="mdc-list-item__text">Inbox</span>
         </a>
         <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
           <span class="mdc-list-item__text">Outgoing</span>
         </a>
         <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
           <span class="mdc-list-item__text">Drafts</span>
         </a>
@@ -207,14 +223,17 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
     <div class="mdc-drawer__content">
       <div class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
           <span class="mdc-list-item__text">Inbox</span>
         </a>
         <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
           <span class="mdc-list-item__text">Outgoing</span>
         </a>
         <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
           <span class="mdc-list-item__text">Drafts</span>
         </a>
@@ -259,14 +278,17 @@ In cases where the drawer appears below the top app bar you will want to follow 
     <div class="mdc-drawer__content">
       <div class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
           <span class="mdc-list-item__text">Inbox</span>
         </a>
         <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
           <span class="mdc-list-item__text">Outgoing</span>
         </a>
         <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
           <span class="mdc-list-item__text">Drafts</span>
         </a>
@@ -334,14 +356,17 @@ Modal drawers are elevated above most of the app's UI and don't affect the scree
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page" tabindex="0">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
           <span class="mdc-list-item__text">Inbox</span>
         </a>
         <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
           <span class="mdc-list-item__text">Outgoing</span>
         </a>
         <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
           <span class="mdc-list-item__text">Drafts</span>
         </a>

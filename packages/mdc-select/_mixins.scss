@@ -233,7 +233,7 @@
   }
 
   .mdc-select__menu .mdc-list .mdc-list-item--selected {
-    @include ripple-mixins.states(on-surface, $query: $query);
+    @include list-mixins.ripple-states(on-surface, $query: $query);
   }
 }
 
