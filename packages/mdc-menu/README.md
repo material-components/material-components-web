@@ -221,7 +221,7 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 Property | Value Type | Description
 --- | --- | ---
 `open` | Boolean | Proxies to the menu surface's `open` property.
-`items` | Array<Element> | Proxies to the list to query for all `.mdc-list-item` elements.
+`items` | `Array<Element>` | Proxies to the list to query for all `.mdc-list-item` elements.
 `quickOpen` | Boolean | Proxies to the menu surface `quickOpen` property.
 `wrapFocus` | Boolean | Proxies to list's `wrapFocus` property.
 `hasTypeahead` | Boolean | Proxies to the list's `hasTypeahead` property.
