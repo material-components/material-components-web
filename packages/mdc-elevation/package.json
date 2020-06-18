@@ -13,6 +13,7 @@
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-elevation"
   },
+  "sideEffects": false,
   "dependencies": {
     "@material/animation": "^6.0.0",
     "@material/base": "^6.0.0",

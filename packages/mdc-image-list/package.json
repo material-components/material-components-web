@@ -13,6 +13,7 @@
     "material design",
     "image list"
   ],
+  "sideEffects": false,
   "dependencies": {
     "@material/feature-targeting": "^6.0.0",
     "@material/shape": "^6.0.0",

@@ -13,6 +13,7 @@
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-card"
   },
+  "sideEffects": false,
   "dependencies": {
     "@material/elevation": "^6.0.0",
     "@material/feature-targeting": "^6.0.0",

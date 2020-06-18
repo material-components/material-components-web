@@ -13,6 +13,7 @@
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-theme"
   },
+  "sideEffects": false,
   "dependencies": {
     "@material/feature-targeting": "^6.0.0"
   }

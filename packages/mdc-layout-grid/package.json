@@ -9,6 +9,7 @@
     "grid",
     "layout"
   ],
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git",
