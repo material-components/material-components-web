@@ -171,6 +171,11 @@
       overflow: hidden;
       text-align: left;
       text-overflow: ellipsis;
+
+      @include rtl-mixins.rtl {
+        /* @noflip */
+        text-align: right;
+      }
     }
   }
 
