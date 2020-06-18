@@ -21,16 +21,16 @@
  * THE SOFTWARE.
  */
 
-import { MDCSegButton, MDCSegButtonSingle } from '../index';
+import { MDCSegmentedButton, MDCSegmentedButtonSingle } from '../index';
 
-const mdcSegButtonEls = document.querySelectorAll<HTMLElement>('.mdc-seg-button');
+const mdcSegmentedButtonEls = document.querySelectorAll<HTMLElement>('.mdc-segmented-button');
 
-if (mdcSegButtonEls) {
-    mdcSegButtonEls.forEach((mdcSegButtonEl) => {
-        if (mdcSegButtonEl.classList.contains('mdc-seg-button--single')) {
-            new MDCSegButtonSingle(mdcSegButtonEl);
+if (mdcSegmentedButtonEls) {
+    mdcSegmentedButtonEls.forEach((mdcSegmentedButtonEl) => {
+        if (mdcSegmentedButtonEl.classList.contains('mdc-segmented-button--single')) {
+            new MDCSegmentedButtonSingle(mdcSegmentedButtonEl);
         } else {
-            new MDCSegButton(mdcSegButtonEl);
+            new MDCSegmentedButton(mdcSegmentedButtonEl);
         }
     });
 }

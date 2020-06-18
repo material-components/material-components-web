@@ -23,37 +23,55 @@
 @use "../mdc-button";
 @use "../mdc-theme/variables" as theme-variables;
 
-@include mdc-button.core-styles;
-@include mdc-button.theme-baseline;
+
+@use "../mdc-feature-targeting/functions" as feature-targeting-functions;
+@use "../mdc-typography/mixins" as typography-mixins;
 
 // Style for when element is on
-.mdc-seg-button__element--toggled {
+.mdc-segmented-button__item--toggled {
     @include mdc-button.ink-color(rgba(theme-variables.prop-value(primary), 1));
     @include mdc-button.outline-color(rgba(theme-variables.prop-value(primary), 1));
     @include mdc-button.container-fill-color(rgba(theme-variables.prop-value(primary), .08));
 
     // Avoids double borders
-    +.mdc-seg-button__element {
+    +.mdc-segmented-button__item {
         border-left: hidden;
     }
 }
 
-.mdc-seg-button {
+.mdc-segmented-button {
     font-size: 0;
     display: inline-block;
 }
 
 // TODO: include test for element resizing besides the left/right border
-.mdc-seg-button__element {
+.mdc-segmented-button__item {
+    @include typography-mixins.typography(button, feature-targeting-functions.all());
+
     height: 36px;
     min-width: 48px;
     padding-left: 12px;
     padding-right: 12px;
-    // TODO: Remove this after mdc-button is removed
-    border-radius: 0;
+
+    // Mimicking mdc-button and mdc-button--outlined
+    border-width: 1px;
+    vertical-align: top;
+
+    display: inline-flex;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &:focus {
+        outline-width: 0;
+    }
 
     // Style for when element is not on
-    &:not(.mdc-seg-button__element--toggled) {
+    &:not(.mdc-segmented-button__item--toggled) {
         @include mdc-button.ink-color(rgba(theme-variables.prop-value(on-surface), .6));
         @include mdc-button.outline-color(rgba(theme-variables.prop-value(on-surface), .12));
         @include mdc-button.container-fill-color(rgba(theme-variables.prop-value(surface), 1));
@@ -75,11 +93,16 @@
     }
 }
 
-.mdc-seg-button__icon {
+.mdc-segmented-button__icon {
     width: 24px;
     font-size: 18px;
+
+    // TODO: stop hacking
+    &:not(:last-child) {
+        margin-left: -4;
+    }
 }
 
-.mdc-seg-button__icon + .mdc-seg-button__label{
+.mdc-segmented-button__icon + .mdc-segmented-button__label{
     padding-left: 6;
 }
