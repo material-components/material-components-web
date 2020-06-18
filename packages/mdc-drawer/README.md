@@ -7,28 +7,124 @@ iconId: side_navigation
 path: /catalog/drawers/
 -->
 
-# Drawers
+# Navigation drawers
 
-The MDC Navigation Drawer is used to organize access to destinations and other functionality on an app.
+[Navigation drawers](https://material.io/components/navigation-drawer) provide access to destinations in your app.
 
-## Design & API Documentation
+![Hero navigation drawer image](images/drawer-hero.png)
 
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-navigation-drawer">Material Design guidelines: Navigation drawer</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/drawer">Demo</a>
-  </li>
-</ul>
+## Contents
 
-## Installation
+* [Using navigation drawers](#using-navigation-drawers)
+* [Types](#types)
+* [Other variants](#other-variants)
+* [API](#api)
+* [Usage within web frameworks](#usage-within-web-frameworks)
+
+## Using navigation drawers
+
+A navigation drawer provides access to destinations and app functionality, such as switching accounts. It can either be permanently on-screen or controlled by a navigation menu icon.
+
+A navigation drawer is recommended for:
+
+* Apps with five or more top-level destinations
+* Apps with two or more levels of navigation hierarchy
+* Quick navigation between unrelated destinations
+
+### Installation
 
 ```
 npm install @material/drawer
 ```
 
-### HTML Structure
+### Styles
+
+```scss
+@use "@material/drawer";
+@use "@material/list";
+
+@include drawer.core-styles;
+@include list.core-styles;
+```
+
+### JavaScript instantiation
+
+For permanently visible drawer, the list must be instantiated for appropriate keyboard interaction:
+
+```js
+import {MDCList} from "@material/list";
+const list = MDCList.attachTo(document.querySelector('.mdc-list'));
+list.wrapFocus = true;
+```
+
+Other variants use the `MDCDrawer` component, which will instantiate `MDCList` automatically:
+
+```js
+import {MDCDrawer} from "@material/drawer";
+const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+```
+
+### Icons
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
+### Making navigation drawers accessible
+
+### Focus management
+
+It is recommended to shift focus to the first focusable element in the main content when drawer is closed or one of the destination items is activated. (By default, MDC Drawer restores focus to the menu button which opened it.)
+
+#### Dismissible drawer
+
+Restore focus to the first focusable element when a list item is activated or after the drawer closes. Do not close the drawer upon item activation, since it should be up to the user when to show/hide the dismissible drawer.
+
+```js
+const listEl = document.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.querySelector('.main-content');
+
+listEl.addEventListener('click', (event) => {
+  mainContentEl.querySelector('input, button').focus();
+});
+
+document.body.addEventListener('MDCDrawer:closed', () => {
+  mainContentEl.querySelector('input, button').focus();
+});
+```
+
+#### Modal drawer
+
+Close the drawer when an item is activated in order to dismiss the modal as soon as the user performs an action. Only restore focus to the first focusable element in the main content after the drawer is closed, since it's being closed automatically.
+
+```js
+const listEl = document.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.querySelector('.main-content');
+
+listEl.addEventListener('click', (event) => {
+  drawer.open = false;
+});
+
+document.body.addEventListener('MDCDrawer:closed', () => {
+  mainContentEl.querySelector('input, button').focus();
+});
+```
+
+## Types
+
+There are three types of navigation drawers: [standard (1)](#standard-navigation-drawers), [modal (2)](#modal-navigation-drawers), and [bottom (3)](#bottom-navigation-drawers).
+
+![Standard, modal, and bottom navigation drawers](images/drawer-composite.png)
+
+### Standard navigation drawers
+
+[Standard navigation drawers](https://material.io/components/navigation-drawer#standard-drawer) allow interaction with both screen content and the drawer at the same time. They can be used on tablet and desktop, but they aren’t suitable for mobile due to limited screen size.
 
 ```html
 <aside class="mdc-drawer">
@@ -54,43 +150,49 @@ npm install @material/drawer
 </aside>
 ```
 
-#### Icons
+### Modal navigation drawers
 
-We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+[Modal navigation drawers](https://material.io/components/navigation-drawer#modal-drawer) block interaction with the rest of an app’s content with a scrim. They are elevated above most of the app’s UI and don’t affect the screen’s layout grid.
+
 
 ```html
-<head>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-</head>
+<body>
+  <aside class="mdc-drawer mdc-drawer--modal">
+    <div class="mdc-drawer__content">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page" tabindex="0">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+          <span class="mdc-list-item__text">Inbox</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+          <span class="mdc-list-item__text">Outgoing</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+          <span class="mdc-list-item__text">Drafts</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-scrim"></div>
+  <div>Main Content</div>
+</body>
 ```
 
-However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+**Note: The `mdc-drawer-scrim` next sibling element is required, to protect the app's UI from interactions while the modal drawer is open.**
 
-### Styles
+### Bottom navigation drawers
 
-```scss
-@use "@material/drawer/mdc-drawer";
-@use "@material/list/mdc-list";
-```
+[Bottom navigation drawers](https://material.io/components/navigation-drawer#bottom-drawer) are modal drawers that are anchored to the bottom of the screen instead of the left or right edge. They are only used with bottom app bars.
 
-### JavaScript Instantiation
+MDC Web does not currently support bottom navigation drawers.
 
-For permanently visible drawer, the list must be instantiated for appropriate keyboard interaction:
-
-```js
-import {MDCList} from "@material/list";
-const list = MDCList.attachTo(document.querySelector('.mdc-list'));
-list.wrapFocus = true;
-```
-
-Other variants use the `MDCDrawer` component, which will instantiate `MDCList` automatically:
-
-```js
-import {MDCDrawer} from "@material/drawer";
-const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
-```
-
-## Variants
+## Other variants
 
 ### Drawer with separate list groups
 
@@ -141,7 +243,7 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 </aside>
 ```
 
-### Drawer with Header
+### Drawer with header
 
 Drawers can contain a header element which will not scroll with the rest of the drawer content. Things like account switchers and titles should live in the header element.
 
@@ -173,7 +275,7 @@ Drawers can contain a header element which will not scroll with the rest of the 
 </aside>
 ```
 
-### Dismissible Drawer
+### Dismissible drawer
 
 Dismissible drawers are by default hidden off screen, and can slide into view. Dismissible drawers should be used when navigation is not common, and the main app content is prioritized.
 
@@ -207,11 +309,11 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 </body>
 ```
 
-> Apply the `mdc-drawer-app-content` class to the sibling element after the drawer for the open/close animations to work.
+**Note: Apply the `mdc-drawer-app-content` class to the sibling element after the drawer for the open/close animations to work.**
 
-#### Usage with Top App Bar
+#### Usage with top app bar
 
-##### Dismissible Drawer Full Height Drawer
+##### Dismissible drawer: full height drawer
 
 In cases where the drawer occupies the full viewport height, some styles must be applied to get the dismissible drawer and the content below the top app bar to independently scroll and work in all browsers.
 
@@ -260,7 +362,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
 </body>
 ```
 
-##### Dismissible Drawer Below Top App Bar
+##### Dismissible drawer: below top app bar
 
 In cases where the drawer appears below the top app bar you will want to follow the markup shown below. The `mdc-drawer__content` and `main-content` elements will also scroll independently of each other. The `mdc-top-app-bar`, `mdc-drawer` and `mdc-drawer-app-content` will be sibling to each other. The `mdc-top-app-bar--fixed-adjust` helper class will be applied to `mdc-drawer` and `mdc-drawer-app-content` elements to adjust the position with top app bar.
 
@@ -307,7 +409,7 @@ In cases where the drawer appears below the top app bar you will want to follow 
 The CSS to match either case looks like this:
 
 ```scss
-// Note: these styles do not account for any paddings/margins that you may need.
+// Note: These styles do not account for any paddings/margins that you may need.
 
 body {
   display: flex;
@@ -329,7 +431,7 @@ body {
   position: absolute;
 }
 
-// only apply this style if below top app bar
+// Only apply this style if below top app bar.
 .mdc-top-app-bar {
   z-index: 7;
 }
@@ -346,48 +448,9 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
 });
 ```
 
-### Modal Drawer
+## API
 
-Modal drawers are elevated above most of the app's UI and don't affect the screen's layout grid.
-
-```html
-<body>
-  <aside class="mdc-drawer mdc-drawer--modal">
-    <div class="mdc-drawer__content">
-      <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page" tabindex="0">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-          <span class="mdc-list-item__text">Inbox</span>
-        </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-          <span class="mdc-list-item__text">Outgoing</span>
-        </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-          <span class="mdc-list-item__text">Drafts</span>
-        </a>
-      </nav>
-    </div>
-  </aside>
-
-  <div class="mdc-drawer-scrim"></div>
-  <div>Main Content</div>
-</body>
-```
-
-> The `mdc-drawer-scrim` next sibling element is **required**, to protect the app's UI from interactions while the modal drawer is open.
-
-### Responsive Drawer
-
- There is currently no dedicated material component for responsive drawers.  This [responsive drawer example](https://glitch.com/~material-responsive-drawer) demonstrates a suggested solution for a drawer that dynamically switches between the permanent variant and the modal variant based on screen width.
-
-## Style Customization
-
-### CSS Classes
+### CSS classes
 
 Class | Description
 --- | ---
@@ -404,8 +467,7 @@ Class | Description
 `mdc-drawer-app-content` | Mandatory for dismissible variant only. Sibling element that is resized when the drawer opens/closes.
 `mdc-drawer-scrim` | Mandatory for modal variant only. Used for the overlay on the app content.
 
-
-### Sass Mixins
+### Sass mixins
 
 Mixin | Description
 --- | ---
@@ -426,55 +488,15 @@ Mixin | Description
 `z-index($value)` | Sets the z index of drawer. Drawer stays on top of top app bar except for clipped variant of drawer.
 `width($width)` | Sets the width of the drawer. In the case of the dismissible variant, also sets margin required for `mdc-drawer-app-content`.
 
-## Accessibility
+### `MDCDrawer`
 
-### Focus Management
-
-It is recommended to shift focus to the first focusable element in the main content when drawer is closed or one of the destination items is activated. (By default, MDC Drawer restores focus to the menu button which opened it.)
-
-#### Dismissible Drawer
-
-Restore focus to the first focusable element when a list item is activated or after the drawer closes. Do not close the drawer upon item activation, since it should be up to the user when to show/hide the dismissible drawer.
-
-```js
-const listEl = document.querySelector('.mdc-drawer .mdc-list');
-const mainContentEl = document.querySelector('.main-content');
-
-listEl.addEventListener('click', (event) => {
-  mainContentEl.querySelector('input, button').focus();
-});
-
-document.body.addEventListener('MDCDrawer:closed', () => {
-  mainContentEl.querySelector('input, button').focus();
-});
-```
-
-#### Modal Drawer
-
-Close the drawer when an item is activated in order to dismiss the modal as soon as the user performs an action. Only restore focus to the first focusable element in the main content after the drawer is closed, since it's being closed automatically.
-
-```js
-const listEl = document.querySelector('.mdc-drawer .mdc-list');
-const mainContentEl = document.querySelector('.main-content');
-
-listEl.addEventListener('click', (event) => {
-  drawer.open = false;
-});
-
-document.body.addEventListener('MDCDrawer:closed', () => {
-  mainContentEl.querySelector('input, button').focus();
-});
-```
-
-<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
-### MDCDrawer
 #### Methods
 
 Signature | Description
 --- | ---
 `emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
-`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
-`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
+`listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions \| boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
+`unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions \| boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
 
 #### Properties
 
@@ -483,14 +505,16 @@ Name | Type | Description
 open | `boolean` | Toggles the drawer open and closed.
 
 #### Events
+
 - `MDCDrawer:closed {}` Emits when the navigation drawer has closed.
 - `MDCDrawer:opened {}` Emits when the navigation drawer has opened.
 
-## Usage within Web Frameworks
+## Usage within web frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create this component for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### MDCDrawerAdapter
+### `MDCDrawerAdapter`
+
 #### Methods
 
 Signature | Description
@@ -507,7 +531,8 @@ Signature | Description
 `saveFocus() => void` | Saves the focus of currently active element.
 `trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
 
-### MDCDismissibleDrawerFoundation
+### `MDCDismissibleDrawerFoundation`
+
 #### Methods
 
 Signature | Description
@@ -522,7 +547,8 @@ Signature | Description
 `open() => void` | Opens the drawer from the closed state.
 `opened_() => void` | Extension point for when drawer finishes open animation.
 
-### MDCModalDrawerFoundation
+### `MDCModalDrawerFoundation`
+
 #### Methods
 
 Signature | Description
@@ -537,6 +563,3 @@ Signature | Description
 `isOpening() => boolean` | Returns true if the drawer is animating open.
 `open() => void` | Opens the drawer from the closed state.
 `opened_() => void` | Called when drawer finishes open animation.
-
-
-<!-- docgen-tsdoc-replacer:end -->
