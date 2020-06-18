@@ -41,19 +41,32 @@
 }
 
 @mixin base($query: feature-targeting-functions.all()) {
-  $feat-typography: feature-targeting-functions.create-target($query, typography);
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
 
   @include smooth-font($query: $query);
   @include feature-targeting-mixins.targets($feat-typography) {
-    @include theme-mixins.prop(font-family, (
-      varname: --mdc-typography-font-family,
-      fallback: map.get(variables.$base, 'font-family')
-    ));
+    @include theme-mixins.prop(
+      font-family,
+      (
+        varname: --mdc-typography-font-family,
+        fallback: map.get(variables.$base, 'font-family'),
+      )
+    );
   }
 }
 
-@mixin typography($style, $query: feature-targeting-functions.all(), $exclude-props: ()) {
-  $feat-typography: feature-targeting-functions.create-target($query, typography);
+@mixin typography(
+  $style,
+  $query: feature-targeting-functions.all(),
+  $exclude-props: ()
+) {
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
   $style-props: map.get(variables.$styles, $style);
 
   @if not map.has-key(variables.$styles, $style) {
@@ -65,20 +78,23 @@
     @each $key, $value in $style-props {
       @if list.index($exclude-props, $key) == null {
         $fallback: $value;
-        @if $key == "font-family" {
+        @if $key == 'font-family' {
           // Each style has its own font-family custom property, but should
           // fallback to a generic font-family property. This allows
           // customizing the font-family for all styles or only specific ones.
           $fallback: (
             varname: --mdc-typography-font-family,
-            fallback: $fallback
+            fallback: $fallback,
           );
         }
 
-        @include theme-mixins.prop($key, (
-          varname: --mdc-typography-#{$style}-#{$key},
-          fallback: $fallback
-        ));
+        @include theme-mixins.prop(
+          $key,
+          (
+            varname: --mdc-typography-#{$style}-#{$key},
+            fallback: $fallback,
+          )
+        );
       }
     }
   }
@@ -86,7 +102,10 @@
 
 /// Applies antialiasing via font-smoothing to text.
 @mixin smooth-font($query: feature-targeting-functions.all()) {
-  $feat-typography: feature-targeting-functions.create-target($query, typography);
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
 
   @include feature-targeting-mixins.targets($feat-typography) {
     -moz-osx-font-smoothing: grayscale;
@@ -117,14 +136,19 @@
 ///     bottom of the container.
 /// @param {String} $display - the display type of the container. May be `flex`,
 ///     `inline-flex`, `block`, or `inline-block`.
-@mixin baseline($top: 0, $bottom: 0, $display: block, $query: feature-targeting-functions.all()) {
+@mixin baseline(
+  $top: 0,
+  $bottom: 0,
+  $display: block,
+  $query: feature-targeting-functions.all()
+) {
   $validDisplayTypes: (flex, inline-flex, block, inline-block);
 
   @if list.index($validDisplayTypes, $display) == null {
     @error "mdc-typography: invalid display specified! #{$display} must be one of #{$validDisplayTypes}";
   }
 
-  $isFlexbox: $display == "flex" or $display == "inline-flex";
+  $isFlexbox: $display == 'flex' or $display == 'inline-flex';
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -168,7 +192,13 @@
 ///     is the distance between baselines of multiple lines of text.
 /// @param {String} $display - the display type of the container. May be `block`
 ///     or `inline-block`.
-@mixin text-baseline($top: 0, $bottom: 0, $display: block, $lineHeight: normal, $query: feature-targeting-functions.all()) {
+@mixin text-baseline(
+  $top: 0,
+  $bottom: 0,
+  $display: block,
+  $lineHeight: normal,
+  $query: feature-targeting-functions.all()
+) {
   $validDisplayTypes: (block, inline-block);
 
   @if list.index($validDisplayTypes, $display) == null {
@@ -177,7 +207,12 @@
 
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include baseline($display: $display, $top: $top, $bottom: $bottom, $query: $query);
+  @include baseline(
+    $display: $display,
+    $top: $top,
+    $bottom: $bottom,
+    $query: $query
+  );
   @include feature-targeting-mixins.targets($feat-structure) {
     @if $top > 0 {
       margin-top: 0;
@@ -243,5 +278,5 @@
   display: inline-block;
   width: 0;
   height: $distance;
-  content: "";
+  content: '';
 }

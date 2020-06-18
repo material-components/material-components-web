@@ -100,7 +100,7 @@
       align-items: center;
       justify-content: flex-start;
       box-sizing: border-box;
-      transform: scale(.8);
+      transform: scale(0.8);
       opacity: 0;
     }
 
@@ -112,8 +112,10 @@
       }
 
       @include feature-targeting-mixins.targets($feat-animation) {
-        transition:
-          animation-functions.enter(opacity, variables.$enter-duration),
+        transition: animation-functions.enter(
+            opacity,
+            variables.$enter-duration
+          ),
           animation-functions.enter(transform, variables.$enter-duration);
       }
     }
@@ -124,13 +126,19 @@
       }
 
       @include feature-targeting-mixins.targets($feat-animation) {
-        transition: animation-functions.exit-permanent(opacity, variables.$exit-duration);
+        transition: animation-functions.exit-permanent(
+          opacity,
+          variables.$exit-duration
+        );
       }
     }
   }
 
   .mdc-snackbar__label {
-    @include typography-mixins.typography(variables.$label-type-scale, $query: $query);
+    @include typography-mixins.typography(
+      variables.$label-type-scale,
+      $query: $query
+    );
 
     @include feature-targeting-mixins.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(padding, 16px, variables.$padding);
@@ -157,7 +165,6 @@
 
   .mdc-snackbar__actions {
     @include feature-targeting-mixins.targets($feat-structure) {
-
       display: flex;
       flex-shrink: 0;
       align-items: center;
@@ -166,18 +173,27 @@
   }
 
   .mdc-snackbar__action {
-    @include button-mixins.ink-color(variables.$action-ink-color, $query: $query);
+    @include button-mixins.ink-color(
+      variables.$action-ink-color,
+      $query: $query
+    );
     @include ripple-mixins.states(variables.$action-ink-color, $query: $query);
   }
 
   .mdc-snackbar__dismiss {
-    @include icon-button-mixins.ink-color(variables.$dismiss-ink-color, $query: $query);
+    @include icon-button-mixins.ink-color(
+      variables.$dismiss-ink-color,
+      $query: $query
+    );
   }
 
   // Two selectors are needed to increase specificity above `.material-icons`.
   // stylelint-disable-next-line selector-class-pattern
   .mdc-snackbar__dismiss.mdc-snackbar__dismiss {
-    @include icon-button-mixins.icon-size(variables.$dismiss-icon-size, $query: $query);
+    @include icon-button-mixins.icon-size(
+      variables.$dismiss-icon-size,
+      $query: $query
+    );
   }
 
   .mdc-snackbar__action + .mdc-snackbar__dismiss {
@@ -208,7 +224,11 @@
   }
 }
 
-@mixin shape-radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting-functions.all()
+) {
   .mdc-snackbar__surface {
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
   }

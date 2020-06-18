@@ -85,7 +85,8 @@
   }
 
   // postcss-bem-linter: ignore
-  .mdc-tab-indicator--active.mdc-tab-indicator--fade .mdc-tab-indicator__content {
+  .mdc-tab-indicator--active.mdc-tab-indicator--fade
+    .mdc-tab-indicator__content {
     @include feature-targeting-mixins.targets($feat-animation) {
       transition-delay: 100ms;
     }

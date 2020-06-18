@@ -36,16 +36,18 @@
 // 2. mdc-shape-flip-radius((0, 8px)) => 8px 0
 //
 @function flip-radius($radius) {
-  @if meta.type-of($radius) == "list" {
+  @if meta.type-of($radius) == 'list' {
     @if list.length($radius) > 4 {
       @error "Invalid radius: '#{$radius}' is more than 4 values";
     }
   }
 
   @if list.length($radius) == 4 {
-    @return list.nth($radius, 2) list.nth($radius, 1) list.nth($radius, 4) list.nth($radius, 3);
+    @return list.nth($radius, 2) list.nth($radius, 1) list.nth($radius, 4)
+      list.nth($radius, 3);
   } @else if list.length($radius) == 3 {
-    @return list.nth($radius, 2) list.nth($radius, 1) list.nth($radius, 2) list.nth($radius, 3);
+    @return list.nth($radius, 2) list.nth($radius, 1) list.nth($radius, 2)
+      list.nth($radius, 3);
   } @else if list.length($radius) == 2 {
     @return list.nth($radius, 2) list.nth($radius, 1);
   } @else {
@@ -66,11 +68,14 @@
 @function resolve-percentage-radius($component-height, $radius) {
   $radius: prop-value($radius);
 
-  @if meta.type-of($radius) == "list" {
+  @if meta.type-of($radius) == 'list' {
     $radius-value: ();
 
     @each $corner in $radius {
-      $radius-value: list.append($radius-value, resolve-percentage-for-corner_($component-height, $corner));
+      $radius-value: list.append(
+        $radius-value,
+        resolve-percentage-for-corner_($component-height, $corner)
+      );
     }
 
     @return $radius-value;
@@ -102,7 +107,7 @@
 /// @return {Number | Map | List} the resolved radius value. May be a number,
 ///     a custom property Map, or a List if $radius was a List.
 @function resolve-radius($radius, $component-height: null) {
-  @if meta.type-of($radius) == "list" {
+  @if meta.type-of($radius) == 'list' {
     // $radius is a List
     @if list.length($radius) > 4 or list.length($radius) < 1 {
       @error "mdc-shape: Invalid radius: #{$radius}. Radius must be between 1 and 4 values.";
@@ -134,11 +139,15 @@
     @return custom-properties.set-fallback($radius, $fallback);
   } @else {
     // $radius is a value
-    @if meta.type-of($radius) != "number" {
+    @if meta.type-of($radius) != 'number' {
       @error "mdc-shape: Invalid radius: #{$radius}. Must be a number.";
     }
 
-    @if math.unit($radius) == "%" and meta.type-of($component-height) == "number" {
+    @if math.unit($radius) ==
+      '%' and
+      meta.type-of($component-height) ==
+      'number'
+    {
       $radius: _resolve-radius-percentage($radius, $component-height);
     }
 
@@ -159,7 +168,7 @@
 // mdc-shape-prop-value(small small 0 0) => 4px 4px 0 0
 //
 @function prop-value($radius) {
-  @if meta.type-of($radius) == "list" {
+  @if meta.type-of($radius) == 'list' {
     @if list.length($radius) > 4 {
       @error "Invalid radius: '#{$radius}' is more than 4 values";
     }
@@ -171,18 +180,27 @@
 
       @if map.has-key(variables.$category-keywords, $corner) {
         // If a category is encountered within a list of radii, apply the category's value for the corresponding corner
-        $category-value: custom-properties.get-fallback(map.get(variables.$category-keywords, $corner));
-        $radius-values:
-          list.append($radius-values, list.nth(unpack-radius($category-value), $i));
+        $category-value: custom-properties.get-fallback(
+          map.get(variables.$category-keywords, $corner)
+        );
+        $radius-values: list.append(
+          $radius-values,
+          list.nth(unpack-radius($category-value), $i)
+        );
       } @else {
-        $radius-values: list.append($radius-values, validate-radius-value_($corner));
+        $radius-values: list.append(
+          $radius-values,
+          validate-radius-value_($corner)
+        );
       }
     }
 
     @return $radius-values;
   } @else {
     @if map.has-key(variables.$category-keywords, $radius) {
-      @return custom-properties.get-fallback(map.get(variables.$category-keywords, $radius));
+      @return custom-properties.get-fallback(
+        map.get(variables.$category-keywords, $radius)
+      );
     } @else {
       @return validate-radius-value_($radius);
     }
@@ -200,7 +218,7 @@
 // 3. mdc-shape-mask-radius(4px 4px 4px 4px, 0 1 1 0) => 0 4px 4px 0
 //
 @function mask-radius($radius, $masked-corners) {
-  @if meta.type-of($radius) == "list" {
+  @if meta.type-of($radius) == 'list' {
     @if list.length($radius) > 4 {
       @error "Invalid radius: '#{$radius}' is more than 4 values";
     }
@@ -231,14 +249,16 @@
 /// @param {Number | Map | List} $radius - List of 1 to 4 radius numbers.
 /// @return {List} a List of 4 radius numbers.
 @function unpack-radius($radius) {
-  @if meta.type-of($radius) == "map" or list.length($radius) == 1 {
+  @if meta.type-of($radius) == 'map' or list.length($radius) == 1 {
     @return $radius $radius $radius $radius;
   } @else if list.length($radius) == 4 {
     @return $radius;
   } @else if list.length($radius) == 3 {
-    @return list.nth($radius, 1) list.nth($radius, 2) list.nth($radius, 3) list.nth($radius, 2);
+    @return list.nth($radius, 1) list.nth($radius, 2) list.nth($radius, 3)
+      list.nth($radius, 2);
   } @else if list.length($radius) == 2 {
-    @return list.nth($radius, 1) list.nth($radius, 2) list.nth($radius, 1) list.nth($radius, 2);
+    @return list.nth($radius, 1) list.nth($radius, 2) list.nth($radius, 1)
+      list.nth($radius, 2);
   }
 
   @error "Invalid radius: '#{$radius}' is more than 4 values";
@@ -257,7 +277,7 @@
 
 // @deprecated use `_resolve-radius-percentage()` directly
 @function resolve-percentage-for-corner_($component-height, $radius) {
-  @if meta.type-of($radius) == "number" and math.unit($radius) == "%" {
+  @if meta.type-of($radius) == 'number' and math.unit($radius) == '%' {
     @return _resolve-radius-percentage($radius, $component-height);
   } @else {
     @return $radius;
@@ -266,9 +286,12 @@
 
 /// @deprecated
 @function validate-radius-value_($radius) {
-  $is-number: meta.type-of($radius) == "number";
+  $is-number: meta.type-of($radius) == 'number';
 
-  @if not ($is-number or str_index($radius, "var(") or str_index($radius, "calc(")) {
+  @if not(
+    $is-number or str_index($radius, 'var(') or str_index($radius, 'calc(')
+  )
+  {
     @error "Invalid radius: #{$radius}";
   }
 

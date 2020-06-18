@@ -25,9 +25,18 @@
 
 :root {
   @each $size in map.keys(variables.$columns) {
-    --mdc-layout-grid-margin-#{$size}: #{map.get(variables.$default-margin, $size)};
-    --mdc-layout-grid-gutter-#{$size}: #{map.get(variables.$default-gutter, $size)};
-    --mdc-layout-grid-column-width-#{$size}: #{map.get(variables.$column-width, $size)};
+    --mdc-layout-grid-margin-#{$size}: #{map.get(
+        variables.$default-margin,
+        $size
+      )};
+    --mdc-layout-grid-gutter-#{$size}: #{map.get(
+        variables.$default-gutter,
+        $size
+      )};
+    --mdc-layout-grid-column-width-#{$size}: #{map.get(
+        variables.$column-width,
+        $size
+      )};
   }
 }
 
@@ -67,7 +76,7 @@
         // Span classes.
         // stylelint-disable max-nesting-depth
         @at-root .mdc-layout-grid__cell--span-#{$span},
-        .mdc-layout-grid__cell--span-#{$span}-#{$size} {
+          .mdc-layout-grid__cell--span-#{$span}-#{$size} {
           @include mixins.cell-span_($size, $span, $gutter);
         }
         // stylelint-enable max-nesting-depth
@@ -103,7 +112,12 @@
       $gutter: map.get(variables.$default-gutter, $size);
       $column-width: map.get(variables.$column-width, $size);
 
-      @include mixins.fixed-column-width($size, $margin, $gutter, $column-width);
+      @include mixins.fixed-column-width(
+        $size,
+        $margin,
+        $gutter,
+        $column-width
+      );
     }
   }
 }

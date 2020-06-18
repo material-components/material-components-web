@@ -51,8 +51,8 @@
     }
   }
 
- .mdc-select--invalid + .mdc-select-helper-text--validation-msg,
- .mdc-select-helper-text--validation-msg-persistent {
+  .mdc-select--invalid + .mdc-select-helper-text--validation-msg,
+  .mdc-select-helper-text--validation-msg-persistent {
     @include feature-targeting-mixins.targets($feat-structure) {
       opacity: 1;
     }
@@ -65,19 +65,28 @@
   }
 }
 
-@mixin disabled-helper-text-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-helper-text-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &.mdc-select--disabled {
     @include helper-text-color_($color, $query: $query);
   }
 }
 
-@mixin helper-text-validation-color($color, $query: feature-targeting-functions.all()) {
+@mixin helper-text-validation-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &:not(.mdc-select--disabled) {
     @include helper-text-validation-color_($color, $query: $query);
   }
 }
 
-@mixin hover-helper-text-validation-color($color, $query: feature-targeting-functions.all()) {
+@mixin hover-helper-text-validation-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &:not(.mdc-select--disabled):not(.mdc-select--focused):hover {
     @include helper-text-validation-color_($color, $query: $query);
   }
@@ -95,7 +104,10 @@
   }
 }
 
-@mixin helper-text-validation-color_($color, $query: feature-targeting-functions.all()) {
+@mixin helper-text-validation-color_(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   &.mdc-select--invalid + .mdc-select-helper-text--validation-msg {

@@ -24,6 +24,6 @@
 @use "./mixins";
 
 // Line Ripple is intended for use by multiple components, but its styles should only be emitted once when bundled
-@include base-mixins.emit-once("mdc-line-ripple") {
+@include base-mixins.emit-once('mdc-line-ripple') {
   @include mixins.core-styles;
 }

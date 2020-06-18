@@ -24,10 +24,20 @@
 @use "@material/theme/functions";
 @use "@material/theme/variables"; // for mdc-theme-prop-value() function
 
-$fill-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 80%) !default;
-$label-ink-color: rgba(variables.prop-value(surface), variables.text-emphasis(high)) !default;
+$fill-color: color.mix(
+  variables.prop-value(on-surface),
+  variables.prop-value(surface),
+  80%
+) !default;
+$label-ink-color: rgba(
+  variables.prop-value(surface),
+  variables.text-emphasis(high)
+) !default;
 $action-ink-color: #bb86fc !default;
-$dismiss-ink-color: rgba(variables.prop-value(surface), variables.text-emphasis(high)) !default;
+$dismiss-ink-color: rgba(
+  variables.prop-value(surface),
+  variables.text-emphasis(high)
+) !default;
 
 $label-type-scale: body2 !default;
 $dismiss-icon-size: 18px !default;

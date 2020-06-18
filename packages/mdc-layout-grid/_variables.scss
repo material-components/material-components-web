@@ -21,31 +21,31 @@
 $breakpoints: (
   desktop: 840px,
   tablet: 600px,
-  phone: 0px
+  phone: 0px,
 ) !default;
 
 $columns: (
   desktop: 12,
   tablet: 8,
-  phone: 4
+  phone: 4,
 ) !default;
 
 $default-margin: (
   desktop: 24px,
   tablet: 16px,
-  phone: 16px
+  phone: 16px,
 ) !default;
 
 $default-gutter: (
   desktop: 24px,
   tablet: 16px,
-  phone: 16px
+  phone: 16px,
 ) !default;
 
 $column-width: (
   desktop: 72px,
   tablet: 72px,
-  phone: 72px
+  phone: 72px,
 ) !default;
 
 $default-column-span: 4 !default;

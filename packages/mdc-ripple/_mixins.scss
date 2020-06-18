@@ -76,13 +76,13 @@
   // (Every component using MDC Ripple imports these mixins, but doesn't necessarily import
   // mdc-ripple.scss.)
   @include feature-targeting-mixins.targets($feat-animation) {
-    @include base-mixins.emit-once("mdc-ripple/common/animation") {
+    @include base-mixins.emit-once('mdc-ripple/common/animation') {
       @include keyframes.keyframes_;
     }
   }
 }
 
-@mixin surface($query: feature-targeting-functions.all(), $ripple-target: "&") {
+@mixin surface($query: feature-targeting-functions.all(), $ripple-target: '&') {
   $feat-animation: feature-targeting-functions.create-target($query, animation);
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
@@ -105,15 +105,14 @@
       border-radius: 50%;
       opacity: 0;
       pointer-events: none;
-      content: "";
+      content: '';
     }
   }
 
   #{$ripple-target}::before {
     @include feature-targeting-mixins.targets($feat-animation) {
       // Also transition background-color to avoid unnatural color flashes when toggling activated/selected state
-      transition:
-        opacity variables.$states-wash-duration linear,
+      transition: opacity variables.$states-wash-duration linear,
         background-color variables.$states-wash-duration linear;
     }
 
@@ -155,8 +154,8 @@
   &.mdc-ripple-upgraded--foreground-activation {
     #{$ripple-target}::after {
       @include feature-targeting-mixins.targets($feat-animation) {
-        animation:
-          mdc-ripple-fg-radius-in variables.$translate-duration forwards,
+        animation: mdc-ripple-fg-radius-in variables.$translate-duration
+            forwards,
           mdc-ripple-fg-opacity-in variables.$fade-in-duration forwards;
       }
     }
@@ -170,14 +169,18 @@
 
       @include feature-targeting-mixins.targets($feat-structure) {
         // Retain transform from mdc-ripple-fg-radius-in activation
-        transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+        transform: translate(var(--mdc-ripple-fg-translate-end, 0))
+          scale(var(--mdc-ripple-fg-scale, 1));
       }
     }
   }
 }
 
 @mixin states-base-color(
-  $color, $query: feature-targeting-functions.all(), $ripple-target: "&") {
+  $color,
+  $query: feature-targeting-functions.all(),
+  $ripple-target: '&'
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   #{$ripple-target}::before,
@@ -200,23 +203,44 @@
 /// @param {bool} $has-nested-focusable-element - whether the component contains a focusable element in the root
 /// @param {string} $ripple-target - the optional selector for the ripple element
 ///
-@mixin states-opacities($opacity-map: (), $has-nested-focusable-element: false, $ripple-target: "&", $query: feature-targeting-functions.all()) {
+@mixin states-opacities(
+  $opacity-map: (),
+  $has-nested-focusable-element: false,
+  $ripple-target: '&',
+  $query: feature-targeting-functions.all()
+) {
   // Ensure sufficient specificity to override base state opacities
   @if map.has-key($opacity-map, hover) {
-    @include states-hover-opacity(map.get($opacity-map, hover), $ripple-target: $ripple-target, $query: $query);
+    @include states-hover-opacity(
+      map.get($opacity-map, hover),
+      $ripple-target: $ripple-target,
+      $query: $query
+    );
   }
 
   @if map.has-key($opacity-map, focus) {
-    @include states-focus-opacity(map.get($opacity-map, focus), $ripple-target: $ripple-target, $has-nested-focusable-element: $has-nested-focusable-element, $query: $query);
+    @include states-focus-opacity(
+      map.get($opacity-map, focus),
+      $ripple-target: $ripple-target,
+      $has-nested-focusable-element: $has-nested-focusable-element,
+      $query: $query
+    );
   }
 
   @if map.has-key($opacity-map, press) {
-    @include states-press-opacity(map.get($opacity-map, press), $ripple-target: $ripple-target, $query: $query);
+    @include states-press-opacity(
+      map.get($opacity-map, press),
+      $ripple-target: $ripple-target,
+      $query: $query
+    );
   }
 }
 
 @mixin states-hover-opacity(
-  $opacity, $query: feature-targeting-functions.all(), $ripple-target: "&") {
+  $opacity,
+  $query: feature-targeting-functions.all(),
+  $ripple-target: '&'
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   // Background wash styles, for both CSS-only and upgraded stateful surfaces
@@ -234,8 +258,8 @@
   $opacity,
   $has-nested-focusable-element: false,
   $query: feature-targeting-functions.all(),
-  $ripple-target: "&") {
-
+  $ripple-target: '&'
+) {
   // Focus overrides hover by reusing the ::before pseudo-element.
   // :focus-within generally works on non-MS browsers and matches when a *child* of the element has focus.
   // It is useful for cases where a component has a focusable element within the root node, e.g. text field,
@@ -250,7 +274,9 @@
     &:not(.mdc-ripple-upgraded):focus-within {
       #{$ripple-target}::before {
         @include states-focus-opacity-properties_(
-          $opacity: $opacity, $query: $query);
+          $opacity: $opacity,
+          $query: $query
+        );
       }
     }
   } @else {
@@ -260,7 +286,9 @@
     &:not(.mdc-ripple-upgraded):focus {
       #{$ripple-target}::before {
         @include states-focus-opacity-properties_(
-          $opacity: $opacity, $query: $query);
+          $opacity: $opacity,
+          $query: $query
+        );
       }
     }
   }
@@ -281,7 +309,11 @@
   }
 }
 
-@mixin states-press-opacity($opacity, $query: feature-targeting-functions.all(), $ripple-target: "&") {
+@mixin states-press-opacity(
+  $opacity,
+  $query: feature-targeting-functions.all(),
+  $ripple-target: '&'
+) {
   $feat-animation: feature-targeting-functions.create-target($query, animation);
   $feat-color: feature-targeting-functions.create-target($query, color);
 
@@ -322,19 +354,24 @@
   $color: theme-variables.prop-value(on-surface),
   $has-nested-focusable-element: false,
   $query: feature-targeting-functions.all(),
-  $ripple-target: "&",
+  $ripple-target: '&'
 ) {
   @include states-interactions_(
     $color: $color,
     $has-nested-focusable-element: $has-nested-focusable-element,
     $query: $query,
-    $ripple-target: $ripple-target);
+    $ripple-target: $ripple-target
+  );
 }
 
 // Simple mixin for activated states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin states-activated(
-  $color, $has-nested-focusable-element: false, $query: feature-targeting-functions.all(), $ripple-target: "&") {
+  $color,
+  $has-nested-focusable-element: false,
+  $query: feature-targeting-functions.all(),
+  $ripple-target: '&'
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
   $activated-opacity: functions.states-opacity($color, activated);
 
@@ -353,7 +390,8 @@
       $has-nested-focusable-element: $has-nested-focusable-element,
       $opacity-modifier: $activated-opacity,
       $query: $query,
-      $ripple-target: $ripple-target);
+      $ripple-target: $ripple-target
+    );
   }
 }
 
@@ -363,7 +401,8 @@
   $color,
   $has-nested-focusable-element: false,
   $query: feature-targeting-functions.all(),
-  $ripple-target: "&") {
+  $ripple-target: '&'
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
   $selected-opacity: functions.states-opacity($color, selected);
 
@@ -381,12 +420,16 @@
       $has-nested-focusable-element: $has-nested-focusable-element,
       $opacity-modifier: $selected-opacity,
       $query: $query,
-      $ripple-target: $ripple-target);
+      $ripple-target: $ripple-target
+    );
   }
 }
 
 @mixin radius-bounded(
-  $radius: 100%, $query: feature-targeting-functions.all(), $ripple-target: "&") {
+  $radius: 100%,
+  $query: feature-targeting-functions.all(),
+  $ripple-target: '&'
+) {
   $feat-struture: feature-targeting-functions.create-target($query, structure);
 
   #{$ripple-target}::before,
@@ -411,7 +454,10 @@
 }
 
 @mixin radius-unbounded(
-  $radius: 100%, $query: feature-targeting-functions.all(), $ripple-target: "&") {
+  $radius: 100%,
+  $query: feature-targeting-functions.all(),
+  $ripple-target: '&'
+) {
   $feat-struture: feature-targeting-functions.create-target($query, structure);
 
   #{$ripple-target}::before,
@@ -451,7 +497,7 @@
   $has-nested-focusable-element,
   $opacity-modifier: 0,
   $query: feature-targeting-functions.all(),
-  $ripple-target: "&",
+  $ripple-target: '&'
 ) {
   @include target-selector($ripple-target) {
     @include states-base-color($color, $query);
@@ -463,12 +509,17 @@
     press: functions.states-opacity($color, press) + $opacity-modifier,
   );
 
-  @include states-opacities($opacity-map, $has-nested-focusable-element: $has-nested-focusable-element, $ripple-target: $ripple-target, $query: $query);
+  @include states-opacities(
+    $opacity-map,
+    $has-nested-focusable-element: $has-nested-focusable-element,
+    $ripple-target: $ripple-target,
+    $query: $query
+  );
 }
 
 // Wraps content in the `ripple-target` selector if it exists.
-@mixin target-selector($ripple-target: "&") {
-  @if $ripple-target == "&" {
+@mixin target-selector($ripple-target: '&') {
+  @if $ripple-target == '&' {
     @content;
   } @else {
     #{$ripple-target} {

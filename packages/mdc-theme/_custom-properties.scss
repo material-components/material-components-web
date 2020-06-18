@@ -144,7 +144,12 @@ $ie-fallback: true !default;
     #{$property}: #{$fallback} #{$important-rule};
 
     // add @alternate to annotations
-    $gss: map.merge($gss, (alternate: true));
+    $gss: map.merge(
+      $gss,
+      (
+        alternate: true,
+      )
+    );
   }
 
   @include gss.annotate($gss);

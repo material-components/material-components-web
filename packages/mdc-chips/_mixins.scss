@@ -42,7 +42,7 @@
 @use "@material/theme/variables" as theme-variables;
 @use "./trailingaction/mixins" as trailing-action-mixins;
 
-$ripple-target: ".mdc-chip__ripple";
+$ripple-target: '.mdc-chip__ripple';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   @include without-ripple($query: $query);
@@ -65,7 +65,10 @@ $ripple-target: ".mdc-chip__ripple";
   .mdc-chip {
     @include shape-radius(variables.$shape-radius, $query: $query);
     @include fill-color(variables.$fill-color-default, $query: $query);
-    @include ink-color-without-ripple_(variables.$ink-color-default, $query: $query);
+    @include ink-color-without-ripple_(
+      variables.$ink-color-default,
+      $query: $query
+    );
     @include typography-mixins.typography(body2, $query: $query);
     @include density($density-scale: 0, $query: $query);
     @include leading-icon-margin($query: $query);
@@ -139,12 +142,11 @@ $ripple-target: ".mdc-chip__ripple";
 
   .mdc-chip__checkmark-path {
     @include feature-targeting-mixins.targets($feat-animation) {
-      transition:
-        checkbox-functions.transition-exit(
-          stroke-dashoffset,
-          variables.$checkmark-animation-delay,
-          variables.$checkmark-animation-duration
-        );
+      transition: checkbox-functions.transition-exit(
+        stroke-dashoffset,
+        variables.$checkmark-animation-delay,
+        variables.$checkmark-animation-duration
+      );
     }
 
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -199,7 +201,8 @@ $ripple-target: ".mdc-chip__ripple";
     }
 
     @include feature-targeting-mixins.targets($feat-animation) {
-      transition: width variables.$width-animation-duration animation-variables.$standard-curve-timing-function;
+      transition: width variables.$width-animation-duration
+        animation-variables.$standard-curve-timing-function;
     }
   }
 
@@ -284,8 +287,14 @@ $ripple-target: ".mdc-chip__ripple";
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-chip {
-    @include ripple-mixins.surface($query: $query, $ripple-target: $ripple-target);
-    @include ripple-mixins.radius-bounded($query: $query, $ripple-target: $ripple-target);
+    @include ripple-mixins.surface(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+    @include ripple-mixins.radius-bounded(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
     @include ink-color-ripple_(variables.$ink-color-default, $query: $query);
 
     #{$ripple-target} {
@@ -311,8 +320,8 @@ $ripple-target: ".mdc-chip__ripple";
   @include feature-targeting-mixins.targets($feat-animation) {
     @keyframes mdc-chip-entry {
       from {
-        transform: scale(.8);
-        opacity: .4;
+        transform: scale(0.8);
+        opacity: 0.4;
       }
 
       to {
@@ -334,7 +343,8 @@ $ripple-target: ".mdc-chip__ripple";
 
   .mdc-chip-set--input .mdc-chip {
     @include feature-targeting-mixins.targets($feat-animation) {
-      animation: mdc-chip-entry 100ms animation-variables.$deceleration-curve-timing-function;
+      animation: mdc-chip-entry 100ms
+        animation-variables.$deceleration-curve-timing-function;
     }
   }
 }
@@ -343,8 +353,8 @@ $ripple-target: ".mdc-chip__ripple";
   $radius,
   $rtl-reflexive: false,
   $density-scale: variables.$density-scale,
-  $query: feature-targeting-functions.all()) {
-
+  $query: feature-targeting-functions.all()
+) {
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
@@ -355,7 +365,8 @@ $ripple-target: ".mdc-chip__ripple";
     $radius,
     $rtl-reflexive,
     $component-height: $height,
-    $query: $query);
+    $query: $query
+  );
 
   #{$ripple-target} {
     @include shape-mixins.radius(
@@ -367,12 +378,15 @@ $ripple-target: ".mdc-chip__ripple";
   }
 }
 
-@mixin fill-color-accessible($color, $query: feature-targeting-functions.all()) {
+@mixin fill-color-accessible(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $fill-tone: theme-functions.tone($color);
 
   @include fill-color($color, $query: $query);
 
-  @if ($fill-tone == "dark") {
+  @if ($fill-tone == 'dark') {
     @include ink-color(text-primary-on-dark, $query: $query);
     @include selected-ink-color(text-primary-on-dark, $query: $query);
     @include leading-icon-color(text-primary-on-dark, $query: $query);
@@ -413,7 +427,12 @@ $ripple-target: ".mdc-chip__ripple";
 }
 
 @mixin ink-color-ripple_($color, $query) {
-  @include ripple-mixins.states($color, true, $query: $query, $ripple-target: $ripple-target);
+  @include ripple-mixins.states(
+    $color,
+    true,
+    $query: $query,
+    $ripple-target: $ripple-target
+  );
 }
 
 @mixin selected-ink-color($color, $query: feature-targeting-functions.all()) {
@@ -448,7 +467,11 @@ $ripple-target: ".mdc-chip__ripple";
 @mixin selected-ink-color-ripple_($color, $query) {
   &.mdc-chip {
     @include ripple-mixins.states-selected(
-      $color, $has-nested-focusable-element: true, $query: $query, $ripple-target: $ripple-target);
+      $color,
+      $has-nested-focusable-element: true,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
   }
 }
 
@@ -456,7 +479,8 @@ $ripple-target: ".mdc-chip__ripple";
   $width: 1px,
   $style: solid,
   $color: theme-variables.prop-value(on-surface),
-  $query: feature-targeting-functions.all()) {
+  $query: feature-targeting-functions.all()
+) {
   @include outline-width($width, $query: $query);
   @include outline-style($style, $query: $query);
   @include outline-color($color, $query: $query);
@@ -478,7 +502,11 @@ $ripple-target: ".mdc-chip__ripple";
   }
 }
 
-@mixin outline-width($width, $horizontal-padding: variables.$horizontal-padding, $query: feature-targeting-functions.all()) {
+@mixin outline-width(
+  $width,
+  $horizontal-padding: variables.$horizontal-padding,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   // Note: Adjust padding to maintain consistent width with non-outlined chips
@@ -531,11 +559,17 @@ $ripple-target: ".mdc-chip__ripple";
 
   .mdc-chip--touch {
     @include touch-target-mixins.margin(
-      $component-height: variables.$height, $query: $query);
+      $component-height: variables.$height,
+      $query: $query
+    );
   }
 }
 
-@mixin leading-icon-color($color, $opacity: variables.$icon-opacity, $query: feature-targeting-functions.all()) {
+@mixin leading-icon-color(
+  $color,
+  $opacity: variables.$icon-opacity,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-chip__icon--leading {
@@ -550,7 +584,8 @@ $ripple-target: ".mdc-chip__ripple";
   $opacity: variables.$icon-opacity,
   $hover-opacity: variables.$trailing-icon-hover-opacity,
   $focus-opacity: variables.$trailing-icon-focus-opacity,
-  $query: feature-targeting-functions.all()) {
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   @include trailing-action-mixins.color($color, $query: $query);
@@ -607,13 +642,18 @@ $ripple-target: ".mdc-chip__ripple";
 @mixin leading-icon-margin(
   $left-margin: variables.$leading-icon-margin-left,
   $right-margin: variables.$leading-icon-margin-right,
-  $query: feature-targeting-functions.all()) {
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   &.mdc-chip--selected .mdc-chip__checkmark,
   .mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(margin, $left-margin, $right-margin);
+      @include rtl-mixins.reflexive-property(
+        margin,
+        $left-margin,
+        $right-margin
+      );
     }
   }
 }
@@ -621,15 +661,24 @@ $ripple-target: ".mdc-chip__ripple";
 @mixin trailing-icon-margin(
   $left-margin: variables.$trailing-icon-margin-left,
   $right-margin: variables.$trailing-icon-margin-right,
-  $query: feature-targeting-functions.all()) {
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include trailing-action-mixins.horizontal-spacing($left-margin, $right-margin, $query: $query);
+  @include trailing-action-mixins.horizontal-spacing(
+    $left-margin,
+    $right-margin,
+    $query: $query
+  );
 
   // TODO(b/151980552): Remove the following block
   .mdc-chip__icon--trailing {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(margin, $left-margin, $right-margin);
+      @include rtl-mixins.reflexive-property(
+        margin,
+        $left-margin,
+        $right-margin
+      );
     }
   }
 }
@@ -643,8 +692,7 @@ $ripple-target: ".mdc-chip__ripple";
 
   &.mdc-chip--exit {
     @include feature-targeting-mixins.targets($feat-animation) {
-      transition:
-        elevation-functions.transition-value(),
+      transition: elevation-functions.transition-value(),
         variables.$exit-transition;
     }
   }

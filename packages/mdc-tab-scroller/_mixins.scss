@@ -54,7 +54,8 @@
   .mdc-tab-scroller {
     @include transition(
       $duration-ms: variables.$transition-duration,
-      $query: $query);
+      $query: $query
+    );
 
     @include feature-targeting-mixins.targets($feat-structure) {
       overflow-y: hidden;

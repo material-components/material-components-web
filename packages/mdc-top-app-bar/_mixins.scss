@@ -57,13 +57,17 @@
 }
 
 @mixin short-shape-radius($radius, $rtl-reflexive: true) {
-  @if meta.type-of($radius) == "list" and list.length($radius) > 1 {
+  @if meta.type-of($radius) == 'list' and list.length($radius) > 1 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   }
 
   $radius: 0 0 $radius 0;
 
-  $selector: if(&, "&.mdc-top-app-bar--short-collapsed", ".mdc-top-app-bar--short-collapsed");
+  $selector: if(
+    &,
+    '&.mdc-top-app-bar--short-collapsed',
+    '.mdc-top-app-bar--short-collapsed'
+  );
 
   #{$selector} {
     @include shape-mixins.radius(
@@ -89,14 +93,20 @@
     }
 
     .mdc-top-app-bar--short {
-      transition: width 200ms animation-variables.$standard-curve-timing-function;
+      transition: width 200ms
+        animation-variables.$standard-curve-timing-function;
     }
 
     .mdc-top-app-bar--short-collapsed {
-      transition: width 250ms animation-variables.$standard-curve-timing-function;
+      transition: width 250ms
+        animation-variables.$standard-curve-timing-function;
 
       .mdc-top-app-bar__section--align-end {
-        @include rtl-mixins.reflexive-box(padding, right, variables.$short-collapsed-right-icon-padding);
+        @include rtl-mixins.reflexive-box(
+          padding,
+          right,
+          variables.$short-collapsed-right-icon-padding
+        );
       }
     }
 

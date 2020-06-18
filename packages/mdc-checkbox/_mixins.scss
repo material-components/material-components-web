@@ -38,7 +38,7 @@
 // Public
 //
 
-$ripple-target: ".mdc-checkbox__ripple";
+$ripple-target: '.mdc-checkbox__ripple';
 
 ///
 /// Checkbox core styles.
@@ -68,7 +68,10 @@ $ripple-target: ".mdc-checkbox__ripple";
       @include base_;
     }
 
-    @include focus-indicator-color(variables.$baseline-theme-color, $query: $query);
+    @include focus-indicator-color(
+      variables.$baseline-theme-color,
+      $query: $query
+    );
     @include density(variables.$density-scale, $query: $query);
   }
 
@@ -137,7 +140,8 @@ $ripple-target: ".mdc-checkbox__ripple";
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
   .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control[data-indeterminate="true"] ~ .mdc-checkbox__background {
+  .mdc-checkbox__native-control[data-indeterminate='true']
+    ~ .mdc-checkbox__background {
     @include feature-targeting-mixins.targets($feat-animation) {
       @include background--marked_;
     }
@@ -174,7 +178,8 @@ $ripple-target: ".mdc-checkbox__ripple";
     @include touch-target-mixins.margin(
       $component-height: variables.$ripple-size,
       $component-width: variables.$ripple-size,
-      $query: $query);
+      $query: $query
+    );
     @include touch-target(touch-target-variables.$height, $query: $query);
   }
 
@@ -190,7 +195,8 @@ $ripple-target: ".mdc-checkbox__ripple";
     }
   }
   .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control[data-indeterminate="true"] ~ .mdc-checkbox__background {
+  .mdc-checkbox__native-control[data-indeterminate='true']
+    ~ .mdc-checkbox__background {
     .mdc-checkbox__checkmark {
       @include checkmark--indeterminate_($query);
     }
@@ -213,9 +219,19 @@ $ripple-target: ".mdc-checkbox__ripple";
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-checkbox {
-    @include ripple-mixins.surface($query: $query, $ripple-target: $ripple-target);
-    @include ripple-mixins.states($color: on-surface, $query: $query, $ripple-target: $ripple-target);
-    @include ripple-mixins.radius-unbounded($query: $query, $ripple-target: $ripple-target);
+    @include ripple-mixins.surface(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+    @include ripple-mixins.states(
+      $color: on-surface,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+    @include ripple-mixins.radius-unbounded(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
   }
 
   #{$ripple-target} {
@@ -273,7 +289,11 @@ $ripple-target: ".mdc-checkbox__ripple";
     }
   }
 
-  @include touch-target($ripple-size, $ripple-size: $ripple-size, $query: $query);
+  @include touch-target(
+    $ripple-size,
+    $ripple-size: $ripple-size,
+    $query: $query
+  );
 }
 
 ///
@@ -297,11 +317,19 @@ $ripple-target: ".mdc-checkbox__ripple";
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   @include if-unmarked-enabled_ {
-    @include container-colors_($unmarked-stroke-color, $unmarked-fill-color, $query: $query);
+    @include container-colors_(
+      $unmarked-stroke-color,
+      $unmarked-fill-color,
+      $query: $query
+    );
   }
 
   @include if-marked-enabled_ {
-    @include container-colors_($marked-stroke-color, $marked-fill-color, $query: $query);
+    @include container-colors_(
+      $marked-stroke-color,
+      $marked-fill-color,
+      $query: $query
+    );
   }
 
   @if $generate-keyframes {
@@ -310,7 +338,7 @@ $ripple-target: ".mdc-checkbox__ripple";
       theme-functions.color-hash($unmarked-fill-color) +
       theme-functions.color-hash($marked-fill-color);
 
-    $anim-selector: if(&, "&.mdc-checkbox--anim", ".mdc-checkbox--anim");
+    $anim-selector: if(&, '&.mdc-checkbox--anim', '.mdc-checkbox--anim');
 
     @include feature-targeting-mixins.targets($feat-animation, $feat-color) {
       @include keyframes.container-keyframes_(
@@ -363,11 +391,19 @@ $ripple-target: ".mdc-checkbox__ripple";
   $query: feature-targeting-functions.all()
 ) {
   @include if-unmarked-disabled_ {
-    @include container-colors_($unmarked-stroke-color, $unmarked-fill-color, $query: $query);
+    @include container-colors_(
+      $unmarked-stroke-color,
+      $unmarked-fill-color,
+      $query: $query
+    );
   }
 
   @include if-marked-disabled_ {
-    @include container-colors_($marked-stroke-color, $marked-fill-color, $query: $query);
+    @include container-colors_(
+      $marked-stroke-color,
+      $marked-fill-color,
+      $query: $query
+    );
   }
 }
 
@@ -393,23 +429,36 @@ $ripple-target: ".mdc-checkbox__ripple";
   }
 }
 
-@mixin focus-indicator-color($color, $query: feature-targeting-functions.all()) {
+@mixin focus-indicator-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background::before,
-  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background::before,
-  .mdc-checkbox__native-control[data-indeterminate="true"] ~ .mdc-checkbox__background::before {
+  .mdc-checkbox__native-control:indeterminate
+    ~ .mdc-checkbox__background::before,
+  .mdc-checkbox__native-control[data-indeterminate='true']
+    ~ .mdc-checkbox__background::before {
     @include feature-targeting-mixins.targets($feat-color) {
       @include theme-mixins.prop(background-color, $color);
     }
   }
 
   &.mdc-checkbox--selected {
-    @include ripple-mixins.states($color: $color, $query: $query, $ripple-target: $ripple-target);
+    @include ripple-mixins.states(
+      $color: $color,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
   }
 
   &.mdc-ripple-upgraded--background-focused.mdc-checkbox--selected {
-    @include ripple-mixins.states-base-color($color: $color, $query: $query, $ripple-target: $ripple-target);
+    @include ripple-mixins.states-base-color(
+      $color: $color,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
   }
 }
 
@@ -423,7 +472,8 @@ $ripple-target: ".mdc-checkbox__ripple";
 @mixin touch-target(
   $size: variables.$ripple-size,
   $ripple-size: variables.$ripple-size,
-  $query: feature-targeting-functions.all()) {
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $offset: ($ripple-size - $size) / 2;
 
@@ -490,45 +540,52 @@ $ripple-target: ".mdc-checkbox__ripple";
       // Instead of delaying the animation, we simply multiply its length by 2 and begin the
       // animation at 50% in order to prevent a flash of styles applied to a checked checkmark
       // as the background is fading in before the animation begins.
-      animation: mdc-checkbox-unchecked-checked-checkmark-path variables.$transition-duration * 2 linear 0s;
+      animation: mdc-checkbox-unchecked-checked-checkmark-path
+        variables.$transition-duration * 2 linear 0s;
       transition: none;
     }
   }
 
   &-unchecked-indeterminate {
     .mdc-checkbox__mixedmark {
-      animation: mdc-checkbox-unchecked-indeterminate-mixedmark variables.$transition-duration linear 0s;
+      animation: mdc-checkbox-unchecked-indeterminate-mixedmark
+        variables.$transition-duration linear 0s;
       transition: none;
     }
   }
 
   &-checked-unchecked {
     .mdc-checkbox__checkmark-path {
-      animation: mdc-checkbox-checked-unchecked-checkmark-path variables.$transition-duration linear 0s;
+      animation: mdc-checkbox-checked-unchecked-checkmark-path
+        variables.$transition-duration linear 0s;
       transition: none;
     }
   }
 
   &-checked-indeterminate {
     .mdc-checkbox__checkmark {
-      animation: mdc-checkbox-checked-indeterminate-checkmark variables.$transition-duration linear 0s;
+      animation: mdc-checkbox-checked-indeterminate-checkmark
+        variables.$transition-duration linear 0s;
       transition: none;
     }
 
     .mdc-checkbox__mixedmark {
-      animation: mdc-checkbox-checked-indeterminate-mixedmark variables.$transition-duration linear 0s;
+      animation: mdc-checkbox-checked-indeterminate-mixedmark
+        variables.$transition-duration linear 0s;
       transition: none;
     }
   }
 
   &-indeterminate-checked {
     .mdc-checkbox__checkmark {
-      animation: mdc-checkbox-indeterminate-checked-checkmark $mdc-checkbox-indeterminate-change-duration_ linear 0s;
+      animation: mdc-checkbox-indeterminate-checked-checkmark
+        $mdc-checkbox-indeterminate-change-duration_ linear 0s;
       transition: none;
     }
 
     .mdc-checkbox__mixedmark {
-      animation: mdc-checkbox-indeterminate-checked-mixedmark $mdc-checkbox-indeterminate-change-duration_ linear 0s;
+      animation: mdc-checkbox-indeterminate-checked-mixedmark
+        $mdc-checkbox-indeterminate-change-duration_ linear 0s;
       transition: none;
     }
   }
@@ -536,8 +593,8 @@ $ripple-target: ".mdc-checkbox__ripple";
   &-indeterminate-unchecked {
     .mdc-checkbox__mixedmark {
       // stylelint-disable-next-line declaration-colon-space-after
-      animation:
-        mdc-checkbox-indeterminate-unchecked-mixedmark $mdc-checkbox-indeterminate-change-duration_ * .6 linear 0s;
+      animation: mdc-checkbox-indeterminate-unchecked-mixedmark
+        $mdc-checkbox-indeterminate-change-duration_ * 0.6 linear 0s;
       transition: none;
     }
   }
@@ -575,7 +632,8 @@ $ripple-target: ".mdc-checkbox__ripple";
 /// @access private
 ///
 @mixin if-unmarked-enabled_ {
-  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate):not([data-indeterminate="true"]) ~ {
+  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate):not([data-indeterminate='true'])
+    ~ {
     @content;
   }
 }
@@ -589,7 +647,8 @@ $ripple-target: ".mdc-checkbox__ripple";
   // Note: we must use `[disabled]` instead of `:disabled` below because Edge does not always recalculate the style
   // property when the `:disabled` pseudo-class is followed by a sibling combinator. See:
   // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
-  .mdc-checkbox__native-control[disabled]:not(:checked):not(:indeterminate):not([data-indeterminate="true"]) ~ {
+  .mdc-checkbox__native-control[disabled]:not(:checked):not(:indeterminate):not([data-indeterminate='true'])
+    ~ {
     @content;
   }
 }
@@ -602,7 +661,7 @@ $ripple-target: ".mdc-checkbox__ripple";
 @mixin if-marked-enabled_ {
   .mdc-checkbox__native-control:enabled:checked,
   .mdc-checkbox__native-control:enabled:indeterminate,
-  .mdc-checkbox__native-control[data-indeterminate="true"]:enabled {
+  .mdc-checkbox__native-control[data-indeterminate='true']:enabled {
     ~ {
       @content;
     }
@@ -620,7 +679,7 @@ $ripple-target: ".mdc-checkbox__ripple";
   // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
   .mdc-checkbox__native-control[disabled]:checked,
   .mdc-checkbox__native-control[disabled]:indeterminate,
-  .mdc-checkbox__native-control[data-indeterminate="true"][disabled] {
+  .mdc-checkbox__native-control[data-indeterminate='true'][disabled] {
     ~ {
       @content;
     }
@@ -655,15 +714,13 @@ $ripple-target: ".mdc-checkbox__ripple";
   }
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition:
-      functions.transition-exit(background-color),
+    transition: functions.transition-exit(background-color),
       functions.transition-exit(border-color);
   }
 }
 
 @mixin background--marked_ {
-  transition:
-    functions.transition-enter(border-color),
+  transition: functions.transition-enter(border-color),
     functions.transition-enter(background-color);
 }
 
@@ -673,7 +730,11 @@ $ripple-target: ".mdc-checkbox__ripple";
 /// `mdc-checkbox-if-unmarked-enabled_`.
 /// @access private
 ///
-@mixin container-colors_($stroke-color, $fill-color, $query: feature-targeting-functions.all()) {
+@mixin container-colors_(
+  $stroke-color,
+  $fill-color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-checkbox__background {
@@ -696,13 +757,12 @@ $ripple-target: ".mdc-checkbox__ripple";
     border-radius: 50%;
     opacity: 0;
     pointer-events: none;
-    content: "";
+    content: '';
     will-change: opacity, transform;
   }
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition:
-      functions.transition-exit(opacity),
+    transition: functions.transition-exit(opacity),
       functions.transition-exit(transform);
   }
 }
@@ -717,8 +777,7 @@ $ripple-target: ".mdc-checkbox__ripple";
   }
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition:
-      functions.transition-enter(opacity, 0ms, 80ms),
+    transition: functions.transition-enter(opacity, 0ms, 80ms),
       functions.transition-enter(transform, 0ms, 80ms);
   }
 }
@@ -750,7 +809,11 @@ $ripple-target: ".mdc-checkbox__ripple";
   }
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition: functions.transition-exit(opacity, 0ms, variables.$transition-duration * 2);
+    transition: functions.transition-exit(
+      opacity,
+      0ms,
+      variables.$transition-duration * 2
+    );
   }
 
   .mdc-checkbox--upgraded & {
@@ -765,9 +828,16 @@ $ripple-target: ".mdc-checkbox__ripple";
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition:
-      functions.transition-enter(opacity, 0ms, variables.$transition-duration * 2),
-      functions.transition-enter(transform, 0ms, variables.$transition-duration * 2);
+    transition: functions.transition-enter(
+        opacity,
+        0ms,
+        variables.$transition-duration * 2
+      ),
+      functions.transition-enter(
+        transform,
+        0ms,
+        variables.$transition-duration * 2
+      );
   }
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -785,8 +855,11 @@ $ripple-target: ".mdc-checkbox__ripple";
   }
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition:
-      functions.transition-exit(opacity, 0ms, variables.$transition-duration),
+    transition: functions.transition-exit(
+        opacity,
+        0ms,
+        variables.$transition-duration
+      ),
       functions.transition-exit(transform, 0ms, variables.$transition-duration);
   }
 }
@@ -822,7 +895,11 @@ $ripple-target: ".mdc-checkbox__ripple";
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition: functions.transition-exit(stroke-dashoffset, 0ms, variables.$transition-duration * 2);
+    transition: functions.transition-exit(
+      stroke-dashoffset,
+      0ms,
+      variables.$transition-duration * 2
+    );
   }
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -853,8 +930,7 @@ $ripple-target: ".mdc-checkbox__ripple";
   }
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition:
-      functions.transition-exit(opacity),
+    transition: functions.transition-exit(opacity),
       functions.transition-exit(transform);
   }
 }

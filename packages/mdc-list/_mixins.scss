@@ -49,10 +49,13 @@
 @mixin without-ripple($query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target($query, typography);
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
 
   $divider-color: if(
-    theme-functions.tone(theme-variables.$background) == "dark",
+    theme-functions.tone(theme-variables.$background) == 'dark',
     variables.$divider-color-on-dark-bg,
     variables.$divider-color-on-light-bg
   );
@@ -61,7 +64,10 @@
     @include base_($query);
   }
 
-  @include single-line-density(variables.$single-line-density-scale, $query: $query);
+  @include single-line-density(
+    variables.$single-line-density-scale,
+    $query: $query
+  );
   @include item-secondary-text-ink-color(text-secondary-on-background, $query);
   @include item-graphic-fill-color(transparent, $query);
   @include item-graphic-ink-color(text-icon-on-background, $query);
@@ -75,7 +81,7 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       padding-top: 4px;
       padding-bottom: 4px;
-      font-size: .812rem;
+      font-size: 0.812rem;
     }
   }
 
@@ -85,43 +91,64 @@
     }
 
     @include list-item-padding-variant(
-      variables.$textual-variant-config, $query);
+      variables.$textual-variant-config,
+      $query
+    );
     @include list-item-height-variant(
-      variables.$textual-variant-config, $query);
+      variables.$textual-variant-config,
+      $query
+    );
 
     .mdc-list--icon-list & {
       @include list-item-padding-variant(
-        variables.$icon-variant-config, $query);
-      @include list-item-height-variant(
-        variables.$icon-variant-config, $query);
+        variables.$icon-variant-config,
+        $query
+      );
+      @include list-item-height-variant(variables.$icon-variant-config, $query);
     }
 
     .mdc-list--avatar-list & {
       @include list-item-padding-variant(
-        variables.$avatar-variant-config, $query);
+        variables.$avatar-variant-config,
+        $query
+      );
       @include list-item-height-variant(
-        variables.$avatar-variant-config, $query);
+        variables.$avatar-variant-config,
+        $query
+      );
     }
 
     .mdc-list--thumbnail-list & {
       @include list-item-padding-variant(
-        variables.$thumbnail-variant-config, $query);
+        variables.$thumbnail-variant-config,
+        $query
+      );
       @include list-item-height-variant(
-        variables.$thumbnail-variant-config, $query);
+        variables.$thumbnail-variant-config,
+        $query
+      );
     }
 
     .mdc-list--image-list & {
       @include list-item-padding-variant(
-        variables.$image-variant-config, $query);
+        variables.$image-variant-config,
+        $query
+      );
       @include list-item-height-variant(
-        variables.$image-variant-config, $query);
+        variables.$image-variant-config,
+        $query
+      );
     }
 
     .mdc-list--video-list & {
       @include list-item-padding-variant(
-        variables.$video-variant-config, $query);
+        variables.$video-variant-config,
+        $query
+      );
       @include list-item-height-variant(
-        variables.$video-variant-config, $query);
+        variables.$video-variant-config,
+        $query
+      );
     }
   }
 
@@ -157,7 +184,9 @@
 
     .mdc-list--thumbnail-list & {
       @include graphic-size-variant(
-        variables.$thumbnail-variant-config, $query);
+        variables.$thumbnail-variant-config,
+        $query
+      );
     }
 
     .mdc-list--image-list & {
@@ -187,7 +216,7 @@
     // stylelint-enable selector-class-pattern
 
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(margin, auto, 0, ".mdc-list-item");
+      @include rtl-mixins.reflexive-property(margin, auto, 0, '.mdc-list-item');
     }
   }
 
@@ -273,9 +302,9 @@
       }
     }
 
-    &.mdc-list--video-list .mdc-list-item ,
-    &.mdc-list--image-list .mdc-list-item ,
-    &.mdc-list--thumbnail-list .mdc-list-item ,
+    &.mdc-list--video-list .mdc-list-item,
+    &.mdc-list--image-list .mdc-list-item,
+    &.mdc-list--thumbnail-list .mdc-list-item,
     &.mdc-list--avatar-list .mdc-list-item,
     &.mdc-list--icon-list .mdc-list-item {
       @include feature-targeting-mixins.targets($feat-structure) {
@@ -338,7 +367,10 @@
   // Items are fully inset using padding.
   .mdc-list-divider--padded {
     @include divider-inset-variant(
-      variables.$textual-variant-config, $use-padding: true, $query: $query);
+      variables.$textual-variant-config,
+      $use-padding: true,
+      $query: $query
+    );
   }
 
   // Deprecated. Use the specialized inset classes instead.
@@ -346,44 +378,61 @@
   // width.
   .mdc-list-divider--inset {
     @include divider-inset-variant(
-      variables.$avatar-variant-config, $trailing: false, $query: $query);
+      variables.$avatar-variant-config,
+      $trailing: false,
+      $query: $query
+    );
   }
 
   // Deprecated. Use the specialized inset classes instead.
   // Item's leading and trailing edges are inset to account for *avatar* width.
   .mdc-list-divider--inset.mdc-list-divider--padded {
     @include divider-inset-variant(
-      variables.$avatar-variant-config, $query: $query);
+      variables.$avatar-variant-config,
+      $query: $query
+    );
   }
 
   .mdc-list {
     @include divider-insets-variant(
-      variables.$textual-variant-config, $query: $query);
+      variables.$textual-variant-config,
+      $query: $query
+    );
   }
 
   .mdc-list--icon-list {
     @include divider-insets-variant(
-      variables.$icon-variant-config, $query: $query);
+      variables.$icon-variant-config,
+      $query: $query
+    );
   }
 
   .mdc-list--avatar-list {
     @include divider-insets-variant(
-      variables.$avatar-variant-config, $query: $query);
+      variables.$avatar-variant-config,
+      $query: $query
+    );
   }
 
   .mdc-list--thumbnail-list {
     @include divider-insets-variant(
-      variables.$thumbnail-variant-config, $query: $query);
+      variables.$thumbnail-variant-config,
+      $query: $query
+    );
   }
 
   .mdc-list--image-list {
     @include divider-insets-variant(
-      variables.$image-variant-config, $query: $query);
+      variables.$image-variant-config,
+      $query: $query
+    );
   }
 
   .mdc-list--video-list {
     @include divider-insets-variant(
-      variables.$video-variant-config, $query: $query);
+      variables.$video-variant-config,
+      $query: $query
+    );
   }
 
   .mdc-list-group {
@@ -397,7 +446,12 @@
 
   .mdc-list-group__subheader {
     $mdc-list-subheader-virtual-height: 3rem;
-    $mdc-list-subheader-leading: map.get(map.get(typography-variables.$styles, body1), line-height);
+    $mdc-list-subheader-leading: map.get(
+      map.get(typography-variables.$styles, body1),
+      line-height
+    );
+    // ignored for GSS space parsing issues
+    // prettier-ignore
     $mdc-list-subheader-margin: calc((#{$mdc-list-subheader-virtual-height} - #{$mdc-list-subheader-leading}) / 2);
 
     @include typography-mixins.typography(subtitle1, $query);
@@ -420,10 +474,24 @@
 
   // Set styles only for focus state on disabled list item.
   .mdc-list-item--disabled {
-    @include ripple-mixins.surface($ripple-target: variables.$ripple-target, $query: $query);
-    @include ripple-mixins.radius-bounded($ripple-target: variables.$ripple-target, $query: $query);
-    @include ripple-mixins.states-base-color(theme-variables.prop-value(on-surface), $ripple-target: variables.$ripple-target, $query: $query);
-    @include ripple-mixins.states-focus-opacity(ripple-functions.states-opacity(primary, focus), $ripple-target: variables.$ripple-target, $query: $query);
+    @include ripple-mixins.surface(
+      $ripple-target: variables.$ripple-target,
+      $query: $query
+    );
+    @include ripple-mixins.radius-bounded(
+      $ripple-target: variables.$ripple-target,
+      $query: $query
+    );
+    @include ripple-mixins.states-base-color(
+      theme-variables.prop-value(on-surface),
+      $ripple-target: variables.$ripple-target,
+      $query: $query
+    );
+    @include ripple-mixins.states-focus-opacity(
+      ripple-functions.states-opacity(primary, focus),
+      $ripple-target: variables.$ripple-target,
+      $query: $query
+    );
 
     #{variables.$ripple-target} {
       @include ripple-mixins.target-common($query: $query);
@@ -436,12 +504,18 @@
 ///
 @mixin ripple-states($color, $query: feature-targeting-functions.all()) {
   @include ripple-mixins.states(
-    $color: $color, $query: $query, $ripple-target: variables.$ripple-target);
+    $color: $color,
+    $query: $query,
+    $ripple-target: variables.$ripple-target
+  );
 }
 
 /// Sets the text color of the list item in selected or activated state.
 /// @param {color} $color - The desired text color.
-@mixin item-selected-text-color($color, $query: feature-targeting-functions.all()) {
+@mixin item-selected-text-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
   .mdc-list-item--selected,
@@ -451,7 +525,10 @@
   }
 }
 
-@mixin item-primary-text-ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin item-primary-text-ink-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
@@ -459,7 +536,10 @@
   }
 }
 
-@mixin item-secondary-text-ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin item-secondary-text-ink-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-item__secondary-text {
@@ -469,7 +549,10 @@
   }
 }
 
-@mixin item-graphic-fill-color($color, $query: feature-targeting-functions.all()) {
+@mixin item-graphic-fill-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-item__graphic {
@@ -479,7 +562,10 @@
   }
 }
 
-@mixin item-graphic-ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin item-graphic-ink-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-item__graphic {
@@ -514,8 +600,8 @@
   $radius,
   $rtl-reflexive: false,
   $density-scale: variables.$single-line-density-scale,
-  $query: feature-targeting-functions.all()) {
-
+  $query: feature-targeting-functions.all()
+) {
   $height: density-functions.prop-value(
     $density-config: variables.$single-line-density-config,
     $density-scale: $density-scale,
@@ -542,7 +628,10 @@
   }
 }
 
-@mixin group-subheader-ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin group-subheader-ink-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-group__subheader {
@@ -552,7 +641,10 @@
   }
 }
 
-@mixin item-disabled-text-opacity($opacity, $query: feature-targeting-functions.all()) {
+@mixin item-disabled-text-opacity(
+  $opacity,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-item--disabled .mdc-list-item__text {
@@ -562,7 +654,10 @@
   }
 }
 
-@mixin item-disabled-text-color($color, $query: feature-targeting-functions.all()) {
+@mixin item-disabled-text-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-list-item--disabled {
@@ -584,7 +679,9 @@
 /// @access public
 ///
 @mixin list-item-padding-variant(
-    $variant-config, $query: feature-targeting-functions.all()) {
+  $variant-config,
+  $query: feature-targeting-functions.all()
+) {
   $leading-padding: map.get($variant-config, leading-padding);
   @include list-item-padding($leading-padding, $query);
 }
@@ -597,12 +694,17 @@
 /// @access public
 ///
 @mixin list-item-padding(
-    $leading-padding, $query: feature-targeting-functions.all()) {
+  $leading-padding,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(
-        padding, $leading-padding, variables.$trailing-padding);
+    @include rtl-mixins.reflexive-property(
+      padding,
+      $leading-padding,
+      variables.$trailing-padding
+    );
   }
 }
 
@@ -614,7 +716,9 @@
 /// @access public
 ///
 @mixin list-item-height-variant(
-    $variant-config, $query: feature-targeting-functions.all()) {
+  $variant-config,
+  $query: feature-targeting-functions.all()
+) {
   $single-line-height: map.get($variant-config, single-line-height);
   @include list-item-height($single-line-height, $query);
 }
@@ -646,8 +750,7 @@
 
   @include feature-targeting-mixins.targets($feat-structure) {
     .mdc-list-item__graphic {
-      @include rtl-mixins.reflexive-box(
-        margin, right, $margin);
+      @include rtl-mixins.reflexive-box(margin, right, $margin);
     }
   }
 }
@@ -660,7 +763,9 @@
 /// @access public
 ///
 @mixin divider-insets-variant(
-    $variant-config, $query: feature-targeting-functions.all()) {
+  $variant-config,
+  $query: feature-targeting-functions.all()
+) {
   $leading-padding: map.get($variant-config, leading-padding);
   $text-offset: map.get($variant-config, text-offset);
   @include divider-insets($leading-padding, $text-offset, $query);
@@ -675,15 +780,26 @@
 /// @access public
 ///
 @mixin divider-insets(
-    $leading-padding, $text-offset, $query: feature-targeting-functions.all()) {
+  $leading-padding,
+  $text-offset,
+  $query: feature-targeting-functions.all()
+) {
   .mdc-list-divider--inset-leading {
     @include divider-inset(
-      $leading-padding, $text-offset, $trailing: false, $query: $query);
+      $leading-padding,
+      $text-offset,
+      $trailing: false,
+      $query: $query
+    );
   }
 
   .mdc-list-divider--inset-trailing {
     @include divider-inset(
-      $leading-padding, $text-offset, $leading: false, $query: $query);
+      $leading-padding,
+      $text-offset,
+      $leading: false,
+      $query: $query
+    );
   }
 
   .mdc-list-divider--inset-leading.mdc-list-divider--inset-trailing {
@@ -692,26 +808,41 @@
 
   .mdc-list-divider--inset-leading.mdc-list-divider--padding {
     @include divider-inset(
-      $leading-padding, $text-offset, $trailing: false, $use-padding: true,
-      $query: $query);
+      $leading-padding,
+      $text-offset,
+      $trailing: false,
+      $use-padding: true,
+      $query: $query
+    );
   }
 
   .mdc-list-divider--inset-leading.mdc-list-divider--inset-trailing.mdc-list-divider--inset-padding {
     @include divider-inset(
-      $leading-padding, $text-offset, $use-padding: true, $query: $query);
+      $leading-padding,
+      $text-offset,
+      $use-padding: true,
+      $query: $query
+    );
   }
 }
 
 // Sets the width and height of the graphic element using a variant config.
 @mixin graphic-size-variant(
-    $variant-config, $query: feature-targeting-functions.all()) {
+  $variant-config,
+  $query: feature-targeting-functions.all()
+) {
   $leading-padding: map.get($variant-config, leading-padding);
   $text-offset: map.get($variant-config, text-offset);
   $width: map.get(map.get($variant-config, graphic-size), width);
   $height: map.get(map.get($variant-config, graphic-size), height);
 
   @include graphic-size(
-    $leading-padding, $text-offset, $width, $height, $query);
+    $leading-padding,
+    $text-offset,
+    $width,
+    $height,
+    $query
+  );
 }
 
 // Sets the width and height of the graphic element, as well as calculates the
@@ -720,14 +851,19 @@
 // height isn't specified, the graphic is assumed to be square.
 // TODO(b/155397992): restructure to use symmetric margins.
 @mixin graphic-size(
-    $leading-padding, $text-offset, $width, $height,
-    $query: feature-targeting-functions.all()) {
+  $leading-padding,
+  $text-offset,
+  $width,
+  $height,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $margin-value: max(
-    $text-offset - $leading-padding - $width, $leading-padding);
+    $text-offset - $leading-padding - $width,
+    $leading-padding
+  );
   @include feature-targeting-mixins.targets($feat-structure) {
-    @include rtl-mixins.reflexive-box(
-      margin, right, $margin-value);
+    @include rtl-mixins.reflexive-box(margin, right, $margin-value);
     width: $width;
     height: $height;
   }
@@ -736,8 +872,12 @@
 // Deprecated. Supports legacy density styles.
 @mixin graphic-size-dense_($size, $query: feature-targeting-functions.all()) {
   @include graphic-size(
-    $leading-padding: 16px, $text-offset: 16px, $width: $size, $height: $size,
-    $query: $query);
+    $leading-padding: 16px,
+    $text-offset: 16px,
+    $width: $size,
+    $height: $size,
+    $query: $query
+  );
 }
 
 ///
@@ -751,22 +891,40 @@
 /// @access private
 ///
 @mixin divider-inset-variant(
-    $variant-config, $leading: true, $trailing: true, $use-padding: false,
-    $query: feature-targeting-functions.all()) {
+  $variant-config,
+  $leading: true,
+  $trailing: true,
+  $use-padding: false,
+  $query: feature-targeting-functions.all()
+) {
   $leading-padding: map.get($variant-config, leading-padding);
   $text-offset: map.get($variant-config, text-offset);
 
   @include divider-inset(
-    $leading-padding, $text-offset, $leading, $trailing, $use-padding, $query);
+    $leading-padding,
+    $text-offset,
+    $leading,
+    $trailing,
+    $use-padding,
+    $query
+  );
 }
 
 @mixin divider-inset(
-    $leading-padding, $text-offset, $leading: true, $trailing: true,
-    $use-padding: false, $query: feature-targeting-functions.all()) {
+  $leading-padding,
+  $text-offset,
+  $leading: true,
+  $trailing: true,
+  $use-padding: false,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $trailing-inset: if($trailing, variables.$trailing-padding, 0);
-  $leading-inset:
-    if($leading, if($use-padding, $leading-padding, $text-offset), 0);
+  $leading-inset: if(
+    $leading,
+    if($use-padding, $leading-padding, $text-offset),
+    0
+  );
 
   @include feature-targeting-mixins.targets($feat-structure) {
     @if $leading {
@@ -783,7 +941,10 @@
 ///
 /// @access public
 ///
-@mixin single-line-density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin single-line-density(
+  $density-scale,
+  $query: feature-targeting-functions.all()
+) {
   $height: density-functions.prop-value(
     $density-config: variables.$single-line-density-config,
     $density-scale: $density-scale,
@@ -817,7 +978,10 @@
 @mixin base_($query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target($query, typography);
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
 
   @include typography-mixins.typography(subtitle1, $query);
 
@@ -825,7 +989,10 @@
     // According to the mocks and stickersheet, the line-height is
     // adjusted to 24px for text content, same as for body1.
     /* @alternate */
-    line-height: map.get(map.get(typography-variables.$styles, body1), line-height);
+    line-height: map.get(
+      map.get(typography-variables.$styles, body1),
+      line-height
+    );
   }
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -856,11 +1023,32 @@
 
 // Ripple styles for an interactive list item (one that is enabled and inside an interactive list).
 @mixin item-interactive-ripple_($query: feature-targeting-functions.all()) {
-  @include ripple-mixins.surface($ripple-target: variables.$ripple-target, $query: $query);
-  @include ripple-mixins.radius-bounded($ripple-target: variables.$ripple-target, $query: $query);
-  @include ripple-mixins.states(theme-variables.prop-value(on-surface), false, $ripple-target: variables.$ripple-target, $query: $query);
-  @include ripple-mixins.states-activated(primary, false, $ripple-target: variables.$ripple-target, $query: $query);
-  @include ripple-mixins.states-selected(primary, false, $ripple-target: variables.$ripple-target, $query: $query);
+  @include ripple-mixins.surface(
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple-mixins.radius-bounded(
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple-mixins.states(
+    theme-variables.prop-value(on-surface),
+    false,
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple-mixins.states-activated(
+    primary,
+    false,
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple-mixins.states-selected(
+    primary,
+    false,
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
 
   #{variables.$ripple-target} {
     @include ripple-mixins.target-common($query: $query);

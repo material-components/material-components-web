@@ -82,8 +82,15 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
 
   .mdc-chip-trailing-action {
     @include ripple.surface($query: $query, $ripple-target: $ripple-target);
-    @include ripple.radius-unbounded($query: $query, $ripple-target: $ripple-target);
-    @include ripple.states(variables.$ripple-color, $query: $query, $ripple-target: $ripple-target);
+    @include ripple.radius-unbounded(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+    @include ripple.states(
+      variables.$ripple-color,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
 
     #{$ripple-target} {
       @include feature-mixins.targets($feat-structure) {

@@ -46,7 +46,10 @@
 
 // Creates a feature target from the given feature query and targeted feature.
 @function create-target($feature-query, $targeted-feature) {
-  $feature-target: (query: $feature-query, target: $targeted-feature);
+  $feature-target: (
+    query: $feature-query,
+    target: $targeted-feature,
+  );
   $valid: verify-target_($feature-target);
 
   @return $feature-target;
@@ -59,7 +62,10 @@
   $available-features: ();
 
   @each $target in $feature-targets {
-    $available-features: list.append($available-features, map.get($target, target));
+    $available-features: list.append(
+      $available-features,
+      map.get($target, target)
+    );
   }
 
   @return (
@@ -72,20 +78,14 @@
 @function all($feature-queries...) {
   $valid: verify-query_($feature-queries...);
 
-  @return (
-    op: all,
-    queries: $feature-queries
-  );
+  @return (op: all, queries: $feature-queries);
 }
 
 // Creates a feature query that is satisfied iff any of its sub-queries are satisfied.
 @function any($feature-queries...) {
   $valid: verify-query_($feature-queries...);
 
-  @return (
-    op: any,
-    queries: $feature-queries
-  );
+  @return (op: any, queries: $feature-queries);
 }
 
 // Creates a feature query that is satisfied iff its sub-query is not satisfied.
@@ -95,7 +95,7 @@
   @return (
     op: without,
     // NOTE: we need to use `append`, just putting parens around a single value doesn't make it a list in Sass.
-    queries: list.append((), $feature-query)
+      queries: list.append((), $feature-query)
   );
 }
 
@@ -112,7 +112,8 @@
 
     $targeted-feature: map.get($target, target);
     $feature-query: map.get($target, query);
-    $valid: verify-feature_($targeted-feature) and verify-query_($feature-query);
+    $valid: verify-feature_($targeted-feature) and
+      verify-query_($feature-query);
   }
 
   @return true;
@@ -128,7 +129,8 @@
     $sub-queries: map.get($feature-query, queries);
 
     @if $op == without {
-      @return not is-query-satisfied_(list.nth($sub-queries, 1), $available-features);
+      @return not
+        is-query-satisfied_(list.nth($sub-queries, 1), $available-features);
     }
 
     @if $op == any {

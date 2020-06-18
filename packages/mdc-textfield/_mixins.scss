@@ -107,7 +107,7 @@
   // Move label when text-field gets auto-filled in Chrome.
   .mdc-text-field__input:-webkit-autofill + .mdc-floating-label {
     @include feature-targeting-mixins.targets($feat-structure) {
-      transform: translateY(-50%) scale(.75);
+      transform: translateY(-50%) scale(0.75);
       cursor: auto;
     }
   }
@@ -302,8 +302,14 @@
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-text-field--filled {
-    @include ripple-mixins.surface($query: $query, $ripple-target: variables.$ripple-target);
-    @include ripple-mixins.radius-bounded($query: $query, $ripple-target: variables.$ripple-target);
+    @include ripple-mixins.surface(
+      $query: $query,
+      $ripple-target: variables.$ripple-target
+    );
+    @include ripple-mixins.radius-bounded(
+      $query: $query,
+      $ripple-target: variables.$ripple-target
+    );
   }
 
   #{variables.$ripple-target} {
@@ -319,14 +325,22 @@
 /// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
 ///     filled textfields at which to allow floating labels.
 ///
-@mixin density($density-scale, $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label, $query: feature-targeting-functions.all()) {
+@mixin density(
+  $density-scale,
+  $minimum-height-for-filled-label: variables.$minimum-height-for-filled-label,
+  $query: feature-targeting-functions.all()
+) {
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
 
-  @include height($height, $minimum-height-for-filled-label: $minimum-height-for-filled-label, $query: $query);
+  @include height(
+    $height,
+    $minimum-height-for-filled-label: $minimum-height-for-filled-label,
+    $query: $query
+  );
   // TODO(b/151839219): resize icons and adjust label position
   // @if $density-scale < 0 {
   //   @include icon-mixins.size(icon-variables.$dense-icon-size);
@@ -339,7 +353,10 @@
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
 ///
-@mixin outlined-density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin outlined-density(
+  $density-scale,
+  $query: feature-targeting-functions.all()
+) {
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
@@ -359,7 +376,10 @@
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
 ///
-@mixin outlined-with-leading-icon-density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin outlined-with-leading-icon-density(
+  $density-scale,
+  $query: feature-targeting-functions.all()
+) {
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
@@ -379,7 +399,10 @@
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
 ///
-@mixin filled-textarea-density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin filled-textarea-density(
+  $density-scale,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $textfield-height: density-functions.prop-value(
     $density-config: variables.$density-config,
@@ -417,7 +440,8 @@
 
       // Adjust the floating position and animation/keyframes of the floating
       // label by the new position of the resting label
-      $label-top-difference: variables.$textarea-outlined-label-top - $label-top;
+      $label-top-difference: variables.$textarea-outlined-label-top -
+        $label-top;
 
       // Floating label position
       @include floating-label-mixins.float-position(
@@ -426,7 +450,10 @@
       );
 
       // Floating label animation
-      @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
+      @include floating-label-mixins.shake-animation(
+        $keyframe-suffix,
+        $query: $query
+      );
       @at-root {
         @include floating-label-mixins.shake-keyframes(
           $keyframe-suffix,
@@ -494,7 +521,10 @@
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
 ///
-@mixin outlined-textarea-density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin outlined-textarea-density(
+  $density-scale,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $keyframe-suffix: text-field-outlined-#{$density-scale};
   $label-top: density-functions.prop-value(
@@ -533,7 +563,10 @@
     );
 
     // Floating label animation
-    @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
+    @include floating-label-mixins.shake-animation(
+      $keyframe-suffix,
+      $query: $query
+    );
     @at-root {
       @include floating-label-mixins.shake-keyframes(
         $keyframe-suffix,
@@ -580,7 +613,11 @@
 /// @param {Number} $rows - The minimum number of rows for a textarea.
 /// @param {Number} $line-height - The line-height of the textarea.
 ///
-@mixin textarea-min-rows($rows, $line-height: variables.$textarea-line-height, $query: feature-targeting-functions.all()) {
+@mixin textarea-min-rows(
+  $rows,
+  $line-height: variables.$textarea-line-height,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-text-field__input {
@@ -630,12 +667,22 @@
   $positionY: variables.get-outlined-label-position-y($height);
 
   // Floating label position
-  @include notched-outline-mixins.floating-label-float-position-absolute($positionY, $query: $query);
+  @include notched-outline-mixins.floating-label-float-position-absolute(
+    $positionY,
+    $query: $query
+  );
 
   // Floating label animation
-  @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
+  @include floating-label-mixins.shake-animation(
+    $keyframe-suffix,
+    $query: $query
+  );
   @at-root {
-    @include floating-label-mixins.shake-keyframes($keyframe-suffix, $positionY, $query: $query);
+    @include floating-label-mixins.shake-keyframes(
+      $keyframe-suffix,
+      $positionY,
+      $query: $query
+    );
   }
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -662,7 +709,11 @@
   // already to two selectors (outlined + with-leading-icon). To override
   // them with a new label position and animation, another selector is needed.
   &.mdc-text-field--outlined {
-    @include _outlined-with-leading-icon-floating-label-position-animation($height, $keyframe-suffix, $query);
+    @include _outlined-with-leading-icon-floating-label-position-animation(
+      $height,
+      $keyframe-suffix,
+      $query
+    );
   }
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -689,7 +740,10 @@
   );
 
   // Floating label animation
-  @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
+  @include floating-label-mixins.shake-animation(
+    $keyframe-suffix,
+    $query: $query
+  );
   @at-root {
     @include floating-label-mixins.shake-keyframes(
       $keyframe-suffix,
@@ -701,7 +755,10 @@
 
   $keyframe-suffix-rtl: #{$keyframe-suffix}-rtl;
   @include rtl-mixins.rtl {
-    @include floating-label-mixins.shake-animation($keyframe-suffix, $query: $query);
+    @include floating-label-mixins.shake-animation(
+      $keyframe-suffix,
+      $query: $query
+    );
   }
   @at-root {
     @include floating-label-mixins.shake-keyframes(
@@ -725,7 +782,8 @@
   $radius,
   $density-scale: variables.$density-scale,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()) {
+  $query: feature-targeting-functions.all()
+) {
   @if list.length($radius) > 2 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   }
@@ -745,8 +803,16 @@
   );
 }
 
-@mixin textarea-shape-radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
-  @include notched-outline-mixins.shape-radius($radius, $rtl-reflexive, $query: $query);
+@mixin textarea-shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting-functions.all()
+) {
+  @include notched-outline-mixins.shape-radius(
+    $radius,
+    $rtl-reflexive,
+    $query: $query
+  );
 }
 
 ///
@@ -783,7 +849,10 @@
 /// Customizes the color of the placeholder in a disabled text field.
 /// @param {Color} $color - The desired placeholder text color.
 ///
-@mixin disabled-placeholder-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-placeholder-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   @include if-disabled_ {
     @include placeholder-color_($color, $query: $query);
   }
@@ -823,7 +892,10 @@
 /// Customizes the disabled text field bottom line color for the filled variant.
 /// @param {Color} $color - The desired bottom line color.
 ///
-@mixin disabled-bottom-line-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-bottom-line-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   @include if-disabled_ {
     @include bottom-line-color_($color, $query: $query);
   }
@@ -833,7 +905,10 @@
 /// Customizes the hover text field bottom line color for the filled variant.
 /// @param {Color} $color - The desired bottom line color.
 ///
-@mixin hover-bottom-line-color($color, $query: feature-targeting-functions.all()) {
+@mixin hover-bottom-line-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   @include if-enabled_ {
     @include hover-bottom-line-color_($color, $query: $query);
   }
@@ -893,7 +968,10 @@
 /// Customizes the outline border color when the text field or textarea is focused.
 /// @param {Color} $color - The desired outline border color.
 ///
-@mixin focused-outline-color($color, $query: feature-targeting-functions.all()) {
+@mixin focused-outline-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   @include if-enabled_ {
     @include focused-outline-color_($color, $query: $query);
   }
@@ -903,7 +981,10 @@
 /// Customizes the outline border color when the text field or textarea is disabled.
 /// @param {Color} $color - The desired outline border color.
 ///
-@mixin disabled-outline-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-outline-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   @include if-disabled_ {
     @include notched-outline-mixins.color($color, $query: $query);
   }
@@ -937,7 +1018,10 @@
 /// Customizes the color of the prefix text for a disabled text field.
 /// @param {Color} $color - The desired prefix text color.
 ///
-@mixin disabled-prefix-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-prefix-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   @include if-disabled_ {
     @include _prefix-color($color, $query: $query);
   }
@@ -957,7 +1041,10 @@
 /// Customizes the color of the suffix text for a disabled text field.
 /// @param {Color} $color - The desired suffix text color.
 ///
-@mixin disabled-suffix-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-suffix-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   @include if-disabled_ {
     @include _suffix-color($color, $query: $query);
   }
@@ -975,7 +1062,8 @@
   $radius,
   $density-scale: variables.$density-scale,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()) {
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
@@ -983,7 +1071,13 @@
     $property-name: height,
   );
 
-  $resolved-radius: list.nth(shape-functions.resolve-percentage-radius($height, shape-functions.prop-value($radius)), 1);
+  $resolved-radius: list.nth(
+    shape-functions.resolve-percentage-radius(
+      $height,
+      shape-functions.prop-value($radius)
+    ),
+    1
+  );
 
   @if (list.length(shape-functions.prop-value($radius)) > 1) {
     // stylelint-disable max-line-length
@@ -992,17 +1086,29 @@
   }
 
   .mdc-notched-outline {
-    @include notched-outline-mixins.shape-radius($resolved-radius, $rtl-reflexive, $query: $query);
+    @include notched-outline-mixins.shape-radius(
+      $resolved-radius,
+      $rtl-reflexive,
+      $query: $query
+    );
   }
 
   @if ($resolved-radius > notched-outline-variables.$leading-width) {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, $resolved-radius + notched-outline-variables.$padding, 0);
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $resolved-radius + notched-outline-variables.$padding,
+        0
+      );
     }
 
     + .mdc-text-field-helper-line {
       @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(padding, $resolved-radius + notched-outline-variables.$padding, $resolved-radius);
+        @include rtl-mixins.reflexive-property(
+          padding,
+          $resolved-radius + notched-outline-variables.$padding,
+          $resolved-radius
+        );
       }
     }
   }
@@ -1014,9 +1120,17 @@
 /// @param {Number} $duration-ms - Duration (in ms) of the animation.
 /// @param {String} $timing-function - Optionally overrides the default animation timing function.
 ///
-@mixin floating-label-float-transition($duration-ms, $timing-function: null, $query: feature-targeting-functions.all()) {
+@mixin floating-label-float-transition(
+  $duration-ms,
+  $timing-function: null,
+  $query: feature-targeting-functions.all()
+) {
   .mdc-floating-label {
-    @include floating-label-mixins.float-transition($duration-ms, $timing-function, $query: $query);
+    @include floating-label-mixins.float-transition(
+      $duration-ms,
+      $timing-function,
+      $query: $query
+    );
   }
 }
 
@@ -1034,10 +1148,22 @@
   @include ink-color(variables.$ink-color, $query: $query);
   @include placeholder-color(variables.$placeholder-ink-color, $query: $query);
   @include caret-color(primary, $query: $query);
-  @include helper-text-mixins.helper-text-color(variables.$helper-text-color, $query: $query);
-  @include character-counter-mixins.character-counter-color(variables.$helper-text-color, $query: $query);
-  @include icon-mixins.leading-icon-color(variables.$icon-color, $query: $query);
-  @include icon-mixins.trailing-icon-color(variables.$icon-color, $query: $query);
+  @include helper-text-mixins.helper-text-color(
+    variables.$helper-text-color,
+    $query: $query
+  );
+  @include character-counter-mixins.character-counter-color(
+    variables.$helper-text-color,
+    $query: $query
+  );
+  @include icon-mixins.leading-icon-color(
+    variables.$icon-color,
+    $query: $query
+  );
+  @include icon-mixins.trailing-icon-color(
+    variables.$icon-color,
+    $query: $query
+  );
   @include prefix-color(variables.$affix-color, $query: $query);
   @include suffix-color(variables.$affix-color, $query: $query);
 
@@ -1164,15 +1290,33 @@
 
 @mixin _filled($query: feature-targeting-functions.all()) {
   // Text Field intentionally omits press ripple, so each state needs to be specified individually.
-  @include ripple-mixins.states-base-color(variables.$ink-color, $query: $query, $ripple-target: variables.$ripple-target);
-  @include ripple-mixins.states-hover-opacity(ripple-functions.states-opacity(variables.$ink-color, hover), $query: $query, $ripple-target: variables.$ripple-target);
-  @include ripple-mixins.states-focus-opacity(ripple-functions.states-opacity(variables.$ink-color, focus), $query: $query, $ripple-target: variables.$ripple-target);
+  @include ripple-mixins.states-base-color(
+    variables.$ink-color,
+    $query: $query,
+    $ripple-target: variables.$ripple-target
+  );
+  @include ripple-mixins.states-hover-opacity(
+    ripple-functions.states-opacity(variables.$ink-color, hover),
+    $query: $query,
+    $ripple-target: variables.$ripple-target
+  );
+  @include ripple-mixins.states-focus-opacity(
+    ripple-functions.states-opacity(variables.$ink-color, focus),
+    $query: $query,
+    $ripple-target: variables.$ripple-target
+  );
 
   @include height(variables.$height, $query: $query);
-  @include typography-mixins.baseline-top(variables.$filled-baseline-top, $query: $query);
+  @include typography-mixins.baseline-top(
+    variables.$filled-baseline-top,
+    $query: $query
+  );
   @include fill-color(variables.$background, $query: $query);
   @include bottom-line-color(variables.$bottom-line-idle, $query: $query);
-  @include hover-bottom-line-color(variables.$bottom-line-hover, $query: $query);
+  @include hover-bottom-line-color(
+    variables.$bottom-line-hover,
+    $query: $query
+  );
   @include line-ripple-color_(primary, $query: $query);
   @include _filled-floating-label($query);
 }
@@ -1186,7 +1330,10 @@
     }
   }
 
-  @include floating-label-mixins.float-position(variables.$label-position-y, $query: $query);
+  @include floating-label-mixins.float-position(
+    variables.$label-position-y,
+    $query: $query
+  );
 }
 
 // Filled variant with no label. This variant centers the text elements and
@@ -1220,11 +1367,21 @@
   );
   @include _baseline-center-aligned($query: $query);
   @include outline-color(variables.$outlined-idle-border, $query: $query);
-  @include hover-outline-color(variables.$outlined-hover-border, $query: $query);
+  @include hover-outline-color(
+    variables.$outlined-hover-border,
+    $query: $query
+  );
   @include focused-outline-color(primary, $query: $query);
   @include outline-shape-radius(small, $query: $query);
-  @include notched-outline-mixins.notch-offset(notched-outline-variables.$border-width, $query: $query);
-  @include ripple-mixins.states-base-color(transparent, $query: $query, $ripple-target: variables.$ripple-target);
+  @include notched-outline-mixins.notch-offset(
+    notched-outline-variables.$border-width,
+    $query: $query
+  );
+  @include ripple-mixins.states-base-color(
+    transparent,
+    $query: $query,
+    $ripple-target: variables.$ripple-target
+  );
   @include _outlined-floating-label($query);
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -1246,7 +1403,10 @@
 
   .mdc-floating-label {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, notched-outline-variables.$padding);
+      @include rtl-mixins.reflexive-position(
+        left,
+        notched-outline-variables.$padding
+      );
     }
   }
 }
@@ -1257,24 +1417,45 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include ink-color_(variables.$disabled-ink-color, $query: $query);
-  @include placeholder-color_(variables.$disabled-placeholder-ink-color, $query: $query);
+  @include placeholder-color_(
+    variables.$disabled-placeholder-ink-color,
+    $query: $query
+  );
   @include label-ink-color_(variables.$disabled-label-color, $query: $query);
-  @include helper-text-mixins.helper-text-color_(variables.$disabled-helper-text-color, $query: $query);
-  @include character-counter-mixins.character-counter-color_(variables.$disabled-helper-text-color, $query: $query);
-  @include icon-mixins.leading-icon-color_(variables.$disabled-icon, $query: $query);
-  @include icon-mixins.trailing-icon-color_(variables.$disabled-icon, $query: $query);
+  @include helper-text-mixins.helper-text-color_(
+    variables.$disabled-helper-text-color,
+    $query: $query
+  );
+  @include character-counter-mixins.character-counter-color_(
+    variables.$disabled-helper-text-color,
+    $query: $query
+  );
+  @include icon-mixins.leading-icon-color_(
+    variables.$disabled-icon,
+    $query: $query
+  );
+  @include icon-mixins.trailing-icon-color_(
+    variables.$disabled-icon,
+    $query: $query
+  );
   @include _prefix-color(variables.$disabled-affix-color, $query: $query);
   @include _suffix-color(variables.$disabled-affix-color, $query: $query);
 
   // Mixins that are ok to include since they target variant-specific elements
   @include bottom-line-color_(variables.$disabled-border, $query: $query);
-  @include notched-outline-mixins.color(variables.$outlined-disabled-border, $query: $query);
+  @include notched-outline-mixins.color(
+    variables.$outlined-disabled-border,
+    $query: $query
+  );
 
   @media screen and (-ms-high-contrast: active) {
     @include placeholder-color_(GrayText, $query: $query);
     @include label-ink-color_(GrayText, $query: $query);
     @include helper-text-mixins.helper-text-color_(GrayText, $query: $query);
-    @include character-counter-mixins.character-counter-color_(GrayText, $query: $query);
+    @include character-counter-mixins.character-counter-color_(
+      GrayText,
+      $query: $query
+    );
     @include icon-mixins.leading-icon-color_(GrayText, $query: $query);
     @include icon-mixins.trailing-icon-color_(GrayText, $query: $query);
     @include _prefix-color(GrayText, $query: $query);
@@ -1326,7 +1507,10 @@
   @include hover-bottom-line-color(variables.$error, $query: $query);
   @include line-ripple-color(variables.$error, $query: $query);
   @include label-color(variables.$error, $query: $query);
-  @include helper-text-mixins.helper-text-validation-color(variables.$error, $query: $query);
+  @include helper-text-mixins.helper-text-validation-color(
+    variables.$error,
+    $query: $query
+  );
   @include caret-color(variables.$error, $query: $query);
   @include icon-mixins.trailing-icon-color(variables.$error, $query: $query);
 
@@ -1349,9 +1533,13 @@
   @include label-color(variables.$focused-label-color, $query: $query);
 
   // Mixins that are ok to include since they target variant-specific elements
-  @include notched-outline-mixins.stroke-width(variables.$outlined-stroke-width, $query: $query);
+  @include notched-outline-mixins.stroke-width(
+    variables.$outlined-stroke-width,
+    $query: $query
+  );
 
-  + .mdc-text-field-helper-line .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
+  + .mdc-text-field-helper-line
+    .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
     @include feature-targeting-mixins.targets($feat-structure) {
       opacity: 1;
     }
@@ -1359,7 +1547,10 @@
 }
 
 @mixin _focused-outlined($query: feature-targeting-functions.all()) {
-  @include notched-outline-mixins.notch-offset(variables.$outlined-stroke-width, $query: $query);
+  @include notched-outline-mixins.notch-offset(
+    variables.$outlined-stroke-width,
+    $query: $query
+  );
 }
 
 @mixin _focused-outlined-textarea($query: feature-targeting-functions.all()) {
@@ -1371,7 +1562,8 @@
 @mixin with-leading-icon_($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
+  $icon-padding: icon-variables.$leading-icon-padding-left +
+    icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
 
   .mdc-floating-label {
     @include _truncate-floating-label-max-width($icon-padding, $query: $query);
@@ -1383,25 +1575,37 @@
   $truncation: $icon-padding + variables.$padding-horizontal;
 
   .mdc-floating-label--float-above {
-    @include _truncate-floating-label-floated-max-width($truncation, $query: $query);
+    @include _truncate-floating-label-floated-max-width(
+      $truncation,
+      $query: $query
+    );
   }
 }
 
 @mixin _with-trailing-icon($query: feature-targeting-functions.all()) {
-  $truncation: icon-variables.$trailing-icon-padding-left + icon-variables.$icon-size + icon-variables.$trailing-icon-padding-right + variables.$label-offset;
+  $truncation: icon-variables.$trailing-icon-padding-left +
+    icon-variables.$icon-size + icon-variables.$trailing-icon-padding-right +
+    variables.$label-offset;
 
   .mdc-floating-label {
     @include _truncate-floating-label-max-width($truncation, $query: $query);
   }
 
   .mdc-floating-label--float-above {
-    @include _truncate-floating-label-floated-max-width($truncation, $query: $query);
+    @include _truncate-floating-label-floated-max-width(
+      $truncation,
+      $query: $query
+    );
   }
 }
 
-@mixin _with-leading-and-trailing-icon($query: feature-targeting-functions.all()) {
-  $leading-icon: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
-  $trailing-icon: icon-variables.$trailing-icon-padding-left + icon-variables.$icon-size + icon-variables.$trailing-icon-padding-right;
+@mixin _with-leading-and-trailing-icon(
+  $query: feature-targeting-functions.all()
+) {
+  $leading-icon: icon-variables.$leading-icon-padding-left +
+    icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
+  $trailing-icon: icon-variables.$trailing-icon-padding-left +
+    icon-variables.$icon-size + icon-variables.$trailing-icon-padding-right;
   $truncation: $leading-icon + $trailing-icon;
 
   .mdc-floating-label {
@@ -1409,7 +1613,10 @@
   }
 
   .mdc-floating-label--float-above {
-    @include _truncate-floating-label-floated-max-width($truncation, $query: $query);
+    @include _truncate-floating-label-floated-max-width(
+      $truncation,
+      $query: $query
+    );
   }
 }
 
@@ -1417,7 +1624,8 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   // Resting label position
-  $icon-padding: icon-variables.$leading-icon-padding-left + icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
+  $icon-padding: icon-variables.$leading-icon-padding-left +
+    icon-variables.$icon-size + icon-variables.$leading-icon-padding-right;
   $left-spacing: $icon-padding - notched-outline-variables.$leading-width;
 
   .mdc-floating-label {
@@ -1428,7 +1636,10 @@
 
   // Notch width
   $notch-truncation: $icon-padding + notched-outline-variables.$leading-width;
-  @include _truncate-notched-outline-max-width($notch-truncation, $query: $query);
+  @include _truncate-notched-outline-max-width(
+    $notch-truncation,
+    $query: $query
+  );
 
   // Floating label position and animation
   @include _outlined-with-leading-icon-floating-label-position-animation(
@@ -1443,11 +1654,15 @@
 ///
 @mixin _outlined-with-trailing-icon($query: feature-targeting-functions.all()) {
   // Resting label position
-  $icon-padding: icon-variables.$trailing-icon-padding-left + icon-variables.$icon-size + icon-variables.$trailing-icon-padding-right;
+  $icon-padding: icon-variables.$trailing-icon-padding-left +
+    icon-variables.$icon-size + icon-variables.$trailing-icon-padding-right;
   // Notch width
   $notch-truncation: $icon-padding + notched-outline-variables.$leading-width;
 
-  @include _truncate-notched-outline-max-width($notch-truncation, $query: $query);
+  @include _truncate-notched-outline-max-width(
+    $notch-truncation,
+    $query: $query
+  );
 }
 
 ///
@@ -1455,8 +1670,14 @@
 ///
 /// @param {Number} $truncation - Amount to truncate the notched outline max-width
 ///
-@mixin _truncate-notched-outline-max-width($truncation, $query: feature-targeting-functions.all()) {
-  @include notched-outline-mixins.notch-max-width(calc(100% - #{$truncation}), $query: $query);
+@mixin _truncate-notched-outline-max-width(
+  $truncation,
+  $query: feature-targeting-functions.all()
+) {
+  @include notched-outline-mixins.notch-max-width(
+    calc(100% - #{$truncation}),
+    $query: $query
+  );
 }
 
 ///
@@ -1464,8 +1685,14 @@
 ///
 /// @param {Number} $truncation - Amount to truncate the floating label max-width
 ///
-@mixin _truncate-floating-label-max-width($truncation, $query: feature-targeting-functions.all()) {
-  @include floating-label-mixins.max-width(calc(100% - #{$truncation}), $query: $query);
+@mixin _truncate-floating-label-max-width(
+  $truncation,
+  $query: feature-targeting-functions.all()
+) {
+  @include floating-label-mixins.max-width(
+    calc(100% - #{$truncation}),
+    $query: $query
+  );
 }
 
 ///
@@ -1473,9 +1700,15 @@
 ///
 /// @param {Number} $truncation - Amount to truncate the floating label max-width
 ///
-@mixin _truncate-floating-label-floated-max-width($truncation, $query: feature-targeting-functions.all()) {
+@mixin _truncate-floating-label-floated-max-width(
+  $truncation,
+  $query: feature-targeting-functions.all()
+) {
   $scale: floating-label-variables.$float-scale;
-  @include floating-label-mixins.max-width(calc(100% / #{$scale} - #{$truncation} / #{$scale}), $query: $query);
+  @include floating-label-mixins.max-width(
+    calc(100% / #{$scale} - #{$truncation} / #{$scale}),
+    $query: $query
+  );
 }
 
 // Full Width
@@ -1483,7 +1716,10 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include bottom-line-color(variables.$bottom-line-idle, $query: $query);
-  @include disabled-bottom-line-color(variables.$bottom-line-idle, $query: $query);
+  @include disabled-bottom-line-color(
+    variables.$bottom-line-idle,
+    $query: $query
+  );
 
   @include feature-targeting-mixins.targets($feat-structure) {
     padding: 0;
@@ -1492,7 +1728,11 @@
 
   &:not(.mdc-text-field--textarea) {
     @include _filled-no-label($query);
-    @include ripple-mixins.states-base-color(transparent, $query: $query, $ripple-target: variables.$ripple-target);
+    @include ripple-mixins.states-base-color(
+      transparent,
+      $query: $query,
+      $ripple-target: variables.$ripple-target
+    );
     @include fill-color(transparent, $query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -1573,7 +1813,9 @@
   }
 }
 
-@mixin _textarea-filled-resizer-children($query: feature-targeting-functions.all()) {
+@mixin _textarea-filled-resizer-children(
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   // See above. After shifting the resize wrapper element, all of its children
   // should be shifted in the opposite direction (down) to compensate.
@@ -1604,7 +1846,9 @@
   }
 }
 
-@mixin _textarea-outlined-resizer-children($query: feature-targeting-functions.all()) {
+@mixin _textarea-outlined-resizer-children(
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   // See above. After shifting the resize wrapper element, all of its children
   // should be shifted in the opposite direction (right and down) to compensate.
@@ -1641,7 +1885,10 @@
 
 @mixin _textarea-input($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target($query, typography);
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
 
   @include feature-targeting-mixins.targets($feat-structure) {
     flex-grow: 1;
@@ -1664,7 +1911,10 @@
 @mixin _textarea-internal-counter($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include typography-mixins.baseline-bottom(variables.$textarea-internal-counter-baseline-bottom, $query: $query);
+  @include typography-mixins.baseline-bottom(
+    variables.$textarea-internal-counter-baseline-bottom,
+    $query: $query
+  );
   @include feature-targeting-mixins.targets($feat-structure) {
     align-self: flex-end;
     // Needed since padding is on the textarea and not the container
@@ -1677,7 +1927,9 @@
   }
 }
 
-@mixin _textarea-input-with-internal-counter($query: feature-targeting-functions.all()) {
+@mixin _textarea-input-with-internal-counter(
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -1697,10 +1949,16 @@
   }
 
   // Floating label position
-  @include floating-label-mixins.float-position(variables.$textarea-filled-label-position-y, $query: $query);
+  @include floating-label-mixins.float-position(
+    variables.$textarea-filled-label-position-y,
+    $query: $query
+  );
 
   // Floating label animation
-  @include floating-label-mixins.shake-animation(textarea-filled, $query: $query);
+  @include floating-label-mixins.shake-animation(
+    textarea-filled,
+    $query: $query
+  );
   @at-root {
     @include floating-label-mixins.shake-keyframes(
       textarea-filled,
@@ -1720,7 +1978,9 @@
   }
 }
 
-@mixin _textarea-filled-no-label-input($query: feature-targeting-functions.all()) {
+@mixin _textarea-filled-no-label-input(
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -1733,10 +1993,16 @@
   @include notched-outline-mixins.notch-offset(0, $query: $query);
 
   // Floating label position
-  @include notched-outline-mixins.floating-label-float-position-absolute(variables.$textarea-outlined-label-position-y, $query: $query);
+  @include notched-outline-mixins.floating-label-float-position-absolute(
+    variables.$textarea-outlined-label-position-y,
+    $query: $query
+  );
 
   // Floating label animation
-  @include floating-label-mixins.shake-animation(textarea-outlined, $query: $query);
+  @include floating-label-mixins.shake-animation(
+    textarea-outlined,
+    $query: $query
+  );
   @at-root {
     @include floating-label-mixins.shake-keyframes(
       textarea-outlined,
@@ -1747,7 +2013,9 @@
   }
 }
 
-@mixin _textarea-outlined-floating-label($query: feature-targeting-functions.all()) {
+@mixin _textarea-outlined-floating-label(
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -1773,7 +2041,11 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   // Exclude setting line-height to keep caret (text cursor) same height as the input text in iOS browser.
-  @include typography-mixins.typography(subtitle1, $exclude-props: (line-height), $query: $query);
+  @include typography-mixins.typography(
+    subtitle1,
+    $exclude-props: (line-height),
+    $query: $query
+  );
   @include feature-targeting-mixins.targets($feat-structure) {
     height: variables.$input-height;
   }
@@ -1866,7 +2138,11 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    @include rtl-mixins.reflexive-box(padding, right, variables.$prefix-padding);
+    @include rtl-mixins.reflexive-box(
+      padding,
+      right,
+      variables.$prefix-padding
+    );
   }
 }
 
@@ -1874,7 +2150,11 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    @include rtl-mixins.reflexive-box(padding, right, variables.$prefix-end-aligned-padding);
+    @include rtl-mixins.reflexive-box(
+      padding,
+      right,
+      variables.$prefix-end-aligned-padding
+    );
   }
 }
 
@@ -1890,7 +2170,11 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    @include rtl-mixins.reflexive-box(padding, left, variables.$suffix-end-aligned-padding);
+    @include rtl-mixins.reflexive-box(
+      padding,
+      left,
+      variables.$suffix-end-aligned-padding
+    );
   }
 }
 
@@ -2020,7 +2304,11 @@
   }
 }
 
-@mixin fill-color_($color, $query: feature-targeting-functions.all(), $addAlternate: false) {
+@mixin fill-color_(
+  $color,
+  $query: feature-targeting-functions.all(),
+  $addAlternate: false
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
@@ -2037,7 +2325,10 @@
   }
 }
 
-@mixin hover-bottom-line-color_($color, $query: feature-targeting-functions.all()) {
+@mixin hover-bottom-line-color_(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   &:hover .mdc-line-ripple {
@@ -2059,7 +2350,10 @@
   }
 }
 
-@mixin focused-outline-color_($color, $query: feature-targeting-functions.all()) {
+@mixin focused-outline-color_(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &.mdc-text-field--focused {
     @include notched-outline-mixins.color($color, $query: $query);
   }
@@ -2116,7 +2410,6 @@
     }
   }
 }
-
 
 // State qualifiers
 

@@ -76,13 +76,19 @@
 /// Customizes the color of the helper text following a disabled text-field.
 /// @param {Color} $color - The desired helper text color.
 ///
-@mixin disabled-helper-text-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-helper-text-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &.mdc-text-field--disabled {
     @include helper-text-color_($color, $query);
   }
 }
 
-@mixin helper-text-validation-color($color, $query: feature-targeting-functions.all()) {
+@mixin helper-text-validation-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &:not(.mdc-text-field--disabled) {
     @include helper-text-validation-color_($color, $query);
   }
@@ -100,10 +106,15 @@
   }
 }
 
-@mixin helper-text-validation-color_($color, $query: feature-targeting-functions.all()) {
+@mixin helper-text-validation-color_(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
-  &.mdc-text-field--invalid + .mdc-text-field-helper-line .mdc-text-field-helper-text--validation-msg {
+  &.mdc-text-field--invalid
+    + .mdc-text-field-helper-line
+    .mdc-text-field-helper-text--validation-msg {
     @include feature-targeting-mixins.targets($feat-color) {
       @include mixins.prop(color, $color);
     }

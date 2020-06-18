@@ -23,7 +23,10 @@
 @use "@material/theme/mixins";
 @use "@material/theme/variables";
 
-$ink-color: rgba(variables.prop-value(on-surface), variables.text-emphasis(high)) !default;
+$ink-color: rgba(
+  variables.prop-value(on-surface),
+  variables.text-emphasis(high)
+) !default;
 
 $width-base: 56px !default;
 $min-width: 2 * $width-base !default;

@@ -35,11 +35,12 @@
     @include icon-horizontal-margins(
       $left: variables.$icon-horizontal-margin,
       $right: variables.$icon-horizontal-margin,
-      $query: $query);
+      $query: $query
+    );
   }
 
   .mdc-select__icon:not([tabindex]),
-  .mdc-select__icon[tabindex="-1"] {
+  .mdc-select__icon[tabindex='-1'] {
     @include feature-targeting-mixins.targets($feat-structure) {
       cursor: default;
       pointer-events: none;
@@ -75,15 +76,15 @@
   }
 }
 
-@mixin icon-horizontal-margins($left, $right, $query: feature-targeting-functions.all()) {
+@mixin icon-horizontal-margins(
+  $left,
+  $right,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   .mdc-select__icon {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(
-        margin,
-        $left,
-        $right
-      );
+      @include rtl-mixins.reflexive-property(margin, $left, $right);
     }
   }
 }

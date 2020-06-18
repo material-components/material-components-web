@@ -24,7 +24,7 @@
 @use "sass:string";
 @use "./functions";
 
-$font-family: string.unquote("Roboto, sans-serif") !default;
+$font-family: string.unquote('Roboto, sans-serif') !default;
 
 // Override styles
 $styles-headline1: () !default;
@@ -42,7 +42,7 @@ $styles-button: () !default;
 $styles-overline: () !default;
 
 $base: (
-  font-family: $font-family
+  font-family: $font-family,
 ) !default;
 
 $font-weight-values: (
@@ -51,116 +51,145 @@ $font-weight-values: (
   regular: 400,
   medium: 500,
   bold: 700,
-  black: 900
+  black: 900,
 ) !default;
+
+// font-size / line-height
+
+// 96sp / 96sp
+$_headline1: (
+  font-size: 6rem,
+  line-height: 6rem,
+  font-weight: map.get($font-weight-values, light),
+  letter-spacing: functions.get-letter-spacing_(-1.5, 6),
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 60sp / 60sp
+$_headline2: (
+  font-size: 3.75rem,
+  line-height: 3.75rem,
+  font-weight: map.get($font-weight-values, light),
+  letter-spacing: functions.get-letter-spacing_(-0.5, 3.75),
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 48sp / 50sp
+$_headline3: (
+  font-size: 3rem,
+  line-height: 3.125rem,
+  font-weight: map.get($font-weight-values, regular),
+  letter-spacing: normal,
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 34sp / 40sp
+$_headline4: (
+  font-size: 2.125rem,
+  line-height: 2.5rem,
+  font-weight: map.get($font-weight-values, regular),
+  letter-spacing: functions.get-letter-spacing_(0.25, 2.125),
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 24sp / 32sp
+$_headline5: (
+  font-size: 1.5rem,
+  line-height: 2rem,
+  font-weight: map.get($font-weight-values, regular),
+  letter-spacing: normal,
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 20sp / 32sp
+$_headline6: (
+  font-size: 1.25rem,
+  line-height: 2rem,
+  font-weight: map.get($font-weight-values, medium),
+  letter-spacing: functions.get-letter-spacing_(0.25, 1.25),
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 16sp / 28sp
+$_subtitle1: (
+  font-size: 1rem,
+  line-height: 1.75rem,
+  font-weight: map.get($font-weight-values, regular),
+  letter-spacing: functions.get-letter-spacing_(0.15, 1),
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 14sp / 22sp
+$_subtitle2: (
+  font-size: 0.875rem,
+  line-height: 1.375rem,
+  font-weight: map.get($font-weight-values, medium),
+  letter-spacing: functions.get-letter-spacing_(0.1, 0.875),
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 16sp / 24sp
+$_body1: (
+  font-size: 1rem,
+  line-height: 1.5rem,
+  font-weight: map.get($font-weight-values, regular),
+  letter-spacing: functions.get-letter-spacing_(0.5, 1),
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 14sp / 20sp
+$_body2: (
+  font-size: 0.875rem,
+  line-height: 1.25rem,
+  font-weight: map.get($font-weight-values, regular),
+  letter-spacing: functions.get-letter-spacing_(0.25, 0.875),
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 12sp / 20sp
+$_caption: (
+  font-size: 0.75rem,
+  line-height: 1.25rem,
+  font-weight: map.get($font-weight-values, regular),
+  letter-spacing: functions.get-letter-spacing_(0.4, 0.75),
+  text-decoration: inherit,
+  text-transform: inherit,
+);
+// 14sp / 36sp
+$_button: (
+  font-size: 0.875rem,
+  line-height: 2.25rem,
+  font-weight: map.get($font-weight-values, medium),
+  letter-spacing: functions.get-letter-spacing_(1.25, 0.875),
+  text-decoration: none,
+  text-transform: uppercase,
+);
+// 12sp / 32sp
+$_overline: (
+  font-size: 0.75rem,
+  line-height: 2rem,
+  font-weight: map.get($font-weight-values, medium),
+  letter-spacing: functions.get-letter-spacing_(2, 0.75),
+  text-decoration: none,
+  text-transform: uppercase,
+);
 
 $styles: functions.set-styles_(
   $base,
   (
-    headline1: (
-      font-size: 6rem, // 96sp
-      line-height: 6rem,
-      font-weight: map.get($font-weight-values, light),
-      letter-spacing: functions.get-letter-spacing_(-1.5, 6),
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    headline2: (
-      font-size: 3.75rem, // 60sp
-      line-height: 3.75rem,
-      font-weight: map.get($font-weight-values, light),
-      letter-spacing: functions.get-letter-spacing_(-.5, 3.75),
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    headline3: (
-      font-size: 3rem, // 48sp
-      line-height: 3.125rem, // 50sp
-      font-weight: map.get($font-weight-values, regular),
-      letter-spacing: normal,
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    headline4: (
-      font-size: 2.125rem, // 34sp
-      line-height: 2.5rem, // 40sp
-      font-weight: map.get($font-weight-values, regular),
-      letter-spacing: functions.get-letter-spacing_(.25, 2.125),
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    headline5: (
-      font-size: 1.5rem, // 24sp
-      line-height: 2rem, // 32sp
-      font-weight: map.get($font-weight-values, regular),
-      letter-spacing: normal,
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    headline6: (
-      font-size: 1.25rem, // 20sp
-      line-height: 2rem, // 32sp
-      font-weight: map.get($font-weight-values, medium),
-      letter-spacing: functions.get-letter-spacing_(.25, 1.25),
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    subtitle1: (
-      font-size: 1rem, // 16sp
-      line-height: 1.75rem, // 28sp
-      font-weight: map.get($font-weight-values, regular),
-      letter-spacing: functions.get-letter-spacing_(.15, 1),
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    subtitle2: (
-      font-size: .875rem, // 14sp
-      line-height: 1.375rem, // 22sp
-      font-weight: map.get($font-weight-values, medium),
-      letter-spacing: functions.get-letter-spacing_(.1, .875),
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    body1: (
-      font-size: 1rem, // 16sp
-      line-height: 1.5rem, // 24sp
-      font-weight: map.get($font-weight-values, regular),
-      letter-spacing: functions.get-letter-spacing_(.5, 1),
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    body2: (
-      font-size: .875rem, // 14sp
-      line-height: 1.25rem, // 20sp
-      font-weight: map.get($font-weight-values, regular),
-      letter-spacing: functions.get-letter-spacing_(.25, .875),
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    caption: (
-      font-size: .75rem, // 12sp
-      line-height: 1.25rem, // 20sp
-      font-weight: map.get($font-weight-values, regular),
-      letter-spacing: functions.get-letter-spacing_(.4, .75),
-      text-decoration: inherit,
-      text-transform: inherit
-    ),
-    button: (
-      font-size: .875rem, // 14sp
-      line-height: 2.25rem, // 36sp
-      font-weight: map.get($font-weight-values, medium),
-      letter-spacing: functions.get-letter-spacing_(1.25, .875),
-      text-decoration: none,
-      text-transform: uppercase
-    ),
-    overline: (
-      font-size: .75rem, // 12sp
-      line-height: 2rem, // 32sp
-      font-weight: map.get($font-weight-values, medium),
-      letter-spacing: functions.get-letter-spacing_(2, .75),
-      text-decoration: none,
-      text-transform: uppercase
-    ),
+    headline1: $_headline1,
+    headline2: $_headline2,
+    headline3: $_headline3,
+    headline4: $_headline4,
+    headline5: $_headline5,
+    headline6: $_headline6,
+    subtitle1: $_subtitle1,
+    subtitle2: $_subtitle2,
+    body1: $_body1,
+    body2: $_body2,
+    caption: $_caption,
+    button: $_button,
+    overline: $_overline,
   ),
   (
     headline1: $styles-headline1,
