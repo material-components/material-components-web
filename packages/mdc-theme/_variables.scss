@@ -53,14 +53,18 @@ $on-error: if(functions.contrast-tone($error) == "dark", #000, #fff) !default;
 
 $text-colors: (
   dark: (
+    high: rgba(black, .87),
     primary: rgba(black, .87),
+    medium: rgba(black, .54),
     secondary: rgba(black, .54),
     hint: rgba(black, .38),
     disabled: rgba(black, .38),
     icon: rgba(black, .38)
   ),
   light: (
+    high: white,
     primary: white,
+    medium: rgba(white, .7),
     secondary: rgba(white, .7),
     hint: rgba(white, .5),
     disabled: rgba(white, .5),
@@ -99,21 +103,27 @@ $property-values: (
   on-secondary: $on-secondary,
   on-surface: $on-surface,
   on-error: $on-error,
-  // Text-primary on "background" background
-  text-primary-on-background: ink-color-for-fill_(primary, $background),
-  text-secondary-on-background: ink-color-for-fill_(secondary, $background),
+  // Text on "background" background
+  text-high-on-background: ink-color-for-fill_(high, $background),
+  text-primary-on-background: ink-color-for-fill_(high, $background),
+  text-medium-on-background: ink-color-for-fill_(medium, $background),
+  text-secondary-on-background: ink-color-for-fill_(medium, $background),
   text-hint-on-background: ink-color-for-fill_(hint, $background),
   text-disabled-on-background: ink-color-for-fill_(disabled, $background),
   text-icon-on-background: ink-color-for-fill_(icon, $background),
-  // Text-primary on "light" background
-  text-primary-on-light: ink-color-for-fill_(primary, light),
-  text-secondary-on-light: ink-color-for-fill_(secondary, light),
+  // Text on "light" background
+  text-high-on-light: ink-color-for-fill_(high, light),
+  text-primary-on-light: ink-color-for-fill_(high, light),
+  text-medium-on-light: ink-color-for-fill_(medium, light),
+  text-secondary-on-light: ink-color-for-fill_(medium, light),
   text-hint-on-light: ink-color-for-fill_(hint, light),
   text-disabled-on-light: ink-color-for-fill_(disabled, light),
   text-icon-on-light: ink-color-for-fill_(icon, light),
-  // Text-primary on "dark" background
-  text-primary-on-dark: ink-color-for-fill_(primary, dark),
-  text-secondary-on-dark: ink-color-for-fill_(secondary, dark),
+  // Text on "dark" background
+  text-high-on-dark: ink-color-for-fill_(high, dark),
+  text-primary-on-dark: ink-color-for-fill_(high, dark),
+  text-medium-on-dark: ink-color-for-fill_(medium, dark),
+  text-secondary-on-dark: ink-color-for-fill_(medium, dark),
   text-hint-on-dark: ink-color-for-fill_(hint, dark),
   text-disabled-on-dark: ink-color-for-fill_(disabled, dark),
   text-icon-on-dark: ink-color-for-fill_(icon, dark)

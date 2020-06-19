@@ -244,8 +244,8 @@
   $color-value: theme-variables.prop-value($color);
   $ink-color: if(
     theme-functions.tone($color-value) == 'light',
-    text-primary-on-light,
-    text-primary-on-dark
+    text-high-on-light,
+    text-high-on-dark
   );
 
   @include value-pin-fill-color($color, $query: $query);

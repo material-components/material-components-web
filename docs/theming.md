@@ -330,8 +330,8 @@ The same pattern is followed for text colors on _background_:
 
 | Custom property                            | Description                                                |
 | ------------------------------------------ | ---------------------------------------------------------- |
-| `--mdc-theme-text-primary-on-background`   | Primary text on top of the theme background color.         |
-| `--mdc-theme-text-secondary-on-background` | Secondary text on top of the theme background color.       |
+| `--mdc-theme-text-high-on-background`      | High emphasis text on top of the theme background color.   |
+| `--mdc-theme-text-medium-on-background`    | Medium emphasis text on top of the theme background color. |
 | `--mdc-theme-text-hint-on-background`      | Hint text on top of the theme background color.            |
 | `--mdc-theme-text-disabled-on-background`  | Disabled text on top of the theme background color.        |
 | `--mdc-theme-text-icon-on-background`      | Icons on top of the theme background color.                |
@@ -340,16 +340,16 @@ In addition, we also define custom properties for known dark and light backgroun
 
 | Custom property                            | Description                                                |
 | ------------------------------------------ | ---------------------------------------------------------- |
-| `--mdc-theme-text-primary-on-light`        | Primary text on top of a light-colored background.         |
-| `--mdc-theme-text-secondary-on-light`      | Secondary text on top of a light-colored background.       |
+| `--mdc-theme-text-high-on-light`           | High emphasis text on top of a light-colored background.   |
+| `--mdc-theme-text-medium-on-light`         | Medium emphasis text on top of a light-colored background. |
 | `--mdc-theme-text-hint-on-light`           | Hint text on top of a light-colored background.            |
 | `--mdc-theme-text-disabled-on-light`       | Disabled text on top of a light-colored background.        |
 | `--mdc-theme-text-icon-on-light`           | Icons on top of a light-colored background.                |
 
 | Custom property                            | Description                                                |
 | ------------------------------------------ | ---------------------------------------------------------- |
-| `--mdc-theme-text-primary-on-dark`        | Primary text on top of a dark-colored background.         |
-| `--mdc-theme-text-secondary-on-dark`      | Secondary text on top of a dark-colored background.       |
+| `--mdc-theme-text-high-on-dark`           | Primary text on top of a dark-colored background.         |
+| `--mdc-theme-text-medium-on-dark`         | Secondary text on top of a dark-colored background.       |
 | `--mdc-theme-text-hint-on-dark`           | Hint text on top of a dark-colored background.            |
 | `--mdc-theme-text-disabled-on-dark`       | Disabled text on top of a dark-colored background.        |
 | `--mdc-theme-text-icon-on-dark`           | Icons on top of a dark-colored background.                |
@@ -361,22 +361,22 @@ Since our cards only contain text and no components, let's keep it simple for no
 ```css
 .element-card.earth {
   --mdc-theme-primary: #795548;
-  --mdc-theme-on-primary: var(--mdc-theme-text-primary-on-dark);
+  --mdc-theme-on-primary: var(--mdc-theme-text-high-on-dark);
 }
 
 .element-card.wind {
   --mdc-theme-primary: #9e9e9e;
-  --mdc-theme-on-primary: var(--mdc-theme-text-primary-on-light);
+  --mdc-theme-on-primary: var(--mdc-theme-text-high-on-light);
 }
 
 .element-card.fire {
   --mdc-theme-primary: #f44336;
-  --mdc-theme-on-primary: var(--mdc-theme-text-primary-on-dark);
+  --mdc-theme-on-primary: var(--mdc-theme-text-high-on-dark);
 }
 
 .element-card.water {
   --mdc-theme-primary: #00bcd4;
-  --mdc-theme-on-primary: var(--mdc-theme-text-primary-on-light);
+  --mdc-theme-on-primary: var(--mdc-theme-text-high-on-light);
 }
 ```
 

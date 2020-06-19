@@ -55,17 +55,17 @@ The text styles (referred to as `<TEXT_STYLE>` below) used in the color system:
 
 Text style | Description
 --- | ---
-`primary` | Used for most text (e.g., `text-primary-on-light`)
-`secondary` | Used for text which is lower in the visual hierarchy (e.g., `text-secondary-on-light`)
+`high` | Used for most high emphasis text (e.g., `text-high-on-light`)
+`medium` | Used for medium emphasis text which is lower in the visual hierarchy (e.g., `text-medium-on-light`)
 `hint` | Used for text hints, such as those in text fields and labels (e.g., `text-hint-on-light`)
 `disabled` | Used for text in disabled components and content (e.g., `text-disabled-on-light`)
 `icon` | Used for icons (e.g., `text-icon-on-light`)
 
-Here are the example usages of `primary` text style:
+Here are the example usages of `high` text style:
 
-  * CSS Custom property: `--mdc-theme-text-primary-on-light`
-  * Class name: `mdc-theme--text-primary-on-light`
-  * Property name used in Sass: `text-primary-on-light`
+  * CSS Custom property: `--mdc-theme-text-high-on-light`
+  * Class name: `mdc-theme--text-high-on-light`
+  * Property name used in Sass: `text-high-on-light`
 
 ### Non-Sass customization
 
@@ -198,8 +198,8 @@ Params:
 > NOTE: This function is defined in `_variables.scss` instead of `_functions.scss` to avoid circular imports.
 
 ```scss
-@debug theme.accessible-ink-color(secondary); // rgba(0, 0, 0, .87) (text-primary-on-light)
-@debug theme.accessible-ink-color(blue);      // white              (text-primary-on-dark)
+@debug theme.accessible-ink-color(secondary); // rgba(0, 0, 0, .87) (text-high-on-light)
+@debug theme.accessible-ink-color(blue);      // white              (text-high-on-dark)
 ```
 #### `theme.text-emphasis($emphasis)`
 

@@ -62,11 +62,11 @@
   }
 
   @include single-line-density(variables.$single-line-density-scale, $query: $query);
-  @include item-secondary-text-ink-color(text-secondary-on-background, $query);
+  @include item-secondary-text-ink-color(text-medium-on-background, $query);
   @include item-graphic-fill-color(transparent, $query);
   @include item-graphic-ink-color(text-icon-on-background, $query);
   @include item-meta-ink-color(text-hint-on-background, $query);
-  @include group-subheader-ink-color(text-primary-on-background, $query);
+  @include group-subheader-ink-color(text-high-on-background, $query);
   @include item-disabled-text-opacity(variables.$text-disabled-opacity, $query);
   @include item-disabled-text-color(variables.$text-disabled-color, $query);
   @include item-selected-text-color(variables.$text-selected-color, $query);
@@ -838,7 +838,7 @@
     }
   }
 
-  @include item-primary-text-ink-color(text-primary-on-background, $query);
+  @include item-primary-text-ink-color(text-high-on-background, $query);
 }
 
 @mixin item-base_ {
