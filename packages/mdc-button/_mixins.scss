@@ -36,7 +36,7 @@
 @use "./variables";
 @use "@material/elevation/functions" as elevation-functions;
 
-$ripple-target: ".mdc-button__ripple";
+$ripple-target: '.mdc-button__ripple';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   @include without-ripple($query);
@@ -127,7 +127,9 @@ $ripple-target: ".mdc-button__ripple";
 
   .mdc-button--touch {
     @include touch-target-mixins.margin(
-      $component-height: variables.$height, $query: $query);
+      $component-height: variables.$height,
+      $query: $query
+    );
   }
   // postcss-bem-linter: end
 }
@@ -140,9 +142,14 @@ $ripple-target: ".mdc-button__ripple";
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-button {
-    @include ripple-mixins.surface($query: $query, $ripple-target: $ripple-target);
+    @include ripple-mixins.surface(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
     @include ripple-mixins.radius-bounded(
-      $query: $query, $ripple-target: $ripple-target);
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
     @include ripple-states($color: primary, $query: $query);
 
     #{$ripple-target} {
@@ -178,15 +185,21 @@ $ripple-target: ".mdc-button__ripple";
 ///
 @mixin ripple-states($color, $query: feature-targeting-functions.all()) {
   @include ripple-mixins.states(
-    $color: $color, $query: $query, $ripple-target: $ripple-target);
+    $color: $color,
+    $query: $query,
+    $ripple-target: $ripple-target
+  );
 }
 
-@mixin filled-accessible($container-fill-color, $query: feature-targeting-functions.all()) {
+@mixin filled-accessible(
+  $container-fill-color,
+  $query: feature-targeting-functions.all()
+) {
   $fill-tone: theme-functions.tone($container-fill-color);
 
   @include container-fill-color($container-fill-color, $query);
 
-  @if ($fill-tone == "dark") {
+  @if ($fill-tone == 'dark') {
     @include ink-color(text-primary-on-dark, $query);
     @include ripple-states($color: text-primary-on-dark, $query: $query);
   } @else {
@@ -211,7 +224,10 @@ $ripple-target: ".mdc-button__ripple";
 /// Sets the container fill color to the given color for a disabled button.
 /// @param {Color} $color - The desired container fill color.
 ///
-@mixin disabled-container-fill-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-container-fill-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &:disabled {
     @include container-fill-color_($color, $query: $query);
   }
@@ -231,7 +247,10 @@ $ripple-target: ".mdc-button__ripple";
 /// Sets the outline color to the given color for a disabled button.
 /// @param {Color} $color - The desired outline color.
 ///
-@mixin disabled-outline-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-outline-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &:disabled {
     @include outline-color_($color, $query: $query);
   }
@@ -288,7 +307,6 @@ $ripple-target: ".mdc-button__ripple";
 ///     `-2`, `-1`, `0`.
 ///
 @mixin density($density-scale, $query: feature-targeting-functions.all()) {
-
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
@@ -515,7 +533,10 @@ $ripple-target: ".mdc-button__ripple";
   @include horizontal-padding(variables.$contained-horizontal-padding, $query);
   @include container-fill-color(primary, $query);
   @include ink-color(on-primary, $query);
-  @include disabled-container-fill-color(variables.$disabled-container-color, $query);
+  @include disabled-container-fill-color(
+    variables.$disabled-container-color,
+    $query
+  );
   @include disabled-ink-color(variables.$disabled-ink-color, $query);
 }
 
@@ -548,7 +569,10 @@ $ripple-target: ".mdc-button__ripple";
 /// wrapped in a selector that qualifies button state.
 /// @access private
 ///
-@mixin container-fill-color_($color, $query: feature-targeting-functions.all()) {
+@mixin container-fill-color_(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {

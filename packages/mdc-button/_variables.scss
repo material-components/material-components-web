@@ -39,8 +39,14 @@ $density-config: (
 ) !default;
 
 $outlined-border-width: 1px !default;
-$outline-color: rgba(theme-variables.prop-value(on-surface), .12) !default;
+$outline-color: rgba(theme-variables.prop-value(on-surface), 0.12) !default;
 $shape-radius: small !default;
 
-$disabled-container-color: rgba(theme-variables.prop-value(on-surface), .12) !default;
-$disabled-ink-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
+$disabled-container-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.12
+) !default;
+$disabled-ink-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
