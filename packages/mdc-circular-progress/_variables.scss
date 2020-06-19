@@ -47,4 +47,4 @@ $shrink-time: 400ms;
 /// us a 5 pointed star shape (it's 360/5 * 3)
 $arc-start-rotation-interval: 216deg;
 /// The timing function used for the core spinner animations.
-$timing-function: cubic-bezier(.4, 0, .2, 1);
+$timing-function: cubic-bezier(0.4, 0, 0.2, 1);

@@ -26,7 +26,9 @@
 /// @access private
 @mixin container-rotate-keyframes_ {
   @keyframes mdc-circular-progress-container-rotate {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 }
 
@@ -36,7 +38,7 @@
   @keyframes mdc-circular-progress-spinner-layer-rotate {
     @for $i from 1 through 8 {
       #{$i * 12.5}% {
-        transform: rotate($i * .5 * variables.$arc-size);
+        transform: rotate($i * 0.5 * variables.$arc-size);
       }
     }
   }
@@ -47,12 +49,24 @@
 /// @access private
 @mixin color-1-fade-in-out-keyframes_ {
   @keyframes mdc-circular-progress-color-1-fade-in-out {
-    from { opacity: .99; }
-    25% { opacity: .99; }
-    26% { opacity: 0; }
-    89% { opacity: 0; }
-    90% { opacity: .99; }
-    to  { opacity: .99; }
+    from {
+      opacity: 0.99;
+    }
+    25% {
+      opacity: 0.99;
+    }
+    26% {
+      opacity: 0;
+    }
+    89% {
+      opacity: 0;
+    }
+    90% {
+      opacity: 0.99;
+    }
+    to {
+      opacity: 0.99;
+    }
   }
 }
 
@@ -61,12 +75,24 @@
 /// @access private
 @mixin color-2-fade-in-out-keyframes_ {
   @keyframes mdc-circular-progress-color-2-fade-in-out {
-    from { opacity: 0; }
-    15% { opacity: 0; }
-    25% { opacity: .99; }
-    50% { opacity: .99; }
-    51% { opacity: 0; }
-    to  { opacity: 0; }
+    from {
+      opacity: 0;
+    }
+    15% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.99;
+    }
+    50% {
+      opacity: 0.99;
+    }
+    51% {
+      opacity: 0;
+    }
+    to {
+      opacity: 0;
+    }
   }
 }
 
@@ -75,12 +101,24 @@
 /// @access private
 @mixin color-3-fade-in-out-keyframes_ {
   @keyframes mdc-circular-progress-color-3-fade-in-out {
-    from { opacity: 0; }
-    40% { opacity: 0; }
-    50% { opacity: .99; }
-    75% { opacity: .99; }
-    76% { opacity: 0; }
-    to  { opacity: 0; }
+    from {
+      opacity: 0;
+    }
+    40% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.99;
+    }
+    75% {
+      opacity: 0.99;
+    }
+    76% {
+      opacity: 0;
+    }
+    to {
+      opacity: 0;
+    }
   }
 }
 
@@ -89,11 +127,21 @@
 /// @access private
 @mixin color-4-fade-in-out-keyframes_ {
   @keyframes mdc-circular-progress-color-4-fade-in-out {
-    from { opacity: 0; }
-    65% { opacity: 0; }
-    75% { opacity: .99; }
-    90% { opacity: .99; }
-    to  { opacity: 0; }
+    from {
+      opacity: 0;
+    }
+    65% {
+      opacity: 0;
+    }
+    75% {
+      opacity: 0.99;
+    }
+    90% {
+      opacity: 0.99;
+    }
+    to {
+      opacity: 0;
+    }
   }
 }
 
@@ -102,9 +150,15 @@
 /// @access private
 @mixin left-spin-keyframes_ {
   @keyframes mdc-circular-progress-left-spin {
-    from { transform: rotate(265deg); }
-    50% { transform: rotate(130deg); }
-    to { transform: rotate(265deg); }
+    from {
+      transform: rotate(265deg);
+    }
+    50% {
+      transform: rotate(130deg);
+    }
+    to {
+      transform: rotate(265deg);
+    }
   }
 }
 
@@ -113,8 +167,14 @@
 /// @access private
 @mixin right-spin-keyframes_ {
   @keyframes mdc-circular-progress-right-spin {
-    from { transform: rotate(-265deg); }
-    50% { transform: rotate(-130deg); }
-    to { transform: rotate(-265deg); }
+    from {
+      transform: rotate(-265deg);
+    }
+    50% {
+      transform: rotate(-130deg);
+    }
+    to {
+      transform: rotate(-265deg);
+    }
   }
 }
