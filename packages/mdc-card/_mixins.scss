@@ -83,7 +83,7 @@
     &::before {
       @include feature-targeting-mixins.targets($feat-structure) {
         display: block;
-        content: "";
+        content: '';
       }
     }
   }
@@ -297,7 +297,11 @@
   }
 }
 
-@mixin outline($color, $thickness: variables.$outline-width, $query: functions.all()) {
+@mixin outline(
+  $color,
+  $thickness: variables.$outline-width,
+  $query: functions.all()
+) {
   $feat-color: functions.create-target($query, color);
   $feat-structure: functions.create-target($query, structure);
 
