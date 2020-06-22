@@ -28,13 +28,13 @@
 @use "../mdc-typography/mixins" as typography-mixins;
 
 // Style for when element is on
-.mdc-segmented-button__item--toggled {
+.mdc-segmented-button__segment--selected {
     @include mdc-button.ink-color(rgba(theme-variables.prop-value(primary), 1));
     @include mdc-button.outline-color(rgba(theme-variables.prop-value(primary), 1));
     @include mdc-button.container-fill-color(rgba(theme-variables.prop-value(primary), .08));
 
     // Avoids double borders
-    +.mdc-segmented-button__item {
+    +.mdc-segmented-button__segment {
         border-left: hidden;
     }
 }
@@ -45,7 +45,7 @@
 }
 
 // TODO: include test for element resizing besides the left/right border
-.mdc-segmented-button__item {
+.mdc-segmented-button__segment {
     @include typography-mixins.typography(button, feature-targeting-functions.all());
 
     height: 36px;
@@ -71,7 +71,7 @@
     }
 
     // Style for when element is not on
-    &:not(.mdc-segmented-button__item--toggled) {
+    &:not(.mdc-segmented-button__segment--selected) {
         @include mdc-button.ink-color(rgba(theme-variables.prop-value(on-surface), .6));
         @include mdc-button.outline-color(rgba(theme-variables.prop-value(on-surface), .12));
         @include mdc-button.container-fill-color(rgba(theme-variables.prop-value(surface), 1));
@@ -96,11 +96,6 @@
 .mdc-segmented-button__icon {
     width: 24px;
     font-size: 18px;
-
-    // TODO: stop hacking
-    &:not(:last-child) {
-        margin-left: -4;
-    }
 }
 
 .mdc-segmented-button__icon + .mdc-segmented-button__label{

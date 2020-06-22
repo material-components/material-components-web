@@ -27,7 +27,7 @@ const mdcSegmentedButtonEls = document.querySelectorAll<HTMLElement>('.mdc-segme
 
 if (mdcSegmentedButtonEls) {
     mdcSegmentedButtonEls.forEach((mdcSegmentedButtonEl) => {
-        if (mdcSegmentedButtonEl.classList.contains('mdc-segmented-button--single')) {
+        if (mdcSegmentedButtonEl.classList.contains('mdc-segmented-button--single-select')) {
             new MDCSegmentedButtonSingle(mdcSegmentedButtonEl);
         } else {
             new MDCSegmentedButton(mdcSegmentedButtonEl);

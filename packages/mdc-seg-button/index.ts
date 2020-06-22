@@ -27,17 +27,17 @@ import './index.scss';
 //TODO: have list of currently active buttons
 export class MDCSegmentedButton {
     private root: HTMLElement;
-    private mdcSegmentedButtonItems: MDCSegmentedButtonItem[] = [];
+    private mdcSegmentedButtonSegments: MDCSegmentedButtonSegment[] = [];
 
     constructor(root: HTMLElement) {
         this.root = root;
-        this.createMDCSegButtonItems();
+        this.createMDCSegButtonSegments();
     }
 
-    createMDCSegButtonItems() {
-        this.root.querySelectorAll<HTMLElement>('.mdc-segmented-button__item').forEach((el, index) => {
-            const mdcSegmentedButtonItem = new MDCSegmentedButtonItem(el, index, this.root);
-            this.mdcSegmentedButtonItems.push(mdcSegmentedButtonItem);
+    createMDCSegButtonSegments() {
+        this.root.querySelectorAll<HTMLElement>('.mdc-segmented-button__segment').forEach((el, index) => {
+            const mdcSegmentedButtonSegment = new MDCSegmentedButtonSegment(el, index, this.root);
+            this.mdcSegmentedButtonSegments.push(mdcSegmentedButtonSegment);
         });
     }
 
@@ -49,34 +49,34 @@ export class MDCSegmentedButton {
 
 export class MDCSegmentedButtonSingle {
     private root: HTMLElement;
-    private mdcSegmentedButtonItems: MDCSegmentedButtonItem[] = [];
+    private mdcSegmentedButtonSegments: MDCSegmentedButtonSegment[] = [];
 
     constructor(root: HTMLElement) {
         this.root = root;
-        this.createMDCSegButtonItems();
-        this.root.addEventListener('toggled', (event) => {this.handleToggle(event)});
+        this.createMDCSegButtonSegments();
+        this.root.addEventListener('selected', (event) => {this.handleSelected(event)});
     }
 
-    createMDCSegButtonItems() {
-        this.root.querySelectorAll<HTMLElement>('.mdc-segmented-button__item').forEach((el, index) => {
-            const mdcSegmentedButtonItem = new MDCSegmentedButtonItem(el, index, this.root);
-            this.mdcSegmentedButtonItems.push(mdcSegmentedButtonItem);
+    createMDCSegButtonSegments() {
+        this.root.querySelectorAll<HTMLElement>('.mdc-segmented-button__segment').forEach((el, index) => {
+            const mdcSegmentedButtonSegment = new MDCSegmentedButtonSegment(el, index, this.root);
+            this.mdcSegmentedButtonSegments.push(mdcSegmentedButtonSegment);
         });
-        if (this.mdcSegmentedButtonItems.length > 0) {
-            this.mdcSegmentedButtonItems[0].setToggled(true);
+        if (this.mdcSegmentedButtonSegments.length > 0) {
+            this.mdcSegmentedButtonSegments[0].setSelected(true);
         }
     }
 
 
-    handleToggle(event) {
-        const toggled = event.detail.toggled;
+    handleSelected(event) {
+        const selected = event.detail.selected;
         const id = event.detail.id;
-        const otherItemsToggled = this.mdcSegmentedButtonItems.filter(item => item.isToggled && item.getId() != id);
-        if (toggled) {
-            otherItemsToggled.forEach(item => item.setToggled(false));
+        const otherSegmentsSelected = this.mdcSegmentedButtonSegments.filter(segment => segment.isSelected() && segment.getId() != id);
+        if (selected) {
+            otherSegmentsSelected.forEach(segment => segment.setSelected(false));
         } else {
-            if (otherItemsToggled.length === 0) {
-                this.mdcSegmentedButtonItems[id].setToggled(true);
+            if (otherSegmentsSelected.length === 0) {
+                this.mdcSegmentedButtonSegments[id].setSelected(true);
             }
         }
     }
@@ -87,7 +87,7 @@ export class MDCSegmentedButtonSingle {
 }
 
 
-export class MDCSegmentedButtonItem {
+export class MDCSegmentedButtonSegment {
     private root: HTMLElement;
     private id: number;
     private parentElement: HTMLElement;
@@ -96,33 +96,26 @@ export class MDCSegmentedButtonItem {
         this.root = root;
         this.id = id;
         this.parentElement = parentElement;
-        this.root.addEventListener('click', this.handleToggle);
+        this.root.addEventListener('click', this.handleClick);
     }
 
-    get isToggled(): boolean {
-        return this.root.classList.contains('mdc-segmented-button__item--toggled');
+
+    isSelected(): boolean {
+        return this.root.classList.contains('mdc-segmented-button__segment--selected');
     }
 
-    set isToggled(toggled: boolean) {
-        if (toggled) {
-            this.addClass('mdc-segmented-button__item--toggled');
+    setSelected(selected: boolean) {
+        if (selected) {
+            this.addClass('mdc-segmented-button__segment--selected');
         } else {
-            this.removeClass('mdc-segmented-button__item--toggled');
+            this.removeClass('mdc-segmented-button__segment--selected');
         }
     }
 
-    getToggled(): boolean {
-        return this.isToggled;
-    }
-
-    setToggled(toggled: boolean) {
-        this.isToggled = toggled;
-    }
-
-    handleToggle = () => {
-        this.isToggled = !this.isToggled;
+    handleClick = () => {
+        this.setSelected(!this.isSelected());
         // Avoids race conditions
-        this.parentElement.dispatchEvent(new CustomEvent('toggled', {detail: {toggled: this.isToggled, id: this.id}}));
+        this.parentElement.dispatchEvent(new CustomEvent('selected', {detail: {selected: this.isSelected(), id: this.id}}));
     };
 
     getId(): number {
