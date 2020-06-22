@@ -50,7 +50,11 @@
 
     &__leading {
       @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(border, variables.$border-width solid, none);
+        @include rtl-mixins.reflexive-property(
+          border,
+          variables.$border-width solid,
+          none
+        );
 
         width: variables.$leading-width;
       }
@@ -58,7 +62,11 @@
 
     &__trailing {
       @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(border, none, variables.$border-width solid);
+        @include rtl-mixins.reflexive-property(
+          border,
+          none,
+          variables.$border-width solid
+        );
 
         flex-grow: 1;
       }
@@ -88,7 +96,7 @@
 
     &--upgraded .mdc-floating-label--float-above {
       @include feature-targeting-mixins.targets($feat-structure) {
-        max-width: calc(100% / .75);
+        max-width: calc(100% / 0.75);
       }
     }
   }
@@ -151,7 +159,11 @@
   }
 }
 
-@mixin shape-radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $radius: shape-functions.prop-value($radius);
 
@@ -163,7 +175,11 @@
   $radius: list.nth($radius, 1);
 
   .mdc-notched-outline__leading {
-    @include shape-mixins.radius(shape-functions.mask-radius($radius, 1 0 0 1), $rtl-reflexive: true, $query: $query);
+    @include shape-mixins.radius(
+      shape-functions.mask-radius($radius, 1 0 0 1),
+      $rtl-reflexive: true,
+      $query: $query
+    );
 
     @include feature-targeting-mixins.targets($feat-structure) {
       @if ($radius > variables.$leading-width) {
@@ -181,16 +197,28 @@
   }
 
   .mdc-notched-outline__trailing {
-    @include shape-mixins.radius(shape-functions.mask-radius($radius, 0 1 1 0), $rtl-reflexive: true, $query: $query);
+    @include shape-mixins.radius(
+      shape-functions.mask-radius($radius, 0 1 1 0),
+      $rtl-reflexive: true,
+      $query: $query
+    );
   }
 }
 
 @mixin floating-label-float-position(
-  $positionY, $positionX: 0%, $scale: .75, $query: feature-targeting-functions.all()) {
+  $positionY,
+  $positionX: 0%,
+  $scale: 0.75,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include floating-label-mixins.float-position(
-    $positionY + variables.$label-adjust, $positionX, 1, $query: $query);
+    $positionY + variables.$label-adjust,
+    $positionX,
+    1,
+    $query: $query
+  );
 
   .mdc-floating-label--float-above {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -201,7 +229,12 @@
   // Two selectors to ensure we select the appropriate class when applied from this component or a parent component.
   &.mdc-notched-outline--upgraded,
   .mdc-notched-outline--upgraded {
-    @include floating-label-mixins.float-position($positionY, $positionX, $scale, $query: $query);
+    @include floating-label-mixins.float-position(
+      $positionY,
+      $positionX,
+      $scale,
+      $query: $query
+    );
 
     // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {
@@ -223,11 +256,19 @@
 ///     center aligned in all the places.
 ///
 @mixin floating-label-float-position-absolute(
-  $positionY, $positionX: 0, $scale: .75, $query: feature-targeting-functions.all()) {
+  $positionY,
+  $positionX: 0,
+  $scale: 0.75,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include floating-label-mixins.float-position(
-    $positionY + variables.$label-adjust-absolute, $positionX, 1, $query: $query);
+    $positionY + variables.$label-adjust-absolute,
+    $positionX,
+    1,
+    $query: $query
+  );
 
   .mdc-floating-label--float-above {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -239,7 +280,11 @@
   &.mdc-notched-outline--upgraded,
   .mdc-notched-outline--upgraded {
     @include floating-label-mixins.float-position(
-      $positionY, $positionX, $scale, $query: $query);
+      $positionY,
+      $positionX,
+      $scale,
+      $query: $query
+    );
 
     // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {
