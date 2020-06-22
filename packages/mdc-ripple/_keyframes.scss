@@ -37,7 +37,8 @@
     }
 
     to {
-      transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+      transform: translate(var(--mdc-ripple-fg-translate-end, 0))
+        scale(var(--mdc-ripple-fg-scale, 1));
     }
   }
 
