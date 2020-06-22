@@ -27,7 +27,10 @@
 /// only visible in high-contrast mode. The target element should be a child of
 /// a relatively positioned top-level element (i.e. a ::before pseudo-element).
 ///
-@mixin transparent-border($query: feature-targeting-functions.all()) {
+/// @param {number} $border-width - The width of the transparent border.
+/// @param {string} $border-style - The style of the transparent border.
+///
+@mixin transparent-border($border-width: 1px, $border-style: solid, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
@@ -37,7 +40,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    border: 1px solid transparent;
+    border: $border-width $border-style transparent;
     border-radius: inherit;
     content: '';
   }

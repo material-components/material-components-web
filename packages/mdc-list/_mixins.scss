@@ -21,6 +21,7 @@
 @use "sass:list";
 @use "sass:map";
 @use "@material/density/functions" as density-functions;
+@use "@material/dom/mixins" as dom-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/theme/mixins" as theme-mixins;
 @use "@material/shape/functions" as shape-functions;
@@ -82,6 +83,15 @@
   .mdc-list-item {
     @include feature-targeting-mixins.targets($feat-structure) {
       @include item-base_;
+    }
+
+    &:not(.mdc-list-item--selected):focus::before {
+      @include dom-mixins.transparent-border($query: $query);
+    }
+
+    &.mdc-list-item--selected::before {
+      @include dom-mixins.transparent-border(
+        $border-width: 3px, $border-style: double, $query: $query);
     }
 
     @include list-item-padding-variant(
