@@ -284,10 +284,15 @@ $pagination-rows-per-page-select-height: 36px;
 @mixin cell-height($height, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  .mdc-data-table__cell,
-  .mdc-data-table__pagination {
+  .mdc-data-table__cell {
     @include feature-targeting-mixins.targets($feat-structure) {
       height: $height;
+    }
+  }
+
+  .mdc-data-table__pagination {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      min-height: $height;
     }
   }
 }
