@@ -225,11 +225,6 @@ same.
 </div>
 ```
 
-### Fullwidth Select
-
-The Select Fullwidth variant takes up the entirety of the width of its parent container. To use this variant, place the
-`mdc-select--fullwidth` modifier class on the root element.
-
 ### Additional Information
 
 #### Select with pre-selected option

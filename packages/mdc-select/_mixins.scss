@@ -165,10 +165,6 @@
 
   @include text_($query: $query);
 
-  .mdc-select--fullwidth {
-    @include fullwidth_($query: $query);
-  }
-
   .mdc-select--outlined {
     @include outlined_($query: $query);
   }
@@ -836,17 +832,6 @@
 
   &.mdc-select--focused {
     @include notched-outline-mixins.notch-offset(variables.$outlined-stroke-width, $query: $query);
-  }
-}
-
-///
-/// Sets the select to take the full width of its parent container.
-///
-@mixin fullwidth_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    width: 100%;
   }
 }
 
