@@ -1,6 +1,6 @@
 {
   "name": "@material/card",
-  "version": "7.0.0",
+  "version": "6.0.0",
   "description": "The Material Components for the web card component",
   "license": "MIT",
   "keywords": [
@@ -15,11 +15,11 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@material/elevation": "^7.0.0",
-    "@material/feature-targeting": "^7.0.0",
-    "@material/ripple": "^7.0.0",
-    "@material/rtl": "^7.0.0",
-    "@material/shape": "^7.0.0",
-    "@material/theme": "^7.0.0"
+    "@material/elevation": "^6.0.0",
+    "@material/feature-targeting": "^6.0.0",
+    "@material/ripple": "^6.0.0",
+    "@material/rtl": "^6.0.0",
+    "@material/shape": "^6.0.0",
+    "@material/theme": "^6.0.0"
   }
 }

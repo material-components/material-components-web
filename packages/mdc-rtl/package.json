@@ -1,7 +1,7 @@
 {
   "name": "@material/rtl",
   "description": "Material Components for the web RTL Scss helpers",
-  "version": "7.0.0",
+  "version": "6.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -16,6 +16,6 @@
     "directory": "packages/mdc-rtl"
   },
   "dependencies": {
-    "@material/theme": "^7.0.0"
+    "@material/theme": "^6.0.0"
   }
 }
