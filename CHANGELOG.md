@@ -572,4 +572,4 @@ removed from MDC-Web. Some of its functionalities are available in the MDC Image
 * **chips:** MDCChipSetAdapter#removeChip has been replaced with MDCChipSetAdapter#removeChipAtIndex. MDCChipSetAdapter#setSelected has been replaced with MDCChipSetAdapter#selectChipAtIndex
 * **density:** Renamed sass mixins & variables in MDC Data Table - `mdc-data-table-header-row-height` => `mdc-data-table-header-cell-height` & `mdc-data-table-row-height` => `mdc-data-table-cell-height`. Also removed `mdc-button--dense` variant, use button's density mixin instead.
 
-**Note: For changes below v4.0.0, see the [changelog archive](CHANGELOG_ARCHIVE.md).**
+**Note: For older changes, see the [changelog archive](CHANGELOG_ARCHIVE.md).**
