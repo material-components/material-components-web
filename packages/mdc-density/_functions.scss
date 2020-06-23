@@ -80,12 +80,22 @@
 ///   // 48px
 ///
 @function prop-value($density-config, $density-scale, $property-name) {
-  @if (meta.type-of($density-scale) == "string" and
-  list.index($list: variables.$supported-scales, $value: $density-scale) == null) {
+  @if (
+    meta.type-of($density-scale) ==
+      'string' and
+      list.index($list: variables.$supported-scales, $value: $density-scale) ==
+      null
+  ) {
     @error "mdc-density: Supported density scales #{variables.$supported-scales}, but received #{$density-scale}.";
   }
 
-  @if (list.index($list: variables.$supported-properties, $value: $property-name) == null) {
+  @if (
+    list.index(
+        $list: variables.$supported-properties,
+        $value: $property-name
+      ) ==
+      null
+  ) {
     @error "mdc-density: Supported density properties #{variables.$supported-properties}," +
       "but received #{$property-name}.";
   }
@@ -96,7 +106,9 @@
   @if map.has-key($property-scale-map, $density-scale) {
     $value: map.get($property-scale-map, $density-scale);
   } @else {
-    $value: map.get($property-scale-map, default) + $density-scale * variables.$interval;
+    $value: map.get($property-scale-map, default) +
+      $density-scale *
+      variables.$interval;
   }
 
   $min-value: map.get($property-scale-map, variables.$minimum-scale);
