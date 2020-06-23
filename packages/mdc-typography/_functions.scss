@@ -25,7 +25,6 @@
 
 @function set-styles_($base-styles, $scale-styles, $override-styles) {
   @each $style, $style-props in $scale-styles {
-
     // Merge base properties for all styles.
     $style-props: map.merge($base-styles, $style-props);
 
@@ -41,4 +40,8 @@
 
 @function get-letter-spacing_($tracking, $font-size) {
   @return $tracking / ($font-size * 16) * 1em;
+}
+
+@function pxToRem($px) {
+  @return #{$px / 16px}rem;
 }
