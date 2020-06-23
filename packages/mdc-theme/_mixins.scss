@@ -39,7 +39,7 @@
   }
 
   @each $style in map.keys(variables.$property-values) {
-    @if $style != "background" and $style != "surface" {
+    @if $style != 'background' and $style != 'surface' {
       .mdc-theme--#{$style} {
         @include mixins.targets($feat-color) {
           @include prop(color, $style, true);
@@ -55,7 +55,7 @@
   }
 
   // CSS rules for using primary and secondary (plus light/dark variants) as background colors.
-  @each $style in ("primary", "secondary") {
+  @each $style in ('primary', 'secondary') {
     .mdc-theme--#{$style}-bg {
       @include mixins.targets($feat-color) {
         @include prop(background-color, $style, true);
@@ -78,7 +78,7 @@
 /// @param {Bool} $important - set to true to add an `!important` rule. Defaults
 ///     to false.
 @mixin property($property, $value, $gss: (), $important: false) {
-  $important-rule: if($important, "!important", "");
+  $important-rule: if($important, '!important', '');
 
   @if custom-properties.is-custom-prop($value) {
     // $value is a custom property Map
@@ -110,7 +110,7 @@
 // $style should be one of the map keys in $mdc-theme-property-values (_variables.scss), or a color value.
 // @deprecated use the `property()` mixin instead
 @mixin prop($property, $style, $important: false) {
-  $important-rule: if($important, "!important", "");
+  $important-rule: if($important, '!important', '');
 
   @if custom-properties.is-custom-prop($style) {
     @include custom-properties.apply($property, $style, $important: $important);
