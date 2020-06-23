@@ -182,7 +182,11 @@
 @mixin buffer-color($color, $query: feature-targeting-functions.all()) {
   // We need to escape the '#' character as "%23" for SVG because '#' is a reserved character in URIs.
   $color-value-for-css: theme-variables.prop-value($color);
-  $color-value-for-svg: str-replace_(string.unquote("#{$color-value-for-css}"), "#", "%23");
+  $color-value-for-svg: str-replace_(
+    string.unquote('#{$color-value-for-css}'),
+    '#',
+    '%23'
+  );
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   .mdc-linear-progress__buffer-dots {
@@ -221,12 +225,14 @@
       }
 
       @include feature-targeting-mixins.targets($feat-animation) {
-        animation: mdc-linear-progress-primary-indeterminate-translate 2s infinite linear;
+        animation: mdc-linear-progress-primary-indeterminate-translate 2s
+          infinite linear;
       }
 
       > .mdc-linear-progress__bar-inner {
         @include feature-targeting-mixins.targets($feat-animation) {
-          animation: mdc-linear-progress-primary-indeterminate-scale 2s infinite linear;
+          animation: mdc-linear-progress-primary-indeterminate-scale 2s infinite
+            linear;
         }
       }
     }
@@ -238,12 +244,14 @@
       }
 
       @include feature-targeting-mixins.targets($feat-animation) {
-        animation: mdc-linear-progress-secondary-indeterminate-translate 2s infinite linear;
+        animation: mdc-linear-progress-secondary-indeterminate-translate 2s
+          infinite linear;
       }
 
       > .mdc-linear-progress__bar-inner {
         @include feature-targeting-mixins.targets($feat-animation) {
-          animation: mdc-linear-progress-secondary-indeterminate-scale 2s infinite linear;
+          animation: mdc-linear-progress-secondary-indeterminate-scale 2s
+            infinite linear;
         }
       }
     }
@@ -299,7 +307,11 @@
 
   @if $index {
     $head: string.slice($string, 1, $index - 1);
-    $tail: str-replace_(string.slice($string, $index + string.length($search)), $search, $replace);
+    $tail: str-replace_(
+      string.slice($string, $index + string.length($search)),
+      $search,
+      $replace
+    );
 
     @return $head + $replace + $tail;
   }

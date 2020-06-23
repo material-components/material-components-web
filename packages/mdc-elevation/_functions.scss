@@ -31,7 +31,8 @@
 ///
 @function transition-value(
   $duration: variables.$transition-duration,
-  $easing: variables.$transition-timing-function) {
+  $easing: variables.$transition-timing-function
+) {
   @return #{variables.$property} #{$duration} #{$easing};
 }
 
@@ -44,6 +45,7 @@
 ///
 @function overlay-transition-value(
   $duration: variables.$transition-duration,
-  $easing: variables.$transition-timing-function) {
+  $easing: variables.$transition-timing-function
+) {
   @return #{variables.$overlay-property} #{$duration} #{$easing};
 }

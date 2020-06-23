@@ -61,7 +61,7 @@
 
   @include overlay-selector_ {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include base-mixins.emit-once("mdc-elevation/common/structure") {
+      @include base-mixins.emit-once('mdc-elevation/common/structure') {
         position: absolute;
         border-radius: inherit;
         opacity: 0;
@@ -70,12 +70,12 @@
     }
 
     @include feature-targeting-mixins.targets($feat-animation) {
-      @include base-mixins.emit-once("mdc-elevation/common/animation") {
+      @include base-mixins.emit-once('mdc-elevation/common/animation') {
         transition: functions.overlay-transition-value();
       }
     }
 
-    @include base-mixins.emit-once("mdc-elevation/common/color") {
+    @include base-mixins.emit-once('mdc-elevation/common/color') {
       @include overlay-fill-color(variables.$overlay-color, $query: $query);
     }
   }
@@ -114,7 +114,12 @@
 /// @param {Number} [$height] - The height of the elevation overlay
 /// @param {Boolean} [$has-content-sizing] - Set to false if the container has no content sizing
 ///
-@mixin overlay-dimensions($width, $height: $width, $has-content-sizing: true, $query: feature-targeting-functions.all()) {
+@mixin overlay-dimensions(
+  $width,
+  $height: $width,
+  $has-content-sizing: true,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include overlay-selector_ {
@@ -170,7 +175,12 @@
 // The $z-value must be between 0 and 24.
 // If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
 // $opacity-boost.
-@mixin elevation($z-value, $color: variables.$baseline-color, $opacity-boost: 0, $query: feature-targeting-functions.all()) {
+@mixin elevation(
+  $z-value,
+  $color: variables.$baseline-color,
+  $opacity-boost: 0,
+  $query: feature-targeting-functions.all()
+) {
   @if meta.type-of($z-value) != number or not math.is-unitless($z-value) {
     @error "$z-value must be a unitless number, but received '#{$z-value}'";
   }
@@ -192,9 +202,9 @@
   $ambient-color: rgba($color, variables.$ambient-opacity + $opacity-boost);
 
   $box-shadow: (
-    #{"#{$umbra-z-value} #{$umbra-color}"},
-    #{"#{$penumbra-z-value} #{$penumbra-color}"},
-    #{$ambient-z-value} $ambient-color,
+    #{'#{$umbra-z-value} #{$umbra-color}'},
+    #{'#{$penumbra-z-value} #{$penumbra-color}'},
+    #{$ambient-z-value} $ambient-color
   );
 
   @include shadow($box-shadow, $query: $query);

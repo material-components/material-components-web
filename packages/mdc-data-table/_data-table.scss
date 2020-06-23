@@ -28,6 +28,7 @@
 @use '@material/animation/functions';
 @use '@material/checkbox/mixins' as checkbox-mixins;
 @use '@material/density/functions' as density-functions;
+@use '@material/dom/mixins' as dom;
 @use '@material/elevation/mixins';
 @use '@material/feature-targeting/functions' as feature-targeting-functions;
 @use '@material/feature-targeting/mixins' as feature-targeting-mixins;
@@ -170,6 +171,11 @@
       overflow: hidden;
       text-align: left;
       text-overflow: ellipsis;
+
+      @include rtl-mixins.rtl {
+        /* @noflip */
+        text-align: right;
+      }
     }
   }
 
@@ -200,6 +206,16 @@
         /* @noflip */
         text-align: right;
       }
+    }
+  }
+
+  .mdc-data-table__header-cell--checkbox,
+  .mdc-data-table__cell--checkbox {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      // Set to lowest width to adapt to cell content. Cell width should adapt
+      // to row checkbox size when it is dense.
+      // NOTE: `min-width` does not seem to work on table cells.
+      width: 1px;
     }
   }
 
@@ -295,6 +311,10 @@
       top: 0;
       width: 100%;
     }
+  }
+
+  .mdc-data-table__sort-status-label {
+    @include dom.visually-hidden($query: $query);
   }
 
   @include data-table-pagination.core-styles($query: $query);

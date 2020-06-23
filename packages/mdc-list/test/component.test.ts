@@ -30,18 +30,22 @@ function getFixture() {
   wrapper.innerHTML = `
     <ul class="mdc-list" tabindex="-1">
       <li class="mdc-list-item" tabindex="0">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Fruit</span>
         <button>one</button>
       </li>
       <li class="mdc-list-item">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Potato</span>
         <a href="http://www.google.com">Link</a>
       </li>
       <li class="mdc-list-item">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Pasta</span>
         <input type="checkbox"/>
       </li>
       <li class="mdc-list-item">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Pizza</span>
         <input type="radio"/>
       </li>
@@ -57,18 +61,22 @@ function getFixtureWithDisabledItems() {
   wrapper.innerHTML = `
     <ul class="mdc-list" tabindex="-1">
       <li class="mdc-list-item" tabindex="0">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Fruit</span>
         <button>one</button>
       </li>
       <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Potato</span>
         <a href="http://www.google.com">Link</a>
       </li>
       <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Pasta</span>
         <input type="checkbox"/>
       </li>
       <li class="mdc-list-item">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Pizza</span>
         <input type="radio"/>
       </li>
@@ -85,23 +93,29 @@ function getTwoLineFixture() {
       <ul class="mdc-list mdc-list--two-line">
         <li class="mdc-list-item" tabindex="0">
           <span class="mdc-list-item__text">
-            <span class="mdc-list-item__primary-text">Fruit</span>
-            <span class="mdc-list-item__secondary-text">Secondary fruit</span>
+            <span class="mdc-list-item__ripple"></span>
+            <span class="mdc-list-item__text">
+              <span class="mdc-list-item__primary-text">Fruit</span>
+              <span class="mdc-list-item__secondary-text">Secondary fruit</span>
+            </span>
           </span>
         </li>
         <li class="mdc-list-item" tabindex="0">
+          <span class="mdc-list-item__ripple"></span>
           <span class="mdc-list-item__text">
             <span class="mdc-list-item__primary-text">Potato</span>
             <span class="mdc-list-item__secondary-text">Secondary potato</span>
           </span>
         </li>
         <li class="mdc-list-item">
+          <span class="mdc-list-item__ripple"></span>
           <span class="mdc-list-item__text">
             <span class="mdc-list-item__primary-text">Pasta</span>
             <span class="mdc-list-item__secondary-text">Secondary pasta</span>
           </span>
         </li>
         <li class="mdc-list-item">
+          <span class="mdc-list-item__ripple"></span>
           <span class="mdc-list-item__text">
             <span class="mdc-list-item__primary-text">Pizza</span>
             <span class="mdc-list-item__secondary-text">Secondary pizza</span>

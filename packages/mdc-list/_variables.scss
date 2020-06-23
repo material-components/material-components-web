@@ -21,6 +21,8 @@
 @use "@material/density/variables" as density-variables;
 @use "@material/theme/variables" as theme-variables;
 
+$ripple-target: '.mdc-list-item__ripple';
+
 $divider-color-on-light-bg: rgba(0, 0, 0, .12) !default;
 $divider-color-on-dark-bg: rgba(255, 255, 255, .2) !default;
 $side-padding: 16px !default;

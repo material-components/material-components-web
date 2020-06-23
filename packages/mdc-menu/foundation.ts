@@ -100,7 +100,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.closeAnimationEndTimerId_ = setTimeout(() => {
       // Recompute the index in case the menu contents have changed.
       const recomputedIndex = this.adapter.getElementIndex(listItem);
-      if (this.adapter.isSelectableItemAtIndex(recomputedIndex)) {
+      if (recomputedIndex >= 0 &&
+          this.adapter.isSelectableItemAtIndex(recomputedIndex)) {
         this.setSelectedIndex(recomputedIndex);
       }
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);

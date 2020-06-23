@@ -41,7 +41,7 @@
         left: 0;
         width: 100%;
         border-bottom-style: solid;
-        content: "";
+        content: '';
       }
 
       &::before {
@@ -59,7 +59,8 @@
 
     @include feature-targeting-mixins.targets($feat-animation) {
       &::after {
-        transition: functions.transition-value(transform), functions.transition-value(opacity);
+        transition: functions.transition-value(transform),
+          functions.transition-value(opacity);
       }
     }
   }

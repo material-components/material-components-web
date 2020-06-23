@@ -29,18 +29,29 @@
 @use "./variables";
 @use "./functions";
 
-@mixin radius($radius, $rtl-reflexive: false, $component-height: null, $query: feature-targeting-functions.all()) {
+@mixin radius(
+  $radius,
+  $rtl-reflexive: false,
+  $component-height: null,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    $has-multiple-corners: meta.type-of($radius) == "list" and list.length($radius) > 1;
+    $has-multiple-corners: meta.type-of($radius) == 'list' and
+      list.length($radius) > 1;
     // Even if $rtl-reflexive is true, only emit RTL styles if we can't easily tell that the given radius is symmetrical
     $needs-flip: $rtl-reflexive and $has-multiple-corners;
-    $radius: functions.resolve-radius($radius, $component-height: $component-height);
+    $radius: functions.resolve-radius(
+      $radius,
+      $component-height: $component-height
+    );
     @if not $has-multiple-corners {
       @include theme.property(border-radius, $radius);
     } @else {
-      $gss: (noflip: $needs-flip);
+      $gss: (
+        noflip: $needs-flip,
+      );
       $radii: functions.unpack-radius($radius);
       @include theme.property(
         border-top-left-radius,
@@ -67,7 +78,9 @@
     @if ($needs-flip) {
       @include rtl-mixins.rtl {
         // If it needs to be flipped, it will always have multiple corners
-        $gss: (noflip: true);
+        $gss: (
+          noflip: true,
+        );
         $radii: functions.flip-radius(functions.unpack-radius($radius));
         @include theme.property(
           border-top-left-radius,

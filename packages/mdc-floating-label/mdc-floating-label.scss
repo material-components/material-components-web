@@ -23,6 +23,6 @@
 @use "@material/base/mixins" as base-mixins;
 @use "./mixins";
 
-@include base-mixins.emit-once("mdc-floating-label") {
+@include base-mixins.emit-once('mdc-floating-label') {
   @include mixins.core-styles;
 }

@@ -26,9 +26,9 @@ import {normalizeKey} from '@material/dom/keyboard';
 
 import {MDCListAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
+import * as typeahead from './typeahead';
 import {MDCListIndex, MDCListTextAndIndex} from './types';
-
-const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
+import {preventDefaultEvent} from './events';
 
 function isNumberArray(selectedIndex: MDCListIndex): selectedIndex is number[] {
   return selectedIndex instanceof Array;
@@ -73,7 +73,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private isVertical_ = true;
   private isSingleSelectionList_ = false;
   private selectedIndex_: MDCListIndex = numbers.UNSET_INDEX;
-  private focusedItemIndex_ = numbers.UNSET_INDEX;
+  private focusedItemIndex = numbers.UNSET_INDEX;
   private useActivatedClass_ = false;
   private ariaCurrentAttrValue_: string | null = null;
   private isCheckboxList_ = false;
@@ -81,13 +81,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
   private hasTypeahead = false;
   // Transiently holds current typeahead prefix from user.
-  private typeaheadBuffer = '';
-  private typeaheadBufferClearTimeout = 0;
-  // Persistently holds most recent first character typed by user.
-  private currentFirstChar = '';
-  private readonly sortedIndexByFirstChar =
-      new Map<string, MDCListTextAndIndex[]>();
-  private sortedIndexCursor = 0;
+  private readonly typeaheadState = typeahead.initState();
+  private sortedIndexByFirstChar = new Map<string, MDCListTextAndIndex[]>();
 
   constructor(adapter?: Partial<MDCListAdapter>) {
     super({...MDCListFoundation.defaultAdapter, ...adapter});
@@ -105,7 +100,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
 
     if (this.hasTypeahead) {
-      this.initTypeaheadState();
+      this.sortedIndexByFirstChar = this.typeaheadInitSortedIndex();
     }
   }
 
@@ -137,7 +132,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   setHasTypeahead(hasTypeahead: boolean) {
     this.hasTypeahead = hasTypeahead;
     if (hasTypeahead) {
-      this.initTypeaheadState();
+      this.sortedIndexByFirstChar = this.typeaheadInitSortedIndex();
     }
   }
 
@@ -145,7 +140,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * @return Whether typeahead is currently matching a user-specified prefix.
    */
   isTypeaheadInProgress(): boolean {
-    return this.hasTypeahead && this.typeaheadBuffer.length > 0;
+    return this.hasTypeahead &&
+        typeahead.isTypingInProgress(this.typeaheadState);
   }
 
   /**
@@ -178,7 +174,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    */
   handleFocusIn(_: FocusEvent, listItemIndex: number) {
     if (listItemIndex >= 0) {
-      this.focusedItemIndex_ = listItemIndex;
+      this.focusedItemIndex = listItemIndex;
       this.adapter.setTabIndexForListItemChildren(listItemIndex, '0');
     }
   }
@@ -223,11 +219,25 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       } else if (isArrowDown || isHome) {
         event.preventDefault();
         this.focusFirstElement();
-      } else if (this.hasTypeahead && event.key.length === 1) {
-        // focus first item matching prefix
-        event.preventDefault();
-        this.typeaheadMatchItem(event.key.toLowerCase());
       }
+
+      if (this.hasTypeahead) {
+        const handleKeydownOpts: typeahead.HandleKeydownOpts = {
+          event,
+          focusItemAtIndex: (index) => {
+            this.focusItemAtIndex(index)
+          },
+          focusedItemIndex: -1,
+          isTargetListItem: isRootListItem,
+          sortedIndexByFirstChar: this.sortedIndexByFirstChar,
+          isItemAtIndexDisabled: (index) =>
+              this.adapter.listItemAtIndexHasClass(
+                  index, cssClasses.LIST_ITEM_DISABLED_CLASS),
+        };
+
+        typeahead.handleKeydown(handleKeydownOpts, this.typeaheadState);
+      }
+
       return;
     }
 
@@ -242,16 +252,16 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
 
     if ((this.isVertical_ && isArrowDown) || (!this.isVertical_ && isArrowRight)) {
-      this.preventDefaultEvent_(event);
+      preventDefaultEvent(event);
       this.focusNextElement(currentIndex);
     } else if ((this.isVertical_ && isArrowUp) || (!this.isVertical_ && isArrowLeft)) {
-      this.preventDefaultEvent_(event);
+      preventDefaultEvent(event);
       this.focusPrevElement(currentIndex);
     } else if (isHome) {
-      this.preventDefaultEvent_(event);
+      preventDefaultEvent(event);
       this.focusFirstElement();
     } else if (isEnd) {
-      this.preventDefaultEvent_(event);
+      preventDefaultEvent(event);
       this.focusLastElement();
     } else if (isEnter || isSpace) {
       if (isRootListItem) {
@@ -260,26 +270,36 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         if (target && target.tagName === 'A' && isEnter) {
           return;
         }
-        this.preventDefaultEvent_(event);
+        preventDefaultEvent(event);
 
         if (this.adapter.listItemAtIndexHasClass(
                 currentIndex, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
           return;
         }
 
-        if (isSpace && this.isTypeaheadInProgress()) {
-          // space participates in typeahead matching if in rapid typing mode
-          this.typeaheadMatchItem(' ');
-        } else {
+        if (!this.isTypeaheadInProgress()) {
           if (this.isSelectableList_()) {
             this.setSelectedIndexOnAction_(currentIndex);
           }
           this.adapter.notifyAction(currentIndex);
         }
       }
-    } else if (this.hasTypeahead && event.key.length === 1) {
-      this.preventDefaultEvent_(event);
-      this.typeaheadMatchItem(event.key.toLowerCase());
+    }
+
+    if (this.hasTypeahead) {
+      const handleKeydownOpts: typeahead.HandleKeydownOpts = {
+        event,
+        focusItemAtIndex: (index) => {
+          this.focusItemAtIndex(index)
+        },
+        focusedItemIndex: this.focusedItemIndex,
+        isTargetListItem: isRootListItem,
+        sortedIndexByFirstChar: this.sortedIndexByFirstChar,
+        isItemAtIndexDisabled: (index) => this.adapter.listItemAtIndexHasClass(
+            index, cssClasses.LIST_ITEM_DISABLED_CLASS),
+      };
+
+      typeahead.handleKeydown(handleKeydownOpts, this.typeaheadState);
     }
   }
 
@@ -292,7 +312,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
 
     this.setTabindexAtIndex_(index);
-    this.focusedItemIndex_ = index;
+    this.focusedItemIndex = index;
 
     if (this.adapter.listItemAtIndexHasClass(
             index, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
@@ -374,17 +394,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
   }
 
-  /**
-   * Ensures that preventDefault is only called if the containing element doesn't
-   * consume the event, and it will cause an unintended scroll.
-   */
-  private preventDefaultEvent_(evt: KeyboardEvent) {
-    const target = evt.target as Element;
-    const tagName = `${target.tagName}`.toLowerCase();
-    if (ELEMENTS_KEY_ALLOWED_IN.indexOf(tagName) === -1) {
-      evt.preventDefault();
-    }
-  }
 
   private setSingleSelectionAtIndex_(index: number) {
     if (this.selectedIndex_ === index) {
@@ -462,13 +471,13 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private setTabindexAtIndex_(index: number) {
-    if (this.focusedItemIndex_ === numbers.UNSET_INDEX && index !== 0) {
+    if (this.focusedItemIndex === numbers.UNSET_INDEX && index !== 0) {
       // If no list item was selected set first list item's tabindex to -1.
       // Generally, tabindex is set to 0 on first list item of list that has no preselected items.
       this.adapter.setAttributeForElementIndex(0, 'tabindex', '-1');
-    } else if (this.focusedItemIndex_ >= 0 && this.focusedItemIndex_ !== index) {
+    } else if (this.focusedItemIndex >= 0 && this.focusedItemIndex !== index) {
       this.adapter.setAttributeForElementIndex(
-          this.focusedItemIndex_, 'tabindex', '-1');
+          this.focusedItemIndex, 'tabindex', '-1');
     }
 
     this.adapter.setAttributeForElementIndex(index, 'tabindex', '0');
@@ -559,40 +568,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private focusItemAtIndex(index: number) {
     this.setTabindexAtIndex_(index);
     this.adapter.focusItemAtIndex(index);
-    this.focusedItemIndex_ = index;
-  }
-
-  /**
-   * Initializes typeahead state by indexing the current list items by primary
-   * text into the sortedIndexByFirstChar data structure.
-   */
-  private initTypeaheadState() {
-    this.sortedIndexByFirstChar.clear();
-
-    // Aggregate item text to index mapping
-    for (let i = 0; i < this.adapter.getListItemCount(); i++) {
-      const textAtIndex = this.adapter.getPrimaryTextAtIndex(i).trim();
-      if (!textAtIndex) {
-        continue;
-      }
-
-      const firstChar = textAtIndex[0].toLowerCase();
-      if (!this.sortedIndexByFirstChar.has(firstChar)) {
-        this.sortedIndexByFirstChar.set(firstChar, []);
-      }
-      this.sortedIndexByFirstChar.get(firstChar)!.push({
-        text: this.adapter.getPrimaryTextAtIndex(i).toLowerCase(),
-        index: i
-      });
-    }
-
-    // Sort the mapping
-    // TODO(b/157162694): Investigate replacing forEach with Map.values()
-    this.sortedIndexByFirstChar.forEach((values) => {
-      values.sort((first: MDCListTextAndIndex, second: MDCListTextAndIndex) => {
-        return first.index - second.index;
-      });
-    });
+    this.focusedItemIndex = index;
   }
 
   /**
@@ -609,111 +585,37 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * @return The index of the matched item, or -1 if no match.
    */
   typeaheadMatchItem(
-      nextChar: string, startingIndex?: number, skipFocus = false): number {
-    clearTimeout(this.typeaheadBufferClearTimeout);
+      nextChar: string, startingIndex?: number, skipFocus = false) {
+    const opts: typeahead.TypeaheadMatchItemOpts = {
+      focusItemAtIndex: (index) => {
+        this.focusItemAtIndex(index)
+      },
+      focusedItemIndex: startingIndex ? startingIndex : this.focusedItemIndex,
+      nextChar,
+      sortedIndexByFirstChar: this.sortedIndexByFirstChar,
+      skipFocus,
+      isItemAtIndexDisabled: (index) => this.adapter.listItemAtIndexHasClass(
+          index, cssClasses.LIST_ITEM_DISABLED_CLASS)
+    };
+    return typeahead.matchItem(opts, this.typeaheadState);
+  }
 
-    this.typeaheadBufferClearTimeout = setTimeout(() => {
-      this.clearTypeaheadBuffer();
-    }, numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
-
-    this.typeaheadBuffer += nextChar;
-
-    startingIndex =
-        startingIndex !== undefined ? startingIndex : this.focusedItemIndex_;
-    let index: number;
-    if (this.typeaheadBuffer.length === 1) {
-      index = this.matchFirstChar(startingIndex);
-    } else {
-      index = this.matchAllChars();
-    }
-
-    if (index !== -1 && !skipFocus) {
-      this.focusItemAtIndex(index);
-    }
-    return index;
+  /**
+   * Initializes the MDCListTextAndIndex data structure by indexing the current
+   * list items by primary text.
+   *
+   * @return The primary texts of all the list items sorted by first character.
+   */
+  private typeaheadInitSortedIndex() {
+    return typeahead.initSortedIndex(
+        this.adapter.getListItemCount(), this.adapter.getPrimaryTextAtIndex);
   }
 
   /**
    * Clears the typeahead buffer.
    */
   clearTypeaheadBuffer() {
-    this.typeaheadBuffer = '';
-  }
-
-  /**
-   * Matches the user's single input character in the buffer to the
-   * next option that begins with such character. Wraps around if at
-   * end of options.
-   */
-  private matchFirstChar(startingIndex: number): number {
-    const firstChar = this.typeaheadBuffer[0];
-    const itemsMatchingFirstChar = this.sortedIndexByFirstChar.get(firstChar);
-    if (!itemsMatchingFirstChar) {
-      return -1;
-    }
-
-    // Has the same firstChar been recently matched?
-    // Also, did starting index remain the same between key presses?
-    // If both hold true, simply increment index.
-    if (firstChar === this.currentFirstChar &&
-        itemsMatchingFirstChar[this.sortedIndexCursor].index ===
-            startingIndex) {
-      this.sortedIndexCursor =
-          (this.sortedIndexCursor + 1) % itemsMatchingFirstChar.length;
-
-      return itemsMatchingFirstChar[this.sortedIndexCursor].index;
-    }
-
-    // If we're here, either firstChar changed, or startingIndex has changed
-    // thus invalidating the cursor.
-    this.currentFirstChar = firstChar;
-    this.sortedIndexCursor = 0;
-
-    // Advance cursor to first item matching the firstChar that is positioned
-    // after starting item. Cursor is unchanged if there's no such item.
-    for (let cursorPosition = 0; cursorPosition < itemsMatchingFirstChar.length;
-         cursorPosition++) {
-      if (itemsMatchingFirstChar[cursorPosition].index > startingIndex) {
-        this.sortedIndexCursor = cursorPosition;
-        break;
-      }
-    }
-
-    return itemsMatchingFirstChar[this.sortedIndexCursor].index;
-  }
-
-  /**
-   * Attempts to find the next item that matches all of the typeahead buffer.
-   * Wraps around if at end of options.
-   */
-  private matchAllChars(): number {
-    const firstChar = this.typeaheadBuffer[0];
-    const itemsMatchingFirstChar = this.sortedIndexByFirstChar.get(firstChar);
-    if (!itemsMatchingFirstChar) {
-      return -1;
-    }
-
-    // Do nothing if text already matches
-    if (itemsMatchingFirstChar[this.sortedIndexCursor].text.lastIndexOf(
-            this.typeaheadBuffer, 0) === 0) {
-      return itemsMatchingFirstChar[this.sortedIndexCursor].index;
-    }
-
-    // Find next item that matches completely; if no match, we'll eventually
-    // loop around to same position
-    let cursorPosition =
-        (this.sortedIndexCursor + 1) % itemsMatchingFirstChar.length;
-    while (cursorPosition !== this.sortedIndexCursor) {
-      const matches = itemsMatchingFirstChar[cursorPosition].text.lastIndexOf(
-                          this.typeaheadBuffer, 0) === 0;
-      if (matches) {
-        this.sortedIndexCursor = cursorPosition;
-        break;
-      }
-
-      cursorPosition = (cursorPosition + 1) % itemsMatchingFirstChar.length;
-    }
-    return itemsMatchingFirstChar[this.sortedIndexCursor].index;
+    typeahead.clearBuffer(this.typeaheadState);
   }
 }
 

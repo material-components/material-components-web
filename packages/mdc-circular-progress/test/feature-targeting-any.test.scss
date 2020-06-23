@@ -5,7 +5,10 @@
   .test {
     @include circular-progress.core-styles($query: $query);
     @include circular-progress.color(red, $query: $query);
-    @include circular-progress.indeterminate-colors((red, blue, green, yellow), $query: $query);
+    @include circular-progress.indeterminate-colors(
+      (red, blue, green, yellow),
+      $query: $query
+    );
   }
 }
 

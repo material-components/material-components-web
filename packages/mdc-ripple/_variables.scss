@@ -31,22 +31,22 @@ $states-wash-duration: 15ms !default;
 // * selected/activated are applied additively to hover/focus via calculations at preprocessing time
 
 $dark-ink-opacities: (
-  hover: .04,
-  focus: .12,
-  press: .12,
-  selected: .08,
-  activated: .12
+  hover: 0.04,
+  focus: 0.12,
+  press: 0.12,
+  selected: 0.08,
+  activated: 0.12,
 ) !default;
 
 $light-ink-opacities: (
-  hover: .08,
-  focus: .24,
-  press: .24,
-  selected: .16,
-  activated: .24
+  hover: 0.08,
+  focus: 0.24,
+  press: 0.24,
+  selected: 0.16,
+  activated: 0.24,
 ) !default;
 
 // Legacy
 
-$pressed-dark-ink-opacity: .16 !default;
-$pressed-light-ink-opacity: .32 !default;
+$pressed-dark-ink-opacity: 0.16 !default;
+$pressed-light-ink-opacity: 0.32 !default;

@@ -6,37 +6,58 @@ iconId: switch
 path: /catalog/input-controls/switches/
 -->
 
-# Switches
+# Selection controls: switches
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/switch">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/switches.png" width="37" alt="Switches screenshot">
-  </a>
-</div>-->
+[Selection controls](https://material.io/components/selection-controls#usage) allow the user to select options.
 
 Switches toggle the state of a single setting on or off. They are the preferred way to adjust settings on mobile.
 
-## Design & API Documentation
+![Switch hero example for menu options](images/switch-hero.png)
 
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-switches">Material Design guidelines: Switches</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/switch">Demo</a>
-  </li>
-</ul>
+## Contents
 
-## Installation
+* [Using switches](#using-switches)
+* [Switches](#switches)
+* [Other variants](#other-variants)
+* [API](#api)
+* [Usage within web frameworks](#usage-within-web-frameworks)
+
+## Using switches
+
+Use switches to:
+
+* Toggle a single item on or off, on mobile and tablet
+* Immediately activate or deactivate something
+
+### Installing switches
 
 ```
 npm install @material/switch
 ```
 
-## Basic Usage
+### Styles
 
-### HTML Structure
+```scss
+@use "@material/switch";
+
+@include switch.core-styles;
+```
+
+### JavaScript instantiation
+
+The switch requires JavaScript to function, so it is necessary to instantiate `MDCSwitch` on the `mdc-switch` element.
+
+```js
+import {MDCSwitch} from '@material/switch';
+
+const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
+```
+
+**Note: See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.**
+
+## Switches
+
+### Switch example
 
 ```html
 <div class="mdc-switch">
@@ -49,27 +70,15 @@ npm install @material/switch
 <label for="basic-switch">off/on</label>
 ```
 
-### Styles
+### Switch states
 
-```scss
-@use "@material/switch/mdc-switch";
-```
+Switches can be on or off. Switches have enabled, hover, focused, and pressed states.
 
-### JavaScript Instantiation
+![Switch states in a table. Columns are enabled, disabled, hover, focused, pressed. Rows are on or off.](images/switch-states.png)
 
-The Switch requires JavaScript to function, so it is necessary to instantiate MDCSwitch with the HTML.
+## Other variants
 
-```js
-import {MDCSwitch} from '@material/switch';
-
-const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
-```
-
-> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
-
-## Variant
-
-### Initially Disabled Switch
+### Initially disabled switch
 
 Add the `mdc-switch--disabled` class to the `mdc-switch` element, and the `disabled` attribute to the `mdc-switch__native-control` element to disable the switch. This logic is handled by the `MDCSwitchFoundation.setDisabled` method, but you'll want to avoid a FOUC by initially adding this class and attribute.
 
@@ -84,7 +93,7 @@ Add the `mdc-switch--disabled` class to the `mdc-switch` element, and the `disab
 <label for="another-basic-switch">off/on</label>
 ```
 
-### Initially "On" Switch
+### Initially "on" switch
 
 Add the `mdc-switch--checked` class to the `mdc-switch` element, and the `checked` attribute to the `mdc-switch__native-control` element to toggle the switch to "on". This logic is handled by the `MDCSwitchFoundation.setChecked` method, but you'll want to avoid a FOUC by initially adding this class and attribute.
 
@@ -99,9 +108,9 @@ Add the `mdc-switch--checked` class to the `mdc-switch` element, and the `checke
 <label for="another-basic-switch">off/on</label>
 ```
 
-## Style Customization
+## API
 
-### CSS Classes
+### CSS classes
 
 CSS Class | Description
 --- | ---
@@ -113,7 +122,7 @@ CSS Class | Description
 `mdc-switch__thumb` | Mandatory, for the thumb element.
 `mdc-switch__native-control` | Mandatory, for the hidden input checkbox.
 
-### Sass Mixins
+### Sass mixins
 
 MDC Switch uses [MDC Theme](../mdc-theme)'s `secondary` color by default for the checked (toggled on) state.
 Use the following mixins to customize _enabled_ switches. It is not currently possible to customize the color of a
@@ -133,14 +142,14 @@ Mixin | Description
 `density($density-scale)` | Sets density scale for switch. Supported density scales are `-5`, `-4`, `-3`, `-2`, `-1`, and `0` (default).
 `ripple-states-opacity($opacity-map)` | Sets the opacity of the ripple surrounding the thumb in any of the `hover`, `focus`, or `press` states. The `opacity-map` can specify any of these states as keys. States not specified in the map resort to default opacity values.
 
-## `MDCSwitch` Properties and Methods
+### `MDCSwitch` properties and methods
 
 Property | Value Type | Description
 --- | --- | ---
 `checked` | Boolean | Setter/getter for the switch's checked state
 `disabled` | Boolean | Setter/getter for the switch's disabled state
 
-## Usage within Web Frameworks
+## Usage within web frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Switch for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
@@ -162,7 +171,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control and updates styling to reflect the disabled state. |
 | `handleChange(evt: Event) => void` | Handles a change event from the native control. |
 
-### `MDCSwitchFoundation` Event Handlers
+### `MDCSwitchFoundation` event handlers
+
 If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [`MDCSwitch`](component.ts) component's `initialSyncWithDOM` method.
 
 | Event | Element Selector | Foundation Handler |

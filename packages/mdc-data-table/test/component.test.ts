@@ -23,7 +23,7 @@
 
 import {html} from '../../../testing/dom';
 import {MDCDataTable} from '../component';
-import {cssClasses, dataAttributes, events, SortValue, strings} from '../constants';
+import {cssClasses, dataAttributes, events, selectors, SortValue, strings} from '../constants';
 
 interface ClassMap {
   [className: string]: boolean;
@@ -98,6 +98,7 @@ function mdcDataTableHeaderCellTemplate(
             ${props.content}
           </div>
           ${sortButton}
+          <div class="${cssClasses.SORT_STATUS_LABEL}"></div>
         </div>
       </th>
       `;
@@ -611,6 +612,45 @@ describe('MDCDataTable', () => {
 
          // Resets previous column sort state.
          expect(dessertHeaderCell!.getAttribute('aria-sort')).toBe('none');
+         component.destroy();
+       });
+
+    it('clicking on sortable header cell sets appropriate sort status label that is visually hidden',
+       () => {
+         const {component, root} = setupTest();
+
+         const caloriesHeaderCell = root.querySelector<HTMLElement>(
+             `[${dataAttributes.COLUMN_ID}="calories"]`);
+         expect(caloriesHeaderCell!
+                    .querySelector<HTMLElement>(
+                        selectors.SORT_STATUS_LABEL)!.textContent)
+             .toBe('');
+         caloriesHeaderCell!
+             .querySelector<HTMLElement>(
+                 `.${cssClasses.SORT_ICON_BUTTON}`)!.click();
+         expect(caloriesHeaderCell!
+                    .querySelector<HTMLElement>(
+                        selectors.SORT_STATUS_LABEL)!.textContent)
+             .toMatch(/ascending/);
+         caloriesHeaderCell!
+             .querySelector<HTMLElement>(
+                 `.${cssClasses.SORT_ICON_BUTTON}`)!.click();
+         expect(caloriesHeaderCell!
+                    .querySelector<HTMLElement>(
+                        selectors.SORT_STATUS_LABEL)!.textContent)
+             .toMatch(/descending/);
+
+         // Should reset previous column sort status label.
+         const dessertHeaderCell = root.querySelector<HTMLElement>(
+             `[${dataAttributes.COLUMN_ID}="dessert"]`);
+         dessertHeaderCell!
+             .querySelector<HTMLElement>(
+                 `.${cssClasses.SORT_ICON_BUTTON}`)!.click();
+         expect(caloriesHeaderCell!
+                    .querySelector<HTMLElement>(
+                        selectors.SORT_STATUS_LABEL)!.textContent)
+             .toBe('');
+
          component.destroy();
        });
   });

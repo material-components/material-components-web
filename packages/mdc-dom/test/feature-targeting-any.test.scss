@@ -1,9 +1,10 @@
-@use "../mixins";
-@use "@material/feature-targeting/functions" as feature;
+@use '../mixins' as dom;
+@use '@material/feature-targeting/functions' as feature;
 
 @mixin test($query) {
   .test {
-    @include mixins.transparent-border($query: $query);
+    @include dom.transparent-border($query: $query);
+    @include dom.visually-hidden($query: $query);
   }
 }
 

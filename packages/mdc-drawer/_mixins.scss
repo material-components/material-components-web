@@ -51,10 +51,22 @@
     @include subtitle-ink-color(variables.$subtitle-ink-color, $query: $query);
     @include border-color(variables.$divider-color, $query: $query);
     @include surface-fill-color(variables.$surface-fill-color, $query: $query);
-    @include item-icon-ink-color(variables.$item-inactive-ink-color, $query: $query);
-    @include item-text-ink-color(variables.$item-inactive-ink-color, $query: $query);
-    @include item-activated-icon-ink-color(variables.$item-activated-ink-color, $query: $query);
-    @include item-activated-text-ink-color(variables.$item-activated-ink-color, $query: $query);
+    @include item-icon-ink-color(
+      variables.$item-inactive-ink-color,
+      $query: $query
+    );
+    @include item-text-ink-color(
+      variables.$item-inactive-ink-color,
+      $query: $query
+    );
+    @include item-activated-icon-ink-color(
+      variables.$item-activated-ink-color,
+      $query: $query
+    );
+    @include item-activated-text-ink-color(
+      variables.$item-activated-ink-color,
+      $query: $query
+    );
     @include shape-radius(variables.$shape-radius, $query: $query);
     @include item-shape-radius(variables.$item-shape-radius, $query: $query);
     @include z-index(variables.$z-index, $query: $query);
@@ -142,7 +154,11 @@
 
   .mdc-drawer__title {
     @include typography-mixins.typography(headline6, $query: $query);
-    @include typography-mixins.text-baseline($top: 36px, $bottom: 20px, $query: $query);
+    @include typography-mixins.text-baseline(
+      $top: 36px,
+      $bottom: 20px,
+      $query: $query
+    );
   }
 
   .mdc-drawer__subtitle {
@@ -196,7 +212,10 @@
 
   .mdc-drawer--modal {
     @include scrim-fill-color(variables.$modal-scrim-color, $query: $query);
-    @include elevation-mixins.elevation(variables.$modal-elevation, $query: $query);
+    @include elevation-mixins.elevation(
+      variables.$modal-elevation,
+      $query: $query
+    );
 
     @include feature-targeting-mixins.targets($feat-structure) {
       @include rtl-mixins.reflexive-position(left, 0);
@@ -277,13 +296,21 @@
   }
 }
 
-@mixin item-shape-radius($radius, $rtl-reflexive: true, $query: functions.all()) {
-  @include list-mixins.single-line-shape-radius($radius, $rtl-reflexive, $query: $query);
+@mixin item-shape-radius(
+  $radius,
+  $rtl-reflexive: true,
+  $query: functions.all()
+) {
+  @include list-mixins.single-line-shape-radius(
+    $radius,
+    $rtl-reflexive,
+    $query: $query
+  );
 }
 
 @mixin shape-radius($radius, $query: functions.all()) {
   // Check type since $radius may be a custom property Map
-  $is-list: meta.type-of($radius) == "list";
+  $is-list: meta.type-of($radius) == 'list';
   @if $is-list and list.length($radius) > 2 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   } @else if $is-list and list.length($radius) == 2 {
@@ -303,7 +330,10 @@
 
 @mixin title-ink-color($color, $query: functions.all()) {
   $feat-color: functions.create-target($query, color);
-  $value: rgba(theme-variables.prop-value($color), variables.$title-ink-opacity);
+  $value: rgba(
+    theme-variables.prop-value($color),
+    variables.$title-ink-opacity
+  );
 
   .mdc-drawer__title {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -314,7 +344,10 @@
 
 @mixin subtitle-ink-color($color, $query: functions.all()) {
   $feat-color: functions.create-target($query, color);
-  $value: rgba(theme-variables.prop-value($color), variables.$subtitle-ink-opacity);
+  $value: rgba(
+    theme-variables.prop-value($color),
+    variables.$subtitle-ink-opacity
+  );
 
   @include list-mixins.group-subheader-ink-color($value, $query: $query);
 
@@ -336,13 +369,19 @@
 }
 
 @mixin item-icon-ink-color($color, $query: functions.all()) {
-  $value: rgba(theme-variables.prop-value($color), variables.$item-inactive-icon-ink-opacity);
+  $value: rgba(
+    theme-variables.prop-value($color),
+    variables.$item-inactive-icon-ink-opacity
+  );
 
   @include list-mixins.item-graphic-ink-color($value, $query: $query);
 }
 
 @mixin item-activated-icon-ink-color($color, $query: functions.all()) {
-  $value: rgba(theme-variables.prop-value($color), variables.$item-active-icon-ink-opacity);
+  $value: rgba(
+    theme-variables.prop-value($color),
+    variables.$item-active-icon-ink-opacity
+  );
 
   .mdc-list-item--activated {
     @include list-mixins.item-graphic-ink-color($value, $query: $query);
@@ -350,7 +389,10 @@
 }
 
 @mixin item-activated-text-ink-color($color, $query: functions.all()) {
-  $value: rgba(theme-variables.prop-value($color), variables.$item-active-text-ink-opacity);
+  $value: rgba(
+    theme-variables.prop-value($color),
+    variables.$item-active-text-ink-opacity
+  );
 
   .mdc-list-item--activated {
     @include list-mixins.item-primary-text-ink-color($value, $query: $query);
@@ -358,7 +400,10 @@
 }
 
 @mixin item-text-ink-color($color, $query: functions.all()) {
-  $value: rgba(theme-variables.prop-value($color), variables.$item-inactive-text-ink-opacity);
+  $value: rgba(
+    theme-variables.prop-value($color),
+    variables.$item-inactive-text-ink-opacity
+  );
 
   .mdc-list-item {
     @include list-mixins.item-primary-text-ink-color($value, $query: $query);
@@ -376,7 +421,10 @@
 
 @mixin scrim-fill-color($color, $query: functions.all()) {
   $feat-color: functions.create-target($query, color);
-  $value: rgba(theme-variables.prop-value($color), variables.$modal-scrim-opacity);
+  $value: rgba(
+    theme-variables.prop-value($color),
+    variables.$modal-scrim-opacity
+  );
 
   + .mdc-drawer-scrim {
     @include feature-targeting-mixins.targets($feat-color) {

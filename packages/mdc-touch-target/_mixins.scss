@@ -33,7 +33,7 @@
     @include feature-targeting-mixins.targets($feat-structure) {
       // Ensure that styles are only emitted once across all components that
       // have increased touch targets.
-      @include base-mixins.emit-once("mdc-touch-target/wrapper") {
+      @include base-mixins.emit-once('mdc-touch-target/wrapper') {
         // NOTE: Will change to `inline-block` in the future, but keeping as is
         // temporarily for backwards-compatibility.
         display: inline;
@@ -74,7 +74,11 @@
 
 /// Applies margin to the component with the increased touch target,
 /// to compensate for the touch target.
-@mixin margin($component-height, $component-width: null, $query: functions.all()) {
+@mixin margin(
+  $component-height,
+  $component-width: null,
+  $query: functions.all()
+) {
   $feat-structure: functions.create-target($query, structure);
 
   $vertical-margin-value: (variables.$height - $component-height) / 2;

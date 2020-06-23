@@ -27,8 +27,8 @@
 
 $baseline-theme-color: secondary !default;
 $mark-color: theme-variables.prop-value(on-secondary) !default;
-$border-color: rgba(theme-variables.prop-value(on-surface), .54) !default;
-$disabled-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
+$border-color: rgba(theme-variables.prop-value(on-surface), 0.54) !default;
+$disabled-color: rgba(theme-variables.prop-value(on-surface), 0.38) !default;
 
 $ripple-size: 40px !default;
 $icon-size: 18px !default;
@@ -36,7 +36,10 @@ $mark-stroke-size: 2 / 15 * $icon-size !default;
 $border-width: 2px !default;
 $transition-duration: 90ms !default;
 $item-spacing: 4px !default;
-$focus-indicator-opacity: map.get(ripple-variables.$dark-ink-opacities, focus) !default;
+$focus-indicator-opacity: map.get(
+  ripple-variables.$dark-ink-opacities,
+  focus
+) !default;
 
 $minimum-size: 28px !default;
 $maximum-size: $ripple-size !default;
@@ -51,4 +54,4 @@ $density-config: (
 
 // Manual calculation done on SVG
 $mark-path-length_: 29.7833385 !default;
-$indeterminate-checked-easing-function_: cubic-bezier(.14, 0, 0, 1) !default;
+$indeterminate-checked-easing-function_: cubic-bezier(0.14, 0, 0, 1) !default;

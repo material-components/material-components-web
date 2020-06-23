@@ -22,6 +22,7 @@
  */
 
 
+import {SortValue} from './constants';
 import {MDCDataTableRowSelectionChangedEventDetail, ProgressIndicatorStyles, SortActionEventDetail} from './types';
 
 /**
@@ -223,4 +224,17 @@ export interface MDCDataTableAdapter {
    * Sets progress indicator CSS styles to position it on top of table body.
    */
   setProgressIndicatorStyles(styles: ProgressIndicatorStyles): void;
+
+  /**
+   * Sets appropriate sort status label by header cell index. Skips setting sort
+   * status label if header cell is not sortable.
+   *
+   * Example status label to set for sortValue:
+   *
+   *   - `SortValue.ASCENDING`: 'Sorted in ascending order'
+   *   - `SortValue.DESCENDING`: 'Sorted in descending order'
+   *   - `SortValue.NONE`: '' (Empty string)
+   */
+  setSortStatusLabelByHeaderCellIndex(
+      columnIndex: number, sortValue: SortValue): void;
 }

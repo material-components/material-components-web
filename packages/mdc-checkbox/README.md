@@ -47,7 +47,9 @@ npm install @material/checkbox
 @include form-field.core-styles;
 ```
 
-### Javascript instantiation
+**Note: The form field styles are only required when the checkbox is used with the form field.**
+
+### JavaScript instantiation
 
 The checkbox will work without JavaScript, but you can enhance it with a ripple interaction effect by instantiating `MDCCheckbox` on the `mdc-checkbox` element. To activate the ripple effect upon interacting with the label, you must also instantiate `MDCFormField` on the `mdc-form-field` element and set the `MDCCheckbox` instance as its `input`.
 
@@ -122,7 +124,7 @@ We recommend using MDC Checkbox with [MDC Form Field](../mdc-form-field) for enh
 
 Checkboxes can be selected, unselected, or indeterminate. Checkboxes have enabled, disabled, hover, focused, and pressed states.
 
-![Checkbox states in an array. Columns are enabled, disabled, hover, focused, pressed. Rows are selected, unselected, or indeterminite](images/checkbox-states.png)
+![Checkbox states in a table. Columns are enabled, disabled, hover, focused, pressed. Rows are selected, unselected, or indeterminite](images/checkbox-states.png)
 
 ## Other variants
 

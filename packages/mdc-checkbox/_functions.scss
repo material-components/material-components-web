@@ -23,10 +23,18 @@
 @use "@material/animation/functions";
 @use "./variables";
 
-@function transition-enter($property, $delay: 0ms, $duration: variables.$transition-duration) {
+@function transition-enter(
+  $property,
+  $delay: 0ms,
+  $duration: variables.$transition-duration
+) {
   @return functions.enter($property, $duration, $delay);
 }
 
-@function transition-exit($property, $delay: 0ms, $duration: variables.$transition-duration) {
+@function transition-exit(
+  $property,
+  $delay: 0ms,
+  $duration: variables.$transition-duration
+) {
   @return functions.exit-temporary($property, $duration, $delay);
 }
