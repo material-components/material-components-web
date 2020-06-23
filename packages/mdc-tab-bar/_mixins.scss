@@ -70,7 +70,10 @@
 ///
 /// @param {Number} $density-scale Density scale value. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
 ///
-@mixin stacked-density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin stacked-density(
+  $density-scale,
+  $query: feature-targeting-functions.all()
+) {
   $height: density-functions.prop-value(
     $density-config: variables.$stacked-density-config,
     $density-scale: $density-scale,
@@ -95,6 +98,10 @@
   $query: feature-targeting-functions.all()
 ) {
   .mdc-tab-scroller {
-    @include tab-scroller-mixins.transition($duration-ms, $timing-function: $timing-function, $query: $query);
+    @include tab-scroller-mixins.transition(
+      $duration-ms,
+      $timing-function: $timing-function,
+      $query: $query
+    );
   }
 }
