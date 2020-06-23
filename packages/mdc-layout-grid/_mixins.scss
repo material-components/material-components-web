@@ -80,19 +80,24 @@
     @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
 
-  $percent: math.percentage($span / map.get(variables.$columns, $size));
+  @if $span == 0 {
+    display: none;
+  } @else {
+    $percent: math.percentage($span / map.get(variables.$columns, $size));
 
-  @if $percent > 100% {
-    $percent: 100%;
-  }
+    @if $percent > 100% {
+      $percent: 100%;
+    }
 
-  width: calc(#{$percent} - #{$gutter});
-  // stylelint-disable-next-line declaration-block-no-duplicate-properties
-  width: calc(#{$percent} - var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}));
+    display: block;
+    width: calc(#{$percent} - #{$gutter});
+    // stylelint-disable-next-line declaration-block-no-duplicate-properties
+    width: calc(#{$percent} - var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}));
 
-  @supports (display: grid) {
-    width: auto;
-    grid-column-end: span math.min($span, map.get(variables.$columns, $size));
+    @supports (display: grid) {
+      width: auto;
+      grid-column-end: span math.min($span, map.get(variables.$columns, $size));
+    }
   }
 }
 
