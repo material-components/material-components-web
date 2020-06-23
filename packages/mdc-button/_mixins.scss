@@ -43,12 +43,6 @@ $ripple-target: '.mdc-button__ripple';
   @include ripple($query);
 }
 
-@mixin theme-baseline($query: feature-targeting-functions.all()) {
-  .mdc-button {
-    @include density(variables.$density-scale, $query: $query);
-  }
-}
-
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // button styles. It is recommended that most users use `mdc-button-core-styles` instead.
 @mixin without-ripple($query: feature-targeting-functions.all()) {
@@ -62,6 +56,7 @@ $ripple-target: '.mdc-button__ripple';
   .mdc-button {
     @include base_($query);
     @include shape-radius(variables.$shape-radius, $query: $query);
+    @include density(variables.$density-scale, $query: $query);
     @include container-fill-color(transparent, $query);
     @include disabled-container-fill-color(transparent, $query);
     // The icon CSS class overrides styles defined in the .material-icons CSS
