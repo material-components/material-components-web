@@ -30,7 +30,11 @@
 /// @param {number} $border-width - The width of the transparent border.
 /// @param {string} $border-style - The style of the transparent border.
 ///
-@mixin transparent-border($border-width: 1px, $border-style: solid, $query: feature-targeting-functions.all()) {
+@mixin transparent-border(
+  $border-width: 1px,
+  $border-style: solid,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
