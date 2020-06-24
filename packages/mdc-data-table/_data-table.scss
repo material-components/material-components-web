@@ -317,6 +317,10 @@
     @include dom.visually-hidden($query: $query);
   }
 
+  .mdc-data-table--sticky-header {
+    @include _sticky-header($query: $query);
+  }
+
   @include data-table-pagination.core-styles($query: $query);
 }
 
@@ -325,4 +329,37 @@
     data-table-theme.$checked-icon-color,
     $query: $query
   );
+}
+
+/// Sets styles required to support sticky header row.
+@mixin _sticky-header($query: $query) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-data-table__header-cell {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+  }
+
+  // Use pseudo element to set border to bottom side of header cell.
+  // Applying `border-bottom` to header cell element does not work on vertical
+  // scroll for header row is sticky and table is set to
+  // `border-collapse: collapse`.
+  .mdc-data-table__header-cell:after {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      bottom: 0;
+      content: '';
+      left: 0;
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  .mdc-data-table__row:first-child {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      border-top: 0;
+    }
+  }
 }

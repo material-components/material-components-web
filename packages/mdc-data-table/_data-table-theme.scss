@@ -25,6 +25,7 @@
 // selectors.
 
 @use 'sass:list';
+@use 'sass:meta';
 @use '@material/animation/functions';
 @use '@material/checkbox/mixins' as checkbox-mixins;
 @use '@material/density/functions' as density-functions;
@@ -34,6 +35,7 @@
 @use '@material/icon-button/mixins' as icon-button-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
+@use '@material/shape/functions' as shape-functions;
 @use '@material/theme/mixins' as theme-mixins;
 @use '@material/theme/variables' as variables2; // for mdc-theme-prop-value.
 @use '@material/typography/mixins' as typography-mixins;
@@ -42,7 +44,7 @@
 @use '@material/select/mixins' as select-theme;
 
 $fill-color: surface !default;
-$header-row-fill-color: inherit !default;
+$header-row-fill-color: surface !default;
 $row-fill-color: inherit !default;
 $selected-row-fill-color: rgba(
   theme-variables.prop-value(primary),
@@ -133,7 +135,8 @@ $pagination-rows-per-page-select-height: 36px;
 ) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
-  .mdc-data-table__header-row {
+  // Set background color to cell instead of row to support sticky header.
+  .mdc-data-table__header-cell {
     @include feature-targeting-mixins.targets($feat-color) {
       @include theme-mixins.prop('background-color', $color);
     }
@@ -183,6 +186,11 @@ $pagination-rows-per-page-select-height: 36px;
 @mixin divider-color($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
+  .mdc-data-table__header-cell:after {
+    @include feature-targeting-mixins.targets($feat-color) {
+      border-bottom-color: $color;
+    }
+  }
   .mdc-data-table__pagination-rows-per-page-select {
     @include select-theme.outline-color($color, $query: $query);
   }
@@ -197,6 +205,13 @@ $pagination-rows-per-page-select-height: 36px;
 
 @mixin divider-size($size, $query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-data-table__header-cell:after {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      border-bottom-style: solid;
+      border-bottom-width: $size;
+    }
+  }
 
   .mdc-data-table__row,
   .mdc-data-table__pagination {
@@ -246,12 +261,62 @@ $pagination-rows-per-page-select-height: 36px;
   }
 }
 
+///
+/// Sets rounded shape radius to data table.
+/// @param {Number|List} $radius - Shape radius in `border-radius` CSS format.
+/// @param {Boolean} $rtl-reflexive - Set to `true` to flip radius corners in
+///     RTL context.
+///
 @mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
   $query: feature-targeting-functions.all()
 ) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
   @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+
+  // Apply same border radius as parent to leading & trailing header cells.
+  // Header cells have explicite background color applied which requires border
+  // radius to take its parent rounded shape.
+  $border-radius: shape-functions.unpack-radius($radius);
+  $top-left-radius: shape-functions.resolve-radius(list.nth($border-radius, 1));
+  $top-right-radius: shape-functions.resolve-radius(
+    list.nth($border-radius, 2)
+  );
+
+  .mdc-data-table__header-cell:first-child {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include theme-mixins.property(border-top-left-radius, $top-left-radius);
+
+      @include rtl-mixins.rtl {
+        @include theme-mixins.property(
+          border-top-right-radius,
+          if($rtl-reflexive, $top-left-radius, $top-right-radius)
+        );
+
+        border-top-left-radius: 0;
+      }
+    }
+  }
+
+  .mdc-data-table__header-cell:last-child {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include theme-mixins.property(
+        border-top-right-radius,
+        $top-right-radius
+      );
+
+      @include rtl-mixins.rtl {
+        @include theme-mixins.property(
+          border-top-left-radius,
+          if($rtl-reflexive, $top-right-radius, $top-left-radius)
+        );
+
+        border-top-right-radius: 0;
+      }
+    }
+  }
 }
 
 @mixin stroke-size($size, $query: feature-targeting-functions.all()) {
@@ -348,4 +413,19 @@ $pagination-rows-per-page-select-height: 36px;
 
   @include cell-height($height, $query: $query);
   @include header-cell-height(get-header-cell-height($height), $query: $query);
+}
+
+///
+/// Sets maximum height of data table. Use this to make table vertically
+/// scrollable.
+/// @param {Number} $height
+///
+@mixin max-height($height, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-data-table__table-container {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      max-height: $height;
+    }
+  }
 }

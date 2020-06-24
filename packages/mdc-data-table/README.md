@@ -353,6 +353,7 @@ Event constant | Event name | Event detail | Description
 CSS Class | Description
 --- | ---
 `mdc-data-table` | Mandatory. The root DOM element containing `table` and other supporting elements.
+`mdc-data-table--sticky-header` | Optional. Modifier class name added to root element to make header row sticky (fixed) on vertical scroll. (Note: Sticky header feature is not compatible with IE11 browsers.)
 `mdc-data-table__table-container` | Mandatory. Container of Table element. Used for horizontal overflowing of table content.
 `mdc-data-table__table` | Mandatory. Table element. Added to `table` HTML tag.
 `mdc-data-table__header-row` | Mandatory. Table header row element. Added to `thead > tr` HTML tag.
