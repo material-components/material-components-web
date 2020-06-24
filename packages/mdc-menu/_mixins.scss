@@ -35,6 +35,7 @@
   $feat-structure: functions.create-target($query, structure);
 
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  // prettier-ignore
   @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // Customize the menu-surface and contained list to match the mdc-menu styles.

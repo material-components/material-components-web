@@ -48,6 +48,7 @@
   $feat-color: functions.create-target($query, color);
   $feat-structure: functions.create-target($query, structure);
 
+  // prettier-ignore
   @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-card {

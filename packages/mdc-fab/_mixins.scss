@@ -46,6 +46,7 @@ $ripple-target: '.mdc-fab__ripple';
   // postcss-bem-linter: define fab
 
   @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
+  // prettier-ignore
   @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-fab {

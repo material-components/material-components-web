@@ -60,6 +60,7 @@ $ripple-target: '.mdc-chip__ripple';
   @include trailing-icon-size(variables.$trailing-icon-size, $query: $query);
   @include trailing-icon-margin($query: $query);
   @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
+  // prettier-ignore
   @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-chip {
