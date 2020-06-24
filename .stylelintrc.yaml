@@ -1,7 +1,9 @@
 # Keep this file in sync with internal sass/stylelint/stylelintrc.yaml file.
 plugins:
   - stylelint-scss
+  - stylelint-prettier
 rules:
+  prettier/prettier: true
   # This list is to be verified with tests in `e2e_test.js`, in order to verify that each rule is
   # functioning, and that this file does not contain typos.
   block-closing-brace-newline-after:
