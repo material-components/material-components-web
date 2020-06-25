@@ -56,8 +56,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
       getSelectedMenuItem: () => null,
-      getSelectedIndex: () => -1,
-      setSelectedIndex: () => undefined,
       hasLabel: () => false,
       floatLabel: () => undefined,
       getLabelWidth: () => 0,
@@ -97,6 +95,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   private readonly leadingIcon: MDCSelectIconFoundation|undefined;
   private readonly helperText: MDCSelectHelperTextFoundation|undefined;
 
+  // Index of the currently selected menu item.
+  private selectedIndex: number = numbers.UNSET_INDEX;
   // VALUE_ATTR values of the menu items.
   private menuItemValues: string[] = [];
   // Disabled state
@@ -124,7 +124,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
   getSelectedIndex(): number {
-    return this.adapter.getSelectedIndex();
+    return this.selectedIndex;
   }
 
   setSelectedIndex(index: number, closeMenu = false) {
@@ -132,14 +132,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       return;
     }
 
-    if (index === numbers.UNSET_INDEX) {
-      this.adapter.setSelectedText('');
-    } else {
-      this.adapter.setSelectedText(
-          this.adapter.getMenuItemTextAtIndex(index).trim());
-    }
-
-    this.adapter.setSelectedIndex(index);
+    this.removeSelectionAtIndex(this.selectedIndex);
+    this.setSelectionAtIndex(index);
 
     if (closeMenu) {
       this.adapter.closeMenu();
@@ -230,7 +224,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   layoutOptions() {
     this.menuItemValues = this.adapter.getMenuItemValues();
     const selectedIndex = this.menuItemValues.indexOf(this.getValue());
-    this.adapter.setSelectedIndex(selectedIndex);
+    this.setSelectionAtIndex(selectedIndex);
   }
 
   handleMenuOpened() {
@@ -239,8 +233,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
 
     // Menu should open to the last selected element, should open to first menu item otherwise.
-    const selectedIndex = this.getSelectedIndex();
-    const focusItemIndex = selectedIndex >= 0 ? selectedIndex : 0;
+    const focusItemIndex = this.selectedIndex >= 0 ? this.selectedIndex : 0;
     this.adapter.focusMenuItemAtIndex(focusItemIndex);
   }
 
@@ -329,7 +322,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
         isSpace && this.adapter.isTypeaheadInProgress()) {
       const key = isSpace ? ' ' : event.key;
       const typeaheadNextIndex =
-          this.adapter.typeaheadMatchItem(key, this.getSelectedIndex());
+          this.adapter.typeaheadMatchItem(key, this.selectedIndex);
       if (typeaheadNextIndex >= 0) {
         this.setSelectedIndex(typeaheadNextIndex);
       }
@@ -342,12 +335,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
 
     // Increment/decrement index as necessary and open menu.
-    if (arrowUp && this.getSelectedIndex() > 0) {
-      this.setSelectedIndex(this.getSelectedIndex() - 1);
+    if (arrowUp && this.selectedIndex > 0) {
+      this.setSelectedIndex(this.selectedIndex - 1);
     } else if (
-        arrowDown &&
-        this.getSelectedIndex() < this.adapter.getMenuItemCount() - 1) {
-      this.setSelectedIndex(this.getSelectedIndex() + 1);
+        arrowDown && this.selectedIndex < this.adapter.getMenuItemCount() - 1) {
+      this.setSelectedIndex(this.selectedIndex + 1);
     }
 
     this.openMenu();
@@ -415,8 +407,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
         !this.adapter.hasClass(cssClasses.DISABLED)) {
       // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
       // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
-      return this.getSelectedIndex() !== numbers.UNSET_INDEX &&
-          (this.getSelectedIndex() !== 0 || Boolean(this.getValue()));
+      return this.selectedIndex !== numbers.UNSET_INDEX &&
+          (this.selectedIndex !== 0 || Boolean(this.getValue()));
     }
     return this.customValidity;
   }
@@ -462,6 +454,28 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       if (this.helperText) {
         this.helperText.setValidity(this.isValid());
       }
+    }
+  }
+
+  private setSelectionAtIndex(index: number) {
+    this.selectedIndex = index;
+
+    if (index === numbers.UNSET_INDEX) {
+      this.adapter.setSelectedText('');
+      return;
+    }
+
+    this.adapter.setSelectedText(
+        this.adapter.getMenuItemTextAtIndex(index).trim());
+    this.adapter.addClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
+    this.adapter.setAttributeAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
+  }
+
+  private removeSelectionAtIndex(index: number) {
+    if (index !== numbers.UNSET_INDEX) {
+      this.adapter.removeClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
+      this.adapter.setAttributeAtIndex(
+          index, strings.ARIA_SELECTED_ATTR, 'false');
     }
   }
 }

@@ -203,16 +203,6 @@ export interface MDCSelectAdapter {
   getMenuItemAttr(menuItem: Element, attr: string): string | null;
 
   /**
-   * Returns the selected index.
-   */
-  getSelectedIndex(): number;
-
-  /**
-   * Sets the selected index in the menu.
-   */
-  setSelectedIndex(index: number): void;
-
-  /**
    * Adds the class name on the menu item at the given index.
    */
   addClassAtIndex(index: number, className: string): void;

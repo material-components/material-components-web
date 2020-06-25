@@ -198,12 +198,11 @@ describe('MDCListFoundation', () => {
            .toHaveBeenCalledWith(2, 'tabindex', '0');
      });
 
-  it('#handleFocusOut sets tabindex=0 to previously focused item when focus' +
-         'leaves list that has no selection',
+  it('#handleFocusOut sets tabindex=0 to first item when focus leaves single selection list that has no ' +
+         'selection',
      () => {
        const {foundation, mockAdapter} = setupTest();
 
-       foundation['focusedItemIndex'] = 3;
        foundation.setSingleSelection(true);
        mockAdapter.getListItemCount.and.returnValue(4);
        mockAdapter.isFocusInsideList.and.returnValue(false);
@@ -213,7 +212,7 @@ describe('MDCListFoundation', () => {
        foundation.handleFocusOut(event, 3);
        jasmine.clock().tick(1);
        expect(mockAdapter.setAttributeForElementIndex)
-           .toHaveBeenCalledWith(3, 'tabindex', '0');
+           .toHaveBeenCalledWith(0, 'tabindex', '0');
      });
 
   it('#handleFocusOut does not set tabindex=0 to selected list item when focus moves to next list item.',
@@ -690,8 +689,7 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(1);
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(0, strings.ARIA_SELECTED, 'true');
-       expect(mockAdapter.setAttributeForElementIndex)
-           .toHaveBeenCalledWith(0, 'tabindex', '0');
+       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
      });
 
   it('#handleKeydown does not select the list item when' +
@@ -733,9 +731,7 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(1);
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(0, strings.ARIA_SELECTED, 'true');
-       expect(mockAdapter.setAttributeForElementIndex)
-           .toHaveBeenCalledWith(0, 'tabindex', '0');
-       ;
+       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
      });
 
   it('#handleKeydown space key when singleSelection=true does not select an element is isRootListItem=false',
@@ -797,8 +793,7 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(2);
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(0, strings.ARIA_SELECTED, 'true');
-       expect(mockAdapter.setAttributeForElementIndex)
-           .not.toHaveBeenCalledWith(0, strings.ARIA_SELECTED, 'false');
+       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
      });
 
   it('#handleKeydown space key is triggered 2x when singleSelection is true on second ' +
@@ -820,8 +815,7 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(2);
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(1, strings.ARIA_SELECTED, 'true');
-       expect(mockAdapter.setAttributeForElementIndex)
-           .toHaveBeenCalledWith(0, 'tabindex', '-1');
+       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
      });
 
   it('#handleKeydown bail out early if event origin doesnt have a mdc-list-item ancestor from the current list',
@@ -997,7 +991,7 @@ describe('MDCListFoundation', () => {
                       (args: any) => JSON.stringify(args) ==
                           JSON.stringify([0, 'tabindex', '0']))
                   .length)
-           .toEqual(1);
+           .toEqual(2);
      });
 
   it('#handleClick when toggleCheckbox=false does not change the checkbox state',
@@ -1183,13 +1177,7 @@ describe('MDCListFoundation', () => {
            .not.toHaveBeenCalledWith(2, strings.ARIA_CURRENT, 'false');
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(2, strings.ARIA_CURRENT, 'page');
-
-       expect(mockAdapter.setAttributeForElementIndex.calls.allArgs()
-                  .filter(
-                      (args: any) => JSON.stringify(args) ==
-                          JSON.stringify([2, strings.ARIA_CURRENT, 'page']))
-                  .length)
-           .toEqual(1);
+       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
      });
 
   it('#setSelectedIndex should set aria-selected as default option in the absence of aria-selected on pre-selected ' +
@@ -1206,12 +1194,7 @@ describe('MDCListFoundation', () => {
            .not.toHaveBeenCalledWith(2, jasmine.any(String), 'false');
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(2, strings.ARIA_SELECTED, 'true');
-       expect(mockAdapter.setAttributeForElementIndex.calls.allArgs()
-                  .filter(
-                      (args: any) => JSON.stringify(args) ==
-                          JSON.stringify([2, strings.ARIA_SELECTED, 'true']))
-                  .length)
-           .toEqual(1);
+       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
      });
 
   it('#setSelectedIndex sets aria-current="false" to previously selected index and sets aria-current without any token' +

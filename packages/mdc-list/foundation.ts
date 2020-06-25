@@ -21,9 +21,6 @@
  * THE SOFTWARE.
  */
 
-// TODO(b/152410470): Remove trailing underscores from private properties
-// tslint:disable:strip-private-property-underscore
-
 import {MDCFoundation} from '@material/base/foundation';
 import {normalizeKey} from '@material/dom/keyboard';
 
@@ -178,7 +175,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   handleFocusIn(_: FocusEvent, listItemIndex: number) {
     if (listItemIndex >= 0) {
       this.focusedItemIndex = listItemIndex;
-      this.adapter.setAttributeForElementIndex(listItemIndex, 'tabindex', '0');
       this.adapter.setTabIndexForListItemChildren(listItemIndex, '0');
     }
   }
@@ -188,7 +184,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    */
   handleFocusOut(_: FocusEvent, listItemIndex: number) {
     if (listItemIndex >= 0) {
-      this.adapter.setAttributeForElementIndex(listItemIndex, 'tabindex', '-1');
       this.adapter.setTabIndexForListItemChildren(listItemIndex, '-1');
     }
 
@@ -198,7 +193,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
      */
     setTimeout(() => {
       if (!this.adapter.isFocusInsideList()) {
-        this.setTabindexToFirstSelectedOrFocusedItem();
+        this.setTabindexToFirstSelectedItem_();
       }
     }, 0);
   }
@@ -230,7 +225,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         const handleKeydownOpts: typeahead.HandleKeydownOpts = {
           event,
           focusItemAtIndex: (index) => {
-            this.focusItemAtIndex(index);
+            this.focusItemAtIndex(index)
           },
           focusedItemIndex: -1,
           isTargetListItem: isRootListItem,
@@ -315,6 +310,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     if (index === numbers.UNSET_INDEX) {
       return;
     }
+
+    this.setTabindexAtIndex_(index);
+    this.focusedItemIndex = index;
 
     if (this.adapter.listItemAtIndexHasClass(
             index, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
@@ -411,12 +409,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       this.adapter.removeClassForElementIndex(
           this.selectedIndex_ as number, selectedClassName);
     }
-
+    this.adapter.addClassForElementIndex(index, selectedClassName);
     this.setAriaForSingleSelectionAtIndex_(index);
-    this.setTabindexAtIndex_(index);
-    if (index !== numbers.UNSET_INDEX) {
-      this.adapter.addClassForElementIndex(index, selectedClassName);
-    }
 
     this.selectedIndex_ = index;
   }
@@ -439,12 +433,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
           this.selectedIndex_ as number, ariaAttribute, 'false');
     }
 
-    if (index !== numbers.UNSET_INDEX) {
-      const ariaAttributeValue =
-          isAriaCurrent ? this.ariaCurrentAttrValue_ : 'true';
-      this.adapter.setAttributeForElementIndex(
-          index, ariaAttribute, ariaAttributeValue as string);
-    }
+    const ariaAttributeValue = isAriaCurrent ? this.ariaCurrentAttrValue_ : 'true';
+    this.adapter.setAttributeForElementIndex(
+        index, ariaAttribute, ariaAttributeValue as string);
   }
 
   /**
@@ -481,27 +472,15 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
   private setTabindexAtIndex_(index: number) {
     if (this.focusedItemIndex === numbers.UNSET_INDEX && index !== 0) {
-      // If some list item was selected set first list item's tabindex to -1.
-      // Generally, tabindex is set to 0 on first list item of list that has no
-      // preselected items.
+      // If no list item was selected set first list item's tabindex to -1.
+      // Generally, tabindex is set to 0 on first list item of list that has no preselected items.
       this.adapter.setAttributeForElementIndex(0, 'tabindex', '-1');
     } else if (this.focusedItemIndex >= 0 && this.focusedItemIndex !== index) {
       this.adapter.setAttributeForElementIndex(
           this.focusedItemIndex, 'tabindex', '-1');
     }
 
-    // Set the previous selection's tabindex to -1. We need this because
-    // in selection menus that are not visible, programmatically setting an
-    // option will not change focus but will change where tabindex should be 0.
-    if (!(this.selectedIndex_ instanceof Array) &&
-        this.selectedIndex_ !== index) {
-      this.adapter.setAttributeForElementIndex(
-          this.selectedIndex_, 'tabindex', '-1');
-    }
-
-    if (index !== numbers.UNSET_INDEX) {
-      this.adapter.setAttributeForElementIndex(index, 'tabindex', '0');
-    }
+    this.adapter.setAttributeForElementIndex(index, 'tabindex', '0');
   }
 
   /**
@@ -511,8 +490,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     return this.isSingleSelectionList_ || this.isCheckboxList_ || this.isRadioList_;
   }
 
-  private setTabindexToFirstSelectedOrFocusedItem() {
-    let targetIndex = this.focusedItemIndex >= 0 ? this.focusedItemIndex : 0;
+  private setTabindexToFirstSelectedItem_() {
+    let targetIndex = 0;
+
     if (this.isSelectableList_()) {
       if (typeof this.selectedIndex_ === 'number' && this.selectedIndex_ !== numbers.UNSET_INDEX) {
         targetIndex = this.selectedIndex_;
@@ -539,8 +519,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       if (this.isCheckboxList_) {
         throw new Error('MDCListFoundation: Expected array of index for checkbox based list but got number: ' + index);
       }
-      return this.isIndexInRange_(index) ||
-          this.isSingleSelectionList_ && index === numbers.UNSET_INDEX;
+      return this.isIndexInRange_(index);
     } else {
       return false;
     }
@@ -587,6 +566,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private focusItemAtIndex(index: number) {
+    this.setTabindexAtIndex_(index);
     this.adapter.focusItemAtIndex(index);
     this.focusedItemIndex = index;
   }
@@ -608,7 +588,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       nextChar: string, startingIndex?: number, skipFocus = false) {
     const opts: typeahead.TypeaheadMatchItemOpts = {
       focusItemAtIndex: (index) => {
-        this.focusItemAtIndex(index);
+        this.focusItemAtIndex(index)
       },
       focusedItemIndex: startingIndex ? startingIndex : this.focusedItemIndex,
       nextChar,
