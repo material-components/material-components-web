@@ -169,6 +169,7 @@ class CssBundleFactory {
         'mdc.notched-outline': getAbsolutePath('/packages/mdc-notched-outline/mdc-notched-outline.scss'),
         'mdc.radio': getAbsolutePath('/packages/mdc-radio/mdc-radio.scss'),
         'mdc.ripple': getAbsolutePath('/packages/mdc-ripple/mdc-ripple.scss'),
+        'mdc.segmented-button': getAbsolutePath('/packages/mdc-segmented-button/styles.scss'),
         'mdc.select': getAbsolutePath('/packages/mdc-select/mdc-select.scss'),
         'mdc.slider': getAbsolutePath('/packages/mdc-slider/mdc-slider.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
