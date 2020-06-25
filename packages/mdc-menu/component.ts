@@ -21,16 +21,21 @@
  * THE SOFTWARE.
  */
 
+// TODO(b/152410470): Remove trailing underscores from private properties
+// tslint:disable:strip-private-property-underscore
+
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
 import {closest} from '@material/dom/ponyfill';
 import {MDCList, MDCListFactory} from '@material/list/component';
+import {numbers as listConstants} from '@material/list/constants';
 import {MDCListFoundation} from '@material/list/foundation';
-import {MDCListActionEvent} from '@material/list/types';
+import {MDCListActionEvent, MDCListIndex} from '@material/list/types';
 import {MDCMenuSurface, MDCMenuSurfaceFactory} from '@material/menu-surface/component';
 import {Corner} from '@material/menu-surface/constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuDistance} from '@material/menu-surface/types';
+
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, DefaultFocusState, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
@@ -170,6 +175,38 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
    */
   get items(): Element[] {
     return this.list_ ? this.list_.listElements : [];
+  }
+
+  /**
+   * Turns on/off the underlying list's single selection mode. Used mainly
+   * by select menu.
+   *
+   * @param singleSelection Whether to enable single selection mode.
+   */
+  set singleSelection(singleSelection: boolean) {
+    if (this.list_) {
+      this.list_.singleSelection = singleSelection;
+    }
+  }
+
+  /**
+   * Retrieves the selected index. Only applicable to select menus.
+   * @return The selected index, which is a number for single selection and
+   *     radio lists, and an array of numbers for checkbox lists.
+   */
+  get selectedIndex(): MDCListIndex {
+    return this.list_ ? this.list_.selectedIndex : listConstants.UNSET_INDEX;
+  }
+
+  /**
+   * Sets the selected index of the list. Only applicable to select menus.
+   * @param index The selected index, which is a number for single selection and
+   *     radio lists, and an array of numbers for checkbox lists.
+   */
+  set selectedIndex(index: MDCListIndex) {
+    if (this.list_) {
+      this.list_.selectedIndex = index;
+    }
   }
 
   set quickOpen(quickOpen: boolean) {

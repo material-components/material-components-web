@@ -80,6 +80,8 @@ describe('MDCSelectFoundation', () => {
       'removeClassAtIndex',
       'isTypeaheadInProgress',
       'typeaheadMatchItem',
+      'getSelectedIndex',
+      'setSelectedIndex',
     ]);
   });
 
@@ -209,7 +211,7 @@ describe('MDCSelectFoundation', () => {
   it('#handleMenuOpened focuses last selected element', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.init();
-    (foundation as any).selectedIndex = 2;
+    mockAdapter.getSelectedIndex.and.returnValue(2);
     foundation.handleMenuOpened();
     expect(mockAdapter.focusMenuItemAtIndex).toHaveBeenCalledWith(2);
     expect(mockAdapter.focusMenuItemAtIndex).toHaveBeenCalledTimes(1);
@@ -378,7 +380,7 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.getMenuItemAttr
            .withArgs(jasmine.anything(), strings.VALUE_ATTR)
            .and.returnValue('foo');
-       (foundation as any).selectedIndex = 0;
+       mockAdapter.getSelectedIndex.and.returnValue(0);
        foundation.handleBlur();
        expect(helperText.setValidity).toHaveBeenCalledWith(true);
        expect(helperText.setValidity).toHaveBeenCalledTimes(1);
@@ -549,19 +551,22 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.getMenuItemAttr
            .withArgs(jasmine.anything(), strings.VALUE_ATTR)
            .and.returnValue('two');
+       mockAdapter.getSelectedIndex.and.returnValue(2);
        foundation.init();
 
        const event = {key: 'ArrowUp', preventDefault} as any;
        foundation.handleKeydown(event);
-       expect(foundation.getSelectedIndex()).toEqual(1);
+       expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(1);
 
+       mockAdapter.getSelectedIndex.and.returnValue(1);
        foundation['isMenuOpen'] = false;
        event.key = '';
        event.keyCode = 38;  // Up
        foundation.handleKeydown(event);
-       expect(foundation.getSelectedIndex()).toEqual(0);
+       expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(0);
 
        // Further ArrowUps should be no-ops once we're at first item
+       mockAdapter.getSelectedIndex.and.returnValue(0);
        foundation['isMenuOpen'] = false;
        event.key = 'ArrowUp';
        event.keyCode = undefined;
@@ -571,7 +576,6 @@ describe('MDCSelectFoundation', () => {
        event.keyCode = 38;  // Up
        foundation.handleKeydown(event);
 
-       expect(foundation.getSelectedIndex()).toEqual(0);
        expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(2);
      });
 
@@ -586,19 +590,22 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.getMenuItemAttr
            .withArgs(jasmine.anything(), strings.VALUE_ATTR)
            .and.returnValue('zero');
+       mockAdapter.getSelectedIndex.and.returnValue(0);
        foundation.init();
 
        const event = {key: 'ArrowDown', preventDefault} as any;
        foundation.handleKeydown(event);
-       expect(foundation.getSelectedIndex()).toEqual(1);
+       expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(1);
 
+       mockAdapter.getSelectedIndex.and.returnValue(1);
        foundation['isMenuOpen'] = false;
        event.key = '';
        event.keyCode = 40;  // Down
        foundation.handleKeydown(event);
-       expect(foundation.getSelectedIndex()).toEqual(2);
+       expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(2);
 
        // Further ArrowDowns should be no-ops once we're at last item
+       mockAdapter.getSelectedIndex.and.returnValue(2);
        foundation['isMenuOpen'] = false;
        event.key = 'ArrowDown';
        event.keyCode = undefined;
@@ -608,7 +615,6 @@ describe('MDCSelectFoundation', () => {
        event.keyCode = 40;  // Down
        foundation.handleKeydown(event);
 
-       expect(foundation.getSelectedIndex()).toEqual(2);
        expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(2);
      });
 
@@ -719,7 +725,7 @@ describe('MDCSelectFoundation', () => {
         .and.returnValue('two');
 
     foundation.layoutOptions();
-    expect(foundation.getSelectedIndex()).toEqual(2);
+    expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(2);
   });
 
   it('#layoutOptions reinitializes selected empty value', () => {
@@ -730,7 +736,7 @@ describe('MDCSelectFoundation', () => {
         .and.returnValue('');
 
     foundation.layoutOptions();
-    expect(foundation.getSelectedIndex()).toEqual(0);
+    expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(0);
   });
 
   it('#setLeadingIconAriaLabel sets the aria-label of the leading icon element',
@@ -786,26 +792,13 @@ describe('MDCSelectFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
 
     foundation.setSelectedIndex(1);
-    expect(mockAdapter.addClassAtIndex)
-        .toHaveBeenCalledWith(1, cssClasses.SELECTED_ITEM_CLASS);
-    expect(mockAdapter.setAttributeAtIndex)
-        .toHaveBeenCalledWith(1, strings.ARIA_SELECTED_ATTR, 'true');
+    expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(1);
 
     foundation.setSelectedIndex(0);
-    expect(mockAdapter.removeClassAtIndex)
-        .toHaveBeenCalledWith(1, cssClasses.SELECTED_ITEM_CLASS);
-    expect(mockAdapter.setAttributeAtIndex)
-        .toHaveBeenCalledWith(1, strings.ARIA_SELECTED_ATTR, 'false');
-    expect(mockAdapter.addClassAtIndex)
-        .toHaveBeenCalledWith(0, cssClasses.SELECTED_ITEM_CLASS);
-    expect(mockAdapter.setAttributeAtIndex)
-        .toHaveBeenCalledWith(0, strings.ARIA_SELECTED_ATTR, 'true');
+    expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(0);
 
     foundation.setSelectedIndex(-1);
-    expect(mockAdapter.removeClassAtIndex)
-        .toHaveBeenCalledWith(0, cssClasses.SELECTED_ITEM_CLASS);
-    expect(mockAdapter.setAttributeAtIndex)
-        .toHaveBeenCalledWith(0, strings.ARIA_SELECTED_ATTR, 'false');
+    expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(-1);
 
     expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(3);
   });
@@ -814,10 +807,7 @@ describe('MDCSelectFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.init();
     foundation.setValue('bar');
-    expect(mockAdapter.addClassAtIndex)
-        .toHaveBeenCalledWith(1, cssClasses.SELECTED_ITEM_CLASS);
-    expect(mockAdapter.setAttributeAtIndex)
-        .toHaveBeenCalledWith(1, strings.ARIA_SELECTED_ATTR, 'true');
+    expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(1);
     expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(1);
   });
 
@@ -848,7 +838,7 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.hasClass.withArgs(cssClasses.REQUIRED).and.returnValue(true);
        mockAdapter.hasClass.withArgs(cssClasses.DISABLED)
            .and.returnValue(false);
-       (foundation as any).selectedIndex = -1;
+       mockAdapter.getSelectedIndex.and.returnValue(-1);
 
        expect(foundation.isValid()).toBe(false);
      });
@@ -863,7 +853,7 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.getMenuItemAttr
            .withArgs(jasmine.anything(), strings.VALUE_ATTR)
            .and.returnValue('');
-       (foundation as any).selectedIndex = 0;
+       mockAdapter.getSelectedIndex.and.returnValue(0);
 
        expect(foundation.isValid()).toBe(false);
      });
@@ -877,7 +867,7 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.getMenuItemAttr
            .withArgs(jasmine.anything(), strings.VALUE_ATTR)
            .and.returnValue('foo');
-       (foundation as any).selectedIndex = 0;
+       mockAdapter.getSelectedIndex.and.returnValue(0);
 
        expect(foundation.isValid()).toBe(true);
      });
@@ -889,7 +879,7 @@ describe('MDCSelectFoundation', () => {
 
     foundation.setUseDefaultValidation(false);
     foundation.setValid(false);
-    (foundation as any).selectedIndex = 2;
+    mockAdapter.getSelectedIndex.and.returnValue(2);
 
     expect(foundation.isValid()).toBe(false);
   });
@@ -903,7 +893,7 @@ describe('MDCSelectFoundation', () => {
 
        foundation.setUseDefaultValidation(false);
        foundation.setValid(true);
-       (foundation as any).selectedIndex = -1;
+       mockAdapter.getSelectedIndex.and.returnValue(-1);
 
        expect(foundation.isValid()).toBe(true);
      });
@@ -921,7 +911,7 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.getMenuItemAttr
            .withArgs(jasmine.anything(), strings.VALUE_ATTR)
            .and.returnValue('');
-       (foundation as any).selectedIndex = 0;
+       mockAdapter.getSelectedIndex.and.returnValue(0);
 
        expect(foundation.isValid()).toBe(true);
      });

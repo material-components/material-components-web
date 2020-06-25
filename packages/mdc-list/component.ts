@@ -226,7 +226,8 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
         return toggleEl!.checked;
       },
       isFocusInsideList: () => {
-        return this.root.contains(document.activeElement);
+        return this.root !== document.activeElement &&
+            this.root.contains(document.activeElement);
       },
       isRootFocused: () => document.activeElement === this.root,
       listItemAtIndexHasClass: (index, className) =>
