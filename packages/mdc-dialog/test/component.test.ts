@@ -25,7 +25,7 @@ import {supportsCssVariables} from '../../mdc-ripple/util';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {strings} from '../constants';
+import {strings, numbers} from '../constants';
 import {MDCDialog, MDCDialogFoundation, util} from '../index';
 
 function getFixture() {
@@ -592,14 +592,34 @@ describe('MDCDialog', () => {
     expect((component as any).foundation.layout).toHaveBeenCalled();
   });
 
-  it(`${strings.INITIAL_FOCUS_ATTRIBUTE} will focus when the dialog is opened`, () => {
-    const {component: component1, yesButton: yesButton1} = setupTest();
-    const {component: component2, yesButton: yesButton2} = setupTest();
+  it(`Button with ${strings.INITIAL_FOCUS_ATTRIBUTE} will be focused when the dialog is opened, with multiple initial focus buttons in DOM`, () => {
+    const {root: root1, component: component1, yesButton: yesButton1} = setupTest();
+    const {root: root2, component: component2, yesButton: yesButton2} = setupTest();
 
     const initialFocusEl1 = (component1.getDefaultFoundation() as any).adapter.getInitialFocusEl();
     expect(initialFocusEl1).toEqual(yesButton1);
 
     const initialFocusEl2 = (component2.getDefaultFoundation() as any).adapter.getInitialFocusEl();
     expect(initialFocusEl2).toEqual(yesButton2);
+
+    try {
+      document.body.appendChild(root1)
+      document.body.appendChild(root2)
+
+      component1.open()
+      jasmine.clock().tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS + 10);
+      expect(document.activeElement).toEqual(yesButton1);
+      component1.close()
+      jasmine.clock().tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
+
+      component2.open()
+      jasmine.clock().tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS + 10);
+      expect(document.activeElement).toEqual(yesButton2);
+      component2.close()
+      jasmine.clock().tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
+    } finally {
+      document.body.removeChild(root1)
+      document.body.removeChild(root2)
+    }
   });
 });
