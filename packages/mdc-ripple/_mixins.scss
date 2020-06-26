@@ -82,7 +82,11 @@
   }
 }
 
-@mixin surface($query: feature-targeting-functions.all(), $ripple-target: '&') {
+@mixin surface(
+  $query: feature-targeting-functions.all(),
+  $ripple-target: '&',
+  $include-will-change: true // TODO(b/151931961): Remove once resolved
+) {
   $feat-animation: feature-targeting-functions.create-target($query, animation);
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
@@ -95,7 +99,10 @@
     --mdc-ripple-fg-translate-start: 0;
 
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    // !!DO NOT REMOVE!! mdc-ripple-will-change-replacer
+    // TODO(b/151931961): Remove the following block once resolved
+    @if $include-will-change {
+      // !!DO NOT REMOVE!! mdc-ripple-will-change-replacer
+    }
   }
 
   #{$ripple-target}::before,
