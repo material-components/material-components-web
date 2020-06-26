@@ -20,12 +20,12 @@
 // THE SOFTWARE.
 //
 
-@use "@material/mdc-button";
-@use "@material/mdc-theme/variables" as theme-variables;
+@use "@material/button";
+@use "@material/theme/variables" as theme-variables;
 
 
-@use "@material/mdc-feature-targeting/functions" as feature-targeting-functions;
-@use "@material/mdc-typography/mixins" as typography-mixins;
+@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/typography/mixins" as typography-mixins;
 
 // Style for when element is on
 .mdc-segmented-button__segment--selected {
