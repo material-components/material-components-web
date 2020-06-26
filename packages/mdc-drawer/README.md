@@ -44,6 +44,8 @@ npm install @material/drawer
 @use "@material/list";
 
 @include drawer.core-styles;
+@include drawer.dismissible-core-styles;
+@include drawer.modal-core-styles;
 @include list.core-styles;
 ```
 
