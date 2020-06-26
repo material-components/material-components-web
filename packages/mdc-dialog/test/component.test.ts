@@ -53,7 +53,7 @@ function getFixture() {
               <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no" type="button">
                 <span class="mdc-button__label">No</span>
               </button>
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" type="button">
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" type="button" data-mdc-dialog-initial-focus>
                 <span class="mdc-button__label">Yes</span>
               </button>
             </div>
@@ -590,5 +590,16 @@ describe('MDCDialog', () => {
         jasmine.createSpy('component.foundation.layout');
     component.layout();
     expect((component as any).foundation.layout).toHaveBeenCalled();
+  });
+
+  it(`${strings.INITIAL_FOCUS_ATTRIBUTE} will focus when the dialog is opened`, () => {
+    const {component: component1, yesButton: yesButton1} = setupTest();
+    const {component: component2, yesButton: yesButton2} = setupTest();
+
+    const initialFocusEl1 = (component1.getDefaultFoundation() as any).adapter.getInitialFocusEl();
+    expect(initialFocusEl1).toEqual(yesButton1);
+
+    const initialFocusEl2 = (component2.getDefaultFoundation() as any).adapter.getInitialFocusEl();
+    expect(initialFocusEl2).toEqual(yesButton2);
   });
 });

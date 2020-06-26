@@ -197,6 +197,6 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   }
 
   private getInitialFocusEl_(): HTMLElement|null {
-    return document.querySelector(`[${strings.INITIAL_FOCUS_ATTRIBUTE}]`);
+    return this.root.querySelector(`[${strings.INITIAL_FOCUS_ATTRIBUTE}]`);
   }
 }
