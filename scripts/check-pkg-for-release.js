@@ -188,16 +188,14 @@ function checkPkgDependencyAddedInMDCPackage() {
 
 function checkCSSDependencyAddedInMDCPackage() {
   const name = getPkgName();
-  const nameMDC = `mdc-${name}`;
   if (CSS_EXCLUDES.has(name)) {
     return;
   }
 
   const src = fs.readFileSync(path.join(process.env.PWD, MASTER_CSS_RELATIVE_PATH), 'utf8');
-  const cssRules = src.match(/@material[a-z-\/]+/g);
-  const cssRule = path.join(CLI_PACKAGE_JSON.name, nameMDC);
 
-  assert.notEqual(cssRules.indexOf(cssRule), -1,
+  const shouldImportCSS = !!src.match(`${CLI_PACKAGE_JSON.name}/`);
+  assert(shouldImportCSS,
     'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' +
     'Please add ' + name + ' to ' + MASTER_CSS_RELATIVE_PATH + ' import rule before commit.');
 }
