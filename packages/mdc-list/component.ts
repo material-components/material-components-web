@@ -141,10 +141,6 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   initializeListType() {
     const checkboxListItems =
         this.root.querySelectorAll(strings.ARIA_ROLE_CHECKBOX_SELECTOR);
-    const singleSelectedListItem = this.root.querySelector(`
-      .${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
-      .${cssClasses.LIST_ITEM_SELECTED_CLASS}
-    `);
     const radioSelectedListItem =
         this.root.querySelector(strings.ARIA_CHECKED_RADIO_SELECTOR);
 
@@ -153,13 +149,6 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
           this.root.querySelectorAll(strings.ARIA_CHECKED_CHECKBOX_SELECTOR);
       this.selectedIndex =
           [].map.call(preselectedItems, (listItem: Element) => this.listElements.indexOf(listItem)) as number[];
-    } else if (singleSelectedListItem) {
-      if (singleSelectedListItem.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
-        this.foundation.setUseActivatedClass(true);
-      }
-
-      this.singleSelection = true;
-      this.selectedIndex = this.listElements.indexOf(singleSelectedListItem);
     } else if (radioSelectedListItem) {
       this.selectedIndex = this.listElements.indexOf(radioSelectedListItem);
     }
@@ -226,7 +215,8 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
         return toggleEl!.checked;
       },
       isFocusInsideList: () => {
-        return this.root.contains(document.activeElement);
+        return this.root !== document.activeElement &&
+            this.root.contains(document.activeElement);
       },
       isRootFocused: () => document.activeElement === this.root,
       listItemAtIndexHasClass: (index, className) =>

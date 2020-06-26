@@ -165,45 +165,6 @@ describe('MDCList', () => {
        expect(mockFoundation.setVerticalOrientation).toHaveBeenCalledTimes(1);
      });
 
-  it('#initializeListType sets the selectedIndex if a list item has the --selected class',
-     () => {
-       const {root, component, mockFoundation} = setupTest();
-       (root.querySelector('.mdc-list-item') as HTMLElement)
-           .classList.add(
-               MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS);
-       component.initializeListType();
-       expect(mockFoundation.setSelectedIndex).toHaveBeenCalledWith(0);
-       expect(mockFoundation.setSelectedIndex).toHaveBeenCalledTimes(1);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledWith(true);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledTimes(1);
-     });
-
-  it('#initializeListType sets the selectedIndex if a list item has the --activated class',
-     () => {
-       const {root, component, mockFoundation} = setupTest();
-       (root.querySelector('.mdc-list-item') as HTMLElement)
-           .classList.add(
-               MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
-       component.initializeListType();
-       expect(mockFoundation.setSelectedIndex).toHaveBeenCalledWith(0);
-       expect(mockFoundation.setSelectedIndex).toHaveBeenCalledTimes(1);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledWith(true);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledTimes(1);
-     });
-
-  it('#initializeListType calls the foundation if the --activated class is present',
-     () => {
-       const {root, component, mockFoundation} = setupTest();
-       (root.querySelector('.mdc-list-item') as HTMLElement)
-           .classList.add(
-               MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
-       component.initializeListType();
-       expect(mockFoundation.setUseActivatedClass).toHaveBeenCalledWith(true);
-       expect(mockFoundation.setUseActivatedClass).toHaveBeenCalledTimes(1);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledWith(true);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledTimes(1);
-     });
-
   it('#initializeListType populates selectedIndex based on preselected checkbox items',
      () => {
        const {root, component, mockFoundation} = setupTest();
