@@ -38,10 +38,6 @@
 }
 
 $error: error !default;
-$fullwidth-bottom-line-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.12
-) !default;
 $disabled-border: rgba(theme-variables.prop-value(on-surface), 0.06) !default;
 $disabled-icon: rgba(theme-variables.prop-value(on-surface), 0.3) !default;
 $bottom-line-hover: rgba(theme-variables.prop-value(on-surface), 0.87) !default;

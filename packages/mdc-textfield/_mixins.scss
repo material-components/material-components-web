@@ -69,7 +69,6 @@
 
     // Always show placeholder for text fields that has no
     // label and show only on focused state when label is present.
-    .mdc-text-field--fullwidth &,
     .mdc-text-field--no-label &,
     .mdc-text-field--focused & {
       @include placeholder-selector_ {
@@ -194,10 +193,6 @@
         @include _textarea-outlined-resizer-children($query);
       }
     }
-  }
-
-  .mdc-text-field--fullwidth {
-    @include fullwidth_($query);
   }
 
   .mdc-text-field--with-leading-icon {
@@ -1709,42 +1704,6 @@
     calc(100% / #{$scale} - #{$truncation} / #{$scale}),
     $query: $query
   );
-}
-
-// Full Width
-@mixin fullwidth_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include bottom-line-color(variables.$bottom-line-idle, $query: $query);
-  @include disabled-bottom-line-color(
-    variables.$bottom-line-idle,
-    $query: $query
-  );
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    padding: 0;
-    width: 100%;
-  }
-
-  &:not(.mdc-text-field--textarea) {
-    @include _filled-no-label($query);
-    @include ripple-mixins.states-base-color(
-      transparent,
-      $query: $query,
-      $ripple-target: variables.$ripple-target
-    );
-    @include fill-color(transparent, $query: $query);
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      display: flex;
-    }
-  }
-
-  &.mdc-text-field--textarea .mdc-text-field__resizer {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      resize: vertical;
-    }
-  }
 }
 
 // Textarea

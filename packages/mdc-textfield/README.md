@@ -91,26 +91,6 @@ See [here](../mdc-notched-outline/) for more information on using the notched ou
 
 ## Other variations
 
-### Full width
-
-Full width text fields are useful for in-depth tasks or entering complex information.
-
-```html
-<label class="mdc-text-field mdc-text-field--filled mdc-text-field--fullwidth">
-  <span class="mdc-text-field__ripple"></span>
-  <input class="mdc-text-field__input"
-         type="text"
-         placeholder="Full-Width Text Field"
-         aria-label="Full-Width Text Field">
-  <span class="mdc-line-ripple"></span>
-</label>
-```
-
-**Note: Do not use `mdc-text-field--outlined` to style a full width text field.**
-
-**Note: Do not use `mdc-floating-label` within `mdc-text-field--fullwidth`. Labels should not be
-included as part of the DOM structure of a full width text field.**
-
 ### Textarea
 
 #### Filled
@@ -378,7 +358,6 @@ CSS Class | Description
 `mdc-text-field` | Mandatory.
 `mdc-text-field--filled` | Styles the text field as a filled text field.
 `mdc-text-field--outlined` | Styles the text field as an outlined text field.
-`mdc-text-field--fullwidth` | Styles the text field as a full width text field.
 `mdc-text-field--textarea` | Indicates the text field is a `<textarea>`.
 `mdc-text-field--disabled` | Styles the text field as a disabled text field.
 `mdc-text-field--with-leading-icon` | Styles the text field as a text field with a leading icon.
