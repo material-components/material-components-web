@@ -67,14 +67,12 @@
     }
   }
 
-  @at-root {
-    @include fill-color(variables.$fill-color, $query: $query);
-    @include label-ink-color(variables.$label-ink-color, $query: $query);
-    @include min-width(variables.$min-width, $query: $query);
-    @include max-width(variables.$max-width, $query: $query);
-    @include elevation(variables.$elevation, $query: $query);
-    @include shape-radius(variables.$shape-radius, $query: $query);
-  }
+  @include fill-color(variables.$fill-color, $query: $query);
+  @include label-ink-color(variables.$label-ink-color, $query: $query);
+  @include min-width(variables.$min-width, $query: $query);
+  @include max-width(variables.$max-width, $query: $query);
+  @include elevation(variables.$elevation, $query: $query);
+  @include shape-radius(variables.$shape-radius, $query: $query);
 
   .mdc-snackbar--opening,
   .mdc-snackbar--open,
