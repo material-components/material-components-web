@@ -39,7 +39,7 @@ describe('MDCDataTableFoundation', () => {
       'getRowIdAtIndex',
       'getRowIndexByChildElement',
       'getSelectedRowCount',
-      'getTableBodyHeight',
+      'getTableContainerHeight',
       'getTableHeaderHeight',
       'isCheckboxAtRowIndexChecked',
       'isHeaderRowCheckboxChecked',
@@ -484,13 +484,13 @@ describe('MDCDataTableFoundation', () => {
   it('#showProgress Adds class name that makes the progress indicator visibile',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       mockAdapter.getTableHeaderHeight.and.returnValue('20px');
-       mockAdapter.getTableBodyHeight.and.returnValue('100px');
+       mockAdapter.getTableHeaderHeight.and.returnValue(20);
+       mockAdapter.getTableContainerHeight.and.returnValue(100);
 
        foundation.showProgress();
 
        expect(mockAdapter.setProgressIndicatorStyles)
-           .toHaveBeenCalledWith({height: '100px', top: '20px'});
+           .toHaveBeenCalledWith({height: '80px', top: '20px'});
        expect(mockAdapter.addClass)
            .toHaveBeenCalledWith(cssClasses.IN_PROGRESS);
      });

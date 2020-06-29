@@ -151,15 +151,15 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
       notifySortAction: (data) => {
         this.emit(events.SORTED, data, /** shouldBubble */ true);
       },
-      getTableBodyHeight: () => {
-        const tableBody =
-            this.root.querySelector<HTMLElement>(selectors.CONTENT);
+      getTableContainerHeight: () => {
+        const tableContainer =
+            this.root.querySelector<HTMLElement>(`.${cssClasses.CONTAINER}`);
 
-        if (!tableBody) {
-          throw new Error('MDCDataTable: Table body element not found.');
+        if (!tableContainer) {
+          throw new Error('MDCDataTable: Table container element not found.');
         }
 
-        return `${tableBody.getBoundingClientRect().height}px`;
+        return tableContainer.getBoundingClientRect().height;
       },
       getTableHeaderHeight: () => {
         const tableHeader =
@@ -169,7 +169,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
           throw new Error('MDCDataTable: Table header element not found.');
         }
 
-        return `${tableHeader.getBoundingClientRect().height}px`;
+        return tableHeader.getBoundingClientRect().height;
       },
       setProgressIndicatorStyles: (styles) => {
         const progressIndicator =

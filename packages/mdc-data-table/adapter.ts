@@ -211,14 +211,14 @@ export interface MDCDataTableAdapter {
   notifySortAction(data: SortActionEventDetail): void;
 
   /**
-   * @return Returns computed styles height of table's body element.
+   * @return Returns computed styles height of table container element.
    */
-  getTableBodyHeight(): string;
+  getTableContainerHeight(): number;
 
   /**
    * @return Returns computed styles height of table's header element.
    */
-  getTableHeaderHeight(): string;
+  getTableHeaderHeight(): number;
 
   /**
    * Sets progress indicator CSS styles to position it on top of table body.

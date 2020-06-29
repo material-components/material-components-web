@@ -27,6 +27,7 @@
 export const cssClasses = {
   CELL: 'mdc-data-table__cell',
   CELL_NUMERIC: 'mdc-data-table__cell--numeric',
+  CONTAINER: 'mdc-data-table__container',
   CONTENT: 'mdc-data-table__content',
   HEADER_CELL: 'mdc-data-table__header-cell',
   HEADER_CELL_LABEL: 'mdc-data-table__header-cell-label',

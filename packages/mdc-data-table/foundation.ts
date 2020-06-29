@@ -44,8 +44,8 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       getRowIdAtIndex: () => '',
       getRowIndexByChildElement: () => 0,
       getSelectedRowCount: () => 0,
-      getTableBodyHeight: () => '',
-      getTableHeaderHeight: () => '',
+      getTableContainerHeight: () => 0,
+      getTableHeaderHeight: () => 0,
       isCheckboxAtRowIndexChecked: () => false,
       isHeaderRowCheckboxChecked: () => false,
       isRowsSelectable: () => false,
@@ -262,12 +262,15 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
    * loading state.
    */
   showProgress() {
-    const height = this.adapter.getTableBodyHeight();
-    const top = this.adapter.getTableHeaderHeight();
+    const tableHeaderHeight = this.adapter.getTableHeaderHeight();
+    // Calculate the height of table content (Not scroll content) excluding
+    // header row height.
+    const height = this.adapter.getTableContainerHeight() - tableHeaderHeight;
+    const top = tableHeaderHeight;
 
     this.adapter.setProgressIndicatorStyles({
-      height,
-      top,
+      height: `${height}px`,
+      top: `${top}px`,
     });
     this.adapter.addClass(cssClasses.IN_PROGRESS);
   }
