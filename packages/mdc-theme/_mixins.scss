@@ -91,7 +91,7 @@
   } @else if map.has-key(variables.$property-values, $value) {
     // $value is a theme property String
     $fallback: map.get(variables.$property-values, $value);
-    $custom-prop: custom-properties.create(--mdc-theme-#{$style}, $fallback);
+    $custom-prop: custom-properties.create(--mdc-theme-#{$value}, $fallback);
     @include custom-properties.apply(
       $property,
       $custom-prop,
