@@ -22,7 +22,7 @@
 
 // Core: Define complete styles to render component, including base and theme styles
 
-@use './mdc-segmented-button-theme';
+@use './segmented-button-theme';
 
 @mixin core-styles() {
   .mdc-segmented-button {

@@ -22,6 +22,8 @@
 
 // CSS: Emit CSS required to style component
 
-@use './segment/mdc-segmented-button__segment';
+@use './segmented-button/segmented-button';
+@use './segment/segment';
 
-@include mdc-segmented-button__segment.core_styles();
+@include segmented-button.core_styles();
+@include segment.core_styles();
