@@ -28,7 +28,10 @@
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target($query, typography);
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
 
   .mdc-segmented-button {
     @include feature-targeting-mixins.targets($feat-structure) {
