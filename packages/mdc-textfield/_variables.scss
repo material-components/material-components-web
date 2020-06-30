@@ -125,6 +125,7 @@ $density-config: (
     minimum: $minimum-height,
   ),
 ) !default;
+$shape-radius: small !default;
 $label-position-y: floating-label-variables.$position-y !default;
 $label-offset: 16px !default;
 // TODO(b/154350788): Remove this variable, it's not used internally but it is

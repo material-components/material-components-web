@@ -551,12 +551,12 @@ Mixin | Description
 `hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
 `focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 `disabled-bottom-line-color($color)` | Customizes the color of the bottom line when the select is disabled.
-`shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed select variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`filled-shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets rounded shape to filled select variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `outline-color($color)` | Customizes the color of the notched outline.
 `focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
 `hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
 `disabled-outline-color($color)` | Customizes the color of the notched outline when the select is disabled.
-`outline-shape-radius($radius, $rtl-reflexive)` | Sets the border radius of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`outline-shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets the border radius of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `filled-density($density-scale)` | Sets density scale for the filled select variant (Excluding filled select with leading icon).
 `filled-with-leading-icon-density($density-scale)` | Sets density scale for filled select with leading icon.
 `outlined-density($density-scale)` | Sets density scale for outlined select (Excluding outlined select with leading icon).

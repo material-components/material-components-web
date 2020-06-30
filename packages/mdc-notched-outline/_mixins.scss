@@ -21,10 +21,11 @@
 //
 
 @use "sass:list";
+@use "@material/theme/custom-properties";
 @use "@material/theme/mixins" as theme-mixins;
+@use "@material/shape/functions" as shape-functions;
 @use "@material/shape/mixins" as shape-mixins;
 @use "@material/floating-label/mixins" as floating-label-mixins;
-@use "@material/shape/functions" as shape-functions;
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
@@ -162,44 +163,90 @@
 @mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
+  $component-height: null,
   $query: feature-targeting-functions.all()
 ) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $radius: shape-functions.prop-value($radius);
+  // Resolve the radius relative to the notched outline component's height. The
+  // component should provide its current height from its density. The resolved
+  // radius allows percentage radii to be converted to pixels.
+  $resolved-radius: shape-functions.resolve-radius(
+    $radius,
+    $component-height: $component-height
+  );
 
-  @if (list.length($radius) > 1) {
-    // stylelint-disable-next-line max-line-length
-    @warn "mdc-notched-outline-shape-radius only supports a single radius; see https://github.com/material-components/material-components-web/issues/4140";
+  // Grab the top-left radius. We'll need it to adjust the leading for the
+  // label notch if the resulting radius shape is larger than the default
+  // leading.
+  $top-left-radius: list.nth(
+    shape-functions.unpack-radius($resolved-radius),
+    1
+  );
+  $top-left-is-custom-prop: custom-properties.is-custom-prop($top-left-radius);
+  $top-left-radius-px: $top-left-radius;
+  @if ($top-left-is-custom-prop) {
+    $top-left-radius-px: custom-properties.get-fallback($top-left-radius);
   }
 
-  $radius: list.nth($radius, 1);
-
   .mdc-notched-outline__leading {
+    // mask the leading to apply the top-left and bottom-left corners
     @include shape-mixins.radius(
       shape-functions.mask-radius($radius, 1 0 0 1),
       $rtl-reflexive: true,
+      $component-height: $component-height,
       $query: $query
     );
 
     @include feature-targeting-mixins.targets($feat-structure) {
-      @if ($radius > variables.$leading-width) {
-        width: $radius;
+      @if ($top-left-radius-px > variables.$leading-width) {
+        // If the radius is bigger than the default leading width, we need to
+        // increase the leading width
+        width: $top-left-radius-px;
+        @if ($top-left-is-custom-prop) {
+          // The radius may be a custom property, in which case the above width
+          // is the IE11 fallback value.
+          /* @alternate */
+        }
+      }
+
+      @if ($top-left-is-custom-prop) {
+        // If the top-left radius is dynamic, the width of the leading is
+        // the max of whichever is larger: the default leading width or the
+        // value of the custom property.
+        $var: custom-properties.create-var($top-left-radius);
+        @supports (top: max(0%)) {
+          width: max(#{variables.$leading-width}, #{$var});
+        }
       }
     }
   }
 
-  @if ($radius > variables.$leading-width) {
-    .mdc-notched-outline__notch {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        max-width: calc(100% - #{$radius} * 2);
+  // Similar to above, adjust the max-width of the notch if we adjusted the
+  // leading's width.
+  .mdc-notched-outline__notch {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @if ($top-left-radius-px > variables.$leading-width) {
+        max-width: calc(100% - #{$top-left-radius-px} * 2);
+        @if ($top-left-is-custom-prop) {
+          /* @alternate */
+        }
+      }
+
+      @if ($top-left-is-custom-prop) {
+        $var: custom-properties.create-var($top-left-radius);
+        @supports (top: max(0%)) {
+          max-width: calc(100% - max(#{variables.$leading-width}, #{$var}) * 2);
+        }
       }
     }
   }
 
   .mdc-notched-outline__trailing {
+    // mask the leading to apply the top-right and bottom-right corners
     @include shape-mixins.radius(
       shape-functions.mask-radius($radius, 0 1 1 0),
       $rtl-reflexive: true,
+      $component-height: $component-height,
       $query: $query
     );
   }

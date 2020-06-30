@@ -21,6 +21,7 @@
 //
 
 @use "sass:list";
+@use "sass:meta";
 @use "sass:string";
 @use "@material/animation/variables" as animation-variables;
 @use "@material/density/functions" as density-functions;
@@ -39,7 +40,8 @@
 @use "@material/ripple/functions" as ripple-functions;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/shape/mixins" as shape-mixins;
-@use "@material/shape/functions";
+@use "@material/shape/functions" as shape-functions;
+@use "@material/theme/custom-properties";
 @use "@material/theme/mixins" as theme-mixins;
 @use "@material/theme/variables" as theme-variables;
 @use "@material/typography/mixins" as typography-mixins;
@@ -136,7 +138,7 @@
 
     // structural
     @include filled-height(variables.$height, $query: $query);
-    @include shape-radius(small, $query: $query);
+    @include filled-shape-radius(variables.$shape-radius, $query: $query);
     @include padding-horizontal_(
       $left: variables.$anchor-padding-left,
       $left-with-leading-icon: variables.$anchor-padding-left-with-leading-icon,
@@ -492,21 +494,29 @@
   }
 }
 
-@mixin shape-radius(
+@mixin filled-shape-radius(
   $radius,
+  $density-scale: variables.$density-scale,
   $rtl-reflexive: false,
   $query: feature-targeting-functions.all()
 ) {
-  @if list.length($radius) > 2 {
-    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  @if meta.type-of($radius) == 'list' and list.length($radius) > 2 {
+    @error "mdc-select: Invalid radius #{$radius}. Only top-left and top-right corners may be customized.";
   }
 
-  $masked-radius: functions.mask-radius($radius, 1 1 0 0);
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  $masked-radius: shape-functions.mask-radius($radius, 1 1 0 0);
 
   .mdc-select__anchor {
     @include shape-mixins.radius(
-      functions.resolve-percentage-radius(variables.$height, $masked-radius),
+      $masked-radius,
       $rtl-reflexive,
+      $component-height: $height,
       $query: $query
     );
   }
@@ -514,58 +524,149 @@
 
 @mixin outline-shape-radius(
   $radius,
+  $density-scale: variables.$density-scale,
   $rtl-reflexive: false,
   $query: feature-targeting-functions.all()
 ) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  $resolved-radius: list.nth(
-    functions.resolve-percentage-radius(
-      variables.$height,
-      functions.prop-value($radius)
-    ),
-    1
+  $height: density-functions.prop-value(
+    $density-config: variables.$density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
   );
-
-  @if (list.length(functions.prop-value($radius)) > 1) {
-    // stylelint-disable-next-line max-line-length
-    @warn "mdc-select-outline-shape-radius only supports a single radius; see https://github.com/material-components/material-components-web/issues/4140";
-  }
 
   .mdc-notched-outline {
     @include notched-outline-mixins.shape-radius(
-      $resolved-radius,
+      $radius,
       $rtl-reflexive,
+      $component-height: variables.$height,
       $query: $query
     );
   }
 
-  .mdc-select__selected-text {
-    @include shape-mixins.radius(
-      $resolved-radius,
-      $rtl-reflexive,
-      $query: $query
-    );
+  $resolved-radius: shape-functions.resolve-radius(
+    $radius,
+    $component-height: $height
+  );
+  $unpacked-radius: shape-functions.unpack-radius($resolved-radius);
+  $top-left-radius: list.nth($unpacked-radius, 1);
+  $top-left-is-custom-prop: custom-properties.is-custom-prop($top-left-radius);
+  $top-left-radius-px: $top-left-radius;
+  @if ($top-left-is-custom-prop) {
+    $top-left-radius-px: custom-properties.get-fallback($top-left-radius);
   }
 
-  @if ($resolved-radius > notched-outline-variables.$leading-width) {
+  @if (
+    $top-left-is-custom-prop or
+      $top-left-radius-px >
+      notched-outline-variables.$leading-width
+  ) {
     .mdc-select__anchor {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(
-          padding,
-          $resolved-radius + notched-outline-variables.$padding,
-          0
+      @include _apply-outline-shape-padding(
+        padding-left,
+        $top-left-radius,
+        $add-label-padding: true,
+        $query: $query
+      );
+
+      @include rtl-mixins.rtl {
+        @include feature-targeting-mixins.targets($feat-structure) {
+          /* @noflip */
+          padding-left: 0;
+        }
+        @include _apply-outline-shape-padding(
+          padding-right,
+          $top-left-radius,
+          $add-label-padding: true,
+          $query: $query
         );
       }
     }
 
     + .mdc-select-helper-text {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(
-          margin,
-          $resolved-radius + notched-outline-variables.$padding,
-          variables.$outline-label-offset
+      @include _apply-outline-shape-padding(
+        margin-left,
+        $top-left-radius,
+        $add-label-padding: true,
+        $query: $query
+      );
+
+      @include rtl-mixins.rtl {
+        @include feature-targeting-mixins.targets($feat-structure) {
+          /* @noflip */
+          margin-left: 0;
+        }
+        @include _apply-outline-shape-padding(
+          margin-right,
+          $top-left-radius,
+          $add-label-padding: true,
+          $query: $query
         );
+      }
+    }
+
+    // Unlike textfield, select does not need to re-apply leading icon padding.
+    // This is because select only has one potential leading class, not two
+    // extra classes like textfield (leading + trailing). Textfield's two extra
+    // classes can cause specificity conflicts, requiring everything to be
+    // re-applied.
+  }
+}
+
+// $add-label-padding is copied from textfield's mixin, even though select
+// always sets it to true. This is to try and keep things aligned between select
+// and textfield for when these styles are refactored into shared styles.
+@mixin _apply-outline-shape-padding(
+  $property,
+  $padding,
+  $add-label-padding: false,
+  $query: feature-targeting-functions.all()
+) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $padding-is-custom-prop: custom-properties.is-custom-prop($padding);
+  $padding-px: $padding;
+  @if ($padding-is-custom-prop) {
+    $padding-px: custom-properties.get-fallback($padding);
+  }
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    // The shape should only change the padding if the radius becomes greater
+    // than the default padding. That means we need to add more padding.
+    @if ($padding-px > notched-outline-variables.$leading-width) {
+      // Set a px value if it's greater. This is either the only value (if
+      // we're given an exact value), or an IE11 fallback if we're given a
+      // custom property and the fallback value is greater than the padding.
+      $value: $padding-px;
+      @if ($add-label-padding) {
+        // If this is for the top-left leading, add the notched outline padding
+        // to keep it aligned with the label
+        $value: $padding-px + notched-outline-variables.$padding;
+      }
+
+      /* @noflip */
+      #{$property}: $value;
+      @if ($padding-is-custom-prop) {
+        // Add an alternate GSS tag b/c this was an IE11 fallback and we're
+        // going to add another property with the var() value
+        /* @alternate */
+      }
+    }
+    @if ($padding-is-custom-prop) {
+      // If it's a custom property, always add it since the value may change
+      // to be greater than the padding at runtime, even if the fallback is
+      // not currently greater than the default padding.
+      $value: custom-properties.create-var($padding);
+      @if ($add-label-padding) {
+        $value: calc(#{$value} + #{notched-outline-variables.$padding});
+      }
+
+      @supports (top: max(0%)) {
+        // A max() function makes this runtime dynamic. The padding will be
+        // whichever is greater: the default horizontal padding, or the
+        // calculated custom property plus extra padding.
+        /* @noflip */
+        #{$property}: max(#{variables.$anchor-padding-left}, #{$value});
       }
     }
   }
@@ -947,7 +1048,7 @@
     $query: $query
   );
   @include disabled-container-fill-color(transparent, $query: $query);
-  @include outline-shape-radius(small, $query: $query);
+  @include outline-shape-radius(variables.$shape-radius, $query: $query);
   @include container-fill-color(transparent, $query: $query);
 
   @include _truncate-notched-outline-max-width(
