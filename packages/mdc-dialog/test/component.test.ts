@@ -53,7 +53,7 @@ function getFixture() {
               <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no" type="button">
                 <span class="mdc-button__label">No</span>
               </button>
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" type="button" data-mdc-dialog-initial-focus>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" type="button" ${strings.INITIAL_FOCUS_ATTRIBUTE}>
                 <span class="mdc-button__label">Yes</span>
               </button>
             </div>
@@ -596,11 +596,8 @@ describe('MDCDialog', () => {
     const {root: root1, component: component1, yesButton: yesButton1} = setupTest();
     const {root: root2, component: component2, yesButton: yesButton2} = setupTest();
 
-    const initialFocusEl1 = (component1.getDefaultFoundation() as any).adapter.getInitialFocusEl();
-    expect(initialFocusEl1).toEqual(yesButton1);
-
-    const initialFocusEl2 = (component2.getDefaultFoundation() as any).adapter.getInitialFocusEl();
-    expect(initialFocusEl2).toEqual(yesButton2);
+    expect(yesButton1.hasAttribute(strings.INITIAL_FOCUS_ATTRIBUTE)).toBe(true);
+    expect(yesButton2.hasAttribute(strings.INITIAL_FOCUS_ATTRIBUTE)).toBe(true);
 
     try {
       document.body.appendChild(root1)
