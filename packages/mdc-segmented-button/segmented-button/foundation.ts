@@ -22,9 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-
 import {MDCSegmentedButtonAdapter} from './adapter';
-
 import {SegmentDetail} from '../types';
 
 export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButtonAdapter> {

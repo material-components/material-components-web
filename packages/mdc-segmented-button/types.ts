@@ -24,7 +24,6 @@
  export interface SegmentDetail {
    index: number;
    selected: boolean;
-   // Maybe use type `string|null`
    segmentId?: string;
  }
 
