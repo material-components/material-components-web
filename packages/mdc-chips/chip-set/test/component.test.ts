@@ -46,6 +46,59 @@ const getFixture = () => {
   return el;
 };
 
+const getFixtureWithTrailingAction = () => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `
+  <div class="mdc-chip-set">
+    <div class="mdc-chip" id="chip1" role="row">
+      <div class="mdc-chip__ripple"></div>
+      <span role="gridcell">
+        <span role="button" tabindex="0" class="mdc-chip__primary-action">
+          <span class="mdc-chip__text">Chip content</span>
+        </span>
+      </span>
+      <button class="mdc-chip-trailing-action"
+        aria-label="Remove chip"
+        tabindex="-1">
+        <span class="mdc-chip-trailing-action__ripple"></span>
+        <span class="mdc-chip-trailing-action__icon material-icons">close</span>
+      </button>
+    </div>
+    <div class="mdc-chip" id="chip2" role="row">
+      <div class="mdc-chip__ripple"></div>
+      <span role="gridcell">
+        <span role="button" tabindex="0" class="mdc-chip__primary-action">
+          <span class="mdc-chip__text">Chip content</span>
+        </span>
+      </span>
+      <button class="mdc-chip-trailing-action"
+        aria-label="Remove chip"
+        tabindex="-1">
+        <span class="mdc-chip-trailing-action__ripple"></span>
+        <span class="mdc-chip-trailing-action__icon material-icons">close</span>
+      </button>
+    </div>
+    <div class="mdc-chip" id="chip3" role="row">
+      <div class="mdc-chip__ripple"></div>
+      <span role="gridcell">
+        <span role="button" tabindex="0" class="mdc-chip__primary-action">
+          <span class="mdc-chip__text">Chip content</span>
+        </span>
+      </span>
+      <button class="mdc-chip-trailing-action"
+        aria-label="Remove chip"
+        tabindex="-1">
+        <span class="mdc-chip-trailing-action__ripple"></span>
+        <span class="mdc-chip-trailing-action__icon material-icons">close</span>
+      </button>
+    </div>
+  </div>`;
+
+  const el = wrapper.firstElementChild as HTMLElement;
+  wrapper.removeChild(el);
+  return el;
+};
+
 describe('MDCChipSet', () => {
   it('attachTo returns an MDCChipSet instance', () => {
     expect(MDCChipSet.attachTo(getFixture()) instanceof MDCChipSet)
@@ -321,5 +374,44 @@ describe('MDCChipSet', () => {
     expect((component.getDefaultFoundation() as any).adapter.isRTL())
         .toBe(false);
     document.documentElement.removeChild(root);
+  });
+
+  it('remove all chips does not crash', () => {
+    const {REMOVAL_EVENT, TRAILING_ACTION_SELECTOR} = MDCChipFoundation.strings;
+    const root = getFixtureWithTrailingAction();
+    try {
+      document.body.appendChild(root)
+      const component = new MDCChipSet(root);
+      const chips = [...component.chips]
+      const lastChip = chips.pop()!
+
+      for (const chip of chips) {
+        emitEvent(chip.root, REMOVAL_EVENT, {
+          bubbles: true,
+          detail: {
+            chipId: chip.id,
+            removedAnnouncement: 'Removed',
+          },
+        });
+      }
+
+      expect(component.chips.length).toEqual(1);
+
+      // Since there is still one left, #focusChipTrailingActionAtIndex have called.
+      expect(document.activeElement).toEqual(lastChip.root.querySelector(TRAILING_ACTION_SELECTOR));
+
+      // Removing the last one does not crash.
+      emitEvent(lastChip.root, REMOVAL_EVENT, {
+        bubbles: true,
+        detail: {
+          chipId: lastChip.id,
+          removedAnnouncement: 'Removed',
+        },
+      });
+
+      expect(component.chips.length).toEqual(0);
+    } finally {
+      document.body.removeChild(root)
+    }
   });
 });
