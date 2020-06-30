@@ -20,4 +20,13 @@
 // THE SOFTWARE.
 //
 
-// Index: Forward mixins of theme modules for client use
+// Core: Define complete styles to render component, including base and theme styles
+
+@use './mdc-segmented-button-theme';
+
+@mixin core-styles() {
+  .mdc-segmented-button {
+    font-size: 0;
+    display: inline-block;
+  }
+}

@@ -20,4 +20,8 @@
 // THE SOFTWARE.
 //
 
-// TODO: Add styles.
+// CSS: Emit CSS required to style component
+
+@use './segment/mdc-segmented-button__segment';
+
+@include mdc-segmented-button__segment.core_styles();
