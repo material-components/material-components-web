@@ -297,7 +297,7 @@
 
   .mdc-snackbar__label {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, 16px, 0);
+      @include rtl-mixins.reflexive-property(padding, 16px, 8px);
       padding-bottom: 12px;
     }
   }
