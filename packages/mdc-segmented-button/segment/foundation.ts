@@ -21,15 +21,14 @@
  * THE SOFTWARE.
  */
 
-// TODO: convert this to '@material/base/foundation'
-import {MDCFoundation} from '../../mdc-base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
     return {
       // TODO: this isn't in the design doc
-      isSingleSelected: () => false,
+      isSingleSelect: () => false,
       getAttr: () => '',
       setAttr: () => undefined,
       addClass: () => undefined,
@@ -49,7 +48,7 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
 
   setSelected() {
     this.adapter.addClass('mdc-segmented-button__segment--selected');
-    if (this.adapter.isSingleSelected()) {
+    if (this.adapter.isSingleSelect()) {
       this.adapter.setAttr('aria-checked', 'true');
     } else {
       this.adapter.setAttr('aria-pressed', 'true');
@@ -58,7 +57,7 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
 
   setUnselected() {
     this.adapter.removeClass('mdc-segmented-button__segment--selected');
-    if (this.adapter.isSingleSelected()) {
+    if (this.adapter.isSingleSelect()) {
       this.adapter.setAttr('aria-checked', 'false');
     } else {
       this.adapter.setAttr('aria-pressed', 'false');
