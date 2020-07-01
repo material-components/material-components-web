@@ -55,35 +55,6 @@
   }
 }
 
-//
-// @deprecated use `resolve-radius()` and provide $component-height.
-//
-// Resolves the percentage unit radius to appropriate absolute radius value based on component height.
-// Use this for fixed height components only.
-//
-// Examples:
-//
-// mdc-shape-resolve-percentage-radius(36px, 50%) => `18px` (i.e., 36px / 2)
-//
-@function resolve-percentage-radius($component-height, $radius) {
-  $radius: prop-value($radius);
-
-  @if meta.type-of($radius) == 'list' {
-    $radius-value: ();
-
-    @each $corner in $radius {
-      $radius-value: list.append(
-        $radius-value,
-        resolve-percentage-for-corner_($component-height, $corner)
-      );
-    }
-
-    @return $radius-value;
-  } @else {
-    @return resolve-percentage-for-corner_($component-height, $radius);
-  }
-}
-
 /// Returns the resolved radius value of a shape category - `large`, `medium`,
 /// or `small`. If $radius is not a category, this function returns the value
 /// itself if valid. Valid values are numbers or percentages.
@@ -154,58 +125,6 @@
 }
 
 //
-// @deprecated use `resolve-radius()` for custom property support
-//
-// Returns $radius value of shape category - `large`, `medium` or `small`.
-// Otherwise, it returns the $radius itself if valid.
-// $radius can be a single value, or a list of up to 4 values.
-//
-// Examples:
-//
-// mdc-shape-prop-value(small) => 4px
-// mdc-shape-prop-value(small small 0 0) => 4px 4px 0 0
-//
-@function prop-value($radius) {
-  @if meta.type-of($radius) == 'list' {
-    @if list.length($radius) > 4 {
-      @error "Invalid radius: '#{$radius}' is more than 4 values";
-    }
-
-    $radius-values: ();
-
-    @for $i from 1 through list.length($radius) {
-      $corner: list.nth($radius, $i);
-
-      @if map.has-key(variables.$category-keywords, $corner) {
-        // If a category is encountered within a list of radii, apply the category's value for the corresponding corner
-        $category-value: custom-properties.get-fallback(
-          map.get(variables.$category-keywords, $corner)
-        );
-        $radius-values: list.append(
-          $radius-values,
-          list.nth(unpack-radius($category-value), $i)
-        );
-      } @else {
-        $radius-values: list.append(
-          $radius-values,
-          validate-radius-value_($corner)
-        );
-      }
-    }
-
-    @return $radius-values;
-  } @else {
-    @if map.has-key(variables.$category-keywords, $radius) {
-      @return custom-properties.get-fallback(
-        map.get(variables.$category-keywords, $radius)
-      );
-    } @else {
-      @return validate-radius-value_($radius);
-    }
-  }
-}
-
-//
 // Accepts radius number or list of 2-4 radius values and returns 4 value list with
 // masked corners as mentioned in `$masked-corners`
 //
@@ -271,27 +190,4 @@
   // Converts the percentage to number without unit. Example: 50% => 50.
   $percentage: $percentage / ($percentage * 0 + 1);
   @return $component-height * ($percentage / 100);
-}
-
-// @deprecated use `_resolve-radius-percentage()` directly
-@function resolve-percentage-for-corner_($component-height, $radius) {
-  @if meta.type-of($radius) == 'number' and math.unit($radius) == '%' {
-    @return _resolve-radius-percentage($radius, $component-height);
-  } @else {
-    @return $radius;
-  }
-}
-
-/// @deprecated
-@function validate-radius-value_($radius) {
-  $is-number: meta.type-of($radius) == 'number';
-
-  @if not(
-    $is-number or str_index($radius, 'var(') or str_index($radius, 'calc(')
-  )
-  {
-    @error "Invalid radius: #{$radius}";
-  }
-
-  @return $radius;
 }
