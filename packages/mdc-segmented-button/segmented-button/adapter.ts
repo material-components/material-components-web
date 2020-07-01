@@ -24,8 +24,10 @@
 import {SegmentDetail} from '../types';
 
 export interface MDCSegmentedButtonAdapter {
+  // TODO: not used
   getAttr(attrName: string): string;
 
+  // TODO: not used
   setAttr(attrName: string, value: string): void;
 
   hasClass(className: string): boolean;
