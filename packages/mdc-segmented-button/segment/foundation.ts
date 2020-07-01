@@ -48,10 +48,20 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
 
   setSelected() {
     this.adapter.addClass('mdc-segmented-button__segment--selected');
+    if (this.adapter.isSingleSelected()) {
+      this.adapter.setAttr('aria-checked', 'true');
+    } else {
+      this.adapter.setAttr('aria-pressed', 'true');
+    }
   }
 
   setUnselected() {
     this.adapter.removeClass('mdc-segmented-button__segment--selected');
+    if (this.adapter.isSingleSelected()) {
+      this.adapter.setAttr('aria-checked', 'false');
+    } else {
+      this.adapter.setAttr('aria-pressed', 'false');
+    }
   }
 
   getSegmentId(): string {
