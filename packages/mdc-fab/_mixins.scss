@@ -29,6 +29,7 @@
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/shape/mixins" as shape-mixins;
 @use "@material/shape/functions" as shape-functions;
+@use "@material/theme/custom-properties";
 @use "@material/theme/functions" as theme-functions;
 @use "@material/theme/mixins" as theme-mixins;
 @use "@material/touch-target/mixins" as touch-target-mixins;
@@ -213,23 +214,88 @@ $ripple-target: '.mdc-fab__ripple';
   // Offsets the outer label padding by deducting it from icon padding.
   .mdc-fab__icon {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(
-        margin,
-        $icon-padding - $label-padding,
-        $icon-padding
-      );
+      @include extended-icon-padding_($icon-padding, $label-padding);
     }
   }
 
   // For Extended FAB with text label followed by icon.
   .mdc-fab__label + .mdc-fab__icon {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(
-        margin,
+      @include extended-icon-padding_(
         $icon-padding,
-        $icon-padding - $label-padding
+        $label-padding,
+        $is-icon-at-end: true
       );
     }
+  }
+}
+
+@mixin extended-icon-padding_(
+  $icon-padding,
+  $label-padding,
+  $is-icon-at-end: false
+) {
+  $icon-padding-is-custom-prop: custom-properties.is-custom-prop($icon-padding);
+  $icon-padding-value: $icon-padding;
+  $icon-padding-px: $icon-padding;
+  $primary-direction: 'left';
+  $secondary-direction: 'right';
+
+  @if $is-icon-at-end {
+    $primary-direction: 'right';
+    $secondary-direction: 'left';
+  }
+
+  @if $icon-padding-is-custom-prop {
+    $icon-padding-value: custom-properties.create-var($icon-padding);
+    $icon-padding-px: custom-properties.get-fallback($icon-padding);
+  }
+
+  $label-padding-is-custom-prop: custom-properties.is-custom-prop(
+    $label-padding
+  );
+
+  $label-padding-value: $label-padding;
+  $label-padding-px: $label-padding;
+
+  @if $label-padding-is-custom-prop {
+    $label-padding-value: custom-properties.create-var($label-padding);
+    $label-padding-px: custom-properties.get-fallback($label-padding);
+  }
+
+  /* @noflip */
+  margin-#{$primary-direction}: $icon-padding-px - $label-padding-px;
+  @if $icon-padding-is-custom-prop or $label-padding-is-custom-prop {
+    // Use calc() for dynamic margin
+    /* @alternate */
+    /* @noflip */
+    margin-#{$primary-direction}: calc(
+      #{$icon-padding-value} - #{$label-padding-value}
+    );
+  }
+  @include rtl-mixins.rtl {
+    /* @noflip */
+    margin-#{$secondary-direction}: $icon-padding-px - $label-padding-px;
+    @if $icon-padding-is-custom-prop or $label-padding-is-custom-prop {
+      /* @alternate */
+      /* @noflip */
+      margin-#{$secondary-direction}: calc(
+        #{$icon-padding-value} - #{$label-padding-value}
+      );
+    }
+  }
+
+  @include theme-mixins.property(
+    margin-#{$secondary-direction},
+    $icon-padding,
+    $gss: (noflip: true)
+  );
+  @include rtl-mixins.rtl {
+    @include theme-mixins.property(
+      margin-#{$primary-direction},
+      $icon-padding,
+      $gss: (noflip: true)
+    );
   }
 }
 
@@ -240,7 +306,16 @@ $ripple-target: '.mdc-fab__ripple';
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    padding: 0 $label-padding;
+    @include theme-mixins.property(
+      padding-left,
+      $label-padding,
+      $gss: (noflip: true)
+    );
+    @include theme-mixins.property(
+      padding-right,
+      $label-padding,
+      $gss: (noflip: true)
+    );
   }
 }
 
