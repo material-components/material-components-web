@@ -21,7 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {MDCFoundation} from '@material/base/foundation';
+// TODO: convert this to '@material/base/foundation'
+import {MDCFoundation} from '../../mdc-base/foundation';
 import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
@@ -41,22 +42,27 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
   }
 
   isSelected(): boolean {
-    return false;
+    return this.adapter.hasClass('mdc-segmented-button__segment--selected');
   }
 
   setSelected() {
-    return;
+    this.adapter.addClass('mdc-segmented-button__segment--selected');
   }
 
   setUnselected() {
-    return;
+    this.adapter.removeClass('mdc-segmented-button__segment--selected');
   }
 
   getSegmentId(): string {
-    return '';
+    return this.adapter.getAttr('id');
   }
 
   handleClick(): void {
-    return;
+    if (this.isSelected()) {
+      this.setUnselected();
+    } else {
+      this.setSelected();
+    }
+    this.adapter.notifySelectedChange(this.isSelected());
   }
 }
