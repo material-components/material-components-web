@@ -288,6 +288,15 @@ describe('MDCChipSetFoundation', () => {
     expect(mockAdapter.focusChipTrailingActionAtIndex).toHaveBeenCalledWith(1);
   });
 
+  it('#handleChipRemoval if empty do not focus', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getChipListCount.and.returnValue(0);
+    mockAdapter.getIndexOfChipById.and.returnValue(1);
+
+    foundation.handleChipRemoval({chipId: 'chipA', removedAnnouncement: null});
+    expect(mockAdapter.focusChipTrailingActionAtIndex).not.toHaveBeenCalled();
+  });
+
   function setupChipNavigationTest(chipIds: string[], isRTL = false) {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.getIndexOfChipById.and.callFake((id: string) => {
