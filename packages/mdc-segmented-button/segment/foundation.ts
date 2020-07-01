@@ -28,6 +28,8 @@ import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
     return {
+      // TODO: this isn't in the design doc
+      isSingleSelected: () => false,
       getAttr: () => '',
       setAttr: () => undefined,
       addClass: () => undefined,
@@ -47,10 +49,20 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
 
   setSelected() {
     this.adapter.addClass('mdc-segmented-button__segment--selected');
+    if (this.adapter.isSingleSelected()) {
+      this.adapter.setAttr('aria-checked', 'true');
+    } else {
+      this.adapter.setAttr('aria-pressed', 'true');
+    }
   }
 
   setUnselected() {
     this.adapter.removeClass('mdc-segmented-button__segment--selected');
+    if (this.adapter.isSingleSelected()) {
+      this.adapter.setAttr('aria-checked', 'false');
+    } else {
+      this.adapter.setAttr('aria-pressed', 'false');
+    }
   }
 
   getSegmentId(): string {

@@ -22,6 +22,9 @@
  */
 
 export interface MDCSegmentedButtonSegmentAdapter {
+  // TODO: this isn't in the design doc
+  isSingleSelected(): boolean;
+
   getAttr(attrName: string): string;
 
   setAttr(attrName: string, value: string): void;
