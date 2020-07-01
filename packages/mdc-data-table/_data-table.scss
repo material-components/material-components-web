@@ -239,6 +239,11 @@
     );
 
     @include feature-targeting-mixins.targets($feat-structure) {
+      // Apply dummy `transform` to avoid pixel shift on sort down animation.
+      transform: rotate(0.0001deg);
+    }
+
+    @include feature-targeting-mixins.targets($feat-structure) {
       @include rtl-mixins.reflexive-box(margin, left, 4px);
     }
 
