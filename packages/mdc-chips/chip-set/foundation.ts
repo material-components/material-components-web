@@ -119,8 +119,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     this.deselectAndNotifyClients_(chipId);
     this.adapter.removeChipAtIndex(index);
     const maxIndex = this.adapter.getChipListCount() - 1;
-    if (maxIndex === -1) {
-      return
+    if (maxIndex < 0) {
+      return;
     }
     const nextIndex = Math.min(index, maxIndex);
     this.removeFocusFromChipsExcept_(nextIndex);
