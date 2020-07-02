@@ -82,7 +82,13 @@ Sample usage of text field component. Please see [Textfield](packages/mdc-textfi
 Load styles required for text field component.
 
 ```scss
-@import "@material/textfield/mdc-text-field";
+@use "@material/floating-label/mdc-floating-label";
+@use "@material/line-ripple/mdc-line-ripple";
+@use "@material/notched-outline/mdc-notched-outline";
+@use "@material/textfield";
+
+@include textfield.core-styles;
+
 ```
 
 #### JavaScript
