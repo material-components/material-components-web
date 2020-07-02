@@ -146,8 +146,10 @@
   }
 
   .mdc-circular-progress__circle-right {
-    .mdc-circular-progress__indeterminate-circle-graphic {
-      @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      position: absolute;
+
+      .mdc-circular-progress__indeterminate-circle-graphic {
         /* @noflip */
         left: -100%;
       }
