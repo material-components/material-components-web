@@ -58,7 +58,6 @@
     "@material/tab-scroller": "^7.0.0",
     "@material/textfield": "^7.0.0",
     "@material/theme": "^7.0.0",
-    "@material/tooltip": "^7.0.0",
     "@material/top-app-bar": "^7.0.0",
     "@material/touch-target": "^7.0.0",
     "@material/typography": "^7.0.0"
