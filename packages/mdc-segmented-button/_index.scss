@@ -21,3 +21,6 @@
 //
 
 // Index: Forward mixins of theme modules for client use
+
+@forward './segmented-button/segmented-button-theme';
+@forward './segment/segment-theme';
