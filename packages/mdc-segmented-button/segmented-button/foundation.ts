@@ -28,6 +28,8 @@ import {SegmentDetail} from '../types';
 export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButtonAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonAdapter {
     return {
+      getAttr: () => '',
+      setAttr: () => undefined,
       hasClass: () => false,
       getSegments: () => [],
       selectSegment: () => undefined,
@@ -41,37 +43,26 @@ export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButt
   }
 
   selectSegment(indexOrSegmentId: number | string) {
-    this.adapter.selectSegment(indexOrSegmentId);
+    return;
   }
 
   unselectSegment(indexOrSegmentId: number | string) {
-    this.adapter.unselectSegment(indexOrSegmentId);
+    return;
   }
 
   getSelectedSegments(): readonly SegmentDetail[] {
-    return this.adapter.getSegments().filter(segmentDetail => segmentDetail.selected);
+    return [];
   }
 
   isSegmentSelected(indexOrSegmentId: number | string): boolean {
-    let segment = this.adapter.getSegments().filter(segmentDetail => segmentDetail.index === indexOrSegmentId || segmentDetail.segmentId === indexOrSegmentId);
-    return segment.length > 0 && segment[0].selected;
+    return false;
   }
 
   isSingleSelect(): boolean {
-    return this.adapter.hasClass('mdc-segmented-button--single-select');
+    return false;
   }
 
   handleSelected(detail: SegmentDetail) {
-    if (this.isSingleSelect()) {
-      let selectedSegments = this.getSelectedSegments();
-      if (detail.selected) {
-        selectedSegments.filter(segmentDetail => segmentDetail.index !== detail.index)
-          .forEach(segmentDetail => this.unselectSegment(segmentDetail.index));
-      } else if (selectedSegments.length === 0) {
-        this.selectSegment(detail.index);
-        detail.selected = true;
-      }
-    }
-    this.adapter.notifySelectedChange(detail);
+    return;
   }
 }

@@ -27,7 +27,6 @@ import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
     return {
-      isSingleSelect: () => false,
       getAttr: () => '',
       setAttr: () => undefined,
       addClass: () => undefined,
@@ -42,37 +41,22 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
   }
 
   isSelected(): boolean {
-    return this.adapter.hasClass('mdc-segmented-button__segment--selected');
+    return false;
   }
 
   setSelected() {
-    this.adapter.addClass('mdc-segmented-button__segment--selected');
-    this.setAriaAttr('true');
+    return;
   }
 
   setUnselected() {
-    this.adapter.removeClass('mdc-segmented-button__segment--selected');
-    this.setAriaAttr('false');
+    return;
   }
 
   getSegmentId(): string {
-    return this.adapter.getAttr('id');
+    return '';
   }
 
   handleClick(): void {
-    if (this.isSelected()) {
-      this.setUnselected();
-    } else {
-      this.setSelected();
-    }
-    this.adapter.notifySelectedChange(this.isSelected());
-  }
-
-  private setAriaAttr(value: string) {
-    if (this.adapter.isSingleSelect()) {
-      this.adapter.setAttr('aria-checked', value);
-    } else {
-      this.adapter.setAttr('aria-pressed', value);
-    }
+    return;
   }
 }
