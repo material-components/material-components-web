@@ -27,6 +27,7 @@ import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
     return {
+      isSingleSelect: () => false,
       getAttr: () => '',
       setAttr: () => undefined,
       addClass: () => undefined,
@@ -56,7 +57,11 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
     return '';
   }
 
-  handleClick(): void {
+  handleClick() {
+    return;
+  }
+
+  private setAriaAttr(value: string) {
     return;
   }
 }
