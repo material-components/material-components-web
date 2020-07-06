@@ -180,6 +180,7 @@ class CssBundleFactory {
         'mdc.tab-scroller': getAbsolutePath('/packages/mdc-tab-scroller/mdc-tab-scroller.scss'),
         'mdc.textfield': getAbsolutePath('/packages/mdc-textfield/mdc-text-field.scss'),
         'mdc.theme': getAbsolutePath('/packages/mdc-theme/mdc-theme.scss'),
+        'mdc.tooltip': getAbsolutePath('/packages/mdc-tooltip/styles.scss'),
         'mdc.top-app-bar': getAbsolutePath('/packages/mdc-top-app-bar/mdc-top-app-bar.scss'),
         'mdc.typography': getAbsolutePath('/packages/mdc-typography/mdc-typography.scss'),
       },
