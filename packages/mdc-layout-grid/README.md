@@ -76,7 +76,7 @@ However, the Material Design guidelines do not recommend having a deeply nested 
 ### Styles
 
 ```scss
-@import "@material/layout-grid/mdc-layout-grid";
+@use "@material/layout-grid/mdc-layout-grid";
 ```
 
 ### CSS Classes
