@@ -28,8 +28,6 @@ import {SegmentDetail} from '../types';
 export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButtonAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonAdapter {
     return {
-      getAttr: () => '',
-      setAttr: () => undefined,
       hasClass: () => false,
       getSegments: () => [],
       selectSegment: () => undefined,

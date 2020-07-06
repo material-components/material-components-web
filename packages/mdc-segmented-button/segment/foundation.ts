@@ -27,7 +27,6 @@ import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
     return {
-      // TODO: this isn't in the design doc
       isSingleSelect: () => false,
       getAttr: () => '',
       setAttr: () => undefined,
