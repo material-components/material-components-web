@@ -31,107 +31,27 @@
 @use './segment-theme';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  $feat-typography: feature-targeting-functions.create-target(
-    $query,
-    typography
-  );
-
   // TODO: include test for element resizing besides the left/right border
   .mdc-segmented-button__segment {
-    @include typography-mixins.typography(
-      button,
-      feature-targeting-functions.all()
-    );
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      height: 36px;
-      min-width: 48px;
-      padding: 0px;
-      padding-left: 12px;
-      padding-right: 12px;
-      // Mimicking mdc-button and mdc-button--outlined
-      border-width: 1px;
-      vertical-align: top;
-      display: inline-flex;
-      align-items: center;
-
-      &:hover {
-        cursor: pointer;
-      }
-
-      // TODO: verify that this is still needed
-      &:focus {
-        outline-width: 0;
-      }
-
-      // TODO: this CSS doesn't work if the buttons are wrapped by divs
-      &:first-child {
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
-      }
-
-      &:last-child {
-        border-bottom-right-radius: 4px;
-        border-top-right-radius: 4px;
-      }
-    }
+    @include base_($query);
 
     // Style for when element is selected
     .mdc-segmented-button__segment--selected {
-      // TODO: move these @includes into a *-theme.scss mixin
-      @include button.ink-color(rgba(theme-variables.prop-value(primary), 1));
-      @include button.outline-color(
-        rgba(theme-variables.prop-value(primary), 1)
-      );
-      @include button.container-fill-color(
-        rgba(theme-variables.prop-value(primary), 0.08)
-      );
-
-      @include feature-targeting-mixins.targets($feat-structure) {
-        // Avoids double borders
-        + .mdc-segmented-button__segment {
-          border-left: hidden;
-        }
-      }
+      @include selected_($query);
     }
 
-    // Style for when element is not selected
+    // Style for when element is unselected
     &:not(.mdc-segmented-button__segment--selected) {
-      // TODO: move these @includes into a *-theme.scss mixin
-      @include button.ink-color(
-        rgba(theme-variables.prop-value(on-surface), 0.6)
-      );
-      @include button.outline-color(
-        rgba(theme-variables.prop-value(on-surface), 0.12)
-      );
-      @include button.container-fill-color(
-        rgba(theme-variables.prop-value(surface), 1)
-      );
-
-      @include feature-targeting-mixins.targets($feat-structure) {
-        // Avoids double borders
-        &:not(:last-child) {
-          border-right: hidden;
-        }
-      }
+      @include unselected_($query);
     }
   }
 
   .mdc-segmented-button__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      width: 24px;
-    }
-    @include feature-targeting-mixins.targets($feat-typography) {
-      font-size: 18px;
-    }
+    @include icon_($query);
   }
 
   .mdc-segmented-button__icon + .mdc-segmented-button__label {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      padding-left: 6;
-    }
+    @include label_($query);
   }
 
   .mdc-segmented-button--touch {
@@ -144,5 +64,121 @@
 
   .mdc-segmented-button__touch {
     //TODO
+  }
+}
+
+@mixin base_($query) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
+
+  @include typography-mixins.typography(button, $feat-typography);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    height: 36px;
+    min-width: 48px;
+    padding: 0px;
+    padding-left: 12px;
+    padding-right: 12px;
+    // Mimicking mdc-button and mdc-button--outlined
+    border-width: 1px;
+    vertical-align: top;
+    display: inline-flex;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    // TODO: verify that this is still needed
+    &:focus {
+      outline-width: 0;
+    }
+
+    // TODO: this CSS doesn't work if the buttons are wrapped by divs
+    &:first-child {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+
+    &:last-child {
+      border-bottom-right-radius: 4px;
+      border-top-right-radius: 4px;
+    }    
+  }
+}
+
+@mixin unselected_($query) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  // TODO: move these @includes into a *-theme.scss mixin
+  @include button.ink-color(
+    rgba(theme-variables.prop-value(on-surface), 0.6),
+    $query
+  );
+  @include button.outline-color(
+    rgba(theme-variables.prop-value(on-surface), 0.12),
+    $query
+  );
+  @include button.container-fill-color(
+    rgba(theme-variables.prop-value(surface), 1),
+    $query
+  );
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    // Avoids double borders
+    &:not(:last-child) {
+      border-right: hidden;
+    }
+  }
+}
+
+@mixin selected_($query) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  
+  // TODO: move these @includes into a *-theme.scss mixin
+  @include button.ink-color(
+    rgba(theme-variables.prop-value(primary), 1),
+    $query
+  );
+  @include button.outline-color(
+    rgba(theme-variables.prop-value(primary), 1),
+    $query
+  );
+  @include button.container-fill-color(
+    rgba(theme-variables.prop-value(primary), 0.08),
+    $query
+  );
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    // Avoids double borders
+    +.mdc-segmented-button__segment {
+      border-left: hidden;
+    }
+  }
+}
+
+@mixin icon_($query) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    width: 24px;
+  }
+  @include feature-targeting-mixins.targets($feat-typography) {
+    font-size: 18px;
+  }
+}
+
+@mixin label_($query) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    padding-left: 6;
   }
 }

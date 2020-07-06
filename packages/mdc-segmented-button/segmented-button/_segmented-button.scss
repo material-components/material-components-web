@@ -27,18 +27,22 @@
 @use './segmented-button-theme';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
+  .mdc-segmented-button {
+    @include inline_($query);
+  }
+}
+
+@mixin inline_($query) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $feat-typography: feature-targeting-functions.create-target(
     $query,
     typography
   );
 
-  .mdc-segmented-button {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      display: inline-block;
-    }
-    @include feature-targeting-mixins.targets($feat-typography) {
-      font-size: 0;
-    }
+  @include feature-targeting-mixins.targets($feat-structure) {
+    display: inline-block;
+  }
+  @include feature-targeting-mixins.targets($feat-typography) {
+    font-size: 0;
   }
 }
