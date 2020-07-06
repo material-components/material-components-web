@@ -90,7 +90,7 @@ const circularProgress = new MDCCircularProgress(document.querySelector('.mdc-ci
 
 ### Sizing
 
-To set the stroke-width and container size strictly to one of three sizes defined by guidelines, replace each SVG of the baseline element with the following and apply the appropriate `mdc-circular-progress--{size}` modifier class (see CSS Modifiers section).
+To set the stroke-width and container size strictly to one of three sizes defined by guidelines, replace each SVG of the baseline element with the following and apply the appropriate `mdc-circular-progress--{size}` modifier class (see [CSS Classes](#CSS-Classes) section).
 
 #### Large (default)
 Add the `.mdc-circular-progress--large` class and use the following inner SVGs.
@@ -231,61 +231,73 @@ This is done instead of animating the color property to reduce browser repaints.
 </div>
 ```
 
-### CSS Modifiers
+## Style Customization
 
-The provided modifiers are:
+### CSS Classes
 
-| Class                 | Description                                             |
-| --------------------- | ------------------------------------------------------- |
-| `mdc-circular-progress--large`   | Sets the stroke and container sizes for the large variant. See note. |
-| `mdc-circular-progress--medium`   | Sets the stroke and container sizes for the medium-sized variant. See note. |
-| `mdc-circular-progress--small`   | Sets the stroke and container sizes for the small variant. See note. |
-| `mdc-circular-progress--indeterminate`   | Puts the circular progress indicator in an indeterminate state. |
-| `mdc-circular-progress--closed`  | Hides the circular progress indicator. |
+CSS Class | Description
+--------- | -------------
+`mdc-circular-progress` | Mandatory.  The root element.
+`mdc-circular-progress--large`   | Optional. Sets the stroke and container sizes for the large variant. See note. |
+`mdc-circular-progress--medium`   | Optional. Sets the stroke and container sizes for the medium-sized variant. See note. |
+`mdc-circular-progress--small`   | Optional. Sets the stroke and container sizes for the small variant. See note. |
+`mdc-circular-progress--indeterminate`   | Optional. Puts the circular progress indicator in an indeterminate state. |
+`mdc-circular-progress--closed`  | Optional. Hides the circular progress indicator. |
+`mdc-circular-progress__determinate-container` | Mandatory.  Contains the determinate progress indicator.
+`mdc-circular-progress__indeterminate-container` | Mandatory.  Contains the indeterminate progress indicator.
+`mdc-circular-progress__determinate-circle-graphic` | Mandatory. The determinate SVG.
+`mdc-circular-progress__determinate-circle` | Mandatory.  The determinate SVG circle.
+`mdc-circular-progress__spinner-layer` | Mandatory.  Another wrapper around the indeterminate indicator.
+`mdc-circular-progress__indeterminate-circle-graphic` | Mandatory.  An indeterminate SVG (there are three of these in total).
+`mdc-circular-progress__circle-clipper` | Mandatory.  Clips an indeterminate SVG circle so that only a section of it is visible.
+`mdc-circular-progress__circle-left` | Mandatory.  One of two circle sections that when combined are animated to form the full indeterminate progress indicator.
+`mdc-circular-progress__circle-right` | Mandatory.  One of two circle sections that when combined are animated to form the full indeterminate progress indicator.
+`mdc-circular-progress__gap-patch` | Mandatory.  A tiny little sliver of an SVG circle used to patch a gap between the circle-left and the circle-right.
+
 
 > _NOTE_: Each size modifier class **must** be used with a separate inner SVG template to ensure optimal ratio of the stroke width to container size as specified in Material Design guidelines.
 
 ### Sass Mixins
 
 Mixin | Description
---- | ---
+----- | ------------
 `color($color)` | Customizes the stroke-color of the indicator. Applies to the determinate variant, and also the indeterminate variant unless the four-color mixin is applied.
 `indeterminate-colors($colors)` | Applies four animated stroke-colors to the indeterminate indicator. Applicable to the indeterminate variant only and overrides any single color currently set. Takes a list of exacty four colors.
 
-### Using the Foundation Class
+## `MDCCircularProgress` Properties and Methods
 
-MDC Circular Progress ships with an `MDCCircularProgressFoundation` class that external frameworks and libraries can
-use to integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for circular progress must provide the following functions, with correct signatures:
+Property | Value Type | Description
+-------- | ---------- | --------------
+`determinate` | `boolean` (write-only) | Toggles the component between the determinate and indeterminate state. 
+`progress` | `number` (write-only) | Sets the progress bar to this value. Value should be between 0 and 1.
 
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `getDeterminateCircleAttribute(attributeName: string) => void` | Gets the specified attribute from the determinate circle element. |
-| `hasClass(className: string) => boolean` | Returns boolean indicating whether the root element has a given class. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `removeAttribute(attributeName: string) => void` | Removes the specified attribute from the root element. |
-| `setAttribute(attributeName: string, value: string) => void` | Sets the specified attribute on the root element. |
-| `setDeterminateCircleAttribute(attributeName: string, value: string) => void` | Sets the specified attribute on the determinate circle element. |
+Method Signature | Description |
+---------------- | ----------- |
+`open() => void` | Puts the component in the open state. |
+`close() => void` | Puts the component in the closed state. |
 
-### MDCCircularProgressFoundation API
 
-MDC Circular Progress Foundation exposes the following methods:
+## Usage within Web Frameworks
 
-| Method Signature | Description |
-| --- | --- |
-| `setDeterminate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state. |
-| `setProgress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
-| `open() => void` | Puts the component in the open state. |
-| `close() => void` | Puts the component in the closed state. |
+### `MDCCircularProgressAdapter`
 
-### MDCCircularProgress API
+Method Signature | Description 
+---------------- | -----------
+`addClass(className: string) => void` | Adds a class to the root element.
+`getDeterminateCircleAttribute(attributeName: string) => void` | Gets the specified attribute from the determinate circle element.
+`hasClass(className: string) => boolean` | Returns boolean indicating whether the root element has a given class.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`removeAttribute(attributeName: string) => void` | Removes the specified attribute from the root element.
+`setAttribute(attributeName: string, value: string) => void` | Sets the specified attribute on the root element.
+`setDeterminateCircleAttribute(attributeName: string, value: string) => void` | Sets the specified attribute on the determinate circle element.
 
-MDC Circular Progress exposes the following methods:
+### `MDCCircularProgressFoundation`
 
-| Method Signature | Description |
-| --- | --- |
-| `set determinate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state. |
-| `set progress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
-| `open() => void` | Puts the component in the open state. |
-| `close() => void` | Puts the component in the closed state. |
+Method Signature | Description
+---------------- | ---
+`setDeterminate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state.
+`setProgress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1].
+`open() => void` | Puts the component in the open state.
+`close() => void` | Puts the component in the closed state.
+
+
