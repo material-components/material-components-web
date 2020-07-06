@@ -71,7 +71,10 @@ $label-padding: 6px;
 @mixin unselected($query) {
   @include button.ink-color($unselected-ink-color, $query);
   @include button.outline-color($unselected-outline-color, $query);
-  @include button.container-fill-color($unselected-container-fill-color, $query);
+  @include button.container-fill-color(
+    $unselected-container-fill-color,
+    $query
+  );
 }
 
 @mixin selected($query) {
@@ -139,7 +142,7 @@ $label-padding: 6px;
 
 @mixin hide-left-border($query) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-  
+
   @include feature-targeting-mixins.targets($feat-structure) {
     border-left: hidden;
   }
@@ -147,7 +150,7 @@ $label-padding: 6px;
 
 @mixin hide-right-border($query) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-  
+
   @include feature-targeting-mixins.targets($feat-structure) {
     border-right: hidden;
   }

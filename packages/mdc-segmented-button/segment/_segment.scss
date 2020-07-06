@@ -36,7 +36,7 @@
       @include segment-theme.selected($query);
 
       // Avoids double borders
-      +.mdc-segmented-button__segment {
+      + .mdc-segmented-button__segment {
         @include segment-theme.hide-left-border($query);
       }
     }

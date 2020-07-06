@@ -27,6 +27,6 @@
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   .mdc-segmented-button {
-    @include segmeted-button-theme.inline($query);
+    @include segmented-button-theme.inline($query);
   }
 }
