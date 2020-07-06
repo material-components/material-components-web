@@ -21,3 +21,21 @@
 //
 
 // Theme: Variables, functions, and mixins required to theme component
+
+@use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+
+@mixin inline($query) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    display: inline-block;
+  }
+  @include feature-targeting-mixins.targets($feat-typography) {
+    font-size: 0;
+  }
+}
