@@ -46,12 +46,8 @@ $label-padding: 6px;
 
 @mixin base($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target(
-    $query,
-    typography
-  );
 
-  @include typography-mixins.typography(button, $feat-typography);
+  @include typography-mixins.typography(button, $query);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     display: inline-flex;

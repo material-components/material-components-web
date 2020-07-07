@@ -25,7 +25,7 @@
 @use '@material/feature-targeting/functions' as feature-targeting-functions;
 @use '@material/feature-targeting/mixins' as feature-targeting-mixins;
 
-@mixin base($query) {
+@mixin base($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $feat-typography: feature-targeting-functions.create-target(
     $query,
