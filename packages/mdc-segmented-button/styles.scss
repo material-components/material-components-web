@@ -25,5 +25,5 @@
 @use './segmented-button/segmented-button';
 @use './segment/segment';
 
-@include segmented-button.core_styles();
-@include segment.core_styles();
+@include segmented-button.core-styles();
+@include segment.core-styles();

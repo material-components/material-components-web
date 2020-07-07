@@ -23,9 +23,6 @@
 // Theme: Variables, functions, and mixins required to theme component segment
 
 @use "@material/theme/variables" as theme-variables;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/typography/mixins" as typography-mixins;
 
 $unselected-ink-color: rgba(theme-variables.prop-value(on-surface), 0.6);
 $unselected-outline-color: rgba(theme-variables.prop-value(on-surface), 0.12);
@@ -43,19 +40,3 @@ $border-radius: 4px;
 $icon-width: 24px;
 $icon-font-size: 18px;
 $label-padding: 6px;
-
-@mixin base($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include typography-mixins.typography(button, $query);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    display: inline-flex;
-    vertical-align: top;
-    align-items: center;
-    height: $height;
-    min-width: $min-width;
-    padding: 0px $horizontal-padding;
-    border-width: $border-width;
-  }
-}

@@ -25,6 +25,7 @@
 @use "@material/button";
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/typography/mixins" as typography-mixins;
 @use './segment-theme';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
@@ -32,7 +33,7 @@
 
   // TODO: include test for element resizing besides the left/right border
   .mdc-segmented-button__segment {
-    @include segment-theme.base($query);
+    @include base($query);
     @include unselected($query);
 
     // Style for when element is selected
@@ -95,6 +96,22 @@
 
   .mdc-segmented-button__touch {
     //TODO
+  }
+}
+
+@mixin base($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include typography-mixins.typography(button, $query);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    display: inline-flex;
+    vertical-align: top;
+    align-items: center;
+    height: segment-theme.$height;
+    min-width: segment-theme.$min-width;
+    padding: 0px segment-theme.$horizontal-padding;
+    border-width: segment-theme.$border-width;
   }
 }
 

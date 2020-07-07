@@ -23,10 +23,26 @@
 // Core: Define complete styles to render component, including base and theme styles
 
 @use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
 @use './segmented-button-theme';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   .mdc-segmented-button {
-    @include segmented-button-theme.base($query);
+    @include base($query);
+  }
+}
+
+@mixin base($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-typography: feature-targeting-functions.create-target(
+    $query,
+    typography
+  );
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    display: inline-block;
+  }
+  @include feature-targeting-mixins.targets($feat-typography) {
+    font-size: 0;
   }
 }
