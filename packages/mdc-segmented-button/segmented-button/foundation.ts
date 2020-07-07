@@ -40,11 +40,11 @@ export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButt
     super({...MDCSegmentedButtonFoundation.defaultAdapter, ...adapter});
   }
 
-  selectSegment(indexOrSegmentId: number | string) {
+  selectSegment(_indexOrSegmentId: number | string) {
     return;
   }
 
-  unselectSegment(indexOrSegmentId: number | string) {
+  unselectSegment(_indexOrSegmentId: number | string) {
     return;
   }
 
@@ -52,7 +52,7 @@ export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButt
     return [];
   }
 
-  isSegmentSelected(indexOrSegmentId: number | string): boolean {
+  isSegmentSelected(_indexOrSegmentId: number | string): boolean {
     return false;
   }
 
@@ -60,7 +60,7 @@ export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButt
     return false;
   }
 
-  handleSelected(detail: SegmentDetail) {
+  handleSelected(_detail: SegmentDetail) {
     return;
   }
 }

@@ -60,8 +60,4 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
   handleClick() {
     return;
   }
-
-  private setAriaAttr(value: string) {
-    return;
-  }
 }
