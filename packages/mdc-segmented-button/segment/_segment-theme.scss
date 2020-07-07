@@ -22,8 +22,6 @@
 
 // Theme: Variables, functions, and mixins required to theme component segment
 
-// TODO: is it ok to use mdc-button?
-@use "@material/button";
 @use "@material/theme/variables" as theme-variables;
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
@@ -39,14 +37,14 @@ $selected-container-fill-color: rgba(theme-variables.prop-value(primary), 0.08);
 
 $height: 36px;
 $min-width: 48px;
-$end-padding: 12px;
+$horizontal-padding: 12px;
 $border-width: 1px;
 $border-radius: 4px;
 $icon-width: 24px;
 $icon-font-size: 18px;
 $label-padding: 6px;
 
-@mixin base($query) {
+@mixin base($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $feat-typography: feature-targeting-functions.create-target(
     $query,
@@ -61,97 +59,7 @@ $label-padding: 6px;
     align-items: center;
     height: $height;
     min-width: $min-width;
-    padding: 0px;
-    padding-left: $end-padding;
-    padding-right: $end-padding;
+    padding: 0px $horizontal-padding;
     border-width: $border-width;
-  }
-}
-
-@mixin unselected($query) {
-  @include button.ink-color($unselected-ink-color, $query);
-  @include button.outline-color($unselected-outline-color, $query);
-  @include button.container-fill-color(
-    $unselected-container-fill-color,
-    $query
-  );
-}
-
-@mixin selected($query) {
-  @include button.ink-color($selected-ink-color, $query);
-  @include button.outline-color($selected-outline-color, $query);
-  @include button.container-fill-color($selected-container-fill-color, $query);
-}
-
-@mixin icon($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target(
-    $query,
-    typography
-  );
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    width: $icon-width;
-  }
-  @include feature-targeting-mixins.targets($feat-typography) {
-    font-size: $icon-font-size;
-  }
-}
-
-@mixin label($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    padding-left: $label-padding;
-  }
-}
-
-@mixin pointer-cursor($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    cursor: pointer;
-  }
-}
-
-@mixin no-outline($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    outline-width: 0;
-  }
-}
-
-@mixin rounded-left-borders($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    border-top-left-radius: $border-radius;
-    border-bottom-left-radius: $border-radius;
-  }
-}
-
-@mixin rounded-right-borders($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    border-top-right-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
-  }
-}
-
-@mixin hide-left-border($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    border-left: hidden;
-  }
-}
-
-@mixin hide-right-border($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    border-right: hidden;
   }
 }
