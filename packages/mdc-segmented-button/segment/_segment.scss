@@ -22,7 +22,6 @@
 
 // Core: Define complete styles to render component segment, including base and theme styles
 
-@use "@material/button";
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/typography/mixins" as typography-mixins;
@@ -118,12 +117,12 @@
 @mixin unselected($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include button.ink-color(segment-theme.$unselected-ink-color, $query);
-  @include button.outline-color(
+  @include segment-theme.ink-color(segment-theme.$unselected-ink-color, $query);
+  @include segment-theme.outline-color(
     segment-theme.$unselected-outline-color,
     $query
   );
-  @include button.container-fill-color(
+  @include segment-theme.container-fill-color(
     segment-theme.$unselected-container-fill-color,
     $query
   );
@@ -137,9 +136,12 @@
 @mixin selected($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include button.ink-color(segment-theme.$selected-ink-color, $query);
-  @include button.outline-color(segment-theme.$selected-outline-color, $query);
-  @include button.container-fill-color(
+  @include segment-theme.ink-color(segment-theme.$selected-ink-color, $query);
+  @include segment-theme.outline-color(
+    segment-theme.$selected-outline-color,
+    $query
+  );
+  @include segment-theme.container-fill-color(
     segment-theme.$selected-container-fill-color,
     $query
   );
