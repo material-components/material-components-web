@@ -64,6 +64,7 @@ class FakeOutline {
 class FakeMenu {
   destroy: jasmine.Spy = jasmine.createSpy('.destroy');
   items: HTMLElement[] = [];
+  selectedIndex: number = -1;
   hoistMenuToBody: jasmine.Spy = jasmine.createSpy('.hoistMenuToBody');
   setAnchorElement: jasmine.Spy = jasmine.createSpy('.setAnchorElement');
   setAnchorCorner: jasmine.Spy = jasmine.createSpy('.setAnchorCorner');
@@ -371,6 +372,18 @@ describe('MDCSelect', () => {
     component.layoutOptions();
     expect(mockFoundation.layoutOptions).toHaveBeenCalled();
     expect(mockMenu.layout).toHaveBeenCalled();
+  });
+
+  it('#layoutOptions refreshes menu options cache', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = false;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {component} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    component['menuItemValues'] = [];
+    component.layoutOptions();
+    expect(component['menuItemValues']).toEqual(['', 'orange', 'apple']);
   });
 
   it('#set useDefaultValidation forwards to foundation', () => {
@@ -910,60 +923,6 @@ describe('MDCSelect', () => {
         .toEqual(0);
   });
 
-  it('adapter#getSelectedMenuItem returns the selected element', () => {
-    const hasMockFoundation = true;
-    const hasMockMenu = false;
-    const hasOutline = false;
-    const hasLabel = true;
-    const {component, menuSurface} =
-        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-
-    const index = 1;
-    const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const adapter = (component.getDefaultFoundation() as any).adapter;
-    menuItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
-
-    expect(adapter.getSelectedMenuItem()).toEqual(menuItem);
-  });
-
-  it('adapter#setAttributeAtIndex sets attribute value correctly', () => {
-    const hasMockFoundation = true;
-    const hasMockMenu = false;
-    const hasOutline = false;
-    const hasLabel = true;
-    const {component, menuSurface} =
-        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-
-    const index = 1;
-    const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const valueToSet = 'foo';
-
-    expect(menuItem.getAttribute(strings.VALUE_ATTR)).not.toEqual(valueToSet);
-    const adapter = (component.getDefaultFoundation() as any).adapter;
-    adapter.setAttributeAtIndex(index, strings.VALUE_ATTR, valueToSet);
-
-    expect(menuItem.getAttribute(strings.VALUE_ATTR)).toEqual(valueToSet);
-  });
-
-  it('adapter#removeAttributeAtIndex removes attribute value correctly', () => {
-    const hasMockFoundation = true;
-    const hasMockMenu = false;
-    const hasOutline = false;
-    const hasLabel = true;
-    const {component, menuSurface} =
-        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-
-    const index = 1;
-    const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const attrToRemove = 'foo';
-    menuItem.setAttribute(attrToRemove, '0');
-
-    const adapter = (component.getDefaultFoundation() as any).adapter;
-    adapter.removeAttributeAtIndex(index, attrToRemove);
-
-    expect(menuItem.hasAttribute(attrToRemove)).toBe(false);
-  });
-
   it('adapter#focusMenuItemAtIndex', () => {
     const hasMockFoundation = true;
     const hasMockMenu = false;
@@ -1181,44 +1140,6 @@ describe('MDCSelect', () => {
 
     expect(adapter.getMenuItemAttr(menuItem, strings.VALUE_ATTR))
         .toEqual('orange');
-  });
-
-  it('adapter#addClassAtIndex adds class correctly', () => {
-    const hasMockFoundation = true;
-    const hasMockMenu = false;
-    const hasOutline = false;
-    const hasLabel = true;
-    const {fixture, component} =
-        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-    document.body.appendChild(fixture);
-
-    const adapter = (component.getDefaultFoundation() as any).adapter;
-    const index = 1;
-    const menuItem = document.querySelectorAll('.mdc-list-item')[index];
-
-    adapter.addClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
-    expect(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS))
-        .toBe(true);
-    document.body.removeChild(fixture);
-  });
-
-  it('adapter#removeClassAtIndex removes class correctly', () => {
-    const hasMockFoundation = true;
-    const hasMockMenu = false;
-    const hasOutline = false;
-    const hasLabel = true;
-    const {fixture, component} =
-        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-    document.body.appendChild(fixture);
-
-    const adapter = (component.getDefaultFoundation() as any).adapter;
-    const index = 1;
-    const menuItem = document.querySelectorAll('.mdc-list-item')[index];
-
-    adapter.removeClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
-    expect(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS))
-        .toBe(false);
-    document.body.removeChild(fixture);
   });
 
   it('adapter#isTypeaheadInProgress queries menu state', () => {

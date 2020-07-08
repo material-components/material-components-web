@@ -610,7 +610,6 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `hasClass(className: string) => boolean` | Returns true if the select element has the className in its classList. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
-| `getSelectedMenuItem() => Element` | Returns the selected menu item element. |
 | `hasLabel() => boolean` | Returns true if the select contains a label. |
 | `floatLabel(value: boolean) => void` | Floats or defloats label. |
 | `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
@@ -632,14 +631,12 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setMenuAnchorElement(anchorEl: Element) => void` | Sets the menu anchor element. |
 | `setMenuAnchorCorner(anchorCorner: Corner) => void` | Sets the menu anchor corner. |
 | `setMenuWrapFocus(wrapFocus: boolean) => void` | Sets whether the menu should wrap focus. |
-| `setAttributeAtIndex(index: number, attributeName: string, attributeValue: string) => void` | Sets the attribute on the menu item at the given index. |
 | `focusMenuItemAtIndex(index: number) => void` | Focuses the menu item at the given index. |
 | `getMenuItemValues() => string[]` | Returns an array representing the VALUE_ATTR attributes of each menu item. |
 | `getMenuItemCount() => number` | Returns the number of menu items. |
-| `getMenuItemAttr(menuItem: Element, attr: string) => string` | Returns the given attribute on the the menu item element. |
 | `getMenuItemTextAtIndex(index: number) => string` | Gets the text content of the menu item element at the given index. |
-| `addClassAtIndex(menuItem: Element, className: string) => void` | Adds the class name on the menu item at the given index. |
-| `removeClassAtIndex(menuItem: Element, className: string) => void` | Removes the class name on the menu item at the given index. |
+| `getSelectedIndex() => number` | Returns the selected index in the menu. |
+| `setSelectedIndex() => number` | Sets the selected index in the menu. |
 | `isTypeaheadInProgress() => boolean` | Returns whether typeahead is in progress in the menu. |
 | `typeaheadMatchItem: (nextChar: string, startingIndex: number) => number` | Adds a character to the list typeahead buffer and returns index of the next item in the list matching the buffer. |
 ### `MDCSelectFoundation`

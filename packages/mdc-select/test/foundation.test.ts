@@ -47,7 +47,6 @@ describe('MDCSelectFoundation', () => {
       'hasClass',
       'activateBottomLine',
       'deactivateBottomLine',
-      'getSelectedMenuItem',
       'hasLabel',
       'floatLabel',
       'setLabelRequired',
@@ -70,14 +69,10 @@ describe('MDCSelectFoundation', () => {
       'setMenuAnchorElement',
       'setMenuAnchorCorner',
       'setMenuWrapFocus',
-      'setAttributeAtIndex',
       'focusMenuItemAtIndex',
       'getMenuItemCount',
       'getMenuItemValues',
       'getMenuItemTextAtIndex',
-      'getMenuItemAttr',
-      'addClassAtIndex',
-      'removeClassAtIndex',
       'isTypeaheadInProgress',
       'typeaheadMatchItem',
       'getSelectedIndex',
@@ -98,13 +93,11 @@ describe('MDCSelectFoundation', () => {
       'showToScreenReader',
       'setValidity',
     ]);
-    const listItem = jasmine.createSpy('listItem');
     const foundationMap = {
       leadingIcon: hasLeadingIcon ? leadingIcon : undefined,
       helperText: hasHelperText ? helperText : undefined,
     };
 
-    mockAdapter.getSelectedMenuItem.and.returnValue(listItem);
     mockAdapter.hasLabel.and.returnValue(true);
     mockAdapter.getMenuItemValues.and.returnValue(['foo', 'bar']);
     mockAdapter.getMenuItemTextAtIndex.withArgs(0).and.returnValue('foo');
@@ -240,9 +233,9 @@ describe('MDCSelectFoundation', () => {
   it('#handleChange calls adapter.floatLabel(true) when there is a value',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('value');
+       foundation.init();
+       mockAdapter.floatLabel.calls.reset();
+       mockAdapter.getSelectedIndex.and.returnValue(1);
 
        foundation.handleChange();
        expect(mockAdapter.floatLabel).toHaveBeenCalledWith(true);
@@ -252,9 +245,7 @@ describe('MDCSelectFoundation', () => {
   it('#handleChange calls adapter.floatLabel(false) when there is no value and the select is not focused',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('');
+       mockAdapter.getSelectedIndex.and.returnValue(numbers.UNSET_INDEX);
 
        foundation.handleChange();
        expect(mockAdapter.floatLabel).toHaveBeenCalledWith(false);
@@ -264,9 +255,7 @@ describe('MDCSelectFoundation', () => {
   it('#handleChange does not call adapter.floatLabel(false) when there is no value if the select is focused',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('');
+       mockAdapter.getSelectedIndex.and.returnValue(numbers.UNSET_INDEX);
        mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
 
        foundation.handleChange();
@@ -286,10 +275,9 @@ describe('MDCSelectFoundation', () => {
   it('#handleChange calls foundation.notchOutline(true) when there is a value',
      () => {
        const {foundation, mockAdapter} = setupTest();
+       mockAdapter.getSelectedIndex.and.returnValue(1);
+       foundation.init();
        foundation.notchOutline = jasmine.createSpy('');
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('value');
 
        foundation.handleChange();
        expect(foundation.notchOutline).toHaveBeenCalledWith(true);
@@ -300,9 +288,7 @@ describe('MDCSelectFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        foundation.notchOutline = jasmine.createSpy('');
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('');
+       mockAdapter.getSelectedIndex.and.returnValue(numbers.UNSET_INDEX);
 
        foundation.handleChange();
        expect(foundation.notchOutline).toHaveBeenCalledWith(false);
@@ -377,10 +363,8 @@ describe('MDCSelectFoundation', () => {
        const {foundation, mockAdapter, helperText} =
            setupTest(hasIcon, hasHelperText);
        mockAdapter.hasClass.withArgs(cssClasses.REQUIRED).and.returnValue(true);
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('foo');
        mockAdapter.getSelectedIndex.and.returnValue(0);
+       foundation.init();
        foundation.handleBlur();
        expect(helperText.setValidity).toHaveBeenCalledWith(true);
        expect(helperText.setValidity).toHaveBeenCalledTimes(1);
@@ -548,10 +532,8 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
        mockAdapter.getMenuItemValues.and.returnValue(['zero', 'one', 'two']);
        mockAdapter.getMenuItemCount.and.returnValue(3);
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('two');
        mockAdapter.getSelectedIndex.and.returnValue(2);
+
        foundation.init();
 
        const event = {key: 'ArrowUp', preventDefault} as any;
@@ -576,6 +558,7 @@ describe('MDCSelectFoundation', () => {
        event.keyCode = 38;  // Up
        foundation.handleKeydown(event);
 
+       expect(foundation.getSelectedIndex()).toEqual(0);
        expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(2);
      });
 
@@ -587,9 +570,6 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
        mockAdapter.getMenuItemValues.and.returnValue(['zero', 'one', 'two']);
        mockAdapter.getMenuItemCount.and.returnValue(3);
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('zero');
        mockAdapter.getSelectedIndex.and.returnValue(0);
        foundation.init();
 
@@ -666,10 +646,10 @@ describe('MDCSelectFoundation', () => {
   it('#layout notches outline and floats label if unfocused and value is nonempty',
      () => {
        const {foundation, mockAdapter} = setupTest();
+       foundation.init();
        foundation.notchOutline = jasmine.createSpy('');
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('blah');
+       mockAdapter.getSelectedIndex.and.returnValue(1);
+
        foundation.layout();
        expect(foundation.notchOutline).toHaveBeenCalledWith(true);
        expect(mockAdapter.floatLabel).toHaveBeenCalledWith(true);
@@ -722,8 +702,7 @@ describe('MDCSelectFoundation', () => {
     foundation.init();
     mockAdapter.getMenuItemCount.and.returnValue(3);
     mockAdapter.getMenuItemValues.and.returnValue(['zero', 'one', 'two']);
-    mockAdapter.getMenuItemAttr.withArgs(jasmine.anything(), strings.VALUE_ATTR)
-        .and.returnValue('two');
+    mockAdapter.getSelectedIndex.and.returnValue(2);
 
     foundation.layoutOptions();
     expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(2);
@@ -734,8 +713,7 @@ describe('MDCSelectFoundation', () => {
     foundation.init();
     mockAdapter.getMenuItemCount.and.returnValue(3);
     mockAdapter.getMenuItemValues.and.returnValue(['', 'one', 'two']);
-    mockAdapter.getMenuItemAttr.withArgs(jasmine.anything(), strings.VALUE_ATTR)
-        .and.returnValue('');
+    mockAdapter.getSelectedIndex.and.returnValue(0);
 
     foundation.layoutOptions();
     expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(0);
@@ -841,6 +819,7 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.hasClass.withArgs(cssClasses.DISABLED)
            .and.returnValue(false);
        mockAdapter.getSelectedIndex.and.returnValue(-1);
+       foundation.init();
 
        expect(foundation.isValid()).toBe(false);
      });
@@ -852,10 +831,9 @@ describe('MDCSelectFoundation', () => {
        mockAdapter.hasClass.withArgs(cssClasses.REQUIRED).and.returnValue(true);
        mockAdapter.hasClass.withArgs(cssClasses.DISABLED)
            .and.returnValue(false);
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('');
        mockAdapter.getSelectedIndex.and.returnValue(0);
+       mockAdapter.getMenuItemValues.and.returnValue(['', '<--empty']);
+       foundation.init();
 
        expect(foundation.isValid()).toBe(false);
      });
@@ -863,13 +841,12 @@ describe('MDCSelectFoundation', () => {
   it('#isValid returns true if using default validity check and an index is selected that has value',
      () => {
        const {foundation, mockAdapter} = setupTest();
+       foundation.init();
        mockAdapter.hasClass.withArgs(cssClasses.REQUIRED).and.returnValue(true);
        mockAdapter.hasClass.withArgs(cssClasses.DISABLED)
            .and.returnValue(false);
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('foo');
        mockAdapter.getSelectedIndex.and.returnValue(0);
+       foundation.init();
 
        expect(foundation.isValid()).toBe(true);
      });
@@ -910,9 +887,6 @@ describe('MDCSelectFoundation', () => {
 
        foundation.setUseDefaultValidation(false);
        foundation.setValid(true);
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('');
        mockAdapter.getSelectedIndex.and.returnValue(0);
 
        expect(foundation.isValid()).toBe(true);
@@ -974,8 +948,7 @@ describe('MDCSelectFoundation', () => {
 
   it('#init emits no change events when value is preselected', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getMenuItemAttr.withArgs(jasmine.anything(), strings.VALUE_ATTR)
-        .and.returnValue('foo');
+    mockAdapter.getSelectedIndex.and.returnValue(1);
     foundation.init();
     expect(mockAdapter.notifyChange).not.toHaveBeenCalled();
   });
@@ -984,9 +957,7 @@ describe('MDCSelectFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        foundation.notchOutline = jasmine.createSpy('notchOutline');
-       mockAdapter.getMenuItemAttr
-           .withArgs(jasmine.anything(), strings.VALUE_ATTR)
-           .and.returnValue('foo');
+       mockAdapter.getSelectedIndex.and.returnValue(1);
        foundation.init();
        expect(foundation.notchOutline).toHaveBeenCalledTimes(1);
      });

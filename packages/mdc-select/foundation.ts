@@ -55,7 +55,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       hasClass: () => false,
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
-      getSelectedMenuItem: () => null,
       getSelectedIndex: () => -1,
       setSelectedIndex: () => undefined,
       hasLabel: () => false,
@@ -80,14 +79,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       setMenuAnchorElement: () => undefined,
       setMenuAnchorCorner: () => undefined,
       setMenuWrapFocus: () => undefined,
-      setAttributeAtIndex: () => undefined,
       focusMenuItemAtIndex: () => undefined,
       getMenuItemCount: () => 0,
       getMenuItemValues: () => [],
       getMenuItemTextAtIndex: () => '',
-      getMenuItemAttr: () => '',
-      addClassAtIndex: () => undefined,
-      removeClassAtIndex: () => undefined,
       isTypeaheadInProgress: () => false,
       typeaheadMatchItem: () => -1,
     };
@@ -97,8 +92,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   private readonly leadingIcon: MDCSelectIconFoundation|undefined;
   private readonly helperText: MDCSelectHelperTextFoundation|undefined;
 
-  // VALUE_ATTR values of the menu items.
-  private menuItemValues: string[] = [];
   // Disabled state
   private disabled = false;
   // isMenuOpen is used to track the state of the menu by listening to the
@@ -156,11 +149,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   getValue() {
-    const listItem = this.adapter.getSelectedMenuItem();
-    if (listItem) {
-      return this.adapter.getMenuItemAttr(listItem, strings.VALUE_ATTR) || '';
-    }
-    return '';
+    const index = this.adapter.getSelectedIndex();
+    const menuItemValues = this.adapter.getMenuItemValues();
+    return index !== numbers.UNSET_INDEX ? menuItemValues[index] : '';
   }
 
   getDisabled() {
@@ -230,8 +221,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * this whenever menu options are dynamically updated.
    */
   layoutOptions() {
-    this.menuItemValues = this.adapter.getMenuItemValues();
-    const selectedIndex = this.menuItemValues.indexOf(this.getValue());
+    const menuItemValues = this.adapter.getMenuItemValues();
+    const selectedIndex = menuItemValues.indexOf(this.getValue());
     this.setSelectedIndex(
         selectedIndex, /** closeMenu */ false, /** skipNotify */ true);
   }
