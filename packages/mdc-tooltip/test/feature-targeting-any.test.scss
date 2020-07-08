@@ -1,0 +1,11 @@
+@use "../tooltip";
+@use "@material/feature-targeting/functions" as feature;
+
+@mixin test($query) {
+  .test {
+    @include tooltip.core-styles($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature.any());
