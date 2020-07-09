@@ -38,6 +38,7 @@
 @use '@material/theme/mixins' as theme-mixins;
 @use '@material/theme/variables' as variables2; // for mdc-theme-prop-value.
 @use '@material/typography/mixins' as typography-mixins;
+@use './data-table-cell';
 @use './data-table-pagination';
 @use './data-table-progress-indicator';
 @use './data-table-theme';
@@ -164,34 +165,7 @@
     }
   }
 
-  .mdc-data-table__cell {
-    @include typography-mixins.typography(body2, $query: $query);
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      box-sizing: border-box;
-      overflow: hidden;
-      text-align: left;
-      text-overflow: ellipsis;
-
-      @include rtl-mixins.rtl {
-        /* @noflip */
-        text-align: right;
-      }
-    }
-  }
-
-  .mdc-data-table__cell--numeric {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      text-align: right;
-    }
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.rtl {
-        /* @noflip */
-        text-align: left;
-      }
-    }
-  }
+  @include data-table-cell.core-styles($query: $query);
 
   .mdc-data-table__header-cell {
     @include typography-mixins.typography(subtitle2, $query: $query);
@@ -210,14 +184,8 @@
     }
   }
 
-  .mdc-data-table__header-cell--checkbox,
-  .mdc-data-table__cell--checkbox {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      // Set to lowest width to adapt to cell content. Cell width should adapt
-      // to row checkbox size when it is dense.
-      // NOTE: `min-width` does not seem to work on table cells.
-      width: 1px;
-    }
+  .mdc-data-table__header-cell--checkbox {
+    @include data-table-cell.adaptive-width($query: $query);
   }
 
   .mdc-data-table__header-cell--numeric {
