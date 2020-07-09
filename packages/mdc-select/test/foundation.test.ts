@@ -775,6 +775,9 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(1);
 
     foundation.setSelectedIndex(0);
+    // We intentionally call this twice, expecting notifyChange to be called
+    // only once for these two calls.
+    foundation.setSelectedIndex(0);
     expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(0);
 
     foundation.setSelectedIndex(-1);

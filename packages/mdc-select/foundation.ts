@@ -102,6 +102,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   // By default, select is invalid if it is required but no value is selected.
   private useDefaultValidation = true;
   private customValidity = true;
+  private lastSelectedIndex = numbers.UNSET_INDEX;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
@@ -138,9 +139,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       this.adapter.closeMenu();
     }
 
-    if (!skipNotify) {
+    if (!skipNotify && this.lastSelectedIndex !== index) {
       this.handleChange();
     }
+    this.lastSelectedIndex = index;
   }
 
   setValue(value: string) {
