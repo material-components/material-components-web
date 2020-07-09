@@ -134,7 +134,8 @@
   @include feature-targeting-mixins.targets($feat-animation) {
     transition: opacity variables.$fade-in-duration linear,
       transform variables.$scale-duration
-        animation-variables.$deceleration-curve-timing-function;
+        animation-variables.$deceleration-curve-timing-function,
+      height 250ms animation-variables.$deceleration-curve-timing-function;
   }
 
   &:focus {
