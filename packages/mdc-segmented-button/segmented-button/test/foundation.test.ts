@@ -198,21 +198,6 @@ describe('MDCSegmentedButtonFoundation', () => {
       expect(mockAdapter.notifySelectedChange).toHaveBeenCalledWith(newSelectedSegment);
     });
   
-    it('#handleSelected reselects segment if single select and it was unselected', () => {
-      const {foundation, mockAdapter} = setupSegmentTest(true);
-      let newUnselectedSegment = mockAdapter.getSegments()[SELECTED];
-      newUnselectedSegment.selected = false;
-  
-      foundation.handleSelected(newUnselectedSegment);
-      expect(mockAdapter.selectSegment).toHaveBeenCalledTimes(1);
-      if (typeof mockAdapter.selectSegment.calls.mostRecent().args[0] === 'number') {
-        expect(mockAdapter.selectSegment).toHaveBeenCalledWith(newUnselectedSegment.index);
-      } else {
-        expect(mockAdapter.selectSegment).toHaveBeenCalledWith(newUnselectedSegment.segmentId);
-      }
-      expect(mockAdapter.notifySelectedChange).toHaveBeenCalledWith(newUnselectedSegment);
-    });
-  
     it('#handleSelected changes nothing if multi select and segment is selected or unselected', () => {
       const {foundation, mockAdapter} = setupSegmentTest();
       let newUnselectedSegment = mockAdapter.getSegments()[SELECTED];
