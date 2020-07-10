@@ -60,10 +60,10 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
   }
 
   handleClick(): void {
-    if (this.isSelected() && this.adapter.isSingleSelect()) {
-      this.setUnselected();
-    } else if (!this.isSelected()) {
+    if (!this.isSelected()) {
       this.setSelected();
+    } else if (!this.adapter.isSingleSelect()) {
+      this.setUnselected();
     }
     this.adapter.notifySelectedChange(this.isSelected());
   }
