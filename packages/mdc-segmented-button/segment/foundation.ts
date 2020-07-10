@@ -56,13 +56,13 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
   }
 
   getSegmentId(): string {
-    return this.adapter.getAttr('id');
+    return this.adapter.getAttr('data-segment-id');
   }
 
   handleClick(): void {
-    if (this.isSelected()) {
+    if (this.isSelected() && this.adapter.isSingleSelect()) {
       this.setUnselected();
-    } else {
+    } else if (!this.isSelected()) {
       this.setSelected();
     }
     this.adapter.notifySelectedChange(this.isSelected());

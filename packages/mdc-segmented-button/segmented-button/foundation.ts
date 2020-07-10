@@ -63,15 +63,16 @@ export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButt
 
   handleSelected(detail: SegmentDetail) {
     if (this.isSingleSelect()) {
-      let selectedSegments = this.getSelectedSegments();
-      if (detail.selected) {
-        selectedSegments.filter(segmentDetail => segmentDetail.index !== detail.index)
-          .forEach(segmentDetail => this.unselectSegment(segmentDetail.index));
-      } else if (selectedSegments.length === 0) {
-        this.selectSegment(detail.index);
-        detail.selected = true;
-      }
+      this.unselectPrevSelected(detail.index);
     }
     this.adapter.notifySelectedChange(detail);
+  }
+
+  private unselectPrevSelected(index: number) {
+    for (let selectedSegment of this.getSelectedSegments()) {
+      if (selectedSegment.index !== index) {
+        this.unselectSegment(selectedSegment.index);
+      }
+    }
   }
 }
