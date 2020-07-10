@@ -45,10 +45,12 @@
 
     @include feature-targeting-mixins.targets($feat-structure) {
       box-sizing: border-box;
-      text-align: left;
       text-overflow: ellipsis;
       overflow: hidden;
       outline: none;
+
+      /* @noflip */
+      text-align: left;
 
       @include rtl-mixins.rtl {
         /* @noflip */
