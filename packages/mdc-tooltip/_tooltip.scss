@@ -74,6 +74,7 @@ $exit-duration: 75ms;
       padding: $_padding-x $_padding-y;
       min-width: $_min-width;
       max-width: $_max-width;
+      text-align: center;
       transform: scale(0.8);
       opacity: 0;
     }
