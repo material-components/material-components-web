@@ -32,6 +32,10 @@ const numbers = {
   UNBOUNDED_ANCHOR_GAP: 8,
   MIN_VIEWPORT_TOOLTIP_THRESHOLD: 32,
   HIDE_DELAY_MS: 600,
+  // LINT.IfChange(tooltip_animation_duration)
+  HIDE_DURATION_MS: 75,
+  SHOW_DURATION_MS: 150
+  // LINT.ThenChange(_tooltip.scss:tooltip_animation_duration)
 };
 
 /** Enum for possible tooltip positioning relative to its anchor element. */

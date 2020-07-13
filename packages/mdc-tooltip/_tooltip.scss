@@ -32,8 +32,10 @@ $_max-width: 120px;
 $_min-width: 40px;
 $_label-type-scale: caption;
 
+// LINT.IfChange(tooltip_animation_duration)
 $enter-duration: 150ms;
 $exit-duration: 75ms;
+// LINT.ThenChange(constants.ts:tooltip_animation_duration)
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
