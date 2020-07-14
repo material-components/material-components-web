@@ -21,18 +21,18 @@
  * THE SOFTWARE.
  */
 
-export interface MDCSegmentedButtonSegmentAdapter {
-  isSingleSelect(): boolean;
-  
-  getAttr(attrName: string): string | null;
-
-  setAttr(attrName: string, value: string): void;
-
-  addClass(className: string): void;
-
-  removeClass(className: string): void;
-
-  hasClass(className: string): boolean;
-
-  notifySelectedChange(selected: boolean): void;
+export const indices = {
+  NOT_PRESENT: -1,
+  SELECTED: 0,
+  UNSELECTED: 1
 }
+
+export const strings = {
+  NOT_PRESENT_SEGMENT_ID: 'segment-1',
+  SELECTED_SEGMENT_ID: 'segment0',
+  UNSELECTED_SEGMENT_ID: 'segment1'
+};
+
+export const cssClasses = {
+  SINGLE_SELECT: 'mdc-segmented-button--single-select'
+};

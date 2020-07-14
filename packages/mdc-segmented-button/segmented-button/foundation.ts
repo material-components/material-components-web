@@ -24,6 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCSegmentedButtonAdapter} from './adapter';
 import {SegmentDetail} from '../types';
+import {cssClasses} from './constants';
 
 export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButtonAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonAdapter {
@@ -53,22 +54,21 @@ export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButt
   }
 
   isSegmentSelected(indexOrSegmentId: number | string): boolean {
-    let segment = this.adapter.getSegments().filter(segmentDetail => segmentDetail.index === indexOrSegmentId || segmentDetail.segmentId === indexOrSegmentId);
-    return segment.length > 0 && segment[0].selected;
+    return this.adapter.getSegments().some(segmentDetail => (segmentDetail.index === indexOrSegmentId || segmentDetail.segmentId === indexOrSegmentId) && segmentDetail.selected);
   }
 
   isSingleSelect(): boolean {
-    return this.adapter.hasClass('mdc-segmented-button--single-select');
+    return this.adapter.hasClass(cssClasses.SINGLE_SELECT);
   }
 
   handleSelected(detail: SegmentDetail) {
     if (this.isSingleSelect()) {
-      this.unselectPrevSelected(detail.index);
+      this.unselectPrevSelected_(detail.index);
     }
     this.adapter.notifySelectedChange(detail);
   }
 
-  private unselectPrevSelected(index: number) {
+  private unselectPrevSelected_(index: number) {
     for (let selectedSegment of this.getSelectedSegments()) {
       if (selectedSegment.index !== index) {
         this.unselectSegment(selectedSegment.index);

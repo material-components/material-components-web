@@ -23,6 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCSegmentedButtonSegmentAdapter} from './adapter';
+import {cssClasses, strings} from './constants';
 
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
@@ -42,37 +43,45 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
   }
 
   isSelected(): boolean {
-    return this.adapter.hasClass('mdc-segmented-button__segment--selected');
+    return this.adapter.hasClass(cssClasses.SELECTED);
   }
 
   setSelected() {
-    this.adapter.addClass('mdc-segmented-button__segment--selected');
-    this.setAriaAttr('true');
+    this.adapter.addClass(cssClasses.SELECTED);
+    this.setAriaAttr_(strings.TRUE);
   }
 
   setUnselected() {
-    this.adapter.removeClass('mdc-segmented-button__segment--selected');
-    this.setAriaAttr('false');
+    this.adapter.removeClass(cssClasses.SELECTED);
+    this.setAriaAttr_(strings.FALSE);
   }
 
-  getSegmentId(): string {
-    return this.adapter.getAttr('data-segment-id');
+  getSegmentId(): string | null {
+    return this.adapter.getAttr(strings.DATA_SEGMENT_ID);
   }
 
   handleClick(): void {
-    if (!this.isSelected()) {
+    if (this.adapter.isSingleSelect()) {
       this.setSelected();
-    } else if (!this.adapter.isSingleSelect()) {
-      this.setUnselected();
+    } else {
+      this.toggleSelection_();
     }
     this.adapter.notifySelectedChange(this.isSelected());
   }
 
-  private setAriaAttr(value: string) {
-    if (this.adapter.isSingleSelect()) {
-      this.adapter.setAttr('aria-checked', value);
+  private toggleSelection_() {
+    if (this.isSelected()) {
+      this.setUnselected();
     } else {
-      this.adapter.setAttr('aria-pressed', value);
+      this.setSelected();
+    }
+  }
+
+  private setAriaAttr_(value: string) {
+    if (this.adapter.isSingleSelect()) {
+      this.adapter.setAttr(strings.ARIA_CHECKED, value);
+    } else {
+      this.adapter.setAttr(strings.ARIA_PRESSED, value);
     }
   }
 }

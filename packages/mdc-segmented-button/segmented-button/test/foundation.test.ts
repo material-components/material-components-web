@@ -24,6 +24,7 @@
 import {MDCSegmentedButtonFoundation} from '../foundation';
 import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
+import {cssClasses, indices, strings} from '../constants';
 
 describe('MDCSegmentedButtonFoundation', () => {
   it('defaultAdapter returns a complete adapter implementation', () => {
@@ -38,154 +39,69 @@ describe('MDCSegmentedButtonFoundation', () => {
 
   const setupSingleSelectTest = () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCSegmentedButtonFoundation);
-    mockAdapter.hasClass.withArgs('mdc-segmented-button--single-select').and.returnValue(true);
+    mockAdapter.hasClass.withArgs(cssClasses.SINGLE_SELECT).and.returnValue(true);
     return {foundation, mockAdapter};
   };
 
   const setupMultiSelectTest = () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCSegmentedButtonFoundation);
-    mockAdapter.hasClass.withArgs('mdc-segmented-button--single-select').and.returnValue(false);
+    mockAdapter.hasClass.withArgs(cssClasses.SINGLE_SELECT).and.returnValue(false);
     return {foundation, mockAdapter};
   };
-
-  const SELECTED = 0;
-  const UNSELECTED = 1;
 
   const setupSegmentTest = (singleSelect: boolean = false) => {
     const {foundation, mockAdapter} = singleSelect ? setupSingleSelectTest() : setupMultiSelectTest();
     mockAdapter.getSegments.and.returnValue([
       {
-        'index': SELECTED,
+        'index': indices.SELECTED,
         'selected': true,
-        'segmentId': 'segment' + SELECTED
+        'segmentId': strings.SELECTED_SEGMENT_ID
       }, {
-        'index': UNSELECTED,
+        'index': indices.UNSELECTED,
         'selected': false,
-        'segmentId': 'segment' + UNSELECTED
+        'segmentId': strings.UNSELECTED_SEGMENT_ID
       }
     ]);
     return {foundation, mockAdapter};
   }
 
-  describe('Single select check', () => {
+  it('#unselectSegment does not emit an event', () => {
+    const {foundation, mockAdapter} = setupSegmentTest();
+    let selectedSegment = mockAdapter.getSegments()[indices.SELECTED];
+
+    foundation.unselectSegment(selectedSegment.segmentId);
+    expect(mockAdapter.notifySelectedChange).toHaveBeenCalledTimes(0);
+  });
+
+  it('#getSelectedSegments returns selected segments', () => {
+    const {foundation, mockAdapter} = setupSegmentTest();
+    let selectedSegment = mockAdapter.getSegments()[indices.SELECTED];
+    let selectedSegments = foundation.getSelectedSegments();
+    
+    expect(selectedSegments.length).toEqual(1);
+    expect(selectedSegments[0].index).toEqual(selectedSegment.index);
+    expect(selectedSegments[0].selected).toBeTruthy();
+    expect(selectedSegments[0].segmentId).toEqual(selectedSegment.segmentId);
+  });
+
+  it('#selectSegment does not emit an event', () => {
+    const {foundation, mockAdapter} = setupSegmentTest();
+    let unselectedSegment = mockAdapter.getSegments()[indices.UNSELECTED];
+
+    foundation.selectSegment(unselectedSegment.index);
+    expect(mockAdapter.notifySelectedChange).toHaveBeenCalledTimes(0);
+  });
+
+  describe('Single selection', () => {
     it('#isSingleSelect returns true if single select', () => {
-      const {foundation} = setupSingleSelectTest();
+      const {foundation} = setupSegmentTest(true);
       expect(foundation.isSingleSelect()).toBeTruthy();
     });
-  
-    it('#isSingleSelect returns false if multi select', () => {
-      const {foundation} = setupMultiSelectTest();
-      expect(foundation.isSingleSelect()).toBeFalsy();
-    });
-  });
 
-  describe('Segment selected check', () => {
-    it('#isSegmentSelected returns true if segment at index is selected', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let selectedSegment = mockAdapter.getSegments()[SELECTED];
-      expect(foundation.isSegmentSelected(selectedSegment.index)).toBeTruthy();
-    });
-  
-    it('#isSegmentSelected returns true if segment with segmentId is selected', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let selectedSegment = mockAdapter.getSegments()[SELECTED];
-      expect(foundation.isSegmentSelected(selectedSegment.segmentId)).toBeTruthy();
-    });
-  
-    it('#isSegmentSelected returns false if segment at index is not selected', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let unselectedSegment = mockAdapter.getSegments()[UNSELECTED];
-      expect(foundation.isSegmentSelected(unselectedSegment.index)).toBeFalsy();
-    });
-  
-    it('#isSegmentSelected returns false if segment with segmentId is not selected', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let unselectedSegment = mockAdapter.getSegments()[UNSELECTED];
-      expect(foundation.isSegmentSelected(unselectedSegment.segmentId)).toBeFalsy();
-    });
-  
-    it('#isSegmentSelected returns false if no segment is at index', () => {
-      const {foundation} = setupSegmentTest();
-      expect(foundation.isSegmentSelected(-1)).toBeFalsy();
-    });
-  
-    it('#isSegmentSelected returns false if no segment has segmentId', () => {
-      const {foundation} = setupSegmentTest();
-      expect(foundation.isSegmentSelected('-1')).toBeFalsy();
-    });
-  });
-
-  describe('Selected segments', () => {
-    it('#getSelectedSegments returns selected segments', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let selectedSegment = mockAdapter.getSegments()[SELECTED];
-      let selectedSegments = foundation.getSelectedSegments();
-      
-      expect(selectedSegments.length).toEqual(1);
-      expect(selectedSegments[0].index).toEqual(selectedSegment.index);
-      expect(selectedSegments[0].selected).toBeTruthy();
-      expect(selectedSegments[0].segmentId).toEqual(selectedSegment.segmentId);
-    });
-  });
-
-  describe('Segment selecting', () => {
-    it('#selectSegment selects segment at index if it is unselected', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let unselectedSegment = mockAdapter.getSegments()[UNSELECTED];
-  
-      foundation.selectSegment(unselectedSegment.index);
-      expect(mockAdapter.selectSegment).toHaveBeenCalledWith(unselectedSegment.index);
-    });
-  
-    it('#selectSegment selects segment with segmentId if it is unselected', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let unselectedSegment = mockAdapter.getSegments()[UNSELECTED];
-  
-      foundation.selectSegment(unselectedSegment.segmentId);
-      expect(mockAdapter.selectSegment).toHaveBeenCalledWith(unselectedSegment.segmentId);
-    });
-  
-    it('#selectSegment does not emit an event', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let unselectedSegment = mockAdapter.getSegments()[UNSELECTED];
-  
-      foundation.selectSegment(unselectedSegment.index);
-      expect(mockAdapter.notifySelectedChange).toHaveBeenCalledTimes(0);
-    });
-  });
-
-
-  describe('Segment unselecting', () => {
-    it('#unselectSegment unselects segment at index if it is selected', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let selectedSegment = mockAdapter.getSegments()[SELECTED];
-  
-      foundation.unselectSegment(selectedSegment.index);
-      expect(mockAdapter.unselectSegment).toHaveBeenCalledWith(selectedSegment.index);
-    });
-  
-    it('#unselectSegment unselects segment with segmentId if it is selected', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let selectedSegment = mockAdapter.getSegments()[SELECTED];
-  
-      foundation.unselectSegment(selectedSegment.segmentId);
-      expect(mockAdapter.unselectSegment).toHaveBeenCalledWith(selectedSegment.segmentId);
-    });
-  
-    it('#unselectSegment does not emit an event', () => {
-      const {foundation, mockAdapter} = setupSegmentTest();
-      let selectedSegment = mockAdapter.getSegments()[SELECTED];
-  
-      foundation.unselectSegment(selectedSegment.segmentId);
-      expect(mockAdapter.notifySelectedChange).toHaveBeenCalledTimes(0);
-    });
-  });
-
-  describe('Selection handling', () => {
     it('#handleSelected unselects segment if single select and another segment was selected', () => {
       const {foundation, mockAdapter} = setupSegmentTest(true);
-      let newSelectedSegment = mockAdapter.getSegments()[UNSELECTED];
-      let newUnselectedSegment = mockAdapter.getSegments()[SELECTED];
+      let newSelectedSegment = mockAdapter.getSegments()[indices.UNSELECTED];
+      let newUnselectedSegment = mockAdapter.getSegments()[indices.SELECTED];
       newSelectedSegment.selected = true;
   
       foundation.handleSelected(newSelectedSegment);
@@ -197,11 +113,18 @@ describe('MDCSegmentedButtonFoundation', () => {
       }
       expect(mockAdapter.notifySelectedChange).toHaveBeenCalledWith(newSelectedSegment);
     });
-  
+  });
+
+  describe('Multi selection', () => {
+    it('#isSingleSelect returns false if multi select', () => {
+      const {foundation} = setupSegmentTest();
+      expect(foundation.isSingleSelect()).toBeFalsy();
+    });
+
     it('#handleSelected changes nothing if multi select and segment is selected or unselected', () => {
       const {foundation, mockAdapter} = setupSegmentTest();
-      let newUnselectedSegment = mockAdapter.getSegments()[SELECTED];
-      let newSelectedSegment = mockAdapter.getSegments()[UNSELECTED];
+      let newUnselectedSegment = mockAdapter.getSegments()[indices.SELECTED];
+      let newSelectedSegment = mockAdapter.getSegments()[indices.UNSELECTED];
       newUnselectedSegment.selected = false;
       newSelectedSegment.selected = true;
   
@@ -214,6 +137,76 @@ describe('MDCSegmentedButtonFoundation', () => {
       expect(mockAdapter.selectSegment).toHaveBeenCalledTimes(0);
       expect(mockAdapter.unselectSegment).toHaveBeenCalledTimes(0);
       expect(mockAdapter.notifySelectedChange).toHaveBeenCalledWith(newSelectedSegment);
+    });
+  });
+
+  describe('Segment selections by index', () => {
+    it('#isSegmentSelected returns true if segment at index is selected', () => {
+      const {foundation, mockAdapter} = setupSegmentTest();
+      let selectedSegment = mockAdapter.getSegments()[indices.SELECTED];
+      expect(foundation.isSegmentSelected(selectedSegment.index)).toBeTruthy();
+    });
+
+    it('#isSegmentSelected returns false if segment at index is not selected', () => {
+      const {foundation, mockAdapter} = setupSegmentTest();
+      let unselectedSegment = mockAdapter.getSegments()[indices.UNSELECTED];
+      expect(foundation.isSegmentSelected(unselectedSegment.index)).toBeFalsy();
+    });
+
+    it('#isSegmentSelected returns false if no segment is at index', () => {
+      const {foundation} = setupSegmentTest();
+      expect(foundation.isSegmentSelected(indices.NOT_PRESENT)).toBeFalsy();
+    });
+
+    it('#selectSegment selects segment at index if it is unselected', () => {
+      const {foundation, mockAdapter} = setupSegmentTest();
+      let unselectedSegment = mockAdapter.getSegments()[indices.UNSELECTED];
+  
+      foundation.selectSegment(unselectedSegment.index);
+      expect(mockAdapter.selectSegment).toHaveBeenCalledWith(unselectedSegment.index);
+    });
+
+    it('#unselectSegment unselects segment at index if it is selected', () => {
+      const {foundation, mockAdapter} = setupSegmentTest();
+      let selectedSegment = mockAdapter.getSegments()[indices.SELECTED];
+  
+      foundation.unselectSegment(selectedSegment.index);
+      expect(mockAdapter.unselectSegment).toHaveBeenCalledWith(selectedSegment.index);
+    });
+  });
+
+  describe('Segment selections by segmentId', () => {
+    it('#isSegmentSelected returns true if segment with segmentId is selected', () => {
+      const {foundation, mockAdapter} = setupSegmentTest();
+      let selectedSegment = mockAdapter.getSegments()[indices.SELECTED];
+      expect(foundation.isSegmentSelected(selectedSegment.segmentId)).toBeTruthy();
+    });
+  
+    it('#isSegmentSelected returns false if segment with segmentId is not selected', () => {
+      const {foundation, mockAdapter} = setupSegmentTest();
+      let unselectedSegment = mockAdapter.getSegments()[indices.UNSELECTED];
+      expect(foundation.isSegmentSelected(unselectedSegment.segmentId)).toBeFalsy();
+    });    
+  
+    it('#isSegmentSelected returns false if no segment has segmentId', () => {
+      const {foundation} = setupSegmentTest();
+      expect(foundation.isSegmentSelected(strings.NOT_PRESENT_SEGMENT_ID)).toBeFalsy();
+    });
+
+    it('#selectSegment selects segment with segmentId if it is unselected', () => {
+      const {foundation, mockAdapter} = setupSegmentTest();
+      let unselectedSegment = mockAdapter.getSegments()[indices.UNSELECTED];
+  
+      foundation.selectSegment(unselectedSegment.segmentId);
+      expect(mockAdapter.selectSegment).toHaveBeenCalledWith(unselectedSegment.segmentId);
+    });
+  
+    it('#unselectSegment unselects segment with segmentId if it is selected', () => {
+      const {foundation, mockAdapter} = setupSegmentTest();
+      let selectedSegment = mockAdapter.getSegments()[indices.SELECTED];
+  
+      foundation.unselectSegment(selectedSegment.segmentId);
+      expect(mockAdapter.unselectSegment).toHaveBeenCalledWith(selectedSegment.segmentId);
     });
   });
 });
