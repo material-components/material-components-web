@@ -23,6 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCSegmentedButtonSegmentAdapter} from './adapter';
+import {cssClasses, strings} from './constants';
 
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
@@ -42,22 +43,45 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
   }
 
   isSelected(): boolean {
-    return false;
+    return this.adapter.hasClass(cssClasses.SELECTED);
   }
 
   setSelected() {
-    return;
+    this.adapter.addClass(cssClasses.SELECTED);
+    this.setAriaAttr(strings.TRUE);
   }
 
   setUnselected() {
-    return;
+    this.adapter.removeClass(cssClasses.SELECTED);
+    this.setAriaAttr(strings.FALSE);
   }
 
-  getSegmentId(): string {
-    return '';
+  getSegmentId(): string | null {
+    return this.adapter.getAttr(strings.DATA_SEGMENT_ID);
   }
 
-  handleClick() {
-    return;
+  handleClick(): void {
+    if (this.adapter.isSingleSelect()) {
+      this.setSelected();
+    } else {
+      this.toggleSelection();
+    }
+    this.adapter.notifySelectedChange(this.isSelected());
+  }
+
+  private toggleSelection() {
+    if (this.isSelected()) {
+      this.setUnselected();
+    } else {
+      this.setSelected();
+    }
+  }
+
+  private setAriaAttr(value: string) {
+    if (this.adapter.isSingleSelect()) {
+      this.adapter.setAttr(strings.ARIA_CHECKED, value);
+    } else {
+      this.adapter.setAttr(strings.ARIA_PRESSED, value);
+    }
   }
 }

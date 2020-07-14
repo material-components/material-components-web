@@ -21,18 +21,20 @@
  * THE SOFTWARE.
  */
 
-export interface MDCSegmentedButtonSegmentAdapter {
-  isSingleSelect(): boolean;
-  
-  getAttr(attrName: string): string | null;
+/**
+ * Strings constants used by segment
+ */
+export const strings = {
+  ARIA_CHECKED: 'aria-checked',
+  ARIA_PRESSED: 'aria-pressed',
+  DATA_SEGMENT_ID: 'data-segment-id',
+  TRUE: 'true',
+  FALSE: 'false'
+};
 
-  setAttr(attrName: string, value: string): void;
-
-  addClass(className: string): void;
-
-  removeClass(className: string): void;
-
-  hasClass(className: string): boolean;
-
-  notifySelectedChange(selected: boolean): void;
-}
+/**
+ * Style classes for segment
+ */
+export const cssClasses = {
+  SELECTED: 'mdc-segmented-button__segment--selected'
+};

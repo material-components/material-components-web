@@ -21,18 +21,9 @@
  * THE SOFTWARE.
  */
 
-export interface MDCSegmentedButtonSegmentAdapter {
-  isSingleSelect(): boolean;
-  
-  getAttr(attrName: string): string | null;
-
-  setAttr(attrName: string, value: string): void;
-
-  addClass(className: string): void;
-
-  removeClass(className: string): void;
-
-  hasClass(className: string): boolean;
-
-  notifySelectedChange(selected: boolean): void;
-}
+/**
+ * Style classes for segmented-button
+ */
+export const cssClasses = {
+  SINGLE_SELECT: 'mdc-segmented-button--single-select'
+};

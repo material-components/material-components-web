@@ -21,18 +21,20 @@
  * THE SOFTWARE.
  */
 
-export interface MDCSegmentedButtonSegmentAdapter {
-  isSingleSelect(): boolean;
-  
-  getAttr(attrName: string): string | null;
-
-  setAttr(attrName: string, value: string): void;
-
-  addClass(className: string): void;
-
-  removeClass(className: string): void;
-
-  hasClass(className: string): boolean;
-
-  notifySelectedChange(selected: boolean): void;
+/**
+ * Indices for segments used in tests
+ */
+export enum test_indices {
+  NOT_PRESENT = -1,
+  UNSELECTED = 0,
+  SELECTED = 1
 }
+
+/**
+ * SegmentIds for segments used in tests
+ */
+export const test_segment_ids = {
+  NOT_PRESENT_SEGMENT_ID: 'segment-1',
+  UNSELECTED_SEGMENT_ID: 'segment0',
+  SELECTED_SEGMENT_ID: 'segment1'
+};
