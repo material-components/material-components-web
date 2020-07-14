@@ -21,43 +21,96 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
+import {MDCComponent} from '../../mdc-base/component';
+import {SpecificEventListener} from '../../mdc-base/types';
+// TODO: use this to allow ripple usage
+// import {MDCRippleAdapter} from '../../mdc-ripple/adapter';
+// import {MDCRipple, MDCRippleFactory} from '../../mdc-ripple/component';
+// import {MDCRippleFoundation} from '../../mdc-ripple/foundation';
+import {MDCRippleCapableSurface} from '../../mdc-ripple/types';
+import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 import {MDCSegmentedButtonSegmentFoundation} from './foundation';
+import {SegmentDetail} from '../types';
+import {strings} from './constants';
 
 export type MDCSegmentedButtonSegmentFactory =
     (el: Element, foundation?: MDCSegmentedButtonSegmentFoundation) =>
     MDCSegmentedButtonSegment;
 
-export class MDCSegmentedButtonSegment extends MDCComponent<MDCSegmentedButtonSegmentFoundation> {
+export class MDCSegmentedButtonSegment extends MDCComponent<MDCSegmentedButtonSegmentFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: Element) {
     return new MDCSegmentedButtonSegment(root);
   }
 
+  private index!: number; // assigned in setIndex by parent
+  private isSingleSelect!: boolean; // assigned in setIsSingleSelect by parent
+  private handleClick!:
+      SpecificEventListener<'click'>; // assigned in initialSyncWithDOM
+
   initialSyncWithDOM() {
-    return;
+    this.handleClick = this.foundation.handleClick;
+
+    this.listen(strings.CLICK_EVENT, this.handleClick);
   }
 
   destroy() {
+    this.unlisten(strings.CLICK_EVENT, this.handleClick);
+
     super.destroy();
   }
 
   getDefaultFoundation(): MDCSegmentedButtonSegmentFoundation {
-    return new MDCSegmentedButtonSegmentFoundation();
+    const adapter: MDCSegmentedButtonSegmentAdapter = {
+      isSingleSelect: () => {
+        return this.isSingleSelect;
+      },
+      getAttr: (attrName: string) => {
+        return this.root.getAttribute(attrName);
+      },
+      setAttr: (attrName: string, value: string) => {
+        this.root.setAttribute(attrName, value);
+      },
+      addClass: (className: string) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className: string) => {
+        this.root.classList.remove(className);
+      },
+      hasClass: (className: string) => {
+        return this.root.classList.contains(className);
+      },
+      notifySelectedChange: (selected: boolean) => {
+        this.emit<SegmentDetail>(
+          strings.SELECTED_EVENT,
+          {index: this.index, selected: selected, segmentId: this.getSegmentId()},
+          true /* shouldBubble */
+        );
+      }
+    };
+    return new MDCSegmentedButtonSegmentFoundation(adapter);
+  }
+
+  setIndex(index: number) {
+    this.index = index;
+  }
+
+  setIsSingleSelect(isSingleSelect: boolean) {
+    this.isSingleSelect = isSingleSelect;
   }
 
   isSelected(): boolean {
-    return false;
+    return this.foundation.isSelected();
   }
 
   setSelected() {
-    return;
+    return this.foundation.setSelected();
   }
 
   setUnselected() {
-    return;
+    return this.foundation.setUnselected();
   }
 
   getSegmentId(): string {
-    return '';
+    return this.getSegmentId();
   }
 }

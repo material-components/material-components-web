@@ -29,7 +29,9 @@ export const strings = {
   ARIA_PRESSED: 'aria-pressed',
   DATA_SEGMENT_ID: 'data-segment-id',
   TRUE: 'true',
-  FALSE: 'false'
+  FALSE: 'false',
+  CLICK_EVENT: 'click',
+  SELECTED_EVENT: 'selected'
 };
 
 /**

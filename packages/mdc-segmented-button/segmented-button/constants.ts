@@ -22,6 +22,15 @@
  */
 
 /**
+ * String constants used by segmented-button
+ */
+export const strings = {
+  SEGMENT_SELECTOR: '.mdc-segmented-button__segment',
+  SELECTED_EVENT: 'selected',
+  CHANGE_EVENT: 'change'
+};
+
+/**
  * Style classes for segmented-button
  */
 export const cssClasses = {
