@@ -25,6 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCCheckbox, MDCCheckboxFactory} from '@material/checkbox/component';
 import {closest} from '@material/dom/ponyfill';
+import {MDCLinearProgress} from '@material/linear-progress/component';
 
 import {MDCDataTableAdapter} from './adapter';
 import {cssClasses, dataAttributes, events, messages, selectors, SortValue} from './constants';
@@ -42,6 +43,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   private headerRowCheckbox!: MDCCheckbox;
   private rowCheckboxList!: MDCCheckbox[];
   private checkboxFactory!: MDCCheckboxFactory;
+  private linearProgress!: MDCLinearProgress;
   private headerRow!: HTMLElement;
   private content!: HTMLElement;
   private handleHeaderRowCheckboxChange!: SpecificEventListener<'change'>;
@@ -111,6 +113,22 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     this.foundation.setSelectedRowIds(rowIds);
   }
 
+  /**
+   * Shows progress indicator when data table is in loading state.
+   */
+  showProgress() {
+    this.getLinearProgress().open();
+    this.foundation.showProgress();
+  }
+
+  /**
+   * Hides progress indicator after data table is finished loading.
+   */
+  hideProgress() {
+    this.foundation.hideProgress();
+    this.getLinearProgress().close();
+  }
+
   destroy() {
     this.headerRow.removeEventListener(
         'change', this.handleHeaderRowCheckboxChange);
@@ -152,8 +170,8 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
         this.emit(events.SORTED, data, /** shouldBubble */ true);
       },
       getTableContainerHeight: () => {
-        const tableContainer =
-            this.root.querySelector<HTMLElement>(`.${cssClasses.CONTAINER}`);
+        const tableContainer = this.root.querySelector<HTMLElement>(
+            `.${cssClasses.TABLE_CONTAINER}`);
 
         if (!tableContainer) {
           throw new Error('MDCDataTable: Table container element not found.');
@@ -307,5 +325,24 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
       default:
         return '';
     }
+  }
+
+  private getLinearProgressElement(): HTMLElement {
+    const el =
+        this.root.querySelector<HTMLElement>(`.${cssClasses.LINEAR_PROGRESS}`);
+    if (!el) {
+      throw new Error('MDCDataTable: linear progress element is not found.');
+    }
+
+    return el;
+  }
+
+  private getLinearProgress(): MDCLinearProgress {
+    if (!this.linearProgress) {
+      const el = this.getLinearProgressElement();
+      this.linearProgress = new MDCLinearProgress(el);
+    }
+
+    return this.linearProgress;
   }
 }
