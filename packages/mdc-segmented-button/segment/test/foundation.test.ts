@@ -24,6 +24,7 @@
 import {MDCSegmentedButtonSegmentFoundation} from '../foundation';
 import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
+import {cssClasses, strings} from '../constants';
 
 describe('MDCSegmentedButtonSegmentFoundation', () => {
   it('defaultAdapter returns a complete adapter implementation', () => {
@@ -38,14 +39,22 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
     ]);
   });
 
-  // This value is arbitrary
-  const SEGMENT_ID = 'segment0';
-  const SELECTED_CLASS = 'mdc-segmented-button__segment--selected';
-
   const setupTest = (selected: boolean, singleSelect: boolean) => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCSegmentedButtonSegmentFoundation);
-    mockAdapter.hasClass.withArgs(SELECTED_CLASS).and.returnValue(selected);
+    mockAdapter.hasClass.withArgs(cssClasses.SELECTED).and.returnValue(selected);
     mockAdapter.isSingleSelect.and.returnValue(singleSelect);
+    mockAdapter.getAttr.and.callFake((name: string) => {
+      let is_selected = false;
+      if ((singleSelect && name === strings.ARIA_PRESSED) ||
+          (!singleSelect && name === strings.ARIA_CHECKED)) {
+        return null;
+      } else if (name === strings.ARIA_CHECKED) {
+        is_selected = singleSelect;
+      } else if (name === strings.ARIA_PRESSED) {
+        is_selected = !singleSelect;
+      }
+      return (selected && is_selected) ? strings.TRUE : strings.FALSE;
+    });
 
     // Need calls to mocked methods to change mocked state
     mockAdapter.addClass.and.callFake((cssClass: string) => {
@@ -53,6 +62,9 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
     });
     mockAdapter.removeClass.and.callFake((cssClass: string) => {
       mockAdapter.hasClass.withArgs(cssClass).and.returnValue(false);
+    });
+    mockAdapter.setAttr.and.callFake((name: string, value: string | null) => {
+      mockAdapter.getAttr.withArgs(name).and.returnValue(value);
     });
 
     return {foundation, mockAdapter};
@@ -78,8 +90,8 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
 
   it('#getSegmentId returns segment id', () => {
     const {foundation, mockAdapter} = setupSelectedTest();
-    mockAdapter.getAttr.withArgs('data-segment-id').and.returnValue(SEGMENT_ID);
-    expect(foundation.getSegmentId()).toEqual(SEGMENT_ID);
+    mockAdapter.getAttr.withArgs(strings.DATA_SEGMENT_ID).and.returnValue(strings.SEGMENT_ID);
+    expect(foundation.getSegmentId()).toEqual(strings.SEGMENT_ID);
   });
 
   describe('Selection toggling', () => {
@@ -87,32 +99,32 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
       const {foundation, mockAdapter} = setupUnselectedTest(true);
       foundation.setSelected();
 
-      expect(mockAdapter.addClass).toHaveBeenCalledWith(SELECTED_CLASS);
-      expect(mockAdapter.setAttr).toHaveBeenCalledWith('aria-checked', 'true');
+      expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.SELECTED);
+      expect(mockAdapter.setAttr).toHaveBeenCalledWith(strings.ARIA_CHECKED, strings.TRUE);
     });
 
     it('#setSelected adds the `selected` css class and if not singleSelect then sets aria-pressed to true', () => {
       const {foundation, mockAdapter} = setupUnselectedTest();
       foundation.setSelected();
 
-      expect(mockAdapter.addClass).toHaveBeenCalledWith(SELECTED_CLASS);
-      expect(mockAdapter.setAttr).toHaveBeenCalledWith('aria-pressed', 'true');
+      expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.SELECTED);
+      expect(mockAdapter.setAttr).toHaveBeenCalledWith(strings.ARIA_PRESSED, strings.TRUE);
     });
 
     it('#setUnselected removes the `selected` css class and if singleSelect then sets aria-checked to false', () => {
       const {foundation, mockAdapter} = setupSelectedTest(true);
       foundation.setUnselected();
 
-      expect(mockAdapter.removeClass).toHaveBeenCalledWith(SELECTED_CLASS);
-      expect(mockAdapter.setAttr).toHaveBeenCalledWith('aria-checked', 'false');
+      expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.SELECTED);
+      expect(mockAdapter.setAttr).toHaveBeenCalledWith(strings.ARIA_CHECKED, strings.FALSE);
     });
 
     it('#setUnselected removes the `selected` css class and if not singleSelect then sets aria-pressed to false', () => {
       const {foundation, mockAdapter} = setupSelectedTest();
       foundation.setUnselected();
 
-      expect(mockAdapter.removeClass).toHaveBeenCalledWith(SELECTED_CLASS);
-      expect(mockAdapter.setAttr).toHaveBeenCalledWith('aria-pressed', 'false');
+      expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.SELECTED);
+      expect(mockAdapter.setAttr).toHaveBeenCalledWith(strings.ARIA_PRESSED, strings.FALSE);
     });
   });
 
@@ -121,8 +133,8 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
       const {foundation, mockAdapter} = setupUnselectedTest(true);
       foundation.handleClick();
 
-      expect(mockAdapter.addClass).toHaveBeenCalledWith(SELECTED_CLASS);
-      expect(mockAdapter.setAttr).toHaveBeenCalledWith('aria-checked', 'true');
+      expect(mockAdapter.hasClass(cssClasses.SELECTED)).toBeTruthy();
+      expect(mockAdapter.getAttr(strings.ARIA_CHECKED)).toBeTruthy();
       expect(mockAdapter.notifySelectedChange).toHaveBeenCalledWith(true);
     });
 
@@ -130,8 +142,8 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
       const {foundation, mockAdapter} = setupSelectedTest(true);
       foundation.handleClick();
 
-      expect(mockAdapter.removeClass).toHaveBeenCalledTimes(0);
-      expect(mockAdapter.setAttr).toHaveBeenCalledTimes(0);
+      expect(mockAdapter.hasClass(cssClasses.SELECTED)).toBeTruthy();
+      expect(mockAdapter.getAttr(strings.ARIA_CHECKED)).toBeTruthy();
       expect(mockAdapter.notifySelectedChange).toHaveBeenCalledWith(true);
     });
 
@@ -139,8 +151,8 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
       const {foundation, mockAdapter} = setupUnselectedTest();
       foundation.handleClick();
 
-      expect(mockAdapter.addClass).toHaveBeenCalledWith(SELECTED_CLASS);
-      expect(mockAdapter.setAttr).toHaveBeenCalledWith('aria-pressed', 'true');
+      expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.SELECTED);
+      expect(mockAdapter.setAttr).toHaveBeenCalledWith(strings.ARIA_PRESSED, strings.TRUE);
       expect(mockAdapter.notifySelectedChange).toHaveBeenCalledWith(true);
     });
 
@@ -148,8 +160,8 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
       const {foundation, mockAdapter} = setupSelectedTest();
       foundation.handleClick();
 
-      expect(mockAdapter.removeClass).toHaveBeenCalledWith(SELECTED_CLASS);
-      expect(mockAdapter.setAttr).toHaveBeenCalledWith('aria-pressed', 'false');
+      expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.SELECTED);
+      expect(mockAdapter.setAttr).toHaveBeenCalledWith(strings.ARIA_PRESSED, strings.FALSE);
       expect(mockAdapter.notifySelectedChange).toHaveBeenCalledWith(false);
     });
   });
