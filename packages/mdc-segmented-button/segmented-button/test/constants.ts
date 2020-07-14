@@ -22,19 +22,19 @@
  */
 
 /**
- * Strings constants used by segment
+ * Indices for segments used in tests
  */
-export const strings = {
-  ARIA_CHECKED: 'aria-checked',
-  ARIA_PRESSED: 'aria-pressed',
-  DATA_SEGMENT_ID: 'data-segment-id',
-  TRUE: 'true',
-  FALSE: 'false'
-};
+export enum test_indices {
+  NOT_PRESENT = -1,
+  UNSELECTED = 0,
+  SELECTED = 1
+}
 
 /**
- * Style classes for segment
+ * SegmentIds for segments used in tests
  */
-export const cssClasses = {
-  SELECTED: 'mdc-segmented-button__segment--selected'
+export const test_segment_ids = {
+  NOT_PRESENT_SEGMENT_ID: 'segment-1',
+  UNSELECTED_SEGMENT_ID: 'segment0',
+  SELECTED_SEGMENT_ID: 'segment1'
 };

@@ -21,18 +21,9 @@
  * THE SOFTWARE.
  */
 
-export const indices = {
-  NOT_PRESENT: -1,
-  SELECTED: 0,
-  UNSELECTED: 1
-}
-
-export const strings = {
-  NOT_PRESENT_SEGMENT_ID: 'segment-1',
-  SELECTED_SEGMENT_ID: 'segment0',
-  UNSELECTED_SEGMENT_ID: 'segment1'
-};
-
+/**
+ * Style classes for segmented-button
+ */
 export const cssClasses = {
   SINGLE_SELECT: 'mdc-segmented-button--single-select'
 };

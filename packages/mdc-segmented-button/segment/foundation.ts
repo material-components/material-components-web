@@ -48,12 +48,12 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
 
   setSelected() {
     this.adapter.addClass(cssClasses.SELECTED);
-    this.setAriaAttr_(strings.TRUE);
+    this.setAriaAttr(strings.TRUE);
   }
 
   setUnselected() {
     this.adapter.removeClass(cssClasses.SELECTED);
-    this.setAriaAttr_(strings.FALSE);
+    this.setAriaAttr(strings.FALSE);
   }
 
   getSegmentId(): string | null {
@@ -64,12 +64,12 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
     if (this.adapter.isSingleSelect()) {
       this.setSelected();
     } else {
-      this.toggleSelection_();
+      this.toggleSelection();
     }
     this.adapter.notifySelectedChange(this.isSelected());
   }
 
-  private toggleSelection_() {
+  private toggleSelection() {
     if (this.isSelected()) {
       this.setUnselected();
     } else {
@@ -77,7 +77,7 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
     }
   }
 
-  private setAriaAttr_(value: string) {
+  private setAriaAttr(value: string) {
     if (this.adapter.isSingleSelect()) {
       this.adapter.setAttr(strings.ARIA_CHECKED, value);
     } else {

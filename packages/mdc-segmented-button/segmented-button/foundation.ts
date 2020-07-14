@@ -63,12 +63,12 @@ export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButt
 
   handleSelected(detail: SegmentDetail) {
     if (this.isSingleSelect()) {
-      this.unselectPrevSelected_(detail.index);
+      this.unselectPrevSelected(detail.index);
     }
     this.adapter.notifySelectedChange(detail);
   }
 
-  private unselectPrevSelected_(index: number) {
+  private unselectPrevSelected(index: number) {
     for (let selectedSegment of this.getSelectedSegments()) {
       if (selectedSegment.index !== index) {
         this.unselectSegment(selectedSegment.index);

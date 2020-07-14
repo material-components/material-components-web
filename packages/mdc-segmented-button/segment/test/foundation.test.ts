@@ -90,8 +90,8 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
 
   it('#getSegmentId returns segment id', () => {
     const {foundation, mockAdapter} = setupSelectedTest();
-    mockAdapter.getAttr.withArgs(strings.DATA_SEGMENT_ID).and.returnValue(strings.SEGMENT_ID);
-    expect(foundation.getSegmentId()).toEqual(strings.SEGMENT_ID);
+    mockAdapter.getAttr.withArgs(strings.DATA_SEGMENT_ID).and.returnValue('segment0');
+    expect(foundation.getSegmentId()).toEqual('segment0');
   });
 
   describe('Selection toggling', () => {
