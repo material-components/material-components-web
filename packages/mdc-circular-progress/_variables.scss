@@ -22,19 +22,6 @@
 
 $color: primary !default;
 
-/// size parameters
-$default-size: large !default;
-$container-side-length: (
-  large: 48px,
-  medium: 36px,
-  small: 24px,
-) !default;
-$stroke-width: (
-  large: 4px,
-  medium: 3px,
-  small: 2.5px,
-) !default;
-
 /// The rotation position of the arcs that corresponds to their fully contracted state
 $base-angle: 135deg !default;
 /// Amount of circle the arc takes up

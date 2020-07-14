@@ -45,8 +45,6 @@
   }
 
   .mdc-circular-progress {
-    @include size_(variables.$default-size, $query);
-
     @include feature-targeting-mixins.targets($feat-structure) {
       display: inline-block;
       position: relative;
@@ -57,18 +55,6 @@
     @include feature-targeting-mixins.targets($feat-animation) {
       transition: animation-functions.exit-temporary(opacity, 250ms);
     }
-  }
-
-  .mdc-circular-progress--small {
-    @include size_(small, $query);
-  }
-
-  .mdc-circular-progress--medium {
-    @include size_(medium, $query);
-  }
-
-  .mdc-circular-progress--large {
-    @include size_(large, $query);
   }
 
   .mdc-circular-progress__determinate-container,
@@ -221,36 +207,6 @@
 }
 
 // Private mixins
-
-/// Sets the container size of the indicator and the stroke width appropriate
-/// for the size according to Material Design guidelines. The dimensions are
-/// predefined for one of three discrete sizes listed below only.
-/// @param {String} $size - Choose from small, medium, or large.
-/// @access private
-@mixin size_($size, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  $resolved-size: map-get(variables.$container-side-length, $size);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
-    width: $resolved-size;
-    height: $resolved-size;
-  }
-
-  .mdc-circular-progress__determinate-circle-graphic,
-  .mdc-circular-progress__indeterminate-circle-graphic {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      stroke-width: map-get(variables.$stroke-width, $size);
-    }
-  }
-
-  .mdc-circular-progress__gap-patch
-    .mdc-circular-progress__indeterminate-circle-graphic {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      stroke-width: map-get(variables.$stroke-width, $size) * 0.8;
-    }
-  }
-}
 
 /// Sets the animations for the indicator in indeterminate mode.
 /// @access private
