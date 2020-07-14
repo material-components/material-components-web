@@ -50,9 +50,9 @@ the display of the helper text is dependent on the interaction with the MDCSelec
        aria-controls="my-helper-text"
        aria-describedby="my-helper-text">
     <span class="mdc-select__ripple"></span>
+    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <input type="text" disabled readonly id="demo-selected-text" class="mdc-select__selected-text" value="Vegetables">
     <i class="mdc-select__dropdown-icon"></i>
-    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
