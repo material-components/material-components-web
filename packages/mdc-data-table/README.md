@@ -233,6 +233,70 @@ The row selection feature allows users to select table rows via row checkboxes. 
   - `getSelectedRowIds()`
   - `setSelectedRowIds(string[])`
 
+### Data table with progress indicator
+
+Progress indicator inform users about the status of ongoing processes, such as data loading. Indeterminate linear progress indicator along with a scrim is shown on blocking the table content.
+
+#### HTML Structure
+
+```html
+<div class="mdc-data-table">
+  <div class="mdc-data-table__table-container">
+    <table class="mdc-data-table__table" aria-label="Dessert calories">
+      <thead>
+        <tr class="mdc-data-table__header-row">
+          <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Dessert</th>
+          <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Carbs (g)</th>
+          <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Protein (g)</th>
+          <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
+        </tr>
+      </thead>
+      <tbody class="mdc-data-table__content">
+        <tr class="mdc-data-table__row">
+          <th class="mdc-data-table__cell" scope="row">Frozen yogurt</th>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.0</td>
+          <td class="mdc-data-table__cell">Super tasty</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+          <th class="mdc-data-table__cell" scope="row">Ice cream sandwich</th>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">37</td>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.33333333333</td>
+          <td class="mdc-data-table__cell">I like ice cream more</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+          <th class="mdc-data-table__cell" scope="row">Eclair</th>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">6.0</td>
+          <td class="mdc-data-table__cell">New filing flavor</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mdc-data-table__progress-indicator">
+    <div class="mdc-data-table__scrim"></div>
+    <div class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-data-table__linear-progress" role="progressbar" aria-label="Data is being loaded...">
+      <div class="mdc-linear-progress__buffer">
+        <div class="mdc-linear-progress__buffer-bar"></div>
+        <div class="mdc-linear-progress__buffer-dots"></div>
+      </div>
+      <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+      </div>
+      <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+#### JavaScript APIs
+
+- Use `showProgress()` and `hideProgress()` API to show or hide the progress indicator.
+- Data table component will automatically initializes the linear progress indicator subcomponent.
+
 #### Events
 
 Following events are emitted for row selection feature.
