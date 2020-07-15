@@ -86,6 +86,13 @@
     .mdc-text-field--no-label & {
       @include _affix-visible($query: $query);
     }
+
+    // Safari only
+    @supports (-webkit-hyphens: none) {
+      .mdc-text-field--outlined & {
+        @include _centered-affix-safari-support($query: $query);
+      }
+    }
   }
 
   .mdc-text-field__affix--prefix {
@@ -1541,6 +1548,13 @@
       display: none;
     }
   }
+
+  // Safari only
+  @supports (-webkit-hyphens: none) {
+    .mdc-text-field__affix {
+      @include _centered-affix-safari-support($query: $query);
+    }
+  }
 }
 
 // Outlined
@@ -2275,6 +2289,21 @@
   @include feature-targeting-mixins.targets($feat-structure) {
     opacity: 0;
     white-space: nowrap;
+  }
+}
+
+// TODO(b/155467610): Remove when Safari supports baseline alignment
+// https://github.com/material-components/material-components-web/issues/5879
+@mixin _centered-affix-safari-support(
+  $query: feature-targeting-functions.all()
+) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    align-items: center;
+    align-self: center;
+    display: inline-flex;
+    height: 100%;
   }
 }
 
