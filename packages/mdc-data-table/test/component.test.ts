@@ -23,7 +23,7 @@
 
 import {html} from '../../../testing/dom';
 import {MDCDataTable} from '../component';
-import {cssClasses, dataAttributes, events, SortValue, strings} from '../constants';
+import {cssClasses, dataAttributes, events, selectors, SortValue, strings} from '../constants';
 
 interface ClassMap {
   [className: string]: boolean;
@@ -98,6 +98,7 @@ function mdcDataTableHeaderCellTemplate(
             ${props.content}
           </div>
           ${sortButton}
+          <div class="${cssClasses.SORT_STATUS_LABEL}"></div>
         </div>
       </th>
       `;
@@ -148,6 +149,26 @@ function mdcDataTableRowTemplate(props: DataTableRowTemplateProps): string {
   `;
 }
 
+const progressIndicatorTemplate = (): string => {
+  return html`
+      <div class="mdc-data-table__progress-indicator">
+        <div class="mdc-data-table__scrim"></div>
+        <div class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-data-table__linear-progress" role="progressbar" aria-label="Data is being loaded...">
+          <div class="mdc-linear-progress__buffer">
+            <div class="mdc-linear-progress__buffer-bar"></div>
+            <div class="mdc-linear-progress__buffer-dots"></div>
+          </div>
+          <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+          </div>
+          <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+          </div>
+        </div>
+      </div>
+      `;
+};
+
 interface DataTableHeader {
   name: string;
   isSortable?: boolean;
@@ -195,6 +216,7 @@ const mdcDataTableData = {
 
 interface RenderComponentProps {
   data: DataTableData;
+  excludeProgressIndicator?: boolean;
 }
 
 function renderComponent(props: RenderComponentProps): HTMLElement {
@@ -227,16 +249,19 @@ function renderComponent(props: RenderComponentProps): HTMLElement {
 
   const blobHtml = html`
     <div class="${cssClasses.ROOT}">
-      <table class="mdc-data-table__table">
-        <thead>
-          <tr class="${cssClasses.HEADER_ROW}">
-            ${headerRowContent}
-          </tr>
-        </thead>
-        <tbody class="mdc-data-table__content">
-          ${bodyContent}
-        </tbody>
-      </table>
+      <div class="${cssClasses.TABLE_CONTAINER}">
+        <table class="mdc-data-table__table">
+          <thead>
+            <tr class="${cssClasses.HEADER_ROW}">
+              ${headerRowContent}
+            </tr>
+          </thead>
+          <tbody class="mdc-data-table__content">
+            ${bodyContent}
+          </tbody>
+        </table>
+      </div>
+      ${props.excludeProgressIndicator ? '' : progressIndicatorTemplate()}
     </div>
   `;
 
@@ -251,8 +276,15 @@ function renderComponent(props: RenderComponentProps): HTMLElement {
   return document.querySelector(`.${cssClasses.ROOT}`) as HTMLElement;
 }
 
-function setupTest() {
-  const root = renderComponent({data: mdcDataTableData});
+interface SetupProps {
+  excludeProgressIndicator?: boolean;
+}
+
+function setupTest(props: SetupProps = {}) {
+  const root = renderComponent({
+    data: mdcDataTableData,
+    excludeProgressIndicator: props.excludeProgressIndicator
+  });
   const component = new MDCDataTable(root);
   // This is an intentionally reference to adapter instance for testing.
   // tslint:disable-next-line:no-any
@@ -613,5 +645,100 @@ describe('MDCDataTable', () => {
          expect(dessertHeaderCell!.getAttribute('aria-sort')).toBe('none');
          component.destroy();
        });
+
+    it('clicking on sortable header cell sets appropriate sort status label that is visually hidden',
+       () => {
+         const {component, root} = setupTest();
+
+         const caloriesHeaderCell = root.querySelector<HTMLElement>(
+             `[${dataAttributes.COLUMN_ID}="calories"]`);
+         expect(caloriesHeaderCell!
+                    .querySelector<HTMLElement>(
+                        selectors.SORT_STATUS_LABEL)!.textContent)
+             .toBe('');
+         caloriesHeaderCell!
+             .querySelector<HTMLElement>(
+                 `.${cssClasses.SORT_ICON_BUTTON}`)!.click();
+         expect(caloriesHeaderCell!
+                    .querySelector<HTMLElement>(
+                        selectors.SORT_STATUS_LABEL)!.textContent)
+             .toMatch(/ascending/);
+         caloriesHeaderCell!
+             .querySelector<HTMLElement>(
+                 `.${cssClasses.SORT_ICON_BUTTON}`)!.click();
+         expect(caloriesHeaderCell!
+                    .querySelector<HTMLElement>(
+                        selectors.SORT_STATUS_LABEL)!.textContent)
+             .toMatch(/descending/);
+
+         // Should reset previous column sort status label.
+         const dessertHeaderCell = root.querySelector<HTMLElement>(
+             `[${dataAttributes.COLUMN_ID}="dessert"]`);
+         dessertHeaderCell!
+             .querySelector<HTMLElement>(
+                 `.${cssClasses.SORT_ICON_BUTTON}`)!.click();
+         expect(caloriesHeaderCell!
+                    .querySelector<HTMLElement>(
+                        selectors.SORT_STATUS_LABEL)!.textContent)
+             .toBe('');
+
+         component.destroy();
+       });
+  });
+
+  describe('Progress indicator', () => {
+    it('Should show progress indicator blocking the content when calling showProgress()',
+       () => {
+         const {component, root} = setupTest();
+
+         const progressIndicator = root.querySelector<HTMLElement>(
+             `.${cssClasses.PROGRESS_INDICATOR}`);
+         expect(progressIndicator!.style.cssText).toBe('');
+
+         component.showProgress();
+         expect(progressIndicator!.style.cssText).toMatch(/(height|top)/);
+         expect(root.classList.contains(cssClasses.IN_PROGRESS)).toBe(true);
+
+         destroyProgress(component, root);
+         component.destroy();
+       });
+
+    it('Should hide progress indicator when hideProgress() called', () => {
+      const {component, root} = setupTest();
+
+      component.showProgress();
+      component.hideProgress();
+      expect(root.classList.contains(cssClasses.IN_PROGRESS)).toBe(false);
+
+      destroyProgress(component, root);
+      component.destroy();
+    });
+
+    it('Should throw error when showProgress() is called without progress indicator element',
+       () => {
+         const {component} = setupTest({excludeProgressIndicator: true});
+
+         expect(() => {
+           component.showProgress();
+         }).toThrowError();
+         component.destroy();
+       });
+
+    it('Should throw error when hideProgress() is called without progress indicator element',
+       () => {
+         const {component} = setupTest({excludeProgressIndicator: true});
+
+         expect(() => {
+           component.hideProgress();
+         }).toThrowError();
+         component.destroy();
+       });
   });
 });
+
+function destroyProgress(component: MDCDataTable, root: HTMLElement) {
+  const progressIndicator =
+      root.querySelector<HTMLElement>(`.${cssClasses.PROGRESS_INDICATOR}`);
+  component.hideProgress();
+  progressIndicator!.setAttribute('style', '');
+}

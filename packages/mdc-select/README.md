@@ -50,6 +50,7 @@ The select requires that you set the `width` of the `mdc-select` element. This i
 <div class="mdc-select mdc-select--filled demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
+    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -69,20 +70,24 @@ The select requires that you set the `width` of the `mdc-select` element. This i
         </polygon>
       </svg>
     </span>
-    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
     <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
+      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true">
+        <span class="mdc-list-item__ripple"></span>
+      </li>
       <li class="mdc-list-item" data-value="grains">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
       </li>
       <li class="mdc-list-item" data-value="vegetables">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Vegetables</span>
       </li>
       <li class="mdc-list-item" data-value="fruit">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Fruit</span>
       </li>
     </ul>
@@ -136,6 +141,7 @@ The following is an example of the select component with all of the necessary ar
        aria-haspopup="listbox"
        aria-labelledby="demo-label demo-selected-text">
     <span class="mdc-select__ripple"></span>
+    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span id="demo-selected-text" class="mdc-select__selected-text">Vegetables</span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -155,7 +161,6 @@ The following is an example of the select component with all of the necessary ar
         </polygon>
       </svg>
     </span>
-    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
@@ -187,6 +192,13 @@ same.
 ```html
 <div class="mdc-select mdc-select--outlined">
   <div class="mdc-select__anchor" aria-labelledby="outlined-select-label">
+    <span class="mdc-notched-outline">
+      <span class="mdc-notched-outline__leading"></span>
+      <span class="mdc-notched-outline__notch">
+        <span id="outlined-select-label" class="mdc-floating-label">Pick a Food Group</span>
+      </span>
+      <span class="mdc-notched-outline__trailing"></span>
+    </span>
     <span id="demo-selected-text" class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -206,24 +218,12 @@ same.
         </polygon>
       </svg>
     </span>
-    <span class="mdc-notched-outline">
-      <span class="mdc-notched-outline__leading"></span>
-      <span class="mdc-notched-outline__notch">
-        <span id="outlined-select-label" class="mdc-floating-label">Pick a Food Group</span>
-      </span>
-      <span class="mdc-notched-outline__trailing"></span>
-    </span>
   </div>
 
   <!-- Other elements from the select remain. -->
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">...</div>
 </div>
 ```
-
-### Fullwidth Select
-
-The Select Fullwidth variant takes up the entirety of the width of its parent container. To use this variant, place the
-`mdc-select--fullwidth` modifier class on the root element.
 
 ### Additional Information
 
@@ -237,6 +237,7 @@ to set the selected item. The select also needs the text from the selected eleme
 <div class="mdc-select mdc-select--filled demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
+    <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-select__selected-text">Vegetables</span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -256,20 +257,24 @@ to set the selected item. The select also needs the text from the selected eleme
         </polygon>
       </svg>
     </span>
-    <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
   <div class="mdc-select__menu demo-width-class mdc-menu mdc-menu-surface">
     <ul class="mdc-list">
-      <li class="mdc-list-item" data-value=""></li>
+      <li class="mdc-list-item" data-value="">
+        <span class="mdc-list-item__ripple"></span>
+      </li>
       <li class="mdc-list-item" data-value="grains">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
       </li>
       <li class="mdc-list-item mdc-list-item--selected" data-value="vegetables" aria-selected="true">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Vegetables</span>
       </li>
       <li class="mdc-list-item" data-value="fruit">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Fruit</span>
       </li>
     </ul>
@@ -294,8 +299,9 @@ and set the `aria-required` attribute on the `mdc-select__anchor` element to be 
 
 ```html
 <div class="mdc-select mdc-select--filled mdc-select--required">
-  <span class="mdc-select__ripple"></span>
   <div class="mdc-select__anchor" aria-required="true">
+    <span class="mdc-select__ripple"></span>
+    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -315,7 +321,6 @@ and set the `aria-required` attribute on the `mdc-select__anchor` element to be 
         </polygon>
       </svg>
     </span>
-    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
@@ -336,6 +341,7 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
 <div class="mdc-select mdc-select--filled mdc-select--disabled">
   <div class="mdc-select__anchor" aria-disabled="true">
     <span class="mdc-select__ripple"></span>
+    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -355,7 +361,6 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
         </polygon>
       </svg>
     </span>
-    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
@@ -381,14 +386,19 @@ programmatically select a disabled list item.
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">
     <ul class="mdc-list">
-      <li class="mdc-list-item" data-value=""></li>
+      <li class="mdc-list-item" data-value="">
+        <span class="mdc-list-item__ripple"></span>
+      </li>
       <li class="mdc-list-item" data-value="grains">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
       </li>
       <li class="mdc-list-item mdc-list-item--selected mdc-list-item--disabled" data-value="vegetables">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Vegetables</span>
       </li>
       <li class="mdc-list-item" data-value="fruit">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Fruit</span>
       </li>
     </ul>
@@ -443,14 +453,19 @@ structure.
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
     <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
+      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true">
+        <span class="mdc-list-item__ripple"></span>
+      </li>
       <li class="mdc-list-item" data-value="grains">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
       </li>
       <li class="mdc-list-item" data-value="vegetables">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Vegetables</span>
       </li>
       <li class="mdc-list-item" data-value="fruit">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Fruit</span>
       </li>
     </ul>
@@ -463,6 +478,10 @@ structure.
 ```html
 <div class="mdc-select mdc-select--outlined mdc-select--no-label demo-width-class">
   <div class="mdc-select__anchor">
+    <span class="mdc-notched-outline">
+      <span class="mdc-notched-outline__leading"></span>
+      <span class="mdc-notched-outline__trailing"></span>
+    </span>
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -481,10 +500,6 @@ structure.
             points="7 15 12 10 17 15">
         </polygon>
       </svg>
-    </span>
-    <span class="mdc-notched-outline">
-      <span class="mdc-notched-outline__leading"></span>
-      <span class="mdc-notched-outline__trailing"></span>
     </span>
   </div>
 
@@ -536,12 +551,12 @@ Mixin | Description
 `hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
 `focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 `disabled-bottom-line-color($color)` | Customizes the color of the bottom line when the select is disabled.
-`shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed select variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`filled-shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets rounded shape to filled select variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `outline-color($color)` | Customizes the color of the notched outline.
 `focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
 `hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
 `disabled-outline-color($color)` | Customizes the color of the notched outline when the select is disabled.
-`outline-shape-radius($radius, $rtl-reflexive)` | Sets the border radius of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`outline-shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets the border radius of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `filled-density($density-scale)` | Sets density scale for the filled select variant (Excluding filled select with leading icon).
 `filled-with-leading-icon-density($density-scale)` | Sets density scale for filled select with leading icon.
 `outlined-density($density-scale)` | Sets density scale for outlined select (Excluding outlined select with leading icon).
@@ -595,7 +610,6 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `hasClass(className: string) => boolean` | Returns true if the select element has the className in its classList. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
-| `getSelectedMenuItem() => Element` | Returns the selected menu item element. |
 | `hasLabel() => boolean` | Returns true if the select contains a label. |
 | `floatLabel(value: boolean) => void` | Floats or defloats label. |
 | `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
@@ -617,14 +631,12 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setMenuAnchorElement(anchorEl: Element) => void` | Sets the menu anchor element. |
 | `setMenuAnchorCorner(anchorCorner: Corner) => void` | Sets the menu anchor corner. |
 | `setMenuWrapFocus(wrapFocus: boolean) => void` | Sets whether the menu should wrap focus. |
-| `setAttributeAtIndex(index: number, attributeName: string, attributeValue: string) => void` | Sets the attribute on the menu item at the given index. |
 | `focusMenuItemAtIndex(index: number) => void` | Focuses the menu item at the given index. |
 | `getMenuItemValues() => string[]` | Returns an array representing the VALUE_ATTR attributes of each menu item. |
 | `getMenuItemCount() => number` | Returns the number of menu items. |
-| `getMenuItemAttr(menuItem: Element, attr: string) => string` | Returns the given attribute on the the menu item element. |
 | `getMenuItemTextAtIndex(index: number) => string` | Gets the text content of the menu item element at the given index. |
-| `addClassAtIndex(menuItem: Element, className: string) => void` | Adds the class name on the menu item at the given index. |
-| `removeClassAtIndex(menuItem: Element, className: string) => void` | Removes the class name on the menu item at the given index. |
+| `getSelectedIndex() => number` | Returns the selected index in the menu. |
+| `setSelectedIndex() => number` | Sets the selected index in the menu. |
 | `isTypeaheadInProgress() => boolean` | Returns whether typeahead is in progress in the menu. |
 | `typeaheadMatchItem: (nextChar: string, startingIndex: number) => number` | Adds a character to the list typeahead buffer and returns index of the next item in the list matching the buffer. |
 ### `MDCSelectFoundation`

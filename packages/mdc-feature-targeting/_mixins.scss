@@ -37,7 +37,11 @@ $targets-context_: false;
   $targets-context_: true !global;
   $parsed-targets: functions.parse-targets($feature-targets);
 
-  @if functions.is-query-satisfied_(map.get($parsed-targets, query), map.get($parsed-targets, available)) {
+  @if functions.is-query-satisfied_(
+    map.get($parsed-targets, query),
+    map.get($parsed-targets, available)
+  )
+  {
     @content;
   }
 

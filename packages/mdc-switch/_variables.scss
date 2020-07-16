@@ -41,8 +41,7 @@ $density-config: (
 // Amount the edge of the thumb should be offset from the edge of the track.
 $thumb-offset: 4px !default;
 
-$thumb-active-margin:
-  $track-width - $thumb-diameter + $thumb-offset * 2 !default;
+$thumb-active-margin: $track-width - $thumb-diameter + $thumb-offset * 2 !default;
 
 $toggled-off-thumb-color: surface !default;
 $toggled-off-track-color: on-surface !default;

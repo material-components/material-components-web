@@ -37,7 +37,7 @@ $item-inactive-icon-ink-opacity: variables.text-emphasis(medium) !default;
 $item-inactive-text-ink-opacity: variables.text-emphasis(high) !default;
 $item-active-icon-ink-opacity: 1 !default;
 $item-active-text-ink-opacity: variables.text-emphasis(high) !default;
-$divider-opacity: .12 !default;
+$divider-opacity: 0.12 !default;
 
 // Widths
 $width: 256px !default;
@@ -52,7 +52,7 @@ $animation-exit: 200ms !default;
 
 // Scrim
 $modal-scrim-color: variables.prop-value(on-surface) !default;
-$modal-scrim-opacity: .32 !default;
+$modal-scrim-opacity: 0.32 !default;
 
 $z-index: 6 !default;
 $modal-elevation: 16 !default;

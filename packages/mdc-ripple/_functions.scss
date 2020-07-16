@@ -46,7 +46,7 @@
 @function states-opacities_($color) {
   $color-value: theme-variables.prop-value($color);
   $opacity-map: if(
-    functions.tone($color-value) == "light",
+    functions.tone($color-value) == 'light',
     variables.$light-ink-opacities,
     variables.$dark-ink-opacities
   );

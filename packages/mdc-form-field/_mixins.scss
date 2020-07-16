@@ -48,7 +48,11 @@
     > label {
       @include feature-targeting-mixins.targets($feat-structure) {
         @include rtl-mixins.reflexive-property(margin, 0, auto);
-        @include rtl-mixins.reflexive-property(padding, variables.$item-spacing, 0);
+        @include rtl-mixins.reflexive-property(
+          padding,
+          variables.$item-spacing,
+          0
+        );
 
         order: 0;
       }
@@ -70,7 +74,11 @@
     > label {
       @include feature-targeting-mixins.targets($feat-structure) {
         @include rtl-mixins.reflexive-property(margin, auto, 0);
-        @include rtl-mixins.reflexive-property(padding, 0, variables.$item-spacing);
+        @include rtl-mixins.reflexive-property(
+          padding,
+          0,
+          variables.$item-spacing
+        );
 
         order: -1;
       }

@@ -44,8 +44,8 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       getRowIdAtIndex: () => '',
       getRowIndexByChildElement: () => 0,
       getSelectedRowCount: () => 0,
-      getTableBodyHeight: () => '',
-      getTableHeaderHeight: () => '',
+      getTableContainerHeight: () => 0,
+      getTableHeaderHeight: () => 0,
       isCheckboxAtRowIndexChecked: () => false,
       isHeaderRowCheckboxChecked: () => false,
       isRowsSelectable: () => false,
@@ -65,6 +65,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       setHeaderRowCheckboxIndeterminate: () => undefined,
       setProgressIndicatorStyles: () => undefined,
       setRowCheckboxCheckedAtIndex: () => undefined,
+      setSortStatusLabelByHeaderCellIndex: () => undefined,
     };
   }
 
@@ -214,6 +215,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
           index, cssClasses.HEADER_CELL_SORTED_DESCENDING);
       this.adapter.setAttributeByHeaderCellIndex(
           index, strings.ARIA_SORT, SortValue.NONE);
+      this.adapter.setSortStatusLabelByHeaderCellIndex(index, SortValue.NONE);
     }
 
     // Set appropriate sort attributes / classes on target header cell.
@@ -245,6 +247,8 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       sortValue = SortValue.ASCENDING;
     }
 
+    this.adapter.setSortStatusLabelByHeaderCellIndex(columnIndex, sortValue);
+
     this.adapter.notifySortAction({
       columnId,
       columnIndex,
@@ -258,12 +262,15 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
    * loading state.
    */
   showProgress() {
-    const height = this.adapter.getTableBodyHeight();
-    const top = this.adapter.getTableHeaderHeight();
+    const tableHeaderHeight = this.adapter.getTableHeaderHeight();
+    // Calculate the height of table content (Not scroll content) excluding
+    // header row height.
+    const height = this.adapter.getTableContainerHeight() - tableHeaderHeight;
+    const top = tableHeaderHeight;
 
     this.adapter.setProgressIndicatorStyles({
-      height,
-      top,
+      height: `${height}px`,
+      top: `${top}px`,
     });
     this.adapter.addClass(cssClasses.IN_PROGRESS);
   }

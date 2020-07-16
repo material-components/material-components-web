@@ -30,18 +30,22 @@ function getFixture() {
   wrapper.innerHTML = `
     <ul class="mdc-list" tabindex="-1">
       <li class="mdc-list-item" tabindex="0">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Fruit</span>
         <button>one</button>
       </li>
       <li class="mdc-list-item">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Potato</span>
         <a href="http://www.google.com">Link</a>
       </li>
       <li class="mdc-list-item">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Pasta</span>
         <input type="checkbox"/>
       </li>
       <li class="mdc-list-item">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Pizza</span>
         <input type="radio"/>
       </li>
@@ -57,18 +61,22 @@ function getFixtureWithDisabledItems() {
   wrapper.innerHTML = `
     <ul class="mdc-list" tabindex="-1">
       <li class="mdc-list-item" tabindex="0">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Fruit</span>
         <button>one</button>
       </li>
       <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Potato</span>
         <a href="http://www.google.com">Link</a>
       </li>
       <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Pasta</span>
         <input type="checkbox"/>
       </li>
       <li class="mdc-list-item">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">Pizza</span>
         <input type="radio"/>
       </li>
@@ -85,23 +93,29 @@ function getTwoLineFixture() {
       <ul class="mdc-list mdc-list--two-line">
         <li class="mdc-list-item" tabindex="0">
           <span class="mdc-list-item__text">
-            <span class="mdc-list-item__primary-text">Fruit</span>
-            <span class="mdc-list-item__secondary-text">Secondary fruit</span>
+            <span class="mdc-list-item__ripple"></span>
+            <span class="mdc-list-item__text">
+              <span class="mdc-list-item__primary-text">Fruit</span>
+              <span class="mdc-list-item__secondary-text">Secondary fruit</span>
+            </span>
           </span>
         </li>
         <li class="mdc-list-item" tabindex="0">
+          <span class="mdc-list-item__ripple"></span>
           <span class="mdc-list-item__text">
             <span class="mdc-list-item__primary-text">Potato</span>
             <span class="mdc-list-item__secondary-text">Secondary potato</span>
           </span>
         </li>
         <li class="mdc-list-item">
+          <span class="mdc-list-item__ripple"></span>
           <span class="mdc-list-item__text">
             <span class="mdc-list-item__primary-text">Pasta</span>
             <span class="mdc-list-item__secondary-text">Secondary pasta</span>
           </span>
         </li>
         <li class="mdc-list-item">
+          <span class="mdc-list-item__ripple"></span>
           <span class="mdc-list-item__text">
             <span class="mdc-list-item__primary-text">Pizza</span>
             <span class="mdc-list-item__secondary-text">Secondary pizza</span>
@@ -149,45 +163,6 @@ describe('MDCList', () => {
        const {mockFoundation} = setupTest(root);
        expect(mockFoundation.setVerticalOrientation).toHaveBeenCalledWith(true);
        expect(mockFoundation.setVerticalOrientation).toHaveBeenCalledTimes(1);
-     });
-
-  it('#initializeListType sets the selectedIndex if a list item has the --selected class',
-     () => {
-       const {root, component, mockFoundation} = setupTest();
-       (root.querySelector('.mdc-list-item') as HTMLElement)
-           .classList.add(
-               MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS);
-       component.initializeListType();
-       expect(mockFoundation.setSelectedIndex).toHaveBeenCalledWith(0);
-       expect(mockFoundation.setSelectedIndex).toHaveBeenCalledTimes(1);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledWith(true);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledTimes(1);
-     });
-
-  it('#initializeListType sets the selectedIndex if a list item has the --activated class',
-     () => {
-       const {root, component, mockFoundation} = setupTest();
-       (root.querySelector('.mdc-list-item') as HTMLElement)
-           .classList.add(
-               MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
-       component.initializeListType();
-       expect(mockFoundation.setSelectedIndex).toHaveBeenCalledWith(0);
-       expect(mockFoundation.setSelectedIndex).toHaveBeenCalledTimes(1);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledWith(true);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledTimes(1);
-     });
-
-  it('#initializeListType calls the foundation if the --activated class is present',
-     () => {
-       const {root, component, mockFoundation} = setupTest();
-       (root.querySelector('.mdc-list-item') as HTMLElement)
-           .classList.add(
-               MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
-       component.initializeListType();
-       expect(mockFoundation.setUseActivatedClass).toHaveBeenCalledWith(true);
-       expect(mockFoundation.setUseActivatedClass).toHaveBeenCalledTimes(1);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledWith(true);
-       expect(mockFoundation.setSingleSelection).toHaveBeenCalledTimes(1);
      });
 
   it('#initializeListType populates selectedIndex based on preselected checkbox items',

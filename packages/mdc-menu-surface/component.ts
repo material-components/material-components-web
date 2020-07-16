@@ -40,13 +40,17 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
   anchorElement!: Element | null; // assigned in initialSyncWithDOM()
 
-  private previousFocus_?: HTMLElement | SVGElement | null;
+  private previousFocus?: HTMLElement|SVGElement|null;
 
-  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
-  private handleBodyClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+  private handleKeydown!:
+      SpecificEventListener<'keydown'>;  // assigned in initialSyncWithDOM()
+  private handleBodyClick!:
+      SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
 
-  private registerBodyClickListener_!: RegisterFunction; // assigned in initialSyncWithDOM()
-  private deregisterBodyClickListener_!: RegisterFunction; // assigned in initialSyncWithDOM()
+  private registerBodyClickListener!:
+      RegisterFunction;  // assigned in initialSyncWithDOM()
+  private deregisterBodyClickListener!:
+      RegisterFunction;  // assigned in initialSyncWithDOM()
 
   initialSyncWithDOM() {
     const parentEl = this.root.parentElement;
@@ -56,24 +60,32 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       this.setFixedPosition(true);
     }
 
-    this.handleKeydown_ = (evt) => this.foundation.handleKeydown(evt);
-    this.handleBodyClick_ = (evt) => this.foundation.handleBodyClick(evt);
+    this.handleKeydown = (event) => {
+      this.foundation.handleKeydown(event);
+    };
+    this.handleBodyClick = (event) => {
+      this.foundation.handleBodyClick(event);
+    };
 
     // capture so that no race between handleBodyClick and quickOpen when
     // menusurface opened on button click which registers this listener
-    this.registerBodyClickListener_ = () => document.body.addEventListener(
-        'click', this.handleBodyClick_, {capture: true});
-    this.deregisterBodyClickListener_ = () => document.body.removeEventListener('click', this.handleBodyClick_);
+    this.registerBodyClickListener = () => {
+      document.body.addEventListener(
+          'click', this.handleBodyClick, {capture: true});
+    };
+    this.deregisterBodyClickListener = () => {
+      document.body.removeEventListener('click', this.handleBodyClick);
+    };
 
-    this.listen('keydown', this.handleKeydown_);
-    this.listen(strings.OPENED_EVENT, this.registerBodyClickListener_);
-    this.listen(strings.CLOSED_EVENT, this.deregisterBodyClickListener_);
+    this.listen('keydown', this.handleKeydown);
+    this.listen(strings.OPENED_EVENT, this.registerBodyClickListener);
+    this.listen(strings.CLOSED_EVENT, this.deregisterBodyClickListener);
   }
 
   destroy() {
-    this.unlisten('keydown', this.handleKeydown_);
-    this.unlisten(strings.OPENED_EVENT, this.registerBodyClickListener_);
-    this.unlisten(strings.CLOSED_EVENT, this.deregisterBodyClickListener_);
+    this.unlisten('keydown', this.handleKeydown);
+    this.unlisten(strings.OPENED_EVENT, this.registerBodyClickListener);
+    this.unlisten(strings.CLOSED_EVENT, this.deregisterBodyClickListener);
     super.destroy();
   }
 
@@ -154,12 +166,13 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
       isFocused: () => document.activeElement === this.root,
       saveFocus: () => {
-        this.previousFocus_ = document.activeElement as HTMLElement | SVGElement | null;
+        this.previousFocus =
+            document.activeElement as HTMLElement | SVGElement | null;
       },
       restoreFocus: () => {
         if (this.root.contains(document.activeElement)) {
-          if (this.previousFocus_ && this.previousFocus_.focus) {
-            this.previousFocus_.focus();
+          if (this.previousFocus && this.previousFocus.focus) {
+            this.previousFocus.focus();
           }
         }
       },

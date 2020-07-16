@@ -35,6 +35,7 @@
   $feat-structure: functions.create-target($query, structure);
 
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  // prettier-ignore
   @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // Customize the menu-surface and contained list to match the mdc-menu styles.
@@ -44,7 +45,10 @@
     @include min-width(variables.$min-width, $query: $query);
     // Include mdc-list selector to ensure list-inside-menu overrides default list styles
     .mdc-list {
-      @include list-mixins.item-primary-text-ink-color(variables.$ink-color, $query);
+      @include list-mixins.item-primary-text-ink-color(
+        variables.$ink-color,
+        $query
+      );
       @include elevation-mixins.overlay-surface-position($query: $query);
       @include elevation-mixins.overlay-dimensions(100%, $query: $query);
     }
@@ -86,7 +90,11 @@
 
     .mdc-list-item {
       @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(padding, 56px, list-variables.$side-padding);
+        @include rtl-mixins.reflexive-property(
+          padding,
+          56px,
+          list-variables.$side-padding
+        );
       }
     }
 

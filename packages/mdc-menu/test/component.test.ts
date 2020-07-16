@@ -35,13 +35,25 @@ function getFixture(open = false) {
     <div class="mdc-menu mdc-menu-surface ${
       open ? 'mdc-menu-surface--open' : ''}">
       <ul class="mdc-list" role="menu" tabIndex="-1">
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">Item</span>
+        </li>
         <li role="separator"></li>
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item</a>
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">Another Item</span>
+        </li>
         <li>
           <ul class="mdc-menu__selection-group" role="menu">
-            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
-            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Another Item</a>
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Item</span>
+            </li>
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Another Item</span>
+            </li>
           </ul>
         </li>
       </ul>
@@ -58,20 +70,38 @@ function getFixtureWithMultipleSelectionGroups(open = false) {
     <div class="mdc-menu mdc-menu-surface ${
       open ? 'mdc-menu-surface--open' : ''}">
       <ul class="mdc-list" role="menu" tabIndex="-1">
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">Item</span>
+        </li>
         <li class="mdc-list-divider" role="separator"></li>
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item</a>
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">Another Item</span>
+        </li>
         <li>
           <ul class="mdc-menu__selection-group" role="menu">
-            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
-            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Another Item</a>
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Item</span>
+            </li>
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Another Item</span>
+            </li>
           </ul>
         </li>
         <li class="mdc-list-divider" role="separator"></li>
         <li>
           <ul class="mdc-menu__selection-group" role="menu">
-            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Item2</a>
-            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item2</a>
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Item2</span>
+            </li>
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Another Item2</span>
+            </li>
           </ul>
         </li>
       </ul>

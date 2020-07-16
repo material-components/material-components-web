@@ -96,6 +96,7 @@ Function | Description
 --- | ---
 `transition-value($duration, $easing)` | Returns a value for the `transition` property to transition an element between elevations
 `overlay-transition-value($duration, $easing)` | Returns a value for the `transition` property to transition the elevation overlay between elevations
+`elevation-box-shadow($z-value, $color, $opacity-boost)` | Returns the box-shadow for the elevation z-space for that given elevation z-value, and optionally sets the color and/or boosts the opacity of the shadow
 
 Variable | Description
 --- | ---

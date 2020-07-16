@@ -57,11 +57,6 @@ export interface MDCSelectAdapter {
   deactivateBottomLine(): void;
 
   /**
-   * Returns the selected menu item element.
-   */
-  getSelectedMenuItem(): Element | null;
-
-  /**
    * Returns true if label exists, false if it doesn't.
    */
   hasLabel(): boolean;
@@ -173,11 +168,6 @@ export interface MDCSelectAdapter {
   setMenuWrapFocus(wrapFocus: boolean): void;
 
   /**
-   * Sets the attribute on the menu item at the given index.
-   */
-  setAttributeAtIndex(index: number, attributeName: string, attributeValue: string): void;
-
-  /**
    * Focuses the menu item element at the given index.
    */
   focusMenuItemAtIndex(index: number): void;
@@ -198,19 +188,14 @@ export interface MDCSelectAdapter {
   getMenuItemTextAtIndex(index: number): string;
 
   /**
-   * Returns the given attribute on the the menu item element.
+   * Returns the selected index.
    */
-  getMenuItemAttr(menuItem: Element, attr: string): string | null;
+  getSelectedIndex(): number;
 
   /**
-   * Adds the class name on the menu item at the given index.
+   * Sets the selected index in the menu.
    */
-  addClassAtIndex(index: number, className: string): void;
-
-  /**
-   * Removes the class name on the menu item at the given index.
-   */
-  removeClassAtIndex(index: number, className: string): void;
+  setSelectedIndex(index: number): void;
 
   /**
    * Returns whether typeahead is in progress in the menu.

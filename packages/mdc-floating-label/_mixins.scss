@@ -35,7 +35,11 @@
 
   // postcss-bem-linter: define floating-label
   .mdc-floating-label {
-    @include typography-mixins.typography(subtitle1, $exclude-props: (line-height), $query: $query);
+    @include typography-mixins.typography(
+      subtitle1,
+      $exclude-props: (line-height),
+      $query: $query
+    );
 
     @include feature-targeting-mixins.targets($feat-structure) {
       position: absolute;
@@ -68,9 +72,10 @@
     }
 
     @include feature-targeting-mixins.targets($feat-animation) {
-      transition:
-        transform variables.$transition-duration animation-variables.$standard-curve-timing-function,
-        color variables.$transition-duration animation-variables.$standard-curve-timing-function;
+      transition: transform variables.$transition-duration
+          animation-variables.$standard-curve-timing-function,
+        color variables.$transition-duration
+          animation-variables.$standard-curve-timing-function;
     }
   }
 
@@ -118,42 +123,64 @@
 }
 
 @mixin shake-keyframes(
-  $modifier, $positionY, $positionX: 0%, $scale: variables.$float-scale, $query: functions.all()) {
+  $modifier,
+  $positionY,
+  $positionX: 0%,
+  $scale: variables.$float-scale,
+  $query: functions.all()
+) {
   $feat-animation: functions.create-target($query, animation);
 
   @include feature-targeting-mixins.targets($feat-animation) {
     @keyframes mdc-floating-label-shake-float-above-#{$modifier} {
       0% {
-        transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+        transform: translateX(calc(0 - #{$positionX}))
+          translateY(-#{$positionY}) scale(#{$scale});
       }
 
       33% {
-        animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
-        transform: translateX(calc(4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+        animation-timing-function: cubic-bezier(0.5, 0, 0.701732, 0.495819);
+        transform: translateX(calc(4% - #{$positionX}))
+          translateY(-#{$positionY}) scale(#{$scale});
       }
 
       66% {
-        animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
-        transform: translateX(calc(-4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+        animation-timing-function: cubic-bezier(
+          0.302435,
+          0.381352,
+          0.55,
+          0.956352
+        );
+        transform: translateX(calc(-4% - #{$positionX}))
+          translateY(-#{$positionY}) scale(#{$scale});
       }
 
       100% {
-        transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+        transform: translateX(calc(0 - #{$positionX}))
+          translateY(-#{$positionY}) scale(#{$scale});
       }
     }
   }
 }
 
-@mixin float-position($positionY, $positionX: 0%, $scale: variables.$float-scale, $query: functions.all()) {
+@mixin float-position(
+  $positionY,
+  $positionX: 0%,
+  $scale: variables.$float-scale,
+  $query: functions.all()
+) {
   $feat-structure: functions.create-target($query, structure);
 
   .mdc-floating-label--float-above {
     @include feature-targeting-mixins.targets($feat-structure) {
       @if $positionX > 0 or $positionX < 0 {
-        transform: translateY(-1 * $positionY) translateX(-1 * $positionX) scale($scale);
+        transform: translateY(-1 * $positionY)
+          translateX(-1 * $positionX)
+          scale($scale);
 
         @include rtl-mixins.rtl {
-          transform: translateY(-1 * $positionY) translateX($positionX) scale($scale);
+          transform: translateY(-1 * $positionY) translateX($positionX)
+            scale($scale);
         }
       } @else {
         transform: translateY(-1 * $positionY) scale($scale);
@@ -194,8 +221,7 @@
   $feat-animation: functions.create-target($query, animation);
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition:
-      color $duration-ms $timing-function,
+    transition: color $duration-ms $timing-function,
       transform $duration-ms $timing-function;
   }
 }
@@ -208,7 +234,7 @@
     margin-left: 1px;
     /* @noflip */
     margin-right: 0px;
-    content: "*";
+    content: '*';
   }
 }
 

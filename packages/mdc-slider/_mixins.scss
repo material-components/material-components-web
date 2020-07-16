@@ -104,7 +104,7 @@
     .mdc-slider__focus-ring {
       @include feature-targeting-mixins.targets($feat-structure) {
         transform: scale3d(1.55, 1.55, 1.55);
-        opacity: .25;
+        opacity: 0.25;
       }
     }
   }
@@ -384,7 +384,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      transform: scale(.571);
+      transform: scale(0.571);
       stroke-width: 3.5;
     }
 

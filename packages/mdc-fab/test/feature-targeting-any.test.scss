@@ -14,7 +14,11 @@
     @include fab.extended-padding(0, 0, $query: $query);
     @include fab.extended-label-padding(0, $query: $query);
     @include fab.shape-radius(0, $query: $query);
-    @include fab.extended-shape-radius(0, $rtl-reflexive: false, $query: $query);
+    @include fab.extended-shape-radius(
+      0,
+      $rtl-reflexive: false,
+      $query: $query
+    );
   }
 }
 

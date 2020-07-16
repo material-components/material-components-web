@@ -233,6 +233,70 @@ The row selection feature allows users to select table rows via row checkboxes. 
   - `getSelectedRowIds()`
   - `setSelectedRowIds(string[])`
 
+### Data table with progress indicator
+
+Progress indicator inform users about the status of ongoing processes, such as data loading. Indeterminate linear progress indicator along with a scrim is shown on blocking the table content.
+
+#### HTML Structure
+
+```html
+<div class="mdc-data-table">
+  <div class="mdc-data-table__table-container">
+    <table class="mdc-data-table__table" aria-label="Dessert calories">
+      <thead>
+        <tr class="mdc-data-table__header-row">
+          <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Dessert</th>
+          <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Carbs (g)</th>
+          <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Protein (g)</th>
+          <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
+        </tr>
+      </thead>
+      <tbody class="mdc-data-table__content">
+        <tr class="mdc-data-table__row">
+          <th class="mdc-data-table__cell" scope="row">Frozen yogurt</th>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.0</td>
+          <td class="mdc-data-table__cell">Super tasty</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+          <th class="mdc-data-table__cell" scope="row">Ice cream sandwich</th>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">37</td>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.33333333333</td>
+          <td class="mdc-data-table__cell">I like ice cream more</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+          <th class="mdc-data-table__cell" scope="row">Eclair</th>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">6.0</td>
+          <td class="mdc-data-table__cell">New filing flavor</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mdc-data-table__progress-indicator">
+    <div class="mdc-data-table__scrim"></div>
+    <div class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-data-table__linear-progress" role="progressbar" aria-label="Data is being loaded...">
+      <div class="mdc-linear-progress__buffer">
+        <div class="mdc-linear-progress__buffer-bar"></div>
+        <div class="mdc-linear-progress__buffer-dots"></div>
+      </div>
+      <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+      </div>
+      <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+#### JavaScript APIs
+
+- Use `showProgress()` and `hideProgress()` API to show or hide the progress indicator.
+- Data table component will automatically initializes the linear progress indicator subcomponent.
+
 #### Events
 
 Following events are emitted for row selection feature.
@@ -276,7 +340,10 @@ that needs to be sorted.
             <div class="mdc-data-table__header-cell-label">
               Dessert
             </div>
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button"
+                    aria-label="Sort by dessert" aria-describedby="dessert-status-label">arrow_upward</button>
+            <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="dessert-status-label">
+            </div>
           </div>
         </th>
         <th
@@ -287,10 +354,12 @@ that needs to be sorted.
           data-column-id="carbs"
         >
           <div class="mdc-data-table__header-cell-wrapper">
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button"
+                    aria-label="Sort by carbs" aria-describedby="carbs-status-label">arrow_upward</button>
             <div class="mdc-data-table__header-cell-label">
               Carbs (g)
             </div>
+            <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="carbs-status-label"></div>
           </div>
         </th>
         <th
@@ -301,10 +370,12 @@ that needs to be sorted.
           data-column-id="protein"
         >
           <div class="mdc-data-table__header-cell-wrapper">
-            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+            <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button"
+                    aria-label="Sort by protein" aria-describedby="protein-status-label">arrow_upward</button>
             <div class="mdc-data-table__header-cell-label">
               Protein (g)
             </div>
+            <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="protein-status-label"></div>
           </div>
         </th>
         <th
@@ -346,6 +417,7 @@ Event constant | Event name | Event detail | Description
 CSS Class | Description
 --- | ---
 `mdc-data-table` | Mandatory. The root DOM element containing `table` and other supporting elements.
+`mdc-data-table--sticky-header` | Optional. Modifier class name added to root element to make header row sticky (fixed) on vertical scroll. (Note: Sticky header feature is not compatible with IE11 browsers.)
 `mdc-data-table__table-container` | Mandatory. Container of Table element. Used for horizontal overflowing of table content.
 `mdc-data-table__table` | Mandatory. Table element. Added to `table` HTML tag.
 `mdc-data-table__header-row` | Mandatory. Table header row element. Added to `thead > tr` HTML tag.
@@ -366,6 +438,7 @@ CSS Class | Description
 `mdc-data-table__header-cell-wrapper` | Mandatory. Container of header cell label and sort button, used to align header cell in center.
 `mdc-data-table__sort-icon-button` | Optional. Class name added to icon button used as sort icon button. This is sibling to header cell label.
 `mdc-data-table__header-cell-label` | Mandatory. Class name added to header cell label. Child to header cell wrapper element.
+`mdc-data-table__sort-status-label` | Optional. Class name added to sort status label which is visually hidden. Only visible to screen reader users.
 
 ### Sass mixins
 

@@ -102,7 +102,7 @@
   }
 
   &:not([tabindex]),
-  &[tabindex="-1"] {
+  &[tabindex='-1'] {
     @include feature-targeting-mixins.targets($feat-color) {
       cursor: default;
       pointer-events: none;
@@ -125,7 +125,11 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(margin, variables.$leading-icon-padding-left, variables.$leading-icon-padding-right);
+    @include rtl-mixins.reflexive-property(
+      margin,
+      variables.$leading-icon-padding-left,
+      variables.$leading-icon-padding-right
+    );
   }
 }
 
@@ -133,7 +137,11 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(margin, variables.$trailing-icon-padding-left, variables.$trailing-icon-padding-right);
+    @include rtl-mixins.reflexive-property(
+      margin,
+      variables.$trailing-icon-padding-left,
+      variables.$trailing-icon-padding-right
+    );
   }
 }
 

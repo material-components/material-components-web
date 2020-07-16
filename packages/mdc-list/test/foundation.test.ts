@@ -198,11 +198,12 @@ describe('MDCListFoundation', () => {
            .toHaveBeenCalledWith(2, 'tabindex', '0');
      });
 
-  it('#handleFocusOut sets tabindex=0 to first item when focus leaves single selection list that has no ' +
-         'selection',
+  it('#handleFocusOut sets tabindex=0 to previously focused item when focus' +
+         'leaves list that has no selection',
      () => {
        const {foundation, mockAdapter} = setupTest();
 
+       foundation['focusedItemIndex'] = 3;
        foundation.setSingleSelection(true);
        mockAdapter.getListItemCount.and.returnValue(4);
        mockAdapter.isFocusInsideList.and.returnValue(false);
@@ -212,7 +213,7 @@ describe('MDCListFoundation', () => {
        foundation.handleFocusOut(event, 3);
        jasmine.clock().tick(1);
        expect(mockAdapter.setAttributeForElementIndex)
-           .toHaveBeenCalledWith(0, 'tabindex', '0');
+           .toHaveBeenCalledWith(3, 'tabindex', '0');
      });
 
   it('#handleFocusOut does not set tabindex=0 to selected list item when focus moves to next list item.',
@@ -689,7 +690,8 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(1);
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(0, strings.ARIA_SELECTED, 'true');
-       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
+       expect(mockAdapter.setAttributeForElementIndex)
+           .toHaveBeenCalledWith(0, 'tabindex', '0');
      });
 
   it('#handleKeydown does not select the list item when' +
@@ -731,7 +733,9 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(1);
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(0, strings.ARIA_SELECTED, 'true');
-       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
+       expect(mockAdapter.setAttributeForElementIndex)
+           .toHaveBeenCalledWith(0, 'tabindex', '0');
+       ;
      });
 
   it('#handleKeydown space key when singleSelection=true does not select an element is isRootListItem=false',
@@ -793,7 +797,8 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(2);
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(0, strings.ARIA_SELECTED, 'true');
-       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
+       expect(mockAdapter.setAttributeForElementIndex)
+           .not.toHaveBeenCalledWith(0, strings.ARIA_SELECTED, 'false');
      });
 
   it('#handleKeydown space key is triggered 2x when singleSelection is true on second ' +
@@ -815,7 +820,8 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(2);
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(1, strings.ARIA_SELECTED, 'true');
-       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
+       expect(mockAdapter.setAttributeForElementIndex)
+           .toHaveBeenCalledWith(0, 'tabindex', '-1');
      });
 
   it('#handleKeydown bail out early if event origin doesnt have a mdc-list-item ancestor from the current list',
@@ -991,7 +997,7 @@ describe('MDCListFoundation', () => {
                       (args: any) => JSON.stringify(args) ==
                           JSON.stringify([0, 'tabindex', '0']))
                   .length)
-           .toEqual(2);
+           .toEqual(1);
      });
 
   it('#handleClick when toggleCheckbox=false does not change the checkbox state',
@@ -1071,6 +1077,35 @@ describe('MDCListFoundation', () => {
        foundation.handleClick(2, true);
        expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
            .not.toHaveBeenCalledWith(1, jasmine.anything());
+     });
+
+  it('#setSingleSelection true with --selected item initializes list state' +
+         ' to correct selection',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.getListItemCount.and.returnValue(3);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(2, cssClasses.LIST_ITEM_SELECTED_CLASS)
+           .and.returnValue(true);
+       foundation.setSingleSelection(true);
+
+       expect(foundation.getSelectedIndex()).toEqual(2);
+     });
+
+  it('#setSingleSelection true with --activated item initializes list state' +
+         ' to correct selection and causes further selections to use activation',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.getListItemCount.and.returnValue(3);
+       mockAdapter.listItemAtIndexHasClass
+           .withArgs(2, cssClasses.LIST_ITEM_ACTIVATED_CLASS)
+           .and.returnValue(true);
+       foundation.setSingleSelection(true);
+
+       expect(foundation.getSelectedIndex()).toEqual(2);
+       foundation.setSelectedIndex(1);
+       expect(mockAdapter.addClassForElementIndex)
+           .toHaveBeenCalledWith(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS);
      });
 
   it('#setUseActivatedClass causes setSelectedIndex to use the --activated class',
@@ -1177,7 +1212,13 @@ describe('MDCListFoundation', () => {
            .not.toHaveBeenCalledWith(2, strings.ARIA_CURRENT, 'false');
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(2, strings.ARIA_CURRENT, 'page');
-       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
+
+       expect(mockAdapter.setAttributeForElementIndex.calls.allArgs()
+                  .filter(
+                      (args: any) => JSON.stringify(args) ==
+                          JSON.stringify([2, strings.ARIA_CURRENT, 'page']))
+                  .length)
+           .toEqual(1);
      });
 
   it('#setSelectedIndex should set aria-selected as default option in the absence of aria-selected on pre-selected ' +
@@ -1194,7 +1235,12 @@ describe('MDCListFoundation', () => {
            .not.toHaveBeenCalledWith(2, jasmine.any(String), 'false');
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(2, strings.ARIA_SELECTED, 'true');
-       expect(mockAdapter.setAttributeForElementIndex).toHaveBeenCalledTimes(1);
+       expect(mockAdapter.setAttributeForElementIndex.calls.allArgs()
+                  .filter(
+                      (args: any) => JSON.stringify(args) ==
+                          JSON.stringify([2, strings.ARIA_SELECTED, 'true']))
+                  .length)
+           .toEqual(1);
      });
 
   it('#setSelectedIndex sets aria-current="false" to previously selected index and sets aria-current without any token' +
@@ -1350,7 +1396,7 @@ describe('MDCListFoundation', () => {
            target: {tagName: 'span'}
          };
          // start with focus on first item
-         foundation.focusedItemIndex_ = 0;
+         foundation.focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
@@ -1379,7 +1425,7 @@ describe('MDCListFoundation', () => {
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
          };
-         foundation.focusedItemIndex_ = 3;
+         foundation.focusedItemIndex = 3;
 
          foundation.handleKeydown(event, true, 3);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(4);
@@ -1404,12 +1450,12 @@ describe('MDCListFoundation', () => {
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
          };
-         foundation.focusedItemIndex_ = 0;
+         foundation.focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
 
-         foundation.focusedItemIndex_ = 5;
+         foundation.focusedItemIndex = 5;
 
          jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
          foundation.handleKeydown(event, true, 5);
@@ -1427,7 +1473,7 @@ describe('MDCListFoundation', () => {
            target: {tagName: 'span'}
          };
          // start with focus on first item
-         foundation.focusedItemIndex_ = 0;
+         foundation.focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
@@ -1457,7 +1503,7 @@ describe('MDCListFoundation', () => {
         preventDefault: jasmine.createSpy(),
         target: {tagName: 'span'}
       };
-      foundation.focusedItemIndex_ = 0;
+      foundation.focusedItemIndex = 0;
 
       foundation.handleKeydown(event, true, 0);
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
@@ -1481,7 +1527,7 @@ describe('MDCListFoundation', () => {
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
          };
-         foundation.focusedItemIndex_ = 0;
+         foundation.focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(1);
@@ -1510,7 +1556,7 @@ describe('MDCListFoundation', () => {
         target: {tagName: 'span'}
       };
       // start with focus on first item
-      foundation.focusedItemIndex_ = 0;
+      foundation.focusedItemIndex = 0;
 
       foundation.handleKeydown(event, true, 0);
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(6);
@@ -1536,7 +1582,7 @@ describe('MDCListFoundation', () => {
         target: {tagName: 'span'}
       };
       // start with focus on first item
-      foundation.focusedItemIndex_ = 0;
+      foundation.focusedItemIndex = 0;
 
       foundation.handleKeydown(event, true, 0);
       jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
@@ -1548,6 +1594,33 @@ describe('MDCListFoundation', () => {
       foundation.handleKeydown(event, true, 0);
 
       expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalled();
+    });
+
+    it('ignores disabled items properly', () => {
+      const {foundation, mockAdapter} = setupTypeaheadTest();
+
+      mockAdapter.isRootFocused.and.returnValue(false);
+      const event = {
+        key: 'Z',
+        preventDefault: jasmine.createSpy(),
+        target: {tagName: 'span'}
+      };
+      // start with focus on first item
+      foundation.focusedItemIndex = 0;
+
+      mockAdapter.listItemAtIndexHasClass
+          .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+          .and.returnValue(true);
+
+      foundation.handleKeydown(event, true, 0);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(5);
+      jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
+
+      mockAdapter.listItemAtIndexHasClass
+          .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+          .and.returnValue(false);
+      foundation.handleKeydown(event, true, 0);
+      expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(1);
     });
 
     it('programmatic typeahead invocation returns correct matching items',

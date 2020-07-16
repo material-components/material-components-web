@@ -56,8 +56,14 @@
 
     @include toggled-on-track-color(variables.$baseline-theme-color, $query);
     @include toggled-on-thumb-color(variables.$baseline-theme-color, $query);
-    @include toggled-off-track-color(variables.$toggled-off-track-color, $query);
-    @include toggled-off-thumb-color(variables.$toggled-off-thumb-color, $query);
+    @include toggled-off-track-color(
+      variables.$toggled-off-track-color,
+      $query
+    );
+    @include toggled-off-thumb-color(
+      variables.$toggled-off-thumb-color,
+      $query
+    );
   }
 
   .mdc-switch__native-control {
@@ -120,13 +126,20 @@
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-switch {
-    @include toggled-off-ripple-color(variables.$toggled-off-ripple-color, $query);
+    @include toggled-off-ripple-color(
+      variables.$toggled-off-ripple-color,
+      $query
+    );
   }
 
   .mdc-switch__thumb-underlay {
     @include ripple-mixins.surface($query);
     @include ripple-mixins.radius-unbounded(100%, $query);
-    @include ripple-mixins.states(variables.$baseline-theme-color, false, $query);
+    @include ripple-mixins.states(
+      variables.$baseline-theme-color,
+      false,
+      $query
+    );
   }
 }
 
@@ -142,7 +155,10 @@
   @include toggled-off-ripple-color($color, $query);
 }
 
-@mixin toggled-on-track-color($color, $query: feature-targeting-functions.all()) {
+@mixin toggled-on-track-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   &.mdc-switch--checked .mdc-switch__track {
@@ -152,7 +168,10 @@
   }
 }
 
-@mixin toggled-on-thumb-color($color, $query: feature-targeting-functions.all()) {
+@mixin toggled-on-thumb-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   &.mdc-switch--checked .mdc-switch__thumb {
@@ -163,13 +182,19 @@
   }
 }
 
-@mixin toggled-on-ripple-color($color, $query: feature-targeting-functions.all()) {
+@mixin toggled-on-ripple-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &.mdc-switch--checked .mdc-switch__thumb-underlay {
     @include ripple-mixins.states($color, false, $query);
   }
 }
 
-@mixin toggled-off-track-color($color, $query: feature-targeting-functions.all()) {
+@mixin toggled-off-track-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   &:not(.mdc-switch--checked) .mdc-switch__track {
@@ -179,7 +204,10 @@
   }
 }
 
-@mixin toggled-off-thumb-color($color, $query: feature-targeting-functions.all()) {
+@mixin toggled-off-thumb-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   &:not(.mdc-switch--checked) .mdc-switch__thumb {
@@ -190,7 +218,10 @@
   }
 }
 
-@mixin toggled-off-ripple-color($color, $query: feature-targeting-functions.all()) {
+@mixin toggled-off-ripple-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &:not(.mdc-switch--checked) .mdc-switch__thumb-underlay {
     @include ripple-mixins.states($color, false, $query);
   }
@@ -218,17 +249,19 @@
 
   // Position for the tap target that contains the thumb to align the thumb
   // correctly offset from the track.
-  $tap-target-initial-position:
-    -$ripple-size / 2 + variables.$thumb-diameter / 2 - variables.$thumb-offset;
+  $tap-target-initial-position: -$ripple-size / 2 + variables.$thumb-diameter /
+    2 - variables.$thumb-offset;
   // Value to cover the whole switch area (including the ripple) with the
   // native control.
-  $native-control-width:
-    variables.$track-width +
+  $native-control-width: variables.$track-width +
     ($ripple-size - variables.$thumb-diameter) + variables.$thumb-offset * 2;
 
   .mdc-switch__thumb-underlay {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, $tap-target-initial-position);
+      @include rtl-mixins.reflexive-position(
+        left,
+        $tap-target-initial-position
+      );
 
       // Ensures the knob is centered on the track.
       top: -(($ripple-size - variables.$track-height) / 2);
@@ -250,7 +283,10 @@
 /// The customizations apply to both on and off switches to ensure symmetry
 /// @param {map} $opacity-map - map specifying custom opacity of zero or more states
 ///
-@mixin ripple-states-opacity($opacity-map: (), $query: feature-targeting-functions.all()) {
+@mixin ripple-states-opacity(
+  $opacity-map: (),
+  $query: feature-targeting-functions.all()
+) {
   // Ensure sufficient specificity to override base state opacities
   &.mdc-switch .mdc-switch__thumb-underlay {
     @include ripple-mixins.states-opacities($opacity-map, $query: $query);
@@ -279,14 +315,12 @@
     height: variables.$track-height;
     border: 1px solid transparent;
     border-radius: variables.$track-height / 2;
-    opacity: .38;
+    opacity: 0.38;
   }
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition:
-      functions.transition(opacity),
-      functions.transition(background-color),
-      functions.transition(border-color);
+    transition: functions.transition(opacity),
+      functions.transition(background-color), functions.transition(border-color);
   }
 }
 
@@ -304,10 +338,8 @@
   }
 
   @include feature-targeting-mixins.targets($feat-animation) {
-    transition:
-      functions.transition(transform),
-      functions.transition(background-color),
-      functions.transition(border-color);
+    transition: functions.transition(transform),
+      functions.transition(background-color), functions.transition(border-color);
   }
 }
 
@@ -343,7 +375,7 @@
 // Checked state
 
 @mixin track-checked_ {
-  opacity: .54;
+  opacity: 0.54;
 }
 
 @mixin thumb-underlay-checked_ {
@@ -366,12 +398,12 @@
 // Disabled state
 
 @mixin disabled-base_ {
-  opacity: .38;
+  opacity: 0.38;
   pointer-events: none;
 }
 
 @mixin thumb-disabled_ {
-  border-width: 1px;  // In high contrast mode, only show outline of knob.
+  border-width: 1px; // In high contrast mode, only show outline of knob.
 }
 
 @mixin native-control-disabled_ {

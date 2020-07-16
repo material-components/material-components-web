@@ -25,8 +25,12 @@
 @use "@material/density/variables" as density-variables;
 @use "@material/theme/variables" as theme-variables;
 
-$fill-color-default: color.mix(theme-variables.prop-value(on-surface), theme-variables.prop-value(surface), 12%) !default;
-$ink-color-default: rgba(theme-variables.prop-value(on-surface), .87) !default;
+$fill-color-default: color.mix(
+  theme-variables.prop-value(on-surface),
+  theme-variables.prop-value(surface),
+  12%
+) !default;
+$ink-color-default: rgba(theme-variables.prop-value(on-surface), 0.87) !default;
 $horizontal-padding: 12px !default;
 $height: 32px !default;
 $shape-radius: 50% !default;
@@ -43,9 +47,9 @@ $density-config: (
 ) !default;
 
 $icon-color: theme-variables.prop-value(on-surface) !default;
-$icon-opacity: .54 !default;
-$trailing-icon-hover-opacity: .62 !default;
-$trailing-icon-focus-opacity: .87 !default;
+$icon-opacity: 0.54 !default;
+$trailing-icon-hover-opacity: 0.62 !default;
+$trailing-icon-focus-opacity: 0.87 !default;
 $leading-icon-size: 20px !default;
 $trailing-icon-size: 18px !default;
 // Speed up delay to bridge gap between leading icon and checkmark transition.
@@ -63,8 +67,7 @@ $leading-icon-margin-left: -4px !default;
 $trailing-icon-margin-right: -4px !default;
 $trailing-icon-margin-left: 4px !default;
 
-$exit-transition:
-  opacity 75ms animation-variables.$standard-curve-timing-function,
+$exit-transition: opacity 75ms
+    animation-variables.$standard-curve-timing-function,
   width 150ms animation-variables.$deceleration-curve-timing-function,
-  padding 100ms linear,
-  margin 100ms linear !default;
+  padding 100ms linear, margin 100ms linear !default;

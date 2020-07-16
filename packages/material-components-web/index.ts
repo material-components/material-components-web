@@ -50,6 +50,7 @@ import * as tabIndicator from '@material/tab-indicator/index';
 import * as tabScroller from '@material/tab-scroller/index';
 import * as tab from '@material/tab/index';
 import * as textField from '@material/textfield/index';
+import * as tooltip from '@material/tooltip/index';
 import * as topAppBar from '@material/top-app-bar/index';
 
 // Register all components
@@ -77,6 +78,7 @@ autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCSwitch', switchControl.MDCSwitch);
 autoInit.register('MDCTabBar', tabBar.MDCTabBar);
 autoInit.register('MDCTextField', textField.MDCTextField);
+autoInit.register('MDCTooltip', tooltip.MDCTooltip);
 autoInit.register('MDCTopAppBar', topAppBar.MDCTopAppBar);
 
 // Export all components.
@@ -110,5 +112,6 @@ export {
   tabIndicator,
   tabScroller,
   textField,
+  tooltip,
   topAppBar,
 };

@@ -151,17 +151,29 @@
   }
 }
 
-@mixin shape-radius($radius, $rtl-reflexive: false, $query: feature-targeting-functions.all()) {
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting-functions.all()
+) {
   .mdc-image-list__image {
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
   }
 
-  $selector: if(&, "&.mdc-image-list--with-text-protection", ".mdc-image-list--with-text-protection");
+  $selector: if(
+    &,
+    '&.mdc-image-list--with-text-protection',
+    '.mdc-image-list--with-text-protection'
+  );
 
   #{$selector} .mdc-image-list__supporting {
     $masked-radius: shape-functions.mask-radius($radius, 0 0 1 1);
 
-    @include shape-mixins.radius($masked-radius, $rtl-reflexive, $query: $query);
+    @include shape-mixins.radius(
+      $masked-radius,
+      $rtl-reflexive,
+      $query: $query
+    );
   }
 }
 
@@ -179,7 +191,9 @@
   .mdc-image-list__item {
     @include feature-targeting-mixins.targets($feat-structure) {
       // Subtract extra fraction from each item's width to ensure correct wrapping in IE/Edge which round differently
-      width: calc(100% / #{$column-count} - #{$gutter-size + 1 / $column-count});
+      width: calc(
+        100% / #{$column-count} - #{$gutter-size + 1 / $column-count}
+      );
       margin: $gutter-size / 2;
     }
   }

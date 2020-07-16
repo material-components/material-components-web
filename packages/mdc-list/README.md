@@ -100,12 +100,15 @@ Single-line list items contain a maximum of one line of text.
 ```html
 <ul class="mdc-list">
   <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
 </ul>
@@ -123,18 +126,21 @@ text to style a two-line list.
 ```html
 <ul class="mdc-list mdc-list--two-line">
   <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">
       <span class="mdc-list-item__primary-text">Two-line item</span>
       <span class="mdc-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">
       <span class="mdc-list-item__primary-text">Two-line item</span>
       <span class="mdc-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">
       <span class="mdc-list-item__primary-text">Two-line item</span>
       <span class="mdc-list-item__secondary-text">Secondary text</span>
@@ -162,24 +168,30 @@ Multiple related lists can be grouped together using the `mdc-list-group` class 
   <h3 class="mdc-list-group__subheader">List 1</h3>
   <ul class="mdc-list">
     <li class="mdc-list-item" tabindex="0">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
     <li class="mdc-list-item">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
     <li class="mdc-list-item">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
   </ul>
   <h3 class="mdc-list-group__subheader">List 2</h3>
   <ul class="mdc-list">
     <li class="mdc-list-item">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
     <li class="mdc-list-item">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
     <li class="mdc-list-item">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
   </ul>
@@ -193,16 +205,20 @@ MDC List contains an `mdc-list-divider` class which can be used as full-width or
 ```html
 <ul class="mdc-list">
   <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Item 1 - Division 1</span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Item 2 - Division 1</span>
   </li>
   <li role="separator" class="mdc-list-divider"></li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Item 1 - Division 2</span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Item 2 - Division 2</span>
   </li>
 </ul>
@@ -240,12 +256,15 @@ single list item to become selected and any other previously selected element to
 ```html
 <ul id="my-list" class="mdc-list" role="listbox">
   <li class="mdc-list-item" role="option" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item" role="option">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item" role="option">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
 </ul>
@@ -288,6 +307,7 @@ When rendering list radio group with pre-selected radio button the selected list
 ```html
 <ul class="mdc-list" role="radiogroup">
   <li class="mdc-list-item" role="radio" aria-checked="false">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
@@ -304,6 +324,7 @@ When rendering list radio group with pre-selected radio button the selected list
     <label class="mdc-list-item__text" for="demo-list-radio-item-1">Option 1</label>
   </li>
   <li class="mdc-list-item" role="radio" aria-checked="true" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
@@ -321,6 +342,7 @@ When rendering list radio group with pre-selected radio button the selected list
     <label class="mdc-list-item__text" for="demo-list-radio-item-2">Option 2</label>
   </li>
   <li class="mdc-list-item" role="radio" aria-checked="false">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
@@ -346,6 +368,7 @@ When rendering list with checkbox items all pre-selected list items should conta
 ```html
 <ul class="mdc-list" role="group" aria-label="List with checkbox items">
   <li class="mdc-list-item" role="checkbox" aria-checked="false">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
       <div class="mdc-checkbox">
         <input type="checkbox"
@@ -365,6 +388,7 @@ When rendering list with checkbox items all pre-selected list items should conta
     <label class="mdc-list-item__text" for="demo-list-checkbox-item-1">Option 1</label>
   </li>
   <li class="mdc-list-item" role="checkbox" aria-checked="true" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
         <div class="mdc-checkbox">
             <input type="checkbox"
@@ -385,6 +409,7 @@ When rendering list with checkbox items all pre-selected list items should conta
     <label class="mdc-list-item__text" for="demo-list-checkbox-item-2">Option 2</label>
   </li>
   <li class="mdc-list-item" role="checkbox" aria-checked="false">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
         <div class="mdc-checkbox">
             <input type="checkbox"
@@ -536,13 +561,16 @@ these should also receive `tabIndex="-1"`.
 ```html
 <ul id="my-list" class="mdc-list">
   <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
     <button tabindex="-1"></button>
   </li>
   <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
 </ul>
@@ -559,13 +587,16 @@ after the foundation is instantiated. Please see [Accessibility](#Accessibility)
 ```html
 <ul id="my-list" class="mdc-list">
   <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
     <button tabindex="-1"></button>
     </li>
   <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
 </ul>

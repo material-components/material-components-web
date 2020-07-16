@@ -55,7 +55,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       hasClass: () => false,
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
-      getSelectedMenuItem: () => null,
+      getSelectedIndex: () => -1,
+      setSelectedIndex: () => undefined,
       hasLabel: () => false,
       floatLabel: () => undefined,
       getLabelWidth: () => 0,
@@ -78,14 +79,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       setMenuAnchorElement: () => undefined,
       setMenuAnchorCorner: () => undefined,
       setMenuWrapFocus: () => undefined,
-      setAttributeAtIndex: () => undefined,
       focusMenuItemAtIndex: () => undefined,
       getMenuItemCount: () => 0,
       getMenuItemValues: () => [],
       getMenuItemTextAtIndex: () => '',
-      getMenuItemAttr: () => '',
-      addClassAtIndex: () => undefined,
-      removeClassAtIndex: () => undefined,
       isTypeaheadInProgress: () => false,
       typeaheadMatchItem: () => -1,
     };
@@ -95,10 +92,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   private readonly leadingIcon: MDCSelectIconFoundation|undefined;
   private readonly helperText: MDCSelectHelperTextFoundation|undefined;
 
-  // Index of the currently selected menu item.
-  private selectedIndex: number = numbers.UNSET_INDEX;
-  // VALUE_ATTR values of the menu items.
-  private menuItemValues: string[] = [];
   // Disabled state
   private disabled = false;
   // isMenuOpen is used to track the state of the menu by listening to the
@@ -109,6 +102,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   // By default, select is invalid if it is required but no value is selected.
   private useDefaultValidation = true;
   private customValidity = true;
+  private lastSelectedIndex = numbers.UNSET_INDEX;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
@@ -124,35 +118,42 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
   getSelectedIndex(): number {
-    return this.selectedIndex;
+    return this.adapter.getSelectedIndex();
   }
 
-  setSelectedIndex(index: number, closeMenu = false) {
+  setSelectedIndex(index: number, closeMenu = false, skipNotify = false) {
     if (index >= this.adapter.getMenuItemCount()) {
       return;
     }
 
-    this.removeSelectionAtIndex(this.selectedIndex);
-    this.setSelectionAtIndex(index);
+    if (index === numbers.UNSET_INDEX) {
+      this.adapter.setSelectedText('');
+    } else {
+      this.adapter.setSelectedText(
+          this.adapter.getMenuItemTextAtIndex(index).trim());
+    }
+
+    this.adapter.setSelectedIndex(index);
 
     if (closeMenu) {
       this.adapter.closeMenu();
     }
 
-    this.handleChange();
+    if (!skipNotify && this.lastSelectedIndex !== index) {
+      this.handleChange();
+    }
+    this.lastSelectedIndex = index;
   }
 
   setValue(value: string) {
-    const index = this.menuItemValues.indexOf(value);
+    const index = this.adapter.getMenuItemValues().indexOf(value);
     this.setSelectedIndex(index);
   }
 
   getValue() {
-    const listItem = this.adapter.getSelectedMenuItem();
-    if (listItem) {
-      return this.adapter.getMenuItemAttr(listItem, strings.VALUE_ATTR) || '';
-    }
-    return '';
+    const index = this.adapter.getSelectedIndex();
+    const menuItemValues = this.adapter.getMenuItemValues();
+    return index !== numbers.UNSET_INDEX ? menuItemValues[index] : '';
   }
 
   getDisabled() {
@@ -222,18 +223,20 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * this whenever menu options are dynamically updated.
    */
   layoutOptions() {
-    this.menuItemValues = this.adapter.getMenuItemValues();
-    const selectedIndex = this.menuItemValues.indexOf(this.getValue());
-    this.setSelectionAtIndex(selectedIndex);
+    const menuItemValues = this.adapter.getMenuItemValues();
+    const selectedIndex = menuItemValues.indexOf(this.getValue());
+    this.setSelectedIndex(
+        selectedIndex, /** closeMenu */ false, /** skipNotify */ true);
   }
 
   handleMenuOpened() {
-    if (this.menuItemValues.length === 0) {
+    if (this.adapter.getMenuItemValues().length === 0) {
       return;
     }
 
     // Menu should open to the last selected element, should open to first menu item otherwise.
-    const focusItemIndex = this.selectedIndex >= 0 ? this.selectedIndex : 0;
+    const selectedIndex = this.getSelectedIndex();
+    const focusItemIndex = selectedIndex >= 0 ? selectedIndex : 0;
     this.adapter.focusMenuItemAtIndex(focusItemIndex);
   }
 
@@ -289,9 +292,15 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   handleClick(normalizedX: number) {
-    if (this.disabled || this.isMenuOpen) {
+    if (this.disabled) {
       return;
     }
+
+    if (this.isMenuOpen) {
+      this.adapter.closeMenu();
+      return;
+    }
+
     this.adapter.setRippleCenter(normalizedX);
 
     this.openMenu();
@@ -312,11 +321,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const arrowDown = normalizeKey(event) === KEY.ARROW_DOWN;
 
     // Typeahead
-    if (event.key && event.key.length === 1 ||
+    if (!isSpace && event.key && event.key.length === 1 ||
         isSpace && this.adapter.isTypeaheadInProgress()) {
       const key = isSpace ? ' ' : event.key;
       const typeaheadNextIndex =
-          this.adapter.typeaheadMatchItem(key, this.selectedIndex);
+          this.adapter.typeaheadMatchItem(key, this.getSelectedIndex());
       if (typeaheadNextIndex >= 0) {
         this.setSelectedIndex(typeaheadNextIndex);
       }
@@ -329,11 +338,12 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
 
     // Increment/decrement index as necessary and open menu.
-    if (arrowUp && this.selectedIndex > 0) {
-      this.setSelectedIndex(this.selectedIndex - 1);
+    if (arrowUp && this.getSelectedIndex() > 0) {
+      this.setSelectedIndex(this.getSelectedIndex() - 1);
     } else if (
-        arrowDown && this.selectedIndex < this.adapter.getMenuItemCount() - 1) {
-      this.setSelectedIndex(this.selectedIndex + 1);
+        arrowDown &&
+        this.getSelectedIndex() < this.adapter.getMenuItemCount() - 1) {
+      this.setSelectedIndex(this.getSelectedIndex() + 1);
     }
 
     this.openMenu();
@@ -401,8 +411,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
         !this.adapter.hasClass(cssClasses.DISABLED)) {
       // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
       // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
-      return this.selectedIndex !== numbers.UNSET_INDEX &&
-          (this.selectedIndex !== 0 || Boolean(this.getValue()));
+      return this.getSelectedIndex() !== numbers.UNSET_INDEX &&
+          (this.getSelectedIndex() !== 0 || Boolean(this.getValue()));
     }
     return this.customValidity;
   }
@@ -430,8 +440,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter.setMenuWrapFocus(false);
 
     this.setDisabled(this.adapter.hasClass(cssClasses.DISABLED));
-    this.layoutOptions();
     this.layout();
+    this.layoutOptions();
   }
 
   /**
@@ -448,28 +458,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       if (this.helperText) {
         this.helperText.setValidity(this.isValid());
       }
-    }
-  }
-
-  private setSelectionAtIndex(index: number) {
-    this.selectedIndex = index;
-
-    if (index === numbers.UNSET_INDEX) {
-      this.adapter.setSelectedText('');
-      return;
-    }
-
-    this.adapter.setSelectedText(
-        this.adapter.getMenuItemTextAtIndex(index).trim());
-    this.adapter.addClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
-    this.adapter.setAttributeAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
-  }
-
-  private removeSelectionAtIndex(index: number) {
-    if (index !== numbers.UNSET_INDEX) {
-      this.adapter.removeClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
-      this.adapter.setAttributeAtIndex(
-          index, strings.ARIA_SELECTED_ATTR, 'false');
     }
   }
 }

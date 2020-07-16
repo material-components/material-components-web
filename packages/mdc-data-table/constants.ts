@@ -38,12 +38,19 @@ export const cssClasses = {
   HEADER_ROW: 'mdc-data-table__header-row',
   HEADER_ROW_CHECKBOX: 'mdc-data-table__header-row-checkbox',
   IN_PROGRESS: 'mdc-data-table--in-progress',
+  LINEAR_PROGRESS: 'mdc-data-table__linear-progress',
+  PAGINATION_ROWS_PER_PAGE_LABEL:
+      'mdc-data-table__pagination-rows-per-page-label',
+  PAGINATION_ROWS_PER_PAGE_SELECT:
+      'mdc-data-table__pagination-rows-per-page-select',
   PROGRESS_INDICATOR: 'mdc-data-table__progress-indicator',
   ROOT: 'mdc-data-table',
   ROW: 'mdc-data-table__row',
   ROW_CHECKBOX: 'mdc-data-table__row-checkbox',
   ROW_SELECTED: 'mdc-data-table__row--selected',
   SORT_ICON_BUTTON: 'mdc-data-table__sort-icon-button',
+  SORT_STATUS_LABEL: 'mdc-data-table__sort-status-label',
+  TABLE_CONTAINER: 'mdc-data-table__table-container',
 };
 
 /**
@@ -76,6 +83,15 @@ export const selectors = {
   ROW_CHECKBOX: `.${cssClasses.ROW_CHECKBOX}`,
   ROW_SELECTED: `.${cssClasses.ROW_SELECTED}`,
   SORT_ICON_BUTTON: `.${cssClasses.SORT_ICON_BUTTON}`,
+  SORT_STATUS_LABEL: `.${cssClasses.SORT_STATUS_LABEL}`,
+};
+
+/**
+ * Messages used in component.
+ */
+export const messages = {
+  SORTED_IN_DESCENDING: 'Sorted in descending order',
+  SORTED_IN_ASCENDING: 'Sorted in ascending order',
 };
 
 /**

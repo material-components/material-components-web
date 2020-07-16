@@ -36,7 +36,6 @@ const strings = {
 const cssClasses = {
   DISABLED: 'mdc-text-field--disabled',
   FOCUSED: 'mdc-text-field--focused',
-  FULLWIDTH: 'mdc-text-field--fullwidth',
   HELPER_LINE: 'mdc-text-field-helper-line',
   INVALID: 'mdc-text-field--invalid',
   LABEL_FLOATING: 'mdc-text-field--label-floating',

@@ -196,6 +196,7 @@ class JsBundleFactory {
         tabIndicator: getAbsolutePath('/packages/mdc-tab-indicator/index.ts'),
         tabScroller: getAbsolutePath('/packages/mdc-tab-scroller/index.ts'),
         textfield: getAbsolutePath('/packages/mdc-textfield/index.ts'),
+        tooltip: getAbsolutePath('/packages/mdc-tooltip/index.ts'),
         topAppBar: getAbsolutePath('/packages/mdc-top-app-bar/index.ts'),
       },
       output: {

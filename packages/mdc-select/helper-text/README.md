@@ -50,26 +50,31 @@ the display of the helper text is dependent on the interaction with the MDCSelec
        aria-controls="my-helper-text"
        aria-describedby="my-helper-text">
     <span class="mdc-select__ripple"></span>
+    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <input type="text" disabled readonly id="demo-selected-text" class="mdc-select__selected-text" value="Vegetables">
     <i class="mdc-select__dropdown-icon"></i>
-    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="" role="option"></li>
+      <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="" role="option">
+        <span class="mdc-list-item__ripple"></span>
+      </li>
       <li class="mdc-list-item" data-value="grains" role="option">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">
           Bread, Cereal, Rice, and Pasta
         </span>
       </li>
       <li class="mdc-list-item mdc-list-item--disabled" data-value="vegetables" aria-disabled="true" role="option">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">
           Vegetables
         </span>
       </li>
       <li class="mdc-list-item" data-value="fruit" role="option">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">
           Fruit
         </span>

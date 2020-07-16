@@ -28,6 +28,7 @@
 @use '@material/animation/functions';
 @use '@material/checkbox/mixins' as checkbox-mixins;
 @use '@material/density/functions' as density-functions;
+@use '@material/dom/mixins' as dom;
 @use '@material/elevation/mixins';
 @use '@material/feature-targeting/functions' as feature-targeting-functions;
 @use '@material/feature-targeting/mixins' as feature-targeting-mixins;
@@ -37,6 +38,10 @@
 @use '@material/theme/mixins' as theme-mixins;
 @use '@material/theme/variables' as variables2; // for mdc-theme-prop-value.
 @use '@material/typography/mixins' as typography-mixins;
+@use './data-table-cell';
+@use './data-table-header-cell';
+@use './data-table-pagination';
+@use './data-table-progress-indicator';
 @use './data-table-theme';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
@@ -161,174 +166,15 @@
     }
   }
 
-  .mdc-data-table__cell {
-    @include typography-mixins.typography(body2, $query: $query);
+  @include data-table-cell.core-styles($query: $query);
+  @include data-table-header-cell.core-styles($query: $query);
+  @include data-table-progress-indicator.core-styles($query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
-      box-sizing: border-box;
-      overflow: hidden;
-      text-align: left;
-      text-overflow: ellipsis;
-    }
+  .mdc-data-table--sticky-header {
+    @include _sticky-header($query: $query);
   }
 
-  .mdc-data-table__cell--numeric {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      text-align: right;
-    }
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.rtl {
-        /* @noflip */
-        text-align: left;
-      }
-    }
-  }
-
-  .mdc-data-table__header-cell {
-    @include typography-mixins.typography(subtitle2, $query: $query);
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      box-sizing: border-box;
-      text-align: left;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      outline: none;
-
-      @include rtl-mixins.rtl {
-        /* @noflip */
-        text-align: right;
-      }
-    }
-  }
-
-  .mdc-data-table__header-cell--numeric {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      text-align: right;
-    }
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.rtl {
-        /* @noflip */
-        text-align: left;
-      }
-    }
-  }
-
-  .mdc-data-table__sort-icon-button {
-    @include icon-button-mixins.density(
-      $density-scale: data-table-theme.$sort-icon-density-scale,
-      $query: $query
-    );
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, left, 4px);
-    }
-
-    .mdc-data-table__header-cell--numeric & {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        @include rtl-mixins.reflexive-box(margin, right, 4px);
-      }
-    }
-
-    @include feature-targeting-mixins.targets($feat-animation) {
-      transition: functions.standard(transform, $duration: 150ms);
-    }
-
-    .mdc-data-table__header-cell--sorted-descending & {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        transform: rotate(-180deg);
-      }
-    }
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      opacity: 0;
-    }
-
-    &:focus,
-    .mdc-data-table__header-cell:hover &,
-    .mdc-data-table__header-cell--sorted & {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        opacity: 1;
-      }
-    }
-  }
-
-  .mdc-data-table__header-cell-wrapper {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      align-items: center;
-      display: inline-flex;
-      vertical-align: middle;
-    }
-  }
-
-  .mdc-data-table__header-cell--with-sort {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      cursor: pointer;
-    }
-  }
-
-  .mdc-data-table__progress-indicator {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      display: none;
-      position: absolute;
-      width: 100%;
-    }
-
-    .mdc-data-table--in-progress & {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        display: block;
-      }
-    }
-  }
-
-  .mdc-data-table__scrim {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include theme-mixins.prop('background-color', surface);
-
-      height: 100%;
-      // TODO(b/151453287): Set appropriate opacity value once we've a UX
-      // guidance.
-      opacity: 0.32;
-      position: absolute;
-      top: 0;
-      width: 100%;
-    }
-  }
-
-  .mdc-data-table__pagination {
-    @include typography-mixins.typography(body2, $query: $query);
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      box-sizing: border-box;
-      display: flex;
-      justify-content: flex-end;
-    }
-  }
-
-  .mdc-data-table__pagination-trailing {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, left, 4px);
-
-      align-items: center;
-      display: flex;
-    }
-  }
-
-  .mdc-data-table__pagination-button {
-    @include icon-button-mixins.flip-icon-in-rtl($query: $query);
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, right, 4px);
-    }
-  }
-
-  .mdc-data-table__pagination-total {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, right, 36px);
-
-      white-space: nowrap;
-    }
-  }
+  @include data-table-pagination.core-styles($query: $query);
 }
 
 @mixin theme-baseline($query: feature-targeting-functions.all()) {
@@ -336,4 +182,17 @@
     data-table-theme.$checked-icon-color,
     $query: $query
   );
+}
+
+/// Sets styles required to support sticky header row.
+@mixin _sticky-header($query: $query) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include data-table-header-cell.header-cell-sticky($query: $query);
+
+  .mdc-data-table__row:first-child {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      border-top: 0;
+    }
+  }
 }

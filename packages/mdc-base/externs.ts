@@ -26,5 +26,5 @@ declare interface Element {
 }
 
 declare interface Window {
-  CSS: CSS;
+  CSS: typeof CSS;
 }

@@ -28,7 +28,9 @@
 
 // Public mixins
 
-@mixin character-counter-core-styles($query: feature-targeting-functions.all()) {
+@mixin character-counter-core-styles(
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   // postcss-bem-linter: define text-field-character-counter
@@ -53,7 +55,10 @@
 /// Customizes the color of the character counter associated with an enabled text field.
 /// @param {Color} $color - The desired character counter color.
 ///
-@mixin character-counter-color($color, $query: feature-targeting-functions.all()) {
+@mixin character-counter-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &:not(.mdc-text-field--disabled) {
     @include character-counter-color_($color, $query);
   }
@@ -63,13 +68,20 @@
 /// Customizes the color of the character counter associated with a disabled text field.
 /// @param {Color} $color - The desired character counter color.
 ///
-@mixin disabled-character-counter-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-character-counter-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   &.mdc-text-field--disabled {
     @include character-counter-color_($color, $query);
   }
 }
 
-@mixin character-counter-position($xOffset, $yOffset, $query: feature-targeting-functions.all()) {
+@mixin character-counter-position(
+  $xOffset,
+  $yOffset,
+  $query: feature-targeting-functions.all()
+) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-text-field-character-counter {
@@ -81,10 +93,12 @@
   }
 }
 
-
 // Private mixins
 
-@mixin character-counter-color_($color, $query: feature-targeting-functions.all()) {
+@mixin character-counter-color_(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   // Character counter is placed inside mdc-textfield element (for textarea variant) or

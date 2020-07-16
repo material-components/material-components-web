@@ -33,41 +33,79 @@
 ///     wrap label in a child element to apply `transitionY(-50%)` to automatically offset based on box height.
 ///
 @function get-outlined-label-position-y($text-field-height) {
-  @return $text-field-height / 2 + notched-outline-variables.$label-box-height / 2;
+  @return $text-field-height / 2 + notched-outline-variables.$label-box-height /
+    2;
 }
 
 $error: error !default;
-$fullwidth-bottom-line-color: rgba(theme-variables.prop-value(on-surface), .12) !default;
-$disabled-border: rgba(theme-variables.prop-value(on-surface), .06) !default;
-$disabled-icon: rgba(theme-variables.prop-value(on-surface), .3) !default;
-$bottom-line-hover: rgba(theme-variables.prop-value(on-surface), .87) !default;
-$bottom-line-idle: rgba(theme-variables.prop-value(on-surface), .42) !default;
-$label: rgba(theme-variables.prop-value(on-surface), .6) !default;
+$disabled-border: rgba(theme-variables.prop-value(on-surface), 0.06) !default;
+$disabled-icon: rgba(theme-variables.prop-value(on-surface), 0.3) !default;
+$bottom-line-hover: rgba(theme-variables.prop-value(on-surface), 0.87) !default;
+$bottom-line-idle: rgba(theme-variables.prop-value(on-surface), 0.42) !default;
+$label: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
 
-$ink-color: rgba(theme-variables.prop-value(on-surface), .87) !default;
-$helper-text-color: rgba(theme-variables.prop-value(on-surface), .6) !default;
-$icon-color: rgba(theme-variables.prop-value(on-surface), .54) !default;
-$focused-label-color: rgba(theme-variables.prop-value(primary), .87) !default;
-$placeholder-ink-color: rgba(theme-variables.prop-value(on-surface), .54) !default;
-$affix-color: rgba(theme-variables.prop-value(on-surface), .6) !default;
+$ink-color: rgba(theme-variables.prop-value(on-surface), 0.87) !default;
+$helper-text-color: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
+$icon-color: rgba(theme-variables.prop-value(on-surface), 0.54) !default;
+$focused-label-color: rgba(theme-variables.prop-value(primary), 0.87) !default;
+$placeholder-ink-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.54
+) !default;
+$affix-color: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
 
-$disabled-label-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
-$disabled-ink-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
-$disabled-placeholder-ink-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
-$disabled-helper-text-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
-$disabled-affix-color: rgba(theme-variables.prop-value(on-surface), .38) !default;
+$disabled-label-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+$disabled-ink-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+$disabled-placeholder-ink-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+$disabled-helper-text-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+$disabled-affix-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
 
-$background: color.mix(theme-variables.prop-value(on-surface), theme-variables.prop-value(surface), 4%) !default;
-$disabled-background: color.mix(theme-variables.prop-value(on-surface), theme-variables.prop-value(surface), 2%) !default;
-$secondary-text: rgba(theme-variables.prop-value(on-surface), .6) !default;
+$background: color.mix(
+  theme-variables.prop-value(on-surface),
+  theme-variables.prop-value(surface),
+  4%
+) !default;
+$disabled-background: color.mix(
+  theme-variables.prop-value(on-surface),
+  theme-variables.prop-value(surface),
+  2%
+) !default;
+$secondary-text: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
 
-$outlined-idle-border: rgba(theme-variables.prop-value(on-surface), .38) !default;
-$outlined-disabled-border: rgba(theme-variables.prop-value(on-surface), .06) !default;
-$outlined-hover-border: rgba(theme-variables.prop-value(on-surface), .87) !default;
+$outlined-idle-border: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+$outlined-disabled-border: rgba(
+  theme-variables.prop-value(on-surface),
+  0.06
+) !default;
+$outlined-hover-border: rgba(
+  theme-variables.prop-value(on-surface),
+  0.87
+) !default;
 
-$textarea-border: rgba(theme-variables.prop-value(on-surface), .73) !default;
+$textarea-border: rgba(theme-variables.prop-value(on-surface), 0.73) !default;
 $textarea-background: rgba(theme-variables.prop-value(surface), 1) !default;
-$textarea-disabled-border-color: rgba(theme-variables.prop-value(on-surface), .26) !default;
+$textarea-disabled-border-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.26
+) !default;
 // cannot be transparent because multiline textarea input
 // will make text unreadable
 $textarea-disabled-background: rgba(249, 249, 249, 1) !default;
@@ -87,14 +125,14 @@ $density-config: (
     minimum: $minimum-height,
   ),
 ) !default;
+$shape-radius: small !default;
 $label-position-y: floating-label-variables.$position-y !default;
 $label-offset: 16px !default;
 // TODO(b/154350788): Remove this variable, it's not used internally but it is
 // externally in Angular
 /// @deprecated this variable will be removed in the future.
 /// Use get-outlined-label-position-y($height) instead
-$outlined-label-position-y:
-    get-outlined-label-position-y($height) !default;
+$outlined-label-position-y: get-outlined-label-position-y($height) !default;
 $outlined-with-leading-icon-label-position-x: 32px !default;
 $textarea-outlined-label-position-y: 24.75px !default; // visually ~4dp from top to baseline
 $textarea-filled-label-position-y: 10.25px !default; // visually ~20dp from top to label baseline
@@ -102,7 +140,8 @@ $helper-line-padding: 16px !default;
 $filled-baseline-top: 40px !default;
 $input-height: 28px !default;
 $textarea-label-top: 19px !default; // visually ~32dp from top to label baseline
-$textarea-outlined-label-top: $textarea-label-top - notched-outline-variables.$border-width !default;
+$textarea-outlined-label-top: $textarea-label-top -
+  notched-outline-variables.$border-width !default;
 $textarea-line-height: 1.5rem !default; // 24dp from baseline to baseline
 $textarea-input-handle-margin: 1px !default;
 // Outlined textarea's first line should be placed at the same position as
@@ -117,51 +156,51 @@ $textarea-outlined-density-config: (
   margin-top: (
     default: $textarea-outlined-input-margin-top,
     maximum: $textarea-outlined-input-margin-top,
-    minimum: $textarea-outlined-input-margin-top - 8 // remove 1/2 of scale to -4
+    minimum: $textarea-outlined-input-margin-top - 8,
   ),
   margin-bottom: (
     default: $textarea-outlined-input-margin-bottom,
     maximum: $textarea-outlined-input-margin-bottom,
-    minimum: $textarea-outlined-input-margin-bottom - 8 // remove 1/2 of scale to -4
-  )
-) !default;
+    minimum: $textarea-outlined-input-margin-bottom - 8,
+  ),
+) !default; // remove 1/2 of scale to -4 for minimum
 $textarea-outlined-label-density-config: (
   top: (
     default: $textarea-outlined-label-top,
     maximum: $textarea-outlined-label-top,
-    minimum: $textarea-outlined-label-top - 8 // remove 1/2 of scale to -4
-  )
-) !default;
+    minimum: $textarea-outlined-label-top - 8,
+  ),
+) !default; // remove 1/2 of scale to -4 for minimum
 $textarea-filled-input-margin-top: 23px !default; // visually ~40dp from top to baseline
 $textarea-filled-input-margin-bottom: 9px !default; // visually ~16dp from baseline to bottom
 $textarea-filled-density-config: (
   margin-bottom: (
     default: $textarea-filled-input-margin-bottom,
     maximum: $textarea-filled-input-margin-bottom,
-    minimum: $textarea-filled-input-margin-bottom - 4 // scale to -1
-  )
-) !default;
+    minimum: $textarea-filled-input-margin-bottom - 4,
+  ),
+) !default; // scale to -1 for minimum
 $textarea-filled-label-density-config: (
   top: (
     default: $textarea-label-top,
     maximum: $textarea-label-top,
-    minimum: $textarea-label-top - 2 // remove 1/2 of scale to -1
-  )
-) !default;
+    minimum: $textarea-label-top - 2,
+  ),
+) !default; // remove 1/2 of scale to -1 for minimm
 $textarea-filled-no-label-input-margin-top: 16px !default; // see above explanation for outlined textarea margin
 $textarea-filled-no-label-input-margin-bottom: 16px !default; // see above explanation for outlined textarea margin
 $textarea-filled-no-label-density-config: (
   margin-top: (
     default: $textarea-filled-no-label-input-margin-top,
     maximum: $textarea-filled-no-label-input-margin-top,
-    minimum: $textarea-filled-no-label-input-margin-top - 8 // remove 1/2 of scale to -4
+    minimum: $textarea-filled-no-label-input-margin-top - 8,
   ),
   margin-bottom: (
     default: $textarea-filled-no-label-input-margin-bottom,
     maximum: $textarea-filled-no-label-input-margin-bottom,
-    minimum: $textarea-filled-no-label-input-margin-bottom - 8 // remove 1/2 of scale to -4
-  )
-) !default;
+    minimum: $textarea-filled-no-label-input-margin-bottom - 8,
+  ),
+) !default; // remove 1/2 of scale to -4 for minimum
 $textarea-internal-counter-input-margin-bottom: 2px !default; // visually ~20dp from baseline to counter baseline
 $textarea-internal-counter-baseline-bottom: 16px !default;
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.

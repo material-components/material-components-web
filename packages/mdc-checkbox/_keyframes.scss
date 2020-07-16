@@ -29,7 +29,8 @@
   $to-stroke-color,
   $from-fill-color,
   $to-fill-color,
-  $uid) {
+  $uid
+) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
       @include mixins.prop(border-color, $from-stroke-color);

@@ -53,6 +53,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private selectedText!: HTMLElement;       // assigned in initialize()
 
   private menuElement!: Element;                  // assigned in menuSetup()
+  private menuItemValues!: string[];              // assigned in menuSetup()
   private leadingIcon?: MDCSelectIcon;            // assigned in initialize()
   private helperText!: MDCSelectHelperText|null;  // assigned in initialize()
   private lineRipple!: MDCLineRipple|null;        // assigned in initialize()
@@ -297,6 +298,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   layoutOptions() {
     this.foundation.layoutOptions();
     this.menu.layout();
+    // Update cached menuItemValues for adapter.
+    this.menuItemValues =
+        this.menu.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || '');
   }
 
   getDefaultFoundation() {
@@ -318,6 +322,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menuElement = this.root.querySelector(strings.MENU_SELECTOR)!;
     this.menu = menuFactory(this.menuElement);
     this.menu.hasTypeahead = true;
+    this.menu.singleSelection = true;
+    this.menuItemValues =
+        this.menu.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || '');
   }
 
   private createRipple(): MDCRipple {
@@ -340,8 +347,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private getSelectAdapterMethods() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
-      getSelectedMenuItem: () =>
-          this.menuElement.querySelector(strings.SELECTED_ITEM_SELECTOR),
       getMenuItemAttr: (menuItem: Element, attr: string) =>
           menuItem.getAttribute(attr),
       setSelectedText: (text: string) => {
@@ -379,27 +384,21 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       setMenuWrapFocus: (wrapFocus: boolean) => {
         this.menu.wrapFocus = wrapFocus;
       },
-      setAttributeAtIndex:
-          (index: number, attributeName: string, attributeValue: string) => {
-            this.menu.items[index].setAttribute(attributeName, attributeValue);
-          },
-      removeAttributeAtIndex: (index: number, attributeName: string) => {
-        this.menu.items[index].removeAttribute(attributeName);
+      getSelectedIndex: () => {
+        const index = this.menu.selectedIndex;
+        return index instanceof Array ? index[0] : index;
+      },
+      setSelectedIndex: (index: number) => {
+        this.menu.selectedIndex = index;
       },
       focusMenuItemAtIndex: (index: number) => {
         (this.menu.items[index] as HTMLElement).focus();
       },
       getMenuItemCount: () => this.menu.items.length,
-      getMenuItemValues: () => this.menu.items.map(
-          (el) => el.getAttribute(strings.VALUE_ATTR) || ''),
+      // Cache menu item values. layoutOptions() updates this cache.
+      getMenuItemValues: () => this.menuItemValues,
       getMenuItemTextAtIndex: (index: number) =>
           this.menu.getPrimaryTextAtIndex(index),
-      addClassAtIndex: (index: number, className: string) => {
-        this.menu.items[index].classList.add(className);
-      },
-      removeClassAtIndex: (index: number, className: string) => {
-        this.menu.items[index].classList.remove(className);
-      },
       isTypeaheadInProgress: () => this.menu.typeaheadInProgress,
       typeaheadMatchItem: (nextChar: string, startingIndex: number) =>
           this.menu.typeaheadMatchItem(nextChar, startingIndex),
