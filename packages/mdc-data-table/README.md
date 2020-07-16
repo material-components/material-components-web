@@ -233,6 +233,131 @@ The row selection feature allows users to select table rows via row checkboxes. 
   - `getSelectedRowIds()`
   - `setSelectedRowIds(string[])`
 
+### Data table with pagination
+
+Pagination is rendered at the footer section of data table. Pagination helps
+user change the rows per page (page size) and navigate between data table pages.
+
+#### HTML Structure
+
+```html
+<div class="mdc-data-table">
+  <div class="mdc-data-table__table-container">
+    <table class="mdc-data-table__table" aria-label="Dessert calories">
+      <thead>
+        <tr class="mdc-data-table__header-row">
+          <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Dessert</th>
+          <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Carbs (g)</th>
+          <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Protein (g)</th>
+          <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
+        </tr>
+      </thead>
+      <tbody class="mdc-data-table__content">
+        <tr class="mdc-data-table__row">
+          <th class="mdc-data-table__cell" scope="row">Frozen yogurt</th>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.0</td>
+          <td class="mdc-data-table__cell">Super tasty</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+          <th class="mdc-data-table__cell" scope="row">Ice cream sandwich</th>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">37</td>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.33333333333</td>
+          <td class="mdc-data-table__cell">I like ice cream more</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+          <th class="mdc-data-table__cell" scope="row">Eclair</th>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+          <td class="mdc-data-table__cell mdc-data-table__cell--numeric">6.0</td>
+          <td class="mdc-data-table__cell">New filing flavor</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mdc-data-table__pagination">
+    <div class="mdc-data-table__pagination-trailing">
+      <div class="mdc-data-table__pagination-rows-per-page">
+        <div class="mdc-data-table__pagination-rows-per-page-label">
+          Rows per page
+        </div>
+
+        <div class="mdc-select mdc-select--outlined mdc-select--no-label mdc-data-table__pagination-rows-per-page-select">
+          <div class="mdc-select__anchor" role="button" aria-haspopup="listbox"
+                aria-labelledby="demo-pagination-select" tabindex="0">
+            <span id="demo-pagination-select" class="mdc-select__selected-text">10</span>
+            <span class="mdc-select__dropdown-icon">
+              <svg
+                  class="mdc-select__dropdown-icon-graphic"
+                  viewBox="7 10 10 5">
+                <polygon
+                    class="mdc-select__dropdown-icon-inactive"
+                    stroke="none"
+                    fill-rule="evenodd"
+                    points="7 10 12 15 17 10">
+                </polygon>
+                <polygon
+                    class="mdc-select__dropdown-icon-active"
+                    stroke="none"
+                    fill-rule="evenodd"
+                    points="7 15 12 10 17 15">
+                </polygon>
+              </svg>
+            </span>
+            <span class="mdc-notched-outline mdc-notched-outline--notched">
+              <span class="mdc-notched-outline__leading"></span>
+              <span class="mdc-notched-outline__trailing"></span>
+            </span>
+          </div>
+
+          <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth" role="listbox">
+            <ul class="mdc-list">
+              <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" role="option" data-value="10">
+                <span class="mdc-list-item__text">10</span>
+              </li>
+              <li class="mdc-list-item" role="option" data-value="25">
+                <span class="mdc-list-item__text">25</span>
+              </li>
+              <li class="mdc-list-item" role="option" data-value="100">
+                <span class="mdc-list-item__text">100</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mdc-data-table__pagination-navigation">
+        <div class="mdc-data-table__pagination-total">
+          1‑10 of 100
+        </div>
+        <button class="mdc-icon-button material-icons mdc-data-table__pagination-button" data-first-page="true" disabled>
+          <div class="mdc-button__icon">first_page</div>
+        </button>
+        <button class="mdc-icon-button material-icons mdc-data-table__pagination-button" data-prev-page="true" disabled>
+          <div class="mdc-button__icon">chevron_left</div>
+        </button>
+        <button class="mdc-icon-button material-icons mdc-data-table__pagination-button" data-next-page="true">
+          <div class="mdc-button__icon">chevron_right</div>
+        </button>
+        <button class="mdc-icon-button material-icons mdc-data-table__pagination-button" data-last-page="true">
+          <div class="mdc-button__icon">last_page</div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+#### JavaScript APIs
+
+Data table component does not provide any JavaScript APIs for pagination.
+
+- Should manually initialize following components supporting pagination feature:
+  - Select component: Used to change rows per page (page size).
+  - Icon button: Used to navigate between data table pages.
+- Should re-render data table content when rows per page is changed or navigated to another page using events triggered by select & pagination button.
+- Should manually enable or disable pagination buttons accordingly when data table reaches first or last page.
+
 ### Data table with progress indicator
 
 Progress indicator inform users about the status of ongoing processes, such as data loading. Indeterminate linear progress indicator along with a scrim is shown on blocking the table content.
@@ -439,6 +564,15 @@ CSS Class | Description
 `mdc-data-table__sort-icon-button` | Optional. Class name added to icon button used as sort icon button. This is sibling to header cell label.
 `mdc-data-table__header-cell-label` | Mandatory. Class name added to header cell label. Child to header cell wrapper element.
 `mdc-data-table__sort-status-label` | Optional. Class name added to sort status label which is visually hidden. Only visible to screen reader users.
+`mdc-data-table__pagination` | Root element of pagination. Pagination block element is rendered as immediate child to data table root element.
+`mdc-data-table__pagination-trailing` | Immediate child of pagination. Used to wrap pagination content.
+`mdc-data-table__pagination-rows-per-page` | Container of rows per page label and rows per page select.
+`mdc-data-table__pagination-rows-per-page-select` | Class name added to select component used for changing rows per page (page size).
+`mdc-data-table__pagination-navigation` | Block element containing all icon buttons used to navigate between data table pages.
+`mdc-data-table__pagination-button` | Class name added to icon button component used to navigate between data table pages.
+`mdc-data-table__progress-indicator` | Block element rendered as immediate child to data table root element. Contains linear progress and scrim blocking the data table content.
+`mdc-data-table__scrim` | Element blocking data table content. Rendered inside progress indicator root element.
+`mdc-data-table__linear-progress` | Class name added to linear progress component. Rendered inside progress indicator root element.
 
 ### Sass mixins
 
