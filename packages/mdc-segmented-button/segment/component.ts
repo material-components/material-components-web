@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '../../mdc-base/component';
-import {SpecificEventListener} from '../../mdc-base/types';
+import {MDCComponent} from '@material/base/component';
+import {SpecificEventListener} from '@material/base/types';
 // TODO: use this to allow ripple usage
 // import {MDCRippleAdapter} from '../../mdc-ripple/adapter';
 // import {MDCRipple, MDCRippleFactory} from '../../mdc-ripple/component';
@@ -64,25 +64,29 @@ export class MDCSegmentedButtonSegment extends MDCComponent<MDCSegmentedButtonSe
       isSingleSelect: () => {
         return this.isSingleSelect;
       },
-      getAttr: (attrName: string) => {
+      getAttr: (attrName) => {
         return this.root.getAttribute(attrName);
       },
-      setAttr: (attrName: string, value: string) => {
+      setAttr: (attrName, value) => {
         this.root.setAttribute(attrName, value);
       },
-      addClass: (className: string) => {
+      addClass: (className) => {
         this.root.classList.add(className);
       },
-      removeClass: (className: string) => {
+      removeClass: (className) => {
         this.root.classList.remove(className);
       },
-      hasClass: (className: string) => {
+      hasClass: (className) => {
         return this.root.classList.contains(className);
       },
-      notifySelectedChange: (selected: boolean) => {
+      notifySelectedChange: (selected) => {
         this.emit<SegmentDetail>(
           strings.SELECTED_EVENT,
-          {index: this.index, selected: selected, segmentId: this.getSegmentId()},
+          {
+            index: this.index,
+            selected: selected,
+            segmentId: this.getSegmentId() ?? undefined
+          },
           true /* shouldBubble */
         );
       }
@@ -110,7 +114,7 @@ export class MDCSegmentedButtonSegment extends MDCComponent<MDCSegmentedButtonSe
     return this.foundation.setUnselected();
   }
 
-  getSegmentId(): string {
-    return this.getSegmentId();
+  getSegmentId(): string | null {
+    return this.foundation.getSegmentId();
   }
 }

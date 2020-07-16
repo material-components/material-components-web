@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '../../mdc-base/component';
-import {CustomEventListener} from '../../mdc-base/types';
+import {MDCComponent} from '@material/base/component';
+import {CustomEventListener} from '@material/base/types';
 import {MDCSegmentedButtonSegment, MDCSegmentedButtonSegmentFactory} from '../segment/component';
 import {SegmentDetail, MDCSegmentedButtonEvent} from '../types';
 import {MDCSegmentedButtonAdapter} from './adapter';
@@ -49,7 +49,7 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
     const segmentElements: Element[] =
         [].slice.call(this.root.querySelectorAll(strings.SEGMENT_SELECTOR));
     return segmentElements.map((el: Element, index: number) => {
-      let segment = segmentFactory(el);
+      const segment = segmentFactory(el);
       segment.setIndex(index);
       segment.setIsSingleSelect(this.foundation.isSingleSelect());
       return segment;
@@ -70,31 +70,31 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
 
   getDefaultFoundation(): MDCSegmentedButtonFoundation {
     const adapter: MDCSegmentedButtonAdapter = {
-      hasClass: (className: string): boolean => {
+      hasClass: (className) => {
         return this.root.classList.contains(className);
       },
-      getSegments: (): readonly SegmentDetail[] => {
+      getSegments: () => {
         return this.mappedSegments();
       },
-      selectSegment: (indexOrSegmentId: number | string) => {
-        let segmentDetail = this.mappedSegments().find((_segmentDetail) => {
-          return _segmentDetail.index === indexOrSegmentId
-              || _segmentDetail.segmentId === indexOrSegmentId;
-        });
+      selectSegment: (indexOrSegmentId) => {
+        const segmentDetail = this.mappedSegments().find((_segmentDetail) =>
+          _segmentDetail.index === indexOrSegmentId
+          || _segmentDetail.segmentId === indexOrSegmentId
+        );
         if (segmentDetail) {
           this.segments[segmentDetail.index].setSelected();
         }
       },
-      unselectSegment: (indexOrSegmentId: number | string) => {
-        let segmentDetail = this.mappedSegments().find((_segmentDetail) => {
-          return _segmentDetail.index === indexOrSegmentId
-              || _segmentDetail.segmentId === indexOrSegmentId;
-        });
+      unselectSegment: (indexOrSegmentId) => {
+        const segmentDetail = this.mappedSegments().find((_segmentDetail) =>
+          _segmentDetail.index === indexOrSegmentId
+          || _segmentDetail.segmentId === indexOrSegmentId
+        );
         if (segmentDetail) {
           this.segments[segmentDetail.index].setUnselected();
         }
       },
-      notifySelectedChange: (detail: SegmentDetail) => {
+      notifySelectedChange: (detail) => {
         this.emit<SegmentDetail>(
           strings.CHANGE_EVENT,
           detail,
@@ -121,12 +121,12 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
     return this.foundation.isSegmentSelected(indexOrSegmentId);
   }
 
-  private mappedSegments() {
+  private mappedSegments(): readonly SegmentDetail[] {
     return this.segments.map((segment: MDCSegmentedButtonSegment, index: number) => {
       return {
-        index: index,
+        index,
         selected: segment.isSelected(),
-        ...segment.getSegmentId() && {segmentId: segment.getSegmentId()}
+        segmentId: segment.getSegmentId() ?? undefined
       };
     });
   }
