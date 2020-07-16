@@ -18,7 +18,6 @@
     },
     "dependencies": {
         "@material/base": "^7.0.0",
-        "@material/button": "^7.0.0",
         "@material/feature-targeting": "^7.0.0",
         "@material/theme": "^7.0.0",
         "@material/typography": "^7.0.0"

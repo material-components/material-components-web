@@ -24,15 +24,37 @@
 
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/theme/variables" as theme-variables;
 @use "@material/theme/custom-properties";
 
-$unselected-ink-color: custom-properties.create(--mdc-segmneted-button-unselected-ink-color, rgba(on-surface, 0.6));
-$unselected-outline-color: custom-properties.create(--mdc-segmneted-button-unselected-outline-color, rgba(on-surface, 0.12));
-$unselected-container-fill-color: custom-properties.create(--mdc-segmneted-button-unselected-container-fill-color, rgba(surface, 1));
+$on-surface: theme-variables.prop-value(on-surface);
+$surface: theme-variables.prop-value(surface);
+$primary: theme-variables.prop-value(primary);
 
-$selected-ink-color: custom-properties.create(--mdc-segmneted-button-selected-ink-color, rgba(primary, 1));
-$selected-outline-color: custom-properties.create(--mdc-segmneted-button-selected-outline-color, rgba(primary, 1));
-$selected-container-fill-color: custom-properties.create(--mdc-segmneted-button-selected-container-fill-color, rgba(primary, 0.08));
+$unselected-ink-color: custom-properties.create(
+  --mdc-segmneted-button-unselected-ink-color,
+  rgba($on-surface, 0.6)
+);
+$unselected-outline-color: custom-properties.create(
+  --mdc-segmneted-button-unselected-outline-color,
+  rgba($on-surface, 0.12)
+);
+$unselected-container-fill-color: custom-properties.create(
+  --mdc-segmneted-button-unselected-container-fill-color,
+  rgba($surface, 1)
+);
+$selected-ink-color: custom-properties.create(
+  --mdc-segmneted-button-selected-ink-color,
+  rgba($primary, 1)
+);
+$selected-outline-color: custom-properties.create(
+  --mdc-segmneted-button-selected-outline-color,
+  rgba($primary, 1)
+);
+$selected-container-fill-color: custom-properties.create(
+  --mdc-segmneted-button-selected-container-fill-color,
+  rgba($primary, 0.08)
+);
 
 $height: 36px;
 $min-width: 48px;
