@@ -21,6 +21,10 @@
  * THE SOFTWARE.
  */
 
-export * from './adapter';
-export * from './foundation';
-export * from './component';
+/**
+ * Strings constants to be used for tests
+ */
+export const test_strings = {
+  SEGMENT_ID: 'test-segment-id',
+  CLASS: 'test-class'
+};
