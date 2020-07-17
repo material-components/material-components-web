@@ -34,7 +34,11 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
     return new MDCSegmentedButton(root);
   }
 
-  private segments!: MDCSegmentedButtonSegment[]; // assigned in initialize
+  get segments(): ReadonlyArray<MDCSegmentedButtonSegment> {
+    return this.segments_.slice();
+  }
+
+  private segments_!: MDCSegmentedButtonSegment[]; // assigned in initialize
   private segmentFactory!:
       (el: Element) => MDCSegmentedButtonSegment; // assigned in initialize
   private handleSelected!:
@@ -42,28 +46,34 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
 
   initialize(segmentFactory: MDCSegmentedButtonSegmentFactory = (el) => new MDCSegmentedButtonSegment(el)) {
     this.segmentFactory = segmentFactory;
-    this.segments = this.instantiateSegments(this.segmentFactory);
+    this.segments_ = this.instantiateSegments(this.segmentFactory);
   }
 
   private instantiateSegments(segmentFactory: MDCSegmentedButtonSegmentFactory): MDCSegmentedButtonSegment[] {
     const segmentElements: Element[] =
         [].slice.call(this.root.querySelectorAll(strings.SEGMENT_SELECTOR));
-    return segmentElements.map((el: Element, index: number) => {
-      const segment = segmentFactory(el);
-      segment.setIndex(index);
-      segment.setIsSingleSelect(this.foundation.isSingleSelect());
-      return segment;
-    });
+    return segmentElements.map((el: Element) => segmentFactory(el));
   }
 
   initialSyncWithDOM() {
     this.handleSelected = (event) =>
         this.foundation.handleSelected(event.detail);
     this.listen(strings.SELECTED_EVENT, this.handleSelected);
+
+    // foundation is undefined in #instantiateSegments
+    const isSingleSelect = this.foundation.isSingleSelect()
+    this.segments_.forEach((segment, index: number) => {
+      segment.setIndex(index);
+      segment.setIsSingleSelect(isSingleSelect);
+    });
   }
 
   destroy() {
-    this.listen(strings.SELECTED_EVENT, this.handleSelected);
+    this.segments_.forEach((segment) => {
+      segment.destroy();
+    });
+
+    this.unlisten(strings.SELECTED_EVENT, this.handleSelected);
 
     super.destroy();
   }
@@ -82,7 +92,7 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
           || _segmentDetail.segmentId === indexOrSegmentId
         );
         if (segmentDetail) {
-          this.segments[segmentDetail.index].setSelected();
+          this.segments_[segmentDetail.index].setSelected();
         }
       },
       unselectSegment: (indexOrSegmentId) => {
@@ -91,7 +101,7 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
           || _segmentDetail.segmentId === indexOrSegmentId
         );
         if (segmentDetail) {
-          this.segments[segmentDetail.index].setUnselected();
+          this.segments_[segmentDetail.index].setUnselected();
         }
       },
       notifySelectedChange: (detail) => {
@@ -122,7 +132,7 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
   }
 
   private mappedSegments(): readonly SegmentDetail[] {
-    return this.segments.map((segment: MDCSegmentedButtonSegment, index: number) => {
+    return this.segments_.map((segment: MDCSegmentedButtonSegment, index: number) => {
       return {
         index,
         selected: segment.isSelected(),

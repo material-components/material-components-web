@@ -124,7 +124,7 @@ describe('MDCSegmentedButtonSegment', () => {
       expect(root.classList.contains(test_strings.CLASS)).toBeFalsy();
     });
 
-    it('#hasClass returns root element has class', () => {
+    it('#hasClass returns whether root element has class', () => {
       const {root, component} = setupTest();
 
       root.classList.add(test_strings.CLASS);

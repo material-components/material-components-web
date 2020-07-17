@@ -22,6 +22,13 @@
  */
 
 /**
+ * String constants for segmented button tests
+ */
+export const test_strings = {
+  CLASS: 'test-class'
+};
+
+/**
  * Indices for segments used in tests
  */
 export enum test_indices {
