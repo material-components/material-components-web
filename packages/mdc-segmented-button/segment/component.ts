@@ -27,7 +27,7 @@ import {SpecificEventListener} from '@material/base/types';
 // import {MDCRippleAdapter} from '../../mdc-ripple/adapter';
 // import {MDCRipple, MDCRippleFactory} from '../../mdc-ripple/component';
 // import {MDCRippleFoundation} from '../../mdc-ripple/foundation';
-import {MDCRippleCapableSurface} from '../../mdc-ripple/types';
+import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 import {MDCSegmentedButtonSegmentFoundation} from './foundation';
 import {SegmentDetail} from '../types';
@@ -48,7 +48,7 @@ export class MDCSegmentedButtonSegment extends MDCComponent<MDCSegmentedButtonSe
       SpecificEventListener<'click'>; // assigned in initialSyncWithDOM
 
   initialSyncWithDOM() {
-    this.handleClick = this.foundation.handleClick;
+    this.handleClick = () => this.foundation.handleClick();
 
     this.listen(strings.CLICK_EVENT, this.handleClick);
   }
