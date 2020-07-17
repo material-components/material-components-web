@@ -36,7 +36,7 @@
     @include unselected($query);
 
     // Style for when element is selected
-    .mdc-segmented-button__segment--selected {
+    &.mdc-segmented-button__segment--selected {
       @include selected($query);
 
       // Avoids double borders
@@ -70,7 +70,7 @@
 
     &:last-child {
       @include feature-targeting-mixins.targets($feat-structure) {
-        border-right: visible;
+        border-right-width: 1px;
         border-radius: 0px segment-theme.$border-radius
           segment-theme.$border-radius 0px;
       }
@@ -129,7 +129,7 @@
 
   // Avoids double borders
   @include feature-targeting-mixins.targets($feat-structure) {
-    border-right: hidden;
+    border-right-width: 0;
   }
 }
 
@@ -148,7 +148,7 @@
 
   // Avoids double borders
   @include feature-targeting-mixins.targets($feat-structure) {
-    border-right: visible;
+    border-right-width: 1px;
   }
 }
 

@@ -32,27 +32,27 @@ $surface: theme-variables.prop-value(surface);
 $primary: theme-variables.prop-value(primary);
 
 $unselected-ink-color: custom-properties.create(
-  --mdc-segmneted-button-unselected-ink-color,
+  --mdc-segmented-button-unselected-ink-color,
   rgba($on-surface, 0.6)
 );
 $unselected-outline-color: custom-properties.create(
-  --mdc-segmneted-button-unselected-outline-color,
+  --mdc-segmented-button-unselected-outline-color,
   rgba($on-surface, 0.12)
 );
 $unselected-container-fill-color: custom-properties.create(
-  --mdc-segmneted-button-unselected-container-fill-color,
+  --mdc-segmented-button-unselected-container-fill-color,
   rgba($surface, 1)
 );
 $selected-ink-color: custom-properties.create(
-  --mdc-segmneted-button-selected-ink-color,
+  --mdc-segmented-button-selected-ink-color,
   rgba($primary, 1)
 );
 $selected-outline-color: custom-properties.create(
-  --mdc-segmneted-button-selected-outline-color,
+  --mdc-segmented-button-selected-outline-color,
   rgba($primary, 1)
 );
 $selected-container-fill-color: custom-properties.create(
-  --mdc-segmneted-button-selected-container-fill-color,
+  --mdc-segmented-button-selected-container-fill-color,
   rgba($primary, 0.08)
 );
 
