@@ -155,18 +155,57 @@ describe('MDCSegmentedButton', () => {
       }
     });
 
-    it('#selectSegment calls identified child segment\s #setSelected', () => {
-      // TODO: test that #setSelected is called on correct segment, and no other
-      // TODO: test that no segment's #setSelected is called if there is no match
+    it('#selectSegment calls identified child segment\'s #setSelected if found', () => {
+      const {component} = setupTest();
+
+      component.selectSegment(1);
+      expect(component.segments[0].setSelected).not.toHaveBeenCalled();
+      expect(component.segments[1].setSelected).toHaveBeenCalled();
+      expect(component.segments[2].setSelected).not.toHaveBeenCalled();
     });
 
-    it('#unselectSegment calls identified child segment\s #setUnselected', () => {
-      // TODO: test that #setUnselected is called on correct segment, and no other
-      // TODO: test that no segment's #setUnselected is called if there is no match
+    it('#selectSegment calls no child segment\'s #setSelected if not found', () => {
+      const {component} = setupTest();
+
+      component.selectSegment(-1);
+      expect(component.segments[0].setSelected).not.toHaveBeenCalled();
+      expect(component.segments[1].setSelected).not.toHaveBeenCalled();
+      expect(component.segments[2].setSelected).not.toHaveBeenCalled();
+    });
+
+    it('#unselectSegment calls identified child segment\'s #setUnselected if found', () => {
+      const {component} = setupTest();
+
+      component.unselectSegment(1);
+      expect(component.segments[0].setUnselected).not.toHaveBeenCalled();
+      expect(component.segments[1].setUnselected).toHaveBeenCalled();
+      expect(component.segments[2].setUnselected).not.toHaveBeenCalled();
+    });
+
+    it('#unselectSegment calls no child segment\'s #setUnselected if not found', () => {
+      const {component} = setupTest();
+
+      component.unselectSegment(-1);
+      expect(component.segments[0].setUnselected).not.toHaveBeenCalled();
+      expect(component.segments[1].setUnselected).not.toHaveBeenCalled();
+      expect(component.segments[2].setUnselected).not.toHaveBeenCalled();
     });
 
     it('#notifySelectedChange emits ' + strings.CHANGE_EVENT, () => {
-      // TODO: test that method emits
+      const {component} = setupTest();
+      const handler = jasmine.createSpy('change handler');
+
+      component.listen(strings.CHANGE_EVENT, handler);
+
+      (component.getDefaultFoundation() as any).adapter.notifySelectedChange({
+        index: test_indices.SELECTED,
+        selected: true,
+        segmentId: test_segment_ids.SELECTED_SEGMENT_ID
+      });
+      expect(handler).toHaveBeenCalledWith(jasmine.anything());
+      expect(handler.calls.mostRecent().args[0].detail.index).toEqual(test_indices.SELECTED);
+      expect(handler.calls.mostRecent().args[0].detail.selected).toBeTrue();
+      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(test_segment_ids.SELECTED_SEGMENT_ID);
     });
   });
 
