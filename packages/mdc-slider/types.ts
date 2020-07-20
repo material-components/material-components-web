@@ -21,24 +21,31 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '../../mdc-animation/index';
-import {captureHandlers} from '../../../testing/helpers/foundation';
-import {setUpFoundationTest} from '../../../testing/helpers/setup';
+/** Tick mark enum, for discrete sliders. */
+export enum TickMark {
+  ACTIVE,
+  INACTIVE,
+}
 
-import {MDCSliderFoundation} from '../foundation';
+/**
+ * Thumb types: range slider has two thumbs (START, END) whereas single point
+ * slider only has one thumb (END).
+ */
+export enum Thumb {
+  // Thumb at start of slider (e.g. in LTR mode, left thumb on range slider).
+  START = 1,
+  // Thumb at end of slider (e.g. in LTR mode, right thumb on range slider,
+  // or only thumb on single point slider).
+  END,
+}
 
-export const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
+/** Interface for `detail` of slider custom change and input events. */
+export interface MDCSliderChangeEventDetail {
+  // The new value after change.
+  value: number;
 
-export function setupEventTest() {
-  const {foundation, mockAdapter} = setUpFoundationTest(MDCSliderFoundation);
-
-  return {
-    foundation,
-    mockAdapter,
-    rootHandlers: captureHandlers(mockAdapter, 'registerInteractionHandler'),
-    thumbContainerHandlers: captureHandlers(
-        mockAdapter, 'registerThumbContainerInteractionHandler'),
-    bodyHandlers:
-        captureHandlers(mockAdapter, 'registerBodyInteractionHandler'),
-  };
+  // The thumb for which the value has changed:
+  // - For single point slider, this will always be Thumb.END.
+  // - For range slider, either Thumb.START or Thumb.END.
+  thumb: Thumb;
 }

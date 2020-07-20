@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2020 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +20,6 @@
 // THE SOFTWARE.
 //
 
-@mixin emphasize-keyframes_ {
-  @keyframes mdc-slider-emphasize {
-    0% {
-      animation-timing-function: ease-out;
-    }
+@use "./slider";
 
-    50% {
-      animation-timing-function: ease-in;
-      transform: scale(0.85);
-    }
-
-    100% {
-      transform: scale(0.571);
-    }
-  }
-}
+@include slider.core-styles;
