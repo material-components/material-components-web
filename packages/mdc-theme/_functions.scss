@@ -22,6 +22,7 @@
 
 @use "sass:color";
 @use "sass:list";
+@use "sass:map";
 @use "sass:math";
 @use "sass:meta";
 @use "sass:string";
@@ -90,4 +91,25 @@
   }
 
   @return string.slice(color.ie-hex-str($color), 2); // Index starts at 1
+}
+
+/// Perform a recursive map.get on a nested map structure
+/// Returns a value, or `null` if `$map` does not contain `$path`.
+///
+/// @example scss
+///   $color: deep-get((foo: (bar: black)), (foo, bar));
+///   $color === black;
+///
+/// @param {Map} $map - Map to recurse down
+/// @param {List} $path - List of keys to traverse the map
+/// @return {*} The deep value or `null`
+@function deep-get($map: (), $keys: ()) {
+  $result: $map;
+  @each $key in $keys {
+    $result: map.get($result, $key);
+    @if $result == null {
+      @return null;
+    }
+  }
+  @return $result;
 }
