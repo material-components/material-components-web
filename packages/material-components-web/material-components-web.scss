@@ -44,7 +44,7 @@
 @use "@material/radio/mdc-radio";
 @use "@material/ripple/mdc-ripple";
 @use "@material/select/mdc-select";
-@use "@material/slider/mdc-slider";
+@use "@material/slider/styles" as slider-styles;
 @use "@material/snackbar/mdc-snackbar";
 @use "@material/switch/mdc-switch";
 @use "@material/tab/mdc-tab";
@@ -53,6 +53,6 @@
 @use "@material/tab-scroller/mdc-tab-scroller";
 @use "@material/textfield/mdc-text-field";
 @use "@material/theme/mdc-theme";
-@use "@material/tooltip/styles";
+@use "@material/tooltip/styles" as tooltip-styles;
 @use "@material/top-app-bar/mdc-top-app-bar";
 @use "@material/typography/mdc-typography";

@@ -29,9 +29,6 @@ import {cssClasses, events} from './constants';
 import {MDCSliderFoundation} from './foundation';
 import {MDCSliderChangeEventDetail, Thumb, TickMark} from './types';
 
-// Accessing `window` without a `typeof` check will throw on Node environments.
-const HAS_WINDOW = typeof window !== 'undefined';
-
 /** Vanilla JS implementation of slider component. */
 export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   static attachTo(root: Element) {
