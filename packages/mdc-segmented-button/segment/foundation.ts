@@ -56,8 +56,8 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
     this.setAriaAttr(strings.FALSE);
   }
 
-  getSegmentId(): string | null {
-    return this.adapter.getAttr(strings.DATA_SEGMENT_ID);
+  getSegmentId(): string | undefined {
+    return this.adapter.getAttr(strings.DATA_SEGMENT_ID) ?? undefined;
   }
 
   handleClick(): void {

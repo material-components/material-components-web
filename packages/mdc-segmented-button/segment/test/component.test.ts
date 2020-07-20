@@ -97,6 +97,8 @@ describe('MDCSegmentedButtonSegment', () => {
       expect((component.getDefaultFoundation() as any).adapter.getAttr('aria-pressed')).toEqual('false');
       root.setAttribute('aria-pressed', 'true');
       expect((component.getDefaultFoundation() as any).adapter.getAttr('aria-pressed')).toEqual('true');
+      root.removeAttribute('aria-pressed');
+      expect((component.getDefaultFoundation() as any).adapter.getAttr('aria-pressed')).toEqual(null);
     });
 
     it('#setAttr sets the value of attribute of root element', () => {
@@ -180,7 +182,7 @@ describe('MDCSegmentedButtonSegment', () => {
     expect(mockFoundation.getSegmentId).toHaveBeenCalled();
     expect(segmentId).toEqual(test_strings.SEGMENT_ID);
 
-    mockFoundation.getSegmentId.and.returnValue(null);
-    expect(component.getSegmentId()).toEqual(null);
+    mockFoundation.getSegmentId.and.returnValue(undefined);
+    expect(component.getSegmentId()).toEqual(undefined);
   });
 });

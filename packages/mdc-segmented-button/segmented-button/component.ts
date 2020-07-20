@@ -136,7 +136,7 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
       return {
         index,
         selected: segment.isSelected(),
-        segmentId: segment.getSegmentId() ?? undefined
+        segmentId: segment.getSegmentId()
       };
     });
   }

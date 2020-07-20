@@ -85,7 +85,7 @@ export class MDCSegmentedButtonSegment extends MDCComponent<MDCSegmentedButtonSe
           {
             index: this.index,
             selected: selected,
-            segmentId: this.getSegmentId() ?? undefined
+            segmentId: this.getSegmentId()
           },
           true /* shouldBubble */
         );
@@ -114,7 +114,7 @@ export class MDCSegmentedButtonSegment extends MDCComponent<MDCSegmentedButtonSe
     return this.foundation.setUnselected();
   }
 
-  getSegmentId(): string | null {
+  getSegmentId(): string | undefined {
     return this.foundation.getSegmentId();
   }
 }
