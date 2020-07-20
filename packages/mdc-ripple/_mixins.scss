@@ -42,19 +42,11 @@
     @include surface($query: $query);
     @include states($query: $query);
     @include radius-bounded($query: $query);
-
-    @include feature-targeting-mixins.targets($feat-structure) {
-      position: relative;
-      outline: none;
-      overflow: hidden;
-    }
+    @include surface-styles($query: $query);
 
     &[data-mdc-ripple-is-unbounded] {
       @include radius-unbounded($query: $query);
-
-      @include feature-targeting-mixins.targets($feat-structure) {
-        overflow: visible;
-      }
+      @include unbounded-styles($query: $query);
     }
 
     &--primary {
@@ -67,6 +59,23 @@
   }
 
   // postcss-bem-linter: end
+}
+
+@mixin surface-styles($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    position: relative;
+    outline: none;
+    overflow: hidden;
+  }
+}
+
+@mixin unbounded-styles($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  @include feature-targeting-mixins.targets($feat-structure) {
+    overflow: visible;
+  }
 }
 
 @mixin common($query: feature-targeting-functions.all()) {
