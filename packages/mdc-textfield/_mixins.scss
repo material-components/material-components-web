@@ -111,15 +111,6 @@
     }
   }
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern
-  // Move label when text-field gets auto-filled in Chrome.
-  .mdc-text-field__input:-webkit-autofill + .mdc-floating-label {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      transform: translateY(-50%) scale(0.75);
-      cursor: auto;
-    }
-  }
-
   // Variants
 
   .mdc-text-field--filled {
@@ -2246,11 +2237,6 @@
     // Remove red outline on firefox
     &:invalid {
       box-shadow: none;
-    }
-
-    // Keep Chrome autofill behind the notched outline
-    &:-webkit-autofill {
-      z-index: auto !important;
     }
   }
 }
