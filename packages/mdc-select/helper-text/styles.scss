@@ -1,4 +1,4 @@
-//  Copyright 2018 Google Inc.
+//  Copyright 2020 Google Inc.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -19,8 +19,6 @@
 //  THE SOFTWARE.
 //
 
-@use "@material/animation/variables";
+@use './helper-text';
 
-@function transition($property) {
-  @return #{$property} 180ms variables.$standard-curve-timing-function;
-}
+@include helper-text.helper-text-core-styles;
