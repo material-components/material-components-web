@@ -47,6 +47,30 @@ $icon-width: 24px;
 $icon-font-size: 18px;
 $label-padding: 6px;
 
+@mixin unselected-ink-color($color, $query: feature-targeting-functions.all()) {
+  .mdc-segmented-button__segment {
+    @include ink-color($color, $query);
+  }
+}
+
+@mixin unselected-container-color($color, $query: feature-targeting-functions.all()) {
+  .mdc-segmented-button__segment {
+    @include container-fill-color($color, $query);
+  }
+}
+
+@mixin selected-ink-color($color, $query: feature-targeting-functions.all()) {
+  .mdc-segmented-button__segment.mdc-segmented-button__segment--selected {
+    @include ink-color($color, $query);
+  }
+}
+
+@mixin selected-container-color($color, $query: feature-targeting-functions.all()) {
+  .mdc-segmented-button__segment.mdc-segmented-button__segment--selected {
+    @include container-fill-color($color, $query);
+  }
+}
+
 @mixin ink-color($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
