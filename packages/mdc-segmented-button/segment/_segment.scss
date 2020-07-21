@@ -35,18 +35,6 @@
     @include base($query);
     @include unselected($query);
 
-    // Style for when element is selected
-    &.mdc-segmented-button__segment--selected {
-      @include selected($query);
-
-      // Avoids double borders
-      + .mdc-segmented-button__segment {
-        @include feature-targeting-mixins.targets($feat-structure) {
-          border-left: hidden;
-        }
-      }
-    }
-
     &:hover {
       @include feature-targeting-mixins.targets($feat-structure) {
         cursor: pointer;
@@ -70,9 +58,21 @@
 
     &:last-child {
       @include feature-targeting-mixins.targets($feat-structure) {
-        border-right-width: 1px;
+        border-right-width: segment-theme.$border-width;
         border-radius: 0px segment-theme.$border-radius
           segment-theme.$border-radius 0px;
+      }
+    }
+  }
+
+  // Style for when element is selected
+  .mdc-segmented-button__segment--selected {
+    @include selected($query);
+
+    // Avoids double borders
+    + .mdc-segmented-button__segment {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        border-left: hidden;
       }
     }
   }
@@ -117,12 +117,15 @@
 @mixin unselected($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include segment-theme.ink-color(segment-theme.$unselected-ink-color, $query);
-  @include segment-theme.outline-color(
+  @include segment-theme.unselected-ink-color(
+    segment-theme.$unselected-ink-color,
+    $query
+  );
+  @include segment-theme.unselected-outline-color(
     segment-theme.$unselected-outline-color,
     $query
   );
-  @include segment-theme.container-fill-color(
+  @include segment-theme.unselected-container-fill-color(
     segment-theme.$unselected-container-fill-color,
     $query
   );
@@ -136,19 +139,22 @@
 @mixin selected($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
-  @include segment-theme.ink-color(segment-theme.$selected-ink-color, $query);
-  @include segment-theme.outline-color(
+  @include segment-theme.selected-ink-color(
+    segment-theme.$selected-ink-color,
+    $query
+  );
+  @include segment-theme.selected-outline-color(
     segment-theme.$selected-outline-color,
     $query
   );
-  @include segment-theme.container-fill-color(
+  @include segment-theme.selected-container-fill-color(
     segment-theme.$selected-container-fill-color,
     $query
   );
 
   // Avoids double borders
   @include feature-targeting-mixins.targets($feat-structure) {
-    border-right-width: 1px;
+    border-right-width: segment-theme.$border-width;
   }
 }
 

@@ -27,9 +27,9 @@
 @use "@material/theme/variables" as theme-variables;
 @use "@material/theme/custom-properties";
 
-$on-surface: theme-variables.prop-value(on-surface);
-$surface: theme-variables.prop-value(surface);
-$primary: theme-variables.prop-value(primary);
+$on-surface: theme-variables.$on-surface;
+$surface: theme-variables.$surface;
+$primary: theme-variables.$primary;
 
 $unselected-ink-color: rgba($on-surface, 0.6);
 $unselected-outline-color: rgba($on-surface, 0.12);
@@ -49,22 +49,60 @@ $label-padding: 6px;
 
 @mixin unselected-ink-color($color, $query: feature-targeting-functions.all()) {
   .mdc-segmented-button__segment {
-    @include ink-color($color, $query);
+    $property: custom-properties.create(
+      --mdc-segmented-button-unselected-ink-color,
+      $color
+    );
+    @include _ink-color($property, $query);
   }
 }
 
-@mixin unselected-container-color(
+@mixin unselected-outline-color(
   $color,
   $query: feature-targeting-functions.all()
 ) {
   .mdc-segmented-button__segment {
-    @include container-fill-color($color, $query);
+    $property: custom-properties.create(
+      --mdc-segmented-button-unselected-outline-color,
+      $color
+    );
+    @include _outline-color($property, $query);
+  }
+}
+
+@mixin unselected-container-fill-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
+  .mdc-segmented-button__segment {
+    $property: custom-properties.create(
+      --mdc-segmented-button-unselected-container-fill-color,
+      $color
+    );
+    @include _container-fill-color($property, $query);
   }
 }
 
 @mixin selected-ink-color($color, $query: feature-targeting-functions.all()) {
-  .mdc-segmented-button__segment.mdc-segmented-button__segment--selected {
-    @include ink-color($color, $query);
+  .mdc-segmented-button__segment--selected {
+    $property: custom-properties.create(
+      --mdc-segmented-button-selected-ink-color,
+      $color
+    );
+    @include _ink-color($property, $query);
+  }
+}
+
+@mixin selected-outline-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
+  .mdc-segmented-button__segment--selected {
+    $property: custom-properties.create(
+      --mdc-segmented-button-selected-outline-color,
+      $color
+    );
+    @include _outline-color($property, $query);
   }
 }
 
@@ -72,41 +110,33 @@ $label-padding: 6px;
   $color,
   $query: feature-targeting-functions.all()
 ) {
-  .mdc-segmented-button__segment.mdc-segmented-button__segment--selected {
-    @include container-fill-color($color, $query);
+  .mdc-segmented-button__segment--selected {
+    $property: custom-properties.create(
+      --mdc-segmented-button-selected-container-fill-color,
+      $color
+    );
+    @include _container-fill-color($property, $query);
   }
 }
 
-@mixin ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin _ink-color($property, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
-
-  $property: custom-properties.create(--mdc-segmented-button-ink-color, $color);
 
   @include feature-targeting-mixins.targets($feat-color) {
     @include custom-properties.apply('color', $property);
   }
 }
 
-@mixin outline-color($color, $query: feature-targeting-functions.all()) {
+@mixin _outline-color($property, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
-
-  $property: custom-properties.create(
-    --mdc-segmented-button-outline-color,
-    $color
-  );
 
   @include feature-targeting-mixins.targets($feat-color) {
     @include custom-properties.apply('border-color', $property);
   }
 }
 
-@mixin container-fill-color($color, $query: feature-targeting-functions.all()) {
+@mixin _container-fill-color($property, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
-
-  $property: custom-properties.create(
-    --mdc-segmented-button-container-fill-color,
-    $color
-  );
 
   @include feature-targeting-mixins.targets($feat-color) {
     @include custom-properties.apply('background-color', $property);
