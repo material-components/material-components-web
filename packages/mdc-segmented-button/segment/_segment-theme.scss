@@ -31,30 +31,12 @@ $on-surface: theme-variables.prop-value(on-surface);
 $surface: theme-variables.prop-value(surface);
 $primary: theme-variables.prop-value(primary);
 
-$unselected-ink-color: custom-properties.create(
-  --mdc-segmented-button-unselected-ink-color,
-  rgba($on-surface, 0.6)
-);
-$unselected-outline-color: custom-properties.create(
-  --mdc-segmented-button-unselected-outline-color,
-  rgba($on-surface, 0.12)
-);
-$unselected-container-fill-color: custom-properties.create(
-  --mdc-segmented-button-unselected-container-fill-color,
-  rgba($surface, 1)
-);
-$selected-ink-color: custom-properties.create(
-  --mdc-segmented-button-selected-ink-color,
-  rgba($primary, 1)
-);
-$selected-outline-color: custom-properties.create(
-  --mdc-segmented-button-selected-outline-color,
-  rgba($primary, 1)
-);
-$selected-container-fill-color: custom-properties.create(
-  --mdc-segmented-button-selected-container-fill-color,
-  rgba($primary, 0.08)
-);
+$unselected-ink-color: rgba($on-surface, 0.6);
+$unselected-outline-color: rgba($on-surface, 0.12);
+$unselected-container-fill-color: rgba($surface, 1);
+$selected-ink-color: rgba($primary, 1);
+$selected-outline-color: $unselected-outline-color;
+$selected-container-fill-color: rgba($primary, 0.08);
 
 $height: 36px;
 $min-width: 48px;
@@ -68,23 +50,38 @@ $label-padding: 6px;
 @mixin ink-color($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
+  $property: custom-properties.create(
+    --mdc-segmented-button-ink-color,
+    $color
+  );
+
   @include feature-targeting-mixins.targets($feat-color) {
-    @include custom-properties.apply('color', $color);
+    @include custom-properties.apply('color', $property);
   }
 }
 
 @mixin outline-color($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
+  $property: custom-properties.create(
+    --mdc-segmented-button-outline-color,
+    $color
+  );
+
   @include feature-targeting-mixins.targets($feat-color) {
-    @include custom-properties.apply('border-color', $color);
+    @include custom-properties.apply('border-color', $property);
   }
 }
 
 @mixin container-fill-color($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
+  $property: custom-properties.create(
+    --mdc-segmented-button-container-fill-color,
+    $color
+  );
+
   @include feature-targeting-mixins.targets($feat-color) {
-    @include custom-properties.apply('background-color', $color);
+    @include custom-properties.apply('background-color', $property);
   }
 }
