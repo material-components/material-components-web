@@ -53,7 +53,10 @@ $label-padding: 6px;
   }
 }
 
-@mixin unselected-container-color($color, $query: feature-targeting-functions.all()) {
+@mixin unselected-container-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   .mdc-segmented-button__segment {
     @include container-fill-color($color, $query);
   }
@@ -65,7 +68,10 @@ $label-padding: 6px;
   }
 }
 
-@mixin selected-container-color($color, $query: feature-targeting-functions.all()) {
+@mixin selected-container-color(
+  $color,
+  $query: feature-targeting-functions.all()
+) {
   .mdc-segmented-button__segment.mdc-segmented-button__segment--selected {
     @include container-fill-color($color, $query);
   }
@@ -74,10 +80,7 @@ $label-padding: 6px;
 @mixin ink-color($color, $query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
-  $property: custom-properties.create(
-    --mdc-segmented-button-ink-color,
-    $color
-  );
+  $property: custom-properties.create(--mdc-segmented-button-ink-color, $color);
 
   @include feature-targeting-mixins.targets($feat-color) {
     @include custom-properties.apply('color', $property);
