@@ -176,7 +176,7 @@
   .mdc-circular-progress__determinate-circle,
   .mdc-circular-progress__indeterminate-circle-graphic {
     @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop('stroke', $color);
+      @include theme-mixins.property(stroke, $color);
     }
   }
 }
@@ -200,7 +200,7 @@
     .mdc-circular-progress__color-#{$i}
       .mdc-circular-progress__indeterminate-circle-graphic {
       @include feature-targeting-mixins.targets($feat-color) {
-        stroke: nth($colors, $i);
+        @include theme-mixins.property(stroke, nth($colors, $i));
       }
     }
   }
