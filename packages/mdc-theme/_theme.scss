@@ -25,20 +25,20 @@
 @use "@material/feature-targeting/mixins";
 @use "./custom-properties";
 @use "./gss";
-@use "./variables";
+@use "./color";
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   :root {
     @include mixins.targets($feat-color) {
-      @each $style in map.keys(variables.$property-values) {
-        --mdc-theme-#{$style}: #{map.get(variables.$property-values, $style)};
+      @each $style in map.keys(color.$property-values) {
+        --mdc-theme-#{$style}: #{map.get(color.$property-values, $style)};
       }
     }
   }
 
-  @each $style in map.keys(variables.$property-values) {
+  @each $style in map.keys(color.$property-values) {
     @if $style != 'background' and $style != 'surface' {
       .mdc-theme--#{$style} {
         @include mixins.targets($feat-color) {
@@ -88,9 +88,9 @@
       $gss: $gss,
       $important: $important
     );
-  } @else if map.has-key(variables.$property-values, $value) {
+  } @else if map.has-key(color.$property-values, $value) {
     // $value is a theme property String
-    $fallback: map.get(variables.$property-values, $value);
+    $fallback: map.get(color.$property-values, $value);
     $custom-prop: custom-properties.create(--mdc-theme-#{$value}, $fallback);
     @include custom-properties.apply(
       $property,
@@ -114,13 +114,13 @@
 
   @if custom-properties.is-custom-prop($style) {
     @include custom-properties.apply($property, $style, $important: $important);
-  } @else if variables.is-valid-theme-prop-value_($style) {
+  } @else if color.is-valid-theme-prop-value_($style) {
     #{$property}: $style #{$important-rule};
   } @else {
-    @if not map.has-key(variables.$property-values, $style) {
-      @error "Invalid style: '#{$style}'. Choose one of: #{map.keys(variables.$property-values)}";
+    @if not map.has-key(color.$property-values, $style) {
+      @error "Invalid style: '#{$style}'. Choose one of: #{map.keys(color.$property-values)}";
     }
-    $value: map.get(variables.$property-values, $style);
+    $value: map.get(color.$property-values, $style);
 
     #{$property}: $value #{$important-rule};
     /* @alternate */
