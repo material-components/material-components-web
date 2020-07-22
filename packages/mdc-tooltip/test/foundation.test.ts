@@ -39,6 +39,7 @@ describe('MDCTooltipFoundation', () => {
       'getAttribute',
       'setAttribute',
       'addClass',
+      'hasClass',
       'removeClass',
       'setStyleProperty',
       'getViewportWidth',
@@ -48,6 +49,7 @@ describe('MDCTooltipFoundation', () => {
       'isRTL',
       'registerDocumentEventHandler',
       'deregisterDocumentEventHandler',
+      'notifyHidden',
     ]);
   });
 
@@ -151,6 +153,36 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.SHOWING);
     expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.HIDE);
   });
+
+  it('#handleTransitionEnd after #hide sends notification that tooltip has been hidden',
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       mockAdapter.hasClass.and.returnValue(true);
+
+       foundation.show();
+       foundation.hide();
+       foundation.handleTransitionEnd();
+
+       expect(mockAdapter.hasClass).toHaveBeenCalledWith(cssClasses.HIDE);
+       expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.SHOWING);
+       expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.HIDE);
+       expect(mockAdapter.notifyHidden).toHaveBeenCalled();
+     });
+
+  it('#handleTransitionEnd after #show does not send notification that tooltip has been hidden',
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+
+       foundation.show();
+       foundation.handleTransitionEnd();
+
+       expect(mockAdapter.hasClass).toHaveBeenCalledWith(cssClasses.HIDE);
+       expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.SHOWING);
+       expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.HIDE);
+       expect(mockAdapter.notifyHidden).not.toHaveBeenCalled();
+     });
 
   for (const evt of ESC_EVENTS) {
     it(`#handleKeydown(${evt}) hides tooltip`, () => {

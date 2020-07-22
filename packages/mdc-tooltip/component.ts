@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 
 import {MDCTooltipAdapter} from './adapter';
-import {AnchorBoundaryType, Position} from './constants';
+import {AnchorBoundaryType, events, Position} from './constants';
 import {MDCTooltipFoundation} from './foundation';
 
 export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
@@ -112,6 +112,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       addClass: (className) => {
         this.root.classList.add(className);
       },
+      hasClass: (className) => this.root.classList.contains(className),
       removeClass: (className) => {
         this.root.classList.remove(className);
       },
@@ -135,6 +136,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       },
       deregisterDocumentEventHandler: (evt, handler) => {
         document.body.removeEventListener(evt, handler);
+      },
+      notifyHidden: () => {
+        this.emit(events.HIDDEN, {});
       },
     };
 

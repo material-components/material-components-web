@@ -35,6 +35,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       getAttribute: () => null,
       setAttribute: () => undefined,
       addClass: () => undefined,
+      hasClass: () => false,
       removeClass: () => undefined,
       setStyleProperty: () => undefined,
       getViewportWidth: () => 0,
@@ -45,6 +46,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       isRTL: () => false,
       registerDocumentEventHandler: () => undefined,
       deregisterDocumentEventHandler: () => undefined,
+      notifyHidden: () => undefined,
     };
   }
 
@@ -156,8 +158,18 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   handleTransitionEnd() {
+    const isHidingTooltip = this.adapter.hasClass(HIDE);
+
     this.adapter.removeClass(SHOWING);
     this.adapter.removeClass(HIDE);
+
+    // If handleTransitionEnd is called after hiding the tooltip, the tooltip
+    // will have the HIDE class (before calling the adapter removeClass method).
+    // If tooltip is now hidden, send a notification that the animation has
+    // completed and the tooltip is no longer visible.
+    if (isHidingTooltip) {
+      this.adapter.notifyHidden();
+    }
   }
 
   setTooltipPosition(pos: Position) {

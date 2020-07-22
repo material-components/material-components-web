@@ -34,6 +34,10 @@ const numbers = {
   HIDE_DELAY_MS: 600,
 };
 
+const events = {
+  HIDDEN: 'MDCTooltip:hidden',
+};
+
 /** Enum for possible tooltip positioning relative to its anchor element. */
 enum Position {
   DETECTED = 0,
@@ -53,4 +57,4 @@ enum AnchorBoundaryType {
   UNBOUNDED = 1,
 }
 
-export {cssClasses, numbers, Position, AnchorBoundaryType};
+export {cssClasses, numbers, events, Position, AnchorBoundaryType};
