@@ -20,6 +20,8 @@
 // THE SOFTWARE.
 //
 
+@use 'third_party/javascript/material_components_web/theme/custom-properties';
+
 @use "@material/base/mixins" as base-mixins;
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
@@ -61,8 +63,12 @@
       @include base-mixins.emit-once('mdc-elevation/common/structure') {
         position: absolute;
         border-radius: inherit;
-        opacity: 0;
         pointer-events: none;
+
+        @include theme-mixins.property(
+          opacity,
+          custom-properties.create(--mdc-elevation-overlay-opacity, 0)
+        );
       }
     }
 
@@ -73,7 +79,11 @@
     }
 
     @include base-mixins.emit-once('mdc-elevation/common/color') {
-      @include overlay-fill-color(variables.$overlay-color, $query: $query);
+      $fill-color: custom-properties.create(
+        --mdc-elevation-overlay-color,
+        variables.$overlay-color
+      );
+      @include overlay-fill-color($fill-color, $query: $query);
     }
   }
 }
@@ -121,8 +131,8 @@
 
   @include overlay-selector_ {
     @include feature-targeting-mixins.targets($feat-structure) {
-      width: $width;
-      height: $height;
+      @include theme-mixins.property(width, $width);
+      @include theme-mixins.property(height, $height);
 
       @if $has-content-sizing {
         top: 0;
@@ -148,7 +158,7 @@
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
-    @include theme-mixins.prop(background-color, $color);
+    @include theme-mixins.property(background-color, $color);
   }
 }
 
@@ -163,7 +173,7 @@
 
   @include overlay-selector_ {
     @include feature-targeting-mixins.targets($feat-color) {
-      opacity: $opacity;
+      @include theme-mixins.property(opacity, $opacity);
     }
   }
 }
