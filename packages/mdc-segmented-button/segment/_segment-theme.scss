@@ -106,7 +106,7 @@ $label-padding: 6px;
   }
 }
 
-@mixin selected-container-color(
+@mixin selected-container-fill-color(
   $color,
   $query: feature-targeting-functions.all()
 ) {
@@ -135,7 +135,10 @@ $label-padding: 6px;
   }
 }
 
-@mixin _container-fill-color($property, $query: feature-targeting-functions.all()) {
+@mixin _container-fill-color(
+  $property,
+  $query: feature-targeting-functions.all()
+) {
   $feat-color: feature-targeting-functions.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
