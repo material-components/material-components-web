@@ -20,8 +20,7 @@
 // THE SOFTWARE.
 //
 
-@use 'third_party/javascript/material_components_web/theme/custom-properties';
-
+@use "@material/theme/custom-properties";
 @use "@material/base/mixins" as base-mixins;
 @use "@material/feature-targeting/functions" as feature-targeting-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
