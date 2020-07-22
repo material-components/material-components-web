@@ -20,16 +20,16 @@
 // THE SOFTWARE.
 //
 
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/theme/mixins" as theme-mixins;
 @use "./functions";
 
 // Public
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define line-ripple
   .mdc-line-ripple {
@@ -79,8 +79,8 @@
   }
 }
 
-@mixin active-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin active-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
     &::after {
@@ -89,8 +89,8 @@
   }
 }
 
-@mixin inactive-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin inactive-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
     &::before {

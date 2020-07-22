@@ -1,5 +1,4 @@
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/typography/mixins' as typography;
 @use '@material/rtl/mixins' as rtl;
 @use '@material/icon-button/mixins' as icon-button-theme;
@@ -13,8 +12,8 @@
 // selectors.
 
 /// Sets core styles for data table pagination.
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__pagination {
     @include typography.typography(body2, $query: $query);

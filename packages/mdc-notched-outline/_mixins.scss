@@ -26,13 +26,13 @@
 @use "@material/shape/functions" as shape-functions;
 @use "@material/shape/mixins" as shape-mixins;
 @use "@material/floating-label/mixins" as floating-label-mixins;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "./variables";
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-notched-outline {
     @include base_($query);
@@ -121,8 +121,8 @@
   }
 }
 
-@mixin color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-notched-outline__leading,
   .mdc-notched-outline__notch,
@@ -133,8 +133,8 @@
   }
 }
 
-@mixin stroke-width($width, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin stroke-width($width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-notched-outline__leading,
   .mdc-notched-outline__notch,
@@ -150,8 +150,8 @@
 /// Use this when floating label is aligned to center to prevent label jump on focus.
 /// @param {Number} $stroke-width Stroke width of notched outline that needs to be offset.
 ///
-@mixin notch-offset($stroke-width, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin notch-offset($stroke-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-notched-outline--notched .mdc-notched-outline__notch {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -164,9 +164,9 @@
   $radius,
   $rtl-reflexive: false,
   $component-height: null,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
   // Resolve the radius relative to the notched outline component's height. The
   // component should provide its current height from its density. The resolved
   // radius allows percentage radii to be converted to pixels.
@@ -256,9 +256,9 @@
   $positionY,
   $positionX: 0%,
   $scale: 0.75,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include floating-label-mixins.float-position(
     $positionY + variables.$label-adjust,
@@ -306,9 +306,9 @@
   $positionY,
   $positionX: 0,
   $scale: 0.75,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include floating-label-mixins.float-position(
     $positionY + variables.$label-adjust-absolute,
@@ -347,8 +347,8 @@
 ///
 /// @param {Number} $max-width Max-width for the notch
 ///
-@mixin notch-max-width($max-width, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin notch-max-width($max-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   :not(.mdc-notched-outline--notched) .mdc-notched-outline__notch {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -361,7 +361,7 @@
 // Private
 //
 @mixin base_($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     display: flex;

@@ -22,7 +22,7 @@
 
 @use "sass:math";
 @use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/feature-targeting/functions";
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/list/mixins" as list-mixins;
@@ -30,9 +30,9 @@
 @use "@material/ripple/mixins" as ripple-mixins;
 @use "./variables";
 
-@mixin core-styles($query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
-  $feat-structure: functions.create-target($query, structure);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
   // prettier-ignore
@@ -121,8 +121,8 @@
   }
 }
 
-@mixin width($width, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin width($width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     @if math.is-unitless($width) {
@@ -135,8 +135,8 @@
 
 /// Sets the min-width of the menu.
 /// @param {Number} $min-width - the desired min-width.
-@mixin min-width($min-width, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin min-width($min-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     min-width: $min-width;

@@ -22,7 +22,7 @@
 
 @use "sass:math";
 @use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/feature-targeting/functions";
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/ripple/mixins" as ripple-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
@@ -35,18 +35,18 @@
 // Public
 //
 
-@mixin core-styles($query: functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query);
   @include ripple($query);
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // card styles. It is recommended that most users use `mdc-card-core-styles` instead.
-@mixin without-ripple($query: functions.all()) {
+@mixin without-ripple($query: feature-targeting.all()) {
   // postcss-bem-linter: define card
 
-  $feat-color: functions.create-target($query, color);
-  $feat-structure: functions.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   // prettier-ignore
   @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
@@ -280,7 +280,7 @@
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // card styles. It is recommended that most users use `mdc-card-core-styles` instead.
-@mixin ripple($query: functions.all()) {
+@mixin ripple($query: feature-targeting.all()) {
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-card__primary-action {
@@ -290,8 +290,8 @@
   }
 }
 
-@mixin fill-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
     @include theme-mixins.prop(background-color, $color);
@@ -301,10 +301,10 @@
 @mixin outline(
   $color,
   $thickness: variables.$outline-width,
-  $query: functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-color: functions.create-target($query, color);
-  $feat-structure: functions.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     border-width: $thickness;
@@ -316,12 +316,16 @@
   }
 }
 
-@mixin shape-radius($radius, $rtl-reflexive: false, $query: functions.all()) {
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting.all()
+) {
   @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
 }
 
-@mixin media-aspect-ratio($x, $y, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin media-aspect-ratio($x, $y, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   &::before {
     @include feature-targeting-mixins.targets($feat-structure) {

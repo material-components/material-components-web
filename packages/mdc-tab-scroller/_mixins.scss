@@ -22,7 +22,7 @@
 
 @use "@material/animation/variables" as animation-variables;
 @use "@material/tab/mixins" as tab-mixins;
-@use "@material/feature-targeting/functions";
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "./variables";
 
@@ -35,9 +35,9 @@
 @mixin transition(
   $duration-ms,
   $timing-function: animation-variables.$standard-curve-timing-function,
-  $query: functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-animation: functions.create-target($query, animation);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   &.mdc-tab-scroller--animating .mdc-tab-scroller__scroll-content {
     @include feature-targeting-mixins.targets($feat-animation) {
@@ -46,9 +46,9 @@
   }
 }
 
-@mixin core-styles($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
-  $feat-animation: functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define tab-scroller
   .mdc-tab-scroller {
@@ -134,9 +134,9 @@
 // Private
 //
 
-@mixin scroll-content_($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
-  $feat-animation: functions.create-target($query, animation);
+@mixin scroll-content_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include tab-mixins.parent-positioning($query);
 

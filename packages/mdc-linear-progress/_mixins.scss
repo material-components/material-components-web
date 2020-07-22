@@ -20,7 +20,7 @@
 
 @use "sass:string";
 @use "@material/animation/functions" as animation-functions;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/theme/mixins" as theme-mixins;
 @use "@material/theme/variables" as theme-variables; // for mdc-theme-prop-value
@@ -31,9 +31,9 @@
 // Public
 //
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include feature-targeting-mixins.targets($feat-animation) {
     @include keyframes.primary-indeterminate-translate-keyframes_;
@@ -167,8 +167,8 @@
   }
 }
 
-@mixin bar-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin bar-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-linear-progress__bar-inner {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -179,7 +179,7 @@
   }
 }
 
-@mixin buffer-color($color, $query: feature-targeting-functions.all()) {
+@mixin buffer-color($color, $query: feature-targeting.all()) {
   // We need to escape the '#' character as "%23" for SVG because '#' is a reserved character in URIs.
   $color-value-for-css: theme-variables.prop-value($color);
   $color-value-for-svg: str-replace_(
@@ -187,7 +187,7 @@
     '#',
     '%23'
   );
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-linear-progress__buffer-dots {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -208,9 +208,9 @@
 // Private
 //
 
-@mixin indeterminate_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin indeterminate_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   &--indeterminate {
     .mdc-linear-progress__bar {
@@ -258,9 +258,9 @@
   }
 }
 
-@mixin reversed_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin reversed_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   &--reversed {
     .mdc-linear-progress__bar {

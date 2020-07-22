@@ -25,7 +25,7 @@
 @use "@material/animation/functions" as functions2;
 @use "@material/animation/variables" as variables2;
 @use "@material/base/mixins" as base-mixins;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/theme/mixins" as theme-mixins;
 @use "./functions";
@@ -33,10 +33,10 @@
 @use "./variables";
 @use "@material/theme/variables" as theme-variables;
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   // postcss-bem-linter: define ripple-surface
 
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-ripple-surface {
     @include surface($query: $query);
@@ -61,8 +61,8 @@
   // postcss-bem-linter: end
 }
 
-@mixin surface-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin surface-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     position: relative;
@@ -71,15 +71,15 @@
   }
 }
 
-@mixin unbounded-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin unbounded-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting-mixins.targets($feat-structure) {
     overflow: visible;
   }
 }
 
-@mixin common($query: feature-targeting-functions.all()) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin common($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // Ensure that styles needed by any component using MDC Ripple are emitted, but only once.
   // (Every component using MDC Ripple imports these mixins, but doesn't necessarily import
@@ -92,12 +92,12 @@
 }
 
 @mixin surface(
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&',
   $include-will-change: true // TODO(b/151931961): Remove once resolved
 ) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     --mdc-ripple-fg-size: 0;
@@ -194,10 +194,10 @@
 
 @mixin states-base-color(
   $color,
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&'
 ) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-color: feature-targeting.create-target($query, color);
 
   #{$ripple-target}::before,
   #{$ripple-target}::after {
@@ -223,7 +223,7 @@
   $opacity-map: (),
   $has-nested-focusable-element: false,
   $ripple-target: '&',
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   // Ensure sufficient specificity to override base state opacities
   @if map.has-key($opacity-map, hover) {
@@ -254,10 +254,10 @@
 
 @mixin states-hover-opacity(
   $opacity,
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&'
 ) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-color: feature-targeting.create-target($query, color);
 
   // Background wash styles, for both CSS-only and upgraded stateful surfaces
   &:hover {
@@ -273,7 +273,7 @@
 @mixin states-focus-opacity(
   $opacity,
   $has-nested-focusable-element: false,
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&'
 ) {
   // Focus overrides hover by reusing the ::before pseudo-element.
@@ -311,9 +311,9 @@
 }
 
 @mixin states-focus-opacity-properties_($opacity, $query) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+  $feat-animation: feature-targeting.create-target($query, animation);
   // Opacity falls under color because the chosen opacity is color-dependent in typical usage
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-color: feature-targeting.create-target($query, color);
 
   // Note that this duration is only effective on focus, not blur
   @include feature-targeting-mixins.targets($feat-animation) {
@@ -327,11 +327,11 @@
 
 @mixin states-press-opacity(
   $opacity,
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&'
 ) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-color: feature-targeting.create-target($query, color);
 
   // Styles for non-upgraded (CSS-only) stateful surfaces
 
@@ -369,7 +369,7 @@
 @mixin states(
   $color: theme-variables.prop-value(on-surface),
   $has-nested-focusable-element: false,
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&'
 ) {
   @include states-interactions_(
@@ -385,10 +385,10 @@
 @mixin states-activated(
   $color,
   $has-nested-focusable-element: false,
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&'
 ) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-color: feature-targeting.create-target($query, color);
   $activated-opacity: functions.states-opacity($color, activated);
 
   &--activated {
@@ -416,10 +416,10 @@
 @mixin states-selected(
   $color,
   $has-nested-focusable-element: false,
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&'
 ) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-color: feature-targeting.create-target($query, color);
   $selected-opacity: functions.states-opacity($color, selected);
 
   &--selected {
@@ -443,10 +443,10 @@
 
 @mixin radius-bounded(
   $radius: 100%,
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&'
 ) {
-  $feat-struture: feature-targeting-functions.create-target($query, structure);
+  $feat-struture: feature-targeting.create-target($query, structure);
 
   #{$ripple-target}::before,
   #{$ripple-target}::after {
@@ -471,10 +471,10 @@
 
 @mixin radius-unbounded(
   $radius: 100%,
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&'
 ) {
-  $feat-struture: feature-targeting-functions.create-target($query, structure);
+  $feat-struture: feature-targeting.create-target($query, structure);
 
   #{$ripple-target}::before,
   #{$ripple-target}::after {
@@ -512,7 +512,7 @@
   $color,
   $has-nested-focusable-element,
   $opacity-modifier: 0,
-  $query: feature-targeting-functions.all(),
+  $query: feature-targeting.all(),
   $ripple-target: '&'
 ) {
   @include target-selector($ripple-target) {
@@ -546,8 +546,8 @@
 
 // Common styles for a ripple target element.
 // Used for components which have an inner ripple target element.
-@mixin target-common($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin target-common($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     position: absolute;

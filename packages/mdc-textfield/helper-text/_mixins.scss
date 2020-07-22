@@ -23,13 +23,13 @@
 @use "../functions";
 @use "@material/theme/mixins";
 @use "@material/typography/mixins" as typography-mixins;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 // Public mixins
 
-@mixin helper-text-core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin helper-text-core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define text-field-helper-text
 
@@ -66,7 +66,7 @@
 /// Customizes the color of the helper text following an enabled text-field.
 /// @param {Color} $color - The desired helper text color.
 ///
-@mixin helper-text-color($color, $query: feature-targeting-functions.all()) {
+@mixin helper-text-color($color, $query: feature-targeting.all()) {
   &:not(.mdc-text-field--disabled) {
     @include helper-text-color_($color, $query);
   }
@@ -76,19 +76,13 @@
 /// Customizes the color of the helper text following a disabled text-field.
 /// @param {Color} $color - The desired helper text color.
 ///
-@mixin disabled-helper-text-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin disabled-helper-text-color($color, $query: feature-targeting.all()) {
   &.mdc-text-field--disabled {
     @include helper-text-color_($color, $query);
   }
 }
 
-@mixin helper-text-validation-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin helper-text-validation-color($color, $query: feature-targeting.all()) {
   &:not(.mdc-text-field--disabled) {
     @include helper-text-validation-color_($color, $query);
   }
@@ -96,8 +90,8 @@
 
 // Private mixins
 
-@mixin helper-text-color_($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin helper-text-color_($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   + .mdc-text-field-helper-line .mdc-text-field-helper-text {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -106,11 +100,8 @@
   }
 }
 
-@mixin helper-text-validation-color_(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin helper-text-validation-color_($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   &.mdc-text-field--invalid
     + .mdc-text-field-helper-line

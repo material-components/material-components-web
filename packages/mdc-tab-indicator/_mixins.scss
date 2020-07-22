@@ -22,12 +22,12 @@
 
 @use "@material/animation/variables";
 @use "@material/theme/mixins" as theme-mixins;
-@use "@material/feature-targeting/functions";
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 
-@mixin core-styles($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
-  $feat-animation: functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define tab-indicator
 
@@ -95,16 +95,16 @@
   // postcss-bem-linter: end
 }
 
-@mixin surface($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin surface($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     position: relative;
   }
 }
 
-@mixin underline-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin underline-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-tab-indicator__content--underline {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -113,8 +113,8 @@
   }
 }
 
-@mixin underline-height($height, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin underline-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-tab-indicator__content--underline {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -123,8 +123,8 @@
   }
 }
 
-@mixin underline-top-corner-radius($radius, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin underline-top-corner-radius($radius, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-tab-indicator__content--underline {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -134,8 +134,8 @@
   }
 }
 
-@mixin icon-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin icon-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-tab-indicator__content--icon {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -144,8 +144,8 @@
   }
 }
 
-@mixin icon-height($height, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin icon-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-tab-indicator__content--icon {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -160,7 +160,7 @@
 //
 
 @mixin base_($query) {
-  $feat-structure: functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include underline-color(primary, $query);
   @include icon-color(secondary, $query);

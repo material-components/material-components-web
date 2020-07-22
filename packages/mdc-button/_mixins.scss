@@ -22,7 +22,7 @@
 
 @use "sass:math";
 @use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/ripple/mixins" as ripple-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
@@ -38,16 +38,16 @@
 
 $ripple-target: '.mdc-button__ripple';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query);
   @include ripple($query);
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // button styles. It is recommended that most users use `mdc-button-core-styles` instead.
-@mixin without-ripple($query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin without-ripple($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
   // prettier-ignore
@@ -132,8 +132,8 @@ $ripple-target: '.mdc-button__ripple';
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // button styles. It is recommended that most users use `mdc-button-core-styles` instead.
-@mixin ripple($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
@@ -179,7 +179,7 @@ $ripple-target: '.mdc-button__ripple';
 ///
 /// Sets ripple color for button.
 ///
-@mixin ripple-states($color, $query: feature-targeting-functions.all()) {
+@mixin ripple-states($color, $query: feature-targeting.all()) {
   @include ripple-mixins.states(
     $color: $color,
     $query: $query,
@@ -189,7 +189,7 @@ $ripple-target: '.mdc-button__ripple';
 
 @mixin filled-accessible(
   $container-fill-color,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   $fill-tone: theme-functions.tone($container-fill-color);
 
@@ -208,7 +208,7 @@ $ripple-target: '.mdc-button__ripple';
 /// Sets the container fill color to the given color for an enabled button.
 /// @param {Color} $color - The desired container fill color.
 ///
-@mixin container-fill-color($color, $query: feature-targeting-functions.all()) {
+@mixin container-fill-color($color, $query: feature-targeting.all()) {
   // :not(:disabled) is used to support link styled as button
   // as link does not support :enabled style
   &:not(:disabled) {
@@ -220,10 +220,7 @@ $ripple-target: '.mdc-button__ripple';
 /// Sets the container fill color to the given color for a disabled button.
 /// @param {Color} $color - The desired container fill color.
 ///
-@mixin disabled-container-fill-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin disabled-container-fill-color($color, $query: feature-targeting.all()) {
   &:disabled {
     @include container-fill-color_($color, $query: $query);
   }
@@ -233,7 +230,7 @@ $ripple-target: '.mdc-button__ripple';
 /// Sets the outline color to the given color for an enabled button.
 /// @param {Color} $color - The desired outline color.
 ///
-@mixin outline-color($color, $query: feature-targeting-functions.all()) {
+@mixin outline-color($color, $query: feature-targeting.all()) {
   &:not(:disabled) {
     @include outline-color_($color, $query: $query);
   }
@@ -243,10 +240,7 @@ $ripple-target: '.mdc-button__ripple';
 /// Sets the outline color to the given color for a disabled button.
 /// @param {Color} $color - The desired outline color.
 ///
-@mixin disabled-outline-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin disabled-outline-color($color, $query: feature-targeting.all()) {
   &:disabled {
     @include outline-color_($color, $query: $query);
   }
@@ -256,7 +250,7 @@ $ripple-target: '.mdc-button__ripple';
 /// Sets the icon color to the given color for an enabled button.
 /// @param {Color} $color - The desired icon color.
 ///
-@mixin icon-color($color, $query: feature-targeting-functions.all()) {
+@mixin icon-color($color, $query: feature-targeting.all()) {
   &:not(:disabled) {
     @include icon-color_($color, $query: $query);
   }
@@ -266,7 +260,7 @@ $ripple-target: '.mdc-button__ripple';
 /// Sets the icon color to the given color for a disabled button.
 /// @param {Color} $color - The desired icon color.
 ///
-@mixin disabled-icon-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-icon-color($color, $query: feature-targeting.all()) {
   &:disabled {
     @include icon-color_($color, $query: $query);
   }
@@ -278,7 +272,7 @@ $ripple-target: '.mdc-button__ripple';
 /// is also used.
 /// @param {Color} $color - The desired ink color.
 ///
-@mixin ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin ink-color($color, $query: feature-targeting.all()) {
   &:not(:disabled) {
     @include ink-color_($color, $query: $query);
   }
@@ -290,7 +284,7 @@ $ripple-target: '.mdc-button__ripple';
 /// is also used.
 /// @param {Color} $color - The desired ink color.
 ///
-@mixin disabled-ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-ink-color($color, $query: feature-targeting.all()) {
   &:disabled {
     @include ink-color_($color, $query: $query);
   }
@@ -302,7 +296,7 @@ $ripple-target: '.mdc-button__ripple';
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-3`,
 ///     `-2`, `-1`, `0`.
 ///
-@mixin density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin density($density-scale, $query: feature-targeting.all()) {
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
@@ -322,8 +316,8 @@ $ripple-target: '.mdc-button__ripple';
 /// don't have the same default a11y requirements.
 /// @access private
 ///
-@mixin touch-target-reset_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin touch-target-reset_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     margin-top: 0;
@@ -341,8 +335,8 @@ $ripple-target: '.mdc-button__ripple';
 /// Sets custom height for button.
 /// @param {Number} $height - Height of button in `px`.
 ///
-@mixin height($height, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     height: $height;
@@ -353,7 +347,7 @@ $ripple-target: '.mdc-button__ripple';
   $radius,
   $rtl-reflexive: false,
   $density-scale: variables.$density-scale,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
@@ -382,8 +376,8 @@ $ripple-target: '.mdc-button__ripple';
 /// Sets horizontal padding to the given number.
 /// @param {Number} $padding
 ///
-@mixin horizontal-padding($padding, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin horizontal-padding($padding, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     // $padding should be a single value; enforce it by specifying all 4 sides in the output
@@ -394,9 +388,9 @@ $ripple-target: '.mdc-button__ripple';
 @mixin outline-width(
   $outline-width,
   $padding: variables.$contained-horizontal-padding,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
   // Note: Adjust padding to maintain consistent width with non-outlined buttons
   $padding-value: math.max($padding - $outline-width, 0);
 
@@ -425,15 +419,15 @@ $ripple-target: '.mdc-button__ripple';
 ///
 /// Sets the button label to overflow as ellipsis
 ///
-@mixin label-overflow-ellipsis($query: feature-targeting-functions.all()) {
+@mixin label-overflow-ellipsis($query: feature-targeting.all()) {
   .mdc-button__label {
     @include typography-mixins.overflow-ellipsis($query: $query);
   }
 }
 
 @mixin base_($query) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include typography-mixins.typography(button, $query);
   @include horizontal-padding(variables.$horizontal-padding, $query);
@@ -514,7 +508,7 @@ $ripple-target: '.mdc-button__ripple';
 }
 
 @mixin outlined_($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include outline-width(variables.$outlined-border-width, $query: $query);
   @include outline-color(variables.$outline-color, $query);
@@ -537,8 +531,8 @@ $ripple-target: '.mdc-button__ripple';
 }
 
 @mixin raised_($query) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include elevation-mixins.elevation(2, $query: $query);
 
@@ -565,11 +559,8 @@ $ripple-target: '.mdc-button__ripple';
 /// wrapped in a selector that qualifies button state.
 /// @access private
 ///
-@mixin container-fill-color_(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin container-fill-color_($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
     @include theme-mixins.prop(background-color, $color);
@@ -581,8 +572,8 @@ $ripple-target: '.mdc-button__ripple';
 /// wrapped in a selector that qualifies button state.
 /// @access private
 ///
-@mixin outline-color_($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin outline-color_($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
     @include theme-mixins.prop(border-color, $color);
@@ -594,8 +585,8 @@ $ripple-target: '.mdc-button__ripple';
 /// wrapped in a selector that qualifies button state.
 /// @access private
 ///
-@mixin icon-color_($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin icon-color_($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-button__icon {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -609,8 +600,8 @@ $ripple-target: '.mdc-button__ripple';
 /// wrapped in a selector that qualifies button state.
 /// @access private
 ///
-@mixin ink-color_($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin ink-color_($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
     @include theme-mixins.prop(color, $color);

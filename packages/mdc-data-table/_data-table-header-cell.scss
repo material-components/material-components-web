@@ -28,7 +28,7 @@
 @use '@material/animation/functions';
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/mixins' as dom;
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/feature-targeting/mixins' as feature-targeting-mixins;
 @use '@material/icon-button/mixins' as icon-button-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
@@ -36,9 +36,9 @@
 @use './data-table-theme';
 @use './data-table-cell';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-data-table__header-cell {
     @include typography-mixins.typography(subtitle2, $query: $query);
@@ -141,7 +141,7 @@
 
 /// Sets header cell in sticky position on table content vertical scroll.
 @mixin header-cell-sticky($query: $query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__header-cell {
     @include feature-targeting-mixins.targets($feat-structure) {

@@ -23,12 +23,12 @@
 @use "sass:list";
 @use "sass:map";
 @use "sass:string";
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/theme/mixins" as theme-mixins;
 @use "./variables";
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   .mdc-typography {
     @include base($query: $query);
   }
@@ -40,11 +40,8 @@
   }
 }
 
-@mixin base($query: feature-targeting-functions.all()) {
-  $feat-typography: feature-targeting-functions.create-target(
-    $query,
-    typography
-  );
+@mixin base($query: feature-targeting.all()) {
+  $feat-typography: feature-targeting.create-target($query, typography);
 
   @include smooth-font($query: $query);
   @include feature-targeting-mixins.targets($feat-typography) {
@@ -58,15 +55,8 @@
   }
 }
 
-@mixin typography(
-  $style,
-  $query: feature-targeting-functions.all(),
-  $exclude-props: ()
-) {
-  $feat-typography: feature-targeting-functions.create-target(
-    $query,
-    typography
-  );
+@mixin typography($style, $query: feature-targeting.all(), $exclude-props: ()) {
+  $feat-typography: feature-targeting.create-target($query, typography);
   $style-props: map.get(variables.$styles, $style);
 
   @if not map.has-key(variables.$styles, $style) {
@@ -101,11 +91,8 @@
 }
 
 /// Applies antialiasing via font-smoothing to text.
-@mixin smooth-font($query: feature-targeting-functions.all()) {
-  $feat-typography: feature-targeting-functions.create-target(
-    $query,
-    typography
-  );
+@mixin smooth-font($query: feature-targeting.all()) {
+  $feat-typography: feature-targeting.create-target($query, typography);
 
   @include feature-targeting-mixins.targets($feat-typography) {
     -moz-osx-font-smoothing: grayscale;
@@ -114,8 +101,8 @@
 }
 
 // Element must be `display: block` or `display: inline-block` for this to work.
-@mixin overflow-ellipsis($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin overflow-ellipsis($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     text-overflow: ellipsis;
@@ -140,7 +127,7 @@
   $top: 0,
   $bottom: 0,
   $display: block,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   $validDisplayTypes: (flex, inline-flex, block, inline-block);
 
@@ -149,7 +136,7 @@
   }
 
   $isFlexbox: $display == 'flex' or $display == 'inline-flex';
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     display: $display;
@@ -197,7 +184,7 @@
   $bottom: 0,
   $display: block,
   $lineHeight: normal,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   $validDisplayTypes: (block, inline-block);
 
@@ -205,7 +192,7 @@
     @error "mdc-typography: invalid display specified! #{$display} must be one of #{$validDisplayTypes}";
   }
 
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include baseline(
     $display: $display,
@@ -231,8 +218,8 @@
 ///
 /// @param {Number} $distance - The distance from the top of the container to
 ///     the text's baseline.
-@mixin baseline-top($distance, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin baseline-top($distance, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   &::before {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -248,8 +235,8 @@
 ///
 /// @param {Number} $distance - The distance from the text's baseline to the
 ///     bottom of the container.
-@mixin baseline-bottom($distance, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin baseline-bottom($distance, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   &::after {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -264,8 +251,8 @@
 /// This ensures that the baseline is always where the text would be, instead
 /// of defaulting to the container bottom when text is empty. Do not use this
 /// mixin if the `baseline` mixin is already applied.
-@mixin zero-width-prefix($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin zero-width-prefix($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   &::before {
     @include feature-targeting-mixins.targets($feat-structure) {

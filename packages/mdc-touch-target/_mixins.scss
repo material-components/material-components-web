@@ -21,13 +21,13 @@
 //
 
 @use "@material/base/mixins" as base-mixins;
-@use "@material/feature-targeting/functions";
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "./variables";
 
 /// Styles applied to the component's touch target wrapper element.
-@mixin wrapper($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin wrapper($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-touch-target-wrapper {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -47,8 +47,8 @@
 /// height ($mdc-touch-target-height).
 /// @param {Boolean} $set-width [false] - Sets the inner element width to the
 ///     minimum touch target width ($mdc-touch-target-width).
-@mixin touch-target($set-width: false, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin touch-target($set-width: false, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     position: absolute;
@@ -77,9 +77,9 @@
 @mixin margin(
   $component-height,
   $component-width: null,
-  $query: functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   $vertical-margin-value: (variables.$height - $component-height) / 2;
 

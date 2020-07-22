@@ -1,6 +1,6 @@
 @use '../data-table' as data-table;
 @use '../data-table-theme' as data-table-theme;
-@use '@material/feature-targeting/functions' as feature;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {
@@ -31,4 +31,4 @@
 }
 
 // This shouldn't output any CSS.
-@include test(feature.any());
+@include test(feature-targeting.any());

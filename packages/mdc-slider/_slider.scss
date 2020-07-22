@@ -21,7 +21,7 @@
 //
 
 @use "@material/elevation/mixins" as elevation-mixins;
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/feature-targeting/mixins' as feature-targeting-mixins;
 @use "@material/ripple/mixins" as ripple-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
@@ -39,7 +39,7 @@ $_track-active-height: 6px;
 $_track-inactive-height: 4px;
 
 /// Core styles for slider component.
-@mixin core-styles($query: feature-targeting-functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   @include ripple($query: $query);
   @include without-ripple($query: $query);
 }
@@ -47,10 +47,10 @@ $_track-inactive-height: 4px;
 // This API is intended for use by frameworks that may want to separate the
 // ripple-related styles from the other slider styles.
 // It is recommended that most users use `core-styles` instead.
-@mixin without-ripple($query: feature-targeting-functions.all()) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin without-ripple($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-slider {
     @include _track($query: $query);
@@ -93,7 +93,7 @@ $_track-inactive-height: 4px;
 // This API is intended for use by frameworks that may want to separate the
 // ripple-related styles from the other slider styles.
 // It is recommended that most users use `core-styles` instead.
-@mixin ripple($query: feature-targeting-functions.all()) {
+@mixin ripple($query: feature-targeting.all()) {
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-slider__thumb {
@@ -103,8 +103,8 @@ $_track-inactive-height: 4px;
   }
 }
 
-@mixin _track($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin _track($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-slider__track {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -175,9 +175,9 @@ $_track-inactive-height: 4px;
   );
 }
 
-@mixin _thumb($query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin _thumb($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include _value-indicator($query: $query);
 
@@ -237,9 +237,9 @@ $_track-inactive-height: 4px;
   );
 }
 
-@mixin _tick-marks($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin _tick-marks($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__tick-marks {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -277,9 +277,9 @@ $_track-inactive-height: 4px;
   );
 }
 
-@mixin _value-indicator($query: feature-targeting-functions.all()) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin _value-indicator($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-slider__value-indicator-container {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -360,9 +360,9 @@ $_track-inactive-height: 4px;
 }
 
 // Styles for slider in disabled state.
-@mixin _disabled($query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin _disabled($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include slider-theme.track-active-color($color: on-surface, $query: $query);
   @include slider-theme.track-inactive-color(

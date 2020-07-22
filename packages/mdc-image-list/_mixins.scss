@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/shape/mixins" as shape-mixins;
 @use "@material/shape/functions" as shape-functions;
@@ -26,9 +26,9 @@
 @use "@material/typography/mixins" as typography-mixins;
 @use "./variables";
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   // postcss-bem-linter: define image-list
   .mdc-image-list {
@@ -141,8 +141,8 @@
   // postcss-bem-linter: end
 }
 
-@mixin aspect($width-height-ratio, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin aspect($width-height-ratio, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-image-list__image-aspect-container {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -154,7 +154,7 @@
 @mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   .mdc-image-list__image {
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
@@ -182,9 +182,9 @@
 @mixin standard-columns(
   $column-count,
   $gutter-size: variables.$standard-gutter-size,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   // This uses margin rather than padding to facilitate properly positioning the supporting content element when
   // --with-text-protection is used.
@@ -204,9 +204,9 @@
 @mixin masonry-columns(
   $column-count,
   $gutter-size: variables.$masonry-gutter-size,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     column-count: $column-count;

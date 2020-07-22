@@ -25,18 +25,15 @@
 // selectors.
 
 @use 'sass:list';
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/feature-targeting/mixins' as feature-targeting-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/typography/mixins' as typography-mixins;
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target(
-    $query,
-    typography
-  );
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-data-table__cell {
     @include typography-mixins.typography(body2, $query: $query);
@@ -72,8 +69,8 @@
   }
 }
 
-@mixin adaptive-width($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin adaptive-width($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     // Set to lowest width to adapt to cell content. Cell width should adapt

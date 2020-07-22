@@ -21,15 +21,15 @@
 //
 
 @use "@material/animation/functions" as animation-functions;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/theme/mixins" as theme-mixins;
 @use "./variables";
 @use "./keyframes";
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include color(variables.$color, $query);
 
@@ -170,8 +170,8 @@
 /// four-color mixin is applied.
 /// @param {Color} $color - The desired stroke color.
 /// @see {mixin} indeterminate-colors
-@mixin color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-circular-progress__determinate-circle,
   .mdc-circular-progress__indeterminate-circle-graphic {
@@ -186,11 +186,8 @@
 /// currently set.
 /// @param {List} $colors - A list of four desired colors.
 /// @see {mixin} color
-@mixin indeterminate-colors(
-  $colors,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin indeterminate-colors($colors, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   @if length($colors) != 4 {
     @error "`mdc-circular-progress-colors` accepts exactly 4 colors";
@@ -210,10 +207,8 @@
 
 /// Sets the animations for the indicator in indeterminate mode.
 /// @access private
-@mixin indeterminate-active-animations_(
-  $query: feature-targeting-functions.all()
-) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin indeterminate-active-animations_($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-circular-progress__indeterminate-container {
     @include feature-targeting-mixins.targets($feat-animation) {

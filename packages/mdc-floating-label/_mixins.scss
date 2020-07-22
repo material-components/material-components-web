@@ -23,15 +23,15 @@
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/theme/variables" as variables2;
 @use "@material/theme/mixins" as theme-mixins;
-@use "@material/feature-targeting/functions";
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/animation/variables" as animation-variables;
 @use "@material/typography/mixins" as typography-mixins;
 @use "./variables";
 
-@mixin core-styles($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
-  $feat-animation: functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define floating-label
   .mdc-floating-label {
@@ -105,8 +105,8 @@
   @include shake-keyframes(standard, variables.$position-y, $query: $query);
 }
 
-@mixin ink-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
     @include theme-mixins.prop(color, $color);
@@ -114,8 +114,8 @@
 }
 
 // Used for textarea in case of scrolling
-@mixin fill-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting-mixins.targets($feat-color) {
     @include theme-mixins.prop(background-color, $color);
@@ -127,9 +127,9 @@
   $positionY,
   $positionX: 0%,
   $scale: variables.$float-scale,
-  $query: functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-animation: functions.create-target($query, animation);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include feature-targeting-mixins.targets($feat-animation) {
     @keyframes mdc-floating-label-shake-float-above-#{$modifier} {
@@ -167,9 +167,9 @@
   $positionY,
   $positionX: 0%,
   $scale: variables.$float-scale,
-  $query: functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-floating-label--float-above {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -189,8 +189,8 @@
   }
 }
 
-@mixin shake-animation($modifier, $query: functions.all()) {
-  $feat-animation: functions.create-target($query, animation);
+@mixin shake-animation($modifier, $query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-floating-label--shake {
     @include feature-targeting-mixins.targets($feat-animation) {
@@ -199,8 +199,8 @@
   }
 }
 
-@mixin max-width($max-width, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin max-width($max-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     max-width: $max-width;
@@ -216,9 +216,9 @@
 @mixin float-transition(
   $duration-ms,
   $timing-function: animation-variables.$standard-curve-timing-function,
-  $query: functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-animation: functions.create-target($query, animation);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include feature-targeting-mixins.targets($feat-animation) {
     transition: color $duration-ms $timing-function,
@@ -226,8 +226,8 @@
   }
 }
 
-@mixin _required-content($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin _required-content($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     /* @noflip */
@@ -240,8 +240,8 @@
 
 // Need to specify LTR/RTL manually since rtl mixins will add ::after[dir=rtl]
 // selector and that breaks some browsers
-@mixin _required-content-rtl($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin _required-content-rtl($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     /* @noflip */

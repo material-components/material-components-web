@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/animation/functions" as animation-functions;
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/typography/mixins" as typography-mixins;
@@ -35,9 +35,9 @@ $_label-type-scale: caption;
 $enter-duration: 150ms;
 $exit-duration: 75ms;
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include tooltip-theme.shape-radius(
     tooltip-theme.$border-radius,

@@ -2,7 +2,7 @@
 @use "../character-counter/mixins" as character-counter;
 @use "../helper-text/mixins" as helper-text;
 @use "../icon/mixins" as icon;
-@use "@material/feature-targeting/functions" as feature;
+@use "@material/feature-targeting/feature-targeting";
 
 @mixin test($query) {
   .test {
@@ -65,4 +65,4 @@
 }
 
 // This shouldn't output any CSS.
-@include test(feature.any());
+@include test(feature-targeting.any());

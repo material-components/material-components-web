@@ -24,7 +24,7 @@
 @use "@material/animation/functions" as animation-functions;
 @use "@material/button/variables" as button-variables;
 @use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/shape/mixins" as shape-mixins;
@@ -34,9 +34,9 @@
 @use "@material/typography/mixins" as typography-mixins;
 @use "./variables";
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   // prettier-ignore
   @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
@@ -340,8 +340,8 @@
   }
 }
 
-@mixin container-fill-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin container-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-dialog__surface {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -353,9 +353,9 @@
 @mixin scrim-color(
   $color,
   $opacity: variables.$scrim-opacity,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-dialog__scrim {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -367,9 +367,9 @@
 @mixin title-ink-color(
   $color,
   $opacity: variables.$title-ink-opacity,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-dialog__title {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -381,9 +381,9 @@
 @mixin content-ink-color(
   $color,
   $opacity: variables.$content-ink-opacity,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-dialog__content {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -397,9 +397,9 @@
   $padding-right,
   $padding-bottom,
   $padding-left,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-dialog__content {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -411,9 +411,9 @@
 @mixin scroll-divider-color(
   $color,
   $opacity: variables.$scroll-divider-opacity,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+  $feat-color: feature-targeting.create-target($query, color);
 
   &.mdc-dialog--scrollable .mdc-dialog__title,
   &.mdc-dialog--scrollable .mdc-dialog__actions {
@@ -426,17 +426,17 @@
 @mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-dialog__surface {
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
   }
 }
 
-@mixin min-width($min-width, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin min-width($min-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-dialog__surface {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -445,12 +445,8 @@
   }
 }
 
-@mixin max-width(
-  $max-width,
-  $margin,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin max-width($max-width, $margin, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
   $max-size-calc-expr: calc(100vw - #{$margin * 2});
 
   .mdc-dialog__surface {
@@ -474,12 +470,8 @@
   }
 }
 
-@mixin max-height(
-  $max-height,
-  $margin,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin max-height($max-height, $margin, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
   $max-size-calc-expr: calc(100% - #{$margin * 2});
 
   .mdc-dialog__surface {
@@ -527,8 +519,8 @@
 }
 
 // Applied to dialogs that have buttons with an increased touch target.
-@mixin with-touch-target($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin with-touch-target($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
   $touch-target-margin: (
       touch-target-variables.$height - button-variables.$height
     ) / 2;

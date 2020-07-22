@@ -22,7 +22,7 @@
 
 @use "sass:list";
 @use "sass:meta";
-@use "@material/feature-targeting/functions";
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/animation/functions" as functions2;
 @use "@material/animation/variables" as animation-variables;
@@ -41,9 +41,9 @@
 // Public
 //
 
-@mixin core-styles($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
-  $feat-animation: functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define drawer
   .mdc-drawer {
@@ -181,8 +181,8 @@
   // postcss-bem-linter: end
 }
 
-@mixin dismissible-core-styles($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin dismissible-core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-drawer--dismissible {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -206,9 +206,9 @@
   }
 }
 
-@mixin modal-core-styles($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
-  $feat-animation: functions.create-target($query, animation);
+@mixin modal-core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-drawer--modal {
     @include scrim-fill-color(variables.$modal-scrim-color, $query: $query);
@@ -281,14 +281,14 @@
   }
 }
 
-@mixin activated-overlay-color($color, $query: functions.all()) {
+@mixin activated-overlay-color($color, $query: feature-targeting.all()) {
   :not(.mdc-list--non-interactive) > .mdc-list-item {
     @include ripple-mixins.states-activated($color, $query: $query);
   }
 }
 
-@mixin border-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin border-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
   $value: rgba(theme-variables.prop-value($color), variables.$divider-opacity);
 
   @include feature-targeting-mixins.targets($feat-color) {
@@ -299,7 +299,7 @@
 @mixin item-shape-radius(
   $radius,
   $rtl-reflexive: true,
-  $query: functions.all()
+  $query: feature-targeting.all()
 ) {
   @include list-mixins.single-line-shape-radius(
     $radius,
@@ -308,7 +308,7 @@
   );
 }
 
-@mixin shape-radius($radius, $query: functions.all()) {
+@mixin shape-radius($radius, $query: feature-targeting.all()) {
   // Check type since $radius may be a custom property Map
   $is-list: meta.type-of($radius) == 'list';
   @if $is-list and list.length($radius) > 2 {
@@ -322,14 +322,14 @@
   @include shape-mixins.radius($radius, $rtl-reflexive: true, $query: $query);
 }
 
-@mixin divider-color($color, $query: functions.all()) {
+@mixin divider-color($color, $query: feature-targeting.all()) {
   $value: rgba(theme-variables.prop-value($color), variables.$divider-opacity);
 
   @include list-mixins.divider-color($value, $query: $query);
 }
 
-@mixin title-ink-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin title-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
   $value: rgba(
     theme-variables.prop-value($color),
     variables.$title-ink-opacity
@@ -342,8 +342,8 @@
   }
 }
 
-@mixin subtitle-ink-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin subtitle-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
   $value: rgba(
     theme-variables.prop-value($color),
     variables.$subtitle-ink-opacity
@@ -358,7 +358,7 @@
   }
 }
 
-@mixin fill-color-accessible($color, $query: functions.all()) {
+@mixin fill-color-accessible($color, $query: feature-targeting.all()) {
   $accessibleColor: theme-variables.accessible-ink-color($color);
 
   @include title-ink-color($accessibleColor, $query: $query);
@@ -368,7 +368,7 @@
   @include surface-fill-color($color, $query: $query);
 }
 
-@mixin item-icon-ink-color($color, $query: functions.all()) {
+@mixin item-icon-ink-color($color, $query: feature-targeting.all()) {
   $value: rgba(
     theme-variables.prop-value($color),
     variables.$item-inactive-icon-ink-opacity
@@ -377,7 +377,7 @@
   @include list-mixins.item-graphic-ink-color($value, $query: $query);
 }
 
-@mixin item-activated-icon-ink-color($color, $query: functions.all()) {
+@mixin item-activated-icon-ink-color($color, $query: feature-targeting.all()) {
   $value: rgba(
     theme-variables.prop-value($color),
     variables.$item-active-icon-ink-opacity
@@ -388,7 +388,7 @@
   }
 }
 
-@mixin item-activated-text-ink-color($color, $query: functions.all()) {
+@mixin item-activated-text-ink-color($color, $query: feature-targeting.all()) {
   $value: rgba(
     theme-variables.prop-value($color),
     variables.$item-active-text-ink-opacity
@@ -399,7 +399,7 @@
   }
 }
 
-@mixin item-text-ink-color($color, $query: functions.all()) {
+@mixin item-text-ink-color($color, $query: feature-targeting.all()) {
   $value: rgba(
     theme-variables.prop-value($color),
     variables.$item-inactive-text-ink-opacity
@@ -410,8 +410,8 @@
   }
 }
 
-@mixin surface-fill-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin surface-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
   $value: theme-variables.prop-value($color);
 
   @include feature-targeting-mixins.targets($feat-color) {
@@ -419,8 +419,8 @@
   }
 }
 
-@mixin scrim-fill-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin scrim-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
   $value: rgba(
     theme-variables.prop-value($color),
     variables.$modal-scrim-opacity
@@ -433,16 +433,16 @@
   }
 }
 
-@mixin z-index($value, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin z-index($value, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     z-index: $value;
   }
 }
 
-@mixin width($width, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin width($width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     @include theme-mixins.property(width, $width);
@@ -458,8 +458,8 @@
 //
 // Private
 //
-@mixin list-item_($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin list-item_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   // postcss-bem-linter: ignore
   .mdc-list-item {

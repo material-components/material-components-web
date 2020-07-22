@@ -30,7 +30,7 @@
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/mixins' as dom;
 @use '@material/elevation/mixins';
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/feature-targeting/mixins' as feature-targeting-mixins;
 @use '@material/icon-button/mixins' as icon-button-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
@@ -44,13 +44,10 @@
 @use './data-table-progress-indicator';
 @use './data-table-theme';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target(
-    $query,
-    typography
-  );
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define data-table
 
@@ -177,7 +174,7 @@
   @include data-table-pagination.core-styles($query: $query);
 }
 
-@mixin theme-baseline($query: feature-targeting-functions.all()) {
+@mixin theme-baseline($query: feature-targeting.all()) {
   @include data-table-theme.checked-icon-color(
     data-table-theme.$checked-icon-color,
     $query: $query
@@ -186,7 +183,7 @@
 
 /// Sets styles required to support sticky header row.
 @mixin _sticky-header($query: $query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include data-table-header-cell.header-cell-sticky($query: $query);
 

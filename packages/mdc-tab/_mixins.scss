@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@use "@material/feature-targeting/functions";
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/ripple/mixins" as ripple-mixins;
 @use "@material/theme/mixins" as theme-mixins;
@@ -31,16 +31,16 @@
 
 // Public mixins
 
-@mixin core-styles($query: functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query);
   @include ripple($query);
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles
 // from the other tah styles. It is recommended that most users use `mdc-tab-core-styles` instead.
-@mixin without-ripple($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
-  $feat-animation: functions.create-target($query, animation);
+@mixin without-ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define tab
 
@@ -106,7 +106,7 @@
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles
 // from the other tah styles. It is recommended that most users use `mdc-tab-core-styles` instead.
-@mixin ripple($query: functions.all()) {
+@mixin ripple($query: feature-targeting.all()) {
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-tab__ripple {
@@ -114,8 +114,8 @@
   }
 }
 
-@mixin horizontal-padding($padding, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin horizontal-padding($padding, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     padding-right: $padding;
@@ -123,8 +123,8 @@
   }
 }
 
-@mixin text-label-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin text-label-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-tab__text-label {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -133,8 +133,8 @@
   }
 }
 
-@mixin icon-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin icon-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-tab__icon {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -145,46 +145,46 @@
   }
 }
 
-@mixin states-color($color, $query: functions.all()) {
+@mixin states-color($color, $query: feature-targeting.all()) {
   .mdc-tab__ripple {
     @include ripple-mixins.states($color, $query: $query);
   }
 }
 
-@mixin ink-color($color, $query: functions.all()) {
+@mixin ink-color($color, $query: feature-targeting.all()) {
   @include icon-color($color, $query);
   @include states-color($color, $query);
   @include text-label-color($color, $query);
 }
 
-@mixin active-text-label-color($color, $query: functions.all()) {
+@mixin active-text-label-color($color, $query: feature-targeting.all()) {
   &.mdc-tab--active {
     @include text-label-color($color, $query);
   }
 }
 
-@mixin active-icon-color($color, $query: functions.all()) {
+@mixin active-icon-color($color, $query: feature-targeting.all()) {
   &.mdc-tab--active {
     @include icon-color($color, $query);
   }
 }
 
-@mixin active-states-color($color, $query: functions.all()) {
+@mixin active-states-color($color, $query: feature-targeting.all()) {
   &.mdc-tab--active {
     @include states-color($color, $query);
   }
 }
 
-@mixin parent-positioning($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin parent-positioning($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     position: relative;
   }
 }
 
-@mixin fixed-width($width, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin fixed-width($width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     flex: 0 1 $width;
@@ -196,8 +196,8 @@
 ///
 /// @param {Number} $height Height value in `px`.
 ///
-@mixin height($height, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     height: $height;
@@ -209,8 +209,8 @@
 ///
 /// @param {String} $transform The text-transform property to apply.
 ///
-@mixin text-transform($transform, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin text-transform($transform, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     text-transform: $transform;
@@ -221,8 +221,8 @@
 // Private
 //
 
-@mixin base_($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin base_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include typography-mixins.typography(button, $query);
   @include text-label-color(variables.$text-label-color-default, $query);
@@ -256,8 +256,8 @@
   }
 }
 
-@mixin ripple_($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin ripple_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include ripple-mixins.surface($query);
   @include ripple-mixins.radius-bounded($query: $query);
@@ -273,8 +273,8 @@
   }
 }
 
-@mixin content_($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin content_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include tab-indicator-mixins.surface($query);
 
@@ -287,8 +287,8 @@
   }
 }
 
-@mixin stacked_($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin stacked_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     .mdc-tab__content {
@@ -304,8 +304,8 @@
   }
 }
 
-@mixin active_($query: functions.all()) {
-  $feat-animation: functions.create-target($query, animation);
+@mixin active_($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include text-label-color(variables.$text-label-color-active, $query);
   @include icon-color(variables.$icon-color-active, $query);

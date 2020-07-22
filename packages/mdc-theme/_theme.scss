@@ -21,14 +21,14 @@
 //
 
 @use "sass:map";
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins";
 @use "./custom-properties";
 @use "./gss";
 @use "./color";
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   :root {
     @include mixins.targets($feat-color) {

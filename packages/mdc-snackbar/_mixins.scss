@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
+@use "@material/feature-targeting/feature-targeting";
 @use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/animation/functions" as animation-functions;
 @use "@material/button/mixins" as button-mixins;
@@ -33,9 +33,9 @@
 @use "@material/theme/mixins" as theme-mixins;
 @use "./variables";
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define snackbar
   .mdc-snackbar {
@@ -202,8 +202,8 @@
   // postcss-bem-linter: end
 }
 
-@mixin fill-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-snackbar__surface {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -212,8 +212,8 @@
   }
 }
 
-@mixin label-ink-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin label-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-snackbar__label {
     @include feature-targeting-mixins.targets($feat-color) {
@@ -225,7 +225,7 @@
 @mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   .mdc-snackbar__surface {
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
@@ -235,9 +235,9 @@
 @mixin min-width(
   $min-width,
   $mobile-breakpoint: variables.$mobile-breakpoint,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-snackbar__surface {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -252,8 +252,8 @@
   }
 }
 
-@mixin max-width($max-width, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin max-width($max-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-snackbar__surface {
     @include feature-targeting-mixins.targets($feat-structure) {
@@ -262,38 +262,38 @@
   }
 }
 
-@mixin elevation($z-index, $query: feature-targeting-functions.all()) {
+@mixin elevation($z-index, $query: feature-targeting.all()) {
   .mdc-snackbar__surface {
     @include elevation-mixins.elevation($z-index, $query: $query);
   }
 }
 
-@mixin viewport-margin($margin, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin viewport-margin($margin, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     margin: $margin;
   }
 }
 
-@mixin z-index($z-index, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin z-index($z-index, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     z-index: $z-index;
   }
 }
 
-@mixin position-leading($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin position-leading($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting-mixins.targets($feat-structure) {
     justify-content: flex-start;
   }
 }
 
-@mixin layout-stacked($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin layout-stacked($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-snackbar__label {
     @include feature-targeting-mixins.targets($feat-structure) {
