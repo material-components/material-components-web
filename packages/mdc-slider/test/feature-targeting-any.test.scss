@@ -1,0 +1,11 @@
+@use '@material/feature-targeting/feature-targeting';
+@use '../slider';
+
+@mixin test($query) {
+  .test {
+    @include slider.core-styles($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature-targeting.any());
