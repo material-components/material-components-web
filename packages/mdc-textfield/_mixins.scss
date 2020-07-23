@@ -2180,8 +2180,14 @@
     appearance: none;
     padding: 0;
 
-    // Remove built-in trailing clear icon on IE11
+    // Remove built-in trailing clear icon on IE11. IE vendor prefixes cannot
+    // be combined with other vendor prefixes like the webkit one below.
     &::-ms-clear {
+      display: none;
+    }
+
+    // Remove built-in datepicker icon on Chrome
+    &::-webkit-calendar-picker-indicator {
       display: none;
     }
 
