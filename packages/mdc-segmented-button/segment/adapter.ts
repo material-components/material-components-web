@@ -66,6 +66,7 @@ export interface MDCSegmentedButtonSegmentAdapter {
    * Emits event about segment to wrapping segmented button
    * 
    * @param selected Represents whether segment is currently selected
+   * @event selected With detail - SegmentDetail
    */
   notifySelectedChange(selected: boolean): void;
 }

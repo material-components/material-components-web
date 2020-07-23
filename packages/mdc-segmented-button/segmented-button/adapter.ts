@@ -57,6 +57,7 @@ export interface MDCSegmentedButtonAdapter {
    * Emits event about changed child segment to client
    * 
    * @param detail Changed child segment represented as a SegmentDetail
+   * @event change With detail - SegmentDetail
    */
   notifySelectedChange(detail: SegmentDetail): void;
 }

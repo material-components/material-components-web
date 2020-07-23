@@ -78,6 +78,8 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
    * select, doesn't allow segment to be set to not selected. Otherwise, toggles
    * segment's selected status. Finally, emits event to wrapping segmented
    * button.
+   * 
+   * @event selected With detail - SegmentDetail
    */
   handleClick(): void {
     if (this.adapter.isSingleSelect()) {

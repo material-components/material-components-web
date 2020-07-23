@@ -93,6 +93,7 @@ export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButt
    * child segment. Finally, emits event to client.
    * 
    * @param detail Child segment affected represented as SegmentDetail
+   * @event change With detail - SegmentDetail
    */
   handleSelected(detail: SegmentDetail) {
     if (this.isSingleSelect()) {
