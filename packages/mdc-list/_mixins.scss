@@ -31,7 +31,6 @@
 @use "@material/typography/mixins" as typography-mixins;
 @use "@material/typography/variables" as typography-variables;
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "./variables";
 @use "@material/ripple/functions" as ripple-functions;
 @use "@material/theme/variables" as theme-variables;
@@ -76,7 +75,7 @@
   @include item-selected-text-color(variables.$text-selected-color, $query);
 
   .mdc-list--dense {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       padding-top: 4px;
       padding-bottom: 4px;
       font-size: 0.812rem;
@@ -84,7 +83,7 @@
   }
 
   .mdc-list-item {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include item-base_;
     }
 
@@ -170,7 +169,7 @@
   }
 
   .mdc-list-item__graphic {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       flex-shrink: 0;
       align-items: center;
       justify-content: center;
@@ -187,7 +186,7 @@
 
     .mdc-list--avatar-list & {
       @include graphic-size-variant(variables.$avatar-variant-config, $query);
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         border-radius: 50%;
       }
     }
@@ -212,7 +211,7 @@
   // conjunction with mdc-list-item__graphic
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list .mdc-list-item__graphic {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
     }
   }
@@ -225,7 +224,7 @@
     }
     // stylelint-enable selector-class-pattern
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(margin, auto, 0, '.mdc-list-item');
     }
   }
@@ -237,7 +236,7 @@
   // Disable interaction on label elements that may automatically
   // toggle corresponding checkbox / radio input.
   .mdc-list-item__text[for] {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       pointer-events: none;
     }
   }
@@ -285,7 +284,7 @@
 
     // stylelint-disable plugin/selector-bem-pattern
     .mdc-list--dense & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         font-size: inherit;
       }
     }
@@ -294,20 +293,20 @@
 
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list--dense .mdc-list-item {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: 40px;
     }
   }
 
   .mdc-list--two-line .mdc-list-item__text {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       align-self: flex-start;
     }
   }
 
   .mdc-list--two-line {
     .mdc-list-item {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         height: variables.$two-line-height;
       }
     }
@@ -317,14 +316,14 @@
     &.mdc-list--thumbnail-list .mdc-list-item,
     &.mdc-list--avatar-list .mdc-list-item,
     &.mdc-list--icon-list .mdc-list-item {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         height: variables.$two-line-graphic-height;
       }
     }
 
     // Icons in multiline lists are the only graphic that isn't centered.
     &.mdc-list--icon-list .mdc-list-item__graphic {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         align-self: flex-start;
         margin-top: variables.$two-line-icon-top-margin;
       }
@@ -333,7 +332,7 @@
 
   .mdc-list--two-line.mdc-list--dense .mdc-list-item,
   .mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: 60px;
     }
   }
@@ -344,7 +343,7 @@
 
   // Only change mouse cursor for list items which are not disabled.
   :not(.mdc-list-item--disabled).mdc-list-item {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: pointer;
     }
   }
@@ -352,7 +351,7 @@
   // Override anchor tag styles for the use-case of a list being used for navigation
   // stylelint-disable selector-max-type,selector-no-qualifying-type
   a.mdc-list-item {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       color: inherit;
       text-decoration: none;
     }
@@ -360,7 +359,7 @@
   // stylelint-enable selector-max-type,selector-no-qualifying-type
 
   .mdc-list-divider {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: 0;
       margin: 0;
       border: none;
@@ -446,7 +445,7 @@
   }
 
   .mdc-list-group {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       // Cancel top/bottom padding on individual lists within group
       .mdc-list {
         padding: 0;
@@ -467,7 +466,7 @@
 
     @include typography-mixins.typography(subtitle1, $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       margin: $mdc-list-subheader-margin variables.$side-padding;
     }
   }
@@ -536,7 +535,7 @@
 @mixin item-primary-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     @include theme-mixins.prop(color, $color);
   }
 }
@@ -545,7 +544,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item__secondary-text {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(color, $color);
     }
   }
@@ -555,7 +554,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item__graphic {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(background-color, $color);
     }
   }
@@ -565,7 +564,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item__graphic {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(color, $color);
     }
   }
@@ -575,7 +574,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item__meta {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(color, $color);
     }
   }
@@ -618,7 +617,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-divider {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(border-bottom-color, $color);
     }
   }
@@ -628,7 +627,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-group__subheader {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(color, $color);
     }
   }
@@ -638,7 +637,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item--disabled .mdc-list-item__text {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       opacity: $opacity;
     }
   }
@@ -651,7 +650,7 @@
     .mdc-list-item__text,
     .mdc-list-item__primary-text,
     .mdc-list-item__secondary-text {
-      @include feature-targeting-mixins.targets($feat-color) {
+      @include feature-targeting.targets($feat-color) {
         @include theme-mixins.prop(color, $color);
       }
     }
@@ -683,7 +682,7 @@
 @mixin list-item-padding($leading-padding, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     @include rtl-mixins.reflexive-property(
       padding,
       $leading-padding,
@@ -717,7 +716,7 @@
 @mixin list-item-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     height: $height;
   }
 }
@@ -732,7 +731,7 @@
 @mixin icon-margin($margin, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     .mdc-list-item__graphic {
       @include rtl-mixins.reflexive-box(margin, right, $margin);
     }
@@ -843,7 +842,7 @@
     $text-offset - $leading-padding - $width,
     $leading-padding
   );
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     @include rtl-mixins.reflexive-box(margin, right, $margin-value);
     width: $width;
     height: $height;
@@ -907,7 +906,7 @@
     0
   );
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     @if $leading {
       @include rtl-mixins.reflexive-box(margin, left, $leading-inset);
     }
@@ -944,7 +943,7 @@
 @mixin single-line-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     height: $height;
   }
 }
@@ -960,7 +959,7 @@
 
   @include typography-mixins.typography(subtitle1, $query);
 
-  @include feature-targeting-mixins.targets($feat-typography) {
+  @include feature-targeting.targets($feat-typography) {
     // According to the mocks and stickersheet, the line-height is
     // adjusted to 24px for text content, same as for body1.
     /* @alternate */
@@ -970,7 +969,7 @@
     );
   }
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     margin: 0;
     padding: 8px 0;
     list-style-type: none;

@@ -22,7 +22,6 @@
 
 @use "@material/feature-targeting/feature-targeting";
 @use "@material/animation/functions" as animation-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/typography/mixins" as typography-mixins;
 @use "./tooltip-theme";
 
@@ -53,7 +52,7 @@ $exit-duration: 75ms;
   );
 
   .mdc-tooltip {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: fixed;
       display: none;
     }
@@ -62,7 +61,7 @@ $exit-duration: 75ms;
   .mdc-tooltip--shown,
   .mdc-tooltip--showing,
   .mdc-tooltip--hide {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
     }
   }
@@ -70,7 +69,7 @@ $exit-duration: 75ms;
   .mdc-tooltip__surface {
     @include typography-mixins.typography($_label-type-scale, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       padding: $_padding-x $_padding-y;
       min-width: $_min-width;
       max-width: $_max-width;
@@ -80,23 +79,23 @@ $exit-duration: 75ms;
     }
 
     .mdc-tooltip--shown & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         transform: scale(1);
         opacity: 1;
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition: animation-functions.enter(opacity, $enter-duration),
           animation-functions.enter(transform, $enter-duration);
       }
     }
 
     .mdc-tooltip--hide & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         transform: scale(1);
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition: animation-functions.exit-permanent(opacity, $exit-duration);
       }
     }

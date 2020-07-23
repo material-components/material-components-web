@@ -26,28 +26,27 @@
 
 @use 'sass:list';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
 @use '@material/theme/mixins' as theme-mixins;
 
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__progress-indicator {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: none;
       position: absolute;
       width: 100%;
     }
 
     .mdc-data-table--in-progress & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: block;
       }
     }
   }
 
   .mdc-data-table__scrim {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include theme-mixins.prop('background-color', surface);
 
       height: 100%;

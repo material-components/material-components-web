@@ -23,7 +23,6 @@
 @use "sass:math";
 @use "@material/elevation/mixins" as elevation-mixins;
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/ripple/mixins" as ripple-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/theme/functions" as theme-functions;
@@ -65,7 +64,7 @@ $ripple-target: '.mdc-button__ripple';
     // guaranteed. Therefore, increase specifity by nesting this class to ensure
     // overrides apply.
     .mdc-button__icon {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include icon_;
       }
     }
@@ -79,14 +78,14 @@ $ripple-target: '.mdc-button__ripple';
   }
 
   .mdc-button__label + .mdc-button__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include icon-trailing_;
     }
   }
 
   // stylelint-disable-next-line selector-no-qualifying-type
   svg.mdc-button__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include icon-svg_;
     }
   }
@@ -95,14 +94,14 @@ $ripple-target: '.mdc-button__ripple';
   .mdc-button--unelevated,
   .mdc-button--outlined {
     .mdc-button__icon {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         // Icons inside contained buttons have different styles due to increased button padding
         @include icon-contained_;
       }
     }
 
     .mdc-button__label + .mdc-button__icon {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include icon-contained-trailing_;
       }
     }
@@ -149,7 +148,7 @@ $ripple-target: '.mdc-button__ripple';
     @include ripple-states($color: primary, $query: $query);
 
     #{$ripple-target} {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         position: absolute;
         // Ripple needs content-box as the box sizing and box-sizing: border-box
         // is often set as a default, so we override that here.
@@ -163,7 +162,7 @@ $ripple-target: '.mdc-button__ripple';
     // Ripple targets inside outlined buttons set their own `top`/`left`,
     // depending on the border width.
     &:not(.mdc-button--outlined) #{$ripple-target} {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         top: 0;
         left: 0;
       }
@@ -319,13 +318,13 @@ $ripple-target: '.mdc-button__ripple';
 @mixin touch-target-reset_($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     margin-top: 0;
     margin-bottom: 0;
   }
 
   .mdc-button__touch {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: none;
     }
   }
@@ -338,7 +337,7 @@ $ripple-target: '.mdc-button__ripple';
 @mixin height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     height: $height;
   }
 }
@@ -379,7 +378,7 @@ $ripple-target: '.mdc-button__ripple';
 @mixin horizontal-padding($padding, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     // $padding should be a single value; enforce it by specifying all 4 sides in the output
     padding: 0 $padding 0 $padding;
   }
@@ -396,12 +395,12 @@ $ripple-target: '.mdc-button__ripple';
 
   @include horizontal-padding($padding-value, $query);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     border-width: $outline-width;
   }
 
   #{$ripple-target} {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       top: -$outline-width;
       left: -$outline-width;
       border: $outline-width solid transparent;
@@ -409,7 +408,7 @@ $ripple-target: '.mdc-button__ripple';
   }
 
   .mdc-button__touch {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       left: -$outline-width;
       width: calc(100% + 2 * #{$outline-width});
     }
@@ -434,7 +433,7 @@ $ripple-target: '.mdc-button__ripple';
   @include elevation-mixins.overlay-surface-position($query: $query);
   @include elevation-mixins.overlay-dimensions(100%, $query: $query);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: inline-flex;
     // position: relative; already set in mdc-elevation-overlay-surface-position
     align-items: center;
@@ -454,7 +453,7 @@ $ripple-target: '.mdc-button__ripple';
   }
 
   &::-moz-focus-inner {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       padding: 0;
       border: 0;
     }
@@ -462,19 +461,19 @@ $ripple-target: '.mdc-button__ripple';
 
   // postcss-bem-linter: ignore
   &:active {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       outline: none;
     }
   }
 
   &:hover {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: pointer;
     }
   }
 
   &:disabled {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: default;
       pointer-events: none;
     }
@@ -514,7 +513,7 @@ $ripple-target: '.mdc-button__ripple';
   @include outline-color(variables.$outline-color, $query);
   @include disabled-outline-color(variables.$disabled-container-color, $query);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     border-style: solid;
   }
 }
@@ -549,7 +548,7 @@ $ripple-target: '.mdc-button__ripple';
     @include elevation-mixins.elevation(0, $query: $query);
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: elevation-functions.transition-value();
   }
 }
@@ -562,7 +561,7 @@ $ripple-target: '.mdc-button__ripple';
 @mixin container-fill-color_($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     @include theme-mixins.prop(background-color, $color);
   }
 }
@@ -575,7 +574,7 @@ $ripple-target: '.mdc-button__ripple';
 @mixin outline-color_($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     @include theme-mixins.prop(border-color, $color);
   }
 }
@@ -589,7 +588,7 @@ $ripple-target: '.mdc-button__ripple';
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-button__icon {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(color, $color);
     }
   }
@@ -603,7 +602,7 @@ $ripple-target: '.mdc-button__ripple';
 @mixin ink-color_($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     @include theme-mixins.prop(color, $color);
   }
 }

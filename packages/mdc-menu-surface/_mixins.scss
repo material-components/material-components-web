@@ -21,7 +21,6 @@
 //
 
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/theme/mixins" as theme-mixins;
 @use "@material/shape/mixins" as shape-mixins;
 @use "@material/animation/variables" as animation-variables;
@@ -44,7 +43,7 @@
     @include ink-color(on-surface, $query);
     @include shape-radius(variables.$shape-radius, false, $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(
         transform-origin,
         top left,
@@ -54,20 +53,20 @@
   }
 
   .mdc-menu-surface--anchor {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: relative;
       overflow: visible;
     }
   }
 
   .mdc-menu-surface--fixed {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: fixed;
     }
   }
 
   .mdc-menu-surface--fullwidth {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: 100%;
     }
   }
@@ -77,7 +76,7 @@
 @mixin ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     @include theme-mixins.prop(color, $color);
   }
 }
@@ -85,7 +84,7 @@
 @mixin fill-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     @include theme-mixins.prop(background-color, $color);
   }
 }
@@ -104,7 +103,7 @@
   .mdc-menu-surface--is-open-below {
     $feat-structure: feature-targeting.create-target($query, structure);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border-top-left-radius: 0px;
       border-top-right-radius: 0px;
     }
@@ -119,7 +118,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: none;
     position: absolute;
     box-sizing: border-box;
@@ -135,7 +134,7 @@
     z-index: variables.$z-index;
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: opacity variables.$fade-in-duration linear,
       transform variables.$scale-duration
         animation-variables.$deceleration-curve-timing-function,
@@ -143,14 +142,14 @@
   }
 
   &:focus {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       outline: none;
     }
   }
 
   // stylelint-disable-next-line selector-max-type
   &--open {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-block;
       transform: scale(1);
       opacity: 1;
@@ -158,7 +157,7 @@
   }
 
   &--animating-open {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-block;
       transform: scale(0.8);
       opacity: 0;
@@ -166,12 +165,12 @@
   }
 
   &--animating-closed {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-block;
       opacity: 0;
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: opacity variables.$fade-out-duration linear;
     }
   }

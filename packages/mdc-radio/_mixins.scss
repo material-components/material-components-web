@@ -24,7 +24,6 @@
 @use "@material/animation/functions" as functions2;
 @use "@material/density/functions" as density-functions;
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/ripple/mixins" as ripple-mixins;
 @use "@material/ripple/variables" as ripple-variables;
 @use "@material/theme/mixins" as theme-mixins;
@@ -80,7 +79,7 @@ $ripple-target: '.mdc-radio__ripple';
     );
     @include density(variables.$density-scale, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-block;
       position: relative;
       flex: 0 0 auto;
@@ -94,7 +93,7 @@ $ripple-target: '.mdc-radio__ripple';
 
     // Container for radio circles and ripple.
     &__background {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: inline-block;
         position: relative;
         box-sizing: border-box;
@@ -103,7 +102,7 @@ $ripple-target: '.mdc-radio__ripple';
       }
 
       &::before {
-        @include feature-targeting-mixins.targets($feat-structure) {
+        @include feature-targeting.targets($feat-structure) {
           position: absolute;
           transform: scale(0, 0);
           border-radius: 50%;
@@ -112,14 +111,14 @@ $ripple-target: '.mdc-radio__ripple';
           content: '';
         }
 
-        @include feature-targeting-mixins.targets($feat-animation) {
+        @include feature-targeting.targets($feat-animation) {
           transition: functions.exit(opacity), functions.exit(transform);
         }
       }
     }
 
     &__outer-circle {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         position: absolute;
         top: 0;
         left: 0;
@@ -131,13 +130,13 @@ $ripple-target: '.mdc-radio__ripple';
         border-radius: 50%;
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition: functions.exit(border-color);
       }
     }
 
     &__inner-circle {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         position: absolute;
         top: 0;
         left: 0;
@@ -150,13 +149,13 @@ $ripple-target: '.mdc-radio__ripple';
         border-radius: 50%;
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition: functions.exit(transform), functions.exit(border-color);
       }
     }
 
     &__native-control {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         position: absolute;
         margin: 0;
         padding: 0;
@@ -182,18 +181,18 @@ $ripple-target: '.mdc-radio__ripple';
   .mdc-radio__native-control:checked,
   .mdc-radio__native-control:disabled {
     + .mdc-radio__background {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition: functions.enter(opacity), functions.enter(transform);
       }
 
       .mdc-radio__outer-circle {
-        @include feature-targeting-mixins.targets($feat-animation) {
+        @include feature-targeting.targets($feat-animation) {
           transition: functions.enter(border-color);
         }
       }
 
       .mdc-radio__inner-circle {
-        @include feature-targeting-mixins.targets($feat-animation) {
+        @include feature-targeting.targets($feat-animation) {
           transition: functions.enter(transform), functions.enter(border-color);
         }
       }
@@ -201,7 +200,7 @@ $ripple-target: '.mdc-radio__ripple';
   }
 
   .mdc-radio--disabled {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: default;
       pointer-events: none;
     }
@@ -210,11 +209,11 @@ $ripple-target: '.mdc-radio__ripple';
   .mdc-radio__native-control:checked {
     + .mdc-radio__background {
       .mdc-radio__inner-circle {
-        @include feature-targeting-mixins.targets($feat-structure) {
+        @include feature-targeting.targets($feat-structure) {
           transform: scale(0.5);
         }
 
-        @include feature-targeting-mixins.targets($feat-animation) {
+        @include feature-targeting.targets($feat-animation) {
           transition: functions.enter(transform), functions.enter(border-color);
         }
       }
@@ -224,7 +223,7 @@ $ripple-target: '.mdc-radio__ripple';
   .mdc-radio__native-control:disabled,
   [aria-disabled='true'] .mdc-radio__native-control {
     + .mdc-radio__background {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         cursor: default;
       }
     }
@@ -232,12 +231,12 @@ $ripple-target: '.mdc-radio__ripple';
 
   .mdc-radio__native-control:focus {
     + .mdc-radio__background::before {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         transform: scale(1);
         opacity: map.get(ripple-variables.$dark-ink-opacities, focus);
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition: functions.enter(opacity), functions.enter(transform);
       }
     }
@@ -270,7 +269,7 @@ $ripple-target: '.mdc-radio__ripple';
 
     &.mdc-ripple-upgraded--background-focused {
       .mdc-radio__background::before {
-        @include feature-targeting-mixins.targets($feat-structure) {
+        @include feature-targeting.targets($feat-structure) {
           content: none;
         }
       }
@@ -349,7 +348,7 @@ $ripple-target: '.mdc-radio__ripple';
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-radio__background::before {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(background-color, $color);
     }
   }
@@ -371,7 +370,7 @@ $ripple-target: '.mdc-radio__ripple';
   $offset: ($ripple-size - $size) / 2;
 
   .mdc-radio__native-control {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       top: $offset;
       right: $offset;
       left: $offset;
@@ -412,12 +411,12 @@ $ripple-target: '.mdc-radio__ripple';
   $feat-structure: feature-targeting.create-target($query, structure);
   $padding: ($size - variables.$icon-size) / 2;
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     padding: $padding;
   }
 
   .mdc-radio__background::before {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       top: -$padding;
       left: -$padding;
       width: $size;
@@ -435,7 +434,7 @@ $ripple-target: '.mdc-radio__ripple';
 @mixin touch-target-reset_($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     margin: 0;
   }
 }
@@ -524,7 +523,7 @@ $ripple-target: '.mdc-radio__ripple';
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-radio__background .mdc-radio__inner-circle {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(border-color, $color);
     }
   }
@@ -539,7 +538,7 @@ $ripple-target: '.mdc-radio__ripple';
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-radio__background .mdc-radio__outer-circle {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(border-color, $color);
     }
   }

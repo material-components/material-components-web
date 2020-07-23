@@ -24,7 +24,6 @@
 @use "@material/theme/mixins";
 @use "@material/typography/mixins" as typography-mixins;
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 // Public mixins
 
 @mixin helper-text-core-styles($query: feature-targeting.all()) {
@@ -37,23 +36,23 @@
     @include typography-mixins.typography(caption, $query: $query);
     @include typography-mixins.text-baseline($top: 16px, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       margin: 0;
       opacity: 0;
       will-change: opacity;
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: functions.transition(opacity);
     }
   }
 
   .mdc-text-field-helper-text--persistent {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: none;
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 1;
       will-change: initial;
     }
@@ -94,7 +93,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   + .mdc-text-field-helper-line .mdc-text-field-helper-text {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include mixins.prop(color, $color);
     }
   }
@@ -106,7 +105,7 @@
   &.mdc-text-field--invalid
     + .mdc-text-field-helper-line
     .mdc-text-field-helper-text--validation-msg {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include mixins.prop(color, $color);
     }
   }

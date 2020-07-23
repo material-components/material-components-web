@@ -19,8 +19,6 @@
 // THE SOFTWARE.
 
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-
 ///
 /// Emits necessary layout styles to set a transparent border around an element
 /// without interfering with the rest of its component layout. The border is
@@ -37,7 +35,7 @@
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     position: absolute;
     box-sizing: border-box;
     width: 100%;
@@ -58,7 +56,7 @@
 @mixin visually-hidden($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     clip: rect(1px, 1px, 1px, 1px);
     height: 1px;
     overflow: hidden;

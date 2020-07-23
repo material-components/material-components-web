@@ -21,7 +21,6 @@
 //
 
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/theme/mixins" as theme-mixins;
 @use "./functions";
 
@@ -33,7 +32,7 @@
 
   // postcss-bem-linter: define line-ripple
   .mdc-line-ripple {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       &::before,
       &::after {
         position: absolute;
@@ -57,7 +56,7 @@
       }
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       &::after {
         transition: functions.transition-value(transform),
           functions.transition-value(opacity);
@@ -66,14 +65,14 @@
   }
 
   .mdc-line-ripple--active::after {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       transform: scaleX(1);
       opacity: 1;
     }
   }
 
   .mdc-line-ripple--deactivating::after {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 0;
     }
   }
@@ -82,7 +81,7 @@
 @mixin active-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     &::after {
       @include theme-mixins.prop(border-bottom-color, $color);
     }
@@ -92,7 +91,7 @@
 @mixin inactive-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     &::before {
       @include theme-mixins.prop(border-bottom-color, $color);
     }

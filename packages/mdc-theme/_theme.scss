@@ -22,7 +22,6 @@
 
 @use "sass:map";
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins";
 @use "./custom-properties";
 @use "./gss";
 @use "./color";
@@ -31,7 +30,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   :root {
-    @include mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @each $style in map.keys(color.$property-values) {
         --mdc-theme-#{$style}: #{map.get(color.$property-values, $style)};
       }
@@ -41,13 +40,13 @@
   @each $style in map.keys(color.$property-values) {
     @if $style != 'background' and $style != 'surface' {
       .mdc-theme--#{$style} {
-        @include mixins.targets($feat-color) {
+        @include feature-targeting.targets($feat-color) {
           @include prop(color, $style, true);
         }
       }
     } @else {
       .mdc-theme--#{$style} {
-        @include mixins.targets($feat-color) {
+        @include feature-targeting.targets($feat-color) {
           @include prop(background-color, $style);
         }
       }
@@ -57,7 +56,7 @@
   // CSS rules for using primary and secondary (plus light/dark variants) as background colors.
   @each $style in ('primary', 'secondary') {
     .mdc-theme--#{$style}-bg {
-      @include mixins.targets($feat-color) {
+      @include feature-targeting.targets($feat-color) {
         @include prop(background-color, $style, true);
       }
     }

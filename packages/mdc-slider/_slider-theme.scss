@@ -21,7 +21,6 @@
 //
 
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
 @use "@material/ripple/mixins" as ripple-mixins;
 @use '@material/theme/mixins' as theme-mixins;
 
@@ -48,7 +47,7 @@ $tick-mark-opacity: 0.6;
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__track--active_fill {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.property(border-color, $color);
     }
   }
@@ -68,7 +67,7 @@ $tick-mark-opacity: 0.6;
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__track--inactive {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.property(background-color, $color);
 
       opacity: $opacity;
@@ -85,7 +84,7 @@ $tick-mark-opacity: 0.6;
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__thumb-knob {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.property(background-color, $color);
       @include theme-mixins.property(border-color, $color);
     }
@@ -111,7 +110,7 @@ $tick-mark-opacity: 0.6;
 @mixin tick-mark-active-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   .mdc-slider__tick-mark--active {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.property(background-color, $color);
     }
   }
@@ -125,7 +124,7 @@ $tick-mark-opacity: 0.6;
 @mixin tick-mark-inactive-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   .mdc-slider__tick-mark--inactive {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.property(background-color, $color);
     }
   }
@@ -145,7 +144,7 @@ $tick-mark-opacity: 0.6;
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__value-indicator {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.property(background-color, $color);
 
       opacity: $opacity;
@@ -162,7 +161,7 @@ $tick-mark-opacity: 0.6;
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__value-indicator {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.property(color, $color);
     }
   }

@@ -23,7 +23,6 @@
 @use "@material/theme/custom-properties";
 @use "@material/base/mixins" as base-mixins;
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/theme/mixins" as theme-mixins;
 @use "@material/theme/variables" as theme-variables;
 @use "./functions";
@@ -40,11 +39,11 @@
   }
 
   .mdc-elevation-transition {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: functions.transition-value();
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       will-change: variables.$property;
     }
   }
@@ -58,7 +57,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include overlay-selector_ {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include base-mixins.emit-once('mdc-elevation/common/structure') {
         position: absolute;
         border-radius: inherit;
@@ -71,7 +70,7 @@
       }
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       @include base-mixins.emit-once('mdc-elevation/common/animation') {
         transition: functions.overlay-transition-value();
       }
@@ -95,7 +94,7 @@
 @mixin shadow($box-shadow, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     /* @alternate */
     box-shadow: $box-shadow;
   }
@@ -107,7 +106,7 @@
 @mixin overlay-surface-position($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     /* @alternate */
     position: relative;
   }
@@ -129,7 +128,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include overlay-selector_ {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include theme-mixins.property(width, $width);
       @include theme-mixins.property(height, $height);
 
@@ -156,7 +155,7 @@
 @mixin overlay-fill-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     @include theme-mixins.property(background-color, $color);
   }
 }
@@ -171,7 +170,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   @include overlay-selector_ {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.property(opacity, $opacity);
     }
   }

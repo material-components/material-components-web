@@ -23,7 +23,6 @@
 @use "sass:list";
 @use "sass:meta";
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/animation/functions" as functions2;
 @use "@material/animation/variables" as animation-variables;
 @use "@material/rtl/mixins" as rtl-mixins;
@@ -72,7 +71,7 @@
     @include z-index(variables.$z-index, $query: $query);
     @include width(variables.$width, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
@@ -96,7 +95,7 @@
       }
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition-property: transform;
       transition-timing-function: animation-variables.$standard-curve-timing-function;
     }
@@ -105,7 +104,7 @@
   }
 
   .mdc-drawer--animate {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       transform: translateX(-100%);
 
       @include rtl-mixins.rtl {
@@ -115,7 +114,7 @@
   }
 
   .mdc-drawer--opening {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       transform: translateX(0);
 
       // Required to level the specificity with animate class.
@@ -124,13 +123,13 @@
       }
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition-duration: variables.$animation-enter;
     }
   }
 
   .mdc-drawer--closing {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       transform: translateX(-100%);
 
       @include rtl-mixins.rtl {
@@ -138,13 +137,13 @@
       }
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition-duration: variables.$animation-exit;
     }
   }
 
   .mdc-drawer__header {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       flex-shrink: 0;
       box-sizing: border-box;
       min-height: 64px; // same as $mdc-top-app-bar-row-height
@@ -165,13 +164,13 @@
     @include typography-mixins.typography(body2, $query: $query);
     @include typography-mixins.text-baseline($top: 20px, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       margin-bottom: 0;
     }
   }
 
   .mdc-drawer__content {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: 100%;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
@@ -185,7 +184,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-drawer--dismissible {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-position(left, 0);
 
       display: none;
@@ -198,7 +197,7 @@
   }
 
   .mdc-drawer-app-content {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-box(margin, left, 0);
 
       position: relative;
@@ -217,7 +216,7 @@
       $query: $query
     );
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-position(left, 0);
 
       display: none;
@@ -225,14 +224,14 @@
     }
 
     &.mdc-drawer--open {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: flex;
       }
     }
   }
 
   .mdc-drawer-scrim {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: none;
       position: fixed;
       top: 0;
@@ -242,39 +241,39 @@
       z-index: variables.$z-index - 1;
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition-property: opacity;
       transition-timing-function: animation-variables.$standard-curve-timing-function;
     }
 
     .mdc-drawer--open + & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: block;
       }
     }
 
     .mdc-drawer--animate + & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         opacity: 0;
       }
     }
 
     .mdc-drawer--opening + & {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition-duration: variables.$animation-enter;
       }
 
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         opacity: 1;
       }
     }
 
     .mdc-drawer--closing + & {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition-duration: variables.$animation-exit;
       }
 
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         opacity: 0;
       }
     }
@@ -291,7 +290,7 @@
   $feat-color: feature-targeting.create-target($query, color);
   $value: rgba(theme-variables.prop-value($color), variables.$divider-opacity);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     @include theme-mixins.prop(border-color, $value);
   }
 }
@@ -336,7 +335,7 @@
   );
 
   .mdc-drawer__title {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(color, $value);
     }
   }
@@ -352,7 +351,7 @@
   @include list-mixins.group-subheader-ink-color($value, $query: $query);
 
   .mdc-drawer__subtitle {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(color, $value);
     }
   }
@@ -414,7 +413,7 @@
   $feat-color: feature-targeting.create-target($query, color);
   $value: theme-variables.prop-value($color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     @include theme-mixins.prop(background-color, $value);
   }
 }
@@ -427,7 +426,7 @@
   );
 
   + .mdc-drawer-scrim {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(background-color, $value);
     }
   }
@@ -436,7 +435,7 @@
 @mixin z-index($value, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     z-index: $value;
   }
 }
@@ -444,12 +443,12 @@
 @mixin width($width, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     @include theme-mixins.property(width, $width);
   }
 
   &.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-box(margin, left, $width);
     }
   }
@@ -465,7 +464,7 @@
   .mdc-list-item {
     @include typography-mixins.typography(subtitle2, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: calc(48px - 2 * #{variables.$list-item-spacing});
       // To accomodate margin conflict.
       margin: (variables.$list-item-spacing * 2) 8px;
@@ -475,14 +474,14 @@
 
   // postcss-bem-linter: ignore
   .mdc-list-item:nth-child(1) {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       margin-top: 2px;
     }
   }
 
   // postcss-bem-linter: ignore
   .mdc-list-item:nth-last-child(1) {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       margin-bottom: 0;
     }
   }
@@ -492,7 +491,7 @@
     @include typography-mixins.typography(body2, $query: $query);
     @include typography-mixins.text-baseline($top: 24px, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       margin: 0;
       padding: 0 variables.$surface-padding;
     }
@@ -500,7 +499,7 @@
 
   // postcss-bem-linter: ignore
   .mdc-list-divider {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       margin: 3px 0 4px;
     }
   }
@@ -509,7 +508,7 @@
   // postcss-bem-linter: ignore
   .mdc-list-item__text,
   .mdc-list-item__graphic {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       pointer-events: none;
     }
   }

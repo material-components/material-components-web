@@ -26,7 +26,6 @@
 @use "@material/animation/variables" as variables2;
 @use "@material/base/mixins" as base-mixins;
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/theme/mixins" as theme-mixins;
 @use "./functions";
 @use "./keyframes";
@@ -64,7 +63,7 @@
 @mixin surface-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     position: relative;
     outline: none;
     overflow: hidden;
@@ -73,7 +72,7 @@
 
 @mixin unbounded-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     overflow: visible;
   }
 }
@@ -84,7 +83,7 @@
   // Ensure that styles needed by any component using MDC Ripple are emitted, but only once.
   // (Every component using MDC Ripple imports these mixins, but doesn't necessarily import
   // mdc-ripple.scss.)
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     @include base-mixins.emit-once('mdc-ripple/common/animation') {
       @include keyframes.keyframes_;
     }
@@ -99,7 +98,7 @@
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     --mdc-ripple-fg-size: 0;
     --mdc-ripple-left: 0;
     --mdc-ripple-top: 0;
@@ -116,7 +115,7 @@
 
   #{$ripple-target}::before,
   #{$ripple-target}::after {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: absolute;
       border-radius: 50%;
       opacity: 0;
@@ -126,13 +125,13 @@
   }
 
   #{$ripple-target}::before {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       // Also transition background-color to avoid unnatural color flashes when toggling activated/selected state
       transition: opacity variables.$states-wash-duration linear,
         background-color variables.$states-wash-duration linear;
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       z-index: 1; // Ensure that the ripple wash for hover/focus states is displayed on top of positioned child elements
     }
   }
@@ -141,13 +140,13 @@
 
   &.mdc-ripple-upgraded {
     #{$ripple-target}::before {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         transform: scale(var(--mdc-ripple-fg-scale, 1));
       }
     }
 
     #{$ripple-target}::after {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         top: 0;
         /* @noflip */
         left: 0;
@@ -159,7 +158,7 @@
 
   &.mdc-ripple-upgraded--unbounded {
     #{$ripple-target}::after {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         top: var(--mdc-ripple-top, 0);
         /* @noflip */
         left: var(--mdc-ripple-left, 0);
@@ -169,7 +168,7 @@
 
   &.mdc-ripple-upgraded--foreground-activation {
     #{$ripple-target}::after {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         animation: mdc-ripple-fg-radius-in variables.$translate-duration
             forwards,
           mdc-ripple-fg-opacity-in variables.$fade-in-duration forwards;
@@ -179,11 +178,11 @@
 
   &.mdc-ripple-upgraded--foreground-deactivation {
     #{$ripple-target}::after {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         animation: mdc-ripple-fg-opacity-out variables.$fade-out-duration;
       }
 
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         // Retain transform from mdc-ripple-fg-radius-in activation
         transform: translate(var(--mdc-ripple-fg-translate-end, 0))
           scale(var(--mdc-ripple-fg-scale, 1));
@@ -201,7 +200,7 @@
 
   #{$ripple-target}::before,
   #{$ripple-target}::after {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @if color.alpha(theme-variables.prop-value($color)) > 0 {
         @include theme-mixins.prop(background-color, $color);
       } @else {
@@ -263,7 +262,7 @@
   &:hover {
     #{$ripple-target}::before {
       // Opacity falls under color because the chosen opacity is color-dependent in typical usage
-      @include feature-targeting-mixins.targets($feat-color) {
+      @include feature-targeting.targets($feat-color) {
         opacity: $opacity;
       }
     }
@@ -316,11 +315,11 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   // Note that this duration is only effective on focus, not blur
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition-duration: 75ms;
   }
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     opacity: $opacity;
   }
 }
@@ -338,19 +337,19 @@
   &:not(.mdc-ripple-upgraded) {
     // Apply press additively by using the ::after pseudo-element
     #{$ripple-target}::after {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition: opacity variables.$fade-out-duration linear;
       }
     }
 
     &:active {
       #{$ripple-target}::after {
-        @include feature-targeting-mixins.targets($feat-animation) {
+        @include feature-targeting.targets($feat-animation) {
           transition-duration: variables.$fade-in-duration;
         }
 
         // Opacity falls under color because the chosen opacity is color-dependent in typical usage
-        @include feature-targeting-mixins.targets($feat-color) {
+        @include feature-targeting.targets($feat-color) {
           opacity: $opacity;
         }
       }
@@ -358,7 +357,7 @@
   }
 
   &.mdc-ripple-upgraded {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       --mdc-ripple-fg-opacity: #{$opacity};
     }
   }
@@ -396,7 +395,7 @@
     // stylelint-disable-next-line selector-max-type
     #{$ripple-target}::before {
       // Opacity falls under color because the chosen opacity is color-dependent.
-      @include feature-targeting-mixins.targets($feat-color) {
+      @include feature-targeting.targets($feat-color) {
         opacity: $activated-opacity;
       }
     }
@@ -426,7 +425,7 @@
     // stylelint-disable-next-line selector-max-type
     #{$ripple-target}::before {
       // Opacity falls under color because the chosen opacity is color-dependent.
-      @include feature-targeting-mixins.targets($feat-color) {
+      @include feature-targeting.targets($feat-color) {
         opacity: $selected-opacity;
       }
     }
@@ -450,7 +449,7 @@
 
   #{$ripple-target}::before,
   #{$ripple-target}::after {
-    @include feature-targeting-mixins.targets($feat-struture) {
+    @include feature-targeting.targets($feat-struture) {
       top: calc(50% - #{$radius});
       /* @noflip */
       left: calc(50% - #{$radius});
@@ -461,7 +460,7 @@
 
   &.mdc-ripple-upgraded {
     #{$ripple-target}::after {
-      @include feature-targeting-mixins.targets($feat-struture) {
+      @include feature-targeting.targets($feat-struture) {
         width: var(--mdc-ripple-fg-size, $radius);
         height: var(--mdc-ripple-fg-size, $radius);
       }
@@ -478,7 +477,7 @@
 
   #{$ripple-target}::before,
   #{$ripple-target}::after {
-    @include feature-targeting-mixins.targets($feat-struture) {
+    @include feature-targeting.targets($feat-struture) {
       top: calc(50% - #{$radius / 2});
       /* @noflip */
       left: calc(50% - #{$radius / 2});
@@ -490,7 +489,7 @@
   &.mdc-ripple-upgraded {
     #{$ripple-target}::before,
     #{$ripple-target}::after {
-      @include feature-targeting-mixins.targets($feat-struture) {
+      @include feature-targeting.targets($feat-struture) {
         top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
         /* @noflip */
         left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
@@ -500,7 +499,7 @@
     }
 
     #{$ripple-target}::after {
-      @include feature-targeting-mixins.targets($feat-struture) {
+      @include feature-targeting.targets($feat-struture) {
         width: var(--mdc-ripple-fg-size, $radius);
         height: var(--mdc-ripple-fg-size, $radius);
       }
@@ -549,7 +548,7 @@
 @mixin target-common($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     position: absolute;
     top: 0;
     left: 0;

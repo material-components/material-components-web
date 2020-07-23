@@ -20,7 +20,6 @@
 // THE SOFTWARE.
 //
 
-@use "@material/feature-targeting/mixins" as feature-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use "@material/ripple/mixins" as ripple;
 @use "@material/rtl/mixins" as rtl;
@@ -47,7 +46,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
     @include color(variables.$color, $query);
     @include touch-target-width(variables.$touch-target-width, $query);
 
-    @include feature-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border: none;
       display: inline-flex;
       position: relative;
@@ -60,7 +59,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
       -webkit-appearance: none;
     }
 
-    @include feature-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       background: none;
     }
 
@@ -68,7 +67,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
     // color is affected regardless of load order without needing
     // !important or HTML tag targetting.
     .mdc-chip-trailing-action__icon {
-      @include feature-mixins.targets($feat-color) {
+      @include feature-targeting.targets($feat-color) {
         fill: currentColor;
         color: inherit;
       }
@@ -93,7 +92,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
     );
 
     #{$ripple-target} {
-      @include feature-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         position: absolute;
         // Ripple needs content-box as the box sizing and box-sizing: border-box
         // is often set as a default, so we override that here.
@@ -112,7 +111,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-chip-trailing-action {
-    @include feature-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme.prop(color, $color);
     }
   }
@@ -124,7 +123,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-chip-trailing-action__icon {
-    @include feature-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: $size;
       width: $size;
       font-size: $size;
@@ -139,7 +138,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-chip-trailing-action {
-    @include feature-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl.reflexive-property(margin, $left, $right);
     }
   }
@@ -151,7 +150,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-chip-trailing-action__touch {
-    @include feature-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: $width;
     }
   }

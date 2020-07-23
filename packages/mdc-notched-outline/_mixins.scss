@@ -27,7 +27,6 @@
 @use "@material/shape/mixins" as shape-mixins;
 @use "@material/floating-label/mixins" as floating-label-mixins;
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "./variables";
 
@@ -40,7 +39,7 @@
     &__leading,
     &__notch,
     &__trailing {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         box-sizing: border-box;
         height: 100%;
         border-top: variables.$border-width solid;
@@ -50,7 +49,7 @@
     }
 
     &__leading {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-property(
           border,
           variables.$border-width solid,
@@ -62,7 +61,7 @@
     }
 
     &__trailing {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-property(
           border,
           none,
@@ -74,7 +73,7 @@
     }
 
     &__notch {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         flex: 0 0 auto;
         width: auto;
         max-width: calc(100% - #{variables.$leading-width} * 2);
@@ -82,7 +81,7 @@
     }
 
     .mdc-floating-label {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: inline-block;
         position: relative;
         max-width: 100%;
@@ -90,13 +89,13 @@
     }
 
     .mdc-floating-label--float-above {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         text-overflow: clip;
       }
     }
 
     &--upgraded .mdc-floating-label--float-above {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         max-width: calc(100% / 0.75);
       }
     }
@@ -104,7 +103,7 @@
 
   .mdc-notched-outline--notched {
     .mdc-notched-outline__notch {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-box(padding, right, 8px);
 
         border-top: none;
@@ -114,7 +113,7 @@
 
   .mdc-notched-outline--no-label {
     .mdc-notched-outline__notch {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         padding: 0;
       }
     }
@@ -127,7 +126,7 @@
   .mdc-notched-outline__leading,
   .mdc-notched-outline__notch,
   .mdc-notched-outline__trailing {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(border-color, $color);
     }
   }
@@ -139,7 +138,7 @@
   .mdc-notched-outline__leading,
   .mdc-notched-outline__notch,
   .mdc-notched-outline__trailing {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border-width: $width;
     }
   }
@@ -154,7 +153,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-notched-outline--notched .mdc-notched-outline__notch {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       padding-top: $stroke-width;
     }
   }
@@ -197,7 +196,7 @@
       $query: $query
     );
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @if ($top-left-radius-px > variables.$leading-width) {
         // If the radius is bigger than the default leading width, we need to
         // increase the leading width
@@ -224,7 +223,7 @@
   // Similar to above, adjust the max-width of the notch if we adjusted the
   // leading's width.
   .mdc-notched-outline__notch {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @if ($top-left-radius-px > variables.$leading-width) {
         max-width: calc(100% - #{$top-left-radius-px} * 2);
         @if ($top-left-is-custom-prop) {
@@ -268,7 +267,7 @@
   );
 
   .mdc-floating-label--float-above {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       font-size: ($scale * 1rem);
     }
   }
@@ -285,7 +284,7 @@
 
     // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         font-size: 1rem;
       }
     }
@@ -318,7 +317,7 @@
   );
 
   .mdc-floating-label--float-above {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       font-size: ($scale * 1rem);
     }
   }
@@ -335,7 +334,7 @@
 
     // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         font-size: 1rem;
       }
     }
@@ -351,7 +350,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   :not(.mdc-notched-outline--notched) .mdc-notched-outline__notch {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       max-width: $max-width;
     }
   }
@@ -363,7 +362,7 @@
 @mixin base_($query) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: flex;
     position: absolute;
     top: 0;

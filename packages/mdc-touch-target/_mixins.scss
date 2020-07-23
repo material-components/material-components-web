@@ -22,7 +22,6 @@
 
 @use "@material/base/mixins" as base-mixins;
 @use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
 @use "./variables";
 
 /// Styles applied to the component's touch target wrapper element.
@@ -30,7 +29,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-touch-target-wrapper {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       // Ensure that styles are only emitted once across all components that
       // have increased touch targets.
       @include base-mixins.emit-once('mdc-touch-target/wrapper') {
@@ -50,7 +49,7 @@
 @mixin touch-target($set-width: false, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     position: absolute;
     top: 50%;
     right: 0;
@@ -58,14 +57,14 @@
   }
 
   @if $set-width {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       /* @noflip */
       left: 50%;
       width: variables.$width;
       transform: translate(-50%, -50%);
     }
   } @else {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       left: 0;
       transform: translateY(-50%);
     }
@@ -83,7 +82,7 @@
 
   $vertical-margin-value: (variables.$height - $component-height) / 2;
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     margin-top: $vertical-margin-value;
     margin-bottom: $vertical-margin-value;
   }
@@ -91,7 +90,7 @@
   @if $component-width {
     $horizontal-margin-value: (variables.$width - $component-width) / 2;
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       margin-right: $horizontal-margin-value;
       margin-left: $horizontal-margin-value;
     }
