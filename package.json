@@ -49,6 +49,7 @@
     "babel-types": "^6.24.1",
     "camel-case": "^3.0.0",
     "conventional-changelog-cli": "^2.0.31",
+    "core-js": "^3.6.5",
     "cp-file": "^7.0.0",
     "cross-env": "^5.0.0",
     "css-loader": "^2.0.0",
