@@ -23,9 +23,8 @@
 
 import {emitEvent} from '../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../testing/helpers/foundation';
-// import {MDCSegmentedButtonSegmentFoundation} from '../../segment/index';
 import {MDCSegmentedButton, MDCSegmentedButtonFoundation} from '../index';
-import {strings} from '../constants';
+import {events} from '../constants';
 import {test_strings, test_indices, test_segment_ids} from './constants';
 
 const getFixtureMultiWithLabel = () => {
@@ -112,7 +111,7 @@ describe('MDCSegmentedButton', () => {
   it('#initialSyncWithDOM sets up event handlers', () => {
     const {root, mockFoundation} = setupMockFoundationTest();
 
-    emitEvent(root, strings.SELECTED_EVENT);
+    emitEvent(root, events.SELECTED);
     expect(mockFoundation.handleSelected).toHaveBeenCalledTimes(1);
   });
 
@@ -120,7 +119,7 @@ describe('MDCSegmentedButton', () => {
     const {root, component, mockFoundation} = setupMockFoundationTest();
     component.destroy();
 
-    emitEvent(root, strings.SELECTED_EVENT);
+    emitEvent(root, events.SELECTED);
     expect(mockFoundation.handleSelected).not.toHaveBeenCalled();
   });
 
@@ -191,11 +190,11 @@ describe('MDCSegmentedButton', () => {
       expect(component.segments[2].setUnselected).not.toHaveBeenCalled();
     });
 
-    it('#notifySelectedChange emits ' + strings.CHANGE_EVENT, () => {
+    it('#notifySelectedChange emits ' + events.CHANGE, () => {
       const {component} = setupTest();
       const handler = jasmine.createSpy('change handler');
 
-      component.listen(strings.CHANGE_EVENT, handler);
+      component.listen(events.CHANGE, handler);
 
       (component.getDefaultFoundation() as any).adapter.notifySelectedChange({
         index: test_indices.SELECTED,

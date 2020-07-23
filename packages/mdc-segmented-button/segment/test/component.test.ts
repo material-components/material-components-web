@@ -21,11 +21,10 @@
  * THE SOFTWARE.
  */
 
-//  import {MDCRipple} from '../../../mdc-ripple/index';
 import {emitEvent} from '../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../testing/helpers/foundation';
 import {MDCSegmentedButtonSegment, MDCSegmentedButtonSegmentFoundation} from '../index';
-import {strings} from '../constants';
+import {events, attributes, booleans} from '../constants';
 import {test_strings} from './constants';
 
 const getFixtureMultiSelectWithLabel = () => {
@@ -54,10 +53,7 @@ const setupMockFoundationTest = (root = getFixtureMultiSelectWithLabel()) => {
 }
 
 /**
- * Still need tests for:
- *  - ripple
- *  - touch
- *  - having icon?
+ * TODO: add tests for ripple, touch, and having icon
  */
 describe('MDCSegmentedButtonSegment', () => {
   it('attachTo return an MDCSegmentedButtonSegment instance', () => {
@@ -67,7 +63,7 @@ describe('MDCSegmentedButtonSegment', () => {
   it('#initialSyncWithDOM sets up event handlers', () => {
     const {root, mockFoundation} = setupMockFoundationTest();
 
-    emitEvent(root, strings.CLICK_EVENT);
+    emitEvent(root, events.CLICK);
     expect(mockFoundation.handleClick).toHaveBeenCalledTimes(1);
   });
 
@@ -75,7 +71,7 @@ describe('MDCSegmentedButtonSegment', () => {
     const {root, component, mockFoundation} = setupMockFoundationTest();
     component.destroy();
 
-    emitEvent(root, strings.CLICK_EVENT);
+    emitEvent(root, events.CLICK);
     expect(mockFoundation.handleClick).not.toHaveBeenCalled();
   });
 
@@ -93,21 +89,21 @@ describe('MDCSegmentedButtonSegment', () => {
     it('#getAttr returns value of attribute of root element', () => {
       const {root, component} = setupTest();
 
-      root.setAttribute('aria-pressed', 'false');
-      expect((component.getDefaultFoundation() as any).adapter.getAttr('aria-pressed')).toEqual('false');
-      root.setAttribute('aria-pressed', 'true');
-      expect((component.getDefaultFoundation() as any).adapter.getAttr('aria-pressed')).toEqual('true');
-      root.removeAttribute('aria-pressed');
-      expect((component.getDefaultFoundation() as any).adapter.getAttr('aria-pressed')).toEqual(null);
+      root.setAttribute(attributes.ARIA_PRESSED, 'false');
+      expect((component.getDefaultFoundation() as any).adapter.getAttr(attributes.ARIA_PRESSED)).toEqual(booleans.FALSE);
+      root.setAttribute(attributes.ARIA_PRESSED, 'true');
+      expect((component.getDefaultFoundation() as any).adapter.getAttr(attributes.ARIA_PRESSED)).toEqual(booleans.TRUE);
+      root.removeAttribute(attributes.ARIA_PRESSED);
+      expect((component.getDefaultFoundation() as any).adapter.getAttr(attributes.ARIA_PRESSED)).toEqual(null);
     });
 
     it('#setAttr sets the value of attribute of root element', () => {
       const {root, component} = setupTest();
 
-      (component.getDefaultFoundation() as any).adapter.setAttr('aria-pressed', 'true');
-      expect(root.getAttribute('aria-pressed')).toEqual('true');
-      (component.getDefaultFoundation() as any).adapter.setAttr('aria-pressed', 'false');
-      expect(root.getAttribute('aria-pressed')).toEqual('false');
+      (component.getDefaultFoundation() as any).adapter.setAttr(attributes.ARIA_PRESSED, booleans.TRUE);
+      expect(root.getAttribute(attributes.ARIA_PRESSED)).toEqual(booleans.TRUE);
+      (component.getDefaultFoundation() as any).adapter.setAttr(attributes.ARIA_PRESSED, booleans.FALSE);
+      expect(root.getAttribute(attributes.ARIA_PRESSED)).toEqual(booleans.FALSE);
     });
 
     it('#addClass adds class to root element', () => {
@@ -135,11 +131,11 @@ describe('MDCSegmentedButtonSegment', () => {
       expect((component.getDefaultFoundation() as any).adapter.hasClass(test_strings.CLASS)).toBeFalsy();
     });
 
-    it('#notifySelectedChange emits ' + strings.SELECTED_EVENT, () => {
+    it('#notifySelectedChange emits ' + events.SELECTED, () => {
       const {component} = setupTest();
       const handler = jasmine.createSpy('selected handler');
 
-      component.listen(strings.SELECTED_EVENT, handler);
+      component.listen(events.SELECTED, handler);
 
       (component.getDefaultFoundation() as any).adapter.notifySelectedChange(true);
       expect(handler).toHaveBeenCalledWith(jasmine.anything());

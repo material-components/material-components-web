@@ -27,7 +27,7 @@ import {MDCSegmentedButtonSegment, MDCSegmentedButtonSegmentFactory} from '../se
 import {SegmentDetail, MDCSegmentedButtonEvent} from '../types';
 import {MDCSegmentedButtonAdapter} from './adapter';
 import {MDCSegmentedButtonFoundation} from './foundation';
-import {strings} from './constants';
+import {selectors, events} from './constants';
 
 export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundation> {
   static attachTo(root: Element): MDCSegmentedButton {
@@ -49,18 +49,21 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
     this.segments_ = this.instantiateSegments(this.segmentFactory);
   }
 
+  /**
+   * @param segmentFactory Factory to create new child segments
+   * @return Returns list of child segments found in DOM
+   */
   private instantiateSegments(segmentFactory: MDCSegmentedButtonSegmentFactory): MDCSegmentedButtonSegment[] {
     const segmentElements: Element[] =
-        [].slice.call(this.root.querySelectorAll(strings.SEGMENT_SELECTOR));
+        [].slice.call(this.root.querySelectorAll(selectors.SEGMENT));
     return segmentElements.map((el: Element) => segmentFactory(el));
   }
 
   initialSyncWithDOM() {
     this.handleSelected = (event) =>
         this.foundation.handleSelected(event.detail);
-    this.listen(strings.SELECTED_EVENT, this.handleSelected);
+    this.listen(events.SELECTED, this.handleSelected);
 
-    // foundation is undefined in #instantiateSegments
     const isSingleSelect = this.foundation.isSingleSelect();
     this.segments_.forEach((segment, index: number) => {
       segment.setIndex(index);
@@ -73,7 +76,7 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
       segment.destroy();
     });
 
-    this.unlisten(strings.SELECTED_EVENT, this.handleSelected);
+    this.unlisten(events.SELECTED, this.handleSelected);
 
     super.destroy();
   }
@@ -106,7 +109,7 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
       },
       notifySelectedChange: (detail) => {
         this.emit<SegmentDetail>(
-          strings.CHANGE_EVENT,
+          events.CHANGE,
           detail,
           true /* shouldBubble */
         );
@@ -115,22 +118,46 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
     return new MDCSegmentedButtonFoundation(adapter);
   }
 
+  /**
+   * @return Returns readonly list of selected child segments as SegmentDetails
+   */
   getSelectedSegments(): readonly SegmentDetail[] {
     return this.foundation.getSelectedSegments();
   }
 
+  /**
+   * Sets identified segment to be selected
+   * 
+   * @param indexOrSegmentId Number index or string segmentId that identifies
+   * child segment
+   */
   selectSegment(indexOrSegmentId: number | string) {
     this.foundation.selectSegment(indexOrSegmentId);
   }
 
+  /**
+   * Sets identified segment to be not selected
+   * 
+   * @param indexOrSegmentId Number index or string segmentId that identifies
+   * child segment
+   */
   unselectSegment(indexOrSegmentId: number | string) {
     this.foundation.unselectSegment(indexOrSegmentId);
   }
 
+  /**
+   * @param indexOrSegmentId Number index or string segmentId that identifies
+   * child segment
+   * @return Returns true if identified child segment is currently selected,
+   * otherwise returns false
+   */
   isSegmentSelected(indexOrSegmentId: number | string): boolean {
     return this.foundation.isSegmentSelected(indexOrSegmentId);
   }
 
+  /**
+   * @return Returns child segments mapped to readonly SegmentDetail list
+   */
   private mappedSegments(): readonly SegmentDetail[] {
     return this.segments_.map((segment: MDCSegmentedButtonSegment, index: number) => {
       return {
