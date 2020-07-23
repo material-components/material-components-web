@@ -100,7 +100,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private resizeListener!:
       SpecificEventListener<'resize'>;  // Assigned in #initialize.
 
-  constructor(adapter?: Partial<MDCSliderAdapter>) {
+  constructor(readonly adapter: MDCSliderAdapter) {
     super({...MDCSliderFoundation.defaultAdapter, ...adapter});
   }
 

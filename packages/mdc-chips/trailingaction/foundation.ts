@@ -43,7 +43,7 @@ export class MDCChipTrailingActionFoundation extends
     };
   }
 
-  constructor(adapter?: Partial<MDCChipTrailingActionAdapter>) {
+  constructor(readonly adapter: MDCChipTrailingActionAdapter) {
     super({...MDCChipTrailingActionFoundation.defaultAdapter, ...adapter});
   }
 

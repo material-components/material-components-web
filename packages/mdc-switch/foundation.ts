@@ -47,7 +47,7 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
     };
   }
 
-  constructor(adapter?: Partial<MDCSwitchAdapter>) {
+  constructor(readonly adapter: MDCSwitchAdapter) {
     super({...MDCSwitchFoundation.defaultAdapter, ...adapter});
   }
 

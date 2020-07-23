@@ -91,7 +91,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    */
   private shouldFocusPrimaryActionOnClick_ = true;
 
-  constructor(adapter?: Partial<MDCChipAdapter>) {
+  constructor(readonly adapter: MDCChipAdapter) {
     super({...MDCChipFoundation.defaultAdapter, ...adapter});
   }
 

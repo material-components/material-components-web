@@ -42,7 +42,7 @@ export class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
     };
   }
 
-  constructor(adapter?: Partial<MDCRadioAdapter>) {
+  constructor(readonly adapter: MDCRadioAdapter) {
     super({...MDCRadioFoundation.defaultAdapter, ...adapter});
   }
 
