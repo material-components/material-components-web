@@ -45,7 +45,7 @@
 @use "@material/theme/mixins" as theme-mixins;
 @use "@material/theme/variables" as theme-variables;
 @use "@material/typography/mixins" as typography-mixins;
-@use "./helper-text/mixins" as helper-text-mixins;
+@use "./helper-text" as helper-text;
 @use "./icon/variables" as icon-variables;
 @use "./icon/mixins" as icon-mixins;
 @use "./variables";
@@ -73,8 +73,8 @@
       $query: $query
     );
     @include focused-dropdown-icon-color(primary, $query: $query);
-    @include helper-text-mixins.helper-text-color(
-      variables.$helper-text-color,
+    @include helper-text.helper-text-color(
+      helper-text.$helper-text-color,
       $query: $query
     );
     @include icon-mixins.icon-color(variables.$icon-color, $query: $query);
@@ -110,8 +110,8 @@
       $query: $query
     );
     @include disabled-ink-color(variables.$disabled-ink-color, $query: $query);
-    @include helper-text-mixins.disabled-helper-text-color(
-      variables.$disabled-helper-text-color,
+    @include helper-text.disabled-helper-text-color(
+      helper-text.$disabled-helper-text-color,
       $query: $query
     );
     @include icon-mixins.disabled-icon-color(
@@ -127,10 +127,7 @@
       @include disabled-bottom-line-color(GrayText, $query: $query);
       @include disabled-outline-color(GrayText, $query: $query);
       @include icon-mixins.disabled-icon-color(GrayText, $query: $query);
-      @include helper-text-mixins.disabled-helper-text-color(
-        GrayText,
-        $query: $query
-      );
+      @include helper-text.disabled-helper-text-color(GrayText, $query: $query);
     }
 
     // Floating label private mixin
@@ -217,7 +214,7 @@
     @include bottom-line-color(variables.$error-color, $query: $query);
     @include focused-bottom-line-color(variables.$error-color, $query: $query);
     @include focused-label-color(variables.$error-color, $query: $query);
-    @include helper-text-mixins.helper-text-validation-color(
+    @include helper-text.helper-text-validation-color(
       variables.$error-color,
       $query: $query
     );

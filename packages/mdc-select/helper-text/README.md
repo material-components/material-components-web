@@ -23,7 +23,7 @@ Helper text gives context about a select, such as how the selection will be used
 ### Styles
 
 ```scss
-@use "@material/select/helper-text/mdc-select-helper-text";
+@use '@material/select/styles';
 ```
 
 ### JavaScript instantiation

@@ -27,7 +27,7 @@
 @forward "@material/ripple/mixins" as mdc-ripple-* hide mdc-ripple-states, mdc-ripple-states-activated, mdc-ripple-states-base-color, mdc-ripple-states-focus-opacity, mdc-ripple-states-focus-opacity-properties-, mdc-ripple-states-hover-opacity, mdc-ripple-states-interactions-, mdc-ripple-states-opacities, mdc-ripple-states-press-opacity, mdc-ripple-states-selected;
 @forward "icon/mixins" as mdc-select-*;
 @forward "mixins" as mdc-select-*;
-@forward "helper-text/mixins" as mdc-select-*;
+@forward "helper-text" as mdc-select-*;
 @forward "@material/theme/functions" as mdc-theme-*;
 @forward "@material/feature-targeting/functions" as mdc-feature-*;
 @forward "@material/typography/functions" as mdc-typography-*;

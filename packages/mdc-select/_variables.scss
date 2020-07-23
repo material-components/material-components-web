@@ -62,7 +62,6 @@ $label-color: rgba(variables.prop-value(on-surface), 0.6) !default;
 $focused-label-color: rgba(variables.prop-value(primary), 0.87) !default;
 $bottom-line-idle-color: rgba(variables.prop-value(on-surface), 0.42) !default;
 $bottom-line-hover-color: rgba(variables.prop-value(on-surface), 0.87) !default;
-$helper-text-color: rgba(variables.prop-value(on-surface), 0.6) !default;
 
 $fill-color: color.mix(
   variables.prop-value(on-surface),
@@ -80,10 +79,6 @@ $disabled-fill-color: color.mix(
   2%
 ) !default;
 $disabled-fill-border: rgba(variables.prop-value(on-surface), 0.06) !default;
-$disabled-helper-text-color: rgba(
-  variables.prop-value(on-surface),
-  0.38
-) !default;
 $disabled-bottom-line-color: rgba(
   variables.prop-value(on-surface),
   0.06

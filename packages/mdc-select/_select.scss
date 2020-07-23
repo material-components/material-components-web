@@ -20,4 +20,9 @@
 // THE SOFTWARE.
 //
 
-@forward '../select-helper-text-theme';
+@use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use './select-helper-text';
+
+@mixin core-styles($query: feature-targeting-functions.all()) {
+  @include select-helper-text.helper-text-core-styles($query: $query);
+}
