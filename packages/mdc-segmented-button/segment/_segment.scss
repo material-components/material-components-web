@@ -22,42 +22,33 @@
 
 // Core: Define complete styles to render component segment, including base and theme styles
 
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+@use "@material/feature-targeting";
 @use "@material/typography/mixins" as typography-mixins;
 @use './segment-theme';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   // TODO: include test for element resizing besides the left/right border
   .mdc-segmented-button__segment {
     @include base($query);
-    @include unselected($query);
+    @include _unselected($query);
 
     &:hover {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         cursor: pointer;
       }
     }
 
-    // TODO: verify that this is still needed (cancels ripple focus border)
-    &:focus {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        outline-width: 0;
-      }
-    }
-
-    // TODO: this CSS doesn't work if the buttons are wrapped by divs
     &:first-child {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         border-radius: segment-theme.$border-radius 0px 0px
           segment-theme.$border-radius;
       }
     }
 
     &:last-child {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         border-right-width: segment-theme.$border-width;
         border-radius: 0px segment-theme.$border-radius
           segment-theme.$border-radius 0px;
@@ -67,11 +58,11 @@
 
   // Style for when element is selected
   .mdc-segmented-button__segment--selected {
-    @include selected($query);
+    @include _selected($query);
 
     // Avoids double borders
     + .mdc-segmented-button__segment {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         border-left: hidden;
       }
     }
@@ -84,26 +75,17 @@
   .mdc-segmented-button__icon + .mdc-segmented-button__label {
     @include label($query);
   }
-
-  .mdc-segmented-button--touch {
-    //TODO
-  }
-
-  .mdc-segmented-button__ripple {
-    //TODO
-  }
-
-  .mdc-segmented-button__touch {
-    //TODO
-  }
 }
 
-@mixin base($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin base($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include typography-mixins.typography(button, $query);
-
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include segment-theme.outline-color(
+    segment-theme.$unselected-outline-color,
+    $query
+  );
+  @include feature-targeting.targets($feat-structure) {
     display: inline-flex;
     vertical-align: top;
     align-items: center;
@@ -114,15 +96,11 @@
   }
 }
 
-@mixin unselected($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin _unselected($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include segment-theme.unselected-ink-color(
     segment-theme.$unselected-ink-color,
-    $query
-  );
-  @include segment-theme.unselected-outline-color(
-    segment-theme.$unselected-outline-color,
     $query
   );
   @include segment-theme.unselected-container-fill-color(
@@ -131,20 +109,16 @@
   );
 
   // Avoids double borders
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     border-right-width: 0;
   }
 }
 
-@mixin selected($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin _selected($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include segment-theme.selected-ink-color(
     segment-theme.$selected-ink-color,
-    $query
-  );
-  @include segment-theme.selected-outline-color(
-    segment-theme.$selected-outline-color,
     $query
   );
   @include segment-theme.selected-container-fill-color(
@@ -153,30 +127,27 @@
   );
 
   // Avoids double borders
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     border-right-width: segment-theme.$border-width;
   }
 }
 
-@mixin icon($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target(
-    $query,
-    typography
-  );
+@mixin icon($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: segment-theme.$icon-width;
   }
-  @include feature-targeting-mixins.targets($feat-typography) {
+  @include feature-targeting.targets($feat-typography) {
     font-size: segment-theme.$icon-font-size;
   }
 }
 
-@mixin label($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin label($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     padding-left: segment-theme.$label-padding;
   }
 }
