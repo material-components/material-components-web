@@ -22,8 +22,8 @@
 
 // Core: Define complete styles to render component segment, including base and theme styles
 
-@use "@material/feature-targeting";
-@use "@material/typography/mixins" as typography-mixins;
+@use '@material/feature-targeting';
+@use '@material/typography/mixins' as typography-mixins;
 @use './segment-theme';
 
 @mixin core-styles($query: feature-targeting.all()) {

@@ -22,9 +22,9 @@
 
 // Theme: Variables, functions, and mixins required to theme component segment
 
-@use "@material/feature-targeting";
-@use "@material/theme/color" as theme-color;
-@use "@material/theme/custom-properties";
+@use '@material/feature-targeting';
+@use '@material/theme/color' as theme-color;
+@use '@material/theme/custom-properties';
 
 $on-surface: theme-color.$on-surface;
 $surface: theme-color.$surface;
@@ -46,9 +46,8 @@ $icon-width: 24px;
 $icon-font-size: 18px;
 $label-padding: 6px;
 
-/**
-  * Sets the border color of the segment
-  */
+/// Sets the border color of the segment
+/// @param {String} $color - Color of segment outline
 @mixin outline-color($color, $query: feature-targeting.all()) {
   .mdc-segmented-button__segment {
     $property: custom-properties.create(
@@ -59,9 +58,8 @@ $label-padding: 6px;
   }
 }
 
-/**
-  * Sets the text and icon color within the segment when it is not selected
-  */
+/// Sets the text and icon color within the segment when it is not selected
+/// @param {String} $color - Color of text and icon in segment
 @mixin unselected-ink-color($color, $query: feature-targeting.all()) {
   .mdc-segmented-button__segment {
     $property: custom-properties.create(
@@ -72,9 +70,8 @@ $label-padding: 6px;
   }
 }
 
-/**
-  * Sets the background fill color of the segment when it is not selected
-  */
+/// Sets the background fill color of the segment when it is not selected
+/// @param {String} $color - Color of segment background
 @mixin unselected-container-fill-color(
   $color,
   $query: feature-targeting.all()
@@ -88,9 +85,8 @@ $label-padding: 6px;
   }
 }
 
-/**
-  * Sets the text and icon color within the segment when it is selected
-  */
+/// Sets the text and icon color within the segment when it is selected
+/// @param {String} $color - Color of text and icon in segment
 @mixin selected-ink-color($color, $query: feature-targeting.all()) {
   .mdc-segmented-button__segment--selected {
     $property: custom-properties.create(
@@ -101,9 +97,8 @@ $label-padding: 6px;
   }
 }
 
-/**
-  * Sets the background fill color of the segment when it is selected
-  */
+/// Sets the background fill color of the segment when it is not selected
+/// @param {String} $color - Color of segment background
 @mixin selected-container-fill-color($color, $query: feature-targeting.all()) {
   .mdc-segmented-button__segment--selected {
     $property: custom-properties.create(
@@ -114,9 +109,8 @@ $label-padding: 6px;
   }
 }
 
-/**
-  * Sets the text and icon color
-  */
+/// Sets the text and icon color
+/// @param {Map} $property - Custom property of text and icon color
 @mixin _ink-color($property, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
@@ -125,9 +119,8 @@ $label-padding: 6px;
   }
 }
 
-/**
-  * Sets the border color
-  */
+/// Sets the border color
+/// @param {Map} $property - Custom property of border color
 @mixin _outline-color($property, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
@@ -136,9 +129,8 @@ $label-padding: 6px;
   }
 }
 
-/**
-  * Sets the background fill color
-  */
+/// Sets the background fill color
+/// @param {Map} $property - Custom property of background color
 @mixin _container-fill-color($property, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
