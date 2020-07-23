@@ -1,5 +1,5 @@
-@use "../mixins" as elevation;
-@use "@material/feature-targeting/feature-targeting";
+@use '../mixins' as elevation;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {

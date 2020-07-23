@@ -20,9 +20,9 @@
 // THE SOFTWARE.
 //
 
-@use "sass:list";
-@use "@material/theme/mixins" as theme;
-@use "./variables";
+@use 'sass:list';
+@use '@material/theme/mixins' as theme;
+@use './variables';
 
 // Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.
 //
@@ -137,7 +137,7 @@
 // ```
 //
 // You can also pass an optional 4th `$root-selector` argument which will be forwarded to `mdc-rtl`,
-// e.g. `@include rtl-reflexive-box(margin, left, 8px, ".mdc-component")`.
+// e.g. `@include rtl-reflexive-box(margin, left, 8px, '.mdc-component')`.
 //
 // Note that this function will always zero out the original value in an RTL context.
 // If you're trying to flip the values, use `mdc-rtl-reflexive-property()` instead.
@@ -210,7 +210,7 @@
   );
 }
 
-// Takes an argument specifying a horizontal position property (either "left" or "right") as well
+// Takes an argument specifying a horizontal position property (either 'left' or 'right') as well
 // as a value, and applies that value to the specified position in a LTR context, and flips it in a
 // RTL context. For example:
 //
@@ -240,7 +240,7 @@
     @error "Invalid position #{position-property}. Please specifiy either right or left";
   }
 
-  // TODO: "initial" is not supported in IE 11. https://caniuse.com/#feat=css-initial-value
+  // TODO: 'initial' is not supported in IE 11. https://caniuse.com/#feat=css-initial-value
   $left-value: $value;
   $right-value: initial;
 

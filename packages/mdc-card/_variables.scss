@@ -20,9 +20,9 @@
 // THE SOFTWARE.
 //
 
-@use "sass:color";
-@use "@material/theme/mixins";
-@use "@material/theme/variables";
+@use 'sass:color';
+@use '@material/theme/mixins';
+@use '@material/theme/variables';
 
 $action-icon-color: rgba(
   variables.prop-value(on-surface),

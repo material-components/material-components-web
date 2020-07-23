@@ -20,9 +20,9 @@
 // THE SOFTWARE.
 //
 
-@use "@material/base/mixins" as base-mixins;
-@use "@material/feature-targeting/feature-targeting";
-@use "./variables";
+@use '@material/base/mixins' as base-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use './variables';
 
 /// Styles applied to the component's touch target wrapper element.
 @mixin wrapper($query: feature-targeting.all()) {

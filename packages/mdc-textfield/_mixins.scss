@@ -20,29 +20,29 @@
 // THE SOFTWARE.
 //
 
-@use "sass:list";
-@use "sass:meta";
-@use "@material/density/functions" as density-functions;
-@use "@material/floating-label/mixins" as floating-label-mixins;
-@use "@material/floating-label/variables" as floating-label-variables;
-@use "@material/line-ripple/mixins" as line-ripple-mixins;
-@use "@material/notched-outline/mixins" as notched-outline-mixins;
-@use "@material/notched-outline/variables" as notched-outline-variables;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/ripple/functions" as ripple-functions;
-@use "@material/theme/custom-properties";
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/shape/functions" as shape-functions;
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/typography/mixins" as typography-mixins;
-@use "helper-text/mixins" as helper-text-mixins;
-@use "character-counter/mixins" as character-counter-mixins;
-@use "icon/mixins" as icon-mixins;
-@use "icon/variables" as icon-variables;
-@use "./variables";
-@use "./functions";
-@use "@material/rtl/mixins" as rtl-mixins;
+@use 'sass:list';
+@use 'sass:meta';
+@use '@material/density/functions' as density-functions;
+@use '@material/floating-label/mixins' as floating-label-mixins;
+@use '@material/floating-label/variables' as floating-label-variables;
+@use '@material/line-ripple/mixins' as line-ripple-mixins;
+@use '@material/notched-outline/mixins' as notched-outline-mixins;
+@use '@material/notched-outline/variables' as notched-outline-variables;
+@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/functions' as ripple-functions;
+@use '@material/theme/custom-properties';
+@use '@material/theme/mixins' as theme-mixins;
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/shape/functions' as shape-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/typography/mixins' as typography-mixins;
+@use 'helper-text/mixins' as helper-text-mixins;
+@use 'character-counter/mixins' as character-counter-mixins;
+@use 'icon/mixins' as icon-mixins;
+@use 'icon/variables' as icon-variables;
+@use './variables';
+@use './functions';
+@use '@material/rtl/mixins' as rtl-mixins;
 
 @mixin core-styles($query: feature-targeting.all()) {
   @include ripple($query);
@@ -1286,7 +1286,7 @@
 }
 
 ///
-/// Sets the CSS transition for the floating label's "float" animation.
+/// Sets the CSS transition for the floating label's 'float' animation.
 ///
 /// @param {Number} $duration-ms - Duration (in ms) of the animation.
 /// @param {String} $timing-function - Optionally overrides the default animation timing function.
@@ -1343,7 +1343,7 @@
 
   @include feature-targeting.targets($feat-structure) {
     // display and align-items are necessary to make the text field participate
-    // in baseline alignment, even though some variants are "centered". Those
+    // in baseline alignment, even though some variants are 'centered'. Those
     // variants should use the _baseline-center-aligned() mixin
     display: inline-flex;
     align-items: baseline;
@@ -1367,7 +1367,7 @@
     // it follows these rules to determine where its baseline is:
     // https://www.w3.org/TR/css-flexbox-1/#flex-baselines
     //
-    // In order to avoid leading icons "controlling" the baseline (since they
+    // In order to avoid leading icons 'controlling' the baseline (since they
     // are the first child), flexbox will generate a baseline from any child
     // flex items that participate in baseline alignment.
     //
@@ -1380,7 +1380,7 @@
     // making it the baseline of the container.
     // https://www.w3.org/TR/css-flexbox-1/#baseline-participation
     //
-    // For the filled variant, the pseudo ::before strut is the "largest"
+    // For the filled variant, the pseudo ::before strut is the 'largest'
     // child since the input has a height of 28px and the strut is 40px. We
     // can emulate center alignment and force the baseline to use the input
     // text by making the input the full height of the container and removing
@@ -1904,11 +1904,11 @@
     max-width: 100%;
     min-height: variables.$height;
     // stylelint-disable declaration-block-no-duplicate-properties
-    // "stretch" is the preferred rule here. It will allow the textarea to grow
+    // 'stretch' is the preferred rule here. It will allow the textarea to grow
     // to the min/max width of the container, but if an explicit width is set,
     // it cannot be resized horizontally.
     // Stretch is still a working draft. Chrome and Firefox have it implemented
-    // with "available" prefixes. fit-content is another good target for
+    // with 'available' prefixes. fit-content is another good target for
     // Safari since it works in almost all use cases except when an explicit
     // width is set (the user can make the textarea smaller than the container).
     // None of this matters for IE11, which doesn't support resize.

@@ -20,9 +20,9 @@
 // THE SOFTWARE.
 //
 
-@use "sass:color";
-@use "@material/theme/functions";
-@use "@material/theme/variables"; // for mdc-theme-prop-value() function
+@use 'sass:color';
+@use '@material/theme/functions';
+@use '@material/theme/variables'; // for mdc-theme-prop-value() function
 
 $fill-color: color.mix(
   variables.prop-value(on-surface),

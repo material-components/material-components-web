@@ -19,9 +19,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-@use "sass:map";
-@use "sass:meta";
-@use "./gss";
+@use 'sass:map';
+@use 'sass:meta';
+@use './gss';
 
 /// When true, add an additional property/value declaration before a custom
 /// property's `var()` to support IE. Configure

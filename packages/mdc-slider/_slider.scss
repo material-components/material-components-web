@@ -20,12 +20,12 @@
 // THE SOFTWARE.
 //
 
-@use "@material/elevation/mixins" as elevation-mixins;
+@use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/rtl/mixins" as rtl-mixins;
+@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/theme/variables' as theme-variables;
-@use "@material/typography/mixins" as typography-mixins;
+@use '@material/typography/mixins' as typography-mixins;
 @use './slider-theme';
 
 // Thumb variables.

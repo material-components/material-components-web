@@ -20,17 +20,17 @@
 // THE SOFTWARE.
 //
 
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/animation/functions" as animation-functions;
-@use "@material/button/mixins" as button-mixins;
-@use "@material/icon-button/mixins" as icon-button-mixins;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/rtl/mixins" as rtl-mixins;
-@use "@material/typography/mixins" as typography-mixins;
-@use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/theme/mixins" as theme-mixins;
-@use "./variables";
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/animation/functions' as animation-functions;
+@use '@material/button/mixins' as button-mixins;
+@use '@material/icon-button/mixins' as icon-button-mixins;
+@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/typography/mixins' as typography-mixins;
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/mixins' as theme-mixins;
+@use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);

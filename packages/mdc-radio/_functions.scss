@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "@material/animation/functions";
-@use "./variables";
+@use '@material/animation/functions';
+@use './variables';
 
 @function enter($name) {
   @return functions.enter($name, variables.$transition-duration);

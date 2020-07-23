@@ -20,12 +20,12 @@
 // THE SOFTWARE.
 //
 
-@use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/animation/variables" as animation-variables;
-@use "@material/rtl/mixins" as rtl-mixins;
-@use "@material/typography/mixins" as typography-mixins;
-@use "./mixins";
-@use "./variables";
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/animation/variables' as animation-variables;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/typography/mixins' as typography-mixins;
+@use './mixins';
+@use './variables';
 
 // postcss-bem-linter: define top-app-bar
 .mdc-top-app-bar {

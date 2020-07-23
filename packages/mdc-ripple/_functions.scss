@@ -20,10 +20,10 @@
 // THE SOFTWARE.
 //
 
-@use "sass:map";
-@use "@material/theme/functions";
-@use "@material/theme/variables" as theme-variables; // for mdc-theme-prop-value
-@use "./variables";
+@use 'sass:map';
+@use '@material/theme/functions';
+@use '@material/theme/variables' as theme-variables; // for mdc-theme-prop-value
+@use './variables';
 
 //
 // Public

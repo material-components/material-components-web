@@ -20,11 +20,11 @@
 // THE SOFTWARE.
 //
 
-@use "sass:map";
-@use "sass:math";
-@use "sass:meta";
-@use "./variables";
-@use "@material/theme/variables" as theme-variables;
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use './variables';
+@use '@material/theme/variables' as theme-variables;
 
 ///
 /// Sets the elevation transition value.

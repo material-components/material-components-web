@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@use "./variables";
+@use './variables';
 
 @function enter($name, $duration, $delay: 0ms) {
   @return $name $duration $delay variables.$deceleration-curve-timing-function;

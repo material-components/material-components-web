@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "@material/density/variables" as density-variables;
-@use "@material/theme/variables" as theme-variables; // for mdc-theme-prop-value
+@use '@material/density/variables' as density-variables;
+@use '@material/theme/variables' as theme-variables; // for mdc-theme-prop-value
 
 $height: 36px !default;
 $horizontal-padding: 8px !default;

@@ -20,9 +20,9 @@
 // THE SOFTWARE.
 //
 
-@use "@material/animation/variables" as animation-variables;
-@use "@material/theme/mixins";
-@use "./variables";
+@use '@material/animation/variables' as animation-variables;
+@use '@material/theme/mixins';
+@use './variables';
 
 @mixin container-keyframes_(
   $from-stroke-color,

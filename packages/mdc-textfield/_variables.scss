@@ -20,11 +20,11 @@
 // THE SOFTWARE.
 //
 
-@use "sass:color";
-@use "@material/density/variables" as density-variables;
-@use "@material/floating-label/variables" as floating-label-variables;
-@use "@material/notched-outline/variables" as notched-outline-variables;
-@use "@material/theme/variables" as theme-variables;
+@use 'sass:color';
+@use '@material/density/variables' as density-variables;
+@use '@material/floating-label/variables' as floating-label-variables;
+@use '@material/notched-outline/variables' as notched-outline-variables;
+@use '@material/theme/variables' as theme-variables;
 
 ///
 /// Returns outlined text field floating label position for given height.

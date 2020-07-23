@@ -20,18 +20,18 @@
 // THE SOFTWARE.
 //
 
-@use "sass:map";
-@use "@material/animation/functions" as functions2;
-@use "@material/density/functions" as density-functions;
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/ripple/variables" as ripple-variables;
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/theme/variables" as variables2;
-@use "@material/touch-target/mixins" as touch-target-mixins;
-@use "@material/touch-target/variables" as touch-target-variables;
-@use "./functions";
-@use "./variables";
+@use 'sass:map';
+@use '@material/animation/functions' as functions2;
+@use '@material/density/functions' as density-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/variables' as ripple-variables;
+@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/variables' as variables2;
+@use '@material/touch-target/mixins' as touch-target-mixins;
+@use '@material/touch-target/variables' as touch-target-variables;
+@use './functions';
+@use './variables';
 
 $ripple-target: '.mdc-radio__ripple';
 

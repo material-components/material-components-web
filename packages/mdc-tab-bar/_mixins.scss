@@ -20,12 +20,12 @@
 // THE SOFTWARE.
 //
 
-@use "@material/animation/variables" as animation-variables;
-@use "@material/density/functions" as density-functions;
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/tab-scroller/mixins" as tab-scroller-mixins;
-@use "@material/tab/mixins" as tab-mixins;
-@use "./variables";
+@use '@material/animation/variables' as animation-variables;
+@use '@material/density/functions' as density-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/tab-scroller/mixins' as tab-scroller-mixins;
+@use '@material/tab/mixins' as tab-mixins;
+@use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
   // postcss-bem-linter: define tab-bar

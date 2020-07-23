@@ -20,26 +20,26 @@
 // THE SOFTWARE.
 //
 
-@use "sass:math";
-@use "@material/animation/functions";
-@use "@material/animation/variables" as animation-variables;
-@use "@material/checkbox/functions" as checkbox-functions;
-@use "@material/checkbox/variables" as checkbox-variables;
-@use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/density/functions" as density-functions;
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/rtl/mixins" as rtl-mixins;
-@use "@material/theme/functions" as theme-functions;
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/touch-target/mixins" as touch-target-mixins;
-@use "@material/typography/mixins" as typography-mixins;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/shape/functions" as shape-functions;
-@use "./variables";
-@use "@material/elevation/functions" as elevation-functions;
-@use "@material/theme/variables" as theme-variables;
-@use "./trailingaction/mixins" as trailing-action-mixins;
+@use 'sass:math';
+@use '@material/animation/functions';
+@use '@material/animation/variables' as animation-variables;
+@use '@material/checkbox/functions' as checkbox-functions;
+@use '@material/checkbox/variables' as checkbox-variables;
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/density/functions' as density-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/theme/functions' as theme-functions;
+@use '@material/theme/mixins' as theme-mixins;
+@use '@material/touch-target/mixins' as touch-target-mixins;
+@use '@material/typography/mixins' as typography-mixins;
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/shape/functions' as shape-functions;
+@use './variables';
+@use '@material/elevation/functions' as elevation-functions;
+@use '@material/theme/variables' as theme-variables;
+@use './trailingaction/mixins' as trailing-action-mixins;
 
 $ripple-target: '.mdc-chip__ripple';
 

@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "@material/theme/mixins";
-@use "@material/theme/variables";
+@use '@material/theme/mixins';
+@use '@material/theme/variables';
 
 $ink-color: rgba(
   variables.prop-value(on-surface),

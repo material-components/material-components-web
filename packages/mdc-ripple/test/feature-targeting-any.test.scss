@@ -1,5 +1,5 @@
-@use "../mixins" as ripple;
-@use "@material/feature-targeting/feature-targeting";
+@use '../mixins' as ripple;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {

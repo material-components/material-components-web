@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "@material/animation/functions";
-@use "./variables";
+@use '@material/animation/functions';
+@use './variables';
 
 @function transition-enter(
   $property,
