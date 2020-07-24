@@ -22,13 +22,13 @@
 
 @use 'sass:map';
 @use '@material/ripple/variables' as ripple-variables;
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 @use '@material/density/variables' as density-variables;
 
 $baseline-theme-color: secondary !default;
-$mark-color: theme-variables.prop-value(on-secondary) !default;
-$border-color: rgba(theme-variables.prop-value(on-surface), 0.54) !default;
-$disabled-color: rgba(theme-variables.prop-value(on-surface), 0.38) !default;
+$mark-color: theme-color.prop-value(on-secondary) !default;
+$border-color: rgba(theme-color.prop-value(on-surface), 0.54) !default;
+$disabled-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
 
 $ripple-size: 40px !default;
 $icon-size: 18px !default;

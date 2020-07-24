@@ -35,7 +35,7 @@
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
-@use '@material/theme/variables' as variables2; // for mdc-theme-prop-value.
+@use '@material/theme/theme-color';
 @use '@material/typography/mixins' as typography-mixins;
 @use './data-table-cell';
 @use './data-table-header-cell';

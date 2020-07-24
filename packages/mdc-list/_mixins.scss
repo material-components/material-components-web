@@ -27,13 +27,12 @@
 @use '@material/shape/functions' as shape-functions;
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/ripple/mixins' as ripple-mixins;
-@use '@material/theme/theme-color';
 @use '@material/typography/mixins' as typography-mixins;
 @use '@material/typography/variables' as typography-variables;
 @use '@material/feature-targeting/feature-targeting';
 @use './variables';
 @use '@material/ripple/functions' as ripple-functions;
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 
 //
 // Public
@@ -52,7 +51,7 @@
   $feat-typography: feature-targeting.create-target($query, typography);
 
   $divider-color: if(
-    theme-color.tone(theme-variables.$background) == 'dark',
+    theme-color.tone(theme-color.$background) == 'dark',
     variables.$divider-color-on-dark-bg,
     variables.$divider-color-on-light-bg
   );
@@ -493,7 +492,7 @@
       $query: $query
     );
     @include ripple-mixins.states-base-color(
-      theme-variables.prop-value(on-surface),
+      theme-color.prop-value(on-surface),
       $ripple-target: variables.$ripple-target,
       $query: $query
     );
@@ -1006,7 +1005,7 @@
     $query: $query
   );
   @include ripple-mixins.states(
-    theme-variables.prop-value(on-surface),
+    theme-color.prop-value(on-surface),
     false,
     $ripple-target: variables.$ripple-target,
     $query: $query

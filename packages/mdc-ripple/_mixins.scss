@@ -30,7 +30,7 @@
 @use './functions';
 @use './keyframes';
 @use './variables';
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 
 @mixin core-styles($query: feature-targeting.all()) {
   // postcss-bem-linter: define ripple-surface
@@ -201,7 +201,7 @@
   #{$ripple-target}::before,
   #{$ripple-target}::after {
     @include feature-targeting.targets($feat-color) {
-      @if color.alpha(theme-variables.prop-value($color)) > 0 {
+      @if color.alpha(theme-color.prop-value($color)) > 0 {
         @include theme.prop(background-color, $color);
       } @else {
         // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
@@ -366,7 +366,7 @@
 // Simple mixin for base states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin states(
-  $color: theme-variables.prop-value(on-surface),
+  $color: theme-color.prop-value(on-surface),
   $has-nested-focusable-element: false,
   $query: feature-targeting.all(),
   $ripple-target: '&'

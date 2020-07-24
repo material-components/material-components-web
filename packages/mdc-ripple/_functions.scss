@@ -22,7 +22,6 @@
 
 @use 'sass:map';
 @use '@material/theme/theme-color';
-@use '@material/theme/variables' as theme-variables; // for mdc-theme-prop-value
 @use './variables';
 
 //
@@ -44,7 +43,7 @@
 //
 
 @function states-opacities_($color) {
-  $color-value: theme-variables.prop-value($color);
+  $color-value: theme-color.prop-value($color);
   $opacity-map: if(
     theme-color.tone($color-value) == 'light',
     variables.$light-ink-opacities,

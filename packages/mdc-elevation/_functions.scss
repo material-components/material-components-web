@@ -24,7 +24,7 @@
 @use 'sass:math';
 @use 'sass:meta';
 @use './variables';
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 
 ///
 /// Sets the elevation transition value.
@@ -71,7 +71,7 @@
     @error "$z-value must be between 0 and 24, but received '#{$z-value}'";
   }
 
-  $color: theme-variables.prop-value($color);
+  $color: theme-color.prop-value($color);
 
   $umbra-z-value: map.get(variables.$umbra-map, $z-value);
   $penumbra-z-value: map.get(variables.$penumbra-map, $z-value);

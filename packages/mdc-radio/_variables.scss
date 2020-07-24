@@ -21,18 +21,15 @@
 //
 
 @use '@material/density/variables' as density-variables;
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 
 $ripple-size: 40px !default;
 $icon-size: 20px !default;
 $transition-duration: 120ms !default;
 $ripple-opacity: 0.14 !default;
 $baseline-theme-color: secondary !default;
-$unchecked-color: rgba(theme-variables.prop-value(on-surface), 0.54) !default;
-$disabled-circle-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.38
-) !default;
+$unchecked-color: rgba(theme-color.prop-value(on-surface), 0.54) !default;
+$disabled-circle-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
 
 $minimum-size: 28px !default;
 $maximum-size: $ripple-size !default;

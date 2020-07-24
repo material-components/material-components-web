@@ -36,44 +36,34 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
 @use '@material/theme/theme';
-@use '@material/theme/variables' as variables2; // for mdc-theme-prop-value.
 @use '@material/typography/mixins' as typography-mixins;
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 @use '@material/density/variables' as density-variables;
 @use '@material/select/mixins' as select-theme;
 
 $fill-color: surface !default;
 $header-row-fill-color: surface !default;
 $row-fill-color: inherit !default;
-$selected-row-fill-color: rgba(
-  theme-variables.prop-value(primary),
-  0.04
-) !default;
+$selected-row-fill-color: rgba(theme-color.prop-value(primary), 0.04) !default;
 $checked-icon-color: primary !default;
-$divider-color: rgba(theme-variables.prop-value(on-surface), 0.12) !default;
+$divider-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 $divider-size: 1px !default;
-$row-hover-fill-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.04
-) !default;
+$row-hover-fill-color: rgba(theme-color.prop-value(on-surface), 0.04) !default;
 $checkbox-touch-dimension: 48px !default;
 
-$header-row-text-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.87
-) !default;
-$row-text-color: rgba(theme-variables.prop-value(on-surface), 0.87) !default;
+$header-row-text-color: rgba(theme-color.prop-value(on-surface), 0.87) !default;
+$row-text-color: rgba(theme-color.prop-value(on-surface), 0.87) !default;
 
-$sort-icon-color: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
+$sort-icon-color: rgba(theme-color.prop-value(on-surface), 0.6) !default;
 $sort-icon-active-color: rgba(
-  theme-variables.prop-value(on-surface),
+  theme-color.prop-value(on-surface),
   0.87
 ) !default;
 $sort-icon-density-scale: -5 !default;
 
 $shape-radius: medium !default;
 $stroke-size: 1px !default;
-$stroke-color: rgba(theme-variables.prop-value(on-surface), 0.12) !default;
+$stroke-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 
 $cell-height: 52px !default;
 $header-cell-height: get-header-cell-height($cell-height) !default;

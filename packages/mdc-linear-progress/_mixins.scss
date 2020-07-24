@@ -22,7 +22,7 @@
 @use '@material/animation/functions' as animation-functions;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
-@use '@material/theme/variables' as theme-variables; // for mdc-theme-prop-value
+@use '@material/theme/theme-color';
 @use './variables';
 @use './keyframes';
 
@@ -180,7 +180,7 @@
 
 @mixin buffer-color($color, $query: feature-targeting.all()) {
   // We need to escape the '#' character as "%23" for SVG because '#' is a reserved character in URIs.
-  $color-value-for-css: theme-variables.prop-value($color);
+  $color-value-for-css: theme-color.prop-value($color);
   $color-value-for-svg: str-replace_(
     string.unquote('#{$color-value-for-css}'),
     '#',

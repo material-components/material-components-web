@@ -29,7 +29,7 @@
 @use '@material/typography/mixins' as typography-mixins;
 @use '@material/typography/variables' as variables2;
 @use '@material/theme/theme';
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 @use '@material/list/mixins' as list-mixins;
 @use '@material/ripple/mixins' as ripple-mixins;
 @use '@material/shape/mixins' as shape-mixins;
@@ -288,7 +288,7 @@
 
 @mixin border-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
-  $value: rgba(theme-variables.prop-value($color), variables.$divider-opacity);
+  $value: rgba(theme-color.prop-value($color), variables.$divider-opacity);
 
   @include feature-targeting.targets($feat-color) {
     @include theme.prop(border-color, $value);
@@ -322,17 +322,14 @@
 }
 
 @mixin divider-color($color, $query: feature-targeting.all()) {
-  $value: rgba(theme-variables.prop-value($color), variables.$divider-opacity);
+  $value: rgba(theme-color.prop-value($color), variables.$divider-opacity);
 
   @include list-mixins.divider-color($value, $query: $query);
 }
 
 @mixin title-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
-  $value: rgba(
-    theme-variables.prop-value($color),
-    variables.$title-ink-opacity
-  );
+  $value: rgba(theme-color.prop-value($color), variables.$title-ink-opacity);
 
   .mdc-drawer__title {
     @include feature-targeting.targets($feat-color) {
@@ -343,10 +340,7 @@
 
 @mixin subtitle-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
-  $value: rgba(
-    theme-variables.prop-value($color),
-    variables.$subtitle-ink-opacity
-  );
+  $value: rgba(theme-color.prop-value($color), variables.$subtitle-ink-opacity);
 
   @include list-mixins.group-subheader-ink-color($value, $query: $query);
 
@@ -358,7 +352,7 @@
 }
 
 @mixin fill-color-accessible($color, $query: feature-targeting.all()) {
-  $accessibleColor: theme-variables.accessible-ink-color($color);
+  $accessibleColor: theme-color.accessible-ink-color($color);
 
   @include title-ink-color($accessibleColor, $query: $query);
   @include subtitle-ink-color($accessibleColor, $query: $query);
@@ -369,7 +363,7 @@
 
 @mixin item-icon-ink-color($color, $query: feature-targeting.all()) {
   $value: rgba(
-    theme-variables.prop-value($color),
+    theme-color.prop-value($color),
     variables.$item-inactive-icon-ink-opacity
   );
 
@@ -378,7 +372,7 @@
 
 @mixin item-activated-icon-ink-color($color, $query: feature-targeting.all()) {
   $value: rgba(
-    theme-variables.prop-value($color),
+    theme-color.prop-value($color),
     variables.$item-active-icon-ink-opacity
   );
 
@@ -389,7 +383,7 @@
 
 @mixin item-activated-text-ink-color($color, $query: feature-targeting.all()) {
   $value: rgba(
-    theme-variables.prop-value($color),
+    theme-color.prop-value($color),
     variables.$item-active-text-ink-opacity
   );
 
@@ -400,7 +394,7 @@
 
 @mixin item-text-ink-color($color, $query: feature-targeting.all()) {
   $value: rgba(
-    theme-variables.prop-value($color),
+    theme-color.prop-value($color),
     variables.$item-inactive-text-ink-opacity
   );
 
@@ -411,7 +405,7 @@
 
 @mixin surface-fill-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
-  $value: theme-variables.prop-value($color);
+  $value: theme-color.prop-value($color);
 
   @include feature-targeting.targets($feat-color) {
     @include theme.prop(background-color, $value);
@@ -420,10 +414,7 @@
 
 @mixin scrim-fill-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
-  $value: rgba(
-    theme-variables.prop-value($color),
-    variables.$modal-scrim-opacity
-  );
+  $value: rgba(theme-color.prop-value($color), variables.$modal-scrim-opacity);
 
   + .mdc-drawer-scrim {
     @include feature-targeting.targets($feat-color) {

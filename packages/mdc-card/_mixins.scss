@@ -28,7 +28,7 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
 @use './variables';
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 
 //
 // Public
@@ -311,7 +311,7 @@
   }
 
   @include feature-targeting.targets($feat-color) {
-    border-color: theme-variables.prop-value($color);
+    border-color: theme-color.prop-value($color);
   }
 }
 

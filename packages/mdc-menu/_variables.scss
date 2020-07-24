@@ -21,11 +21,11 @@
 //
 
 @use '@material/theme/theme';
-@use '@material/theme/variables';
+@use '@material/theme/theme-color';
 
 $ink-color: rgba(
-  variables.prop-value(on-surface),
-  variables.text-emphasis(high)
+  theme-color.prop-value(on-surface),
+  theme-color.text-emphasis(high)
 ) !default;
 
 $width-base: 56px !default;

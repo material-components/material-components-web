@@ -23,9 +23,9 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 
-$background-color: rgba(black, theme-variables.text-emphasis(medium));
+$background-color: rgba(black, theme-color.text-emphasis(medium));
 $border-radius: small;
 $label-color: text-primary-on-dark;
 

@@ -30,7 +30,6 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/mixins' as ripple-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
-@use '@material/theme/theme-color';
 @use '@material/theme/theme';
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/typography/mixins' as typography-mixins;
@@ -38,7 +37,7 @@
 @use '@material/shape/functions' as shape-functions;
 @use './variables';
 @use '@material/elevation/functions' as elevation-functions;
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 @use './trailingaction/mixins' as trailing-action-mixins;
 
 $ripple-target: '.mdc-chip__ripple';
@@ -475,7 +474,7 @@ $ripple-target: '.mdc-chip__ripple';
 @mixin outline(
   $width: 1px,
   $style: solid,
-  $color: theme-variables.prop-value(on-surface),
+  $color: theme-color.prop-value(on-surface),
   $query: feature-targeting.all()
 ) {
   @include outline-width($width, $query: $query);
@@ -571,7 +570,7 @@ $ripple-target: '.mdc-chip__ripple';
 
   .mdc-chip__icon--leading {
     @include feature-targeting.targets($feat-color) {
-      color: rgba(theme-variables.prop-value($color), $opacity);
+      color: rgba(theme-color.prop-value($color), $opacity);
     }
   }
 }
@@ -590,18 +589,18 @@ $ripple-target: '.mdc-chip__ripple';
   // TODO(b/151980552): Remove the following block
   .mdc-chip__icon--trailing {
     @include feature-targeting.targets($feat-color) {
-      color: rgba(theme-variables.prop-value($color), $opacity);
+      color: rgba(theme-color.prop-value($color), $opacity);
     }
 
     &:hover {
       @include feature-targeting.targets($feat-color) {
-        color: rgba(theme-variables.prop-value($color), $hover-opacity);
+        color: rgba(theme-color.prop-value($color), $hover-opacity);
       }
     }
 
     &:focus {
       @include feature-targeting.targets($feat-color) {
-        color: rgba(theme-variables.prop-value($color), $focus-opacity);
+        color: rgba(theme-color.prop-value($color), $focus-opacity);
       }
     }
   }

@@ -28,7 +28,7 @@
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
-@use '@material/theme/variables' as theme-variables; // for mdc-theme-prop-value
+@use '@material/theme/theme-color';
 @use '@material/touch-target/variables' as touch-target-variables;
 @use '@material/typography/mixins' as typography-mixins;
 @use './variables';
@@ -358,7 +358,7 @@
 
   .mdc-dialog__scrim {
     @include feature-targeting.targets($feat-color) {
-      background-color: rgba(theme-variables.prop-value($color), $opacity);
+      background-color: rgba(theme-color.prop-value($color), $opacity);
     }
   }
 }
@@ -372,7 +372,7 @@
 
   .mdc-dialog__title {
     @include feature-targeting.targets($feat-color) {
-      color: rgba(theme-variables.prop-value($color), $opacity);
+      color: rgba(theme-color.prop-value($color), $opacity);
     }
   }
 }
@@ -386,7 +386,7 @@
 
   .mdc-dialog__content {
     @include feature-targeting.targets($feat-color) {
-      color: rgba(theme-variables.prop-value($color), $opacity);
+      color: rgba(theme-color.prop-value($color), $opacity);
     }
   }
 }
@@ -417,7 +417,7 @@
   &.mdc-dialog--scrollable .mdc-dialog__title,
   &.mdc-dialog--scrollable .mdc-dialog__actions {
     @include feature-targeting.targets($feat-color) {
-      border-color: rgba(theme-variables.prop-value($color), $opacity);
+      border-color: rgba(theme-color.prop-value($color), $opacity);
     }
   }
 }

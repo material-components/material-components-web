@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 @use '@material/density/variables' as density-variables;
-@use '@material/theme/variables' as theme-variables;
+@use '@material/theme/theme-color';
 
 $ripple-target: '.mdc-list-item__ripple';
 
@@ -28,7 +28,7 @@ $divider-color-on-dark-bg: rgba(255, 255, 255, 0.2) !default;
 $side-padding: 16px !default;
 $trailing-padding: 16px !default;
 $text-offset: 72px !default;
-$text-disabled-opacity: theme-variables.text-emphasis(disabled) !default;
+$text-disabled-opacity: theme-color.text-emphasis(disabled) !default;
 $text-disabled-color: on-surface !default;
 $text-selected-color: primary !default;
 

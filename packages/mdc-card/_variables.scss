@@ -22,15 +22,15 @@
 
 @use 'sass:color';
 @use '@material/theme/theme';
-@use '@material/theme/variables';
+@use '@material/theme/theme-color';
 
 $action-icon-color: rgba(
-  variables.prop-value(on-surface),
-  variables.text-emphasis(medium)
+  theme-color.prop-value(on-surface),
+  theme-color.text-emphasis(medium)
 ) !default;
 $outline-color: color.mix(
-  variables.prop-value(on-surface),
-  variables.prop-value(surface),
+  theme-color.prop-value(on-surface),
+  theme-color.prop-value(surface),
   12%
 ) !default;
 $outline-width: 1px !default;

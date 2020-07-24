@@ -24,7 +24,7 @@
 @use 'sass:meta';
 @use '@material/animation/variables' as animation-variables;
 @use '@material/ripple/mixins' as ripple-mixins;
-@use '@material/theme/variables' as theme-variables; // for mdc-theme-accessible-ink-color
+@use '@material/theme/theme-color';
 @use '@material/theme/theme';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions';
@@ -45,7 +45,7 @@
 
 @mixin fill-color-accessible($color) {
   @include fill-color($color);
-  @include ink-color(theme-variables.accessible-ink-color($color));
+  @include ink-color(theme-color.accessible-ink-color($color));
 }
 
 @mixin icon-ink-color($color) {
