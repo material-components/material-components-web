@@ -86,7 +86,10 @@
       @include item-base_;
     }
 
-    &:not(.mdc-list-item--selected):focus::before {
+    // For components using aria-activedescendant, the focus pseudoclass is
+    // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
+    &:not(.mdc-list-item--selected):focus::before,
+    &.mdc-ripple-upgraded--background-focused::before {
       @include dom-mixins.transparent-border($query: $query);
     }
 
