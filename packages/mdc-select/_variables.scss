@@ -57,7 +57,6 @@ $density-config: (
 
 $ink-color: rgba(variables.prop-value(on-surface), 0.87) !default;
 $dropdown-icon-color: rgba(variables.prop-value(on-surface), 0.54) !default;
-$icon-color: rgba(variables.prop-value(on-surface), 0.54) !default;
 $label-color: rgba(variables.prop-value(on-surface), 0.6) !default;
 $focused-label-color: rgba(variables.prop-value(primary), 0.87) !default;
 $bottom-line-idle-color: rgba(variables.prop-value(on-surface), 0.42) !default;
@@ -71,7 +70,6 @@ $fill-color: color.mix(
 
 // Disabled Styles
 $disabled-label-color: rgba(variables.prop-value(on-surface), 0.38) !default;
-$disabled-icon-color: rgba(variables.prop-value(on-surface), 0.38) !default;
 $disabled-ink-color: rgba(variables.prop-value(on-surface), 0.38) !default;
 $disabled-fill-color: color.mix(
   variables.prop-value(on-surface),

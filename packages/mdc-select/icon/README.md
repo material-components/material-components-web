@@ -34,7 +34,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ### Styles
 
 ```scss
-@use "@material/select/icon/mdc-select-icon";
+@use "@material/select/styles";
 ```
 
 ### JavaScript instantiation

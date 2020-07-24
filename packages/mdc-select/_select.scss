@@ -22,7 +22,9 @@
 
 @use '@material/feature-targeting/functions' as feature-targeting-functions;
 @use './select-helper-text';
+@use './select-icon';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   @include select-helper-text.helper-text-core-styles($query: $query);
+  @include select-icon.icon-core-styles($query: $query);
 }
