@@ -25,6 +25,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/mixins' as ripple-mixins;
 @use '@material/rtl/mixins' as rtl;
+@use '@material/theme/custom-properties';
 @use '@material/theme/theme';
 @use './variables';
 
@@ -44,7 +45,7 @@
 
   .mdc-icon-button__icon {
     @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
+      display: inline-flex;
     }
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
@@ -64,7 +65,7 @@
       // stylelint-disable-next-line plugin/selector-bem-pattern
       &.mdc-icon-button__icon--on {
         @include feature-targeting.targets($feat-structure) {
-          display: inline-block;
+          display: inline-flex;
         }
       }
     }
@@ -102,15 +103,15 @@
 /// Sets the size of the icon-button.
 ///
 /// @param {Number} $size - Size value for icon-button.
-///     Size will set the width, height, and padding for the overall component.
+///     Size will set the width and height for the overall component.
 ///
 @mixin size($size, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
+  $size: custom-properties.create(--mdc-icon-button-size, $size);
 
   @include feature-targeting.targets($feat-structure) {
-    width: $size;
-    height: $size;
-    padding: ($size - variables.$icon-size) / 2;
+    @include theme.property(width, $size);
+    @include theme.property(height, $size);
   }
 }
 
@@ -136,7 +137,6 @@
   @include feature-targeting.targets($feat-structure) {
     width: $width + $padding * 2;
     height: $height + $padding * 2;
-    padding: $padding;
     font-size: math.max($width, $height);
   }
 
@@ -189,12 +189,15 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     box-sizing: border-box;
     border: none;
     outline: none;
     background-color: transparent;
+    padding: 0;
     fill: currentColor;
     color: inherit;
     font-size: variables.$icon-size;
