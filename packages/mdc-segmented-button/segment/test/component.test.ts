@@ -24,7 +24,7 @@
 import {emitEvent} from '../../../../testing/dom/events';
 import {MDCSegmentedButtonSegment} from '../index';
 import {events, attributes, booleans, cssClasses} from '../constants';
-import {test_strings} from './constants';
+import {testStrings} from './constants';
 
 const getFixtureMultiSelectWithLabel = () => {
   const wrapper = document.createElement('div');
@@ -94,12 +94,12 @@ describe('MDCSegmentedButtonSegment', () => {
     it('#getAttr returns value of attribute of root element', () => {
       const {root, component, adapter} = setupTest();
 
-      root.setAttribute(test_strings.ATTRIBUTE, booleans.FALSE);
-      expect(adapter.getAttr(test_strings.ATTRIBUTE)).toEqual(booleans.FALSE);
-      root.setAttribute(test_strings.ATTRIBUTE, booleans.TRUE);
-      expect(adapter.getAttr(test_strings.ATTRIBUTE)).toEqual(booleans.TRUE);
-      root.removeAttribute(test_strings.ATTRIBUTE);
-      expect(adapter.getAttr(test_strings.ATTRIBUTE)).toEqual(null);
+      root.setAttribute(testStrings.ATTRIBUTE, booleans.FALSE);
+      expect(adapter.getAttr(testStrings.ATTRIBUTE)).toEqual(booleans.FALSE);
+      root.setAttribute(testStrings.ATTRIBUTE, booleans.TRUE);
+      expect(adapter.getAttr(testStrings.ATTRIBUTE)).toEqual(booleans.TRUE);
+      root.removeAttribute(testStrings.ATTRIBUTE);
+      expect(adapter.getAttr(testStrings.ATTRIBUTE)).toEqual(null);
 
       component.destroy();
     });
@@ -107,10 +107,10 @@ describe('MDCSegmentedButtonSegment', () => {
     it('#setAttr sets the value of attribute of root element', () => {
       const {root, component, adapter} = setupTest();
 
-      adapter.setAttr(test_strings.ATTRIBUTE, booleans.TRUE);
-      expect(root.getAttribute(test_strings.ATTRIBUTE)).toEqual(booleans.TRUE);
-      adapter.setAttr(test_strings.ATTRIBUTE, booleans.FALSE);
-      expect(root.getAttribute(test_strings.ATTRIBUTE)).toEqual(booleans.FALSE);
+      adapter.setAttr(testStrings.ATTRIBUTE, booleans.TRUE);
+      expect(root.getAttribute(testStrings.ATTRIBUTE)).toEqual(booleans.TRUE);
+      adapter.setAttr(testStrings.ATTRIBUTE, booleans.FALSE);
+      expect(root.getAttribute(testStrings.ATTRIBUTE)).toEqual(booleans.FALSE);
 
       component.destroy();
     });
@@ -118,9 +118,9 @@ describe('MDCSegmentedButtonSegment', () => {
     it('#addClass adds class to root element', () => {
       const {root, component, adapter} = setupTest();
 
-      root.classList.remove(test_strings.CLASS);
-      adapter.addClass(test_strings.CLASS);
-      expect(root.classList.contains(test_strings.CLASS)).toBeTrue();
+      root.classList.remove(testStrings.CLASS);
+      adapter.addClass(testStrings.CLASS);
+      expect(root.classList.contains(testStrings.CLASS)).toBeTrue();
 
       component.destroy();
     });
@@ -128,9 +128,9 @@ describe('MDCSegmentedButtonSegment', () => {
     it('#removeClass removes class from root element', () => {
       const {root, component, adapter} = setupTest();
 
-      root.classList.add(test_strings.CLASS);
-      adapter.removeClass(test_strings.CLASS);
-      expect(root.classList.contains(test_strings.CLASS)).toBeFalse();
+      root.classList.add(testStrings.CLASS);
+      adapter.removeClass(testStrings.CLASS);
+      expect(root.classList.contains(testStrings.CLASS)).toBeFalse();
 
       component.destroy();
     });
@@ -138,10 +138,10 @@ describe('MDCSegmentedButtonSegment', () => {
     it('#hasClass returns whether root element has class', () => {
       const {root, component, adapter} = setupTest();
 
-      root.classList.add(test_strings.CLASS);
-      expect(adapter.hasClass(test_strings.CLASS)).toBeTrue();
-      root.classList.remove(test_strings.CLASS);
-      expect(adapter.hasClass(test_strings.CLASS)).toBeFalse();
+      root.classList.add(testStrings.CLASS);
+      expect(adapter.hasClass(testStrings.CLASS)).toBeTrue();
+      root.classList.remove(testStrings.CLASS);
+      expect(adapter.hasClass(testStrings.CLASS)).toBeFalse();
 
       component.destroy();
     });
@@ -153,18 +153,18 @@ describe('MDCSegmentedButtonSegment', () => {
 
       const index = 0;
       component.setIndex(index);
-      root.setAttribute(attributes.DATA_SEGMENT_ID, test_strings.SEGMENT_ID);
+      root.setAttribute(attributes.DATA_SEGMENT_ID, testStrings.SEGMENT_ID);
 
       adapter.notifySelectedChange(true);
       expect(handler).toHaveBeenCalledWith(jasmine.anything());
       expect(handler.calls.mostRecent().args[0].detail.index).toEqual(index);
       expect(handler.calls.mostRecent().args[0].detail.selected).toBeTrue();
-      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(test_strings.SEGMENT_ID);
+      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(testStrings.SEGMENT_ID);
 
       adapter.notifySelectedChange(false);
       expect(handler.calls.mostRecent().args[0].detail.index).toEqual(index);
       expect(handler.calls.mostRecent().args[0].detail.selected).toBeFalse();
-      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(test_strings.SEGMENT_ID);
+      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(testStrings.SEGMENT_ID);
 
       component.unlisten(events.SELECTED, handler);
       component.destroy();
@@ -229,8 +229,8 @@ describe('MDCSegmentedButtonSegment', () => {
   it('#getSegmentId returns segment\'s segmentId if it has one', () => {
     const {root, component} = setupTest();
 
-    root.setAttribute(attributes.DATA_SEGMENT_ID, test_strings.SEGMENT_ID);
-    expect(component.getSegmentId()).toEqual(test_strings.SEGMENT_ID);
+    root.setAttribute(attributes.DATA_SEGMENT_ID, testStrings.SEGMENT_ID);
+    expect(component.getSegmentId()).toEqual(testStrings.SEGMENT_ID);
 
     root.removeAttribute(attributes.DATA_SEGMENT_ID);
     expect(component.getSegmentId()).toEqual(undefined);

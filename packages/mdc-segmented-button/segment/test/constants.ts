@@ -24,7 +24,7 @@
 /**
  * Strings constants to be used for tests
  */
-export const test_strings = {
+export const testStrings = {
   SEGMENT_ID: 'test-segment-id',
   CLASS: 'test-class',
   ATTRIBUTE: 'test-attribute'

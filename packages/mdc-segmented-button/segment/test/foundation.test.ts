@@ -44,16 +44,16 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
     mockAdapter.hasClass.withArgs(cssClasses.SELECTED).and.returnValue(selected);
     mockAdapter.isSingleSelect.and.returnValue(singleSelect);
     mockAdapter.getAttr.and.callFake((name: string) => {
-      let is_selected = false;
+      let isSelected = false;
       if ((singleSelect && name === attributes.ARIA_PRESSED) ||
           (!singleSelect && name === attributes.ARIA_CHECKED)) {
         return null;
       } else if (name === attributes.ARIA_CHECKED) {
-        is_selected = singleSelect;
+        isSelected = singleSelect;
       } else if (name === attributes.ARIA_PRESSED) {
-        is_selected = !singleSelect;
+        isSelected = !singleSelect;
       }
-      return (selected && is_selected) ? booleans.TRUE : booleans.FALSE;
+      return (selected && isSelected) ? booleans.TRUE : booleans.FALSE;
     });
 
     // Need calls to mocked methods to change mocked state

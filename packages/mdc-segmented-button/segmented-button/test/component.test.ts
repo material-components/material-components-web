@@ -25,7 +25,7 @@ import {emitEvent} from '../../../../testing/dom/events';
 import {MDCSegmentedButton} from '../index';
 import {MDCSegmentedButtonSegment} from '../../segment/index';
 import {events, cssClasses} from '../constants';
-import {test_css_classes, test_indices, test_segment_ids, test_selectors} from './constants';
+import {testCssClasses, testIndices, testSegmentIds, testSelectors} from './constants';
 import {attributes} from '../../segment/constants';
 
 const getFixtureMultiWithLabel = () => {
@@ -59,13 +59,13 @@ const setupTest = () => {
 
 const setAllSelected = (els: NodeListOf<Element>) => {
   els.forEach((el) => {
-    el.classList.add(test_css_classes.SELECTED);
+    el.classList.add(testCssClasses.SELECTED);
   });
 }
 
 const setAllUnselected = (els: NodeListOf<Element>) => {
   els.forEach((el) => {
-    el.classList.remove(test_css_classes.SELECTED);
+    el.classList.remove(testCssClasses.SELECTED);
   });
 }
 
@@ -125,11 +125,11 @@ describe('MDCSegmentedButton', () => {
     const isSingleSelect = root.classList.contains(cssClasses.SINGLE_SELECT);
 
     for (let i = 0; i < component.segments.length; i++) {
-      const segment_adapter = (component.segments[i].getDefaultFoundation() as any).adapter
-      segment_adapter.notifySelectedChange(true);
+      const segmentAdapter = (component.segments[i].getDefaultFoundation() as any).adapter
+      segmentAdapter.notifySelectedChange(true);
 
       expect(handler.calls.mostRecent().args[0].detail.index).toEqual(i);
-      expect(segment_adapter.isSingleSelect()).toEqual(isSingleSelect);
+      expect(segmentAdapter.isSingleSelect()).toEqual(isSingleSelect);
     }
 
     component.destroy();
@@ -139,10 +139,10 @@ describe('MDCSegmentedButton', () => {
     it('#hasClass returns whether root element has test class', () => {
       const {root, component, adapter} = setupTest();
 
-      root.classList.add(test_css_classes.TEST_CLASS);
-      expect(adapter.hasClass(test_css_classes.TEST_CLASS)).toBeTrue();
-      root.classList.remove(test_css_classes.TEST_CLASS);
-      expect(adapter.hasClass(test_css_classes.TEST_CLASS)).toBeFalse();
+      root.classList.add(testCssClasses.TEST_CLASS);
+      expect(adapter.hasClass(testCssClasses.TEST_CLASS)).toBeTrue();
+      root.classList.remove(testCssClasses.TEST_CLASS);
+      expect(adapter.hasClass(testCssClasses.TEST_CLASS)).toBeFalse();
 
       component.destroy();
     });
@@ -164,19 +164,19 @@ describe('MDCSegmentedButton', () => {
     it('#selectSegment selects identified child segment if found', () => {
       const {root, component, adapter} = setupTest();
 
-      const segments = root.querySelectorAll(test_selectors.SEGMENT);
-      segments[test_indices.SELECTED].setAttribute(attributes.DATA_SEGMENT_ID, test_segment_ids.SELECTED_SEGMENT_ID);
+      const segments = root.querySelectorAll(testSelectors.SEGMENT);
+      segments[testIndices.SELECTED].setAttribute(attributes.DATA_SEGMENT_ID, testSegmentIds.SELECTED_SEGMENT_ID);
 
       setAllUnselected(segments);
-      adapter.selectSegment(test_indices.SELECTED);
+      adapter.selectSegment(testIndices.SELECTED);
       for (let i = 0; i < segments.length; i++) {
-        expect(segments[i].classList.contains(test_css_classes.SELECTED)).toEqual(i === test_indices.SELECTED);
+        expect(segments[i].classList.contains(testCssClasses.SELECTED)).toEqual(i === testIndices.SELECTED);
       }
 
       setAllUnselected(segments);
-      adapter.selectSegment(test_segment_ids.SELECTED_SEGMENT_ID);
+      adapter.selectSegment(testSegmentIds.SELECTED_SEGMENT_ID);
       for (let i = 0; i < segments.length; i++) {
-        expect(segments[i].classList.contains(test_css_classes.SELECTED)).toEqual(i === test_indices.SELECTED);
+        expect(segments[i].classList.contains(testCssClasses.SELECTED)).toEqual(i === testIndices.SELECTED);
       }
 
       component.destroy();
@@ -185,17 +185,17 @@ describe('MDCSegmentedButton', () => {
     it('#selectSegment selects no child segment if none is identified', () => {
       const {root, component, adapter} = setupTest();
 
-      const segments = root.querySelectorAll(test_selectors.SEGMENT);
+      const segments = root.querySelectorAll(testSelectors.SEGMENT);
       setAllUnselected(segments);
 
-      adapter.selectSegment(test_indices.NOT_PRESENT);
+      adapter.selectSegment(testIndices.NOT_PRESENT);
       for (let i = 0; i < segments.length; i++) {
-        expect(segments[i].classList.contains(test_css_classes.SELECTED)).toBeFalse();
+        expect(segments[i].classList.contains(testCssClasses.SELECTED)).toBeFalse();
       }
 
-      adapter.selectSegment(test_segment_ids.NOT_PRESENT_SEGMENT_ID);
+      adapter.selectSegment(testSegmentIds.NOT_PRESENT_SEGMENT_ID);
       for (let i = 0; i < segments.length; i++) {
-        expect(segments[i].classList.contains(test_css_classes.SELECTED)).toBeFalse();
+        expect(segments[i].classList.contains(testCssClasses.SELECTED)).toBeFalse();
       }
 
       component.destroy();
@@ -204,19 +204,19 @@ describe('MDCSegmentedButton', () => {
     it('#unselectSegment unselectes identified child segment if found', () => {
       const {root, component, adapter} = setupTest();
 
-      const segments = root.querySelectorAll(test_selectors.SEGMENT);
-      segments[test_indices.UNSELECTED].setAttribute(attributes.DATA_SEGMENT_ID, test_segment_ids.UNSELECTED_SEGMENT_ID);
+      const segments = root.querySelectorAll(testSelectors.SEGMENT);
+      segments[testIndices.UNSELECTED].setAttribute(attributes.DATA_SEGMENT_ID, testSegmentIds.UNSELECTED_SEGMENT_ID);
 
       setAllSelected(segments);
-      adapter.unselectSegment(test_indices.UNSELECTED);
+      adapter.unselectSegment(testIndices.UNSELECTED);
       for (let i = 0; i < segments.length; i++) {
-        expect(segments[i].classList.contains(test_css_classes.SELECTED)).toEqual(i !== test_indices.UNSELECTED);
+        expect(segments[i].classList.contains(testCssClasses.SELECTED)).toEqual(i !== testIndices.UNSELECTED);
       }
 
       setAllSelected(segments);
-      adapter.unselectSegment(test_segment_ids.UNSELECTED_SEGMENT_ID);
+      adapter.unselectSegment(testSegmentIds.UNSELECTED_SEGMENT_ID);
       for (let i = 0; i < segments.length; i++) {
-        expect(segments[i].classList.contains(test_css_classes.SELECTED)).toEqual(i !== test_indices.UNSELECTED);
+        expect(segments[i].classList.contains(testCssClasses.SELECTED)).toEqual(i !== testIndices.UNSELECTED);
       }
 
       component.destroy();
@@ -225,17 +225,17 @@ describe('MDCSegmentedButton', () => {
     it('#unselectSegment unselects no child segment if none is identified', () => {
       const {root, component, adapter} = setupTest();
 
-      const segments = root.querySelectorAll(test_selectors.SEGMENT);
+      const segments = root.querySelectorAll(testSelectors.SEGMENT);
       setAllSelected(segments);
 
-      adapter.unselectSegment(test_indices.NOT_PRESENT);
+      adapter.unselectSegment(testIndices.NOT_PRESENT);
       for (let i = 0; i < segments.length; i++) {
-        expect(segments[i].classList.contains(test_css_classes.SELECTED)).toBeTrue();
+        expect(segments[i].classList.contains(testCssClasses.SELECTED)).toBeTrue();
       }
 
-      adapter.unselectSegment(test_segment_ids.NOT_PRESENT_SEGMENT_ID);
+      adapter.unselectSegment(testSegmentIds.NOT_PRESENT_SEGMENT_ID);
       for (let i = 0; i < segments.length; i++) {
-        expect(segments[i].classList.contains(test_css_classes.SELECTED)).toBeTrue();
+        expect(segments[i].classList.contains(testCssClasses.SELECTED)).toBeTrue();
       }
 
       component.destroy();
@@ -248,14 +248,14 @@ describe('MDCSegmentedButton', () => {
       component.listen(events.CHANGE, handler);
 
       adapter.notifySelectedChange({
-        index: test_indices.SELECTED,
+        index: testIndices.SELECTED,
         selected: true,
-        segmentId: test_segment_ids.SELECTED_SEGMENT_ID
+        segmentId: testSegmentIds.SELECTED_SEGMENT_ID
       });
       expect(handler).toHaveBeenCalledWith(jasmine.anything());
-      expect(handler.calls.mostRecent().args[0].detail.index).toEqual(test_indices.SELECTED);
+      expect(handler.calls.mostRecent().args[0].detail.index).toEqual(testIndices.SELECTED);
       expect(handler.calls.mostRecent().args[0].detail.selected).toBeTrue();
-      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(test_segment_ids.SELECTED_SEGMENT_ID);
+      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(testSegmentIds.SELECTED_SEGMENT_ID);
 
       component.unlisten(events.CHANGE, handler);
       component.destroy();
@@ -265,15 +265,15 @@ describe('MDCSegmentedButton', () => {
   it('#getSelectedSegments returns selected child segments as a SegmentDetail list', () => {
     const {root, component} = setupTest();
 
-    const segments = root.querySelectorAll(test_selectors.SEGMENT);
+    const segments = root.querySelectorAll(testSelectors.SEGMENT);
     setAllSelected(segments);
 
-    const selected_segments = component.getSelectedSegments();
-    expect(selected_segments.length).toEqual(segments.length);
-    for (let i = 0; i < selected_segments.length; i++) {
-      expect(selected_segments[i].index).toEqual(i);
-      expect(selected_segments[i].selected).toBeTrue();
-      expect(selected_segments[i].hasOwnProperty('segmentId')).toBeTrue();
+    const selectedSegments = component.getSelectedSegments();
+    expect(selectedSegments.length).toEqual(segments.length);
+    for (let i = 0; i < selectedSegments.length; i++) {
+      expect(selectedSegments[i].index).toEqual(i);
+      expect(selectedSegments[i].selected).toBeTrue();
+      expect(selectedSegments[i].hasOwnProperty('segmentId')).toBeTrue();
     }
 
     setAllUnselected(segments);
@@ -285,17 +285,17 @@ describe('MDCSegmentedButton', () => {
   it('#selectSegment selects identified child segment', () => {
     const {root, component} = setupTest();
 
-    const segments = root.querySelectorAll(test_selectors.SEGMENT);
-    const selected_segment = segments[test_indices.SELECTED];
-    selected_segment.setAttribute(attributes.DATA_SEGMENT_ID, test_segment_ids.SELECTED_SEGMENT_ID);
+    const segments = root.querySelectorAll(testSelectors.SEGMENT);
+    const selectedSegment = segments[testIndices.SELECTED];
+    selectedSegment.setAttribute(attributes.DATA_SEGMENT_ID, testSegmentIds.SELECTED_SEGMENT_ID);
     
     setAllUnselected(segments);
-    component.selectSegment(test_indices.SELECTED);
-    expect(selected_segment.classList.contains(test_css_classes.SELECTED)).toBeTrue();
+    component.selectSegment(testIndices.SELECTED);
+    expect(selectedSegment.classList.contains(testCssClasses.SELECTED)).toBeTrue();
 
     setAllUnselected(segments);
-    component.selectSegment(test_segment_ids.SELECTED_SEGMENT_ID);
-    expect(selected_segment.classList.contains(test_css_classes.SELECTED)).toBeTrue();
+    component.selectSegment(testSegmentIds.SELECTED_SEGMENT_ID);
+    expect(selectedSegment.classList.contains(testCssClasses.SELECTED)).toBeTrue();
 
     component.destroy();
   });
@@ -303,17 +303,17 @@ describe('MDCSegmentedButton', () => {
   it('#unselectSegment unselects identified child segment', () => {
     const {root, component} = setupTest();
 
-    const segments = root.querySelectorAll(test_selectors.SEGMENT);
-    const unselected_segment = segments[test_indices.UNSELECTED];
-    unselected_segment.setAttribute(attributes.DATA_SEGMENT_ID, test_segment_ids.UNSELECTED_SEGMENT_ID);
+    const segments = root.querySelectorAll(testSelectors.SEGMENT);
+    const unselectedSegment = segments[testIndices.UNSELECTED];
+    unselectedSegment.setAttribute(attributes.DATA_SEGMENT_ID, testSegmentIds.UNSELECTED_SEGMENT_ID);
 
     setAllSelected(segments);
-    component.unselectSegment(test_indices.UNSELECTED);
-    expect(unselected_segment.classList.contains(test_css_classes.SELECTED)).toBeFalse();
+    component.unselectSegment(testIndices.UNSELECTED);
+    expect(unselectedSegment.classList.contains(testCssClasses.SELECTED)).toBeFalse();
 
     setAllSelected(segments);
-    component.unselectSegment(test_segment_ids.UNSELECTED_SEGMENT_ID);
-    expect(unselected_segment.classList.contains(test_css_classes.SELECTED)).toBeFalse();
+    component.unselectSegment(testSegmentIds.UNSELECTED_SEGMENT_ID);
+    expect(unselectedSegment.classList.contains(testCssClasses.SELECTED)).toBeFalse();
 
     component.destroy();
   });
@@ -321,20 +321,20 @@ describe('MDCSegmentedButton', () => {
   it('#isSegmentSelected returns whether identified child segment is selected', () => {
     const {root, component} = setupTest();
 
-    const segments = root.querySelectorAll(test_selectors.SEGMENT);
-    const selected_segment = segments[test_indices.SELECTED];
-    const unselected_segment = segments[test_indices.UNSELECTED];
-    selected_segment.classList.add(test_css_classes.SELECTED);
-    selected_segment.setAttribute(attributes.DATA_SEGMENT_ID, test_segment_ids.SELECTED_SEGMENT_ID);
-    unselected_segment.classList.remove(test_css_classes.SELECTED);
-    unselected_segment.setAttribute(attributes.DATA_SEGMENT_ID, test_segment_ids.UNSELECTED_SEGMENT_ID);
+    const segments = root.querySelectorAll(testSelectors.SEGMENT);
+    const selectedSegment = segments[testIndices.SELECTED];
+    const unselectedSegment = segments[testIndices.UNSELECTED];
+    selectedSegment.classList.add(testCssClasses.SELECTED);
+    selectedSegment.setAttribute(attributes.DATA_SEGMENT_ID, testSegmentIds.SELECTED_SEGMENT_ID);
+    unselectedSegment.classList.remove(testCssClasses.SELECTED);
+    unselectedSegment.setAttribute(attributes.DATA_SEGMENT_ID, testSegmentIds.UNSELECTED_SEGMENT_ID);
 
-    expect(component.isSegmentSelected(test_indices.SELECTED)).toBeTrue();
-    expect(component.isSegmentSelected(test_segment_ids.SELECTED_SEGMENT_ID)).toBeTrue();
-    expect(component.isSegmentSelected(test_indices.UNSELECTED)).toBeFalse();
-    expect(component.isSegmentSelected(test_segment_ids.UNSELECTED_SEGMENT_ID)).toBeFalse();
-    expect(component.isSegmentSelected(test_indices.NOT_PRESENT)).toBeFalse();
-    expect(component.isSegmentSelected(test_segment_ids.NOT_PRESENT_SEGMENT_ID)).toBeFalse();
+    expect(component.isSegmentSelected(testIndices.SELECTED)).toBeTrue();
+    expect(component.isSegmentSelected(testSegmentIds.SELECTED_SEGMENT_ID)).toBeTrue();
+    expect(component.isSegmentSelected(testIndices.UNSELECTED)).toBeFalse();
+    expect(component.isSegmentSelected(testSegmentIds.UNSELECTED_SEGMENT_ID)).toBeFalse();
+    expect(component.isSegmentSelected(testIndices.NOT_PRESENT)).toBeFalse();
+    expect(component.isSegmentSelected(testSegmentIds.NOT_PRESENT_SEGMENT_ID)).toBeFalse();
 
     component.destroy();
   });
