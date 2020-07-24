@@ -26,7 +26,7 @@
 @use '@material/animation/variables' as variables2;
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/theme';
 @use './functions';
 @use './keyframes';
 @use './variables';
@@ -202,7 +202,7 @@
   #{$ripple-target}::after {
     @include feature-targeting.targets($feat-color) {
       @if color.alpha(theme-variables.prop-value($color)) > 0 {
-        @include theme-mixins.prop(background-color, $color);
+        @include theme.prop(background-color, $color);
       } @else {
         // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
         // This avoids unnecessary transitions and overflow.

@@ -21,7 +21,7 @@
 //
 
 @use '../functions';
-@use '@material/theme/mixins';
+@use '@material/theme/theme';
 @use '@material/typography/mixins' as typography-mixins;
 @use '@material/feature-targeting/feature-targeting';
 // Public mixins
@@ -94,7 +94,7 @@
 
   + .mdc-text-field-helper-line .mdc-text-field-helper-text {
     @include feature-targeting.targets($feat-color) {
-      @include mixins.prop(color, $color);
+      @include theme.prop(color, $color);
     }
   }
 }
@@ -106,7 +106,7 @@
     + .mdc-text-field-helper-line
     .mdc-text-field-helper-text--validation-msg {
     @include feature-targeting.targets($feat-color) {
-      @include mixins.prop(color, $color);
+      @include theme.prop(color, $color);
     }
   }
 }

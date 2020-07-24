@@ -21,7 +21,7 @@
 //
 
 @use 'sass:color';
-@use '@material/theme/mixins';
+@use '@material/theme/theme';
 @use '@material/theme/variables';
 
 $action-icon-color: rgba(

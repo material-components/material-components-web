@@ -21,7 +21,7 @@
 //
 
 @use 'sass:color';
-@use '@material/theme/functions';
+@use '@material/theme/theme-color';
 @use '@material/theme/variables'; // for mdc-theme-prop-value() function
 
 $fill-color: color.mix(

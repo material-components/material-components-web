@@ -21,7 +21,7 @@
 //
 
 @use 'sass:list';
-@use '@material/theme/mixins' as theme;
+@use '@material/theme/theme';
 @use './variables';
 
 // Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.

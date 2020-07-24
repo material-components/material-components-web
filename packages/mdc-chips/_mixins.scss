@@ -30,8 +30,8 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/mixins' as ripple-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
-@use '@material/theme/functions' as theme-functions;
-@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/theme-color';
+@use '@material/theme/theme';
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/typography/mixins' as typography-mixins;
 @use '@material/shape/mixins' as shape-mixins;
@@ -94,7 +94,7 @@ $ripple-target: '.mdc-chip__ripple';
 
     &:hover {
       @include feature-targeting.targets($feat-color) {
-        @include theme-mixins.prop(color, on-surface);
+        @include theme.prop(color, on-surface);
       }
     }
 
@@ -187,7 +187,7 @@ $ripple-target: '.mdc-chip__ripple';
 
     .mdc-chip--selected {
       @include feature-targeting.targets($feat-color) {
-        @include theme-mixins.prop(background-color, surface);
+        @include theme.prop(background-color, surface);
       }
     }
   }
@@ -379,7 +379,7 @@ $ripple-target: '.mdc-chip__ripple';
 }
 
 @mixin fill-color-accessible($color, $query: feature-targeting.all()) {
-  $fill-tone: theme-functions.tone($color);
+  $fill-tone: theme-color.tone($color);
 
   @include fill-color($color, $query: $query);
 
@@ -400,7 +400,7 @@ $ripple-target: '.mdc-chip__ripple';
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme-mixins.prop(background-color, $color);
+    @include theme.prop(background-color, $color);
   }
 }
 
@@ -413,12 +413,12 @@ $ripple-target: '.mdc-chip__ripple';
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme-mixins.prop(color, $color);
+    @include theme.prop(color, $color);
   }
 
   &:hover {
     @include feature-targeting.targets($feat-color) {
-      @include theme-mixins.prop(color, $color);
+      @include theme.prop(color, $color);
     }
   }
 }
@@ -442,21 +442,21 @@ $ripple-target: '.mdc-chip__ripple';
 
   &.mdc-chip--selected {
     @include feature-targeting.targets($feat-color) {
-      @include theme-mixins.prop(color, $color);
+      @include theme.prop(color, $color);
     }
 
     @include leading-icon-color($color, $query: $query);
 
     &:hover {
       @include feature-targeting.targets($feat-color) {
-        @include theme-mixins.prop(color, $color);
+        @include theme.prop(color, $color);
       }
     }
   }
 
   .mdc-chip__checkmark-path {
     @include feature-targeting.targets($feat-color) {
-      @include theme-mixins.prop(stroke, $color);
+      @include theme.prop(stroke, $color);
     }
   }
 }
@@ -487,7 +487,7 @@ $ripple-target: '.mdc-chip__ripple';
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme-mixins.prop(border-color, $color);
+    @include theme.prop(border-color, $color);
   }
 }
 

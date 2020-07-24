@@ -31,7 +31,7 @@
 @use '@material/ripple/mixins' as ripple-mixins;
 @use '@material/ripple/functions' as ripple-functions;
 @use '@material/theme/custom-properties';
-@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/theme';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
 @use '@material/feature-targeting/feature-targeting';
@@ -982,7 +982,7 @@
 
   .mdc-text-field__input {
     @include feature-targeting.targets($feat-color) {
-      @include theme-mixins.prop(caret-color, $color);
+      @include theme.prop(caret-color, $color);
     }
   }
 }
@@ -2412,7 +2412,7 @@
 
   .mdc-text-field__input {
     @include feature-targeting.targets($feat-color) {
-      @include theme-mixins.prop(color, $color);
+      @include theme.prop(color, $color);
     }
   }
 }
@@ -2423,7 +2423,7 @@
   @include feature-targeting.targets($feat-color) {
     .mdc-text-field__input {
       @include placeholder-selector_ {
-        @include theme-mixins.prop(color, $color);
+        @include theme.prop(color, $color);
       }
     }
   }
@@ -2440,7 +2440,7 @@
     @if ($addAlternate) {
       /* @alternate */
     }
-    @include theme-mixins.prop(background-color, $color);
+    @include theme.prop(background-color, $color);
   }
 }
 
@@ -2489,7 +2489,7 @@
 
   @include feature-targeting.targets($feat-color) {
     .mdc-text-field__affix--prefix {
-      @include theme-mixins.prop(color, $color);
+      @include theme.prop(color, $color);
     }
   }
 }
@@ -2499,7 +2499,7 @@
 
   @include feature-targeting.targets($feat-color) {
     .mdc-text-field__affix--suffix {
-      @include theme-mixins.prop(color, $color);
+      @include theme.prop(color, $color);
     }
   }
 }

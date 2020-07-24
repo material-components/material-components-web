@@ -24,7 +24,7 @@
 @use 'sass:map';
 @use 'sass:string';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/theme';
 @use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
@@ -44,7 +44,7 @@
 
   @include smooth-font($query: $query);
   @include feature-targeting.targets($feat-typography) {
-    @include theme-mixins.prop(
+    @include theme.prop(
       font-family,
       (
         varname: --mdc-typography-font-family,
@@ -77,7 +77,7 @@
           );
         }
 
-        @include theme-mixins.prop(
+        @include theme.prop(
           $key,
           (
             varname: --mdc-typography-#{$style}-#{$key},

@@ -22,7 +22,7 @@
 
 @use '@material/animation/functions' as animation-functions;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/theme';
 @use './variables';
 @use './keyframes';
 
@@ -175,7 +175,7 @@
   .mdc-circular-progress__determinate-circle,
   .mdc-circular-progress__indeterminate-circle-graphic {
     @include feature-targeting.targets($feat-color) {
-      @include theme-mixins.property(stroke, $color);
+      @include theme.property(stroke, $color);
     }
   }
 }
@@ -196,7 +196,7 @@
     .mdc-circular-progress__color-#{$i}
       .mdc-circular-progress__indeterminate-circle-graphic {
       @include feature-targeting.targets($feat-color) {
-        @include theme-mixins.property(stroke, nth($colors, $i));
+        @include theme.property(stroke, nth($colors, $i));
       }
     }
   }

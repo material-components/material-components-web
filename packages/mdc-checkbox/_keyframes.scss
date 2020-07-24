@@ -21,7 +21,7 @@
 //
 
 @use '@material/animation/variables' as animation-variables;
-@use '@material/theme/mixins';
+@use '@material/theme/theme';
 @use './variables';
 
 @mixin container-keyframes_(
@@ -33,26 +33,26 @@
 ) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
-      @include mixins.prop(border-color, $from-stroke-color);
-      @include mixins.prop(background-color, $from-fill-color);
+      @include theme.prop(border-color, $from-stroke-color);
+      @include theme.prop(background-color, $from-fill-color);
     }
 
     50% {
-      @include mixins.prop(border-color, $to-stroke-color);
-      @include mixins.prop(background-color, $to-fill-color);
+      @include theme.prop(border-color, $to-stroke-color);
+      @include theme.prop(background-color, $to-fill-color);
     }
   }
 
   @keyframes mdc-checkbox-fade-out-background-#{$uid} {
     0%,
     80% {
-      @include mixins.prop(border-color, $to-stroke-color);
-      @include mixins.prop(background-color, $to-fill-color);
+      @include theme.prop(border-color, $to-stroke-color);
+      @include theme.prop(background-color, $to-fill-color);
     }
 
     100% {
-      @include mixins.prop(border-color, $from-stroke-color);
-      @include mixins.prop(background-color, $from-fill-color);
+      @include theme.prop(border-color, $from-stroke-color);
+      @include theme.prop(background-color, $from-fill-color);
     }
   }
 }

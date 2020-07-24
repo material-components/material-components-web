@@ -21,7 +21,7 @@
 //
 
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/theme';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/animation/variables' as animation-variables;
 @use '@material/elevation/mixins' as elevation-mixins;
@@ -77,7 +77,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme-mixins.prop(color, $color);
+    @include theme.prop(color, $color);
   }
 }
 
@@ -85,7 +85,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme-mixins.prop(background-color, $color);
+    @include theme.prop(background-color, $color);
   }
 }
 
