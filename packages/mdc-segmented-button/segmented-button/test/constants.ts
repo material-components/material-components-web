@@ -24,9 +24,17 @@
 /**
  * String constants for segmented button tests
  */
-export const test_strings = {
-  CLASS: 'test-class'
+export const test_css_classes = {
+  TEST_CLASS: 'test-class',
+  SELECTED: 'mdc-segmented-button__segment--selected'
 };
+
+/**
+ * 
+ */
+export const test_selectors = {
+  SEGMENT: '.mdc-segmented-button__segment'
+}
 
 /**
  * Indices for segments used in tests
