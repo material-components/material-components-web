@@ -34,30 +34,8 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
     return cssClasses;
   }
 
-  static get defaultAdapter(): MDCDrawerAdapter {
-    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-    return {
-      addClass: () => undefined,
-      removeClass: () => undefined,
-      hasClass: () => false,
-      elementHasClass: () => false,
-      notifyClose: () => undefined,
-      notifyOpen: () => undefined,
-      saveFocus: () => undefined,
-      restoreFocus: () => undefined,
-      focusActiveNavigationItem: () => undefined,
-      trapFocus: () => undefined,
-      releaseFocus: () => undefined,
-    };
-    // tslint:enable:object-literal-sort-keys
-  }
-
   private animationFrame_ = 0;
   private animationTimer_ = 0;
-
-  constructor(adapter?: Partial<MDCDrawerAdapter>) {
-    super({...MDCDismissibleDrawerFoundation.defaultAdapter, ...adapter});
-  }
 
   destroy() {
     if (this.animationFrame_) {

@@ -75,27 +75,6 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCRippleAdapter {
-    return {
-      addClass: () => undefined,
-      browserSupportsCssVars: () => true,
-      computeBoundingRect: () => ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
-      containsEventTarget: () => true,
-      deregisterDocumentInteractionHandler: () => undefined,
-      deregisterInteractionHandler: () => undefined,
-      deregisterResizeHandler: () => undefined,
-      getWindowPageOffset: () => ({x: 0, y: 0}),
-      isSurfaceActive: () => true,
-      isSurfaceDisabled: () => true,
-      isUnbounded: () => true,
-      registerDocumentInteractionHandler: () => undefined,
-      registerInteractionHandler: () => undefined,
-      registerResizeHandler: () => undefined,
-      removeClass: () => undefined,
-      updateCssVariable: () => undefined,
-    };
-  }
-
   private activationAnimationHasEnded_ = false;
   private activationState_: ActivationStateType;
   private activationTimer_ = 0;
@@ -116,8 +95,8 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
 
   private previousActivationEvent_?: Event;
 
-  constructor(adapter?: Partial<MDCRippleAdapter>) {
-    super({...MDCRippleFoundation.defaultAdapter, ...adapter});
+  constructor(protected readonly adapter: MDCRippleAdapter) {
+    super(adapter);
 
     this.activationState_ = this.defaultActivationState_();
 

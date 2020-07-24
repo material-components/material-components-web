@@ -52,39 +52,6 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     return Corner;
   }
 
-  /**
-   * @see {@link MDCMenuSurfaceAdapter} for typing information on parameters and return types.
-   */
-  static get defaultAdapter(): MDCMenuSurfaceAdapter {
-    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-    return {
-      addClass: () => undefined,
-      removeClass: () => undefined,
-      hasClass: () => false,
-      hasAnchor: () => false,
-
-      isElementInContainer: () => false,
-      isFocused: () => false,
-      isRtl: () => false,
-
-      getInnerDimensions: () => ({height: 0, width: 0}),
-      getAnchorDimensions: () => null,
-      getWindowDimensions: () => ({height: 0, width: 0}),
-      getBodyDimensions: () => ({height: 0, width: 0}),
-      getWindowScroll: () => ({x: 0, y: 0}),
-      setPosition: () => undefined,
-      setMaxHeight: () => undefined,
-      setTransformOrigin: () => undefined,
-
-      saveFocus: () => undefined,
-      restoreFocus: () => undefined,
-
-      notifyClose: () => undefined,
-      notifyOpen: () => undefined,
-    };
-    // tslint:enable:object-literal-sort-keys
-  }
-
   private isSurfaceOpen = false;
   private isQuickOpen = false;
   private isHoistedElement = false;
@@ -117,10 +84,6 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
   private dimensions!: MDCMenuDimensions;         // assigned in open()
   private measurements!: AutoLayoutMeasurements;  // assigned in open()
-
-  constructor(adapter?: Partial<MDCMenuSurfaceAdapter>) {
-    super({...MDCMenuSurfaceFoundation.defaultAdapter, ...adapter});
-  }
 
   init() {
     const {ROOT, OPEN} = MDCMenuSurfaceFoundation.cssClasses;

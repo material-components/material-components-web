@@ -43,33 +43,6 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   private closeAnimationEndTimerId_ = 0;
   private defaultFocusState_ = DefaultFocusState.LIST_ROOT;
 
-  /**
-   * @see {@link MDCMenuAdapter} for typing information on parameters and return types.
-   */
-  static get defaultAdapter(): MDCMenuAdapter {
-    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-    return {
-      addClassToElementAtIndex: () => undefined,
-      removeClassFromElementAtIndex: () => undefined,
-      addAttributeToElementAtIndex: () => undefined,
-      removeAttributeFromElementAtIndex: () => undefined,
-      elementContainsClass: () => false,
-      closeSurface: () => undefined,
-      getElementIndex: () => -1,
-      notifySelected: () => undefined,
-      getMenuItemCount: () => 0,
-      focusItemAtIndex: () => undefined,
-      focusListRoot: () => undefined,
-      getSelectedSiblingOfItemAtIndex: () => -1,
-      isSelectableItemAtIndex: () => false,
-    };
-    // tslint:enable:object-literal-sort-keys
-  }
-
-  constructor(adapter?: Partial<MDCMenuAdapter>) {
-    super({...MDCMenuFoundation.defaultAdapter, ...adapter});
-  }
-
   destroy() {
     if (this.closeAnimationEndTimerId_) {
       clearTimeout(this.closeAnimationEndTimerId_);

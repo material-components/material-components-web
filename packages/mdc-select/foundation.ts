@@ -44,50 +44,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     return strings;
   }
 
-  /**
-   * See {@link MDCSelectAdapter} for typing information on parameters and return types.
-   */
-  static get defaultAdapter(): MDCSelectAdapter {
-    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-    return {
-      addClass: () => undefined,
-      removeClass: () => undefined,
-      hasClass: () => false,
-      activateBottomLine: () => undefined,
-      deactivateBottomLine: () => undefined,
-      getSelectedIndex: () => -1,
-      setSelectedIndex: () => undefined,
-      hasLabel: () => false,
-      floatLabel: () => undefined,
-      getLabelWidth: () => 0,
-      setLabelRequired: () => undefined,
-      hasOutline: () => false,
-      notchOutline: () => undefined,
-      closeOutline: () => undefined,
-      setRippleCenter: () => undefined,
-      notifyChange: () => undefined,
-      setSelectedText: () => undefined,
-      isSelectAnchorFocused: () => false,
-      getSelectAnchorAttr: () => '',
-      setSelectAnchorAttr: () => undefined,
-      removeSelectAnchorAttr: () => undefined,
-      addMenuClass: () => undefined,
-      removeMenuClass: () => undefined,
-      openMenu: () => undefined,
-      closeMenu: () => undefined,
-      getAnchorElement: () => null,
-      setMenuAnchorElement: () => undefined,
-      setMenuAnchorCorner: () => undefined,
-      setMenuWrapFocus: () => undefined,
-      focusMenuItemAtIndex: () => undefined,
-      getMenuItemCount: () => 0,
-      getMenuItemValues: () => [],
-      getMenuItemTextAtIndex: () => '',
-      isTypeaheadInProgress: () => false,
-      typeaheadMatchItem: () => -1,
-    };
-    // tslint:enable:object-literal-sort-keys
-  }
 
   private readonly leadingIcon: MDCSelectIconFoundation|undefined;
   private readonly helperText: MDCSelectHelperTextFoundation|undefined;
@@ -109,8 +65,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * @param adapter
    * @param foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter?: Partial<MDCSelectAdapter>, foundationMap: Partial<MDCSelectFoundationMap> = {}) {
-    super({...MDCSelectFoundation.defaultAdapter, ...adapter});
+  constructor(protected readonly adapter: MDCSelectAdapter, foundationMap: Partial<MDCSelectFoundationMap> = {}) {
+    super(adapter);
 
     this.leadingIcon = foundationMap.leadingIcon;
     this.helperText = foundationMap.helperText;

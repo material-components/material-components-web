@@ -41,28 +41,12 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCSnackbarAdapter {
-    return {
-      addClass: () => undefined,
-      announce: () => undefined,
-      notifyClosed: () => undefined,
-      notifyClosing: () => undefined,
-      notifyOpened: () => undefined,
-      notifyOpening: () => undefined,
-      removeClass: () => undefined,
-    };
-  }
-
   private isOpen_ = false;
   private animationFrame_ = 0;
   private animationTimer_ = 0;
   private autoDismissTimer_ = 0;
   private autoDismissTimeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
   private closeOnEscape_ = true;
-
-  constructor(adapter?: Partial<MDCSnackbarAdapter>) {
-    super({...MDCSnackbarFoundation.defaultAdapter, ...adapter});
-  }
 
   destroy() {
     this.clearAutoDismissTimer_();

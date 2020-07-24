@@ -26,21 +26,6 @@ import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
-  static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
-    return {
-      isSingleSelect: () => false,
-      getAttr: () => '',
-      setAttr: () => undefined,
-      addClass: () => undefined,
-      removeClass: () => undefined,
-      hasClass: () => false,
-      notifySelectedChange: () => undefined
-    }
-  }
-
-  constructor(adapter?: Partial<MDCSegmentedButtonSegmentAdapter>) {
-    super({...MDCSegmentedButtonSegmentFoundation.defaultAdapter, ...adapter});
-  }
 
   isSelected(): boolean {
     return this.adapter.hasClass(cssClasses.SELECTED);
