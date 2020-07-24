@@ -61,6 +61,9 @@ describe('MDCSegmentedButtonSegment', () => {
 
     emitEvent(root, events.CLICK);
     expect(handler).toHaveBeenCalledTimes(1);
+
+    component.unlisten(events.SELECTED, handler);
+    component.destroy();
   });
 
   it('#destroy removes event handlers', () => {
@@ -71,6 +74,8 @@ describe('MDCSegmentedButtonSegment', () => {
 
     emitEvent(root, events.CLICK);
     expect(handler).not.toHaveBeenCalled();
+
+    component.unlisten(events.SELECTED, handler);
   });
 
   describe('Adapter', () => {
@@ -82,10 +87,12 @@ describe('MDCSegmentedButtonSegment', () => {
 
       component.setIsSingleSelect(false);
       expect(adapter.isSingleSelect()).toBeFalse();
+
+      component.destroy();
     });
 
     it('#getAttr returns value of attribute of root element', () => {
-      const {root, adapter} = setupTest();
+      const {root, component, adapter} = setupTest();
 
       root.setAttribute(test_strings.ATTRIBUTE, booleans.FALSE);
       expect(adapter.getAttr(test_strings.ATTRIBUTE)).toEqual(booleans.FALSE);
@@ -93,40 +100,50 @@ describe('MDCSegmentedButtonSegment', () => {
       expect(adapter.getAttr(test_strings.ATTRIBUTE)).toEqual(booleans.TRUE);
       root.removeAttribute(test_strings.ATTRIBUTE);
       expect(adapter.getAttr(test_strings.ATTRIBUTE)).toEqual(null);
+
+      component.destroy();
     });
 
     it('#setAttr sets the value of attribute of root element', () => {
-      const {root, adapter} = setupTest();
+      const {root, component, adapter} = setupTest();
 
       adapter.setAttr(test_strings.ATTRIBUTE, booleans.TRUE);
       expect(root.getAttribute(test_strings.ATTRIBUTE)).toEqual(booleans.TRUE);
       adapter.setAttr(test_strings.ATTRIBUTE, booleans.FALSE);
       expect(root.getAttribute(test_strings.ATTRIBUTE)).toEqual(booleans.FALSE);
+
+      component.destroy();
     });
 
     it('#addClass adds class to root element', () => {
-      const {root, adapter} = setupTest();
+      const {root, component, adapter} = setupTest();
 
       root.classList.remove(test_strings.CLASS);
       adapter.addClass(test_strings.CLASS);
       expect(root.classList.contains(test_strings.CLASS)).toBeTrue();
+
+      component.destroy();
     });
 
     it('#removeClass removes class from root element', () => {
-      const {root, adapter} = setupTest();
+      const {root, component, adapter} = setupTest();
 
       root.classList.add(test_strings.CLASS);
       adapter.removeClass(test_strings.CLASS);
       expect(root.classList.contains(test_strings.CLASS)).toBeFalse();
+
+      component.destroy();
     });
 
     it('#hasClass returns whether root element has class', () => {
-      const {root, adapter} = setupTest();
+      const {root, component, adapter} = setupTest();
 
       root.classList.add(test_strings.CLASS);
       expect(adapter.hasClass(test_strings.CLASS)).toBeTrue();
       root.classList.remove(test_strings.CLASS);
       expect(adapter.hasClass(test_strings.CLASS)).toBeFalse();
+
+      component.destroy();
     });
 
     it(`#notifySelectedChange emits ${events.SELECTED} event with SegmentDetail`, () => {
@@ -148,6 +165,9 @@ describe('MDCSegmentedButtonSegment', () => {
       expect(handler.calls.mostRecent().args[0].detail.index).toEqual(index);
       expect(handler.calls.mostRecent().args[0].detail.selected).toBeFalse();
       expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(test_strings.SEGMENT_ID);
+
+      component.unlisten(events.SELECTED, handler);
+      component.destroy();
     });
   });
 
@@ -159,6 +179,8 @@ describe('MDCSegmentedButtonSegment', () => {
 
     root.classList.remove(cssClasses.SELECTED);
     expect(component.isSelected()).toBeFalse();
+
+    component.destroy();
   });
 
   it('#setSelected sets segment to be selected', () => {
@@ -177,6 +199,8 @@ describe('MDCSegmentedButtonSegment', () => {
     component.setSelected();
     expect(root.classList.contains(cssClasses.SELECTED)).toBeTrue();
     expect(root.getAttribute(attributes.ARIA_CHECKED)).toEqual(booleans.TRUE);
+
+    component.destroy();
   });
 
   it('#setUnselected sets segment to be not selected', () => {
@@ -198,6 +222,8 @@ describe('MDCSegmentedButtonSegment', () => {
     component.setUnselected();
     expect(root.classList.contains(cssClasses.SELECTED)).toBeFalse();
     expect(root.getAttribute(attributes.ARIA_CHECKED)).toEqual(booleans.FALSE);
+
+    component.destroy();
   });
 
   it('#getSegmentId returns segment\'s segmentId if it has one', () => {
@@ -208,5 +234,7 @@ describe('MDCSegmentedButtonSegment', () => {
 
     root.removeAttribute(attributes.DATA_SEGMENT_ID);
     expect(component.getSegmentId()).toEqual(undefined);
+
+    component.destroy();
   });
 });
