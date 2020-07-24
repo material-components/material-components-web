@@ -30,7 +30,7 @@ export const test_css_classes = {
 };
 
 /**
- * 
+ * CSS class selectors for segmented button tests
  */
 export const test_selectors = {
   SEGMENT: '.mdc-segmented-button__segment'

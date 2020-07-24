@@ -26,5 +26,6 @@
  */
 export const test_strings = {
   SEGMENT_ID: 'test-segment-id',
-  CLASS: 'test-class'
+  CLASS: 'test-class',
+  ATTRIBUTE: 'test-attribute'
 };

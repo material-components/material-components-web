@@ -22,9 +22,8 @@
  */
 
 import {emitEvent} from '../../../../testing/dom/events';
-import {createMockFoundation} from '../../../../testing/helpers/foundation';
-import {MDCSegmentedButtonSegment, MDCSegmentedButtonSegmentFoundation} from '../index';
-import {events, attributes, booleans} from '../constants';
+import {MDCSegmentedButtonSegment} from '../index';
+import {events, attributes, booleans, cssClasses} from '../constants';
 import {test_strings} from './constants';
 
 const getFixtureMultiSelectWithLabel = () => {
@@ -43,14 +42,9 @@ const getFixtureMultiSelectWithLabel = () => {
 const setupTest = () => {
   const root = getFixtureMultiSelectWithLabel();
   const component = new MDCSegmentedButtonSegment(root);
-  return {root, component};
+  const adapter = (component.getDefaultFoundation() as any).adapter;
+  return {root, component, adapter};
 };
-
-const setupMockFoundationTest = (root = getFixtureMultiSelectWithLabel()) => {
-  const mockFoundation = createMockFoundation(MDCSegmentedButtonSegmentFoundation);
-  const component = new MDCSegmentedButtonSegment(root, mockFoundation);
-  return {root, component, mockFoundation};
-}
 
 /**
  * TODO: add tests for ripple, touch, and having icon
@@ -61,124 +55,158 @@ describe('MDCSegmentedButtonSegment', () => {
   });
 
   it('#initialSyncWithDOM sets up event handlers', () => {
-    const {root, mockFoundation} = setupMockFoundationTest();
+    const {root, component} = setupTest();
+    const handler = jasmine.createSpy('handle selected');
+    component.listen(events.SELECTED, handler);
 
     emitEvent(root, events.CLICK);
-    expect(mockFoundation.handleClick).toHaveBeenCalledTimes(1);
+    expect(handler).toHaveBeenCalledTimes(1);
   });
 
   it('#destroy removes event handlers', () => {
-    const {root, component, mockFoundation} = setupMockFoundationTest();
+    const {root, component} = setupTest();
+    const handler = jasmine.createSpy('handle selected');
+    component.listen(events.SELECTED, handler);
     component.destroy();
 
     emitEvent(root, events.CLICK);
-    expect(mockFoundation.handleClick).not.toHaveBeenCalled();
+    expect(handler).not.toHaveBeenCalled();
   });
 
   describe('Adapter', () => {
     it('#isSingleSelect returns value of isSingleSelect', () => {
-      const {component} = setupTest();
+      const {component, adapter} = setupTest();
 
       component.setIsSingleSelect(true);
-      expect((component.getDefaultFoundation() as any).adapter.isSingleSelect()).toBeTruthy();
+      expect(adapter.isSingleSelect()).toBeTrue();
 
       component.setIsSingleSelect(false);
-      expect((component.getDefaultFoundation() as any).adapter.isSingleSelect()).toBeFalsy();
+      expect(adapter.isSingleSelect()).toBeFalse();
     });
 
     it('#getAttr returns value of attribute of root element', () => {
-      const {root, component} = setupTest();
+      const {root, adapter} = setupTest();
 
-      root.setAttribute(attributes.ARIA_PRESSED, 'false');
-      expect((component.getDefaultFoundation() as any).adapter.getAttr(attributes.ARIA_PRESSED)).toEqual(booleans.FALSE);
-      root.setAttribute(attributes.ARIA_PRESSED, 'true');
-      expect((component.getDefaultFoundation() as any).adapter.getAttr(attributes.ARIA_PRESSED)).toEqual(booleans.TRUE);
-      root.removeAttribute(attributes.ARIA_PRESSED);
-      expect((component.getDefaultFoundation() as any).adapter.getAttr(attributes.ARIA_PRESSED)).toEqual(null);
+      root.setAttribute(test_strings.ATTRIBUTE, booleans.FALSE);
+      expect(adapter.getAttr(test_strings.ATTRIBUTE)).toEqual(booleans.FALSE);
+      root.setAttribute(test_strings.ATTRIBUTE, booleans.TRUE);
+      expect(adapter.getAttr(test_strings.ATTRIBUTE)).toEqual(booleans.TRUE);
+      root.removeAttribute(test_strings.ATTRIBUTE);
+      expect(adapter.getAttr(test_strings.ATTRIBUTE)).toEqual(null);
     });
 
     it('#setAttr sets the value of attribute of root element', () => {
-      const {root, component} = setupTest();
+      const {root, adapter} = setupTest();
 
-      (component.getDefaultFoundation() as any).adapter.setAttr(attributes.ARIA_PRESSED, booleans.TRUE);
-      expect(root.getAttribute(attributes.ARIA_PRESSED)).toEqual(booleans.TRUE);
-      (component.getDefaultFoundation() as any).adapter.setAttr(attributes.ARIA_PRESSED, booleans.FALSE);
-      expect(root.getAttribute(attributes.ARIA_PRESSED)).toEqual(booleans.FALSE);
+      adapter.setAttr(test_strings.ATTRIBUTE, booleans.TRUE);
+      expect(root.getAttribute(test_strings.ATTRIBUTE)).toEqual(booleans.TRUE);
+      adapter.setAttr(test_strings.ATTRIBUTE, booleans.FALSE);
+      expect(root.getAttribute(test_strings.ATTRIBUTE)).toEqual(booleans.FALSE);
     });
 
     it('#addClass adds class to root element', () => {
-      const {root, component} = setupTest();
+      const {root, adapter} = setupTest();
 
       root.classList.remove(test_strings.CLASS);
-      (component.getDefaultFoundation() as any).adapter.addClass(test_strings.CLASS);
-      expect(root.classList.contains(test_strings.CLASS)).toBeTruthy();
+      adapter.addClass(test_strings.CLASS);
+      expect(root.classList.contains(test_strings.CLASS)).toBeTrue();
     });
 
     it('#removeClass removes class from root element', () => {
-      const {root, component} = setupTest();
+      const {root, adapter} = setupTest();
 
       root.classList.add(test_strings.CLASS);
-      (component.getDefaultFoundation() as any).adapter.removeClass(test_strings.CLASS);
-      expect(root.classList.contains(test_strings.CLASS)).toBeFalsy();
+      adapter.removeClass(test_strings.CLASS);
+      expect(root.classList.contains(test_strings.CLASS)).toBeFalse();
     });
 
     it('#hasClass returns whether root element has class', () => {
-      const {root, component} = setupTest();
+      const {root, adapter} = setupTest();
 
       root.classList.add(test_strings.CLASS);
-      expect((component.getDefaultFoundation() as any).adapter.hasClass(test_strings.CLASS)).toBeTruthy();
+      expect(adapter.hasClass(test_strings.CLASS)).toBeTrue();
       root.classList.remove(test_strings.CLASS);
-      expect((component.getDefaultFoundation() as any).adapter.hasClass(test_strings.CLASS)).toBeFalsy();
+      expect(adapter.hasClass(test_strings.CLASS)).toBeFalse();
     });
 
-    it('#notifySelectedChange emits ' + events.SELECTED, () => {
-      const {component} = setupTest();
+    it(`#notifySelectedChange emits ${events.SELECTED} event with SegmentDetail`, () => {
+      const {root, component, adapter} = setupTest();
       const handler = jasmine.createSpy('selected handler');
-
       component.listen(events.SELECTED, handler);
 
-      (component.getDefaultFoundation() as any).adapter.notifySelectedChange(true);
-      expect(handler).toHaveBeenCalledWith(jasmine.anything());
-      expect(handler.calls.mostRecent().args[0].detail.selected).toBeTruthy();
+      const index = 0;
+      component.setIndex(index);
+      root.setAttribute(attributes.DATA_SEGMENT_ID, test_strings.SEGMENT_ID);
 
-      (component.getDefaultFoundation() as any).adapter.notifySelectedChange(false);
-      expect(handler.calls.mostRecent().args[0].detail.selected).toBeFalsy();
+      adapter.notifySelectedChange(true);
+      expect(handler).toHaveBeenCalledWith(jasmine.anything());
+      expect(handler.calls.mostRecent().args[0].detail.index).toEqual(index);
+      expect(handler.calls.mostRecent().args[0].detail.selected).toBeTrue();
+      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(test_strings.SEGMENT_ID);
+
+      adapter.notifySelectedChange(false);
+      expect(handler.calls.mostRecent().args[0].detail.index).toEqual(index);
+      expect(handler.calls.mostRecent().args[0].detail.selected).toBeFalse();
+      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(test_strings.SEGMENT_ID);
     });
   });
 
-  it('#isSelected proxies to foundation#isSelected', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
+  it('#isSelected returns whether segment is selected', () => {
+    const {root, component} = setupTest();
 
-    mockFoundation.isSelected.and.returnValue(true);
-    const isSelected = component.isSelected();
-    expect(mockFoundation.isSelected).toHaveBeenCalled();
-    expect(isSelected).toBeTrue();
+    root.classList.add(cssClasses.SELECTED);
+    expect(component.isSelected()).toBeTrue();
 
-    mockFoundation.isSelected.and.returnValue(false);
+    root.classList.remove(cssClasses.SELECTED);
     expect(component.isSelected()).toBeFalse();
   });
 
-  it('#setSelected proxies to foundation#setSelected', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
+  it('#setSelected sets segment to be selected', () => {
+    const {root, component} = setupTest();
+
+    root.classList.remove(cssClasses.SELECTED);
+    root.setAttribute(attributes.ARIA_PRESSED, booleans.FALSE);
+    component.setIsSingleSelect(false);
     component.setSelected();
-    expect(mockFoundation.setSelected).toHaveBeenCalled();
+    expect(root.classList.contains(cssClasses.SELECTED)).toBeTrue();
+    expect(root.getAttribute(attributes.ARIA_PRESSED)).toEqual(booleans.TRUE);
+
+    root.classList.remove(cssClasses.SELECTED);
+    root.setAttribute(attributes.ARIA_CHECKED, booleans.FALSE);
+    component.setIsSingleSelect(true);
+    component.setSelected();
+    expect(root.classList.contains(cssClasses.SELECTED)).toBeTrue();
+    expect(root.getAttribute(attributes.ARIA_CHECKED)).toEqual(booleans.TRUE);
   });
 
-  it('#setUnselected proxies to foundation#setUnselected', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
+  it('#setUnselected sets segment to be not selected', () => {
+    const {root, component} = setupTest();
+
     component.setUnselected();
-    expect(mockFoundation.setUnselected).toHaveBeenCalled();
+    expect(root.classList.contains(cssClasses.SELECTED)).toBeFalse();
+
+    root.classList.add(cssClasses.SELECTED);
+    root.setAttribute(attributes.ARIA_PRESSED, booleans.TRUE);
+    component.setIsSingleSelect(false);
+    component.setUnselected();
+    expect(root.classList.contains(cssClasses.SELECTED)).toBeFalse();
+    expect(root.getAttribute(attributes.ARIA_PRESSED)).toEqual(booleans.FALSE);
+
+    root.classList.add(cssClasses.SELECTED);
+    root.setAttribute(attributes.ARIA_CHECKED, booleans.TRUE);
+    component.setIsSingleSelect(true);
+    component.setUnselected();
+    expect(root.classList.contains(cssClasses.SELECTED)).toBeFalse();
+    expect(root.getAttribute(attributes.ARIA_CHECKED)).toEqual(booleans.FALSE);
   });
 
-  it('#getSegmentId proxies to foundation#getSegmentId', () => {
-    const {component, mockFoundation} = setupMockFoundationTest();
+  it('#getSegmentId returns segment\'s segmentId if it has one', () => {
+    const {root, component} = setupTest();
 
-    mockFoundation.getSegmentId.and.returnValue(test_strings.SEGMENT_ID);
-    const segmentId = component.getSegmentId();
-    expect(mockFoundation.getSegmentId).toHaveBeenCalled();
-    expect(segmentId).toEqual(test_strings.SEGMENT_ID);
+    root.setAttribute(attributes.DATA_SEGMENT_ID, test_strings.SEGMENT_ID);
+    expect(component.getSegmentId()).toEqual(test_strings.SEGMENT_ID);
 
-    mockFoundation.getSegmentId.and.returnValue(undefined);
+    root.removeAttribute(attributes.DATA_SEGMENT_ID);
     expect(component.getSegmentId()).toEqual(undefined);
   });
 });
