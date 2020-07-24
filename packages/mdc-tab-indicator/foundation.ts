@@ -34,21 +34,6 @@ export abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndi
     return strings;
   }
 
-  static get defaultAdapter(): MDCTabIndicatorAdapter {
-    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-    return {
-      addClass: () => undefined,
-      removeClass: () => undefined,
-      computeContentClientRect: () => ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
-      setContentStyleProperty: () => undefined,
-    };
-    // tslint:enable:object-literal-sort-keys
-  }
-
-  constructor(readonly adapter: MDCTabIndicatorAdapter) {
-    super({...MDCTabIndicatorFoundation.defaultAdapter, ...adapter});
-  }
-
   computeContentClientRect(): ClientRect {
     return this.adapter.computeContentClientRect();
   }

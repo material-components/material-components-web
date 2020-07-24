@@ -34,18 +34,6 @@ export class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
     return strings;
   }
 
-  static get defaultAdapter(): MDCRadioAdapter {
-    return {
-      addClass: () => undefined,
-      removeClass: () => undefined,
-      setNativeControlDisabled: () => undefined,
-    };
-  }
-
-  constructor(readonly adapter: MDCRadioAdapter) {
-    super({...MDCRadioFoundation.defaultAdapter, ...adapter});
-  }
-
   setDisabled(disabled: boolean) {
     const {DISABLED} = MDCRadioFoundation.cssClasses;
     this.adapter.setNativeControlDisabled(disabled);

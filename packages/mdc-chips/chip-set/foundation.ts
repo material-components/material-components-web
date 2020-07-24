@@ -38,29 +38,11 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     return cssClasses;
   }
 
-  static get defaultAdapter(): MDCChipSetAdapter {
-    return {
-      announceMessage: () => undefined,
-      focusChipPrimaryActionAtIndex: () => undefined,
-      focusChipTrailingActionAtIndex: () => undefined,
-      getChipListCount: () => -1,
-      getIndexOfChipById: () => -1,
-      hasClass: () => false,
-      isRTL: () => false,
-      removeChipAtIndex: () => undefined,
-      removeFocusFromChipAtIndex: () => undefined,
-      selectChipAtIndex: () => undefined,
-    };
-  }
 
   /**
    * The ids of the selected chips in the set. Only used for choice chip set or filter chip set.
    */
   private selectedChipIds_: string[] = [];
-
-  constructor(readonly adapter: MDCChipSetAdapter) {
-    super({...MDCChipSetFoundation.defaultAdapter, ...adapter});
-  }
 
   /**
    * Returns an array of the IDs of all selected chips.

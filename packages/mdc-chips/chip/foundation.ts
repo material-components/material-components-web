@@ -51,35 +51,6 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return cssClasses;
   }
 
-  static get defaultAdapter(): MDCChipAdapter {
-    return {
-      addClass: () => undefined,
-      addClassToLeadingIcon: () => undefined,
-      eventTargetHasClass: () => false,
-      focusPrimaryAction: () => undefined,
-      focusTrailingAction: () => undefined,
-      getAttribute: () => null,
-      getCheckmarkBoundingClientRect: () => emptyClientRect,
-      getComputedStyleValue: () => '',
-      getRootBoundingClientRect: () => emptyClientRect,
-      hasClass: () => false,
-      hasLeadingIcon: () => false,
-      isRTL: () => false,
-      isTrailingActionNavigable: () => false,
-      notifyEditFinish: () => undefined,
-      notifyEditStart: () => undefined,
-      notifyInteraction: () => undefined,
-      notifyNavigation: () => undefined,
-      notifyRemoval: () => undefined,
-      notifySelection: () => undefined,
-      notifyTrailingIconInteraction: () => undefined,
-      removeClass: () => undefined,
-      removeClassFromLeadingIcon: () => undefined,
-      removeTrailingActionFocus: () => undefined,
-      setPrimaryActionAttr: () => undefined,
-      setStyleProperty: () => undefined,
-    };
-  }
 
   /** Whether a trailing icon click should immediately trigger exit/removal of the chip. */
   private shouldRemoveOnTrailingIconClick_ = true;
@@ -90,10 +61,6 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * element on the page when a chip is clicked (like a menu).
    */
   private shouldFocusPrimaryActionOnClick_ = true;
-
-  constructor(readonly adapter: MDCChipAdapter) {
-    super({...MDCChipFoundation.defaultAdapter, ...adapter});
-  }
 
   isSelected() {
     return this.adapter.hasClass(cssClasses.SELECTED);

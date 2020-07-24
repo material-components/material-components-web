@@ -36,21 +36,6 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
     return cssClasses;
   }
 
-  /** The default Adapter for the switch. */
-  static get defaultAdapter(): MDCSwitchAdapter {
-    return {
-      addClass: () => undefined,
-      removeClass: () => undefined,
-      setNativeControlChecked: () => undefined,
-      setNativeControlDisabled: () => undefined,
-      setNativeControlAttr: () => undefined,
-    };
-  }
-
-  constructor(readonly adapter: MDCSwitchAdapter) {
-    super({...MDCSwitchFoundation.defaultAdapter, ...adapter});
-  }
-
   /** Sets the checked state of the switch. */
   setChecked(checked: boolean) {
     this.adapter.setNativeControlChecked(checked);

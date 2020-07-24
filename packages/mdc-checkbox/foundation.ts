@@ -38,29 +38,10 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCCheckboxAdapter {
-    return {
-      addClass: () => undefined,
-      forceLayout: () => undefined,
-      hasNativeControl: () => false,
-      isAttachedToDOM: () => false,
-      isChecked: () => false,
-      isIndeterminate: () => false,
-      removeClass: () => undefined,
-      removeNativeControlAttr: () => undefined,
-      setNativeControlAttr: () => undefined,
-      setNativeControlDisabled: () => undefined,
-    };
-  }
-
   private currentCheckState_ = strings.TRANSITION_STATE_INIT;
   private currentAnimationClass_ = '';
   private animEndLatchTimer_ = 0;
   private enableAnimationEndHandler_ = false;
-
-  constructor(readonly adapter: MDCCheckboxAdapter) {
-    super({...MDCCheckboxFoundation.defaultAdapter, ...adapter});
-  }
 
   init() {
     this.currentCheckState_ = this.determineCheckState_();

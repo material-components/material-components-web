@@ -100,49 +100,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private resizeListener!:
       SpecificEventListener<'resize'>;  // Assigned in #initialize.
 
-  constructor(readonly adapter: MDCSliderAdapter) {
-    super({...MDCSliderFoundation.defaultAdapter, ...adapter});
-  }
-
-  static get defaultAdapter(): MDCSliderAdapter {
-    // tslint:disable:object-literal-sort-keys Methods should be in the same
-    // order as the adapter interface.
-    return {
-      hasClass: () => false,
-      addClass: () => undefined,
-      removeClass: () => undefined,
-      addThumbClass: () => undefined,
-      removeThumbClass: () => undefined,
-      getAttribute: () => null,
-      getThumbAttribute: () => null,
-      setThumbAttribute: () => null,
-      getThumbKnobWidth: () => 0,
-      isThumbFocused: () => false,
-      focusThumb: () => undefined,
-      getThumbBoundingClientRect: () =>
-          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
-      getBoundingClientRect: () =>
-          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
-      isRTL: () => false,
-      setThumbStyleProperty: () => undefined,
-      setTrackActiveStyleProperty: () => undefined,
-      setValueIndicatorText: () => undefined,
-      updateTickMarks: () => undefined,
-      setPointerCapture: () => undefined,
-      emitChangeEvent: () => undefined,
-      emitInputEvent: () => undefined,
-      registerEventHandler: () => undefined,
-      deregisterEventHandler: () => undefined,
-      registerThumbEventHandler: () => undefined,
-      deregisterThumbEventHandler: () => undefined,
-      registerBodyEventHandler: () => undefined,
-      deregisterBodyEventHandler: () => undefined,
-      registerWindowEventHandler: () => undefined,
-      deregisterWindowEventHandler: () => undefined,
-    };
-    // tslint:enable:object-literal-sort-keys
-  }
-
   init() {
     this.isDisabled = this.adapter.hasClass(cssClasses.DISABLED);
     this.isDiscrete = this.adapter.hasClass(cssClasses.DISCRETE);

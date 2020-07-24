@@ -47,7 +47,7 @@ export class MDCFoundation<AdapterType extends {} = {}> {
     return {};
   }
 
-  constructor(protected adapter: AdapterType = {} as AdapterType) {}
+  constructor(protected readonly adapter: AdapterType = {} as AdapterType) {}
 
   init() {
     // Subclasses should override this method to perform initialization routines (registering events, etc.)

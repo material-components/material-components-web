@@ -34,19 +34,10 @@ export class MDCFormFieldFoundation extends MDCFoundation<MDCFormFieldAdapter> {
     return strings;
   }
 
-  static get defaultAdapter(): MDCFormFieldAdapter {
-    return {
-      activateInputRipple: () => undefined,
-      deactivateInputRipple: () => undefined,
-      deregisterInteractionHandler: () => undefined,
-      registerInteractionHandler: () => undefined,
-    };
-  }
-
   private readonly click: () => void;
 
-  constructor(readonly adapter: MDCFormFieldAdapter) {
-    super({...MDCFormFieldFoundation.defaultAdapter, ...adapter});
+  constructor(protected readonly adapter: MDCFormFieldAdapter) {
+    super(adapter);
 
     this.click = () => {
       this.handleClick();
