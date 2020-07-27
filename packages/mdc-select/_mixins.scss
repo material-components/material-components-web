@@ -36,7 +36,8 @@
 @use "@material/menu-surface/mixins" as menu-surface-mixins;
 @use "@material/notched-outline/mixins" as notched-outline-mixins;
 @use "@material/notched-outline/variables" as notched-outline-variables;
-@use "@material/ripple/mixins" as ripple-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
 @use "@material/ripple/functions" as ripple-functions;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/shape/mixins" as shape-mixins;
@@ -256,20 +257,20 @@
 
 @mixin ripple($query: feature-targeting-functions.all()) {
   .mdc-select__anchor {
-    @include ripple-mixins.surface(
+    @include ripple.surface(
       $ripple-target: variables.$ripple-target,
       $query: $query
     );
-    @include ripple-mixins.radius-bounded(
+    @include ripple.radius-bounded(
       $ripple-target: variables.$ripple-target,
       $query: $query
     );
-    @include ripple-mixins.states-base-color(
+    @include ripple-theme.states-base-color(
       variables.$ink-color,
       $ripple-target: variables.$ripple-target,
       $query: $query
     );
-    @include ripple-mixins.states-opacities(
+    @include ripple-theme.states-opacities(
       (
         hover: ripple-functions.states-opacity(variables.$ink-color, hover),
         focus: ripple-functions.states-opacity(variables.$ink-color, focus),
@@ -279,7 +280,7 @@
     );
 
     #{variables.$ripple-target} {
-      @include ripple-mixins.target-common($query: $query);
+      @include ripple.target-common($query: $query);
     }
   }
 

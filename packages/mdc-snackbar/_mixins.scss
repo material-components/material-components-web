@@ -24,7 +24,7 @@
 @use '@material/animation/functions' as animation-functions;
 @use '@material/button/mixins' as button-mixins;
 @use '@material/icon-button/mixins' as icon-button-mixins;
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/typography/mixins' as typography-mixins;
 @use '@material/elevation/mixins' as elevation-mixins;
@@ -174,7 +174,7 @@
       variables.$action-ink-color,
       $query: $query
     );
-    @include ripple-mixins.states(variables.$action-ink-color, $query: $query);
+    @include ripple-theme.states(variables.$action-ink-color, $query: $query);
   }
 
   .mdc-snackbar__dismiss {

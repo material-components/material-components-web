@@ -21,7 +21,8 @@
 //
 
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/ripple/mixins' as ripple;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl;
 @use '@material/theme/theme';
 @use '@material/touch-target/mixins' as touch;
@@ -85,7 +86,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
       $query: $query,
       $ripple-target: $ripple-target
     );
-    @include ripple.states(
+    @include ripple-theme.states(
       variables.$ripple-color,
       $query: $query,
       $ripple-target: $ripple-target

@@ -31,7 +31,7 @@
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/list/mixins' as list-mixins;
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple-theme';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use './variables';
@@ -282,7 +282,7 @@
 
 @mixin activated-overlay-color($color, $query: feature-targeting.all()) {
   :not(.mdc-list--non-interactive) > .mdc-list-item {
-    @include ripple-mixins.states-activated($color, $query: $query);
+    @include ripple-theme.states-activated($color, $query: $query);
   }
 }
 

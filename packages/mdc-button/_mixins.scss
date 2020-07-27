@@ -23,7 +23,8 @@
 @use 'sass:math';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
@@ -134,14 +135,11 @@ $ripple-target: '.mdc-button__ripple';
 @mixin ripple($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-button {
-    @include ripple-mixins.surface(
-      $query: $query,
-      $ripple-target: $ripple-target
-    );
-    @include ripple-mixins.radius-bounded(
+    @include ripple.surface($query: $query, $ripple-target: $ripple-target);
+    @include ripple.radius-bounded(
       $query: $query,
       $ripple-target: $ripple-target
     );
@@ -179,7 +177,7 @@ $ripple-target: '.mdc-button__ripple';
 /// Sets ripple color for button.
 ///
 @mixin ripple-states($color, $query: feature-targeting.all()) {
-  @include ripple-mixins.states(
+  @include ripple-theme.states(
     $color: $color,
     $query: $query,
     $ripple-target: $ripple-target

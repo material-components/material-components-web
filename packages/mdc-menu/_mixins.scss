@@ -26,14 +26,14 @@
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/list/mixins' as list-mixins;
 @use '@material/list/variables' as list-variables;
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple';
 @use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
   // prettier-ignore
   @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 

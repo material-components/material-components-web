@@ -21,7 +21,7 @@
 //
 
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple-theme';
 @use '@material/theme/theme';
 
 /// Default color for slider (track, thumb, ripple).
@@ -98,7 +98,7 @@ $tick-mark-opacity: 0.6;
 ///
 @mixin thumb-ripple-color($color, $query: feature-targeting.all()) {
   .mdc-slider__thumb {
-    @include ripple-mixins.states($color: $color, $query: $query);
+    @include ripple-theme.states($color: $color, $query: $query);
   }
 }
 

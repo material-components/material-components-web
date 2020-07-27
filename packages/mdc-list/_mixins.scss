@@ -26,7 +26,8 @@
 @use '@material/theme/theme';
 @use '@material/shape/functions' as shape-functions;
 @use '@material/shape/mixins' as shape-mixins;
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
 @use '@material/typography/mixins' as typography-mixins;
 @use '@material/typography/variables' as typography-variables;
 @use '@material/feature-targeting/feature-targeting';
@@ -477,7 +478,7 @@
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // list styles. It is recommended that most users use `mdc-list-core-styles` instead.
 @mixin ripple($query: feature-targeting.all()) {
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // List items should support states by default, but it should be possible to opt out.
   :not(.mdc-list-item--disabled).mdc-list-item {
@@ -486,27 +487,27 @@
 
   // Set styles only for focus state on disabled list item.
   .mdc-list-item--disabled {
-    @include ripple-mixins.surface(
+    @include ripple.surface(
       $ripple-target: variables.$ripple-target,
       $query: $query
     );
-    @include ripple-mixins.radius-bounded(
+    @include ripple.radius-bounded(
       $ripple-target: variables.$ripple-target,
       $query: $query
     );
-    @include ripple-mixins.states-base-color(
+    @include ripple-theme.states-base-color(
       theme-color.prop-value(on-surface),
       $ripple-target: variables.$ripple-target,
       $query: $query
     );
-    @include ripple-mixins.states-focus-opacity(
+    @include ripple-theme.states-focus-opacity(
       ripple-functions.states-opacity(primary, focus),
       $ripple-target: variables.$ripple-target,
       $query: $query
     );
 
     #{variables.$ripple-target} {
-      @include ripple-mixins.target-common($query: $query);
+      @include ripple.target-common($query: $query);
     }
   }
 }
@@ -515,7 +516,7 @@
 /// Sets ripple color for a list item.
 ///
 @mixin ripple-states($color, $query: feature-targeting.all()) {
-  @include ripple-mixins.states(
+  @include ripple-theme.states(
     $color: $color,
     $query: $query,
     $ripple-target: variables.$ripple-target
@@ -999,27 +1000,27 @@
 
 // Ripple styles for an interactive list item (one that is enabled and inside an interactive list).
 @mixin item-interactive-ripple_($query: feature-targeting.all()) {
-  @include ripple-mixins.surface(
+  @include ripple.surface(
     $ripple-target: variables.$ripple-target,
     $query: $query
   );
-  @include ripple-mixins.radius-bounded(
+  @include ripple.radius-bounded(
     $ripple-target: variables.$ripple-target,
     $query: $query
   );
-  @include ripple-mixins.states(
+  @include ripple-theme.states(
     theme-color.prop-value(on-surface),
     false,
     $ripple-target: variables.$ripple-target,
     $query: $query
   );
-  @include ripple-mixins.states-activated(
+  @include ripple-theme.states-activated(
     primary,
     false,
     $ripple-target: variables.$ripple-target,
     $query: $query
   );
-  @include ripple-mixins.states-selected(
+  @include ripple-theme.states-selected(
     primary,
     false,
     $ripple-target: variables.$ripple-target,
@@ -1027,6 +1028,6 @@
   );
 
   #{variables.$ripple-target} {
-    @include ripple-mixins.target-common($query: $query);
+    @include ripple.target-common($query: $query);
   }
 }

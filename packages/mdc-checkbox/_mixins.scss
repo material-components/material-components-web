@@ -24,7 +24,8 @@
 @use '@material/animation/functions' as functions2;
 @use '@material/density/functions' as density-functions;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/theme/theme-color';
 @use './functions';
@@ -215,26 +216,23 @@ $ripple-target: '.mdc-checkbox__ripple';
 @mixin ripple($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-checkbox {
-    @include ripple-mixins.surface(
-      $query: $query,
-      $ripple-target: $ripple-target
-    );
-    @include ripple-mixins.states(
+    @include ripple.surface($query: $query, $ripple-target: $ripple-target);
+    @include ripple-theme.states(
       $color: on-surface,
       $query: $query,
       $ripple-target: $ripple-target
     );
-    @include ripple-mixins.radius-unbounded(
+    @include ripple.radius-unbounded(
       $query: $query,
       $ripple-target: $ripple-target
     );
   }
 
   #{$ripple-target} {
-    @include ripple-mixins.target-common($query: $query);
+    @include ripple.target-common($query: $query);
   }
 
   .mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {
@@ -442,7 +440,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   }
 
   &.mdc-checkbox--selected {
-    @include ripple-mixins.states(
+    @include ripple-theme.states(
       $color: $color,
       $query: $query,
       $ripple-target: $ripple-target
@@ -450,7 +448,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   }
 
   &.mdc-ripple-upgraded--background-focused.mdc-checkbox--selected {
-    @include ripple-mixins.states-base-color(
+    @include ripple-theme.states-base-color(
       $color: $color,
       $query: $query,
       $ripple-target: $ripple-target

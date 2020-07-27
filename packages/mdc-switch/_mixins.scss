@@ -23,7 +23,8 @@
 @use '@material/density/functions' as density-functions;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/theme/theme';
 @use './functions';
@@ -122,7 +123,7 @@
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // switch styles. It is recommended that most users use `mdc-switch-core-styles` instead.
 @mixin ripple($query: feature-targeting.all()) {
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-switch {
     @include toggled-off-ripple-color(
@@ -132,9 +133,9 @@
   }
 
   .mdc-switch__thumb-underlay {
-    @include ripple-mixins.surface($query);
-    @include ripple-mixins.radius-unbounded(100%, $query);
-    @include ripple-mixins.states(
+    @include ripple.surface($query);
+    @include ripple.radius-unbounded(100%, $query);
+    @include ripple-theme.states(
       variables.$baseline-theme-color,
       false,
       $query
@@ -177,7 +178,7 @@
 
 @mixin toggled-on-ripple-color($color, $query: feature-targeting.all()) {
   &.mdc-switch--checked .mdc-switch__thumb-underlay {
-    @include ripple-mixins.states($color, false, $query);
+    @include ripple-theme.states($color, false, $query);
   }
 }
 
@@ -204,7 +205,7 @@
 
 @mixin toggled-off-ripple-color($color, $query: feature-targeting.all()) {
   &:not(.mdc-switch--checked) .mdc-switch__thumb-underlay {
-    @include ripple-mixins.states($color, false, $query);
+    @include ripple-theme.states($color, false, $query);
   }
 }
 
@@ -270,7 +271,7 @@
 ) {
   // Ensure sufficient specificity to override base state opacities
   &.mdc-switch .mdc-switch__thumb-underlay {
-    @include ripple-mixins.states-opacities($opacity-map, $query: $query);
+    @include ripple-theme.states-opacities($opacity-map, $query: $query);
   }
 }
 

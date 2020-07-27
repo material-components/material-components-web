@@ -24,7 +24,8 @@
 @use '@material/animation/functions' as functions2;
 @use '@material/density/functions' as density-functions;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
 @use '@material/ripple/variables' as ripple-variables;
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
@@ -250,18 +251,15 @@ $ripple-target: '.mdc-radio__ripple';
 @mixin ripple($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-radio {
-    @include ripple-mixins.surface(
+    @include ripple.surface($query: $query, $ripple-target: $ripple-target);
+    @include ripple.radius-unbounded(
       $query: $query,
       $ripple-target: $ripple-target
     );
-    @include ripple-mixins.radius-unbounded(
-      $query: $query,
-      $ripple-target: $ripple-target
-    );
-    @include ripple-mixins.states(
+    @include ripple-theme.states(
       $color: variables.$baseline-theme-color,
       $query: $query,
       $ripple-target: $ripple-target
@@ -277,7 +275,7 @@ $ripple-target: '.mdc-radio__ripple';
   }
 
   #{$ripple-target} {
-    @include ripple-mixins.target-common($query: $query);
+    @include ripple.target-common($query: $query);
   }
 }
 

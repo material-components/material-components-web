@@ -23,7 +23,7 @@
 @use 'sass:list';
 @use 'sass:meta';
 @use '@material/animation/variables' as animation-variables;
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple-theme';
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
 @use '@material/shape/mixins' as shape-mixins;
@@ -52,7 +52,7 @@
   .mdc-top-app-bar__action-item,
   .mdc-top-app-bar__navigation-icon {
     @include theme.prop(color, $color);
-    @include ripple-mixins.states($color);
+    @include ripple-theme.states($color);
   }
 }
 

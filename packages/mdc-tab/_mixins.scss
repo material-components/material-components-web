@@ -21,7 +21,8 @@
 //
 
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
 @use '@material/theme/theme';
 @use '@material/typography/mixins' as typography-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
@@ -106,7 +107,7 @@
 // This API is intended for use by frameworks that may want to separate the ripple-related styles
 // from the other tah styles. It is recommended that most users use `mdc-tab-core-styles` instead.
 @mixin ripple($query: feature-targeting.all()) {
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-tab__ripple {
     @include ripple_($query);
@@ -146,7 +147,7 @@
 
 @mixin states-color($color, $query: feature-targeting.all()) {
   .mdc-tab__ripple {
-    @include ripple-mixins.states($color, $query: $query);
+    @include ripple-theme.states($color, $query: $query);
   }
 }
 
@@ -258,9 +259,9 @@
 @mixin ripple_($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include ripple-mixins.surface($query);
-  @include ripple-mixins.radius-bounded($query: $query);
-  @include ripple-mixins.states($color: primary, $query: $query);
+  @include ripple.surface($query);
+  @include ripple.radius-bounded($query: $query);
+  @include ripple-theme.states($color: primary, $query: $query);
 
   @include feature-targeting.targets($feat-structure) {
     position: absolute;

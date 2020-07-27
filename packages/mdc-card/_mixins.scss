@@ -23,7 +23,8 @@
 @use 'sass:math';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
@@ -280,12 +281,12 @@
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // card styles. It is recommended that most users use `mdc-card-core-styles` instead.
 @mixin ripple($query: feature-targeting.all()) {
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-card__primary-action {
-    @include ripple-mixins.surface($query);
-    @include ripple-mixins.radius-bounded($query: $query);
-    @include ripple-mixins.states($query: $query);
+    @include ripple.surface($query);
+    @include ripple.radius-bounded($query: $query);
+    @include ripple-theme.states($query: $query);
   }
 }
 
