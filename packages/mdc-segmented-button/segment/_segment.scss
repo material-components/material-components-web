@@ -63,7 +63,7 @@ $ripple-target: '.mdc-segmented-button__ripple';
 
     &:first-child {
       @include feature-targeting.targets($feat-structure) {
-        border-radius: segment-theme.$border-radius 0px 0px
+        border-radius: segment-theme.$border-radius 0 0
           segment-theme.$border-radius;
       }
     }
@@ -71,8 +71,8 @@ $ripple-target: '.mdc-segmented-button__ripple';
     &:last-child {
       @include feature-targeting.targets($feat-structure) {
         border-right-width: segment-theme.$border-width;
-        border-radius: 0px segment-theme.$border-radius
-          segment-theme.$border-radius 0px;
+        border-radius: 0 segment-theme.$border-radius
+          segment-theme.$border-radius 0;
       }
     }
 
@@ -97,13 +97,13 @@ $ripple-target: '.mdc-segmented-button__ripple';
   // This could also be accomplished with --first/--last classes
   .mdc-touch-target-wrapper {
     .mdc-segmented-button__segment {
-      border-radius: 0px;
+      border-radius: 0;
       border-right-width: 0;
     }
 
     &:first-child .mdc-segmented-button__segment {
       @include feature-targeting.targets($feat-structure) {
-        border-radius: segment-theme.$border-radius 0px 0px
+        border-radius: segment-theme.$border-radius 0 0
           segment-theme.$border-radius;
       }
     }
@@ -111,8 +111,8 @@ $ripple-target: '.mdc-segmented-button__ripple';
     &:last-child .mdc-segmented-button__segment {
       @include feature-targeting.targets($feat-structure) {
         border-right-width: segment-theme.$border-width;
-        border-radius: 0px segment-theme.$border-radius
-          segment-theme.$border-radius 0px;
+        border-radius: 0 segment-theme.$border-radius
+          segment-theme.$border-radius 0;
       }
     }
   }
@@ -170,7 +170,7 @@ $ripple-target: '.mdc-segmented-button__ripple';
     align-items: center;
     height: segment-theme.$height;
     min-width: segment-theme.$min-width;
-    padding: 0px segment-theme.$horizontal-padding;
+    padding: 0 segment-theme.$horizontal-padding;
     border-width: segment-theme.$border-width 0 segment-theme.$border-width
       segment-theme.$border-width;
   }
