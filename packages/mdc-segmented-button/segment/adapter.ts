@@ -22,17 +22,51 @@
  */
 
 export interface MDCSegmentedButtonSegmentAdapter {
+  /**
+   * @return Returns true if wrapping segmented button is single select
+   */
   isSingleSelect(): boolean;
   
+  /**
+   * @param attrName Attribute of interest
+   * @return Returns segment's attribute value if it is set, otherwise returns
+   * null
+   */
   getAttr(attrName: string): string | null;
 
+  /**
+   * Sets segment's attribute value to new value
+   * 
+   * @param attrName Attribute of interest
+   * @param value New value of attribute
+   */
   setAttr(attrName: string, value: string): void;
 
+  /**
+   * Adds css class to segment
+   * 
+   * @param className Class to add
+   */
   addClass(className: string): void;
 
+  /**
+   * Removes css class from segment
+   * 
+   * @param className Class to remove
+   */
   removeClass(className: string): void;
 
+  /**
+   * @param className Class of interest
+   * @return Returns true if segment has css class, otherwise returns false
+   */
   hasClass(className: string): boolean;
 
+  /**
+   * Emits event about segment to wrapping segmented button
+   * 
+   * @param selected Represents whether segment is currently selected
+   * @event selected With detail - SegmentDetail
+   */
   notifySelectedChange(selected: boolean): void;
 }
