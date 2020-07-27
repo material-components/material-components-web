@@ -23,7 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCSegmentedButtonSegmentAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, booleans, attributes} from './constants';
 
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
@@ -42,24 +42,45 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
     super({...MDCSegmentedButtonSegmentFoundation.defaultAdapter, ...adapter});
   }
 
+  /**
+   * @return Returns true if segment is currently selected, otherwise returns
+   * false
+   */
   isSelected(): boolean {
     return this.adapter.hasClass(cssClasses.SELECTED);
   }
 
+  /**
+   * Sets segment to be selected
+   */
   setSelected() {
     this.adapter.addClass(cssClasses.SELECTED);
-    this.setAriaAttr(strings.TRUE);
+    this.setAriaAttr(booleans.TRUE);
   }
 
+  /**
+   * Sets segment to be not selected
+   */
   setUnselected() {
     this.adapter.removeClass(cssClasses.SELECTED);
-    this.setAriaAttr(strings.FALSE);
+    this.setAriaAttr(booleans.FALSE);
   }
 
-  getSegmentId(): string | null {
-    return this.adapter.getAttr(strings.DATA_SEGMENT_ID);
+  /**
+   * @return Returns segment's segmentId if it was set by client
+   */
+  getSegmentId(): string | undefined {
+    return this.adapter.getAttr(attributes.DATA_SEGMENT_ID) ?? undefined;
   }
 
+  /**
+   * Called when segment is clicked. If the wrapping segmented button is single
+   * select, doesn't allow segment to be set to not selected. Otherwise, toggles
+   * segment's selected status. Finally, emits event to wrapping segmented
+   * button.
+   * 
+   * @event selected With detail - SegmentDetail
+   */
   handleClick(): void {
     if (this.adapter.isSingleSelect()) {
       this.setSelected();
@@ -69,6 +90,9 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
     this.adapter.notifySelectedChange(this.isSelected());
   }
 
+  /**
+   * Sets segment from not selected to selected, or selected to not selected
+   */
   private toggleSelection() {
     if (this.isSelected()) {
       this.setUnselected();
@@ -77,11 +101,17 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
     }
   }
 
+  /**
+   * Sets appropriate aria attribute, based on wrapping segmented button's
+   * single selected value, to new value
+   * 
+   * @param value Value that represents selected status
+   */
   private setAriaAttr(value: string) {
     if (this.adapter.isSingleSelect()) {
-      this.adapter.setAttr(strings.ARIA_CHECKED, value);
+      this.adapter.setAttr(attributes.ARIA_CHECKED, value);
     } else {
-      this.adapter.setAttr(strings.ARIA_PRESSED, value);
+      this.adapter.setAttr(attributes.ARIA_PRESSED, value);
     }
   }
 }

@@ -24,13 +24,40 @@
 import {SegmentDetail} from '../types';
 
 export interface MDCSegmentedButtonAdapter {
+  /**
+   * @param className Class of interest
+   * @return Returns true if segmented button has css class, otherwise returns
+   * false
+   */
   hasClass(className: string): boolean;
 
+  /**
+   * @return Returns child segments represented as readonly list of
+   * SegmentDetails
+   */
   getSegments(): readonly SegmentDetail[];
 
+  /**
+   * Sets identified child segment to be selected
+   * 
+   * @param indexOrSegmentId Number index or string segmentId that identifies
+   * child segment
+   */
   selectSegment(indexOrSegmentId: number | string): void;
 
+  /**
+   * Sets identified child segment to be not selected
+   * 
+   * @param indexOrSegmentId Number index or string segmentId that identifies
+   * child segment
+   */
   unselectSegment(indexOrSegmentId: number | string): void;
 
+  /**
+   * Emits event about changed child segment to client
+   * 
+   * @param detail Changed child segment represented as a SegmentDetail
+   * @event change With detail - SegmentDetail
+   */
   notifySelectedChange(detail: SegmentDetail): void;
 }
