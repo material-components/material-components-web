@@ -50,6 +50,7 @@ The select requires that you set the `width` of the `mdc-select` element. This i
 <div class="mdc-select mdc-select--filled demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
+    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -69,7 +70,6 @@ The select requires that you set the `width` of the `mdc-select` element. This i
         </polygon>
       </svg>
     </span>
-    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
@@ -141,6 +141,7 @@ The following is an example of the select component with all of the necessary ar
        aria-haspopup="listbox"
        aria-labelledby="demo-label demo-selected-text">
     <span class="mdc-select__ripple"></span>
+    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span id="demo-selected-text" class="mdc-select__selected-text">Vegetables</span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -160,7 +161,6 @@ The following is an example of the select component with all of the necessary ar
         </polygon>
       </svg>
     </span>
-    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
@@ -192,6 +192,13 @@ same.
 ```html
 <div class="mdc-select mdc-select--outlined">
   <div class="mdc-select__anchor" aria-labelledby="outlined-select-label">
+    <span class="mdc-notched-outline">
+      <span class="mdc-notched-outline__leading"></span>
+      <span class="mdc-notched-outline__notch">
+        <span id="outlined-select-label" class="mdc-floating-label">Pick a Food Group</span>
+      </span>
+      <span class="mdc-notched-outline__trailing"></span>
+    </span>
     <span id="demo-selected-text" class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -210,13 +217,6 @@ same.
             points="7 15 12 10 17 15">
         </polygon>
       </svg>
-    </span>
-    <span class="mdc-notched-outline">
-      <span class="mdc-notched-outline__leading"></span>
-      <span class="mdc-notched-outline__notch">
-        <span id="outlined-select-label" class="mdc-floating-label">Pick a Food Group</span>
-      </span>
-      <span class="mdc-notched-outline__trailing"></span>
     </span>
   </div>
 
@@ -237,6 +237,7 @@ to set the selected item. The select also needs the text from the selected eleme
 <div class="mdc-select mdc-select--filled demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
+    <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-select__selected-text">Vegetables</span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -256,7 +257,6 @@ to set the selected item. The select also needs the text from the selected eleme
         </polygon>
       </svg>
     </span>
-    <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
@@ -299,8 +299,9 @@ and set the `aria-required` attribute on the `mdc-select__anchor` element to be 
 
 ```html
 <div class="mdc-select mdc-select--filled mdc-select--required">
-  <span class="mdc-select__ripple"></span>
   <div class="mdc-select__anchor" aria-required="true">
+    <span class="mdc-select__ripple"></span>
+    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -320,7 +321,6 @@ and set the `aria-required` attribute on the `mdc-select__anchor` element to be 
         </polygon>
       </svg>
     </span>
-    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
@@ -341,6 +341,7 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
 <div class="mdc-select mdc-select--filled mdc-select--disabled">
   <div class="mdc-select__anchor" aria-disabled="true">
     <span class="mdc-select__ripple"></span>
+    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -360,7 +361,6 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
         </polygon>
       </svg>
     </span>
-    <span class="mdc-floating-label">Pick a Food Group</span>
     <span class="mdc-line-ripple"></span>
   </div>
 
@@ -478,6 +478,10 @@ structure.
 ```html
 <div class="mdc-select mdc-select--outlined mdc-select--no-label demo-width-class">
   <div class="mdc-select__anchor">
+    <span class="mdc-notched-outline">
+      <span class="mdc-notched-outline__leading"></span>
+      <span class="mdc-notched-outline__trailing"></span>
+    </span>
     <span class="mdc-select__selected-text"></span>
     <span class="mdc-select__dropdown-icon">
       <svg
@@ -496,10 +500,6 @@ structure.
             points="7 15 12 10 17 15">
         </polygon>
       </svg>
-    </span>
-    <span class="mdc-notched-outline">
-      <span class="mdc-notched-outline__leading"></span>
-      <span class="mdc-notched-outline__trailing"></span>
     </span>
   </div>
 

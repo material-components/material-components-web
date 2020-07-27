@@ -24,6 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCSegmentedButtonAdapter} from './adapter';
 import {SegmentDetail} from '../types';
+import {cssClasses} from './constants';
 
 export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButtonAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonAdapter {
@@ -40,27 +41,78 @@ export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButt
     super({...MDCSegmentedButtonFoundation.defaultAdapter, ...adapter});
   }
 
-  selectSegment(_indexOrSegmentId: number | string) {
-    return;
+  /**
+   * Sets identified child segment to be selected
+   * 
+   * @param indexOrSegmentId Number index or string segmentId that identifies
+   * child segment
+   */
+  selectSegment(indexOrSegmentId: number | string) {
+    this.adapter.selectSegment(indexOrSegmentId);
   }
 
-  unselectSegment(_indexOrSegmentId: number | string) {
-    return;
+  /**
+   * Sets identified child segment to be not selected
+   * 
+   * @param indexOrSegmentId Number index or string segmentId that identifies
+   * child segment
+   */
+  unselectSegment(indexOrSegmentId: number | string) {
+    this.adapter.unselectSegment(indexOrSegmentId);
   }
 
+  /**
+   * @return Returns currently selected child segments as readonly list of
+   * SegmentDetails
+   */
   getSelectedSegments(): readonly SegmentDetail[] {
-    return [];
+    return this.adapter.getSegments().filter(segmentDetail => segmentDetail.selected);
   }
 
-  isSegmentSelected(_indexOrSegmentId: number | string): boolean {
-    return false;
+  /**
+   * @param indexOrSegmentId Number index or string segmentId that identifies
+   * child segment
+   * @return Returns true if identified child segment is currently selected,
+   * otherwise returns false
+   */
+  isSegmentSelected(indexOrSegmentId: number | string): boolean {
+    return this.adapter.getSegments().some(segmentDetail => (segmentDetail.index === indexOrSegmentId || segmentDetail.segmentId === indexOrSegmentId) && segmentDetail.selected);
   }
 
+  /**
+   * @return Returns true if segmented button is single select, otherwise
+   * returns false
+   */
   isSingleSelect(): boolean {
-    return false;
+    return this.adapter.hasClass(cssClasses.SINGLE_SELECT);
   }
 
-  handleSelected(_detail: SegmentDetail) {
-    return;
+  /**
+   * Called when child segment's selected status may have changed. If segmented
+   * button is single select, unselects all child segments other than identified
+   * child segment. Finally, emits event to client.
+   * 
+   * @param detail Child segment affected represented as SegmentDetail
+   * @event change With detail - SegmentDetail
+   */
+  handleSelected(detail: SegmentDetail) {
+    if (this.isSingleSelect()) {
+      this.unselectPrevSelected(detail.index);
+    }
+    this.adapter.notifySelectedChange(detail);
+  }
+
+  /**
+   * Sets all child segments to be not selected except for child segment
+   * identified by index
+   * 
+   * @param index Index of child segment to not unselect
+   */
+  private unselectPrevSelected(index: number) {
+    for (let selectedSegment of this.getSelectedSegments()) {
+      if (selectedSegment.index !== index) {
+        this.unselectSegment(selectedSegment.index);
+      }
+    }
   }
 }

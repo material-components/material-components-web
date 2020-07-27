@@ -20,9 +20,9 @@
 // THE SOFTWARE.
 //
 
-@use "sass:map";
-@use "sass:string";
-@use "./functions";
+@use 'sass:map';
+@use 'sass:string';
+@use './functions';
 
 $font-family: string.unquote('Roboto, sans-serif') !default;
 

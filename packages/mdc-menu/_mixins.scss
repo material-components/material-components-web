@@ -20,19 +20,18 @@
 // THE SOFTWARE.
 //
 
-@use "sass:math";
-@use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/feature-targeting/functions";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/rtl/mixins" as rtl-mixins;
-@use "@material/list/mixins" as list-mixins;
-@use "@material/list/variables" as list-variables;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "./variables";
+@use 'sass:math';
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/list/mixins' as list-mixins;
+@use '@material/list/variables' as list-variables;
+@use '@material/ripple/mixins' as ripple-mixins;
+@use './variables';
 
-@mixin core-styles($query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
-  $feat-structure: functions.create-target($query, structure);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
   // prettier-ignore
@@ -54,19 +53,19 @@
     }
 
     .mdc-list-divider {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         margin: 8px 0;
       }
     }
 
     .mdc-list-item {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         user-select: none;
       }
     }
 
     .mdc-list-item--disabled {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         cursor: auto;
       }
     }
@@ -74,7 +73,7 @@
     //stylelint-disable selector-no-qualifying-type
     a.mdc-list-item .mdc-list-item__text,
     a.mdc-list-item .mdc-list-item__graphic {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         pointer-events: none;
       }
     }
@@ -83,13 +82,13 @@
 
   // postcss-bem-linter: define menu
   .mdc-menu__selection-group {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       padding: 0;
       fill: currentColor;
     }
 
     .mdc-list-item {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-property(
           padding,
           56px,
@@ -100,7 +99,7 @@
 
     // Extra specificity required to override `display` property on `mdc-list-item__graphic`.
     .mdc-menu__selection-group-icon {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-position(left, 16px);
 
         display: none;
@@ -115,16 +114,16 @@
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-menu-item--selected .mdc-menu__selection-group-icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline;
     }
   }
 }
 
-@mixin width($width, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin width($width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     @if math.is-unitless($width) {
       width: $width * variables.$width-base;
     } @else {
@@ -135,10 +134,10 @@
 
 /// Sets the min-width of the menu.
 /// @param {Number} $min-width - the desired min-width.
-@mixin min-width($min-width, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin min-width($min-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     min-width: $min-width;
   }
 }

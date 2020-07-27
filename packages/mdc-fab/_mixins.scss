@@ -18,31 +18,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@use "@material/animation/functions" as animation-functions;
-@use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/elevation/variables" as elevation-variables;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/dom/mixins" as dom-mixins;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/ripple/variables" as variables2;
-@use "@material/rtl/mixins" as rtl-mixins;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/shape/functions" as shape-functions;
-@use "@material/theme/functions" as theme-functions;
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/touch-target/mixins" as touch-target-mixins;
-@use "@material/typography/mixins" as typography-mixins;
-@use "./variables";
+@use '@material/animation/functions' as animation-functions;
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/elevation/variables' as elevation-variables;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/dom/mixins' as dom-mixins;
+@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/ripple/variables' as variables2;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/shape/functions' as shape-functions;
+@use '@material/theme/custom-properties';
+@use '@material/theme/theme-color';
+@use '@material/theme/theme';
+@use '@material/touch-target/mixins' as touch-target-mixins;
+@use '@material/typography/mixins' as typography-mixins;
+@use './variables';
 
 $ripple-target: '.mdc-fab__ripple';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query);
   @include ripple($query);
 }
 
-@mixin without-ripple($query: feature-targeting-functions.all()) {
+@mixin without-ripple($query: feature-targeting.all()) {
   // postcss-bem-linter: define fab
 
   @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
@@ -104,8 +104,8 @@ $ripple-target: '.mdc-fab__ripple';
   // postcss-bem-linter: end
 }
 
-@mixin ripple($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
 
@@ -130,7 +130,7 @@ $ripple-target: '.mdc-fab__ripple';
     #{$ripple-target} {
       @include ripple-mixins.target-common($query: $query);
 
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         overflow: hidden;
       }
     }
@@ -139,10 +139,10 @@ $ripple-target: '.mdc-fab__ripple';
   // postcss-bem-linter: end
 }
 
-@mixin accessible($container-color, $query: feature-targeting-functions.all()) {
+@mixin accessible($container-color, $query: feature-targeting.all()) {
   @include container-color($container-color, $query: $query);
 
-  $fill-tone: theme-functions.tone($container-color);
+  $fill-tone: theme-color.tone($container-color);
 
   @if ($fill-tone == 'dark') {
     @include ink-color(text-primary-on-dark, $query: $query);
@@ -161,23 +161,19 @@ $ripple-target: '.mdc-fab__ripple';
   }
 }
 
-@mixin container-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin container-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
-    @include theme-mixins.prop(background-color, $color);
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(background-color, $color);
   }
 }
 
-@mixin icon-size(
-  $width,
-  $height: $width,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin icon-size($width, $height: $width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-fab__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: $width;
       height: $height;
       font-size: $height;
@@ -185,18 +181,18 @@ $ripple-target: '.mdc-fab__ripple';
   }
 }
 
-@mixin ink-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
-    @include theme-mixins.prop(color, $color);
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(color, $color);
   }
 }
 
-@mixin extended-fluid($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin extended-fluid($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: 100%;
   }
 }
@@ -204,50 +200,109 @@ $ripple-target: '.mdc-fab__ripple';
 @mixin extended-padding(
   $icon-padding,
   $label-padding,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include extended-label-padding($label-padding, $query: $query);
 
   // Offsets the outer label padding by deducting it from icon padding.
   .mdc-fab__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(
-        margin,
-        $icon-padding - $label-padding,
-        $icon-padding
-      );
+    @include feature-targeting.targets($feat-structure) {
+      @include extended-icon-padding_($icon-padding, $label-padding);
     }
   }
 
   // For Extended FAB with text label followed by icon.
   .mdc-fab__label + .mdc-fab__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(
-        margin,
+    @include feature-targeting.targets($feat-structure) {
+      @include extended-icon-padding_(
         $icon-padding,
-        $icon-padding - $label-padding
+        $label-padding,
+        $is-icon-at-end: true
       );
     }
   }
 }
 
-@mixin extended-label-padding(
+@mixin extended-icon-padding_(
+  $icon-padding,
   $label-padding,
-  $query: feature-targeting-functions.all()
+  $is-icon-at-end: false
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $icon-padding-is-custom-prop: custom-properties.is-custom-prop($icon-padding);
+  $icon-padding-value: $icon-padding;
+  $icon-padding-px: $icon-padding;
+  $start: 'left';
+  $end: 'right';
 
-  @include feature-targeting-mixins.targets($feat-structure) {
-    padding: 0 $label-padding;
+  @if $is-icon-at-end {
+    $start: 'right';
+    $end: 'left';
+  }
+
+  @if $icon-padding-is-custom-prop {
+    $icon-padding-value: custom-properties.create-var($icon-padding);
+    $icon-padding-px: custom-properties.get-fallback($icon-padding);
+  }
+
+  $label-padding-is-custom-prop: custom-properties.is-custom-prop(
+    $label-padding
+  );
+
+  $label-padding-value: $label-padding;
+  $label-padding-px: $label-padding;
+
+  @if $label-padding-is-custom-prop {
+    $label-padding-value: custom-properties.create-var($label-padding);
+    $label-padding-px: custom-properties.get-fallback($label-padding);
+  }
+
+  /* @noflip */
+  margin-#{$start}: $icon-padding-px - $label-padding-px;
+  @if $icon-padding-is-custom-prop or $label-padding-is-custom-prop {
+    // Use calc() for dynamic margin
+    /* @alternate */
+    /* @noflip */
+    margin-#{$start}: calc(#{$icon-padding-value} - #{$label-padding-value});
+  }
+  @include rtl-mixins.rtl {
+    /* @noflip */
+    margin-#{$end}: $icon-padding-px - $label-padding-px;
+    @if $icon-padding-is-custom-prop or $label-padding-is-custom-prop {
+      /* @alternate */
+      /* @noflip */
+      margin-#{$end}: calc(#{$icon-padding-value} - #{$label-padding-value});
+    }
+  }
+
+  @include theme.property(margin-#{$end}, $icon-padding, $gss: (noflip: true));
+  @include rtl-mixins.rtl {
+    @include theme.property(
+      margin-#{$start},
+      $icon-padding,
+      $gss: (noflip: true)
+    );
+  }
+}
+
+@mixin extended-label-padding($label-padding, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    @include theme.property(padding-left, $label-padding, $gss: (noflip: true));
+    @include theme.property(
+      padding-right,
+      $label-padding,
+      $gss: (noflip: true)
+    );
   }
 }
 
 @mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   &:not(.mdc-fab--extended) {
     // Do not specify $component-height for shape radius. FABs are circular,
@@ -264,7 +319,7 @@ $ripple-target: '.mdc-fab__ripple';
 @mixin extended-shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   // Extended FABs _do_ need a $component-height since they are not circular.
   // Percentage radii must be resolved.
@@ -288,16 +343,16 @@ $ripple-target: '.mdc-fab__ripple';
 $icon-enter-delay_: 90ms;
 $icon-enter-duration_: 180ms;
 
-@mixin base_($query: feature-targeting-functions.all()) {
+@mixin base_($query: feature-targeting.all()) {
   @include elevation-mixins.overlay-surface-position($query: $query);
   @include elevation-mixins.overlay-dimensions(100%, $query: $query);
   @include elevation-mixins.elevation(6, $query: $query);
   @include shape-radius(variables.$shape-radius, $query: $query);
 
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: inline-flex;
     position: relative;
     align-items: center;
@@ -318,7 +373,7 @@ $icon-enter-duration_: 180ms;
     overflow: visible;
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: box-shadow elevation-variables.$transition-duration
         elevation-variables.$transition-timing-function,
       opacity 15ms linear 30ms,
@@ -329,7 +384,7 @@ $icon-enter-duration_: 180ms;
   }
 
   &::-moz-focus-inner {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       padding: 0;
       border: 0;
     }
@@ -350,13 +405,13 @@ $icon-enter-duration_: 180ms;
     // (an accessibility/usability feature) unless we're confident that there is also a visual indication that the
     // element has focus. If the client has customized the DOM in some unexpected way, and is certain that another
     // element will receive focus instead, they can always override this property manually in their CSS.
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       outline: none;
     }
   }
 
   &:hover {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: pointer;
     }
   }
@@ -367,23 +422,23 @@ $icon-enter-duration_: 180ms;
   // stylelint-disable selector-max-type
   // postcss-bem-linter: ignore
   > svg {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: 100%;
     }
   }
   // stylelint-enable selector-max-type
 }
 
-@mixin mini_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin mini_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: variables.$mini-height;
     height: variables.$mini-height;
   }
 }
 
-@mixin extended_($query: feature-targeting-functions.all()) {
+@mixin extended_($query: feature-targeting.all()) {
   @include typography-mixins.typography(button, $query: $query);
   @include extended-shape-radius(variables.$shape-radius, $query: $query);
   @include extended-padding(
@@ -392,9 +447,9 @@ $icon-enter-duration_: 180ms;
     $query: $query
   );
 
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: auto;
     max-width: 100%;
     height: variables.$extended-height;
@@ -404,11 +459,11 @@ $icon-enter-duration_: 180ms;
   }
 }
 
-@mixin icon_($query: feature-targeting-functions.all()) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin icon_($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: animation-functions.enter(
       transform,
       $icon-enter-duration_,
@@ -416,16 +471,16 @@ $icon-enter-duration_: 180ms;
     );
   }
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     fill: currentColor;
     will-change: transform;
   }
 }
 
-@mixin label_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin label_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     justify-content: flex-start;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -434,36 +489,36 @@ $icon-enter-duration_: 180ms;
   }
 }
 
-@mixin icon-overrides_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin icon-overrides_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
 }
 
-@mixin exited_($query: feature-targeting-functions.all()) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin exited_($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     transform: scale(0);
     opacity: 0;
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: opacity 15ms linear 150ms,
       animation-functions.exit-permanent(transform, 180ms);
   }
 
   .mdc-fab__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       transform: scale(0);
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: animation-functions.exit-permanent(transform, 135ms);
     }
   }

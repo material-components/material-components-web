@@ -47,6 +47,11 @@ export interface MDCTooltipAdapter {
   addClass(className: string): void;
 
   /**
+   * @return whether or not the root element has the provided className.
+   */
+  hasClass(className: string): boolean;
+
+  /**
    * Removes a class from the root element.
    */
   removeClass(className: string): void;
@@ -92,4 +97,10 @@ export interface MDCTooltipAdapter {
    */
   deregisterDocumentEventHandler<K extends EventType>(
       evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Notification that the tooltip element has been fully hidden. Typically used
+   * to wait for the hide animation to complete.
+   */
+  notifyHidden(): void;
 }

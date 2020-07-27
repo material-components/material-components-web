@@ -22,8 +22,8 @@
 
 // MDC Ripple keyframes are split into their own file so that _mixins.scss can rely on them.
 
-@use "@material/animation/variables";
-@use "./variables" as variables2;
+@use '@material/animation/variables';
+@use './variables' as variables2;
 
 @mixin keyframes_ {
   @keyframes mdc-ripple-fg-radius-in {

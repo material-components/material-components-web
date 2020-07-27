@@ -30,13 +30,12 @@
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/mixins' as dom;
 @use '@material/elevation/mixins';
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/icon-button/mixins' as icon-button-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
-@use '@material/theme/mixins' as theme-mixins;
-@use '@material/theme/variables' as variables2; // for mdc-theme-prop-value.
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
 @use '@material/typography/mixins' as typography-mixins;
 @use './data-table-cell';
 @use './data-table-header-cell';
@@ -44,13 +43,10 @@
 @use './data-table-progress-indicator';
 @use './data-table-theme';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-typography: feature-targeting-functions.create-target(
-    $query,
-    typography
-  );
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define data-table
 
@@ -76,7 +72,7 @@
       $query: $query
     );
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       // Makes the table scroll smoothly in iOS.
       // NOTE: Root element should not be scrollable, added this for backward
       // compatibility.
@@ -142,7 +138,7 @@
   );
 
   .mdc-data-table__table-container {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       // Makes the table scroll smoothly in iOS.
       -webkit-overflow-scrolling: touch;
       overflow-x: auto;
@@ -151,7 +147,7 @@
   }
 
   .mdc-data-table__table {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       min-width: 100%; // Makes table full-width of its container (Firefox / IE11)
       border: 0;
       white-space: nowrap;
@@ -177,7 +173,7 @@
   @include data-table-pagination.core-styles($query: $query);
 }
 
-@mixin theme-baseline($query: feature-targeting-functions.all()) {
+@mixin theme-baseline($query: feature-targeting.all()) {
   @include data-table-theme.checked-icon-color(
     data-table-theme.$checked-icon-color,
     $query: $query
@@ -186,12 +182,12 @@
 
 /// Sets styles required to support sticky header row.
 @mixin _sticky-header($query: $query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include data-table-header-cell.header-cell-sticky($query: $query);
 
   .mdc-data-table__row:first-child {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border-top: 0;
     }
   }

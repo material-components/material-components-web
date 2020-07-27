@@ -171,7 +171,7 @@ class CssBundleFactory {
         'mdc.ripple': getAbsolutePath('/packages/mdc-ripple/mdc-ripple.scss'),
         'mdc.segmented-button': getAbsolutePath('/packages/mdc-segmented-button/styles.scss'),
         'mdc.select': getAbsolutePath('/packages/mdc-select/mdc-select.scss'),
-        'mdc.slider': getAbsolutePath('/packages/mdc-slider/mdc-slider.scss'),
+        'mdc.slider': getAbsolutePath('/packages/mdc-slider/styles.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
         'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
         'mdc.tab': getAbsolutePath('/packages/mdc-tab/mdc-tab.scss'),

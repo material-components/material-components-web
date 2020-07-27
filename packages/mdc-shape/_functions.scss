@@ -20,12 +20,12 @@
 // THE SOFTWARE.
 //
 
-@use "sass:list";
-@use "sass:map";
-@use "sass:math";
-@use "sass:meta";
-@use "@material/theme/custom-properties";
-@use "./variables";
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use '@material/theme/custom-properties';
+@use './variables';
 
 //
 // Flips the radius values based on RTL context.

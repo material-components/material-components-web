@@ -20,15 +20,14 @@
 // THE SOFTWARE.
 //
 
-@use "@material/animation/variables" as animation-variables;
-@use "@material/density/functions" as density-functions;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/tab-scroller/mixins" as tab-scroller-mixins;
-@use "@material/tab/mixins" as tab-mixins;
-@use "./variables";
+@use '@material/animation/variables' as animation-variables;
+@use '@material/density/functions' as density-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/tab-scroller/mixins' as tab-scroller-mixins;
+@use '@material/tab/mixins' as tab-mixins;
+@use './variables';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   // postcss-bem-linter: define tab-bar
   .mdc-tab-bar {
     @include width(100%, $query);
@@ -39,10 +38,10 @@
   // postcss-bem-linter: end
 }
 
-@mixin width($width, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin width($width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: $width;
   }
 }
@@ -53,7 +52,7 @@
 ///
 /// @param {Number} $density-scale Density scale value. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
 ///
-@mixin density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin density($density-scale, $query: feature-targeting.all()) {
   $height: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
@@ -70,10 +69,7 @@
 ///
 /// @param {Number} $density-scale Density scale value. Supported density scales `-4`, `-3`, `-2`, `-1` and `0`.
 ///
-@mixin stacked-density(
-  $density-scale,
-  $query: feature-targeting-functions.all()
-) {
+@mixin stacked-density($density-scale, $query: feature-targeting.all()) {
   $height: density-functions.prop-value(
     $density-config: variables.$stacked-density-config,
     $density-scale: $density-scale,
@@ -95,7 +91,7 @@
 @mixin tab-scroller-transition(
   $duration-ms,
   $timing-function: animation-variables.$standard-curve-timing-function,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   .mdc-tab-scroller {
     @include tab-scroller-mixins.transition(

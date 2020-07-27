@@ -21,24 +21,35 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '../../mdc-animation/index';
-import {captureHandlers} from '../../../testing/helpers/foundation';
-import {setUpFoundationTest} from '../../../testing/helpers/setup';
+/**
+ * String constants for segmented button tests
+ */
+export const testCssClasses = {
+  TEST_CLASS: 'test-class',
+  SELECTED: 'mdc-segmented-button__segment--selected'
+};
 
-import {MDCSliderFoundation} from '../foundation';
-
-export const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
-
-export function setupEventTest() {
-  const {foundation, mockAdapter} = setUpFoundationTest(MDCSliderFoundation);
-
-  return {
-    foundation,
-    mockAdapter,
-    rootHandlers: captureHandlers(mockAdapter, 'registerInteractionHandler'),
-    thumbContainerHandlers: captureHandlers(
-        mockAdapter, 'registerThumbContainerInteractionHandler'),
-    bodyHandlers:
-        captureHandlers(mockAdapter, 'registerBodyInteractionHandler'),
-  };
+/**
+ * CSS class selectors for segmented button tests
+ */
+export const testSelectors = {
+  SEGMENT: '.mdc-segmented-button__segment'
 }
+
+/**
+ * Indices for segments used in tests
+ */
+export enum testIndices {
+  NOT_PRESENT = -1,
+  UNSELECTED = 0,
+  SELECTED = 1
+}
+
+/**
+ * SegmentIds for segments used in tests
+ */
+export const testSegmentIds = {
+  NOT_PRESENT_SEGMENT_ID: 'segment-1',
+  UNSELECTED_SEGMENT_ID: 'segment0',
+  SELECTED_SEGMENT_ID: 'segment1'
+};

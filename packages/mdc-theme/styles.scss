@@ -20,4 +20,6 @@
 // THE SOFTWARE.
 //
 
-$baseline-rail-opacity: 0.26 !default;
+@use './mixins';
+
+@include mixins.core-styles;

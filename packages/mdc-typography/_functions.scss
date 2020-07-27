@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "sass:map";
-@use "sass:string";
+@use 'sass:map';
+@use 'sass:string';
 
 @function set-styles_($base-styles, $scale-styles, $override-styles) {
   @each $style, $style-props in $scale-styles {

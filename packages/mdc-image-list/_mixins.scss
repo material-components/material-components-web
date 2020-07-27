@@ -18,21 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/shape/functions" as shape-functions;
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/typography/mixins" as typography-mixins;
-@use "./variables";
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/shape/functions' as shape-functions;
+@use '@material/theme/theme';
+@use '@material/typography/mixins' as typography-mixins;
+@use './variables';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   // postcss-bem-linter: define image-list
   .mdc-image-list {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: flex;
       flex-wrap: wrap;
       // Margin and padding are set to override default user agent styles for lists, and also to center the Image List
@@ -43,7 +42,7 @@
 
   .mdc-image-list__item,
   .mdc-image-list__image-aspect-container {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       // Supports absolute positioning of protected supporting content for item, and image for image-aspect-container
       position: relative;
       box-sizing: border-box;
@@ -51,20 +50,20 @@
   }
 
   .mdc-image-list__item {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       list-style-type: none;
     }
   }
 
   .mdc-image-list__image {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: 100%;
     }
   }
 
   // Descendant selector allows image-aspect-container to be optional in DOM structure
   .mdc-image-list__image-aspect-container .mdc-image-list__image {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: absolute;
       top: 0;
       right: 0;
@@ -82,11 +81,11 @@
   @include shape-radius(variables.$shape-radius, $query: $query);
 
   .mdc-image-list__supporting {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(color, text-primary-on-background);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, text-primary-on-background);
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -104,7 +103,7 @@
   // Modifier for labels/icons with text protection, overlaying images.
 
   .mdc-image-list--with-text-protection .mdc-image-list__supporting {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: absolute;
       bottom: 0;
       width: 100%;
@@ -112,7 +111,7 @@
       padding: 0 variables.$text-protection-horizontal-padding;
     }
 
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       background: variables.$text-protection-background-color;
       color: #fff;
     }
@@ -121,18 +120,18 @@
   // Masonry Image List, using CSS columns (i.e. renders down then across)
 
   .mdc-image-list--masonry {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: block; // Override flex
     }
 
     .mdc-image-list__item {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         break-inside: avoid-column;
       }
     }
 
     .mdc-image-list__image {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: block;
         height: auto;
       }
@@ -141,11 +140,11 @@
   // postcss-bem-linter: end
 }
 
-@mixin aspect($width-height-ratio, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin aspect($width-height-ratio, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-image-list__image-aspect-container {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       padding-bottom: calc(100% / #{$width-height-ratio});
     }
   }
@@ -154,7 +153,7 @@
 @mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   .mdc-image-list__image {
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
@@ -182,14 +181,14 @@
 @mixin standard-columns(
   $column-count,
   $gutter-size: variables.$standard-gutter-size,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   // This uses margin rather than padding to facilitate properly positioning the supporting content element when
   // --with-text-protection is used.
   .mdc-image-list__item {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       // Subtract extra fraction from each item's width to ensure correct wrapping in IE/Edge which round differently
       width: calc(
         100% / #{$column-count} - #{$gutter-size + 1 / $column-count}
@@ -204,17 +203,17 @@
 @mixin masonry-columns(
   $column-count,
   $gutter-size: variables.$masonry-gutter-size,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     column-count: $column-count;
     column-gap: $gutter-size;
   }
 
   .mdc-image-list__item {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       margin-bottom: $gutter-size;
     }
   }

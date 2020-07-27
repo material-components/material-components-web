@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2020 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +20,19 @@
 // THE SOFTWARE.
 //
 
-@mixin emphasize-keyframes_ {
-  @keyframes mdc-slider-emphasize {
-    0% {
-      animation-timing-function: ease-out;
-    }
+// Core: Define complete styles to render component, including base and theme styles
 
-    50% {
-      animation-timing-function: ease-in;
-      transform: scale(0.85);
-    }
+@use '@material/feature-targeting';
+@use './segmented-button-theme';
 
-    100% {
-      transform: scale(0.571);
+@mixin core-styles($query: feature-targeting.all()) {
+  .mdc-segmented-button {
+    $feat-structure: feature-targeting.create-target($query, structure);
+
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-block;
+      // Removes spacing between segments
+      font-size: 0;
     }
   }
 }

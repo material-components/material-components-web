@@ -20,24 +20,23 @@
 // THE SOFTWARE.
 //
 
-@use "@material/feature-targeting/mixins" as feature-mixins;
-@use "@material/feature-targeting/functions" as feature-functions;
-@use "@material/ripple/mixins" as ripple;
-@use "@material/rtl/mixins" as rtl;
-@use "@material/theme/mixins" as theme;
-@use "@material/touch-target/mixins" as touch;
-@use "./variables";
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/mixins' as ripple;
+@use '@material/rtl/mixins' as rtl;
+@use '@material/theme/theme';
+@use '@material/touch-target/mixins' as touch;
+@use './variables';
 
 $ripple-target: '.mdc-chip-trailing-action__ripple';
 
-@mixin core-styles($query: feature-functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query: $query);
   @include ripple($query: $query);
 }
 
-@mixin without-ripple($query: feature-functions.all()) {
-  $feat-structure: feature-functions.create-target($query, structure);
-  $feat-color: feature-functions.create-target($query, color);
+@mixin without-ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include touch.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
   @include _touch-target-base($query);
@@ -47,7 +46,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
     @include color(variables.$color, $query);
     @include touch-target-width(variables.$touch-target-width, $query);
 
-    @include feature-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border: none;
       display: inline-flex;
       position: relative;
@@ -60,7 +59,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
       -webkit-appearance: none;
     }
 
-    @include feature-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       background: none;
     }
 
@@ -68,7 +67,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
     // color is affected regardless of load order without needing
     // !important or HTML tag targetting.
     .mdc-chip-trailing-action__icon {
-      @include feature-mixins.targets($feat-color) {
+      @include feature-targeting.targets($feat-color) {
         fill: currentColor;
         color: inherit;
       }
@@ -76,9 +75,9 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
   }
 }
 
-@mixin ripple($query: feature-functions.all()) {
+@mixin ripple($query: feature-targeting.all()) {
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
-  $feat-structure: feature-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-chip-trailing-action {
     @include ripple.surface($query: $query, $ripple-target: $ripple-target);
@@ -93,7 +92,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
     );
 
     #{$ripple-target} {
-      @include feature-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         position: absolute;
         // Ripple needs content-box as the box sizing and box-sizing: border-box
         // is often set as a default, so we override that here.
@@ -108,11 +107,11 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
 
 /// Set the color of the trailing action
 /// @param {Color} $color The trailing action color
-@mixin color($color, $query: feature-functions.all()) {
-  $feat-color: feature-functions.create-target($query, color);
+@mixin color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-chip-trailing-action {
-    @include feature-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme.prop(color, $color);
     }
   }
@@ -120,11 +119,11 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
 
 /// Set the size of the trailing action
 /// @param {Number} $number The size of the trailing action
-@mixin size($size, $query: feature-functions.all()) {
-  $feat-structure: feature-functions.create-target($query, structure);
+@mixin size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-chip-trailing-action__icon {
-    @include feature-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: $size;
       width: $size;
       font-size: $size;
@@ -135,11 +134,11 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
 /// Set the horizontal spacing of the trailing action
 /// @param {Number} $left The left spacing
 /// @param {Number} $right The right spacing
-@mixin horizontal-spacing($left, $right, $query: feature-functions.all()) {
-  $feat-structure: feature-functions.create-target($query, structure);
+@mixin horizontal-spacing($left, $right, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-chip-trailing-action {
-    @include feature-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl.reflexive-property(margin, $left, $right);
     }
   }
@@ -147,11 +146,11 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
 
 /// Set the width of the touch target
 /// @param {Number} $width The width of the touch target
-@mixin touch-target-width($width, $query: feature-functions.all()) {
-  $feat-structure: feature-functions.create-target($query, structure);
+@mixin touch-target-width($width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-chip-trailing-action__touch {
-    @include feature-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: $width;
     }
   }
@@ -159,7 +158,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
 
 /// Private mixins
 
-@mixin _touch-target-base($query: feature-functions.all()) {
+@mixin _touch-target-base($query: feature-targeting.all()) {
   .mdc-chip-trailing-action__touch {
     @include touch.touch-target($set-width: true, $query: $query);
   }

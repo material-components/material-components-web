@@ -34,7 +34,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ### Styles
 
 ```scss
-@use "@material/select/icon/mdc-select-icon";
+@use "@material/select/styles";
 ```
 
 ### JavaScript instantiation
@@ -60,6 +60,8 @@ In filled select:
 ```html
 <div class="mdc-select mdc-select--filled mdc-select--with-leading-icon">
   <div class="mdc-select__anchor">
+    <span class="mdc-select__ripple"></span>
+    <span class="mdc-floating-label">Pick a Food Group</span>
     <i class="material-icons mdc-select__icon" tabindex="0" role="button">event</i>
     ...
   </div>
@@ -89,6 +91,9 @@ In outlined select:
 ```html
 <div class="mdc-select mdc-select--outlined mdc-select--with-leading-icon">
   <div class="mdc-select__anchor">
+    <span class="mdc-notched-outline">
+      ...
+    </span>
     <i class="material-icons mdc-select__icon" tabindex="0" role="button">event</i>
     ...
   </div>

@@ -20,38 +20,38 @@
 // THE SOFTWARE.
 //
 
-@use "sass:list";
-@use "sass:meta";
-@use "@material/animation/variables" as animation-variables;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/theme/variables" as theme-variables; // for mdc-theme-accessible-ink-color
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/shape/functions";
-@use "./variables";
-@use "@material/rtl/mixins" as rtl-mixins;
+@use 'sass:list';
+@use 'sass:meta';
+@use '@material/animation/variables' as animation-variables;
+@use '@material/ripple/mixins' as ripple-mixins;
+@use '@material/theme/theme-color';
+@use '@material/theme/theme';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/shape/functions';
+@use './variables';
+@use '@material/rtl/mixins' as rtl-mixins;
 
 //
 // Public
 //
 
 @mixin ink-color($color) {
-  @include theme-mixins.prop(color, $color);
+  @include theme.prop(color, $color);
 }
 
 @mixin fill-color($color) {
-  @include theme-mixins.prop(background-color, $color);
+  @include theme.prop(background-color, $color);
 }
 
 @mixin fill-color-accessible($color) {
   @include fill-color($color);
-  @include ink-color(theme-variables.accessible-ink-color($color));
+  @include ink-color(theme-color.accessible-ink-color($color));
 }
 
 @mixin icon-ink-color($color) {
   .mdc-top-app-bar__action-item,
   .mdc-top-app-bar__navigation-icon {
-    @include theme-mixins.prop(color, $color);
+    @include theme.prop(color, $color);
     @include ripple-mixins.states($color);
   }
 }

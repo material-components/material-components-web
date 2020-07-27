@@ -31,25 +31,25 @@ npm install @material/circular-progress
 ### HTML Structure
 
 ```html
-<div class="mdc-circular-progress mdc-circular-progress--large" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
+<div class="mdc-circular-progress" style="width:48px;height:48px;" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
   <div class="mdc-circular-progress__determinate-container">
     <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-      <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097"/>
+      <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097" stroke-width="4"/>
     </svg>
   </div>
   <div class="mdc-circular-progress__indeterminate-container">
     <div class="mdc-circular-progress__spinner-layer">
       <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
         </svg>
       </div><div class="mdc-circular-progress__gap-patch">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="3.2"/>
         </svg>
       </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
         </svg>
       </div>
     </div>
@@ -92,55 +92,30 @@ const circularProgress = new MDCCircularProgress(document.querySelector('.mdc-ci
 
 To set the stroke-width and container size strictly to one of three sizes defined by guidelines, replace each SVG of the baseline element with the following and apply the appropriate `mdc-circular-progress--{size}` modifier class (see [CSS Classes](#CSS-Classes) section).
 
-#### Large (default)
-Add the `.mdc-circular-progress--large` class and use the following inner SVGs.
-```html
-<!--Determinate-->
-<svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-  <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097"/>
-</svg>
-<!--Indeterminate-->
-<svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
-</svg>
-```
-
-##### Full Example
+#### Large (48px)
 See [baseline template](#HTML-Structure) above.
 
-#### Medium
-Add the `.mdc-circular-progress--medium` class and replace SVG's from baseline template with the following.
+#### Medium (36px)
 ```html
-<!--Determinate-->
-<svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <circle class="mdc-circular-progress__determinate-circle" cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="78.54"/>
-</svg>
-<!--Indeterminate-->
-<svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27"/>
-</svg>
-```
-##### Full Example
-```html
-<div class="mdc-circular-progress mdc-circular-progress--medium" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
+<div class="mdc-circular-progress" style="width:36px;height:36px;" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
   <div class="mdc-circular-progress__determinate-container">
     <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-      <circle class="mdc-circular-progress__determinate-circle" cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="78.54"/>
+      <circle class="mdc-circular-progress__determinate-circle" cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="78.54" stroke-width="3"/>
     </svg>
   </div>
   <div class="mdc-circular-progress__indeterminate-container">
     <div class="mdc-circular-progress__spinner-layer">
       <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27"/>
+          <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27" stroke-width="3"/>
         </svg>
       </div><div class="mdc-circular-progress__gap-patch">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27"/>
+          <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27" stroke-width="2.4"/>
         </svg>
       </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27"/>
+          <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27" stroke-width="3"/>
         </svg>
       </div>
     </div>
@@ -148,39 +123,27 @@ Add the `.mdc-circular-progress--medium` class and replace SVG's from baseline t
 </div>
 ```
 
-#### Small
-Add the `.mdc-circular-progress--small` class and replace SVG's from baseline template with the following.
+#### Small (24px)
 ```html
-<!--Determinate-->
-<svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <circle class="mdc-circular-progress__determinate-circle" cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="54.978"/>
-</svg>
-<!--Indeterminate-->
-<svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/>
-</svg>
-```
-##### Full Example
-```html
-<div class="mdc-circular-progress mdc-circular-progress--small" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
+<div class="mdc-circular-progress" style="width:24px;height:24px;" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
   <div class="mdc-circular-progress__determinate-container">
     <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <circle class="mdc-circular-progress__determinate-circle" cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="54.978"/>
+      <circle class="mdc-circular-progress__determinate-circle" cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="54.978" stroke-width="2.5"/>
     </svg>
   </div>
   <div class="mdc-circular-progress__indeterminate-container">
     <div class="mdc-circular-progress__spinner-layer">
       <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/>
+          <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489" stroke-width="2.5"/>
         </svg>
       </div><div class="mdc-circular-progress__gap-patch">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/>
+          <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489" stroke-width="2"/>
         </svg>
       </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489"/>
+          <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489" stroke-width="2.5"/>
         </svg>
       </div>
     </div>
@@ -193,25 +156,25 @@ You may choose to have the indicator in inderminate state animate through 4 colo
 This is done instead of animating the color property to reduce browser repaints.
 
 ```html
-<div class="mdc-circular-progress" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
+<div class="mdc-circular-progress" style="width:48px;height:48px;" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
   <div class="mdc-circular-progress__determinate-container">
     <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-      <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097"/>
+      <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097" stroke-width="4"/>
     </svg>
   </div>
   <div class="mdc-circular-progress__indeterminate-container">
     <div class="mdc-circular-progress__spinner-layer mdc-circular-progress__color-1">
       <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
         </svg>
       </div><div class="mdc-circular-progress__gap-patch">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="3.8"/>
         </svg>
       </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549"/>
+          <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
         </svg>
       </div>
     </div>
@@ -238,9 +201,6 @@ This is done instead of animating the color property to reduce browser repaints.
 CSS Class | Description
 --------- | -------------
 `mdc-circular-progress` | Mandatory.  The root element.
-`mdc-circular-progress--large`   | Optional. Sets the stroke and container sizes for the large variant. See note. |
-`mdc-circular-progress--medium`   | Optional. Sets the stroke and container sizes for the medium-sized variant. See note. |
-`mdc-circular-progress--small`   | Optional. Sets the stroke and container sizes for the small variant. See note. |
 `mdc-circular-progress--indeterminate`   | Optional. Puts the circular progress indicator in an indeterminate state. |
 `mdc-circular-progress--closed`  | Optional. Hides the circular progress indicator. |
 `mdc-circular-progress__determinate-container` | Mandatory.  Contains the determinate progress indicator.
@@ -255,7 +215,7 @@ CSS Class | Description
 `mdc-circular-progress__gap-patch` | Mandatory.  A tiny little sliver of an SVG circle used to patch a gap between the circle-left and the circle-right.
 
 
-> _NOTE_: Each size modifier class **must** be used with a separate inner SVG template to ensure optimal ratio of the stroke width to container size as specified in Material Design guidelines.
+> _NOTE_: Ensure the correct inner SVG templates for each size are used to ensure optimal ratio of the stroke width to container size as specified in Material Design guidelines.
 
 ### Sass Mixins
 
@@ -281,7 +241,7 @@ Method Signature | Description |
 
 ### `MDCCircularProgressAdapter`
 
-Method Signature | Description 
+Method Signature | Description
 ---------------- | -----------
 `addClass(className: string) => void` | Adds a class to the root element.
 `getDeterminateCircleAttribute(attributeName: string) => void` | Gets the specified attribute from the determinate circle element.

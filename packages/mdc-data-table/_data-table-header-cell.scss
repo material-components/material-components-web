@@ -28,22 +28,21 @@
 @use '@material/animation/functions';
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/mixins' as dom;
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/icon-button/mixins' as icon-button-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/typography/mixins' as typography-mixins;
 @use './data-table-theme';
 @use './data-table-cell';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-data-table__header-cell {
     @include typography-mixins.typography(subtitle2, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       box-sizing: border-box;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -64,11 +63,11 @@
   }
 
   .mdc-data-table__header-cell--numeric {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       text-align: right;
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.rtl {
         /* @noflip */
         text-align: left;
@@ -82,46 +81,46 @@
       $query: $query
     );
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       // Apply dummy `transform` to avoid pixel shift on sort down animation.
       transform: rotate(0.0001deg);
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-box(margin, left, 4px);
     }
 
     .mdc-data-table__header-cell--numeric & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-box(margin, right, 4px);
       }
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: functions.standard(transform, $duration: 150ms);
     }
 
     .mdc-data-table__header-cell--sorted-descending & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         transform: rotate(-180deg);
       }
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 0;
     }
 
     &:focus,
     .mdc-data-table__header-cell:hover &,
     .mdc-data-table__header-cell--sorted & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         opacity: 1;
       }
     }
   }
 
   .mdc-data-table__header-cell-wrapper {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       align-items: center;
       display: inline-flex;
       vertical-align: middle;
@@ -129,7 +128,7 @@
   }
 
   .mdc-data-table__header-cell--with-sort {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: pointer;
     }
   }
@@ -141,10 +140,10 @@
 
 /// Sets header cell in sticky position on table content vertical scroll.
 @mixin header-cell-sticky($query: $query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__header-cell {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: sticky;
       top: 0;
       z-index: 1;
@@ -156,7 +155,7 @@
   // scroll for header row is sticky and table is set to
   // `border-collapse: collapse`.
   .mdc-data-table__header-cell:after {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       bottom: 0;
       content: '';
       left: 0;

@@ -198,7 +198,8 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
               'MDCDataTable: Progress indicator element not found.');
         }
 
-        Object.assign(progressIndicator.style, styles);
+        progressIndicator.style.setProperty('height', styles.height);
+        progressIndicator.style.setProperty('top', styles.top);
       },
       addClassAtRowIndex: (rowIndex: number, className: string) => {
         this.getRows()[rowIndex].classList.add(className);

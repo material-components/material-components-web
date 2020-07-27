@@ -1,5 +1,5 @@
-@use "./feature-targeting-any.test" as feature-targeting-test;
-@use "@material/feature-targeting/functions" as feature;
+@use './feature-targeting-any.test' as feature-targeting-test;
+@use '@material/feature-targeting/feature-targeting';
 
 // Verify that the Sass compiles when we ask for all features.
-@include feature-targeting-test.test(feature.all());
+@include feature-targeting-test.test(feature-targeting.all());

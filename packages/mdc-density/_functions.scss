@@ -20,10 +20,10 @@
 // THE SOFTWARE.
 //
 
-@use "sass:list";
-@use "sass:map";
-@use "sass:meta";
-@use "./variables";
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use './variables';
 
 ///
 /// Returns component property value based on given density config and density scale.
