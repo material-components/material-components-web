@@ -69,4 +69,9 @@ export interface MDCSegmentedButtonSegmentAdapter {
    * @event selected With detail - SegmentDetail
    */
   notifySelectedChange(selected: boolean): void;
+
+  /**
+   * @return Returns bounding rectangle for ripple effect
+   */
+  getRootBoundingClientRect(): ClientRect;
 }

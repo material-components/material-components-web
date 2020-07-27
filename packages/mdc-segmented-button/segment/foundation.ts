@@ -34,7 +34,8 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
       addClass: () => undefined,
       removeClass: () => undefined,
       hasClass: () => false,
-      notifySelectedChange: () => undefined
+      notifySelectedChange: () => undefined,
+      getRootBoundingClientRect: () => new ClientRect()
     }
   }
 
@@ -88,6 +89,13 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
       this.toggleSelection();
     }
     this.adapter.notifySelectedChange(this.isSelected());
+  }
+
+  /**
+   * @return Returns bounding rectangle for ripple effect
+   */
+  getDimensions(): ClientRect {
+    return this.adapter.getRootBoundingClientRect();
   }
 
   /**
