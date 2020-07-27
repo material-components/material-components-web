@@ -83,7 +83,9 @@ $exit-duration: 75ms;
         transform: scale(1);
         opacity: 1;
       }
+    }
 
+    .mdc-tooltip--showing-transition & {
       @include feature-targeting.targets($feat-animation) {
         transition: animation-functions.enter(opacity, $enter-duration),
           animation-functions.enter(transform, $enter-duration);
@@ -94,7 +96,9 @@ $exit-duration: 75ms;
       @include feature-targeting.targets($feat-structure) {
         transform: scale(1);
       }
+    }
 
+    .mdc-tooltip--hide-transition & {
       @include feature-targeting.targets($feat-animation) {
         transition: animation-functions.exit-permanent(opacity, $exit-duration);
       }

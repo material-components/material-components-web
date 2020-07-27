@@ -22,6 +22,7 @@
  */
 
 import {EventType, SpecificEventListener} from '@material/base/types';
+import {CssClasses} from './constants';
 
 /**
  * Implement this adapter for your framework of choice to delegate updates to
@@ -44,17 +45,17 @@ export interface MDCTooltipAdapter {
   /**
    * Adds a class onto the root element.
    */
-  addClass(className: string): void;
+  addClass(className: CssClasses): void;
 
   /**
    * @return whether or not the root element has the provided className.
    */
-  hasClass(className: string): boolean;
+  hasClass(className: CssClasses): boolean;
 
   /**
    * Removes a class from the root element.
    */
-  removeClass(className: string): void;
+  removeClass(className: CssClasses): void;
 
   /**
    * Sets the property value of the given style property on the root element.
