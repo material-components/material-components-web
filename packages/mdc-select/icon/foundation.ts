@@ -40,7 +40,7 @@ export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter>
   // assigned in initialSyncWithDOM()
   private readonly interactionHandler_!: SpecificEventListener<InteractionEventType>;
 
-  constructor(protected readonly adapter: MDCSelectIconAdapter) {
+  constructor(adapter: MDCSelectIconAdapter) {
     super(adapter);
 
     this.interactionHandler_ = (evt) => this.handleInteraction(evt);

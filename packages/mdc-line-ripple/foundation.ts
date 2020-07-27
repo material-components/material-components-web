@@ -33,7 +33,7 @@ export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter>
 
   private readonly transitionEndHandler_: SpecificEventListener<'transitionend'>;
 
-  constructor(protected readonly adapter: MDCLineRippleAdapter) {
+  constructor(adapter: MDCLineRippleAdapter) {
     super(adapter);
 
     this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);

@@ -65,7 +65,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * @param adapter
    * @param foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(protected readonly adapter: MDCSelectAdapter, foundationMap: Partial<MDCSelectFoundationMap> = {}) {
+  constructor(adapter: MDCSelectAdapter, foundationMap: Partial<MDCSelectFoundationMap> = {}) {
     super(adapter);
 
     this.leadingIcon = foundationMap.leadingIcon;
