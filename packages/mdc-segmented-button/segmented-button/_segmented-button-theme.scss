@@ -20,10 +20,4 @@
 // THE SOFTWARE.
 //
 
-// CSS: Emit CSS required to style component
-
-@use './segmented-button/segmented-button';
-@use './segment/segment';
-
-@include segmented-button.core-styles();
-@include segment.core-styles();
+// Theme: Variables, functions, and mixins required to theme component

@@ -20,10 +20,19 @@
 // THE SOFTWARE.
 //
 
-// CSS: Emit CSS required to style component
+// Core: Define complete styles to render component, including base and theme styles
 
-@use './segmented-button/segmented-button';
-@use './segment/segment';
+@use '@material/feature-targeting';
+@use './segmented-button-theme';
 
-@include segmented-button.core-styles();
-@include segment.core-styles();
+@mixin core-styles($query: feature-targeting.all()) {
+  .mdc-segmented-button {
+    $feat-structure: feature-targeting.create-target($query, structure);
+
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-block;
+      // Removes spacing between segments
+      font-size: 0;
+    }
+  }
+}
