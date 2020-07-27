@@ -30,6 +30,7 @@ $_padding-y: 8px;
 $_max-width: 120px;
 $_min-width: 40px;
 $_label-type-scale: caption;
+$_z-index: 2;
 
 $enter-duration: 150ms;
 $exit-duration: 75ms;
@@ -55,6 +56,7 @@ $exit-duration: 75ms;
     @include feature-targeting.targets($feat-structure) {
       position: fixed;
       display: none;
+      z-index: $_z-index;
     }
   }
 
