@@ -20,6 +20,9 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
 @use 'sass:math';
 @use '@material/animation/functions';
 @use '@material/animation/variables' as animation-variables;
