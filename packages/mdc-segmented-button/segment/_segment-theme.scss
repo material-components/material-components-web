@@ -31,10 +31,9 @@ $surface: theme-color.$surface;
 $primary: theme-color.$primary;
 
 $unselected-ink-color: rgba($on-surface, 0.6);
-$unselected-outline-color: rgba($on-surface, 0.12);
+$outline-color: rgba($on-surface, 0.12);
 $unselected-container-fill-color: rgba($surface, 1);
 $selected-ink-color: rgba($primary, 1);
-$selected-outline-color: $unselected-outline-color;
 $selected-container-fill-color: rgba($primary, 0.08);
 
 $height: 36px;
@@ -49,12 +48,16 @@ $label-padding: 6px;
 /// Sets the border color of the segment
 /// @param {String} $color - Color of segment outline
 @mixin outline-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $property: custom-properties.create(
+    --mdc-segmented-button-outline-color,
+    $color
+  );
+
   .mdc-segmented-button__segment {
-    $property: custom-properties.create(
-      --mdc-segmented-button-outline-color,
-      $color
-    );
-    @include _outline-color($property, $query);
+    @include feature-targeting.targets($feat-color) {
+      @include custom-properties.apply('border-color', $property);
+    }
   }
 }
 
@@ -116,16 +119,6 @@ $label-padding: 6px;
 
   @include feature-targeting.targets($feat-color) {
     @include custom-properties.apply('color', $property);
-  }
-}
-
-/// Sets the border color
-/// @param {Map} $property - Custom property of border color
-@mixin _outline-color($property, $query: feature-targeting.all()) {
-  $feat-color: feature-targeting.create-target($query, color);
-
-  @include feature-targeting.targets($feat-color) {
-    @include custom-properties.apply('border-color', $property);
   }
 }
 

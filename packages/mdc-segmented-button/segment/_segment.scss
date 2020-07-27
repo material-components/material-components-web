@@ -56,7 +56,7 @@ $ripple-target: '.mdc-segmented-button__ripple';
 
     // Removes ripple's focus outline
     &:focus {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         outline-width: 0;
       }
     }
@@ -84,7 +84,7 @@ $ripple-target: '.mdc-segmented-button__ripple';
       @include touch-target-mixins.margin(
         $component-height: 32px,
         $query: $query
-      )
+      );
     }
   }
 
@@ -97,19 +97,19 @@ $ripple-target: '.mdc-segmented-button__ripple';
   // This could also be accomplished with --first/--last classes
   .mdc-touch-target-wrapper {
     .mdc-segmented-button__segment {
-      border-radius: 0px 0px 0px 0px;
+      border-radius: 0px;
       border-right-width: 0;
     }
 
     &:first-child .mdc-segmented-button__segment {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         border-radius: segment-theme.$border-radius 0px 0px
           segment-theme.$border-radius;
       }
     }
 
     &:last-child .mdc-segmented-button__segment {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         border-right-width: segment-theme.$border-width;
         border-radius: 0px segment-theme.$border-radius
           segment-theme.$border-radius 0px;
@@ -126,8 +126,8 @@ $ripple-target: '.mdc-segmented-button__ripple';
   }
 }
 
-@mixin ripple($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include ripple-mixins.common($query);
 
@@ -146,7 +146,7 @@ $ripple-target: '.mdc-segmented-button__ripple';
       $query: $query,
       $ripple-target: $ripple-target
     );
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       overflow: hidden;
     }
 
@@ -163,10 +163,7 @@ $ripple-target: '.mdc-segmented-button__ripple';
   @include elevation-mixins.overlay-surface-position($query: $query);
   @include elevation-mixins.overlay-dimensions(100%, $query: $query);
   @include typography-mixins.typography(button, $query);
-  @include segment-theme.outline-color(
-    segment-theme.$unselected-outline-color,
-    $query
-  );
+  @include segment-theme.outline-color(segment-theme.$outline-color, $query);
   @include feature-targeting.targets($feat-structure) {
     display: inline-flex;
     vertical-align: top;
