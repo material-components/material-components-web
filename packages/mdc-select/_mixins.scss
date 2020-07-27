@@ -38,7 +38,6 @@
 @use "@material/notched-outline/variables" as notched-outline-variables;
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use "@material/ripple/functions" as ripple-functions;
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/shape/mixins" as shape-mixins;
 @use "@material/shape/functions" as shape-functions;
@@ -272,8 +271,8 @@
     );
     @include ripple-theme.states-opacities(
       (
-        hover: ripple-functions.states-opacity(variables.$ink-color, hover),
-        focus: ripple-functions.states-opacity(variables.$ink-color, focus),
+        hover: ripple-theme.states-opacity(variables.$ink-color, hover),
+        focus: ripple-theme.states-opacity(variables.$ink-color, focus),
       ),
       $ripple-target: variables.$ripple-target,
       $query: $query

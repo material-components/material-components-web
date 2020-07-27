@@ -32,7 +32,6 @@
 @use '@material/typography/variables' as typography-variables;
 @use '@material/feature-targeting/feature-targeting';
 @use './variables';
-@use '@material/ripple/functions' as ripple-functions;
 @use '@material/theme/theme-color';
 
 //
@@ -501,7 +500,7 @@
       $query: $query
     );
     @include ripple-theme.states-focus-opacity(
-      ripple-functions.states-opacity(primary, focus),
+      ripple-theme.states-opacity(primary, focus),
       $ripple-target: variables.$ripple-target,
       $query: $query
     );

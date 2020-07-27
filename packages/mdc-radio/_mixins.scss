@@ -26,7 +26,6 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/ripple/variables' as ripple-variables;
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/touch-target/mixins' as touch-target-mixins;
@@ -234,7 +233,7 @@ $ripple-target: '.mdc-radio__ripple';
     + .mdc-radio__background::before {
       @include feature-targeting.targets($feat-structure) {
         transform: scale(1);
-        opacity: map.get(ripple-variables.$dark-ink-opacities, focus);
+        opacity: map.get(ripple-theme.$dark-ink-opacities, focus);
       }
 
       @include feature-targeting.targets($feat-animation) {

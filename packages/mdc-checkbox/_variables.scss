@@ -21,7 +21,7 @@
 //
 
 @use 'sass:map';
-@use '@material/ripple/variables' as ripple-variables;
+@use '@material/ripple/ripple-theme';
 @use '@material/theme/theme-color';
 @use '@material/density/variables' as density-variables;
 
@@ -37,7 +37,7 @@ $border-width: 2px !default;
 $transition-duration: 90ms !default;
 $item-spacing: 4px !default;
 $focus-indicator-opacity: map.get(
-  ripple-variables.$dark-ink-opacities,
+  ripple-theme.$dark-ink-opacities,
   focus
 ) !default;
 
