@@ -27,9 +27,6 @@
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
-@use './functions';
-@use './keyframes';
-@use './variables';
 @use '@material/theme/theme-color';
 @use './ripple-theme';
 
@@ -86,7 +83,7 @@
   // mdc-ripple.scss.)
   @include feature-targeting.targets($feat-animation) {
     @include base-mixins.emit-once('mdc-ripple/common/animation') {
-      @include keyframes.keyframes_;
+      @include keyframes_;
     }
   }
 }
@@ -128,8 +125,8 @@
   #{$ripple-target}::before {
     @include feature-targeting.targets($feat-animation) {
       // Also transition background-color to avoid unnatural color flashes when toggling activated/selected state
-      transition: opacity variables.$states-wash-duration linear,
-        background-color variables.$states-wash-duration linear;
+      transition: opacity ripple-theme.$states-wash-duration linear,
+        background-color ripple-theme.$states-wash-duration linear;
     }
 
     @include feature-targeting.targets($feat-structure) {
@@ -170,9 +167,9 @@
   &.mdc-ripple-upgraded--foreground-activation {
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-animation) {
-        animation: mdc-ripple-fg-radius-in variables.$translate-duration
+        animation: mdc-ripple-fg-radius-in ripple-theme.$translate-duration
             forwards,
-          mdc-ripple-fg-opacity-in variables.$fade-in-duration forwards;
+          mdc-ripple-fg-opacity-in ripple-theme.$fade-in-duration forwards;
       }
     }
   }
@@ -180,7 +177,7 @@
   &.mdc-ripple-upgraded--foreground-deactivation {
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-animation) {
-        animation: mdc-ripple-fg-opacity-out variables.$fade-out-duration;
+        animation: mdc-ripple-fg-opacity-out ripple-theme.$fade-out-duration;
       }
 
       @include feature-targeting.targets($feat-structure) {
@@ -273,5 +270,45 @@
     // Necessary for clicks on other inner elements (e.g. close icon in chip)
     // to go through.
     pointer-events: none;
+  }
+}
+
+@mixin keyframes_ {
+  @keyframes mdc-ripple-fg-radius-in {
+    from {
+      animation-timing-function: variables2.$standard-curve-timing-function;
+      // NOTE: For these keyframes, we do not need custom property fallbacks because they are only
+      // used in conjunction with `.mdc-ripple-upgraded`. Since MDCRippleFoundation checks to ensure
+      // that custom properties are supported within the browser before adding this class, we can
+      // safely use them without a fallback.
+      transform: translate(var(--mdc-ripple-fg-translate-start, 0)) scale(1);
+    }
+
+    to {
+      transform: translate(var(--mdc-ripple-fg-translate-end, 0))
+        scale(var(--mdc-ripple-fg-scale, 1));
+    }
+  }
+
+  @keyframes mdc-ripple-fg-opacity-in {
+    from {
+      animation-timing-function: linear;
+      opacity: 0;
+    }
+
+    to {
+      opacity: var(--mdc-ripple-fg-opacity, 0);
+    }
+  }
+
+  @keyframes mdc-ripple-fg-opacity-out {
+    from {
+      animation-timing-function: linear;
+      opacity: var(--mdc-ripple-fg-opacity, 0);
+    }
+
+    to {
+      opacity: 0;
+    }
   }
 }

@@ -27,10 +27,38 @@
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
-@use './functions';
-@use './keyframes';
-@use './variables';
 @use '@material/theme/theme-color';
+
+$fade-in-duration: 75ms !default;
+$fade-out-duration: 150ms !default;
+$translate-duration: 225ms !default;
+$states-wash-duration: 15ms !default;
+
+// Notes on states:
+// * focus takes precedence over hover (i.e. if an element is both focused and hovered, only focus value applies)
+// * press state applies to a separate pseudo-element, so it has an additive effect on top of other states
+// * selected/activated are applied additively to hover/focus via calculations at preprocessing time
+
+$dark-ink-opacities: (
+  hover: 0.04,
+  focus: 0.12,
+  press: 0.12,
+  selected: 0.08,
+  activated: 0.12,
+) !default;
+
+$light-ink-opacities: (
+  hover: 0.08,
+  focus: 0.24,
+  press: 0.24,
+  selected: 0.16,
+  activated: 0.24,
+) !default;
+
+// Legacy
+
+$pressed-dark-ink-opacity: 0.16 !default;
+$pressed-light-ink-opacity: 0.32 !default;
 
 @mixin states-base-color(
   $color,
@@ -179,14 +207,14 @@
     // Apply press additively by using the ::after pseudo-element
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-animation) {
-        transition: opacity variables.$fade-out-duration linear;
+        transition: opacity $fade-out-duration linear;
       }
     }
 
     &:active {
       #{$ripple-target}::after {
         @include feature-targeting.targets($feat-animation) {
-          transition-duration: variables.$fade-in-duration;
+          transition-duration: $fade-in-duration;
         }
 
         // Opacity falls under color because the chosen opacity is color-dependent in typical usage
@@ -229,7 +257,7 @@
   $ripple-target: '&'
 ) {
   $feat-color: feature-targeting.create-target($query, color);
-  $activated-opacity: functions.states-opacity($color, activated);
+  $activated-opacity: states-opacity($color, activated);
 
   &--activated {
     // Stylelint seems to think that '&' qualifies as a type selector here?
@@ -260,7 +288,7 @@
   $ripple-target: '&'
 ) {
   $feat-color: feature-targeting.create-target($query, color);
-  $selected-opacity: functions.states-opacity($color, selected);
+  $selected-opacity: states-opacity($color, selected);
 
   &--selected {
     // stylelint-disable-next-line selector-max-type
@@ -293,9 +321,9 @@
   }
 
   $opacity-map: (
-    hover: functions.states-opacity($color, hover) + $opacity-modifier,
-    focus: functions.states-opacity($color, focus) + $opacity-modifier,
-    press: functions.states-opacity($color, press) + $opacity-modifier,
+    hover: states-opacity($color, hover) + $opacity-modifier,
+    focus: states-opacity($color, focus) + $opacity-modifier,
+    press: states-opacity($color, press) + $opacity-modifier,
   );
 
   @include states-opacities(
@@ -315,4 +343,25 @@
       @content;
     }
   }
+}
+
+@function states-opacity($color, $state) {
+  $opacity-map: states-opacities_($color);
+
+  @if not map.has-key($opacity-map, $state) {
+    @error "Invalid state: '#{$state}'. Choose one of: #{map.keys($opacity-map)}";
+  }
+
+  @return map.get($opacity-map, $state);
+}
+
+@function states-opacities_($color) {
+  $color-value: theme-color.prop-value($color);
+  $opacity-map: if(
+    theme-color.tone($color-value) == 'light',
+    $light-ink-opacities,
+    $dark-ink-opacities
+  );
+
+  @return $opacity-map;
 }

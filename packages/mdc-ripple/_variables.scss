@@ -20,33 +20,5 @@
 // THE SOFTWARE.
 //
 
-$fade-in-duration: 75ms !default;
-$fade-out-duration: 150ms !default;
-$translate-duration: 225ms !default;
-$states-wash-duration: 15ms !default;
-
-// Notes on states:
-// * focus takes precedence over hover (i.e. if an element is both focused and hovered, only focus value applies)
-// * press state applies to a separate pseudo-element, so it has an additive effect on top of other states
-// * selected/activated are applied additively to hover/focus via calculations at preprocessing time
-
-$dark-ink-opacities: (
-  hover: 0.04,
-  focus: 0.12,
-  press: 0.12,
-  selected: 0.08,
-  activated: 0.12,
-) !default;
-
-$light-ink-opacities: (
-  hover: 0.08,
-  focus: 0.24,
-  press: 0.24,
-  selected: 0.16,
-  activated: 0.24,
-) !default;
-
-// Legacy
-
-$pressed-dark-ink-opacity: 0.16 !default;
-$pressed-light-ink-opacity: 0.32 !default;
+/// @deprecated Import '_ripple-theme.scss' instead.
+@forward './ripple-theme' show $fade-in-duration, $fade-out-duration, $translate-duration, $states-wash-duration, $dark-ink-opacities, $light-ink-opacities, $pressed-dark-ink-opacity, $pressed-light-ink-opacity;
