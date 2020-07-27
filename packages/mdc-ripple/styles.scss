@@ -20,5 +20,6 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Use 'styles.css' instead.
-@forward './styles';
+@use './mixins';
+@include mixins.common;
+@include mixins.core-styles;
