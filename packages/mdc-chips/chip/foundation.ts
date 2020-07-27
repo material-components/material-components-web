@@ -28,15 +28,6 @@ import {MDCChipTrailingActionNavigationEvent} from '../trailingaction/types';
 import {MDCChipAdapter} from './adapter';
 import {cssClasses, Direction, EventSource, jumpChipKeys, navigationKeys, strings} from './constants';
 
-const emptyClientRect = {
-  bottom: 0,
-  height: 0,
-  left: 0,
-  right: 0,
-  top: 0,
-  width: 0,
-};
-
 enum FocusBehavior {
   SHOULD_FOCUS,
   SHOULD_NOT_FOCUS,
