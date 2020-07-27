@@ -18,9 +18,11 @@
     },
     "dependencies": {
         "@material/base": "^7.0.0",
+        "@material/elevation": "^7.0.0",
         "@material/feature-targeting": "^7.0.0",
         "@material/ripple": "^7.0.0",
         "@material/theme": "^7.0.0",
+        "@material/touch-target": "7.0.0",
         "@material/typography": "^7.0.0"
     }
 }
