@@ -58,13 +58,13 @@ const setupTest = () => {
 };
 
 const setAllSelected = (els: NodeListOf<Element>) => {
-  els.forEach((el) => {
+  Array.from(els).forEach((el: Element) => {
     el.classList.add(testCssClasses.SELECTED);
   });
 }
 
 const setAllUnselected = (els: NodeListOf<Element>) => {
-  els.forEach((el) => {
+  Array.from(els).forEach((el: Element) => {
     el.classList.remove(testCssClasses.SELECTED);
   });
 }
@@ -288,7 +288,7 @@ describe('MDCSegmentedButton', () => {
     const segments = root.querySelectorAll(testSelectors.SEGMENT);
     const selectedSegment = segments[testIndices.SELECTED];
     selectedSegment.setAttribute(attributes.DATA_SEGMENT_ID, testSegmentIds.SELECTED_SEGMENT_ID);
-    
+
     setAllUnselected(segments);
     component.selectSegment(testIndices.SELECTED);
     expect(selectedSegment.classList.contains(testCssClasses.SELECTED)).toBeTrue();
