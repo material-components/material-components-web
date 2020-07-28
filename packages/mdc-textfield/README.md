@@ -60,8 +60,8 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 ```html
 <label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
-  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <span class="mdc-floating-label" id="my-label-id">Hint text</span>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <span class="mdc-line-ripple"></span>
 </label>
 ```
@@ -74,7 +74,6 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined">
-  <input type="text" class="mdc-text-field__input" aria-labelledby="my-label-id">
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__notch">
@@ -82,6 +81,7 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
     </span>
     <span class="mdc-notched-outline__trailing"></span>
   </span>
+  <input type="text" class="mdc-text-field__input" aria-labelledby="my-label-id">
 </label>
 ```
 
@@ -109,12 +109,12 @@ See [here](../mdc-notched-outline/) for more information on using the notched ou
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--no-label">
-  <span class="mdc-text-field__resizer">
-    <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
-  </span>
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__trailing"></span>
+  </span>
+  <span class="mdc-text-field__resizer">
+    <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
   </span>
 </label>
 ```
@@ -140,11 +140,11 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-  <input class="mdc-text-field__input" type="text" aria-label="Label">
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__trailing"></span>
   </span>
+  <input class="mdc-text-field__input" type="text" aria-label="Label">
 </label>
 ```
 
@@ -152,12 +152,12 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--no-label">
-  <span class="mdc-text-field__resizer">
-    <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
-  </span>
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__trailing"></span>
+  </span>
+  <span class="mdc-text-field__resizer">
+    <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
   </span>
 </label>
 ```
@@ -169,8 +169,8 @@ To disable the text field, add the `disabled` attribute to the `<input>` element
 ```html
 <label class="mdc-text-field mdc-text-field--filled mdc-text-field--disabled">
   <span class="mdc-text-field__ripple"></span>
-  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" disabled>
   <span class="mdc-floating-label" id="my-label-id">Disabled text field</span>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" disabled>
   <span class="mdc-line-ripple"></span>
 </label>
 ```
@@ -184,11 +184,11 @@ which is immediate sibling of `.mdc-text-field`. See [here](helper-text/) for mo
 ```html
 <label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
+  <span class="mdc-floating-label" id="my-label-id">My Label</span>
   <input class="mdc-text-field__input" type="text"
          aria-labelledby="my-label-id"
          aria-controls="my-helper-id"
          aria-describedby="my-helper-id">
-  <span class="mdc-floating-label" id="my-label-id">My Label</span>
   <span class="mdc-line-ripple"></span>
 </label>
 <div class="mdc-text-field-helper-line">
@@ -205,8 +205,8 @@ See [here](character-counter/) for more information on using character counter.
 ```html
 <label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
-  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" maxlength="10">
   <span class="mdc-floating-label" id="my-label-id">My Label</span>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" maxlength="10">
   <span class="mdc-line-ripple"></span>
 </label>
 <div class="mdc-text-field-helper-line">
@@ -222,16 +222,16 @@ to any helper text.
 
 ```html
 <label class="mdc-text-field mdc-text-field--textarea">
-  <span class="mdc-text-field__resizer">
-    <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8" 
-      cols="40" maxlength="140"></textarea>
-  </span>
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__notch">
       <span class="mdc-floating-label" id="my-label-id">Textarea Label</span>
     </span>
     <span class="mdc-notched-outline__trailing"></span>
+  </span>
+  <span class="mdc-text-field__resizer">
+    <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8"
+      cols="40" maxlength="140"></textarea>
   </span>
 </label>
 <div class="mdc-text-field-helper-line">
@@ -244,16 +244,16 @@ inserting the character counter below the textarea and adding the
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--with-internal-counter">
-  <span class="mdc-text-field__resizer">
-    <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8" cols="40" maxlength="140"></textarea>
-    <span class="mdc-text-field-character-counter">0 / 140</span>
-  </span>
   <span class="mdc-notched-outline">
     <span class="mdc-notched-outline__leading"></span>
     <span class="mdc-notched-outline__notch">
       <span class="mdc-floating-label" id="my-label-id">Textarea Label</span>
     </span>
     <span class="mdc-notched-outline__trailing"></span>
+  </span>
+  <span class="mdc-text-field__resizer">
+    <textarea class="mdc-text-field__input" aria-labelledby="my-label-id" rows="8" cols="40" maxlength="140"></textarea>
+    <span class="mdc-text-field-character-counter">0 / 140</span>
   </span>
 </label>
 ```
@@ -269,10 +269,10 @@ A prefix, suffix, or both can be added within the default or outlined variants o
 ```html
 <label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
+  <span class="mdc-floating-label" id="my-label-id">Currency Value</span>
   <span class="mdc-text-field__affix mdc-text-field__affix--prefix">$</span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <span class="mdc-text-field__affix mdc-text-field__affix--suffix">.00</span>
-  <span class="mdc-floating-label" id="my-label-id">Currency Value</span>
   <span class="mdc-line-ripple"></span>
 </label>
 ```
@@ -294,8 +294,8 @@ by HTML5's form validation API.
 ```html
 <label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
-  <input class="mdc-text-field__input" type="password" aria-labelledby="my-label-id" required minlength="8">
   <span class="mdc-floating-label" id="my-label-id">Password</span>
+  <input class="mdc-text-field__input" type="password" aria-labelledby="my-label-id" required minlength="8">
   <span class="mdc-line-ripple"></span>
 </label>
 ```
@@ -313,10 +313,10 @@ Un-styled Content (**FOUC**).
 ```html
 <label class="mdc-text-field mdc-text-field--filled mdc-text-field--label-floating">
   <span class="mdc-text-field__ripple"></span>
-  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" value="Pre-filled value">
   <span class="mdc-floating-label mdc-floating-label--float-above" id="my-label-id">
     Label in correct place
   </span>
+  <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id" value="Pre-filled value">
   <span class="mdc-line-ripple"></span>
 </label>
 ```
@@ -332,18 +332,22 @@ flexbox.
 ```html
 <div>
   <label class="mdc-text-field mdc-text-field--outlined">
+    <span class="mdc-notched-outline">
+      <span class="mdc-notched-outline__leading"></span>
+      <span class="mdc-notched-outline__trailing"></span>
+    </span>
     <input type="text" class="mdc-text-field__input" value="Baseline">
-    <span class="mdc-notched-outline__leading"></span>
-    <span class="mdc-notched-outline__trailing"></span>
   </label>
   <span>Text that is aligned with the text field's value</span>
 </div>
 
 <div style="display: flex; flex-direction: row; align-items: flex-end;">
   <label class="mdc-text-field mdc-text-field--outlined">
+    <span class="mdc-notched-outline">
+      <span class="mdc-notched-outline__leading"></span>
+      <span class="mdc-notched-outline__trailing"></span>
+    </span>
     <input type="text" class="mdc-text-field__input" value="Baseline">
-    <span class="mdc-notched-outline__leading"></span>
-    <span class="mdc-notched-outline__trailing"></span>
   </label>
   <span>Text that is aligned to the bottom of the text field's outline</span>
 </div>

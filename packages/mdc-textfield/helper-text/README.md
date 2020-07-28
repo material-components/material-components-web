@@ -47,12 +47,13 @@ the input element.
 
 ```html
 <label class="mdc-text-field mdc-text-field--filled">
+  <span class="mdc-text-field__ripple"></span>
+  <span class="mdc-floating-label" id="my-label-id">Username</span>
   <input class="mdc-text-field__input" type="text"
          aria-labelledby="my-label-id"
          aria-controls="username-helper-text"
          aria-describedby="username-helper-text">
-  <span class="mdc-floating-label" id="my-label-id">Username</span>
-  <div class="mdc-line-ripple"></div>
+  <span class="mdc-line-ripple"></span>
 </label>
 <div class="mdc-text-field-helper-line">
   <div id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">
