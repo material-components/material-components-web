@@ -20,4 +20,5 @@
 // THE SOFTWARE.
 //
 
-$include: true !default;
+/// @deprecated Import '_rtl.scss' module instead.
+@forward './rtl' show $include;
