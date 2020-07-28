@@ -37,9 +37,9 @@ const getFixture = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
     <label class="mdc-text-field mdc-text-field--filled mdc-text-field--with-leading-icon">
+      <span class="mdc-floating-label" id="my-label">My Label</span>
       <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
       <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
-      <span class="mdc-floating-label" id="my-label">My Label</span>
       <span class="mdc-line-ripple"></span>
     </label>
   `;
@@ -76,9 +76,9 @@ const getFixtureWithPrefix = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
     <label class="mdc-text-field mdc-text-field--filled">
+      <span class="mdc-floating-label" id="my-label">My Label</span>
       <span class="mdc-text-field__affix mdc-text-field__affix--prefix">$</span>
       <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
-      <span class="mdc-floating-label" id="my-label">My Label</span>
       <span class="mdc-line-ripple"></span>
     </label>
   `;
@@ -91,9 +91,9 @@ const getFixtureWithSuffix = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
     <label class="mdc-text-field mdc-text-field--filled">
+      <span class="mdc-floating-label" id="my-label">My Label</span>
       <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
       <span class="mdc-text-field__affix mdc-text-field__affix--suffix">/100</span>
-      <span class="mdc-floating-label" id="my-label">My Label</span>
       <span class="mdc-line-ripple"></span>
     </label>
   `;

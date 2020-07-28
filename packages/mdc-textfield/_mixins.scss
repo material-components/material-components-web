@@ -125,6 +125,10 @@
 
   .mdc-text-field--outlined {
     @include outlined_($query);
+
+    .mdc-notched-outline {
+      @include _outlined-notched-outline($query);
+    }
   }
 
   // Other Variations
@@ -1573,6 +1577,18 @@
         notched-outline-variables.$padding
       );
     }
+  }
+}
+
+@mixin _outlined-notched-outline($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    // Force the outline to appear "above" the textfield elements, even though
+    // it is absolutely positioned and comes before the input in the DOM. This
+    // is primarily for the textarea scrollbar and resize elements, which may
+    // clip with with outline border.
+    z-index: 1;
   }
 }
 
