@@ -150,9 +150,11 @@ $_track-inactive-height: 4px;
       height: 100%;
       width: 100%;
       position: relative;
+      /* @noflip */
       transform-origin: left;
 
       @include rtl-mixins.rtl {
+        /* @noflip */
         transform-origin: right;
       }
     }
@@ -222,6 +224,7 @@ $_track-inactive-height: 4px;
       border-radius: 50%;
       box-sizing: border-box;
       height: $_thumb-size;
+      /* @noflip */
       left: 50%;
       position: absolute;
       top: 50%;
