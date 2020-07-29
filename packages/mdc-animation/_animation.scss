@@ -20,5 +20,23 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import '_animation.scss' instead.
-@forward './animation' show enter, exit-permanent, exit-temporary, standard;
+$deceleration-curve-timing-function: cubic-bezier(0, 0, 0.2, 1) !default;
+$standard-curve-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !default;
+$acceleration-curve-timing-function: cubic-bezier(0.4, 0, 1, 1) !default;
+$sharp-curve-timing-function: cubic-bezier(0.4, 0, 0.6, 1) !default;
+
+@function enter($name, $duration, $delay: 0ms) {
+  @return $name $duration $delay $deceleration-curve-timing-function;
+}
+
+@function exit-permanent($name, $duration, $delay: 0ms) {
+  @return $name $duration $delay $acceleration-curve-timing-function;
+}
+
+@function exit-temporary($name, $duration, $delay: 0ms) {
+  @return $name $duration $delay $sharp-curve-timing-function;
+}
+
+@function standard($name, $duration, $delay: 0ms) {
+  @return $name $duration $delay $standard-curve-timing-function;
+}

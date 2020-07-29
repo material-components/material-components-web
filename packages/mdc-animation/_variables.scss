@@ -20,7 +20,5 @@
 // THE SOFTWARE.
 //
 
-$deceleration-curve-timing-function: cubic-bezier(0, 0, 0.2, 1) !default;
-$standard-curve-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !default;
-$acceleration-curve-timing-function: cubic-bezier(0.4, 0, 1, 1) !default;
-$sharp-curve-timing-function: cubic-bezier(0.4, 0, 0.6, 1) !default;
+/// @deprecation Import '_animation.scss' instead.
+@forward './animation' show $deceleration-curve-timing-function, $standard-curve-timing-function, $acceleration-curve-timing-function, $sharp-curve-timing-function;
