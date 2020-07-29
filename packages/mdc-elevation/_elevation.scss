@@ -1,0 +1,91 @@
+//
+// Copyright 2017 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/theme/custom-properties';
+@use '@material/base/mixins' as base-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use './functions';
+@use './variables';
+@use './elevation-theme';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @for $z-value from 0 through 24 {
+    .mdc-elevation--z#{$z-value} {
+      @include elevation-theme.elevation($z-value, $query: $query);
+    }
+  }
+
+  .mdc-elevation-transition {
+    @include feature-targeting.targets($feat-animation) {
+      transition: functions.transition-value();
+    }
+
+    @include feature-targeting.targets($feat-structure) {
+      will-change: variables.$property;
+    }
+  }
+}
+
+///
+/// Called once per application to set up the global default elevation styles.
+///
+@mixin overlay-common($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-elevation-overlay {
+    @include feature-targeting.targets($feat-structure) {
+      @include base-mixins.emit-once('mdc-elevation/common/structure') {
+        position: absolute;
+        border-radius: inherit;
+        pointer-events: none;
+
+        @include theme.property(
+          opacity,
+          custom-properties.create(--mdc-elevation-overlay-opacity, 0)
+        );
+      }
+    }
+
+    @include feature-targeting.targets($feat-animation) {
+      @include base-mixins.emit-once('mdc-elevation/common/animation') {
+        transition: functions.overlay-transition-value();
+      }
+    }
+
+    @include base-mixins.emit-once('mdc-elevation/common/color') {
+      $fill-color: custom-properties.create(
+        --mdc-elevation-overlay-color,
+        variables.$overlay-color
+      );
+      @include elevation-theme.overlay-fill-color($fill-color, $query: $query);
+    }
+  }
+}

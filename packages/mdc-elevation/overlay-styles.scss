@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use './mixins';
-@include mixins.overlay-common;
+@use './elevation';
+@include elevation.overlay-common;
