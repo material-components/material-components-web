@@ -26,7 +26,7 @@
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/animation/variables' as animation-variables;
 @use '@material/rtl/mixins' as rtl-mixins;
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use './mixins';
 @use './variables';
 
@@ -72,7 +72,7 @@
   }
 
   &__title {
-    @include typography-mixins.typography(headline6);
+    @include typography.typography(headline6);
     @include rtl-mixins.reflexive-box(
       padding,
       left,

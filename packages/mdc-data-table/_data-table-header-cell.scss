@@ -31,7 +31,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/icon-button/mixins' as icon-button-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use './data-table-theme';
 @use './data-table-cell';
 
@@ -40,7 +40,7 @@
   $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-data-table__header-cell {
-    @include typography-mixins.typography(subtitle2, $query: $query);
+    @include typography.typography(subtitle2, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       box-sizing: border-box;

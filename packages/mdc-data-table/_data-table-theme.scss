@@ -36,7 +36,7 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
 @use '@material/theme/theme';
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use '@material/theme/theme-color';
 @use '@material/density/variables' as density-variables;
 @use '@material/select/mixins' as select-theme;

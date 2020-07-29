@@ -25,7 +25,7 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/animation/functions' as animation-functions;
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use './tooltip-theme';
 
 $_padding-x: 4px;
@@ -72,7 +72,7 @@ $exit-duration: 75ms;
   }
 
   .mdc-tooltip__surface {
-    @include typography-mixins.typography($_label-type-scale, $query: $query);
+    @include typography.typography($_label-type-scale, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       padding: $_padding-x $_padding-y;

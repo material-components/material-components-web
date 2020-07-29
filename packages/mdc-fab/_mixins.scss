@@ -32,7 +32,7 @@
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
 @use '@material/touch-target/mixins' as touch-target-mixins;
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use './variables';
 
 $ripple-target: '.mdc-fab__ripple';
@@ -436,7 +436,7 @@ $icon-enter-duration_: 180ms;
 }
 
 @mixin extended_($query: feature-targeting.all()) {
-  @include typography-mixins.typography(button, $query: $query);
+  @include typography.typography(button, $query: $query);
   @include extended-shape-radius(variables.$shape-radius, $query: $query);
   @include extended-padding(
     variables.$extended-icon-padding,

@@ -26,7 +26,7 @@
 @use '@material/theme/theme';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 
 // Public mixins
 
@@ -36,8 +36,8 @@
   // postcss-bem-linter: define text-field-character-counter
 
   .mdc-text-field-character-counter {
-    @include typography-mixins.typography(caption, $query: $query);
-    @include typography-mixins.text-baseline($top: 16px, $query: $query);
+    @include typography.typography(caption, $query: $query);
+    @include typography.text-baseline($top: 16px, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       // Keep flex item align to trailing side on absence of helper text.

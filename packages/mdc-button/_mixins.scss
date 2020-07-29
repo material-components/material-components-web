@@ -32,7 +32,7 @@
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
 @use '@material/touch-target/mixins' as touch-target-mixins;
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
 @use '@material/density/functions' as density-functions;
@@ -421,7 +421,7 @@ $ripple-target: '.mdc-button__ripple';
 ///
 @mixin label-overflow-ellipsis($query: feature-targeting.all()) {
   .mdc-button__label {
-    @include typography-mixins.overflow-ellipsis($query: $query);
+    @include typography.overflow-ellipsis($query: $query);
   }
 }
 
@@ -429,7 +429,7 @@ $ripple-target: '.mdc-button__ripple';
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include typography-mixins.typography(button, $query);
+  @include typography.typography(button, $query);
   @include horizontal-padding(variables.$horizontal-padding, $query);
   @include elevation-mixins.overlay-surface-position($query: $query);
   @include elevation-mixins.overlay-dimensions(100%, $query: $query);

@@ -22,7 +22,7 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
 @use '@material/theme/theme';
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
@@ -96,8 +96,8 @@
   }
 
   .mdc-image-list__label {
-    @include typography-mixins.typography(subtitle1, $query: $query);
-    @include typography-mixins.overflow-ellipsis($query: $query);
+    @include typography.typography(subtitle1, $query: $query);
+    @include typography.overflow-ellipsis($query: $query);
   }
 
   // Modifier for labels/icons with text protection, overlaying images.

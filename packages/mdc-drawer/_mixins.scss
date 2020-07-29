@@ -29,8 +29,7 @@
 @use '@material/animation/functions' as functions2;
 @use '@material/animation/variables' as animation-variables;
 @use '@material/rtl/mixins' as rtl-mixins;
-@use '@material/typography/mixins' as typography-mixins;
-@use '@material/typography/variables' as variables2;
+@use '@material/typography/typography';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/list/mixins' as list-mixins;
@@ -155,8 +154,8 @@
   }
 
   .mdc-drawer__title {
-    @include typography-mixins.typography(headline6, $query: $query);
-    @include typography-mixins.text-baseline(
+    @include typography.typography(headline6, $query: $query);
+    @include typography.text-baseline(
       $top: 36px,
       $bottom: 20px,
       $query: $query
@@ -164,8 +163,8 @@
   }
 
   .mdc-drawer__subtitle {
-    @include typography-mixins.typography(body2, $query: $query);
-    @include typography-mixins.text-baseline($top: 20px, $query: $query);
+    @include typography.typography(body2, $query: $query);
+    @include typography.text-baseline($top: 20px, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       margin-bottom: 0;
@@ -456,7 +455,7 @@
 
   // postcss-bem-linter: ignore
   .mdc-list-item {
-    @include typography-mixins.typography(subtitle2, $query: $query);
+    @include typography.typography(subtitle2, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       height: calc(48px - 2 * #{variables.$list-item-spacing});
@@ -482,8 +481,8 @@
 
   // postcss-bem-linter: ignore
   .mdc-list-group__subheader {
-    @include typography-mixins.typography(body2, $query: $query);
-    @include typography-mixins.text-baseline($top: 24px, $query: $query);
+    @include typography.typography(body2, $query: $query);
+    @include typography.text-baseline($top: 24px, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       margin: 0;

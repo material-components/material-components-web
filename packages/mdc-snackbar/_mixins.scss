@@ -26,7 +26,7 @@
 @use '@material/icon-button/mixins' as icon-button-mixins;
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
@@ -132,10 +132,7 @@
   }
 
   .mdc-snackbar__label {
-    @include typography-mixins.typography(
-      variables.$label-type-scale,
-      $query: $query
-    );
+    @include typography.typography(variables.$label-type-scale, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(padding, 16px, variables.$padding);

@@ -25,7 +25,7 @@
 
 @use '../functions';
 @use '@material/theme/theme';
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use '@material/feature-targeting/feature-targeting';
 // Public mixins
 
@@ -36,8 +36,8 @@
   // postcss-bem-linter: define text-field-helper-text
 
   .mdc-text-field-helper-text {
-    @include typography-mixins.typography(caption, $query: $query);
-    @include typography-mixins.text-baseline($top: 16px, $query: $query);
+    @include typography.typography(caption, $query: $query);
+    @include typography.text-baseline($top: 16px, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       margin: 0;

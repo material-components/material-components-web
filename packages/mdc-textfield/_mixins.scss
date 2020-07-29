@@ -38,7 +38,7 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use 'helper-text/mixins' as helper-text-mixins;
 @use 'character-counter/mixins' as character-counter-mixins;
 @use 'icon/mixins' as icon-mixins;
@@ -1469,7 +1469,7 @@
   );
 
   @include height(variables.$height, $query: $query);
-  @include typography-mixins.baseline-top(
+  @include typography.baseline-top(
     variables.$filled-baseline-top,
     $query: $query
   );
@@ -2047,7 +2047,7 @@
 @mixin _textarea-internal-counter($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include typography-mixins.baseline-bottom(
+  @include typography.baseline-bottom(
     variables.$textarea-internal-counter-baseline-bottom,
     $query: $query
   );
@@ -2171,7 +2171,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   // Exclude setting line-height to keep caret (text cursor) same height as the input text in iOS browser.
-  @include typography-mixins.typography(
+  @include typography.typography(
     subtitle1,
     $exclude-props: (line-height),
     $query: $query

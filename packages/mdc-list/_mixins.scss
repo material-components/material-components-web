@@ -28,8 +28,7 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/typography/mixins' as typography-mixins;
-@use '@material/typography/variables' as typography-variables;
+@use '@material/typography/typography';
 @use '@material/feature-targeting/feature-targeting';
 @use './variables';
 @use '@material/theme/theme-color';
@@ -222,7 +221,7 @@
   .mdc-list-item__meta {
     // stylelint-disable selector-class-pattern
     &:not(.material-icons) {
-      @include typography-mixins.typography(caption, $query);
+      @include typography.typography(caption, $query);
     }
     // stylelint-enable selector-class-pattern
 
@@ -232,7 +231,7 @@
   }
 
   .mdc-list-item__text {
-    @include typography-mixins.overflow-ellipsis($query);
+    @include typography.overflow-ellipsis($query);
   }
 
   // Disable interaction on label elements that may automatically
@@ -244,8 +243,8 @@
   }
 
   .mdc-list-item__primary-text {
-    @include typography-mixins.overflow-ellipsis($query);
-    @include typography-mixins.text-baseline(
+    @include typography.overflow-ellipsis($query);
+    @include typography.text-baseline(
       $top: variables.$item-primary-text-baseline-height,
       $bottom: variables.$item-secondary-text-baseline-height,
       $display: block,
@@ -257,7 +256,7 @@
     .mdc-list--thumbnail-list &,
     .mdc-list--avatar-list &,
     .mdc-list--icon-list & {
-      @include typography-mixins.text-baseline(
+      @include typography.text-baseline(
         $top: variables.$item-primary-text-baseline-height-with-graphic,
         $bottom: variables.$item-secondary-text-baseline-height,
         $query: $query
@@ -266,7 +265,7 @@
 
     // stylelint-disable plugin/selector-bem-pattern
     .mdc-list--dense & {
-      @include typography-mixins.text-baseline(
+      @include typography.text-baseline(
         $top: variables.$dense-item-primary-text-baseline-height,
         $bottom: variables.$item-secondary-text-baseline-height,
         $query: $query
@@ -276,9 +275,9 @@
   }
 
   .mdc-list-item__secondary-text {
-    @include typography-mixins.typography(body2, $query);
-    @include typography-mixins.overflow-ellipsis($query);
-    @include typography-mixins.text-baseline(
+    @include typography.typography(body2, $query);
+    @include typography.overflow-ellipsis($query);
+    @include typography.text-baseline(
       $top: variables.$item-secondary-text-baseline-height,
       $display: block,
       $query: $query
@@ -458,7 +457,7 @@
   .mdc-list-group__subheader {
     $mdc-list-subheader-virtual-height: 3rem;
     $mdc-list-subheader-leading: map.get(
-      map.get(typography-variables.$styles, body1),
+      map.get(typography.$styles, body1),
       line-height
     );
     $mdc-list-subheader-margin: calc(
@@ -466,7 +465,7 @@
         2
     );
 
-    @include typography-mixins.typography(subtitle1, $query);
+    @include typography.typography(subtitle1, $query);
 
     @include feature-targeting.targets($feat-structure) {
       margin: $mdc-list-subheader-margin variables.$side-padding;
@@ -959,16 +958,13 @@
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
 
-  @include typography-mixins.typography(subtitle1, $query);
+  @include typography.typography(subtitle1, $query);
 
   @include feature-targeting.targets($feat-typography) {
     // According to the mocks and stickersheet, the line-height is
     // adjusted to 24px for text content, same as for body1.
     /* @alternate */
-    line-height: map.get(
-      map.get(typography-variables.$styles, body1),
-      line-height
-    );
+    line-height: map.get(map.get(typography.$styles, body1), line-height);
   }
 
   @include feature-targeting.targets($feat-structure) {

@@ -29,7 +29,7 @@
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/theme/theme-color';
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use './slider-theme';
 
 // Thumb variables.
@@ -351,7 +351,7 @@ $_track-inactive-height: 4px;
   }
 
   .mdc-slider__value-indicator-text {
-    @include typography-mixins.typography(subtitle2, $query);
+    @include typography.typography(subtitle2, $query);
   }
 
   @include slider-theme.value-indicator-color(
