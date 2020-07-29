@@ -20,28 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use 'sass:map';
-@use 'sass:string';
-
-@function set-styles_($base-styles, $scale-styles, $override-styles) {
-  @each $style, $style-props in $scale-styles {
-    // Merge base properties for all styles.
-    $style-props: map.merge($base-styles, $style-props);
-
-    // Merge overrides onto each style.
-    $style-props: map.merge($style-props, map.get($override-styles, $style));
-
-    // Override original styles with new styles.
-    $scale-styles: map.merge($scale-styles, (#{$style}: $style-props));
-  }
-
-  @return $scale-styles;
-}
-
-@function get-letter-spacing_($tracking, $font-size) {
-  @return $tracking / ($font-size * 16) * 1em;
-}
-
-@function pxToRem($px) {
-  @return #{$px / 16px}rem;
-}
+/// @deprecated Import '_typography.scss' instead.
+@forward './typography' show set-styles_, get-letter-spacing_, pxToRem;
