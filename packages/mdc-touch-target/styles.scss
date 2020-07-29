@@ -20,5 +20,6 @@
 // THE SOFTWARE.
 //
 
-@use './mixins';
-@include mixins.wrapper;
+@use './touch-target';
+
+@include touch-target.wrapper;
