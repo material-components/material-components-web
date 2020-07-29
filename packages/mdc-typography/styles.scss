@@ -20,4 +20,5 @@
 // THE SOFTWARE.
 //
 
-@forward './styles';
+@use './mixins';
+@include mixins.core-styles;
