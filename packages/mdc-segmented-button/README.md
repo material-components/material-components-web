@@ -17,14 +17,14 @@ npm install @material/segmented-button
 ```html
 <div class="mdc-segmented-button" role="group">
   <button class="mdc-segmented-button__segment" aria-pressed="false">
-      <i class="material-icons mdc-segmented-button__icon">favorite</i>
+    <i class="material-icons mdc-segmented-button__icon">favorite</i>
   </button>
   <button class="mdc-segmented-button__segment" aria-pressed="false">
-      <div class="mdc-segmented-button__label">Sample Text</div>
+    <div class="mdc-segmented-button__label">Sample Text</div>
   </button>
   <button class="mdc-segmented-button__segment" aria-pressed="false">
-      <i class="material-icons mdc-segmented-button__icon">favorite</i>
-      <div class="mdc-segmented-button__label">Sample Text</div>
+    <i class="material-icons mdc-segmented-button__icon">favorite</i>
+    <div class="mdc-segmented-button__label">Sample Text</div>
   </button>
 </div>
 ```
@@ -74,14 +74,14 @@ For accessibility, the segments are treated as toggle buttons. The segmented but
 ```html
 <div class="mdc-segmented-button" role="group">
   <button class="mdc-segmented-button__segment" aria-pressed="false">
-      <i class="material-icons mdc-segmented-button__icon">favorite</i>
+    <i class="material-icons mdc-segmented-button__icon">favorite</i>
   </button>
   <button class="mdc-segmented-button__segment" aria-pressed="false">
-      <div class="mdc-segmented-button__label">Sample Text</div>
+    <div class="mdc-segmented-button__label">Sample Text</div>
   </button>
   <button class="mdc-segmented-button__segment" aria-pressed="false">
-      <i class="material-icons mdc-segmented-button__icon">favorite</i>
-      <div class="mdc-segmented-button__label">Sample Text</div>
+    <i class="material-icons mdc-segmented-button__icon">favorite</i>
+    <div class="mdc-segmented-button__label">Sample Text</div>
   </button>
 </div>
 ```
@@ -95,14 +95,14 @@ For accessibility, the segments are treated as radio buttons. The segmented butt
 ```html
 <div class="mdc-segmented-button mdc-segmented-button--single-select" role="radiogroup">
   <button class="mdc-segmented-button__segment" role="radio" aria-checked="false">
-      <i class="material-icons mdc-segmented-button__icon">favorite</i>
+    <i class="material-icons mdc-segmented-button__icon">favorite</i>
   </button>
   <button class="mdc-segmented-button__segment" role="radio" aria-checked="false">
-      <div class="mdc-segmented-button__label">Sample Text</div>
+    <div class="mdc-segmented-button__label">Sample Text</div>
   </button>
   <button class="mdc-segmented-button__segment" role="radio" aria-checked="false">
-      <i class="material-icons mdc-segmented-button__icon">favorite</i>
-      <div class="mdc-segmented-button__label">Sample Text</div>
+    <i class="material-icons mdc-segmented-button__icon">favorite</i>
+    <div class="mdc-segmented-button__label">Sample Text</div>
   </button>
 </div>
 ```
