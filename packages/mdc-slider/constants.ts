@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,32 +21,51 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
-  ACTIVE: 'mdc-slider--active',
+/** Slider element classes. */
+export const cssClasses = {
   DISABLED: 'mdc-slider--disabled',
   DISCRETE: 'mdc-slider--discrete',
-  FOCUS: 'mdc-slider--focus',
-  HAS_TRACK_MARKER: 'mdc-slider--display-markers',
-  IN_TRANSIT: 'mdc-slider--in-transit',
-  IS_DISCRETE: 'mdc-slider--discrete',
+  RANGE: 'mdc-slider--range',
+  THUMB: 'mdc-slider__thumb',
+  THUMB_KNOB: 'mdc-slider__thumb-knob',
+  // Class added to the top thumb (for overlapping thumbs in range slider).
+  THUMB_TOP: 'mdc-slider__thumb--top',
+  THUMB_WITH_INDICATOR: 'mdc-slider__thumb--with-indicator',
+  TICK_MARKS: 'mdc-slider--tick-marks',
+  TICK_MARKS_CONTAINER: 'mdc-slider__tick-marks',
+  TICK_MARK_ACTIVE: 'mdc-slider__tick-mark--active',
+  TICK_MARK_INACTIVE: 'mdc-slider__tick-mark--inactive',
+  TRACK: 'mdc-slider__track',
+  // The active track fill element that will be scaled as the value changes.
+  TRACK_ACTIVE: 'mdc-slider__track--active_fill',
+  VALUE_INDICATOR_TEXT: 'mdc-slider__value-indicator-text',
 };
 
-const strings = {
+/** Slider numbers. */
+export const numbers = {
+  // Default factor to multiply `step` by for big step value, if
+  // `DATA_ATTR_BIG_STEP` is not set.
+  BIG_STEP_FACTOR: 4,
+  // Minimum absolute difference between clientX of move event / down event
+  // for which to update thumb, in the case of overlapping thumbs.
+  // This is needed to reduce chances of choosing the thumb based on
+  // pointer jitter.
+  THUMB_UPDATE_MIN_PX: 5,
+};
+
+/** Slider attributes. */
+export const attributes = {
   ARIA_DISABLED: 'aria-disabled',
   ARIA_VALUEMAX: 'aria-valuemax',
   ARIA_VALUEMIN: 'aria-valuemin',
   ARIA_VALUENOW: 'aria-valuenow',
-  CHANGE_EVENT: 'MDCSlider:change',
-  INPUT_EVENT: 'MDCSlider:input',
-  PIN_VALUE_MARKER_SELECTOR: '.mdc-slider__pin-value-marker',
-  STEP_DATA_ATTR: 'data-step',
-  THUMB_CONTAINER_SELECTOR: '.mdc-slider__thumb-container',
-  TRACK_MARKER_CONTAINER_SELECTOR: '.mdc-slider__track-marker-container',
-  TRACK_SELECTOR: '.mdc-slider__track',
+  // Step value to increment/decrement by for PAGE_UP or PAGE_DOWN keypresses.
+  DATA_ATTR_BIG_STEP: 'data-big-step',
+  DATA_ATTR_STEP: 'data-step',
 };
 
-const numbers = {
-  PAGE_FACTOR: 4,
+/** Slider events. */
+export const events = {
+  CHANGE: 'MDCSlider:change',
+  INPUT: 'MDCSlider:input',
 };
-
-export {cssClasses, strings, numbers};

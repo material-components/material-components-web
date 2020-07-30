@@ -20,10 +20,13 @@
 // THE SOFTWARE.
 //
 
-@use "@material/theme/mixins";
-@use "@material/theme/variables";
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
 
-$ink-color: rgba(variables.prop-value(on-surface), variables.text-emphasis(high)) !default;
+$ink-color: rgba(
+  theme-color.prop-value(on-surface),
+  theme-color.text-emphasis(high)
+) !default;
 
 $width-base: 56px !default;
 $min-width: 2 * $width-base !default;

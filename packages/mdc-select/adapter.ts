@@ -57,11 +57,6 @@ export interface MDCSelectAdapter {
   deactivateBottomLine(): void;
 
   /**
-   * Returns the selected menu item element.
-   */
-  getSelectedMenuItem(): Element | null;
-
-  /**
    * Returns true if label exists, false if it doesn't.
    */
   hasLabel(): boolean;
@@ -75,6 +70,11 @@ export interface MDCSelectAdapter {
    * Returns width of label in pixels, if the label exists.
    */
   getLabelWidth(): number;
+
+  /**
+   * Styles the label as required, if the label exists.
+   */
+  setLabelRequired(isRequired: boolean): void;
 
   /**
    * Returns true if outline element exists, false if it doesn't.
@@ -107,21 +107,36 @@ export interface MDCSelectAdapter {
   setSelectedText(text: string): void;
 
   /**
-   * Returns whether the selected text element is focused.
+   * Returns whether the select anchor is focused.
    */
-  isSelectedTextFocused(): boolean;
+  isSelectAnchorFocused(): boolean;
 
   /**
-   * Gets the given attribute on the selected text element.
+   * Gets the given attribute on the select anchor element.
    */
-  getSelectedTextAttr(attr: string): string | null;
+  getSelectAnchorAttr(attr: string): string|null;
 
   /**
-   * Sets the given attribute on the selected text element.
+   * Sets the given attribute on the select anchor element.
    */
-  setSelectedTextAttr(attr: string, value: string): void;
+  setSelectAnchorAttr(attr: string, value: string): void;
+
+  /**
+   * Removes the given attribute on the select anchor element.
+   */
+  removeSelectAnchorAttr(attr: string): void;
 
   // Menu-related methods ======================================================
+  /**
+   * Adds class to the menu element.
+   */
+  addMenuClass(className: string): void;
+
+  /**
+   * Removes a class from the menu element.
+   */
+  removeMenuClass(className: string): void;
+
   /**
    * Opens the menu.
    */
@@ -153,16 +168,6 @@ export interface MDCSelectAdapter {
   setMenuWrapFocus(wrapFocus: boolean): void;
 
   /**
-   * Sets the attribute on the menu item at the given index.
-   */
-  setAttributeAtIndex(index: number, attributeName: string, attributeValue: string): void;
-
-  /**
-   * Removes the attribute on the menu item at the given index.
-   */
-  removeAttributeAtIndex(index: number, attributeName: string): void;
-
-  /**
    * Focuses the menu item element at the given index.
    */
   focusMenuItemAtIndex(index: number): void;
@@ -183,17 +188,23 @@ export interface MDCSelectAdapter {
   getMenuItemTextAtIndex(index: number): string;
 
   /**
-   * Returns the given attribute on the the menu item element.
+   * Returns the selected index.
    */
-  getMenuItemAttr(menuItem: Element, attr: string): string | null;
+  getSelectedIndex(): number;
 
   /**
-   * Adds the class name on the menu item at the given index.
+   * Sets the selected index in the menu.
    */
-  addClassAtIndex(index: number, className: string): void;
+  setSelectedIndex(index: number): void;
 
   /**
-   * Removes the class name on the menu item at the given index.
+   * Returns whether typeahead is in progress in the menu.
    */
-  removeClassAtIndex(index: number, className: string): void;
+  isTypeaheadInProgress(): boolean;
+
+  /**
+   * Adds a character to the list typeahead buffer and returns index of the
+   * next item in the list matching the buffer.
+   */
+  typeaheadMatchItem(nextChar: string, startingIndex: number): number;
 }

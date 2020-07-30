@@ -565,7 +565,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-Please put this in a comment at the top of every source file, replacing <YEAR> with the year the file was created.
+Please put this in a comment at the top of every source file, replacing `<YEAR>` with the year the file was created.
 
 ### Scss
 

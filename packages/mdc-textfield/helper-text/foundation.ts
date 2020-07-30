@@ -58,7 +58,7 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
    * Sets the content of the helper text field.
    */
   setContent(content: string) {
-    this.adapter_.setContent(content);
+    this.adapter.setContent(content);
   }
 
   /**
@@ -66,9 +66,9 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
    */
   setPersistent(isPersistent: boolean) {
     if (isPersistent) {
-      this.adapter_.addClass(cssClasses.HELPER_TEXT_PERSISTENT);
+      this.adapter.addClass(cssClasses.HELPER_TEXT_PERSISTENT);
     } else {
-      this.adapter_.removeClass(cssClasses.HELPER_TEXT_PERSISTENT);
+      this.adapter.removeClass(cssClasses.HELPER_TEXT_PERSISTENT);
     }
   }
 
@@ -77,9 +77,9 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
    */
   setValidation(isValidation: boolean) {
     if (isValidation) {
-      this.adapter_.addClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+      this.adapter.addClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     } else {
-      this.adapter_.removeClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+      this.adapter.removeClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     }
   }
 
@@ -87,21 +87,21 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
    * Makes the helper text visible to the screen reader.
    */
   showToScreenReader() {
-    this.adapter_.removeAttr(strings.ARIA_HIDDEN);
+    this.adapter.removeAttr(strings.ARIA_HIDDEN);
   }
 
   /**
    * Sets the validity of the helper text based on the input validity.
    */
   setValidity(inputIsValid: boolean) {
-    const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
-    const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+    const helperTextIsPersistent = this.adapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
+    const helperTextIsValidationMsg = this.adapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
 
     if (validationMsgNeedsDisplay) {
-      this.adapter_.setAttr(strings.ROLE, 'alert');
+      this.adapter.setAttr(strings.ROLE, 'alert');
     } else {
-      this.adapter_.removeAttr(strings.ROLE);
+      this.adapter.removeAttr(strings.ROLE);
     }
 
     if (!helperTextIsPersistent && !validationMsgNeedsDisplay) {
@@ -113,7 +113,7 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
    * Hides the help text from screen readers.
    */
   private hide_() {
-    this.adapter_.setAttr(strings.ARIA_HIDDEN, 'true');
+    this.adapter.setAttr(strings.ARIA_HIDDEN, 'true');
   }
 }
 

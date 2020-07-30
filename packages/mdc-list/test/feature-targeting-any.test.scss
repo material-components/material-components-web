@@ -1,5 +1,5 @@
-@use "../mixins" as list;
-@use "@material/feature-targeting/functions" as feature;
+@use '../mixins' as list;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {
@@ -9,7 +9,12 @@
     @include list.item-graphic-fill-color(red, $query: $query);
     @include list.item-graphic-ink-color(red, $query: $query);
     @include list.item-meta-ink-color(red, $query: $query);
-    @include list.single-line-shape-radius(42, $rtl-reflexive: false, $density-scale: 0, $query: $query);
+    @include list.single-line-shape-radius(
+      42,
+      $rtl-reflexive: false,
+      $density-scale: 0,
+      $query: $query
+    );
     @include list.single-line-height(0, $query: $query);
     @include list.single-line-density(0, $query: $query);
     @include list.divider-color(red, $query: $query);
@@ -20,4 +25,4 @@
 }
 
 // This shouldn't output any CSS.
-@include test(feature.any());
+@include test(feature-targeting.any());

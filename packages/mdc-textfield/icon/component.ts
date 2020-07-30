@@ -32,8 +32,9 @@ export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
     return new MDCTextFieldIcon(root);
   }
 
-  get foundation(): MDCTextFieldIconFoundation {
-    return this.foundation_;
+  // Provided for access by MDCTextField component
+  get foundationForTextField(): MDCTextFieldIconFoundation {
+    return this.foundation;
   }
 
   getDefaultFoundation() {
@@ -41,11 +42,11 @@ export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTextFieldIconAdapter = {
-      getAttr: (attr) => this.root_.getAttribute(attr),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      removeAttr: (attr) => this.root_.removeAttribute(attr),
+      getAttr: (attr) => this.root.getAttribute(attr),
+      setAttr: (attr, value) => this.root.setAttribute(attr, value),
+      removeAttr: (attr) => this.root.removeAttribute(attr),
       setContent: (content) => {
-        this.root_.textContent = content;
+        this.root.textContent = content;
       },
       registerInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),

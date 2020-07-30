@@ -1,0 +1,71 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+
+$background-color: rgba(black, theme-color.text-emphasis(medium));
+$border-radius: small;
+$label-color: text-primary-on-dark;
+
+/// Sets the border-radius for the tooltip element.
+/// @param {Number | String} $radius Desired border radius value, accepts either
+///   a shape category or number value. $radius can be a singel value, or a
+///   list of up to 4 values.
+/// @param {Boolean} $rtl-reflexive [false] If a rule should be created for a
+///    flipped $radius for a RTL layout.
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $query: feature-targeting.all()
+) {
+  .mdc-tooltip__surface {
+    @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+  }
+}
+
+/// Sets the color of the tooltip label.
+/// @param {Color | String} $color
+@mixin label-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  @include feature-targeting.targets($feat-color) {
+    .mdc-tooltip__surface {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+/// Sets the fill/surface color of the tooltip.
+/// @param {Color | String} $color
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  .mdc-tooltip__surface {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
+    }
+  }
+}

@@ -51,14 +51,14 @@ describe('MDCTextFieldHelperText', () => {
 
   it('#adapter.addClass adds a class to the element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('#adapter.removeClass removes a class from the element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
 
@@ -67,18 +67,18 @@ describe('MDCTextFieldHelperText', () => {
        const {root, component} = setupTest();
        root.classList.add('foo');
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasClass('foo'))
+           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBeTruthy();
        root.classList.remove('foo');
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasClass('foo'))
+           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBeFalsy();
      });
 
   it('#adapter.setAttr adds a given attribute to the element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any)
-        .adapter_.setAttr('aria-label', 'foo');
+        .adapter.setAttr('aria-label', 'foo');
     expect(root.getAttribute('aria-label')).toEqual('foo');
   });
 
@@ -86,13 +86,13 @@ describe('MDCTextFieldHelperText', () => {
     const {root, component} = setupTest();
     root.setAttribute('aria-label', 'foo');
     (component.getDefaultFoundation() as any)
-        .adapter_.removeAttr('aria-label', 'foo');
+        .adapter.removeAttr('aria-label', 'foo');
     expect(root.hasAttribute('aria-label')).toBeFalsy();
   });
 
   it('#adapter.setContent sets the text content of the element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.setContent('foo');
+    (component.getDefaultFoundation() as any).adapter.setContent('foo');
     expect(root.textContent).toEqual('foo');
   });
 });

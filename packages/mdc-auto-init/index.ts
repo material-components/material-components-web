@@ -115,6 +115,7 @@ mdcAutoInit.deregister = function(componentName: string) {
   delete registry[componentName];
 };
 
+/** @nocollapse */
 mdcAutoInit.deregisterAll = function() {
   const keys = Object.keys(registry) as string[];
   keys.forEach(this.deregister, this);

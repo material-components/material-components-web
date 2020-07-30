@@ -49,7 +49,7 @@ describe('MDCLineRipple', () => {
 
   it('#adapter.addClass adds a class to the element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
@@ -57,7 +57,7 @@ describe('MDCLineRipple', () => {
     const {root, component} = setupTest();
 
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
   it('#adapter.hasClass returns true if a class is on the element', () => {
@@ -65,14 +65,14 @@ describe('MDCLineRipple', () => {
 
     root.classList.add('foo');
     const hasClass =
-        (component.getDefaultFoundation() as any).adapter_.hasClass('foo');
+        (component.getDefaultFoundation() as any).adapter.hasClass('foo');
     expect(hasClass).toBe(true);
   });
 
   it('#adapter.setStyle adds a given style property to the element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any)
-        .adapter_.setStyle('color', 'blue');
+        .adapter.setStyle('color', 'blue');
     expect(root.getAttribute('style')).toEqual('color: blue;');
   });
 
@@ -81,7 +81,7 @@ describe('MDCLineRipple', () => {
        const {root, component} = setupTest();
        const handler = jasmine.createSpy('transitionend handler');
        (component.getDefaultFoundation() as any)
-           .adapter_.registerEventHandler('transitionend', handler);
+           .adapter.registerEventHandler('transitionend', handler);
        emitEvent(root, 'transitionend');
 
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
@@ -94,7 +94,7 @@ describe('MDCLineRipple', () => {
 
        root.addEventListener('transitionend', handler);
        (component.getDefaultFoundation() as any)
-           .adapter_.deregisterEventHandler('transitionend', handler);
+           .adapter.deregisterEventHandler('transitionend', handler);
        emitEvent(root, 'transitionend');
 
        expect(handler).not.toHaveBeenCalled();

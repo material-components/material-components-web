@@ -1,0 +1,103 @@
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/typography/typography';
+@use '@material/rtl/mixins' as rtl;
+@use '@material/icon-button/mixins' as icon-button-theme;
+@use '@material/select/select-theme';
+@use '@material/list/mixins' as list-theme;
+@use '@material/menu/mixins' as menu-theme;
+@use './data-table-theme';
+
+// stylelint-disable selector-class-pattern
+// NOTE: We disable `selector-class-pattern` above to allow using `mdc-` class
+// selectors.
+
+/// Sets core styles for data table pagination.
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-data-table__pagination {
+    @include typography.typography(body2, $query: $query);
+
+    @include feature-targeting.targets($feat-structure) {
+      box-sizing: border-box;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .mdc-data-table__pagination-trailing {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-box(margin, left, 4px);
+
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+  }
+
+  .mdc-data-table__pagination-navigation {
+    @include feature-targeting.targets($feat-structure) {
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  .mdc-data-table__pagination-button {
+    @include icon-button-theme.flip-icon-in-rtl($query: $query);
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-box(margin, right, 4px);
+    }
+  }
+
+  .mdc-data-table__pagination-total {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-property(
+        margin,
+        $left-value: 14px,
+        $right-value: 36px
+      );
+
+      white-space: nowrap;
+    }
+  }
+
+  .mdc-data-table__pagination-rows-per-page {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-box(margin, right, 22px);
+
+      align-items: center;
+      display: inline-flex;
+    }
+  }
+
+  .mdc-data-table__pagination-rows-per-page-label {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-box(margin, right, 12px);
+
+      white-space: nowrap;
+    }
+  }
+
+  .mdc-data-table__pagination-rows-per-page-select {
+    @include select-theme.min-width(80px, $query: $query);
+    @include menu-theme.min-width(80px, $query: $query);
+
+    @include feature-targeting.targets($feat-structure) {
+      margin: 8px 0;
+    }
+
+    // TODO(b/158196144): Set it to `-5` density scale using density mixin when
+    // select component supports it.
+    @include select-theme.outlined-height(
+      data-table-theme.$pagination-rows-per-page-select-height,
+      $query: $query
+    );
+    .mdc-list-item {
+      @include list-theme.single-line-height(
+        data-table-theme.$pagination-rows-per-page-select-height,
+        $query: $query
+      );
+    }
+  }
+}

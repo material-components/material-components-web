@@ -41,6 +41,7 @@ const LABEL_WIDTH = 100;
 class FakeLabel {
   float: jasmine.Spy = jasmine.createSpy('label.float');
   getWidth: jasmine.Spy = jasmine.createSpy('label.getWidth');
+  setRequired: jasmine.Spy = jasmine.createSpy('label.setRequired');
 
   constructor() {
     this.getWidth.and.returnValue(LABEL_WIDTH);
@@ -63,14 +64,18 @@ class FakeOutline {
 class FakeMenu {
   destroy: jasmine.Spy = jasmine.createSpy('.destroy');
   items: HTMLElement[] = [];
+  selectedIndex: number = -1;
   hoistMenuToBody: jasmine.Spy = jasmine.createSpy('.hoistMenuToBody');
   setAnchorElement: jasmine.Spy = jasmine.createSpy('.setAnchorElement');
   setAnchorCorner: jasmine.Spy = jasmine.createSpy('.setAnchorCorner');
+  typeaheadMatchItem: jasmine.Spy = jasmine.createSpy('.typeaheadMatchItem');
   listen: jasmine.Spy = jasmine.createSpy('.listen');
   unlisten: jasmine.Spy = jasmine.createSpy('.listen');
+  layout: jasmine.Spy = jasmine.createSpy('.layout');
 
   open: boolean = false;
   wrapFocus: boolean = false;
+  typeaheadInProgress: boolean = false;
 }
 
 class FakeIcon {
@@ -85,10 +90,28 @@ function getFixture() {
   return createFixture(`
     <div class="mdc-select mdc-select--with-leading-icon">
       <div class="mdc-select__anchor">
-        <input type="hidden" name="select">
+        <span class="mdc-select__ripple"></span>
         <i class="mdc-select__icon material-icons">code</i>
-        <div class="mdc-select__selected-text"></div>
-        <i class="mdc-select__dropdown-icon"></i>
+        <span class="mdc-select__selected-text"></span>
+        <span class="mdc-select__dropdown-icon">
+          <svg
+              width="10px"
+              height="5px"
+              viewBox="7 10 10 5">
+            <polygon
+                class="mdc-select__dropdown-icon-inactive"
+                stroke="none"
+                fill-rule="evenodd"
+                points="7 10 12 15 17 10">
+            </polygon>
+            <polygon
+                class="mdc-select__dropdown-icon-active"
+                stroke="none"
+                fill-rule="evenodd"
+                points="7 15 12 10 17 15">
+            </polygon>
+          </svg>
+        </span>
         <span class="mdc-floating-label">Pick a Food Group</span>
         <span class="mdc-line-ripple"></span>
       </div>
@@ -97,10 +120,10 @@ function getFixture() {
         <ul class="mdc-list">
           <li class="mdc-list-item" data-value=""></li>
           <li class="mdc-list-item" data-value="orange">
-            Orange
+            <span class="mdc-list-item__text">Orange</span>
           </li>
           <li class="mdc-list-item" data-value="apple">
-            Apple
+            <span class="mdc-list-item__text">Apple</span>
           </li>
         </ul>
       </div>
@@ -112,10 +135,27 @@ function getOutlineFixture() {
   return createFixture(`
     <div class="mdc-select mdc-select--outlined mdc-select--with-leading-icon">
       <div class="mdc-select__anchor">
-        <input type="hidden" name="select">
         <i class="mdc-select__icon material-icons">code</i>
-        <div class="mdc-select__selected-text"></div>
-        <i class="mdc-select__dropdown-icon"></i>
+        <span class="mdc-select__selected-text"></span>
+        <span class="mdc-select__dropdown-icon">
+          <svg
+              width="10px"
+              height="5px"
+              viewBox="7 10 10 5">
+            <polygon
+                class="mdc-select__dropdown-icon-inactive"
+                stroke="none"
+                fill-rule="evenodd"
+                points="7 10 12 15 17 10">
+            </polygon>
+            <polygon
+                class="mdc-select__dropdown-icon-active"
+                stroke="none"
+                fill-rule="evenodd"
+                points="7 15 12 10 17 15">
+            </polygon>
+          </svg>
+        </span>
         <span class="mdc-notched-outline">
           <span class="mdc-notched-outline__leading"></span>
           <span class="mdc-notched-outline__notch">
@@ -129,10 +169,10 @@ function getOutlineFixture() {
         <ul class="mdc-list">
           <li class="mdc-list-item" data-value=""></li>
           <li class="mdc-list-item" data-value="orange">
-            Orange
+            <span class="mdc-list-item__text">Orange</span>
           </li>
           <li class="mdc-list-item" data-value="apple">
-            Apple
+            <span class="mdc-list-item__text">Apple</span>
           </li>
         </ul>
       </div>
@@ -142,7 +182,7 @@ function getOutlineFixture() {
 
 function getHelperTextFixture(root = getFixture()) {
   const containerDiv = document.createElement('div');
-  root.querySelector('.mdc-select__selected-text')!.setAttribute(
+  root.querySelector(strings.SELECT_ANCHOR_SELECTOR)!.setAttribute(
       'aria-controls', 'test-helper-text');
   containerDiv.appendChild(root);
   containerDiv.appendChild(createFixture(
@@ -229,7 +269,7 @@ describe('MDCSelect', () => {
     const hasLabel = true;
     const {component, menuSurface} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-    expect(component.selectedIndex).toEqual(-1);
+    expect(component.selectedIndex).toEqual(0);
     component.selectedIndex = 1;
     expect(component.selectedIndex).toEqual(1);
     menuSurface.parentElement!.removeChild(menuSurface);
@@ -242,7 +282,7 @@ describe('MDCSelect', () => {
     const hasLabel = true;
     const {component, menuSurface} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-    expect(component.selectedIndex).toEqual(-1);
+    expect(component.selectedIndex).toEqual(0);
     component.selectedIndex = 1;
     component.selectedIndex = 2;
     expect(component.selectedIndex).toEqual(2);
@@ -261,28 +301,27 @@ describe('MDCSelect', () => {
     component.disabled = true;
     checkNumTimesSpyCalledWithArgs(mockFoundation.setDisabled, [true], 1);
     component.disabled = false;
-    // Called once at initialization, once when setting to false
-    checkNumTimesSpyCalledWithArgs(mockFoundation.setDisabled, [false], 2);
+    checkNumTimesSpyCalledWithArgs(mockFoundation.setDisabled, [false], 1);
   });
 
   it('#get/set required true', () => {
-    const {fixture, component, selectedText} = setupTest();
+    const {fixture, component, anchor} = setupTest();
     expect(component.required).toBe(false);
 
     component.required = true;
     expect(component.required).toBe(true);
     expect(fixture.classList.contains(cssClasses.REQUIRED)).toBe(true);
-    expect(selectedText.getAttribute('aria-required')).toBe('true');
+    expect(anchor.getAttribute('aria-required')).toBe('true');
   });
 
   it('#get/set required false', () => {
-    const {fixture, component, selectedText} = setupTest();
+    const {fixture, component, anchor} = setupTest();
     expect(component.required).toBe(false);
 
     component.required = false;
     expect(component.required).toBe(false);
     expect(fixture.classList.contains(cssClasses.REQUIRED)).toBe(false);
-    expect(selectedText.getAttribute('aria-required')).toBe('false');
+    expect(anchor.getAttribute('aria-required')).toBe('false');
   });
 
   it('#get value', () => {
@@ -310,6 +349,53 @@ describe('MDCSelect', () => {
     component.value = 'orange';
     expect(mockFoundation.setValue).toHaveBeenCalledWith('orange');
     expect(mockFoundation.setValue).toHaveBeenCalledTimes(1);
+  });
+
+  it('#layout calls foundation.layout', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {component, mockFoundation} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    component.layout();
+    expect(mockFoundation.layout).toHaveBeenCalled();
+  });
+
+  it('#layoutOptions calls foundation.layoutOptions and menu.layout', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {component, mockFoundation, mockMenu} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    component.layoutOptions();
+    expect(mockFoundation.layoutOptions).toHaveBeenCalled();
+    expect(mockMenu.layout).toHaveBeenCalled();
+  });
+
+  it('#layoutOptions refreshes menu options cache', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = false;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {component} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    component['menuItemValues'] = [];
+    component.layoutOptions();
+    expect(component['menuItemValues']).toEqual(['', 'orange', 'apple']);
+  });
+
+  it('#set useDefaultValidation forwards to foundation', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = false;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {component, mockFoundation} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+
+    component.useDefaultValidation = false;
+    expect(mockFoundation.setUseDefaultValidation).toHaveBeenCalled();
   });
 
   it('#get valid forwards to foundation', () => {
@@ -400,39 +486,108 @@ describe('MDCSelect', () => {
 
   it('#set helperTextContent calls foundation.setHelperTextContent', () => {
     const {component} = setupTest();
-    (component as any).foundation_.setHelperTextContent = jasmine.createSpy('');
+    (component as any).foundation.setHelperTextContent = jasmine.createSpy('');
     component.helperTextContent = 'hello_world';
-    expect((component as any).foundation_.setHelperTextContent)
+    expect((component as any).foundation.setHelperTextContent)
         .toHaveBeenCalledWith('hello_world');
-    expect((component as any).foundation_.setHelperTextContent)
+    expect((component as any).foundation.setHelperTextContent)
         .toHaveBeenCalledTimes(1);
   });
 
   it('#initialSyncWithDOM sets the selected index if an option has the selected class',
      () => {
        const fixture = createFixture(`
-    <div class="mdc-select">
-      <div class="mdc-select__anchor">
-        <div class="mdc-select__selected-text"></div>
-        <label class="mdc-floating-label">Pick a Food Group</label>
-        <span class="mdc-line-ripple"></span>
-      </div>
+        <div class="mdc-select">
+          <div class="mdc-select__anchor">
+            <span class="mdc-select__ripple"></span>
+            <i class="mdc-select__icon material-icons">code</i>
+            <span class="mdc-select__selected-text"></span>
+            <span class="mdc-select__dropdown-icon">
+              <svg
+                  width="10px"
+                  height="5px"
+                  viewBox="7 10 10 5">
+                <polygon
+                    class="mdc-select__dropdown-icon-inactive"
+                    stroke="none"
+                    fill-rule="evenodd"
+                    points="7 10 12 15 17 10">
+                </polygon>
+                <polygon
+                    class="mdc-select__dropdown-icon-active"
+                    stroke="none"
+                    fill-rule="evenodd"
+                    points="7 15 12 10 17 15">
+                </polygon>
+              </svg>
+            </span>
+            <span class="mdc-floating-label">Pick a Food Group</span>
+            <span class="mdc-line-ripple"></span>
+          </div>
 
-      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-        <ul class="mdc-list">
-          <li class="mdc-list-item" data-value=""></li>
-          <li class="mdc-list-item mdc-list-item--selected" data-value="orange">
-            Orange
-          </li>
-          <li class="mdc-list-item" data-value="apple">
-            Apple
-          </li>
-        </ul>
-      </div>
-    </div>
-  `);
+          <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+            <ul class="mdc-list">
+              <li class="mdc-list-item" data-value=""></li>
+              <li class="mdc-list-item mdc-list-item--selected" data-value="orange">
+                <span class="mdc-list-tem__text">Orange</span>
+              </li>
+              <li class="mdc-list-item" data-value="apple">
+                <span class="mdc-list-tem__text">Apple</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      `);
        const component = new MDCSelect(fixture, /* foundation */ undefined);
        expect(component.selectedIndex).toEqual(1);
+     });
+
+  it('#initialSyncWithDOM sets the selected index if empty option has the selected class',
+     () => {
+       const fixture = createFixture(`
+        <div class="mdc-select">
+          <div class="mdc-select__anchor">
+            <span class="mdc-select__ripple"></span>
+            <i class="mdc-select__icon material-icons">code</i>
+            <span class="mdc-select__selected-text"></span>
+            <span class="mdc-select__dropdown-icon">
+              <svg
+                  width="10px"
+                  height="5px"
+                  viewBox="7 10 10 5">
+                <polygon
+                    class="mdc-select__dropdown-icon-inactive"
+                    stroke="none"
+                    fill-rule="evenodd"
+                    points="7 10 12 15 17 10">
+                </polygon>
+                <polygon
+                    class="mdc-select__dropdown-icon-active"
+                    stroke="none"
+                    fill-rule="evenodd"
+                    points="7 15 12 10 17 15">
+                </polygon>
+              </svg>
+            </span>
+            <span class="mdc-floating-label">Pick a Food Group</span>
+            <span class="mdc-line-ripple"></span>
+          </div>
+
+          <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+            <ul class="mdc-list">
+              <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
+              <li class="mdc-list-item" data-value="orange">
+                Orange
+              </li>
+              <li class="mdc-list-item" data-value="apple">
+                Apple
+              </li>
+            </ul>
+          </div>
+        </div>
+      `);
+       const component = new MDCSelect(fixture, /* foundation */ undefined);
+       expect(component.selectedIndex).toEqual(0);
      });
 
   it('#initialSyncWithDOM disables the select if the disabled class is found',
@@ -440,8 +595,29 @@ describe('MDCSelect', () => {
        const fixture = createFixture(`
     <div class="mdc-select mdc-select--disabled">
       <div class="mdc-select__anchor">
-        <div class="mdc-select__selected-text"></div>
-        <label class="mdc-floating-label">Pick a Food Group</label>
+        <span class="mdc-select__ripple"></span>
+        <i class="mdc-select__icon material-icons">code</i>
+        <span class="mdc-select__selected-text"></span>
+        <span class="mdc-select__dropdown-icon">
+          <svg
+              width="10px"
+              height="5px"
+              viewBox="7 10 10 5">
+            <polygon
+                class="mdc-select__dropdown-icon-inactive"
+                stroke="none"
+                fill-rule="evenodd"
+                points="7 10 12 15 17 10">
+            </polygon>
+            <polygon
+                class="mdc-select__dropdown-icon-active"
+                stroke="none"
+                fill-rule="evenodd"
+                points="7 15 12 10 17 15">
+            </polygon>
+          </svg>
+        </span>
+        <span class="mdc-floating-label">Pick a Food Group</span>
         <span class="mdc-line-ripple"></span>
       </div>
 
@@ -449,10 +625,10 @@ describe('MDCSelect', () => {
         <ul class="mdc-list">
           <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
           <li class="mdc-list-item" data-value="orange">
-            Orange
+            <span class="mdc-list-item__text">Orange</span>
           </li>
           <li class="mdc-list-item" data-value="apple">
-            Apple
+            <span class="mdc-list-item__text">Apple</span>
           </li>
         </ul>
       </div>
@@ -472,7 +648,7 @@ describe('MDCSelect', () => {
     const component = MDCSelect.attachTo(fixture);
     jasmine.clock().tick(1);
 
-    expect((component as any).ripple_).toEqual(jasmine.any(MDCRipple));
+    expect((component as any).ripple).toEqual(jasmine.any(MDCRipple));
     const anchor =
         fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
     expect(anchor.classList.contains(MDCRippleFoundation.cssClasses.ROOT))
@@ -484,7 +660,7 @@ describe('MDCSelect', () => {
      () => {
        const root = getOutlineFixture();
        const component = new MDCSelect(root);
-       expect((component as any).outline_)
+       expect((component as any).outline)
            .toEqual(jasmine.any(MDCNotchedOutline));
      });
 
@@ -498,14 +674,12 @@ describe('MDCSelect', () => {
     MDCSelect.attachTo(fixture);
     jasmine.clock().tick(1);
 
-    const selectedText =
-        fixture.querySelector('.mdc-select__selected-text') as HTMLElement;
-
-    emitEvent(selectedText, 'focus');
-    jasmine.clock().tick(1);
-
     const anchor =
         fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
+
+    emitEvent(anchor, 'focus');
+    jasmine.clock().tick(1);
+
     expect(anchor.classList.contains(MDCRippleFoundation.cssClasses.BG_FOCUSED))
         .toBe(true);
   });
@@ -533,7 +707,7 @@ describe('MDCSelect', () => {
 
   it('#destroy cleans up the outline if present', () => {
     const {component, outline} = setupTest();
-    (component as any).outline_ = outline;
+    (component as any).outline = outline;
     component.destroy();
     expect(outline.destroy).toHaveBeenCalled();
   });
@@ -542,7 +716,7 @@ describe('MDCSelect', () => {
      () => {
        const hasOutline = true;
        const {component} = setupTest(hasOutline);
-       expect((component as any).ripple_).toBe(undefined);
+       expect((component as any).ripple).toBe(undefined);
        expect(() => {
          component.destroy();
        }).not.toThrow();
@@ -550,14 +724,14 @@ describe('MDCSelect', () => {
 
   it('adapter#addClass adds a class to the root element', () => {
     const {component, fixture} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(fixture.classList.contains('foo')).toBe(true);
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {component, fixture} = setupTest();
     fixture.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(fixture.classList.contains('foo')).toBe(false);
   });
 
@@ -566,7 +740,7 @@ describe('MDCSelect', () => {
        const {component, fixture} = setupTest();
        fixture.classList.add('foo');
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasClass('foo'))
+           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
@@ -574,7 +748,28 @@ describe('MDCSelect', () => {
     const fixture = createFixture(`
     <div class="mdc-select">
       <div class="mdc-select__anchor">
-        <div class="mdc-select__selected-text"></div>
+        <span class="mdc-select__ripple"></span>
+        <i class="mdc-select__icon material-icons">code</i>
+        <span class="mdc-select__selected-text"></span>
+        <span class="mdc-select__dropdown-icon">
+          <svg
+              width="10px"
+              height="5px"
+              viewBox="7 10 10 5">
+            <polygon
+                class="mdc-select__dropdown-icon-inactive"
+                stroke="none"
+                fill-rule="evenodd"
+                points="7 10 12 15 17 10">
+            </polygon>
+            <polygon
+                class="mdc-select__dropdown-icon-active"
+                stroke="none"
+                fill-rule="evenodd"
+                points="7 15 12 10 17 15">
+            </polygon>
+          </svg>
+        </span>
         <span class="mdc-line-ripple"></span>
       </div>
 
@@ -582,10 +777,10 @@ describe('MDCSelect', () => {
         <ul class="mdc-list">
           <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
           <li class="mdc-list-item" data-value="orange">
-            Orange
+            <span class="mdc-list-item__text">Orange</span>
           </li>
           <li class="mdc-list-item" data-value="apple">
-            Apple
+            <span class="mdc-list-item__text">Apple</span>
           </li>
         </ul>
       </div>
@@ -594,7 +789,7 @@ describe('MDCSelect', () => {
     const component = new MDCSelect(fixture);
     expect(
         () => (component.getDefaultFoundation() as any)
-                  .adapter_.floatLabel('foo'))
+                  .adapter.floatLabel('foo'))
         .not.toThrow();
   });
 
@@ -604,18 +799,39 @@ describe('MDCSelect', () => {
        const fixture = createFixture(`
     <div class="mdc-select">
       <div class="mdc-select__anchor">
-        <div class="mdc-select__selected-text"></div>
-        <label class="mdc-floating-label">Pick a Food Group</label>
+        <span class="mdc-select__ripple"></span>
+        <i class="mdc-select__icon material-icons">code</i>
+        <span class="mdc-select__selected-text"></span>
+        <span class="mdc-select__dropdown-icon">
+          <svg
+              width="10px"
+              height="5px"
+              viewBox="7 10 10 5">
+            <polygon
+                class="mdc-select__dropdown-icon-inactive"
+                stroke="none"
+                fill-rule="evenodd"
+                points="7 10 12 15 17 10">
+            </polygon>
+            <polygon
+                class="mdc-select__dropdown-icon-active"
+                stroke="none"
+                fill-rule="evenodd"
+                points="7 15 12 10 17 15">
+            </polygon>
+          </svg>
+        </span>
+        <span class="mdc-floating-label">Pick a Food Group</span>
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
         <ul class="mdc-list">
           <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
           <li class="mdc-list-item" data-value="orange">
-            Orange
+            <span class="mdc-list-item__text">Orange</span>
           </li>
           <li class="mdc-list-item" data-value="apple">
-            Apple
+            <span class="mdc-list-item__text">Apple</span>
           </li>
         </ul>
       </div>
@@ -624,25 +840,25 @@ describe('MDCSelect', () => {
        const component = new MDCSelect(fixture);
        expect(
            () => (component.getDefaultFoundation() as any)
-                     .adapter_.activateBottomLine())
+                     .adapter.activateBottomLine())
            .not.toThrow();
        expect(
            () => (component.getDefaultFoundation() as any)
-                     .adapter_.deactivateBottomLine())
+                     .adapter.deactivateBottomLine())
            .not.toThrow();
      });
 
   it('adapter#floatLabel adds a class to the label', () => {
     const {component, label} = setupTest();
 
-    (component.getDefaultFoundation() as any).adapter_.floatLabel('foo');
+    (component.getDefaultFoundation() as any).adapter.floatLabel('foo');
     expect(label.float).toHaveBeenCalledWith('foo');
   });
 
   it('adapter#activateBottomLine adds active class to the bottom line', () => {
     const {component, bottomLine} = setupTest();
 
-    (component.getDefaultFoundation() as any).adapter_.activateBottomLine();
+    (component.getDefaultFoundation() as any).adapter.activateBottomLine();
     expect(bottomLine.activate).toHaveBeenCalled();
   });
 
@@ -651,7 +867,7 @@ describe('MDCSelect', () => {
        const {component, bottomLine} = setupTest();
 
        (component.getDefaultFoundation() as any)
-           .adapter_.deactivateBottomLine();
+           .adapter.deactivateBottomLine();
        expect(bottomLine.deactivate).toHaveBeenCalled();
      });
 
@@ -660,7 +876,7 @@ describe('MDCSelect', () => {
     const {component, outline} = setupTest(hasOutline);
 
     (component.getDefaultFoundation() as any)
-        .adapter_.notchOutline(LABEL_WIDTH);
+        .adapter.notchOutline(LABEL_WIDTH);
     expect(outline.notch).toHaveBeenCalledWith(LABEL_WIDTH);
     expect(outline.notch).toHaveBeenCalledTimes(1);
   });
@@ -671,14 +887,14 @@ describe('MDCSelect', () => {
        const {component, outline} = setupTest(hasOutline);
 
        (component.getDefaultFoundation() as any)
-           .adapter_.notchOutline(LABEL_WIDTH);
+           .adapter.notchOutline(LABEL_WIDTH);
        expect(outline.notch).not.toHaveBeenCalledWith(LABEL_WIDTH);
      });
 
   it('adapter#closeOutline closes the outline if there is an outline', () => {
     const hasOutline = true;
     const {component, outline} = setupTest(hasOutline);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     adapter.closeOutline();
     expect(outline.closeNotch).toHaveBeenCalled();
   });
@@ -686,7 +902,7 @@ describe('MDCSelect', () => {
   it('adapter#closeOutline does nothing if there is no outline', () => {
     const hasOutline = false;
     const {component, outline} = setupTest(hasOutline);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.closeOutline();
     expect(outline.closeNotch).not.toHaveBeenCalled();
@@ -694,7 +910,7 @@ describe('MDCSelect', () => {
 
   it('adapter#getLabelWidth returns the width of the label', () => {
     const {component} = setupTest();
-    expect((component.getDefaultFoundation() as any).adapter_.getLabelWidth())
+    expect((component.getDefaultFoundation() as any).adapter.getLabelWidth())
         .toEqual(LABEL_WIDTH);
   });
 
@@ -703,62 +919,8 @@ describe('MDCSelect', () => {
     const hasLabel = false;
     const {component} = setupTest(hasOutline, hasLabel);
 
-    expect((component.getDefaultFoundation() as any).adapter_.getLabelWidth())
+    expect((component.getDefaultFoundation() as any).adapter.getLabelWidth())
         .toEqual(0);
-  });
-
-  it('adapter#getSelectedMenuItem returns the selected element', () => {
-    const hasMockFoundation = true;
-    const hasMockMenu = false;
-    const hasOutline = false;
-    const hasLabel = true;
-    const {component, menuSurface} =
-        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-
-    const index = 1;
-    const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
-    menuItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
-
-    expect(adapter.getSelectedMenuItem()).toEqual(menuItem);
-  });
-
-  it('adapter#setAttributeAtIndex sets attribute value correctly', () => {
-    const hasMockFoundation = true;
-    const hasMockMenu = false;
-    const hasOutline = false;
-    const hasLabel = true;
-    const {component, menuSurface} =
-        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-
-    const index = 1;
-    const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const valueToSet = 'foo';
-
-    expect(menuItem.getAttribute(strings.VALUE_ATTR)).not.toEqual(valueToSet);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
-    adapter.setAttributeAtIndex(index, strings.VALUE_ATTR, valueToSet);
-
-    expect(menuItem.getAttribute(strings.VALUE_ATTR)).toEqual(valueToSet);
-  });
-
-  it('adapter#removeAttributeAtIndex removes attribute value correctly', () => {
-    const hasMockFoundation = true;
-    const hasMockMenu = false;
-    const hasOutline = false;
-    const hasLabel = true;
-    const {component, menuSurface} =
-        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-
-    const index = 1;
-    const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const attrToRemove = 'foo';
-    menuItem.setAttribute(attrToRemove, '0');
-
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
-    adapter.removeAttributeAtIndex(index, attrToRemove);
-
-    expect(menuItem.hasAttribute(attrToRemove)).toBe(false);
   });
 
   it('adapter#focusMenuItemAtIndex', () => {
@@ -771,7 +933,7 @@ describe('MDCSelect', () => {
     document.body.appendChild(fixture);
     const index = 1;
     const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.focusMenuItemAtIndex(index);
     expect(document.activeElement).toEqual(menuItem);
@@ -786,7 +948,7 @@ describe('MDCSelect', () => {
     const {fixture, component, selectedText} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     const textToSet = 'foo';
     expect(selectedText.textContent).not.toEqual(textToSet);
@@ -795,55 +957,53 @@ describe('MDCSelect', () => {
     document.body.removeChild(fixture);
   });
 
-  it('adapter#isSelectedTextFocused', () => {
+  it('adapter#isSelectAnchorFocused', () => {
     const hasMockFoundation = true;
     const hasMockMenu = true;
     const hasOutline = false;
     const hasLabel = true;
-    const {fixture, component, selectedText} =
+    const {fixture, component, anchor} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    selectedText.tabIndex = 0;
-    selectedText.focus();
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    anchor.tabIndex = 0;
+    anchor.focus();
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
-    expect(adapter.isSelectedTextFocused()).toBe(true);
+    expect(adapter.isSelectAnchorFocused()).toBe(true);
     document.body.removeChild(fixture);
   });
 
-  it('adapter#getSelectedTextAttr sets the select text content correctly',
-     () => {
-       const hasMockFoundation = true;
-       const hasMockMenu = true;
-       const hasOutline = false;
-       const hasLabel = true;
-       const {fixture, component, selectedText} =
-           setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-       document.body.appendChild(fixture);
-       const adapter = (component.getDefaultFoundation() as any).adapter_;
+  it('adapter#getSelectAnchorAttr gets the attribute content correctly', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {fixture, component, anchor} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    document.body.appendChild(fixture);
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
-       expect(selectedText.hasAttribute('foo')).toBe(false);
-       selectedText.setAttribute('foo', '1');
-       expect(adapter.getSelectedTextAttr('foo')).toEqual('1');
-       document.body.removeChild(fixture);
-     });
+    expect(anchor.hasAttribute('foo')).toBe(false);
+    anchor.setAttribute('foo', '1');
+    expect(adapter.getSelectAnchorAttr('foo')).toEqual('1');
+    document.body.removeChild(fixture);
+  });
 
-  it('adapter#setSelectedTextAttr sets the select text content correctly',
-     () => {
-       const hasMockFoundation = true;
-       const hasMockMenu = true;
-       const hasOutline = false;
-       const hasLabel = true;
-       const {fixture, component, selectedText} =
-           setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-       document.body.appendChild(fixture);
-       const adapter = (component.getDefaultFoundation() as any).adapter_;
+  it('adapter#setSelectAnchorAttr sets the attribute content correctly', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {fixture, component, anchor} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    document.body.appendChild(fixture);
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
-       expect(selectedText.hasAttribute('foo')).toBe(false);
-       adapter.setSelectedTextAttr('foo', '1');
-       expect(selectedText.getAttribute('foo')).toEqual('1');
-       document.body.removeChild(fixture);
-     });
+    expect(anchor.hasAttribute('foo')).toBe(false);
+    adapter.setSelectAnchorAttr('foo', '1');
+    expect(anchor.getAttribute('foo')).toEqual('1');
+    document.body.removeChild(fixture);
+  });
 
   it('adapter#openMenu causes the menu to open', () => {
     const hasMockFoundation = true;
@@ -853,7 +1013,7 @@ describe('MDCSelect', () => {
     const {fixture, component, mockMenu} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     adapter.openMenu();
     expect(mockMenu.open).toBe(true);
     document.body.removeChild(fixture);
@@ -867,7 +1027,7 @@ describe('MDCSelect', () => {
     const {fixture, component, mockMenu} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     adapter.openMenu();
     adapter.closeMenu();
     expect(mockMenu.open).toBe(false);
@@ -882,7 +1042,7 @@ describe('MDCSelect', () => {
     const {fixture, component, anchor} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     expect(adapter.getAnchorElement()).toEqual(anchor);
     document.body.removeChild(fixture);
@@ -896,7 +1056,7 @@ describe('MDCSelect', () => {
     const {fixture, component, mockMenu, anchor} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.setMenuAnchorElement(anchor);
     expect(mockMenu.setAnchorElement).toHaveBeenCalledWith(anchor);
@@ -911,7 +1071,7 @@ describe('MDCSelect', () => {
     const {fixture, component, mockMenu} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.setMenuAnchorCorner(Corner.BOTTOM_START);
     expect(mockMenu.setAnchorCorner).toHaveBeenCalledWith(Corner.BOTTOM_START);
@@ -926,7 +1086,7 @@ describe('MDCSelect', () => {
     const {fixture, component, mockMenu} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.setMenuWrapFocus(false);
     expect(mockMenu.wrapFocus).toBe(false);
@@ -945,7 +1105,7 @@ describe('MDCSelect', () => {
            setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
        document.body.appendChild(fixture);
 
-       const adapter = (component.getDefaultFoundation() as any).adapter_;
+       const adapter = (component.getDefaultFoundation() as any).adapter;
        expect(adapter.getMenuItemCount()).toEqual(3);
 
        document.body.removeChild(fixture);
@@ -960,7 +1120,7 @@ describe('MDCSelect', () => {
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
 
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
     expect(adapter.getMenuItemValues()).toEqual(['', 'orange', 'apple']);
 
     document.body.removeChild(fixture);
@@ -976,87 +1136,82 @@ describe('MDCSelect', () => {
 
     const index = 1;
     const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
     expect(adapter.getMenuItemAttr(menuItem, strings.VALUE_ATTR))
         .toEqual('orange');
   });
 
-  it('adapter#addClassAtIndex adds class correctly', () => {
+  it('adapter#isTypeaheadInProgress queries menu state', () => {
     const hasMockFoundation = true;
-    const hasMockMenu = false;
+    const hasMockMenu = true;
     const hasOutline = false;
     const hasLabel = true;
-    const {fixture, component} =
+    const {fixture, component, mockMenu} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
+    const adapter = (component.getDefaultFoundation() as any).adapter;
 
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
-    const index = 1;
-    const menuItem = document.querySelectorAll('.mdc-list-item')[index];
-
-    adapter.addClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
-    expect(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS))
-        .toBe(true);
+    mockMenu.typeaheadInProgress = false;
+    expect(adapter.isTypeaheadInProgress()).toBe(false);
+    mockMenu.typeaheadInProgress = true;
+    expect(adapter.isTypeaheadInProgress()).toBe(true);
     document.body.removeChild(fixture);
   });
 
-  it('adapter#removeClassAtIndex removes class correctly', () => {
+  it('adapter#typeaheadMatchItem calls menu method', () => {
     const hasMockFoundation = true;
-    const hasMockMenu = false;
+    const hasMockMenu = true;
     const hasOutline = false;
     const hasLabel = true;
-    const {fixture, component} =
+    const {fixture, component, mockMenu} =
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
+    const adapter = (component.getDefaultFoundation() as any).adapter;
+    mockMenu.typeaheadMatchItem.and.returnValue(2);
 
-    const adapter = (component.getDefaultFoundation() as any).adapter_;
-    const index = 1;
-    const menuItem = document.querySelectorAll('.mdc-list-item')[index];
-
-    adapter.removeClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS);
-    expect(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS))
-        .toBe(false);
+    expect(adapter.typeaheadMatchItem('a', 4)).toEqual(2);
+    expect(mockMenu.typeaheadMatchItem).toHaveBeenCalledWith('a', 4);
     document.body.removeChild(fixture);
   });
 
   it('focus event triggers foundation.handleFocus()', () => {
-    const {selectedText, mockFoundation} = setupWithMockFoundation();
-    emitEvent(selectedText, 'focus');
+    const {anchor, mockFoundation} = setupWithMockFoundation();
+    emitEvent(anchor, 'focus');
     expect(mockFoundation.handleFocus).toHaveBeenCalledTimes(1);
   });
 
   it('blur event triggers foundation.handleBlur()', () => {
-    const {selectedText, mockFoundation} = setupWithMockFoundation();
-    emitEvent(selectedText, 'blur');
+    const {anchor, mockFoundation} = setupWithMockFoundation();
+    emitEvent(anchor, 'blur');
     expect(mockFoundation.handleBlur).toHaveBeenCalledTimes(1);
   });
 
   it('#destroy removes the change handler', () => {
-    const {component, selectedText, mockFoundation} = setupWithMockFoundation();
+    const {component, anchor, mockFoundation} = setupWithMockFoundation();
     component.destroy();
-    emitEvent(selectedText, 'change');
+    emitEvent(anchor, 'change');
     expect(mockFoundation.handleChange).not.toHaveBeenCalled();
   });
 
   it('#destroy removes the focus handler', () => {
-    const {component, selectedText, mockFoundation} = setupWithMockFoundation();
+    const {component, anchor, mockFoundation} = setupWithMockFoundation();
     component.destroy();
-    emitEvent(selectedText, 'focus');
+    emitEvent(anchor, 'focus');
     expect(mockFoundation.handleFocus).not.toHaveBeenCalled();
   });
 
   it('#destroy removes the blur handler', () => {
-    const {component, selectedText, mockFoundation} = setupWithMockFoundation();
+    const {component, anchor, mockFoundation} = setupWithMockFoundation();
     component.destroy();
-    emitEvent(selectedText, 'blur');
+    emitEvent(anchor, 'blur');
     expect(mockFoundation.handleBlur).not.toHaveBeenCalled();
   });
 
   it('#destroy removes the click handler', () => {
-    const {component, selectedText, mockFoundation} = setupWithMockFoundation();
+    const {component, anchor, mockFoundation} = setupWithMockFoundation();
     component.destroy();
-    emitEvent(selectedText, 'click');
+    emitEvent(anchor, 'click');
     expect(mockFoundation.handleClick).not.toHaveBeenCalled();
   });
 
@@ -1097,25 +1252,26 @@ describe('MDCSelect', () => {
      });
 
   it('#destroy removes the click listener', () => {
-    const {component, selectedText} = setupTest();
-    (component as any).foundation_.handleClick = jasmine.createSpy('');
+    const {component, anchor} = setupTest();
+    (component as any).foundation.handleClick =
+        jasmine.createSpy('handleClick');
     component.destroy();
-    emitEvent(selectedText, 'click');
-    expect((component as any).foundation_.handleClick).not.toHaveBeenCalled();
+    emitEvent(anchor, 'click');
+    expect((component as any).foundation.handleClick).not.toHaveBeenCalled();
   });
 
-  it('click on the selectedText calls foundation.handleClick()', () => {
-    const {component, selectedText} = setupTest();
-    (component as any).foundation_.handleClick = jasmine.createSpy('');
-    emitEvent(selectedText, 'click');
-    expect((component as any).foundation_.handleClick).toHaveBeenCalled();
+  it('click on the anchor calls foundation.handleClick()', () => {
+    const {component, anchor} = setupTest();
+    (component as any).foundation.handleClick = jasmine.createSpy('');
+    emitEvent(anchor, 'click');
+    expect((component as any).foundation.handleClick).toHaveBeenCalled();
   });
 
-  it('click on the selectedText focuses on the selectedText element', () => {
-    const {selectedText} = setupTest();
-    selectedText.focus = jasmine.createSpy('');
-    emitEvent(selectedText, 'click');
-    expect(selectedText.focus).toHaveBeenCalledTimes(1);
+  it('click on the anchor focuses on the anchor element', () => {
+    const {anchor} = setupTest();
+    anchor.focus = jasmine.createSpy('focus');
+    emitEvent(anchor, 'click');
+    expect(anchor.focus).toHaveBeenCalledTimes(1);
   });
 
   it('menu surface opened event causes the first element (if no element is selected) to be focused',
@@ -1178,11 +1334,11 @@ describe('MDCSelect', () => {
     document.body.removeChild(fixture);
   });
 
-  it('keydown event is added to selected-text when initialized', () => {
+  it('keydown event is added to select anchor when initialized', () => {
     const {fixture, mockFoundation} = setupWithMockFoundation();
     document.body.appendChild(fixture);
     emitEvent(
-        fixture.querySelector('.mdc-select__selected-text') as HTMLElement,
+        fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement,
         'keydown');
     expect(mockFoundation.handleKeydown)
         .toHaveBeenCalledWith(jasmine.anything());
@@ -1190,12 +1346,12 @@ describe('MDCSelect', () => {
     document.body.removeChild(fixture);
   });
 
-  it('keydown event is removed from selected-text when destroyed', () => {
+  it('keydown event is removed from select anchor when destroyed', () => {
     const {fixture, mockFoundation, component} = setupWithMockFoundation();
     document.body.appendChild(fixture);
     component.destroy();
     emitEvent(
-        fixture.querySelector('.mdc-select__selected-text') as HTMLElement,
+        fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement,
         'keydown');
     expect(mockFoundation.handleKeydown)
         .not.toHaveBeenCalledWith(jasmine.anything());
@@ -1233,7 +1389,7 @@ describe('MDCSelect', () => {
      () => {
        const root = getFixture();
        const component = new MDCSelect(root);
-       expect((component as any).leadingIcon_)
+       expect((component as any).leadingIcon)
            .toEqual(jasmine.any(MDCSelectIcon));
        expect(root.classList.contains(cssClasses.WITH_LEADING_ICON)).toBe(true);
      });
@@ -1247,7 +1403,7 @@ describe('MDCSelect', () => {
     const {container, component} = setupTest(
         hasLabel, hasOutline, hasMockFoundation, hasMockMenu, hasHelperText);
 
-    expect((component as any).helperText_).toEqual(jasmine.any(FakeHelperText));
+    expect((component as any).helperText).toEqual(jasmine.any(FakeHelperText));
     document.body.removeChild(container as HTMLElement);
   });
 
@@ -1260,7 +1416,7 @@ describe('MDCSelect', () => {
 
        const component = new MDCSelect(
            containerDiv.querySelector('.mdc-select') as HTMLElement);
-       expect((component as any).helperText_).toBe(undefined);
+       expect((component as any).helperText).toBe(undefined);
        document.body.removeChild(containerDiv as HTMLElement);
      });
 

@@ -38,11 +38,12 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
   private content_!: HTMLElement; // assigned in initialize()
 
   initialize() {
-    this.content_ = this.root_.querySelector<HTMLElement>(MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
+    this.content_ = this.root.querySelector<HTMLElement>(
+        MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
   }
 
   computeContentClientRect(): ClientRect {
-    return this.foundation_.computeContentClientRect();
+    return this.foundation.computeContentClientRect();
   }
 
   getDefaultFoundation() {
@@ -50,14 +51,16 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTabIndicatorAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
+      addClass: (className) => this.root.classList.add(className),
+      removeClass: (className) => this.root.classList.remove(className),
       computeContentClientRect: () => this.content_.getBoundingClientRect(),
-      setContentStyleProperty: (prop, value) => this.content_.style.setProperty(prop, value),
+      setContentStyleProperty: (prop, value) =>
+          this.content_.style.setProperty(prop, value),
     };
     // tslint:enable:object-literal-sort-keys
 
-    if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.FADE)) {
+    if (this.root.classList.contains(
+            MDCTabIndicatorFoundation.cssClasses.FADE)) {
       return new MDCFadingTabIndicatorFoundation(adapter);
     }
 
@@ -66,10 +69,10 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
   }
 
   activate(previousIndicatorClientRect?: ClientRect) {
-    this.foundation_.activate(previousIndicatorClientRect);
+    this.foundation.activate(previousIndicatorClientRect);
   }
 
   deactivate() {
-    this.foundation_.deactivate();
+    this.foundation.deactivate();
   }
 }

@@ -20,10 +20,18 @@
 // THE SOFTWARE.
 //
 
-@use "sass:color";
-@use "@material/theme/mixins";
-@use "@material/theme/variables";
+@use 'sass:color';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
 
-$action-icon-color: rgba(variables.prop-value(on-surface), variables.text-emphasis(medium)) !default;
-$outline-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 12%) !default;
+$action-icon-color: rgba(
+  theme-color.prop-value(on-surface),
+  theme-color.text-emphasis(medium)
+) !default;
+$outline-color: color.mix(
+  theme-color.prop-value(on-surface),
+  theme-color.prop-value(surface),
+  12%
+) !default;
 $outline-width: 1px !default;
+$shape-radius: medium !default;

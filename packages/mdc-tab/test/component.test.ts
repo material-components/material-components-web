@@ -91,14 +91,14 @@ describe('MDCTab', () => {
 
   it('#adapter.addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('#adapter.removeClass removes a class to the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
 
@@ -106,21 +106,21 @@ describe('MDCTab', () => {
      () => {
        const {root, component} = setupTest();
        root.classList.add('foo');
-       (component.getDefaultFoundation() as any).adapter_.hasClass('foo');
+       (component.getDefaultFoundation() as any).adapter.hasClass('foo');
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasClass('foo'))
+           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
   it('#adapter.setAttr adds a given attribute to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.setAttr('foo', 'bar');
+    (component.getDefaultFoundation() as any).adapter.setAttr('foo', 'bar');
     expect(root.getAttribute('foo')).toEqual('bar');
   });
 
   it('#adapter.activateIndicator activates the indicator subcomponent', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.activateIndicator();
+    (component.getDefaultFoundation() as any).adapter.activateIndicator();
     expect((root.querySelector('.mdc-tab-indicator') as Element)
                .classList.contains('mdc-tab-indicator--active'))
         .toBeTruthy();
@@ -129,7 +129,7 @@ describe('MDCTab', () => {
   it('#adapter.deactivateIndicator deactivates the indicator subcomponent',
      () => {
        const {root, component} = setupTest();
-       (component.getDefaultFoundation() as any).adapter_.deactivateIndicator();
+       (component.getDefaultFoundation() as any).adapter.deactivateIndicator();
        expect((root.querySelector('.mdc-tab-indicator') as Element)
                   .classList.contains('mdc-tab-indicator--active'))
            .toBeFalsy();
@@ -140,7 +140,7 @@ describe('MDCTab', () => {
        const {root, component} = setupTest();
        expect(
            (component.getDefaultFoundation() as any)
-               .adapter_.getOffsetWidth() === root.offsetWidth)
+               .adapter.getOffsetWidth() === root.offsetWidth)
            .toBe(true);
      });
 
@@ -149,7 +149,7 @@ describe('MDCTab', () => {
        const {root, component} = setupTest();
        expect(
            (component.getDefaultFoundation() as any)
-               .adapter_.getOffsetLeft() === root.offsetLeft)
+               .adapter.getOffsetLeft() === root.offsetLeft)
            .toBe(true);
      });
 
@@ -158,7 +158,7 @@ describe('MDCTab', () => {
        const {content, component} = setupTest();
        expect(
            (component.getDefaultFoundation() as any)
-               .adapter_.getContentOffsetWidth() === content.offsetWidth)
+               .adapter.getContentOffsetWidth() === content.offsetWidth)
            .toBe(true);
      });
 
@@ -167,14 +167,14 @@ describe('MDCTab', () => {
        const {content, component} = setupTest();
        expect(
            (component.getDefaultFoundation() as any)
-               .adapter_.getContentOffsetLeft() === content.offsetLeft)
+               .adapter.getContentOffsetLeft() === content.offsetLeft)
            .toBe(true);
      });
 
   it('#adapter.focus() gives focus to the root element', () => {
     const {root, component} = setupTest();
     document.body.appendChild(root);
-    (component.getDefaultFoundation() as any).adapter_.focus();
+    (component.getDefaultFoundation() as any).adapter.focus();
     expect(document.activeElement === root).toBe(true);
     document.body.removeChild(root);
   });
@@ -186,7 +186,7 @@ describe('MDCTab', () => {
        const handler = jasmine.createSpy('interaction handler');
 
        component.listen(MDCTabFoundation.strings.INTERACTED_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter_.notifyInteracted();
+       (component.getDefaultFoundation() as any).adapter.notifyInteracted();
        expect(handler).toHaveBeenCalled();
      });
 
@@ -224,7 +224,7 @@ describe('MDCTab', () => {
   it('#computeIndicatorClientRect() returns the indicator element\'s bounding client rect',
      () => {
        const {root, component} = setupTest();
-       (component.getDefaultFoundation() as any).adapter_.deactivateIndicator();
+       (component.getDefaultFoundation() as any).adapter.deactivateIndicator();
        expect(component.computeIndicatorClientRect())
            .toEqual((root.querySelector('.mdc-tab-indicator') as HTMLElement)
                         .getBoundingClientRect());

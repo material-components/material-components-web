@@ -20,30 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use "./variables";
-
-///
-/// Sets the elevation transition value.
-///
-/// @param {String} $duration - The duration of the transition.
-/// @param {String} $easing - The easing function for the transition.
-/// @return {String}
-///
-@function transition-value(
-  $duration: variables.$transition-duration,
-  $easing: variables.$transition-timing-function) {
-  @return #{variables.$property} #{$duration} #{$easing};
-}
-
-///
-/// Sets the elevation overlay transition value.
-///
-/// @param {String} $duration - The duration of the transition.
-/// @param {String} $easing - The easing function for the transition.
-/// @return {String}
-///
-@function overlay-transition-value(
-  $duration: variables.$transition-duration,
-  $easing: variables.$transition-timing-function) {
-  @return #{variables.$overlay-property} #{$duration} #{$easing};
-}
+/// @deprecated Import '_elevation-theme.scss' instead.
+@forward './elevation-theme' show transition-value, overlay-transition-value, elevation-box-shadow;

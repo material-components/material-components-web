@@ -24,7 +24,8 @@
 import {MDCRipple} from '../../../mdc-ripple/index';
 import {emitEvent} from '../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../testing/helpers/foundation';
-import {chipCssClasses, chipStrings, MDCChip, MDCChipFoundation} from '../index';
+import {strings as trailingActionStrings} from '../../trailingaction/constants';
+import {chipStrings, MDCChip, MDCChipFoundation} from '../index';
 
 const {CHECKMARK_SELECTOR} = MDCChipFoundation.strings;
 
@@ -78,29 +79,38 @@ const addLeadingIcon = (root: HTMLElement) => {
   return icon;
 };
 
-const addTrailingIcon = (root: HTMLElement) => {
+const addTrailingAction = (root: HTMLElement, isFocusable?: boolean) => {
   const wrapper = document.createElement('div');
 
   wrapper.innerHTML = `<span role="gridcell"></span>`;
   const parent = wrapper.firstElementChild as HTMLElement;
   wrapper.removeChild(parent);
 
-  wrapper.innerHTML = `
-    <i tabindex="0" role="button" class="material-icons mdc-chip__icon mdc-chip__icon--trailing">cancel</i>
-  `;
-  const icon = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(icon);
+  let innerHTML: string;
+  if (isFocusable) {
+    innerHTML =
+        `<button class="mdc-chip-trailing-action aria-label="Remove chip" tabindex="-1">
+  <span class='mdc-chip-trailing-action__ripple'></span>
+  <span class="mdc-chip-trailing-action__icon material-icons">close</span>
+</button>`;
+  } else {
+    innerHTML = `<button class="mdc-chip-trailing-action aria-hidden="true">
+  <span class='mdc-chip-trailing-action__ripple'></span>
+  <span class="mdc-chip-trailing-action__icon material-icons">close</span>
+</button>`;
+  }
 
-  parent.appendChild(icon);
+  wrapper.innerHTML = innerHTML;
+  const trailingAction = wrapper.firstElementChild as HTMLElement;
+  wrapper.removeChild(trailingAction);
+
+  parent.appendChild(trailingAction);
   root.appendChild(parent);
-  return icon;
+  return trailingAction;
 };
 
-const addTrailingAction = (root: HTMLElement) => {
-  const icon = addTrailingIcon(root);
-  icon.classList.add(chipCssClasses.TRAILING_ACTION);
-  return icon;
-};
+const addFocusableTrailingAction = (root: HTMLElement) =>
+    addTrailingAction(root, true);
 
 class FakeRipple {
   destroy: jasmine.Spy;
@@ -137,9 +147,7 @@ describe('MDCChip', () => {
     const {root, mockFoundation} = setupMockFoundationTest();
 
     emitEvent(root, 'click');
-    expect(mockFoundation.handleInteraction)
-        .toHaveBeenCalledWith(jasmine.anything());
-    expect(mockFoundation.handleInteraction).toHaveBeenCalledTimes(1);
+    expect(mockFoundation.handleClick).toHaveBeenCalled();
 
     emitEvent(root, 'transitionend');
     expect(mockFoundation.handleTransitionEnd)
@@ -162,16 +170,17 @@ describe('MDCChip', () => {
     expect(mockFoundation.handleFocusOut).toHaveBeenCalledTimes(1);
   });
 
-  it('#initialSyncWithDOM sets up interaction event handler on trailing icon if present',
+  it('#initialSyncWithDOM sets up trailing action event handlers if present',
      () => {
        const root = getFixture();
-       const icon = addTrailingIcon(root);
+       addTrailingAction(root);
        const {mockFoundation} = setupMockFoundationTest(root);
 
-       emitEvent(icon, 'click');
-       expect(mockFoundation.handleTrailingIconInteraction)
-           .toHaveBeenCalledWith(jasmine.anything());
-       expect(mockFoundation.handleTrailingIconInteraction)
+       emitEvent(root, trailingActionStrings.INTERACTION_EVENT);
+       expect(mockFoundation.handleTrailingActionInteraction)
+           .toHaveBeenCalledTimes(1);
+       emitEvent(root, trailingActionStrings.NAVIGATION_EVENT);
+       expect(mockFoundation.handleTrailingActionNavigation)
            .toHaveBeenCalledTimes(1);
      });
 
@@ -180,8 +189,7 @@ describe('MDCChip', () => {
     component.destroy();
 
     emitEvent(root, 'click');
-    expect(mockFoundation.handleInteraction)
-        .not.toHaveBeenCalledWith(jasmine.anything());
+    expect(mockFoundation.handleClick).not.toHaveBeenCalled();
 
     emitEvent(root, 'transitionend');
     expect(mockFoundation.handleTransitionEnd)
@@ -200,17 +208,19 @@ describe('MDCChip', () => {
         .not.toHaveBeenCalledWith(jasmine.anything());
   });
 
-  it('#destroy removes interaction event handler on trailing icon if present',
-     () => {
-       const root = getFixture();
-       const icon = addTrailingIcon(root);
-       const {component, mockFoundation} = setupMockFoundationTest(root);
+  it('#destroy removes trailing action event handlers if present', () => {
+    const root = getFixture();
+    addTrailingAction(root);
+    const {component, mockFoundation} = setupMockFoundationTest(root);
 
-       component.destroy();
-       emitEvent(icon, 'click');
-       expect(mockFoundation.handleTrailingIconInteraction)
-           .not.toHaveBeenCalledWith(jasmine.anything());
-     });
+    component.destroy();
+    emitEvent(root, trailingActionStrings.INTERACTION_EVENT);
+    expect(mockFoundation.handleTrailingActionInteraction)
+        .not.toHaveBeenCalledWith(jasmine.anything());
+    emitEvent(root, trailingActionStrings.NAVIGATION_EVENT);
+    expect(mockFoundation.handleTrailingActionNavigation)
+        .not.toHaveBeenCalledWith(jasmine.anything());
+  });
 
   it('#destroy destroys ripple', () => {
     const {component} = setupMockRippleTest();
@@ -243,20 +253,20 @@ describe('MDCChip', () => {
        const {root, component} = setupTest();
        root.classList.add('foo');
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasClass('foo'))
+           (component.getDefaultFoundation() as any).adapter.hasClass('foo'))
            .toBe(true);
      });
 
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('adapter#removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
 
@@ -267,7 +277,7 @@ describe('MDCChip', () => {
        const component = new MDCChip(root);
 
        (component.getDefaultFoundation() as any)
-           .adapter_.addClassToLeadingIcon('foo');
+           .adapter.addClassToLeadingIcon('foo');
        expect(leadingIcon.classList.contains('foo')).toBe(true);
      });
 
@@ -276,7 +286,7 @@ describe('MDCChip', () => {
        const {component} = setupTest();
        expect(
            () => (component.getDefaultFoundation() as any)
-                     .adapter_.addClassToLeadingIcon)
+                     .adapter.addClassToLeadingIcon)
            .not.toThrow();
      });
 
@@ -288,7 +298,7 @@ describe('MDCChip', () => {
 
        leadingIcon.classList.add('foo');
        (component.getDefaultFoundation() as any)
-           .adapter_.removeClassFromLeadingIcon('foo');
+           .adapter.removeClassFromLeadingIcon('foo');
        expect(leadingIcon.classList.contains('foo')).toBe(false);
      });
 
@@ -297,7 +307,7 @@ describe('MDCChip', () => {
        const {component} = setupTest();
        expect(
            () => (component.getDefaultFoundation() as any)
-                     .adapter_.removeClassFromLeadingIcon)
+                     .adapter.removeClassFromLeadingIcon)
            .not.toThrow();
      });
 
@@ -312,7 +322,7 @@ describe('MDCChip', () => {
        wrapper.removeChild(mockEventTarget);
 
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.eventTargetHasClass(mockEventTarget, 'foo'))
+                  .adapter.eventTargetHasClass(mockEventTarget, 'foo'))
            .toBe(true);
      });
 
@@ -323,7 +333,7 @@ describe('MDCChip', () => {
        const handler = jasmine.createSpy('interaction handler');
 
        component.listen(MDCChipFoundation.strings.INTERACTION_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter_.notifyInteraction();
+       (component.getDefaultFoundation() as any).adapter.notifyInteraction();
 
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
@@ -335,7 +345,7 @@ describe('MDCChip', () => {
        const handler = jasmine.createSpy('selection handler');
 
        component.listen(MDCChipFoundation.strings.SELECTION_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter_.notifySelection();
+       (component.getDefaultFoundation() as any).adapter.notifySelection();
 
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
@@ -349,7 +359,7 @@ describe('MDCChip', () => {
        component.listen(
            MDCChipFoundation.strings.TRAILING_ICON_INTERACTION_EVENT, handler);
        (component.getDefaultFoundation() as any)
-           .adapter_.notifyTrailingIconInteraction();
+           .adapter.notifyTrailingIconInteraction();
 
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
@@ -360,7 +370,7 @@ describe('MDCChip', () => {
        const handler = jasmine.createSpy('interaction handler');
 
        component.listen(MDCChipFoundation.strings.REMOVAL_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter_.notifyRemoval();
+       (component.getDefaultFoundation() as any).adapter.notifyRemoval();
 
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
@@ -373,7 +383,7 @@ describe('MDCChip', () => {
 
        component.listen(MDCChipFoundation.strings.NAVIGATION_EVENT, handler);
        (component.getDefaultFoundation() as any)
-           .adapter_.notifyNavigation(MDCChipFoundation.strings.ARROW_LEFT_KEY);
+           .adapter.notifyNavigation(MDCChipFoundation.strings.ARROW_LEFT_KEY);
 
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
@@ -382,7 +392,7 @@ describe('MDCChip', () => {
      () => {
        const {root, component} = setupTest();
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.getComputedStyleValue('color'))
+                  .adapter.getComputedStyleValue('color'))
            .toEqual(window.getComputedStyle(root).getPropertyValue('color'));
      });
 
@@ -391,7 +401,7 @@ describe('MDCChip', () => {
        const {root, component} = setupTest();
        const color = 'blue';
        (component.getDefaultFoundation() as any)
-           .adapter_.setStyleProperty('color', color);
+           .adapter.setStyleProperty('color', color);
        expect(root.style.getPropertyValue('color')).toEqual(color);
      });
 
@@ -402,7 +412,7 @@ describe('MDCChip', () => {
        const component = new MDCChip(root);
 
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasLeadingIcon())
+           (component.getDefaultFoundation() as any).adapter.hasLeadingIcon())
            .toBe(true);
      });
 
@@ -410,7 +420,7 @@ describe('MDCChip', () => {
      () => {
        const {component} = setupTest();
        expect(
-           (component.getDefaultFoundation() as any).adapter_.hasLeadingIcon())
+           (component.getDefaultFoundation() as any).adapter.hasLeadingIcon())
            .toBe(false);
      });
 
@@ -419,7 +429,7 @@ describe('MDCChip', () => {
        const {root, component} = setupTest();
        root.getBoundingClientRect = jasmine.createSpy('');
        (component.getDefaultFoundation() as any)
-           .adapter_.getRootBoundingClientRect();
+           .adapter.getRootBoundingClientRect();
        expect(root.getBoundingClientRect).toHaveBeenCalledTimes(1);
      });
 
@@ -431,7 +441,7 @@ describe('MDCChip', () => {
 
        checkmark!.getBoundingClientRect = jasmine.createSpy('');
        (component.getDefaultFoundation() as any)
-           .adapter_.getCheckmarkBoundingClientRect();
+           .adapter.getCheckmarkBoundingClientRect();
        expect(checkmark!.getBoundingClientRect).toHaveBeenCalledTimes(1);
      });
 
@@ -439,34 +449,14 @@ describe('MDCChip', () => {
      () => {
        const {component} = setupTest();
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.getCheckmarkBoundingClientRect())
+                  .adapter.getCheckmarkBoundingClientRect())
            .toBe(null);
-     });
-
-  it('adapter#hasTrailingAction returns false when no trailing action is present',
-     () => {
-       const root = getFixture();
-       addTrailingIcon(root);
-       const component = new MDCChip(root);
-       expect((component.getDefaultFoundation() as any)
-                  .adapter_.hasTrailingAction())
-           .toBe(false);
-     });
-
-  it('adapter#hasTrailingAction returns true when trailing icon is present',
-     () => {
-       const root = getFixture();
-       addTrailingAction(root);
-       const component = new MDCChip(root);
-       expect((component.getDefaultFoundation() as any)
-                  .adapter_.hasTrailingAction())
-           .toBe(true);
      });
 
   it('adapter#isRTL returns false if the text direction is not RTL', () => {
     const {component, root} = setupTest();
     document.documentElement.appendChild(root);
-    expect((component.getDefaultFoundation() as any).adapter_.isRTL())
+    expect((component.getDefaultFoundation() as any).adapter.isRTL())
         .toBe(false);
     document.documentElement.removeChild(root);
   });
@@ -475,7 +465,7 @@ describe('MDCChip', () => {
     const {component, root} = setupTest();
     document.documentElement.appendChild(root);
     document.documentElement.setAttribute('dir', 'rtl');
-    expect((component.getDefaultFoundation() as any).adapter_.isRTL())
+    expect((component.getDefaultFoundation() as any).adapter.isRTL())
         .toBe(true);
     document.documentElement.removeAttribute('dir');
     document.documentElement.removeChild(root);
@@ -485,7 +475,7 @@ describe('MDCChip', () => {
      () => {
        const {component, root} = setupTest();
        document.documentElement.appendChild(root);
-       (component.getDefaultFoundation() as any).adapter_.focusPrimaryAction();
+       (component.getDefaultFoundation() as any).adapter.focusPrimaryAction();
        expect(document.activeElement)
            .toEqual(root.querySelector(chipStrings.PRIMARY_ACTION_SELECTOR));
        document.documentElement.removeChild(root);
@@ -497,7 +487,7 @@ describe('MDCChip', () => {
        const trailingAction = addTrailingAction(root);
        document.documentElement.appendChild(root);
        const component = new MDCChip(root);
-       (component.getDefaultFoundation() as any).adapter_.focusTrailingAction();
+       (component.getDefaultFoundation() as any).adapter.focusTrailingAction();
        expect(document.activeElement).toEqual(trailingAction);
        document.documentElement.removeChild(root);
      });
@@ -508,19 +498,47 @@ describe('MDCChip', () => {
        const primaryAction =
            root.querySelector(chipStrings.PRIMARY_ACTION_SELECTOR);
        (component.getDefaultFoundation() as any)
-           .adapter_.setPrimaryActionAttr('tabindex', '-1');
+           .adapter.setPrimaryActionAttr('tabindex', '-1');
        expect(primaryAction!.getAttribute('tabindex')).toEqual('-1');
      });
 
-  it('adapter#setTrailingActionAttr sets the attribute on the trailing action element',
+  it('adapter#focusTrailingAction focuses the trailing action element', () => {
+    const root = getFixture();
+    const trailingAction = addFocusableTrailingAction(root);
+    document.documentElement.appendChild(root);
+    const component = new MDCChip(root);
+    (component.getDefaultFoundation() as any).adapter.focusTrailingAction();
+    expect(document.activeElement).toEqual(trailingAction);
+    document.documentElement.removeChild(root);
+    expect(trailingAction.getAttribute('tabindex')).toEqual('0');
+  });
+
+  it('adapter#removeTrailingActionFocus removes focus from the trailing action element',
      () => {
        const root = getFixture();
-       const trailingAction = addTrailingAction(root);
+       const trailingAction = addFocusableTrailingAction(root);
        const component = new MDCChip(root);
        (component.getDefaultFoundation() as any)
-           .adapter_.setTrailingActionAttr('tabindex', '-1');
+           .adapter.removeTrailingActionFocus();
        expect(trailingAction.getAttribute('tabindex')).toEqual('-1');
      });
+
+  it('adapter#isTrailingActionNavigable returns true if focusable', () => {
+    const root = getFixture();
+    addFocusableTrailingAction(root);
+    const component = new MDCChip(root);
+    const got = (component.getDefaultFoundation() as any)
+                    .adapter.isTrailingActionNavigable();
+    expect(got).toEqual(true);
+  });
+
+  it('adapter#isTrailingActionNavigable returns false if absent', () => {
+    const root = getFixture();
+    const component = new MDCChip(root);
+    const got = (component.getDefaultFoundation() as any)
+                    .adapter.isTrailingActionNavigable();
+    expect(got).toEqual(false);
+  });
 
   it('#get selected proxies to foundation', () => {
     const {component, mockFoundation} = setupMockFoundationTest();
@@ -543,6 +561,13 @@ describe('MDCChip', () => {
     const {component, mockFoundation} = setupMockFoundationTest();
     component.shouldRemoveOnTrailingIconClick = false;
     expect(mockFoundation.setShouldRemoveOnTrailingIconClick)
+        .toHaveBeenCalledWith(false);
+  });
+
+  it('#set setShouldFocusPrimaryActionOnClick proxies to foundation', () => {
+    const {component, mockFoundation} = setupMockFoundationTest();
+    component.setShouldFocusPrimaryActionOnClick = false;
+    expect(mockFoundation.setShouldFocusPrimaryActionOnClick)
         .toHaveBeenCalledWith(false);
   });
 

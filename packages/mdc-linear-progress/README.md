@@ -70,7 +70,9 @@ Note that `aria-label`, `aria-valuemin`, and `aria-valuemax` are static and must
 
 ### Styles
 ```scss
-@use "@material/linear-progress/mdc-linear-progress";
+@use "@material/linear-progress";
+
+@include linear-progress.core-styles;
 ```
 
 ### JavaScript Instantiation

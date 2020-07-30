@@ -1,7 +1,7 @@
 {
   "name": "@material/button",
   "description": "The Material Components for the web button component",
-  "version": "5.1.0",
+  "version": "7.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -13,15 +13,16 @@
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-button"
   },
+  "sideEffects": false,
   "dependencies": {
-    "@material/density": "^5.1.0",
-    "@material/elevation": "^5.1.0",
-    "@material/feature-targeting": "^5.1.0",
-    "@material/ripple": "^5.1.0",
-    "@material/rtl": "^5.1.0",
-    "@material/shape": "^5.1.0",
-    "@material/theme": "^5.1.0",
-    "@material/touch-target": "^5.1.0",
-    "@material/typography": "^5.1.0"
+    "@material/density": "^7.0.0",
+    "@material/elevation": "^7.0.0",
+    "@material/feature-targeting": "^7.0.0",
+    "@material/ripple": "^7.0.0",
+    "@material/rtl": "^7.0.0",
+    "@material/shape": "^7.0.0",
+    "@material/theme": "^7.0.0",
+    "@material/touch-target": "^7.0.0",
+    "@material/typography": "^7.0.0"
   }
 }

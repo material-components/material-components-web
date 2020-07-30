@@ -67,7 +67,7 @@ export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapte
   handleWindowResize() {} // tslint:disable-line:no-empty
 
   handleNavigationClick() {
-    this.adapter_.notifyNavigationIconClicked();
+    this.adapter.notifyNavigationIconClicked();
   }
 }
 

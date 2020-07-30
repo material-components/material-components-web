@@ -53,17 +53,17 @@ describe('MDCNotchedOutline', () => {
 
   it('adapter#addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('adapter#removeClass removes a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     (component.getDefaultFoundation() as any)
-        .adapter_.setNotchWidthProperty(50);
+        .adapter.setNotchWidthProperty(50);
     (component.getDefaultFoundation() as any)
-        .adapter_.removeNotchWidthProperty();
+        .adapter.removeNotchWidthProperty();
     const path =
         root.querySelector('.mdc-notched-outline__notch') as HTMLElement;
     expect('').toEqual(path.style.width as string);
@@ -73,7 +73,7 @@ describe('MDCNotchedOutline', () => {
      () => {
        const {root, component} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.setNotchWidthProperty(50);
+           .adapter.setNotchWidthProperty(50);
        const path =
            root.querySelector('.mdc-notched-outline__notch') as HTMLElement;
        expect('50px').toEqual(path.style.width as string);

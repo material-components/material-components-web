@@ -35,19 +35,20 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     return new MDCIconButtonToggle(root);
   }
 
-  protected root_!: HTMLElement; // assigned in MDCComponent constructor
-
-  private readonly ripple_: MDCRipple = this.createRipple_();
-  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+  private readonly rippleComponent: MDCRipple = this.createRipple();
+  private handleClick!:
+      SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
 
   initialSyncWithDOM() {
-    this.handleClick_ = () => this.foundation_.handleClick();
-    this.listen('click', this.handleClick_);
+    this.handleClick = () => {
+      this.foundation.handleClick();
+    };
+    this.listen('click', this.handleClick);
   }
 
   destroy() {
-    this.unlisten('click', this.handleClick_);
-    this.ripple_.destroy();
+    this.unlisten('click', this.handleClick);
+    this.ripple.destroy();
     super.destroy();
   }
 
@@ -55,34 +56,34 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCIconButtonToggleAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      hasClass: (className) => this.root_.classList.contains(className),
+      addClass: (className) => this.root.classList.add(className),
+      hasClass: (className) => this.root.classList.contains(className),
       notifyChange: (evtData) => {
         this.emit<MDCIconButtonToggleEventDetail>(
             strings.CHANGE_EVENT, evtData);
       },
-      removeClass: (className) => this.root_.classList.remove(className),
-      getAttr: (attrName) => this.root_.getAttribute(attrName),
+      removeClass: (className) => this.root.classList.remove(className),
+      getAttr: (attrName) => this.root.getAttribute(attrName),
       setAttr: (attrName, attrValue) =>
-          this.root_.setAttribute(attrName, attrValue),
+          this.root.setAttribute(attrName, attrValue),
     };
     return new MDCIconButtonToggleFoundation(adapter);
   }
 
   get ripple(): MDCRipple {
-    return this.ripple_;
+    return this.rippleComponent;
   }
 
   get on(): boolean {
-    return this.foundation_.isOn();
+    return this.foundation.isOn();
   }
 
   set on(isOn: boolean) {
-    this.foundation_.toggle(isOn);
+    this.foundation.toggle(isOn);
   }
 
-  private createRipple_(): MDCRipple {
-    const ripple = new MDCRipple(this.root_);
+  private createRipple(): MDCRipple {
+    const ripple = new MDCRipple(this.root);
     ripple.unbounded = true;
     return ripple;
   }

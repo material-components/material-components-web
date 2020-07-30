@@ -20,12 +20,15 @@
 // THE SOFTWARE.
 //
 
-@use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/animation/variables" as animation-variables;
-@use "@material/rtl/mixins" as rtl-mixins;
-@use "@material/typography/mixins" as typography-mixins;
-@use "./mixins";
-@use "./variables";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/animation/variables' as animation-variables;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/typography/typography';
+@use './mixins';
+@use './variables';
 
 // postcss-bem-linter: define top-app-bar
 .mdc-top-app-bar {
@@ -53,7 +56,8 @@
     flex: 1 1 auto;
     align-items: center;
     min-width: 0;
-    padding: variables.$section-vertical-padding variables.$section-horizontal-padding;
+    padding: variables.$section-vertical-padding
+      variables.$section-horizontal-padding;
     z-index: 1;
 
     &--align-start {
@@ -68,8 +72,12 @@
   }
 
   &__title {
-    @include typography-mixins.typography(headline6);
-    @include rtl-mixins.reflexive-box(padding, left, variables.$title-left-padding);
+    @include typography.typography(headline6);
+    @include rtl-mixins.reflexive-box(
+      padding,
+      left,
+      variables.$title-left-padding
+    );
 
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -107,7 +115,8 @@
   }
 
   .mdc-top-app-bar__title {
-    transition: opacity 200ms animation-variables.$standard-curve-timing-function;
+    transition: opacity 200ms
+      animation-variables.$standard-curve-timing-function;
     opacity: 1;
   }
 }
@@ -123,7 +132,8 @@
   }
 
   .mdc-top-app-bar__action-item {
-    transition: padding 150ms animation-variables.$standard-curve-timing-function;
+    transition: padding 150ms
+      animation-variables.$standard-curve-timing-function;
   }
 }
 
@@ -146,7 +156,11 @@
   }
 
   .mdc-top-app-bar__title {
-    @include rtl-mixins.reflexive-box(padding, left, variables.$dense-title-left-padding);
+    @include rtl-mixins.reflexive-box(
+      padding,
+      left,
+      variables.$dense-title-left-padding
+    );
   }
 }
 
@@ -189,7 +203,11 @@
   }
 
   .mdc-top-app-bar__title {
-    @include rtl-mixins.reflexive-box(padding, left, variables.$title-left-padding);
+    @include rtl-mixins.reflexive-box(
+      padding,
+      left,
+      variables.$title-left-padding
+    );
 
     padding-bottom: variables.$dense-prominent-title-bottom-padding;
   }

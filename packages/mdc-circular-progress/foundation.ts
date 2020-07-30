@@ -59,18 +59,18 @@ export class MDCCircularProgressFoundation extends
   }
 
   init() {
-    this.isClosed_ = this.adapter_.hasClass(cssClasses.CLOSED_CLASS);
+    this.isClosed_ = this.adapter.hasClass(cssClasses.CLOSED_CLASS);
     this.isDeterminate_ =
-        !this.adapter_.hasClass(cssClasses.INDETERMINATE_CLASS);
+        !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
     this.progress_ = 0;
 
     if (this.isDeterminate_) {
-      this.adapter_.setAttribute(
+      this.adapter.setAttribute(
           strings.ARIA_VALUENOW, this.progress_.toString());
     }
 
     this.radius_ =
-        Number(this.adapter_.getDeterminateCircleAttribute(strings.RADIUS));
+        Number(this.adapter.getDeterminateCircleAttribute(strings.RADIUS));
   }
 
   isDeterminate() {
@@ -96,11 +96,11 @@ export class MDCCircularProgressFoundation extends
     this.isDeterminate_ = isDeterminate;
 
     if (this.isDeterminate_) {
-      this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
+      this.adapter.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.setProgress(this.progress_);
     } else {
-      this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
-      this.adapter_.removeAttribute(strings.ARIA_VALUENOW);
+      this.adapter.addClass(cssClasses.INDETERMINATE_CLASS);
+      this.adapter.removeAttribute(strings.ARIA_VALUENOW);
     }
   }
 
@@ -116,9 +116,9 @@ export class MDCCircularProgressFoundation extends
       const unfilledArcLength =
           (1 - this.progress_) * (2 * Math.PI * this.radius_);
 
-      this.adapter_.setDeterminateCircleAttribute(
+      this.adapter.setDeterminateCircleAttribute(
           strings.STROKE_DASHOFFSET, `${unfilledArcLength}`);
-      this.adapter_.setAttribute(
+      this.adapter.setAttribute(
           strings.ARIA_VALUENOW, this.progress_.toString());
     }
   }
@@ -128,7 +128,7 @@ export class MDCCircularProgressFoundation extends
    */
   open() {
     this.isClosed_ = false;
-    this.adapter_.removeClass(cssClasses.CLOSED_CLASS);
+    this.adapter.removeClass(cssClasses.CLOSED_CLASS);
   }
 
   /**
@@ -136,7 +136,7 @@ export class MDCCircularProgressFoundation extends
    */
   close() {
     this.isClosed_ = true;
-    this.adapter_.addClass(cssClasses.CLOSED_CLASS);
+    this.adapter.addClass(cssClasses.CLOSED_CLASS);
   }
 }
 

@@ -58,6 +58,7 @@ describe('MDCTextFieldFoundation', () => {
       'setLineRippleTransformOrigin',
       'shakeLabel',
       'floatLabel',
+      'setLabelRequired',
       'hasLabel',
       'getLabelWidth',
       'registerValidationAttributeChangeHandler',
@@ -130,6 +131,7 @@ describe('MDCTextFieldFoundation', () => {
 
   const setupValueTest = ({
     value = '',
+    optIsRequired = false,
     optIsValid = true,
     optIsBadInput = false,
     hasLabel = false,
@@ -146,6 +148,7 @@ describe('MDCTextFieldFoundation', () => {
     });
     const nativeInput = {
       value,
+      required: optIsRequired,
       validity: {
         valid: optIsValid,
         badInput: optIsBadInput,
@@ -1264,4 +1267,38 @@ describe('MDCTextFieldFoundation', () => {
        expect(characterCounter.setCounterValue).toHaveBeenCalledWith(8, 10);
        expect(characterCounter.setCounterValue).toHaveBeenCalledTimes(1);
      });
+
+  it('on required attribute change calls setLabelRequired', () => {
+    const {foundation, mockAdapter} = setupTest();
+    let attributeChange: Function|undefined;
+    mockAdapter.registerValidationAttributeChangeHandler
+        .withArgs(jasmine.any(Function))
+        .and.callFake((handler: Function) => attributeChange = handler);
+    foundation.init();
+
+    mockAdapter.getNativeInput.and.returnValue({
+      required: true
+    });
+
+    if (attributeChange !== undefined) {
+      attributeChange(['required']);
+    }
+    expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(true);
+
+    mockAdapter.getNativeInput.and.returnValue({
+      required: false
+    });
+
+    if (attributeChange !== undefined) {
+      attributeChange(['required']);
+    }
+    expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(false);
+  });
+
+  it('#init sets label required if native input is required', () => {
+    const {foundation, mockAdapter} =
+        setupValueTest({value: '', hasLabel: true, optIsRequired: true});
+    foundation.init();
+    expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(true);
+  });
 });

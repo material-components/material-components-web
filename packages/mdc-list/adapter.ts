@@ -96,4 +96,9 @@ export interface MDCListAdapter {
    * @return true when the current focused element is inside list root.
    */
   isFocusInsideList(): boolean;
+
+  /**
+   * @return the primary text content of the list item at index.
+   */
+  getPrimaryTextAtIndex(index: number): string;
 }

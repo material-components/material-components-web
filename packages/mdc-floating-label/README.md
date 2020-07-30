@@ -58,6 +58,7 @@ CSS Class | Description
 `mdc-floating-label` | Mandatory.
 `mdc-floating-label--float-above` | Indicates the label is floating in the floating position.
 `mdc-floating-label--shake` | Shakes the label.
+`mdc-floating-label--required` | Indicates the label is required and adds an asterisk.
 
 ### Sass Mixins
 
@@ -77,6 +78,7 @@ Method Signature | Description
 --- | ---
 `shake(shouldShake: boolean) => void` | Proxies to the foundation's `shake()` method.
 `float(shouldFloat: boolean) => void` | Proxies to the foundation's `float()` method.
+`setRequired(isRequired: boolean) => void` | Proxies to the foundation's `setRequired()` method.
 `getWidth() => number` | Proxies to the foundation's `getWidth()` method.
 
 ## Usage Within Frameworks
@@ -99,4 +101,5 @@ Method Signature | Description
 --- | ---
 `shake(shouldShake: boolean)` | Shakes or stops shaking the label, depending on the value of `shouldShake`.
 `float(shouldFloat: boolean)` | Floats or docks the label, depending on the value of `shouldFloat`.
+`setRequired(isRequired: boolean)` | Styles the label as required, depending on the value of `isRequired`.
 `getWidth() => number` | Returns the width of the label element.

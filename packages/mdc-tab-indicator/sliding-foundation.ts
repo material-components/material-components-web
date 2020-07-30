@@ -29,7 +29,7 @@ export class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation 
     // Early exit if no indicator is present to handle cases where an indicator
     // may be activated without a prior indicator state
     if (!previousIndicatorClientRect) {
-      this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
+      this.adapter.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
       return;
     }
 
@@ -40,19 +40,21 @@ export class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation 
     const currentClientRect = this.computeContentClientRect();
     const widthDelta = previousIndicatorClientRect.width / currentClientRect.width;
     const xPosition = previousIndicatorClientRect.left - currentClientRect.left;
-    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.NO_TRANSITION);
-    this.adapter_.setContentStyleProperty('transform', `translateX(${xPosition}px) scaleX(${widthDelta})`);
+    this.adapter.addClass(MDCTabIndicatorFoundation.cssClasses.NO_TRANSITION);
+    this.adapter.setContentStyleProperty(
+        'transform', `translateX(${xPosition}px) scaleX(${widthDelta})`);
 
     // Force repaint before updating classes and transform to ensure the transform properly takes effect
     this.computeContentClientRect();
 
-    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.NO_TRANSITION);
-    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
-    this.adapter_.setContentStyleProperty('transform', '');
+    this.adapter.removeClass(
+        MDCTabIndicatorFoundation.cssClasses.NO_TRANSITION);
+    this.adapter.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
+    this.adapter.setContentStyleProperty('transform', '');
   }
 
   deactivate() {
-    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
+    this.adapter.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }
 }
 

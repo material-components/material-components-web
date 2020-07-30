@@ -1,0 +1,88 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/variables' as theme-variables;
+
+$icon-size: 24px !default;
+$dense-icon-size: 20px !default;
+$icon-horizontal-margin: 12px !default;
+
+$icon-color: rgba(theme-variables.prop-value(on-surface), 0.54) !default;
+$disabled-icon-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+
+///
+/// Customizes the size (both width and height) of the icon.
+/// @param {Number} $size - the intended icon size.
+///
+@mixin size($size, $query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  @include feature-targeting-mixins.targets($feat-structure) {
+    .mdc-select__icon {
+      width: $size;
+      height: $size;
+      font-size: $size;
+    }
+  }
+}
+
+@mixin icon-color($color, $query: feature-targeting-functions.all()) {
+  &:not(.mdc-select--disabled) {
+    @include _icon-color($color, $query: $query);
+  }
+}
+
+@mixin disabled-icon-color($color, $query: feature-targeting-functions.all()) {
+  &.mdc-select--disabled {
+    @include _icon-color($color, $query: $query);
+  }
+}
+
+@mixin icon-horizontal-margins(
+  $left,
+  $right,
+  $query: feature-targeting-functions.all()
+) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  .mdc-select__icon {
+    @include feature-targeting-mixins.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(margin, $left, $right);
+    }
+  }
+}
+
+@mixin _icon-color($color, $query: feature-targeting-functions.all()) {
+  $feat-color: feature-targeting-functions.create-target($query, color);
+
+  .mdc-select__icon {
+    @include feature-targeting-mixins.targets($feat-color) {
+      @include theme-mixins.prop(color, $color);
+    }
+  }
+}

@@ -48,7 +48,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
    * Also returns true if drawer is in the open position.
    */
   get open(): boolean {
-    return this.foundation_.isOpen();
+    return this.foundation.isOpen();
   }
 
   /**
@@ -56,9 +56,9 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
    */
   set open(isOpen: boolean) {
     if (isOpen) {
-      this.foundation_.open();
+      this.foundation.open();
     } else {
-      this.foundation_.close();
+      this.foundation.close();
     }
   }
 
@@ -81,7 +81,8 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       focusTrapFactory: MDCDrawerFocusTrapFactory = (el) => new FocusTrap(el),
       listFactory: MDCListFactory = (el) => new MDCList(el),
   ) {
-    const listEl = this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`);
+    const listEl =
+        this.root.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`);
     if (listEl) {
       this.list_ = listFactory(listEl);
       this.list_.wrapFocus = true;
@@ -93,16 +94,20 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     const {MODAL} = cssClasses;
     const {SCRIM_SELECTOR} = strings;
 
-    this.scrim_ = (this.root_.parentNode as Element).querySelector<HTMLElement>(SCRIM_SELECTOR);
+    this.scrim_ = (this.root.parentNode as Element)
+                      .querySelector<HTMLElement>(SCRIM_SELECTOR);
 
-    if (this.scrim_ && this.root_.classList.contains(MODAL)) {
-      this.handleScrimClick_ = () => (this.foundation_ as MDCModalDrawerFoundation).handleScrimClick();
+    if (this.scrim_ && this.root.classList.contains(MODAL)) {
+      this.handleScrimClick_ = () =>
+          (this.foundation as MDCModalDrawerFoundation).handleScrimClick();
       this.scrim_.addEventListener('click', this.handleScrimClick_);
-      this.focusTrap_ = util.createFocusTrapInstance(this.root_ as HTMLElement, this.focusTrapFactory_);
+      this.focusTrap_ = util.createFocusTrapInstance(
+          this.root as HTMLElement, this.focusTrapFactory_);
     }
 
-    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
-    this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
+    this.handleKeydown_ = (evt) => this.foundation.handleKeydown(evt);
+    this.handleTransitionEnd_ = (evt) =>
+        this.foundation.handleTransitionEnd(evt);
 
     this.listen('keydown', this.handleKeydown_);
     this.listen('transitionend', this.handleTransitionEnd_);
@@ -117,7 +122,8 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     }
 
     const {MODAL} = cssClasses;
-    if (this.scrim_ && this.handleScrimClick_ && this.root_.classList.contains(MODAL)) {
+    if (this.scrim_ && this.handleScrimClick_ &&
+        this.root.classList.contains(MODAL)) {
       this.scrim_.removeEventListener('click', this.handleScrimClick_);
       // Ensure drawer is closed to hide scrim and release focus
       this.open = false;
@@ -129,35 +135,39 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCDrawerAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      elementHasClass: (element, className) => element.classList.contains(className),
+      addClass: (className) => this.root.classList.add(className),
+      removeClass: (className) => this.root.classList.remove(className),
+      hasClass: (className) => this.root.classList.contains(className),
+      elementHasClass: (element, className) =>
+          element.classList.contains(className),
       saveFocus: () => this.previousFocus_ = document.activeElement,
       restoreFocus: () => {
         const previousFocus = this.previousFocus_ as HTMLOrSVGElement | null;
-        if (previousFocus && previousFocus.focus && this.root_.contains(document.activeElement)) {
+        if (previousFocus && previousFocus.focus &&
+            this.root.contains(document.activeElement)) {
           previousFocus.focus();
         }
       },
       focusActiveNavigationItem: () => {
-        const activeNavItemEl =
-            this.root_.querySelector<HTMLElement>(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+        const activeNavItemEl = this.root.querySelector<HTMLElement>(
+            `.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
         if (activeNavItemEl) {
           activeNavItemEl.focus();
         }
       },
-      notifyClose: () => this.emit(strings.CLOSE_EVENT, {}, true /* shouldBubble */),
-      notifyOpen: () => this.emit(strings.OPEN_EVENT, {}, true /* shouldBubble */),
+      notifyClose: () =>
+          this.emit(strings.CLOSE_EVENT, {}, true /* shouldBubble */),
+      notifyOpen: () =>
+          this.emit(strings.OPEN_EVENT, {}, true /* shouldBubble */),
       trapFocus: () => this.focusTrap_!.trapFocus(),
       releaseFocus: () => this.focusTrap_!.releaseFocus(),
     };
     // tslint:enable:object-literal-sort-keys
 
     const {DISMISSIBLE, MODAL} = cssClasses;
-    if (this.root_.classList.contains(DISMISSIBLE)) {
+    if (this.root.classList.contains(DISMISSIBLE)) {
       return new MDCDismissibleDrawerFoundation(adapter);
-    } else if (this.root_.classList.contains(MODAL)) {
+    } else if (this.root.classList.contains(MODAL)) {
       return new MDCModalDrawerFoundation(adapter);
     } else {
       throw new Error(

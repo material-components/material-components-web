@@ -20,36 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use "sass:map";
-@use "@material/theme/functions";
-@use "@material/theme/variables" as theme-variables; // for mdc-theme-prop-value
-@use "./variables";
-
-//
-// Public
-//
-
-@function states-opacity($color, $state) {
-  $opacity-map: states-opacities_($color);
-
-  @if not map.has-key($opacity-map, $state) {
-    @error "Invalid state: '#{$state}'. Choose one of: #{map.keys($opacity-map)}";
-  }
-
-  @return map.get($opacity-map, $state);
-}
-
-//
-// Private
-//
-
-@function states-opacities_($color) {
-  $color-value: theme-variables.prop-value($color);
-  $opacity-map: if(
-    functions.tone($color-value) == "light",
-    variables.$light-ink-opacities,
-    variables.$dark-ink-opacities
-  );
-
-  @return $opacity-map;
-}
+/// @deprecated Import '_ripple-theme.scss' instead.
+@forward './ripple-theme' show states-opacity, states-opacities_;

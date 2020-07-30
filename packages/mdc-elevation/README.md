@@ -79,7 +79,7 @@ CSS Class | Description
 `mdc-elevation--z<N>` | Sets the elevation to the (N)dp, where 1 <= N <= 24
 `mdc-elevation-transition` | Applies the correct css rules to transition an element between elevations
 
-### Sass Mixins, Variables, and Functions
+### Sass Mixins, Variables, Functions, and Custom Properties
 
 Mixin | Description
 --- | ---
@@ -96,6 +96,7 @@ Function | Description
 --- | ---
 `transition-value($duration, $easing)` | Returns a value for the `transition` property to transition an element between elevations
 `overlay-transition-value($duration, $easing)` | Returns a value for the `transition` property to transition the elevation overlay between elevations
+`elevation-box-shadow($z-value, $color, $opacity-boost)` | Returns the box-shadow for the elevation z-space for that given elevation z-value, and optionally sets the color and/or boosts the opacity of the shadow
 
 Variable | Description
 --- | ---
@@ -104,6 +105,13 @@ Variable | Description
 `$transition-timing-function` | Default easing value for elevation transitions
 `$overlay-color` | Default color for the elevation overlay
 `$overlay-property` | Default property for the elevation overlay transitions
+
+If you need more configurability over your transitions, use the `transition-value` function in conjunction with the exported sass variables.
+
+Custom Property | Default value | Description
+--- | ---
+`--mdc-elevation-overlay-opacity` | `0` | The opacity of the elevation overlay.
+`--mdc-elevation-overlay-fill-color` | `#fff` | The color of the elevation overlay
 
 If you need more configurability over your transitions, use the `transition-value` function in conjunction with the exported sass variables.
 

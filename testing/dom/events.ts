@@ -43,3 +43,70 @@ export function emitEvent(
   }
   targetEl.dispatchEvent(event);
 }
+
+/** Creates mouse event, with IE11 support. */
+export function createMouseEvent(
+    eventName: string, eventInit: MouseEventInit = {}) {
+  const eventDefaults = {
+    bubbles: false,
+    cancelable: false,
+    screenX: 0,
+    screenY: 0,
+    clientX: 0,
+    clientY: 0,
+    ctrlKey: false,
+    altKey: false,
+    shiftKey: false,
+    metaKey: false,
+    button: 0,
+    relatedTarget: null,
+  };
+
+  let event;
+  const eventOptions = {...eventDefaults, ...eventInit};
+  if (typeof (MouseEvent) === 'function') {
+    event = new MouseEvent(eventName, eventInit);
+  } else {
+    // IE11 support.
+    event = document.createEvent('MouseEvent');
+    event.initMouseEvent(
+        eventName, eventOptions.bubbles, eventOptions.cancelable, window, 0,
+        eventOptions.screenX, eventOptions.screenY, eventOptions.clientX,
+        eventOptions.clientY, eventOptions.ctrlKey, eventOptions.altKey,
+        eventOptions.shiftKey, eventOptions.metaKey, eventOptions.button,
+        eventOptions.relatedTarget);
+  }
+  return event;
+}
+
+/** Creates keyboard event, with IE 11 support. */
+export function createKeyboardEvent(
+    eventName: string, eventInit: KeyboardEventInit = {}) {
+  const eventDefaults = {
+    bubbles: false,
+    cancelable: false,
+    key: '',
+    code: '',
+    charCode: 0,
+    location: 0,
+    repeat: false,
+  };
+
+  let event;
+  const eventOptions = {...eventDefaults, ...eventInit};
+  if (typeof (KeyboardEvent) === 'function') {
+    event = new KeyboardEvent(eventName, eventInit);
+  } else {
+    // IE11 support.
+    event = document.createEvent('KeyboardEvent');
+    // #initKeyboardEvent is deprecated but necessary here for IE 11.
+    // tslint:disable:no-any
+    (event as any)
+        .initKeyboardEvent(
+            eventName, eventOptions.bubbles, eventOptions.cancelable, window,
+            eventOptions.key, eventOptions.location,
+            /* modifiersListArg */[], eventOptions.repeat,
+            /* locale */ '');
+  }
+  return event;
+}

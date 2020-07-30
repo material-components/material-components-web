@@ -20,11 +20,13 @@
 // THE SOFTWARE.
 //
 
-@use "@material/animation/variables" as animation-variables;
-@use "@material/tab/mixins" as tab-mixins;
-@use "@material/feature-targeting/functions";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "./variables";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/animation/variables' as animation-variables;
+@use '@material/tab/mixins' as tab-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use './variables';
 
 ///
 /// Sets the CSS transition for the tab scrolling animation.
@@ -35,35 +37,36 @@
 @mixin transition(
   $duration-ms,
   $timing-function: animation-variables.$standard-curve-timing-function,
-  $query: functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-animation: functions.create-target($query, animation);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   &.mdc-tab-scroller--animating .mdc-tab-scroller__scroll-content {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: $duration-ms transform $timing-function;
     }
   }
 }
 
-@mixin core-styles($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
-  $feat-animation: functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define tab-scroller
   .mdc-tab-scroller {
     @include transition(
       $duration-ms: variables.$transition-duration,
-      $query: $query);
+      $query: $query
+    );
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       overflow-y: hidden;
     }
   }
 
   // Selector for test element used to feature-detect horizontal scrollbar height
   .mdc-tab-scroller__test {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: absolute;
       top: -9999px;
       width: 100px;
@@ -73,7 +76,7 @@
   }
 
   .mdc-tab-scroller__scroll-area {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       -webkit-overflow-scrolling: touch;
       display: flex;
       overflow-x: hidden;
@@ -82,7 +85,7 @@
 
   .mdc-tab-scroller__scroll-area,
   .mdc-tab-scroller__test {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       &::-webkit-scrollbar {
         display: none;
       }
@@ -91,7 +94,7 @@
 
   // This modifier class will be added in JS after computing the OS scrollbar size in order to hide the scrollbar.
   .mdc-tab-scroller__scroll-area--scroll {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       overflow-x: scroll;
     }
   }
@@ -101,26 +104,26 @@
   }
 
   .mdc-tab-scroller--align-start .mdc-tab-scroller__scroll-content {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       justify-content: flex-start;
     }
   }
 
   .mdc-tab-scroller--align-end .mdc-tab-scroller__scroll-content {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       justify-content: flex-end;
     }
   }
 
   .mdc-tab-scroller--align-center .mdc-tab-scroller__scroll-content {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       justify-content: center;
     }
   }
 
   .mdc-tab-scroller--animating {
     .mdc-tab-scroller__scroll-area {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         -webkit-overflow-scrolling: auto;
       }
     }
@@ -133,19 +136,19 @@
 // Private
 //
 
-@mixin scroll-content_($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
-  $feat-animation: functions.create-target($query, animation);
+@mixin scroll-content_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include tab-mixins.parent-positioning($query);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: flex;
     flex: 1 0 auto;
     transform: none;
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     will-change: transform;
   }
 }

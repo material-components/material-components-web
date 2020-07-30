@@ -18,10 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@use "sass:list";
-@use "sass:map";
-@use "sass:math";
-@use "./variables";
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use './variables';
 
 // returns the lower grid boundary or null if the smallest grid is selected
 @function breakpoint-min($size) {
@@ -131,7 +131,10 @@
     grid-gap: $gutter;
     // stylelint-disable-next-line declaration-block-no-duplicate-properties
     grid-gap: var(--mdc-layout-grid-gutter-#{$size}, $gutter);
-    grid-template-columns: repeat(map.get(variables.$columns, $size), minmax(0, 1fr));
+    grid-template-columns: repeat(
+      map.get(variables.$columns, $size),
+      minmax(0, 1fr)
+    );
   }
 }
 
@@ -157,7 +160,7 @@
 }
 
 @mixin cell-align($position) {
-  @if $position == "top" {
+  @if $position == 'top' {
     align-self: flex-start;
 
     @supports (display: grid) {
@@ -165,11 +168,11 @@
     }
   }
 
-  @if $position == "middle" {
+  @if $position == 'middle' {
     align-self: center;
   }
 
-  @if $position == "bottom" {
+  @if $position == 'bottom' {
     align-self: flex-end;
 
     @supports (display: grid) {
@@ -177,7 +180,7 @@
     }
   }
 
-  @if $position == "stretch" {
+  @if $position == 'stretch' {
     align-self: stretch;
   }
 }
@@ -191,12 +194,12 @@
   $gutter-number: $columnCount - 1;
   $margin-number: 2;
 
-  width: $column-width * $columnCount + $gutter * $gutter-number + $margin * $margin-number;
+  width: $column-width * $columnCount + $gutter * $gutter-number + $margin *
+    $margin-number;
   // stylelint-disable-next-line declaration-block-no-duplicate-properties
-  width:
-    calc(
-      var(--mdc-layout-grid-column-width-#{$size}, #{$column-width}) * #{$columnCount} +
+  width: calc(
+    var(--mdc-layout-grid-column-width-#{$size}, #{$column-width}) * #{$columnCount} +
       var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) * #{$gutter-number} +
       var(--mdc-layout-grid-margin-#{$size}, #{$margin}) * #{$margin-number}
-    );
+  );
 }

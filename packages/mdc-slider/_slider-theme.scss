@@ -1,0 +1,171 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple-theme';
+@use '@material/theme/theme';
+
+/// Default color for slider (track, thumb, ripple).
+$color: primary;
+
+// Thumb variables.
+$value-indicator-color: #000;
+$value-indicator-opacity: 0.6;
+$value-indicator-text-color: on-primary;
+
+// Track variables.
+$track-inactive-opacity: 0.24;
+$tick-mark-active-color: on-primary;
+$tick-mark-inactive-color: primary;
+$tick-mark-opacity: 0.6;
+
+///
+/// Customizes active track color.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-variables.property-values`.
+///
+@mixin track-active-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-slider__track--active_fill {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(border-color, $color);
+    }
+  }
+}
+
+///
+/// Customizes inactive track color and opacity.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-variables.property-values`.
+/// @param {Number} $opacity [$track-inactive-opacity]
+///
+@mixin track-inactive-color(
+  $color,
+  $opacity: $track-inactive-opacity,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-slider__track--inactive {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(background-color, $color);
+
+      opacity: $opacity;
+    }
+  }
+}
+
+///
+/// Customizes thumb color.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-variables.property-values`.
+///
+@mixin thumb-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-slider__thumb-knob {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(background-color, $color);
+      @include theme.property(border-color, $color);
+    }
+  }
+}
+
+///
+/// Customizes thumb ripple color.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-variables.property-values`.
+///
+@mixin thumb-ripple-color($color, $query: feature-targeting.all()) {
+  .mdc-slider__thumb {
+    @include ripple-theme.states($color: $color, $query: $query);
+  }
+}
+
+///
+/// Customizes color of active tick marks.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-variables.property-values`.
+///
+@mixin tick-mark-active-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  .mdc-slider__tick-mark--active {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(background-color, $color);
+    }
+  }
+}
+
+///
+/// Customizes color of inactive tick marks.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-variables.property-values`.
+///
+@mixin tick-mark-inactive-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  .mdc-slider__tick-mark--inactive {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(background-color, $color);
+    }
+  }
+}
+
+///
+/// Customizes color and opacity of the value indicator.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-variables.property-values`.
+/// @param {number} $opacity
+///
+@mixin value-indicator-color(
+  $color,
+  $opacity,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-slider__value-indicator {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(background-color, $color);
+
+      opacity: $opacity;
+    }
+  }
+}
+
+///
+/// Customizes color of the value indicator text.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-variables.property-values`.
+///
+@mixin value-indicator-text-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-slider__value-indicator {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
+    }
+  }
+}

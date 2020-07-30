@@ -56,10 +56,10 @@ export class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonTo
   }
 
   init() {
-    const ariaLabelOn = this.adapter_.getAttr(strings.DATA_ARIA_LABEL_ON);
-    const ariaLabelOff = this.adapter_.getAttr(strings.DATA_ARIA_LABEL_OFF);
+    const ariaLabelOn = this.adapter.getAttr(strings.DATA_ARIA_LABEL_ON);
+    const ariaLabelOff = this.adapter.getAttr(strings.DATA_ARIA_LABEL_OFF);
     if (ariaLabelOn && ariaLabelOff) {
-      if (this.adapter_.getAttr(strings.ARIA_PRESSED) !== null) {
+      if (this.adapter.getAttr(strings.ARIA_PRESSED) !== null) {
         throw new Error(
             'MDCIconButtonToggleFoundation: Button should not set ' +
             '`aria-pressed` if it has a toggled aria label.');
@@ -67,35 +67,35 @@ export class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonTo
 
       this.hasToggledAriaLabel = true;
     } else {
-      this.adapter_.setAttr(strings.ARIA_PRESSED, String(this.isOn()));
+      this.adapter.setAttr(strings.ARIA_PRESSED, String(this.isOn()));
     }
   }
 
   handleClick() {
     this.toggle();
-    this.adapter_.notifyChange({isOn: this.isOn()});
+    this.adapter.notifyChange({isOn: this.isOn()});
   }
 
   isOn(): boolean {
-    return this.adapter_.hasClass(cssClasses.ICON_BUTTON_ON);
+    return this.adapter.hasClass(cssClasses.ICON_BUTTON_ON);
   }
 
   toggle(isOn: boolean = !this.isOn()) {
     // Toggle UI based on state.
     if (isOn) {
-      this.adapter_.addClass(cssClasses.ICON_BUTTON_ON);
+      this.adapter.addClass(cssClasses.ICON_BUTTON_ON);
     } else {
-      this.adapter_.removeClass(cssClasses.ICON_BUTTON_ON);
+      this.adapter.removeClass(cssClasses.ICON_BUTTON_ON);
     }
 
     // Toggle aria attributes based on state.
     if (this.hasToggledAriaLabel) {
       const ariaLabel = isOn ?
-          this.adapter_.getAttr(strings.DATA_ARIA_LABEL_ON) :
-          this.adapter_.getAttr(strings.DATA_ARIA_LABEL_OFF);
-      this.adapter_.setAttr(strings.ARIA_LABEL, ariaLabel || '');
+          this.adapter.getAttr(strings.DATA_ARIA_LABEL_ON) :
+          this.adapter.getAttr(strings.DATA_ARIA_LABEL_OFF);
+      this.adapter.setAttr(strings.ARIA_LABEL, ariaLabel || '');
     } else {
-      this.adapter_.setAttr(strings.ARIA_PRESSED, `${isOn}`);
+      this.adapter.setAttr(strings.ARIA_PRESSED, `${isOn}`);
     }
   }
 }

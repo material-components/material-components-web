@@ -66,16 +66,16 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
   }
 
   init() {
-    this.savedTabIndex_ = this.adapter_.getAttr('tabindex');
+    this.savedTabIndex_ = this.adapter.getAttr('tabindex');
 
     INTERACTION_EVENTS.forEach((evtType) => {
-      this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter.registerInteractionHandler(evtType, this.interactionHandler_);
     });
   }
 
   destroy() {
     INTERACTION_EVENTS.forEach((evtType) => {
-      this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter.deregisterInteractionHandler(evtType, this.interactionHandler_);
     });
   }
 
@@ -85,20 +85,20 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
     }
 
     if (disabled) {
-      this.adapter_.setAttr('tabindex', '-1');
-      this.adapter_.removeAttr('role');
+      this.adapter.setAttr('tabindex', '-1');
+      this.adapter.removeAttr('role');
     } else {
-      this.adapter_.setAttr('tabindex', this.savedTabIndex_);
-      this.adapter_.setAttr('role', strings.ICON_ROLE);
+      this.adapter.setAttr('tabindex', this.savedTabIndex_);
+      this.adapter.setAttr('role', strings.ICON_ROLE);
     }
   }
 
   setAriaLabel(label: string) {
-    this.adapter_.setAttr('aria-label', label);
+    this.adapter.setAttr('aria-label', label);
   }
 
   setContent(content: string) {
-    this.adapter_.setContent(content);
+    this.adapter.setContent(content);
   }
 
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
@@ -106,7 +106,7 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
     if (evt.type === 'click' || isEnterKey) {
       evt.preventDefault();  // stop click from causing host label to focus
                              // input
-      this.adapter_.notifyIconAction();
+      this.adapter.notifyIconAction();
     }
   }
 }

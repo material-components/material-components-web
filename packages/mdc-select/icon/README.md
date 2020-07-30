@@ -34,7 +34,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ### Styles
 
 ```scss
-@import "@material/select/icon/mdc-select-icon";
+@use "@material/select/styles";
 ```
 
 ### JavaScript instantiation
@@ -53,15 +53,36 @@ Leading icons can be applied to default or `mdc-select--outlined` Selects. To ad
 
 ### Leading icon
 
-In select:
+> **NOTE:** when using leading icons in select anchor, also include an empty `<span class="mdc-list-item__graphic"></span>` in each list item.
+
+In filled select:
 
 ```html
-<div class="mdc-select mdc-select--with-leading-icon">
+<div class="mdc-select mdc-select--filled mdc-select--with-leading-icon">
   <div class="mdc-select__anchor">
+    <span class="mdc-select__ripple"></span>
+    <span class="mdc-floating-label">Pick a Food Group</span>
     <i class="material-icons mdc-select__icon" tabindex="0" role="button">event</i>
     ...
   </div>
-  <!-- The rest of the select markup. -->
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
+    <ul class="mdc-list" role="listbox">
+      <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" role="option" data-value="grains">
+        <span class="mdc-list-item__ripple"></span>
+        <span class="mdc-list-item__graphic"></span>
+        <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+      </li>
+      <li class="mdc-list-item" role="option" data-value="vegetables">
+        <span class="mdc-list-item__ripple"></span>
+        <span class="mdc-list-item__graphic"></span>
+        <span class="mdc-list-item__text">Vegetables</span>
+      </li>
+      <li class="mdc-list-item" role="option" data-value="fruit">
+        <span class="mdc-list-item__ripple"></span>
+        <span class="mdc-list-item__graphic"></span>
+        <span class="mdc-list-item__text">Fruit</span>
+      </li>
+    </ul>
 </div>
 ```
 
@@ -70,10 +91,13 @@ In outlined select:
 ```html
 <div class="mdc-select mdc-select--outlined mdc-select--with-leading-icon">
   <div class="mdc-select__anchor">
+    <span class="mdc-notched-outline">
+      ...
+    </span>
     <i class="material-icons mdc-select__icon" tabindex="0" role="button">event</i>
     ...
   </div>
-  <!-- The rest of the select markup. -->
+  <!-- The rest of the select markup, see above. -->
 </div>
 ```
 
@@ -89,7 +113,9 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-select-icon-color($color)` | Customizes the color for the leading icon.
+`size($size)` | Customizes the size (both width and height) of the icon.
+`icon-color($color)` | Customizes the color for the leading icon.
+`disabled-icon-color($color)` | Customizes the color for the leading icon when disabled.
 
 ## `MDCSelectIcon` properties and methods
 

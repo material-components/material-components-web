@@ -94,21 +94,21 @@ describe('MDCIconButtonToggle', () => {
 
   it('#adapter.addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('#adapter.removeClass removes a class from the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
 
   it('#adapter.setAttr sets an attribute on the root element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any)
-        .adapter_.setAttr('aria-label', 'hello');
+        .adapter.setAttr('aria-label', 'hello');
     expect(root.getAttribute('aria-label')).toEqual('hello');
   });
 
@@ -119,7 +119,7 @@ describe('MDCIconButtonToggle', () => {
        const handler = jasmine.createSpy('custom event handler');
        root.addEventListener(
            MDCIconButtonToggleFoundation.strings.CHANGE_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter_.notifyChange({});
+       (component.getDefaultFoundation() as any).adapter.notifyChange({});
        expect(handler).toHaveBeenCalledWith(jasmine.anything());
      });
 

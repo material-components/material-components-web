@@ -1,0 +1,194 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern
+// NOTE: We disable `selector-class-pattern` above to allow using `mdc-` class
+// selectors.
+
+@use 'sass:list';
+@use '@material/animation/functions';
+@use '@material/checkbox/mixins' as checkbox-mixins;
+@use '@material/density/functions' as density-functions;
+@use '@material/dom/mixins' as dom;
+@use '@material/elevation/mixins';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/icon-button/mixins' as icon-button-mixins;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/typography/typography';
+@use './data-table-cell';
+@use './data-table-header-cell';
+@use './data-table-pagination';
+@use './data-table-progress-indicator';
+@use './data-table-theme';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  // postcss-bem-linter: define data-table
+
+  .mdc-data-table__content {
+    @include typography.typography(body2, $query: $query);
+  }
+
+  .mdc-data-table {
+    @include data-table-theme.fill-color(
+      data-table-theme.$fill-color,
+      $query: $query
+    );
+    @include data-table-theme.shape-radius(
+      data-table-theme.$shape-radius,
+      $query: $query
+    );
+    @include data-table-theme.stroke-size(
+      data-table-theme.$stroke-size,
+      $query: $query
+    );
+    @include data-table-theme.stroke-color(
+      data-table-theme.$stroke-color,
+      $query: $query
+    );
+
+    @include feature-targeting.targets($feat-structure) {
+      // Makes the table scroll smoothly in iOS.
+      // NOTE: Root element should not be scrollable, added this for backward
+      // compatibility.
+      -webkit-overflow-scrolling: touch;
+      display: inline-flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      position: relative;
+    }
+  }
+
+  // Note that we don't output the color styles inside the `@at-root`,
+  // because it makes it difficult to consume by projects that wrap their
+  // themes in a class (e.g. `.my-theme { @include mdc-data-table-core-style() }`).
+  @include data-table-theme.row-fill-color(
+    data-table-theme.$row-fill-color,
+    $query: $query
+  );
+  @include data-table-theme.header-row-fill-color(
+    data-table-theme.$header-row-fill-color,
+    $query: $query
+  );
+  @include data-table-theme.selected-row-fill-color(
+    data-table-theme.$selected-row-fill-color,
+    $query: $query
+  );
+  @include data-table-theme.divider-color(
+    data-table-theme.$divider-color,
+    $query: $query
+  );
+  @include data-table-theme.divider-size(
+    data-table-theme.$divider-size,
+    $query: $query
+  );
+  @include data-table-theme.row-hover-fill-color(
+    data-table-theme.$row-hover-fill-color,
+    $query: $query
+  );
+  @include data-table-theme.header-row-text-color(
+    data-table-theme.$header-row-text-color,
+    $query: $query
+  );
+  @include data-table-theme.row-text-color(
+    data-table-theme.$row-text-color,
+    $query: $query
+  );
+  @include data-table-theme.density(
+    data-table-theme.$default-density-scale,
+    $query: $query
+  );
+  @include data-table-theme.cell-padding(
+    $leading-padding: data-table-theme.$cell-leading-padding,
+    $trailing-padding: data-table-theme.$cell-trailing-padding,
+    $query: $query
+  );
+  @include data-table-theme.sort-icon-color(
+    data-table-theme.$sort-icon-color,
+    $query: $query
+  );
+  @include data-table-theme.sort-icon-active-color(
+    data-table-theme.$sort-icon-active-color,
+    $query: $query
+  );
+
+  .mdc-data-table__table-container {
+    @include feature-targeting.targets($feat-structure) {
+      // Makes the table scroll smoothly in iOS.
+      -webkit-overflow-scrolling: touch;
+      overflow-x: auto;
+      width: 100%;
+    }
+  }
+
+  .mdc-data-table__table {
+    @include feature-targeting.targets($feat-structure) {
+      min-width: 100%; // Makes table full-width of its container (Firefox / IE11)
+      border: 0;
+      white-space: nowrap;
+      border-collapse: collapse;
+      /**
+       * With table-layout:fixed, table and column widths are defined by the width
+       * of the first row of cells. Cells in subsequent rows do not affect column
+       * widths. This results in a predictable table layout and may also speed up
+       * rendering.
+       */
+      table-layout: fixed;
+    }
+  }
+
+  @include data-table-cell.core-styles($query: $query);
+  @include data-table-header-cell.core-styles($query: $query);
+  @include data-table-progress-indicator.core-styles($query: $query);
+
+  .mdc-data-table--sticky-header {
+    @include _sticky-header($query: $query);
+  }
+
+  @include data-table-pagination.core-styles($query: $query);
+}
+
+@mixin theme-baseline($query: feature-targeting.all()) {
+  @include data-table-theme.checked-icon-color(
+    data-table-theme.$checked-icon-color,
+    $query: $query
+  );
+}
+
+/// Sets styles required to support sticky header row.
+@mixin _sticky-header($query: $query) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include data-table-header-cell.header-cell-sticky($query: $query);
+
+  .mdc-data-table__row:first-child {
+    @include feature-targeting.targets($feat-structure) {
+      border-top: 0;
+    }
+  }
+}

@@ -1,8 +1,8 @@
-@use "../mixins" as text-field;
-@use "../character-counter/mixins" as character-counter;
-@use "../helper-text/mixins" as helper-text;
-@use "../icon/mixins" as icon;
-@use "@material/feature-targeting/functions" as feature;
+@use '../mixins' as text-field;
+@use '../character-counter/mixins' as character-counter;
+@use '../helper-text/mixins' as helper-text;
+@use '../icon/mixins' as icon;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {
@@ -34,12 +34,23 @@
     @include text-field.focused-outline-color(red, $query: $query);
     @include text-field.disabled-outline-color(red, $query: $query);
     @include text-field.caret-color(red, $query: $query);
-    @include text-field.floating-label-float-transition(250ms, linear, $query: $query);
+    @include text-field.floating-label-float-transition(
+      250ms,
+      linear,
+      $query: $query
+    );
 
     @include character-counter.character-counter-core-styles($query: $query);
     @include character-counter.character-counter-color(red, $query: $query);
-    @include character-counter.disabled-character-counter-color(red, $query: $query);
-    @include character-counter.character-counter-position(100%, 100%, $query: $query);
+    @include character-counter.disabled-character-counter-color(
+      red,
+      $query: $query
+    );
+    @include character-counter.character-counter-position(
+      100%,
+      100%,
+      $query: $query
+    );
 
     @include helper-text.helper-text-core-styles($query: $query);
     @include helper-text.helper-text-color(red, $query: $query);
@@ -54,4 +65,4 @@
 }
 
 // This shouldn't output any CSS.
-@include test(feature.any());
+@include test(feature-targeting.any());

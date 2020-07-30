@@ -20,37 +20,39 @@
 // THE SOFTWARE.
 //
 
-@use "@material/theme/variables";
+@use '@material/theme/theme-color';
 
 // Colors
-$title-ink-color: variables.prop-value(on-surface) !default;
-$subtitle-ink-color: variables.prop-value(on-surface) !default;
-$item-inactive-ink-color: variables.prop-value(on-surface) !default;
-$item-activated-ink-color: variables.prop-value(primary) !default;
-$divider-color: variables.prop-value(on-surface) !default;
-$surface-fill-color: variables.prop-value(surface) !default;
+$title-ink-color: theme-color.prop-value(on-surface) !default;
+$subtitle-ink-color: theme-color.prop-value(on-surface) !default;
+$item-inactive-ink-color: theme-color.prop-value(on-surface) !default;
+$item-activated-ink-color: theme-color.prop-value(primary) !default;
+$divider-color: theme-color.prop-value(on-surface) !default;
+$surface-fill-color: theme-color.prop-value(surface) !default;
 
 // Opacity
-$title-ink-opacity: variables.text-emphasis(high) !default;
-$subtitle-ink-opacity: variables.text-emphasis(medium) !default;
-$item-inactive-icon-ink-opacity: variables.text-emphasis(medium) !default;
-$item-inactive-text-ink-opacity: variables.text-emphasis(high) !default;
+$title-ink-opacity: theme-color.text-emphasis(high) !default;
+$subtitle-ink-opacity: theme-color.text-emphasis(medium) !default;
+$item-inactive-icon-ink-opacity: theme-color.text-emphasis(medium) !default;
+$item-inactive-text-ink-opacity: theme-color.text-emphasis(high) !default;
 $item-active-icon-ink-opacity: 1 !default;
-$item-active-text-ink-opacity: variables.text-emphasis(high) !default;
-$divider-opacity: .12 !default;
+$item-active-text-ink-opacity: theme-color.text-emphasis(high) !default;
+$divider-opacity: 0.12 !default;
 
 // Widths
 $width: 256px !default;
 $list-item-spacing: 4px !default;
 $surface-padding: 16px !default;
+$shape-radius: large !default;
+$item-shape-radius: small !default;
 
 // Animations
 $animation-enter: 250ms !default;
 $animation-exit: 200ms !default;
 
 // Scrim
-$modal-scrim-color: variables.prop-value(on-surface) !default;
-$modal-scrim-opacity: .32 !default;
+$modal-scrim-color: theme-color.prop-value(on-surface) !default;
+$modal-scrim-opacity: 0.32 !default;
 
 $z-index: 6 !default;
 $modal-elevation: 16 !default;

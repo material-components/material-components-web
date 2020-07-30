@@ -100,12 +100,15 @@ Single-line list items contain a maximum of one line of text.
 ```html
 <ul class="mdc-list">
   <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
 </ul>
@@ -123,18 +126,21 @@ text to style a two-line list.
 ```html
 <ul class="mdc-list mdc-list--two-line">
   <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">
       <span class="mdc-list-item__primary-text">Two-line item</span>
       <span class="mdc-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">
       <span class="mdc-list-item__primary-text">Two-line item</span>
       <span class="mdc-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">
       <span class="mdc-list-item__primary-text">Two-line item</span>
       <span class="mdc-list-item__secondary-text">Secondary text</span>
@@ -162,24 +168,30 @@ Multiple related lists can be grouped together using the `mdc-list-group` class 
   <h3 class="mdc-list-group__subheader">List 1</h3>
   <ul class="mdc-list">
     <li class="mdc-list-item" tabindex="0">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
     <li class="mdc-list-item">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
     <li class="mdc-list-item">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
   </ul>
   <h3 class="mdc-list-group__subheader">List 2</h3>
   <ul class="mdc-list">
     <li class="mdc-list-item">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
     <li class="mdc-list-item">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
     <li class="mdc-list-item">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">line item</span>
     </li>
   </ul>
@@ -193,16 +205,20 @@ MDC List contains an `mdc-list-divider` class which can be used as full-width or
 ```html
 <ul class="mdc-list">
   <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Item 1 - Division 1</span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Item 2 - Division 1</span>
   </li>
   <li role="separator" class="mdc-list-divider"></li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Item 1 - Division 2</span>
   </li>
   <li class="mdc-list-item">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Item 2 - Division 2</span>
   </li>
 </ul>
@@ -240,12 +256,15 @@ single list item to become selected and any other previously selected element to
 ```html
 <ul id="my-list" class="mdc-list" role="listbox">
   <li class="mdc-list-item" role="option" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item" role="option">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item" role="option">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
 </ul>
@@ -288,6 +307,7 @@ When rendering list radio group with pre-selected radio button the selected list
 ```html
 <ul class="mdc-list" role="radiogroup">
   <li class="mdc-list-item" role="radio" aria-checked="false">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
@@ -304,6 +324,7 @@ When rendering list radio group with pre-selected radio button the selected list
     <label class="mdc-list-item__text" for="demo-list-radio-item-1">Option 1</label>
   </li>
   <li class="mdc-list-item" role="radio" aria-checked="true" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
@@ -321,6 +342,7 @@ When rendering list radio group with pre-selected radio button the selected list
     <label class="mdc-list-item__text" for="demo-list-radio-item-2">Option 2</label>
   </li>
   <li class="mdc-list-item" role="radio" aria-checked="false">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
@@ -346,6 +368,7 @@ When rendering list with checkbox items all pre-selected list items should conta
 ```html
 <ul class="mdc-list" role="group" aria-label="List with checkbox items">
   <li class="mdc-list-item" role="checkbox" aria-checked="false">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
       <div class="mdc-checkbox">
         <input type="checkbox"
@@ -365,6 +388,7 @@ When rendering list with checkbox items all pre-selected list items should conta
     <label class="mdc-list-item__text" for="demo-list-checkbox-item-1">Option 1</label>
   </li>
   <li class="mdc-list-item" role="checkbox" aria-checked="true" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
         <div class="mdc-checkbox">
             <input type="checkbox"
@@ -385,6 +409,7 @@ When rendering list with checkbox items all pre-selected list items should conta
     <label class="mdc-list-item__text" for="demo-list-checkbox-item-2">Option 2</label>
   </li>
   <li class="mdc-list-item" role="checkbox" aria-checked="false">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__graphic">
         <div class="mdc-checkbox">
             <input type="checkbox"
@@ -415,9 +440,20 @@ The `selectedIndex` (that proxies foundation's `setSelectedState()`) accepts lis
 CSS Class | Description
 --- | ---
 `mdc-list` | Mandatory, for the list element.
-`mdc-list--non-interactive` | Optional, disables interactivity affordances.
 `mdc-list--dense` | Optional, styles the density of the list, making it appear more compact.
-`mdc-list--avatar-list` | Optional, configures the leading tiles of each row to display images instead of icons. This will make the graphics of the list items larger.
+`mdc-list--textual-list` | Optional, configures lists that start with text
+(e.g., do not have a leading tile).
+`mdc-list--avatar-list` | Optional, configures the leading tile of each row to 
+display avatars.
+`mdc-list--icon-list` | Optional, configures the leading tile of each row to 
+display icons.
+`mdc-list--image-list` | Optional, configures the leading tile of each row to 
+display images.
+`mdc-list--thumbnail-list` | Optional, configures the leading tile of each row to
+display smaller images (this is analogous to an avatar list but the image will
+not be rounded).
+`mdc-list--video-list` | Optional, configures the leading tile of each row to 
+display videos.
 `mdc-list--two-line` | Optional, modifier to style list with two lines (primary and secondary lines).
 `mdc-list-item` | Mandatory, for the list item element.
 `mdc-list-item__text` |	Mandatory. Wrapper for list item text content (displayed as middle column of the list item).
@@ -426,13 +462,26 @@ CSS Class | Description
 `mdc-list-item--disabled` | Optional, styles the row in the disabled state.
 `mdc-list-item--selected` | Optional, styles the row in the selected* state.
 `mdc-list-item--activated` | Optional, styles the row in the activated* state.
-`mdc-list-item__graphic` | Optional, the first tile in the row (in LTR languages, the first column of the list item). Typically an icon or image.
-`mdc-list-item__meta`	| Optional, the last tile in the row (in LTR languages, the last column of the list item). Typically small text, icon. or image.
+`mdc-list-item__graphic` | Optional, the first tile in the row (in LTR
+languages, the first column of the list item). Defaults to an icon, but renders
+as an avatar in an avatar list, or an image or video in the corresponding list.
+`mdc-list-item__meta`	| Optional, the last tile in the row (in LTR languages, 
+the last column of the list item). Typically small text, icon, or image.
 `mdc-list-group` | Optional, wrapper around two or more mdc-list elements to be grouped together.
 `mdc-list-group__subheader` |	Optional, heading text displayed above each list in a group.
 `mdc-list-divider` | Optional, for list divider element.
-`mdc-list-divider--padded` | Optional, leaves gaps on each side of divider to match padding of `list-item__meta`.
-`mdc-list-divider--inset` | Optional, increases the leading margin of the divider so that it does not intersect the avatar column.
+`mdc-list-divider--padded` | Optional, leaves gaps on each side of divider to
+match padding of `list-item__meta`. Deprecated: use the more flexible "inset-" 
+classes, instead.
+`mdc-list-divider--inset` | Optional, increases the leading and trailing margins
+of the divider so that it doesn't intersect with an avatar. Deprecated: use the
+more flexible "inset-" classes instead.
+`mdc-list-divider--inset-leading` | Optional, increases the leading margin of
+the divider so that it does not intersect the graphics column.
+`mdc-list-divider--inset-trailing` | Optional, increases the trailing margin of
+the divider so that it coincides with the item's padding.
+`mdc-list-divider--inset-padding` | Optional, alters the inset to correspond to
+the item's padding rather than the leading graphics column.
 
 **Note: The `mdc-list-divider` class can be used between list items *OR* between two lists (see respective examples under [List Dividers](#list-dividers)).**
 
@@ -452,10 +501,20 @@ Mixin | Description
 `single-line-shape-radius($radius, $rtl-reflexive, $density-scale)` | Sets the rounded shape to list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false. Set `$density-scale` only when custom density is applied, defaults to `$mdc-list-single-line-density-scale`.
 `divider-color($color)` | Sets divider ink color.
 `group-subheader-ink-color($color)` | Sets ink color of subheader text within list group.
-`item-disabled-text-color($color`) | Sets the color of the text when the list item is disabled.
-`item-disabled-text-opacity($opacity`) | Sets the opacity of the text when the list item is disabled.
+`item-selected-text-color($color)` | Sets the color of the text when the list item is selected/activated.
+`item-disabled-text-color($color)` | Sets the color of the text when the list item is disabled.
+`item-disabled-text-opacity($opacity)` | Sets the opacity of the text when the list item is disabled.
 `single-line-density($density-scale)` | Sets density scale to single line list variant. Supported density scales are `-4`, `-3`, `-2`, `-1` and  `0`.
 `single-line-height($height)` | Sets height to single line list variant.
+`list-item-padding($leading-padding)` | Sets the padding used by each list item.
+`list-item-height($height)` | Sets the height used by each list item.
+`icon-margin($margin)` | Sets the trailing margin used by icons.
+`divider-insets($leading-padding, $text-offset)` | Creates the full set of
+divider inset styles using the provided padding and text offset.
+`divider-insets($leading-padding, $text-offset)` | Sets a single divider's inset
+using the provided padding, text offset, and configuration.
+`graphic-size($leading-padding, $text-offset, $width, $height)` | Sets the size
+and trailing margin of a leading graphic.
 
 ## `MDCList` Properties and Methods
 
@@ -464,12 +523,15 @@ Property | Value Type | Description
 `vertical` | `boolean` (write-only) | Proxies to the foundation's `setVerticalOrientation()` method.
 `listElements` | `Array<Element>` (read-only) | Returns all list item elements including disabled list items.
 `wrapFocus` | `boolean` (write-only) | Proxies to the foundation's `setWrapFocus()` method.
+`typeaheadInProgress` | `boolean` (read-only) | Proxies to foundation's `isTypeaheadInProgress` method.
+`hasTypeahead` | `boolean` (write-only) | Proxies to the foundation's `setHasTypeahead()` method.
 `singleSelection` | `boolean` (write-only) | Proxies to the foundation's `setSingleSelection()` method.
 `selectedIndex` | `MDCListIndex` | Proxies to the foundation's `getSelectedIndex()` and `setSelectedIndex()` methods.
 
 Method Signature | Description
 --- | ---
 `layout() => void` | Recalculates layout and orientation.
+`getPrimaryText(item: Element) => string` | Fetches the primary text in the given element.
 `initializeListType() => void` | Initialize `selectedIndex` value based on pre-selected checkbox list items, single selection or radio.
 `setEnabled(itemIndex: number, isEnabled: boolean) => void` | Updates the list item at `itemIndex` to the desired `isEnabled` state.
 
@@ -499,13 +561,16 @@ these should also receive `tabIndex="-1"`.
 ```html
 <ul id="my-list" class="mdc-list">
   <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
     <button tabindex="-1"></button>
   </li>
   <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
 </ul>
@@ -522,13 +587,16 @@ after the foundation is instantiated. Please see [Accessibility](#Accessibility)
 ```html
 <ul id="my-list" class="mdc-list">
   <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
     <button tabindex="-1"></button>
     </li>
   <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" tabindex="0">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__ripple"></span>
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
 </ul>
@@ -554,6 +622,7 @@ Method Signature | Description
 `isFocusInsideList() => boolean` | Returns true if the current focused element is inside list root.
 `isRootFocused() => boolean` | Returns true if root element is focused.
 `listItemAtIndexHasClass(index: number, className: string) => boolean` | Returns true if list item at `index` has class `className`.
+`getPrimaryTextAtIndex(index: number)` | Returns the primary text content of the list item at index.
 
 ### `MDCListFoundation`
 
@@ -574,3 +643,7 @@ Method Signature | Description
 `focusFirstElement() => number` | Handles focusing the first element in a list. Returns focused element index.
 `focusLastElement() => number` | Handles focusing the last element in a list. Returns focused element index.
 `setEnabled(itemIndex: number, isEnabled: Boolean) => void` | Updates the list item's disabled state.
+`setHasTypeahead(hasTypeahead: Boolean) => void` | Sets whether typeahead is enabled on the list.
+`isTypeaheadInProgress() => Boolean` | Returns whether typeahead is currently matching a user-specified prefix.
+`typeaheadMatchItem(nextChar: string) => number` | Adds a character to the typeahead buffer and returns index of the next item in the list matching the buffer.
+`clearTypeaheadBuffer() => void` | Clears the typeahead buffer.

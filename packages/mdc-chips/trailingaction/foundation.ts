@@ -49,7 +49,7 @@ export class MDCChipTrailingActionFoundation extends
 
   handleClick(evt: MouseEvent) {
     evt.stopPropagation();
-    this.adapter_.notifyInteraction(InteractionTrigger.CLICK);
+    this.adapter.notifyInteraction(InteractionTrigger.CLICK);
   }
 
   handleKeydown(evt: KeyboardEvent) {
@@ -57,27 +57,27 @@ export class MDCChipTrailingActionFoundation extends
     const key = normalizeKey(evt);
     if (this.shouldNotifyInteractionFromKey_(key)) {
       const trigger = this.getTriggerFromKey_(key);
-      this.adapter_.notifyInteraction(trigger);
+      this.adapter.notifyInteraction(trigger);
       return;
     }
 
     if (isNavigationEvent(evt)) {
-      this.adapter_.notifyNavigation(key);
+      this.adapter.notifyNavigation(key);
       return;
     }
   }
 
   removeFocus() {
-    this.adapter_.setAttribute(strings.TAB_INDEX, '-1');
+    this.adapter.setAttribute(strings.TAB_INDEX, '-1');
   }
 
   focus() {
-    this.adapter_.setAttribute(strings.TAB_INDEX, '0');
-    this.adapter_.focus();
+    this.adapter.setAttribute(strings.TAB_INDEX, '0');
+    this.adapter.focus();
   }
 
   isNavigable() {
-    return this.adapter_.getAttribute(strings.ARIA_HIDDEN) !== 'true';
+    return this.adapter.getAttribute(strings.ARIA_HIDDEN) !== 'true';
   }
 
   private shouldNotifyInteractionFromKey_(key: string): boolean {

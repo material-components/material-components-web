@@ -35,13 +35,25 @@ function getFixture(open = false) {
     <div class="mdc-menu mdc-menu-surface ${
       open ? 'mdc-menu-surface--open' : ''}">
       <ul class="mdc-list" role="menu" tabIndex="-1">
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">Item</span>
+        </li>
         <li role="separator"></li>
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item</a>
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">Another Item</span>
+        </li>
         <li>
           <ul class="mdc-menu__selection-group" role="menu">
-            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
-            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Another Item</a>
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Item</span>
+            </li>
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Another Item</span>
+            </li>
           </ul>
         </li>
       </ul>
@@ -58,20 +70,38 @@ function getFixtureWithMultipleSelectionGroups(open = false) {
     <div class="mdc-menu mdc-menu-surface ${
       open ? 'mdc-menu-surface--open' : ''}">
       <ul class="mdc-list" role="menu" tabIndex="-1">
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">Item</span>
+        </li>
         <li class="mdc-list-divider" role="separator"></li>
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item</a>
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">Another Item</span>
+        </li>
         <li>
           <ul class="mdc-menu__selection-group" role="menu">
-            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
-            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Another Item</a>
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Item</span>
+            </li>
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Another Item</span>
+            </li>
           </ul>
         </li>
         <li class="mdc-list-divider" role="separator"></li>
         <li>
           <ul class="mdc-menu__selection-group" role="menu">
-            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Item2</a>
-            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item2</a>
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Item2</span>
+            </li>
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">
+              <span class="mdc-list-item__ripple"></span>
+              <span class="mdc-list-item__text">Another Item2</span>
+            </li>
           </ul>
         </li>
       </ul>
@@ -83,10 +113,14 @@ function getFixtureWithMultipleSelectionGroups(open = false) {
 }
 
 class FakeList {
-  destroy: Function = jasmine.createSpy('.destroy');
-  itemsContainer: Function = jasmine.createSpy('.root_');
+  destroy: jasmine.Spy = jasmine.createSpy('.destroy');
+  itemsContainer: jasmine.Spy = jasmine.createSpy('.root_');
+  layout: jasmine.Spy = jasmine.createSpy('layout');
   wrapFocus: boolean = true;
+  typeaheadInProgress: boolean = false;
+  typeaheadMatchItem: jasmine.Spy = jasmine.createSpy('.typeaheadMatchItem');
   listElements: HTMLElement[];
+  getPrimaryText: jasmine.Spy = jasmine.createSpy('.getPrimaryText');
 
   constructor(root: HTMLElement) {
     this.listElements = [].slice.call(root.querySelectorAll('.mdc-list-item'))
@@ -221,6 +255,29 @@ describe('MDCMenu', () => {
     expect(list.wrapFocus).toBe(false);
   });
 
+  it('typeaheadInProgress proxies to MDCList#typeaheadInProgress property',
+     () => {
+       const {component, list} = setupTestWithFakes();
+
+       expect(component.typeaheadInProgress).toBeFalse();
+       list.typeaheadInProgress = true;
+       expect(component.typeaheadInProgress).toBeTrue();
+     });
+
+  it('typeaheadMatchItem proxies to MDCList#typeaheadMatchItem method', () => {
+    const {component, list} = setupTestWithFakes();
+
+    component.typeaheadMatchItem('a', 2);
+    expect(list.typeaheadMatchItem).toHaveBeenCalledWith('a', 2);
+  });
+
+  it('layout proxies to MDCList#layout method', () => {
+    const {component, list} = setupTestWithFakes();
+
+    component.layout();
+    expect(list.layout).toHaveBeenCalled();
+  });
+
   it('setAnchorCorner proxies to the MDCMenuSurface#setAnchorCorner method',
      () => {
        const {component, menuSurface} = setupTestWithFakes();
@@ -284,6 +341,14 @@ describe('MDCMenu', () => {
     const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
     list.listElements = items;
     expect(component.getOptionByIndex(items.length)).toBe(null);
+  });
+
+  it('getPrimaryTextAtIndex', () => {
+    const {component, list} = setupTestWithFakes();
+    list.getPrimaryText.withArgs(jasmine.any(Element))
+        .and.returnValue('Another Item');
+
+    expect(component.getPrimaryTextAtIndex(1)).toEqual('Another Item');
   });
 
   it('setFixedPosition', () => {
@@ -352,7 +417,7 @@ describe('MDCMenu', () => {
 
     document.body.appendChild(root);
     (component as any)
-        .list_.foundation_.handleKeydown(
+        .list_.foundation.handleKeydown(
             fakeEnterKeyEvent, /* isRootListItem */ true,
             /* listItemIndex */ 0);
     document.body.removeChild(root);
@@ -388,7 +453,7 @@ describe('MDCMenu', () => {
        const {root, component} = setupTest();
        const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
        (component.getDefaultFoundation() as any)
-           .adapter_.addClassToElementAtIndex(0, 'foo');
+           .adapter.addClassToElementAtIndex(0, 'foo');
        expect(firstItem.classList.contains('foo')).toBe(true);
      });
 
@@ -398,7 +463,7 @@ describe('MDCMenu', () => {
        const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
        firstItem.classList.add('foo');
        (component.getDefaultFoundation() as any)
-           .adapter_.removeClassFromElementAtIndex(0, 'foo');
+           .adapter.removeClassFromElementAtIndex(0, 'foo');
        expect(firstItem.classList.contains('foo')).toBe(false);
      });
 
@@ -407,7 +472,7 @@ describe('MDCMenu', () => {
        const {root, component} = setupTest();
        const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
        (component.getDefaultFoundation() as any)
-           .adapter_.addAttributeToElementAtIndex(0, 'foo', 'true');
+           .adapter.addAttributeToElementAtIndex(0, 'foo', 'true');
        expect(firstItem.getAttribute('foo') === 'true').toBe(true);
      });
 
@@ -417,7 +482,7 @@ describe('MDCMenu', () => {
        const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
        firstItem.setAttribute('foo', 'true');
        (component.getDefaultFoundation() as any)
-           .adapter_.removeAttributeFromElementAtIndex(0, 'foo');
+           .adapter.removeAttributeFromElementAtIndex(0, 'foo');
        expect(firstItem.getAttribute('foo')).toBe(null);
      });
 
@@ -427,7 +492,7 @@ describe('MDCMenu', () => {
        const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
        firstItem.classList.add('foo');
        const containsFoo = (component.getDefaultFoundation() as any)
-                               .adapter_.elementContainsClass(firstItem, 'foo');
+                               .adapter.elementContainsClass(firstItem, 'foo');
        expect(containsFoo).toBe(true);
      });
 
@@ -436,14 +501,14 @@ describe('MDCMenu', () => {
        const {root, component} = setupTest();
        const firstItem = root.querySelector('.mdc-list-item');
        const containsFoo = (component.getDefaultFoundation() as any)
-                               .adapter_.elementContainsClass(firstItem, 'foo');
+                               .adapter.elementContainsClass(firstItem, 'foo');
        expect(containsFoo).toBe(false);
      });
 
   it('adapter#closeSurface proxies to menuSurface#close', () => {
     const {component, menuSurface} = setupTestWithFakes();
     (component.getDefaultFoundation() as any)
-        .adapter_.closeSurface(/** skipRestoreFocus */ false);
+        .adapter.closeSurface(/** skipRestoreFocus */ false);
     expect(menuSurface.close)
         .toHaveBeenCalledWith(/** skipRestoreFocus */ false);
   });
@@ -453,7 +518,7 @@ describe('MDCMenu', () => {
        const {root, component} = setupTest();
        const firstItem = root.querySelector('.mdc-list-item');
        const indexValue = (component.getDefaultFoundation() as any)
-                              .adapter_.getElementIndex(firstItem);
+                              .adapter.getElementIndex(firstItem);
        expect(indexValue).toEqual(0);
      });
 
@@ -462,7 +527,7 @@ describe('MDCMenu', () => {
        const {component} = setupTest();
        const firstItem = document.createElement('li');
        const indexValue = (component.getDefaultFoundation() as any)
-                              .adapter_.getElementIndex(firstItem);
+                              .adapter.getElementIndex(firstItem);
        expect(indexValue).toEqual(-1);
      });
 
@@ -470,14 +535,14 @@ describe('MDCMenu', () => {
     const {root, component} = setupTest();
     const handler = jasmine.createSpy('eventHandler');
     root.addEventListener(MDCMenuFoundation.strings.SELECTED_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifySelected(0);
+    (component.getDefaultFoundation() as any).adapter.notifySelected(0);
     expect(handler).toHaveBeenCalled();
   });
 
   it('adapter#getMenuItemCount returns the menu item count', () => {
     const {component} = setupTest();
     expect(
-        (component.getDefaultFoundation() as any).adapter_.getMenuItemCount())
+        (component.getDefaultFoundation() as any).adapter.getMenuItemCount())
         .toEqual(component.items.length);
   });
 
@@ -485,7 +550,7 @@ describe('MDCMenu', () => {
     const {root, component} = setupTest();
     document.body.appendChild(root);
 
-    (component.getDefaultFoundation() as any).adapter_.focusItemAtIndex(2);
+    (component.getDefaultFoundation() as any).adapter.focusItemAtIndex(2);
     expect(document.activeElement).toEqual(component.items[2]);
 
     document.body.removeChild(root);
@@ -495,7 +560,7 @@ describe('MDCMenu', () => {
     const {root, component} = setupTest();
     document.body.appendChild(root);
 
-    (component.getDefaultFoundation() as any).adapter_.focusListRoot();
+    (component.getDefaultFoundation() as any).adapter.focusListRoot();
     expect(document.activeElement)
         .toEqual(root.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
 
@@ -508,7 +573,7 @@ describe('MDCMenu', () => {
        const {component} = setupTest();
 
        const isSelectableItemAtIndex = (component.getDefaultFoundation() as any)
-                                           .adapter_.isSelectableItemAtIndex(3);
+                                           .adapter.isSelectableItemAtIndex(3);
        expect(isSelectableItemAtIndex).toBe(true);
      });
 
@@ -518,7 +583,7 @@ describe('MDCMenu', () => {
        const {component} = setupTest();
 
        const isSelectableItemAtIndex = (component.getDefaultFoundation() as any)
-                                           .adapter_.isSelectableItemAtIndex(1);
+                                           .adapter.isSelectableItemAtIndex(1);
        expect(isSelectableItemAtIndex).toBe(false);
      });
 
@@ -528,7 +593,7 @@ describe('MDCMenu', () => {
        const {component} = setupTest();
 
        const siblingIndex = (component.getDefaultFoundation() as any)
-                                .adapter_.getSelectedSiblingOfItemAtIndex(2);
+                                .adapter.getSelectedSiblingOfItemAtIndex(2);
        expect(siblingIndex).toEqual(3);
      });
 });

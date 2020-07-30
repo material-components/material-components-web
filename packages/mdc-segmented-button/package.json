@@ -1,0 +1,26 @@
+{
+    "name": "@material/segmented-button",
+    "version": "0.0.0",
+    "description": "The Material Components for the web segmented button component",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/material-components/material-components-web.git",
+        "directory": "packages/mdc-segmented-button"
+    },
+    "keywords": [
+        "material components",
+        "material design",
+        "segmented button"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@material/base": "^7.0.0",
+        "@material/feature-targeting": "^7.0.0",
+        "@material/ripple": "^7.0.0",
+        "@material/theme": "^7.0.0",
+        "@material/typography": "^7.0.0"
+    }
+}

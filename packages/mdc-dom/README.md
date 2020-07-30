@@ -68,5 +68,14 @@ Method Signature | Description
 The `keyboard` utility provides helper methods for normalizing `KeyboardEvent` keys across browsers. It is intended for usage from MDC-internal components.
 
 Method Signature | Description
+--- | ---
 `normalizeKey(evt: KeyboardEvent) => string` | Returns a normalized string derived from `KeyboardEvent`'s `keyCode` property to be standard across browsers.
 `isNavigationEvent(evt: KeyboardEvent) => boolean` | Returns `true` if the event is a navigation event (Page Up, Page Down, Home, End, Left, Up, Right, Down).
+
+## Mixins
+
+The module provides a single SASS mixin which helps improves a DOM element's UX for high-contrast mode users.
+
+Mixin | Description
+--- | ---
+`transparent-border` | Emits necessary layout styles to set a transparent border around an element without interfering with the rest of its component layout. The border is only visible in high-contrast mode. The target element should be a child of a relatively positioned top-level element (i.e. a ::before pseudo-element).

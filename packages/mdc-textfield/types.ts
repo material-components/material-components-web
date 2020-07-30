@@ -25,7 +25,7 @@ import {MDCTextFieldCharacterCounterFoundation} from './character-counter/founda
 import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
 import {MDCTextFieldIconFoundation} from './icon/foundation';
 
-export type MDCTextFieldNativeInputElement = Pick<HTMLInputElement, 'disabled' | 'maxLength' | 'type' | 'value'> & {
+export type MDCTextFieldNativeInputElement = Pick<HTMLInputElement, 'disabled' | 'maxLength' | 'type' | 'value' | 'required'> & {
   validity: Pick<ValidityState, 'badInput' | 'valid'>;
 };
 

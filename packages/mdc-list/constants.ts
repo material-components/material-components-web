@@ -26,6 +26,8 @@ const cssClasses = {
   LIST_ITEM_CLASS: 'mdc-list-item',
   LIST_ITEM_DISABLED_CLASS: 'mdc-list-item--disabled',
   LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
+  LIST_ITEM_TEXT_CLASS: 'mdc-list-item__text',
+  LIST_ITEM_PRIMARY_TEXT_CLASS: 'mdc-list-item__primary-text',
   ROOT: 'mdc-list',
 };
 
@@ -57,6 +59,7 @@ const strings = {
 
 const numbers = {
   UNSET_INDEX: -1,
+  TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS: 300
 };
 
 export {strings, cssClasses, numbers};

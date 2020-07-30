@@ -6,8 +6,6 @@
 @mixin test($query) {
   .test {
     @include select.core-styles($query: $query);
-    @include select.without-ripple($query: $query);
-    @include select.ripple($query: $query);
     @include select.ink-color(red, $query: $query);
     @include select.container-fill-color(red, $query: $query);
     @include select.focused-label-color(red, $query: $query);
@@ -18,7 +16,7 @@
     @include select.outline-color(red, $query: $query);
     @include select.hover-outline-color(red, $query: $query);
     @include select.focused-outline-color(red, $query: $query);
-    @include select.shape-radius(42px, $query: $query);
+    @include select.filled-shape-radius(42px, $query: $query);
     @include select.outline-shape-radius(42px, $query: $query);
 
     @include helper-text.helper-text-core-styles($query: $query);

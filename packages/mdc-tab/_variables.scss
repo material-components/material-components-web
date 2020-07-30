@@ -20,15 +20,21 @@
 // THE SOFTWARE.
 //
 
-@use "@material/theme/variables"; // for mdc-theme-prop-value()
+@use '@material/theme/theme-color';
 
 $icon-size: 24px !default;
 $height: 48px !default;
 $stacked-height: 72px !default;
 $horizontal-padding: 24px !default;
-$text-label-opacity: .6 !default;
-$icon-opacity: .54 !default;
-$text-label-color-default: rgba(variables.prop-value(on-surface), $text-label-opacity) !default;
-$icon-color-default: rgba(variables.prop-value(on-surface), $icon-opacity) !default;
+$text-label-opacity: 0.6 !default;
+$icon-opacity: 0.54 !default;
+$text-label-color-default: rgba(
+  theme-color.prop-value(on-surface),
+  $text-label-opacity
+) !default;
+$icon-color-default: rgba(
+  theme-color.prop-value(on-surface),
+  $icon-opacity
+) !default;
 $text-label-color-active: primary !default;
 $icon-color-active: primary !default;

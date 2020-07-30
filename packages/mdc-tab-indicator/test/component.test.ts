@@ -71,14 +71,14 @@ describe('MDCTabIndicator', () => {
 
   it('#adapter.addClass adds a class to the root element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
+    (component.getDefaultFoundation() as any).adapter.addClass('foo');
     expect(root.classList.contains('foo')).toBe(true);
   });
 
   it('#adapter.removeClass removes a class to the root element', () => {
     const {root, component} = setupTest();
     root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
+    (component.getDefaultFoundation() as any).adapter.removeClass('foo');
     expect(root.classList.contains('foo')).toBe(false);
   });
 
@@ -87,7 +87,7 @@ describe('MDCTabIndicator', () => {
        const {component, root, content} = setupTest();
        document.body.appendChild(root);
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.computeContentClientRect())
+                  .adapter.computeContentClientRect())
            .toEqual(content.getBoundingClientRect());
        document.body.removeChild(root);
      });
@@ -96,7 +96,7 @@ describe('MDCTabIndicator', () => {
      () => {
        const {component, content} = setupTest();
        (component.getDefaultFoundation() as any)
-           .adapter_.setContentStyleProperty('background-color', 'red');
+           .adapter.setContentStyleProperty('background-color', 'red');
        expect(content.style.backgroundColor).toBe('red');
      });
 

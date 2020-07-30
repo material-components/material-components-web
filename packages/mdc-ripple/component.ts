@@ -43,31 +43,36 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
 
   static createAdapter(instance: MDCRippleCapableSurface): MDCRippleAdapter {
     return {
-      addClass: (className) => instance.root_.classList.add(className),
+      addClass: (className) => instance.root.classList.add(className),
       browserSupportsCssVars: () => util.supportsCssVariables(window),
-      computeBoundingRect: () => instance.root_.getBoundingClientRect(),
-      containsEventTarget: (target) => instance.root_.contains(target as Node),
+      computeBoundingRect: () => instance.root.getBoundingClientRect(),
+      containsEventTarget: (target) => instance.root.contains(target as Node),
       deregisterDocumentInteractionHandler: (evtType, handler) =>
-          document.documentElement.removeEventListener(evtType, handler, applyPassive()),
+          document.documentElement.removeEventListener(
+              evtType, handler, applyPassive()),
       deregisterInteractionHandler: (evtType, handler) =>
-          (instance.root_ as HTMLElement).removeEventListener(evtType, handler, applyPassive()),
-      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
-      getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
-      isSurfaceActive: () => matches(instance.root_, ':active'),
+          (instance.root as HTMLElement)
+              .removeEventListener(evtType, handler, applyPassive()),
+      deregisterResizeHandler: (handler) =>
+          window.removeEventListener('resize', handler),
+      getWindowPageOffset: () =>
+          ({x: window.pageXOffset, y: window.pageYOffset}),
+      isSurfaceActive: () => matches(instance.root, ':active'),
       isSurfaceDisabled: () => Boolean(instance.disabled),
       isUnbounded: () => Boolean(instance.unbounded),
       registerDocumentInteractionHandler: (evtType, handler) =>
-          document.documentElement.addEventListener(evtType, handler, applyPassive()),
+          document.documentElement.addEventListener(
+              evtType, handler, applyPassive()),
       registerInteractionHandler: (evtType, handler) =>
-        (instance.root_ as HTMLElement).addEventListener(evtType, handler, applyPassive()),
-      registerResizeHandler: (handler) => window.addEventListener('resize', handler),
-      removeClass: (className) => instance.root_.classList.remove(className),
-      updateCssVariable: (varName, value) => (instance.root_ as HTMLElement).style.setProperty(varName, value),
+          (instance.root as HTMLElement)
+              .addEventListener(evtType, handler, applyPassive()),
+      registerResizeHandler: (handler) =>
+          window.addEventListener('resize', handler),
+      removeClass: (className) => instance.root.classList.remove(className),
+      updateCssVariable: (varName, value) =>
+          (instance.root as HTMLElement).style.setProperty(varName, value),
     };
   }
-
-  // Public visibility for this property is required by MDCRippleCapableSurface.
-  root_!: Element; // assigned in MDCComponent constructor
 
   disabled = false;
 
@@ -83,15 +88,15 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
   }
 
   activate() {
-    this.foundation_.activate();
+    this.foundation.activate();
   }
 
   deactivate() {
-    this.foundation_.deactivate();
+    this.foundation.deactivate();
   }
 
   layout() {
-    this.foundation_.layout();
+    this.foundation.layout();
   }
 
   getDefaultFoundation() {
@@ -99,7 +104,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
   }
 
   initialSyncWithDOM() {
-    const root = this.root_ as HTMLElement;
+    const root = this.root as HTMLElement;
     this.unbounded = 'mdcRippleIsUnbounded' in root.dataset;
   }
 
@@ -110,6 +115,6 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
    * That's why this function exists.
    */
   private setUnbounded_() {
-    this.foundation_.setUnbounded(Boolean(this.unbounded_));
+    this.foundation.setUnbounded(Boolean(this.unbounded_));
   }
 }

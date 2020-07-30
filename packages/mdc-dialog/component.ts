@@ -36,31 +36,31 @@ const {strings} = MDCDialogFoundation;
 
 export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   get isOpen() {
-    return this.foundation_.isOpen();
+    return this.foundation.isOpen();
   }
 
   get escapeKeyAction() {
-    return this.foundation_.getEscapeKeyAction();
+    return this.foundation.getEscapeKeyAction();
   }
 
   set escapeKeyAction(action) {
-    this.foundation_.setEscapeKeyAction(action);
+    this.foundation.setEscapeKeyAction(action);
   }
 
   get scrimClickAction() {
-    return this.foundation_.getScrimClickAction();
+    return this.foundation.getScrimClickAction();
   }
 
   set scrimClickAction(action) {
-    this.foundation_.setScrimClickAction(action);
+    this.foundation.setScrimClickAction(action);
   }
 
   get autoStackButtons() {
-    return this.foundation_.getAutoStackButtons();
+    return this.foundation.getAutoStackButtons();
   }
 
   set autoStackButtons(autoStack) {
-    this.foundation_.setAutoStackButtons(autoStack);
+    this.foundation.setAutoStackButtons(autoStack);
   }
 
   static attachTo(root: Element) {
@@ -86,14 +86,18 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   initialize(
       focusTrapFactory: MDCDialogFocusTrapFactory = (el, focusOptions) => new FocusTrap(el, focusOptions),
   ) {
-    const container = this.root_.querySelector<HTMLElement>(strings.CONTAINER_SELECTOR);
+    const container =
+        this.root.querySelector<HTMLElement>(strings.CONTAINER_SELECTOR);
     if (!container) {
       throw new Error(`Dialog component requires a ${strings.CONTAINER_SELECTOR} container element`);
     }
     this.container_ = container;
-    this.content_ = this.root_.querySelector<HTMLElement>(strings.CONTENT_SELECTOR);
-    this.buttons_ = [].slice.call(this.root_.querySelectorAll<HTMLElement>(strings.BUTTON_SELECTOR));
-    this.defaultButton_ = this.root_.querySelector<HTMLElement>(`[${strings.BUTTON_DEFAULT_ATTRIBUTE}]`);
+    this.content_ =
+        this.root.querySelector<HTMLElement>(strings.CONTENT_SELECTOR);
+    this.buttons_ = [].slice.call(
+        this.root.querySelectorAll<HTMLElement>(strings.BUTTON_SELECTOR));
+    this.defaultButton_ = this.root.querySelector<HTMLElement>(
+        `[${strings.BUTTON_DEFAULT_ATTRIBUTE}]`);
     this.focusTrapFactory_ = focusTrapFactory;
     this.buttonRipples_ = [];
 
@@ -106,9 +110,10 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.focusTrap_ = util.createFocusTrapInstance(
         this.container_, this.focusTrapFactory_, this.getInitialFocusEl_() || undefined);
 
-    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
-    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
-    this.handleDocumentKeydown_ = this.foundation_.handleDocumentKeydown.bind(this.foundation_);
+    this.handleClick_ = this.foundation.handleClick.bind(this.foundation);
+    this.handleKeydown_ = this.foundation.handleKeydown.bind(this.foundation);
+    this.handleDocumentKeydown_ =
+        this.foundation.handleDocumentKeydown.bind(this.foundation);
     this.handleLayout_ = this.layout.bind(this);
 
     const LAYOUT_EVENTS = ['resize', 'orientationchange'];
@@ -139,15 +144,15 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   }
 
   layout() {
-    this.foundation_.layout();
+    this.foundation.layout();
   }
 
   open() {
-    this.foundation_.open();
+    this.foundation.open();
   }
 
   close(action = '') {
-    this.foundation_.close(action);
+    this.foundation.close(action);
   }
 
   getDefaultFoundation() {
@@ -155,10 +160,12 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCDialogAdapter = {
       addBodyClass: (className) => document.body.classList.add(className),
-      addClass: (className) => this.root_.classList.add(className),
+      addClass: (className) => this.root.classList.add(className),
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
-      clickDefaultButton: () => this.defaultButton_ && this.defaultButton_.click(),
-      eventTargetMatches: (target, selector) => target ? matches(target as Element, selector) : false,
+      clickDefaultButton: () =>
+          this.defaultButton_ && this.defaultButton_.click(),
+      eventTargetMatches: (target, selector) =>
+          target ? matches(target as Element, selector) : false,
       getActionFromEvent: (evt: Event) => {
         if (!evt.target) {
           return '';
@@ -167,15 +174,17 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
         return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
       },
       getInitialFocusEl: () => this.getInitialFocusEl_(),
-      hasClass: (className) => this.root_.classList.contains(className),
+      hasClass: (className) => this.root.classList.contains(className),
       isContentScrollable: () => util.isScrollable(this.content_),
-      notifyClosed: (action) => this.emit<MDCDialogCloseEventDetail>(strings.CLOSED_EVENT, action ? {action} : {}),
-      notifyClosing: (action) => this.emit<MDCDialogCloseEventDetail>(strings.CLOSING_EVENT, action ? {action} : {}),
+      notifyClosed: (action) => this.emit<MDCDialogCloseEventDetail>(
+          strings.CLOSED_EVENT, action ? {action} : {}),
+      notifyClosing: (action) => this.emit<MDCDialogCloseEventDetail>(
+          strings.CLOSING_EVENT, action ? {action} : {}),
       notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
       notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
       releaseFocus: () => this.focusTrap_.releaseFocus(),
       removeBodyClass: (className) => document.body.classList.remove(className),
-      removeClass: (className) => this.root_.classList.remove(className),
+      removeClass: (className) => this.root.classList.remove(className),
       reverseButtons: () => {
         this.buttons_.reverse();
         this.buttons_.forEach((button) => {
@@ -188,6 +197,6 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   }
 
   private getInitialFocusEl_(): HTMLElement|null {
-    return document.querySelector(`[${strings.INITIAL_FOCUS_ATTRIBUTE}]`);
+    return this.root.querySelector(`[${strings.INITIAL_FOCUS_ATTRIBUTE}]`);
   }
 }

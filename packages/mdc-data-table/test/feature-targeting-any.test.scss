@@ -1,32 +1,34 @@
-@use "../mixins" as data-table;
-@use "@material/feature-targeting/functions" as feature;
+@use '../data-table' as data-table;
+@use '../data-table-theme' as data-table-theme;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {
     @include data-table.core-styles($query: $query);
     @include data-table.theme-baseline($query: $query);
-    @include data-table.fill-color(red, $query: $query);
-    @include data-table.header-row-fill-color(red, $query: $query);
-    @include data-table.row-fill-color(red, $query: $query);
-    @include data-table.selected-row-fill-color(red, $query: $query);
-    @include data-table.checked-icon-color(red, $query: $query);
-    @include data-table.divider-color(red, $query: $query);
-    @include data-table.divider-size(0, $query: $query);
-    @include data-table.row-hover-fill-color(red, $query: $query);
-    @include data-table.header-row-text-color(red, $query: $query);
-    @include data-table.row-text-color(red, $query: $query);
-    @include data-table.shape-radius(0, $query: $query);
-    @include data-table.stroke-size(0, $query: $query);
-    @include data-table.stroke-color(red, $query: $query);
-    @include data-table.header-cell-height(0, $query: $query);
-    @include data-table.cell-height(0, $query: $query);
-    @include data-table.cell-padding(0, $query: $query);
-    @include data-table.column-widths(0, $query: $query);
-    @include data-table.density(0, $query: $query);
-    @include data-table.sort-icon-color(red, $query: $query);
-    @include data-table.sort-icon-active-color(red, $query: $query);
+    @include data-table-theme.fill-color(red, $query: $query);
+    @include data-table-theme.header-row-fill-color(red, $query: $query);
+    @include data-table-theme.row-fill-color(red, $query: $query);
+    @include data-table-theme.selected-row-fill-color(red, $query: $query);
+    @include data-table-theme.checked-icon-color(red, $query: $query);
+    @include data-table-theme.divider-color(red, $query: $query);
+    @include data-table-theme.divider-size(0, $query: $query);
+    @include data-table-theme.row-hover-fill-color(red, $query: $query);
+    @include data-table-theme.header-row-text-color(red, $query: $query);
+    @include data-table-theme.row-text-color(red, $query: $query);
+    @include data-table-theme.shape-radius(0, $query: $query);
+    @include data-table-theme.stroke-size(0, $query: $query);
+    @include data-table-theme.stroke-color(red, $query: $query);
+    @include data-table-theme.header-cell-height(0, $query: $query);
+    @include data-table-theme.cell-height(0, $query: $query);
+    @include data-table-theme.cell-padding(0, $query: $query);
+    @include data-table-theme.column-widths(0, $query: $query);
+    @include data-table-theme.density(0, $query: $query);
+    @include data-table-theme.sort-icon-color(red, $query: $query);
+    @include data-table-theme.sort-icon-active-color(red, $query: $query);
+    @include data-table-theme.max-height(99px, $query: $query);
   }
 }
 
 // This shouldn't output any CSS.
-@include test(feature.any());
+@include test(feature-targeting.any());

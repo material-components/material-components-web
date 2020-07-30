@@ -51,7 +51,7 @@ describe('MDCTextFieldCharacterCounter', () => {
 
   it('#adapter.setContent sets the text content of the element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.setContent('5 / 10');
+    (component.getDefaultFoundation() as any).adapter.setContent('5 / 10');
     expect(root.textContent).toEqual('5 / 10');
   });
 });

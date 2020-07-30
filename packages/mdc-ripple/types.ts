@@ -40,7 +40,7 @@ export interface MDCRippleAttachOpts {
  * disabled Whether or not the ripple is attached to a disabled component.
  */
 export interface MDCRippleCapableSurface {
-  readonly root_: Element;
+  root: Element;
   unbounded?: boolean;
   disabled?: boolean;
 }

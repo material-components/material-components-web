@@ -75,7 +75,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       clearTimeout(this.closeAnimationEndTimerId_);
     }
 
-    this.adapter_.closeSurface();
+    this.adapter.closeSurface();
   }
 
   handleKeydown(evt: KeyboardEvent) {
@@ -83,24 +83,25 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     const isTab = key === 'Tab' || keyCode === 9;
 
     if (isTab) {
-      this.adapter_.closeSurface(/** skipRestoreFocus */ true);
+      this.adapter.closeSurface(/** skipRestoreFocus */ true);
     }
   }
 
   handleItemAction(listItem: Element) {
-    const index = this.adapter_.getElementIndex(listItem);
+    const index = this.adapter.getElementIndex(listItem);
     if (index < 0) {
       return;
     }
 
-    this.adapter_.notifySelected({index});
-    this.adapter_.closeSurface();
+    this.adapter.notifySelected({index});
+    this.adapter.closeSurface();
 
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {
       // Recompute the index in case the menu contents have changed.
-      const recomputedIndex = this.adapter_.getElementIndex(listItem);
-      if (this.adapter_.isSelectableItemAtIndex(recomputedIndex)) {
+      const recomputedIndex = this.adapter.getElementIndex(listItem);
+      if (recomputedIndex >= 0 &&
+          this.adapter.isSelectableItemAtIndex(recomputedIndex)) {
         this.setSelectedIndex(recomputedIndex);
       }
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
@@ -109,16 +110,16 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   handleMenuSurfaceOpened() {
     switch (this.defaultFocusState_) {
       case DefaultFocusState.FIRST_ITEM:
-        this.adapter_.focusItemAtIndex(0);
+        this.adapter.focusItemAtIndex(0);
         break;
       case DefaultFocusState.LAST_ITEM:
-        this.adapter_.focusItemAtIndex(this.adapter_.getMenuItemCount() - 1);
+        this.adapter.focusItemAtIndex(this.adapter.getMenuItemCount() - 1);
         break;
       case DefaultFocusState.NONE:
         // Do nothing.
         break;
       default:
-        this.adapter_.focusListRoot();
+        this.adapter.focusListRoot();
         break;
     }
   }
@@ -139,18 +140,23 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   setSelectedIndex(index: number) {
     this.validatedIndex_(index);
 
-    if (!this.adapter_.isSelectableItemAtIndex(index)) {
+    if (!this.adapter.isSelectableItemAtIndex(index)) {
       throw new Error('MDCMenuFoundation: No selection group at specified index.');
     }
 
-    const prevSelectedIndex = this.adapter_.getSelectedSiblingOfItemAtIndex(index);
+    const prevSelectedIndex =
+        this.adapter.getSelectedSiblingOfItemAtIndex(index);
     if (prevSelectedIndex >= 0) {
-      this.adapter_.removeAttributeFromElementAtIndex(prevSelectedIndex, strings.ARIA_CHECKED_ATTR);
-      this.adapter_.removeClassFromElementAtIndex(prevSelectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
+      this.adapter.removeAttributeFromElementAtIndex(
+          prevSelectedIndex, strings.ARIA_CHECKED_ATTR);
+      this.adapter.removeClassFromElementAtIndex(
+          prevSelectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
     }
 
-    this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_SELECTED_LIST_ITEM);
-    this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_CHECKED_ATTR, 'true');
+    this.adapter.addClassToElementAtIndex(
+        index, cssClasses.MENU_SELECTED_LIST_ITEM);
+    this.adapter.addAttributeToElementAtIndex(
+        index, strings.ARIA_CHECKED_ATTR, 'true');
   }
 
   /**
@@ -162,16 +168,20 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.validatedIndex_(index);
 
     if (isEnabled) {
-      this.adapter_.removeClassFromElementAtIndex(index, listCssClasses.LIST_ITEM_DISABLED_CLASS);
-      this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_DISABLED_ATTR, 'false');
+      this.adapter.removeClassFromElementAtIndex(
+          index, listCssClasses.LIST_ITEM_DISABLED_CLASS);
+      this.adapter.addAttributeToElementAtIndex(
+          index, strings.ARIA_DISABLED_ATTR, 'false');
     } else {
-      this.adapter_.addClassToElementAtIndex(index, listCssClasses.LIST_ITEM_DISABLED_CLASS);
-      this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_DISABLED_ATTR, 'true');
+      this.adapter.addClassToElementAtIndex(
+          index, listCssClasses.LIST_ITEM_DISABLED_CLASS);
+      this.adapter.addAttributeToElementAtIndex(
+          index, strings.ARIA_DISABLED_ATTR, 'true');
     }
   }
 
   private validatedIndex_(index: number): void {
-    const menuSize = this.adapter_.getMenuItemCount();
+    const menuSize = this.adapter.getMenuItemCount();
     const isIndexInRange = index >= 0 && index < menuSize;
 
     if (!isIndexInRange) {

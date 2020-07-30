@@ -20,22 +20,25 @@
 // THE SOFTWARE.
 //
 
-@use "sass:math";
-@use "@material/density/functions" as density-functions;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/rtl/mixins" as rtl;
-@use "@material/theme/mixins" as theme-mixins;
-@use "./variables";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
+@use 'sass:math';
+@use '@material/density/functions' as density-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use '@material/rtl/mixins' as rtl;
+@use '@material/theme/theme';
+@use './variables';
+
+@mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query);
   @include ripple($query);
 }
 
-@mixin without-ripple($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin without-ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   // postcss-bem-linter: define icon-button
   .mdc-icon-button {
@@ -44,13 +47,13 @@
   }
 
   .mdc-icon-button__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-block;
     }
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
     &.mdc-icon-button__icon--on {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: none;
       }
     }
@@ -58,13 +61,13 @@
 
   .mdc-icon-button--on {
     .mdc-icon-button__icon {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: none;
       }
 
       // stylelint-disable-next-line plugin/selector-bem-pattern
       &.mdc-icon-button__icon--on {
-        @include feature-targeting-mixins.targets($feat-structure) {
+        @include feature-targeting.targets($feat-structure) {
           display: inline-block;
         }
       }
@@ -73,13 +76,13 @@
   // postcss-bem-linter: end
 }
 
-@mixin ripple($query: feature-targeting-functions.all()) {
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+@mixin ripple($query: feature-targeting.all()) {
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-icon-button {
-    @include ripple-mixins.surface($query: $query);
-    @include ripple-mixins.radius-unbounded($query: $query);
-    @include ripple-mixins.states($query: $query);
+    @include ripple.surface($query: $query);
+    @include ripple.radius-unbounded($query: $query);
+    @include ripple-theme.states($query: $query);
   }
 }
 
@@ -89,7 +92,7 @@
 /// @param {Number | String} $density-scale - Density scale value for component.
 ///     Supported density scale values range from `-5` to `0`, with `0` being the default.
 ///
-@mixin density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin density($density-scale, $query: feature-targeting.all()) {
   $size: density-functions.prop-value(
     $density-config: variables.$density-config,
     $density-scale: $density-scale,
@@ -105,10 +108,10 @@
 /// @param {Number} $size - Size value for icon-button.
 ///     Size will set the width, height, and padding for the overall component.
 ///
-@mixin size($size, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: $size;
     height: $size;
     padding: ($size - variables.$icon-size) / 2;
@@ -126,10 +129,15 @@
 ///     This mixin provides too much of low level customization.
 ///     Please use mdc-icon-button-size instead.
 ///
-@mixin icon-size($width, $height: $width, $padding: math.max($width,$height) / 2, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin icon-size(
+  $width,
+  $height: $width,
+  $padding: math.max($width, $height) / 2,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: $width + $padding * 2;
     height: $height + $padding * 2;
     padding: $padding;
@@ -139,7 +147,7 @@
   // stylelint-disable-next-line selector-max-type
   svg,
   img {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: $width;
       height: $height;
     }
@@ -150,21 +158,20 @@
 /// Sets the font color and the ripple color to the provided color value.
 /// @param {Color} $color - The desired font and ripple color.
 ///
-@mixin ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin ink-color($color, $query: feature-targeting.all()) {
   @include ink-color_($color, $query: $query);
-  @include ripple-mixins.states($color, $query: $query);
+  @include ripple-theme.states($color, $query: $query);
 }
-
 
 ///
 /// Flips icon only in RTL context.
 ///
-@mixin flip-icon-in-rtl($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin flip-icon-in-rtl($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-button__icon {
     @include rtl.rtl {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         /* @noflip */
         transform: rotate(180deg);
       }
@@ -176,16 +183,16 @@
 /// Sets the font color to the provided color value for a disabled icon button.
 /// @param {Color} $color - The desired font color.
 ///
-@mixin disabled-ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-ink-color($color, $query: feature-targeting.all()) {
   @include if-disabled_ {
     @include ink-color_($color, $query: $query);
   }
 }
 
-@mixin base_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin base_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: inline-block;
     position: relative;
     box-sizing: border-box;
@@ -203,7 +210,7 @@
   // stylelint-disable-next-line selector-max-type
   svg,
   img {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: variables.$icon-size;
       height: variables.$icon-size;
     }
@@ -212,7 +219,7 @@
   @include disabled-ink-color(text-disabled-on-light, $query: $query);
 
   @include if-disabled_ {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: default;
       pointer-events: none;
     }
@@ -224,11 +231,11 @@
 /// a state qualifier such as `mdc-icon-button-if-disabled_`.
 /// @access private
 ///
-@mixin ink-color_($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin ink-color_($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
-    @include theme-mixins.prop(color, $color);
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(color, $color);
   }
 }
 

@@ -55,27 +55,27 @@ describe('MDCTextFieldIcon', () => {
        const expectedValue = '0';
        root.setAttribute(expectedAttr, expectedValue);
        expect((component.getDefaultFoundation() as any)
-                  .adapter_.getAttr(expectedAttr))
+                  .adapter.getAttr(expectedAttr))
            .toEqual(expectedValue);
      });
 
   it('#adapter.setAttr adds a given attribute to the element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any)
-        .adapter_.setAttr('aria-label', 'foo');
+        .adapter.setAttr('aria-label', 'foo');
     expect(root.getAttribute('aria-label')).toEqual('foo');
   });
 
   it('#adapter.removeAttr removes a given attribute from the element', () => {
     const {root, component} = setupTest();
     root.setAttribute('role', 'button');
-    (component.getDefaultFoundation() as any).adapter_.removeAttr('role');
+    (component.getDefaultFoundation() as any).adapter.removeAttr('role');
     expect(root.hasAttribute('role')).toBe(false);
   });
 
   it('#adapter.setContent sets the text content of the element', () => {
     const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.setContent('foo');
+    (component.getDefaultFoundation() as any).adapter.setContent('foo');
     expect(root.textContent).toEqual('foo');
   });
 
@@ -84,7 +84,7 @@ describe('MDCTextFieldIcon', () => {
        const {root, component} = setupTest();
        const handler = jasmine.createSpy('keydown handler');
        (component.getDefaultFoundation() as any)
-           .adapter_.registerInteractionHandler('keydown', handler);
+           .adapter.registerInteractionHandler('keydown', handler);
        emitEvent(root, 'keydown');
 
        expect(handler).toHaveBeenCalled();
@@ -97,7 +97,7 @@ describe('MDCTextFieldIcon', () => {
 
        root.addEventListener('keydown', handler);
        (component.getDefaultFoundation() as any)
-           .adapter_.deregisterInteractionHandler('keydown', handler);
+           .adapter.deregisterInteractionHandler('keydown', handler);
        emitEvent(root, 'keydown');
 
        expect(handler).not.toHaveBeenCalled();
@@ -110,7 +110,7 @@ describe('MDCTextFieldIcon', () => {
        const handler = jasmine.createSpy('handler');
 
        component.listen(MDCTextFieldIconFoundation.strings.ICON_EVENT, handler);
-       (component.getDefaultFoundation() as any).adapter_.notifyIconAction();
+       (component.getDefaultFoundation() as any).adapter.notifyIconAction();
 
        expect(handler).toHaveBeenCalled();
      });

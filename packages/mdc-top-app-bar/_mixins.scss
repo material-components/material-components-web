@@ -20,54 +20,63 @@
 // THE SOFTWARE.
 //
 
-@use "sass:list";
-@use "@material/animation/variables" as animation-variables;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/theme/variables" as theme-variables; // for mdc-theme-accessible-ink-color
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/shape/functions";
-@use "./variables";
-@use "@material/rtl/mixins" as rtl-mixins;
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use 'sass:list';
+@use 'sass:meta';
+@use '@material/animation/variables' as animation-variables;
+@use '@material/ripple/ripple-theme';
+@use '@material/theme/theme-color';
+@use '@material/theme/theme';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/shape/functions';
+@use './variables';
+@use '@material/rtl/mixins' as rtl-mixins;
 
 //
 // Public
 //
 
 @mixin ink-color($color) {
-  @include theme-mixins.prop(color, $color);
+  @include theme.prop(color, $color);
 }
 
 @mixin fill-color($color) {
-  @include theme-mixins.prop(background-color, $color);
+  @include theme.prop(background-color, $color);
 }
 
 @mixin fill-color-accessible($color) {
   @include fill-color($color);
-  @include ink-color(theme-variables.accessible-ink-color($color));
+  @include ink-color(theme-color.accessible-ink-color($color));
 }
 
 @mixin icon-ink-color($color) {
   .mdc-top-app-bar__action-item,
   .mdc-top-app-bar__navigation-icon {
-    @include theme-mixins.prop(color, $color);
-    @include ripple-mixins.states($color);
+    @include theme.prop(color, $color);
+    @include ripple-theme.states($color);
   }
 }
 
 @mixin short-shape-radius($radius, $rtl-reflexive: true) {
-  @if list.length($radius) > 1 {
+  @if meta.type-of($radius) == 'list' and list.length($radius) > 1 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   }
 
   $radius: 0 0 $radius 0;
 
-  $selector: if(&, "&.mdc-top-app-bar--short-collapsed", ".mdc-top-app-bar--short-collapsed");
+  $selector: if(
+    &,
+    '&.mdc-top-app-bar--short-collapsed',
+    '.mdc-top-app-bar--short-collapsed'
+  );
 
   #{$selector} {
     @include shape-mixins.radius(
-      functions.resolve-percentage-radius(variables.$dense-row-height, $radius),
-      $rtl-reflexive
+      $radius,
+      $rtl-reflexive,
+      $component-height: variables.$dense-row-height
     );
   }
 }
@@ -87,14 +96,20 @@
     }
 
     .mdc-top-app-bar--short {
-      transition: width 200ms animation-variables.$standard-curve-timing-function;
+      transition: width 200ms
+        animation-variables.$standard-curve-timing-function;
     }
 
     .mdc-top-app-bar--short-collapsed {
-      transition: width 250ms animation-variables.$standard-curve-timing-function;
+      transition: width 250ms
+        animation-variables.$standard-curve-timing-function;
 
       .mdc-top-app-bar__section--align-end {
-        @include rtl-mixins.reflexive-box(padding, right, variables.$short-collapsed-right-icon-padding);
+        @include rtl-mixins.reflexive-box(
+          padding,
+          right,
+          variables.$short-collapsed-right-icon-padding
+        );
       }
     }
 

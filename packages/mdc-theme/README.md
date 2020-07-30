@@ -47,7 +47,7 @@ https://www.w3.org/TR/WCAG20
 
 ### Advanced customization
 
-Color scheme will only get you 80% of the way to a well-designed app. Inevitably there will be some components that do not work "out of the box". To fix problems with accessibility and design, we suggest you use our Sass mixins, such as `mdc-button-filled-accessible`. For more information, consult the documentation for each component.
+Color scheme will only get you 80% of the way to a well-designed app. Inevitably there will be some components that do not work "out of the box". To fix problems with accessibility and design, we suggest you use our Sass mixins, such as `button.filled-accessible()`. For more information, consult the documentation for each component.
 
 ### Text styles
 
@@ -105,13 +105,13 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`prop($property, $style, $important)` | Applies a theme color or a custom color to a CSS property, optionally with `!important`.
+`property($property, $value, $gss, $important)` | Applies a dynamic value to the specified property. The value may be a standard CSS value, a custom property Map, or a Material theme key.
 
-#### `mdc-theme-prop` Properties
+#### Material theme keys with `theme.property()`
 
-The properties below can be used as the `$style` argument for the `mdc-theme-prop` mixin. Literal color values (e.g., `rgba(0, 0, 0, .75)`) may also be used instead.
+Material theme key names below can be used as the `$value` argument for the `theme.property()` mixin. Some keys are dynamic, and change context depending on other key values. Keys may also translate to custom properties for dynamic runtime theming.
 
-Property Name | Description
+Key Name | Description
 --- | ---
 `primary` | The theme primary color
 `secondary` | The theme secondary color
@@ -123,27 +123,20 @@ Property Name | Description
 `on-secondary` | A text/iconography color that is usable on top of secondary color
 `on-surface` | A text/iconography color that is usable on top of surface color
 
-#### `mdc-theme-prop` with CSS Custom Properties
+#### Custom properties with `theme.property()`
 
-> **Note** The Sass map `$style` argument is intended *only* for use with color mixins.
+The `theme.property()` mixin also accepts a custom property Map for the `$value` argument. The map must contain a `varname` key with the name of the custom property, and an optional `fallback` key with the value of the custom property.
 
-The `mdc-theme-prop` mixin also accepts a Sass map for the `$style` argument. The map must contain the following fields:
-
-Fields | Description
---- | ---
-`varname` | The name of a CSS custom property
-`fallback` | A fallback value for the CSS custom property
+Use the `@material/theme/custom-properties` module to create custom property Maps.
 
 For example, the following Sass...
 
 ```scss
 @use "@material/theme";
+@use "@material/theme/custom-properties";
 
 .foo {
-  @include theme.prop(color, (
-    varname: --foo-color,
-    fallback: red,
-  ));
+  @include theme.property(color, custom-properties.create(--foo-color, red));
 }
 ```
 
@@ -158,7 +151,7 @@ For example, the following Sass...
 
 The above output CSS will apply the `fallback` field's value for all supported browsers (including IE11) while allowing for CSS custom property use as a progressive enhancement. Browsers like IE11 that do not support CSS custom properties will apply the `color: red;` and ignore the `color: var(--foo-color, red);`. This argument type is intended for clients who need custom color application outside of the existing theme properties.
 
-#### `mdc-theme-luminance($color)`
+#### `theme.luminance($color)`
 
 Calculates the luminance value (0 - 1) of a given color.
 
@@ -166,7 +159,7 @@ Calculates the luminance value (0 - 1) of a given color.
 @debug theme.luminance(#9c27b0); // 0.11654
 ```
 
-#### `mdc-theme-contrast($back, $front)`
+#### `theme.contrast($back, $front)`
 
 Calculates the contrast ratio between two colors.
 
@@ -174,7 +167,7 @@ Calculates the contrast ratio between two colors.
 @debug theme.contrast(#9c27b0, #000); // 3.33071
 ```
 
-#### `mdc-theme-tone($color)`
+#### `theme.tone($color)`
 
 Determines whether the given color is "light" or "dark".
 
@@ -185,7 +178,7 @@ If the input color is a string literal equal to `"light"` or `"dark"`, it will b
 @debug theme.tone(light);   // light
 ```
 
-#### `mdc-theme-contrast-tone($color)`
+#### `theme.contrast-tone($color)`
 
 Determines whether to use light or dark text on top of a given color.
 
@@ -193,25 +186,7 @@ Determines whether to use light or dark text on top of a given color.
 @debug theme.contrast-tone(#9c27b0); // light
 ```
 
-#### `mdc-theme-prop-value($style)`
-
-If `$style` is a color (a literal color value, `currentColor`, or a CSS custom property), it is returned verbatim.
-Otherwise, `$style` is treated as a theme property name, and the corresponding value from `$property-values`
-is returned. If this also fails, an error is thrown.
-
-This is mainly useful in situations where `prop` cannot be used directly (e.g., `box-shadow`).
-
-Unlike the `prop` mixin, this function does _not_ support CSS custom properties.
-It only returns the raw color value of the specified theme property.
-
-> NOTE: This function is defined in `_variables.scss` instead of `_functions.scss` to avoid circular imports.
-
-```scss
-@debug theme.prop-value(primary); // #3f51b5
-@debug theme.prop-value(blue);    // blue
-```
-
-#### `mdc-theme-accessible-ink-color($fill-color, $text-style: primary)`
+#### `theme.accessible-ink-color($fill-color, $text-style: primary)`
 
 Returns an accessible ink color that has sufficient contrast against the given fill color.
 
@@ -226,7 +201,7 @@ Params:
 @debug theme.accessible-ink-color(secondary); // rgba(0, 0, 0, .87) (text-primary-on-light)
 @debug theme.accessible-ink-color(blue);      // white              (text-primary-on-dark)
 ```
-#### `mdc-theme-text-emphasis($emphasis)`
+#### `theme.text-emphasis($emphasis)`
 
 Returns opacity value for given emphasis.
 

@@ -140,9 +140,9 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     if (supportsPressRipple) {
       const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
       requestAnimationFrame(() => {
-        this.adapter_.addClass(ROOT);
-        if (this.adapter_.isUnbounded()) {
-          this.adapter_.addClass(UNBOUNDED);
+        this.adapter.addClass(ROOT);
+        if (this.adapter.isUnbounded()) {
+          this.adapter.addClass(UNBOUNDED);
           // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
           this.layoutInternal_();
         }
@@ -155,19 +155,20 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
       if (this.activationTimer_) {
         clearTimeout(this.activationTimer_);
         this.activationTimer_ = 0;
-        this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_ACTIVATION);
+        this.adapter.removeClass(MDCRippleFoundation.cssClasses.FG_ACTIVATION);
       }
 
       if (this.fgDeactivationRemovalTimer_) {
         clearTimeout(this.fgDeactivationRemovalTimer_);
         this.fgDeactivationRemovalTimer_ = 0;
-        this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_DEACTIVATION);
+        this.adapter.removeClass(
+            MDCRippleFoundation.cssClasses.FG_DEACTIVATION);
       }
 
       const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
       requestAnimationFrame(() => {
-        this.adapter_.removeClass(ROOT);
-        this.adapter_.removeClass(UNBOUNDED);
+        this.adapter.removeClass(ROOT);
+        this.adapter.removeClass(UNBOUNDED);
         this.removeCssVars_();
       });
     }
@@ -200,20 +201,21 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   setUnbounded(unbounded: boolean): void {
     const {UNBOUNDED} = MDCRippleFoundation.cssClasses;
     if (unbounded) {
-      this.adapter_.addClass(UNBOUNDED);
+      this.adapter.addClass(UNBOUNDED);
     } else {
-      this.adapter_.removeClass(UNBOUNDED);
+      this.adapter.removeClass(UNBOUNDED);
     }
   }
 
   handleFocus(): void {
-    requestAnimationFrame(() =>
-        this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
+    requestAnimationFrame(
+        () => this.adapter.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
   }
 
   handleBlur(): void {
-    requestAnimationFrame(() =>
-        this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
+    requestAnimationFrame(
+        () => this.adapter.removeClass(
+            MDCRippleFoundation.cssClasses.BG_FOCUSED));
   }
 
   /**
@@ -223,7 +225,7 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
    * and then initialized at mount time on the client.
    */
   private supportsPressRipple_(): boolean {
-    return this.adapter_.browserSupportsCssVars();
+    return this.adapter.browserSupportsCssVars();
   }
 
   private defaultActivationState_(): ActivationStateType {
@@ -243,43 +245,45 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   private registerRootHandlers_(supportsPressRipple: boolean) {
     if (supportsPressRipple) {
       ACTIVATION_EVENT_TYPES.forEach((evtType) => {
-        this.adapter_.registerInteractionHandler(evtType, this.activateHandler_);
+        this.adapter.registerInteractionHandler(evtType, this.activateHandler_);
       });
-      if (this.adapter_.isUnbounded()) {
-        this.adapter_.registerResizeHandler(this.resizeHandler_);
+      if (this.adapter.isUnbounded()) {
+        this.adapter.registerResizeHandler(this.resizeHandler_);
       }
     }
 
-    this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
-    this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
+    this.adapter.registerInteractionHandler('focus', this.focusHandler_);
+    this.adapter.registerInteractionHandler('blur', this.blurHandler_);
   }
 
   private registerDeactivationHandlers_(evt: Event) {
     if (evt.type === 'keydown') {
-      this.adapter_.registerInteractionHandler('keyup', this.deactivateHandler_);
+      this.adapter.registerInteractionHandler('keyup', this.deactivateHandler_);
     } else {
       POINTER_DEACTIVATION_EVENT_TYPES.forEach((evtType) => {
-        this.adapter_.registerDocumentInteractionHandler(evtType, this.deactivateHandler_);
+        this.adapter.registerDocumentInteractionHandler(
+            evtType, this.deactivateHandler_);
       });
     }
   }
 
   private deregisterRootHandlers_() {
     ACTIVATION_EVENT_TYPES.forEach((evtType) => {
-      this.adapter_.deregisterInteractionHandler(evtType, this.activateHandler_);
+      this.adapter.deregisterInteractionHandler(evtType, this.activateHandler_);
     });
-    this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
-    this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
+    this.adapter.deregisterInteractionHandler('focus', this.focusHandler_);
+    this.adapter.deregisterInteractionHandler('blur', this.blurHandler_);
 
-    if (this.adapter_.isUnbounded()) {
-      this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+    if (this.adapter.isUnbounded()) {
+      this.adapter.deregisterResizeHandler(this.resizeHandler_);
     }
   }
 
   private deregisterDeactivationHandlers_() {
-    this.adapter_.deregisterInteractionHandler('keyup', this.deactivateHandler_);
+    this.adapter.deregisterInteractionHandler('keyup', this.deactivateHandler_);
     POINTER_DEACTIVATION_EVENT_TYPES.forEach((evtType) => {
-      this.adapter_.deregisterDocumentInteractionHandler(evtType, this.deactivateHandler_);
+      this.adapter.deregisterDocumentInteractionHandler(
+          evtType, this.deactivateHandler_);
     });
   }
 
@@ -288,13 +292,13 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     const keys = Object.keys(rippleStrings) as Array<keyof typeof rippleStrings>;
     keys.forEach((key) => {
       if (key.indexOf('VAR_') === 0) {
-        this.adapter_.updateCssVariable(rippleStrings[key], null);
+        this.adapter.updateCssVariable(rippleStrings[key], null);
       }
     });
   }
 
   private activate_(evt?: Event) {
-    if (this.adapter_.isSurfaceDisabled()) {
+    if (this.adapter.isSurfaceDisabled()) {
       return;
     }
 
@@ -317,8 +321,10 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
         evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown'
     );
 
-    const hasActivatedChild = evt !== undefined && activatedTargets.length > 0 && activatedTargets.some(
-        (target) => this.adapter_.containsEventTarget(target));
+    const hasActivatedChild = evt !== undefined &&
+        activatedTargets.length > 0 &&
+        activatedTargets.some(
+            (target) => this.adapter.containsEventTarget(target));
     if (hasActivatedChild) {
       // Immediately reset activation state, while preserving logic that prevents touch follow-on events
       this.resetActivationState_();
@@ -362,7 +368,9 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   }
 
   private checkElementMadeActive_(evt?: Event) {
-    return (evt !== undefined && evt.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
+    return (evt !== undefined && evt.type === 'keydown') ?
+        this.adapter.isSurfaceActive() :
+        true;
   }
 
   private animateActivation_() {
@@ -375,23 +383,23 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     let translateStart = '';
     let translateEnd = '';
 
-    if (!this.adapter_.isUnbounded()) {
+    if (!this.adapter.isUnbounded()) {
       const {startPoint, endPoint} = this.getFgTranslationCoordinates_();
       translateStart = `${startPoint.x}px, ${startPoint.y}px`;
       translateEnd = `${endPoint.x}px, ${endPoint.y}px`;
     }
 
-    this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, translateStart);
-    this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
+    this.adapter.updateCssVariable(VAR_FG_TRANSLATE_START, translateStart);
+    this.adapter.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
     // Cancel any ongoing activation/deactivation animations
     clearTimeout(this.activationTimer_);
     clearTimeout(this.fgDeactivationRemovalTimer_);
     this.rmBoundedActivationClasses_();
-    this.adapter_.removeClass(FG_DEACTIVATION);
+    this.adapter.removeClass(FG_DEACTIVATION);
 
     // Force layout in order to re-trigger the animation.
-    this.adapter_.computeBoundingRect();
-    this.adapter_.addClass(FG_ACTIVATION);
+    this.adapter.computeBoundingRect();
+    this.adapter.addClass(FG_ACTIVATION);
     this.activationTimer_ = setTimeout(() => this.activationTimerCallback_(), DEACTIVATION_TIMEOUT_MS);
   }
 
@@ -402,8 +410,8 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     if (wasActivatedByPointer) {
       startPoint = getNormalizedEventCoords(
           activationEvent,
-          this.adapter_.getWindowPageOffset(),
-          this.adapter_.computeBoundingRect(),
+          this.adapter.getWindowPageOffset(),
+          this.adapter.computeBoundingRect(),
       );
     } else {
       startPoint = {
@@ -434,18 +442,18 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
 
     if (activationHasEnded && this.activationAnimationHasEnded_) {
       this.rmBoundedActivationClasses_();
-      this.adapter_.addClass(FG_DEACTIVATION);
+      this.adapter.addClass(FG_DEACTIVATION);
       this.fgDeactivationRemovalTimer_ = setTimeout(() => {
-        this.adapter_.removeClass(FG_DEACTIVATION);
+        this.adapter.removeClass(FG_DEACTIVATION);
       }, numbers.FG_DEACTIVATION_MS);
     }
   }
 
   private rmBoundedActivationClasses_() {
     const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
-    this.adapter_.removeClass(FG_ACTIVATION);
+    this.adapter.removeClass(FG_ACTIVATION);
     this.activationAnimationHasEnded_ = false;
-    this.adapter_.computeBoundingRect();
+    this.adapter.computeBoundingRect();
   }
 
   private resetActivationState_() {
@@ -485,7 +493,7 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   }
 
   private layoutInternal_() {
-    this.frame_ = this.adapter_.computeBoundingRect();
+    this.frame_ = this.adapter.computeBoundingRect();
     const maxDim = Math.max(this.frame_.height, this.frame_.width);
 
     // Surface diameter is treated differently for unbounded vs. bounded ripples.
@@ -499,12 +507,12 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
       return hypotenuse + MDCRippleFoundation.numbers.PADDING;
     };
 
-    this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
+    this.maxRadius_ = this.adapter.isUnbounded() ? maxDim : getBoundedRadius();
 
     // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
     const initialSize = Math.floor(maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE);
     // Unbounded ripple size should always be even number to equally center align.
-    if (this.adapter_.isUnbounded() && initialSize % 2 !== 0) {
+    if (this.adapter.isUnbounded() && initialSize % 2 !== 0) {
       this.initialSize_ = initialSize - 1;
     } else {
       this.initialSize_ = initialSize;
@@ -519,17 +527,18 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
       VAR_FG_SIZE, VAR_LEFT, VAR_TOP, VAR_FG_SCALE,
     } = MDCRippleFoundation.strings;
 
-    this.adapter_.updateCssVariable(VAR_FG_SIZE, `${this.initialSize_}px`);
-    this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
+    this.adapter.updateCssVariable(VAR_FG_SIZE, `${this.initialSize_}px`);
+    this.adapter.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
 
-    if (this.adapter_.isUnbounded()) {
+    if (this.adapter.isUnbounded()) {
       this.unboundedCoords_ = {
         left: Math.round((this.frame_.width / 2) - (this.initialSize_ / 2)),
         top: Math.round((this.frame_.height / 2) - (this.initialSize_ / 2)),
       };
 
-      this.adapter_.updateCssVariable(VAR_LEFT, `${this.unboundedCoords_.left}px`);
-      this.adapter_.updateCssVariable(VAR_TOP, `${this.unboundedCoords_.top}px`);
+      this.adapter.updateCssVariable(
+          VAR_LEFT, `${this.unboundedCoords_.left}px`);
+      this.adapter.updateCssVariable(VAR_TOP, `${this.unboundedCoords_.top}px`);
     }
   }
 }

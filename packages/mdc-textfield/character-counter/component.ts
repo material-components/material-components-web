@@ -33,8 +33,9 @@ export class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldChara
     return new MDCTextFieldCharacterCounter(root);
   }
 
-  get foundation(): MDCTextFieldCharacterCounterFoundation {
-    return this.foundation_;
+  // Provided for access by MDCTextField component
+  get foundationForTextField(): MDCTextFieldCharacterCounterFoundation {
+    return this.foundation;
   }
 
   getDefaultFoundation() {
@@ -42,7 +43,7 @@ export class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldChara
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCTextFieldCharacterCounterAdapter = {
       setContent: (content) => {
-        this.root_.textContent = content;
+        this.root.textContent = content;
       },
     };
     return new MDCTextFieldCharacterCounterFoundation(adapter);

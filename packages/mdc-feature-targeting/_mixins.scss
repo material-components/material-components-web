@@ -20,26 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use "sass:map";
-@use "./functions";
-
-// Tracks whether the current context is inside a `mdc-feature-targets` mixin.
-$targets-context_: false;
-
-// Mixin that annotates the contained styles as applying to specific cross-cutting features
-// indicated by the given list of feature targets.
-@mixin targets($feature-targets...) {
-  // Prevent accidental nesting of this mixin, which could lead to unexpected results.
-  @if $targets-context_ {
-    @error "mdc-feature-targets must not be used inside of another mdc-feature-targets block";
-  }
-
-  $targets-context_: true !global;
-  $parsed-targets: functions.parse-targets($feature-targets);
-
-  @if functions.is-query-satisfied_(map.get($parsed-targets, query), map.get($parsed-targets, available)) {
-    @content;
-  }
-
-  $targets-context_: false !global;
-}
+/// @deprecated Import `_feature-targeting.scss` Sass module instead.
+@forward 'feature-targeting' show targets;

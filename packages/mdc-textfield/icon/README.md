@@ -59,10 +59,11 @@ In text field:
 
 ```html
 <label class="mdc-text-field mdc-text-field--filled mdc-text-field--with-leading-icon">
+  <span class="mdc-text-field__ripple"></span>
+  <span class="mdc-floating-label" id="my-label-id">Your Name</span>
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
-  <span class="mdc-floating-label" id="my-label-id">Your Name</span>
-  <div class="mdc-line-ripple"></div>
+  <span class="mdc-line-ripple"></span>
 </label>
 ```
 
@@ -70,15 +71,15 @@ In outlined text field:
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
+  <span class="mdc-notched-outline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__notch">
+      <span class="mdc-floating-label" id="my-label-id">Your Name</span>
+    </span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading" tabindex="0" role="button">event</i>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
-  <div class="mdc-notched-outline">
-    <div class="mdc-notched-outline__leading"></div>
-    <div class="mdc-notched-outline__notch">
-      <span class="mdc-floating-label" id="my-label-id">Your Name</span>
-    </div>
-    <div class="mdc-notched-outline__trailing"></div>
-  </div>
 </label>
 ```
 
@@ -88,10 +89,11 @@ In text field:
 
 ```html
 <label class="mdc-text-field mdc-text-field--filled mdc-text-field--with-trailing-icon">
+  <span class="mdc-text-field__ripple"></span>
+  <span class="mdc-floating-label" id="my-label-id">Your Name</span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
-  <span class="mdc-floating-label" id="my-label-id">Your Name</span>
-  <div class="mdc-line-ripple"></div>
+  <span class="mdc-line-ripple"></span>
 </label>
 ```
 
@@ -99,15 +101,15 @@ In outlined text field:
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
+  <span class="mdc-notched-outline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__notch">
+      <span class="mdc-floating-label" id="my-label-id">Your Name</span>
+    </span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
-  <div class="mdc-notched-outline">
-    <div class="mdc-notched-outline__leading"></div>
-    <div class="mdc-notched-outline__notch">
-      <span class="mdc-floating-label" id="my-label-id">Your Name</span>
-    </div>
-    <div class="mdc-notched-outline__trailing"></div>
-  </div>
 </label>
 ```
 
@@ -117,10 +119,11 @@ In text field:
 
 ```html
 <label class="mdc-text-field mdc-text-field--filled mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
+  <span class="mdc-text-field__ripple"></span>
+  <span class="mdc-floating-label" id="my-label-id">Phone Number</span>
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading">phone</i>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
-  <span class="mdc-floating-label" id="my-label-id">Phone Number</span>
   <div class="mdc-line-ripple"></div>
 </label>
 ```
@@ -129,16 +132,16 @@ In outlined text field:
 
 ```html
 <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
+  <span class="mdc-notched-outline">
+   <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__notch">
+      <span class="mdc-floating-label" id="my-label-id">Phone Number</span>
+    </span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading">phone</i>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">clear</i>
-  <div class="mdc-notched-outline">
-   <div class="mdc-notched-outline__leading"></div>
-    <div class="mdc-notched-outline__notch">
-      <span class="mdc-floating-label" id="my-label-id">Phone Number</span>
-    </div>
-    <div class="mdc-notched-outline__trailing"></div>
-  </div>
 </label>
 ```
 
@@ -156,9 +159,10 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-text-field-leading-icon-color($color)` | Customizes the color for the leading icon in an enabled text-field.
-`mdc-text-field-trailing-icon-color($color)` | Customizes the color for the trailing icon in an enabled text-field.
-`mdc-text-field-disabled-icon-color($color)` | Customizes the color for the leading/trailing icons in a disabled text-field.
+`leading-icon-color($color)` | Customizes the color for the leading icon in an enabled text-field.
+`trailing-icon-color($color)` | Customizes the color for the trailing icon in an enabled text-field.
+`disabled-icon-color($color)` | Customizes the color for the leading/trailing icons in a disabled text-field.
+`size($size)` | Sets the size of the leading and trailing icons.
 
 ## `MDCTextFieldIcon` properties and methods
 

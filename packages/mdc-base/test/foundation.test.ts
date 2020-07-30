@@ -24,8 +24,8 @@
 import {MDCFoundation} from '../../mdc-base/foundation';
 
 class FakeFoundation extends MDCFoundation {
-  get adapter() {
-    return this.adapter_;
+  get _adapter() {
+    return this.adapter;
   }
 }
 
@@ -46,16 +46,16 @@ describe('MDCFoundation', () => {
     expect(MDCFoundation.defaultAdapter).toEqual({});
   });
 
-  it('takes an adapter object in its constructor, assigns it to "adapter_"',
+  it('takes an adapter object in its constructor, assigns it to "adapter"',
      () => {
        const adapter = {adapter: true};
        const f = new FakeFoundation(adapter);
-       expect(f.adapter).toEqual(adapter);
+       expect(f._adapter).toEqual(adapter);
      });
 
   it('assigns adapter to an empty object when none given', () => {
     const f = new FakeFoundation();
-    expect(f.adapter).toEqual({});
+    expect(f._adapter).toEqual({});
   });
 
   it('provides an init() lifecycle method, which defaults to a no-op', () => {

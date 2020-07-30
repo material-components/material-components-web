@@ -76,15 +76,15 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
       return;
     }
 
-    this.adapter_.addClass(cssClasses.OPEN);
-    this.adapter_.addClass(cssClasses.ANIMATE);
+    this.adapter.addClass(cssClasses.OPEN);
+    this.adapter.addClass(cssClasses.ANIMATE);
 
     // Wait a frame once display is no longer "none", to establish basis for animation
     this.runNextAnimationFrame_(() => {
-      this.adapter_.addClass(cssClasses.OPENING);
+      this.adapter.addClass(cssClasses.OPENING);
     });
 
-    this.adapter_.saveFocus();
+    this.adapter.saveFocus();
   }
 
   /**
@@ -95,7 +95,7 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
       return;
     }
 
-    this.adapter_.addClass(cssClasses.CLOSING);
+    this.adapter.addClass(cssClasses.CLOSING);
   }
 
   /**
@@ -103,7 +103,7 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
    * @return true if drawer is in open state.
    */
   isOpen(): boolean {
-    return this.adapter_.hasClass(cssClasses.OPEN);
+    return this.adapter.hasClass(cssClasses.OPEN);
   }
 
   /**
@@ -111,7 +111,8 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
    * @return true if drawer is animating open.
    */
   isOpening(): boolean {
-    return this.adapter_.hasClass(cssClasses.OPENING) || this.adapter_.hasClass(cssClasses.ANIMATE);
+    return this.adapter.hasClass(cssClasses.OPENING) ||
+        this.adapter.hasClass(cssClasses.ANIMATE);
   }
 
   /**
@@ -119,7 +120,7 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
    * @return true if drawer is animating closed.
    */
   isClosing(): boolean {
-    return this.adapter_.hasClass(cssClasses.CLOSING);
+    return this.adapter.hasClass(cssClasses.CLOSING);
   }
 
   /**
@@ -140,25 +141,26 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
 
     // In Edge, transitionend on ripple pseudo-elements yields a target without classList, so check for Element first.
-    const isRootElement = this.isElement_(evt.target) && this.adapter_.elementHasClass(evt.target, ROOT);
+    const isRootElement = this.isElement_(evt.target) &&
+        this.adapter.elementHasClass(evt.target, ROOT);
     if (!isRootElement) {
       return;
     }
 
     if (this.isClosing()) {
-      this.adapter_.removeClass(OPEN);
+      this.adapter.removeClass(OPEN);
       this.closed_();
-      this.adapter_.restoreFocus();
-      this.adapter_.notifyClose();
+      this.adapter.restoreFocus();
+      this.adapter.notifyClose();
     } else {
-      this.adapter_.focusActiveNavigationItem();
+      this.adapter.focusActiveNavigationItem();
       this.opened_();
-      this.adapter_.notifyOpen();
+      this.adapter.notifyOpen();
     }
 
-    this.adapter_.removeClass(ANIMATE);
-    this.adapter_.removeClass(OPENING);
-    this.adapter_.removeClass(CLOSING);
+    this.adapter.removeClass(ANIMATE);
+    this.adapter.removeClass(OPENING);
+    this.adapter.removeClass(CLOSING);
   }
 
   /**

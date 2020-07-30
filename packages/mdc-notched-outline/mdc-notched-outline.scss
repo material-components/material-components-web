@@ -20,10 +20,10 @@
 // THE SOFTWARE.
 //
 
-@use "@material/base/mixins" as base-mixins;
-@use "./mixins";
+@use '@material/base/mixins' as base-mixins;
+@use './mixins';
 
 // Notched Outline is intended for use by multiple components, but its styles should only be emitted once when bundled
-@include base-mixins.emit-once("mdc-notched-outline") {
+@include base-mixins.emit-once('mdc-notched-outline') {
   @include mixins.core-styles;
 }

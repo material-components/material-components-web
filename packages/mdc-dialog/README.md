@@ -96,7 +96,7 @@ dialog.listen('MDCDialog:closing', function() {
 
 Alert dialogs interrupt users with urgent information, details, or actions.
 
-<img src="images/alert-dialog.png" alt="Alert dialog: discard" width=250px>
+<img src="images/alert-dialog.png" alt="Alert dialog: discard" width="250px">
 
 ### Alert dialog example
 
@@ -133,7 +133,7 @@ Simple dialogs can display items that are immediately actionable when selected. 
 
 As simple dialogs are interruptive, they should be used sparingly. Alternatively, dropdown menus provide options in a non-modal, less disruptive way.
 
-<img src="images/simple-dialog.png" alt="Simple dialog: selection" width=250px>
+<img src="images/simple-dialog.png" alt="Simple dialog: selection" width="250px">
 
 ### Simple dialog example
 
@@ -174,7 +174,7 @@ Confirmation dialogs give users the ability to provide final confirmation of a c
 
 If the user confirms a choice, it’s carried out. Otherwise, the user can dismiss the dialog. For example, users can listen to multiple ringtones but only make a final selection upon tapping “OK.”
 
-<img src="images/confirmation-dialog.png" alt="Confirmation dialog: selection confirmation" width=250px>
+<img src="images/confirmation-dialog.png" alt="Confirmation dialog: selection confirmation" width="250px">
 
 ### Confirmation dialog example
 
@@ -239,7 +239,7 @@ Full-screen dialogs group a series of tasks, such as creating a calendar entry w
 
 MDC Web does not yet support full-screen dialogs.
 
-<img src="images/full-screen-dialog.png" alt="Full-screen dialog: event" width=250px>
+<img src="images/full-screen-dialog.png" alt="Full-screen dialog: event" width="250px">
 
 ## Additional Information
 
@@ -341,6 +341,7 @@ Mixin | Description
 `scrim-color($color, $opacity)` | Sets the color of the scrim behind the dialog.
 `title-ink-color($color, $opacity)` | Sets the color of the dialog's title text.
 `content-ink-color($color, $opacity)` | Sets the color of the dialog's content text.
+`content-padding($padding-top, $padding-right, $padding-bottom, $padding-left)` | Sets the padding of the dialog's content.
 `scroll-divider-color($color, $opacity)` | Sets the color of the dividers which display around scrollable content.
 `shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to dialog surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `min-width($min-width)` | Sets the minimum width of the dialog (defaults to 280px).

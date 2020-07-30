@@ -55,18 +55,18 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
   }
 
   init() {
-    this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+    this.adapter.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
   }
 
   destroy() {
-    this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+    this.adapter.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
   }
 
   /**
    * Returns the width of the label element.
    */
   getWidth(): number {
-    return this.adapter_.getWidth();
+    return this.adapter.getWidth();
   }
 
   /**
@@ -76,9 +76,9 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
   shake(shouldShake: boolean) {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     if (shouldShake) {
-      this.adapter_.addClass(LABEL_SHAKE);
+      this.adapter.addClass(LABEL_SHAKE);
     } else {
-      this.adapter_.removeClass(LABEL_SHAKE);
+      this.adapter.removeClass(LABEL_SHAKE);
     }
   }
 
@@ -89,16 +89,29 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
   float(shouldFloat: boolean) {
     const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     if (shouldFloat) {
-      this.adapter_.addClass(LABEL_FLOAT_ABOVE);
+      this.adapter.addClass(LABEL_FLOAT_ABOVE);
     } else {
-      this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
-      this.adapter_.removeClass(LABEL_SHAKE);
+      this.adapter.removeClass(LABEL_FLOAT_ABOVE);
+      this.adapter.removeClass(LABEL_SHAKE);
+    }
+  }
+
+  /**
+   * Styles the label as required.
+   * @param isRequired If true, adds an asterisk to the label, indicating that it is required.
+   */
+  setRequired(isRequired: boolean) {
+    const {LABEL_REQUIRED} = MDCFloatingLabelFoundation.cssClasses;
+    if (isRequired) {
+      this.adapter.addClass(LABEL_REQUIRED);
+    } else {
+      this.adapter.removeClass(LABEL_REQUIRED);
     }
   }
 
   private handleShakeAnimationEnd_() {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
-    this.adapter_.removeClass(LABEL_SHAKE);
+    this.adapter.removeClass(LABEL_SHAKE);
   }
 }
 

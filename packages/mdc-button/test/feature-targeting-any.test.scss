@@ -1,5 +1,5 @@
-@use "../mixins" as button;
-@use "@material/feature-targeting/functions" as feature;
+@use '../mixins' as button;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {
@@ -14,12 +14,11 @@
     @include button.outline-width(0, $query: $query);
     @include button.ripple($query: $query);
     @include button.without-ripple($query: $query);
-    @include button.theme-baseline($query: $query);
     @include button.density(-1, $query: $query);
     @include button.height(0, $query: $query);
-    @include button.label-overlow-ellipsis($query: $query);
+    @include button.label-overflow-ellipsis($query: $query);
   }
 }
 
 // This shouldn't output any CSS.
-@include test(feature.any());
+@include test(feature-targeting.any());

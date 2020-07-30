@@ -20,20 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use "./variables";
-
-@function enter($name, $duration, $delay: 0ms) {
-  @return $name $duration $delay variables.$deceleration-curve-timing-function;
-}
-
-@function exit-permanent($name, $duration, $delay: 0ms) {
-  @return $name $duration $delay variables.$acceleration-curve-timing-function;
-}
-
-@function exit-temporary($name, $duration, $delay: 0ms) {
-  @return $name $duration $delay variables.$sharp-curve-timing-function;
-}
-
-@function standard($name, $duration, $delay: 0ms) {
-  @return $name $duration $delay variables.$standard-curve-timing-function;
-}
+/// @deprecated Import '_animation.scss' instead.
+@forward './animation' show enter, exit-permanent, exit-temporary, standard;

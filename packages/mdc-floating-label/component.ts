@@ -38,7 +38,7 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
    * @param shouldShake If true, shakes the label by adding a CSS class; otherwise, stops shaking by removing the class.
    */
   shake(shouldShake: boolean) {
-    this.foundation_.shake(shouldShake);
+    this.foundation.shake(shouldShake);
   }
 
   /**
@@ -46,11 +46,19 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
    * @param shouldFloat If true, floats the label by adding a CSS class; otherwise, docks it by removing the class.
    */
   float(shouldFloat: boolean) {
-    this.foundation_.float(shouldFloat);
+    this.foundation.float(shouldFloat);
+  }
+
+  /**
+   * Styles the label as required.
+   * @param isRequired If true, adds an asterisk to the label, indicating that it is required.
+   */
+  setRequired(isRequired: boolean) {
+    this.foundation.setRequired(isRequired);
   }
 
   getWidth(): number {
-    return this.foundation_.getWidth();
+    return this.foundation.getWidth();
   }
 
   getDefaultFoundation() {
@@ -58,9 +66,9 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCFloatingLabelAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      getWidth: () => estimateScrollWidth(this.root_),
+      addClass: (className) => this.root.classList.add(className),
+      removeClass: (className) => this.root.classList.remove(className),
+      getWidth: () => estimateScrollWidth(this.root),
       registerInteractionHandler: (evtType, handler) =>
           this.listen(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) =>

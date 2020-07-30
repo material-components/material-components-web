@@ -84,7 +84,7 @@ export interface MDCTextFieldInputAdapter {
   getNativeInput(): MDCTextFieldNativeInputElement | null;
 
   /**
-   * @return true if the textfield is focused. We achieve this via `document.activeElement === this.root_`.
+   * @return true if the textfield is focused. We achieve this via `document.activeElement === this.root`.
    */
   isFocused(): boolean;
 
@@ -122,6 +122,12 @@ export interface MDCTextFieldLabelAdapter {
    * @return width of label in pixels.
    */
   getLabelWidth(): number;
+
+  /**
+   * Only implement if label exists.
+   * Styles the label as required.
+   */
+  setLabelRequired(isRequired: boolean): void;
 }
 
 export interface MDCTextFieldLineRippleAdapter {

@@ -21,473 +21,666 @@
  * THE SOFTWARE.
  */
 
-import {TRANSFORM_PROP} from './helpers';
-import {cssClasses, strings} from '../constants';
-import {MDCSlider} from '../index';
-import {emitEvent} from '../../../testing/dom/events';
+import {KEY} from '../../mdc-dom/keyboard';
+import {getFixture} from '../../../testing/dom';
+import {createKeyboardEvent, createMouseEvent, emitEvent} from '../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-
-function getFixture() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
-    <div class="mdc-slider" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-      <div class="mdc-slider__track-container">
-        <div class="mdc-slider__track"></div>
-        <div class="mdc-slider__track-marker-container"></div>
-      </div>
-      <div class="mdc-slider__thumb-container">
-        <div class="mdc-slider__pin">
-          <span class="mdc-slider__pin-value-marker">30</span>
-        </div>
-        <svg class="mdc-slider__thumb" width="21" height="21">
-          <circle cx="10.5" cy="10.5" r="7.875"></circle>
-        </svg>
-        <div class="mdc-slider__focus-ring"></div>
-      </div>
-    </div>`;
-  const el = wrapper.firstElementChild as HTMLElement;
-  wrapper.removeChild(el);
-  return el;
-}
-
-function setupTest() {
-  const root = getFixture();
-  const component = new MDCSlider(root);
-  return {root, component};
-}
+import {attributes, cssClasses, events, MDCSlider, MDCSliderFoundation, Thumb} from '../index';
 
 describe('MDCSlider', () => {
   setUpMdcTestEnvironment();
 
-  it('attachTo() instantiates and returns an MDCSlider instance', () => {
-    expect(MDCSlider.attachTo(getFixture())).toEqual(jasmine.any(MDCSlider));
+  let root: HTMLElement;
+  let component: MDCSlider;
+
+  beforeAll(() => {
+    // Mock #setPointerCapture as it throws errors on FF without a
+    // real pointerId.
+    spyOn(Element.prototype, 'setPointerCapture');
   });
 
-  it('get/set value', () => {
-    const {component} = setupTest();
-    component.value = 50;
-
-    expect(component.value).toEqual(50);
+  afterEach(() => {
+    if (root && document.body.contains(root)) {
+      document.body.removeChild(root);
+    }
   });
 
-  it('get/set min', () => {
-    const {component} = setupTest();
-    component.min = 10;
+  createTestSuiteForSliderEvents('pointer');
+  createTestSuiteForSliderEvents('mouse');
+  createTestSuiteForSliderEvents('touch');
 
-    expect(component.min).toEqual(10);
+  /**
+   * Creates test suite for any tests that should be tested across
+   * pointer, mouse, and touch events.
+   */
+  function createTestSuiteForSliderEvents(eventType: 'pointer'|'mouse'|
+                                          'touch') {
+    // Don't run tests with pointer events if the test browser does not
+    // support pointer events.
+    if (eventType === 'pointer' && !window.PointerEvent) return;
+    // Don't run tests with touch events if the test browser does not
+    // support touch events.
+    if (eventType === 'touch' && !('ontouchstart' in window)) {
+      return;
+    }
+
+    describe(`slider events for ${eventType} event types`, () => {
+      let thumb: HTMLElement;
+      let trackActive: HTMLElement;
+
+      beforeEach(() => {
+        if (eventType !== 'pointer') {
+          MDCSliderFoundation.SUPPORTS_POINTER_EVENTS = false;
+        }
+
+        ({root, component, endThumb: thumb, trackActive} = setUpTest());
+      });
+
+      afterEach(() => {
+        // Reset to actual value.
+        MDCSliderFoundation.SUPPORTS_POINTER_EVENTS =
+            Boolean(window.PointerEvent);
+
+        document.body.removeChild(root);
+      });
+
+      it('down event sets the slider value based on x coordinate', () => {
+        const event = createEventFrom(eventType, 'down', {clientX: 50});
+        root.dispatchEvent(event);
+        jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+        expect(thumb.style.transform).toBe('translateX(50px)');
+        expect(trackActive!.style.transform).toBe('scaleX(0.5)');
+      });
+
+      it('move event after down event sets the slider value based on x coordinate',
+         () => {
+           const downEvent = createEventFrom(eventType, 'down', {clientX: 0});
+           root.dispatchEvent(downEvent);
+           jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+           expect(thumb.style.transform).toBe('translateX(0px)');
+           expect(trackActive!.style.transform).toBe('scaleX(0)');
+
+           const moveEvent = createEventFrom(eventType, 'move', {clientX: 50});
+           const el = eventType === 'pointer' ? root : document.body;
+           el.dispatchEvent(moveEvent);
+           jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+           expect(thumb.style.transform).toBe('translateX(50px)');
+           expect(trackActive!.style.transform).toBe('scaleX(0.5)');
+         });
+
+      it('move event after up event doesn\'t update slider value', () => {
+        const downEvent = createEventFrom(eventType, 'down', {clientX: 0});
+        root.dispatchEvent(downEvent);
+        jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+        expect(thumb.style.transform).toBe('translateX(0px)');
+        expect(trackActive!.style.transform).toBe('scaleX(0)');
+
+        const upEvent = createEventFrom(eventType, 'up', {clientX: 0});
+        const upEl = eventType === 'pointer' ? root : document.body;
+        upEl.dispatchEvent(upEvent);
+
+        const moveEvent = createEventFrom(eventType, 'move', {clientX: 0});
+        const moveEl = eventType === 'pointer' ? root : document.body;
+        moveEl.dispatchEvent(moveEvent);
+        jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+        expect(thumb.style.transform).toBe('translateX(0px)');
+        expect(trackActive!.style.transform).toBe('scaleX(0)');
+      });
+
+      it('Event listeners are destroyed when component is destroyed.', () => {
+        spyOn(root, 'removeEventListener').and.callThrough();
+        spyOn(thumb, 'removeEventListener').and.callThrough();
+
+        component.destroy();
+
+        if (eventType === 'pointer') {
+          expect(root.removeEventListener)
+              .toHaveBeenCalledWith(
+                  'pointerdown', jasmine.any(Function), undefined);
+          expect(root.removeEventListener)
+              .toHaveBeenCalledWith(
+                  'pointerup', jasmine.any(Function), undefined);
+        } else {
+          expect(root.removeEventListener)
+              .toHaveBeenCalledWith(
+                  'mousedown', jasmine.any(Function), undefined);
+          expect(root.removeEventListener)
+              .toHaveBeenCalledWith(
+                  'touchstart', jasmine.any(Function), undefined);
+        }
+
+        const thumbEvents =
+            ['keydown', 'focus', 'mouseenter', 'blur', 'mouseleave'];
+        for (const event of thumbEvents) {
+          expect(thumb.removeEventListener)
+              .toHaveBeenCalledWith(event, jasmine.any(Function));
+        }
+      });
+    });
+  }
+
+  describe('range slider', () => {
+    let startThumb: HTMLElement;
+    let endThumb: HTMLElement;
+    const initialValueStart = 30;
+    const initialValueEnd = 70;
+
+    beforeEach(() => {
+      ({root, component, startThumb, endThumb} =
+           setUpTest({
+             isRange: true,
+             valueStart: initialValueStart,
+             value: initialValueEnd
+           }) as {
+             root: HTMLElement,
+             component: MDCSlider,
+             startThumb: HTMLElement,
+             endThumb: HTMLElement
+           });
+
+      spyOn(startThumb, 'getBoundingClientRect').and.returnValue({
+        left: initialValueStart - 3,
+        right: initialValueStart + 3,
+      } as DOMRect);
+      spyOn(endThumb, 'getBoundingClientRect').and.returnValue({
+        left: initialValueEnd - 3,
+        right: initialValueEnd + 3,
+      } as DOMRect);
+    });
+
+    it('press + move on start thumb updates start thumb value', () => {
+      const downEvent =
+          createEventFrom('pointer', 'down', {clientX: initialValueStart + 2});
+      root.dispatchEvent(downEvent);
+      jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+      // Start thumb value should be the same as initial value, since press
+      // was in the middle of the range.
+      expect(startThumb.style.transform)
+          .toBe(`translateX(${initialValueStart}px)`);
+
+      const moveEvent = createEventFrom('pointer', 'move', {clientX: 50});
+      root.dispatchEvent(moveEvent);
+      jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+      expect(startThumb.style.transform).toBe('translateX(50px)');
+    });
+
+    it('press + move on end thumb updates start thumb value', () => {
+      const downEvent =
+          createEventFrom('pointer', 'down', {clientX: initialValueEnd - 2});
+      root.dispatchEvent(downEvent);
+      jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+      // End thumb value should be the same as initial value, since press
+      // was in the middle of the range.
+      expect(endThumb.style.transform).toBe(`translateX(${initialValueEnd}px)`);
+
+      const moveEvent = createEventFrom('pointer', 'move', {clientX: 40});
+      root.dispatchEvent(moveEvent);
+      jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+      expect(endThumb.style.transform).toBe('translateX(40px)');
+    });
+
+    it('down event between min and start thumb updates start thumb value',
+       () => {
+         const downEvent = createEventFrom(
+             'pointer', 'down', {clientX: initialValueStart - 10});
+         root.dispatchEvent(downEvent);
+         jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+         expect(startThumb.style.transform)
+             .toBe(`translateX(${initialValueStart - 10}px)`);
+         expect(endThumb.style.transform)
+             .toBe(`translateX(${initialValueEnd}px)`);
+       });
+
+    it('down event between end thumb and max updates end thumb value', () => {
+      const downEvent =
+          createEventFrom('pointer', 'down', {clientX: initialValueEnd + 10});
+      root.dispatchEvent(downEvent);
+      jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+      expect(endThumb.style.transform)
+          .toBe(`translateX(${initialValueEnd + 10}px)`);
+      expect(startThumb.style.transform)
+          .toBe(`translateX(${initialValueStart}px)`);
+    });
+
+    it('Thumb event listeners are destroyed when component is destroyed.',
+       () => {
+         spyOn(startThumb, 'removeEventListener').and.callThrough();
+         spyOn(endThumb, 'removeEventListener').and.callThrough();
+
+         component.destroy();
+         expect(startThumb.removeEventListener)
+             .toHaveBeenCalledWith('keydown', jasmine.any(Function));
+         expect(endThumb.removeEventListener)
+             .toHaveBeenCalledWith('keydown', jasmine.any(Function));
+       });
   });
 
-  it('get/set max', () => {
-    const {component} = setupTest();
-    component.max = 80;
+  describe('thumb states', () => {
+    it('single point slider: thumb is focused after value update', () => {
+      let thumb;
+      ({root, endThumb: thumb} =
+           setUpTest({isDiscrete: true, hasTickMarks: true}));
 
-    expect(component.max).toEqual(80);
+      const downEvent = createEventFrom('pointer', 'down', {clientX: 65.3});
+      root.dispatchEvent(downEvent);
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(document.activeElement).toBe(thumb);
+    });
+
+    it('range slider: thumb is focused after value update', () => {
+      let startThumb, endThumb;
+      const valueStart = 10;
+      const value = 40;
+      ({root, startThumb, endThumb} =
+           setUpTest({isDiscrete: true, isRange: true, valueStart, value}));
+
+      spyOn(startThumb as HTMLElement, 'getBoundingClientRect')
+          .and.returnValue({
+            left: valueStart - 3,
+            right: valueStart + 3,
+          } as DOMRect);
+      spyOn(endThumb, 'getBoundingClientRect').and.returnValue({
+        left: value - 3,
+        right: value + 3,
+      } as DOMRect);
+
+      // Update start thumb value.
+      const downEventStart = createEventFrom('pointer', 'down', {clientX: 3});
+      root.dispatchEvent(downEventStart);
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(document.activeElement).toBe(startThumb);
+
+      // Update end thumb value.
+      const downEventEnd = createEventFrom('pointer', 'down', {clientX: 92});
+      root.dispatchEvent(downEventEnd);
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(document.activeElement).toBe(endThumb);
+    });
   });
 
-  it('get/set step', () => {
-    const {component} = setupTest();
-    component.step = 2.5;
+  describe('value indicator', () => {
+    it('single point slider: updates value indicator after value update',
+       () => {
+         let thumb;
+         ({root, endThumb: thumb} =
+              setUpTest({isDiscrete: true, hasTickMarks: true, step: 10}));
+         expect(thumb.textContent!.trim()).not.toBe('70');
 
-    expect(component.step).toEqual(2.5);
+         const downEvent = createEventFrom('pointer', 'down', {clientX: 65.3});
+         root.dispatchEvent(downEvent);
+         expect(thumb.textContent!.trim()).toBe('70');
+       });
+
+    it('range slider: updates value indicator after value update', () => {
+      let startThumb, endThumb;
+      const valueStart = 10;
+      const value = 40;
+      ({root, startThumb, endThumb} = setUpTest(
+           {isDiscrete: true, isRange: true, valueStart, value, step: 10}));
+
+      spyOn(startThumb as HTMLElement, 'getBoundingClientRect')
+          .and.returnValue({
+            left: valueStart - 3,
+            right: valueStart + 3,
+          } as DOMRect);
+      spyOn(endThumb, 'getBoundingClientRect').and.returnValue({
+        left: value - 3,
+        right: value + 3,
+      } as DOMRect);
+
+      expect(startThumb!.textContent!.trim()).not.toBe('0');
+      expect(endThumb.textContent!.trim()).not.toBe('90');
+
+      // Update start thumb value.
+      const downEventStart = createEventFrom('pointer', 'down', {clientX: 3});
+      root.dispatchEvent(downEventStart);
+      expect(startThumb!.textContent!.trim()).toBe('0');
+
+      // Update end thumb value.
+      const downEventEnd = createEventFrom('pointer', 'down', {clientX: 92});
+      root.dispatchEvent(downEventEnd);
+      expect(endThumb.textContent!.trim()).toBe('90');
+    });
   });
 
-  it('get/set disabled', () => {
-    const {component} = setupTest();
-    component.disabled = true;
+  describe('tick marks', () => {
+    beforeEach(() => {
+      ({root} = setUpTest({isDiscrete: true, hasTickMarks: true, step: 10}));
+    });
 
-    expect(component.disabled).toBe(true);
+    it('adds tick mark elements on component initialization', () => {
+      const tickMarks =
+          root.querySelector(`.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
+      expect(tickMarks.length).toBe(11);
+      for (let i = 0; i < tickMarks.length; i++) {
+        const tickMarkClass = i === 0 ? cssClasses.TICK_MARK_ACTIVE :
+                                        cssClasses.TICK_MARK_INACTIVE;
+        expect(tickMarks[i].classList.contains(tickMarkClass)).toBe(true);
+      }
+    });
+
+    it('updates tick mark classes after slider update', () => {
+      // Sanity check that tick mark classes are as we expect on component init.
+      let tickMarks =
+          root.querySelector(`.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
+      expect(tickMarks.length).toBe(11);
+      for (let i = 0; i < tickMarks.length; i++) {
+        const tickMarkClass = i === 0 ? cssClasses.TICK_MARK_ACTIVE :
+                                        cssClasses.TICK_MARK_INACTIVE;
+        expect(tickMarks[i].classList.contains(tickMarkClass)).toBe(true);
+      }
+
+      const downEvent = createEventFrom('pointer', 'down', {clientX: 55.3});
+      root.dispatchEvent(downEvent);
+      jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
+
+      tickMarks =
+          root.querySelector(`.${cssClasses.TICK_MARKS_CONTAINER}`)!.children;
+      expect(tickMarks.length).toBe(11);
+      for (let i = 0; i < tickMarks.length; i++) {
+        // 55.3 rounds up to 60, since step value is 10.
+        const tickMarkClass = i <= 6 ? cssClasses.TICK_MARK_ACTIVE :
+                                       cssClasses.TICK_MARK_INACTIVE;
+        expect(tickMarks[i].classList.contains(tickMarkClass)).toBe(true);
+      }
+    });
   });
 
-  it('#layout lays out the component', () => {
-    const {root, component} = setupTest();
-    jasmine.clock().tick(1);
+  describe('a11y support', () => {
+    let startThumb: HTMLElement|null, endThumb: HTMLElement;
 
-    component.value = 50;
-    jasmine.clock().tick(1);
+    it('updates aria-valuenow on thumb value updates', () => {
+      ({root, endThumb} = setUpTest({isDiscrete: true, value: 30, step: 10}));
+      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('30');
 
-    root.style.position = 'absolute';
-    root.style.left = '0';
-    root.style.top = '0';
-    root.style.width = '100px';
+      const downEvent = createEventFrom('pointer', 'down', {clientX: 90});
+      root.dispatchEvent(downEvent);
+      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('90');
+    });
 
-    document.body.appendChild(root);
-    component.layout();
-    jasmine.clock().tick(1);
+    it('increments/decrements correct thumb value on keydown', () => {
+      ({root, startThumb, endThumb} = setUpTest({
+         isDiscrete: true,
+         valueStart: 10,
+         value: 50,
+         isRange: true,
+         step: 10
+       }));
+      expect(startThumb!.getAttribute(attributes.ARIA_VALUENOW)).toBe('10');
+      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('50');
 
-    const thumbContainer = root.querySelector(strings.THUMB_CONTAINER_SELECTOR) as HTMLElement;
-    expect(thumbContainer.style.getPropertyValue(TRANSFORM_PROP)).toContain('translateX(50px)');
+      const keyUpEvent = createKeyboardEvent('keydown', {key: KEY.ARROW_UP});
+      startThumb!.dispatchEvent(keyUpEvent);
+      expect(startThumb!.getAttribute(attributes.ARIA_VALUENOW)).toBe('20');
 
-    document.body.removeChild(root);
+      const keyDownEvent =
+          createKeyboardEvent('keydown', {key: KEY.ARROW_DOWN});
+      endThumb.dispatchEvent(keyDownEvent);
+      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('40');
+    });
   });
 
-  it('#initialSyncWithDOM syncs the min property with aria-valuemin', () => {
-    const root = getFixture();
-    root.setAttribute('aria-valuemin', '10');
+  describe('disabled state', () => {
+    let startThumb: HTMLElement|null, endThumb: HTMLElement;
 
-    const component = new MDCSlider(root);
-    expect(component.min).toEqual(10);
+    it('updates disabled class when setting disabled state', () => {
+      ({root, component} = setUpTest());
+      expect(root.classList.contains(cssClasses.DISABLED)).toBe(false);
+
+      component.setDisabled(true);
+      expect(component.getDisabled()).toBe(true);
+      expect(root.classList.contains(cssClasses.DISABLED)).toBe(true);
+
+      component.setDisabled(false);
+      expect(component.getDisabled()).toBe(false);
+      expect(root.classList.contains(cssClasses.DISABLED)).toBe(false);
+    });
+
+    it('updates thumb attrs when setting disabled state', () => {
+      ({root, component, endThumb} = setUpTest());
+      expect(endThumb.tabIndex).toBe(0);
+
+      component.setDisabled(true);
+      expect(endThumb.tabIndex).toBe(-1);
+      expect(endThumb.getAttribute('aria-disabled')).toBe('true');
+
+      component.setDisabled(false);
+      expect(endThumb.tabIndex).toBe(0);
+      expect(endThumb.getAttribute('aria-disabled')).toBe('false');
+    });
+
+    it('range slider: updates thumbs\' attrs when setting disabled state',
+       () => {
+         ({root, component, startThumb, endThumb} = setUpTest({isRange: true}));
+         expect(startThumb!.tabIndex).toBe(0);
+         expect(endThumb.tabIndex).toBe(0);
+
+         component.setDisabled(true);
+         expect(startThumb!.tabIndex).toBe(-1);
+         expect(endThumb.tabIndex).toBe(-1);
+         expect(startThumb!.getAttribute('aria-disabled')).toBe('true');
+         expect(endThumb.getAttribute('aria-disabled')).toBe('true');
+
+         component.setDisabled(false);
+         expect(startThumb!.tabIndex).toBe(0);
+         expect(endThumb.tabIndex).toBe(0);
+         expect(startThumb!.getAttribute('aria-disabled')).toBe('false');
+         expect(endThumb.getAttribute('aria-disabled')).toBe('false');
+       });
   });
 
-  it('#initialSyncWithDOM adds an aria-valuemin attribute if not present', () => {
-    const root = getFixture();
-    root.removeAttribute('aria-valuemin');
+  describe('change/input events', () => {
+    it('emits `change`/`input` events across an interaction', () => {
+      ({root, component} = setUpTest({value: 25, isDiscrete: true}));
+      spyOn(component, 'emit');
 
-    const component = new MDCSlider(root);
-    expect(root.getAttribute('aria-valuemin')).toEqual(String(component.min));
+      const downEvent = createEventFrom('pointer', 'down', {clientX: 28});
+      root.dispatchEvent(downEvent);
+      expect(component.emit)
+          .toHaveBeenCalledWith(events.INPUT, {value: 28, thumb: Thumb.END});
+      expect(component.emit)
+          .not.toHaveBeenCalledWith(events.CHANGE, jasmine.any(Object));
+
+      const moveEvent = createEventFrom('pointer', 'move', {clientX: 48});
+      root.dispatchEvent(moveEvent);
+      expect(component.emit)
+          .toHaveBeenCalledWith(events.INPUT, {value: 48, thumb: Thumb.END});
+      expect(component.emit)
+          .not.toHaveBeenCalledWith(events.CHANGE, jasmine.any(Object));
+
+      root.dispatchEvent(createEventFrom('pointer', 'up', {clientX: 48}));
+      expect(component.emit)
+          .toHaveBeenCalledWith(events.CHANGE, {value: 48, thumb: Thumb.END});
+    });
   });
 
-  it('#initialSyncWithDOM syncs the max property with aria-valuemax', () => {
-    const root = getFixture();
-    root.setAttribute('aria-valuemax', '80');
+  describe('#get/setValue, #get/setValueStart', () => {
+    it('single pointer slider: #getValue returns correct value', () => {
+      ({component} = setUpTest({value: 25}));
+      expect(component.getValue()).toBe(25);
+    });
 
-    const component = new MDCSlider(root);
-    expect(component.max).toEqual(80);
+    it('range slider: #getValue/#getValueStart returns correct values', () => {
+      ({component} = setUpTest({valueStart: 3, value: 25, isRange: true}));
+      expect(component.getValueStart()).toBe(3);
+      expect(component.getValue()).toBe(25);
+    });
+
+    it('single pointer slider: #setValue moves thumb to correct position',
+       () => {
+         let endThumb;
+         ({root, component, endThumb} =
+              setUpTest({value: 25, isDiscrete: true}));
+         component.setValue(75);
+
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(endThumb.style.transform).toBe(`translateX(75px)`);
+         expect(document.activeElement).not.toBe(endThumb);
+       });
+
+    it('range slider: #setValueStart/#setValue move thumbs to correct positions',
+       () => {
+         let startThumb, endThumb;
+         ({root, component, startThumb, endThumb} = setUpTest(
+              {valueStart: 20, value: 53, isDiscrete: true, isRange: true}));
+
+         component.setValueStart(5);
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(startThumb!.style.transform).toBe(`translateX(5px)`);
+         expect(document.activeElement).not.toBe(startThumb);
+
+         component.setValue(75);
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(endThumb.style.transform).toBe(`translateX(75px)`);
+         expect(document.activeElement).not.toBe(endThumb);
+       });
   });
 
-  it('#initialSyncWithDOM adds an aria-valuemax attribute if not present', () => {
-    const root = getFixture();
-    root.removeAttribute('aria-valuemax');
+  describe('resize handling:', () => {
+    it('adjusts layout calculations on window resize', () => {
+      jasmine.getEnv().allowRespy(true);
 
-    const component = new MDCSlider(root);
-    expect(root.getAttribute('aria-valuemax')).toEqual(String(component.max));
+      let endThumb;
+      ({root, component, endThumb} = setUpTest({value: 24, isDiscrete: true}));
+
+      expect(component.getValue()).toBe(24);
+      expect(endThumb.style.transform).toBe('translateX(24px)');
+
+      // Mock out client rect to half the size of the original.
+      spyOn(root, 'getBoundingClientRect').and.returnValue({
+        left: 0,
+        right: 50,
+        width: 50,
+      } as DOMRect);
+      emitEvent(window, 'resize');
+
+      jasmine.clock().tick(1);  // Tick for RAF.
+      // Value should be the same...
+      expect(component.getValue()).toBe(24);
+      // Thumb position should be different.
+      expect(endThumb.style.transform).toBe('translateX(12px)');
+
+      component.setValue(12);
+      jasmine.clock().tick(1);  // Tick for RAF.
+      // Subsequent updates should take into account new client rect.
+      expect(endThumb.style.transform).toBe('translateX(6px)');
+
+      jasmine.getEnv().allowRespy(false);
+    });
   });
-
-  it('#initialSyncWithDOM syncs a custom range with aria-valuemin and aria-valuemax', () => {
-    const root = getFixture();
-    root.setAttribute('aria-valuemin', '2001');
-    root.setAttribute('aria-valuemax', '2017');
-
-    const component = new MDCSlider(root);
-    expect(component.min).toEqual(2001);
-    expect(component.max).toEqual(2017);
-  });
-
-  it('#initialSyncWithDOM syncs the value property with aria-valuenow for continuous slider', () => {
-    const root = getFixture();
-    root.setAttribute('aria-valuenow', '30');
-
-    const component = new MDCSlider(root);
-    expect(component.value).toEqual(30);
-  });
-
-  it('#initialSyncWithDOM syncs the value property with aria-valuenow for discrete slider', () => {
-    const root = getFixture();
-    root.classList.add(cssClasses.DISCRETE);
-    root.setAttribute('aria-valuenow', '30');
-
-    const component = new MDCSlider(root);
-    expect(component.value).toEqual(30);
-  });
-
-  it('#initialSyncWithDOM adds an aria-valuenow attribute if not present', () => {
-    const root = getFixture();
-    root.removeAttribute('aria-valuenow');
-
-    const component = new MDCSlider(root);
-    expect(root.getAttribute('aria-valuenow')).toEqual(String(component.value));
-  });
-
-  it('#initialSyncWithDOM syncs the step property with data-step', () => {
-    const root = getFixture();
-    root.setAttribute('data-step', '2.5');
-
-    const component = new MDCSlider(root);
-    expect(component.step).toEqual(2.5);
-  });
-
-  it('#initialSyncWithDOM disables the slider if aria-disabled is present on the component', () => {
-    const root = getFixture();
-    root.setAttribute('aria-disabled', 'true');
-
-    const component = new MDCSlider(root);
-    expect(component.disabled).toBe(true);
-  });
-
-  it('#initialSyncWithDOM does not disable the component if aria-disabled is "false"', () => {
-    const root = getFixture();
-    root.setAttribute('aria-disabled', 'false');
-
-    const component = new MDCSlider(root);
-    expect(component.disabled).toBe(false);
-  });
-
-  it('#stepUp increments the slider by a given value', () => {
-    const {component} = setupTest();
-    component.stepUp(10);
-
-    expect(component.value).toEqual(10);
-  });
-
-  it('#stepUp increments the slider by 1 if no value given', () => {
-    const {component} = setupTest();
-    component.stepUp();
-
-    expect(component.value).toEqual(1);
-  });
-
-  it('#stepUp increments the slider by the step value if no value given and a step is set', () => {
-    const {component} = setupTest();
-    component.step = 5;
-    component.stepUp();
-
-    expect(component.value).toEqual(5);
-  });
-
-  it('#stepDown decrements the slider by a given value', () => {
-    const {component} = setupTest();
-    component.value = 15;
-    component.stepDown(10);
-
-    expect(component.value).toEqual(5);
-  });
-
-  it('#stepDown decrements the slider by 1 if no value given', () => {
-    const {component} = setupTest();
-    component.value = 10;
-    component.stepDown();
-
-    expect(component.value).toEqual(9);
-  });
-
-  it('#stepDown decrements the slider by the step value if no value given and a step is set', () => {
-    const {component} = setupTest();
-    component.step = 5;
-    component.value = 15;
-    component.stepDown();
-
-    expect(component.value).toEqual(10);
-  });
-
-  it('adapter#hasClass checks if a class exists on root element', () => {
-    const {root, component} = setupTest();
-    root.classList.add('foo');
-
-    expect((component.getDefaultFoundation() as any).adapter_.hasClass('foo')).toBe(true);
-  });
-
-  it('adapter#addClass adds a class to the root element', () => {
-    const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.addClass('foo');
-
-    expect(root.className).toContain('foo');
-  });
-
-  it('adapter#removeClass removes a class from the root element', () => {
-    const {root, component} = setupTest();
-    root.classList.add('foo');
-    (component.getDefaultFoundation() as any).adapter_.removeClass('foo');
-
-    expect(root.className).not.toContain('foo');
-  });
-
-  it('adapter#getAttribute retrieves an attribute value from the root element', () => {
-    const {root, component} = setupTest();
-    root.setAttribute('data-foo', 'bar');
-
-    expect((component.getDefaultFoundation() as any).adapter_.getAttribute('data-foo')).toEqual('bar');
-  });
-
-  it('adapter#setAttribute sets an attribute on the root element', () => {
-    const {root, component} = setupTest();
-    (component.getDefaultFoundation() as any).adapter_.setAttribute('data-foo', 'bar');
-
-    expect(root.getAttribute('data-foo')).toEqual('bar');
-  });
-
-  it('adapter#removeAttribute removes an attribute from the root element', () => {
-    const {root, component} = setupTest();
-    root.setAttribute('data-foo', 'bar');
-    (component.getDefaultFoundation() as any).adapter_.removeAttribute('data-foo');
-
-    expect(root.hasAttribute('data-foo')).toBe(false);
-  });
-
-  it('adapter#computeBoundingRect computes the client rect on the root element', () => {
-    const {root, component} = setupTest();
-    expect(
-      (component.getDefaultFoundation() as any).adapter_.computeBoundingRect()).toEqual(root.getBoundingClientRect()
-    );
-  });
-
-  it('adapter#getTabIndex gets the tabIndex property of the root element', () => {
-    const {root, component} = setupTest();
-    expect(root.tabIndex).toEqual(0, 'sanity check');
-
-    expect((component.getDefaultFoundation() as any).adapter_.getTabIndex()).toEqual(root.tabIndex);
-  });
-
-  it('adapter#registerInteractionHandler adds an event listener to the root element', () => {
-    const {root, component} = setupTest();
-    const handler = jasmine.createSpy('interactionHandler');
-
-    (component.getDefaultFoundation() as any).adapter_.registerInteractionHandler('click', handler);
-    emitEvent(root, 'click');
-
-    expect(handler).toHaveBeenCalledWith(jasmine.anything());
-  });
-
-  it('adapter#deregisterInteractionHandler removes an event listener from the root element', () => {
-    const {root, component} = setupTest();
-    const handler = jasmine.createSpy('interactionHandler');
-
-    root.addEventListener('click', handler);
-    (component.getDefaultFoundation() as any).adapter_.deregisterInteractionHandler('click', handler);
-    emitEvent(root, 'click');
-
-    expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
-  });
-
-  it('adapter#registerThumbContainerInteractionHandler adds an event listener to the thumb container element', () => {
-    const {root, component} = setupTest();
-    const thumbContainer = root.querySelector(strings.THUMB_CONTAINER_SELECTOR) as HTMLElement;
-    const handler = jasmine.createSpy('interactionHandler');
-
-    (component.getDefaultFoundation() as any).adapter_.registerThumbContainerInteractionHandler('click', handler);
-    emitEvent(thumbContainer, 'click');
-
-    expect(handler).toHaveBeenCalledWith(jasmine.anything());
-  });
-
-  it('adapter#deregisterThumbContainerInteractionHandler removes an event listener from ' +
-       'the thumb container element', () => {
-    const {root, component} = setupTest();
-    const thumbContainer = root.querySelector(strings.THUMB_CONTAINER_SELECTOR) as HTMLElement;
-    const handler = jasmine.createSpy('interactionHandler');
-
-    thumbContainer.addEventListener('click', handler);
-    (component.getDefaultFoundation() as any).adapter_.deregisterThumbContainerInteractionHandler('click', handler);
-    emitEvent(thumbContainer, 'click');
-
-    expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
-  });
-
-  it('adapter#registerBodyInteractionHandler adds an event listener to the body element', () => {
-    const {component} = setupTest();
-    const handler = jasmine.createSpy('interactionHandler');
-
-    (component.getDefaultFoundation() as any).adapter_.registerBodyInteractionHandler('click', handler);
-    emitEvent(document.body, 'click');
-    document.body.removeEventListener('click', handler);
-
-    expect(handler).toHaveBeenCalledWith(jasmine.anything());
-  });
-
-  it('adapter#deregisterBodyInteractionHandler removes an event listener from the body element', () => {
-    const {component} = setupTest();
-    const handler = jasmine.createSpy('interactionHandler');
-
-    document.body.addEventListener('click', handler);
-    (component.getDefaultFoundation() as any).adapter_.deregisterBodyInteractionHandler('click', handler);
-    emitEvent(document.body, 'click');
-    // Just in case deregisterBodyInteractionHandler doesn't work as expected
-    document.body.removeEventListener('click', handler);
-
-    expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
-  });
-
-  it('adapter#registerResizeHandler adds an event listener for the window\'s "resize" event', () => {
-    const {component} = setupTest();
-    const handler = jasmine.createSpy('resizeHandler');
-
-    (component.getDefaultFoundation() as any).adapter_.registerResizeHandler(handler);
-    emitEvent(window, 'resize');
-    window.removeEventListener('resize', handler);
-
-    expect(handler).toHaveBeenCalledWith(jasmine.anything());
-  });
-
-  it('adapter#deregisterResizeHandler removes an event listener for the window\'s "resize" event', () => {
-    const {component} = setupTest();
-    const handler = jasmine.createSpy('resizeHandler');
-
-    window.addEventListener('resize', handler);
-    (component.getDefaultFoundation() as any).adapter_.deregisterResizeHandler(handler);
-    emitEvent(window, 'resize');
-    // Just in case deregisterResizeHandler doesn't work as expected
-    window.removeEventListener('resize', handler);
-
-    expect(handler).not.toHaveBeenCalledWith(jasmine.anything());
-  });
-
-  it('adapter#notifyInput emits a MDCSlider:input event with the slider instance as its detail', () => {
-    const {root, component} = setupTest();
-    const handler = jasmine.createSpy('inputHandler');
-
-    root.addEventListener(strings.INPUT_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyInput();
-
-    expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({
-      detail: component,
-    }));
-  });
-
-  it('adapter#notifyChange emits a MDCSlider:change event with the slider instance as its detail', () => {
-    const {root, component} = setupTest();
-    const handler = jasmine.createSpy('changeHandler');
-
-    root.addEventListener(strings.CHANGE_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyChange();
-
-    expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({
-      detail: component,
-    }));
-  });
-
-  it('adapter#setThumbContainerStyleProperty sets a style property on the thumb container element', () => {
-    const {root, component} = setupTest();
-    const thumbContainer = root.querySelector(strings.THUMB_CONTAINER_SELECTOR) as HTMLElement;
-
-    const div = document.createElement('div');
-    div.style.backgroundColor = 'black';
-
-    (component.getDefaultFoundation() as any).adapter_.setThumbContainerStyleProperty('background-color', 'black');
-
-    expect(thumbContainer.style.backgroundColor).toEqual(div.style.backgroundColor);
-  });
-
-  it('adapter#setTrackStyleProperty sets a style property on the track element', () => {
-    const {root, component} = setupTest();
-    const track = root.querySelector(strings.TRACK_SELECTOR) as HTMLElement;
-
-    const div = document.createElement('div');
-    div.style.backgroundColor = 'black';
-
-    (component.getDefaultFoundation() as any).adapter_.setTrackStyleProperty('background-color', 'black');
-
-    expect(track.style.backgroundColor).toEqual(div.style.backgroundColor);
-  });
-
-  it('adapter#setMarkerValue changes the value on pin value markers', () => {
-    const {root, component} = setupTest();
-    const pinValueMarker = root.querySelector(strings.PIN_VALUE_MARKER_SELECTOR) as HTMLElement;
-
-    (component.getDefaultFoundation() as any).adapter_.setMarkerValue(10);
-
-    expect(pinValueMarker.innerHTML).toEqual('10');
-  });
-
-  it('adapter#isRTL returns true when component is in an RTL context', () => {
-    const wrapper = document.createElement('div');
-    wrapper.setAttribute('dir', 'rtl');
-    const {root, component} = setupTest();
-    wrapper.appendChild(root);
-    document.body.appendChild(wrapper);
-
-    expect((component.getDefaultFoundation() as any).adapter_.isRTL()).toBe(true);
-
-    document.body.removeChild(wrapper);
-  });
-
-  it('adapter#isRTL returns false when component is not in an RTL context', () => {
-    const wrapper = document.createElement('div');
-    wrapper.setAttribute('dir', 'ltr');
-    const {root, component} = setupTest();
-    wrapper.appendChild(root);
-    document.body.appendChild(wrapper);
-
-    expect((component.getDefaultFoundation() as any).adapter_.isRTL()).toBe(false);
-
-    document.body.removeChild(wrapper);
-  });
-
 });
+
+function setUpTest(
+    {isDiscrete, hasTickMarks, isRange, valueStart, value, step}: {
+      isDiscrete?: boolean,
+      isRange?: boolean,
+      hasTickMarks?: boolean,
+      valueStart?: number,
+      value?: number,
+      step?: number,
+    } = {}): {
+  root: HTMLElement,
+  component: MDCSlider,
+  startThumb: HTMLElement|null,
+  endThumb: HTMLElement,
+  trackActive: HTMLElement
+} {
+  const discreteClass = isDiscrete ? cssClasses.DISCRETE : '';
+  const rangeClass = isRange ? cssClasses.RANGE : '';
+  const dataStepAttr =
+      isDiscrete ? `${attributes.DATA_ATTR_STEP}="${step || 1}"` : '';
+  const tickMarksClass = hasTickMarks ? cssClasses.TICK_MARKS : '';
+
+  const valueIndicator = (valueNum: number) => `
+      <div class="mdc-slider__value-indicator-container">
+        <div class="mdc-slider__value-indicator">
+          <span class="mdc-slider__value-indicator-text">
+            ${valueNum}
+            </span>
+          </div>
+        </div>`;
+  const valueIndicatorStart = isDiscrete ? valueIndicator(valueStart || 0) : '';
+  const valueIndicatorEnd = isDiscrete ? valueIndicator(valueStart || 0) : '';
+  const startThumbHtml = isRange ? `
+      <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0"
+           aria-valuemax="100" aria-valuenow="${valueStart || 0}">
+        ${valueIndicatorStart}
+        <div class="mdc-slider__thumb-knob"></div>
+      </div>` :
+                                   '';
+
+  const root = getFixture(`
+    <div class="mdc-slider ${discreteClass} ${rangeClass} ${tickMarksClass}" ${
+      dataStepAttr}>
+      <div class="mdc-slider__track">
+        <div class="mdc-slider__track--active">
+          <div class="mdc-slider__track--active_fill"></div>
+        </div>
+        <div class="mdc-slider__track--inactive"></div>
+      </div>
+      ${startThumbHtml}
+      <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0"
+           aria-valuemax="100" aria-valuenow="${value || 0}">
+        ${valueIndicatorEnd}
+        <div class="mdc-slider__thumb-knob"></div>
+      </div>
+    </div>`);
+  const thumbs = root.querySelectorAll(`.${cssClasses.THUMB}`);
+  const startThumb = isRange ? thumbs[0] as HTMLElement : null;
+  const endThumb = thumbs[thumbs.length - 1] as HTMLElement;
+  const trackActive =
+      root.querySelector(`.${cssClasses.TRACK_ACTIVE}`) as HTMLElement;
+
+  spyOn(root, 'getBoundingClientRect').and.returnValue({
+    left: 0,
+    right: 100,
+    width: 100,
+  } as DOMRect);
+
+  document.body.appendChild(root);  // Removed in #afterEach.
+  const component = MDCSlider.attachTo(root);
+  jasmine.clock().tick(1);  // Tick for RAF.
+
+  return {root, component, startThumb, endThumb, trackActive};
+}
+
+/**
+ * Returns an event based on the event type and phase, e.g. given 'touch'
+ * and 'up', returns a `touchend` event.
+ */
+function createEventFrom(
+    eventType: 'pointer'|'mouse'|'touch', phase: 'down'|'move'|'up',
+    {clientX}: {clientX: number}): PointerEvent|MouseEvent|TouchEvent {
+  let event;
+  let type;
+  switch (eventType) {
+    case 'pointer':
+      type = 'pointerdown';
+      if (phase !== 'down') {
+        type = phase === 'move' ? 'pointermove' : 'pointerup';
+      }
+      // PointerEvent constructor is not supported in IE. Use a MouseEvent in
+      // IE, since PointerEvent inherits from MouseEvent.
+      const isIe = navigator.userAgent.indexOf('MSIE') !== -1 ||
+          navigator.userAgent.indexOf('Trident') !== -1;
+      event = isIe ? createMouseEvent(type, {clientX}) :
+                     new PointerEvent(type, {clientX, pointerId: 1});
+      break;
+    case 'mouse':
+      type = 'mousedown';
+      if (phase !== 'down') {
+        type = phase === 'move' ? 'mousemove' : 'mouseup';
+      }
+      event = createMouseEvent(type, {clientX});
+      break;
+    default:
+      type = 'touchstart';
+      if (phase !== 'down') {
+        type = phase === 'move' ? 'touchmove' : 'touchend';
+      }
+      event = new TouchEvent(type, {
+        touches: [{clientX}] as Touch[],
+      });
+  }
+  return event;
+}

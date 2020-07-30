@@ -84,6 +84,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
       setLineRippleTransformOrigin: () => undefined,
       shakeLabel: () => undefined,
       floatLabel: () => undefined,
+      setLabelRequired: () => undefined,
       hasLabel: () => false,
       getLabelWidth: () => 0,
       hasOutline: () => false,
@@ -132,46 +133,50 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   init() {
-    if (this.adapter_.isFocused()) {
+    if (this.adapter.hasLabel() && this.getNativeInput_().required) {
+      this.adapter.setLabelRequired(true);
+    }
+
+    if (this.adapter.isFocused()) {
       this.inputFocusHandler_();
-    } else if (this.adapter_.hasLabel() && this.shouldFloat) {
+    } else if (this.adapter.hasLabel() && this.shouldFloat) {
       this.notchOutline(true);
-      this.adapter_.floatLabel(true);
+      this.adapter.floatLabel(true);
       this.styleFloating_(true);
     }
 
-    this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
-    this.adapter_.registerInputInteractionHandler('blur', this.inputBlurHandler_);
-    this.adapter_.registerInputInteractionHandler('input', this.inputInputHandler_);
+    this.adapter.registerInputInteractionHandler('focus', this.inputFocusHandler_);
+    this.adapter.registerInputInteractionHandler('blur', this.inputBlurHandler_);
+    this.adapter.registerInputInteractionHandler('input', this.inputInputHandler_);
     POINTERDOWN_EVENTS.forEach((evtType) => {
-      this.adapter_.registerInputInteractionHandler(evtType, this.setPointerXOffset_);
+      this.adapter.registerInputInteractionHandler(evtType, this.setPointerXOffset_);
     });
     INTERACTION_EVENTS.forEach((evtType) => {
-      this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
+      this.adapter.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.validationObserver_ =
-        this.adapter_.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
+        this.adapter.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
     this.setCharacterCounter_(this.getValue().length);
   }
 
   destroy() {
-    this.adapter_.deregisterInputInteractionHandler('focus', this.inputFocusHandler_);
-    this.adapter_.deregisterInputInteractionHandler('blur', this.inputBlurHandler_);
-    this.adapter_.deregisterInputInteractionHandler('input', this.inputInputHandler_);
+    this.adapter.deregisterInputInteractionHandler('focus', this.inputFocusHandler_);
+    this.adapter.deregisterInputInteractionHandler('blur', this.inputBlurHandler_);
+    this.adapter.deregisterInputInteractionHandler('input', this.inputInputHandler_);
     POINTERDOWN_EVENTS.forEach((evtType) => {
-      this.adapter_.deregisterInputInteractionHandler(evtType, this.setPointerXOffset_);
+      this.adapter.deregisterInputInteractionHandler(evtType, this.setPointerXOffset_);
     });
     INTERACTION_EVENTS.forEach((evtType) => {
-      this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
+      this.adapter.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.deregisterValidationAttributeChangeHandler(this.validationObserver_);
+    this.adapter.deregisterValidationAttributeChangeHandler(this.validationObserver_);
   }
 
   /**
    * Handles user interactions with the Text Field.
    */
   handleTextFieldInteraction() {
-    const nativeInput = this.adapter_.getNativeInput();
+    const nativeInput = this.adapter.getNativeInput();
     if (nativeInput && nativeInput.disabled) {
       return;
     }
@@ -185,6 +190,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     attributesList.some((attributeName) => {
       if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
         this.styleValidity_(true);
+        this.adapter.setLabelRequired(this.getNativeInput_().required);
         return true;
       }
       return false;
@@ -199,15 +205,15 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * Opens/closes the notched outline.
    */
   notchOutline(openNotch: boolean) {
-    if (!this.adapter_.hasOutline()) {
+    if (!this.adapter.hasOutline()) {
       return;
     }
 
     if (openNotch) {
-      const labelWidth = this.adapter_.getLabelWidth() * numbers.LABEL_SCALE;
-      this.adapter_.notchOutline(labelWidth);
+      const labelWidth = this.adapter.getLabelWidth() * numbers.LABEL_SCALE;
+      this.adapter.notchOutline(labelWidth);
     } else {
-      this.adapter_.closeOutline();
+      this.adapter.closeOutline();
     }
   }
 
@@ -217,12 +223,12 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   activateFocus() {
     this.isFocused_ = true;
     this.styleFocused_(this.isFocused_);
-    this.adapter_.activateLineRipple();
-    if (this.adapter_.hasLabel()) {
+    this.adapter.activateLineRipple();
+    if (this.adapter.hasLabel()) {
       this.notchOutline(this.shouldFloat);
-      this.adapter_.floatLabel(this.shouldFloat);
+      this.adapter.floatLabel(this.shouldFloat);
       this.styleFloating_(this.shouldFloat);
-      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter.shakeLabel(this.shouldShake);
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
@@ -234,11 +240,15 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * animation will animate out from the user's click location.
    */
   setTransformOrigin(evt: TouchEvent | MouseEvent): void {
+    if (this.isDisabled() || this.adapter.hasOutline()) {
+      return;
+    }
+
     const touches = (evt as TouchEvent).touches;
     const targetEvent = touches ? touches[0] : evt;
     const targetClientRect = (targetEvent.target as Element).getBoundingClientRect();
     const normalizedX = (targetEvent as MouseEvent).clientX - targetClientRect.left;
-    this.adapter_.setLineRippleTransformOrigin(normalizedX);
+    this.adapter.setLineRippleTransformOrigin(normalizedX);
   }
 
   /**
@@ -264,15 +274,15 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    */
   deactivateFocus() {
     this.isFocused_ = false;
-    this.adapter_.deactivateLineRipple();
+    this.adapter.deactivateLineRipple();
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     this.styleFocused_(this.isFocused_);
-    if (this.adapter_.hasLabel()) {
+    if (this.adapter.hasLabel()) {
       this.notchOutline(this.shouldFloat);
-      this.adapter_.floatLabel(this.shouldFloat);
+      this.adapter.floatLabel(this.shouldFloat);
       this.styleFloating_(this.shouldFloat);
-      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter.shakeLabel(this.shouldShake);
     }
     if (!this.shouldFloat) {
       this.receivedUserInput_ = false;
@@ -294,11 +304,11 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.setCharacterCounter_(value.length);
     const isValid = this.isValid();
     this.styleValidity_(isValid);
-    if (this.adapter_.hasLabel()) {
+    if (this.adapter.hasLabel()) {
       this.notchOutline(this.shouldFloat);
-      this.adapter_.floatLabel(this.shouldFloat);
+      this.adapter.floatLabel(this.shouldFloat);
       this.styleFloating_(this.shouldFloat);
-      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter.shakeLabel(this.shouldShake);
     }
   }
 
@@ -318,8 +328,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.styleValidity_(isValid);
 
     const shouldShake = !isValid && !this.isFocused_ && !!this.getValue();
-    if (this.adapter_.hasLabel()) {
-      this.adapter_.shakeLabel(shouldShake);
+    if (this.adapter.hasLabel()) {
+      this.adapter.shakeLabel(shouldShake);
     }
   }
 
@@ -425,9 +435,9 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   private styleValidity_(isValid: boolean): void {
     const {INVALID} = MDCTextFieldFoundation.cssClasses;
     if (isValid) {
-      this.adapter_.removeClass(INVALID);
+      this.adapter.removeClass(INVALID);
     } else {
-      this.adapter_.addClass(INVALID);
+      this.adapter.addClass(INVALID);
     }
     if (this.helperText_) {
       this.helperText_.setValidity(isValid);
@@ -440,9 +450,9 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   private styleFocused_(isFocused: boolean): void {
     const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
     if (isFocused) {
-      this.adapter_.addClass(FOCUSED);
+      this.adapter.addClass(FOCUSED);
     } else {
-      this.adapter_.removeClass(FOCUSED);
+      this.adapter.removeClass(FOCUSED);
     }
   }
 
@@ -452,10 +462,10 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   private styleDisabled_(isDisabled: boolean): void {
     const {DISABLED, INVALID} = MDCTextFieldFoundation.cssClasses;
     if (isDisabled) {
-      this.adapter_.addClass(DISABLED);
-      this.adapter_.removeClass(INVALID);
+      this.adapter.addClass(DISABLED);
+      this.adapter.removeClass(INVALID);
     } else {
-      this.adapter_.removeClass(DISABLED);
+      this.adapter.removeClass(DISABLED);
     }
 
     if (this.leadingIcon_) {
@@ -473,9 +483,9 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   private styleFloating_(isFloating: boolean): void {
     const {LABEL_FLOATING} = MDCTextFieldFoundation.cssClasses;
     if (isFloating) {
-      this.adapter_.addClass(LABEL_FLOATING);
+      this.adapter.addClass(LABEL_FLOATING);
     } else {
-      this.adapter_.removeClass(LABEL_FLOATING);
+      this.adapter.removeClass(LABEL_FLOATING);
     }
   }
 
@@ -483,13 +493,14 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * @return The native text input element from the host environment, or an object with the same shape for unit tests.
    */
   private getNativeInput_(): MDCTextFieldNativeInputElement {
-    // this.adapter_ may be undefined in foundation unit tests. This happens when testdouble is creating a mock object
+    // this.adapter may be undefined in foundation unit tests. This happens when testdouble is creating a mock object
     // and invokes the shouldShake/shouldFloat getters (which in turn call getValue(), which calls this method) before
     // init() has been called from the MDCTextField constructor. To work around that issue, we return a dummy object.
-    const nativeInput = this.adapter_ ? this.adapter_.getNativeInput() : null;
+    const nativeInput = this.adapter ? this.adapter.getNativeInput() : null;
     return nativeInput || {
       disabled: false,
       maxLength: -1,
+      required: false,
       type: 'input',
       validity: {
         badInput: false,

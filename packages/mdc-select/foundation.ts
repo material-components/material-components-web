@@ -22,6 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {KEY, normalizeKey} from '@material/dom/keyboard';
 import {Corner} from '@material/menu-surface/constants';
 
 import {MDCSelectAdapter} from './adapter';
@@ -54,51 +55,54 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       hasClass: () => false,
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
-      getSelectedMenuItem: () => null,
+      getSelectedIndex: () => -1,
+      setSelectedIndex: () => undefined,
       hasLabel: () => false,
       floatLabel: () => undefined,
       getLabelWidth: () => 0,
+      setLabelRequired: () => undefined,
       hasOutline: () => false,
       notchOutline: () => undefined,
       closeOutline: () => undefined,
       setRippleCenter: () => undefined,
       notifyChange: () => undefined,
       setSelectedText: () => undefined,
-      isSelectedTextFocused: () => false,
-      getSelectedTextAttr: () => '',
-      setSelectedTextAttr: () => undefined,
+      isSelectAnchorFocused: () => false,
+      getSelectAnchorAttr: () => '',
+      setSelectAnchorAttr: () => undefined,
+      removeSelectAnchorAttr: () => undefined,
+      addMenuClass: () => undefined,
+      removeMenuClass: () => undefined,
       openMenu: () => undefined,
       closeMenu: () => undefined,
       getAnchorElement: () => null,
       setMenuAnchorElement: () => undefined,
       setMenuAnchorCorner: () => undefined,
       setMenuWrapFocus: () => undefined,
-      setAttributeAtIndex: () => undefined,
-      removeAttributeAtIndex: () => undefined,
       focusMenuItemAtIndex: () => undefined,
       getMenuItemCount: () => 0,
       getMenuItemValues: () => [],
       getMenuItemTextAtIndex: () => '',
-      getMenuItemAttr: () => '',
-      addClassAtIndex: () => undefined,
-      removeClassAtIndex: () => undefined,
+      isTypeaheadInProgress: () => false,
+      typeaheadMatchItem: () => -1,
     };
     // tslint:enable:object-literal-sort-keys
   }
 
-  private readonly leadingIcon_: MDCSelectIconFoundation | undefined;
-  private readonly helperText_: MDCSelectHelperTextFoundation | undefined;
+  private readonly leadingIcon: MDCSelectIconFoundation|undefined;
+  private readonly helperText: MDCSelectHelperTextFoundation|undefined;
 
-  // Index of the currently selected menu item.
-  private selectedIndex_: number = numbers.UNSET_INDEX;
-  // VALUE_ATTR values of the menu items.
-  private readonly menuItemValues_: string[];
   // Disabled state
-  private disabled_ = false;
-  // isMenuOpen_ is used to track the state of the menu by listening to the MDCMenuSurface:closed event
-  // For reference, menu.open will return false if the menu is still closing, but isMenuOpen_ returns false only after
-  // the menu has closed
-  private isMenuOpen_ = false;
+  private disabled = false;
+  // isMenuOpen is used to track the state of the menu by listening to the
+  // MDCMenuSurface:closed event For reference, menu.open will return false if
+  // the menu is still closing, but isMenuOpen returns false only after the menu
+  // has closed
+  private isMenuOpen = false;
+  // By default, select is invalid if it is required but no value is selected.
+  private useDefaultValidation = true;
+  private customValidity = true;
+  private lastSelectedIndex = numbers.UNSET_INDEX;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
@@ -108,118 +112,142 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   constructor(adapter?: Partial<MDCSelectAdapter>, foundationMap: Partial<MDCSelectFoundationMap> = {}) {
     super({...MDCSelectFoundation.defaultAdapter, ...adapter});
 
-    this.leadingIcon_ = foundationMap.leadingIcon;
-    this.helperText_ = foundationMap.helperText;
-
-    this.menuItemValues_ = this.adapter_.getMenuItemValues();
+    this.leadingIcon = foundationMap.leadingIcon;
+    this.helperText = foundationMap.helperText;
   }
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
   getSelectedIndex(): number {
-    return this.selectedIndex_;
+    return this.adapter.getSelectedIndex();
   }
 
-  setSelectedIndex(index: number, closeMenu = false) {
-    if (index >= this.adapter_.getMenuItemCount()) {
+  setSelectedIndex(index: number, closeMenu = false, skipNotify = false) {
+    if (index >= this.adapter.getMenuItemCount()) {
       return;
     }
 
-    const previouslySelectedIndex = this.selectedIndex_;
-    this.selectedIndex_ = index;
-
-    if (this.selectedIndex_ === numbers.UNSET_INDEX) {
-      this.adapter_.setSelectedText('');
+    if (index === numbers.UNSET_INDEX) {
+      this.adapter.setSelectedText('');
     } else {
-      this.adapter_.setSelectedText(this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_)!.trim());
+      this.adapter.setSelectedText(
+          this.adapter.getMenuItemTextAtIndex(index).trim());
     }
 
-    if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
-      this.adapter_.removeClassAtIndex(previouslySelectedIndex, cssClasses.SELECTED_ITEM_CLASS);
-      this.adapter_.removeAttributeAtIndex(previouslySelectedIndex, strings.ARIA_SELECTED_ATTR);
-    }
-    if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
-      this.adapter_.addClassAtIndex(this.selectedIndex_, cssClasses.SELECTED_ITEM_CLASS);
-      this.adapter_.setAttributeAtIndex(this.selectedIndex_, strings.ARIA_SELECTED_ATTR, 'true');
-    }
-    this.layout();
+    this.adapter.setSelectedIndex(index);
 
     if (closeMenu) {
-      this.adapter_.closeMenu();
+      this.adapter.closeMenu();
     }
 
-    this.handleChange();
+    if (!skipNotify && this.lastSelectedIndex !== index) {
+      this.handleChange();
+    }
+    this.lastSelectedIndex = index;
   }
 
   setValue(value: string) {
-    const index = this.menuItemValues_.indexOf(value);
+    const index = this.adapter.getMenuItemValues().indexOf(value);
     this.setSelectedIndex(index);
   }
 
   getValue() {
-    const listItem = this.adapter_.getSelectedMenuItem();
-    if (listItem) {
-      return this.adapter_.getMenuItemAttr(listItem, strings.VALUE_ATTR) || '';
-    }
-    return '';
+    const index = this.adapter.getSelectedIndex();
+    const menuItemValues = this.adapter.getMenuItemValues();
+    return index !== numbers.UNSET_INDEX ? menuItemValues[index] : '';
   }
 
   getDisabled() {
-    return this.disabled_;
+    return this.disabled;
   }
 
   setDisabled(isDisabled: boolean) {
-    this.disabled_ = isDisabled;
-    if (this.disabled_) {
-      this.adapter_.addClass(cssClasses.DISABLED);
-      this.adapter_.closeMenu();
+    this.disabled = isDisabled;
+    if (this.disabled) {
+      this.adapter.addClass(cssClasses.DISABLED);
+      this.adapter.closeMenu();
     } else {
-      this.adapter_.removeClass(cssClasses.DISABLED);
+      this.adapter.removeClass(cssClasses.DISABLED);
     }
 
-    if (this.leadingIcon_) {
-      this.leadingIcon_.setDisabled(this.disabled_);
+    if (this.leadingIcon) {
+      this.leadingIcon.setDisabled(this.disabled);
     }
 
-    this.adapter_.setSelectedTextAttr('tabindex', this.disabled_ ? '-1' : '0');
-    this.adapter_.setSelectedTextAttr('aria-disabled', this.disabled_.toString());
+    if (this.disabled) {
+      // Prevent click events from focusing select. Simply pointer-events: none
+      // is not enough since screenreader clicks may bypass this.
+      this.adapter.removeSelectAnchorAttr('tabindex');
+    } else {
+      this.adapter.setSelectAnchorAttr('tabindex', '0');
+    }
+
+    this.adapter.setSelectAnchorAttr('aria-disabled', this.disabled.toString());
+  }
+
+  /** Opens the menu. */
+  openMenu() {
+    this.adapter.addClass(cssClasses.ACTIVATED);
+    this.adapter.openMenu();
+    this.isMenuOpen = true;
+    this.adapter.setSelectAnchorAttr('aria-expanded', 'true');
   }
 
   /**
    * @param content Sets the content of the helper text.
    */
   setHelperTextContent(content: string) {
-    if (this.helperText_) {
-      this.helperText_.setContent(content);
+    if (this.helperText) {
+      this.helperText.setContent(content);
     }
   }
 
+  /**
+   * Re-calculates if the notched outline should be notched and if the label
+   * should float.
+   */
   layout() {
-    if (this.adapter_.hasLabel()) {
-      const openNotch = this.getValue().length > 0;
-      this.notchOutline(openNotch);
+    if (this.adapter.hasLabel()) {
+      const optionHasValue = this.getValue().length > 0;
+      const isFocused = this.adapter.hasClass(cssClasses.FOCUSED);
+      const shouldFloatAndNotch = optionHasValue || isFocused;
+      const isRequired = this.adapter.hasClass(cssClasses.REQUIRED);
+
+      this.notchOutline(shouldFloatAndNotch);
+      this.adapter.floatLabel(shouldFloatAndNotch);
+      this.adapter.setLabelRequired(isRequired);
     }
+  }
+
+  /**
+   * Synchronizes the list of options with the state of the foundation. Call
+   * this whenever menu options are dynamically updated.
+   */
+  layoutOptions() {
+    const menuItemValues = this.adapter.getMenuItemValues();
+    const selectedIndex = menuItemValues.indexOf(this.getValue());
+    this.setSelectedIndex(
+        selectedIndex, /** closeMenu */ false, /** skipNotify */ true);
   }
 
   handleMenuOpened() {
-    if (this.adapter_.getMenuItemValues().length === 0) {
+    if (this.adapter.getMenuItemValues().length === 0) {
       return;
     }
 
-    this.adapter_.addClass(cssClasses.ACTIVATED);
-
     // Menu should open to the last selected element, should open to first menu item otherwise.
-    const focusItemIndex = this.selectedIndex_ >= 0 ? this.selectedIndex_ : 0;
-    this.adapter_.focusMenuItemAtIndex(focusItemIndex);
+    const selectedIndex = this.getSelectedIndex();
+    const focusItemIndex = selectedIndex >= 0 ? selectedIndex : 0;
+    this.adapter.focusMenuItemAtIndex(focusItemIndex);
   }
 
   handleMenuClosed() {
-    this.adapter_.removeClass(cssClasses.ACTIVATED);
-    this.isMenuOpen_ = false;
-    this.adapter_.setSelectedTextAttr('aria-expanded', 'false');
+    this.adapter.removeClass(cssClasses.ACTIVATED);
+    this.isMenuOpen = false;
+    this.adapter.setSelectAnchorAttr('aria-expanded', 'false');
 
     // Unfocus the select if menu is closed without a selection
-    if (!this.adapter_.isSelectedTextFocused()) {
-      this.blur_();
+    if (!this.adapter.isSelectAnchorFocused()) {
+      this.blur();
     }
   }
 
@@ -227,14 +255,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * Handles value changes, via change event or programmatic updates.
    */
   handleChange() {
-    this.updateLabel_();
-    this.adapter_.notifyChange(this.getValue());
+    this.layout();
+    this.adapter.notifyChange(this.getValue());
 
-    const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
-    if (isRequired) {
+    const isRequired = this.adapter.hasClass(cssClasses.REQUIRED);
+    if (isRequired && this.useDefaultValidation) {
       this.setValid(this.isValid());
-      if (this.helperText_) {
-        this.helperText_.setValidity(this.isValid());
+      if (this.helperText) {
+        this.helperText.setValidity(this.isValid());
       }
     }
   }
@@ -247,73 +275,96 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * Handles focus events from select element.
    */
   handleFocus() {
-    this.adapter_.addClass(cssClasses.FOCUSED);
+    this.adapter.addClass(cssClasses.FOCUSED);
+    this.layout();
 
-    if (this.adapter_.hasLabel()) {
-      this.notchOutline(true);
-      this.adapter_.floatLabel(true);
-    }
-
-    this.adapter_.activateBottomLine();
-    if (this.helperText_) {
-      this.helperText_.showToScreenReader();
-    }
+    this.adapter.activateBottomLine();
   }
 
   /**
    * Handles blur events from select element.
    */
   handleBlur() {
-    if (this.isMenuOpen_) {
+    if (this.isMenuOpen) {
       return;
     }
-    this.blur_();
+    this.blur();
   }
 
   handleClick(normalizedX: number) {
-    if (this.isMenuOpen_) {
+    if (this.disabled) {
       return;
     }
-    this.adapter_.setRippleCenter(normalizedX);
 
-    this.adapter_.openMenu();
-    this.isMenuOpen_ = true;
-    this.adapter_.setSelectedTextAttr('aria-expanded', 'true');
+    if (this.isMenuOpen) {
+      this.adapter.closeMenu();
+      return;
+    }
+
+    this.adapter.setRippleCenter(normalizedX);
+
+    this.openMenu();
   }
 
+  /**
+   * Handles keydown events on select element. Depending on the type of
+   * character typed, does typeahead matching or opens menu.
+   */
   handleKeydown(event: KeyboardEvent) {
-    if (this.isMenuOpen_) {
+    if (this.isMenuOpen || !this.adapter.hasClass(cssClasses.FOCUSED)) {
       return;
     }
 
-    const isEnter = event.key === 'Enter' || event.keyCode === 13;
-    const isSpace = event.key === 'Space' || event.keyCode === 32;
-    const arrowUp = event.key === 'ArrowUp' || event.keyCode === 38;
-    const arrowDown = event.key === 'ArrowDown' || event.keyCode === 40;
+    const isEnter = normalizeKey(event) === KEY.ENTER;
+    const isSpace = normalizeKey(event) === KEY.SPACEBAR;
+    const arrowUp = normalizeKey(event) === KEY.ARROW_UP;
+    const arrowDown = normalizeKey(event) === KEY.ARROW_DOWN;
 
-    if (this.adapter_.hasClass(cssClasses.FOCUSED) && (isEnter || isSpace || arrowUp || arrowDown)) {
-      this.adapter_.openMenu();
-      this.isMenuOpen_ = true;
-      this.adapter_.setSelectedTextAttr('aria-expanded', 'true');
+    // Typeahead
+    if (!isSpace && event.key && event.key.length === 1 ||
+        isSpace && this.adapter.isTypeaheadInProgress()) {
+      const key = isSpace ? ' ' : event.key;
+      const typeaheadNextIndex =
+          this.adapter.typeaheadMatchItem(key, this.getSelectedIndex());
+      if (typeaheadNextIndex >= 0) {
+        this.setSelectedIndex(typeaheadNextIndex);
+      }
       event.preventDefault();
+      return;
     }
+
+    if (!isEnter && !isSpace && !arrowUp && !arrowDown) {
+      return;
+    }
+
+    // Increment/decrement index as necessary and open menu.
+    if (arrowUp && this.getSelectedIndex() > 0) {
+      this.setSelectedIndex(this.getSelectedIndex() - 1);
+    } else if (
+        arrowDown &&
+        this.getSelectedIndex() < this.adapter.getMenuItemCount() - 1) {
+      this.setSelectedIndex(this.getSelectedIndex() + 1);
+    }
+
+    this.openMenu();
+    event.preventDefault();
   }
 
   /**
    * Opens/closes the notched outline.
    */
   notchOutline(openNotch: boolean) {
-    if (!this.adapter_.hasOutline()) {
+    if (!this.adapter.hasOutline()) {
       return;
     }
-    const isFocused = this.adapter_.hasClass(cssClasses.FOCUSED);
+    const isFocused = this.adapter.hasClass(cssClasses.FOCUSED);
 
     if (openNotch) {
       const labelScale = numbers.LABEL_SCALE;
-      const labelWidth = this.adapter_.getLabelWidth() * labelScale;
-      this.adapter_.notchOutline(labelWidth);
+      const labelWidth = this.adapter.getLabelWidth() * labelScale;
+      this.adapter.notchOutline(labelWidth);
     } else if (!isFocused) {
-      this.adapter_.closeOutline();
+      this.adapter.closeOutline();
     }
   }
 
@@ -321,8 +372,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * Sets the aria label of the leading icon.
    */
   setLeadingIconAriaLabel(label: string) {
-    if (this.leadingIcon_) {
-      this.leadingIcon_.setAriaLabel(label);
+    if (this.leadingIcon) {
+      this.leadingIcon.setAriaLabel(label);
     }
   }
 
@@ -330,89 +381,82 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * Sets the text content of the leading icon.
    */
   setLeadingIconContent(content: string) {
-    if (this.leadingIcon_) {
-      this.leadingIcon_.setContent(content);
+    if (this.leadingIcon) {
+      this.leadingIcon.setContent(content);
     }
   }
 
+  setUseDefaultValidation(useDefaultValidation: boolean) {
+    this.useDefaultValidation = useDefaultValidation;
+  }
+
   setValid(isValid: boolean) {
-    this.adapter_.setSelectedTextAttr('aria-invalid', (!isValid).toString());
+    if (!this.useDefaultValidation) {
+      this.customValidity = isValid;
+    }
+
+    this.adapter.setSelectAnchorAttr('aria-invalid', (!isValid).toString());
     if (isValid) {
-      this.adapter_.removeClass(cssClasses.INVALID);
+      this.adapter.removeClass(cssClasses.INVALID);
+      this.adapter.removeMenuClass(cssClasses.MENU_INVALID);
     } else {
-      this.adapter_.addClass(cssClasses.INVALID);
+      this.adapter.addClass(cssClasses.INVALID);
+      this.adapter.addMenuClass(cssClasses.MENU_INVALID);
     }
   }
 
   isValid() {
-    if (this.adapter_.hasClass(cssClasses.REQUIRED) && !this.adapter_.hasClass(cssClasses.DISABLED)) {
+    if (this.useDefaultValidation &&
+        this.adapter.hasClass(cssClasses.REQUIRED) &&
+        !this.adapter.hasClass(cssClasses.DISABLED)) {
       // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
       // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
-      return this.selectedIndex_ !== numbers.UNSET_INDEX &&
-        (this.selectedIndex_ !== 0 || Boolean(this.getValue()));
+      return this.getSelectedIndex() !== numbers.UNSET_INDEX &&
+          (this.getSelectedIndex() !== 0 || Boolean(this.getValue()));
     }
-    return true;
+    return this.customValidity;
   }
 
   setRequired(isRequired: boolean) {
     if (isRequired) {
-      this.adapter_.addClass(cssClasses.REQUIRED);
+      this.adapter.addClass(cssClasses.REQUIRED);
     } else {
-      this.adapter_.removeClass(cssClasses.REQUIRED);
+      this.adapter.removeClass(cssClasses.REQUIRED);
     }
-    this.adapter_.setSelectedTextAttr('aria-required', isRequired.toString());
+    this.adapter.setSelectAnchorAttr('aria-required', isRequired.toString());
+    this.adapter.setLabelRequired(isRequired);
   }
 
   getRequired() {
-    return this.adapter_.getSelectedTextAttr('aria-required') === 'true';
+    return this.adapter.getSelectAnchorAttr('aria-required') === 'true';
   }
 
   init() {
-    const anchorEl = this.adapter_.getAnchorElement();
+    const anchorEl = this.adapter.getAnchorElement();
     if (anchorEl) {
-      this.adapter_.setMenuAnchorElement(anchorEl);
-      this.adapter_.setMenuAnchorCorner(Corner.BOTTOM_START);
+      this.adapter.setMenuAnchorElement(anchorEl);
+      this.adapter.setMenuAnchorCorner(Corner.BOTTOM_START);
     }
-    this.adapter_.setMenuWrapFocus(false);
+    this.adapter.setMenuWrapFocus(false);
 
-    const value = this.getValue();
-    if (value) {
-      this.setValue(value);
-    }
-
-    // Initially sync floating label
-    this.updateLabel_();
-  }
-
-  /**
-   * Notches the outline and floats the label when appropriate.
-   */
-  private updateLabel_() {
-    const value = this.getValue();
-    const optionHasValue = value.length > 0;
-
-    if (this.adapter_.hasLabel()) {
-      this.notchOutline(optionHasValue);
-
-      if (!this.adapter_.hasClass(cssClasses.FOCUSED)) {
-        this.adapter_.floatLabel(optionHasValue);
-      }
-    }
+    this.setDisabled(this.adapter.hasClass(cssClasses.DISABLED));
+    this.layout();
+    this.layoutOptions();
   }
 
   /**
    * Unfocuses the select component.
    */
-  private blur_() {
-    this.adapter_.removeClass(cssClasses.FOCUSED);
-    this.updateLabel_();
-    this.adapter_.deactivateBottomLine();
+  private blur() {
+    this.adapter.removeClass(cssClasses.FOCUSED);
+    this.layout();
+    this.adapter.deactivateBottomLine();
 
-    const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
-    if (isRequired) {
+    const isRequired = this.adapter.hasClass(cssClasses.REQUIRED);
+    if (isRequired && this.useDefaultValidation) {
       this.setValid(this.isValid());
-      if (this.helperText_) {
-        this.helperText_.setValidity(this.isValid());
+      if (this.helperText) {
+        this.helperText.setValidity(this.isValid());
       }
     }
   }

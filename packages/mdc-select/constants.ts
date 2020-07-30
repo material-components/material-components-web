@@ -26,10 +26,10 @@ const cssClasses = {
   DISABLED: 'mdc-select--disabled',
   FOCUSED: 'mdc-select--focused',
   INVALID: 'mdc-select--invalid',
+  MENU_INVALID: 'mdc-select__menu--invalid',
   OUTLINED: 'mdc-select--outlined',
   REQUIRED: 'mdc-select--required',
   ROOT: 'mdc-select',
-  SELECTED_ITEM_CLASS: 'mdc-list-item--selected',
   WITH_LEADING_ICON: 'mdc-select--with-leading-icon',
 };
 
@@ -42,7 +42,6 @@ const strings = {
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   MENU_SELECTOR: '.mdc-select__menu',
   OUTLINE_SELECTOR: '.mdc-notched-outline',
-  SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED_ITEM_CLASS}`,
   SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
   SELECT_ANCHOR_SELECTOR: '.mdc-select__anchor',
   VALUE_ATTR: 'data-value',

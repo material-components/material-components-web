@@ -122,4 +122,20 @@ describe('MDCFloatingLabelFoundation', () => {
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.LABEL_SHAKE);
   });
+
+  it('#setRequired called with isRequired is true, should add required class',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.setRequired(true);
+       expect(mockAdapter.addClass)
+           .toHaveBeenCalledWith(cssClasses.LABEL_REQUIRED);
+     });
+
+  it('#setRequired called with isRequired is false, should remove required class',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.setRequired(false);
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(cssClasses.LABEL_REQUIRED);
+     });
 });

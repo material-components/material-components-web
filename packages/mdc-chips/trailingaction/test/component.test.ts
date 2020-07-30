@@ -115,7 +115,7 @@ describe('MDCChipTrailingAction', () => {
   it('adapter#focus gives focus to the root', () => {
     const {component, root} = setupTest();
     document.documentElement.appendChild(root);
-    (component.getDefaultFoundation() as any).adapter_.focus();
+    (component.getDefaultFoundation() as any).adapter.focus();
     expect(document.activeElement).toEqual(root);
     document.documentElement.removeChild(root);
   });
@@ -124,14 +124,14 @@ describe('MDCChipTrailingAction', () => {
     const {root, component} = setupTest();
     root.setAttribute('data-foo', 'bar');
     expect((component.getDefaultFoundation() as any)
-               .adapter_.getAttribute('data-foo'))
+               .adapter.getAttribute('data-foo'))
         .toBe('bar');
   });
 
   it('adapter#getAttribute returns null if the attribute is absent', () => {
     const {component} = setupTest();
     expect((component.getDefaultFoundation() as any)
-               .adapter_.getAttribute('data-foo'))
+               .adapter.getAttribute('data-foo'))
         .toBe(null);
   });
 
@@ -140,7 +140,7 @@ describe('MDCChipTrailingAction', () => {
     const handler = jasmine.createSpy('interaction handler');
 
     component.listen(strings.INTERACTION_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyInteraction(0);
+    (component.getDefaultFoundation() as any).adapter.notifyInteraction(0);
 
     expect(handler).toHaveBeenCalledWith(jasmine.anything());
   });
@@ -150,7 +150,7 @@ describe('MDCChipTrailingAction', () => {
     const handler = jasmine.createSpy('navigation handler');
 
     component.listen(strings.NAVIGATION_EVENT, handler);
-    (component.getDefaultFoundation() as any).adapter_.notifyNavigation('');
+    (component.getDefaultFoundation() as any).adapter.notifyNavigation('');
 
     expect(handler).toHaveBeenCalledWith(jasmine.anything());
   });

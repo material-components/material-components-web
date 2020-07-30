@@ -1,0 +1,5 @@
+@use '../mixins' as theme;
+
+.test {
+  @include theme.property(color, primary);
+}

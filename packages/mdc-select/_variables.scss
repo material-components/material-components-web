@@ -20,48 +20,4 @@
 // THE SOFTWARE.
 //
 
-@use "sass:color";
-@use "@material/animation/variables" as variables2;
-@use "@material/theme/variables";
-
-$arrow-padding: 52px !default;
-$label-padding: 16px !default;
-$height: 56px !default;
-$icon-padding: 48px !default;
-
-$ink-color: rgba(variables.prop-value(on-surface), .87) !default;
-$dropdown-color: variables.prop-value(on-surface) !default;
-$icon-color: rgba(variables.prop-value(on-surface), .54) !default;
-$label-color: rgba(variables.prop-value(on-surface), .6) !default;
-$focused-label-color: rgba(variables.prop-value(primary), .87) !default;
-$bottom-line-idle-color: rgba(variables.prop-value(on-surface), .42) !default;
-$bottom-line-hover-color: rgba(variables.prop-value(on-surface), .87) !default;
-$helper-text-color: rgba(variables.prop-value(on-surface), .6) !default;
-
-$fill-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 4%) !default;
-
-$dropdown-opacity: .54 !default;
-
-// Disabled Styles
-$disabled-label-color: rgba(variables.prop-value(on-surface), .38) !default;
-$disabled-icon-color: rgba(variables.prop-value(on-surface), .38) !default;
-$disabled-ink-color: rgba(variables.prop-value(on-surface), .38) !default;
-$disabled-fill-color: color.mix(variables.prop-value(on-surface), variables.prop-value(surface), 2%) !default;
-$disabled-dropdown-opacity: .38 !default;
-
-$outlined-idle-border: rgba(variables.prop-value(on-surface), .38) !default;
-$outlined-hover-border: rgba(variables.prop-value(on-surface), .87) !default;
-
-// should be .06 after mdc-select opacity is applied
-$outlined-disabled-border: rgba(variables.prop-value(on-surface), .16) !default;
-
-$label-position-y: 70% !default;
-$outline-label-offset: 16px !default;
-$outlined-label-position-y: 130% !default;
-$outlined-dense-label-position-y: 110% !default;
-$outlined-with-leading-icon-label-position-x: 32px !default;
-
-$dropdown-transition-duration: 150ms !default;
-
-// Error colors
-$error-color: error !default;
+@forward './select-theme' show get-outlined-label-position-y, $ripple-target, $arrow-padding, $label-padding, $height, $minimum-height-for-filled-label, $filled-baseline-top, $selected-text-height, $anchor-padding-left, $anchor-padding-left-with-leading-icon, $anchor-padding-right, $outlined-stroke-width, $min-width, $shape-radius, $minimum-height, $minimum-height-for-filled-label, $maximum-height, $density-scale, $density-config, $ink-color, $dropdown-icon-color, $label-color, $focused-label-color, $bottom-line-idle-color, $bottom-line-hover-color, $fill-color, $disabled-label-color, $disabled-ink-color, $disabled-fill-color, $disabled-fill-border, $disabled-bottom-line-color, $disabled-dropdown-icon-color, $disabled-outline-color, $outlined-idle-border, $outlined-hover-border, $label-position-y, $outline-label-offset, $outlined-label-position-y, $outlined-with-leading-icon-label-position-x, $dropdown-transition-duration, $icon-active-fade-out-duration, $icon-active-fade-in-duration, $icon-inactive-fade-out-duration, $icon-inactive-fade-in-duration, $error-color;

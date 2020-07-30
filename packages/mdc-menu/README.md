@@ -44,9 +44,11 @@ npm install @material/menu
 <div class="mdc-menu mdc-menu-surface">
   <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
     <li class="mdc-list-item" role="menuitem">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">A Menu Item</span>
     </li>
     <li class="mdc-list-item" role="menuitem">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">Another Menu Item</span>
     </li>
   </ul>
@@ -84,12 +86,14 @@ Menus can contain a group of list items that can represent the selection state o
     <li>
       <ul class="mdc-menu__selection-group">
         <li class="mdc-list-item" role="menuitem">
+          <span class="mdc-list-item__ripple"></span>
           <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
             ...
           </span>
           <span class="mdc-list-item__text">Single</span>
         </li>
         <li class="mdc-list-item" role="menuitem">
+          <span class="mdc-list-item__ripple"></span>
           <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
            ...
           </span>
@@ -99,6 +103,7 @@ Menus can contain a group of list items that can represent the selection state o
     </li>
     <li class="mdc-list-divider" role="separator"></li>
     <li class="mdc-list-item" role="menuitem">
+      <span class="mdc-list-item__ripple"></span>
       <span class="mdc-list-item__text">Add space before paragraph</span>
     </li>
     ...
@@ -186,6 +191,7 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `width($width)` | Used to set the `width` of the menu. When used without units (e.g. `4` or `5`) it computes the `width` by multiplying by the base width (`56px`). When used with units (e.g. `240px`, `15%`, or `calc(200px + 10px)` it sets the `width` to the exact value provided.
+`min-width($min-width)` | Sets the `min-width` of the menu. Use with units (e.g. `240px`, `15%`, or `calc(200px + 10px)` only.
 
 > See [Menu Surface](../mdc-menu-surface/README.md#sass-mixins) and [List](../mdc-list/README.md#sass-mixins) documentation for additional style customization options.
 
@@ -215,9 +221,10 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 Property | Value Type | Description
 --- | --- | ---
 `open` | Boolean | Proxies to the menu surface's `open` property.
-`items` | Array<Element> | Proxies to the list to query for all `.mdc-list-item` elements.
+`items` | `Array<Element>` | Proxies to the list to query for all `.mdc-list-item` elements.
 `quickOpen` | Boolean | Proxies to the menu surface `quickOpen` property.
 `wrapFocus` | Boolean | Proxies to list's `wrapFocus` property.
+`hasTypeahead` | Boolean | Proxies to the list's `hasTypeahead` property.
 
 Method Signature | Description
 --- | ---
@@ -225,13 +232,16 @@ Method Signature | Description
 `setAnchorMargin(Partial<MDCMenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
 `setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
-`setSelectedIndex(index: number) => void | Sets the list item to the selected state at the specified index.
+`setSelectedIndex(index: number) => void` | Sets the list item to the selected state at the specified index.
 `setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
 `setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
 `getOptionByIndex(index: number) => Element \| null` | Returns the list item at the `index` specified.
+`getPrimaryTextAtIndex(index: number) => string` | Returns the primary text at the `index` specified.
 `getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 `setEnabled(index: number, isEnabled: boolean) => void` | Sets the enabled state to `isEnabled` for the menu item at given `index`.
+`layout() => void` | Proxies to the list's layout method.
+`typeaheadMatchItem(nextChar: string) => number` | Adds a character to the typeahead buffer and returns index of the next item in the list matching the buffer.
 
 > See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.
 

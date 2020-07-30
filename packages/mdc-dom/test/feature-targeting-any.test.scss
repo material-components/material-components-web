@@ -1,0 +1,12 @@
+@use '../mixins' as dom;
+@use '@material/feature-targeting/feature-targeting';
+
+@mixin test($query) {
+  .test {
+    @include dom.transparent-border($query: $query);
+    @include dom.visually-hidden($query: $query);
+  }
+}
+
+// This shouldn't output any CSS.
+@include test(feature-targeting.any());

@@ -20,24 +20,30 @@
 // THE SOFTWARE.
 //
 
-@use "@material/rtl/mixins" as rtl-mixins;
-@use "@material/theme/variables" as variables2;
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/feature-targeting/functions";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/animation/variables" as animation-variables;
-@use "@material/typography/mixins" as typography-mixins;
-@use "./variables";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
 
-@mixin core-styles($query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
-  $feat-animation: functions.create-target($query, animation);
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/theme/theme-color';
+@use '@material/theme/theme';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/animation/variables' as animation-variables;
+@use '@material/typography/typography';
+@use './variables';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   // postcss-bem-linter: define floating-label
   .mdc-floating-label {
-    @include typography-mixins.typography(subtitle1, $exclude-props: (line-height), $query: $query);
+    @include typography.typography(
+      subtitle1,
+      $exclude-props: (line-height),
+      $query: $query
+    );
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: absolute;
       /* @noflip */
       left: 0;
@@ -67,16 +73,29 @@
       }
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
-      transition:
-        transform variables.$transition-duration animation-variables.$standard-curve-timing-function,
-        color variables.$transition-duration animation-variables.$standard-curve-timing-function;
+    @include feature-targeting.targets($feat-animation) {
+      transition: transform variables.$transition-duration
+          animation-variables.$standard-curve-timing-function,
+        color variables.$transition-duration
+          animation-variables.$standard-curve-timing-function;
     }
   }
 
   .mdc-floating-label--float-above {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: auto;
+    }
+  }
+
+  .mdc-floating-label--required {
+    &::after {
+      @include _required-content($query);
+    }
+
+    @include rtl-mixins.rtl {
+      &::after {
+        @include _required-content-rtl($query);
+      }
     }
   }
 
@@ -88,60 +107,82 @@
   @include shake-keyframes(standard, variables.$position-y, $query: $query);
 }
 
-@mixin ink-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
-    @include theme-mixins.prop(color, $color);
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(color, $color);
   }
 }
 
 // Used for textarea in case of scrolling
-@mixin fill-color($color, $query: functions.all()) {
-  $feat-color: functions.create-target($query, color);
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
-    @include theme-mixins.prop(background-color, $color);
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(background-color, $color);
   }
 }
 
 @mixin shake-keyframes(
-  $modifier, $positionY, $positionX: 0%, $scale: .75, $query: functions.all()) {
-  $feat-animation: functions.create-target($query, animation);
+  $modifier,
+  $positionY,
+  $positionX: 0%,
+  $scale: variables.$float-scale,
+  $query: feature-targeting.all()
+) {
+  $feat-animation: feature-targeting.create-target($query, animation);
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     @keyframes mdc-floating-label-shake-float-above-#{$modifier} {
       0% {
-        transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+        transform: translateX(calc(0 - #{$positionX}))
+          translateY(-#{$positionY}) scale(#{$scale});
       }
 
       33% {
-        animation-timing-function: cubic-bezier(.5, 0, .701732, .495819);
-        transform: translateX(calc(4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+        animation-timing-function: cubic-bezier(0.5, 0, 0.701732, 0.495819);
+        transform: translateX(calc(4% - #{$positionX}))
+          translateY(-#{$positionY}) scale(#{$scale});
       }
 
       66% {
-        animation-timing-function: cubic-bezier(.302435, .381352, .55, .956352);
-        transform: translateX(calc(-4% - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+        animation-timing-function: cubic-bezier(
+          0.302435,
+          0.381352,
+          0.55,
+          0.956352
+        );
+        transform: translateX(calc(-4% - #{$positionX}))
+          translateY(-#{$positionY}) scale(#{$scale});
       }
 
       100% {
-        transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
+        transform: translateX(calc(0 - #{$positionX}))
+          translateY(-#{$positionY}) scale(#{$scale});
       }
     }
   }
 }
 
-@mixin float-position($positionY, $positionX: 0%, $scale: .75, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin float-position(
+  $positionY,
+  $positionX: 0%,
+  $scale: variables.$float-scale,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-floating-label--float-above {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @if $positionX > 0 or $positionX < 0 {
-        transform: translateY(-1 * $positionY) translateX(-1 * $positionX) scale($scale);
+        transform: translateY(-1 * $positionY)
+          translateX(-1 * $positionX)
+          scale($scale);
 
         @include rtl-mixins.rtl {
-          transform: translateY(-1 * $positionY) translateX($positionX) scale($scale);
+          transform: translateY(-1 * $positionY) translateX($positionX)
+            scale($scale);
         }
       } @else {
         transform: translateY(-1 * $positionY) scale($scale);
@@ -150,20 +191,20 @@
   }
 }
 
-@mixin shake-animation($modifier, $query: functions.all()) {
-  $feat-animation: functions.create-target($query, animation);
+@mixin shake-animation($modifier, $query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-floating-label--shake {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       animation: mdc-floating-label-shake-float-above-#{$modifier} 250ms 1;
     }
   }
 }
 
-@mixin max-width($max-width, $query: functions.all()) {
-  $feat-structure: functions.create-target($query, structure);
+@mixin max-width($max-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     max-width: $max-width;
   }
 }
@@ -177,13 +218,37 @@
 @mixin float-transition(
   $duration-ms,
   $timing-function: animation-variables.$standard-curve-timing-function,
-  $query: functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-animation: functions.create-target($query, animation);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
-  @include feature-targeting-mixins.targets($feat-animation) {
-    transition:
-      color $duration-ms $timing-function,
+  @include feature-targeting.targets($feat-animation) {
+    transition: color $duration-ms $timing-function,
       transform $duration-ms $timing-function;
+  }
+}
+
+@mixin _required-content($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    /* @noflip */
+    margin-left: 1px;
+    /* @noflip */
+    margin-right: 0px;
+    content: '*';
+  }
+}
+
+// Need to specify LTR/RTL manually since rtl mixins will add ::after[dir=rtl]
+// selector and that breaks some browsers
+@mixin _required-content-rtl($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    /* @noflip */
+    margin-left: 0;
+    /* @noflip */
+    margin-right: 1px;
   }
 }
