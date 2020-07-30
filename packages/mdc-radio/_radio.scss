@@ -1,0 +1,285 @@
+//
+// Copyright 2016 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use 'sass:map';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use '@material/touch-target/mixins' as touch-target-mixins;
+@use '@material/touch-target/variables' as touch-target-variables;
+@use './functions';
+@use './variables';
+@use './radio-theme';
+
+$ripple-target: '.mdc-radio__ripple';
+
+///
+/// Radio core styles.
+///
+@mixin core-styles($query: feature-targeting.all()) {
+  @include without-ripple($query);
+  @include ripple($query);
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// radio styles. It is recommended that most users use `mdc-radio-core-styles` instead.
+@mixin without-ripple($query: feature-targeting.all()) {
+  // postcss-bem-linter: define radio
+
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
+
+  .mdc-radio {
+    @include radio-theme.unchecked-stroke-color(
+      variables.$unchecked-color,
+      $query: $query
+    );
+    @include radio-theme.checked-stroke-color(
+      variables.$baseline-theme-color,
+      $query: $query
+    );
+    @include radio-theme.ink-color(
+      variables.$baseline-theme-color,
+      $query: $query
+    );
+    @include radio-theme.disabled-unchecked-stroke-color(
+      variables.$disabled-circle-color,
+      $query: $query
+    );
+    @include radio-theme.disabled-checked-stroke-color(
+      variables.$disabled-circle-color,
+      $query: $query
+    );
+    @include radio-theme.disabled-ink-color(
+      variables.$disabled-circle-color,
+      $query: $query
+    );
+    @include radio-theme.focus-indicator-color(
+      variables.$baseline-theme-color,
+      $query: $query
+    );
+    @include radio-theme.density(variables.$density-scale, $query: $query);
+
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-block;
+      position: relative;
+      flex: 0 0 auto;
+      box-sizing: content-box;
+      width: variables.$icon-size;
+      height: variables.$icon-size;
+      cursor: pointer;
+      /* @alternate */
+      will-change: opacity, transform, border-color, color;
+    }
+
+    // Container for radio circles and ripple.
+    &__background {
+      @include feature-targeting.targets($feat-structure) {
+        display: inline-block;
+        position: relative;
+        box-sizing: border-box;
+        width: variables.$icon-size;
+        height: variables.$icon-size;
+      }
+
+      &::before {
+        @include feature-targeting.targets($feat-structure) {
+          position: absolute;
+          transform: scale(0, 0);
+          border-radius: 50%;
+          opacity: 0;
+          pointer-events: none;
+          content: '';
+        }
+
+        @include feature-targeting.targets($feat-animation) {
+          transition: functions.exit(opacity), functions.exit(transform);
+        }
+      }
+    }
+
+    &__outer-circle {
+      @include feature-targeting.targets($feat-structure) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 50%;
+      }
+
+      @include feature-targeting.targets($feat-animation) {
+        transition: functions.exit(border-color);
+      }
+    }
+
+    &__inner-circle {
+      @include feature-targeting.targets($feat-structure) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        transform: scale(0, 0);
+        border-width: 10px;
+        border-style: solid;
+        border-radius: 50%;
+      }
+
+      @include feature-targeting.targets($feat-animation) {
+        transition: functions.exit(transform), functions.exit(border-color);
+      }
+    }
+
+    &__native-control {
+      @include feature-targeting.targets($feat-structure) {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        cursor: inherit;
+        z-index: 1;
+      }
+    }
+
+    &--touch {
+      @include touch-target-mixins.margin(
+        $component-height: variables.$ripple-size,
+        $component-width: variables.$ripple-size,
+        $query: $query
+      );
+      @include radio-theme.touch-target(
+        $size: touch-target-variables.$height,
+        $query: $query
+      );
+    }
+  }
+
+  .mdc-radio__native-control:checked,
+  .mdc-radio__native-control:disabled {
+    + .mdc-radio__background {
+      @include feature-targeting.targets($feat-animation) {
+        transition: functions.enter(opacity), functions.enter(transform);
+      }
+
+      .mdc-radio__outer-circle {
+        @include feature-targeting.targets($feat-animation) {
+          transition: functions.enter(border-color);
+        }
+      }
+
+      .mdc-radio__inner-circle {
+        @include feature-targeting.targets($feat-animation) {
+          transition: functions.enter(transform), functions.enter(border-color);
+        }
+      }
+    }
+  }
+
+  .mdc-radio--disabled {
+    @include feature-targeting.targets($feat-structure) {
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+
+  .mdc-radio__native-control:checked {
+    + .mdc-radio__background {
+      .mdc-radio__inner-circle {
+        @include feature-targeting.targets($feat-structure) {
+          transform: scale(0.5);
+        }
+
+        @include feature-targeting.targets($feat-animation) {
+          transition: functions.enter(transform), functions.enter(border-color);
+        }
+      }
+    }
+  }
+
+  .mdc-radio__native-control:disabled,
+  [aria-disabled='true'] .mdc-radio__native-control {
+    + .mdc-radio__background {
+      @include feature-targeting.targets($feat-structure) {
+        cursor: default;
+      }
+    }
+  }
+
+  .mdc-radio__native-control:focus {
+    + .mdc-radio__background::before {
+      @include feature-targeting.targets($feat-structure) {
+        transform: scale(1);
+        opacity: map.get(ripple-theme.$dark-ink-opacities, focus);
+      }
+
+      @include feature-targeting.targets($feat-animation) {
+        transition: functions.enter(opacity), functions.enter(transform);
+      }
+    }
+  }
+
+  // postcss-bem-linter: end
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// radio styles. It is recommended that most users use `mdc-radio-core-styles` instead.
+@mixin ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  .mdc-radio {
+    @include ripple.surface($query: $query, $ripple-target: $ripple-target);
+    @include ripple.radius-unbounded(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+    @include ripple-theme.states(
+      $color: variables.$baseline-theme-color,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+
+    &.mdc-ripple-upgraded--background-focused {
+      .mdc-radio__background::before {
+        @include feature-targeting.targets($feat-structure) {
+          content: none;
+        }
+      }
+    }
+  }
+
+  #{$ripple-target} {
+    @include ripple.target-common($query: $query);
+  }
+}

@@ -20,6 +20,5 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import './radio' or './radio-theme' instead.
-@forward './radio' show $ripple-target, core-styles, without-ripple, ripple;
-@forward './radio-theme' show unchecked-stroke-color, checked-stroke-color, ink-color, disabled-unchecked-stroke-color, disabled-checked-stroke-color, disabled-ink-color, focus-indicator-color, touch-target, density, ripple-size, touch-target-reset_, if-enabled_, if-enabled-unchecked_, if-enabled-checked_, if-disabled_, if-disabled-unchecked_, if-disabled-checked_, ink-color_, stroke-color_;
+@use './radio';
+@include radio.core-styles;
