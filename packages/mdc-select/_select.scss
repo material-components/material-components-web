@@ -22,12 +22,14 @@
 
 @use '@material/feature-targeting/functions' as feature-targeting-functions;
 @use './select-filled';
+@use './select-outlined';
 @use './select-ripple';
 @use './select-helper-text';
 @use './select-icon';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
   @include select-filled.core-styles($query: $query);
+  @include select-outlined.core-styles($query: $query);
   @include select-ripple.core-styles($query: $query);
   @include select-helper-text.helper-text-core-styles($query: $query);
   @include select-icon.icon-core-styles($query: $query);
