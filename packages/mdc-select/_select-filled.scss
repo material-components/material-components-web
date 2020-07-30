@@ -1,0 +1,115 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/menu-surface/mixins' as menu-surface-mixins;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use './select-icon-theme';
+@use './select-theme';
+
+@mixin core-styles($query: feature-targeting-functions.all()) {
+  $feat-structure: feature-targeting-functions.create-target($query, structure);
+
+  .mdc-select--filled {
+    @include select-theme.filled-height(select-theme.$height, $query: $query);
+    @include select-theme.filled-shape-radius(
+      select-theme.$shape-radius,
+      $query: $query
+    );
+
+    @include select-theme.container-fill-color(
+      select-theme.$fill-color,
+      $query: $query
+    );
+    @include select-theme.disabled-container-fill-color(
+      select-theme.$disabled-fill-color,
+      $query: $query
+    );
+
+    @include select-theme.bottom-line-color(
+      select-theme.$bottom-line-idle-color,
+      $query: $query
+    );
+    @include select-theme.focused-bottom-line-color(primary, $query: $query);
+    @include select-theme.hover-bottom-line-color(
+      select-theme.$bottom-line-hover-color,
+      $query: $query
+    );
+    @include select-theme.disabled-bottom-line-color(
+      select-theme.$disabled-bottom-line-color,
+      $query: $query
+    );
+
+    @include select-theme.truncate-floating-label-max-width(
+      $leading-icon-size: 0,
+      $dropdown-icon-size: select-icon-theme.$icon-size,
+      $query: $query
+    );
+
+    @include menu-surface-mixins.flatten-top-when-opened-below($query: $query);
+
+    &.mdc-select--focused.mdc-line-ripple::after {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        transform: scale(1, 2);
+        opacity: 1;
+      }
+    }
+
+    .mdc-floating-label {
+      @include feature-targeting-mixins.targets($feat-structure) {
+        @include rtl-mixins.reflexive-position(
+          left,
+          select-theme.$outline-label-offset
+        );
+      }
+    }
+
+    &.mdc-select--with-leading-icon {
+      @include select-theme.leading-icon-floating-label-position(
+        select-icon-theme.$icon-size,
+        $query: $query
+      );
+
+      @include select-theme.truncate-floating-label-max-width(
+        $leading-icon-size: select-icon-theme.$icon-size,
+        $dropdown-icon-size: select-icon-theme.$icon-size,
+        $query: $query
+      );
+    }
+  }
+
+  .mdc-select--invalid {
+    @include select-theme.bottom-line-color(
+      select-theme.$error-color,
+      $query: $query
+    );
+    @include select-theme.hover-bottom-line-color(
+      select-theme.$error-color,
+      $query: $query
+    );
+    @include select-theme.focused-bottom-line-color(
+      select-theme.$error-color,
+      $query: $query
+    );
+  }
+}

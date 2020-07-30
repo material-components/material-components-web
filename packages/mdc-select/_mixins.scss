@@ -41,8 +41,6 @@
 @use "@material/shape/mixins" as shape-mixins;
 @use "@material/shape/functions" as shape-functions;
 @use "@material/theme/custom-properties";
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/theme/variables" as theme-variables;
 @use "@material/typography/mixins" as typography-mixins;
 @use "./helper-text" as helper-text;
 @use "./icon";
@@ -58,68 +56,45 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-select {
-    @include select-theme.container-fill-color(
-      select-theme.$fill-color,
+    @include select-theme.ink-color(select-theme.$ink-color, $query: $query);
+    @include select-theme.disabled-ink-color(
+      select-theme.$disabled-ink-color,
       $query: $query
     );
-    @include select-theme.ink-color(select-theme.$ink-color, $query: $query);
+
     @include select-theme.label-color(
       select-theme.$label-color,
       $query: $query
     );
-    @include select-theme.bottom-line-color(
-      select-theme.$bottom-line-idle-color,
-      $query: $query
-    );
-    @include select-theme.dropdown-icon-color(
-      select-theme.$dropdown-icon-color,
-      $query: $query
-    );
-    @include select-theme.focused-dropdown-icon-color(primary, $query: $query);
-    @include helper-text.helper-text-color(
-      helper-text.$helper-text-color,
-      $query: $query
-    );
-    @include icon.icon-color(icon.$icon-color, $query: $query);
-
-    // Focused state colors
-    @include select-theme.focused-bottom-line-color(primary, $query: $query);
     @include select-theme.focused-label-color(
       select-theme.$focused-label-color,
-      $query: $query
-    );
-
-    // Hover state colors
-    @include select-theme.hover-bottom-line-color(
-      select-theme.$bottom-line-hover-color,
-      $query: $query
-    );
-
-    // Disabled state colors
-    @include select-theme.disabled-container-fill-color(
-      select-theme.$disabled-fill-color,
       $query: $query
     );
     @include select-theme.disabled-label-color(
       select-theme.$disabled-label-color,
       $query: $query
     );
-    @include select-theme.disabled-bottom-line-color(
-      select-theme.$disabled-bottom-line-color,
+
+    @include select-theme.dropdown-icon-color(
+      select-theme.$dropdown-icon-color,
       $query: $query
     );
+    @include select-theme.focused-dropdown-icon-color(primary, $query: $query);
     @include select-theme.disabled-dropdown-icon-color(
       select-theme.$disabled-dropdown-icon-color,
       $query: $query
     );
-    @include select-theme.disabled-ink-color(
-      select-theme.$disabled-ink-color,
+
+    @include helper-text.helper-text-color(
+      helper-text.$helper-text-color,
       $query: $query
     );
     @include helper-text.disabled-helper-text-color(
       helper-text.$disabled-helper-text-color,
       $query: $query
     );
+
+    @include icon.icon-color(icon.$icon-color, $query: $query);
     @include icon.disabled-icon-color(
       icon.$disabled-icon-color,
       $query: $query
@@ -140,15 +115,10 @@
     }
 
     // Floating label private mixin
-    @include floating-label_($query: $query);
+    @include _floating-label($query: $query);
 
     // structural
-    @include select-theme.filled-height(select-theme.$height, $query: $query);
-    @include select-theme.filled-shape-radius(
-      select-theme.$shape-radius,
-      $query: $query
-    );
-    @include padding-horizontal_(
+    @include _padding-horizontal(
       $left: select-theme.$anchor-padding-left,
       $left-with-leading-icon:
         select-theme.$anchor-padding-left-with-leading-icon,
@@ -157,7 +127,7 @@
     );
     @include select-theme.min-width(select-theme.$min-width, $query: $query);
     @include icon.size(icon.$icon-size, $query: $query);
-    @include _dropdown-icon-size(icon.$icon-size, $query: $query);
+    @include select-theme.dropdown-icon-size(icon.$icon-size, $query: $query);
     @include _option-side-padding(16px, $query: $query);
     @include _option-graphic-trailing-margin(12px, $query: $query);
 
@@ -278,10 +248,6 @@
 
   .mdc-select--with-leading-icon {
     @include with-leading-icon_($query: $query);
-  }
-
-  .mdc-select--filled {
-    @include menu-surface-mixins.flatten-top-when-opened-below($query: $query);
   }
 
   .mdc-select__menu {
@@ -433,28 +399,15 @@
   }
 }
 
-@mixin floating-label_($query: feature-targeting-functions.all()) {
+@mixin _floating-label($query: feature-targeting-functions.all()) {
   $feat-structure: feature-targeting-functions.create-target($query, structure);
 
   .mdc-floating-label {
     @include feature-targeting-mixins.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(
-        left,
-        select-theme.$outline-label-offset
-      );
-
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
     }
-  }
-
-  &.mdc-select--filled {
-    @include select-theme.truncate-floating-label-max-width(
-      $leading-icon-size: 0,
-      $dropdown-icon-size: icon.$icon-size,
-      $query: $query
-    );
   }
 
   &.mdc-select--outlined {
@@ -470,21 +423,7 @@
 }
 
 @mixin with-leading-icon_($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-
-  @include select-theme.leading-icon-floating-label-position(
-    icon.$icon-size,
-    $query: $query
-  );
   @include _option-side-padding(12px, $query: $query);
-
-  &.mdc-select--filled {
-    @include select-theme.truncate-floating-label-max-width(
-      $leading-icon-size: icon.$icon-size,
-      $dropdown-icon-size: icon.$icon-size,
-      $query: $query
-    );
-  }
 
   &.mdc-select--outlined {
     @include select-theme.outlined-with-leading-icon-floating-label-position-animation(
@@ -550,6 +489,7 @@
   $feat-structure: feature-targeting-functions.create-target($query, structure);
   $feat-color: feature-targeting-functions.create-target($query, color);
 
+  @include select-theme.outlined-height(select-theme.$height, $query: $query);
   @include select-theme.container-fill-color(transparent, $query: $query);
   @include select-theme.outline-color(
     select-theme.$outlined-idle-border,
@@ -600,6 +540,9 @@
     @include select-theme.center-aligned($query: $query);
 
     @include feature-targeting-mixins.targets($feat-structure) {
+      display: flex;
+      // To eliminate extra gap between helper text & outlined select in IE.
+      align-items: baseline;
       overflow: visible;
     }
   }
@@ -643,7 +586,7 @@
 ///     icon is present
 /// @param {Number} $right - right-side padding; note that a trailing icon is
 ///     always present.
-@mixin padding-horizontal_(
+@mixin _padding-horizontal(
   $left,
   $left-with-leading-icon,
   $right,
