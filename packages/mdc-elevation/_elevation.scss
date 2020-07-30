@@ -28,8 +28,6 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
-@use './functions';
-@use './variables';
 @use './elevation-theme';
 
 @mixin core-styles($query: feature-targeting.all()) {
@@ -44,11 +42,11 @@
 
   .mdc-elevation-transition {
     @include feature-targeting.targets($feat-animation) {
-      transition: functions.transition-value();
+      transition: elevation-theme.transition-value();
     }
 
     @include feature-targeting.targets($feat-structure) {
-      will-change: variables.$property;
+      will-change: elevation-theme.$property;
     }
   }
 }
@@ -76,14 +74,14 @@
 
     @include feature-targeting.targets($feat-animation) {
       @include base-mixins.emit-once('mdc-elevation/common/animation') {
-        transition: functions.overlay-transition-value();
+        transition: elevation-theme.overlay-transition-value();
       }
     }
 
     @include base-mixins.emit-once('mdc-elevation/common/color') {
       $fill-color: custom-properties.create(
         --mdc-elevation-overlay-color,
-        variables.$overlay-color
+        elevation-theme.$overlay-color
       );
       @include elevation-theme.overlay-fill-color($fill-color, $query: $query);
     }
