@@ -21,12 +21,42 @@
 //
 
 @use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use './select-ripple';
-@use './select-helper-text';
-@use './select-icon';
+@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/list/mixins' as list-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use './select-theme';
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
-  @include select-ripple.core-styles($query: $query);
-  @include select-helper-text.helper-text-core-styles($query: $query);
-  @include select-icon.icon-core-styles($query: $query);
+  .mdc-select__anchor {
+    @include ripple.surface(
+      $ripple-target: select-theme.$ripple-target,
+      $query: $query
+    );
+    @include ripple.radius-bounded(
+      $ripple-target: select-theme.$ripple-target,
+      $query: $query
+    );
+    @include ripple-theme.states-base-color(
+      select-theme.$ink-color,
+      $ripple-target: select-theme.$ripple-target,
+      $query: $query
+    );
+    @include ripple-theme.states-opacities(
+      (
+        hover: ripple-theme.states-opacity(select-theme.$ink-color, hover),
+        focus: ripple-theme.states-opacity(select-theme.$ink-color, focus),
+      ),
+      $ripple-target: select-theme.$ripple-target,
+      $query: $query
+    );
+
+    #{select-theme.$ripple-target} {
+      @include ripple.target-common($query: $query);
+    }
+  }
+
+  .mdc-select__menu .mdc-list .mdc-list-item--selected {
+    @include list-mixins.ripple-states(on-surface, $query: $query);
+  }
 }

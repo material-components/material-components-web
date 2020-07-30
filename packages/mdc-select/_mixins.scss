@@ -37,8 +37,6 @@
 @use "@material/menu-surface/mixins" as menu-surface-mixins;
 @use "@material/notched-outline/mixins" as notched-outline-mixins;
 @use "@material/notched-outline/variables" as notched-outline-variables;
-@use '@material/ripple/ripple';
-@use '@material/ripple/ripple-theme';
 @use "@material/rtl/mixins" as rtl-mixins;
 @use "@material/shape/mixins" as shape-mixins;
 @use "@material/shape/functions" as shape-functions;
@@ -51,7 +49,6 @@
 @use "./select-theme";
 
 @mixin core-styles($query: feature-targeting-functions.all()) {
-  @include ripple($query);
   @include without-ripple($query);
 }
 
@@ -293,40 +290,6 @@
     .mdc-list {
       @include list-mixins.item-selected-text-color(on-surface, $query: $query);
     }
-  }
-}
-
-@mixin ripple($query: feature-targeting-functions.all()) {
-  .mdc-select__anchor {
-    @include ripple.surface(
-      $ripple-target: select-theme.$ripple-target,
-      $query: $query
-    );
-    @include ripple.radius-bounded(
-      $ripple-target: select-theme.$ripple-target,
-      $query: $query
-    );
-    @include ripple-theme.states-base-color(
-      select-theme.$ink-color,
-      $ripple-target: select-theme.$ripple-target,
-      $query: $query
-    );
-    @include ripple-theme.states-opacities(
-      (
-        hover: ripple-theme.states-opacity(select-theme.$ink-color, hover),
-        focus: ripple-theme.states-opacity(select-theme.$ink-color, focus),
-      ),
-      $ripple-target: select-theme.$ripple-target,
-      $query: $query
-    );
-
-    #{select-theme.$ripple-target} {
-      @include ripple.target-common($query: $query);
-    }
-  }
-
-  .mdc-select__menu .mdc-list .mdc-list-item--selected {
-    @include list-mixins.ripple-states(on-surface, $query: $query);
   }
 }
 
