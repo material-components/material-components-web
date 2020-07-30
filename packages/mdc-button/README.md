@@ -133,7 +133,7 @@ To meet this requirement, add the following to your button:
 <img src="images/contained-button.png" alt="Contained button example">
 
 ```html
-<button class="mdc-button--raised">
+<button class="mdc-button mdc-button--raised">
   <span class="mdc-button__label">Contained Button</span>
 </button>
 ```
