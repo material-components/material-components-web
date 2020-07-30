@@ -1,18 +1,19 @@
-@use '../mixins' as radio;
+@use '../radio';
+@use '../radio-theme';
 @use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {
     @include radio.core-styles($query: $query);
-    @include radio.unchecked-stroke-color(red, $query: $query);
-    @include radio.checked-stroke-color(red, $query: $query);
-    @include radio.ink-color(red, $query: $query);
-    @include radio.focus-indicator-color(red, $query: $query);
+    @include radio-theme.unchecked-stroke-color(red, $query: $query);
+    @include radio-theme.checked-stroke-color(red, $query: $query);
+    @include radio-theme.ink-color(red, $query: $query);
+    @include radio-theme.focus-indicator-color(red, $query: $query);
     @include radio.ripple($query: $query);
     @include radio.without-ripple($query: $query);
-    @include radio.touch-target(900px, $query: $query);
-    @include radio.density(-1, $query: $query);
-    @include radio.ripple-size(0, $query: $query);
+    @include radio-theme.touch-target(900px, $query: $query);
+    @include radio-theme.density(-1, $query: $query);
+    @include radio-theme.ripple-size(0, $query: $query);
   }
 }
 

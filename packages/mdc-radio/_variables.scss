@@ -20,24 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use '@material/density/variables' as density-variables;
-@use '@material/theme/theme-color';
-
-$ripple-size: 40px !default;
-$icon-size: 20px !default;
-$transition-duration: 120ms !default;
-$ripple-opacity: 0.14 !default;
-$baseline-theme-color: secondary !default;
-$unchecked-color: rgba(theme-color.prop-value(on-surface), 0.54) !default;
-$disabled-circle-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
-
-$minimum-size: 28px !default;
-$maximum-size: $ripple-size !default;
-$density-scale: density-variables.$default-scale !default;
-$density-config: (
-  size: (
-    minimum: $minimum-size,
-    default: $ripple-size,
-    maximum: $maximum-size,
-  ),
-) !default;
+/// @deprecated Import './radio-theme' module instead.
+@forward './radio-theme' show $ripple-size, $icon-size, $transition-duration, $ripple-opacity, $baseline-theme-color, $unchecked-color, $disabled-circle-color, $minimum-size, $maximum-size, $density-scale, $density-config;

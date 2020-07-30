@@ -27,7 +27,27 @@
 @use '@material/density/functions' as density-functions;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
-@use './variables';
+@use '@material/density/variables' as density-variables;
+@use '@material/theme/theme-color';
+
+$ripple-size: 40px !default;
+$icon-size: 20px !default;
+$transition-duration: 120ms !default;
+$ripple-opacity: 0.14 !default;
+$baseline-theme-color: secondary !default;
+$unchecked-color: rgba(theme-color.prop-value(on-surface), 0.54) !default;
+$disabled-circle-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
+
+$minimum-size: 28px !default;
+$maximum-size: $ripple-size !default;
+$density-scale: density-variables.$default-scale !default;
+$density-config: (
+  size: (
+    minimum: $minimum-size,
+    default: $ripple-size,
+    maximum: $maximum-size,
+  ),
+) !default;
 
 ///
 /// Sets the stroke color of an unchecked, enabled radio button.
@@ -110,8 +130,8 @@
 /// @param {Number} $ripple-size Size of ripple in `px`. Required only for custom ripple size.
 ///
 @mixin touch-target(
-  $size: variables.$ripple-size,
-  $ripple-size: variables.$ripple-size,
+  $size: $ripple-size,
+  $ripple-size: $ripple-size,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -136,7 +156,7 @@
 ///
 @mixin density($density-scale, $query: feature-targeting.all()) {
   $size: density-functions.prop-value(
-    $density-config: variables.$density-config,
+    $density-config: $density-config,
     $density-scale: $density-scale,
     $property-name: size,
   );
@@ -157,7 +177,7 @@
 ///
 @mixin ripple-size($size, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  $padding: ($size - variables.$icon-size) / 2;
+  $padding: ($size - $icon-size) / 2;
 
   @include feature-targeting.targets($feat-structure) {
     padding: $padding;

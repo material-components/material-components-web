@@ -24,13 +24,12 @@
 // stylelint-disable selector-class-pattern
 
 @use 'sass:map';
+@use '@material/animation/animation';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/touch-target/variables' as touch-target-variables;
-@use './functions';
-@use './variables';
 @use './radio-theme';
 
 $ripple-target: '.mdc-radio__ripple';
@@ -56,42 +55,42 @@ $ripple-target: '.mdc-radio__ripple';
 
   .mdc-radio {
     @include radio-theme.unchecked-stroke-color(
-      variables.$unchecked-color,
+      radio-theme.$unchecked-color,
       $query: $query
     );
     @include radio-theme.checked-stroke-color(
-      variables.$baseline-theme-color,
+      radio-theme.$baseline-theme-color,
       $query: $query
     );
     @include radio-theme.ink-color(
-      variables.$baseline-theme-color,
+      radio-theme.$baseline-theme-color,
       $query: $query
     );
     @include radio-theme.disabled-unchecked-stroke-color(
-      variables.$disabled-circle-color,
+      radio-theme.$disabled-circle-color,
       $query: $query
     );
     @include radio-theme.disabled-checked-stroke-color(
-      variables.$disabled-circle-color,
+      radio-theme.$disabled-circle-color,
       $query: $query
     );
     @include radio-theme.disabled-ink-color(
-      variables.$disabled-circle-color,
+      radio-theme.$disabled-circle-color,
       $query: $query
     );
     @include radio-theme.focus-indicator-color(
-      variables.$baseline-theme-color,
+      radio-theme.$baseline-theme-color,
       $query: $query
     );
-    @include radio-theme.density(variables.$density-scale, $query: $query);
+    @include radio-theme.density(radio-theme.$density-scale, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       display: inline-block;
       position: relative;
       flex: 0 0 auto;
       box-sizing: content-box;
-      width: variables.$icon-size;
-      height: variables.$icon-size;
+      width: radio-theme.$icon-size;
+      height: radio-theme.$icon-size;
       cursor: pointer;
       /* @alternate */
       will-change: opacity, transform, border-color, color;
@@ -103,8 +102,8 @@ $ripple-target: '.mdc-radio__ripple';
         display: inline-block;
         position: relative;
         box-sizing: border-box;
-        width: variables.$icon-size;
-        height: variables.$icon-size;
+        width: radio-theme.$icon-size;
+        height: radio-theme.$icon-size;
       }
 
       &::before {
@@ -118,7 +117,7 @@ $ripple-target: '.mdc-radio__ripple';
         }
 
         @include feature-targeting.targets($feat-animation) {
-          transition: functions.exit(opacity), functions.exit(transform);
+          transition: exit(opacity), exit(transform);
         }
       }
     }
@@ -137,7 +136,7 @@ $ripple-target: '.mdc-radio__ripple';
       }
 
       @include feature-targeting.targets($feat-animation) {
-        transition: functions.exit(border-color);
+        transition: exit(border-color);
       }
     }
 
@@ -156,7 +155,7 @@ $ripple-target: '.mdc-radio__ripple';
       }
 
       @include feature-targeting.targets($feat-animation) {
-        transition: functions.exit(transform), functions.exit(border-color);
+        transition: exit(transform), exit(border-color);
       }
     }
 
@@ -173,8 +172,8 @@ $ripple-target: '.mdc-radio__ripple';
 
     &--touch {
       @include touch-target-mixins.margin(
-        $component-height: variables.$ripple-size,
-        $component-width: variables.$ripple-size,
+        $component-height: radio-theme.$ripple-size,
+        $component-width: radio-theme.$ripple-size,
         $query: $query
       );
       @include radio-theme.touch-target(
@@ -188,18 +187,18 @@ $ripple-target: '.mdc-radio__ripple';
   .mdc-radio__native-control:disabled {
     + .mdc-radio__background {
       @include feature-targeting.targets($feat-animation) {
-        transition: functions.enter(opacity), functions.enter(transform);
+        transition: enter(opacity), enter(transform);
       }
 
       .mdc-radio__outer-circle {
         @include feature-targeting.targets($feat-animation) {
-          transition: functions.enter(border-color);
+          transition: enter(border-color);
         }
       }
 
       .mdc-radio__inner-circle {
         @include feature-targeting.targets($feat-animation) {
-          transition: functions.enter(transform), functions.enter(border-color);
+          transition: enter(transform), enter(border-color);
         }
       }
     }
@@ -220,7 +219,7 @@ $ripple-target: '.mdc-radio__ripple';
         }
 
         @include feature-targeting.targets($feat-animation) {
-          transition: functions.enter(transform), functions.enter(border-color);
+          transition: enter(transform), enter(border-color);
         }
       }
     }
@@ -243,7 +242,7 @@ $ripple-target: '.mdc-radio__ripple';
       }
 
       @include feature-targeting.targets($feat-animation) {
-        transition: functions.enter(opacity), functions.enter(transform);
+        transition: enter(opacity), enter(transform);
       }
     }
   }
@@ -265,7 +264,7 @@ $ripple-target: '.mdc-radio__ripple';
       $ripple-target: $ripple-target
     );
     @include ripple-theme.states(
-      $color: variables.$baseline-theme-color,
+      $color: radio-theme.$baseline-theme-color,
       $query: $query,
       $ripple-target: $ripple-target
     );
@@ -282,4 +281,12 @@ $ripple-target: '.mdc-radio__ripple';
   #{$ripple-target} {
     @include ripple.target-common($query: $query);
   }
+}
+
+@function enter($name) {
+  @return animation.enter($name, radio-theme.$transition-duration);
+}
+
+@function exit($name) {
+  @return animation.exit-temporary($name, radio-theme.$transition-duration);
 }
