@@ -1,0 +1,115 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+
+$fill-color: surface;
+$text-color: on-surface;
+$divider-color: rgba(theme-color.prop-value(on-surface), 0.12);
+$primary-action-text-color: primary;
+$secondary-action-text-color: primary;
+
+$mobile-breakpoint: 480px;
+
+///
+/// Customizes fill color.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-theme-color.property-values`.
+///
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(background-color, $color);
+  }
+}
+
+///
+/// Customizes text color.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-theme-color.property-values`.
+///
+@mixin text-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-banner__text {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+///
+/// Customizes divider color.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-theme-color.property-values`.
+///
+@mixin divider-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(border-bottom-color, $color);
+  }
+}
+
+///
+/// Sets the min-width for the banner content.
+/// @param {Number} $min-width Minimum width value in `px`.
+/// @param {Number} $mobile-breakpoint Mobile breakpoint value in `px`.
+///
+@mixin min-width(
+  $min-width,
+  $mobile-breakpoint: $mobile-breakpoint,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-banner__content {
+    @include feature-targeting.targets($feat-structure) {
+      min-width: $min-width;
+
+      // The first media query ensures that banners are always 100% width on
+      // mobile devices, as required by the spec. The second media query
+      // prevents banners from being wider than the viewport for large min-width
+      // values.
+      @media (max-width: $mobile-breakpoint), (max-width: $min-width) {
+        min-width: 100%;
+      }
+    }
+  }
+}
+
+///
+/// Sets the max-width for the banner content.
+/// @param {Number} $max-width Maximum width value in `px`.
+///
+@mixin max-width($max-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-banner__content {
+    @include feature-targeting.targets($feat-structure) {
+      max-width: $max-width;
+    }
+  }
+}
