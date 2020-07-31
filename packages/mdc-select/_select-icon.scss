@@ -20,12 +20,11 @@
 // THE SOFTWARE.
 //
 
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/feature-targeting/feature-targeting';
 @use './select-icon-theme';
 
-@mixin icon-core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin icon-core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select--with-leading-icon {
     @include _icon($query: $query);
@@ -38,19 +37,19 @@
 
   .mdc-select__icon:not([tabindex]),
   .mdc-select__icon[tabindex='-1'] {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: default;
       pointer-events: none;
     }
   }
 }
 
-@mixin _icon($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin _icon($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-select__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-block;
       box-sizing: border-box;
       border: none;
@@ -61,7 +60,7 @@
       align-self: center;
     }
 
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       background-color: transparent;
       fill: currentColor;
     }

@@ -20,15 +20,14 @@
 // THE SOFTWARE.
 //
 
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/menu-surface/mixins' as menu-surface-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
 @use './select-icon-theme';
 @use './select-theme';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select--filled {
     @include select-theme.filled-height(select-theme.$height, $query: $query);
@@ -69,14 +68,14 @@
     @include menu-surface-mixins.flatten-top-when-opened-below($query: $query);
 
     &.mdc-select--focused.mdc-line-ripple::after {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         transform: scale(1, 2);
         opacity: 1;
       }
     }
 
     .mdc-floating-label {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-position(
           left,
           select-theme.$outline-label-offset

@@ -20,14 +20,13 @@
 // THE SOFTWARE.
 //
 
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/list/mixins' as list-mixins;
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
 @use './select-theme';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   .mdc-select__anchor {
     @include ripple.surface(
       $ripple-target: select-theme.$ripple-target,

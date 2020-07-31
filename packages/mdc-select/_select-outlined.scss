@@ -20,8 +20,7 @@
 // THE SOFTWARE.
 //
 
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/notched-outline/variables' as notched-outline-variables;
@@ -29,13 +28,10 @@
 @use './select-icon-theme';
 @use './select-theme';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   .mdc-select--outlined {
-    $feat-structure: feature-targeting-functions.create-target(
-      $query,
-      structure
-    );
-    $feat-color: feature-targeting-functions.create-target($query, color);
+    $feat-structure: feature-targeting.create-target($query, structure);
+    $feat-color: feature-targeting.create-target($query, color);
 
     @include select-theme.outlined-height(select-theme.$height, $query: $query);
     @include select-theme.outline-shape-radius(
@@ -69,7 +65,7 @@
       $query: $query
     );
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border: none;
     }
 
@@ -88,7 +84,7 @@
       );
       @include select-theme.center-aligned($query: $query);
 
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: flex;
         // To eliminate extra gap between helper text & outlined select in IE.
         align-items: baseline;
@@ -97,25 +93,25 @@
     }
 
     .mdc-select__selected-text {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: flex;
         border: none;
         z-index: 1;
       }
 
-      @include feature-targeting-mixins.targets($feat-color) {
+      @include feature-targeting.targets($feat-color) {
         background-color: transparent;
       }
     }
 
     .mdc-select__icon {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         z-index: 2;
       }
     }
 
     .mdc-floating-label {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         line-height: 1.15rem;
 
         @include rtl-mixins.reflexive-position(

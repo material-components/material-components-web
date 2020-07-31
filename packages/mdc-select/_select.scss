@@ -21,8 +21,7 @@
 //
 
 @use '@material/dom/mixins' as dom-mixins;
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/floating-label/variables' as floating-label-variables;
 @use '@material/list/mixins' as list-mixins;
@@ -40,10 +39,10 @@
 @use './select-helper-text';
 @use './select-icon';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select {
     @include select-theme.ink-color(select-theme.$ink-color, $query: $query);
@@ -133,7 +132,7 @@
     @include _option-side-padding(16px, $query: $query);
     @include _option-graphic-trailing-margin(12px, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
       position: relative; // Menu is absolutely positioned relative to this.
     }
@@ -142,7 +141,7 @@
       @include _dropdown-icon-base($query: $query);
       @include _dropdown-icon-inactive($query: $query);
 
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-property(
           margin,
           select-icon-theme.$icon-horizontal-margin,
@@ -169,7 +168,7 @@
       $query: $query
     );
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: 100%;
       position: relative;
       box-sizing: border-box;
@@ -228,12 +227,12 @@
 /// Sets base dropdown icon styles.
 /// @access private
 ///
-@mixin _dropdown-icon-base($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin _dropdown-icon-base($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select__dropdown-icon-active,
   .mdc-select__dropdown-icon-inactive {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: absolute;
       top: 0;
       left: 0;
@@ -244,7 +243,7 @@
     $svg-natural-width: 10px;
     $svg-natural-height: 5px;
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: $svg-natural-width / select-icon-theme.$icon-size * 100%;
       height: $svg-natural-height / select-icon-theme.$icon-size * 100%;
     }
@@ -255,27 +254,27 @@
 /// Sets styles for transitioning the dropdown icon to inactive state.
 /// @access private
 ///
-@mixin _dropdown-icon-inactive($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin _dropdown-icon-inactive($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-select__dropdown-icon-inactive {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 1;
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: opacity select-theme.$icon-inactive-fade-in-duration linear
         select-theme.$icon-inactive-fade-out-duration;
     }
   }
 
   .mdc-select__dropdown-icon-active {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 0;
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: opacity select-theme.$icon-inactive-fade-out-duration linear;
     }
   }
@@ -285,26 +284,26 @@
 /// Sets styles for transitioning the dropdown icon to activated state.
 /// @access private
 ///
-@mixin _dropdown-icon-active($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin _dropdown-icon-active($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-select__dropdown-icon-inactive {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 0;
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: opacity select-theme.$icon-active-fade-out-duration linear;
     }
   }
 
   .mdc-select__dropdown-icon-active {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 1;
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: opacity select-theme.$icon-active-fade-in-duration linear
         select-theme.$icon-active-fade-out-duration;
     }
@@ -315,14 +314,11 @@
 /// Sets the side padding for option text.
 /// @access private
 ///
-@mixin _option-side-padding(
-  $side-padding,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin _option-side-padding($side-padding, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select__menu .mdc-list-item {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(
         padding,
         $side-padding,
@@ -338,22 +334,22 @@
 ///
 @mixin _option-graphic-trailing-margin(
   $margin-right,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select__menu .mdc-list-item__graphic {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-box(margin, right, $margin-right);
     }
   }
 }
 
-@mixin _floating-label($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin _floating-label($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-floating-label {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
@@ -361,14 +357,14 @@
   }
 }
 
-@mixin _text($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin _text($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-select__selected-text {
     @include typography-mixins.typography(subtitle1, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       &::-ms-expand {
         display: none;
       }
@@ -391,17 +387,17 @@
       overflow: hidden;
     }
 
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       background-color: transparent;
       color: inherit; // Override default user agent stylesheet
     }
   }
 }
 
-@mixin _disabled($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin _disabled($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     cursor: default;
     pointer-events: none;
   }
@@ -418,18 +414,18 @@
   $left,
   $left-with-leading-icon,
   $right,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select__anchor {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(padding, $left, $right);
     }
   }
 
   &.mdc-select--with-leading-icon .mdc-select__anchor {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(
         padding,
         $left-with-leading-icon,

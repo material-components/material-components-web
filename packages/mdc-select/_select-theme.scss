@@ -25,8 +25,7 @@
 @use 'sass:meta';
 @use '@material/density/functions' as density-functions;
 @use '@material/density/variables' as density-variables;
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/floating-label/variables' as floating-label-variables;
 @use '@material/line-ripple/mixins' as line-ripple-mixins;
@@ -155,60 +154,51 @@ $error-color: error !default;
 
 /// Sets the min-width of the select.
 /// @param {Number} $min-width - The desired min-width.
-@mixin min-width($min-width, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin min-width($min-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     min-width: $min-width;
   }
 }
 
-@mixin ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin ink-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     @include _ink-color($color, $query: $query);
   }
 }
 
-@mixin disabled-ink-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-ink-color($color, $query: feature-targeting.all()) {
   @include _if-disabled {
     @include _ink-color($color, $query: $query);
   }
 }
 
-@mixin container-fill-color($color, $query: feature-targeting-functions.all()) {
+@mixin container-fill-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     @include _container-fill-color($color, $query: $query);
   }
 }
 
-@mixin disabled-container-fill-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin disabled-container-fill-color($color, $query: feature-targeting.all()) {
   @include _if-disabled {
     @include _container-fill-color($color, $query: $query);
   }
 }
 
-@mixin dropdown-icon-color($color, $query: feature-targeting-functions.all()) {
+@mixin dropdown-icon-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     @include _dropdown-icon-color($color, $query: $query);
   }
 }
 
-@mixin disabled-dropdown-icon-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin disabled-dropdown-icon-color($color, $query: feature-targeting.all()) {
   @include _if-disabled {
     @include _dropdown-icon-color($color, $query: $query);
   }
 }
 
-@mixin hover-dropdown-icon-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin hover-dropdown-icon-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     &:not(.mdc-select--focused):hover {
       @include _dropdown-icon-color($color, $query: $query);
@@ -216,10 +206,7 @@ $error-color: error !default;
   }
 }
 
-@mixin focused-dropdown-icon-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin focused-dropdown-icon-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     &.mdc-select--focused {
       @include _dropdown-icon-color($color, $query: $query);
@@ -227,7 +214,7 @@ $error-color: error !default;
   }
 }
 
-@mixin focused-label-color($color, $query: feature-targeting-functions.all()) {
+@mixin focused-label-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     &.mdc-select--focused .mdc-floating-label {
       @include floating-label-mixins.ink-color(
@@ -238,7 +225,7 @@ $error-color: error !default;
   }
 }
 
-@mixin label-floating-color($color, $query: feature-targeting-functions.all()) {
+@mixin label-floating-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     .mdc-floating-label--float-above {
       @include floating-label-mixins.ink-color(
@@ -249,10 +236,7 @@ $error-color: error !default;
   }
 }
 
-@mixin hover-label-floating-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin hover-label-floating-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     &:not(.mdc-select--focused):hover .mdc-floating-label--float-above {
       @include floating-label-mixins.ink-color(
@@ -263,25 +247,19 @@ $error-color: error !default;
   }
 }
 
-@mixin bottom-line-color($color, $query: feature-targeting-functions.all()) {
+@mixin bottom-line-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     @include _bottom-line-color($color, $query: $query);
   }
 }
 
-@mixin disabled-bottom-line-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin disabled-bottom-line-color($color, $query: feature-targeting.all()) {
   @include _if-disabled {
     @include _bottom-line-color($color, $query: $query);
   }
 }
 
-@mixin hover-bottom-line-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin hover-bottom-line-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     &:hover {
       @include _bottom-line-color($color, $query: $query);
@@ -289,16 +267,13 @@ $error-color: error !default;
   }
 }
 
-@mixin focused-bottom-line-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin focused-bottom-line-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     @include _focused-line-ripple-color($color, $query: $query);
   }
 }
 
-@mixin label-color($color, $query: feature-targeting-functions.all()) {
+@mixin label-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     .mdc-floating-label {
       @include floating-label-mixins.ink-color($color, $query: $query);
@@ -306,7 +281,7 @@ $error-color: error !default;
   }
 }
 
-@mixin hover-label-color($color, $query: feature-targeting-functions.all()) {
+@mixin hover-label-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     &:not(.mdc-select--focused):hover .mdc-floating-label {
       @include floating-label-mixins.ink-color(
@@ -317,7 +292,7 @@ $error-color: error !default;
   }
 }
 
-@mixin disabled-label-color($color, $query: feature-targeting-functions.all()) {
+@mixin disabled-label-color($color, $query: feature-targeting.all()) {
   @include _if-disabled {
     .mdc-floating-label {
       @include floating-label-mixins.ink-color($color, $query: $query);
@@ -325,31 +300,25 @@ $error-color: error !default;
   }
 }
 
-@mixin outline-color($color, $query: feature-targeting-functions.all()) {
+@mixin outline-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     @include _outline-color($color, $query: $query);
   }
 }
 
-@mixin hover-outline-color($color, $query: feature-targeting-functions.all()) {
+@mixin hover-outline-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     @include _hover-outline-color($color, $query: $query);
   }
 }
 
-@mixin focused-outline-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin focused-outline-color($color, $query: feature-targeting.all()) {
   @include _if-enabled {
     @include _focused-outline-color($color, $query: $query);
   }
 }
 
-@mixin disabled-outline-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin disabled-outline-color($color, $query: feature-targeting.all()) {
   @include _if-disabled {
     @include _outline-color($color, $query: $query);
   }
@@ -358,11 +327,11 @@ $error-color: error !default;
 ///
 /// Sets the dropdown icon to the specified size.
 ///
-@mixin dropdown-icon-size($size, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin dropdown-icon-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select__dropdown-icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: $size;
       height: $size;
     }
@@ -373,7 +342,7 @@ $error-color: error !default;
   $radius,
   $density-scale: $density-scale,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   @if meta.type-of($radius) == 'list' and list.length($radius) > 2 {
     @error "mdc-select: Invalid radius #{$radius}. Only top-left and top-right corners may be customized.";
@@ -401,9 +370,9 @@ $error-color: error !default;
   $radius,
   $density-scale: $density-scale,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   $height: density-functions.prop-value(
     $density-config: $density-config,
@@ -446,7 +415,7 @@ $error-color: error !default;
       );
 
       @include rtl-mixins.rtl {
-        @include feature-targeting-mixins.targets($feat-structure) {
+        @include feature-targeting.targets($feat-structure) {
           /* @noflip */
           padding-left: 0;
         }
@@ -468,7 +437,7 @@ $error-color: error !default;
       );
 
       @include rtl-mixins.rtl {
-        @include feature-targeting-mixins.targets($feat-structure) {
+        @include feature-targeting.targets($feat-structure) {
           /* @noflip */
           margin-left: 0;
         }
@@ -500,7 +469,7 @@ $error-color: error !default;
 @mixin filled-density(
   $density-scale,
   $minimum-height-for-filled-label: $minimum-height-for-filled-label,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   $height: density-functions.prop-value(
     $density-config: $density-config,
@@ -527,7 +496,7 @@ $error-color: error !default;
 @mixin filled-with-leading-icon-density(
   $density-scale,
   $minimum-height-for-filled-label: $minimum-height-for-filled-label,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   $height: density-functions.prop-value(
     $density-config: $density-config,
@@ -549,10 +518,7 @@ $error-color: error !default;
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`. Default is `0`.
 ///
-@mixin outlined-density(
-  $density-scale,
-  $query: feature-targeting-functions.all()
-) {
+@mixin outlined-density($density-scale, $query: feature-targeting.all()) {
   $height: density-functions.prop-value(
     $density-config: $density-config,
     $density-scale: $density-scale,
@@ -571,7 +537,7 @@ $error-color: error !default;
 ///
 @mixin outlined-with-leading-icon-density(
   $density-scale,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   $height: density-functions.prop-value(
     $density-config: $density-config,
@@ -597,12 +563,12 @@ $error-color: error !default;
   $new-height,
   $minimum-height-for-filled-label: $minimum-height-for-filled-label,
   $filled-baseline-top: $filled-baseline-top,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select__anchor {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: $new-height;
     }
 
@@ -616,7 +582,7 @@ $error-color: error !default;
     @if $new-height < $minimum-height-for-filled-label {
       @include center-aligned($query: $query);
 
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         .mdc-floating-label {
           display: none;
         }
@@ -659,9 +625,9 @@ $error-color: error !default;
   $new-height,
   $minimum-height-for-filled-label: $minimum-height-for-filled-label,
   $filled-baseline-top: $filled-baseline-top,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include filled-height(
     $new-height,
@@ -708,9 +674,9 @@ $error-color: error !default;
 @mixin outlined-height(
   $new-height,
   $keyframe-suffix: select-outlined-#{$new-height},
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
   $positionY: get-outlined-label-position-y($new-height);
 
   .mdc-select__anchor {
@@ -733,7 +699,7 @@ $error-color: error !default;
       );
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: $new-height;
     }
   }
@@ -764,9 +730,9 @@ $error-color: error !default;
 @mixin outlined-with-leading-icon-height(
   $new-height,
   $keyframe-suffix: null,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select__anchor {
     @if $new-height < $height {
@@ -789,7 +755,7 @@ $error-color: error !default;
       );
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: $new-height;
     }
   }
@@ -822,16 +788,16 @@ $error-color: error !default;
   $property,
   $padding,
   $add-label-padding: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
   $padding-is-custom-prop: custom-properties.is-custom-prop($padding);
   $padding-px: $padding;
   @if ($padding-is-custom-prop) {
     $padding-px: custom-properties.get-fallback($padding);
   }
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     // The shape should only change the padding if the radius becomes greater
     // than the default padding. That means we need to add more padding.
     @if ($padding-px > notched-outline-variables.$leading-width) {
@@ -874,14 +840,14 @@ $error-color: error !default;
 }
 
 // Removes filled baseline alignment
-@mixin center-aligned($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin center-aligned($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select__selected-text {
     @include typography-mixins.zero-width-prefix($query: $query);
   }
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     // In order for a flexbox container to participate in baseline alignment,
     // it follows these rules to determine where its baseline is:
     // https://www.w3.org/TR/css-flexbox-1/#flex-baselines
@@ -925,13 +891,13 @@ $error-color: error !default;
 ///
 @mixin leading-icon-floating-label-position(
   $icon-size: select-icon-theme.$icon-size,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
   $icon-total-width: $icon-size + 2 * select-icon-theme.$icon-horizontal-margin;
 
   .mdc-floating-label {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-position(left, $icon-total-width);
     }
   }
@@ -947,9 +913,9 @@ $error-color: error !default;
   $height,
   $icon-size,
   $keyframe-suffix: select-outlined-leading-icon-#{$height},
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   $icon-total-width: $icon-size + 2 * select-icon-theme.$icon-horizontal-margin;
   $resting-position-x: $icon-total-width -
@@ -960,7 +926,7 @@ $error-color: error !default;
 
   // Resting label position
   .mdc-floating-label {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-position(left, $resting-position-x);
     }
   }
@@ -1013,7 +979,7 @@ $error-color: error !default;
 @mixin truncate-floating-label-max-width(
   $leading-icon-size,
   $dropdown-icon-size,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   $truncation: select-icon-theme.$icon-horizontal-margin * 2 +
     $dropdown-icon-size;
@@ -1053,7 +1019,7 @@ $error-color: error !default;
 @mixin truncate-notched-outline-max-width(
   $leading-icon-size,
   $dropdown-icon-size,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   $truncation: select-icon-theme.$icon-horizontal-margin * 2 +
     $dropdown-icon-size + notched-outline-variables.$leading-width;
@@ -1095,39 +1061,33 @@ $error-color: error !default;
   }
 }
 
-@mixin _ink-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin _ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-select__selected-text {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(color, $color);
     }
   }
 }
 
-@mixin _container-fill-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin _container-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-select__anchor {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       @include theme-mixins.prop(background-color, $color);
     }
   }
 }
 
-@mixin _bottom-line-color($color, $query: feature-targeting-functions.all()) {
+@mixin _bottom-line-color($color, $query: feature-targeting.all()) {
   .mdc-line-ripple {
     @include line-ripple-mixins.inactive-color($color, $query: $query);
   }
 }
 
-@mixin _focused-line-ripple-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin _focused-line-ripple-color($color, $query: feature-targeting.all()) {
   @include _if-focused {
     .mdc-line-ripple {
       @include line-ripple-mixins.active-color($color, $query: $query);
@@ -1135,11 +1095,11 @@ $error-color: error !default;
   }
 }
 
-@mixin _outline-color($color, $query: feature-targeting-functions.all()) {
+@mixin _outline-color($color, $query: feature-targeting.all()) {
   @include notched-outline-mixins.color($color, $query: $query);
 }
 
-@mixin _hover-outline-color($color, $query: feature-targeting-functions.all()) {
+@mixin _hover-outline-color($color, $query: feature-targeting.all()) {
   // stylelint-disable-next-line selector-combinator-space-after
   &:not(.mdc-select--focused) .mdc-select__anchor:hover {
     .mdc-notched-outline {
@@ -1148,10 +1108,7 @@ $error-color: error !default;
   }
 }
 
-@mixin _focused-outline-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
+@mixin _focused-outline-color($color, $query: feature-targeting.all()) {
   @include _if-focused {
     .mdc-notched-outline {
       @include notched-outline-mixins.stroke-width(
@@ -1167,10 +1124,10 @@ $error-color: error !default;
 /// Sets the dropdown icon to the specified color.
 /// @access private
 ///
-@mixin _dropdown-icon-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin _dropdown-icon-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     .mdc-select__dropdown-icon {
       @include theme-mixins.prop(fill, $color);
     }
