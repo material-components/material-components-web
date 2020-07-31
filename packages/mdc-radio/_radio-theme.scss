@@ -54,8 +54,8 @@ $density-config: (
 /// @param {Color} $color - The desired stroke color.
 ///
 @mixin unchecked-stroke-color($color, $query: feature-targeting.all()) {
-  @include if-enabled-unchecked_ {
-    @include stroke-color_($color, $query: $query);
+  @include _if-enabled-unchecked {
+    @include _stroke-color($color, $query: $query);
   }
 }
 
@@ -64,8 +64,8 @@ $density-config: (
 /// @param {Color} $color - The desired stroke color.
 ///
 @mixin checked-stroke-color($color, $query: feature-targeting.all()) {
-  @include if-enabled-checked_ {
-    @include stroke-color_($color, $query: $query);
+  @include _if-enabled-checked {
+    @include _stroke-color($color, $query: $query);
   }
 }
 
@@ -74,8 +74,8 @@ $density-config: (
 /// @param {Color} $color - The desired ink color.
 ///
 @mixin ink-color($color, $query: feature-targeting.all()) {
-  @include if-enabled_ {
-    @include ink-color_($color, $query: $query);
+  @include _if-enabled {
+    @include _ink-color($color, $query: $query);
   }
 }
 
@@ -87,8 +87,8 @@ $density-config: (
   $color,
   $query: feature-targeting.all()
 ) {
-  @include if-disabled-unchecked_ {
-    @include stroke-color_($color, $query: $query);
+  @include _if-disabled-unchecked {
+    @include _stroke-color($color, $query: $query);
   }
 }
 
@@ -98,7 +98,7 @@ $density-config: (
 ///
 @mixin disabled-checked-stroke-color($color, $query: feature-targeting.all()) {
   @include if-disabled-checked_ {
-    @include stroke-color_($color, $query: $query);
+    @include _stroke-color($color, $query: $query);
   }
 }
 
@@ -108,7 +108,7 @@ $density-config: (
 ///
 @mixin disabled-ink-color($color, $query: feature-targeting.all()) {
   @include if-disabled_ {
-    @include ink-color_($color, $query: $query);
+    @include _ink-color($color, $query: $query);
   }
 }
 
@@ -212,7 +212,7 @@ $density-config: (
 /// enabled state.
 /// @access private
 ///
-@mixin if-enabled_ {
+@mixin _if-enabled {
   .mdc-radio__native-control:enabled + {
     @content;
   }
@@ -223,7 +223,7 @@ $density-config: (
 /// enabled & unchecked state.
 /// @access private
 ///
-@mixin if-enabled-unchecked_ {
+@mixin _if-enabled-unchecked {
   .mdc-radio__native-control:enabled:not(:checked) + {
     @content;
   }
@@ -234,7 +234,7 @@ $density-config: (
 /// enabled & checked state.
 /// @access private
 ///
-@mixin if-enabled-checked_ {
+@mixin _if-enabled-checked {
   .mdc-radio__native-control:enabled:checked + {
     @content;
   }
@@ -259,7 +259,7 @@ $density-config: (
 /// disabled & unchecked state.
 /// @access private
 ///
-@mixin if-disabled-unchecked_ {
+@mixin _if-disabled-unchecked {
   [aria-disabled='true'] .mdc-radio__native-control,
   .mdc-radio__native-control:disabled {
     &:not(:checked) + {
@@ -284,10 +284,10 @@ $density-config: (
 
 ///
 /// Sets the ink color for radio. This is wrapped in a mixin
-/// that qualifies state such as `mdc-radio-if-enabled_`
+/// that qualifies state such as `_if-enabled`
 /// @access private
 ///
-@mixin ink-color_($color, $query: feature-targeting.all()) {
+@mixin _ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-radio__background .mdc-radio__inner-circle {
@@ -299,10 +299,10 @@ $density-config: (
 
 ///
 /// Sets the stroke color for radio. This is wrapped in a mixin
-/// that qualifies state such as `mdc-radio-if-enabled_`
+/// that qualifies state such as `_if-enabled`
 /// @access private
 ///
-@mixin stroke-color_($color, $query: feature-targeting.all()) {
+@mixin _stroke-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-radio__background .mdc-radio__outer-circle {
