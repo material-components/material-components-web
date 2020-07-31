@@ -22,6 +22,7 @@
  */
 
 import autoInit from '@material/auto-init/index';
+import * as banner from '@material/banner/index';
 import * as base from '@material/base/index';
 import * as checkbox from '@material/checkbox/index';
 import * as chips from '@material/chips/index';
@@ -54,6 +55,7 @@ import * as tooltip from '@material/tooltip/index';
 import * as topAppBar from '@material/top-app-bar/index';
 
 // Register all components
+autoInit.register('MDCBanner', banner.MDCBanner);
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCChip', chips.MDCChip);
 autoInit.register('MDCChipSet', chips.MDCChipSet);
@@ -84,6 +86,7 @@ autoInit.register('MDCTopAppBar', topAppBar.MDCTopAppBar);
 // Export all components.
 export {
   autoInit,
+  banner,
   base,
   checkbox,
   chips,
