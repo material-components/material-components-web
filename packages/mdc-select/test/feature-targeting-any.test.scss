@@ -1,7 +1,7 @@
-@use "../mixins" as select;
-@use "../helper-text/mixins" as helper-text;
-@use "../icon/mixins" as icon;
-@use "@material/feature-targeting/functions" as feature;
+@use '../mixins' as select;
+@use '../helper-text/mixins' as helper-text;
+@use '../icon/mixins' as icon;
+@use '@material/feature-targeting/functions' as feature;
 
 @mixin test($query) {
   .test {
