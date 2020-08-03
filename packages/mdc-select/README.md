@@ -485,7 +485,6 @@ structure.
 | `mdc-select--activated` | Optional. Styles the activated state of select. This class will be added automatically when menu is opened.
 | `mdc-select--disabled` | Optional. Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
 | `mdc-select--outlined` | Optional. Styles the select as outlined select. |
-| `mdc-select--fullwidth` | Optional. Styles the select as fullwidth select. |
 | `mdc-select--with-leading-icon` | Styles the select as a select with a leading icon. |
 | `mdc-select--no-label` | Styles the select as a select without a label. |
 > _NOTE_: To further customize the [MDCMenu](./../mdc-menu) or the [MDCList](./../mdc-list) component contained within the select, please refer to their respective documentation.
