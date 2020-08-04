@@ -7,4 +7,4 @@
 @forward "@material/ripple" as mdc-ripple-* hide $mdc-ripple-states-wash-duration, mdc-ripple-states-base-color, mdc-ripple-states-opacities, mdc-ripple-states-hover-opacity, mdc-ripple-states-focus-opacity, mdc-ripple-states-focus-opacity-properties-, mdc-ripple-states-press-opacity, mdc-ripple-states, mdc-ripple-states-activated, mdc-ripple-states-selected, mdc-ripple-states-interactions-, mdc-ripple-states-opacity, mdc-ripple-states-opacities-;
 @forward "@material/touch-target" as mdc-touch-target-* hide mdc-touch-target-touch-target;
 @forward "@material/touch-target" as mdc-* hide mdc-margin, mdc-wrapper;
-@forward "./index" as mdc-radio-*;
+@forward "./radio-all-deprecated" as mdc-radio-*;
