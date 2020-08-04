@@ -92,13 +92,6 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
   }
 
   /**
-   * Makes the helper text visible to screen readers.
-   */
-  showToScreenReader() {
-    this.adapter.removeAttr(strings.ARIA_HIDDEN);
-  }
-
-  /**
    * When acting as a validation message, shows/hides the helper text and
    * triggers alerts as necessary based on the select's validity.
    */
@@ -134,6 +127,13 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
     // Hide everything.
     this.adapter.removeAttr(strings.ROLE);
     this.hide();
+  }
+
+  /**
+   * Makes the helper text visible to screen readers.
+   */
+  private showToScreenReader() {
+    this.adapter.removeAttr(strings.ARIA_HIDDEN);
   }
 
   /**

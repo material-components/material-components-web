@@ -83,12 +83,6 @@ describe('MDCSelectHelperTextFoundation', () => {
         .toHaveBeenCalledWith(cssClasses.HELPER_TEXT_VALIDATION_MSG);
   });
 
-  it('#showToScreenReader removes aria-hidden from helperText', () => {
-    const {foundation, mockAdapter} = setupTest();
-    foundation.showToScreenReader();
-    expect(mockAdapter.removeAttr).toHaveBeenCalledWith('aria-hidden');
-  });
-
   it('#setValidity adds role="alert" to helper text if input is invalid and' +
          'helper text is being used as a validation message',
      () => {

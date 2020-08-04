@@ -138,5 +138,4 @@ Method Signature | Description
 `setContent(content: string) => void` | Sets the content of the helper text.
 `setValidation(isValidation: boolean) => void` | Sets the helper text as a validation message. By default, validation messages are hidden when the select is valid and visible when the select is invalid.
 `setValidationMsgPersistent(isPersistent: boolean) => void` | This keeps the validation message visible even if the select is valid, though it will be displayed in the normal (grey) color.
-`showToScreenReader() => void` | Makes the helper text visible to the screen reader.
 `setValidity(inputIsValid: boolean) => void` | Sets the validity of the helper text based on the input validity.
