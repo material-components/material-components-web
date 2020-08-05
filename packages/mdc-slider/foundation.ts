@@ -42,6 +42,10 @@ const HAS_WINDOW = typeof window !== 'undefined';
 export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   static SUPPORTS_POINTER_EVENTS = HAS_WINDOW && Boolean(window.PointerEvent);
 
+  // Whether the initial styles (to position the thumb, before component
+  // initialization) have been removed.
+  private initialStylesRemoved = false;
+
   private min!: number;       // Assigned in init()
   private max!: number;       // Assigned in init()
   // If `isRange`, this is the value of Thumb.START. Otherwise, defaults to min.
@@ -125,6 +129,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
           ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
       isRTL: () => false,
       setThumbStyleProperty: () => undefined,
+      removeThumbStyleProperty: () => undefined,
       setTrackActiveStyleProperty: () => undefined,
       setValueIndicatorText: () => undefined,
       updateTickMarks: () => undefined,
@@ -685,6 +690,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     const {max, min} = this;
     const pctComplete = (this.value - this.valueStart) / (max - min);
     const rangePx = pctComplete * this.rect.width;
+    const isRtl = this.adapter.isRTL();
 
     const transformProp =
         HAS_WINDOW ? getCorrectPropertyName(window, 'transform') : 'transform';
@@ -697,9 +703,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       requestAnimationFrame(() => {
         // Set active track styles, accounting for animation direction by
         // setting `transform-origin`.
-        const trackAnimatesFromRight =
-            (!this.adapter.isRTL() && thumb === Thumb.START) ||
-            (this.adapter.isRTL() && thumb !== Thumb.START);
+        const trackAnimatesFromRight = (!isRtl && thumb === Thumb.START) ||
+            (isRtl && thumb !== Thumb.START);
         if (trackAnimatesFromRight) {
           this.adapter.setTrackActiveStyleProperty('transform-origin', 'right');
           this.adapter.setTrackActiveStyleProperty('left', 'unset');
@@ -714,8 +719,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
             transformProp, `scaleX(${pctComplete})`);
 
         // Set thumb styles.
-        const thumbStartPos =
-            this.adapter.isRTL() ? thumbRightPos : thumbLeftPos;
+        const thumbStartPos = isRtl ? thumbRightPos : thumbLeftPos;
         const thumbEndPos = this.adapter.isRTL() ? thumbLeftPos : thumbRightPos;
         if (thumb === Thumb.START || !thumb) {
           this.adapter.setThumbStyleProperty(
@@ -726,21 +730,43 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
               transformProp, `translateX(${thumbEndPos}px)`, Thumb.END);
         }
 
+        this.removeInitialStyles(isRtl);
         this.updateOverlappingThumbsUI(thumbStartPos, thumbEndPos, thumb);
         this.focusThumbIfDragging(thumb);
       });
     } else {
       requestAnimationFrame(() => {
-        const thumbStartPos =
-            this.adapter.isRTL() ? this.rect.width - rangePx : rangePx;
+        const thumbStartPos = isRtl ? this.rect.width - rangePx : rangePx;
         this.adapter.setThumbStyleProperty(
             transformProp, `translateX(${thumbStartPos}px)`, Thumb.END);
         this.adapter.setTrackActiveStyleProperty(
             transformProp, `scaleX(${pctComplete})`);
 
+        this.removeInitialStyles(isRtl);
         this.focusThumbIfDragging(thumb);
       });
     }
+  }
+
+  /**
+   * Removes initial inline styles if not already removed. `left:<...>%`
+   * inline styles can be added to position the thumb correctly before JS
+   * initialization. However, they need to be removed before the JS starts
+   * positioning the thumb. This is because the JS uses
+   * `transform:translateX(<...>)px` (for performance reasons) to position
+   * the thumb (which is not possible for initial styles since we need the
+   * bounding rect measurements).
+   */
+  private removeInitialStyles(isRtl: boolean) {
+    if (this.initialStylesRemoved) return;
+
+    const position = isRtl ? 'right' : 'left';
+    this.adapter.removeThumbStyleProperty(position, Thumb.END);
+    if (this.isRange) {
+      this.adapter.removeThumbStyleProperty(position, Thumb.START);
+    }
+
+    this.initialStylesRemoved = true;
   }
 
   /**

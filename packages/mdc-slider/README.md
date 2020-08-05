@@ -249,6 +249,51 @@ as shown below:
 </div>
 ```
 
+### Setting slider position before component initialization
+
+When `MDCSlider` is initialized, it updates the slider track and thumb
+positions based on the internal value(s). To set the correct track and thumb
+positions before component initialization, mark up the DOM as follows:
+
+- Calculate `rangePercentDecimal`, the active track range as a percentage of
+  the entire track, i.e. `(valueEnd - valueStart) / (max - min)`.
+  Set `transform:scaleX(<rangePercentDecimal>)` as an inline style on the
+  `mdc-slider__track--active_fill` element.
+- Calculate `thumbEndPercent`, the initial position of the end thumb as a
+  percentage of the entire track. Set `left:calc(<thumbEndPercent>% - 24px)`
+  as an inline style on the end thumb (`mdc-slider__thumb`) element
+  (or `right` for RTL layouts).
+- *[Range sliders only]* Calculate `thumbStartPercent`, the initial position
+  of the start thumb as a percentage of the entire track. Set
+  `left:calc(<thumbStartPercent>% - 24px` as an inline style on the
+  start thumb (`mdc-slider__thumb`) element (or `right` for RTL layouts).
+- *[Range sliders only]* Using the previously calculated `thumbStartPercent`,
+  set `left:<thumbStartPercent>%` as an inline style on the
+  `mdc-slider__track--active_fill` element (or `right` for RTL layouts).
+
+#### Range slider example
+
+This is an example of a range slider with internal values of
+`[min, max] = [0, 100]` and `[start, end] = [30, 70]`.
+
+```html
+<div class="mdc-slider mdc-slider--range">
+  <div class="mdc-slider__track">
+    <div class="mdc-slider__track--active">
+      <div class="mdc-slider__track--active_fill"
+           style="transform:scaleX(.4); left:30%"></div>
+    </div>
+    <div class="mdc-slider__track--inactive"></div>
+  </div>
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" style="left:calc(30%-24px)">
+    <div class="mdc-slider__thumb-knob"></div>
+  </div>
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70" style="left:calc(70%-24px)">
+    <div class="mdc-slider__thumb-knob"></div>
+  </div>
+</div>
+```
+
 ## API
 
 ### Sass mixins

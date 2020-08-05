@@ -150,6 +150,31 @@ describe('MDCSliderFoundation', () => {
     });
   });
 
+  describe('removing initial thumb styles', () => {
+    it('initial layout removes thumb styles, and subsequent layouts ' +
+           'do not',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({isRange: true});
+         expect(mockAdapter.removeThumbStyleProperty)
+             .toHaveBeenCalledWith('left', Thumb.END);
+         expect(mockAdapter.removeThumbStyleProperty)
+             .toHaveBeenCalledWith('left', Thumb.START);
+
+         mockAdapter.removeThumbStyleProperty.calls.reset();
+         foundation.layout();
+         jasmine.clock().tick(1);
+         expect(mockAdapter.removeThumbStyleProperty).not.toHaveBeenCalled();
+       });
+
+    it('RTL: initial layout removes thumb styles', () => {
+      const {mockAdapter} = setUpAndInit({isRange: true, isRTL: true});
+      expect(mockAdapter.removeThumbStyleProperty)
+          .toHaveBeenCalledWith('right', Thumb.END);
+      expect(mockAdapter.removeThumbStyleProperty)
+          .toHaveBeenCalledWith('right', Thumb.START);
+    });
+  });
+
   describe('#destroy', () => {
     it('Pointer events: Event listeners are deregistered when foundation is ' +
            'destroyed.',
