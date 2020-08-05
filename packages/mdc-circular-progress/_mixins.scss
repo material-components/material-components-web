@@ -48,7 +48,7 @@
 
   .mdc-circular-progress {
     @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
+      display: inline-flex;
       position: relative;
       /* @noflip */
       direction: ltr;
