@@ -35,7 +35,8 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
       'addClass',
       'removeClass',
       'hasClass',
-      'notifySelectedChange'
+      'notifySelectedChange',
+      'getRootBoundingClientRect'
     ]);
   });
 

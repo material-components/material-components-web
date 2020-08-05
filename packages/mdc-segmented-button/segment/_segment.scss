@@ -23,26 +23,19 @@
 // Core: Define complete styles to render component segment, including base and theme styles
 
 @use '@material/feature-targeting';
-@use '@material/typography/mixins' as typography-mixins;
-@use "@material/touch-target/mixins" as touch-target-mixins;
-@use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/ripple/mixins" as ripple-mixins;
+@use '@material/typography/typography';
+@use '@material/touch-target/touch-target';
+@use '@material/elevation/elevation';
+@use '@material/elevation/elevation-theme';
 @use './segment-theme';
-
-$ripple-target: '.mdc-segmented-button__ripple';
-
-@mixin core-styles($query: feature-targeting.all()) {
-  @include without-ripple($query);
-  @include ripple($query);
-}
 
 @mixin without-ripple($query: feature-targeting.all()) {
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include touch-target-mixins.wrapper($query);
-  @include elevation-mixins.overlay-common($query);
+  @include touch-target.wrapper($query);
+  @include elevation.overlay-common($query);
 
   .mdc-segmented-button__segment {
     @include base($query);
@@ -76,13 +69,13 @@ $ripple-target: '.mdc-segmented-button__ripple';
       }
     }
 
-    .mdc-segmented-button__touch {
-      @include touch-target-mixins.touch-target($query: $query);
+    .mdc-segmented-button__segment__touch {
+      @include touch-target.touch-target($query: $query);
     }
 
-    .mdc-segmented-button--touch {
-      @include touch-target-mixins.margin(
-        $component-height: 32px,
+    .mdc-segmented-button__segment--touch {
+      @include touch-target.margin(
+        $component-height: segment-theme.$touch-target-height,
         $query: $query
       );
     }
@@ -126,43 +119,13 @@ $ripple-target: '.mdc-segmented-button__ripple';
   }
 }
 
-@mixin ripple($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include ripple-mixins.common($query);
-
-  .mdc-segmented-button__segment {
-    @include ripple-mixins.surface(
-      $query: $query,
-      $ripple-target: $ripple-target
-    );
-    @include ripple-mixins.radius-bounded(
-      $query: $query,
-      $ripple-target: $ripple-target
-    );
-    @include ripple-mixins.states(
-      segment-theme.$selected-ink-color,
-      true,
-      $query: $query,
-      $ripple-target: $ripple-target
-    );
-    @include feature-targeting.targets($feat-structure) {
-      overflow: hidden;
-    }
-
-    #{$ripple-target} {
-      @include ripple-mixins.target-common($query: $query);
-    }
-  }
-}
-
 @mixin base($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   // elevation mixins contain ripple effect to segment boundaries
-  @include elevation-mixins.overlay-surface-position($query: $query);
-  @include elevation-mixins.overlay-dimensions(100%, $query: $query);
-  @include typography-mixins.typography(button, $query);
+  @include elevation-theme.overlay-surface-position($query: $query);
+  @include elevation-theme.overlay-dimensions(100%, $query: $query);
+  @include typography.typography(button, $query);
   @include segment-theme.outline-color(segment-theme.$outline-color, $query);
   @include feature-targeting.targets($feat-structure) {
     display: inline-flex;
