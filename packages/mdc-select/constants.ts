@@ -35,6 +35,7 @@ const cssClasses = {
 
 const strings = {
   ARIA_CONTROLS: 'aria-controls',
+  ARIA_DESCRIBEDBY: 'aria-describedby',
   ARIA_SELECTED_ATTR: 'aria-selected',
   CHANGE_EVENT: 'MDCSelect:change',
   LABEL_SELECTOR: '.mdc-floating-label',

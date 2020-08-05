@@ -44,6 +44,7 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
       removeClass: () => undefined,
       hasClass: () => false,
       setAttr: () => undefined,
+      getAttr: () => null,
       removeAttr: () => undefined,
       setContent: () => undefined,
     };
@@ -52,6 +53,20 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
 
   constructor(adapter?: Partial<MDCSelectHelperTextAdapter>) {
     super({...MDCSelectHelperTextFoundation.defaultAdapter, ...adapter});
+  }
+
+  /**
+   * @return The ID of the helper text, or null if none is set.
+   */
+  getId(): string|null {
+    return this.adapter.getAttr('id');
+  }
+
+  /**
+   * @return Whether the helper text is currently visible.
+   */
+  isVisible(): boolean {
+    return this.adapter.getAttr(strings.ARIA_HIDDEN) !== 'true';
   }
 
   /**

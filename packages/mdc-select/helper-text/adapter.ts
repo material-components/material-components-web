@@ -55,6 +55,11 @@ export interface MDCSelectHelperTextAdapter {
   removeAttr(attr: string): void;
 
   /**
+   * Gets an attribute from the helper text element.
+   */
+  getAttr(attr: string): string|null;
+
+  /**
    * Sets the text content for the helper text element.
    */
   setContent(content: string): void;

@@ -87,10 +87,11 @@ describe('MDCSelectFoundation', () => {
       'deregisterInteractionHandler', 'handleInteraction'
     ]);
     const helperText = jasmine.createSpyObj('helperText', [
+      'getId',
+      'isVisible',
       'setContent',
-      'setPersistent',
+      'setValidationMsgPersistent',
       'setValidation',
-      'showToScreenReader',
       'setValidity',
     ]);
     const foundationMap = {
@@ -367,7 +368,8 @@ describe('MDCSelectFoundation', () => {
        foundation.init();
        foundation.handleBlur();
        expect(helperText.setValidity).toHaveBeenCalledWith(true);
-       expect(helperText.setValidity).toHaveBeenCalledTimes(1);
+       // once during init, once during blur
+       expect(helperText.setValidity).toHaveBeenCalledTimes(2);
      });
 
   it('#openMenu opens the menu', () => {
@@ -794,6 +796,22 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(1);
   });
 
+  it('#setValid true sets aria-describedby if validation helper text is shown',
+     () => {
+       const hasIcon = false;
+       const hasHelperText = true;
+       const {foundation, mockAdapter, helperText} =
+           setupTest(hasIcon, hasHelperText);
+
+       const mockId = 'foobarbazcool';
+       helperText.getId.and.returnValue(mockId);
+       helperText.isVisible.and.returnValue(true);
+
+       foundation.setValid(false);
+       expect(mockAdapter.setSelectAnchorAttr)
+           .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY, mockId);
+     });
+
   it('#setValid true sets aria-invalid to false and removes invalid classes',
      () => {
        const {foundation, mockAdapter} = setupTest();
@@ -814,6 +832,20 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.addMenuClass)
         .toHaveBeenCalledWith(cssClasses.MENU_INVALID);
   });
+
+  it('#setValid false removes aria-describedby if validation helper text is hidden',
+     () => {
+       const hasIcon = false;
+       const hasHelperText = true;
+       const {foundation, mockAdapter, helperText} =
+           setupTest(hasIcon, hasHelperText);
+
+       helperText.isVisible.and.returnValue(false);
+
+       foundation.setValid(true);
+       expect(mockAdapter.removeSelectAnchorAttr)
+           .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY);
+     });
 
   it('#isValid returns false if using default validity check and no index is selected',
      () => {

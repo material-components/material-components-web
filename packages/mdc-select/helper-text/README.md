@@ -49,38 +49,7 @@ the display of the helper text is dependent on the interaction with the MDCSelec
        aria-labelledby="demo-label demo-selected-text"
        aria-controls="my-helper-text"
        aria-describedby="my-helper-text">
-    <span class="mdc-select__ripple"></span>
-    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-    <input type="text" disabled readonly id="demo-selected-text" class="mdc-select__selected-text" value="Vegetables">
-    <i class="mdc-select__dropdown-icon"></i>
-    <span class="mdc-line-ripple"></span>
-  </div>
-
-  <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
-    <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="" role="option">
-        <span class="mdc-list-item__ripple"></span>
-      </li>
-      <li class="mdc-list-item" data-value="grains" role="option">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">
-          Bread, Cereal, Rice, and Pasta
-        </span>
-      </li>
-      <li class="mdc-list-item mdc-list-item--disabled" data-value="vegetables" aria-disabled="true" role="option">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">
-          Vegetables
-        </span>
-      </li>
-      <li class="mdc-list-item" data-value="fruit" role="option">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">
-          Fruit
-        </span>
-      </li>
-    </ul>
-  </div>
+   <!-- rest of main component -->
 </div>
 <p id="my-helper-text" class="mdc-select-helper-text">Helper text</p>
 ```
@@ -135,6 +104,8 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
+`getId() => string|null` | Gets the ID of the helper text.
+`isVisible() => boolean` | Returns whether the helper text is visible.
 `setContent(content: string) => void` | Sets the content of the helper text.
 `setValidation(isValidation: boolean) => void` | Sets the helper text as a validation message. By default, validation messages are hidden when the select is valid and visible when the select is invalid.
 `setValidationMsgPersistent(isPersistent: boolean) => void` | This keeps the validation message visible even if the select is valid, though it will be displayed in the normal (grey) color.

@@ -41,6 +41,7 @@ describe('MDCSelectHelperTextFoundation', () => {
       'addClass',
       'removeClass',
       'hasClass',
+      'getAttr',
       'setAttr',
       'removeAttr',
       'setContent',
@@ -123,6 +124,17 @@ describe('MDCSelectHelperTextFoundation', () => {
        expect(mockAdapter.removeAttr).toHaveBeenCalledWith('role');
      });
 
+  it('#setValidity does not change helper text visibility if it is' +
+         ' not validation message',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const inputIsValid = true;
+       mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
+           .and.returnValue(false);
+       foundation.setValidity(inputIsValid);
+       expect(mockAdapter.setAttr).not.toHaveBeenCalled();
+     });
+
   it('#setValidity does not set aria-hidden="true" on helper text by default',
      () => {
        const {foundation, mockAdapter} = setupTest();
@@ -176,4 +188,19 @@ describe('MDCSelectHelperTextFoundation', () => {
        foundation.setValidity(inputIsValid);
        expect(mockAdapter.setAttr).toHaveBeenCalledWith('aria-hidden', 'true');
      });
+
+  it('#isVisible returns true if aria-hidden is false or unset', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getAttr.withArgs(strings.ARIA_HIDDEN).and.returnValue('false');
+    expect(foundation.isVisible()).toBeTrue();
+
+    mockAdapter.getAttr.withArgs(strings.ARIA_HIDDEN).and.returnValue(null);
+    expect(foundation.isVisible()).toBeTrue();
+  });
+
+  it('#isVisible returns false if aria-hidden is true', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getAttr.withArgs(strings.ARIA_HIDDEN).and.returnValue('true');
+    expect(foundation.isVisible()).toBeFalse();
+  });
 });

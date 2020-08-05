@@ -261,9 +261,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const isRequired = this.adapter.hasClass(cssClasses.REQUIRED);
     if (isRequired && this.useDefaultValidation) {
       this.setValid(this.isValid());
-      if (this.helperText) {
-        this.helperText.setValidity(this.isValid());
-      }
     }
   }
 
@@ -403,6 +400,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       this.adapter.addClass(cssClasses.INVALID);
       this.adapter.addMenuClass(cssClasses.MENU_INVALID);
     }
+
+    this.syncHelperTextValidity(isValid);
   }
 
   isValid() {
@@ -440,6 +439,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter.setMenuWrapFocus(false);
 
     this.setDisabled(this.adapter.hasClass(cssClasses.DISABLED));
+    this.syncHelperTextValidity(!this.adapter.hasClass(cssClasses.INVALID));
     this.layout();
     this.layoutOptions();
   }
@@ -455,9 +455,25 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const isRequired = this.adapter.hasClass(cssClasses.REQUIRED);
     if (isRequired && this.useDefaultValidation) {
       this.setValid(this.isValid());
-      if (this.helperText) {
-        this.helperText.setValidity(this.isValid());
-      }
+    }
+  }
+
+  private syncHelperTextValidity(isValid: boolean) {
+    if (!this.helperText) {
+      return;
+    }
+
+    this.helperText.setValidity(isValid);
+
+    const helperTextVisible = this.helperText.isVisible();
+    const helperTextId = this.helperText.getId();
+
+    if (helperTextVisible && helperTextId) {
+      this.adapter.setSelectAnchorAttr(strings.ARIA_DESCRIBEDBY, helperTextId);
+    } else {
+      // Needed because screenreaders will read labels pointed to by
+      // `aria-describedby` even if they are `aria-hidden`.
+      this.adapter.removeSelectAnchorAttr(strings.ARIA_DESCRIBEDBY);
     }
   }
 }

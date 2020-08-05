@@ -65,11 +65,12 @@ describe('MDCSelectHelperText', () => {
        expect(adapter.hasClass('foo')).toBeFalsy();
      });
 
-  it('#adapter.setAttr adds a given attribute to the element', () => {
-    const {root, adapter} = setupTest();
-    adapter.setAttr('aria-label', 'foo');
-    expect(root.getAttribute('aria-label')).toEqual('foo');
-  });
+  it('#adapter.get/setAttr retrieves/adds a given attribute to the element',
+     () => {
+       const {adapter} = setupTest();
+       adapter.setAttr('aria-label', 'foo');
+       expect(adapter.getAttr('aria-label')).toEqual('foo');
+     });
 
   it('#adapter.removeAttr removes a given attribute from the element', () => {
     const {root, adapter} = setupTest();
