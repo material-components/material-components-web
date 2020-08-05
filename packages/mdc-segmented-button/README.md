@@ -147,8 +147,6 @@ The segment will remain in a visually toggled state while selected. To select th
 
 ### Touch accessibility
 
-`//TODO: update this section if incorrect`
-
 Material Design spec advises that touch targets should be at least 48 x 48 px. To meet this requirement, add the following to your segments:
 
 ```html
