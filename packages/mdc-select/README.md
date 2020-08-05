@@ -64,7 +64,7 @@ The following example applies ARIA attributes that provide the semantic structur
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
-          viewBox="7 10 10 5">
+          viewBox="7 10 10 5" focusable="false">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
             stroke="none"
@@ -165,7 +165,7 @@ same.
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
-          viewBox="7 10 10 5">
+          viewBox="7 10 10 5" focusable="false">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
             stroke="none"
@@ -204,7 +204,7 @@ to set the selected item. The select also needs the text from the selected eleme
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
-          viewBox="7 10 10 5">
+          viewBox="7 10 10 5" focusable="false">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
             stroke="none"
@@ -268,7 +268,7 @@ and set the `aria-required` attribute on the `mdc-select__anchor` element to be 
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
-          viewBox="7 10 10 5">
+          viewBox="7 10 10 5" focusable="false">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
             stroke="none"
@@ -308,7 +308,7 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
-          viewBox="7 10 10 5">
+          viewBox="7 10 10 5" focusable="false">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
             stroke="none"
@@ -395,7 +395,7 @@ structure.
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
-          viewBox="7 10 10 5">
+          viewBox="7 10 10 5" focusable="false">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
             stroke="none"
@@ -448,7 +448,7 @@ structure.
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
-          viewBox="7 10 10 5">
+          viewBox="7 10 10 5" focusable="false">
         <polygon
             class="mdc-select__dropdown-icon-inactive"
             stroke="none"
