@@ -22,7 +22,7 @@
 
 // Core: Define complete styles to render component segment, including base and theme styles
 
-@use '@material/feature-targeting';
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/typography/typography';
 @use '@material/touch-target/touch-target';
 @use '@material/elevation/elevation';

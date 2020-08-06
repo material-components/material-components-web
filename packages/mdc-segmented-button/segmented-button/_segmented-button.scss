@@ -22,7 +22,7 @@
 
 // Core: Define complete styles to render component, including base and theme styles
 
-@use '@material/feature-targeting';
+@use '@material/feature-targeting/feature-targeting';
 @use './segmented-button-theme';
 
 @mixin core-styles($query: feature-targeting.all()) {
