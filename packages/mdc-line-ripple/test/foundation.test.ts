@@ -22,9 +22,8 @@
  */
 
 
-import {MDCLineRippleFoundation} from '../../mdc-line-ripple/foundation';
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {MDCLineRippleFoundation} from '../../mdc-line-ripple/foundation';
 
 const {cssClasses} = MDCLineRippleFoundation;
 
@@ -35,17 +34,6 @@ describe('MDCLineRippleFoundation', () => {
 
   it('exports strings', () => {
     expect('strings' in MDCLineRippleFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCLineRippleFoundation, [
-      'addClass',
-      'removeClass',
-      'hasClass',
-      'setStyle',
-      'registerEventHandler',
-      'deregisterEventHandler',
-    ]);
   });
 
   const setupTest = () => {

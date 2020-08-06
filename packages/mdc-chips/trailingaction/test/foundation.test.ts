@@ -24,7 +24,6 @@
 
 import {KEY} from '@material/dom/keyboard';
 
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {InteractionTrigger, strings} from '../constants';
 import {MDCChipTrailingActionFoundation} from '../foundation';
@@ -34,16 +33,6 @@ describe('MDCChipTrailingActionFoundation', () => {
 
   it('exports strings', () => {
     expect('strings' in MDCChipTrailingActionFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCChipTrailingActionFoundation, [
-      'focus',
-      'getAttribute',
-      'setAttribute',
-      'notifyInteraction',
-      'notifyNavigation',
-    ]);
   });
 
   const setupTest = () => {

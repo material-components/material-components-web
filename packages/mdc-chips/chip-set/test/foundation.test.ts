@@ -22,10 +22,9 @@
  */
 
 
-import {EventSource, strings} from '../../../mdc-chips/chip/constants';
-import {MDCChipSetFoundation} from '../../../mdc-chips/chip-set/foundation';
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
+import {MDCChipSetFoundation} from '../../../mdc-chips/chip-set/foundation';
+import {EventSource, strings} from '../../../mdc-chips/chip/constants';
 
 const {cssClasses} = MDCChipSetFoundation;
 
@@ -36,21 +35,6 @@ describe('MDCChipSetFoundation', () => {
 
   it('exports cssClasses', () => {
     expect('cssClasses' in MDCChipSetFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCChipSetFoundation, [
-      'hasClass',
-      'removeChipAtIndex',
-      'selectChipAtIndex',
-      'focusChipPrimaryActionAtIndex',
-      'focusChipTrailingActionAtIndex',
-      'getIndexOfChipById',
-      'isRTL',
-      'getChipListCount',
-      'removeFocusFromChipAtIndex',
-      'announceMessage',
-    ]);
   });
 
   const setupTest = () => {
@@ -195,7 +179,7 @@ describe('MDCChipSetFoundation', () => {
      () => {
        const {foundation} = setupTest();
 
-       foundation['selectedChipIds_'] = [];
+       foundation.selectedChipIds_ = [];
        foundation.select = jasmine.createSpy('');
        foundation.handleChipSelection(
            {chipId: 'chipA', selected: true, shouldIgnore: false});
@@ -206,7 +190,7 @@ describe('MDCChipSetFoundation', () => {
      () => {
        const {foundation} = setupTest();
 
-       foundation['selectedChipIds_'] = ['chipA'];
+       foundation.selectedChipIds_ = ['chipA'];
        foundation.select = jasmine.createSpy('');
        foundation.handleChipSelection(
            {chipId: 'chipA', selected: true, shouldIgnore: false});
@@ -217,26 +201,26 @@ describe('MDCChipSetFoundation', () => {
      () => {
        const {foundation} = setupTest();
 
-       foundation['selectedChipIds_'] = ['chipA'];
+       foundation.selectedChipIds_ = ['chipA'];
        foundation.handleChipSelection(
            {chipId: 'chipA', selected: false, shouldIgnore: false});
-       expect(foundation['selectedChipIds_'].length).toEqual(0);
+       expect(foundation.selectedChipIds_.length).toEqual(0);
      });
 
   it('#handleChipSelection does nothing if selected is false and the chip is not selected',
      () => {
        const {foundation} = setupTest();
 
-       foundation['selectedChipIds_'] = ['chipB'];
+       foundation.selectedChipIds_ = ['chipB'];
        foundation.handleChipSelection(
            {chipId: 'chipA', selected: false, shouldIgnore: false});
-       expect(foundation['selectedChipIds_'].length).toEqual(1);
+       expect(foundation.selectedChipIds_.length).toEqual(1);
      });
 
   it('#handleChipSelection does nothing if shouldIgnore is true', () => {
     const {foundation} = setupTest();
 
-    foundation['selectedChipIds_'] = ['chipB'];
+    foundation.selectedChipIds_ = ['chipB'];
     foundation.select = jasmine.createSpy('');
     foundation.handleChipSelection(
         {chipId: 'chipA', selected: true, shouldIgnore: true});
@@ -246,7 +230,7 @@ describe('MDCChipSetFoundation', () => {
   it('#handleChipSelection emits no events', () => {
     const {foundation, mockAdapter} = setupTest();
 
-    foundation['selectedChipIds_'] = [];
+    foundation.selectedChipIds_ = [];
     mockAdapter.getIndexOfChipById.and.returnValue(0);
 
     foundation.handleChipSelection(

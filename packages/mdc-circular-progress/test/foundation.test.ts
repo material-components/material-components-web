@@ -22,9 +22,9 @@
  */
 
 
-import {MDCCircularProgressFoundation} from '../../mdc-circular-progress/foundation';
-import {checkNumTimesSpyCalledWithArgs, verifyDefaultAdapter} from '../../../testing/helpers/foundation';
+import {checkNumTimesSpyCalledWithArgs} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {MDCCircularProgressFoundation} from '../../mdc-circular-progress/foundation';
 
 const {cssClasses, strings} = MDCCircularProgressFoundation;
 
@@ -35,18 +35,6 @@ describe('MDCCircularProgressFoundation', () => {
 
   it('exports cssClasses', () => {
     expect('cssClasses' in MDCCircularProgressFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCCircularProgressFoundation, [
-      'addClass',
-      'getDeterminateCircleAttribute',
-      'hasClass',
-      'removeAttribute',
-      'removeClass',
-      'setAttribute',
-      'setDeterminateCircleAttribute',
-    ]);
   });
 
   const setupTest = () => {

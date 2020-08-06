@@ -22,10 +22,9 @@
  */
 
 
+import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {cssClasses, strings} from '../../mdc-form-field/constants';
 import {MDCFormFieldFoundation} from '../../mdc-form-field/foundation';
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
-import {setUpFoundationTest} from '../../../testing/helpers/setup';
 
 describe('MDCFormFieldFoundation', () => {
   it('exports cssClasses', () => {
@@ -36,15 +35,6 @@ describe('MDCFormFieldFoundation', () => {
   it('exports strings', () => {
     expect('strings' in MDCFormFieldFoundation).toBeTruthy();
     expect(MDCFormFieldFoundation.strings).toEqual(strings);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCFormFieldFoundation, [
-      'registerInteractionHandler',
-      'deregisterInteractionHandler',
-      'activateInputRipple',
-      'deactivateInputRipple',
-    ]);
   });
 
   function setupTest() {

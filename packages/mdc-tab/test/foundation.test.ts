@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {MDCTabFoundation} from '../foundation';
 
@@ -37,23 +36,6 @@ describe('MDCTabFoundation', () => {
 
   it('exports strings', () => {
     expect('strings' in MDCTabFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCTabFoundation, [
-      'addClass',
-      'removeClass',
-      'hasClass',
-      'setAttr',
-      'activateIndicator',
-      'deactivateIndicator',
-      'getOffsetLeft',
-      'getOffsetWidth',
-      'getContentOffsetLeft',
-      'getContentOffsetWidth',
-      'notifyInteracted',
-      'focus',
-    ]);
   });
 
   it('#activate adds mdc-tab--active class to the root element', () => {

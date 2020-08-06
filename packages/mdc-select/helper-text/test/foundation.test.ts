@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {MDCSelectHelperTextFoundation} from '../foundation';
 
@@ -34,17 +33,6 @@ describe('MDCSelectHelperTextFoundation', () => {
 
   it('exports strings', () => {
     expect(MDCSelectHelperTextFoundation.strings).toEqual(strings);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCSelectHelperTextFoundation, [
-      'addClass',
-      'removeClass',
-      'hasClass',
-      'setAttr',
-      'removeAttr',
-      'setContent',
-    ]);
   });
 
   const setupTest =

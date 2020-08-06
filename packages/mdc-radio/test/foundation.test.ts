@@ -38,19 +38,6 @@ describe('MDCRadioFoundation', () => {
     expect('strings' in MDCRadioFoundation).toBeTruthy();
   });
 
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    const {defaultAdapter} = MDCRadioFoundation;
-    const methods = Object.keys(defaultAdapter)
-                        .filter((k) => typeof (defaultAdapter as any)[k] === 'function');
-
-    expect(methods.length).toEqual(Object.keys(defaultAdapter).length);
-    expect(methods).toEqual(
-        ['addClass', 'removeClass', 'setNativeControlDisabled']);
-    methods.forEach((m) => {
-      expect(() => (defaultAdapter as any)[m]).not.toThrow();
-    });
-  });
-
   it('#setDisabled calls adapter.setNativeControlDisabled', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.setDisabled(true);

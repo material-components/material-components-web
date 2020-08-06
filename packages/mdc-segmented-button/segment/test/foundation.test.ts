@@ -21,23 +21,11 @@
  * THE SOFTWARE.
  */
 
-import {MDCSegmentedButtonSegmentFoundation} from '../foundation';
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {cssClasses, strings} from '../constants';
+import {MDCSegmentedButtonSegmentFoundation} from '../foundation';
 
 describe('MDCSegmentedButtonSegmentFoundation', () => {
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCSegmentedButtonSegmentFoundation, [
-      'isSingleSelect',
-      'getAttr',
-      'setAttr',
-      'addClass',
-      'removeClass',
-      'hasClass',
-      'notifySelectedChange'
-    ]);
-  });
 
   const setupTest = (selected: boolean, singleSelect: boolean) => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCSegmentedButtonSegmentFoundation);

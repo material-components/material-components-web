@@ -23,7 +23,6 @@
 
 import 'jasmine';
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {cssClasses, numbers, strings} from '../constants';
 import MDCCheckboxFoundation from '../foundation';
@@ -98,21 +97,6 @@ describe('MDCCheckboxFoundation', () => {
     expect(cssClasses).toEqual(MDCCheckboxFoundation.cssClasses);
     expect(numbers).toEqual(MDCCheckboxFoundation.numbers);
     expect(strings).toEqual(MDCCheckboxFoundation.strings);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCCheckboxFoundation, [
-      'addClass',
-      'removeClass',
-      'setNativeControlAttr',
-      'removeNativeControlAttr',
-      'forceLayout',
-      'isAttachedToDOM',
-      'isIndeterminate',
-      'isChecked',
-      'hasNativeControl',
-      'setNativeControlDisabled',
-    ]);
   });
 
   it('#init adds the upgraded class to the root element', () => {

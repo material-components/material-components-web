@@ -22,9 +22,8 @@
  */
 
 
-import {MDCNotchedOutlineFoundation} from '../../mdc-notched-outline/foundation';
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {MDCNotchedOutlineFoundation} from '../../mdc-notched-outline/foundation';
 
 const {cssClasses, numbers, strings} = MDCNotchedOutlineFoundation;
 
@@ -39,15 +38,6 @@ describe('MDCNotchedOutlineFoundation', () => {
 
   it('exports strings', () => {
     expect(MDCNotchedOutlineFoundation.strings).toEqual(strings);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCNotchedOutlineFoundation, [
-      'addClass',
-      'removeClass',
-      'setNotchWidthProperty',
-      'removeNotchWidthProperty',
-    ]);
   });
 
   const setupTest = () => {

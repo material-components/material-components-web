@@ -22,7 +22,6 @@
  */
 
 
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {MDCTextFieldCharacterCounterFoundation} from '../../../mdc-textfield/character-counter/foundation';
 
@@ -33,12 +32,6 @@ describe('MDCTextFieldCharacterCounterFoundation', () => {
 
   it('exports strings', () => {
     expect(MDCTextFieldCharacterCounterFoundation.strings).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCTextFieldCharacterCounterFoundation, [
-      'setContent',
-    ]);
   });
 
   const setupTest = () => {

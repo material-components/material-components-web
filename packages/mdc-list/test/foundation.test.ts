@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {cssClasses, numbers, strings} from '../constants';
 import {MDCListFoundation} from '../foundation';
@@ -56,28 +55,6 @@ describe('MDCListFoundation', () => {
 
   it('exports numbers', () => {
     expect(MDCListFoundation.numbers).toEqual(numbers);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCListFoundation, [
-      'getListItemCount',
-      'getFocusedElementIndex',
-      'setAttributeForElementIndex',
-      'addClassForElementIndex',
-      'removeClassForElementIndex',
-      'focusItemAtIndex',
-      'setTabIndexForListItemChildren',
-      'hasRadioAtIndex',
-      'hasCheckboxAtIndex',
-      'isCheckboxCheckedAtIndex',
-      'listItemAtIndexHasClass',
-      'setCheckedCheckboxOrRadioAtIndex',
-      'notifyAction',
-      'isFocusInsideList',
-      'getAttributeForElementIndex',
-      'isRootFocused',
-      'getPrimaryTextAtIndex',
-    ]);
   });
 
   // The foundation needs to use a classList object that has a

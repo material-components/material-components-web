@@ -22,9 +22,9 @@
  */
 
 
-import {MDCLinearProgressFoundation} from '../../mdc-linear-progress/foundation';
-import {checkNumTimesSpyCalledWithArgs, verifyDefaultAdapter} from '../../../testing/helpers/foundation';
+import {checkNumTimesSpyCalledWithArgs} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {MDCLinearProgressFoundation} from '../../mdc-linear-progress/foundation';
 
 const {cssClasses, strings} = MDCLinearProgressFoundation;
 
@@ -35,19 +35,6 @@ describe('MDCLinearProgressFoundation', () => {
 
   it('exports cssClasses', () => {
     expect('cssClasses' in MDCLinearProgressFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCLinearProgressFoundation, [
-      'addClass',
-      'forceLayout',
-      'hasClass',
-      'removeAttribute',
-      'removeClass',
-      'setAttribute',
-      'setBufferBarStyle',
-      'setPrimaryBarStyle',
-    ]);
   });
 
   const setupTest = () => {
