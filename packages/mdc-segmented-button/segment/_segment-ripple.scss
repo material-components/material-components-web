@@ -20,19 +20,34 @@
 // THE SOFTWARE.
 //
 
-// Core: Define complete styles to render component, including base and theme styles
-
 @use '@material/feature-targeting/feature-targeting';
-@use './segmented-button-theme';
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use './segment-theme';
 
-@mixin core-styles($query: feature-targeting.all()) {
-  .mdc-segmented-button {
-    $feat-structure: feature-targeting.create-target($query, structure);
+$ripple-target: '.mdc-segmented-button__ripple';
 
+@mixin ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-segmented-button__segment {
+    @include ripple.surface($query: $query, $ripple-target: $ripple-target);
+    @include ripple.radius-bounded(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+    @include ripple-theme.states(
+      segment-theme.$selected-ink-color,
+      true,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
     @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
-      // Removes spacing between segments
-      font-size: 0;
+      overflow: hidden;
+    }
+
+    #{$ripple-target} {
+      @include ripple.target-common($query: $query);
     }
   }
 }

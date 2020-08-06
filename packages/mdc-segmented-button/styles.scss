@@ -24,6 +24,8 @@
 
 @use './segmented-button/segmented-button';
 @use './segment/segment';
+@use './segment/segment-ripple';
 
 @include segmented-button.core-styles();
 @include segment.core-styles();
+@include segment-ripple.ripple();
