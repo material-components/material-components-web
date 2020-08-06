@@ -23,6 +23,7 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:map';
 @use 'sass:math';
 @use '@material/animation/functions' as functions2;
 @use '@material/density/functions' as density-functions;
@@ -31,10 +32,13 @@
 @use '@material/ripple/ripple-theme';
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/theme/theme-color';
+@use './checkbox-custom-properties';
 @use './functions';
 @use './keyframes';
 @use './variables';
 @use '@material/theme/theme';
+@use '@material/theme/color-custom-properties';
+@use '@material/theme/custom-properties';
 @use '@material/touch-target/variables' as touch-target-variables;
 
 //
@@ -316,11 +320,39 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-color: feature-targeting.create-target($query, color);
 
+  // Unhecked colors
+  @if (not custom-properties.is-custom-prop($unmarked-stroke-color)) {
+    $unmarked-stroke-color: custom-properties.create(
+      checkbox-custom-properties.$unchecked-color,
+      theme-color.prop-value($unmarked-stroke-color)
+    );
+  }
+
   @include if-unmarked-enabled_ {
     @include container-colors_(
       $unmarked-stroke-color,
       $unmarked-fill-color,
       $query: $query
+    );
+  }
+
+  // Checked colors
+  @if (not custom-properties.is-custom-prop($marked-stroke-color)) {
+    $marked-stroke-color: custom-properties.create(
+      checkbox-custom-properties.$checked-color,
+      custom-properties.create(
+        color-custom-properties.$secondary,
+        theme-color.prop-value($marked-stroke-color)
+      )
+    );
+  }
+  @if (not custom-properties.is-custom-prop($marked-fill-color)) {
+    $marked-fill-color: custom-properties.create(
+      checkbox-custom-properties.$checked-color,
+      custom-properties.create(
+        color-custom-properties.$secondary,
+        theme-color.prop-value($marked-fill-color)
+      )
     );
   }
 
@@ -390,11 +422,25 @@ $ripple-target: '.mdc-checkbox__ripple';
   $marked-fill-color: variables.$disabled-color,
   $query: feature-targeting.all()
 ) {
+  @if (not custom-properties.is-custom-prop($unmarked-stroke-color)) {
+    $unmarked-stroke-color: custom-properties.create(
+      checkbox-custom-properties.$disabled-color,
+      theme-color.prop-value($unmarked-stroke-color)
+    );
+  }
+
   @include if-unmarked-disabled_ {
     @include container-colors_(
       $unmarked-stroke-color,
       $unmarked-fill-color,
       $query: $query
+    );
+  }
+
+  @if (not custom-properties.is-custom-prop($marked-fill-color)) {
+    $marked-fill-color: custom-properties.create(
+      checkbox-custom-properties.$disabled-color,
+      theme-color.prop-value($marked-fill-color)
     );
   }
 
@@ -412,6 +458,13 @@ $ripple-target: '.mdc-checkbox__ripple';
 /// @param {Color} $color - The desired ink color in enabled state
 ///
 @mixin ink-color($color, $query: feature-targeting.all()) {
+  @if (not custom-properties.is-custom-prop($color)) {
+    $color: custom-properties.create(
+      checkbox-custom-properties.$ink-color,
+      $color
+    );
+  }
+
   @include if-enabled_ {
     @include ink-color_($color, $query: $query);
   }
@@ -422,7 +475,12 @@ $ripple-target: '.mdc-checkbox__ripple';
 /// @param {Color} $color - The desired ink color in disabled state
 ///
 @mixin disabled-ink-color($color, $query: feature-targeting.all()) {
-  $feat-color: feature-targeting.create-target($query, color);
+  @if (not custom-properties.is-custom-prop($color)) {
+    $color: custom-properties.create(
+      checkbox-custom-properties.$ink-color,
+      $color
+    );
+  }
 
   @include if-disabled_ {
     @include ink-color_($color, $query: $query);
@@ -736,8 +794,8 @@ $ripple-target: '.mdc-checkbox__ripple';
 
   .mdc-checkbox__background {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(border-color, $stroke-color);
-      @include theme.prop(background-color, $fill-color);
+      @include theme.property(border-color, $stroke-color);
+      @include theme.property(background-color, $fill-color);
     }
   }
 }
