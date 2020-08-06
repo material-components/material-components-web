@@ -29,7 +29,7 @@
 @use '@material/elevation/elevation-theme';
 @use './segment-theme';
 
-@mixin without-ripple($query: feature-targeting.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);

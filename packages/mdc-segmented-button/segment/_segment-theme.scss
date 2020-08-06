@@ -25,6 +25,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme-color';
 @use '@material/theme/custom-properties';
+@use '@material/theme/theme';
 
 $on-surface: theme-color.$on-surface;
 $surface: theme-color.$surface;
@@ -57,7 +58,7 @@ $touch-target-height: 48px;
 
   .mdc-segmented-button__segment {
     @include feature-targeting.targets($feat-color) {
-      @include custom-properties.apply('border-color', $property);
+      @include theme.property('border-color', $property);
     }
   }
 }
@@ -119,7 +120,7 @@ $touch-target-height: 48px;
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include custom-properties.apply('color', $property);
+    @include theme.property('color', $property);
   }
 }
 
@@ -129,6 +130,6 @@ $touch-target-height: 48px;
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include custom-properties.apply('background-color', $property);
+    @include theme.property('background-color', $property);
   }
 }

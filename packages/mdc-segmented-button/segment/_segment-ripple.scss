@@ -30,8 +30,6 @@ $ripple-target: '.mdc-segmented-button__ripple';
 @mixin ripple($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include ripple.common($query);
-
   .mdc-segmented-button__segment {
     @include ripple.surface($query: $query, $ripple-target: $ripple-target);
     @include ripple.radius-bounded(
