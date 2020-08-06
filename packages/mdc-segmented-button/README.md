@@ -160,7 +160,14 @@ Material Design spec advises that touch targets should be at least 48 x 48 px. T
 
 ### Ripple
 
-To include ripple effects when a segment is clicked, add the following to the segment:
+To include ripple effects when a segment is clicked, add the following:
+
+```scss
+@use '@material/ripple/ripple';
+@include ripple.common();
+```
+
+and add the following classes to the segment:
 
 ```html
 <button class="mdc-segmented-button__segment">
