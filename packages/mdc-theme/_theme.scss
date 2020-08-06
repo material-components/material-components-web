@@ -25,6 +25,7 @@
 
 @use 'sass:map';
 @use '@material/feature-targeting/feature-targeting';
+@use './css';
 @use './custom-properties';
 @use './gss';
 @use './theme-color';
@@ -80,8 +81,6 @@
 /// @param {Bool} $important - set to true to add an `!important` rule. Defaults
 ///     to false.
 @mixin property($property, $value, $gss: (), $important: false) {
-  $important-rule: if($important, '!important', '');
-
   @if custom-properties.is-custom-prop($value) {
     // $value is a custom property Map
     @include custom-properties.apply(
@@ -102,8 +101,12 @@
     );
   } @else {
     // $value is a standard CSS value
-    @include gss.annotate($gss);
-    #{$property}: $value #{$important-rule};
+    @include css.declaration(
+      $property,
+      $value,
+      $gss: $gss,
+      $important: $important
+    );
   }
 }
 
@@ -112,21 +115,22 @@
 // $style should be one of the map keys in $mdc-theme-property-values (_variables.scss), or a color value.
 // @deprecated use the `property()` mixin instead
 @mixin prop($property, $style, $important: false) {
-  $important-rule: if($important, '!important', '');
-
   @if custom-properties.is-custom-prop($style) {
     @include custom-properties.apply($property, $style, $important: $important);
   } @else if theme-color.is-valid-theme-prop-value_($style) {
-    #{$property}: $style #{$important-rule};
+    @include css.declaration($property, $style, $important: $important);
   } @else {
     @if not map.has-key(theme-color.$property-values, $style) {
       @error "Invalid style: '#{$style}'. Choose one of: #{map.keys(theme-color.$property-values)}";
     }
     $value: map.get(theme-color.$property-values, $style);
 
-    #{$property}: $value #{$important-rule};
-    /* @alternate */
-    #{$property}: var(--mdc-theme-#{$style}, $value) #{$important-rule};
+    @include css.declaration(
+      $property,
+      $value: var(--mdc-theme-#{$style}, $value),
+      $fallback-value: $value,
+      $important: $important
+    );
   }
 }
 
