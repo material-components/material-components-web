@@ -22,6 +22,7 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/state';
 @use '@material/theme/variables' as theme-variables;
 
 $helper-text-color: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
@@ -30,30 +31,38 @@ $disabled-helper-text-color: rgba(
   0.38
 ) !default;
 
-@mixin helper-text-color($color, $query: feature-targeting.all()) {
+@mixin helper-text-color($color-or-map, $query: feature-targeting.all()) {
   &:not(.mdc-select--disabled) {
-    @include _helper-text-color($color, $query: $query);
+    @include _helper-text-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
   }
-}
 
-@mixin disabled-helper-text-color($color, $query: feature-targeting.all()) {
   &.mdc-select--disabled {
-    @include _helper-text-color($color, $query: $query);
+    @include _helper-text-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
   }
 }
 
-@mixin helper-text-validation-color($color, $query: feature-targeting.all()) {
-  &:not(.mdc-select--disabled) {
-    @include _helper-text-validation-color($color, $query: $query);
-  }
-}
-
-@mixin hover-helper-text-validation-color(
-  $color,
+@mixin helper-text-validation-color(
+  $color-or-map,
   $query: feature-targeting.all()
 ) {
-  &:not(.mdc-select--disabled):not(.mdc-select--focused):hover {
-    @include _helper-text-validation-color($color, $query: $query);
+  &:not(.mdc-select--disabled) {
+    @include _helper-text-validation-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    &:not(.mdc-select--focused):hover {
+      @include _helper-text-validation-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
   }
 }
 
@@ -62,9 +71,11 @@ $disabled-helper-text-color: rgba(
 @mixin _helper-text-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  & + .mdc-select-helper-text {
-    @include feature-targeting.targets($feat-color) {
-      @include theme-mixins.prop(color, $color);
+  @if $color {
+    & + .mdc-select-helper-text {
+      @include feature-targeting.targets($feat-color) {
+        @include theme-mixins.property(color, $color);
+      }
     }
   }
 }
@@ -72,9 +83,11 @@ $disabled-helper-text-color: rgba(
 @mixin _helper-text-validation-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  &.mdc-select--invalid + .mdc-select-helper-text--validation-msg {
-    @include feature-targeting.targets($feat-color) {
-      @include theme-mixins.prop(color, $color);
+  @if $color {
+    &.mdc-select--invalid + .mdc-select-helper-text--validation-msg {
+      @include feature-targeting.targets($feat-color) {
+        @include theme-mixins.property(color, $color);
+      }
     }
   }
 }

@@ -495,28 +495,14 @@ Mixins should be included in the context of a custom class applied to the compon
 
 Mixin | Description
 --- | ---
-`ink-color($color)` | Customizes the color of the selected item displayed in the select.
-`container-fill-color($color)` | Customizes the background color of the select.
-`disabled-container-fill-color($color)` | Customizes the background color of the select when disabled.
-`dropdown-icon-color($color)` | Customizes the dropdown icon color of the select.
-`hover-dropdown-icon-color($color)` | Customizes the dropdown icon color of the select when hovered.
-`focused-dropdown-icon-color($color)` | Customizes the dropdown icon color of the select when focused.
-`disabled-dropdown-icon-color($color)` | Customizes the dropdown icon color of the select when disabled.
-`label-color($color)` | Customizes the label color of the select in the unfocused state.
-`hover-label-color($color)` | Customizes the label color of the select when hovered.
-`focused-label-color($color)` | Customizes the label color of the select when focused.
-`label-floating-color($color)` | Customizes the label color of the select when the label is floated, but the select is not necessarily focused.
-`hover-label-floating-color($color)` | Customizes the label color of the select when hovered and label is floated.
-`disabled-label-color($color)` | Customizes the label color of the select when disabled.
-`bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
-`hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
-`focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
-`disabled-bottom-line-color($color)` | Customizes the color of the bottom line when the select is disabled.
+`ink-color($state)` | Customizes the color of the selected item displayed in the select. Accepts a Map for `default` and `disabled` states.
+`container-fill-color($state)` | Customizes the background color of the select. Accepts a Map for `default` and `disabled` states.
+`dropdown-icon-color($state)` | Customizes the dropdown icon color of the select. Accepts a Map for `default`, `hover`, `focus`, and `disabled` states.
+`label-color($state)` | Customizes the label color of the select. Accepts a Map for `default`, `hover`, `focus`, and `disabled` states.
+`label-floating-color($state)` | Customizes the label color of the select when the label is floating. Accepts a Map for `default` and `hover` states.
+`bottom-line-color($state)` | Customizes the color of the bottom line of the select. Accepts a Map for `default`, `hover`, `focus`, and `disabled` states.
 `filled-shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets rounded shape to filled select variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`outline-color($color)` | Customizes the color of the notched outline.
-`focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
-`hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
-`disabled-outline-color($color)` | Customizes the color of the notched outline when the select is disabled.
+`outline-color($state)` | Customizes the color of the notched outline. Accepts a Map for `default`, `hover`, `focus`, and `disabled` states.
 `outline-shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets the border radius of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `filled-density($density-scale)` | Sets density scale for the filled select variant (Excluding filled select with leading icon).
 `filled-with-leading-icon-density($density-scale)` | Sets density scale for filled select with leading icon.

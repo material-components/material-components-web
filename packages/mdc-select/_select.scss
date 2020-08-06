@@ -45,66 +45,66 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select {
-    @include select-theme.ink-color(select-theme.$ink-color, $query: $query);
-    @include select-theme.disabled-ink-color(
-      select-theme.$disabled-ink-color,
+    @include select-theme.ink-color(
+      (
+        default: select-theme.$ink-color,
+        disabled: select-theme.$disabled-ink-color,
+      ),
       $query: $query
     );
 
     @include select-theme.label-color(
-      select-theme.$label-color,
-      $query: $query
-    );
-    @include select-theme.focused-label-color(
-      select-theme.$focused-label-color,
-      $query: $query
-    );
-    @include select-theme.disabled-label-color(
-      select-theme.$disabled-label-color,
+      (
+        default: select-theme.$label-color,
+        focus: select-theme.$focused-label-color,
+        disabled: select-theme.$disabled-label-color,
+      ),
       $query: $query
     );
 
     @include select-theme.dropdown-icon-color(
-      select-theme.$dropdown-icon-color,
-      $query: $query
-    );
-    @include select-theme.focused-dropdown-icon-color(primary, $query: $query);
-    @include select-theme.disabled-dropdown-icon-color(
-      select-theme.$disabled-dropdown-icon-color,
+      (
+        default: select-theme.$dropdown-icon-color,
+        focus: primary,
+        disabled: select-theme.$disabled-dropdown-icon-color,
+      ),
       $query: $query
     );
 
     @include select-helper-text-theme.helper-text-color(
-      select-helper-text-theme.$helper-text-color,
-      $query: $query
-    );
-    @include select-helper-text-theme.disabled-helper-text-color(
-      select-helper-text-theme.$disabled-helper-text-color,
+      (
+        default: select-helper-text-theme.$helper-text-color,
+        disabled: select-helper-text-theme.$disabled-helper-text-color,
+      ),
       $query: $query
     );
 
     @include select-icon-theme.icon-color(
-      select-icon-theme.$icon-color,
-      $query: $query
-    );
-    @include select-icon-theme.disabled-icon-color(
-      select-icon-theme.$disabled-icon-color,
+      (
+        default: select-icon-theme.$icon-color,
+        disabled: select-icon-theme.$disabled-icon-color,
+      ),
       $query: $query
     );
 
     // High-contrast mode support
     @include dom-mixins.ie-high-contrast-mode() {
-      @include select-theme.disabled-ink-color(GrayText, $query: $query);
-      @include select-theme.disabled-dropdown-icon-color(red, $query: $query);
-      @include select-theme.disabled-label-color(GrayText, $query: $query);
-      @include select-theme.disabled-bottom-line-color(
-        GrayText,
+      $gray-text: (
+        disabled: GrayText,
+      );
+      @include select-theme.ink-color($gray-text, $query: $query);
+      @include select-theme.dropdown-icon-color(
+        (
+          disabled: red,
+        ),
         $query: $query
       );
-      @include select-theme.disabled-outline-color(GrayText, $query: $query);
-      @include select-icon-theme.disabled-icon-color(GrayText, $query: $query);
-      @include select-helper-text-theme.disabled-helper-text-color(
-        GrayText,
+      @include select-theme.label-color($gray-text, $query: $query);
+      @include select-theme.bottom-line-color($gray-text, $query: $query);
+      @include select-theme.outline-color($gray-text, $query: $query);
+      @include select-icon-theme.icon-color($gray-text, $query: $query);
+      @include select-helper-text-theme.helper-text-color(
+        $gray-text,
         $query: $query
       );
     }
@@ -182,11 +182,10 @@
 
   .mdc-select--invalid {
     @include select-theme.label-color(
-      select-theme.$error-color,
-      $query: $query
-    );
-    @include select-theme.focused-label-color(
-      select-theme.$error-color,
+      (
+        default: select-theme.$error-color,
+        focus: select-theme.$error-color,
+      ),
       $query: $query
     );
     @include select-helper-text-theme.helper-text-validation-color(
@@ -194,11 +193,10 @@
       $query: $query
     );
     @include select-theme.dropdown-icon-color(
-      select-theme.$error-color,
-      $query: $query
-    );
-    @include select-theme.focused-dropdown-icon-color(
-      select-theme.$error-color,
+      (
+        default: select-theme.$error-color,
+        focus: select-theme.$error-color,
+      ),
       $query: $query
     );
   }

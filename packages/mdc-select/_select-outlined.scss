@@ -39,23 +39,21 @@
       $query: $query
     );
 
-    @include select-theme.container-fill-color(transparent, $query: $query);
-    @include select-theme.disabled-container-fill-color(
-      transparent,
+    @include select-theme.container-fill-color(
+      (
+        default: transparent,
+        disabled: transparent,
+      ),
       $query: $query
     );
 
     @include select-theme.outline-color(
-      select-theme.$outlined-idle-border,
-      $query: $query
-    );
-    @include select-theme.hover-outline-color(
-      select-theme.$outlined-hover-border,
-      $query: $query
-    );
-    @include select-theme.focused-outline-color(primary, $query: $query);
-    @include select-theme.disabled-outline-color(
-      select-theme.$disabled-outline-color,
+      (
+        default: select-theme.$outlined-idle-border,
+        hover: select-theme.$outlined-hover-border,
+        focus: primary,
+        disabled: select-theme.$disabled-outline-color,
+      ),
       $query: $query
     );
 
@@ -130,15 +128,11 @@
 
     &.mdc-select--invalid {
       @include select-theme.outline-color(
-        select-theme.$error-color,
-        $query: $query
-      );
-      @include select-theme.hover-outline-color(
-        select-theme.$error-color,
-        $query: $query
-      );
-      @include select-theme.focused-outline-color(
-        select-theme.$error-color,
+        (
+          default: select-theme.$error-color,
+          hover: select-theme.$error-color,
+          focus: select-theme.$error-color,
+        ),
         $query: $query
       );
     }

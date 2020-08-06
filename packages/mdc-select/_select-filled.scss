@@ -37,25 +37,20 @@
     );
 
     @include select-theme.container-fill-color(
-      select-theme.$fill-color,
-      $query: $query
-    );
-    @include select-theme.disabled-container-fill-color(
-      select-theme.$disabled-fill-color,
+      (
+        default: select-theme.$fill-color,
+        disabled: select-theme.$disabled-fill-color,
+      ),
       $query: $query
     );
 
     @include select-theme.bottom-line-color(
-      select-theme.$bottom-line-idle-color,
-      $query: $query
-    );
-    @include select-theme.focused-bottom-line-color(primary, $query: $query);
-    @include select-theme.hover-bottom-line-color(
-      select-theme.$bottom-line-hover-color,
-      $query: $query
-    );
-    @include select-theme.disabled-bottom-line-color(
-      select-theme.$disabled-bottom-line-color,
+      (
+        default: select-theme.$bottom-line-idle-color,
+        focus: primary,
+        hover: select-theme.$bottom-line-hover-color,
+        disabled: select-theme.$disabled-bottom-line-color,
+      ),
       $query: $query
     );
 
@@ -99,15 +94,11 @@
 
   .mdc-select--invalid {
     @include select-theme.bottom-line-color(
-      select-theme.$error-color,
-      $query: $query
-    );
-    @include select-theme.hover-bottom-line-color(
-      select-theme.$error-color,
-      $query: $query
-    );
-    @include select-theme.focused-bottom-line-color(
-      select-theme.$error-color,
+      (
+        default: select-theme.$error-color,
+        hover: select-theme.$error-color,
+        focus: select-theme.$error-color,
+      ),
       $query: $query
     );
   }

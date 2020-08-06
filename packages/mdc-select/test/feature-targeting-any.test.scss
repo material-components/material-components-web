@@ -8,14 +8,9 @@
     @include select.core-styles($query: $query);
     @include select.ink-color(red, $query: $query);
     @include select.container-fill-color(red, $query: $query);
-    @include select.focused-label-color(red, $query: $query);
-    @include select.hover-bottom-line-color(red, $query: $query);
     @include select.bottom-line-color(red, $query: $query);
-    @include select.focused-bottom-line-color(red, $query: $query);
     @include select.label-color(red, $query: $query);
     @include select.outline-color(red, $query: $query);
-    @include select.hover-outline-color(red, $query: $query);
-    @include select.focused-outline-color(red, $query: $query);
     @include select.filled-shape-radius(42px, $query: $query);
     @include select.outline-shape-radius(42px, $query: $query);
 
