@@ -32,10 +32,8 @@ npm install @material/segmented-button
 ### Styles
 
 ```scss
-@use '@material/ripple/ripple';
+@use '@material/ripple/common';
 @use '@material/segmented-button/styles';
-
-@include ripple.common();
 ```
 
 ### JavaScript Instantiation
