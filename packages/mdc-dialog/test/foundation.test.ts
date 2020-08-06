@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {cssClasses, numbers, strings} from '../constants';
 import {MDCDialogFoundation} from '../foundation';
@@ -44,29 +43,6 @@ describe('MDCDialogFoundation', () => {
 
   it('exports numbers', () => {
     expect(MDCDialogFoundation.numbers).toEqual(numbers);
-  });
-
-  it('default adapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCDialogFoundation, [
-      'addClass',
-      'removeClass',
-      'hasClass',
-      'addBodyClass',
-      'removeBodyClass',
-      'eventTargetMatches',
-      'trapFocus',
-      'releaseFocus',
-      'getInitialFocusEl',
-      'isContentScrollable',
-      'areButtonsStacked',
-      'getActionFromEvent',
-      'clickDefaultButton',
-      'reverseButtons',
-      'notifyOpening',
-      'notifyOpened',
-      'notifyClosing',
-      'notifyClosed',
-    ]);
   });
 
   function setupTest() {

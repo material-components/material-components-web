@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {checkNumTimesSpyCalledWithArgs, createMockAdapter, verifyDefaultAdapter} from '../../../testing/helpers/foundation';
+import {checkNumTimesSpyCalledWithArgs, createMockAdapter} from '../../../testing/helpers/foundation';
 import {cssClasses, numbers, strings} from '../constants';
 import {MDCSelectFoundation} from '../foundation';
 
@@ -38,46 +38,6 @@ describe('MDCSelectFoundation', () => {
 
   it('exports strings', () => {
     expect(MDCSelectFoundation.strings).toEqual(strings);
-  });
-
-  it('default adapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCSelectFoundation, [
-      'addClass',
-      'removeClass',
-      'hasClass',
-      'activateBottomLine',
-      'deactivateBottomLine',
-      'hasLabel',
-      'floatLabel',
-      'setLabelRequired',
-      'getLabelWidth',
-      'hasOutline',
-      'notchOutline',
-      'closeOutline',
-      'setRippleCenter',
-      'notifyChange',
-      'setSelectedText',
-      'isSelectAnchorFocused',
-      'getSelectAnchorAttr',
-      'setSelectAnchorAttr',
-      'removeSelectAnchorAttr',
-      'addMenuClass',
-      'removeMenuClass',
-      'openMenu',
-      'closeMenu',
-      'getAnchorElement',
-      'setMenuAnchorElement',
-      'setMenuAnchorCorner',
-      'setMenuWrapFocus',
-      'focusMenuItemAtIndex',
-      'getMenuItemCount',
-      'getMenuItemValues',
-      'getMenuItemTextAtIndex',
-      'isTypeaheadInProgress',
-      'typeaheadMatchItem',
-      'getSelectedIndex',
-      'setSelectedIndex',
-    ]);
   });
 
   function setupTest(hasLeadingIcon = true, hasHelperText = false) {
