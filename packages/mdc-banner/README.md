@@ -152,7 +152,7 @@ Event name | `event.detail` | Description
 Method Signature | Description
 --- | ---
 `open() => void` | Opens the banner.
-`close(reason: CloseReason|string = '') => void` | Closes the banner, optionally with the specified action indicating why it was closed.
+`close(reason: CloseReason) => void` | Closes the banner, with the specified action indicating why it was closed.
 `isOpen() => boolean` | Returns whether the banner is open.
 `getText() => string` | Gets the text of the banner.
 `setText(text: string) => void` | Sets the text of the banner.
