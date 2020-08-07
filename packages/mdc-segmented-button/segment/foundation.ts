@@ -25,6 +25,15 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 import {cssClasses, booleans, attributes} from './constants';
 
+const emptyClientRect = {
+  bottom: 0,
+  height: 0,
+  left: 0,
+  right: 0,
+  top: 0,
+  width: 0,
+};
+
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
   static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
     return {
@@ -35,7 +44,7 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
       removeClass: () => undefined,
       hasClass: () => false,
       notifySelectedChange: () => undefined,
-      getRootBoundingClientRect: () => new ClientRect()
+      getRootBoundingClientRect: () => emptyClientRect,
     }
   }
 
@@ -79,7 +88,7 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
    * select, doesn't allow segment to be set to not selected. Otherwise, toggles
    * segment's selected status. Finally, emits event to wrapping segmented
    * button.
-   * 
+   *
    * @event selected With detail - SegmentDetail
    */
   handleClick(): void {
@@ -112,7 +121,7 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
   /**
    * Sets appropriate aria attribute, based on wrapping segmented button's
    * single selected value, to new value
-   * 
+   *
    * @param value Value that represents selected status
    */
   private setAriaAttr(value: string) {
