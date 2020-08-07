@@ -122,7 +122,9 @@ When using the select, you will also need to load the Menu and List components' 
 @use "@material/list/mdc-list";
 @use "@material/menu-surface/mdc-menu-surface";
 @use "@material/menu/mdc-menu";
-@use "@material/select/styles";
+@use "@material/select/select";
+
+@include select.core-styles();
 
 .demo-width-class {
   width: 400px;

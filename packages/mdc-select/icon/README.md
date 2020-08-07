@@ -31,12 +31,6 @@ We recommend using [Material Icons](https://material.io/tools/icons/) from Googl
 
 However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
 
-### Styles
-
-```scss
-@use "@material/select/styles";
-```
-
 ### JavaScript instantiation
 
 ```js

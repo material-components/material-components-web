@@ -20,11 +20,6 @@ Helper text gives context about a select, such as how the selection will be used
 ```
 
 > NOTE: Make sure there are no white-space characters before helper text content.
-### Styles
-
-```scss
-@use '@material/select/styles';
-```
 
 ### JavaScript instantiation
 
