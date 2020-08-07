@@ -34,7 +34,7 @@ npm install @material/data-table
 ```scss
 @use "@material/checkbox"; // Required only for data table with row selection.
 @use "@material/icon-button"; // Required only for data table with column sorting.
-@use "@material/data-table";
+@use "@material/data-table/data-table";
 
 @include checkbox.core-styles;
 @include icon-button.core-styles;
