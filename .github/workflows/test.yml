@@ -50,11 +50,11 @@ jobs:
         run: |
           # Unit tests does not run on forked repositories because GitHub
           # secrets (that includes Sauce access info) are not shared.
-          # TODO: Figure out a way to Set a warning or set status message
 
           if [[ -z "$SAUCE_USERNAME$SAUCE_ACCESS_KEY" ]]; then
             echo "Unit tests do not run on forked repos because of Sauce labs access"
-            exit 0
+            echo "Run `npm run test:unit` manually to verify."
+            exit 1
           fi
           export SAUCE_BUILD_ID=mdc-tests-${GITHUB_EVENT_NAME}-${GITHUB_ACTION}-${GITHUB_SHA}
           export SAUCE_TUNNEL_ID=${SAUCE_BUILD_ID}-tunnel
