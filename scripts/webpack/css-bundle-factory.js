@@ -146,6 +146,7 @@ class CssBundleFactory {
     return this.createCustomCss({
       bundleName: 'main-css-a-la-carte',
       chunks: {
+        'mdc.banner': getAbsolutePath('/packages/mdc-banner/styles.scss'),
         'mdc.button': getAbsolutePath('/packages/mdc-button/mdc-button.scss'),
         'mdc.card': getAbsolutePath('/packages/mdc-card/mdc-card.scss'),
         'mdc.checkbox': getAbsolutePath('/packages/mdc-checkbox/mdc-checkbox.scss'),

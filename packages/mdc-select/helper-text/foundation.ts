@@ -35,6 +35,20 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
   }
 
   /**
+   * @return The ID of the helper text, or null if none is set.
+   */
+  getId(): string|null {
+    return this.adapter.getAttr('id');
+  }
+
+  /**
+   * @return Whether the helper text is currently visible.
+   */
+  isVisible(): boolean {
+    return this.adapter.getAttr(strings.ARIA_HIDDEN) !== 'true';
+  }
+
+  /**
    * Sets the content of the helper text field.
    */
   setContent(content: string) {
@@ -69,13 +83,6 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
       this.adapter.removeClass(
           cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
     }
-  }
-
-  /**
-   * Makes the helper text visible to screen readers.
-   */
-  showToScreenReader() {
-    this.adapter.removeAttr(strings.ARIA_HIDDEN);
   }
 
   /**
@@ -114,6 +121,13 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
     // Hide everything.
     this.adapter.removeAttr(strings.ROLE);
     this.hide();
+  }
+
+  /**
+   * Makes the helper text visible to screen readers.
+   */
+  private showToScreenReader() {
+    this.adapter.removeAttr(strings.ARIA_HIDDEN);
   }
 
   /**

@@ -22,9 +22,24 @@
  */
 
 /**
+ * String constants for segmented button tests
+ */
+export const testCssClasses = {
+  TEST_CLASS: 'test-class',
+  SELECTED: 'mdc-segmented-button__segment--selected'
+};
+
+/**
+ * CSS class selectors for segmented button tests
+ */
+export const testSelectors = {
+  SEGMENT: '.mdc-segmented-button__segment'
+}
+
+/**
  * Indices for segments used in tests
  */
-export enum test_indices {
+export enum testIndices {
   NOT_PRESENT = -1,
   UNSELECTED = 0,
   SELECTED = 1
@@ -33,7 +48,7 @@ export enum test_indices {
 /**
  * SegmentIds for segments used in tests
  */
-export const test_segment_ids = {
+export const testSegmentIds = {
   NOT_PRESENT_SEGMENT_ID: 'segment-1',
   UNSELECTED_SEGMENT_ID: 'segment0',
   SELECTED_SEGMENT_ID: 'segment1'

@@ -97,7 +97,7 @@ function getFixture() {
           <svg
               width="10px"
               height="5px"
-              viewBox="7 10 10 5">
+              viewBox="7 10 10 5" focusable="false">
             <polygon
                 class="mdc-select__dropdown-icon-inactive"
                 stroke="none"
@@ -141,7 +141,7 @@ function getOutlineFixture() {
           <svg
               width="10px"
               height="5px"
-              viewBox="7 10 10 5">
+              viewBox="7 10 10 5" focusable="false">
             <polygon
                 class="mdc-select__dropdown-icon-inactive"
                 stroke="none"
@@ -506,7 +506,7 @@ describe('MDCSelect', () => {
               <svg
                   width="10px"
                   height="5px"
-                  viewBox="7 10 10 5">
+                  viewBox="7 10 10 5" focusable="false">
                 <polygon
                     class="mdc-select__dropdown-icon-inactive"
                     stroke="none"
@@ -554,7 +554,7 @@ describe('MDCSelect', () => {
               <svg
                   width="10px"
                   height="5px"
-                  viewBox="7 10 10 5">
+                  viewBox="7 10 10 5" focusable="false">
                 <polygon
                     class="mdc-select__dropdown-icon-inactive"
                     stroke="none"
@@ -602,7 +602,7 @@ describe('MDCSelect', () => {
           <svg
               width="10px"
               height="5px"
-              viewBox="7 10 10 5">
+              viewBox="7 10 10 5" focusable="false">
             <polygon
                 class="mdc-select__dropdown-icon-inactive"
                 stroke="none"
@@ -755,7 +755,7 @@ describe('MDCSelect', () => {
           <svg
               width="10px"
               height="5px"
-              viewBox="7 10 10 5">
+              viewBox="7 10 10 5" focusable="false">
             <polygon
                 class="mdc-select__dropdown-icon-inactive"
                 stroke="none"
@@ -806,7 +806,7 @@ describe('MDCSelect', () => {
           <svg
               width="10px"
               height="5px"
-              viewBox="7 10 10 5">
+              viewBox="7 10 10 5" focusable="false">
             <polygon
                 class="mdc-select__dropdown-icon-inactive"
                 stroke="none"

@@ -25,9 +25,9 @@ import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
 import {KEY, normalizeKey} from '@material/dom/keyboard';
 import {MDCTooltipAdapter} from './adapter';
-import {AnchorBoundaryType, cssClasses, numbers, Position} from './constants';
+import {AnchorBoundaryType, CssClasses, numbers, Position} from './constants';
 
-const {SHOWN, SHOWING, HIDE} = cssClasses;
+const {SHOWN, SHOWING, SHOWING_TRANSITION, HIDE, HIDE_TRANSITION} = CssClasses;
 
 export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   static get defaultAdapter(): MDCTooltipAdapter {
@@ -131,7 +131,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         'keydown', this.documentKeydownHandler);
 
     this.frameId = requestAnimationFrame(() => {
+      this.clearAllAnimationClasses();
       this.adapter.addClass(SHOWN);
+      this.adapter.addClass(SHOWING_TRANSITION);
     });
   }
 
@@ -148,7 +150,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     this.isShown = false;
     this.adapter.setAttribute('aria-hidden', 'true');
+    this.clearAllAnimationClasses();
     this.adapter.addClass(HIDE);
+    this.adapter.addClass(HIDE_TRANSITION);
     this.adapter.removeClass(SHOWN);
 
     this.adapter.deregisterDocumentEventHandler(
@@ -161,7 +165,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     const isHidingTooltip = this.adapter.hasClass(HIDE);
 
     this.adapter.removeClass(SHOWING);
+    this.adapter.removeClass(SHOWING_TRANSITION);
     this.adapter.removeClass(HIDE);
+    this.adapter.removeClass(HIDE_TRANSITION);
 
     // If handleTransitionEnd is called after hiding the tooltip, the tooltip
     // will have the HIDE class (before calling the adapter removeClass method).
@@ -170,6 +176,11 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     if (isHidingTooltip) {
       this.adapter.notifyHidden();
     }
+  }
+
+  private clearAllAnimationClasses() {
+    this.adapter.removeClass(SHOWING_TRANSITION);
+    this.adapter.removeClass(HIDE_TRANSITION);
   }
 
   setTooltipPosition(pos: Position) {
@@ -315,8 +326,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     this.clearHideTimeout();
 
     this.adapter.removeClass(SHOWN);
+    this.adapter.removeClass(SHOWING_TRANSITION);
     this.adapter.removeClass(SHOWING);
     this.adapter.removeClass(HIDE);
+    this.adapter.removeClass(HIDE_TRANSITION);
 
     this.adapter.deregisterDocumentEventHandler(
         'click', this.documentClickHandler);

@@ -20,13 +20,16 @@
 // THE SOFTWARE.
 //
 
-@use "@material/elevation/mixins" as elevation-mixins;
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/rtl/mixins" as rtl-mixins;
-@use '@material/theme/variables' as theme-variables;
-@use "@material/typography/mixins" as typography-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/theme/theme-color';
+@use '@material/typography/typography';
 @use './slider-theme';
 
 // Thumb variables.
@@ -57,7 +60,7 @@ $_track-inactive-height: 4px;
     @include _thumb($query: $query);
     @include _tick-marks($query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: pointer;
       height: $_thumb-ripple-size;
       margin: 0 ($_thumb-ripple-size / 2);
@@ -73,7 +76,7 @@ $_track-inactive-height: 4px;
     &--discrete {
       .mdc-slider__thumb,
       .mdc-slider__track--active_fill {
-        @include feature-targeting-mixins.targets($feat-animation) {
+        @include feature-targeting.targets($feat-animation) {
           transition: transform 80ms ease;
         }
       }
@@ -81,7 +84,7 @@ $_track-inactive-height: 4px;
       @media (prefers-reduced-motion) {
         .mdc-slider__thumb,
         .mdc-slider__track--active_fill {
-          @include feature-targeting-mixins.targets($feat-animation) {
+          @include feature-targeting.targets($feat-animation) {
             transition: none;
           }
         }
@@ -94,12 +97,12 @@ $_track-inactive-height: 4px;
 // ripple-related styles from the other slider styles.
 // It is recommended that most users use `core-styles` instead.
 @mixin ripple($query: feature-targeting.all()) {
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-slider__thumb {
-    @include ripple-mixins.surface($query: $query);
-    @include ripple-mixins.radius-unbounded($query: $query);
-    @include ripple-mixins.states($color: slider-theme.$color, $query: $query);
+    @include ripple.surface($query: $query);
+    @include ripple.radius-unbounded($query: $query);
+    @include ripple-theme.states($color: slider-theme.$color, $query: $query);
   }
 }
 
@@ -107,7 +110,7 @@ $_track-inactive-height: 4px;
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-slider__track {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: $_track-inactive-height;
       position: absolute;
       top: 50%;
@@ -118,7 +121,7 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__track--active,
   .mdc-slider__track--inactive {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: flex;
       height: 100%;
       position: absolute;
@@ -127,7 +130,7 @@ $_track-inactive-height: 4px;
   }
 
   .mdc-slider__track--active {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       // Set border-radius on the outer `track--active` element, and apply
       // transform: scale(...) to the inner `track--active_fill` element,
       // such that the track grows/shrinks as needed, but the border-radius
@@ -140,23 +143,25 @@ $_track-inactive-height: 4px;
   }
 
   .mdc-slider__track--active_fill {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       // Use border rather than background-color to fill thumb, for HCM.
       border: $_track-active-height solid;
       box-sizing: border-box;
       height: 100%;
       width: 100%;
       position: relative;
+      /* @noflip */
       transform-origin: left;
 
       @include rtl-mixins.rtl {
+        /* @noflip */
         transform-origin: right;
       }
     }
   }
 
   .mdc-slider__track--inactive {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border-radius: 2px;
       height: $_track-inactive-height;
       left: 0;
@@ -182,7 +187,7 @@ $_track-inactive-height: 4px;
   @include _value-indicator($query: $query);
 
   .mdc-slider__thumb {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: flex;
       height: $_thumb-ripple-size;
       left: -$_thumb-ripple-size / 2;
@@ -193,18 +198,18 @@ $_track-inactive-height: 4px;
     }
 
     &--top {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         z-index: 1;
       }
     }
 
     &--top .mdc-slider__thumb-knob {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         border: 1px solid;
         box-sizing: content-box;
       }
 
-      @include feature-targeting-mixins.targets($feat-color) {
+      @include feature-targeting.targets($feat-color) {
         border-color: #fff;
       }
     }
@@ -213,12 +218,13 @@ $_track-inactive-height: 4px;
   .mdc-slider__thumb-knob {
     @include elevation-mixins.elevation($z-value: 1, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       // Use border rather than background-color to fill thumb, for HCM.
       border: $_thumb-size / 2 solid;
       border-radius: 50%;
       box-sizing: border-box;
       height: $_thumb-size;
+      /* @noflip */
       left: 50%;
       position: absolute;
       top: 50%;
@@ -242,7 +248,7 @@ $_track-inactive-height: 4px;
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__tick-marks {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       align-items: center;
       box-sizing: border-box;
       display: flex;
@@ -256,11 +262,11 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__tick-mark--active,
   .mdc-slider__tick-mark--inactive {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       opacity: slider-theme.$tick-mark-opacity;
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border-radius: 50%;
       height: 2px;
       width: 2px;
@@ -282,7 +288,7 @@ $_track-inactive-height: 4px;
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-slider__value-indicator-container {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       bottom: $_thumb-ripple-size / 2 + $_thumb-size / 2 +
         $_value-indicator-caret-width + 4px;
       left: 50%;
@@ -292,11 +298,11 @@ $_track-inactive-height: 4px;
   }
 
   .mdc-slider__value-indicator {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: transform 100ms cubic-bezier(0.4, 0, 1, 1);
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       align-items: center;
       border-radius: 4px;
       display: flex;
@@ -309,7 +315,7 @@ $_track-inactive-height: 4px;
 
     // Caret: https://css-tricks.com/snippets/css/css-triangle/
     &::before {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         border-left: $_value-indicator-caret-width solid transparent;
         border-right: $_value-indicator-caret-width solid transparent;
         border-top: $_value-indicator-caret-width solid
@@ -326,11 +332,11 @@ $_track-inactive-height: 4px;
   }
 
   .mdc-slider__thumb--with-indicator .mdc-slider__value-indicator {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: transform 100ms cubic-bezier(0, 0, 0.2, 1);
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       transform: scale(1);
     }
   }
@@ -338,14 +344,14 @@ $_track-inactive-height: 4px;
   @media (prefers-reduced-motion) {
     .mdc-slider__value-indicator,
     .mdc-slider__thumb--with-indicator .mdc-slider__value-indicator {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition: none;
       }
     }
   }
 
   .mdc-slider__value-indicator-text {
-    @include typography-mixins.typography(subtitle2, $query);
+    @include typography.typography(subtitle2, $query);
   }
 
   @include slider-theme.value-indicator-color(
@@ -379,16 +385,16 @@ $_track-inactive-height: 4px;
     $query: $query
   );
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     opacity: 0.38;
   }
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     cursor: auto;
   }
 
   .mdc-slider__thumb {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       pointer-events: none;
     }
   }

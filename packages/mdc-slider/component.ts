@@ -80,6 +80,9 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       setThumbStyleProperty: (propertyName, value, thumb: Thumb) => {
         this.getThumbEl(thumb).style.setProperty(propertyName, value);
       },
+      removeThumbStyleProperty: (propertyName, thumb: Thumb) => {
+        this.getThumbEl(thumb).style.removeProperty(propertyName);
+      },
       setTrackActiveStyleProperty: (propertyName, value) => {
         this.trackActive.style.setProperty(propertyName, value);
       },

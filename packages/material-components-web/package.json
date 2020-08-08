@@ -19,6 +19,7 @@
   "dependencies": {
     "@material/animation": "^7.0.0",
     "@material/auto-init": "^7.0.0",
+    "@material/banner": "^7.0.0",
     "@material/base": "^7.0.0",
     "@material/button": "^7.0.0",
     "@material/card": "^7.0.0",

@@ -20,14 +20,17 @@
 // THE SOFTWARE.
 //
 
-@use "sass:math";
-@use "@material/density/functions" as density-functions;
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/rtl/mixins" as rtl;
-@use "@material/theme/mixins" as theme-mixins;
-@use "./variables";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use 'sass:math';
+@use '@material/density/functions' as density-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use '@material/rtl/mixins' as rtl;
+@use '@material/theme/theme';
+@use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query);
@@ -44,13 +47,13 @@
   }
 
   .mdc-icon-button__icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-block;
     }
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
     &.mdc-icon-button__icon--on {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: none;
       }
     }
@@ -58,13 +61,13 @@
 
   .mdc-icon-button--on {
     .mdc-icon-button__icon {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: none;
       }
 
       // stylelint-disable-next-line plugin/selector-bem-pattern
       &.mdc-icon-button__icon--on {
-        @include feature-targeting-mixins.targets($feat-structure) {
+        @include feature-targeting.targets($feat-structure) {
           display: inline-block;
         }
       }
@@ -74,12 +77,12 @@
 }
 
 @mixin ripple($query: feature-targeting.all()) {
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-icon-button {
-    @include ripple-mixins.surface($query: $query);
-    @include ripple-mixins.radius-unbounded($query: $query);
-    @include ripple-mixins.states($query: $query);
+    @include ripple.surface($query: $query);
+    @include ripple.radius-unbounded($query: $query);
+    @include ripple-theme.states($query: $query);
   }
 }
 
@@ -108,7 +111,7 @@
 @mixin size($size, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: $size;
     height: $size;
     padding: ($size - variables.$icon-size) / 2;
@@ -134,7 +137,7 @@
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: $width + $padding * 2;
     height: $height + $padding * 2;
     padding: $padding;
@@ -144,7 +147,7 @@
   // stylelint-disable-next-line selector-max-type
   svg,
   img {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: $width;
       height: $height;
     }
@@ -157,7 +160,7 @@
 ///
 @mixin ink-color($color, $query: feature-targeting.all()) {
   @include ink-color_($color, $query: $query);
-  @include ripple-mixins.states($color, $query: $query);
+  @include ripple-theme.states($color, $query: $query);
 }
 
 ///
@@ -168,7 +171,7 @@
 
   .mdc-button__icon {
     @include rtl.rtl {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         /* @noflip */
         transform: rotate(180deg);
       }
@@ -189,7 +192,7 @@
 @mixin base_($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: inline-block;
     position: relative;
     box-sizing: border-box;
@@ -207,7 +210,7 @@
   // stylelint-disable-next-line selector-max-type
   svg,
   img {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: variables.$icon-size;
       height: variables.$icon-size;
     }
@@ -216,7 +219,7 @@
   @include disabled-ink-color(text-disabled-on-light, $query: $query);
 
   @include if-disabled_ {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       cursor: default;
       pointer-events: none;
     }
@@ -231,8 +234,8 @@
 @mixin ink-color_($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
-    @include theme-mixins.prop(color, $color);
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(color, $color);
   }
 }
 

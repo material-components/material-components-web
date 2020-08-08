@@ -20,13 +20,15 @@
 // THE SOFTWARE.
 //
 
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/theme/variables" as theme-variables;
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
 
-$background-color: rgba(black, theme-variables.text-emphasis(medium));
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+
+$background-color: rgba(black, theme-color.text-emphasis(medium));
 $border-radius: small;
 $label-color: text-primary-on-dark;
 
@@ -50,9 +52,9 @@ $label-color: text-primary-on-dark;
 /// @param {Color | String} $color
 @mixin label-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     .mdc-tooltip__surface {
-      @include theme-mixins.prop(color, $color);
+      @include theme.prop(color, $color);
     }
   }
 }
@@ -62,8 +64,8 @@ $label-color: text-primary-on-dark;
 @mixin fill-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   .mdc-tooltip__surface {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(background-color, $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
     }
   }
 }

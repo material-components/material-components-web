@@ -21,11 +21,13 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
-  SHOWN: 'mdc-tooltip--shown',
-  SHOWING: 'mdc-tooltip--showing',
-  HIDE: 'mdc-tooltip--hide',
-};
+enum CssClasses {
+  SHOWN = 'mdc-tooltip--shown',
+  SHOWING = 'mdc-tooltip--showing',
+  SHOWING_TRANSITION = 'mdc-tooltip--showing-transition',
+  HIDE = 'mdc-tooltip--hide',
+  HIDE_TRANSITION = 'mdc-tooltip--hide-transition',
+}
 
 const numbers = {
   BOUNDED_ANCHOR_GAP: 4,
@@ -57,4 +59,4 @@ enum AnchorBoundaryType {
   UNBOUNDED = 1,
 }
 
-export {cssClasses, numbers, events, Position, AnchorBoundaryType};
+export {CssClasses, numbers, events, Position, AnchorBoundaryType};

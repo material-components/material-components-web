@@ -1,0 +1,135 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Theme: Variables, functions, and mixins required to theme component segment
+
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme-color';
+@use '@material/theme/custom-properties';
+@use '@material/theme/theme';
+
+$on-surface: theme-color.$on-surface;
+$surface: theme-color.$surface;
+$primary: theme-color.$primary;
+
+$unselected-ink-color: rgba($on-surface, 0.6);
+$outline-color: rgba($on-surface, 0.12);
+$unselected-container-fill-color: rgba($surface, 1);
+$selected-ink-color: rgba($primary, 1);
+$selected-container-fill-color: rgba($primary, 0.08);
+
+$height: 36px;
+$min-width: 48px;
+$horizontal-padding: 12px;
+$border-width: 1px;
+$border-radius: 4px;
+$icon-width: 24px;
+$icon-font-size: 18px;
+$label-padding: 6px;
+$touch-target-height: 48px;
+
+/// Sets the border color of the segment
+/// @param {String} $color - Color of segment outline
+@mixin outline-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $property: custom-properties.create(
+    --mdc-segmented-button-outline-color,
+    $color
+  );
+
+  .mdc-segmented-button__segment {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property('border-color', $property);
+    }
+  }
+}
+
+/// Sets the text and icon color within the segment when it is not selected
+/// @param {String} $color - Color of text and icon in segment
+@mixin unselected-ink-color($color, $query: feature-targeting.all()) {
+  .mdc-segmented-button__segment {
+    $property: custom-properties.create(
+      --mdc-segmented-button-unselected-ink-color,
+      $color
+    );
+    @include _ink-color($property, $query);
+  }
+}
+
+/// Sets the background fill color of the segment when it is not selected
+/// @param {String} $color - Color of segment background
+@mixin unselected-container-fill-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  .mdc-segmented-button__segment {
+    $property: custom-properties.create(
+      --mdc-segmented-button-unselected-container-fill-color,
+      $color
+    );
+    @include _container-fill-color($property, $query);
+  }
+}
+
+/// Sets the text and icon color within the segment when it is selected
+/// @param {String} $color - Color of text and icon in segment
+@mixin selected-ink-color($color, $query: feature-targeting.all()) {
+  .mdc-segmented-button__segment--selected {
+    $property: custom-properties.create(
+      --mdc-segmented-button-selected-ink-color,
+      $color
+    );
+    @include _ink-color($property, $query);
+  }
+}
+
+/// Sets the background fill color of the segment when it is not selected
+/// @param {String} $color - Color of segment background
+@mixin selected-container-fill-color($color, $query: feature-targeting.all()) {
+  .mdc-segmented-button__segment--selected {
+    $property: custom-properties.create(
+      --mdc-segmented-button-selected-container-fill-color,
+      $color
+    );
+    @include _container-fill-color($property, $query);
+  }
+}
+
+/// Sets the text and icon color
+/// @param {Map} $property - Custom property of text and icon color
+@mixin _ink-color($property, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property('color', $property);
+  }
+}
+
+/// Sets the background fill color
+/// @param {Map} $property - Custom property of background color
+@mixin _container-fill-color($property, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property('background-color', $property);
+  }
+}

@@ -46,6 +46,7 @@ export class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundat
       addClass: (className) => this.root.classList.add(className),
       removeClass: (className) => this.root.classList.remove(className),
       hasClass: (className) => this.root.classList.contains(className),
+      getAttr: (attr) => this.root.getAttribute(attr),
       setAttr: (attr, value) => this.root.setAttribute(attr, value),
       removeAttr: (attr) => this.root.removeAttribute(attr),
       setContent: (content) => {

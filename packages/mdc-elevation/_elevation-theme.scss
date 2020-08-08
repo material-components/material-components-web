@@ -1,0 +1,315 @@
+//
+// Copyright 2017 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use '@material/animation/variables' as animation-variables;
+@use '@material/theme/custom-properties';
+@use '@material/base/mixins' as base-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+
+$baseline-color: black !default;
+$umbra-opacity: 0.2 !default;
+$penumbra-opacity: 0.14 !default;
+$ambient-opacity: 0.12 !default;
+
+$umbra-map: (
+  0: '0px 0px 0px 0px',
+  1: '0px 2px 1px -1px',
+  2: '0px 3px 1px -2px',
+  3: '0px 3px 3px -2px',
+  4: '0px 2px 4px -1px',
+  5: '0px 3px 5px -1px',
+  6: '0px 3px 5px -1px',
+  7: '0px 4px 5px -2px',
+  8: '0px 5px 5px -3px',
+  9: '0px 5px 6px -3px',
+  10: '0px 6px 6px -3px',
+  11: '0px 6px 7px -4px',
+  12: '0px 7px 8px -4px',
+  13: '0px 7px 8px -4px',
+  14: '0px 7px 9px -4px',
+  15: '0px 8px 9px -5px',
+  16: '0px 8px 10px -5px',
+  17: '0px 8px 11px -5px',
+  18: '0px 9px 11px -5px',
+  19: '0px 9px 12px -6px',
+  20: '0px 10px 13px -6px',
+  21: '0px 10px 13px -6px',
+  22: '0px 10px 14px -6px',
+  23: '0px 11px 14px -7px',
+  24: '0px 11px 15px -7px',
+) !default;
+
+$penumbra-map: (
+  0: '0px 0px 0px 0px',
+  1: '0px 1px 1px 0px',
+  2: '0px 2px 2px 0px',
+  3: '0px 3px 4px 0px',
+  4: '0px 4px 5px 0px',
+  5: '0px 5px 8px 0px',
+  6: '0px 6px 10px 0px',
+  7: '0px 7px 10px 1px',
+  8: '0px 8px 10px 1px',
+  9: '0px 9px 12px 1px',
+  10: '0px 10px 14px 1px',
+  11: '0px 11px 15px 1px',
+  12: '0px 12px 17px 2px',
+  13: '0px 13px 19px 2px',
+  14: '0px 14px 21px 2px',
+  15: '0px 15px 22px 2px',
+  16: '0px 16px 24px 2px',
+  17: '0px 17px 26px 2px',
+  18: '0px 18px 28px 2px',
+  19: '0px 19px 29px 2px',
+  20: '0px 20px 31px 3px',
+  21: '0px 21px 33px 3px',
+  22: '0px 22px 35px 3px',
+  23: '0px 23px 36px 3px',
+  24: '0px 24px 38px 3px',
+) !default;
+
+$ambient-map: (
+  0: '0px 0px 0px 0px',
+  1: '0px 1px 3px 0px',
+  2: '0px 1px 5px 0px',
+  3: '0px 1px 8px 0px',
+  4: '0px 1px 10px 0px',
+  5: '0px 1px 14px 0px',
+  6: '0px 1px 18px 0px',
+  7: '0px 2px 16px 1px',
+  8: '0px 3px 14px 2px',
+  9: '0px 3px 16px 2px',
+  10: '0px 4px 18px 3px',
+  11: '0px 4px 20px 3px',
+  12: '0px 5px 22px 4px',
+  13: '0px 5px 24px 4px',
+  14: '0px 5px 26px 4px',
+  15: '0px 6px 28px 5px',
+  16: '0px 6px 30px 5px',
+  17: '0px 6px 32px 5px',
+  18: '0px 7px 34px 6px',
+  19: '0px 7px 36px 6px',
+  20: '0px 8px 38px 7px',
+  21: '0px 8px 40px 7px',
+  22: '0px 8px 42px 7px',
+  23: '0px 9px 44px 8px',
+  24: '0px 9px 46px 8px',
+) !default;
+
+// The css property used for elevation. In most cases this should not be changed. It is exposed
+// as a variable for abstraction / easy use when needing to reference the property directly, for
+// example in a `will-change` rule.
+$property: box-shadow !default;
+
+// The default color for the elevation overlay.
+$overlay-color: #fff;
+
+// The css property used for elevation overlay transitions. In most cases this should not be changed. It is exposed
+// as a variable for abstraction / easy use when needing to reference the property directly, for
+// example in a `will-change` rule.
+$overlay-property: opacity !default;
+
+// The default duration value for elevation transitions.
+$transition-duration: 280ms !default;
+
+// The default easing value for elevation transitions.
+$transition-timing-function: animation-variables.$standard-curve-timing-function !default;
+
+///
+/// Sets the elevation transition value.
+///
+/// @param {String} $duration - The duration of the transition.
+/// @param {String} $easing - The easing function for the transition.
+/// @return {String}
+///
+@function transition-value(
+  $duration: $transition-duration,
+  $easing: $transition-timing-function
+) {
+  @return #{$property} #{$duration} #{$easing};
+}
+
+///
+/// Sets the elevation overlay transition value.
+///
+/// @param {String} $duration - The duration of the transition.
+/// @param {String} $easing - The easing function for the transition.
+/// @return {String}
+///
+@function overlay-transition-value(
+  $duration: $transition-duration,
+  $easing: $transition-timing-function
+) {
+  @return #{$overlay-property} #{$duration} #{$easing};
+}
+
+// Returns the correct box-shadow specified by $z-value.
+// The $z-value must be between 0 and 24.
+// If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
+// $opacity-boost.
+@function elevation-box-shadow(
+  $z-value,
+  $color: $baseline-color,
+  $opacity-boost: 0
+) {
+  @if meta.type-of($z-value) != number or not math.is-unitless($z-value) {
+    @error "$z-value must be a unitless number, but received '#{$z-value}'";
+  }
+
+  @if $z-value < 0 or $z-value > 24 {
+    @error "$z-value must be between 0 and 24, but received '#{$z-value}'";
+  }
+
+  $color: theme-color.prop-value($color);
+
+  $umbra-z-value: map.get($umbra-map, $z-value);
+  $penumbra-z-value: map.get($penumbra-map, $z-value);
+  $ambient-z-value: map.get($ambient-map, $z-value);
+
+  $umbra-color: rgba($color, $umbra-opacity + $opacity-boost);
+  $penumbra-color: rgba($color, $penumbra-opacity + $opacity-boost);
+  $ambient-color: rgba($color, $ambient-opacity + $opacity-boost);
+
+  $box-shadow: (
+    #{'#{$umbra-z-value} #{$umbra-color}'},
+    #{'#{$penumbra-z-value} #{$penumbra-color}'},
+    #{$ambient-z-value} $ambient-color
+  );
+
+  @return $box-shadow;
+}
+
+///
+/// Sets the shadow of the element.
+///
+/// @param {String} $box-shadow - The shadow to apply to the element.
+///
+@mixin shadow($box-shadow, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    /* @alternate */
+    box-shadow: $box-shadow;
+  }
+}
+
+///
+/// Sets the elevation overlay surface required positioning.
+///
+@mixin overlay-surface-position($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    /* @alternate */
+    position: relative;
+  }
+}
+
+///
+/// Sets the dimensions of the elevation overlay, including positioning and sizing.
+///
+/// @param {Number} $width - The width of the elevation overlay
+/// @param {Number} [$height] - The height of the elevation overlay
+/// @param {Boolean} [$has-content-sizing] - Set to false if the container has no content sizing
+///
+@mixin overlay-dimensions(
+  $width,
+  $height: $width,
+  $has-content-sizing: true,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-elevation-overlay {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(width, $width);
+      @include theme.property(height, $height);
+
+      @if $has-content-sizing {
+        top: 0;
+        /* @noflip */
+        left: 0;
+      } @else {
+        top: 50%;
+        /* @noflip */
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}
+
+///
+/// Sets the elevation overlay fill color.
+/// Expected to be called directly on the elevation overlay element.
+///
+/// @param {Color} $color - The color of the elevation overlay.
+///
+@mixin overlay-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property(background-color, $color);
+  }
+}
+
+///
+/// Sets the elevation overlay opacity.
+/// Expected to be called from a parent element.
+///
+/// @param {Number} $opacity - The opacity of the elevation overlay.
+///
+@mixin overlay-opacity($opacity, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-elevation-overlay {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(opacity, $opacity);
+    }
+  }
+}
+
+// Applies the correct CSS rules to an element to give it the elevation specified by $z-value.
+// The $z-value must be between 0 and 24.
+// If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
+// $opacity-boost.
+@mixin elevation(
+  $z-value,
+  $color: $baseline-color,
+  $opacity-boost: 0,
+  $query: feature-targeting.all()
+) {
+  $box-shadow: elevation-box-shadow(
+    $z-value,
+    $color: $color,
+    $opacity-boost: $opacity-boost
+  );
+
+  @include shadow($box-shadow, $query: $query);
+}

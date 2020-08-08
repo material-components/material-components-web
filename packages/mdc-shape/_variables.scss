@@ -20,23 +20,5 @@
 // THE SOFTWARE.
 //
 
-// Shape categories
-$small-component-radius: 4px !default;
-$medium-component-radius: 4px !default;
-$large-component-radius: 0 !default;
-
-// Shape keyword mapping
-$category-keywords: (
-  small: (
-    varname: --mdc-shape-small,
-    fallback: $small-component-radius,
-  ),
-  medium: (
-    varname: --mdc-shape-medium,
-    fallback: $medium-component-radius,
-  ),
-  large: (
-    varname: --mdc-shape-large,
-    fallback: $large-component-radius,
-  ),
-) !default;
+/// @deprecated Import '_shape.scss' module instead.
+@forward './shape' show $small-component-radius, $medium-component-radius, $large-component-radius, $category-keywords;

@@ -26,9 +26,8 @@
 
 @use 'sass:list';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
-@use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -36,9 +35,9 @@
   $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-data-table__cell {
-    @include typography-mixins.typography(body2, $query: $query);
+    @include typography.typography(body2, $query: $query);
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       box-sizing: border-box;
       overflow: hidden;
       text-align: left;
@@ -52,11 +51,11 @@
   }
 
   .mdc-data-table__cell--numeric {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       text-align: right;
     }
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.rtl {
         /* @noflip */
         text-align: left;
@@ -72,7 +71,7 @@
 @mixin adaptive-width($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     // Set to lowest width to adapt to cell content. Cell width should adapt
     // to row checkbox size when it is dense.
     // NOTE: `min-width` does not seem to work on table cells.

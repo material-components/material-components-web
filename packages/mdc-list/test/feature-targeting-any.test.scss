@@ -1,5 +1,5 @@
-@use "../mixins" as list;
-@use "@material/feature-targeting/feature-targeting";
+@use '../mixins' as list;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {

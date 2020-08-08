@@ -26,29 +26,28 @@
 
 @use 'sass:list';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
-@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/theme';
 
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__progress-indicator {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: none;
       position: absolute;
       width: 100%;
     }
 
     .mdc-data-table--in-progress & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: block;
       }
     }
   }
 
   .mdc-data-table__scrim {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include theme-mixins.prop('background-color', surface);
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.prop('background-color', surface);
 
       height: 100%;
       // TODO(b/151453287): Set appropriate opacity value once we've a UX

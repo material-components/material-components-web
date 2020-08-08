@@ -20,19 +20,22 @@
 // THE SOFTWARE.
 //
 
-@use "sass:math";
-@use "@material/animation/functions" as functions2;
-@use "@material/density/functions" as density-functions;
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/touch-target/mixins" as touch-target-mixins;
-@use "@material/theme/functions" as theme-functions;
-@use "./functions";
-@use "./keyframes";
-@use "./variables";
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/touch-target/variables" as touch-target-variables;
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use 'sass:math';
+@use '@material/animation/functions' as functions2;
+@use '@material/density/functions' as density-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use '@material/touch-target/mixins' as touch-target-mixins;
+@use '@material/theme/theme-color';
+@use './functions';
+@use './keyframes';
+@use './variables';
+@use '@material/theme/theme';
+@use '@material/touch-target/variables' as touch-target-variables;
 
 //
 // Public
@@ -59,12 +62,12 @@ $ripple-target: '.mdc-checkbox__ripple';
 
   @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     @include keyframes.mark-keyframes_;
   }
 
   .mdc-checkbox {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include base_;
     }
 
@@ -91,7 +94,7 @@ $ripple-target: '.mdc-checkbox__ripple';
     @include disabled-ink-color(GrayText, $query: $query);
 
     .mdc-checkbox__mixedmark {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         margin: 0 1px; // Extra horizontal space around mixedmark symbol.
       }
     }
@@ -99,7 +102,7 @@ $ripple-target: '.mdc-checkbox__ripple';
 
   // Needed to disable hover effects on CSS-only (non-JS) checkboxes
   .mdc-checkbox--disabled {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include disabled_;
     }
   }
@@ -126,14 +129,14 @@ $ripple-target: '.mdc-checkbox__ripple';
     .mdc-checkbox__checkmark,
     .mdc-checkbox__checkmark-path,
     .mdc-checkbox__mixedmark {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         @include child--upgraded_;
       }
     }
   }
 
   .mdc-checkbox--anim {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       @include anim_;
     }
   }
@@ -142,12 +145,12 @@ $ripple-target: '.mdc-checkbox__ripple';
   .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background,
   .mdc-checkbox__native-control[data-indeterminate='true']
     ~ .mdc-checkbox__background {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       @include background--marked_;
     }
 
     .mdc-checkbox__checkmark-path {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include checkmark-path--marked_;
       }
     }
@@ -163,12 +166,12 @@ $ripple-target: '.mdc-checkbox__ripple';
   }
 
   .mdc-checkbox__native-control {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include native-control_;
     }
 
     &:disabled {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include disabled_;
       }
     }
@@ -189,7 +192,7 @@ $ripple-target: '.mdc-checkbox__ripple';
     }
 
     .mdc-checkbox__mixedmark {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include mixedmark--checked_;
       }
     }
@@ -202,7 +205,7 @@ $ripple-target: '.mdc-checkbox__ripple';
     }
 
     .mdc-checkbox__mixedmark {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include mixedmark--indeterminate_;
       }
     }
@@ -216,30 +219,27 @@ $ripple-target: '.mdc-checkbox__ripple';
 @mixin ripple($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-checkbox {
-    @include ripple-mixins.surface(
-      $query: $query,
-      $ripple-target: $ripple-target
-    );
-    @include ripple-mixins.states(
+    @include ripple.surface($query: $query, $ripple-target: $ripple-target);
+    @include ripple-theme.states(
       $color: on-surface,
       $query: $query,
       $ripple-target: $ripple-target
     );
-    @include ripple-mixins.radius-unbounded(
+    @include ripple.radius-unbounded(
       $query: $query,
       $ripple-target: $ripple-target
     );
   }
 
   #{$ripple-target} {
-    @include ripple-mixins.target-common($query: $query);
+    @include ripple.target-common($query: $query);
   }
 
   .mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       content: none;
     }
   }
@@ -269,19 +269,19 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-structure: feature-targeting.create-target($query, structure);
   $checkbox-padding: ($ripple-size - variables.$icon-size) / 2;
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     padding: $checkbox-padding;
   }
 
   .mdc-checkbox__background {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       top: $checkbox-padding;
       left: $checkbox-padding;
     }
   }
 
   .mdc-checkbox__background::before {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       top: -(variables.$border-width) - $checkbox-padding;
       left: -(variables.$border-width) - $checkbox-padding;
       width: $ripple-size;
@@ -333,14 +333,14 @@ $ripple-target: '.mdc-checkbox__ripple';
   }
 
   @if $generate-keyframes {
-    $uid: theme-functions.color-hash($unmarked-stroke-color) +
-      theme-functions.color-hash($marked-stroke-color) +
-      theme-functions.color-hash($unmarked-fill-color) +
-      theme-functions.color-hash($marked-fill-color);
+    $uid: theme-color.color-hash($unmarked-stroke-color) +
+      theme-color.color-hash($marked-stroke-color) +
+      theme-color.color-hash($unmarked-fill-color) +
+      theme-color.color-hash($marked-fill-color);
 
     $anim-selector: if(&, '&.mdc-checkbox--anim', '.mdc-checkbox--anim');
 
-    @include feature-targeting-mixins.targets($feat-animation, $feat-color) {
+    @include feature-targeting.targets($feat-animation, $feat-color) {
       @include keyframes.container-keyframes_(
         $from-stroke-color: $unmarked-stroke-color,
         $to-stroke-color: $marked-stroke-color,
@@ -356,7 +356,7 @@ $ripple-target: '.mdc-checkbox__ripple';
       &-unchecked-checked,
       &-unchecked-indeterminate {
         .mdc-checkbox__native-control:enabled ~ .mdc-checkbox__background {
-          @include feature-targeting-mixins.targets($feat-animation) {
+          @include feature-targeting.targets($feat-animation) {
             animation-name: mdc-checkbox-fade-in-background-#{$uid};
           }
         }
@@ -365,7 +365,7 @@ $ripple-target: '.mdc-checkbox__ripple';
       &-checked-unchecked,
       &-indeterminate-unchecked {
         .mdc-checkbox__native-control:enabled ~ .mdc-checkbox__background {
-          @include feature-targeting-mixins.targets($feat-animation) {
+          @include feature-targeting.targets($feat-animation) {
             animation-name: mdc-checkbox-fade-out-background-#{$uid};
           }
         }
@@ -437,13 +437,13 @@ $ripple-target: '.mdc-checkbox__ripple';
     ~ .mdc-checkbox__background::before,
   .mdc-checkbox__native-control[data-indeterminate='true']
     ~ .mdc-checkbox__background::before {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(background-color, $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
     }
   }
 
   &.mdc-checkbox--selected {
-    @include ripple-mixins.states(
+    @include ripple-theme.states(
       $color: $color,
       $query: $query,
       $ripple-target: $ripple-target
@@ -451,7 +451,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   }
 
   &.mdc-ripple-upgraded--background-focused.mdc-checkbox--selected {
-    @include ripple-mixins.states-base-color(
+    @include ripple-theme.states-base-color(
       $color: $color,
       $query: $query,
       $ripple-target: $ripple-target
@@ -474,7 +474,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-structure: feature-targeting.create-target($query, structure);
   $offset: ($ripple-size - $size) / 2;
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     .mdc-checkbox__native-control {
       top: $offset;
       right: $offset;
@@ -688,7 +688,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: inline-flex;
     position: absolute;
     align-items: center;
@@ -705,12 +705,12 @@ $ripple-target: '.mdc-checkbox__ripple';
   }
 
   .mdc-checkbox__background::before {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(background-color, on-surface);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, on-surface);
     }
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: functions.transition-exit(background-color),
       functions.transition-exit(border-color);
   }
@@ -735,9 +735,9 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-checkbox__background {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(border-color, $stroke-color);
-      @include theme-mixins.prop(background-color, $fill-color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(border-color, $stroke-color);
+      @include theme.prop(background-color, $fill-color);
     }
   }
 }
@@ -748,7 +748,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     position: absolute;
     transform: scale(0, 0);
     border-radius: 50%;
@@ -758,7 +758,7 @@ $ripple-target: '.mdc-checkbox__ripple';
     will-change: opacity, transform;
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: functions.transition-exit(opacity),
       functions.transition-exit(transform);
   }
@@ -768,12 +768,12 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     transform: scale(1);
     opacity: variables.$focus-indicator-opacity;
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: functions.transition-enter(opacity, 0ms, 80ms),
       functions.transition-enter(transform, 0ms, 80ms);
   }
@@ -795,7 +795,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     position: absolute;
     top: 0;
     right: 0;
@@ -805,7 +805,7 @@ $ripple-target: '.mdc-checkbox__ripple';
     opacity: 0;
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: functions.transition-exit(
       opacity,
       0ms,
@@ -814,7 +814,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   }
 
   .mdc-checkbox--upgraded & {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 1;
     }
   }
@@ -824,7 +824,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: functions.transition-enter(
         opacity,
         0ms,
@@ -837,7 +837,7 @@ $ripple-target: '.mdc-checkbox__ripple';
       );
   }
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     opacity: 1;
   }
 }
@@ -846,12 +846,12 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     transform: rotate(45deg);
     opacity: 0;
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: functions.transition-exit(
         opacity,
         0ms,
@@ -872,14 +872,14 @@ $ripple-target: '.mdc-checkbox__ripple';
 
   .mdc-checkbox__background {
     .mdc-checkbox__checkmark {
-      @include feature-targeting-mixins.targets($feat-color) {
-        @include theme-mixins.prop(color, $color);
+      @include feature-targeting.targets($feat-color) {
+        @include theme.prop(color, $color);
       }
     }
 
     .mdc-checkbox__mixedmark {
-      @include feature-targeting-mixins.targets($feat-color) {
-        @include theme-mixins.prop(border-color, $color);
+      @include feature-targeting.targets($feat-color) {
+        @include theme.prop(border-color, $color);
       }
     }
   }
@@ -891,7 +891,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: functions.transition-exit(
       stroke-dashoffset,
       0ms,
@@ -899,7 +899,7 @@ $ripple-target: '.mdc-checkbox__ripple';
     );
   }
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     stroke: currentColor;
     stroke-width: variables.$mark-stroke-size * 1.3;
     stroke-dashoffset: variables.$mark-path-length_;
@@ -917,7 +917,7 @@ $ripple-target: '.mdc-checkbox__ripple';
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: 100%;
     height: 0;
     transform: scaleX(0) rotate(0deg);
@@ -926,7 +926,7 @@ $ripple-target: '.mdc-checkbox__ripple';
     opacity: 0;
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: functions.transition-exit(opacity),
       functions.transition-exit(transform);
   }
@@ -950,7 +950,7 @@ $ripple-target: '.mdc-checkbox__ripple';
 @mixin touch-target-reset_($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     margin: 0;
   }
 }

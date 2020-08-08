@@ -1,0 +1,370 @@
+//
+// Copyright 2016 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use 'sass:color';
+@use 'sass:map';
+@use '@material/animation/functions' as functions2;
+@use '@material/animation/variables' as variables2;
+@use '@material/base/mixins' as base-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+
+$fade-in-duration: 75ms !default;
+$fade-out-duration: 150ms !default;
+$translate-duration: 225ms !default;
+$states-wash-duration: 15ms !default;
+
+// Notes on states:
+// * focus takes precedence over hover (i.e. if an element is both focused and hovered, only focus value applies)
+// * press state applies to a separate pseudo-element, so it has an additive effect on top of other states
+// * selected/activated are applied additively to hover/focus via calculations at preprocessing time
+
+$dark-ink-opacities: (
+  hover: 0.04,
+  focus: 0.12,
+  press: 0.12,
+  selected: 0.08,
+  activated: 0.12,
+) !default;
+
+$light-ink-opacities: (
+  hover: 0.08,
+  focus: 0.24,
+  press: 0.24,
+  selected: 0.16,
+  activated: 0.24,
+) !default;
+
+// Legacy
+
+$pressed-dark-ink-opacity: 0.16 !default;
+$pressed-light-ink-opacity: 0.32 !default;
+
+@mixin states-base-color(
+  $color,
+  $query: feature-targeting.all(),
+  $ripple-target: '&'
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  #{$ripple-target}::before,
+  #{$ripple-target}::after {
+    @include feature-targeting.targets($feat-color) {
+      @if color.alpha(theme-color.prop-value($color)) > 0 {
+        @include theme.prop(background-color, $color);
+      } @else {
+        // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
+        // This avoids unnecessary transitions and overflow.
+        content: none;
+      }
+    }
+  }
+}
+
+///
+/// Customizes ripple opacities in `hover`, `focus`, or `press` states
+/// @param {map} $opacity-map - map specifying custom opacity of zero or more states
+/// @param {bool} $has-nested-focusable-element - whether the component contains a focusable element in the root
+/// @param {string} $ripple-target - the optional selector for the ripple element
+///
+@mixin states-opacities(
+  $opacity-map: (),
+  $has-nested-focusable-element: false,
+  $ripple-target: '&',
+  $query: feature-targeting.all()
+) {
+  // Ensure sufficient specificity to override base state opacities
+  @if map.has-key($opacity-map, hover) {
+    @include states-hover-opacity(
+      map.get($opacity-map, hover),
+      $ripple-target: $ripple-target,
+      $query: $query
+    );
+  }
+
+  @if map.has-key($opacity-map, focus) {
+    @include states-focus-opacity(
+      map.get($opacity-map, focus),
+      $ripple-target: $ripple-target,
+      $has-nested-focusable-element: $has-nested-focusable-element,
+      $query: $query
+    );
+  }
+
+  @if map.has-key($opacity-map, press) {
+    @include states-press-opacity(
+      map.get($opacity-map, press),
+      $ripple-target: $ripple-target,
+      $query: $query
+    );
+  }
+}
+
+@mixin states-hover-opacity(
+  $opacity,
+  $query: feature-targeting.all(),
+  $ripple-target: '&'
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  // Background wash styles, for both CSS-only and upgraded stateful surfaces
+  &:hover {
+    #{$ripple-target}::before {
+      // Opacity falls under color because the chosen opacity is color-dependent in typical usage
+      @include feature-targeting.targets($feat-color) {
+        opacity: $opacity;
+      }
+    }
+  }
+}
+
+@mixin states-focus-opacity(
+  $opacity,
+  $has-nested-focusable-element: false,
+  $query: feature-targeting.all(),
+  $ripple-target: '&'
+) {
+  // Focus overrides hover by reusing the ::before pseudo-element.
+  // :focus-within generally works on non-MS browsers and matches when a *child* of the element has focus.
+  // It is useful for cases where a component has a focusable element within the root node, e.g. text field,
+  // but undesirable in general in case of nested stateful components.
+  // We use a modifier class for JS-enabled surfaces to support all use cases in all browsers.
+  @if $has-nested-focusable-element {
+    // JS-enabled selectors.
+    &.mdc-ripple-upgraded--background-focused,
+    &.mdc-ripple-upgraded:focus-within,
+    // CSS-only selectors.
+    &:not(.mdc-ripple-upgraded):focus,
+    &:not(.mdc-ripple-upgraded):focus-within {
+      #{$ripple-target}::before {
+        @include states-focus-opacity-properties_(
+          $opacity: $opacity,
+          $query: $query
+        );
+      }
+    }
+  } @else {
+    // JS-enabled selectors.
+    &.mdc-ripple-upgraded--background-focused,
+    // CSS-only selectors.
+    &:not(.mdc-ripple-upgraded):focus {
+      #{$ripple-target}::before {
+        @include states-focus-opacity-properties_(
+          $opacity: $opacity,
+          $query: $query
+        );
+      }
+    }
+  }
+}
+
+@mixin states-focus-opacity-properties_($opacity, $query) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  // Opacity falls under color because the chosen opacity is color-dependent in typical usage
+  $feat-color: feature-targeting.create-target($query, color);
+
+  // Note that this duration is only effective on focus, not blur
+  @include feature-targeting.targets($feat-animation) {
+    transition-duration: 75ms;
+  }
+
+  @include feature-targeting.targets($feat-color) {
+    opacity: $opacity;
+  }
+}
+
+@mixin states-press-opacity(
+  $opacity,
+  $query: feature-targeting.all(),
+  $ripple-target: '&'
+) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-color: feature-targeting.create-target($query, color);
+
+  // Styles for non-upgraded (CSS-only) stateful surfaces
+
+  &:not(.mdc-ripple-upgraded) {
+    // Apply press additively by using the ::after pseudo-element
+    #{$ripple-target}::after {
+      @include feature-targeting.targets($feat-animation) {
+        transition: opacity $fade-out-duration linear;
+      }
+    }
+
+    &:active {
+      #{$ripple-target}::after {
+        @include feature-targeting.targets($feat-animation) {
+          transition-duration: $fade-in-duration;
+        }
+
+        // Opacity falls under color because the chosen opacity is color-dependent in typical usage
+        @include feature-targeting.targets($feat-color) {
+          opacity: $opacity;
+        }
+      }
+    }
+  }
+
+  &.mdc-ripple-upgraded {
+    @include feature-targeting.targets($feat-color) {
+      --mdc-ripple-fg-opacity: #{$opacity};
+    }
+  }
+}
+
+// Simple mixin for base states which automatically selects opacity values based on whether the ink color is
+// light or dark.
+@mixin states(
+  $color: theme-color.prop-value(on-surface),
+  $has-nested-focusable-element: false,
+  $query: feature-targeting.all(),
+  $ripple-target: '&'
+) {
+  @include states-interactions_(
+    $color: $color,
+    $has-nested-focusable-element: $has-nested-focusable-element,
+    $query: $query,
+    $ripple-target: $ripple-target
+  );
+}
+
+// Simple mixin for activated states which automatically selects opacity values based on whether the ink color is
+// light or dark.
+@mixin states-activated(
+  $color,
+  $has-nested-focusable-element: false,
+  $query: feature-targeting.all(),
+  $ripple-target: '&'
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $activated-opacity: states-opacity($color, activated);
+
+  &--activated {
+    // Stylelint seems to think that '&' qualifies as a type selector here?
+    // stylelint-disable-next-line selector-max-type
+    #{$ripple-target}::before {
+      // Opacity falls under color because the chosen opacity is color-dependent.
+      @include feature-targeting.targets($feat-color) {
+        opacity: $activated-opacity;
+      }
+    }
+
+    @include states-interactions_(
+      $color: $color,
+      $has-nested-focusable-element: $has-nested-focusable-element,
+      $opacity-modifier: $activated-opacity,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+  }
+}
+
+// Simple mixin for selected states which automatically selects opacity values based on whether the ink color is
+// light or dark.
+@mixin states-selected(
+  $color,
+  $has-nested-focusable-element: false,
+  $query: feature-targeting.all(),
+  $ripple-target: '&'
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $selected-opacity: states-opacity($color, selected);
+
+  &--selected {
+    // stylelint-disable-next-line selector-max-type
+    #{$ripple-target}::before {
+      // Opacity falls under color because the chosen opacity is color-dependent.
+      @include feature-targeting.targets($feat-color) {
+        opacity: $selected-opacity;
+      }
+    }
+
+    @include states-interactions_(
+      $color: $color,
+      $has-nested-focusable-element: $has-nested-focusable-element,
+      $opacity-modifier: $selected-opacity,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+  }
+}
+
+@mixin states-interactions_(
+  $color,
+  $has-nested-focusable-element,
+  $opacity-modifier: 0,
+  $query: feature-targeting.all(),
+  $ripple-target: '&'
+) {
+  @include target-selector($ripple-target) {
+    @include states-base-color($color, $query);
+  }
+
+  $opacity-map: (
+    hover: states-opacity($color, hover) + $opacity-modifier,
+    focus: states-opacity($color, focus) + $opacity-modifier,
+    press: states-opacity($color, press) + $opacity-modifier,
+  );
+
+  @include states-opacities(
+    $opacity-map,
+    $has-nested-focusable-element: $has-nested-focusable-element,
+    $ripple-target: $ripple-target,
+    $query: $query
+  );
+}
+
+// Wraps content in the `ripple-target` selector if it exists.
+@mixin target-selector($ripple-target: '&') {
+  @if $ripple-target == '&' {
+    @content;
+  } @else {
+    #{$ripple-target} {
+      @content;
+    }
+  }
+}
+
+@function states-opacity($color, $state) {
+  $opacity-map: states-opacities_($color);
+
+  @if not map.has-key($opacity-map, $state) {
+    @error "Invalid state: '#{$state}'. Choose one of: #{map.keys($opacity-map)}";
+  }
+
+  @return map.get($opacity-map, $state);
+}
+
+@function states-opacities_($color) {
+  $color-value: theme-color.prop-value($color);
+  $opacity-map: if(
+    theme-color.tone($color-value) == 'light',
+    $light-ink-opacities,
+    $dark-ink-opacities
+  );
+
+  @return $opacity-map;
+}

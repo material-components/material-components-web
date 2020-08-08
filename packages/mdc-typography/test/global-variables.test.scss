@@ -1,4 +1,4 @@
-@use "sass:string";
+@use 'sass:string';
 
 $mdc-typography-font-family: string.unquote('Arial');
 $mdc-typography-styles-headline1: (

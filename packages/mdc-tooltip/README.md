@@ -58,7 +58,7 @@ considered valid based on the logic outlined above.
 npm install @material/tooltip
 ```
 
-### Styes
+### Styles
 
 ```scss
 @use "@material/tooltip/styles";

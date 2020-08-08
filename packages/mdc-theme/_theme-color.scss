@@ -20,14 +20,14 @@
 // THE SOFTWARE.
 //
 
-@use "sass:color";
-@use "sass:list";
-@use "sass:map";
-@use "sass:math";
-@use "sass:meta";
-@use "sass:string";
-@use "./constants";
-@use "./custom-properties";
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:string';
+@use './constants';
+@use './custom-properties';
 
 // Calculate the luminance for a color.
 // See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
@@ -48,7 +48,7 @@
   @return math.max($backLum, $foreLum) / math.min($backLum, $foreLum);
 }
 
-// Determine whether the color is "light" or "dark".
+// Determine whether the color is 'light' or 'dark'.
 @function tone($color) {
   @if $color == 'dark' or $color == 'light' {
     @return $color;
@@ -67,7 +67,7 @@
 }
 
 // Determine whether to use dark or light text on top of given color to meet accessibility standards for contrast.
-// Returns "dark" if the given color is light and "light" if the given color is dark.
+// Returns 'dark' if the given color is light and 'light' if the given color is dark.
 @function contrast-tone($color) {
   @return if(tone($color) == 'dark', 'light', 'dark');
 }
@@ -79,7 +79,7 @@
 /// @example
 ///   `color-hash(#6200ee)` => "6200ee"
 ///   `color-hash(rgb(255, 112, 112))` => "ff7070"
-///   `color-hash((varname: --my-fancy-color, fallback: teal))` => "--my-fancy-color"
+///   `color-hash((varname: --my-fancy-color, fallback: teal))` => '--my-fancy-color'
 ///
 @function color-hash($color) {
   @if custom-properties.is-custom-prop($color) {
@@ -191,7 +191,7 @@ $property-values: (
 // Examples:
 //
 // 1. mdc-theme-prop-value(primary) => "#6200ee"
-// 2. mdc-theme-prop-value(blue)    => "blue"
+// 2. mdc-theme-prop-value(blue)    => 'blue'
 //
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
 @function prop-value($style) {

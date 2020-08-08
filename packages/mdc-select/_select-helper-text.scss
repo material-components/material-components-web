@@ -21,17 +21,16 @@
 //
 
 @use '@material/animation/variables';
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/typography/mixins' as typography-mixins;
 
-@mixin helper-text-core-styles($query: feature-targeting-functions.all()) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin helper-text-core-styles($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-select-helper-text {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       margin: 0;
       @include rtl-mixins.reflexive-property(margin, 16px, 16px);
     }
@@ -40,18 +39,18 @@
   }
 
   .mdc-select-helper-text--validation-msg {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 0;
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: opacity 180ms variables.$standard-curve-timing-function;
     }
   }
 
   .mdc-select--invalid + .mdc-select-helper-text--validation-msg,
   .mdc-select-helper-text--validation-msg-persistent {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 1;
     }
   }

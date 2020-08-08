@@ -20,34 +20,37 @@
 // THE SOFTWARE.
 //
 
-@use "sass:map";
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins";
-@use "./custom-properties";
-@use "./gss";
-@use "./color";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use 'sass:map';
+@use '@material/feature-targeting/feature-targeting';
+@use './css';
+@use './custom-properties';
+@use './gss';
+@use './theme-color';
 
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
   :root {
-    @include mixins.targets($feat-color) {
-      @each $style in map.keys(color.$property-values) {
-        --mdc-theme-#{$style}: #{map.get(color.$property-values, $style)};
+    @include feature-targeting.targets($feat-color) {
+      @each $style in map.keys(theme-color.$property-values) {
+        --mdc-theme-#{$style}: #{map.get(theme-color.$property-values, $style)};
       }
     }
   }
 
-  @each $style in map.keys(color.$property-values) {
+  @each $style in map.keys(theme-color.$property-values) {
     @if $style != 'background' and $style != 'surface' {
       .mdc-theme--#{$style} {
-        @include mixins.targets($feat-color) {
+        @include feature-targeting.targets($feat-color) {
           @include prop(color, $style, true);
         }
       }
     } @else {
       .mdc-theme--#{$style} {
-        @include mixins.targets($feat-color) {
+        @include feature-targeting.targets($feat-color) {
           @include prop(background-color, $style);
         }
       }
@@ -57,7 +60,7 @@
   // CSS rules for using primary and secondary (plus light/dark variants) as background colors.
   @each $style in ('primary', 'secondary') {
     .mdc-theme--#{$style}-bg {
-      @include mixins.targets($feat-color) {
+      @include feature-targeting.targets($feat-color) {
         @include prop(background-color, $style, true);
       }
     }
@@ -70,7 +73,7 @@
 /// The value may be any of the following:
 /// - a standard CSS value
 /// - a custom property Map, e.g. (varname: --mdc-foo, fallback: blue)
-/// - a Material theme key String, e.g. "primary", "on-primary"
+/// - a Material theme key String, e.g. 'primary', 'on-primary'
 ///
 /// @param {String} $property - the name of the CSS property.
 /// @param {String | Number | Color | List | Map} $value - the property's value.
@@ -78,8 +81,6 @@
 /// @param {Bool} $important - set to true to add an `!important` rule. Defaults
 ///     to false.
 @mixin property($property, $value, $gss: (), $important: false) {
-  $important-rule: if($important, '!important', '');
-
   @if custom-properties.is-custom-prop($value) {
     // $value is a custom property Map
     @include custom-properties.apply(
@@ -88,9 +89,9 @@
       $gss: $gss,
       $important: $important
     );
-  } @else if map.has-key(color.$property-values, $value) {
+  } @else if map.has-key(theme-color.$property-values, $value) {
     // $value is a theme property String
-    $fallback: map.get(color.$property-values, $value);
+    $fallback: map.get(theme-color.$property-values, $value);
     $custom-prop: custom-properties.create(--mdc-theme-#{$value}, $fallback);
     @include custom-properties.apply(
       $property,
@@ -100,8 +101,12 @@
     );
   } @else {
     // $value is a standard CSS value
-    @include gss.annotate($gss);
-    #{$property}: $value #{$important-rule};
+    @include css.declaration(
+      $property,
+      $value,
+      $gss: $gss,
+      $important: $important
+    );
   }
 }
 
@@ -110,21 +115,22 @@
 // $style should be one of the map keys in $mdc-theme-property-values (_variables.scss), or a color value.
 // @deprecated use the `property()` mixin instead
 @mixin prop($property, $style, $important: false) {
-  $important-rule: if($important, '!important', '');
-
   @if custom-properties.is-custom-prop($style) {
     @include custom-properties.apply($property, $style, $important: $important);
-  } @else if color.is-valid-theme-prop-value_($style) {
-    #{$property}: $style #{$important-rule};
+  } @else if theme-color.is-valid-theme-prop-value_($style) {
+    @include css.declaration($property, $style, $important: $important);
   } @else {
-    @if not map.has-key(color.$property-values, $style) {
-      @error "Invalid style: '#{$style}'. Choose one of: #{map.keys(color.$property-values)}";
+    @if not map.has-key(theme-color.$property-values, $style) {
+      @error "Invalid style: '#{$style}'. Choose one of: #{map.keys(theme-color.$property-values)}";
     }
-    $value: map.get(color.$property-values, $style);
+    $value: map.get(theme-color.$property-values, $style);
 
-    #{$property}: $value #{$important-rule};
-    /* @alternate */
-    #{$property}: var(--mdc-theme-#{$style}, $value) #{$important-rule};
+    @include css.declaration(
+      $property,
+      $value: var(--mdc-theme-#{$style}, $value),
+      $fallback-value: $value,
+      $important: $important
+    );
   }
 }
 

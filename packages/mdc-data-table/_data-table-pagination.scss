@@ -1,8 +1,8 @@
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/typography/mixins' as typography;
+@use '@material/typography/typography';
 @use '@material/rtl/mixins' as rtl;
 @use '@material/icon-button/mixins' as icon-button-theme;
-@use '@material/select/mixins' as select-theme;
+@use '@material/select/select-theme';
 @use '@material/list/mixins' as list-theme;
 @use '@material/menu/mixins' as menu-theme;
 @use './data-table-theme';

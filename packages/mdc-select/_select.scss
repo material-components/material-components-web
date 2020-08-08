@@ -20,9 +20,415 @@
 // THE SOFTWARE.
 //
 
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
+@use '@material/dom/mixins' as dom-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/floating-label/mixins' as floating-label-mixins;
+@use '@material/floating-label/variables' as floating-label-variables;
+@use '@material/list/mixins' as list-mixins;
+@use '@material/notched-outline/mixins' as notched-outline-mixins;
+@use '@material/notched-outline/variables' as notched-outline-variables;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/theme/mixins' as theme-mixins;
+@use '@material/typography/mixins' as typography-mixins;
+@use './select-helper-text-theme';
+@use './select-icon-theme';
+@use './select-theme';
+@use './select-filled';
+@use './select-outlined';
+@use './select-ripple';
 @use './select-helper-text';
+@use './select-icon';
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select {
+    @include select-theme.ink-color(
+      (
+        default: select-theme.$ink-color,
+        disabled: select-theme.$disabled-ink-color,
+      ),
+      $query: $query
+    );
+
+    @include select-theme.label-color(
+      (
+        default: select-theme.$label-color,
+        focus: select-theme.$focused-label-color,
+        disabled: select-theme.$disabled-label-color,
+      ),
+      $query: $query
+    );
+
+    @include select-theme.dropdown-icon-color(
+      (
+        default: select-theme.$dropdown-icon-color,
+        focus: primary,
+        disabled: select-theme.$disabled-dropdown-icon-color,
+      ),
+      $query: $query
+    );
+
+    @include select-helper-text-theme.helper-text-color(
+      (
+        default: select-helper-text-theme.$helper-text-color,
+        disabled: select-helper-text-theme.$disabled-helper-text-color,
+      ),
+      $query: $query
+    );
+
+    @include select-icon-theme.icon-color(
+      (
+        default: select-icon-theme.$icon-color,
+        disabled: select-icon-theme.$disabled-icon-color,
+      ),
+      $query: $query
+    );
+
+    // High-contrast mode support
+    @include dom-mixins.ie-high-contrast-mode() {
+      $gray-text: (
+        disabled: GrayText,
+      );
+      @include select-theme.ink-color($gray-text, $query: $query);
+      @include select-theme.dropdown-icon-color(
+        (
+          disabled: red,
+        ),
+        $query: $query
+      );
+      @include select-theme.label-color($gray-text, $query: $query);
+      @include select-theme.bottom-line-color($gray-text, $query: $query);
+      @include select-theme.outline-color($gray-text, $query: $query);
+      @include select-icon-theme.icon-color($gray-text, $query: $query);
+      @include select-helper-text-theme.helper-text-color(
+        $gray-text,
+        $query: $query
+      );
+    }
+
+    // Floating label private mixin
+    @include _floating-label($query: $query);
+
+    // structural
+    @include _padding-horizontal(
+      $left: select-theme.$anchor-padding-left,
+      $left-with-leading-icon:
+        select-theme.$anchor-padding-left-with-leading-icon,
+      $right: select-theme.$anchor-padding-right,
+      $query: $query
+    );
+    @include select-theme.min-width(select-theme.$min-width, $query: $query);
+    @include select-icon-theme.size(
+      select-icon-theme.$icon-size,
+      $query: $query
+    );
+    @include select-theme.dropdown-icon-size(
+      select-icon-theme.$icon-size,
+      $query: $query
+    );
+    @include _option-side-padding(16px, $query: $query);
+    @include _option-graphic-trailing-margin(12px, $query: $query);
+
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-flex;
+      position: relative; // Menu is absolutely positioned relative to this.
+    }
+
+    &__dropdown-icon {
+      @include _dropdown-icon-base($query: $query);
+      @include _dropdown-icon-inactive($query: $query);
+
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl-mixins.reflexive-property(
+          margin,
+          select-icon-theme.$icon-horizontal-margin,
+          select-icon-theme.$icon-horizontal-margin
+        );
+        display: inline-flex;
+        position: relative;
+        align-self: center;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        pointer-events: none;
+      }
+
+      .mdc-select--activated & {
+        @include _dropdown-icon-active($query: $query);
+      }
+    }
+  }
+
+  .mdc-select__anchor {
+    @include floating-label-mixins.float-position(
+      select-theme.$label-position-y,
+      $query: $query
+    );
+
+    @include feature-targeting.targets($feat-structure) {
+      width: 100%;
+      position: relative;
+      box-sizing: border-box;
+      overflow: hidden;
+      outline: none;
+      cursor: pointer;
+    }
+  }
+
+  @include _text($query: $query);
+
+  .mdc-select--invalid {
+    @include select-theme.label-color(
+      (
+        default: select-theme.$error-color,
+        focus: select-theme.$error-color,
+      ),
+      $query: $query
+    );
+    @include select-helper-text-theme.helper-text-validation-color(
+      select-theme.$error-color,
+      $query: $query
+    );
+    @include select-theme.dropdown-icon-color(
+      (
+        default: select-theme.$error-color,
+        focus: select-theme.$error-color,
+      ),
+      $query: $query
+    );
+  }
+
+  .mdc-select--disabled {
+    @include _disabled($query: $query);
+  }
+
+  .mdc-select--with-leading-icon {
+    @include _option-side-padding(12px, $query: $query);
+  }
+
+  .mdc-select__menu .mdc-list {
+    @include select-icon-theme.icon-horizontal-margins(0, 0, $query: $query);
+    @include list-mixins.item-selected-text-color(on-surface, $query: $query);
+  }
+
+  @include select-filled.core-styles($query: $query);
+  @include select-outlined.core-styles($query: $query);
+  @include select-ripple.core-styles($query: $query);
   @include select-helper-text.helper-text-core-styles($query: $query);
+  @include select-icon.icon-core-styles($query: $query);
+}
+
+///
+/// Sets base dropdown icon styles.
+/// @access private
+///
+@mixin _dropdown-icon-base($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__dropdown-icon-active,
+  .mdc-select__dropdown-icon-inactive {
+    @include feature-targeting.targets($feat-structure) {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  .mdc-select__dropdown-icon-graphic {
+    $svg-natural-width: 10px;
+    $svg-natural-height: 5px;
+
+    @include feature-targeting.targets($feat-structure) {
+      width: $svg-natural-width / select-icon-theme.$icon-size * 100%;
+      height: $svg-natural-height / select-icon-theme.$icon-size * 100%;
+    }
+  }
+}
+
+///
+/// Sets styles for transitioning the dropdown icon to inactive state.
+/// @access private
+///
+@mixin _dropdown-icon-inactive($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  .mdc-select__dropdown-icon-inactive {
+    @include feature-targeting.targets($feat-structure) {
+      opacity: 1;
+    }
+
+    @include feature-targeting.targets($feat-animation) {
+      transition: opacity select-theme.$icon-inactive-fade-in-duration linear
+        select-theme.$icon-inactive-fade-out-duration;
+    }
+  }
+
+  .mdc-select__dropdown-icon-active {
+    @include feature-targeting.targets($feat-structure) {
+      opacity: 0;
+    }
+
+    @include feature-targeting.targets($feat-animation) {
+      transition: opacity select-theme.$icon-inactive-fade-out-duration linear;
+    }
+  }
+}
+
+///
+/// Sets styles for transitioning the dropdown icon to activated state.
+/// @access private
+///
+@mixin _dropdown-icon-active($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  .mdc-select__dropdown-icon-inactive {
+    @include feature-targeting.targets($feat-structure) {
+      opacity: 0;
+    }
+
+    @include feature-targeting.targets($feat-animation) {
+      transition: opacity select-theme.$icon-active-fade-out-duration linear;
+    }
+  }
+
+  .mdc-select__dropdown-icon-active {
+    @include feature-targeting.targets($feat-structure) {
+      opacity: 1;
+    }
+
+    @include feature-targeting.targets($feat-animation) {
+      transition: opacity select-theme.$icon-active-fade-in-duration linear
+        select-theme.$icon-active-fade-out-duration;
+    }
+  }
+}
+
+///
+/// Sets the side padding for option text.
+/// @access private
+///
+@mixin _option-side-padding($side-padding, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__menu .mdc-list-item {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $side-padding,
+        $side-padding
+      );
+    }
+  }
+}
+
+///
+/// Sets the traliing margin for an option's leading graphic.
+/// @access private
+///
+@mixin _option-graphic-trailing-margin(
+  $margin-right,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__menu .mdc-list-item__graphic {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl-mixins.reflexive-box(margin, right, $margin-right);
+    }
+  }
+}
+
+@mixin _floating-label($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-floating-label {
+    @include feature-targeting.targets($feat-structure) {
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+  }
+}
+
+@mixin _text($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-select__selected-text {
+    @include typography-mixins.typography(subtitle1, $query: $query);
+
+    @include feature-targeting.targets($feat-structure) {
+      &::-ms-expand {
+        display: none;
+      }
+
+      &::-ms-value {
+        background-color: transparent;
+        color: inherit;
+      }
+
+      box-sizing: border-box;
+      width: auto;
+      flex-grow: 1;
+      height: select-theme.$selected-text-height;
+      border: none;
+      outline: none;
+      padding: 0;
+      white-space: nowrap;
+      appearance: none;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    @include feature-targeting.targets($feat-color) {
+      background-color: transparent;
+      color: inherit; // Override default user agent stylesheet
+    }
+  }
+}
+
+@mixin _disabled($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+/// Adds horizontal padding to the selected text
+///
+/// @param {Number} $left - left side padding
+/// @param {Number} $left-with-leading-icon - left-side padding when a leading
+///     icon is present
+/// @param {Number} $right - right-side padding; note that a trailing icon is
+///     always present.
+@mixin _padding-horizontal(
+  $left,
+  $left-with-leading-icon,
+  $right,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__anchor {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(padding, $left, $right);
+    }
+  }
+
+  &.mdc-select--with-leading-icon .mdc-select__anchor {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl-mixins.reflexive-property(
+        padding,
+        $left-with-leading-icon,
+        $right
+      );
+    }
+  }
 }

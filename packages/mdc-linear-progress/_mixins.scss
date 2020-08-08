@@ -18,14 +18,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@use "sass:string";
-@use "@material/animation/functions" as animation-functions;
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/theme/variables" as theme-variables; // for mdc-theme-prop-value
-@use "./variables";
-@use "./keyframes";
+@use 'sass:string';
+@use '@material/animation/functions' as animation-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use './variables';
+@use './keyframes';
 
 //
 // Public
@@ -35,7 +34,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     @include keyframes.primary-indeterminate-translate-keyframes_;
     @include keyframes.primary-indeterminate-scale-keyframes_;
     @include keyframes.secondary-indeterminate-translate-keyframes_;
@@ -47,7 +46,7 @@
   }
 
   .mdc-linear-progress {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: relative;
       width: 100%;
       height: variables.$height;
@@ -57,12 +56,12 @@
       overflow: hidden;
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: animation-functions.exit-temporary(opacity, 250ms);
     }
 
     &__bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -70,13 +69,13 @@
         transform-origin: top left;
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition: animation-functions.exit-temporary(transform, 250ms);
       }
     }
 
     &__bar-inner {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: inline-block;
         position: absolute;
         width: 100%;
@@ -88,7 +87,7 @@
     }
 
     &__buffer {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: flex;
         position: absolute;
         width: 100%;
@@ -97,36 +96,36 @@
     }
 
     &__buffer-dots {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         background-repeat: repeat-x;
         background-size: 10px variables.$height;
         flex: auto;
         transform: rotate(180deg);
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         animation: mdc-linear-progress-buffering 250ms infinite linear;
       }
     }
 
     &__buffer-bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         flex: 0 1 100%;
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         transition: animation-functions.exit-temporary(flex-basis, 250ms);
       }
     }
 
     &__primary-bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         transform: scaleX(0);
       }
     }
 
     &__secondary-bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         visibility: hidden;
       }
     }
@@ -135,11 +134,11 @@
     @include reversed_($query: $query);
 
     &--closed {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         opacity: 0;
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         animation: none;
       }
     }
@@ -152,14 +151,14 @@
 
   .mdc-linear-progress--indeterminate.mdc-linear-progress--reversed {
     .mdc-linear-progress__primary-bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         right: -145.166611%;
         left: auto;
       }
     }
 
     .mdc-linear-progress__secondary-bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         right: -54.888891%;
         left: auto;
       }
@@ -171,17 +170,17 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-linear-progress__bar-inner {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       // Border is used rather than background-color to ensure that the
       // bar is visible in Windows High Contrast Mode.
-      @include theme-mixins.prop(border-color, $color);
+      @include theme.prop(border-color, $color);
     }
   }
 }
 
 @mixin buffer-color($color, $query: feature-targeting.all()) {
   // We need to escape the '#' character as "%23" for SVG because '#' is a reserved character in URIs.
-  $color-value-for-css: theme-variables.prop-value($color);
+  $color-value-for-css: theme-color.prop-value($color);
   $color-value-for-svg: str-replace_(
     string.unquote('#{$color-value-for-css}'),
     '#',
@@ -190,7 +189,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-linear-progress__buffer-dots {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       // SVG is optimized for data URI (https://codepen.io/tigt/post/optimizing-svgs-in-data-uris)
       // stylelint-disable-next-line function-url-quotes
       background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' enable-background='new 0 0 5 2' xml:space='preserve' viewBox='0 0 5 2' preserveAspectRatio='none slice'%3E%3Ccircle cx='1' cy='1' r='1' fill='#{$color-value-for-svg}'/%3E%3C/svg%3E");
@@ -198,7 +197,7 @@
   }
 
   .mdc-linear-progress__buffer-bar {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       background-color: $color-value-for-css;
     }
   }
@@ -214,23 +213,23 @@
 
   &--indeterminate {
     .mdc-linear-progress__bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         transition: none;
       }
     }
 
     .mdc-linear-progress__primary-bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         left: -145.166611%;
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         animation: mdc-linear-progress-primary-indeterminate-translate 2s
           infinite linear;
       }
 
       > .mdc-linear-progress__bar-inner {
-        @include feature-targeting-mixins.targets($feat-animation) {
+        @include feature-targeting.targets($feat-animation) {
           animation: mdc-linear-progress-primary-indeterminate-scale 2s infinite
             linear;
         }
@@ -238,18 +237,18 @@
     }
 
     .mdc-linear-progress__secondary-bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         left: -54.888891%;
         visibility: visible;
       }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         animation: mdc-linear-progress-secondary-indeterminate-translate 2s
           infinite linear;
       }
 
       > .mdc-linear-progress__bar-inner {
-        @include feature-targeting-mixins.targets($feat-animation) {
+        @include feature-targeting.targets($feat-animation) {
           animation: mdc-linear-progress-secondary-indeterminate-scale 2s
             infinite linear;
         }
@@ -264,37 +263,37 @@
 
   &--reversed {
     .mdc-linear-progress__bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         right: 0;
         transform-origin: center right;
       }
     }
 
     .mdc-linear-progress__primary-bar {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         animation-name: mdc-linear-progress-primary-indeterminate-translate-reverse;
       }
     }
 
     .mdc-linear-progress__secondary-bar {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         animation-name: mdc-linear-progress-secondary-indeterminate-translate-reverse;
       }
     }
 
     .mdc-linear-progress__buffer-dots {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         animation: mdc-linear-progress-buffering-reverse 250ms infinite linear;
       }
 
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         order: 0;
         transform: rotate(0);
       }
     }
 
     .mdc-linear-progress__buffer-bar {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         order: 1;
       }
     }

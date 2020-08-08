@@ -120,6 +120,15 @@ export interface MDCSliderAdapter {
       void;
 
   /**
+   * Removes the given style property from the thumb element.
+   * - If thumb is `Thumb.START`, removes style from the start thumb (for
+   *   range slider variant).
+   * - If thumb is `Thumb.END`, removes style from the end thumb (or only thumb
+   *   for single point slider).
+   */
+  removeThumbStyleProperty(propertyName: string, thumb: Thumb): void;
+
+  /**
    * Sets a style property of the active track element to the passed value.
    */
   setTrackActiveStyleProperty(propertyName: string, value: string): void;

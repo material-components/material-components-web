@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import 'core-js/es'; // COPYBARA_COMMENT_THIS_LINE
 import {MDCFoundation} from '../../packages/mdc-base/foundation';
 
 import {createMockAdapter, FoundationConstructor} from './foundation';

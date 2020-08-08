@@ -1,5 +1,5 @@
-@use "../mixins" as touch-target;
-@use "@material/feature-targeting/feature-targeting";
+@use '../mixins' as touch-target;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {

@@ -20,4 +20,12 @@
 // THE SOFTWARE.
 //
 
-// TODO: Add styles.
+// CSS: Emit CSS required to style component
+
+@use './segmented-button/segmented-button';
+@use './segment/segment';
+@use './segment/segment-ripple';
+
+@include segmented-button.core-styles();
+@include segment.core-styles();
+@include segment-ripple.ripple();

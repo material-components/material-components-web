@@ -1,5 +1,5 @@
-@use "../mixins" as form-field;
-@use "@material/feature-targeting/feature-targeting";
+@use '../mixins' as form-field;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {

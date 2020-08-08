@@ -20,11 +20,12 @@
 // THE SOFTWARE.
 //
 
-@use "@material/animation/variables";
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
 
+@use '@material/animation/variables';
+@use '@material/theme/theme';
+@use '@material/feature-targeting/feature-targeting';
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
@@ -36,14 +37,14 @@
   }
 
   .mdc-tab-indicator__content {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       transform-origin: left;
       opacity: 0;
     }
   }
 
   .mdc-tab-indicator__content--underline {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       align-self: flex-end;
       box-sizing: border-box;
       width: 100%;
@@ -52,34 +53,34 @@
   }
 
   .mdc-tab-indicator__content--icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       align-self: center;
       margin: 0 auto;
     }
   }
 
   .mdc-tab-indicator--active .mdc-tab-indicator__content {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 1;
     }
   }
 
   // Slide by default
   .mdc-tab-indicator .mdc-tab-indicator__content {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: 250ms transform variables.$standard-curve-timing-function;
     }
   }
 
   // --no-transition is applied in cases where styles need to be applied immediately to set up a transition
   .mdc-tab-indicator--no-transition .mdc-tab-indicator__content {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: none;
     }
   }
 
   .mdc-tab-indicator--fade .mdc-tab-indicator__content {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: 150ms opacity linear;
     }
   }
@@ -87,7 +88,7 @@
   // postcss-bem-linter: ignore
   .mdc-tab-indicator--active.mdc-tab-indicator--fade
     .mdc-tab-indicator__content {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition-delay: 100ms;
     }
   }
@@ -98,7 +99,7 @@
 @mixin surface($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     position: relative;
   }
 }
@@ -107,8 +108,8 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-tab-indicator__content--underline {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(border-color, $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(border-color, $color);
     }
   }
 }
@@ -117,7 +118,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-tab-indicator__content--underline {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border-top-width: $height;
     }
   }
@@ -127,7 +128,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-tab-indicator__content--underline {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border-top-left-radius: $radius;
       border-top-right-radius: $radius;
     }
@@ -138,8 +139,8 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-tab-indicator__content--icon {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(color, $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, $color);
     }
   }
 }
@@ -148,7 +149,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-tab-indicator__content--icon {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: $height;
       font-size: $height;
     }
@@ -167,7 +168,7 @@
   @include underline-height(2px, $query);
   @include icon-height(34px, $query);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: flex;
     position: absolute;
     top: 0;

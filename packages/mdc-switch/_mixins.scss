@@ -20,15 +20,18 @@
 // THE SOFTWARE.
 //
 
-@use "@material/density/functions" as density-functions;
-@use "@material/elevation/mixins" as elevation-mixins;
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/ripple/mixins" as ripple-mixins;
-@use "@material/rtl/mixins" as rtl-mixins;
-@use "@material/theme/mixins" as theme-mixins;
-@use "./functions";
-@use "./variables";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/density/functions' as density-functions;
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/theme/theme';
+@use './functions';
+@use './variables';
 
 //
 // Public
@@ -50,7 +53,7 @@
   @include density(variables.$density-scale, $query: $query);
 
   .mdc-switch {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include base_;
     }
 
@@ -67,10 +70,10 @@
   }
 
   .mdc-switch__native-control {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include native-control_;
     }
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: functions.transition(transform);
     }
   }
@@ -88,7 +91,7 @@
   }
 
   .mdc-switch--checked {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       .mdc-switch__track {
         @include track-checked_;
       }
@@ -104,7 +107,7 @@
   }
 
   .mdc-switch--disabled {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include disabled-base_;
 
       .mdc-switch__thumb {
@@ -123,7 +126,7 @@
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // switch styles. It is recommended that most users use `mdc-switch-core-styles` instead.
 @mixin ripple($query: feature-targeting.all()) {
-  @include ripple-mixins.common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-switch {
     @include toggled-off-ripple-color(
@@ -133,9 +136,9 @@
   }
 
   .mdc-switch__thumb-underlay {
-    @include ripple-mixins.surface($query);
-    @include ripple-mixins.radius-unbounded(100%, $query);
-    @include ripple-mixins.states(
+    @include ripple.surface($query);
+    @include ripple.radius-unbounded(100%, $query);
+    @include ripple-theme.states(
       variables.$baseline-theme-color,
       false,
       $query
@@ -159,8 +162,8 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   &.mdc-switch--checked .mdc-switch__track {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(background-color, $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
     }
   }
 }
@@ -169,16 +172,16 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   &.mdc-switch--checked .mdc-switch__thumb {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(background-color, $color);
-      @include theme-mixins.prop(border-color, $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
+      @include theme.prop(border-color, $color);
     }
   }
 }
 
 @mixin toggled-on-ripple-color($color, $query: feature-targeting.all()) {
   &.mdc-switch--checked .mdc-switch__thumb-underlay {
-    @include ripple-mixins.states($color, false, $query);
+    @include ripple-theme.states($color, false, $query);
   }
 }
 
@@ -186,8 +189,8 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   &:not(.mdc-switch--checked) .mdc-switch__track {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(background-color, $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
     }
   }
 }
@@ -196,16 +199,16 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   &:not(.mdc-switch--checked) .mdc-switch__thumb {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(background-color, $color);
-      @include theme-mixins.prop(border-color, $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
+      @include theme.prop(border-color, $color);
     }
   }
 }
 
 @mixin toggled-off-ripple-color($color, $query: feature-targeting.all()) {
   &:not(.mdc-switch--checked) .mdc-switch__thumb-underlay {
-    @include ripple-mixins.states($color, false, $query);
+    @include ripple-theme.states($color, false, $query);
   }
 }
 
@@ -239,7 +242,7 @@
     ($ripple-size - variables.$thumb-diameter) + variables.$thumb-offset * 2;
 
   .mdc-switch__thumb-underlay {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-position(
         left,
         $tap-target-initial-position
@@ -253,7 +256,7 @@
   }
 
   .mdc-switch__native-control {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       width: $native-control-width;
       height: $ripple-size;
     }
@@ -271,7 +274,7 @@
 ) {
   // Ensure sufficient specificity to override base state opacities
   &.mdc-switch .mdc-switch__thumb-underlay {
-    @include ripple-mixins.states-opacities($opacity-map, $query: $query);
+    @include ripple-theme.states-opacities($opacity-map, $query: $query);
   }
 }
 
@@ -291,7 +294,7 @@
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     box-sizing: border-box;
     width: variables.$track-width;
     height: variables.$track-height;
@@ -300,7 +303,7 @@
     opacity: 0.38;
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: functions.transition(opacity),
       functions.transition(background-color), functions.transition(border-color);
   }
@@ -311,7 +314,7 @@
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: flex;
     position: absolute;
     align-items: center;
@@ -319,7 +322,7 @@
     transform: translateX(0);
   }
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     transition: functions.transition(transform),
       functions.transition(background-color), functions.transition(border-color);
   }
@@ -342,7 +345,7 @@
 
   @include elevation-mixins.elevation($z-value: 2, $query: $query);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     box-sizing: border-box;
     width: variables.$thumb-diameter;
     height: variables.$thumb-diameter;

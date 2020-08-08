@@ -20,13 +20,15 @@
 // THE SOFTWARE.
 //
 
-@use "@material/animation/variables" as animation-variables;
-@use "@material/density/functions" as density-functions;
-@use "@material/feature-targeting/feature-targeting";
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/tab-scroller/mixins" as tab-scroller-mixins;
-@use "@material/tab/mixins" as tab-mixins;
-@use "./variables";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/animation/variables' as animation-variables;
+@use '@material/density/functions' as density-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/tab-scroller/mixins' as tab-scroller-mixins;
+@use '@material/tab/mixins' as tab-mixins;
+@use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
   // postcss-bem-linter: define tab-bar
@@ -42,7 +44,7 @@
 @mixin width($width, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     width: $width;
   }
 }

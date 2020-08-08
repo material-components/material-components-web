@@ -1,0 +1,182 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Core: Define complete styles to render component segment, including base and theme styles
+
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/typography/typography';
+@use '@material/touch-target/touch-target';
+@use '@material/elevation/elevation';
+@use '@material/elevation/elevation-theme';
+@use './segment-theme';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include touch-target.wrapper($query);
+  @include elevation.overlay-common($query);
+
+  .mdc-segmented-button__segment {
+    @include base($query);
+    @include _unselected($query);
+
+    &:hover {
+      @include feature-targeting.targets($feat-structure) {
+        cursor: pointer;
+      }
+    }
+
+    // Removes ripple's focus outline
+    &:focus {
+      @include feature-targeting.targets($feat-structure) {
+        outline-width: 0;
+      }
+    }
+
+    &:first-child {
+      @include feature-targeting.targets($feat-structure) {
+        border-radius: segment-theme.$border-radius 0 0
+          segment-theme.$border-radius;
+      }
+    }
+
+    &:last-child {
+      @include feature-targeting.targets($feat-structure) {
+        border-right-width: segment-theme.$border-width;
+        border-radius: 0 segment-theme.$border-radius
+          segment-theme.$border-radius 0;
+      }
+    }
+
+    .mdc-segmented-button__segment__touch {
+      @include touch-target.touch-target($query: $query);
+    }
+
+    .mdc-segmented-button__segment--touch {
+      @include touch-target.margin(
+        $component-height: segment-theme.$touch-target-height,
+        $query: $query
+      );
+    }
+  }
+
+  // Style for when element is selected
+  .mdc-segmented-button__segment--selected {
+    @include _selected($query);
+  }
+
+  // maintains visual design when inside a touch-target-wrapper
+  // This could also be accomplished with --first/--last classes
+  .mdc-touch-target-wrapper {
+    .mdc-segmented-button__segment {
+      border-radius: 0;
+      border-right-width: 0;
+    }
+
+    &:first-child .mdc-segmented-button__segment {
+      @include feature-targeting.targets($feat-structure) {
+        border-radius: segment-theme.$border-radius 0 0
+          segment-theme.$border-radius;
+      }
+    }
+
+    &:last-child .mdc-segmented-button__segment {
+      @include feature-targeting.targets($feat-structure) {
+        border-right-width: segment-theme.$border-width;
+        border-radius: 0 segment-theme.$border-radius
+          segment-theme.$border-radius 0;
+      }
+    }
+  }
+
+  .mdc-segmented-button__icon {
+    @include icon($query);
+  }
+
+  .mdc-segmented-button__icon + .mdc-segmented-button__label {
+    @include label($query);
+  }
+}
+
+@mixin base($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  // elevation mixins contain ripple effect to segment boundaries
+  @include elevation-theme.overlay-surface-position($query: $query);
+  @include elevation-theme.overlay-dimensions(100%, $query: $query);
+  @include typography.typography(button, $query);
+  @include segment-theme.outline-color(segment-theme.$outline-color, $query);
+  @include feature-targeting.targets($feat-structure) {
+    display: inline-flex;
+    vertical-align: top;
+    align-items: center;
+    height: segment-theme.$height;
+    min-width: segment-theme.$min-width;
+    padding: 0 segment-theme.$horizontal-padding;
+    border-width: segment-theme.$border-width 0 segment-theme.$border-width
+      segment-theme.$border-width;
+  }
+}
+
+@mixin _unselected($query: feature-targeting.all()) {
+  @include segment-theme.unselected-ink-color(
+    segment-theme.$unselected-ink-color,
+    $query
+  );
+  @include segment-theme.unselected-container-fill-color(
+    segment-theme.$unselected-container-fill-color,
+    $query
+  );
+}
+
+@mixin _selected($query: feature-targeting.all()) {
+  @include segment-theme.selected-ink-color(
+    segment-theme.$selected-ink-color,
+    $query
+  );
+  @include segment-theme.selected-container-fill-color(
+    segment-theme.$selected-container-fill-color,
+    $query
+  );
+}
+
+@mixin icon($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  @include feature-targeting.targets($feat-structure) {
+    width: segment-theme.$icon-width;
+  }
+  @include feature-targeting.targets($feat-typography) {
+    font-size: segment-theme.$icon-font-size;
+  }
+}
+
+@mixin label($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    padding-left: segment-theme.$label-padding;
+  }
+}
