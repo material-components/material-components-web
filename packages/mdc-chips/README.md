@@ -122,7 +122,7 @@ A trailing icon comes with the functionality to remove the chip from the set. If
     </span>
   </span>
   <span role="gridcell">
-    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="-1" role="button">cancel</i>
+    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip-trailing-action" tabindex="-1" role="button">cancel</i>
   </span>
 </div>
 ```
