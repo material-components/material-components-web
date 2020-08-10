@@ -139,3 +139,18 @@
     $important: $important
   );
 }
+
+/// Declares custom property only when `$value` is truthy.
+/// @param {String} $custom-property - Name of custom property.
+/// @param {Number|String} $value - Declaration value of custom property.
+/// @example
+///   @include custom-properties.declare(--mdc-foo-bar, 4px);
+///   // --mdc-foo-bar: 4px
+///
+///   @include custom-properties.declare(--mdc-theme-foo, null);
+///   // Does not emit anything.
+@mixin declare($custom-property, $value) {
+  @if $value {
+    #{$custom-property}: #{$value};
+  }
+}
