@@ -52,13 +52,13 @@ jobs:
           # secrets (that includes Sauce access info) are not shared.
 
           if [[ -z "$SAUCE_USERNAME$SAUCE_ACCESS_KEY" ]]; then
-            echo "Unit tests do not run on forked repos because of Sauce labs access"
-            echo "Run `npm run test:unit` manually to verify."
+            echo "Unit tests do not run on forked repos because of Sauce labs access. Run 'npm run test:unit' manually to verify."
             exit 1
+          else
+            export SAUCE_BUILD_ID=mdc-tests-${GITHUB_EVENT_NAME}-${GITHUB_ACTION}-${GITHUB_SHA}
+            export SAUCE_TUNNEL_ID=${SAUCE_BUILD_ID}-tunnel
+            npm run test:unit
           fi
-          export SAUCE_BUILD_ID=mdc-tests-${GITHUB_EVENT_NAME}-${GITHUB_ACTION}-${GITHUB_SHA}
-          export SAUCE_TUNNEL_ID=${SAUCE_BUILD_ID}-tunnel
-          npm run test:unit
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
