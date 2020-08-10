@@ -79,17 +79,28 @@
 /// @example
 ///   `color-hash(#6200ee)` => "6200ee"
 ///   `color-hash(rgb(255, 112, 112))` => "ff7070"
-///   `color-hash((varname: --my-fancy-color, fallback: teal))` => '--my-fancy-color'
+///   `color-hash((varname: --my-fancy-color, fallback: teal))` => 'teal'
+///   `color-hash((varname: --my-fancy-color, fallback: null))` => '--my-fancy-color'
 ///
 @function color-hash($color) {
   @if custom-properties.is-custom-prop($color) {
-    @return custom-properties.get-varname($color);
+    $color-value: custom-properties.get-fallback($color);
+
+    @if ($color-value) {
+      @return _get-hex-string($color-value);
+    } @else {
+      @return custom-properties.get-varname($color);
+    }
   }
 
   @if meta.type-of($color) == 'string' {
     @return $color;
   }
 
+  @return _get-hex-string($color);
+}
+
+@function _get-hex-string($color) {
   @return string.slice(color.ie-hex-str($color), 2); // Index starts at 1
 }
 
