@@ -51,7 +51,7 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-text-field-character-counter-color($color)` | Customizes the color of the character counter associated with an enabled text field.
-`mdc-text-field-character-disabled-counter-color($color)` | Customizes the color of the character counter associated with a disabled text field.
+`mdc-text-field-disabled-character-counter-color($color)` | Customizes the color of the character counter associated with a disabled text field.
 `mdc-text-field-character-counter-position($xOffset, $yOffset)` | Positions the character counter element inside text field. Used only for textarea variant.
 
 ## `MDCTextFieldCharacterCounter` properties and methods
