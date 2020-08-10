@@ -24,7 +24,7 @@
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {cssClasses} from '../constants';
 import {MDCSegmentedButtonFoundation} from '../foundation';
-import {test_indices, test_segment_ids} from './constants';
+import {testIndices, testSegmentIds} from './constants';
 
 describe('MDCSegmentedButtonFoundation', () => {
   const setupSingleSelectTest = () => {

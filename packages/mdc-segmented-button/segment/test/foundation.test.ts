@@ -22,7 +22,7 @@
  */
 
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
-import {cssClasses, strings} from '../constants';
+import {attributes, booleans, cssClasses} from '../constants';
 import {MDCSegmentedButtonSegmentFoundation} from '../foundation';
 
 describe('MDCSegmentedButtonSegmentFoundation', () => {
@@ -58,11 +58,11 @@ describe('MDCSegmentedButtonSegmentFoundation', () => {
     return {foundation, mockAdapter};
   };
 
-  const setupSelectedTest = (singleSelect: boolean = false) => {
+  const setupSelectedTest = (singleSelect = false) => {
     return setupTest(true, singleSelect);
   };
 
-  const setupUnselectedTest = (singleSelect: boolean = false) => {
+  const setupUnselectedTest = (singleSelect = false) => {
     return setupTest(false, singleSelect);
   };
 
