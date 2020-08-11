@@ -40,7 +40,8 @@ $enable-fallback-declarations: true !default;
 /// @param {String} $property - The CSS property of the declaration.
 /// @param {*} $value - The value of the CSS declaration. The value should be
 ///     resolved by other theme functions first (i.e. custom property Maps and
-///     Material theme keys are not supported in this mixin).
+///     Material theme keys are not supported in this mixin). If the value is
+///     null, no declarations will be emitted.
 /// @param {*} $fallback - An optional fallback value for older browsers. If
 ///     provided, a second property/value declaration will be added before the
 ///     main property/value declaration.
@@ -53,21 +54,26 @@ $enable-fallback-declarations: true !default;
   $gss: (),
   $important: false
 ) {
-  $important-rule: if($important, '!important', '');
+  // Normally setting a null value to a property will not emit CSS, so mixins
+  // wouldn't need to check this. However, Sass will throw an error if the
+  // interpolated property is a custom property.
+  @if $value != null {
+    $important-rule: if($important, '!important', '');
 
-  @if $fallback-value and $enable-fallback-declarations {
+    @if $fallback-value and $enable-fallback-declarations {
+      @include gss.annotate($gss);
+      #{$property}: #{$fallback-value} #{$important-rule};
+
+      // Add @alternate to annotations.
+      $gss: map.merge(
+        $gss,
+        (
+          alternate: true,
+        )
+      );
+    }
+
     @include gss.annotate($gss);
-    #{$property}: #{$fallback-value} #{$important-rule};
-
-    // Add @alternate to annotations.
-    $gss: map.merge(
-      $gss,
-      (
-        alternate: true,
-      )
-    );
+    #{$property}: #{$value} #{$important-rule};
   }
-
-  @include gss.annotate($gss);
-  #{$property}: #{$value} #{$important-rule};
 }
