@@ -49,7 +49,7 @@
 }
 
 @function pxToRem($px) {
-  @return #{$px / 16px}rem;
+  @return $px / 16px * 1rem;
 }
 
 $font-family: string.unquote('Roboto, sans-serif') !default;
