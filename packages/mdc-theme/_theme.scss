@@ -23,11 +23,14 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:list';
 @use 'sass:map';
+@use 'sass:meta';
 @use '@material/feature-targeting/feature-targeting';
 @use './css';
 @use './custom-properties';
 @use './gss';
+@use './replace';
 @use './theme-color';
 
 @mixin core-styles($query: feature-targeting.all()) {
@@ -75,12 +78,39 @@
 /// - a custom property Map, e.g. (varname: --mdc-foo, fallback: blue)
 /// - a Material theme key String, e.g. 'primary', 'on-primary'
 ///
-/// @param {String} $property - the name of the CSS property.
-/// @param {String | Number | Color | List | Map} $value - the property's value.
-/// @param {Map} $gss - optional Map of GSS annotations to set.
-/// @param {Bool} $important - set to true to add an `!important` rule. Defaults
+/// @example
+///   @include theme.property(color, teal);
+///   @include theme.property(color, custom-properties.create(--mdc-foo, blue));
+///   @include theme.property(color, primary);
+///
+/// A `$replace` Map parameter may be provided to replace key/value pairs for
+/// string values. This can be used to substitute parameters in complex string
+/// values such as `calc()` with custom properties.
+///
+/// @example
+///   @include theme.property(
+///     width,
+///     calc(foo + bar),
+///     $replace: (foo: custom-properties.create(--mdc-foo), bar: 8px)
+///   );
+///
+/// Note: Material theme key Strings (e.g. `primary`) are not supported as
+/// replacement values.
+///
+/// @param {String} $property - The name of the CSS property.
+/// @param {String | Number | Color | List | Map} $value - The property's value.
+/// @param {Map} $gss - Optional Map of GSS annotations to set.
+/// @param {Map} $replace - An optional Map of replacement key/value pairs if
+///     the `$value` is a string.
+/// @param {Bool} $important - Set to true to add an `!important` rule. Defaults
 ///     to false.
-@mixin property($property, $value, $gss: (), $important: false) {
+@mixin property(
+  $property,
+  $value,
+  $gss: (),
+  $replace: null,
+  $important: false
+) {
   @if custom-properties.is-custom-prop($value) {
     // $value is a custom property Map
     @include custom-properties.apply(
@@ -101,9 +131,27 @@
     );
   } @else {
     // $value is a standard CSS value
+    $fallback: null;
+    @if $replace {
+      @if meta.type-of($value) != 'string' {
+        // theme.property() should support non-string replacements in the
+        // future, such as List types
+        // e.g. theme.property(border-radius, 8px foo, $replace: (foo: $foo));
+        @error 'mdc-theme: Invalid replacement value #{$value}. $replace may only be used with string values.';
+      }
+
+      $fallback: replace.replace-string($value, $replace, $fallback: true);
+      $value: replace.replace-string($value, $replace);
+      @if $fallback == $value {
+        // The replacements don't contain custom properties with fallbacks
+        $fallback: null;
+      }
+    }
+
     @include css.declaration(
       $property,
       $value,
+      $fallback-value: $fallback,
       $gss: $gss,
       $important: $important
     );
