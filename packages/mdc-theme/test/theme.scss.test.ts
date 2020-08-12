@@ -69,4 +69,11 @@ describe('theme.test.scss', () => {
   width: calc(8px + 8px + 8px);
 }`);
   });
+
+  it('should allow overriding theme color values using @use/with', () => {
+    const filePath = path.join(__dirname, 'override.test.css');
+    const css = fs.readFileSync(filePath, 'utf8').trim();
+    expect(css).toContain('--mdc-theme-primary: teal');
+    expect(css).toContain('--mdc-theme-secondary: crimson');
+  });
 });
