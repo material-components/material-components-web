@@ -219,7 +219,7 @@ class CssBundleFactory {
         options: {
           sourceMap: true,
           includePaths: [getAbsolutePath('/packages/material-components-web/node_modules')],
-          implementation: require('dart-sass'),
+          implementation: require('sass'),
           fiber: require('fibers'),
         },
       },
