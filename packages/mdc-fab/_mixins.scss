@@ -227,19 +227,19 @@ $ripple-target: '.mdc-fab__ripple';
   $label-padding,
   $is-icon-at-end: false
 ) {
-  $start: calc(icon-padding - label-padding);
+  $start: calc(icon - label);
   $end: $icon-padding;
 
   @if $is-icon-at-end {
     $start: $icon-padding;
-    $end: calc(icon-padding - label-padding);
+    $end: calc(icon - label);
   }
 
   @include rtl-mixins.reflexive-property(
     margin,
     $start,
     $end,
-    $replace: (icon-padding: $icon-padding, label-padding: $label-padding)
+    $replace: (icon: $icon-padding, label: $label-padding)
   );
 }
 
