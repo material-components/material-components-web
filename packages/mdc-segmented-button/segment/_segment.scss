@@ -37,8 +37,8 @@
   @include touch-target.wrapper($query);
   @include elevation.overlay-common($query);
 
-  @include _unselected-themes($query);
-  @include _selected-themes($query);
+  @include _unselected($query);
+  @include _selected($query);
 
   .mdc-segmented-button__segment {
     @include base($query);
@@ -135,7 +135,7 @@
   }
 }
 
-@mixin _unselected-themes($query: feature-targeting.all()) {
+@mixin _unselected($query: feature-targeting.all()) {
   @include segment-theme.outline-color(segment-theme.$outline-color, $query);
   @include segment-theme.unselected-ink-color(
     segment-theme.$unselected-ink-color,
@@ -147,7 +147,7 @@
   );
 }
 
-@mixin _selected-themes($query: feature-targeting.all()) {
+@mixin _selected($query: feature-targeting.all()) {
   @include segment-theme.selected-ink-color(
     segment-theme.$selected-ink-color,
     $query
