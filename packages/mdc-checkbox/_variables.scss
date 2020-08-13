@@ -20,6 +20,38 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import '_checkbox.scss' or '_checkbox-theme.scss' instead.
-@forward './checkbox' show $mark-path-length_, $indeterminate-checked-easing-function_;
-@forward './checkbox-theme' show $baseline-theme-color, $mark-color, $border-color, $disabled-color, $ripple-size, $icon-size, $mark-stroke-size, $border-width, $transition-duration, $item-spacing, $focus-indicator-opacity, $minimum-size, $maximum-size, $density-scale, $density-config;
+@use 'sass:map';
+@use '@material/ripple/ripple-theme';
+@use '@material/theme/theme-color';
+@use '@material/density/variables' as density-variables;
+
+$baseline-theme-color: secondary !default;
+$mark-color: theme-color.prop-value(on-secondary) !default;
+$border-color: rgba(theme-color.prop-value(on-surface), 0.54) !default;
+$disabled-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
+
+$ripple-size: 40px !default;
+$icon-size: 18px !default;
+$mark-stroke-size: 2 / 15 * $icon-size !default;
+$border-width: 2px !default;
+$transition-duration: 90ms !default;
+$item-spacing: 4px !default;
+$focus-indicator-opacity: map.get(
+  ripple-theme.$dark-ink-opacities,
+  focus
+) !default;
+
+$minimum-size: 28px !default;
+$maximum-size: $ripple-size !default;
+$density-scale: density-variables.$default-scale !default;
+$density-config: (
+  size: (
+    minimum: $minimum-size,
+    default: $ripple-size,
+    maximum: $maximum-size,
+  ),
+) !default;
+
+// Manual calculation done on SVG
+$mark-path-length_: 29.7833385 !default;
+$indeterminate-checked-easing-function_: cubic-bezier(0.14, 0, 0, 1) !default;
