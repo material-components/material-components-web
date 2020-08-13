@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use './mixins';
-@include mixins.core-styles;
+@use './checkbox';
+@include checkbox.core-styles;
