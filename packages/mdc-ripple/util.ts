@@ -28,7 +28,7 @@ import {MDCRipplePoint} from './types';
  */
 let supportsCssVariables_: boolean | undefined;
 
-export function supportsCssVariables(windowObj: Window, forceRefresh = false): boolean {
+export function supportsCssVariables(windowObj: typeof globalThis, forceRefresh = false): boolean {
   const {CSS} = windowObj;
   let supportsCssVars = supportsCssVariables_;
   if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
