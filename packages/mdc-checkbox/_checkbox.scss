@@ -26,7 +26,6 @@
 @use 'sass:map';
 @use 'sass:math';
 @use '@material/animation/functions' as functions2;
-@use '@material/animation/variables' as animation-variables;
 @use '@material/density/functions' as density-functions;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
@@ -34,6 +33,9 @@
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/theme/theme-color';
 @use './checkbox-custom-properties';
+@use './functions';
+@use './keyframes';
+@use './variables';
 @use '@material/theme/theme';
 @use '@material/theme/color-custom-properties';
 @use '@material/theme/custom-properties';
@@ -60,7 +62,7 @@
   @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
 
   @include feature-targeting.targets($feat-animation) {
-    @include mark-keyframes_;
+    @include keyframes.mark-keyframes_;
   }
 
   .mdc-checkbox {
@@ -69,20 +71,17 @@
     }
 
     @include checkbox-theme.focus-indicator-color(
-      checkbox-theme.$baseline-theme-color,
+      variables.$baseline-theme-color,
       $query: $query
     );
-    @include checkbox-theme.density(
-      checkbox-theme.$density-scale,
-      $query: $query
-    );
+    @include checkbox-theme.density(variables.$density-scale, $query: $query);
   }
 
   @include checkbox-theme.container-colors($query: $query);
   @include checkbox-theme.disabled-container-colors($query: $query);
-  @include checkbox-theme.ink-color(checkbox-theme.$mark-color, $query: $query);
+  @include checkbox-theme.ink-color(variables.$mark-color, $query: $query);
   @include checkbox-theme.disabled-ink-color(
-    checkbox-theme.$mark-color,
+    variables.$mark-color,
     $query: $query
   );
 
@@ -182,8 +181,8 @@
 
   .mdc-checkbox--touch {
     @include touch-target-mixins.margin(
-      $component-height: checkbox-theme.$ripple-size,
-      $component-width: checkbox-theme.$ripple-size,
+      $component-height: variables.$ripple-size,
+      $component-width: variables.$ripple-size,
       $query: $query
     );
     @include checkbox-theme.touch-target(
@@ -257,10 +256,10 @@
 @mixin base_ {
   display: inline-block;
   position: relative;
-  flex: 0 0 checkbox-theme.$icon-size;
+  flex: 0 0 variables.$icon-size;
   box-sizing: content-box;
-  width: checkbox-theme.$icon-size;
-  height: checkbox-theme.$icon-size;
+  width: variables.$icon-size;
+  height: variables.$icon-size;
   line-height: 0;
   white-space: nowrap;
   cursor: pointer;
@@ -292,7 +291,7 @@
   &-checked-unchecked,
   &-indeterminate-unchecked {
     .mdc-checkbox__background {
-      animation-duration: checkbox-theme.$transition-duration * 2;
+      animation-duration: variables.$transition-duration * 2;
       animation-timing-function: linear;
     }
   }
@@ -303,7 +302,7 @@
       // animation at 50% in order to prevent a flash of styles applied to a checked checkmark
       // as the background is fading in before the animation begins.
       animation: mdc-checkbox-unchecked-checked-checkmark-path
-        checkbox-theme.$transition-duration * 2 linear 0s;
+        variables.$transition-duration * 2 linear 0s;
       transition: none;
     }
   }
@@ -311,7 +310,7 @@
   &-unchecked-indeterminate {
     .mdc-checkbox__mixedmark {
       animation: mdc-checkbox-unchecked-indeterminate-mixedmark
-        checkbox-theme.$transition-duration linear 0s;
+        variables.$transition-duration linear 0s;
       transition: none;
     }
   }
@@ -319,7 +318,7 @@
   &-checked-unchecked {
     .mdc-checkbox__checkmark-path {
       animation: mdc-checkbox-checked-unchecked-checkmark-path
-        checkbox-theme.$transition-duration linear 0s;
+        variables.$transition-duration linear 0s;
       transition: none;
     }
   }
@@ -327,13 +326,13 @@
   &-checked-indeterminate {
     .mdc-checkbox__checkmark {
       animation: mdc-checkbox-checked-indeterminate-checkmark
-        checkbox-theme.$transition-duration linear 0s;
+        variables.$transition-duration linear 0s;
       transition: none;
     }
 
     .mdc-checkbox__mixedmark {
       animation: mdc-checkbox-checked-indeterminate-mixedmark
-        checkbox-theme.$transition-duration linear 0s;
+        variables.$transition-duration linear 0s;
       transition: none;
     }
   }
@@ -375,10 +374,10 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    width: checkbox-theme.$icon-size;
-    height: checkbox-theme.$icon-size;
+    width: variables.$icon-size;
+    height: variables.$icon-size;
     // border-color is overridden by the mdc-checkbox-unmarked-stroke-color() mixin
-    border: checkbox-theme.$border-width solid currentColor;
+    border: variables.$border-width solid currentColor;
     border-radius: 2px;
     background-color: transparent;
     pointer-events: none;
@@ -392,12 +391,14 @@
   }
 
   @include feature-targeting.targets($feat-animation) {
-    transition: transition-exit(background-color), transition-exit(border-color);
+    transition: functions.transition-exit(background-color),
+      functions.transition-exit(border-color);
   }
 }
 
 @mixin background--marked_ {
-  transition: transition-enter(border-color), transition-enter(background-color);
+  transition: functions.transition-enter(border-color),
+    functions.transition-enter(background-color);
 }
 
 // Focus indicator
@@ -417,7 +418,8 @@
   }
 
   @include feature-targeting.targets($feat-animation) {
-    transition: transition-exit(opacity), transition-exit(transform);
+    transition: functions.transition-exit(opacity),
+      functions.transition-exit(transform);
   }
 }
 
@@ -427,12 +429,12 @@
 
   @include feature-targeting.targets($feat-structure) {
     transform: scale(1);
-    opacity: checkbox-theme.$focus-indicator-opacity;
+    opacity: variables.$focus-indicator-opacity;
   }
 
   @include feature-targeting.targets($feat-animation) {
-    transition: transition-enter(opacity, 0ms, 80ms),
-      transition-enter(transform, 0ms, 80ms);
+    transition: functions.transition-enter(opacity, 0ms, 80ms),
+      functions.transition-enter(transform, 0ms, 80ms);
   }
 }
 
@@ -463,10 +465,10 @@
   }
 
   @include feature-targeting.targets($feat-animation) {
-    transition: transition-exit(
+    transition: functions.transition-exit(
       opacity,
       0ms,
-      checkbox-theme.$transition-duration * 2
+      variables.$transition-duration * 2
     );
   }
 
@@ -482,12 +484,16 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-animation) {
-    transition: transition-enter(
+    transition: functions.transition-enter(
         opacity,
         0ms,
-        checkbox-theme.$transition-duration * 2
+        variables.$transition-duration * 2
       ),
-      transition-enter(transform, 0ms, checkbox-theme.$transition-duration * 2);
+      functions.transition-enter(
+        transform,
+        0ms,
+        variables.$transition-duration * 2
+      );
   }
 
   @include feature-targeting.targets($feat-structure) {
@@ -505,12 +511,12 @@
   }
 
   @include feature-targeting.targets($feat-animation) {
-    transition: transition-exit(
+    transition: functions.transition-exit(
         opacity,
         0ms,
-        checkbox-theme.$transition-duration
+        variables.$transition-duration
       ),
-      transition-exit(transform, 0ms, checkbox-theme.$transition-duration);
+      functions.transition-exit(transform, 0ms, variables.$transition-duration);
   }
 }
 
@@ -521,18 +527,18 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-animation) {
-    transition: transition-exit(
+    transition: functions.transition-exit(
       stroke-dashoffset,
       0ms,
-      checkbox-theme.$transition-duration * 2
+      variables.$transition-duration * 2
     );
   }
 
   @include feature-targeting.targets($feat-structure) {
     stroke: currentColor;
-    stroke-width: checkbox-theme.$mark-stroke-size * 1.3;
-    stroke-dashoffset: $mark-path-length_;
-    stroke-dasharray: $mark-path-length_;
+    stroke-width: variables.$mark-stroke-size * 1.3;
+    stroke-dashoffset: variables.$mark-path-length_;
+    stroke-dasharray: variables.$mark-path-length_;
   }
 }
 
@@ -550,13 +556,14 @@
     width: 100%;
     height: 0;
     transform: scaleX(0) rotate(0deg);
-    border-width: math.floor(checkbox-theme.$mark-stroke-size) / 2;
+    border-width: math.floor(variables.$mark-stroke-size) / 2;
     border-style: solid;
     opacity: 0;
   }
 
   @include feature-targeting.targets($feat-animation) {
-    transition: transition-exit(opacity), transition-exit(transform);
+    transition: functions.transition-exit(opacity),
+      functions.transition-exit(transform);
   }
 }
 
@@ -567,135 +574,4 @@
 @mixin mixedmark--indeterminate_ {
   transform: scaleX(1) rotate(0deg);
   opacity: 1;
-}
-
-@function transition-enter(
-  $property,
-  $delay: 0ms,
-  $duration: checkbox-theme.$transition-duration
-) {
-  @return functions2.enter($property, $duration, $delay);
-}
-
-@function transition-exit(
-  $property,
-  $delay: 0ms,
-  $duration: checkbox-theme.$transition-duration
-) {
-  @return functions2.exit-temporary($property, $duration, $delay);
-}
-
-// Manual calculation done on SVG
-$mark-path-length_: 29.7833385 !default;
-$indeterminate-checked-easing-function_: cubic-bezier(0.14, 0, 0, 1) !default;
-
-@mixin mark-keyframes_ {
-  @keyframes mdc-checkbox-unchecked-checked-checkmark-path {
-    0%,
-    50% {
-      stroke-dashoffset: $mark-path-length_;
-    }
-
-    50% {
-      animation-timing-function: animation-variables.$deceleration-curve-timing-function;
-    }
-
-    100% {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  @keyframes mdc-checkbox-unchecked-indeterminate-mixedmark {
-    0%,
-    68.2% {
-      transform: scaleX(0);
-    }
-
-    68.2% {
-      animation-timing-function: cubic-bezier(0, 0, 0, 1);
-    }
-
-    100% {
-      transform: scaleX(1);
-    }
-  }
-
-  @keyframes mdc-checkbox-checked-unchecked-checkmark-path {
-    from {
-      animation-timing-function: animation-variables.$acceleration-curve-timing-function;
-      opacity: 1;
-      stroke-dashoffset: 0;
-    }
-
-    to {
-      opacity: 0;
-      stroke-dashoffset: $mark-path-length_ * -1;
-    }
-  }
-
-  @keyframes mdc-checkbox-checked-indeterminate-checkmark {
-    from {
-      animation-timing-function: animation-variables.$deceleration-curve-timing-function;
-      transform: rotate(0deg);
-      opacity: 1;
-    }
-
-    to {
-      transform: rotate(45deg);
-      opacity: 0;
-    }
-  }
-
-  @keyframes mdc-checkbox-indeterminate-checked-checkmark {
-    from {
-      animation-timing-function: $indeterminate-checked-easing-function_;
-      transform: rotate(45deg);
-      opacity: 0;
-    }
-
-    to {
-      transform: rotate(360deg);
-      opacity: 1;
-    }
-  }
-
-  @keyframes mdc-checkbox-checked-indeterminate-mixedmark {
-    from {
-      animation-timing-function: mdc-animation-deceleration-curve-timing-function;
-      transform: rotate(-45deg);
-      opacity: 0;
-    }
-
-    to {
-      transform: rotate(0deg);
-      opacity: 1;
-    }
-  }
-
-  @keyframes mdc-checkbox-indeterminate-checked-mixedmark {
-    from {
-      animation-timing-function: $indeterminate-checked-easing-function_;
-      transform: rotate(0deg);
-      opacity: 1;
-    }
-
-    to {
-      transform: rotate(315deg);
-      opacity: 0;
-    }
-  }
-
-  @keyframes mdc-checkbox-indeterminate-unchecked-mixedmark {
-    0% {
-      animation-timing-function: linear;
-      transform: scaleX(1);
-      opacity: 1;
-    }
-
-    32.8%,
-    100% {
-      transform: scaleX(0);
-      opacity: 0;
-    }
-  }
 }

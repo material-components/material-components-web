@@ -33,38 +33,13 @@
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/theme/theme-color';
 @use './checkbox-custom-properties';
+@use './functions';
+@use './keyframes';
+@use './variables';
 @use '@material/theme/theme';
 @use '@material/theme/color-custom-properties';
 @use '@material/theme/custom-properties';
 @use '@material/touch-target/variables' as touch-target-variables;
-@use '@material/density/variables' as density-variables;
-
-$baseline-theme-color: secondary !default;
-$mark-color: theme-color.prop-value(on-secondary) !default;
-$border-color: rgba(theme-color.prop-value(on-surface), 0.54) !default;
-$disabled-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
-
-$ripple-size: 40px !default;
-$icon-size: 18px !default;
-$mark-stroke-size: 2 / 15 * $icon-size !default;
-$border-width: 2px !default;
-$transition-duration: 90ms !default;
-$item-spacing: 4px !default;
-$focus-indicator-opacity: map.get(
-  ripple-theme.$dark-ink-opacities,
-  focus
-) !default;
-
-$minimum-size: 28px !default;
-$maximum-size: $ripple-size !default;
-$density-scale: density-variables.$default-scale !default;
-$density-config: (
-  size: (
-    minimum: $minimum-size,
-    default: $ripple-size,
-    maximum: $maximum-size,
-  ),
-) !default;
 
 $ripple-target: '.mdc-checkbox__ripple';
 
@@ -76,7 +51,7 @@ $ripple-target: '.mdc-checkbox__ripple';
 ///
 @mixin density($density-scale, $query: feature-targeting.all()) {
   $size: density-functions.prop-value(
-    $density-config: $density-config,
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: size,
   );
@@ -90,7 +65,7 @@ $ripple-target: '.mdc-checkbox__ripple';
 
 @mixin ripple-size($ripple-size, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  $checkbox-padding: ($ripple-size - $icon-size) / 2;
+  $checkbox-padding: ($ripple-size - variables.$icon-size) / 2;
 
   @include feature-targeting.targets($feat-structure) {
     padding: $checkbox-padding;
@@ -105,8 +80,8 @@ $ripple-target: '.mdc-checkbox__ripple';
 
   .mdc-checkbox__background::before {
     @include feature-targeting.targets($feat-structure) {
-      top: -($border-width) - $checkbox-padding;
-      left: -($border-width) - $checkbox-padding;
+      top: -(variables.$border-width) - $checkbox-padding;
+      left: -(variables.$border-width) - $checkbox-padding;
       width: $ripple-size;
       height: $ripple-size;
     }
@@ -129,10 +104,10 @@ $ripple-target: '.mdc-checkbox__ripple';
 /// @param {Boolean} $generate-keyframes [true] - Whether animation keyframes should be generated
 ///
 @mixin container-colors(
-  $unmarked-stroke-color: $border-color,
+  $unmarked-stroke-color: variables.$border-color,
   $unmarked-fill-color: transparent,
-  $marked-stroke-color: $baseline-theme-color,
-  $marked-fill-color: $baseline-theme-color,
+  $marked-stroke-color: variables.$baseline-theme-color,
+  $marked-fill-color: variables.$baseline-theme-color,
   $generate-keyframes: true,
   $query: feature-targeting.all()
 ) {
@@ -192,7 +167,7 @@ $ripple-target: '.mdc-checkbox__ripple';
     $anim-selector: if(&, '&.mdc-checkbox--anim', '.mdc-checkbox--anim');
 
     @include feature-targeting.targets($feat-animation, $feat-color) {
-      @include container-keyframes_(
+      @include keyframes.container-keyframes_(
         $from-stroke-color: $unmarked-stroke-color,
         $to-stroke-color: $marked-stroke-color,
         $from-fill-color: $unmarked-fill-color,
@@ -235,10 +210,10 @@ $ripple-target: '.mdc-checkbox__ripple';
 /// @param {Color} $marked-fill-color - The desired fill color for the marked state
 ///
 @mixin disabled-container-colors(
-  $unmarked-stroke-color: $disabled-color,
+  $unmarked-stroke-color: variables.$disabled-color,
   $unmarked-fill-color: transparent,
   $marked-stroke-color: transparent,
-  $marked-fill-color: $disabled-color,
+  $marked-fill-color: variables.$disabled-color,
   $query: feature-targeting.all()
 ) {
   @if (not custom-properties.is-custom-prop($unmarked-stroke-color)) {
@@ -344,8 +319,8 @@ $ripple-target: '.mdc-checkbox__ripple';
 /// @param {Number} $ripple-size Size of ripple in `px`. Required only for custom ripple size.
 ///
 @mixin touch-target(
-  $size: $ripple-size,
-  $ripple-size: $ripple-size,
+  $size: variables.$ripple-size,
+  $ripple-size: variables.$ripple-size,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -504,38 +479,5 @@ $ripple-target: '.mdc-checkbox__ripple';
 
   @include feature-targeting.targets($feat-structure) {
     margin: 0;
-  }
-}
-
-@mixin container-keyframes_(
-  $from-stroke-color,
-  $to-stroke-color,
-  $from-fill-color,
-  $to-fill-color,
-  $uid
-) {
-  @keyframes mdc-checkbox-fade-in-background-#{$uid} {
-    0% {
-      @include theme.property(border-color, $from-stroke-color);
-      @include theme.property(background-color, $from-fill-color);
-    }
-
-    50% {
-      @include theme.property(border-color, $to-stroke-color);
-      @include theme.property(background-color, $to-fill-color);
-    }
-  }
-
-  @keyframes mdc-checkbox-fade-out-background-#{$uid} {
-    0%,
-    80% {
-      @include theme.property(border-color, $to-stroke-color);
-      @include theme.property(background-color, $to-fill-color);
-    }
-
-    100% {
-      @include theme.property(border-color, $from-stroke-color);
-      @include theme.property(background-color, $from-fill-color);
-    }
   }
 }
