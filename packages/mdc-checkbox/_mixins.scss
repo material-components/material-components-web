@@ -21,5 +21,5 @@
 //
 
 /// @deprecated Import '_checkbox.scss' or '_checkbox-theme.scss' instead.
-@forward './checkbox' show core-styles, without-ripple, ripple-styles, base_, disabled_, child--upgraded_, anim_, background_, background--marked_, focus-indicator_, focus-indicator--focused_, native-control_, checkmark_, checkmark--checked_, checkmark--indeterminate_, checkmark-path_, checkmark-path--marked_, mixedmark_, mixedmark--checked_, mixedmark--indeterminate_;
+@forward './checkbox' show core-styles, without-ripple, ripple, base_, disabled_, child--upgraded_, anim_, background_, background--marked_, focus-indicator_, focus-indicator--focused_, native-control_, checkmark_, checkmark--checked_, checkmark--indeterminate_, checkmark-path_, checkmark-path--marked_, mixedmark_, mixedmark--checked_, mixedmark--indeterminate_;
 @forward './checkbox-theme' show $ripple-target, density, ripple-size, container-colors, disabled-container-colors, ink-color, disabled-ink-color, focus-indicator-color, touch-target, if-enabled_, if-disabled_, if-unmarked-enabled_, if-unmarked-disabled_, if-marked-enabled_, if-marked-disabled_, container-colors_, ink-color_, touch-target-reset_;

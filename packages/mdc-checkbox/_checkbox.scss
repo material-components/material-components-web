@@ -41,27 +41,20 @@
 @use './checkbox-theme';
 
 ///
-/// Checkbox and ripple styles.
+/// Checkbox core styles.
 ///
 @mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query);
-  @include ripple-styles($query);
+  @include ripple($query);
 }
 
-/// Checkbox styles.
-///
-/// NOTE: This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
-/// checkbox styles. It is recommended that most users use `mdc-checkbox-core-styles` instead.
-// TODO(b/162887560): Rename to `checkbox-without-ripple-styles()`
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// checkbox styles. It is recommended that most users use `mdc-checkbox-core-styles` instead.
 @mixin without-ripple($query: feature-targeting.all()) {
-  @include static-styles($query: $query);
-  @include theme-styles($query: $query);
-}
+  // postcss-bem-linter: define checkbox
 
-/// Checkbox static styles.
-/// Checkbox styles that are not customizable should go here.
-@mixin static-styles($query: feature-targeting.all()) {
   $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
@@ -74,7 +67,24 @@
     @include feature-targeting.targets($feat-structure) {
       @include base_;
     }
+
+    @include checkbox-theme.focus-indicator-color(
+      checkbox-theme.$baseline-theme-color,
+      $query: $query
+    );
+    @include checkbox-theme.density(
+      checkbox-theme.$density-scale,
+      $query: $query
+    );
   }
+
+  @include checkbox-theme.container-colors($query: $query);
+  @include checkbox-theme.disabled-container-colors($query: $query);
+  @include checkbox-theme.ink-color(checkbox-theme.$mark-color, $query: $query);
+  @include checkbox-theme.disabled-ink-color(
+    checkbox-theme.$mark-color,
+    $query: $query
+  );
 
   @media screen and (-ms-high-contrast: active) {
     @include checkbox-theme.disabled-container-colors(
@@ -170,6 +180,18 @@
     }
   }
 
+  .mdc-checkbox--touch {
+    @include touch-target-mixins.margin(
+      $component-height: checkbox-theme.$ripple-size,
+      $component-width: checkbox-theme.$ripple-size,
+      $query: $query
+    );
+    @include checkbox-theme.touch-target(
+      touch-target-variables.$height,
+      $query: $query
+    );
+  }
+
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
     .mdc-checkbox__checkmark {
       @include checkmark--checked_($query);
@@ -194,36 +216,13 @@
       }
     }
   }
+
+  // postcss-bem-linter: end
 }
 
-/// Checkbox theme styles.
-/// Checkbox styles that are customizable should go here.
-@mixin theme-styles($query: feature-targeting.all()) {
-  .mdc-checkbox {
-    @include checkbox-theme.focus-indicator-color(
-      checkbox-theme.$baseline-theme-color,
-      $query: $query
-    );
-    @include checkbox-theme.density(
-      checkbox-theme.$density-scale,
-      $query: $query
-    );
-  }
-
-  @include checkbox-theme.container-colors($query: $query);
-  @include checkbox-theme.disabled-container-colors($query: $query);
-  @include checkbox-theme.ink-color(checkbox-theme.$mark-color, $query: $query);
-  @include checkbox-theme.disabled-ink-color(
-    checkbox-theme.$mark-color,
-    $query: $query
-  );
-}
-
-/// Checkbox's ripple styles.
-///
-/// NOTE: This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
-/// checkbox styles. It is recommended that most users use `mdc-checkbox-core-styles` instead.
-@mixin ripple-styles($query: feature-targeting.all()) {
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// checkbox styles. It is recommended that most users use `mdc-checkbox-core-styles` instead.
+@mixin ripple($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE

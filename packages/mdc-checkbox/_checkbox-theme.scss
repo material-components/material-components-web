@@ -81,26 +81,14 @@ $ripple-target: '.mdc-checkbox__ripple';
     $property-name: size,
   );
 
-  @if $density-scale == 0 {
-    @include ripple-size(
-      $size,
-      $touch-target-size: touch-target-variables.$height,
-      $query: $query
-    );
-  } @else {
-    @include ripple-size($size, $touch-target-size: $size, $query: $query);
+  @include ripple-size($size, $query: $query);
+
+  @if $density-scale != 0 {
+    @include touch-target-reset_($query: $query);
   }
 }
 
-/// Sets ripple size of checkbox and optionally set touch target size which can
-/// be more than the size of ripple.
-/// @param {Number} $ripple-size - Visual ripple size of checkbox.
-/// @param {Number} $touch-target-size [touch-target.$height] - Touch target size that is visually hidden.
-@mixin ripple-size(
-  $ripple-size,
-  $touch-target-size: touch-target-variables.$height,
-  $query: feature-targeting.all()
-) {
+@mixin ripple-size($ripple-size, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $checkbox-padding: ($ripple-size - $icon-size) / 2;
 
@@ -124,31 +112,11 @@ $ripple-target: '.mdc-checkbox__ripple';
     }
   }
 
-  &.mdc-checkbox--touch {
-    // Set margin around ripple to accommodate visually hidden touch target.
-    @if $ripple-size == $touch-target-size {
-      @include touch-target-reset_($query: $query);
-    } @else {
-      @include touch-target-mixins.margin(
-        $component-height: $ripple-size,
-        $component-width: $ripple-size,
-        $query: $query
-      );
-    }
-
-    // Set touch target height & width.
-    $offset: ($ripple-size - $touch-target-size) / 2;
-
-    @include feature-targeting.targets($feat-structure) {
-      .mdc-checkbox__native-control {
-        top: $offset;
-        right: $offset;
-        left: $offset;
-        width: $touch-target-size;
-        height: $touch-target-size;
-      }
-    }
-  }
+  @include touch-target(
+    $ripple-size,
+    $ripple-size: $ripple-size,
+    $query: $query
+  );
 }
 
 ///
@@ -365,6 +333,32 @@ $ripple-target: '.mdc-checkbox__ripple';
       $query: $query,
       $ripple-target: $ripple-target
     );
+  }
+}
+
+///
+/// Sets checkbox touch target size which can be more than the ripple size. Param `$ripple-size` is required for custom
+/// ripple size.
+///
+/// @param {Number} $size Size of touch target (Native input) in `px`.
+/// @param {Number} $ripple-size Size of ripple in `px`. Required only for custom ripple size.
+///
+@mixin touch-target(
+  $size: $ripple-size,
+  $ripple-size: $ripple-size,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $offset: ($ripple-size - $size) / 2;
+
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-checkbox__native-control {
+      top: $offset;
+      right: $offset;
+      left: $offset;
+      width: $size;
+      height: $size;
+    }
   }
 }
 
