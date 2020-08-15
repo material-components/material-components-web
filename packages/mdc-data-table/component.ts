@@ -58,21 +58,27 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   initialSyncWithDOM() {
     this.headerRow =
         this.root.querySelector(`.${cssClasses.HEADER_ROW}`) as HTMLElement;
-    this.handleHeaderRowCheckboxChange = () =>
-        this.foundation.handleHeaderRowCheckboxChange();
-    this.headerRow.addEventListener(
-        'change', this.handleHeaderRowCheckboxChange);
+    if (this.headerRow.querySelector(selectors.HEADER_ROW_CHECKBOX)) {
+      this.handleHeaderRowCheckboxChange = () =>
+          this.foundation.handleHeaderRowCheckboxChange();
+      this.headerRow.addEventListener(
+          'change', this.handleHeaderRowCheckboxChange);
+    }
 
-    this.headerRowClickListener = (event) => {
-      this.handleHeaderRowClick(event);
-    };
-    this.headerRow.addEventListener('click', this.headerRowClickListener);
+    if (this.headerRow.querySelector(selectors.HEADER_CELL_WITH_SORT)) {
+      this.headerRowClickListener = (event) => {
+        this.handleHeaderRowClick(event);
+      };
+      this.headerRow.addEventListener('click', this.headerRowClickListener);
+    }
 
     this.content =
         this.root.querySelector(`.${cssClasses.CONTENT}`) as HTMLElement;
-    this.handleRowCheckboxChange = (event) =>
-        this.foundation.handleRowCheckboxChange(event);
-    this.content.addEventListener('change', this.handleRowCheckboxChange);
+    if (this.content.querySelector(selectors.ROW_CHECKBOX)) {
+      this.handleRowCheckboxChange = (event) =>
+          this.foundation.handleRowCheckboxChange(event);
+      this.content.addEventListener('change', this.handleRowCheckboxChange);
+    }
 
     this.layout();
   }
@@ -130,15 +136,25 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   }
 
   destroy() {
-    this.headerRow.removeEventListener(
-        'change', this.handleHeaderRowCheckboxChange);
-    this.headerRow.removeEventListener('click', this.headerRowClickListener);
-    this.content.removeEventListener('change', this.handleRowCheckboxChange);
+    if (this.handleHeaderRowCheckboxChange) {
+      this.headerRow.removeEventListener(
+          'change', this.handleHeaderRowCheckboxChange);
+    }
+    if (this.headerRowClickListener) {
+      this.headerRow.removeEventListener('click', this.headerRowClickListener);
+    }
+    if (this.handleRowCheckboxChange) {
+      this.content.removeEventListener('change', this.handleRowCheckboxChange);
+    }
 
-    this.headerRowCheckbox.destroy();
-    this.rowCheckboxList.forEach((checkbox) => {
-      checkbox.destroy();
-    });
+    if (this.headerRowCheckbox) {
+      this.headerRowCheckbox.destroy();
+    }
+    if (this.rowCheckboxList) {
+      this.rowCheckboxList.forEach((checkbox) => {
+        checkbox.destroy();
+      });
+    }
   }
 
   getDefaultFoundation() {
