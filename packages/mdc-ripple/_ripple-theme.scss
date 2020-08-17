@@ -322,9 +322,9 @@ $pressed-light-ink-opacity: 0.32 !default;
   $ripple-target: '&',
   $opacity-map: null
 ) {
-  @include target-selector($ripple-target) {
-    @include states-base-color($color, $query);
-  }
+  // @include target-selector($ripple-target) {
+  //   @include states-base-color($color, $query);
+  // }
 
   @if $opacity-map == null {
     $opacity-map: (
