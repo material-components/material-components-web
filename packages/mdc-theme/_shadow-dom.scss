@@ -20,9 +20,11 @@
 // THE SOFTWARE.
 //
 
+@use 'sass:selector';
 @use 'sass:string';
 @use 'sass:list';
-@use 'sass:selector';
+@use 'sass:map';
+@use 'sass:meta';
 
 $_host: ':host';
 $_host-parens: ':host(';
@@ -54,6 +56,16 @@ $_end-parens: ')';
 /// @param {List} $selector-args - One or more selectors to be fixed for invalid
 /// :host syntax.
 @mixin host-aware($selector-args...) {
+  @each $selector in $selector-args {
+    @if not _is-sass-selector($selector) {
+      @error 'mdc-theme: host-aware() expected a sass:selector value type but received #{$selector}';
+    }
+  }
+
+  @if not _share-common-parent($selector-args...) {
+    @error 'mdc-theme: host-aware() requires all selectors to use the parent selector (&)';
+  }
+
   $selectors: _flatten-selectors($selector-args...);
   $processed-selectors: ();
 
@@ -194,4 +206,224 @@ $_end-parens: ')';
   }
 
   @return null;
+}
+
+/// Returns true if the provided List of Sass selectors share a common parent
+/// selector. This function ensures that the parent selector (`&`) is used with
+/// `host-aware()`.
+///
+/// @example
+///   _share-common-parent(
+///     ('.foo:hover'), ('.foo'  '.bar'), ('.baz' '.foo')
+///   ); // true
+///
+///   _share-common-parent(
+///     ('.foo:hover'), ('.foo' '.bar'), ('.baz' '.bar')
+///   ); // false
+///
+/// The purpose of this function is to make sure that a group of selectors do
+/// not violate Sass nesting rules. Due to the dynamic nature of `host-aware()`,
+/// it's possible to provide invalid selector combinations.
+///
+/// @example
+///   // Valid native nesting
+///   :host {
+///     &:hover,
+///     .foo,
+///     .bar & {
+///       color: blue;
+///     }
+///   }
+///   // Valid host-aware() nesting
+///   :host {
+///     @include host-aware(
+///       selector.append(&, ':hover'),
+///       selector.nest(&, '.foo'),
+///       selector.nest('.bar', &),
+///     ) {
+///       color: blue;
+///     }
+///   }
+///   // Output
+///   :host(:hover),
+///   :host .foo,
+///   .bar :host {
+///     color: blue;
+///   }
+///
+///   // Invalid use of host-aware()
+///   :host {
+///     @include host-aware(
+///       selector.append(&, ':hover'),
+///       selector.parse('.foo') // Does not share a common parent via `&`
+///     ) {
+///       color: blue;
+///     }
+///   }
+///   // Invalid output: no way to write this natively without using @at-root
+///   :host(:hover),
+///   .foo {
+///     color: blue;
+///   }
+///
+/// @param {Arglist} $selector-lists - An argument list of Sass selectors.
+/// @return true if the selectors share a common parent selector, or false
+///   if not.
+@function _share-common-parent($selector-lists...) {
+  // To validate, this function will extract the simple selectors from each
+  // complex selector and compare them to each other. Every complex selector
+  // should share at least one common simple parent selector.
+  //
+  // We do this by keeping track of each simple selector and if they're present
+  // within a complex selector. At the end of checking all the selectors, at
+  // least one of simple selectors should have been seen for each one of the
+  // complex selectors.
+  //
+  // Each selector list index needs to track its own selector count Map. This is
+  // because each comma-separated list has its own root parent selector that
+  // we're looking for:
+  // .foo,
+  // .bar {
+  //   &:hover,
+  //   .baz & { ... }
+  // }
+  // ('.foo:hover', '.bar:hover'), ('.baz' '.foo', '.baz' '.bar')
+  //
+  // In the first index of each selector list, we're looking for the parent
+  // ".foo". In the second index we're looking for the parent ".bar".
+  $selector-counts-by-index: ();
+  $expected-counts-by-index: ();
+  @each $selector-list in $selector-lists {
+    @each $complex-selector in $selector-list {
+      $selector-list-index: list.index($selector-list, $complex-selector);
+      $selector-count-map: map.get(
+        $selector-counts-by-index,
+        $selector-list-index
+      );
+      @if not $selector-count-map {
+        $selector-count-map: ();
+      }
+
+      $expected-count: map.get($expected-counts-by-index, $selector-list-index);
+      @if not $expected-count {
+        $expected-count: 0;
+      }
+
+      $simple-selectors-set: ();
+      @each $selector in $complex-selector {
+        @each $simple-selector in selector.simple-selectors($selector) {
+          // Don't use list.join() because there may be duplicate selectors
+          // within the complex selector. We want to treat $simple-selectors-set
+          // like a Set where there are no duplicate values so that we don't
+          // mess up our count by counting one simple selector too many times
+          // for a single complex selector.
+          @if not list.index($simple-selectors-set, $simple-selector) {
+            $simple-selectors-set: list.append(
+              $simple-selectors-set,
+              $simple-selector
+            );
+          }
+        }
+      }
+
+      // Now that we have a "Set" of simple selectors for this complex
+      // selector, we can go through each one and update the selector count Map.
+      @each $simple-selector in $simple-selectors-set {
+        $count: map.get($selector-count-map, $simple-selector);
+        @if $count {
+          $count: $count + 1;
+        } @else {
+          $count: 1;
+        }
+
+        $selector-count-map: map.merge(
+          $selector-count-map,
+          (
+            $simple-selector: $count,
+          )
+        );
+      }
+
+      $selector-counts-by-index: map.merge(
+        $selector-counts-by-index,
+        (
+          $selector-list-index: $selector-count-map,
+        )
+      );
+      $expected-counts-by-index: map.merge(
+        $expected-counts-by-index,
+        (
+          $selector-list-index: $expected-count + 1,
+        )
+      );
+    }
+  }
+
+  @each $index, $selector-count-map in $selector-counts-by-index {
+    // If one of the selectors was seen the expected number of times, then we
+    // can reasonably assume that each selector shares a common parent.
+    // Verify for each index if there are multiple parents.
+    $found-parent: false;
+    @each $selector, $count in $selector-count-map {
+      $expected-count: map.get($expected-counts-by-index, $index);
+      @if $count == $expected-count {
+        $found-parent: true;
+      }
+    }
+
+    @if not $found-parent {
+      @return false;
+    }
+  }
+
+  // A common parent was found for each selector, or there were no selectors
+  // provided and we did not enter any for loops.
+  @return true;
+}
+
+/// Returns true if the value is a Sass selector type.
+///
+/// Selector types are a 2D List: a comma-separated list (the selector list)
+/// that contains space-separated lists (the complex selectors) that contain
+/// unquoted strings (the compound selectors).
+/// @link https://sass-lang.com/documentation/modules/selector
+///
+/// @example
+///   .foo, .bar button:hover { }
+///   $type: ((unquote('.foo')), (unquote('.bar') unquote('button:hover')),);
+///
+/// @param {*} $selector-list - A value to check.
+/// @return {Boolean} true if the value is a Sass selector, or false if not.
+@function _is-sass-selector($selector-list) {
+  // For the purposes of these utility functions, we don't care if the lists
+  // have the correct separated or if the strings are unquoted. All that
+  // matters is that the type is a 2D array and the values are strings to
+  // ensure "close enough" that the selector was generated by Sass.
+  //
+  // This function is primarily a safe-guard against an accidental string
+  // slipping in and forgetting to use a selector.append() which would cause a
+  // hard-to-debug problem.
+  @if meta.type-of($selector-list) != 'list' {
+    @return false;
+  }
+
+  // First level is the selector list: what's separated by commas
+  // e.g. ".foo, .bar"
+  @each $complex-selector in $selector-list {
+    // Second level is the complex selector: what's separated by spaces
+    // e.g. ".foo .bar"
+    @if meta.type-of($complex-selector) != 'list' {
+      @return false;
+    }
+
+    // Third level is the compound selector: the actual string
+    // e.g. ".foo"
+    @each $selector in $complex-selector {
+      @if meta.type-of($selector) != 'string' {
+        @return false;
+      }
+    }
+  }
+
+  @return true;
 }
