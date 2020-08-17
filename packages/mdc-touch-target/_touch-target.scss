@@ -81,11 +81,13 @@ $width: $height !default;
 @mixin margin(
   $component-height,
   $component-width: null,
+  $touch-target-height: $height,
+  $touch-target-width: $width,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  $vertical-margin-value: ($height - $component-height) / 2;
+  $vertical-margin-value: ($touch-target-height - $component-height) / 2;
 
   @include feature-targeting.targets($feat-structure) {
     margin-top: $vertical-margin-value;
@@ -93,7 +95,7 @@ $width: $height !default;
   }
 
   @if $component-width {
-    $horizontal-margin-value: ($width - $component-width) / 2;
+    $horizontal-margin-value: ($touch-target-width - $component-width) / 2;
 
     @include feature-targeting.targets($feat-structure) {
       margin-right: $horizontal-margin-value;
