@@ -149,5 +149,17 @@
         $query: $query
       );
     }
+
+    .mdc-menu-surface {
+      @include feature-targeting.targets($feat-structure) {
+        margin-bottom: 8px;
+      }
+    }
+
+    .mdc-menu-surface--is-open-below {
+      @include feature-targeting.targets($feat-structure) {
+        margin-bottom: 0;
+      }
+    }
   }
 }
