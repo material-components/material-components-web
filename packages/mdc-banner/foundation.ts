@@ -85,11 +85,12 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
 
   /**
    * @param reason Why the banner was closed. Value will be passed to
-   *     CLOSING_EVENT and CLOSED_EVENT via the `event.detail.reason` property.
-   *     Standard values are CloseReason.PRIMARY and CloseReason.SECONDARY,
-   *     but custom client-specific values may also be used if desired.
+   *     events.CLOSING and events.CLOSED via the `event.detail.reason`
+   *     property. Standard values are CloseReason.PRIMARY and
+   *     CloseReason.SECONDARY, but CloseReason.UNSPECIFIED is provided for
+   *     custom handling of programmatic closing of the banner.
    */
-  close(reason: CloseReason|string = '') {
+  close(reason: CloseReason) {
     if (!this.isOpened) {
       // Avoid redundant close calls (and events), e.g. repeated interactions as
       // the banner is animating closed

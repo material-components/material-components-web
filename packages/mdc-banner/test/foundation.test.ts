@@ -71,7 +71,7 @@ describe('MDCBannerFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
 
     foundation.open();
-    foundation.close();
+    foundation.close(CloseReason.UNSPECIFIED);
 
     expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.OPEN);
   });
@@ -80,7 +80,7 @@ describe('MDCBannerFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
 
     foundation.open();
-    foundation.close();
+    foundation.close(CloseReason.UNSPECIFIED);
 
     jasmine.clock().tick(1);
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(cssClasses.OPEN);
@@ -108,7 +108,7 @@ describe('MDCBannerFoundation', () => {
        jasmine.clock().tick(numbers.BANNER_ANIMATION_OPEN_TIME_MS);
        expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.CLOSING);
        expect(mockAdapter.removeClass).toHaveBeenCalledTimes(1);
-       foundation.close();
+       foundation.close(CloseReason.UNSPECIFIED);
 
        expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.CLOSING);
        jasmine.clock().tick(numbers.BANNER_ANIMATION_CLOSE_TIME_MS);
@@ -131,30 +131,21 @@ describe('MDCBannerFoundation', () => {
 
     foundation.open();
     jasmine.clock().tick(numbers.BANNER_ANIMATION_OPEN_TIME_MS);
-    foundation.close();
+    foundation.close(CloseReason.UNSPECIFIED);
 
-    expect(mockAdapter.notifyClosing).toHaveBeenCalledWith('');
+    expect(mockAdapter.notifyClosing)
+        .toHaveBeenCalledWith(CloseReason.UNSPECIFIED);
     expect(mockAdapter.notifyClosing).toHaveBeenCalledTimes(1);
     jasmine.clock().tick(numbers.BANNER_ANIMATION_CLOSE_TIME_MS);
-    expect(mockAdapter.notifyClosed).toHaveBeenCalledWith('');
+    expect(mockAdapter.notifyClosed)
+        .toHaveBeenCalledWith(CloseReason.UNSPECIFIED);
     expect(mockAdapter.notifyClosed).toHaveBeenCalledTimes(1);
-
-    foundation.open();
-    jasmine.clock().tick(numbers.BANNER_ANIMATION_OPEN_TIME_MS);
-
-    const reason = 'reason';
-    foundation.close(reason);
-    expect(mockAdapter.notifyClosing).toHaveBeenCalledWith(reason);
-    expect(mockAdapter.notifyClosing).toHaveBeenCalledTimes(2);
-    jasmine.clock().tick(numbers.BANNER_ANIMATION_CLOSE_TIME_MS);
-    expect(mockAdapter.notifyClosed).toHaveBeenCalledWith(reason);
-    expect(mockAdapter.notifyClosed).toHaveBeenCalledTimes(2);
   });
 
   it('#close does nothing if the banner is already closed', () => {
     const {foundation, mockAdapter} = setupTest();
 
-    foundation.close();
+    foundation.close(CloseReason.UNSPECIFIED);
     jasmine.clock().tick(1);
     jasmine.clock().tick(numbers.BANNER_ANIMATION_CLOSE_TIME_MS);
     expect(mockAdapter.removeClass).not.toHaveBeenCalledWith(cssClasses.OPEN);
@@ -182,7 +173,7 @@ describe('MDCBannerFoundation', () => {
     const {foundation} = setupTest();
 
     foundation.open();
-    foundation.close();
+    foundation.close(CloseReason.UNSPECIFIED);
 
     expect(foundation.isOpen()).toBe(false);
   });
