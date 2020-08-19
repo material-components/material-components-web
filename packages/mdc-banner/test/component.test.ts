@@ -170,7 +170,7 @@ describe('MDCBanner', () => {
 
        component.listen(events.CLOSING, closingHandler);
        component.listen(events.CLOSED, closedHandler);
-       component.close();
+       component.close(CloseReason.UNSPECIFIED);
        expect(closingHandler).toHaveBeenCalled();
        expect(fixture.classList.contains(cssClasses.CLOSING)).toBe(true);
        expect(fixture.classList.contains(cssClasses.OPEN)).toBe(false);
@@ -195,7 +195,7 @@ describe('MDCBanner', () => {
     const {component} = setupTest(fixture);
     component.open();
 
-    component.close();
+    component.close(CloseReason.UNSPECIFIED);
     expect(fixture.offsetHeight).toEqual(0);
   });
 

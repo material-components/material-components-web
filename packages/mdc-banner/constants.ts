@@ -53,12 +53,15 @@ export const selectors = {
 /** Reason as to why the banner was closed. */
 export enum CloseReason {
   // Indicates the banner was closed via primary action button.
-  PRIMARY = 'primary',
+  PRIMARY,
   // Indicates the banner was closed via secondary action button.
-  SECONDARY = 'secondary',
+  SECONDARY,
+  // Will never be used by the component. Provided for custom handling of
+  // programmatic closing of the banner.
+  UNSPECIFIED,
 }
 
 /** Interface for the detail of the closing and closed events emitted. */
 export interface MDCBannerCloseEventDetail {
-  reason?: CloseReason|string;
+  reason: CloseReason;
 }

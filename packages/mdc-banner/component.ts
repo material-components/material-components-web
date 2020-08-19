@@ -84,10 +84,10 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
    * @param reason Why the banner was closed. Value will be passed to
    *     events.CLOSING and events.CLOSED via the `event.detail.reason`
    *     property. Standard values are CloseReason.PRIMARY and
-   *     CloseReason.SECONDARY, but custom client-specific values may also be
-   *     used if desired.
+   *     CloseReason.SECONDARY, but CloseReason.UNSPECIFIED is provided for
+   *     custom handling of programmatic closing of the banner.
    */
-  close(reason: CloseReason|string = '') {
+  close(reason: CloseReason) {
     this.foundation.close(reason);
   }
 
@@ -103,12 +103,10 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
         return this.contentEl.offsetHeight;
       },
       notifyClosed: (reason) => {
-        this.emit<MDCBannerCloseEventDetail>(
-            events.CLOSED, reason ? {reason} : {});
+        this.emit<MDCBannerCloseEventDetail>(events.CLOSED, {reason});
       },
       notifyClosing: (reason) => {
-        this.emit<MDCBannerCloseEventDetail>(
-            events.CLOSING, reason ? {reason} : {});
+        this.emit<MDCBannerCloseEventDetail>(events.CLOSING, {reason});
       },
       notifyOpened: () => {
         this.emit(events.OPENED, {});
