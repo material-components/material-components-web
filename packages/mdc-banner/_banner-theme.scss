@@ -21,12 +21,16 @@
 //
 
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 
 $fill-color: surface;
 $text-color: on-surface;
 $divider-color: rgba(theme-color.prop-value(on-surface), 0.12);
+$graphic-background-color: primary;
+$graphic-color: surface;
+$graphic-shape-radius: 50%;
 $primary-action-text-color: primary;
 $secondary-action-text-color: primary;
 
@@ -70,6 +74,46 @@ $mobile-breakpoint: 480px;
 
   @include feature-targeting.targets($feat-color) {
     @include theme.prop(border-bottom-color, $color);
+  }
+}
+
+///
+/// Customizes the graphic color.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-theme-color.property-values`.
+///
+@mixin graphic-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-banner__graphic {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+///
+/// Customizes the graphic background color.
+/// @param {Color | String} $color Either a valid color value or a key from
+///     `$theme-theme-color.property-values`.
+///
+@mixin graphic-background-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-banner__graphic {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
+    }
+  }
+}
+
+///
+/// Customizes the graphic shape radius.
+/// @param {Number} $shape-radius Shape radius in length or percentage.
+///
+@mixin graphic-shape-radius($shape-radius, $query: feature-targeting.all()) {
+  .mdc-banner__graphic {
+    @include shape-mixins.radius($shape-radius, $query: $query);
   }
 }
 
