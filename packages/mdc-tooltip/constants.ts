@@ -41,11 +41,17 @@ const events = {
 };
 
 /** Enum for possible tooltip positioning relative to its anchor element. */
-enum Position {
+enum XPosition {
   DETECTED = 0,
   START = 1,
   CENTER = 2,
   END = 3,
+}
+
+enum YPosition {
+  DETECTED = 0,
+  ABOVE = 1,
+  BELOW = 2,
 }
 
 /**
@@ -59,4 +65,4 @@ enum AnchorBoundaryType {
   UNBOUNDED = 1,
 }
 
-export {CssClasses, numbers, events, Position, AnchorBoundaryType};
+export {CssClasses, numbers, events, XPosition, AnchorBoundaryType, YPosition};

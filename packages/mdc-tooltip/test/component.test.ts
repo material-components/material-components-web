@@ -25,7 +25,7 @@ import {getFixture} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {AnchorBoundaryType, Position} from '../constants';
+import {AnchorBoundaryType, XPosition, YPosition} from '../constants';
 import {MDCTooltip, MDCTooltipFoundation} from '../index';
 
 function setupTestWithMockFoundation(fixture: HTMLElement) {
@@ -161,9 +161,10 @@ describe('MDCTooltip', () => {
 
   it('#setTooltipPosition fowards to MDCFoundation#setTooltipPosition', () => {
     const {mockFoundation, component} = setupTestWithMockFoundation(fixture);
-    component.setTooltipPosition(Position.CENTER);
+    component.setTooltipPosition(
+        {xPos: XPosition.CENTER, yPos: YPosition.ABOVE});
     expect(mockFoundation.setTooltipPosition)
-        .toHaveBeenCalledWith(Position.CENTER);
+        .toHaveBeenCalledWith({xPos: XPosition.CENTER, yPos: YPosition.ABOVE});
     component.destroy();
   });
 

@@ -36,8 +36,8 @@ Common use cases include:
 ### Tooltip positioning
 Tooltip positioning is based on the anchor element (the element that, on user
 interaction, results in showing or hiding of a tooltip). They appear directly
-below this anchor element and can be placed flush with either the end, center,
-or start of the anchor.
+below or above this anchor element and can be placed flush with either the end,
+center, or start of the anchor.
 
 ![End, center, and start alignment of tooltip on icon button in a LTR page](images/plain_tooltip_alignment.png)
 <p align="center"> *Tooltips aligned with the end, center, and start of an anchor element (in a LTR page flow).* </p>
@@ -45,9 +45,10 @@ or start of the anchor.
 
 A threshold distance of 32px is expected to be maintained between the tooltip
 and the viewport edge. A valid tooltip position is calculated based on which of
-the position options (start, center, or end) maintain this threshold. If all
-possible alignment options violate the threshold, then a valid tooltip position
-is one that does not collide with the viewport.
+the position options (start, center, or end for x-axis alignment and above or
+below for y-axis alignment) maintain this threshold. If all possible alignment
+options violate the threshold, then a valid tooltip position is one that does
+not collide with the viewport.
 
 A user specified position is honored only if the specified position is
 considered valid based on the logic outlined above.
@@ -140,7 +141,7 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`setTooltipPosition(pos: Position) => void` | Specify how the tooltip should be aligned with the anchor element. See [tooltip positioning](#tooltip-positioning) section for more information.
+`setTooltipPosition(position: {xPos?: XPosition, yPos?: YPosition}) => void` | Specify how the tooltip should be aligned with the anchor element. See [tooltip positioning](#tooltip-positioning) section for more information.
 `setAnchorBoundaryType(type: AnchorBoundaryType) => void` | Specify whether the anchor element is `bounded` (element has an identifiable boundary such as a button) or `unbounded` (element does not have a visually declared boundary such as a text link). Tooltips are placed closer to bounded anchor elements compared to unbounded anchor elements. If no type is specified, defaults to `bounded`
 
 ### Usage Within Frameworks
