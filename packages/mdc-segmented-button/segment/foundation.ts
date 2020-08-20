@@ -46,7 +46,7 @@ export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmen
       hasClass: () => false,
       notifySelectedChange: () => undefined,
       getRootBoundingClientRect: () => emptyClientRect,
-    }	
+    }
   }
 
   /**

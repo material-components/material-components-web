@@ -39,7 +39,7 @@ export class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
       addClass: () => undefined,
       removeClass: () => undefined,
       setNativeControlDisabled: () => undefined,
-    };	
+    };
   }
 
   setDisabled(disabled: boolean) {

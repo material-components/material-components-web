@@ -33,14 +33,14 @@ export class MDCChipTrailingActionFoundation extends
     return strings;
   }
 
-  static get defaultAdapter(): MDCChipTrailingActionAdapter {	
-    return {	
+  static get defaultAdapter(): MDCChipTrailingActionAdapter {
+    return {
       focus: () => undefined,
       getAttribute: () => null,
       setAttribute: () => undefined,
       notifyInteraction: () => undefined,
       notifyNavigation: () => undefined,
-    };	
+    };
   }
 
   handleClick(evt: MouseEvent) {

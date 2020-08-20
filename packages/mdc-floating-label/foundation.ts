@@ -33,13 +33,13 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
 
   static get defaultAdapter(): MDCFloatingLabelAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-    return {	
-      addClass: () => undefined,	
-      removeClass: () => undefined,	
-      getWidth: () => 0,	
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      getWidth: () => 0,
       registerInteractionHandler: () => undefined,
       deregisterInteractionHandler: () => undefined,
-    };	
+    };
     // tslint:enable:object-literal-sort-keys
   }
 

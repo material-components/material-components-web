@@ -33,8 +33,8 @@ import {SortActionEventData} from './types';
  */
 export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
 
-  static get defaultAdapter(): MDCDataTableAdapter {	
-    return {	
+  static get defaultAdapter(): MDCDataTableAdapter {
+    return {
       addClass: () => undefined,
       addClassAtRowIndex: () => undefined,
       getAttributeByHeaderCellIndex: () => '',
@@ -67,9 +67,9 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       setProgressIndicatorStyles: () => undefined,
       setRowCheckboxCheckedAtIndex: () => undefined,
       setSortStatusLabelByHeaderCellIndex: () => undefined,
-    };	
+    };
   }
-  
+
   /**
    * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
    * Use this if registering checkbox is synchronous.

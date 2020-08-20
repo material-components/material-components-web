@@ -38,8 +38,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     return cssClasses;
   }
 
-  static get defaultAdapter(): MDCChipSetAdapter {	
-    return {	
+  static get defaultAdapter(): MDCChipSetAdapter {
+    return {
       announceMessage: () => undefined,
       focusChipPrimaryActionAtIndex: () => undefined,
       focusChipTrailingActionAtIndex: () => undefined,
@@ -50,7 +50,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       removeChipAtIndex: () => undefined,
       removeFocusFromChipAtIndex: () => undefined,
       selectChipAtIndex: () => undefined,
-    };	
+    };
   }
 
   /**

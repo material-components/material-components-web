@@ -50,7 +50,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
       removeNativeControlAttr: () => undefined,
       setNativeControlAttr: () => undefined,
       setNativeControlDisabled: () => undefined,
-    };	
+    };
   }
 
   private currentCheckState_ = strings.TRANSITION_STATE_INIT;

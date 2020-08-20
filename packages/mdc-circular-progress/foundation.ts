@@ -37,16 +37,16 @@ export class MDCCircularProgressFoundation extends
     return strings;
   }
 
-  static get defaultAdapter(): MDCCircularProgressAdapter {	
-    return {	
+  static get defaultAdapter(): MDCCircularProgressAdapter {
+    return {
       addClass: () => undefined,
       getDeterminateCircleAttribute: () => null,
       hasClass: () => false,
       removeAttribute: () => undefined,
       removeClass: () => undefined,
-      setAttribute: () => undefined,	
+      setAttribute: () => undefined,
       setDeterminateCircleAttribute: () => undefined,
-    };	
+    };
   }
 
   private isClosed_!: boolean;

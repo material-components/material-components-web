@@ -38,8 +38,8 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCDialogAdapter {	
-    return {	
+  static get defaultAdapter(): MDCDialogAdapter {
+    return {
       addBodyClass: () => undefined,
       addClass: () => undefined,
       areButtonsStacked: () => false,
@@ -58,7 +58,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       removeClass: () => undefined,
       reverseButtons: () => undefined,
       trapFocus: () => undefined,
-    };	
+    };
   }
 
   private isOpen_ = false;

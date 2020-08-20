@@ -52,7 +52,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   static get defaultAdapter(): MDCChipAdapter {	
-    return {	
+    return {
       addClass: () => undefined,
       addClassToLeadingIcon: () => undefined,
       eventTargetHasClass: () => false,
@@ -78,7 +78,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       removeTrailingActionFocus: () => undefined,
       setPrimaryActionAttr: () => undefined,
       setStyleProperty: () => undefined,
-    };	
+    };
   }
 
 

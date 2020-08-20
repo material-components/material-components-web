@@ -42,21 +42,21 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
   static get defaultAdapter(): MDCMenuAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-    return {	
+    return {
       addClassToElementAtIndex: () => undefined,
       removeClassFromElementAtIndex: () => undefined,
       addAttributeToElementAtIndex: () => undefined,
       removeAttributeFromElementAtIndex: () => undefined,
-      elementContainsClass: () => false,	
-      closeSurface: () => undefined,	
-      getElementIndex: () => -1,	
-      notifySelected: () => undefined,	
-      getMenuItemCount: () => 0,	
-      focusItemAtIndex: () => undefined,	
-      focusListRoot: () => undefined,	
+      elementContainsClass: () => false,
+      closeSurface: () => undefined,
+      getElementIndex: () => -1,
+      notifySelected: () => undefined,
+      getMenuItemCount: () => 0,
+      focusItemAtIndex: () => undefined,
+      focusListRoot: () => undefined,
       getSelectedSiblingOfItemAtIndex: () => -1,
-      isSelectableItemAtIndex: () => false,	
-    };	
+      isSelectableItemAtIndex: () => false,
+    };
     // tslint:enable:object-literal-sort-keys
   }
 
