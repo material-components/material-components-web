@@ -1,4 +1,4 @@
-@use '../mixins' as theme;
+@use '../theme';
 @use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {

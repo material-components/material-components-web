@@ -16,9 +16,3 @@
   tone;
 @forward './theme' show core-styles, property;
 @forward './color-palette';
-
-// Backwards compatibility
-@forward './constants';
-@forward './functions';
-@forward './mixins';
-@forward './variables';
