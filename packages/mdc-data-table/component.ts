@@ -58,27 +58,24 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   initialSyncWithDOM() {
     this.headerRow =
         this.root.querySelector(`.${cssClasses.HEADER_ROW}`) as HTMLElement;
-    if (this.headerRow.querySelector(selectors.HEADER_ROW_CHECKBOX)) {
-      this.handleHeaderRowCheckboxChange = () =>
-          this.foundation.handleHeaderRowCheckboxChange();
-      this.headerRow.addEventListener(
-          'change', this.handleHeaderRowCheckboxChange);
-    }
+    this.handleHeaderRowCheckboxChange = () => {
+      this.foundation.handleHeaderRowCheckboxChange();
+    };
+    this.headerRow.addEventListener(
+        'change', this.handleHeaderRowCheckboxChange);
 
-    if (this.headerRow.querySelector(selectors.HEADER_CELL_WITH_SORT)) {
-      this.headerRowClickListener = (event) => {
-        this.handleHeaderRowClick(event);
-      };
-      this.headerRow.addEventListener('click', this.headerRowClickListener);
-    }
+    this.headerRowClickListener = (event) => {
+      this.handleHeaderRowClick(event);
+    };
+    this.headerRow.addEventListener('click', this.headerRowClickListener);
+
 
     this.content =
         this.root.querySelector(`.${cssClasses.CONTENT}`) as HTMLElement;
-    if (this.content.querySelector(selectors.ROW_CHECKBOX)) {
-      this.handleRowCheckboxChange = (event) =>
-          this.foundation.handleRowCheckboxChange(event);
-      this.content.addEventListener('change', this.handleRowCheckboxChange);
-    }
+    this.handleRowCheckboxChange = (event) => {
+      this.foundation.handleRowCheckboxChange(event);
+    };
+    this.content.addEventListener('change', this.handleRowCheckboxChange);
 
     this.layout();
   }
@@ -151,9 +148,9 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
       this.headerRowCheckbox.destroy();
     }
     if (this.rowCheckboxList) {
-      this.rowCheckboxList.forEach((checkbox) => {
+      for (const checkbox of this.rowCheckboxList) {
         checkbox.destroy();
-      });
+      }
     }
   }
 
