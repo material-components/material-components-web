@@ -120,6 +120,28 @@ attribute.
 <button class="mdc-icon-button material-icons" aria-describedby="tooltip-id">favorite</button>
 ```
 
+If the information provided in the tooltip is duplicated from the anchor
+element's `aria-label`, the tooltip can be hidden from the screenreader by
+annotating the anchor element with `data-tooltip-id` instead of
+`aria-describedby`. Hiding the tooltip from the screenreader will prevent the
+same information from being announced twice (once from the `aria-label` and
+a second time from the tooltip).
+
+```html
+<button class="mdc-icon-button material-icons"
+        aria-label="toggle favorite"
+        data-tooltip-id="tooltip-id">
+  favorite
+</button>
+
+<div id="tooltip-id" class="mdc-tooltip" role="tooltip" aria-hidden="true">
+  <div class="mdc-tooltip__surface">
+    toggle favorite
+  </div>
+</div>
+```
+
+
 ## API
 
 ### Sass mixins

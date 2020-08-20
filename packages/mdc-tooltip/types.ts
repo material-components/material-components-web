@@ -21,8 +21,9 @@
  * THE SOFTWARE.
  */
 
-export * from './adapter';
-export * from './component';
-export * from './foundation';
-export * from './constants';
-export * from './types';
+/**
+ * Available options for how the tooltip element should be shown.
+ */
+export interface ShowTooltipOptions {
+  readonly hideFromScreenreader: boolean;
+}

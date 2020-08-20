@@ -48,10 +48,11 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     }
 
     this.anchorElem = document.querySelector<HTMLElement>(
-        `[aria-describedby="${tooltipId}"]`);
+                          `[aria-describedby="${tooltipId}"]`) ||
+        document.querySelector<HTMLElement>(`[data-tooltip-id="${tooltipId}"]`);
     if (!this.anchorElem) {
       throw new Error(
-          'MDCTooltip: Tooltip component requries an [aria-describedby] anchor element.');
+          'MDCTooltip: Tooltip component requires an anchor element annotated with [aria-describedby] or [data-tooltip-id] anchor element.');
     }
 
     this.handleMouseEnter = () => {
@@ -129,6 +130,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       },
       getAnchorBoundingRect: () => {
         return this.anchorElem ? this.anchorElem.getBoundingClientRect() : null;
+      },
+      getAnchorAttribute: (attr) => {
+        return this.anchorElem ? this.anchorElem.getAttribute(attr) : null;
       },
       isRTL: () => getComputedStyle(this.root).direction === 'rtl',
       registerDocumentEventHandler: (evt, handler) => {
