@@ -34,6 +34,7 @@
   $feat-animation: feature-targeting.create-target($query, animation);
 
   @include color(variables.$color, $query);
+  @include track-color(variables.$track-color, $query: $query);
 
   @include feature-targeting.targets($feat-animation) {
     @include keyframes.container-rotate-keyframes_;
@@ -177,6 +178,19 @@
 
   .mdc-circular-progress__determinate-circle,
   .mdc-circular-progress__indeterminate-circle-graphic {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(stroke, $color);
+    }
+  }
+}
+
+/// Customizes the track color of the indicator. Applies to the
+/// determinate variant only.
+/// @param {Color} $color - The desired track color.
+@mixin track-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-circular-progress__determinate-track {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(stroke, $color);
     }

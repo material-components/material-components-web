@@ -34,6 +34,7 @@ npm install @material/circular-progress
 <div class="mdc-circular-progress" style="width:48px;height:48px;" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
   <div class="mdc-circular-progress__determinate-container">
     <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <circle class="mdc-circular-progress__determinate-track" cx="24" cy="24" r="18" stroke-width="4"/>
       <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097" stroke-width="4"/>
     </svg>
   </div>
@@ -100,6 +101,7 @@ See [baseline template](#HTML-Structure) above.
 <div class="mdc-circular-progress" style="width:36px;height:36px;" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
   <div class="mdc-circular-progress__determinate-container">
     <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <circle class="mdc-circular-progress__determinate-track" cx="16" cy="16" r="12.5" stroke-width="3"/>
       <circle class="mdc-circular-progress__determinate-circle" cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="78.54" stroke-width="3"/>
     </svg>
   </div>
@@ -128,6 +130,7 @@ See [baseline template](#HTML-Structure) above.
 <div class="mdc-circular-progress" style="width:24px;height:24px;" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
   <div class="mdc-circular-progress__determinate-container">
     <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <circle class="mdc-circular-progress__determinate-track" cx="12" cy="12" r="8.75" stroke-width="2.5"/>
       <circle class="mdc-circular-progress__determinate-circle" cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="54.978" stroke-width="2.5"/>
     </svg>
   </div>
@@ -159,6 +162,7 @@ This is done instead of animating the color property to reduce browser repaints.
 <div class="mdc-circular-progress" style="width:48px;height:48px;" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1">
   <div class="mdc-circular-progress__determinate-container">
     <svg class="mdc-circular-progress__determinate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <circle class="mdc-circular-progress__determinate-track" cx="24" cy="24" r="18" stroke-width="4"/>
       <circle class="mdc-circular-progress__determinate-circle" cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="113.097" stroke-width="4"/>
     </svg>
   </div>
@@ -206,6 +210,7 @@ CSS Class | Description
 `mdc-circular-progress__determinate-container` | Mandatory.  Contains the determinate progress indicator.
 `mdc-circular-progress__indeterminate-container` | Mandatory.  Contains the indeterminate progress indicator.
 `mdc-circular-progress__determinate-circle-graphic` | Mandatory. The determinate SVG.
+`mdc-circular-progress__determinate-track` | Mandatory.  The determinate SVG track.
 `mdc-circular-progress__determinate-circle` | Mandatory.  The determinate SVG circle.
 `mdc-circular-progress__spinner-layer` | Mandatory.  Another wrapper around the indeterminate indicator.
 `mdc-circular-progress__indeterminate-circle-graphic` | Mandatory.  An indeterminate SVG (there are three of these in total).
@@ -222,13 +227,14 @@ CSS Class | Description
 Mixin | Description
 ----- | ------------
 `color($color)` | Customizes the stroke-color of the indicator. Applies to the determinate variant, and also the indeterminate variant unless the four-color mixin is applied.
+`track-color($color)` | Customizes the track color of the indicator. Applies to the determinate variant only.
 `indeterminate-colors($colors)` | Applies four animated stroke-colors to the indeterminate indicator. Applicable to the indeterminate variant only and overrides any single color currently set. Takes a list of exacty four colors.
 
 ## `MDCCircularProgress` Properties and Methods
 
 Property | Value Type | Description
 -------- | ---------- | --------------
-`determinate` | `boolean` (write-only) | Toggles the component between the determinate and indeterminate state. 
+`determinate` | `boolean` (write-only) | Toggles the component between the determinate and indeterminate state.
 `progress` | `number` (write-only) | Sets the progress bar to this value. Value should be between 0 and 1.
 
 Method Signature | Description |
