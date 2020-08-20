@@ -71,7 +71,7 @@ const banner = new MDCBanner(document.querySelector('.mdc-banner'));
 
 ### Variants
 
-#### Banner with image
+#### Banner with graphic
 
 Images can help communicate a banner’s message.
 
@@ -80,7 +80,7 @@ Images can help communicate a banner’s message.
   <div class="mdc-banner__content"
        role="status"
        aria-live="assertive">
-    <div class="mdc-banner__image" role="img" alt=""></div>
+    <div class="mdc-banner__graphic" role="img" alt=""><i class="material-icons mdc-banner__icon">error_outline</i></div>
     <div class="mdc-banner__text">
       There was a problem processing a transaction on your credit card.
     </div>

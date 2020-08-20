@@ -43,6 +43,18 @@ $_exit-duration: 250ms;
   $feat-animation: feature-targeting.create-target($query, animation);
 
   @include banner-theme.text-color(banner-theme.$text-color, $query: $query);
+  @include banner-theme.graphic-color(
+    banner-theme.$graphic-color,
+    $query: $query
+  );
+  @include banner-theme.graphic-background-color(
+    banner-theme.$graphic-background-color,
+    $query: $query
+  );
+  @include banner-theme.graphic-shape-radius(
+    banner-theme.$graphic-shape-radius,
+    $query: $query
+  );
   @include banner-theme.min-width($_min-width, $query: $query);
   @include banner-theme.max-width($_max-width, $query: $query);
 
@@ -115,7 +127,7 @@ $_exit-duration: 250ms;
     }
   }
 
-  .mdc-banner__image {
+  .mdc-banner__graphic {
     @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(margin, 16px, 0);
 
@@ -123,7 +135,16 @@ $_exit-duration: 250ms;
       height: 40px;
       margin-top: 16px;
       margin-bottom: 16px;
+      text-align: center;
       width: 40px;
+    }
+  }
+
+  .mdc-banner__icon {
+    @include feature-targeting.targets($feat-structure) {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
 
