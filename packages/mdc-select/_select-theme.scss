@@ -254,12 +254,10 @@ $error-color: error !default;
       );
     }
 
-    @include _if-focused {
-      @include _focused-line-ripple-color(
-        state.get-focus-state($color-or-map),
-        $query: $query
-      );
-    }
+    @include _focused-line-ripple-color(
+      state.get-focus-state($color-or-map),
+      $query: $query
+    );
   }
 
   @include _if-disabled {
