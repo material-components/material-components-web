@@ -53,6 +53,30 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
     return numbers;
   }
 
+  static get defaultAdapter(): MDCTabBarAdapter {
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
+    return {	
+      scrollTo: () => undefined,
+      incrementScroll: () => undefined,
+      getScrollPosition: () => 0,
+      getScrollContentWidth: () => 0,
+      getOffsetWidth: () => 0,
+      isRTL: () => false,
+      setActiveTab: () => undefined,
+      activateTabAtIndex: () => undefined,
+      deactivateTabAtIndex: () => undefined,
+      focusTabAtIndex: () => undefined,
+      getTabIndicatorClientRectAtIndex: () => ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+      getTabDimensionsAtIndex: () => ({rootLeft: 0, rootRight: 0, contentLeft: 0, contentRight: 0}),
+      getPreviousActiveTabIndex: () => -1,
+      getFocusedTabIndex: () => -1,
+      getIndexOfTabById: () => -1,
+      getTabListLength: () => 0,
+      notifyTabActivated: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
+  }
+
   private useAutomaticActivation_ = false;
 
   /**

@@ -32,6 +32,43 @@ import {SortActionEventData} from './types';
  * logic requiring DOM manipulation are delegated to adapter methods.
  */
 export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
+
+  static get defaultAdapter(): MDCDataTableAdapter {	
+    return {	
+      addClass: () => undefined,
+      addClassAtRowIndex: () => undefined,
+      getAttributeByHeaderCellIndex: () => '',
+      getHeaderCellCount: () => 0,
+      getHeaderCellElements: () => [],
+      getRowCount: () => 0,
+      getRowElements: () => [],
+      getRowIdAtIndex: () => '',
+      getRowIndexByChildElement: () => 0,
+      getSelectedRowCount: () => 0,
+      getTableContainerHeight: () => 0,
+      getTableHeaderHeight: () => 0,
+      isCheckboxAtRowIndexChecked: () => false,
+      isHeaderRowCheckboxChecked: () => false,
+      isRowsSelectable: () => false,
+      notifyRowSelectionChanged: () => undefined,
+      notifySelectedAll: () => undefined,
+      notifySortAction: () => undefined,
+      notifyUnselectedAll: () => undefined,
+      registerHeaderRowCheckbox: () => undefined,
+      registerRowCheckboxes: () => undefined,
+      removeClass: () => undefined,
+      removeClassAtRowIndex: () => undefined,
+      removeClassNameByHeaderCellIndex: () => undefined,
+      setAttributeAtRowIndex: () => undefined,
+      setAttributeByHeaderCellIndex: () => undefined,
+      setClassNameByHeaderCellIndex: () => undefined,
+      setHeaderRowCheckboxChecked: () => undefined,
+      setHeaderRowCheckboxIndeterminate: () => undefined,
+      setProgressIndicatorStyles: () => undefined,
+      setRowCheckboxCheckedAtIndex: () => undefined,
+      setSortStatusLabelByHeaderCellIndex: () => undefined,
+    };	
+  }
   
   /**
    * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.

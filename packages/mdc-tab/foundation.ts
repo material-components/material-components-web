@@ -35,6 +35,25 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
     return strings;
   }
 
+  static get defaultAdapter(): MDCTabAdapter {
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
+    return {	
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
+      setAttr: () => undefined,
+      activateIndicator: () => undefined,
+      deactivateIndicator: () => undefined,
+      notifyInteracted: () => undefined,
+      getOffsetLeft: () => 0,
+      getOffsetWidth: () => 0,
+      getContentOffsetLeft: () => 0,
+      getContentOffsetWidth: () => 0,
+      focus: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
+  }
+
   private focusOnActivate_ = true;
 
   handleClick() {

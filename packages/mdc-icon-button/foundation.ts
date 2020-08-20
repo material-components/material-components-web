@@ -40,6 +40,17 @@ export class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonTo
     return strings;
   }
 
+  static get defaultAdapter(): MDCIconButtonToggleAdapter {
+    return {
+      addClass: () => undefined,
+      hasClass: () => false,
+      notifyChange: () => undefined,
+      removeClass: () => undefined,
+      getAttr: () => null,
+      setAttr: () => undefined,
+    };
+  }
+
   init() {
     const ariaLabelOn = this.adapter.getAttr(strings.DATA_ARIA_LABEL_ON);
     const ariaLabelOff = this.adapter.getAttr(strings.DATA_ARIA_LABEL_OFF);

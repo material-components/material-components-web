@@ -50,6 +50,28 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     return numbers;
   }
 
+  static get defaultAdapter(): MDCListAdapter {
+    return {
+      addClassForElementIndex: () => undefined,
+      focusItemAtIndex: () => undefined,
+      getAttributeForElementIndex: () => null,
+      getFocusedElementIndex: () => 0,
+      getListItemCount: () => 0,
+      hasCheckboxAtIndex: () => false,
+      hasRadioAtIndex: () => false,
+      isCheckboxCheckedAtIndex: () => false,
+      isFocusInsideList: () => false,
+      isRootFocused: () => false,
+      listItemAtIndexHasClass: () => false,
+      notifyAction: () => undefined,
+      removeClassForElementIndex: () => undefined,
+      setAttributeForElementIndex: () => undefined,
+      setCheckedCheckboxOrRadioAtIndex: () => undefined,
+      setTabIndexForListItemChildren: () => undefined,
+      getPrimaryTextAtIndex: () => '',
+    };
+  }
+
   private wrapFocus_ = false;
   private isVertical_ = true;
   private isSingleSelectionList_ = false;

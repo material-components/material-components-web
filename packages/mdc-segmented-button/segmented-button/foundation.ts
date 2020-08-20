@@ -28,6 +28,16 @@ import {cssClasses} from './constants';
 
 export class MDCSegmentedButtonFoundation extends MDCFoundation<MDCSegmentedButtonAdapter> {
 
+  static get defaultAdapter(): MDCSegmentedButtonAdapter {
+    return {
+      hasClass: () => false,
+      getSegments: () => [],
+      selectSegment: () => undefined,
+      unselectSegment: () => undefined,
+      notifySelectedChange: () => undefined
+    }
+  }
+
   /**
    * Sets identified child segment to be selected
    * 

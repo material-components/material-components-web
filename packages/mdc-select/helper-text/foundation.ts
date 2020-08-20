@@ -34,6 +34,20 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
     return strings;
   }
 
+  static get defaultAdapter(): MDCSelectHelperTextAdapter {
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
+      setAttr: () => undefined,
+      getAttr: () => null,
+      removeAttr: () => undefined,
+      setContent: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
+  }
+
   /**
    * @return The ID of the helper text, or null if none is set.
    */

@@ -38,6 +38,19 @@ export class MDCLinearProgressFoundation extends
     return strings;
   }
 
+  static get defaultAdapter(): MDCLinearProgressAdapter {
+    return {
+      addClass: () => undefined,
+      forceLayout: () => undefined,
+      setBufferBarStyle: () => null,
+      setPrimaryBarStyle: () => null,
+      hasClass: () => false,
+      removeAttribute: () => undefined,
+      removeClass: () => undefined,
+      setAttribute: () => undefined,
+    };
+  }
+
   private isDeterminate!: boolean;
   private isReversed!: boolean;
   private progress!: number;

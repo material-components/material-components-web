@@ -44,6 +44,48 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     return strings;
   }
 
+  static get defaultAdapter(): MDCSelectAdapter {
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
+      activateBottomLine: () => undefined,
+      deactivateBottomLine: () => undefined,
+      getSelectedIndex: () => -1,
+      setSelectedIndex: () => undefined,
+      hasLabel: () => false,
+      floatLabel: () => undefined,
+      getLabelWidth: () => 0,
+      setLabelRequired: () => undefined,
+      hasOutline: () => false,
+      notchOutline: () => undefined,
+      closeOutline: () => undefined,
+      setRippleCenter: () => undefined,
+      notifyChange: () => undefined,
+      setSelectedText: () => undefined,
+      isSelectAnchorFocused: () => false,
+      getSelectAnchorAttr: () => '',
+      setSelectAnchorAttr: () => undefined,
+      removeSelectAnchorAttr: () => undefined,
+      addMenuClass: () => undefined,
+      removeMenuClass: () => undefined,
+      openMenu: () => undefined,
+      closeMenu: () => undefined,
+      getAnchorElement: () => null,
+      setMenuAnchorElement: () => undefined,
+      setMenuAnchorCorner: () => undefined,
+      setMenuWrapFocus: () => undefined,
+      focusMenuItemAtIndex: () => undefined,
+      getMenuItemCount: () => 0,
+      getMenuItemValues: () => [],
+      getMenuItemTextAtIndex: () => '',
+      isTypeaheadInProgress: () => false,
+      typeaheadMatchItem: () => -1,
+    };
+    // tslint:enable:object-literal-sort-keys
+  }
+
 
   private readonly leadingIcon: MDCSelectIconFoundation|undefined;
   private readonly helperText: MDCSelectHelperTextFoundation|undefined;

@@ -38,6 +38,29 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     return numbers;
   }
 
+  static get defaultAdapter(): MDCDialogAdapter {	
+    return {	
+      addBodyClass: () => undefined,
+      addClass: () => undefined,
+      areButtonsStacked: () => false,
+      clickDefaultButton: () => undefined,
+      eventTargetMatches: () => false,
+      getActionFromEvent: () => '',
+      getInitialFocusEl: () => null,
+      hasClass: () => false,
+      isContentScrollable: () => false,
+      notifyClosed: () => undefined,
+      notifyClosing: () => undefined,
+      notifyOpened: () => undefined,
+      notifyOpening: () => undefined,
+      releaseFocus: () => undefined,
+      removeBodyClass: () => undefined,
+      removeClass: () => undefined,
+      reverseButtons: () => undefined,
+      trapFocus: () => undefined,
+    };	
+  }
+
   private isOpen_ = false;
   private animationFrame_ = 0;
   private animationTimer_ = 0;

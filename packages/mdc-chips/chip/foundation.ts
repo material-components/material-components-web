@@ -28,6 +28,15 @@ import {MDCChipTrailingActionNavigationEvent} from '../trailingaction/types';
 import {MDCChipAdapter} from './adapter';
 import {cssClasses, Direction, EventSource, jumpChipKeys, navigationKeys, strings} from './constants';
 
+const emptyClientRect = {	
+  bottom: 0,	
+  height: 0,	
+  left: 0,	
+  right: 0,	
+  top: 0,	
+  width: 0,	
+};
+
 enum FocusBehavior {
   SHOULD_FOCUS,
   SHOULD_NOT_FOCUS,
@@ -40,6 +49,36 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   static get cssClasses() {
     return cssClasses;
+  }
+
+  static get defaultAdapter(): MDCChipAdapter {	
+    return {	
+      addClass: () => undefined,
+      addClassToLeadingIcon: () => undefined,
+      eventTargetHasClass: () => false,
+      focusPrimaryAction: () => undefined,
+      focusTrailingAction: () => undefined,
+      getAttribute: () => null,
+      getCheckmarkBoundingClientRect: () => emptyClientRect,
+      getComputedStyleValue: () => '',
+      getRootBoundingClientRect: () => emptyClientRect,
+      hasClass: () => false,
+      hasLeadingIcon: () => false,
+      isRTL: () => false,
+      isTrailingActionNavigable: () => false,
+      notifyEditFinish: () => undefined,
+      notifyEditStart: () => undefined,
+      notifyInteraction: () => undefined,
+      notifyNavigation: () => undefined,
+      notifyRemoval: () => undefined,
+      notifySelection: () => undefined,
+      notifyTrailingIconInteraction: () => undefined,
+      removeClass: () => undefined,
+      removeClassFromLeadingIcon: () => undefined,
+      removeTrailingActionFocus: () => undefined,
+      setPrimaryActionAttr: () => undefined,
+      setStyleProperty: () => undefined,
+    };	
   }
 
 

@@ -31,6 +31,19 @@ export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter>
     return cssClasses;
   }
 
+  static get defaultAdapter(): MDCLineRippleAdapter {
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
+    return {	
+      addClass: () => undefined,	
+      removeClass: () => undefined,	
+      hasClass: () => false,	
+      setStyle: () => undefined,	
+      registerEventHandler: () => undefined,
+      deregisterEventHandler: () => undefined,
+    };	
+    // tslint:enable:object-literal-sort-keys
+  }
+
   private readonly transitionEndHandler_: SpecificEventListener<'transitionend'>;
 
   constructor(adapter: MDCLineRippleAdapter) {

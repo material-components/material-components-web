@@ -38,6 +38,20 @@ export class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutline
     return numbers;
   }
 
+  /**	
+   * See {@link MDCNotchedOutlineAdapter} for typing information on parameters and return types.	
+   */	
+  static get defaultAdapter(): MDCNotchedOutlineAdapter {
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      setNotchWidthProperty: () => undefined,
+      removeNotchWidthProperty: () => undefined,
+    };	
+    // tslint:enable:object-literal-sort-keys
+  }
+
   /**
    * Adds the outline notched selector and updates the notch width calculated based off of notchWidth.
    */

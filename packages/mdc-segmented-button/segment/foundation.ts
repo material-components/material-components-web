@@ -25,8 +25,29 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCSegmentedButtonSegmentAdapter} from './adapter';
 import {cssClasses, booleans, attributes} from './constants';
 
+const emptyClientRect = {
+  bottom: 0,
+  height: 0,
+  left: 0,
+  right: 0,
+  top: 0,
+  width: 0,
+};
 
 export class MDCSegmentedButtonSegmentFoundation extends MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
+
+  static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
+    return {
+      isSingleSelect: () => false,
+      getAttr: () => '',
+      setAttr: () => undefined,
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
+      notifySelectedChange: () => undefined,
+      getRootBoundingClientRect: () => emptyClientRect,
+    }	
+  }
 
   /**
    * @return Returns true if segment is currently selected, otherwise returns

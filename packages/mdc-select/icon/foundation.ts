@@ -35,6 +35,20 @@ export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter>
     return strings;
   }
 
+  static get defaultAdapter(): MDCSelectIconAdapter {
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
+    return {
+      getAttr: () => null,
+      setAttr: () => undefined,
+      removeAttr: () => undefined,
+      setContent: () => undefined,
+      registerInteractionHandler: () => undefined,
+      deregisterInteractionHandler: () => undefined,
+      notifyIconAction: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
+  }
+
   private savedTabIndex_: string | null = null;
 
   // assigned in initialSyncWithDOM()
