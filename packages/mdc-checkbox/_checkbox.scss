@@ -209,8 +209,23 @@
 /// Checkbox styles that are customizable should go here.
 @mixin theme-styles($query: feature-targeting.all()) {
   .mdc-checkbox {
-    @include checkbox-theme.theme(checkbox-theme.$light-theme, $query: $query);
+    @include checkbox-theme.focus-indicator-color(
+      checkbox-theme.$baseline-theme-color,
+      $query: $query
+    );
+    @include checkbox-theme.density(
+      checkbox-theme.$density-scale,
+      $query: $query
+    );
   }
+
+  @include checkbox-theme.container-colors($query: $query);
+  @include checkbox-theme.disabled-container-colors($query: $query);
+  @include checkbox-theme.ink-color(checkbox-theme.$mark-color, $query: $query);
+  @include checkbox-theme.disabled-ink-color(
+    checkbox-theme.$mark-color,
+    $query: $query
+  );
 }
 
 /// Checkbox's ripple styles.
@@ -227,13 +242,14 @@
       $query: $query,
       $ripple-target: checkbox-theme.$ripple-target
     );
-    @include ripple.radius-unbounded(
+    @include ripple-theme.states(
+      $color: on-surface,
       $query: $query,
       $ripple-target: checkbox-theme.$ripple-target
     );
-    @include ripple-theme.behind-content(
-      checkbox-theme.$ripple-target,
-      $query: $query
+    @include ripple.radius-unbounded(
+      $query: $query,
+      $ripple-target: checkbox-theme.$ripple-target
     );
   }
 
@@ -267,7 +283,11 @@
 }
 
 @mixin child--upgraded_ {
-  transition: none;
+  // Due to the myriad of selector combos used to properly style a CSS-only checkbox, all of
+  // which have varying selector precedence and make use of transitions, it is cleaner and more
+  // efficient here to simply use !important, since the mdc-checkbox--anim-* classes will take
+  // over from here.
+  transition: none !important;
 }
 
 // Animation

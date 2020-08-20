@@ -68,95 +68,6 @@ $density-config: (
 
 $ripple-target: '.mdc-checkbox__ripple';
 
-/// Material baseline light theme configuration of checkbox.
-/// See https://material.io/components/selection-controls for spec.
-$light-theme: (
-  density-scale: 0,
-  checkmark-color: $mark-color,
-  container-checked-color: theme-color.prop-value($baseline-theme-color),
-  container-checked-hover-color: null,
-  container-disabled-color: $disabled-color,
-  outline-color: $border-color,
-  outline-hover-color: null,
-  ripple-color: theme-color.$on-surface,
-  ripple-opacity: ripple-theme.$dark-ink-opacities,
-  ripple-checked-color: theme-color.prop-value($baseline-theme-color),
-  ripple-checked-opacity: ripple-theme.$dark-ink-opacities,
-);
-
-/// Sets theme to checkbox based on provided theme configuration.
-/// Only emits theme related styles. Theme styles should be included after
-/// `static-styles()`.
-/// @param {Map} $theme - Theme configuration to use for theming checkbox.
-@mixin theme($theme, $query: feature-targeting.all()) {
-  $ripple-color: map.get($theme, ripple-color);
-  $ripple-opacity: map.get($theme, ripple-opacity);
-  @if $ripple-color {
-    @include ripple-color(
-      $color: $ripple-color,
-      $opacity-map: $ripple-opacity,
-      $query: $query
-    );
-  }
-
-  $ripple-checked-color: map.get($theme, ripple-checked-color);
-  $ripple-checked-opacity: map.get($theme, ripple-checked-opacity);
-  @if $ripple-checked-color {
-    @include focus-indicator-color(
-      $color: $ripple-checked-color,
-      $opacity-map: $ripple-checked-opacity,
-      $query: $query
-    );
-  }
-
-  $density-scale: map.get($theme, density-scale);
-  @if $density-scale != null {
-    @include density($density-scale: $density-scale, $query: $query);
-  }
-
-  $outline-color: map.get($theme, outline-color);
-  $container-checked-color: map.get($theme, container-checked-color);
-  @if ($outline-color and $container-checked-color) {
-    @include container-colors(
-      $unmarked-stroke-color: $outline-color,
-      $marked-stroke-color: $container-checked-color,
-      $marked-fill-color: $container-checked-color,
-      $query: $query
-    );
-  }
-
-  $outline-hover-color: map.get($theme, outline-hover-color);
-  $container-checked-hover-color: map.get(
-    $theme,
-    container-checked-hover-color
-  );
-  @if ($outline-hover-color and $container-checked-hover-color) {
-    @include ripple-theme.states-selector() {
-      @include container-colors(
-        $unmarked-stroke-color: $outline-hover-color,
-        $marked-stroke-color: $container-checked-hover-color,
-        $marked-fill-color: $container-checked-hover-color,
-        $query: $query
-      );
-    }
-  }
-
-  $container-disabled-color: map.get($theme, container-disabled-color);
-  @if $container-disabled-color {
-    @include disabled-container-colors(
-      $unmarked-stroke-color: $container-disabled-color,
-      $marked-fill-color: $container-disabled-color,
-      $query: $query
-    );
-  }
-
-  $checkmark-color: map.get($theme, checkmark-color);
-  @if $checkmark-color {
-    @include ink-color($checkmark-color, $query: $query);
-    @include disabled-ink-color($checkmark-color, $query: $query);
-  }
-}
-
 ///
 /// Sets density scale for checkbox.
 ///
@@ -403,26 +314,7 @@ $light-theme: (
   }
 }
 
-/// Sets ripple color when checkbox is not in checked state.
-@mixin ripple-color(
-  $color,
-  $opacity-map: null,
-  $query: feature-targeting.all()
-) {
-  @include ripple-theme.states(
-    $color: $color,
-    $opacity-map: $opacity-map,
-    $query: $query,
-    $ripple-target: $ripple-target
-  );
-}
-
-/// Sets focus indicator color when checkbox is in checked state.
-@mixin focus-indicator-color(
-  $color,
-  $opacity-map: null,
-  $query: feature-targeting.all()
-) {
+@mixin focus-indicator-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background::before,
@@ -438,7 +330,6 @@ $light-theme: (
   &.mdc-checkbox--selected {
     @include ripple-theme.states(
       $color: $color,
-      $opacity-map: $opacity-map,
       $query: $query,
       $ripple-target: $ripple-target
     );

@@ -241,15 +241,13 @@ $pressed-light-ink-opacity: 0.32 !default;
   $color: theme-color.prop-value(on-surface),
   $has-nested-focusable-element: false,
   $query: feature-targeting.all(),
-  $ripple-target: '&',
-  $opacity-map: null
+  $ripple-target: '&'
 ) {
   @include states-interactions_(
     $color: $color,
     $has-nested-focusable-element: $has-nested-focusable-element,
     $query: $query,
-    $ripple-target: $ripple-target,
-    $opacity-map: $opacity-map
+    $ripple-target: $ripple-target
   );
 }
 
@@ -319,20 +317,17 @@ $pressed-light-ink-opacity: 0.32 !default;
   $has-nested-focusable-element,
   $opacity-modifier: 0,
   $query: feature-targeting.all(),
-  $ripple-target: '&',
-  $opacity-map: null
+  $ripple-target: '&'
 ) {
   @include target-selector($ripple-target) {
     @include states-base-color($color, $query);
   }
 
-  @if $opacity-map == null {
-    $opacity-map: (
-      hover: states-opacity($color, hover) + $opacity-modifier,
-      focus: states-opacity($color, focus) + $opacity-modifier,
-      press: states-opacity($color, press) + $opacity-modifier,
-    );
-  }
+  $opacity-map: (
+    hover: states-opacity($color, hover) + $opacity-modifier,
+    focus: states-opacity($color, focus) + $opacity-modifier,
+    press: states-opacity($color, press) + $opacity-modifier,
+  );
 
   @include states-opacities(
     $opacity-map,
@@ -349,34 +344,6 @@ $pressed-light-ink-opacity: 0.32 !default;
   } @else {
     #{$ripple-target} {
       @content;
-    }
-  }
-}
-
-/// Selector for hover, active and focus states.
-@mixin states-selector() {
-  &:hover,
-  &:active,
-  &:focus,
-  &.mdc-ripple-upgraded--background-focused {
-    @content;
-  }
-}
-
-/// Keep the ripple (State overlay) behind the content.
-@mixin behind-content($ripple-target: '&', $query: feature-targeting.all()) {
-  // Needed for IE11. Without this, IE11 renders the state layer completely
-  // underneath the container, making it invisible.
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    z-index: 0;
-  }
-
-  #{$ripple-target}::before,
-  #{$ripple-target}::after {
-    @include feature-targeting.targets($feat-structure) {
-      z-index: -1;
     }
   }
 }
