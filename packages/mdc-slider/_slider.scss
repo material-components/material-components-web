@@ -23,6 +23,7 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use '@material/animation/animation';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
@@ -299,7 +300,7 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__value-indicator {
     @include feature-targeting.targets($feat-animation) {
-      transition: transform 100ms cubic-bezier(0.4, 0, 1, 1);
+      transition: animation.exit-permanent(transform, 100ms);
     }
 
     @include feature-targeting.targets($feat-structure) {
@@ -318,8 +319,7 @@ $_track-inactive-height: 4px;
       @include feature-targeting.targets($feat-structure) {
         border-left: $_value-indicator-caret-width solid transparent;
         border-right: $_value-indicator-caret-width solid transparent;
-        border-top: $_value-indicator-caret-width solid
-          slider-theme.$value-indicator-color;
+        border-top: $_value-indicator-caret-width solid;
         bottom: -$_value-indicator-caret-width + 1;
         content: '';
         height: 0;
@@ -333,7 +333,7 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__thumb--with-indicator .mdc-slider__value-indicator {
     @include feature-targeting.targets($feat-animation) {
-      transition: transform 100ms cubic-bezier(0, 0, 0.2, 1);
+      transition: animation.enter(transform, 100ms);
     }
 
     @include feature-targeting.targets($feat-structure) {

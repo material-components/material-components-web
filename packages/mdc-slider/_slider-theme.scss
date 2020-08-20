@@ -153,6 +153,13 @@ $tick-mark-opacity: 0.6;
       opacity: $opacity;
     }
   }
+
+  // Caret.
+  .mdc-slider__value-indicator::before {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(border-top-color, $color);
+    }
+  }
 }
 
 ///

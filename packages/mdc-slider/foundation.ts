@@ -318,6 +318,11 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     }
   }
 
+  /** @return Whether the slider is a range slider. */
+  getIsRange() {
+    return this.isRange;
+  }
+
   /**
    * - Syncs slider boundingClientRect with the current DOM.
    * - Updates UI based on internal state.
