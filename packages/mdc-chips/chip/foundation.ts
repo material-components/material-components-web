@@ -28,13 +28,13 @@ import {MDCChipTrailingActionNavigationEvent} from '../trailingaction/types';
 import {MDCChipAdapter} from './adapter';
 import {cssClasses, Direction, EventSource, jumpChipKeys, navigationKeys, strings} from './constants';
 
-const emptyClientRect = {	
-  bottom: 0,	
-  height: 0,	
-  left: 0,	
-  right: 0,	
-  top: 0,	
-  width: 0,	
+const emptyClientRect = {
+  bottom: 0,
+  height: 0,
+  left: 0,
+  right: 0,
+  top: 0,
+  width: 0,
 };
 
 enum FocusBehavior {
@@ -51,7 +51,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return cssClasses;
   }
 
-  static get defaultAdapter(): MDCChipAdapter {	
+  static get defaultAdapter(): MDCChipAdapter {
     return {
       addClass: () => undefined,
       addClassToLeadingIcon: () => undefined,
