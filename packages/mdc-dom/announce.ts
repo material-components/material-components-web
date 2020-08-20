@@ -37,8 +37,6 @@ export function announce(message: string, priority?: AnnouncerPriority) {
 }
 
 class Announcer {
-  private static instance: Announcer;
-  private readonly liveRegions: Map<AnnouncerPriority, Element>;
 
   static getInstance(): Announcer {
     if (!Announcer.instance) {
@@ -47,6 +45,8 @@ class Announcer {
 
     return Announcer.instance;
   }
+  private static instance: Announcer;
+  private readonly liveRegions: Map<AnnouncerPriority, Element>;
 
   // Constructor made private to ensure only the singleton is used
   private constructor() {
