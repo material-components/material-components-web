@@ -191,6 +191,22 @@ same.
 
 ### Additional Information
 
+#### Select with hidden input (for HTML forms)
+
+For convenient submission of Select's value in HTML forms, a hidden input
+element may be added under the root element. The component will synchronize its
+value with that of the hidden input.
+
+```html
+<div class="mdc-select mdc-select--filled demo-width-class">
+  <input type="hidden" name="demo-input">
+  <div class="mdc-select__anchor">
+    <!-- Rest of component omitted for brevity -->
+  </div>
+</div>
+
+```
+
 #### Select with pre-selected option
 
 To indicate a select component that has a pre-selected value, use the `mdc-list-item--selected` class
@@ -298,8 +314,9 @@ and set the `aria-required` attribute on the `mdc-select__anchor` element to be 
 
 #### Disabled select
 
-Add the `mdc-select--disabled` class to the `mdc-select` element and and set the
-`aria-disabled` attribute on the `mdc-select__selected-text` element to be `"true"`.
+Add the `mdc-select--disabled` class to the `mdc-select` element, set the
+`aria-disabled` attribute on the `mdc-select__selected-text` element to
+be `"true"`, and set the disabled attribute any hidden input element.
 
 ```html
 <div class="mdc-select mdc-select--filled mdc-select--disabled">

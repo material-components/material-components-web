@@ -81,6 +81,7 @@ $exit-duration: 75ms;
       text-align: center;
       transform: scale(0.8);
       opacity: 0;
+      outline: 1px solid transparent;
     }
 
     .mdc-tooltip--shown & {

@@ -44,7 +44,7 @@ export function closest(element: Element, selector: string): Element | null {
 export function matches(element: Element, selector: string): boolean {
   const nativeMatches = element.matches
       || element.webkitMatchesSelector
-      || element.msMatchesSelector;
+      || (element as any).msMatchesSelector;
   return nativeMatches.call(element, selector);
 }
 

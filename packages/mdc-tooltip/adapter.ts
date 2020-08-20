@@ -83,6 +83,12 @@ export interface MDCTooltipAdapter {
   getAnchorBoundingRect(): ClientRect|null;
 
   /**
+   * @return the attribute string if present on the anchor element, null
+   * otherwise.
+   */
+  getAnchorAttribute(attr: string): string|null;
+
+  /**
    * @return true if the text direction is right-to-left.
    */
   isRTL(): boolean;

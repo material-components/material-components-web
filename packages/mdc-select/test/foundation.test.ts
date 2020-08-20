@@ -756,6 +756,14 @@ describe('MDCSelectFoundation', () => {
     expect(mockAdapter.notifyChange).toHaveBeenCalledTimes(1);
   });
 
+  it('#setValue with skipNotify true does not call notifyChange', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.init();
+    foundation.setValue('bar', /** skipNotify */ true);
+    expect(mockAdapter.setSelectedIndex).toHaveBeenCalledWith(1);
+    expect(mockAdapter.notifyChange).not.toHaveBeenCalled();
+  });
+
   it('#setValid true sets aria-describedby if validation helper text is shown',
      () => {
        const hasIcon = false;

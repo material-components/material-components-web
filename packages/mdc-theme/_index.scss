@@ -1,5 +1,24 @@
-@forward "./color-palette";
-@forward "./variables";
-@forward "./mixins";
-@forward "./functions";
-@forward "./constants";
+@forward './theme-color' show
+  $background,
+  $error,
+  $primary,
+  $on-error,
+  $on-primary,
+  $on-secondary,
+  $on-surface,
+  $secondary,
+  $surface,
+  accessible-ink-color,
+  contrast,
+  contrast-tone,
+  luminance,
+  text-emphasis,
+  tone;
+@forward './theme' show core-styles, property;
+@forward './color-palette';
+
+// Backwards compatibility
+@forward './constants';
+@forward './functions';
+@forward './mixins';
+@forward './variables';

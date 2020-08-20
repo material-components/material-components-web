@@ -26,6 +26,7 @@ import {SpecificEventListener} from '@material/base/types';
 import {KEY, normalizeKey} from '@material/dom/keyboard';
 import {MDCTooltipAdapter} from './adapter';
 import {AnchorBoundaryType, CssClasses, numbers, Position} from './constants';
+import {ShowTooltipOptions} from './types';
 
 const {SHOWN, SHOWING, SHOWING_TRANSITION, HIDE, HIDE_TRANSITION} = CssClasses;
 
@@ -43,6 +44,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       getTooltipSize: () => ({width: 0, height: 0}),
       getAnchorBoundingRect: () =>
           ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+      getAnchorAttribute: () => null,
       isRTL: () => false,
       registerDocumentEventHandler: () => undefined,
       deregisterDocumentEventHandler: () => undefined,
@@ -118,7 +120,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
 
     this.isShown = true;
-    this.adapter.setAttribute('aria-hidden', 'false');
+    const showTooltipOptions = this.parseShowTooltipOptions();
+    if (!showTooltipOptions.hideFromScreenreader) {
+      this.adapter.setAttribute('aria-hidden', 'false');
+    }
     this.adapter.removeClass(HIDE);
     this.adapter.addClass(SHOWING);
     const {top, left} = this.calculateTooltipDistance();
@@ -193,6 +198,12 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     } else {
       this.anchorGap = numbers.BOUNDED_ANCHOR_GAP;
     }
+  }
+
+  private parseShowTooltipOptions(): ShowTooltipOptions {
+    const hideFromScreenreader =
+        Boolean(this.adapter.getAnchorAttribute('data-tooltip-id'));
+    return {hideFromScreenreader};
   }
 
   /**

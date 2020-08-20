@@ -383,11 +383,11 @@ describe('MDCMenuSurface', () => {
        expect((component.getDefaultFoundation() as any)
                   .adapter.getAnchorDimensions()
                   .height)
-           .toEqual(21);
+           .toBeCloseTo(21);
        expect((component.getDefaultFoundation() as any)
                   .adapter.getAnchorDimensions()
                   .width)
-           .toEqual(42);
+           .toBeCloseTo(42);
        document.body.removeChild(anchor);
      });
 

@@ -337,9 +337,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.valueStartBeforeDownEvent = this.valueStart;
     this.valueBeforeDownEvent = this.value;
 
-    const clientX = event instanceof MouseEvent ?
-        event.clientX :
-        event.targetTouches[0].clientX;
+    const clientX = (event as MouseEvent).clientX != null ?
+        (event as MouseEvent).clientX :
+        (event as TouchEvent).targetTouches[0].clientX;
     this.downEventClientX = clientX;
     const value = this.mapClientXOnSliderScale(clientX);
     this.thumb = this.getThumbFromDownEvent(clientX, value);
@@ -362,9 +362,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     // Prevent scrolling.
     event.preventDefault();
 
-    const clientX = event instanceof MouseEvent ?
-        event.clientX :
-        event.targetTouches[0].clientX;
+    const clientX = (event as MouseEvent).clientX != null ?
+        (event as MouseEvent).clientX :
+        (event as TouchEvent).targetTouches[0].clientX;
     this.thumb = this.getThumbFromMoveEvent(clientX);
     if (this.thumb === null) return;
 
@@ -449,6 +449,39 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     } else if (!this.isRange && event.type === 'blur') {
       this.adapter.removeThumbClass(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
     }
+  }
+
+  handleMousedownOrTouchstart(event: MouseEvent|TouchEvent) {
+    const moveEventType =
+        event.type === 'mousedown' ? 'mousemove' : 'touchmove';
+    // After a down event on the slider root, listen for move events on
+    // body (so the slider value is updated for events outside of the
+    // slider root).
+    this.adapter.registerBodyEventHandler(moveEventType, this.moveListener);
+
+    const upHandler = () => {
+      this.handleUp();
+
+      // Once the drag is finished (up event on body), remove the move
+      // handler.
+      this.adapter.deregisterBodyEventHandler(moveEventType, this.moveListener);
+
+      // Also stop listening for subsequent up events.
+      this.adapter.deregisterEventHandler('mouseup', upHandler);
+      this.adapter.deregisterEventHandler('touchend', upHandler);
+    };
+
+    this.adapter.registerBodyEventHandler('mouseup', upHandler);
+    this.adapter.registerBodyEventHandler('touchend', upHandler);
+
+    this.handleDown(event);
+  }
+
+  handlePointerdown(event: PointerEvent) {
+    this.adapter.setPointerCapture(event.pointerId);
+    this.adapter.registerEventHandler('pointermove', this.moveListener);
+
+    this.handleDown(event);
   }
 
   /**
@@ -942,39 +975,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
         Thumb.END, 'blur', this.thumbBlurOrMouseleaveListener);
     this.adapter.deregisterThumbEventHandler(
         Thumb.END, 'mouseleave', this.thumbBlurOrMouseleaveListener);
-  }
-
-  private handleMousedownOrTouchstart(event: MouseEvent|TouchEvent) {
-    const moveEventType =
-        event.type === 'mousedown' ? 'mousemove' : 'touchmove';
-    // After a down event on the slider root, listen for move events on
-    // body (so the slider value is updated for events outside of the
-    // slider root).
-    this.adapter.registerBodyEventHandler(moveEventType, this.moveListener);
-
-    const upHandler = () => {
-      this.handleUp();
-
-      // Once the drag is finished (up event on body), remove the move
-      // handler.
-      this.adapter.deregisterBodyEventHandler(moveEventType, this.moveListener);
-
-      // Also stop listening for subsequent up events.
-      this.adapter.deregisterEventHandler('mouseup', upHandler);
-      this.adapter.deregisterEventHandler('touchend', upHandler);
-    };
-
-    this.adapter.registerBodyEventHandler('mouseup', upHandler);
-    this.adapter.registerBodyEventHandler('touchend', upHandler);
-
-    this.handleDown(event);
-  }
-
-  private handlePointerdown(event: PointerEvent) {
-    this.adapter.setPointerCapture(event.pointerId);
-    this.adapter.registerEventHandler('pointermove', this.moveListener);
-
-    this.handleDown(event);
   }
 
   private handlePointerup() {

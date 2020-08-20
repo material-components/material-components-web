@@ -1,0 +1,6 @@
+@use '../index' as theme with (
+  $primary: teal,
+  $secondary: crimson
+);
+
+@include theme.core-styles();

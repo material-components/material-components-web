@@ -143,9 +143,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.lastSelectedIndex = index;
   }
 
-  setValue(value: string) {
+  setValue(value: string, skipNotify = false) {
     const index = this.adapter.getMenuItemValues().indexOf(value);
-    this.setSelectedIndex(index);
+    this.setSelectedIndex(index, /** closeMenu */ false, skipNotify);
   }
 
   getValue() {

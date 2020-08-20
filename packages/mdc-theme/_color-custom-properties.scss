@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2020 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,4 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import '_checkbox.scss' or '_checkbox-theme.scss' instead.
-@forward './checkbox' show $mark-path-length_, $indeterminate-checked-easing-function_;
-@forward './checkbox-theme' show $baseline-theme-color, $mark-color, $border-color, $disabled-color, $ripple-size, $icon-size, $mark-stroke-size, $border-width, $transition-duration, $item-spacing, $focus-indicator-opacity, $minimum-size, $maximum-size, $density-scale, $density-config;
+$secondary: --mdc-theme-secondary;

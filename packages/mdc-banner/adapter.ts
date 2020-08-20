@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {CloseReason} from './constants';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -42,12 +44,12 @@ export interface MDCBannerAdapter {
   /**
    * Broadcasts an event denoting that the banner has finished closing.
    */
-  notifyClosed(reason: string): void;
+  notifyClosed(reason: CloseReason): void;
 
   /**
    * Broadcasts an event denoting that the banner has just started closing.
    */
-  notifyClosing(reason: string): void;
+  notifyClosing(reason: CloseReason): void;
 
   /**
    * Broadcasts an event denoting that the banner has finished opening.

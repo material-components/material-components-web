@@ -119,7 +119,7 @@
 
   .mdc-circular-progress__circle-clipper {
     @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
+      display: inline-flex;
       position: relative;
       width: 50%;
       height: 100%;

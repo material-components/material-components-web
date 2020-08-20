@@ -51,4 +51,29 @@ describe('theme.test.scss', () => {
   border-color: green;
 }`);
      });
+
+  it('should replace values provided to $replace for theme.property()', () => {
+    const filePath = path.join(__dirname, 'replace.test.css');
+    const css = fs.readFileSync(filePath, 'utf8').trim();
+    expect(css).toEqual(`.simple {
+  width: calc(100% - 20px);
+}
+
+.var {
+  width: calc(16px + 8px);
+  /* @alternate */
+  width: calc(var(--m-foo, 16px) + var(--m-bar, 8px));
+}
+
+.multiple {
+  width: calc(8px + 8px + 8px);
+}`);
+  });
+
+  it('should allow overriding theme color values using @use/with', () => {
+    const filePath = path.join(__dirname, 'override.test.css');
+    const css = fs.readFileSync(filePath, 'utf8').trim();
+    expect(css).toContain('--mdc-theme-primary: teal');
+    expect(css).toContain('--mdc-theme-secondary: crimson');
+  });
 });

@@ -22,13 +22,15 @@
  */
 
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {announce, AnnouncerPriority} from '../announce';
+import {announce, AnnouncerPriority, DATA_MDC_DOM_ANNOUNCE} from '../announce';
+
+const LIVE_REGION_SELECTOR = `[${DATA_MDC_DOM_ANNOUNCE}="true"]`;
 
 describe('announce', () => {
   setUpMdcTestEnvironment();
 
   afterEach(() => {
-    const liveRegions = document.querySelectorAll('[aria-live]');
+    const liveRegions = document.querySelectorAll(LIVE_REGION_SELECTOR);
     for (let i = 0; i < liveRegions.length; i++) {
       const liveRegion = liveRegions[i];
       if (!liveRegion.parentNode) continue;
@@ -39,20 +41,20 @@ describe('announce', () => {
   it('creates an aria-live="polite" region by default', () => {
     announce('Foo');
     jasmine.clock().tick(1);
-    const liveRegion = document.querySelector('[aria-live="polite"]');
+    const liveRegion = document.querySelector(LIVE_REGION_SELECTOR);
     expect(liveRegion!.textContent).toEqual('Foo');
   });
 
   it('creates an aria-live="assertive" region if specified', () => {
     announce('Bar', AnnouncerPriority.ASSERTIVE);
     jasmine.clock().tick(1);
-    const liveRegion = document.querySelector('[aria-live="assertive"]');
+    const liveRegion = document.querySelector(LIVE_REGION_SELECTOR);
     expect(liveRegion!.textContent).toEqual('Bar');
   });
 
   it('sets live region content after a timeout', () => {
     announce('Baz');
-    const liveRegion = document.querySelector('[aria-live="polite"]');
+    const liveRegion = document.querySelector(LIVE_REGION_SELECTOR);
     expect(liveRegion!.textContent).toEqual('');
     jasmine.clock().tick(1);
     expect(liveRegion!.textContent).toEqual('Baz');
@@ -62,7 +64,7 @@ describe('announce', () => {
     announce('aaa');
     announce('bbb');
     announce('ccc');
-    const liveRegions = document.querySelectorAll('[aria-live="polite"]');
+    const liveRegions = document.querySelectorAll(LIVE_REGION_SELECTOR);
     expect(liveRegions.length).toEqual(1);
   });
 
@@ -70,7 +72,7 @@ describe('announce', () => {
     announce('aaa', AnnouncerPriority.ASSERTIVE);
     announce('bbb', AnnouncerPriority.ASSERTIVE);
     announce('ccc', AnnouncerPriority.ASSERTIVE);
-    const liveRegions = document.querySelectorAll('[aria-live="assertive"]');
+    const liveRegions = document.querySelectorAll(LIVE_REGION_SELECTOR);
     expect(liveRegions.length).toEqual(1);
   });
 
@@ -79,14 +81,14 @@ describe('announce', () => {
     announce('2');
     announce('3');
     jasmine.clock().tick(1);
-    const liveRegion = document.querySelector('[aria-live="polite"]');
+    const liveRegion = document.querySelector(LIVE_REGION_SELECTOR);
     expect(liveRegion!.textContent).toEqual('3');
   });
 
   it('clears out the message on click', () => {
     announce('hello');
     jasmine.clock().tick(1);
-    const liveRegion = document.querySelector('[aria-live="polite"]');
+    const liveRegion = document.querySelector(LIVE_REGION_SELECTOR);
     expect(liveRegion!.textContent).toEqual('hello');
     document.documentElement.click();
     expect(liveRegion!.textContent).toEqual('');

@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern
 
 @use 'sass:list';
+@use 'sass:meta';
 @use '@material/theme/theme';
 
 $include: true !default;
@@ -149,7 +150,8 @@ $include: true !default;
   $base-property,
   $default-direction,
   $value,
-  $root-selector: null
+  $root-selector: null,
+  $replace: null
 ) {
   @if (list.index((right, left), $default-direction) == null) {
     @error "Invalid default direction: '#{$default-direction}'. Please specifiy either 'right' or 'left'.";
@@ -167,7 +169,8 @@ $include: true !default;
     $base-property,
     $left-value,
     $right-value,
-    $root-selector
+    $root-selector,
+    $replace: $replace
   );
 }
 
@@ -200,7 +203,8 @@ $include: true !default;
   $base-property,
   $left-value,
   $right-value,
-  $root-selector: null
+  $root-selector: null,
+  $replace: null
 ) {
   $prop-left: #{$base-property}-left;
   $prop-right: #{$base-property}-right;
@@ -210,7 +214,8 @@ $include: true !default;
     $left-value,
     $prop-right,
     $right-value,
-    $root-selector
+    $root-selector,
+    $replace: $replace
   );
 }
 
@@ -239,7 +244,12 @@ $include: true !default;
 // ```
 //
 // An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
-@mixin reflexive-position($position-property, $value, $root-selector: null) {
+@mixin reflexive-position(
+  $position-property,
+  $value,
+  $root-selector: null,
+  $replace: null
+) {
   @if (list.index((right, left), $position-property) == null) {
     @error "Invalid position #{position-property}. Please specifiy either right or left";
   }
@@ -253,7 +263,14 @@ $include: true !default;
     $left-value: initial;
   }
 
-  @include reflexive(left, $left-value, right, $right-value, $root-selector);
+  @include reflexive(
+    left,
+    $left-value,
+    right,
+    $right-value,
+    $root-selector,
+    $replace: $replace
+  );
 }
 
 // Takes pair of properties with values as arguments and flips it in RTL context.
@@ -285,14 +302,31 @@ $include: true !default;
   $left-value,
   $right-property,
   $right-value,
-  $root-selector: null
+  $root-selector: null,
+  $replace: null
 ) {
-  @include property_($left-property, $left-value);
-  @include property_($right-property, $right-value);
+  $left-replace: null;
+  $right-replace: null;
+  @if $replace {
+    @if meta.type-of($left-value) == 'string' {
+      $left-replace: $replace;
+    }
+
+    @if meta.type-of($right-value) == 'string' {
+      $right-replace: $replace;
+    }
+
+    @if $left-replace == null and $right-replace == null {
+      @error 'mdc-rtl: $replace may only be used with strings but neither left nor right values are strings.';
+    }
+  }
+
+  @include _property($left-property, $left-value, $replace: $left-replace);
+  @include _property($right-property, $right-value, $replace: $right-replace);
 
   @include rtl($root-selector) {
-    @include property_($left-property, $right-value);
-    @include property_($right-property, $left-value);
+    @include _property($left-property, $right-value, $replace: $right-replace);
+    @include _property($right-property, $left-value, $replace: $left-replace);
   }
 }
 
@@ -301,8 +335,13 @@ $include: true !default;
 ///
 /// @param {String} $property
 /// @param {String} $value
-/// @access private
+/// @param {Map} $replace
 ///
-@mixin property_($property, $value) {
-  @include theme.property($property, $value, $gss: (noflip: $include));
+@mixin _property($property, $value, $replace: null) {
+  @include theme.property(
+    $property,
+    $value,
+    $replace: $replace,
+    $gss: (noflip: $include)
+  );
 }

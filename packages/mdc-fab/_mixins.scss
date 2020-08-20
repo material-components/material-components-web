@@ -206,14 +206,14 @@ $ripple-target: '.mdc-fab__ripple';
   // Offsets the outer label padding by deducting it from icon padding.
   .mdc-fab__icon {
     @include feature-targeting.targets($feat-structure) {
-      @include extended-icon-padding_($icon-padding, $label-padding);
+      @include extended-icon-padding($icon-padding, $label-padding);
     }
   }
 
   // For Extended FAB with text label followed by icon.
   .mdc-fab__label + .mdc-fab__icon {
     @include feature-targeting.targets($feat-structure) {
-      @include extended-icon-padding_(
+      @include extended-icon-padding(
         $icon-padding,
         $label-padding,
         $is-icon-at-end: true
@@ -222,65 +222,25 @@ $ripple-target: '.mdc-fab__ripple';
   }
 }
 
-@mixin extended-icon-padding_(
+@mixin extended-icon-padding(
   $icon-padding,
   $label-padding,
   $is-icon-at-end: false
 ) {
-  $icon-padding-is-custom-prop: custom-properties.is-custom-prop($icon-padding);
-  $icon-padding-value: $icon-padding;
-  $icon-padding-px: $icon-padding;
-  $start: 'left';
-  $end: 'right';
+  $start: calc(icon - label);
+  $end: $icon-padding;
 
   @if $is-icon-at-end {
-    $start: 'right';
-    $end: 'left';
+    $start: $icon-padding;
+    $end: calc(icon - label);
   }
 
-  @if $icon-padding-is-custom-prop {
-    $icon-padding-value: custom-properties.create-var($icon-padding);
-    $icon-padding-px: custom-properties.get-fallback($icon-padding);
-  }
-
-  $label-padding-is-custom-prop: custom-properties.is-custom-prop(
-    $label-padding
+  @include rtl-mixins.reflexive-property(
+    margin,
+    $start,
+    $end,
+    $replace: (icon: $icon-padding, label: $label-padding)
   );
-
-  $label-padding-value: $label-padding;
-  $label-padding-px: $label-padding;
-
-  @if $label-padding-is-custom-prop {
-    $label-padding-value: custom-properties.create-var($label-padding);
-    $label-padding-px: custom-properties.get-fallback($label-padding);
-  }
-
-  /* @noflip */
-  margin-#{$start}: $icon-padding-px - $label-padding-px;
-  @if $icon-padding-is-custom-prop or $label-padding-is-custom-prop {
-    // Use calc() for dynamic margin
-    /* @alternate */
-    /* @noflip */
-    margin-#{$start}: calc(#{$icon-padding-value} - #{$label-padding-value});
-  }
-  @include rtl-mixins.rtl {
-    /* @noflip */
-    margin-#{$end}: $icon-padding-px - $label-padding-px;
-    @if $icon-padding-is-custom-prop or $label-padding-is-custom-prop {
-      /* @alternate */
-      /* @noflip */
-      margin-#{$end}: calc(#{$icon-padding-value} - #{$label-padding-value});
-    }
-  }
-
-  @include theme.property(margin-#{$end}, $icon-padding, $gss: (noflip: true));
-  @include rtl-mixins.rtl {
-    @include theme.property(
-      margin-#{$start},
-      $icon-padding,
-      $gss: (noflip: true)
-    );
-  }
 }
 
 @mixin extended-label-padding($label-padding, $query: feature-targeting.all()) {
