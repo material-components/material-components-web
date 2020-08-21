@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 
 import {MDCTooltipAdapter} from './adapter';
-import {AnchorBoundaryType, events, Position} from './constants';
+import {AnchorBoundaryType, events, XPosition, YPosition} from './constants';
 import {MDCTooltipFoundation} from './foundation';
 
 export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
@@ -96,8 +96,8 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     super.destroy();
   }
 
-  setTooltipPosition(pos: Position) {
-    this.foundation.setTooltipPosition(pos);
+  setTooltipPosition(position: {xPos?: XPosition, yPos?: YPosition}) {
+    this.foundation.setTooltipPosition(position);
   }
 
   setAnchorBoundaryType(type: AnchorBoundaryType) {
