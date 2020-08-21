@@ -242,14 +242,13 @@
       $query: $query,
       $ripple-target: checkbox-theme.$ripple-target
     );
-    @include ripple-theme.states(
-      $color: on-surface,
-      $query: $query,
-      $ripple-target: checkbox-theme.$ripple-target
-    );
     @include ripple.radius-unbounded(
       $query: $query,
       $ripple-target: checkbox-theme.$ripple-target
+    );
+    @include ripple-theme.behind-content(
+      checkbox-theme.$ripple-target,
+      $query: $query
     );
   }
 
