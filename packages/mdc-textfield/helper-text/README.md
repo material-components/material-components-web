@@ -76,9 +76,9 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`helper-text.helper-text-color($color)` | Customizes the color of the helper text following an enabled text-field.
-`helper-text.disabled-helper-text-color($color)` | Customizes the color of the helper text following a disabled text-field.
-`helper-text.helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
+`helper-text-color($color)` | Customizes the color of the helper text following an enabled text-field.
+`disabled-helper-text-color($color)` | Customizes the color of the helper text following a disabled text-field.
+`helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
 
 ## `MDCTextFieldHelperText` properties and methods
 
