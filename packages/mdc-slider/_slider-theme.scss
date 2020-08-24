@@ -106,29 +106,43 @@ $tick-mark-opacity: 0.6;
 }
 
 ///
-/// Customizes color of active tick marks.
+/// Customizes color and opacity of active tick marks.
 /// @param {Color | String} $color Either a valid color value or a key from
 ///     `$theme-variables.property-values`.
+/// @param {number} $opacity
 ///
-@mixin tick-mark-active-color($color, $query: feature-targeting.all()) {
+@mixin tick-mark-active-color(
+  $color,
+  $opacity: $tick-mark-opacity,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
   .mdc-slider__tick-mark--active {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
+
+      opacity: $opacity;
     }
   }
 }
 
 ///
-/// Customizes color of inactive tick marks.
+/// Customizes color and opacity of inactive tick marks.
 /// @param {Color | String} $color Either a valid color value or a key from
 ///     `$theme-variables.property-values`.
+/// @param {number} $opacity
 ///
-@mixin tick-mark-inactive-color($color, $query: feature-targeting.all()) {
+@mixin tick-mark-inactive-color(
+  $color,
+  $opacity: $tick-mark-opacity,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
   .mdc-slider__tick-mark--inactive {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
+
+      opacity: $opacity;
     }
   }
 }

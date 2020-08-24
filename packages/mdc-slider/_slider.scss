@@ -263,10 +263,6 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__tick-mark--active,
   .mdc-slider__tick-mark--inactive {
-    @include feature-targeting.targets($feat-color) {
-      opacity: slider-theme.$tick-mark-opacity;
-    }
-
     @include feature-targeting.targets($feat-structure) {
       border-radius: 50%;
       height: 2px;

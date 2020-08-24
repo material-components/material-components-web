@@ -150,6 +150,10 @@ predetermined values to which the user can move the slider.
 To add tick marks to a discrete slider, add the following:
 
 *   `mdc-slider--tick-marks` class on the root element
+*   `mdc-slider__tick-marks` element as a child of the `mdc-slider__track`
+    element
+*   `mdc-slider__tick-mark--active` and `mdc-slider__tick-mark--inactive`
+    elements as children of the `mdc-slider__tick-marks` element
 
 ```html
 <div class="mdc-slider mdc-slider--discrete mdc-slider--tick-marks" data-step="10">
@@ -157,6 +161,19 @@ To add tick marks to a discrete slider, add the following:
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
       <div class="mdc-slider__track--active_fill"></div>
+    </div>
+    <div class="mdc-slider__tick-marks">
+      <div class="mdc-slider__tick-mark--active"></div>
+      <div class="mdc-slider__tick-mark--active"></div>
+      <div class="mdc-slider__tick-mark--active"></div>
+      <div class="mdc-slider__tick-mark--active"></div>
+      <div class="mdc-slider__tick-mark--active"></div>
+      <div class="mdc-slider__tick-mark--active"></div>
+      <div class="mdc-slider__tick-mark--inactive"></div>
+      <div class="mdc-slider__tick-mark--inactive"></div>
+      <div class="mdc-slider__tick-mark--inactive"></div>
+      <div class="mdc-slider__tick-mark--inactive"></div>
+      <div class="mdc-slider__tick-mark--inactive"></div>
     </div>
   </div>
   <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
