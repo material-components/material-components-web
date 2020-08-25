@@ -27,8 +27,8 @@ import {cssClasses, numbers, strings} from '../constants';
 import {MDCDialogFoundation} from '../foundation';
 
 const ENTER_EVENTS = [
-  {type: 'keydown', key: 'Enter', target: {}},
-  {type: 'keydown', keyCode: 13, target: {}},
+  {type: 'keydown', key: 'Enter', target: {}, composedPath: () => [{}]},
+  {type: 'keydown', keyCode: 13, target: {}, composedPath: () => [{}]},
 ];
 
 describe('MDCDialogFoundation', () => {
@@ -421,7 +421,7 @@ describe('MDCDialogFoundation', () => {
 
        ENTER_EVENTS.forEach((event) => {
          mockAdapter.eventTargetMatches
-             .withArgs(event.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR)
+             .withArgs(event.composedPath()[0], strings.SUPPRESS_DEFAULT_PRESS_SELECTOR)
              .and.returnValue(true);
          foundation.handleKeydown(event);
          expect(mockAdapter.clickDefaultButton).not.toHaveBeenCalled();
@@ -446,7 +446,7 @@ describe('MDCDialogFoundation', () => {
      });
 
   it(`#handleClick: Click does nothing when ${
-         strings.SCRIM_SELECTOR} class is present but scrimClickAction is 
+         strings.SCRIM_SELECTOR} class is present but scrimClickAction is
     empty string`,
      () => {
        const {foundation, mockAdapter} = setupTest();
