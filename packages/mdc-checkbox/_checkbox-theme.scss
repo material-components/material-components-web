@@ -73,14 +73,14 @@ $ripple-target: '.mdc-checkbox__ripple';
 $light-theme: (
   density-scale: 0,
   checkmark-color: $mark-color,
-  container-checked-color: theme-color.prop-value($baseline-theme-color),
+  container-checked-color: $baseline-theme-color,
   container-checked-hover-color: null,
   container-disabled-color: $disabled-color,
   outline-color: $border-color,
   outline-hover-color: null,
   ripple-color: theme-color.$on-surface,
   ripple-opacity: ripple-theme.$dark-ink-opacities,
-  ripple-checked-color: theme-color.prop-value($baseline-theme-color),
+  ripple-checked-color: $baseline-theme-color,
   ripple-checked-opacity: ripple-theme.$dark-ink-opacities,
 );
 

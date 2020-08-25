@@ -117,18 +117,6 @@
     @include mixedmark_($query);
   }
 
-  // JS checkbox
-  .mdc-checkbox--upgraded {
-    .mdc-checkbox__background,
-    .mdc-checkbox__checkmark,
-    .mdc-checkbox__checkmark-path,
-    .mdc-checkbox__mixedmark {
-      @include feature-targeting.targets($feat-animation) {
-        @include child--upgraded_;
-      }
-    }
-  }
-
   .mdc-checkbox--anim {
     @include feature-targeting.targets($feat-animation) {
       @include anim_;
@@ -203,29 +191,26 @@
       }
     }
   }
+
+  // JS checkbox
+  .mdc-checkbox.mdc-checkbox--upgraded {
+    .mdc-checkbox__background,
+    .mdc-checkbox__checkmark,
+    .mdc-checkbox__checkmark-path,
+    .mdc-checkbox__mixedmark {
+      @include feature-targeting.targets($feat-animation) {
+        @include child--upgraded_;
+      }
+    }
+  }
 }
 
 /// Checkbox theme styles.
 /// Checkbox styles that are customizable should go here.
 @mixin theme-styles($query: feature-targeting.all()) {
   .mdc-checkbox {
-    @include checkbox-theme.focus-indicator-color(
-      checkbox-theme.$baseline-theme-color,
-      $query: $query
-    );
-    @include checkbox-theme.density(
-      checkbox-theme.$density-scale,
-      $query: $query
-    );
+    @include checkbox-theme.theme(checkbox-theme.$light-theme, $query: $query);
   }
-
-  @include checkbox-theme.container-colors($query: $query);
-  @include checkbox-theme.disabled-container-colors($query: $query);
-  @include checkbox-theme.ink-color(checkbox-theme.$mark-color, $query: $query);
-  @include checkbox-theme.disabled-ink-color(
-    checkbox-theme.$mark-color,
-    $query: $query
-  );
 }
 
 /// Checkbox's ripple styles.
@@ -282,11 +267,7 @@
 }
 
 @mixin child--upgraded_ {
-  // Due to the myriad of selector combos used to properly style a CSS-only checkbox, all of
-  // which have varying selector precedence and make use of transitions, it is cleaner and more
-  // efficient here to simply use !important, since the mdc-checkbox--anim-* classes will take
-  // over from here.
-  transition: none !important;
+  transition: none;
 }
 
 // Animation
