@@ -56,7 +56,7 @@
   );
 
   .mdc-list {
-    @include base_($query);
+    @include base($query);
   }
 
   @include single-line-density(
@@ -82,7 +82,7 @@
 
   .mdc-list-item {
     @include feature-targeting.targets($feat-structure) {
-      @include item-base_;
+      @include item-base;
     }
 
     // For components using aria-activedescendant, the focus pseudoclass is
@@ -949,11 +949,12 @@
   }
 }
 
-//
-// Private
-//
-
-@mixin base_($query: feature-targeting.all()) {
+///
+/// Basic structural styles for the list wrapper element.
+///
+/// @access public
+///
+@mixin base($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
@@ -980,7 +981,12 @@
   @include item-primary-text-ink-color(text-primary-on-background, $query);
 }
 
-@mixin item-base_ {
+///
+/// Basic structural styles for a list item element.
+///
+/// @access public
+///
+@mixin item-base {
   display: flex;
   position: relative;
   align-items: center;
@@ -992,6 +998,10 @@
     outline: none;
   }
 }
+
+//
+// Private
+//
 
 // Ripple styles for an interactive list item (one that is enabled and inside an interactive list).
 @mixin item-interactive-ripple_($query: feature-targeting.all()) {
