@@ -60,9 +60,11 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   private readonly minViewportTooltipThreshold =
       numbers.MIN_VIEWPORT_TOOLTIP_THRESHOLD;
   private readonly hideDelayMs = numbers.HIDE_DELAY_MS;
+  private readonly showDelayMs = numbers.SHOW_DELAY_MS;
 
   private frameId: number|null = null;
   private hideTimeout: number|null = null;
+  private showTimeout: number|null = null;
   private readonly documentClickHandler: SpecificEventListener<'click'>;
   private readonly documentKeydownHandler: SpecificEventListener<'keydown'>;
 
@@ -79,17 +81,30 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   handleAnchorMouseEnter() {
-    this.show();
+    if (this.isShown) {
+      // Covers the instance where a user hovers over the anchor to reveal the
+      // tooltip, and then quickly navigates away and then back to the anchor.
+      // The tooltip should stay visible without animating out and then back in
+      // again.
+      this.show();
+    } else {
+      this.showTimeout = setTimeout(() => {
+        this.show();
+      }, this.showDelayMs);
+    }
   }
 
   handleAnchorFocus() {
     // TODO(b/157075286): Need to add some way to distinguish keyboard
     // navigation focus events from other focus events, and only show the
     // tooltip on the former of these events.
-    this.show();
+    this.showTimeout = setTimeout(() => {
+      this.show();
+    }, this.showDelayMs);
   }
 
   handleAnchorMouseLeave() {
+    this.clearShowTimeout();
     this.hideTimeout = setTimeout(() => {
       this.hide();
     }, this.hideDelayMs);
@@ -115,6 +130,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
   show() {
     this.clearHideTimeout();
+    this.clearShowTimeout();
 
     if (this.isShown) {
       return;
@@ -145,6 +161,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
   hide() {
     this.clearHideTimeout();
+    this.clearShowTimeout();
 
     if (!this.isShown) {
       return;
@@ -418,6 +435,13 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     return yPos + tooltipHeight <= viewportHeight && yPos >= 0;
   }
 
+  private clearShowTimeout() {
+    if (this.showTimeout) {
+      clearTimeout(this.showTimeout);
+      this.showTimeout = null;
+    }
+  }
+
   private clearHideTimeout() {
     if (this.hideTimeout) {
       clearTimeout(this.hideTimeout);
@@ -432,6 +456,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
 
     this.clearHideTimeout();
+    this.clearShowTimeout();
 
     this.adapter.removeClass(SHOWN);
     this.adapter.removeClass(SHOWING_TRANSITION);

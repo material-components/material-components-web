@@ -25,7 +25,7 @@ import {getFixture} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {AnchorBoundaryType, XPosition, YPosition} from '../constants';
+import {AnchorBoundaryType, numbers, XPosition, YPosition} from '../constants';
 import {MDCTooltip, MDCTooltipFoundation} from '../index';
 
 function setupTestWithMockFoundation(fixture: HTMLElement) {
@@ -185,7 +185,7 @@ describe('MDCTooltip', () => {
        MDCTooltip.attachTo(tooltipElem);
 
        emitEvent(anchorElem, 'mouseenter');
-       jasmine.clock().tick(1);
+       jasmine.clock().tick(numbers.SHOW_DELAY_MS);
        expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
      });
 
@@ -212,7 +212,7 @@ describe('MDCTooltip', () => {
        MDCTooltip.attachTo(tooltipElem);
 
        emitEvent(anchorElem, 'mouseenter');
-       jasmine.clock().tick(1);
+       jasmine.clock().tick(numbers.SHOW_DELAY_MS);
        expect(tooltipElem.getAttribute('aria-hidden')).toEqual('true');
      });
 });

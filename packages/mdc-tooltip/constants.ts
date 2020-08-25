@@ -34,6 +34,7 @@ const numbers = {
   UNBOUNDED_ANCHOR_GAP: 8,
   MIN_VIEWPORT_TOOLTIP_THRESHOLD: 32,
   HIDE_DELAY_MS: 600,
+  SHOW_DELAY_MS: 500,
 };
 
 const events = {
