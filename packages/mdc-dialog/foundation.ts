@@ -205,7 +205,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       return;
     }
 
-    const target = evt.composedPath()[0];
+    const target = evt.composedPath ? evt.composedPath()[0] : evt.target;
     const isDefault = !this.adapter.eventTargetMatches(
         target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR);
     if (isEnter && isDefault) {
