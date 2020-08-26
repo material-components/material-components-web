@@ -25,7 +25,7 @@ import {getFixture} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {AnchorBoundaryType, numbers, XPosition, YPosition} from '../constants';
+import {AnchorBoundaryType, CssClasses, numbers, XPosition, YPosition} from '../constants';
 import {MDCTooltip, MDCTooltipFoundation} from '../index';
 
 function setupTestWithMockFoundation(fixture: HTMLElement) {
@@ -215,4 +215,34 @@ describe('MDCTooltip', () => {
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
        expect(tooltipElem.getAttribute('aria-hidden')).toEqual('true');
      });
+
+  it('detects tooltip labels that span multiple lines', () => {
+    document.body.removeChild(fixture);
+    fixture = getFixture(`<div>
+        <button data-tooltip-id="tt0">
+          anchor
+        </button>
+        <div id="tt0"
+             class="mdc-tooltip"
+             aria-role="tooltip"
+             aria-hidden="true">
+          <div class="mdc-tooltip__surface">
+            this is as long tooltip label that will overflow the maximum width
+            and will create a multi-line tooltip label
+          </div>
+        </div>
+      </div>`);
+    document.body.appendChild(fixture);
+    const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+    // Add a max-width and min-height since styles are not loaded in
+    // this test.
+    tooltipElem.style.maxWidth = `${numbers.MAX_WIDTH}px`;
+    tooltipElem.style.minHeight = `${numbers.MIN_HEIGHT}px`;
+    const anchorElem = fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
+    MDCTooltip.attachTo(tooltipElem);
+
+    emitEvent(anchorElem, 'mouseenter');
+    jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+    expect(tooltipElem.classList).toContain(CssClasses.MULTILINE_TOOLTIP);
+  });
 });

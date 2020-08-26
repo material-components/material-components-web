@@ -26,11 +26,21 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
+@use '@material/theme/custom-properties';
+@use '@material/theme/css';
 @use '@material/theme/theme-color';
 
 $background-color: rgba(black, theme-color.text-emphasis(medium));
 $border-radius: small;
 $label-color: text-primary-on-dark;
+// Use a custom property so IE11 does not use "normal" and instead uses provided
+// fall-back value.
+$word-break-custom-prop: custom-properties.create(
+  --mdc-tooltip-word-break,
+  normal
+);
+$word-break-default: custom-properties.create-var($word-break-custom-prop);
+$word-break-ie11-fallback: break-all;
 
 /// Sets the border-radius for the tooltip element.
 /// @param {Number | String} $radius Desired border radius value, accepts either
@@ -45,6 +55,32 @@ $label-color: text-primary-on-dark;
 ) {
   .mdc-tooltip__surface {
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+  }
+}
+
+// Sets the word-break property for the tooltip label. Users of IE11 can
+// overwrite the fallback if their tooltip labels will never contain long
+// strings without spaces or hyphens.
+// @param {String} $value
+// @param {String} $fallbackValue A fallback value to be set for word-break.
+//    This can be used to cover IE11 which does not support
+//    "overflow-wrap: anywhere".
+@mixin word-break(
+  $value,
+  $fallbackValue: $word-break-ie11-fallback,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-tooltip__surface {
+      @include css.declaration(
+        word-break,
+        $value,
+        $fallback-value: $fallbackValue
+      );
+      overflow-wrap: anywhere;
+    }
   }
 }
 

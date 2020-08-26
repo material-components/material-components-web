@@ -28,7 +28,14 @@ import {MDCTooltipAdapter} from './adapter';
 import {AnchorBoundaryType, CssClasses, numbers, XPosition, YPosition} from './constants';
 import {ShowTooltipOptions} from './types';
 
-const {SHOWN, SHOWING, SHOWING_TRANSITION, HIDE, HIDE_TRANSITION} = CssClasses;
+const {
+  SHOWN,
+  SHOWING,
+  SHOWING_TRANSITION,
+  HIDE,
+  HIDE_TRANSITION,
+  MULTILINE_TOOLTIP
+} = CssClasses;
 
 export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   static get defaultAdapter(): MDCTooltipAdapter {
@@ -143,6 +150,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
     this.adapter.removeClass(HIDE);
     this.adapter.addClass(SHOWING);
+    if (this.isTooltipMultiline()) {
+      this.adapter.addClass(MULTILINE_TOOLTIP);
+    }
     const {top, left} = this.calculateTooltipDistance();
     this.adapter.setStyleProperty('top', `${top}px`);
     this.adapter.setStyleProperty('left', `${left}px`);
@@ -229,6 +239,12 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     const hideFromScreenreader =
         Boolean(this.adapter.getAnchorAttribute('data-tooltip-id'));
     return {hideFromScreenreader};
+  }
+
+  private isTooltipMultiline() {
+    const tooltipSize = this.adapter.getTooltipSize();
+    return tooltipSize.height > numbers.MIN_HEIGHT &&
+        tooltipSize.width >= numbers.MAX_WIDTH;
   }
 
   /**
