@@ -23,12 +23,16 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
-@use 'sass:map';
 @use '@material/density/functions' as density-functions;
-@use '@material/feature-targeting/feature-targeting';
-@use '@material/theme/theme';
 @use '@material/density/variables' as density-variables;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple-theme';
+@use '@material/theme/color-custom-properties';
+@use '@material/theme/custom-properties';
+@use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use './radio-custom-properties';
+@use 'sass:map';
 
 $ripple-size: 40px !default;
 $icon-size: 20px !default;
@@ -49,11 +53,62 @@ $density-config: (
   ),
 ) !default;
 
+/// Material baseline light theme configuration of radio.
+/// See https://material.io/components/selection-controls for spec.
+$light-theme: (
+  checked-color: $baseline-theme-color,
+  color: $unchecked-color,
+  density: 0,
+  disabled-color: $disabled-circle-color,
+  ripple-color: $baseline-theme-color,
+  ripple-opacity: ripple-theme.$dark-ink-opacities,
+);
+
+/// Sets theme to radio based on provided theme configuration, emits only theme
+/// related styles.
+/// @param {Map} $theme - Theme configuration to use for theming radio.
+@mixin theme($theme, $query: feature-targeting.all()) {
+  $color: map.get($theme, color);
+  @if $color {
+    @include unchecked-stroke-color($unchecked-color, $query: $query);
+  }
+
+  $checked-color: map.get($theme, checked-color);
+  @if ($checked-color) {
+    @include checked-stroke-color($baseline-theme-color, $query: $query);
+    @include ink-color($baseline-theme-color, $query: $query);
+  }
+
+  $disabled-color: map.get($theme, disabled-color);
+  @if ($disabled-color) {
+    @include disabled-unchecked-stroke-color(
+      $disabled-circle-color,
+      $query: $query
+    );
+    @include disabled-checked-stroke-color(
+      $disabled-circle-color,
+      $query: $query
+    );
+    @include disabled-ink-color($disabled-circle-color, $query: $query);
+  }
+
+  @if $color {
+    @include focus-indicator-color($baseline-theme-color, $query: $query);
+  }
+
+  $density: map.get($theme, density);
+  @if $density != null {
+    @include density($density-scale, $query: $query);
+  }
+}
+
 ///
 /// Sets the stroke color of an unchecked, enabled radio button.
 /// @param {Color} $color - The desired stroke color.
 ///
 @mixin unchecked-stroke-color($color, $query: feature-targeting.all()) {
+  $color: _get-unchecked-color-custom-property($color);
+
   @include _if-enabled-unchecked {
     @include _stroke-color($color, $query: $query);
   }
@@ -64,6 +119,8 @@ $density-config: (
 /// @param {Color} $color - The desired stroke color.
 ///
 @mixin checked-stroke-color($color, $query: feature-targeting.all()) {
+  $color: _get-checked-color-custom-property($color);
+
   @include _if-enabled-checked {
     @include _stroke-color($color, $query: $query);
   }
@@ -74,6 +131,8 @@ $density-config: (
 /// @param {Color} $color - The desired ink color.
 ///
 @mixin ink-color($color, $query: feature-targeting.all()) {
+  $color: _get-checked-color-custom-property($color);
+
   @include _if-enabled {
     @include _ink-color($color, $query: $query);
   }
@@ -87,6 +146,8 @@ $density-config: (
   $color,
   $query: feature-targeting.all()
 ) {
+  $color: _get-disabled-color-custom-property($color);
+
   @include _if-disabled-unchecked {
     @include _stroke-color($color, $query: $query);
   }
@@ -97,6 +158,8 @@ $density-config: (
 /// @param {Color} $color - The desired stroke color.
 ///
 @mixin disabled-checked-stroke-color($color, $query: feature-targeting.all()) {
+  $color: _get-disabled-color-custom-property($color);
+
   @include if-disabled-checked_ {
     @include _stroke-color($color, $query: $query);
   }
@@ -107,6 +170,8 @@ $density-config: (
 /// @param {Color} $color - The desired ink color
 ///
 @mixin disabled-ink-color($color, $query: feature-targeting.all()) {
+  $color: _get-disabled-color-custom-property($color);
+
   @include if-disabled_ {
     @include _ink-color($color, $query: $query);
   }
@@ -117,7 +182,9 @@ $density-config: (
 
   .mdc-radio__background::before {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      $color: _get-checked-color-custom-property($color);
+
+      @include theme.property(background-color, $color);
     }
   }
 }
@@ -292,7 +359,7 @@ $density-config: (
 
   .mdc-radio__background .mdc-radio__inner-circle {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(border-color, $color);
+      @include theme.property(border-color, $color);
     }
   }
 }
@@ -307,7 +374,43 @@ $density-config: (
 
   .mdc-radio__background .mdc-radio__outer-circle {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(border-color, $color);
+      @include theme.property(border-color, $color);
     }
   }
+}
+
+@function _get-unchecked-color-custom-property($color) {
+  @if (custom-properties.is-custom-prop($color)) {
+    @return $color;
+  }
+
+  @return custom-properties.create(
+    radio-custom-properties.$color,
+    theme-color.prop-value($color)
+  );
+}
+
+@function _get-checked-color-custom-property($color) {
+  @if (custom-properties.is-custom-prop($color)) {
+    @return $color;
+  }
+
+  @return custom-properties.create(
+    radio-custom-properties.$checked-color,
+    custom-properties.create(
+      color-custom-properties.$secondary,
+      theme-color.prop-value($color)
+    )
+  );
+}
+
+@function _get-disabled-color-custom-property($color) {
+  @if (custom-properties.is-custom-prop($color)) {
+    @return $color;
+  }
+
+  @return custom-properties.create(
+    radio-custom-properties.$disabled-color,
+    theme-color.prop-value($color)
+  );
 }
