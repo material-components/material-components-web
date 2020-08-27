@@ -131,6 +131,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       setThumbStyleProperty: () => undefined,
       removeThumbStyleProperty: () => undefined,
       setTrackActiveStyleProperty: () => undefined,
+      removeTrackActiveStyleProperty: () => undefined,
       setValueIndicatorText: () => undefined,
       updateTickMarks: () => undefined,
       setPointerCapture: () => undefined,
@@ -213,7 +214,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
         this.handleThumbFocusOrMouseenter.bind(this);
     this.thumbBlurOrMouseleaveListener =
         this.handleThumbBlurOrMouseleave.bind(this);
-    this.resizeListener = this.layout.bind(this);
+    this.resizeListener = this.handleResize.bind(this);
     this.registerEventHandlers();
   }
 
@@ -327,14 +328,21 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    * - Syncs slider boundingClientRect with the current DOM.
    * - Updates UI based on internal state.
    */
-  layout() {
+  layout({skipUpdateUI}: {skipUpdateUI?: boolean} = {}) {
     this.rect = this.adapter.getBoundingClientRect();
     if (this.isRange) {
       this.startThumbKnobWidth = this.adapter.getThumbKnobWidth(Thumb.START);
       this.endThumbKnobWidth = this.adapter.getThumbKnobWidth(Thumb.END);
     }
 
-    this.updateUI();
+    if (!skipUpdateUI) {
+      this.updateUI();
+    }
+  }
+
+  /** Handles resize events on the window. */
+  handleResize() {
+    this.layout();
   }
 
   /**
@@ -759,11 +767,11 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
         // Set thumb styles.
         const thumbStartPos = isRtl ? thumbRightPos : thumbLeftPos;
         const thumbEndPos = this.adapter.isRTL() ? thumbLeftPos : thumbRightPos;
-        if (thumb === Thumb.START || !thumb) {
+        if (thumb === Thumb.START || !thumb || !this.initialStylesRemoved) {
           this.adapter.setThumbStyleProperty(
               transformProp, `translateX(${thumbStartPos}px)`, Thumb.START);
         }
-        if (thumb === Thumb.END || !thumb) {
+        if (thumb === Thumb.END || !thumb || !this.initialStylesRemoved) {
           this.adapter.setThumbStyleProperty(
               transformProp, `translateX(${thumbEndPos}px)`, Thumb.END);
         }
@@ -798,6 +806,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private removeInitialStyles(isRtl: boolean) {
     if (this.initialStylesRemoved) return;
 
+    // Remove thumb position properties that were added for initial render.
     const position = isRtl ? 'right' : 'left';
     this.adapter.removeThumbStyleProperty(position, Thumb.END);
     if (this.isRange) {
@@ -805,6 +814,41 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     }
 
     this.initialStylesRemoved = true;
+
+    this.resetTrackAndThumbAnimation();
+  }
+
+  /**
+   * Resets track/thumb animation to prevent animation when adding
+   * `transform` styles to thumb initially.
+   */
+  private resetTrackAndThumbAnimation() {
+    if (!this.isDiscrete) return;
+
+    // Set transition properties to default (no animation), so that the
+    // newly added `transform` styles do not animate thumb/track from
+    // their default positions.
+    const transitionProp = HAS_WINDOW ?
+        getCorrectPropertyName(window, 'transition') :
+        'transition';
+    const transitionDefault = 'all 0s ease 0s';
+    this.adapter.setThumbStyleProperty(
+        transitionProp, transitionDefault, Thumb.END);
+    if (this.isRange) {
+      this.adapter.setThumbStyleProperty(
+          transitionProp, transitionDefault, Thumb.START);
+    }
+    this.adapter.setTrackActiveStyleProperty(transitionProp, transitionDefault);
+
+    // In the next frame, remove the transition inline styles we just
+    // added, such that any animations added in the CSS can now take effect.
+    requestAnimationFrame(() => {
+      this.adapter.removeThumbStyleProperty(transitionProp, Thumb.END);
+      this.adapter.removeTrackActiveStyleProperty(transitionProp);
+      if (this.isRange) {
+        this.adapter.removeThumbStyleProperty(transitionProp, Thumb.START);
+      }
+    });
   }
 
   /**

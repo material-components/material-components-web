@@ -150,7 +150,7 @@ describe('MDCSliderFoundation', () => {
     });
   });
 
-  describe('removing initial thumb styles', () => {
+  describe('#layout', () => {
     it('initial layout removes thumb styles, and subsequent layouts ' +
            'do not',
        () => {
@@ -163,7 +163,59 @@ describe('MDCSliderFoundation', () => {
          mockAdapter.removeThumbStyleProperty.calls.reset();
          foundation.layout();
          jasmine.clock().tick(1);
-         expect(mockAdapter.removeThumbStyleProperty).not.toHaveBeenCalled();
+         expect(mockAdapter.removeThumbStyleProperty)
+             .not.toHaveBeenCalledWith('left', Thumb.END);
+         expect(mockAdapter.removeThumbStyleProperty)
+             .not.toHaveBeenCalledWith('left', Thumb.START);
+       });
+
+    it('initial layout resets thumb/track animations, and subsequent layouts ' +
+           'do not',
+       () => {
+         const {foundation, mockAdapter} =
+             setUpAndInit({isRange: true, isDiscrete: true});
+
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transition', 'all 0s ease 0s', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transition', 'all 0s ease 0s', Thumb.START);
+         expect(mockAdapter.setTrackActiveStyleProperty)
+             .toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+         jasmine.clock().tick(1);  // Tick for RAF.
+         // Newly added inline styles should be removed in next frame.
+         expect(mockAdapter.removeThumbStyleProperty)
+             .toHaveBeenCalledWith('transition', Thumb.END);
+         expect(mockAdapter.removeThumbStyleProperty)
+             .toHaveBeenCalledWith('transition', Thumb.START);
+         expect(mockAdapter.removeTrackActiveStyleProperty)
+             .toHaveBeenCalledWith('transition');
+
+         mockAdapter.setThumbStyleProperty.calls.reset();
+         mockAdapter.setTrackActiveStyleProperty.calls.reset();
+
+         foundation.layout();
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(mockAdapter.setThumbStyleProperty)
+             .not.toHaveBeenCalledWith(
+                 'transition', 'all 0s ease 0s', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .not.toHaveBeenCalledWith(
+                 'transition', 'all 0s ease 0s', Thumb.START);
+         expect(mockAdapter.setTrackActiveStyleProperty)
+             .not.toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+       });
+
+    it('initial layout does not reset thumb/track animations for continuous sliders',
+       () => {
+         const {mockAdapter} = setUpAndInit({isRange: true, isDiscrete: false});
+         expect(mockAdapter.setThumbStyleProperty)
+             .not.toHaveBeenCalledWith(
+                 'transition', 'all 0s ease 0s', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .not.toHaveBeenCalledWith(
+                 'transition', 'all 0s ease 0s', Thumb.START);
+         expect(mockAdapter.setTrackActiveStyleProperty)
+             .not.toHaveBeenCalledWith('transition', 'all 0s ease 0s');
        });
 
     it('RTL: initial layout removes thumb styles', () => {
@@ -172,6 +224,17 @@ describe('MDCSliderFoundation', () => {
           .toHaveBeenCalledWith('right', Thumb.END);
       expect(mockAdapter.removeThumbStyleProperty)
           .toHaveBeenCalledWith('right', Thumb.START);
+    });
+
+    it('`skipUpdateUI` skips updating the UI', () => {
+      const {foundation, mockAdapter} = setUpAndInit({isRange: true});
+      mockAdapter.setThumbStyleProperty.calls.reset();
+      mockAdapter.setTrackActiveStyleProperty.calls.reset();
+
+      foundation.layout({skipUpdateUI: true});
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
+      expect(mockAdapter.setTrackActiveStyleProperty).not.toHaveBeenCalled();
     });
   });
 

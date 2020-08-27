@@ -134,6 +134,11 @@ export interface MDCSliderAdapter {
   setTrackActiveStyleProperty(propertyName: string, value: string): void;
 
   /**
+   * Removes the given style property from the active track element.
+   */
+  removeTrackActiveStyleProperty(propertyName: string): void;
+
+  /**
    * Sets value indicator text based on the given value.
    * - If thumb is `Thumb.START`, updates value indicator on start thumb
    *   (for range slider variant).

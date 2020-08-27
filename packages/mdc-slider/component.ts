@@ -31,13 +31,16 @@ import {MDCSliderChangeEventDetail, Thumb, TickMark} from './types';
 
 /** Vanilla JS implementation of slider component. */
 export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
-  static attachTo(root: Element) {
-    return new MDCSlider(root);
+  static attachTo(root: Element, options: {skipInitialUIUpdate?:
+                                               boolean} = {}) {
+    return new MDCSlider(root, undefined, options);
   }
 
   root!: HTMLElement;                 // Assigned in MDCComponent constructor.
   private thumbs!: HTMLElement[];     // Assigned in #initialize.
   private trackActive!: HTMLElement;  // Assigned in #initialize.
+
+  private skipInitialUIUpdate = false;
 
   getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same
@@ -85,6 +88,9 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       },
       setTrackActiveStyleProperty: (propertyName, value) => {
         this.trackActive.style.setProperty(propertyName, value);
+      },
+      removeTrackActiveStyleProperty: (propertyName) => {
+        this.trackActive.style.removeProperty(propertyName);
       },
       setValueIndicatorText: (value: number, thumb: Thumb) => {
         const valueIndicatorEl =
@@ -148,17 +154,27 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     return new MDCSliderFoundation(adapter);
   }
 
-  initialize() {
+  /**
+   * Initializes component, with the following options:
+   * - `skipInitialUIUpdate`: Whether to skip updating the UI when initially
+   *   syncing with the DOM. This should be enabled when the slider position
+   *   is set before component initialization.
+   */
+  initialize({skipInitialUIUpdate}: {skipInitialUIUpdate?: boolean} = {}) {
     this.thumbs =
         [].slice.call(this.root.querySelectorAll(`.${cssClasses.THUMB}`)) as
         HTMLElement[];
     this.trackActive =
         this.root.querySelector(`.${cssClasses.TRACK_ACTIVE}`) as HTMLElement;
+
+    if (skipInitialUIUpdate) {
+      this.skipInitialUIUpdate = true;
+    }
   }
 
   initialSyncWithDOM() {
     this.createRipples();
-    this.foundation.layout();
+    this.foundation.layout({skipUpdateUI: this.skipInitialUIUpdate});
   }
 
   /** Redraws UI based on DOM (e.g. element dimensions, RTL). */

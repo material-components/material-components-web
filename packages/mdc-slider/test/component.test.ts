@@ -568,6 +568,81 @@ describe('MDCSlider', () => {
       jasmine.getEnv().allowRespy(false);
     });
   });
+
+  describe('setting slider position before component initialization', () => {
+    let root: HTMLElement, thumb: HTMLElement, trackActive: HTMLElement;
+
+    beforeEach(() => {
+      root = getFixture(`
+        <div class="mdc-slider mdc-slider--discrete" data-step="10">
+          <div class="mdc-slider__track">
+            <div class="mdc-slider__track--active">
+              <div class="mdc-slider__track--active_fill"
+                   style="transform:scaleX(70%)">
+              </div>
+            </div>
+            <div class="mdc-slider__track--inactive"></div>
+          </div>
+          <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0"
+               aria-valuemax="100" aria-valuenow="70" style="left:calc(70% - 24px)">
+            <div class="mdc-slider__value-indicator-container">
+              <div class="mdc-slider__value-indicator">
+                <span class="mdc-slider__value-indicator-text">70</span>
+              </div>
+            </div>
+            <div class="mdc-slider__thumb-knob"></div>
+          </div>
+        </div>`);
+
+      thumb = root.querySelector(`.${cssClasses.THUMB}`) as HTMLElement;
+      trackActive =
+          root.querySelector(`.${cssClasses.TRACK_ACTIVE}`) as HTMLElement;
+
+      spyOn(root, 'getBoundingClientRect').and.returnValue({
+        left: 0,
+        right: 100,
+        width: 100,
+      } as DOMRect);
+
+      document.body.appendChild(root);  // Removed in #afterEach.
+    });
+
+    it('does not update thumb styles in initial layout', () => {
+      MDCSlider.attachTo(root, {skipInitialUIUpdate: true});
+      jasmine.clock().tick(1);  // Tick for RAF.
+
+      expect(thumb.style.left).toBe('calc(70% - 24px)');
+      expect(thumb.style.transform).toBe('');
+    });
+
+    it('removes thumb `left` styles on initial down event that changes value',
+       () => {
+         MDCSlider.attachTo(root, {skipInitialUIUpdate: true});
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(thumb.style.left).not.toBe('');
+         expect(thumb.style.transform).not.toBe('translateX(30px)');
+
+         root.dispatchEvent(createEventFrom('pointer', 'down', {clientX: 30}));
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(thumb.style.left).toBe('');
+         expect(thumb.style.transform).toBe('translateX(30px)');
+       });
+
+    it('removes thumb/track animation on initial down event that changes value',
+       () => {
+         MDCSlider.attachTo(root, {skipInitialUIUpdate: true});
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         root.dispatchEvent(createEventFrom('pointer', 'down', {clientX: 30}));
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(thumb.style.transition).toMatch(/all/);
+         expect(trackActive.style.transition).toMatch(/all/);
+
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(thumb.style.transition).toBe('');
+         expect(trackActive.style.transition).toBe('');
+       });
+  });
 });
 
 function setUpTest(

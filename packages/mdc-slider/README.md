@@ -282,11 +282,14 @@ positions before component initialization, mark up the DOM as follows:
   (or `right` for RTL layouts).
 - *[Range sliders only]* Calculate `thumbStartPercent`, the initial position
   of the start thumb as a percentage of the entire track. Set
-  `left:calc(<thumbStartPercent>% - 24px` as an inline style on the
+  `left:calc(<thumbStartPercent>% - 24px)` as an inline style on the
   start thumb (`mdc-slider__thumb`) element (or `right` for RTL layouts).
 - *[Range sliders only]* Using the previously calculated `thumbStartPercent`,
   set `left:<thumbStartPercent>%` as an inline style on the
   `mdc-slider__track--active_fill` element (or `right` for RTL layouts).
+
+Additionally, the MDCSlider component should be initialized with
+`skipInitialUIUpdate` set to true.
 
 #### Range slider example
 
