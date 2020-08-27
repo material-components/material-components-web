@@ -69,7 +69,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   private scrimClickAction_ = strings.CLOSE_ACTION;
   private autoStackButtons_ = true;
   private areButtonsStacked_ = false;
-  private suppressedPressSelector: string = strings.SUPPRESS_DEFAULT_PRESS_SELECTOR;
+  private suppressDefaultPressSelector = strings.SUPPRESS_DEFAULT_PRESS_SELECTOR;
 
   constructor(adapter?: Partial<MDCDialogAdapter>) {
     super({...MDCDialogFoundation.defaultAdapter, ...adapter});
@@ -168,12 +168,12 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     this.autoStackButtons_ = autoStack;
   }
 
-  getSuppressedPressSelector(): string {
-    return this.suppressedPressSelector;
+  getSuppressDefaultPressSelector(): string {
+    return this.suppressDefaultPressSelector;
   }
 
-  setSuppressedPressSelector(selector: string): void {
-    this.suppressedPressSelector = selector;
+  setSuppressDefaultPressSelector(selector: string) {
+    this.suppressDefaultPressSelector = selector;
   }
 
   layout() {
@@ -216,7 +216,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
     const target = evt.composedPath ? evt.composedPath()[0] : evt.target;
     const isDefault = !this.adapter.eventTargetMatches(
-        target, this.suppressedPressSelector);
+        target, this.suppressDefaultPressSelector);
     if (isEnter && isDefault) {
       this.adapter.clickDefaultButton();
     }
