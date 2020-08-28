@@ -214,6 +214,19 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       return;
     }
 
+    // `composedPath` is used here, when available, to account for use cases
+    // where a target meant to suppress the default press behaviour
+    // may exist in a shadow root.
+    // For example, a textarea inside a web component:
+    // <mwc-dialog>
+    //   <horizontal-layout>
+    //     #shadow-root (open)
+    //       <mwc-textarea>
+    //         #shadow-root (open)
+    //           <textarea></textarea>
+    //       </mwc-textarea>
+    //   </horizontal-layout>
+    // </mwc-dialog>
     const target = evt.composedPath ? evt.composedPath()[0] : evt.target;
     const isDefault = !this.adapter.eventTargetMatches(
         target, this.suppressDefaultPressSelector);
