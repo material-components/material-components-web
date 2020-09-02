@@ -286,12 +286,13 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
    * Updates header row checkbox state based on number of rows selected.
    */
   private setHeaderRowCheckboxState() {
-    if (this.adapter.getSelectedRowCount() === this.adapter.getRowCount()) {
+    if (this.adapter.getSelectedRowCount() === 0) {
+      this.adapter.setHeaderRowCheckboxChecked(false);
+      this.adapter.setHeaderRowCheckboxIndeterminate(false);
+    } else if (
+        this.adapter.getSelectedRowCount() === this.adapter.getRowCount()) {
       this.adapter.setHeaderRowCheckboxChecked(true);
       this.adapter.setHeaderRowCheckboxIndeterminate(false);
-    } else if (this.adapter.getSelectedRowCount() === 0) {
-      this.adapter.setHeaderRowCheckboxIndeterminate(false);
-      this.adapter.setHeaderRowCheckboxChecked(false);
     } else {
       this.adapter.setHeaderRowCheckboxIndeterminate(true);
       this.adapter.setHeaderRowCheckboxChecked(false);

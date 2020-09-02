@@ -231,7 +231,9 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
       isCheckboxAtRowIndexChecked: (rowIndex: number) =>
           this.rowCheckboxList[rowIndex].checked,
       isHeaderRowCheckboxChecked: () => this.headerRowCheckbox.checked,
-      isRowsSelectable: () => !!this.root.querySelector(selectors.ROW_CHECKBOX),
+      isRowsSelectable: () =>
+          !!this.root.querySelector(selectors.ROW_CHECKBOX) ||
+          !!this.root.querySelector(selectors.HEADER_ROW_CHECKBOX),
       notifyRowSelectionChanged:
           (data: MDCDataTableRowSelectionChangedEventDetail) => {
             this.emit(

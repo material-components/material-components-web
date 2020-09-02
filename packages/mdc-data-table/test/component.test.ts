@@ -516,6 +516,19 @@ describe('MDCDataTable', () => {
     component.destroy();
   });
 
+  describe('Removing Rows', () => {
+    it('removes all rows while the header checkbox is checked.', () => {
+      const {component, root, adapter} = setupTest();
+      adapter.setHeaderRowCheckboxChecked(true);
+      expect(adapter.isHeaderRowCheckboxChecked()).toBe(true);
+      const tableContent =
+          root.querySelector<HTMLElement>(`.${cssClasses.CONTENT}`);
+      tableContent!.textContent = ``;
+      component.layout();
+      expect(adapter.isHeaderRowCheckboxChecked()).toBe(false);
+    });
+  });
+
   describe('Column sorting', () => {
     it('emits sort event when clicked on sort button of sortable column header',
        () => {
@@ -696,9 +709,9 @@ describe('MDCDataTable', () => {
        () => {
          const {component} = setupTest({withoutRowSelection: true});
          expect(() => {
-          component.destroy();
-        }).not.toThrowError();
-      });
+           component.destroy();
+         }).not.toThrowError();
+       });
   });
 
   describe('Progress indicator', () => {
