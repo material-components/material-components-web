@@ -159,6 +159,7 @@ Mixin | Description
 `label-ink-color($color)` | Sets the color of the tooltip's label text.
 `shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to tooltip surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `word-break($value, $fallbackValue)` | Sets the `word-break` property for the tooltip label. This is used to force-wrap long tooltip labels that lack spaces and hyphens. The optional $fallbackValue param can be used for IE11 as it does not support the `break-word` option. Users for IE11 who do not want their tooltip labels to be broken in the middle of the word can use this mixin to remove the default IE11 behavior of `break-all`.
+`z-index($z-index)` | Sets the z-index of the tooltip.
 
 ### `MDCTooltip` Methods
 

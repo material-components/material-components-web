@@ -39,7 +39,6 @@ $_min-height: 24px;
 // LINT.ThenChange(constants.ts:tooltip-dimensions)
 $_label-type-scale: caption;
 $_line-height: 16px;
-$_z-index: 2;
 
 $enter-duration: 150ms;
 $exit-duration: 75ms;
@@ -65,12 +64,12 @@ $exit-duration: 75ms;
     tooltip-theme.$word-break-ie11-fallback,
     $query: $query
   );
+  @include tooltip-theme.z-index(tooltip-theme.$z-index, $query: $query);
 
   .mdc-tooltip {
     @include feature-targeting.targets($feat-structure) {
       position: fixed;
       display: none;
-      z-index: $_z-index;
     }
   }
 

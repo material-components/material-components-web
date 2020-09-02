@@ -41,13 +41,14 @@ $word-break-custom-prop: custom-properties.create(
 );
 $word-break-default: custom-properties.create-var($word-break-custom-prop);
 $word-break-ie11-fallback: break-all;
+$z-index: 2;
 
-/// Sets the border-radius for the tooltip element.
-/// @param {Number | String} $radius Desired border radius value, accepts either
-///   a shape category or number value. $radius can be a singel value, or a
-///   list of up to 4 values.
-/// @param {Boolean} $rtl-reflexive [false] If a rule should be created for a
-///    flipped $radius for a RTL layout.
+// Sets the border-radius for the tooltip element.
+// @param {Number | String} $radius Desired border radius value, accepts either
+//   a shape category or number value. $radius can be a singel value, or a
+//   list of up to 4 values.
+// @param {Boolean} $rtl-reflexive [false] If a rule should be created for a
+//    flipped $radius for a RTL layout.
 @mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
@@ -84,8 +85,8 @@ $word-break-ie11-fallback: break-all;
   }
 }
 
-/// Sets the color of the tooltip label.
-/// @param {Color | String} $color
+// Sets the color of the tooltip label.
+// @param {Color | String} $color
 @mixin label-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   @include feature-targeting.targets($feat-color) {
@@ -95,13 +96,25 @@ $word-break-ie11-fallback: break-all;
   }
 }
 
-/// Sets the fill/surface color of the tooltip.
-/// @param {Color | String} $color
+// Sets the fill/surface color of the tooltip.
+// @param {Color | String} $color
 @mixin fill-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   .mdc-tooltip__surface {
     @include feature-targeting.targets($feat-color) {
       @include theme.prop(background-color, $color);
+    }
+  }
+}
+
+// Sets the z-index of the tooltip.
+// @param {Number} $z-index
+@mixin z-index($z-index, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-tooltip {
+      z-index: $z-index;
     }
   }
 }
