@@ -177,6 +177,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         // some browsers) refreshes the page.
         this.foundation.setValue(
             this.hiddenInput.value, /** skipNotify */ true);
+        this.foundation.layout();
         return;
       }
 
