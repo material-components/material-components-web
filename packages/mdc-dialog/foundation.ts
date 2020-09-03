@@ -69,6 +69,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   private scrimClickAction_ = strings.CLOSE_ACTION;
   private autoStackButtons_ = true;
   private areButtonsStacked_ = false;
+  private suppressDefaultPressSelector = strings.SUPPRESS_DEFAULT_PRESS_SELECTOR;
 
   constructor(adapter?: Partial<MDCDialogAdapter>) {
     super({...MDCDialogFoundation.defaultAdapter, ...adapter});
@@ -167,6 +168,14 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     this.autoStackButtons_ = autoStack;
   }
 
+  getSuppressDefaultPressSelector(): string {
+    return this.suppressDefaultPressSelector;
+  }
+
+  setSuppressDefaultPressSelector(selector: string) {
+    this.suppressDefaultPressSelector = selector;
+  }
+
   layout() {
     if (this.layoutFrame_) {
       cancelAnimationFrame(this.layoutFrame_);
@@ -205,8 +214,22 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       return;
     }
 
+    // `composedPath` is used here, when available, to account for use cases
+    // where a target meant to suppress the default press behaviour
+    // may exist in a shadow root.
+    // For example, a textarea inside a web component:
+    // <mwc-dialog>
+    //   <horizontal-layout>
+    //     #shadow-root (open)
+    //       <mwc-textarea>
+    //         #shadow-root (open)
+    //           <textarea></textarea>
+    //       </mwc-textarea>
+    //   </horizontal-layout>
+    // </mwc-dialog>
+    const target = evt.composedPath ? evt.composedPath()[0] : evt.target;
     const isDefault = !this.adapter.eventTargetMatches(
-        evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR);
+        target, this.suppressDefaultPressSelector);
     if (isEnter && isDefault) {
       this.adapter.clickDefaultButton();
     }
