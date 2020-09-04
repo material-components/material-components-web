@@ -21,6 +21,6 @@
     "strict": true,
     "stripInternal": true,
     "target": "es5",
-    "types": []
+    "types": ["resize-observer-browser"]
   }
 }
