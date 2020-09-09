@@ -205,7 +205,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * Opens/closes the notched outline.
    */
   notchOutline(openNotch: boolean) {
-    if (!this.adapter.hasOutline()) {
+    if (!this.adapter.hasOutline() || !this.adapter.hasLabel()) {
       return;
     }
 

@@ -648,9 +648,20 @@ describe('MDCTextFieldFoundation', () => {
         .not.toHaveBeenCalledWith(jasmine.anything());
   });
 
-  it('#notchOutline width is set to 0 if no label is present', () => {
+  it('#notchOutline does nothing if no label is present', () => {
     const {foundation, mockAdapter} = setupBareBonesTest();
     mockAdapter.hasOutline.and.returnValue(true);
+    mockAdapter.hasLabel.and.returnValue(false);
+
+    foundation.notchOutline(true);
+    expect(mockAdapter.notchOutline)
+        .not.toHaveBeenCalledWith(jasmine.anything());
+  });
+
+  it('#notchOutline width is set to 0 if no label text is present', () => {
+    const {foundation, mockAdapter} = setupBareBonesTest();
+    mockAdapter.hasOutline.and.returnValue(true);
+    mockAdapter.hasLabel.and.returnValue(true);
     mockAdapter.getLabelWidth.and.returnValue(0);
 
     foundation.notchOutline(true);
