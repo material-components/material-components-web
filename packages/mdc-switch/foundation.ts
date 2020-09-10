@@ -36,7 +36,6 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
     return cssClasses;
   }
 
-  /** The default Adapter for the switch. */
   static get defaultAdapter(): MDCSwitchAdapter {
     return {
       addClass: () => undefined,
@@ -45,10 +44,6 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
       setNativeControlDisabled: () => undefined,
       setNativeControlAttr: () => undefined,
     };
-  }
-
-  constructor(adapter?: Partial<MDCSwitchAdapter>) {
-    super({...MDCSwitchFoundation.defaultAdapter, ...adapter});
   }
 
   /** Sets the checked state of the switch. */

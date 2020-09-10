@@ -104,10 +104,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private resizeListener!:
       SpecificEventListener<'resize'>;  // Assigned in #initialize.
 
-  constructor(adapter?: Partial<MDCSliderAdapter>) {
-    super({...MDCSliderFoundation.defaultAdapter, ...adapter});
-  }
-
   static get defaultAdapter(): MDCSliderAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same
     // order as the adapter interface.

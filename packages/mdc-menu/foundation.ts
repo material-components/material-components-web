@@ -40,12 +40,6 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     return numbers;
   }
 
-  private closeAnimationEndTimerId_ = 0;
-  private defaultFocusState_ = DefaultFocusState.LIST_ROOT;
-
-  /**
-   * @see {@link MDCMenuAdapter} for typing information on parameters and return types.
-   */
   static get defaultAdapter(): MDCMenuAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
@@ -66,9 +60,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter?: Partial<MDCMenuAdapter>) {
-    super({...MDCMenuFoundation.defaultAdapter, ...adapter});
-  }
+  private closeAnimationEndTimerId_ = 0;
+  private defaultFocusState_ = DefaultFocusState.LIST_ROOT;
 
   destroy() {
     if (this.closeAnimationEndTimerId_) {

@@ -22,9 +22,8 @@
  */
 
 
-import {MDCIconButtonToggleFoundation} from '../../mdc-icon-button/foundation';
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {MDCIconButtonToggleFoundation} from '../../mdc-icon-button/foundation';
 
 const {strings, cssClasses} = MDCIconButtonToggleFoundation;
 
@@ -35,17 +34,6 @@ describe('MDCIconButtonToggleFoundation', () => {
 
   it('exports cssClasses', () => {
     expect('cssClasses' in MDCIconButtonToggleFoundation).toBe(true);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCIconButtonToggleFoundation, [
-      'addClass',
-      'removeClass',
-      'hasClass',
-      'getAttr',
-      'setAttr',
-      'notifyChange',
-    ]);
   });
 
   const setupTest = () => {

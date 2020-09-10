@@ -45,8 +45,8 @@ export class MDCFormFieldFoundation extends MDCFoundation<MDCFormFieldAdapter> {
 
   private readonly click: () => void;
 
-  constructor(adapter?: Partial<MDCFormFieldAdapter>) {
-    super({...MDCFormFieldFoundation.defaultAdapter, ...adapter});
+  constructor(adapter: MDCFormFieldAdapter) {
+    super(adapter);
 
     this.click = () => {
       this.handleClick();

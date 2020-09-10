@@ -71,10 +71,6 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   private areButtonsStacked_ = false;
   private suppressDefaultPressSelector = strings.SUPPRESS_DEFAULT_PRESS_SELECTOR;
 
-  constructor(adapter?: Partial<MDCDialogAdapter>) {
-    super({...MDCDialogFoundation.defaultAdapter, ...adapter});
-  }
-
   init() {
     if (this.adapter.hasClass(cssClasses.STACKED)) {
       this.setAutoStackButtons(false);

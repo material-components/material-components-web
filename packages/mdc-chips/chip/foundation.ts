@@ -81,6 +81,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     };
   }
 
+
   /** Whether a trailing icon click should immediately trigger exit/removal of the chip. */
   private shouldRemoveOnTrailingIconClick_ = true;
 
@@ -90,10 +91,6 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * element on the page when a chip is clicked (like a menu).
    */
   private shouldFocusPrimaryActionOnClick_ = true;
-
-  constructor(adapter?: Partial<MDCChipAdapter>) {
-    super({...MDCChipFoundation.defaultAdapter, ...adapter});
-  }
 
   isSelected() {
     return this.adapter.hasClass(cssClasses.SELECTED);

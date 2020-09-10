@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {cssClasses, numbers, strings} from '../constants';
 import {MDCTopAppBarBaseFoundation} from '../foundation';
@@ -40,19 +39,6 @@ describe('MDCTopAppBarBaseFoundation', () => {
   it('exports numbers', () => {
     expect('numbers' in MDCTopAppBarBaseFoundation).toBe(true);
     expect(MDCTopAppBarBaseFoundation.numbers).toEqual(numbers);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCTopAppBarBaseFoundation, [
-      'hasClass',
-      'addClass',
-      'removeClass',
-      'setStyle',
-      'getTopAppBarHeight',
-      'notifyNavigationIconClicked',
-      'getViewportScrollY',
-      'getTotalActionItems',
-    ]);
   });
 
   const setupTest = () => {

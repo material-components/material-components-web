@@ -42,8 +42,8 @@ export class MDCCircularProgressFoundation extends
       addClass: () => undefined,
       getDeterminateCircleAttribute: () => null,
       hasClass: () => false,
-      removeClass: () => undefined,
       removeAttribute: () => undefined,
+      removeClass: () => undefined,
       setAttribute: () => undefined,
       setDeterminateCircleAttribute: () => undefined,
     };
@@ -53,10 +53,6 @@ export class MDCCircularProgressFoundation extends
   private isDeterminate_!: boolean;
   private progress_!: number;
   private radius_!: number;
-
-  constructor(adapter?: Partial<MDCCircularProgressAdapter>) {
-    super({...MDCCircularProgressFoundation.defaultAdapter, ...adapter});
-  }
 
   init() {
     this.isClosed_ = this.adapter.hasClass(cssClasses.CLOSED_CLASS);

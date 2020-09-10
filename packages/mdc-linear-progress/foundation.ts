@@ -56,10 +56,6 @@ export class MDCLinearProgressFoundation extends
   private progress!: number;
   private buffer!: number;
 
-  constructor(adapter?: Partial<MDCLinearProgressAdapter>) {
-    super({...MDCLinearProgressFoundation.defaultAdapter, ...adapter});
-  }
-
   init() {
     this.isDeterminate = !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
     this.isReversed = this.adapter.hasClass(cssClasses.REVERSED_CLASS);

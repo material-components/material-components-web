@@ -31,9 +31,6 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
     return cssClasses;
   }
 
-  /**
-   * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
-   */
   static get defaultAdapter(): MDCFloatingLabelAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
@@ -48,8 +45,8 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
 
   private readonly shakeAnimationEndHandler_: SpecificEventListener<'animationend'>;
 
-  constructor(adapter?: Partial<MDCFloatingLabelAdapter>) {
-    super({...MDCFloatingLabelFoundation.defaultAdapter, ...adapter});
+  constructor(adapter: MDCFloatingLabelAdapter) {
+    super(adapter);
 
     this.shakeAnimationEndHandler_ = () => this.handleShakeAnimationEnd_();
   }

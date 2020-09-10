@@ -22,9 +22,9 @@
  */
 
 
-import {MDCFloatingLabelFoundation} from '../../mdc-floating-label/foundation';
-import {captureHandlers, verifyDefaultAdapter} from '../../../testing/helpers/foundation';
+import {captureHandlers} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
+import {MDCFloatingLabelFoundation} from '../../mdc-floating-label/foundation';
 
 const {cssClasses} = MDCFloatingLabelFoundation;
 
@@ -37,16 +37,6 @@ const setupTest = () => {
 describe('MDCFloatingLabelFoundation', () => {
   it('exports cssClasses', () => {
     expect(MDCFloatingLabelFoundation.cssClasses).toEqual(cssClasses);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCFloatingLabelFoundation, [
-      'addClass',
-      'removeClass',
-      'getWidth',
-      'registerInteractionHandler',
-      'deregisterInteractionHandler',
-    ]);
   });
 
   it('#init should register animationend event listener', () => {

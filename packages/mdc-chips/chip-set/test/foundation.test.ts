@@ -22,10 +22,9 @@
  */
 
 
-import {EventSource, strings} from '../../../mdc-chips/chip/constants';
-import {MDCChipSetFoundation} from '../../../mdc-chips/chip-set/foundation';
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
+import {MDCChipSetFoundation} from '../../../mdc-chips/chip-set/foundation';
+import {EventSource, strings} from '../../../mdc-chips/chip/constants';
 
 const {cssClasses} = MDCChipSetFoundation;
 
@@ -36,21 +35,6 @@ describe('MDCChipSetFoundation', () => {
 
   it('exports cssClasses', () => {
     expect('cssClasses' in MDCChipSetFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCChipSetFoundation, [
-      'hasClass',
-      'removeChipAtIndex',
-      'selectChipAtIndex',
-      'focusChipPrimaryActionAtIndex',
-      'focusChipTrailingActionAtIndex',
-      'getIndexOfChipById',
-      'isRTL',
-      'getChipListCount',
-      'removeFocusFromChipAtIndex',
-      'announceMessage',
-    ]);
   });
 
   const setupTest = () => {

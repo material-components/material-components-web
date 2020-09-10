@@ -22,10 +22,9 @@
  */
 
 
+import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {cssClasses, numbers, strings} from '../../mdc-ripple/constants';
 import {MDCRippleFoundation} from '../../mdc-ripple/foundation';
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 
 import {testFoundation} from './helpers';
 
@@ -42,27 +41,6 @@ describe('MDCRippleFoundation', () => {
 
   it('numbers returns constants.numbers', () => {
     expect(MDCRippleFoundation.numbers).toEqual(numbers);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCRippleFoundation, [
-      'browserSupportsCssVars',
-      'isUnbounded',
-      'isSurfaceActive',
-      'isSurfaceDisabled',
-      'addClass',
-      'removeClass',
-      'containsEventTarget',
-      'registerInteractionHandler',
-      'deregisterInteractionHandler',
-      'registerDocumentInteractionHandler',
-      'deregisterDocumentInteractionHandler',
-      'registerResizeHandler',
-      'deregisterResizeHandler',
-      'updateCssVariable',
-      'computeBoundingRect',
-      'getWindowPageOffset',
-    ]);
   });
 
   testFoundation(

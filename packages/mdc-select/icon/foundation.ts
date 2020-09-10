@@ -35,9 +35,6 @@ export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter>
     return strings;
   }
 
-  /**
-   * See {@link MDCSelectIconAdapter} for typing information on parameters and return types.
-   */
   static get defaultAdapter(): MDCSelectIconAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
@@ -57,8 +54,8 @@ export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter>
   // assigned in initialSyncWithDOM()
   private readonly interactionHandler_!: SpecificEventListener<InteractionEventType>;
 
-  constructor(adapter?: Partial<MDCSelectIconAdapter>) {
-    super({...MDCSelectIconFoundation.defaultAdapter, ...adapter});
+  constructor(adapter: MDCSelectIconAdapter) {
+    super(adapter);
 
     this.interactionHandler_ = (evt) => this.handleInteraction(evt);
   }

@@ -22,7 +22,6 @@
  */
 
 
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {MDCTextFieldHelperTextFoundation} from '../../../mdc-textfield/helper-text/foundation';
 
@@ -35,17 +34,6 @@ describe('MDCTextFieldHelperTextFoundation', () => {
 
   it('exports strings', () => {
     expect('strings' in MDCTextFieldHelperTextFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCTextFieldHelperTextFoundation, [
-      'addClass',
-      'removeClass',
-      'hasClass',
-      'setAttr',
-      'removeAttr',
-      'setContent',
-    ]);
   });
 
   const setupTest = () => {

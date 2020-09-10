@@ -43,10 +43,6 @@ export class MDCChipTrailingActionFoundation extends
     };
   }
 
-  constructor(adapter?: Partial<MDCChipTrailingActionAdapter>) {
-    super({...MDCChipTrailingActionFoundation.defaultAdapter, ...adapter});
-  }
-
   handleClick(evt: MouseEvent) {
     evt.stopPropagation();
     this.adapter.notifyInteraction(InteractionTrigger.CLICK);

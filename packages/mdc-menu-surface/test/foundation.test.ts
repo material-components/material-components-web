@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {Corner, cssClasses, numbers, strings} from '../constants';
@@ -186,30 +185,6 @@ describe('MDCMenuSurfaceFoundation', () => {
 
   it('exports Corner', () => {
     expect(MDCMenuSurfaceFoundation.Corner).toEqual(Corner);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCMenuSurfaceFoundation, [
-      'addClass',
-      'removeClass',
-      'hasClass',
-      'hasAnchor',
-      'notifyClose',
-      'notifyOpen',
-      'isElementInContainer',
-      'isRtl',
-      'setTransformOrigin',
-      'isFocused',
-      'saveFocus',
-      'restoreFocus',
-      'getInnerDimensions',
-      'getAnchorDimensions',
-      'getWindowDimensions',
-      'getBodyDimensions',
-      'getWindowScroll',
-      'setPosition',
-      'setMaxHeight',
-    ]);
   });
 
   it('#init throws error when the root class is not present', () => {

@@ -21,48 +21,11 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {attributes, cssClasses, SortValue, strings} from '../constants';
 import {MDCDataTableFoundation} from '../foundation';
 
 describe('MDCDataTableFoundation', () => {
-  it('default adapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCDataTableFoundation, [
-      'addClass',
-      'addClassAtRowIndex',
-      'getAttributeByHeaderCellIndex',
-      'getHeaderCellCount',
-      'getHeaderCellElements',
-      'getRowCount',
-      'getRowElements',
-      'getRowIdAtIndex',
-      'getRowIndexByChildElement',
-      'getSelectedRowCount',
-      'getTableContainerHeight',
-      'getTableHeaderHeight',
-      'isCheckboxAtRowIndexChecked',
-      'isHeaderRowCheckboxChecked',
-      'isRowsSelectable',
-      'notifyRowSelectionChanged',
-      'notifySelectedAll',
-      'notifySortAction',
-      'notifyUnselectedAll',
-      'registerHeaderRowCheckbox',
-      'registerRowCheckboxes',
-      'removeClass',
-      'removeClassAtRowIndex',
-      'removeClassNameByHeaderCellIndex',
-      'setAttributeAtRowIndex',
-      'setAttributeByHeaderCellIndex',
-      'setClassNameByHeaderCellIndex',
-      'setHeaderRowCheckboxChecked',
-      'setHeaderRowCheckboxIndeterminate',
-      'setProgressIndicatorStyles',
-      'setRowCheckboxCheckedAtIndex',
-      'setSortStatusLabelByHeaderCellIndex',
-    ]);
-  });
 
   function setupTest() {
     const {foundation, mockAdapter} =

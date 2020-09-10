@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {cssClasses, numbers, strings} from '../constants';
 import {MDCSnackbarFoundation} from '../foundation';
@@ -39,18 +38,6 @@ describe('MDCSnackbarFoundation', () => {
 
   it('exports numbers', () => {
     expect(MDCSnackbarFoundation.numbers).toEqual(numbers);
-  });
-
-  it('default adapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCSnackbarFoundation, [
-      'addClass',
-      'removeClass',
-      'announce',
-      'notifyOpening',
-      'notifyOpened',
-      'notifyClosing',
-      'notifyClosed',
-    ]);
   });
 
   const setupTest = () => {

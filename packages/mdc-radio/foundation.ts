@@ -42,10 +42,6 @@ export class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
     };
   }
 
-  constructor(adapter?: Partial<MDCRadioAdapter>) {
-    super({...MDCRadioFoundation.defaultAdapter, ...adapter});
-  }
-
   setDisabled(disabled: boolean) {
     const {DISABLED} = MDCRadioFoundation.cssClasses;
     this.adapter.setNativeControlDisabled(disabled);

@@ -44,9 +44,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     return strings;
   }
 
-  /**
-   * See {@link MDCSelectAdapter} for typing information on parameters and return types.
-   */
   static get defaultAdapter(): MDCSelectAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
@@ -89,6 +86,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
+
   private readonly leadingIcon: MDCSelectIconFoundation|undefined;
   private readonly helperText: MDCSelectHelperTextFoundation|undefined;
 
@@ -109,8 +107,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * @param adapter
    * @param foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter?: Partial<MDCSelectAdapter>, foundationMap: Partial<MDCSelectFoundationMap> = {}) {
-    super({...MDCSelectFoundation.defaultAdapter, ...adapter});
+  constructor(adapter: MDCSelectAdapter, foundationMap: Partial<MDCSelectFoundationMap> = {}) {
+    super(adapter);
 
     this.leadingIcon = foundationMap.leadingIcon;
     this.helperText = foundationMap.helperText;

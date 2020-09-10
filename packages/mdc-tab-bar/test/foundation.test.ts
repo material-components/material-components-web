@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {MDCTabBarFoundation} from '../foundation';
 
@@ -41,28 +40,6 @@ describe('MDCTabBarFoundation', () => {
 
   it('exports numbers', () => {
     expect('numbers' in MDCTabBarFoundation).toBe(true);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCTabBarFoundation, [
-      'scrollTo',
-      'incrementScroll',
-      'getScrollPosition',
-      'getScrollContentWidth',
-      'getOffsetWidth',
-      'isRTL',
-      'setActiveTab',
-      'activateTabAtIndex',
-      'deactivateTabAtIndex',
-      'focusTabAtIndex',
-      'getTabIndicatorClientRectAtIndex',
-      'getTabDimensionsAtIndex',
-      'getPreviousActiveTabIndex',
-      'getFocusedTabIndex',
-      'getIndexOfTabById',
-      'getTabListLength',
-      'notifyTabActivated',
-    ]);
   });
 
   const setupKeyDownTest = () => {

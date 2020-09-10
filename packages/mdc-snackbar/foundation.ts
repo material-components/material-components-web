@@ -60,10 +60,6 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   private autoDismissTimeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
   private closeOnEscape_ = true;
 
-  constructor(adapter?: Partial<MDCSnackbarAdapter>) {
-    super({...MDCSnackbarFoundation.defaultAdapter, ...adapter});
-  }
-
   destroy() {
     this.clearAutoDismissTimer_();
     cancelAnimationFrame(this.animationFrame_);

@@ -55,10 +55,6 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   private animationFrame_ = 0;
   private animationTimer_ = 0;
 
-  constructor(adapter?: Partial<MDCDrawerAdapter>) {
-    super({...MDCDismissibleDrawerFoundation.defaultAdapter, ...adapter});
-  }
-
   destroy() {
     if (this.animationFrame_) {
       cancelAnimationFrame(this.animationFrame_);

@@ -22,7 +22,6 @@
  */
 
 
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {strings} from '../../../mdc-textfield/icon/constants';
 import {MDCTextFieldIconFoundation} from '../../../mdc-textfield/icon/foundation';
@@ -30,18 +29,6 @@ import {MDCTextFieldIconFoundation} from '../../../mdc-textfield/icon/foundation
 describe('MDCTextFieldIconFoundation', () => {
   it('exports strings', () => {
     expect(MDCTextFieldIconFoundation.strings).toEqual(strings);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCTextFieldIconFoundation, [
-      'getAttr',
-      'setAttr',
-      'removeAttr',
-      'setContent',
-      'registerInteractionHandler',
-      'deregisterInteractionHandler',
-      'notifyIconAction',
-    ]);
   });
 
   const setupTest = () => {

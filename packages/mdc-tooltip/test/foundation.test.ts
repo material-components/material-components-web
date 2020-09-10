@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {AnchorBoundaryType, CssClasses, numbers, XPosition, YPosition} from '../constants';
 import {MDCTooltipFoundation} from '../foundation';
@@ -33,26 +32,6 @@ const ESC_EVENTS = [
 
 describe('MDCTooltipFoundation', () => {
   setUpMdcTestEnvironment();
-
-  it('default adapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCTooltipFoundation, [
-      'getAttribute',
-      'setAttribute',
-      'addClass',
-      'hasClass',
-      'removeClass',
-      'setStyleProperty',
-      'getViewportWidth',
-      'getViewportHeight',
-      'getTooltipSize',
-      'getAnchorBoundingRect',
-      'getAnchorAttribute',
-      'isRTL',
-      'registerDocumentEventHandler',
-      'deregisterDocumentEventHandler',
-      'notifyHidden',
-    ]);
-  });
 
   it('#show modifies tooltip element so it is shown', () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);

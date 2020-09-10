@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCTabScrollerFoundation} from '../foundation';
 import {MDCTabScrollerRTLDefault} from '../rtl-default-scroller';
@@ -67,25 +66,6 @@ describe('MDCTabScrollerFoundation', () => {
 
   it('exports strings', () => {
     expect('strings' in MDCTabScrollerFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCTabScrollerFoundation, [
-      'eventTargetMatchesSelector',
-      'addClass',
-      'removeClass',
-      'addScrollAreaClass',
-      'setScrollAreaStyleProperty',
-      'setScrollContentStyleProperty',
-      'getScrollContentStyleValue',
-      'setScrollAreaScrollLeft',
-      'getScrollAreaScrollLeft',
-      'getScrollContentOffsetWidth',
-      'getScrollAreaOffsetWidth',
-      'computeScrollAreaClientRect',
-      'computeScrollContentClientRect',
-      'computeHorizontalScrollbarHeight',
-    ]);
   });
 
   it('#getScrollPosition() returns scroll value when transform is none', () => {

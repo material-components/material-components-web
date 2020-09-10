@@ -23,7 +23,6 @@
 
 
 import {getFixture} from '../../../../testing/dom';
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {cssClasses, strings} from '../../constants';
 import {MDCDismissibleDrawerFoundation} from '../foundation';
@@ -45,22 +44,6 @@ describe('MDCDismissibleDrawerFoundation', () => {
   it('exports cssClasses', () => {
     expect('cssClasses' in MDCDismissibleDrawerFoundation).toBe(true);
     expect(MDCDismissibleDrawerFoundation.cssClasses).toEqual(cssClasses);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
-      'hasClass',
-      'addClass',
-      'removeClass',
-      'elementHasClass',
-      'saveFocus',
-      'restoreFocus',
-      'focusActiveNavigationItem',
-      'notifyClose',
-      'notifyOpen',
-      'trapFocus',
-      'releaseFocus',
-    ]);
   });
 
   it('#destroy cancels pending rAF for #open', () => {

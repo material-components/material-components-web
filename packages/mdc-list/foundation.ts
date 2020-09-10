@@ -87,10 +87,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private readonly typeaheadState = typeahead.initState();
   private sortedIndexByFirstChar = new Map<string, MDCListTextAndIndex[]>();
 
-  constructor(adapter?: Partial<MDCListAdapter>) {
-    super({...MDCListFoundation.defaultAdapter, ...adapter});
-  }
-
   layout() {
     if (this.adapter.getListItemCount() === 0) {
       return;

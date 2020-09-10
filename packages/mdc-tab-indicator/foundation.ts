@@ -45,10 +45,6 @@ export abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndi
     // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter?: Partial<MDCTabIndicatorAdapter>) {
-    super({...MDCTabIndicatorFoundation.defaultAdapter, ...adapter});
-  }
-
   computeContentClientRect(): ClientRect {
     return this.adapter.computeContentClientRect();
   }

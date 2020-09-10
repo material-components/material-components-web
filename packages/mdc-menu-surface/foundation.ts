@@ -52,9 +52,6 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     return Corner;
   }
 
-  /**
-   * @see {@link MDCMenuSurfaceAdapter} for typing information on parameters and return types.
-   */
   static get defaultAdapter(): MDCMenuSurfaceAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
@@ -117,10 +114,6 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
   private dimensions!: MDCMenuDimensions;         // assigned in open()
   private measurements!: AutoLayoutMeasurements;  // assigned in open()
-
-  constructor(adapter?: Partial<MDCMenuSurfaceAdapter>) {
-    super({...MDCMenuSurfaceFoundation.defaultAdapter, ...adapter});
-  }
 
   init() {
     const {ROOT, OPEN} = MDCMenuSurfaceFoundation.cssClasses;

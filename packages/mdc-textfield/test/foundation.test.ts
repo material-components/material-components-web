@@ -22,7 +22,6 @@
  */
 
 
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {MDCTextFieldFoundation} from '../../mdc-textfield/foundation';
 
@@ -40,33 +39,6 @@ describe('MDCTextFieldFoundation', () => {
 
   it('exports numbers', () => {
     expect('numbers' in MDCTextFieldFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCTextFieldFoundation, [
-      'addClass',
-      'removeClass',
-      'hasClass',
-      'registerTextFieldInteractionHandler',
-      'deregisterTextFieldInteractionHandler',
-      'registerInputInteractionHandler',
-      'deregisterInputInteractionHandler',
-      'getNativeInput',
-      'isFocused',
-      'activateLineRipple',
-      'deactivateLineRipple',
-      'setLineRippleTransformOrigin',
-      'shakeLabel',
-      'floatLabel',
-      'setLabelRequired',
-      'hasLabel',
-      'getLabelWidth',
-      'registerValidationAttributeChangeHandler',
-      'deregisterValidationAttributeChangeHandler',
-      'hasOutline',
-      'notchOutline',
-      'closeOutline',
-    ]);
   });
 
   const setupTest = ({

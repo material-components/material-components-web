@@ -58,10 +58,6 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    */
   private selectedChipIds_: string[] = [];
 
-  constructor(adapter?: Partial<MDCChipSetAdapter>) {
-    super({...MDCChipSetFoundation.defaultAdapter, ...adapter});
-  }
-
   /**
    * Returns an array of the IDs of all selected chips.
    */

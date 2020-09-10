@@ -21,11 +21,10 @@
  * THE SOFTWARE.
  */
 
+import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {cssClasses as listCssClasses} from '../../mdc-list/constants';
 import {MDCListFoundation} from '../../mdc-list/foundation';
 import {numbers} from '../../mdc-menu-surface/constants';
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
-import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {cssClasses, DefaultFocusState, strings} from '../constants';
 import {numbers as menuNumbers} from '../constants';
 import {MDCMenuFoundation} from '../foundation';
@@ -39,24 +38,6 @@ const listClasses = MDCListFoundation.cssClasses;
 
 describe('MDCMenuFoundation', () => {
   setUpMdcTestEnvironment();
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCMenuFoundation, [
-      'addClassToElementAtIndex',
-      'removeClassFromElementAtIndex',
-      'addAttributeToElementAtIndex',
-      'removeAttributeFromElementAtIndex',
-      'elementContainsClass',
-      'closeSurface',
-      'getElementIndex',
-      'getSelectedSiblingOfItemAtIndex',
-      'isSelectableItemAtIndex',
-      'notifySelected',
-      'getMenuItemCount',
-      'focusItemAtIndex',
-      'focusListRoot',
-    ]);
-  });
 
   it('exports strings', () => {
     expect(MDCMenuFoundation.strings).toEqual(strings);

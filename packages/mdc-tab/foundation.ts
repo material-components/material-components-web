@@ -56,10 +56,6 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
 
   private focusOnActivate_ = true;
 
-  constructor(adapter?: Partial<MDCTabAdapter>) {
-    super({...MDCTabFoundation.defaultAdapter, ...adapter});
-  }
-
   handleClick() {
     // It's up to the parent component to keep track of the active Tab and
     // ensure we don't activate a Tab that's already active.

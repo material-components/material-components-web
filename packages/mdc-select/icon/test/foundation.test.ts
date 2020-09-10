@@ -22,7 +22,6 @@
  */
 
 
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {strings} from '../constants';
 import {MDCSelectIconFoundation} from '../foundation';
@@ -30,18 +29,6 @@ import {MDCSelectIconFoundation} from '../foundation';
 describe('MDCSelectIconFoundation', () => {
   it('exports strings', () => {
     expect(MDCSelectIconFoundation.strings).toEqual(strings);
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCSelectIconFoundation, [
-      'getAttr',
-      'setAttr',
-      'removeAttr',
-      'setContent',
-      'registerInteractionHandler',
-      'deregisterInteractionHandler',
-      'notifyIconAction',
-    ]);
   });
 
   const setupTest =

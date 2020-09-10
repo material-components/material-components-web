@@ -32,6 +32,7 @@ import {SortActionEventData} from './types';
  * logic requiring DOM manipulation are delegated to adapter methods.
  */
 export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
+
   static get defaultAdapter(): MDCDataTableAdapter {
     return {
       addClass: () => undefined,
@@ -67,10 +68,6 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       setRowCheckboxCheckedAtIndex: () => undefined,
       setSortStatusLabelByHeaderCellIndex: () => undefined,
     };
-  }
-
-  constructor(adapter?: Partial<MDCDataTableAdapter>) {
-    super({...MDCDataTableFoundation.defaultAdapter, ...adapter});
   }
 
   /**

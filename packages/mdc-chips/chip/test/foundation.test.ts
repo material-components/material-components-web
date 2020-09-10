@@ -22,7 +22,6 @@
  */
 
 
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {EventSource} from '../constants';
 import {MDCChipFoundation} from '../foundation';
@@ -38,36 +37,6 @@ describe('MDCChipFoundation', () => {
 
   it('exports cssClasses', () => {
     expect('cssClasses' in MDCChipFoundation).toBeTruthy();
-  });
-
-  it('defaultAdapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCChipFoundation, [
-      'addClass',
-      'addClassToLeadingIcon',
-      'eventTargetHasClass',
-      'focusPrimaryAction',
-      'focusTrailingAction',
-      'getAttribute',
-      'getCheckmarkBoundingClientRect',
-      'getComputedStyleValue',
-      'getRootBoundingClientRect',
-      'hasClass',
-      'hasLeadingIcon',
-      'isRTL',
-      'isTrailingActionNavigable',
-      'notifyEditFinish',
-      'notifyEditStart',
-      'notifyInteraction',
-      'notifyNavigation',
-      'notifyRemoval',
-      'notifySelection',
-      'notifyTrailingIconInteraction',
-      'removeClass',
-      'removeClassFromLeadingIcon',
-      'removeTrailingActionFocus',
-      'setPrimaryActionAttr',
-      'setStyleProperty',
-    ]);
   });
 
   const setupTest = () => {

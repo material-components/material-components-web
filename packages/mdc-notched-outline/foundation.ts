@@ -52,10 +52,6 @@ export class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutline
     // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter?: Partial<MDCNotchedOutlineAdapter>) {
-    super({...MDCNotchedOutlineFoundation.defaultAdapter, ...adapter});
-  }
-
   /**
    * Adds the outline notched selector and updates the notch width calculated based off of notchWidth.
    */

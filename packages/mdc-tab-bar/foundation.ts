@@ -79,10 +79,6 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
 
   private useAutomaticActivation_ = false;
 
-  constructor(adapter?: Partial<MDCTabBarAdapter>) {
-    super({...MDCTabBarFoundation.defaultAdapter, ...adapter});
-  }
-
   /**
    * Switches between automatic and manual activation modes.
    * See https://www.w3.org/TR/wai-aria-practices/#tabpanel for examples.
