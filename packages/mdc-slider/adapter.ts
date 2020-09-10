@@ -178,6 +178,18 @@ export interface MDCSliderAdapter {
   emitInputEvent(value: number, thumb: Thumb): void;
 
   /**
+   * Emits an event on drag start, containing the current value on the
+   * thumb being dragged.
+   */
+  emitDragStartEvent(value: number, thumb: Thumb): void;
+
+  /**
+   * Emits an event on drag end, containing the final value on the
+   * thumb that was dragged.
+   */
+  emitDragEndEvent(value: number, thumb: Thumb): void;
+
+  /**
    * Registers an event listener on the root element.
    */
   registerEventHandler<K extends EventType>(

@@ -125,6 +125,14 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       emitInputEvent: (value, thumb: Thumb) => {
         this.emit<MDCSliderChangeEventDetail>(events.INPUT, {value, thumb});
       },
+      emitDragStartEvent: () => {
+        // Not yet implemented. See issue:
+        // https://github.com/material-components/material-components-web/issues/6448
+      },
+      emitDragEndEvent: () => {
+        // Not yet implemented. See issue:
+        // https://github.com/material-components/material-components-web/issues/6448
+      },
       registerEventHandler: (evtType, handler) => {
         this.listen(evtType, handler);
       },
