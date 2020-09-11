@@ -28,7 +28,7 @@ $subtitle-ink-color: theme-color.prop-value(on-surface) !default;
 $item-inactive-ink-color: theme-color.prop-value(on-surface) !default;
 $item-activated-ink-color: theme-color.prop-value(primary) !default;
 $divider-color: theme-color.prop-value(on-surface) !default;
-$surface-fill-color: theme-color.prop-value(surface) !default;
+$surface-fill-color: surface !default;
 
 // Opacity
 $title-ink-opacity: theme-color.text-emphasis(high) !default;

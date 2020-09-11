@@ -293,7 +293,7 @@
   $value: rgba(theme-color.prop-value($color), variables.$divider-opacity);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme.prop(border-color, $value);
+    @include theme.property(border-color, $value);
   }
 }
 
@@ -335,7 +335,7 @@
 
   .mdc-drawer__title {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $value);
+      @include theme.property(color, $value);
     }
   }
 }
@@ -348,7 +348,7 @@
 
   .mdc-drawer__subtitle {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $value);
+      @include theme.property(color, $value);
     }
   }
 }
@@ -407,10 +407,9 @@
 
 @mixin surface-fill-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
-  $value: theme-color.prop-value($color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme.prop(background-color, $value);
+    @include theme.property(background-color, $color);
   }
 }
 
@@ -420,7 +419,7 @@
 
   + .mdc-drawer-scrim {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $value);
+      @include theme.property(background-color, $value);
     }
   }
 }
