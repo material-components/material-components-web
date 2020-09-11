@@ -222,18 +222,6 @@
       @include feature-targeting.targets($feat-structure) {
         left: -145.166611%;
       }
-
-      @include feature-targeting.targets($feat-animation) {
-        animation: mdc-linear-progress-primary-indeterminate-translate 2s
-          infinite linear;
-      }
-
-      > .mdc-linear-progress__bar-inner {
-        @include feature-targeting.targets($feat-animation) {
-          animation: mdc-linear-progress-primary-indeterminate-scale 2s infinite
-            linear;
-        }
-      }
     }
 
     .mdc-linear-progress__secondary-bar {
@@ -241,16 +229,34 @@
         left: -54.888891%;
         visibility: visible;
       }
+    }
 
-      @include feature-targeting.targets($feat-animation) {
-        animation: mdc-linear-progress-secondary-indeterminate-translate 2s
-          infinite linear;
+    &.mdc-linear-progress--animation-ready {
+      .mdc-linear-progress__primary-bar {
+        @include feature-targeting.targets($feat-animation) {
+          animation: mdc-linear-progress-primary-indeterminate-translate 2s
+            infinite linear;
+        }
+
+        > .mdc-linear-progress__bar-inner {
+          @include feature-targeting.targets($feat-animation) {
+            animation: mdc-linear-progress-primary-indeterminate-scale 2s
+              infinite linear;
+          }
+        }
       }
 
-      > .mdc-linear-progress__bar-inner {
+      .mdc-linear-progress__secondary-bar {
         @include feature-targeting.targets($feat-animation) {
-          animation: mdc-linear-progress-secondary-indeterminate-scale 2s
+          animation: mdc-linear-progress-secondary-indeterminate-translate 2s
             infinite linear;
+        }
+
+        > .mdc-linear-progress__bar-inner {
+          @include feature-targeting.targets($feat-animation) {
+            animation: mdc-linear-progress-secondary-indeterminate-scale 2s
+              infinite linear;
+          }
         }
       }
     }
@@ -269,15 +275,17 @@
       }
     }
 
-    .mdc-linear-progress__primary-bar {
-      @include feature-targeting.targets($feat-animation) {
-        animation-name: mdc-linear-progress-primary-indeterminate-translate-reverse;
+    &.mdc-linear-progress--animation-ready {
+      .mdc-linear-progress__primary-bar {
+        @include feature-targeting.targets($feat-animation) {
+          animation-name: mdc-linear-progress-primary-indeterminate-translate-reverse;
+        }
       }
-    }
 
-    .mdc-linear-progress__secondary-bar {
-      @include feature-targeting.targets($feat-animation) {
-        animation-name: mdc-linear-progress-secondary-indeterminate-translate-reverse;
+      .mdc-linear-progress__secondary-bar {
+        @include feature-targeting.targets($feat-animation) {
+          animation-name: mdc-linear-progress-secondary-indeterminate-translate-reverse;
+        }
       }
     }
 

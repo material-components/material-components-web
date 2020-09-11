@@ -57,8 +57,9 @@ export class MDCLinearProgress extends
   }
 
   getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCLinearProgressAdapter = {
       addClass: (className: string) => {
         this.root.classList.add(className);
@@ -90,6 +91,19 @@ export class MDCLinearProgress extends
       setAttribute: (attributeName: string, value: string) => {
         this.root.setAttribute(attributeName, value);
       },
+      setStyle: (name: string, value: string) => {
+        (this.root as HTMLElement).style.setProperty(name, value);
+      },
+      attachResizeObserver: (callback: ResizeObserverCallback) => {
+        if (window.ResizeObserver) {
+          const ro = new ResizeObserver(callback);
+          ro.observe(this.root);
+          return ro;
+        }
+
+        return null;
+      },
+      getWidth: () => (this.root as HTMLElement).offsetWidth,
     };
     return new MDCLinearProgressFoundation(adapter);
   }

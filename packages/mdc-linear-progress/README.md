@@ -118,6 +118,9 @@ The adapter for linear progress must provide the following functions, with corre
 | `setAttribute(attributeName: string, value: string) => void` | Sets the specified attribute on the root element. |
 | `setBufferBarStyle(styleProperty: string, value: string) => void` | Sets the inline style on the buffer bar. |
 | `setPrimaryBarStyle(styleProperty: string, value: string) => void` | Sets the inline style on the primary bar. |
+| `attachResizeObserver(callback: ResizeObserverCallback) => ResizeObserver|null` | Returns a `ResizeObserver` that has had `observe` called on the root with the given callback (for animation performance gains on modern browsers). `null` if `ResizeObserver` is not implemented or polyfilled. |
+| `setStyle(styleProperty: string, value: string) => void` | Sets the inline style on the root element. |
+| `getWidth() => number` | Returns the width of the root. |
 
 ### MDCLinearProgressFoundation API
 

@@ -22,13 +22,23 @@
  */
 
 
+import {animationDimensionPercentages as percentages} from '../../mdc-linear-progress/constants';
 import {MDCLinearProgress, MDCLinearProgressFoundation} from '../../mdc-linear-progress/index';
+
+interface WithObserverFoundation {
+  foundation: {observer: null|ResizeObserver};
+}
+
+const roundPixelsToTwoDecimals = (val: string) => {
+  const numberVal = Number(val.split('px')[0]);
+  return Math.floor(numberVal * 100) / 100;
+};
 
 function getFixture() {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
     <div role="progressbar" class="mdc-linear-progress" aria-label="Unit Test Progress Bar" aria-valuemin="0"
-      aria-valuemax="1" aria-valuenow="0">
+      aria-valuemax="1" aria-valuenow="0" style="width: 100px">
       <div class="mdc-linear-progress__buffer">
         <div class="mdc-linear-progress__buffer-bar"></div>
         <div class="mdc-linear-progress__buffer-dots"></div>
@@ -45,6 +55,8 @@ function getFixture() {
   wrapper.removeChild(el);
   return el;
 }
+
+const originalResizeObserver = window.ResizeObserver;
 
 function setupTest() {
   const root = getFixture();
@@ -115,5 +127,90 @@ describe('MDCLinearProgress', () => {
 
     component.open();
     expect(root.classList.contains('mdc-linear-progress--closed')).toBeFalsy();
+  });
+
+  describe('attach to dom', () => {
+    let root: HTMLElement|undefined;
+    let component: MDCLinearProgress|undefined;
+
+    beforeEach(() => {
+      root = undefined;
+      component = undefined;
+    });
+
+    afterEach(() => {
+      if (root) {
+        document.body.removeChild(root);
+      }
+      window.ResizeObserver = originalResizeObserver;
+    });
+
+    it('will not error if there is no resize observer', () => {
+      (window.ResizeObserver as unknown as null) = null;
+      component = setupTest().component;
+
+      const foundation =
+          (component as unknown as WithObserverFoundation).foundation;
+      const observer = foundation.observer;
+
+      expect(observer).toBeNull();
+    });
+
+    it('will update size on resize', async () => {
+      if (!window.ResizeObserver) {
+        // skip tests on IE which wouldn't run these anyway
+        return;
+      }
+
+      let mockObserverInstance: MockObserver|null = null;
+      // we need to mock resize observer to prevent external test infrastructure
+      // flakyness as resize observer is not very consistent in timings and
+      // calls across browsers and dom structures
+      class MockObserver {
+        observedElement: HTMLElement|null = null;
+
+        constructor(public callback: ResizeObserverCallback) {
+          this.callback = callback;
+        }
+
+        observe(element: HTMLElement) {
+          this.observedElement = element;
+          this.triggerResize(element.offsetWidth);
+          mockObserverInstance = this;
+        }
+
+        disconnect() {}
+
+        triggerResize(width: number) {
+          const fakeEntry = {contentRect: {width}};
+          this.callback(
+              [fakeEntry as unknown as ResizeObserverEntry],
+              this as unknown as ResizeObserver);
+        }
+      }
+
+      window.ResizeObserver = MockObserver as unknown as typeof ResizeObserver;
+      ({root, component} = setupTest());
+      document.body.appendChild(root);
+      component.determinate = false;
+
+      expect(root.style.width).toBe('100px');
+
+      let actualRounded = roundPixelsToTwoDecimals(
+          root.style.getPropertyValue('--mdc-linear-progress-primary-half'));
+      let expected =
+          roundPixelsToTwoDecimals(`${percentages.PRIMARY_HALF * 100}px`);
+      expect(actualRounded).toEqual(expected);
+      expect(mockObserverInstance).toBeTruthy();
+
+      root.style.setProperty('width', '200px');
+
+      mockObserverInstance!.triggerResize(200);
+      actualRounded = roundPixelsToTwoDecimals(
+          root.style.getPropertyValue('--mdc-linear-progress-primary-half'));
+      expected =
+          roundPixelsToTwoDecimals(`${percentages.PRIMARY_HALF * 200}px`);
+      expect(actualRounded).toEqual(expected);
+    });
   });
 });
