@@ -60,7 +60,9 @@ The following example applies ARIA attributes that provide the semantic structur
        aria-labelledby="demo-label demo-selected-text">
     <span class="mdc-select__ripple"></span>
     <span id="demo-label" class="mdc-floating-label">Pick a Food Group</span>
-    <span id="demo-selected-text" class="mdc-select__selected-text"></span>
+    <span class="mdc-select__selected-text-container">
+      <span id="demo-selected-text" class="mdc-select__selected-text"></span>
+    </span>
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
@@ -163,7 +165,9 @@ same.
       </span>
       <span class="mdc-notched-outline__trailing"></span>
     </span>
-    <span id="demo-selected-text" class="mdc-select__selected-text"></span>
+    <span class="mdc-select__selected-text-container">
+      <span id="demo-selected-text" class="mdc-select__selected-text"></span>
+    </span>
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
@@ -218,7 +222,9 @@ to set the selected item. The select also needs the text from the selected eleme
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
     <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-    <span class="mdc-select__selected-text">Vegetables</span>
+    <span class="mdc-select__selected-text-container">
+      <span class="mdc-select__selected-text">Vegetables</span>
+    </span>
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
@@ -282,7 +288,9 @@ and set the `aria-required` attribute on the `mdc-select__anchor` element to be 
   <div class="mdc-select__anchor" aria-required="true">
     <span class="mdc-select__ripple"></span>
     <span class="mdc-floating-label">Pick a Food Group</span>
-    <span class="mdc-select__selected-text"></span>
+    <span class="mdc-select__selected-text-container">
+      <span class="mdc-select__selected-text"></span>
+    </span>
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
@@ -323,7 +331,9 @@ be `"true"`, and set the disabled attribute any hidden input element.
   <div class="mdc-select__anchor" aria-disabled="true">
     <span class="mdc-select__ripple"></span>
     <span class="mdc-floating-label">Pick a Food Group</span>
-    <span class="mdc-select__selected-text"></span>
+    <span class="mdc-select__selected-text-container">
+      <span class="mdc-select__selected-text"></span>
+    </span>
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
@@ -410,7 +420,9 @@ structure.
 <div class="mdc-select mdc-select--filled mdc-select--no-label demo-width-class">
   <div class="mdc-select__anchor">
     <span class="mdc-select__ripple"></span>
-    <span class="mdc-select__selected-text"></span>
+    <span class="mdc-select__selected-text-container">
+      <span class="mdc-select__selected-text"></span>
+    </span>
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
@@ -463,7 +475,9 @@ structure.
       <span class="mdc-notched-outline__leading"></span>
       <span class="mdc-notched-outline__trailing"></span>
     </span>
-    <span class="mdc-select__selected-text"></span>
+    <span class="mdc-select__selected-text-container">
+      <span class="mdc-select__selected-text"></span>
+    </span>
     <span class="mdc-select__dropdown-icon">
       <svg
           class="mdc-select__dropdown-icon-graphic"
@@ -499,7 +513,8 @@ structure.
 | `mdc-select__anchor` | Mandatory. This element should be placed within the `mdc-select` element. |
 | `mdc-select__menu` | Mandatory. This class should be placed on the `mdc-menu` element within the `mdc-select` element. |
 | `mdc-select__dropdown-icon` | Mandatory. Should be placed on an `i` element within the `mdc-select__anchor` element. Used for the dropdown arrow svg and animation.
-| `mdc-select__selected-text` | Mandatory. This class should be placed on a `div` within the `mdc-select__anchor` element. |
+| `mdc-select__selected-text-container` | Mandatory. This class wraps the `mdc-select__selected-text` and facilitates `text-overflow: ellipsis` on it. |
+| `mdc-select__selected-text` | Mandatory. This class should be placed on a `span` within the `mdc-select__anchor` element. |
 | `mdc-select__icon` | Optional. Should be placed on an `i` or `svg` element within the `mdc-select__anchor` element. Used for the leading icon.
 | `mdc-select--activated` | Optional. Styles the activated state of select. This class will be added automatically when menu is opened.
 | `mdc-select--disabled` | Optional. Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
