@@ -359,35 +359,41 @@
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-select__selected-text {
-    @include typography-mixins.typography(subtitle1, $query: $query);
-
+  .mdc-select__selected-text-container {
     @include feature-targeting.targets($feat-structure) {
-      &::-ms-expand {
-        display: none;
-      }
-
-      &::-ms-value {
-        background-color: transparent;
-        color: inherit;
-      }
-
+      display: flex;
+      appearance: none;
+      pointer-events: none;
       box-sizing: border-box;
       width: auto;
+      min-width: 0;
       flex-grow: 1;
       height: select-theme.$selected-text-height;
       border: none;
       outline: none;
       padding: 0;
-      white-space: nowrap;
-      appearance: none;
-      pointer-events: none;
-      overflow: hidden;
     }
 
     @include feature-targeting.targets($feat-color) {
       background-color: transparent;
       color: inherit; // Override default user agent stylesheet
+    }
+  }
+
+  .mdc-select__selected-text {
+    @include typography-mixins.typography(subtitle1, $query: $query);
+
+    @include feature-targeting.targets($feat-structure) {
+      display: block;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      /* @noflip */
+      text-align: left;
+      @include rtl-mixins.rtl {
+        /* @noflip */
+        text-align: right;
+      }
     }
   }
 }

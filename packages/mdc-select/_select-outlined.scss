@@ -90,7 +90,7 @@
       }
     }
 
-    .mdc-select__selected-text {
+    .mdc-select__selected-text-container {
       @include feature-targeting.targets($feat-structure) {
         display: flex;
         border: none;

@@ -878,7 +878,7 @@ $error-color: error !default;
     //
     // IE11 does not respect this, and makes the leading icon (if present)
     // the baseline.
-    .mdc-select__selected-text {
+    .mdc-select__selected-text-container {
       height: 100%;
       display: inline-flex;
       align-items: center;
