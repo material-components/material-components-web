@@ -471,6 +471,366 @@
       margin: $mdc-list-subheader-margin variables.$side-padding;
     }
   }
+
+  // TODO(b/168039222): apply feature targetting to final styles.
+  .mdc-evolution-list {
+    @include base_($query);
+  }
+
+  .mdc-evolution-list-item {
+    @include feature-targeting.targets($feat-structure) {
+      @include item-base_;
+
+      align-items: stretch;
+      padding-left: 16px;
+      height: 48px;
+    }
+  }
+
+  // Each variant increases specificity by one so that overriding the default
+  // styles with a single custom class does not accidentally override variant
+  // styles (since these will have >1 specificity).
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-leading-avatar,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-leading-checkbox,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-leading-icon,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-leading-radio,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-leading-switch,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-leading-thumbnail {
+    @include feature-targeting.targets($feat-structure) {
+      padding-left: 0px;
+      height: 56px;
+    }
+  }
+
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-leading-image,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-leading-video {
+    @include feature-targeting.targets($feat-structure) {
+      padding-left: 0px;
+      height: 72px;
+    }
+  }
+
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-two-lines {
+    @include feature-targeting.targets($feat-structure) {
+      height: 64px;
+    }
+  }
+
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-avatar,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-checkbox,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-icon,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-image,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-radio,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-switch,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-thumbnail,
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-video {
+    @include feature-targeting.targets($feat-structure) {
+      height: 72px;
+    }
+  }
+
+  .mdc-evolution-list-item.mdc-evolution-list-item--with-three-lines {
+    @include feature-targeting.targets($feat-structure) {
+      height: 88px;
+    }
+  }
+
+  .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      margin-left: 16px;
+      margin-right: 16px;
+      align-self: center;
+    }
+  }
+
+  .mdc-evolution-list-item--with-leading-avatar
+    .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      border-radius: 50%;
+    }
+  }
+
+  .mdc-evolution-list-item--with-leading-avatar .mdc-evolution-list-item__start,
+  .mdc-evolution-list-item--with-leading-thumbnail
+    .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-leading-radio .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-leading-checkbox
+    .mdc-evolution-list-item__start {
+    // The checkbox component is 40dp square, but the spec allocates only 24dp
+    // for the control. We adjust the margins to achieve the intended visual
+    // alignment.
+    @include feature-targeting.targets($feat-structure) {
+      margin-right: absorb-overflow(32px, $size: 40px, $available: 24px);
+      margin-left: absorb-overflow(16px, $size: 40px, $available: 24px);
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-leading-icon .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      margin-right: 32px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-leading-image .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-leading-switch
+    .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      width: 36px;
+      height: 20px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-leading-video .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      width: 100px;
+      height: 56px;
+      margin-left: 0px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-two-lines .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      align-self: start;
+      margin-top: 16px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-video
+    .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      margin-top: 8px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-three-lines .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      align-self: start;
+      margin-top: 16px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-three-lines.mdc-evolution-list-item--with-leading-video
+    .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      margin-right: 20px;
+    }
+  }
+
+  .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      margin-left: 16px;
+      margin-right: 16px;
+      align-self: center;
+    }
+  }
+
+  .mdc-evolution-list-item--with-trailing-meta .mdc-evolution-list-item__end {
+    @include typography.typography(caption, $query);
+
+    @include feature-targeting.targets($feat-structure) {
+      margin-left: 28px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-trailing-checkbox
+    .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      // Checkboxes are 40dp, but the spec allocates only 24dp.
+      width: 40px;
+      height: 40px;
+      margin-left: absorb-overflow(16px, $size: 40px, $available: 24px);
+      margin-right: absorb-overflow(16px, $size: 40px, $available: 24px);
+    }
+  }
+
+  .mdc-evolution-list-item--with-trailing-icon .mdc-evolution-list-item__end,
+  .mdc-evolution-list-item--with-trailing-radio .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-trailing-switch .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      width: 36px;
+      height: 20px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-three-lines .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      align-self: start;
+      margin-top: 16px;
+    }
+  }
+
+  .mdc-evolution-list-item--with-three-lines.mdc-evolution-list-item--with-trailing-checkbox
+    .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      margin-top: absorb-overflow(16px, $size: 40px, $available: 24px);
+      margin-left: absorb-overflow(16px, $size: 40px, $available: 24px);
+      margin-right: absorb-overflow(16px, $size: 40px, $available: 24px);
+    }
+  }
+
+  .mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-trailing-meta
+    .mdc-evolution-list-item__end,
+  .mdc-evolution-list-item--with-three-lines.mdc-evolution-list-item--with-trailing-meta
+    .mdc-evolution-list-item__end {
+    @include typography.text-baseline(
+      $top: 28px,
+      $display: block,
+      $query: $query
+    );
+
+    @include feature-targeting.targets($feat-structure) {
+      align-self: start;
+    }
+  }
+
+  .mdc-evolution-list-item__content {
+    @include typography.overflow-ellipsis($query);
+
+    @include feature-targeting.targets($feat-structure) {
+      align-self: center;
+      min-width: 50%;
+      flex: 1;
+    }
+  }
+
+  .mdc-evolution-list-item--with-two-lines .mdc-evolution-list-item__content,
+  .mdc-evolution-list-item--with-three-lines .mdc-evolution-list-item__content {
+    @include feature-targeting.targets($feat-structure) {
+      align-self: stretch;
+    }
+  }
+
+  .mdc-evolution-list-item__primary-text {
+    @include typography.typography(subtitle1, $query);
+    @include typography.overflow-ellipsis($query);
+  }
+
+  .mdc-evolution-list-item--with-two-lines
+    .mdc-evolution-list-item__primary-text {
+    @include typography.text-baseline(
+      $top: 28px,
+      $bottom: 20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-avatar
+    .mdc-evolution-list-item__primary-text,
+  .mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-checkbox
+    .mdc-evolution-list-item__primary-text,
+  .mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-icon
+    .mdc-evolution-list-item__primary-text,
+  .mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-image
+    .mdc-evolution-list-item__primary-text,
+  .mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-radio
+    .mdc-evolution-list-item__primary-text,
+  .mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-switch
+    .mdc-evolution-list-item__primary-text,
+  .mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-thumbnail
+    .mdc-evolution-list-item__primary-text,
+  .mdc-evolution-list-item--with-two-lines.mdc-evolution-list-item--with-leading-video
+    .mdc-evolution-list-item__primary-text {
+    @include typography.text-baseline(
+      $top: 32px,
+      $bottom: 20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item--with-three-lines
+    .mdc-evolution-list-item__primary-text {
+    @include typography.text-baseline(
+      $top: 28px,
+      $bottom: 20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item__secondary-text {
+    @include typography.typography(body2, $query);
+    // TODO (b/168048902): disable this for three-line (multi-line) lists.
+    @include typography.overflow-ellipsis($query);
+  }
+
+  .mdc-evolution-list-item--with-two-lines
+    .mdc-evolution-list-item__secondary-text,
+  .mdc-evolution-list-item--with-three-lines
+    .mdc-evolution-list-item__secondary-text {
+    @include typography.text-baseline(
+      $top: 20px,
+      $display: block,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item__overline-text {
+    @include typography.overflow-ellipsis($query);
+    // TODO (b/168043604): add styles for overline.
+  }
+
+  .mdc-evolution-list-item--with-two-lines
+    .mdc-evolution-list-item__overline-text,
+  .mdc-evolution-list-item--with-three-lines
+    .mdc-evolution-list-item__overline-text {
+    @include typography.text-baseline(
+      $top: 24px,
+      $bottom: 20px,
+      $display: block,
+      $query: $query
+    );
+  }
+}
+
+///
+/// Adjusts an offset (i.e., margin) to accomodate contents that are larger than
+/// the space allocated by the specification.
+///
+/// For instance, the specification provides 24x24dp for a checkbox with a 16dp
+/// margin. However, checkboxes are actually 40x40dp. To ensure that the
+/// checkbox is positioned correctly, the margin is reduced by 8dp to reflect
+/// that the margin is already "baked into" the checkbox.
+///
+/// Concretely, 40dp - 24dp = 16dp. Assuming that the control is symmetrical,
+/// half of the overflow (8dp) is on the leading side and half on the trailing
+/// side. Therefore, the leading and trailing margins are reduced by 8dp.
+///
+/// Note: this might be more useful if it's added into the leading/trailing
+/// margin mixins as a parameter.
+///
+@function absorb-overflow($offset, $size, $available, $symmetric: true) {
+  @if $size <= $available {
+    @return $offset;
+  }
+  $overflow: $size - $available;
+  @return $offset - $overflow / if($symmetric, 2, 1);
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
@@ -479,6 +839,7 @@
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // List items should support states by default, but it should be possible to opt out.
+  :not(.mdc-list-item--disabled).mdc-evolution-list-item,
   :not(.mdc-list-item--disabled).mdc-list-item {
     @include item-interactive-ripple_($query);
   }
