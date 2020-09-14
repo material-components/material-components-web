@@ -382,12 +382,11 @@
 
   .mdc-select__selected-text {
     @include typography-mixins.typography(subtitle1, $query: $query);
+    @include typography-mixins.overflow-ellipsis($query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       display: block;
       width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
       /* @noflip */
       text-align: left;
       @include rtl-mixins.rtl {
