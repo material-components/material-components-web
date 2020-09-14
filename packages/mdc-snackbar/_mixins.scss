@@ -81,6 +81,13 @@
     }
   }
 
+  .mdc-snackbar--open .mdc-snackbar__label,
+  .mdc-snackbar--open .mdc-snackbar__actions {
+    @include feature-targeting.targets($feat-structure) {
+      visibility: visible;
+    }
+  }
+
   .mdc-snackbar--leading {
     @include position-leading($query: $query);
   }
@@ -141,6 +148,7 @@
       flex-grow: 1;
       box-sizing: border-box;
       margin: 0;
+      visibility: hidden;
 
       // 14px top/bottom padding needed to make the height 48px.
       padding-top: 14px;
@@ -163,6 +171,7 @@
       flex-shrink: 0;
       align-items: center;
       box-sizing: border-box;
+      visibility: hidden;
     }
   }
 
