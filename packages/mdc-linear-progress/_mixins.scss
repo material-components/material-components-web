@@ -137,9 +137,22 @@
       @include feature-targeting.targets($feat-structure) {
         opacity: 0;
       }
+    }
 
-      @include feature-targeting.targets($feat-animation) {
-        animation: none;
+    &--closed-animation-off {
+      .mdc-linear-progress__buffer-dots {
+        @include feature-targeting.targets($feat-animation) {
+          animation: none;
+        }
+      }
+
+      &.mdc-linear-progress--indeterminate {
+        .mdc-linear-progress__bar,
+        .mdc-linear-progress__bar .mdc-linear-progress__bar-inner {
+          @include feature-targeting.targets($feat-animation) {
+            animation: none;
+          }
+        }
       }
     }
   }

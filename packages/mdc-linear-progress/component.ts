@@ -56,6 +56,12 @@ export class MDCLinearProgress extends
     this.foundation.close();
   }
 
+  initialSyncWithDOM() {
+    this.root.addEventListener('transitionend', () => {
+      this.foundation.handleTransitionEnd();
+    });
+  }
+
   getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any

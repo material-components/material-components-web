@@ -24,6 +24,9 @@
 
 import {animationDimensionPercentages as percentages} from '../../mdc-linear-progress/constants';
 import {MDCLinearProgress, MDCLinearProgressFoundation} from '../../mdc-linear-progress/index';
+import {emitEvent} from '../../../testing/dom/events';
+import {createMockFoundation} from '../../../testing/helpers/foundation';
+import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 
 interface WithObserverFoundation {
   foundation: {observer: null|ResizeObserver};
@@ -58,17 +61,27 @@ function getFixture() {
 
 const originalResizeObserver = window.ResizeObserver;
 
-function setupTest() {
+function setupTest(hasMockFoundation = false) {
   const root = getFixture();
-  const component = new MDCLinearProgress(root);
-  return {root, component};
+  const mockFoundation = createMockFoundation(MDCLinearProgressFoundation);
+  const component = new MDCLinearProgress(
+      root, hasMockFoundation ? mockFoundation : undefined);
+  return {root, component, mockFoundation};
 }
 
 describe('MDCLinearProgress', () => {
+  setUpMdcTestEnvironment();
+
   it('attachTo initializes and returns a MDCLinearProgress instance', () => {
     expect(
         MDCLinearProgress.attachTo(getFixture()) instanceof MDCLinearProgress)
         .toBeTruthy();
+  });
+
+  it('transitionend event calls foundation transitionend handler', () => {
+    const {root, mockFoundation} = setupTest(true);
+    emitEvent(root, 'transitionend');
+    expect(mockFoundation.handleTransitionEnd).toHaveBeenCalledTimes(1);
   });
 
   it('set indeterminate', () => {
@@ -123,10 +136,15 @@ describe('MDCLinearProgress', () => {
     const {root, component} = setupTest();
 
     component.close();
-    expect(root.classList.contains('mdc-linear-progress--closed')).toBeTruthy();
+    expect(root.classList.contains('mdc-linear-progress--closed')).toBeTrue();
+    emitEvent(root, 'transitionend');
+    expect(root.classList.contains('mdc-linear-progress--closed-animation-off'))
+        .toBeTrue();
 
     component.open();
-    expect(root.classList.contains('mdc-linear-progress--closed')).toBeFalsy();
+    expect(root.classList.contains('mdc-linear-progress--closed')).toBeFalse();
+    expect(root.classList.contains('mdc-linear-progress--closed-animation-off'))
+        .toBeFalse();
   });
 
   describe('attach to dom', () => {

@@ -168,10 +168,22 @@ export class MDCLinearProgressFoundation extends
 
   open() {
     this.adapter.removeClass(cssClasses.CLOSED_CLASS);
+    this.adapter.removeClass(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
   }
 
   close() {
     this.adapter.addClass(cssClasses.CLOSED_CLASS);
+  }
+
+  /**
+   * Handles the transitionend event emitted after `close()` is called and the
+   * opacity fades out. This is so that animations are removed only after the
+   * progress indicator is completely hidden.
+   */
+  handleTransitionEnd() {
+    if (this.adapter.hasClass(cssClasses.CLOSED_CLASS)) {
+      this.adapter.addClass(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
+    }
   }
 
   destroy() {

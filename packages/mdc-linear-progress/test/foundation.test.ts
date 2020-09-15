@@ -348,6 +348,8 @@ describe('MDCLinearProgressFoundation', () => {
     foundation.open();
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);
+    expect(mockAdapter.removeClass)
+        .toHaveBeenCalledWith(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
   });
 
   it('#close adds class', () => {
@@ -357,6 +359,11 @@ describe('MDCLinearProgressFoundation', () => {
     foundation.init();
     foundation.close();
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);
+    mockAdapter.hasClass.withArgs(cssClasses.CLOSED_CLASS)
+        .and.returnValue(true);
+    foundation.handleTransitionEnd();
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
   });
 
   it('#destroy disconnects the resize observer', () => {
