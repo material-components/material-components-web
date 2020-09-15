@@ -172,11 +172,17 @@ $_track-inactive-height: 4px;
   }
 
   @include slider-theme.track-active-color(
-    $color: slider-theme.$color,
+    $color-or-map: (
+      default: slider-theme.$color,
+      disabled: slider-theme.$disabled-color,
+    ),
     $query: $query
   );
   @include slider-theme.track-inactive-color(
-    $color: slider-theme.$color,
+    $color-or-map: (
+      default: slider-theme.$color,
+      disabled: slider-theme.$disabled-color,
+    ),
     $query: $query
   );
 }
@@ -235,7 +241,10 @@ $_track-inactive-height: 4px;
   }
 
   @include slider-theme.thumb-color(
-    $color: slider-theme.$color,
+    $color-or-map: (
+      default: slider-theme.$color,
+      disabled: slider-theme.$disabled-color,
+    ),
     $query: $query
   );
   @include slider-theme.thumb-ripple-color(
@@ -271,11 +280,17 @@ $_track-inactive-height: 4px;
   }
 
   @include slider-theme.tick-mark-active-color(
-    $color: slider-theme.$tick-mark-active-color,
+    $color-or-map: (
+      default: slider-theme.$tick-mark-active-color,
+      disabled: on-primary,
+    ),
     $query: $query
   );
   @include slider-theme.tick-mark-inactive-color(
-    $color: slider-theme.$tick-mark-inactive-color,
+    $color-or-map: (
+      default: slider-theme.$tick-mark-inactive-color,
+      disabled: slider-theme.$disabled-color,
+    ),
     $query: $query
   );
 }
@@ -365,21 +380,6 @@ $_track-inactive-height: 4px;
 @mixin _disabled($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include slider-theme.track-active-color($color: on-surface, $query: $query);
-  @include slider-theme.track-inactive-color(
-    $color: on-surface,
-    $query: $query
-  );
-  @include slider-theme.thumb-color($color: on-surface, $query: $query);
-  @include slider-theme.tick-mark-active-color(
-    $color: on-primary,
-    $query: $query
-  );
-  @include slider-theme.tick-mark-inactive-color(
-    $color: on-surface,
-    $query: $query
-  );
 
   @include feature-targeting.targets($feat-color) {
     opacity: 0.38;

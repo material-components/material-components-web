@@ -25,10 +25,12 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
+@use '@material/theme/state';
 @use '@material/theme/theme';
 
 /// Default color for slider (track, thumb, ripple).
 $color: primary;
+$disabled-color: on-surface;
 
 // Thumb variables.
 $value-indicator-color: #000;
@@ -41,12 +43,31 @@ $tick-mark-active-color: on-primary;
 $tick-mark-inactive-color: primary;
 $tick-mark-opacity: 0.6;
 
+/// Customizes active track color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `disabled`.
 ///
-/// Customizes active track color.
-/// @param {Color | String} $color Either a valid color value or a key from
-///     `$theme-variables.property-values`.
+/// @example
+///   @include track-active-color(blue);
+///   @include track-active-color((disabled: gray));
 ///
-@mixin track-active-color($color, $query: feature-targeting.all()) {
+/// @param {Color | Map} $color-or-map - The label's color or a state Map
+@mixin track-active-color($color-or-map, $query: feature-targeting.all()) {
+  @include _set-track-active-color(
+    state.get-default-state($color-or-map),
+    $query
+  );
+
+  $_disabled-color: state.get-disabled-state($color-or-map);
+  @if $_disabled-color {
+    &.mdc-slider--disabled {
+      @include _set-track-active-color($_disabled-color, $query);
+    }
+  }
+}
+
+@mixin _set-track-active-color($color, $query) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__track--active_fill {
@@ -56,17 +77,36 @@ $tick-mark-opacity: 0.6;
   }
 }
 
+/// Customizes inactive track color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `disabled`.
 ///
-/// Customizes inactive track color and opacity.
-/// @param {Color | String} $color Either a valid color value or a key from
-///     `$theme-variables.property-values`.
-/// @param {Number} $opacity [$track-inactive-opacity]
+/// @example
+///   @include track-inactive-color(blue);
+///   @include track-inactive-color((disabled: gray));
 ///
+/// @param {Color | Map} $color-or-map - The label's color or a state Map
 @mixin track-inactive-color(
-  $color,
+  $color-or-map,
   $opacity: $track-inactive-opacity,
   $query: feature-targeting.all()
 ) {
+  @include _set-track-inactive-color(
+    state.get-default-state($color-or-map),
+    $opacity,
+    $query
+  );
+
+  $_disabled-color: state.get-disabled-state($color-or-map);
+  @if $_disabled-color {
+    &.mdc-slider--disabled {
+      @include _set-track-inactive-color($_disabled-color, $opacity, $query);
+    }
+  }
+}
+
+@mixin _set-track-inactive-color($color, $opacity, $query) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__track--inactive {
@@ -78,12 +118,28 @@ $tick-mark-opacity: 0.6;
   }
 }
 
+/// Customizes thumb color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `disabled`.
 ///
-/// Customizes thumb color.
-/// @param {Color | String} $color Either a valid color value or a key from
-///     `$theme-variables.property-values`.
+/// @example
+///   @include thumb-color(blue);
+///   @include thumb-color((disabled: gray));
 ///
-@mixin thumb-color($color, $query: feature-targeting.all()) {
+/// @param {Color | Map} $color-or-map - The label's color or a state Map
+@mixin thumb-color($color-or-map, $query: feature-targeting.all()) {
+  @include _set-thumb-color(state.get-default-state($color-or-map), $query);
+
+  $_disabled-color: state.get-disabled-state($color-or-map);
+  @if $_disabled-color {
+    &.mdc-slider--disabled {
+      @include _set-thumb-color($_disabled-color, $query);
+    }
+  }
+}
+
+@mixin _set-thumb-color($color, $query) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__thumb-knob {
@@ -105,18 +161,38 @@ $tick-mark-opacity: 0.6;
   }
 }
 
+/// Customizes color of active tick marks, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `disabled`.
 ///
-/// Customizes color and opacity of active tick marks.
-/// @param {Color | String} $color Either a valid color value or a key from
-///     `$theme-variables.property-values`.
-/// @param {number} $opacity
+/// @example
+///   @include tick-mark-active-color(blue);
+///   @include tick-mark-active-color((disabled: gray));
 ///
+/// @param {Color | Map} $color-or-map - The label's color or a state Map
 @mixin tick-mark-active-color(
-  $color,
+  $color-or-map,
   $opacity: $tick-mark-opacity,
   $query: feature-targeting.all()
 ) {
+  @include _set-tick-mark-active-color(
+    state.get-default-state($color-or-map),
+    $opacity,
+    $query
+  );
+
+  $_disabled-color: state.get-disabled-state($color-or-map);
+  @if $_disabled-color {
+    &.mdc-slider--disabled {
+      @include _set-tick-mark-active-color($_disabled-color, $opacity, $query);
+    }
+  }
+}
+
+@mixin _set-tick-mark-active-color($color, $opacity, $query) {
   $feat-color: feature-targeting.create-target($query, color);
+
   .mdc-slider__tick-mark--active {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
@@ -126,18 +202,42 @@ $tick-mark-opacity: 0.6;
   }
 }
 
+/// Customizes color of inactive tick marks, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `disabled`.
 ///
-/// Customizes color and opacity of inactive tick marks.
-/// @param {Color | String} $color Either a valid color value or a key from
-///     `$theme-variables.property-values`.
-/// @param {number} $opacity
+/// @example
+///   @include tick-mark-inactive-color(blue);
+///   @include tick-mark-inactive-color((disabled: gray));
 ///
+/// @param {Color | Map} $color-or-map - The label's color or a state Map
 @mixin tick-mark-inactive-color(
-  $color,
+  $color-or-map,
   $opacity: $tick-mark-opacity,
   $query: feature-targeting.all()
 ) {
+  @include _set-tick-mark-inactive-color(
+    state.get-default-state($color-or-map),
+    $opacity,
+    $query
+  );
+
+  $_disabled-color: state.get-disabled-state($color-or-map);
+  @if $_disabled-color {
+    &.mdc-slider--disabled {
+      @include _set-tick-mark-inactive-color(
+        $_disabled-color,
+        $opacity,
+        $query
+      );
+    }
+  }
+}
+
+@mixin _set-tick-mark-inactive-color($color, $opacity, $query) {
   $feat-color: feature-targeting.create-target($query, color);
+
   .mdc-slider__tick-mark--inactive {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
