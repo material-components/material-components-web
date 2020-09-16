@@ -76,7 +76,7 @@ a specific value.
       <div class="mdc-slider__track--active_fill"></div>
     </div>
   </div>
-  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0"
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-label="Continuous slider demo" aria-valuemin="0"
        aria-valuemax="100" aria-valuenow="50">
     <div class="mdc-slider__thumb-knob"></div>
   </div>
@@ -95,10 +95,10 @@ a specific value.
       <div class="mdc-slider__track--active_fill"></div>
     </div>
   </div>
-  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30">
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-label="Continuous range slider demo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30">
     <div class="mdc-slider__thumb-knob"></div>
   </div>
-  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70">
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-label="Continuous range slider demo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70">
     <div class="mdc-slider__thumb-knob"></div>
   </div>
 </div>
@@ -127,7 +127,7 @@ To create a discrete slider, add the following:
       <div class="mdc-slider__track--active_fill"></div>
     </div>
   </div>
-  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-label="Discrete slider demo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
     <div class="mdc-slider__value-indicator-container">
       <div class="mdc-slider__value-indicator">
         <span class="mdc-slider__value-indicator-text">
@@ -176,7 +176,7 @@ To add tick marks to a discrete slider, add the following:
       <div class="mdc-slider__tick-mark--inactive"></div>
     </div>
   </div>
-  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-label="Discrete slider with tick marks demo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
     <div class="mdc-slider__value-indicator-container">
       <div class="mdc-slider__value-indicator">
         <span class="mdc-slider__value-indicator-text">
@@ -199,7 +199,7 @@ To add tick marks to a discrete slider, add the following:
       <div class="mdc-slider__track--active_fill"></div>
     </div>
   </div>
-  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20">
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-label="Discrete range slider demo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20">
     <div class="mdc-slider__value-indicator-container">
       <div class="mdc-slider__value-indicator">
         <span class="mdc-slider__value-indicator-text">
@@ -209,7 +209,7 @@ To add tick marks to a discrete slider, add the following:
     </div>
     <div class="mdc-slider__thumb-knob"></div>
   </div>
-  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-label="Discrete range slider demo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
     <div class="mdc-slider__value-indicator-container">
       <div class="mdc-slider__value-indicator">
         <span class="mdc-slider__value-indicator-text">
@@ -240,7 +240,7 @@ To disable a slider, add the following:
       <div class="mdc-slider__track--active_fill"></div>
     </div>
   </div>
-  <div class="mdc-slider__thumb" role="slider" tabindex="-1" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-disabled="true">
+  <div class="mdc-slider__thumb" role="slider" tabindex="-1" aria-label="Disabled slider demo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-disabled="true">
     <div class="mdc-slider__thumb-knob"></div>
   </div>
 </div>
@@ -260,7 +260,7 @@ as shown below:
 ```html
 <div class="mdc-slider">
   <!-- ... -->
-  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75">
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-label="Slider demo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75">
     <div class="mdc-slider__thumb-knob"></div>
   </div>
 </div>
@@ -305,10 +305,10 @@ This is an example of a range slider with internal values of
            style="transform:scaleX(.4); left:30%"></div>
     </div>
   </div>
-  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" style="left:calc(30%-24px)">
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-label="Range slider demo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" style="left:calc(30%-24px)">
     <div class="mdc-slider__thumb-knob"></div>
   </div>
-  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70" style="left:calc(70%-24px)">
+  <div class="mdc-slider__thumb" role="slider" tabindex="0" aria-label="Range slider demo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70" style="left:calc(70%-24px)">
     <div class="mdc-slider__thumb-knob"></div>
   </div>
 </div>
