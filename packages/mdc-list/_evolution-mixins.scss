@@ -1,0 +1,775 @@
+@use 'sass:list';
+@use 'sass:map';
+@use '@material/theme/theme';
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/dom/mixins' as dom-mixins;
+@use '@material/typography/typography';
+@use '@material/feature-targeting/feature-targeting';
+@use './variables';
+
+@mixin evolution($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  @include evolution-item-primary-text-ink-color(
+    text-primary-on-background,
+    $query
+  );
+  @include evolution-item-secondary-text-ink-color(
+    text-secondary-on-background,
+    $query
+  );
+  @include evolution-item-start-fill-color(transparent, $query);
+  @include evolution-item-start-ink-color(text-icon-on-background, $query);
+  @include evolution-item-end-ink-color(text-hint-on-background, $query);
+  @include evolution-group-subheader-ink-color(
+    text-primary-on-background,
+    $query
+  );
+  @include evolution-item-disabled-content-opacity(
+    variables.$text-disabled-opacity,
+    $query
+  );
+  @include evolution-item-disabled-content-color(
+    variables.$text-disabled-color,
+    $query
+  );
+  @include evolution-item-selected-content-color(
+    variables.$text-selected-color,
+    $query
+  );
+
+  .mdc-evolution-list {
+    @include evolution-list-base_($query: $query);
+  }
+
+  .mdc-evolution-list-item {
+    @include evolution-item-base_($query: $query);
+    @include evolution-item-spacing(16px, $query: $query);
+
+    @include evolution-one-line-item-height(48px, $query: $query);
+    @include evolution-two-line-item-height(64px, $query: $query);
+    @include evolution-three-line-item-height(88px, $query: $query);
+
+    @include evolution-one-line-item-start-alignment(center, $query: $query);
+    @include evolution-two-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: 16px,
+      $query: $query
+    );
+    @include evolution-three-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: 16px,
+      $query: $query
+    );
+
+    @include evolution-one-line-item-end-alignment(center, $query: $query);
+    @include evolution-two-line-item-end-alignment(center, $query: $query);
+    @include evolution-three-line-item-end-alignment(
+      $alignment: flex-start,
+      $offset: 16px,
+      $query: $query
+    );
+
+    @include feature-targeting.targets($feat-structure) {
+      align-items: stretch;
+    }
+
+    // For components using aria-activedescendant, the focus pseudoclass is
+    // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
+    &:not(.mdc-evolution-list-item--selected):focus::before,
+    &.mdc-ripple-upgraded--background-focused::before {
+      @include dom-mixins.transparent-border($query: $query);
+    }
+
+    &.mdc-evolution-list-item--selected::before {
+      @include dom-mixins.transparent-border(
+        $border-width: 3px,
+        $border-style: double,
+        $query: $query
+      );
+    }
+
+    // Only change mouse cursor for list items which are not disabled.
+    &:not(.mdc-evolution-list-item--disabled) {
+      @include feature-targeting.targets($feat-structure) {
+        cursor: pointer;
+      }
+    }
+  }
+
+  // Override anchor tag styles for the use-case of a list being used for navigation
+  // stylelint-disable selector-max-type,selector-no-qualifying-type
+  a.mdc-evolution-list-item {
+    @include feature-targeting.targets($feat-structure) {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+  // stylelint-enable selector-max-type,selector-no-qualifying-type
+
+  .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      fill: currentColor;
+    }
+  }
+
+  .mdc-evolution-list-item__content {
+    @include typography.overflow-ellipsis($query);
+    @include feature-targeting.targets($feat-structure) {
+      align-self: center;
+      min-width: 50%;
+      flex: 1;
+    }
+
+    .mdc-evolution-list-item--with-two-lines &,
+    .mdc-evolution-list-item--with-three-lines & {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: stretch;
+      }
+    }
+
+    // Disable interaction on label elements that may automatically
+    // toggle corresponding checkbox / radio input.
+    &[for] {
+      @include feature-targeting.targets($feat-structure) {
+        pointer-events: none;
+      }
+    }
+  }
+
+  .mdc-evolution-list-item__primary-text {
+    @include typography.typography(subtitle1, $query);
+    @include typography.overflow-ellipsis($query);
+
+    .mdc-evolution-list-item--with-two-lines &,
+    .mdc-evolution-list-item--with-three-lines & {
+      @include typography.text-baseline(
+        $top: 28px,
+        $bottom: 20px,
+        $query: $query
+      );
+    }
+  }
+
+  .mdc-evolution-list-item__secondary-text {
+    @include typography.typography(body2, $query);
+    // TODO (b/168048902): disable this for three-line (multi-line) lists.
+    @include typography.overflow-ellipsis($query);
+    @include typography.text-baseline(
+      $top: 20px,
+      $display: block,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item__overline-text {
+    // TODO (b/168043604): fully style overline.
+    @include typography.overflow-ellipsis($query);
+
+    .mdc-evolution-list-item--with-two-lines &,
+    .mdc-evolution-list-item--with-three-lines & {
+      @include typography.text-baseline(
+        $top: 24px,
+        $bottom: 20px,
+        $query: $query
+      );
+    }
+  }
+
+  .mdc-evolution-list-item--with-leading-avatar {
+    @include evolution-one-line-item-height(56px, $query: $query);
+    @include evolution-two-line-item-height(72px, $query: $query);
+    @include evolution-item-start-spacing(16px, $query: $query);
+    @include evolution-item-start-size(40px, $query: $query);
+    @include _evolution-two-line-item-primary-baseline(
+      32px,
+      20px,
+      $query: $query
+    );
+
+    .mdc-evolution-list-item__start {
+      @include feature-targeting.targets($feat-structure) {
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .mdc-evolution-list-item--with-leading-icon {
+    @include evolution-one-line-item-height(56px, $query: $query);
+    @include evolution-two-line-item-height(72px, $query: $query);
+    @include evolution-item-start-size(24px, $query: $query);
+    @include evolution-item-start-spacing(
+      $leading: 16px,
+      $trailing: 32px,
+      $query: $query
+    );
+    @include _evolution-two-line-item-primary-baseline(
+      32px,
+      20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item--with-leading-thumbnail {
+    @include evolution-one-line-item-height(56px, $query: $query);
+    @include evolution-two-line-item-height(72px, $query: $query);
+    @include evolution-item-start-spacing(16px, $query: $query);
+    @include evolution-item-start-size(40px, $query: $query);
+    @include _evolution-two-line-item-primary-baseline(
+      32px,
+      20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item--with-leading-image {
+    @include evolution-one-line-item-height(72px, $query: $query);
+    @include evolution-two-line-item-height(72px, $query: $query);
+    @include evolution-item-start-spacing(16px, $query: $query);
+    @include evolution-item-start-size(56px, $query: $query);
+    @include _evolution-two-line-item-primary-baseline(
+      32px,
+      20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item--with-leading-video {
+    @include evolution-one-line-item-height(72px, $query: $query);
+    @include evolution-two-line-item-height(72px, $query: $query);
+    @include evolution-two-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: 8px,
+      $query: $query
+    );
+    @include evolution-item-start-spacing(
+      $leading: 0,
+      $trailing: 16px,
+      $query: $query
+    );
+    @include evolution-item-start-size(
+      $width: 100px,
+      $height: 56px,
+      $query: $query
+    );
+    @include _evolution-two-line-item-primary-baseline(
+      32px,
+      20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item--with-leading-checkbox {
+    $leading: absorb-overflow(16px, $actual: 40px, $available: 24px);
+    $trailing: absorb-overflow(32px, $actual: 40px, $available: 24px);
+
+    @include evolution-one-line-item-height(56px, $query: $query);
+    @include evolution-two-line-item-height(72px, $query: $query);
+    @include evolution-item-start-spacing($leading, $trailing, $query: $query);
+    @include evolution-item-start-size(40px, $query: $query);
+    @include _evolution-two-line-item-primary-baseline(
+      32px,
+      20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item--with-leading-radio {
+    @include evolution-one-line-item-height(56px, $query: $query);
+    @include evolution-two-line-item-height(72px, $query: $query);
+    @include evolution-item-start-spacing(16px, $query: $query);
+    @include evolution-item-start-size(24px, $query: $query);
+    @include _evolution-two-line-item-primary-baseline(
+      32px,
+      20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item--with-leading-switch {
+    @include evolution-one-line-item-height(56px, $query: $query);
+    @include evolution-two-line-item-height(72px, $query: $query);
+    @include evolution-item-start-spacing(16px, $query: $query);
+    @include evolution-item-start-size(
+      $width: 36px,
+      $height: 20px,
+      $query: $query
+    );
+    @include _evolution-two-line-item-primary-baseline(
+      32px,
+      20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item--with-trailing-icon {
+    @include evolution-item-end-spacing(16px, $query: $query);
+    @include evolution-item-end-size(24px, $query: $query);
+  }
+
+  .mdc-evolution-list-item--with-trailing-meta {
+    @include evolution-two-line-item-end-alignment(flex-start, $query: $query);
+    @include evolution-three-line-item-end-alignment(
+      flex-start,
+      $query: $query
+    );
+    @include evolution-item-end-spacing(
+      $leading: 28px,
+      $trailing: 16px,
+      $query: $query
+    );
+
+    .mdc-evolution-list-item__end {
+      @include typography.typography(caption, $query);
+    }
+
+    &.mdc-evolution-list-item--with-two-lines .mdc-evolution-list-item__end,
+    &.mdc-evolution-list-item--with-three-lines .mdc-evolution-list-item__end {
+      @include typography.text-baseline(
+        $top: 28px,
+        $display: block,
+        $query: $query
+      );
+    }
+  }
+
+  .mdc-evolution-list-item--with-trailing-checkbox {
+    $leading: absorb-overflow(32px, $actual: 40px, $available: 24px);
+    $trailing: absorb-overflow(16px, $actual: 40px, $available: 24px);
+    $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
+
+    @include evolution-item-end-spacing($leading, $trailing, $query: $query);
+    @include evolution-item-end-size(40px, $query: $query);
+    @include evolution-three-line-item-end-alignment(
+      $alignment: flex-start,
+      $offset: $top,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-item--with-trailing-radio {
+    @include evolution-item-end-spacing(16px, $query: $query);
+    @include evolution-item-end-size(24px, $query: $query);
+  }
+
+  .mdc-evolution-list-item--with-trailing-switch {
+    @include evolution-item-end-spacing(16px, $query: $query);
+    @include evolution-item-end-size(
+      $width: 36px,
+      $height: 20px,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-list-group {
+    @include feature-targeting.targets($feat-structure) {
+      // Cancel top/bottom padding on individual lists within group
+      .mdc-list {
+        padding: 0;
+      }
+    }
+  }
+
+  .mdc-evolution-list-group__subheader {
+    $mdc-list-subheader-virtual-height: 3rem;
+    $mdc-list-subheader-leading: map.get(
+      map.get(typography.$styles, body1),
+      line-height
+    );
+    $mdc-list-subheader-margin: calc(
+      (#{$mdc-list-subheader-virtual-height} - #{$mdc-list-subheader-leading}) /
+        2
+    );
+
+    @include typography.typography(subtitle1, $query);
+    @include feature-targeting.targets($feat-structure) {
+      margin: $mdc-list-subheader-margin variables.$side-padding;
+    }
+  }
+}
+
+///
+/// Adjusts an offset (i.e., margin) to accomodate contents that are larger than
+/// the space allocated by the specification.
+///
+/// For instance, the specification provides 24x24dp for a checkbox with a 16dp
+/// margin. However, checkboxes are actually 40x40dp. To ensure that the
+/// checkbox is positioned correctly, the margin is reduced by 8dp to reflect
+/// that the margin is already "baked into" the checkbox.
+///
+/// Concretely, 40dp - 24dp = 16dp. Assuming that the control is symmetrical,
+/// half of the overflow (8dp) is on the leading side and half on the trailing
+/// side. Therefore, the leading and trailing margins are reduced by 8dp.
+///
+/// Note: this might be more useful if it's added into the leading/trailing
+/// margin mixins as a parameter.
+///
+@function absorb-overflow($offset, $actual, $available, $symmetric: true) {
+  @if $actual <= $available {
+    @return $offset;
+  }
+  $overflow: $actual - $available;
+  @return $offset - $overflow / if($symmetric, 2, 1);
+}
+
+@mixin evolution-one-line-item-height(
+  $height,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-item--with-one-line {
+    @include feature-targeting.targets($feat-structure) {
+      height: $height;
+    }
+  }
+}
+
+@mixin evolution-two-line-item-height(
+  $height,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-item--with-two-lines {
+    @include feature-targeting.targets($feat-structure) {
+      height: $height;
+    }
+  }
+}
+@mixin evolution-three-line-item-height(
+  $height,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-item--with-three-lines {
+    @include feature-targeting.targets($feat-structure) {
+      height: $height;
+    }
+  }
+}
+
+@mixin evolution-item-spacing(
+  $leading,
+  $trailing: $leading,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    @include rtl-mixins.reflexive-property(padding, $leading, $trailing);
+  }
+}
+
+@mixin evolution-one-line-item-start-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-item--with-one-line .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      align-self: $alignment;
+      margin-top: $offset;
+    }
+  }
+}
+
+@mixin evolution-two-line-item-start-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-item--with-two-lines .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      align-self: $alignment;
+      margin-top: $offset;
+    }
+  }
+}
+
+@mixin evolution-three-line-item-start-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-item--with-three-lines .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-structure) {
+      align-self: $alignment;
+      margin-top: $offset;
+    }
+  }
+}
+
+@mixin evolution-one-line-item-end-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-item--with-one-line .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      align-self: $alignment;
+      margin-top: $offset;
+    }
+  }
+}
+
+@mixin evolution-two-line-item-end-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-item--with-two-lines .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      align-self: $alignment;
+      margin-top: $offset;
+    }
+  }
+}
+
+@mixin evolution-three-line-item-end-alignment(
+  $alignment,
+  $offset: 0,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-item--with-three-lines .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      align-self: $alignment;
+      margin-top: $offset;
+    }
+  }
+}
+
+@mixin evolution-item-start-spacing(
+  $leading,
+  $trailing: $leading,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    @include rtl-mixins.reflexive-box(padding, left, 0);
+
+    .mdc-evolution-list-item__start {
+      @include rtl-mixins.reflexive-property(margin, $leading, $trailing);
+    }
+  }
+}
+
+@mixin evolution-item-end-spacing(
+  $leading,
+  $trailing: $leading,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    @include rtl-mixins.reflexive-box(padding, right, 0);
+
+    .mdc-evolution-list-item__end {
+      @include rtl-mixins.reflexive-property(margin, $leading, $trailing);
+    }
+  }
+}
+
+@mixin evolution-item-start-size(
+  $width,
+  $height: $width,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-evolution-list-item__start {
+      width: $width;
+      height: $height;
+    }
+  }
+}
+
+@mixin evolution-item-end-size(
+  $width,
+  $height: $width,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-evolution-list-item__end {
+      width: $width;
+      height: $height;
+    }
+  }
+}
+
+// TODO: after merge, bring this to private section and move underscore.
+@mixin _evolution-two-line-item-primary-baseline(
+  $top,
+  $bottom,
+  $query: feature-targeting.all()
+) {
+  &.mdc-evolution-list-item--with-two-lines
+    .mdc-evolution-list-item__primary-text {
+    @include typography.text-baseline(
+      $top: $top,
+      $bottom: $bottom,
+      $query: $query
+    );
+  }
+}
+
+@mixin evolution-item-selected-content-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  .mdc-evolution-list-item--selected,
+  .mdc-list-item--activated {
+    @include evolution-item-primary-text-ink-color($color, $query: $query);
+    @include evolution-item-start-ink-color($color, $query: $query);
+  }
+}
+
+@mixin evolution-item-primary-text-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-item__primary-text {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+@mixin evolution-item-secondary-text-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-item__secondary-text {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+@mixin evolution-item-start-fill-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
+    }
+  }
+}
+
+@mixin evolution-item-start-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-item__start {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+@mixin evolution-item-end-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+@mixin evolution-group-subheader-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-group__subheader {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+@mixin evolution-item-disabled-content-opacity(
+  $opacity,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-item--disabled .mdc-evolution-list-item__content {
+    @include feature-targeting.targets($feat-color) {
+      opacity: $opacity;
+    }
+  }
+}
+
+@mixin evolution-item-disabled-content-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-item--disabled {
+    .mdc-evolution-list-item__content,
+    .mdc-evolution-list-item__primary-text,
+    .mdc-evolution-list-item__secondary-text {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.prop(color, $color);
+      }
+    }
+  }
+}
+
+//
+// Private
+//
+
+@mixin evolution-list-base_($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  @include typography.typography(subtitle1, $query);
+  @include feature-targeting.targets($feat-typography) {
+    // According to the mocks and stickersheet, the line-height is
+    // adjusted to 24px for text content, same as for body1.
+    /* @alternate */
+    line-height: map.get(map.get(typography.$styles, body1), line-height);
+  }
+  @include feature-targeting.targets($feat-structure) {
+    margin: 0;
+    padding: 8px 0;
+    list-style-type: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+@mixin evolution-item-base_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  @include feature-targeting.targets($feat-structure) {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    padding: 0;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
