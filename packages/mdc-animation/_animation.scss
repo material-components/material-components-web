@@ -40,3 +40,7 @@ $sharp-curve-timing-function: cubic-bezier(0.4, 0, 0.6, 1) !default;
 @function standard($name, $duration, $delay: 0ms) {
   @return $name $duration $delay $standard-curve-timing-function;
 }
+
+@function linear($name, $duration, $delay: 0ms) {
+  @return $name $duration $delay linear;
+}
