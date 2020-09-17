@@ -1072,7 +1072,7 @@ describe('MDCSliderFoundation', () => {
            isRange: true,
          });
          mockAdapter.getValueToAriaValueTextFn.and.returnValue(
-             (value: string) => value + ' value');
+             (value: string) => `${value} value`);
 
          foundation.handleThumbKeydown(
              createKeyboardEvent('keydown', {
