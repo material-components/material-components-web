@@ -1063,6 +1063,36 @@ describe('MDCSliderFoundation', () => {
   });
 
   describe('a11y support', () => {
+    it('updates aria-valuetext on value update according to ' +
+           '`Adapter#getValueToAriaValueTextFn`',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 12,
+           value: 15,
+           isRange: true,
+         });
+         mockAdapter.getValueToAriaValueTextFn.and.returnValue(
+             (value: string) => value + ' value');
+
+         foundation.handleThumbKeydown(
+             createKeyboardEvent('keydown', {
+               key: KEY.ARROW_DOWN,
+             }),
+             Thumb.START);
+         expect(mockAdapter.setThumbAttribute)
+             .toHaveBeenCalledWith(
+                 attributes.ARIA_VALUETEXT, '11 value', Thumb.START);
+
+         foundation.handleThumbKeydown(
+             createKeyboardEvent('keydown', {
+               key: KEY.ARROW_UP,
+             }),
+             Thumb.END);
+         expect(mockAdapter.setThumbAttribute)
+             .toHaveBeenCalledWith(
+                 attributes.ARIA_VALUETEXT, '16 value', Thumb.END);
+       });
+
     it('updates aria-valuenow on thumb value updates', () => {
       const {foundation, mockAdapter} = setUpAndInit({
         valueStart: 12,

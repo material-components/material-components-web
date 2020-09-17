@@ -54,6 +54,27 @@ const slider = new MDCSlider(document.querySelector('.mdc-slider'));
 **Note**: See [Importing the JS component](../../docs/importing-js.md) for more
 information on how to import JavaScript.
 
+### Making sliders accessible
+
+Sliders follow the
+[WAI-ARIA guidelines](https://www.w3.org/TR/wai-aria-practices/#slider).
+Per the spec, ensure that the following attributes are added to the
+`mdc-slider__thumb` element(s):
+
+* `role="slider"`
+* `aria-valuenow`: Value representing the current value.
+* `aria-valuemin`: Value representing the minimum allowed value.
+* `aria-valuemax`: Value representing the maximum allowed value.
+* `aria-label` or `aria-labelledby`: Accessible label for the slider.
+
+If the value of `aria-valuenow` is not user-friendly (e.g. a number to
+represent the day of the week), also set the following:
+
+* `aria-valuetext`: Set to a string that makes the slider value
+understandable, e.g. 'Monday'.
+* Add a function to map the slider value to `aria-valuetext` via the
+`MDCSlider#setValueToAriaValueTextFn` method.
+
 ## Sliders
 
 There are two types of sliders:
@@ -346,6 +367,7 @@ Method Signature | Description
 `setValue(value: number) => void` | Sets the value of the thumb (for single point sliders), or the end thumb (for range sliders).
 `getDisabled() => boolean` | Gets the disabled state of the slider.
 `setDisabled(disabled: boolean) => void` | Sets the disabled state of the slider.
+`setValueToAriaValueTextFn((mapFn: ((value: number) => string)|null) => void` | Sets a function that maps the slider value to value of the `aria-valuetext` attribute on the thumb element. If not set, the `aria-valuetext` attribute is unchanged when the value changes.
 
 ### Usage within frameworks
 

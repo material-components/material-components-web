@@ -59,6 +59,7 @@ export const attributes = {
   ARIA_VALUEMAX: 'aria-valuemax',
   ARIA_VALUEMIN: 'aria-valuemin',
   ARIA_VALUENOW: 'aria-valuenow',
+  ARIA_VALUETEXT: 'aria-valuetext',
   // Step value to increment/decrement by for PAGE_UP or PAGE_DOWN keypresses.
   DATA_ATTR_BIG_STEP: 'data-big-step',
   DATA_ATTR_STEP: 'data-step',

@@ -398,6 +398,22 @@ describe('MDCSlider', () => {
       expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('90');
     });
 
+    it('updates aria-valuetext on thumb value updates according to ' +
+           '`valueToAriaValueTextFn`',
+       () => {
+         let component: MDCSlider;
+         ({component, root, endThumb} =
+              setUpTest({isDiscrete: true, value: 30, step: 10}));
+         component.setValueToAriaValueTextFn(
+             (value: number) => `${value} value`);
+         expect(endThumb.getAttribute(attributes.ARIA_VALUETEXT)).toBe(null);
+
+         const downEvent = createEventFrom('pointer', 'down', {clientX: 90});
+         root.dispatchEvent(downEvent);
+         expect(endThumb.getAttribute(attributes.ARIA_VALUETEXT))
+             .toBe('90 value');
+       });
+
     it('increments/decrements correct thumb value on keydown', () => {
       ({root, startThumb, endThumb} = setUpTest({
          isDiscrete: true,

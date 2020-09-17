@@ -148,6 +148,13 @@ export interface MDCSliderAdapter {
   setValueIndicatorText(value: number, thumb: Thumb): void;
 
   /**
+   * Returns a function that maps the slider value to the value of the
+   * `aria-valuetext` attribute on the thumb element. If null, the
+   * `aria-valuetext` attribute is unchanged when the value changes.
+   */
+  getValueToAriaValueTextFn(): ((value: number) => string)|null;
+
+  /**
    * Updates tick marks container element with tick mark elements and their
    * active/inactive classes, based on the given mappings:
    * - TickMark.ACTIVE => `cssClasses.TICK_MARK_ACTIVE`

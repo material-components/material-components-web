@@ -133,6 +133,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       setTrackActiveStyleProperty: () => undefined,
       removeTrackActiveStyleProperty: () => undefined,
       setValueIndicatorText: () => undefined,
+      getValueToAriaValueTextFn: () => null,
       updateTickMarks: () => undefined,
       setPointerCapture: () => undefined,
       emitChangeEvent: () => undefined,
@@ -614,12 +615,32 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    *     updated for both thumbs based on current internal state.
    */
   private updateUI(thumb?: Thumb) {
+    this.updateThumbAriaAttributes(thumb);
     this.updateThumbAndTrackUI(thumb);
     this.updateValueIndicatorUI(thumb);
     this.updateTickMarksUI();
   }
 
   /**
+   * Updates thumb aria attributes based on current value.
+   * @param thumb Thumb whose aria attributes to update.
+   */
+  private updateThumbAriaAttributes(thumb?: Thumb) {
+    if (!thumb) return;
+
+    const value =
+        this.isRange && thumb === Thumb.START ? this.valueStart : this.value;
+    this.adapter.setThumbAttribute(
+        attributes.ARIA_VALUENOW, String(value), thumb);
+    const valueToAriaValueTextFn = this.adapter.getValueToAriaValueTextFn();
+    if (valueToAriaValueTextFn) {
+      this.adapter.setThumbAttribute(
+          attributes.ARIA_VALUETEXT, valueToAriaValueTextFn(value), thumb);
+    }
+  }
+
+  /**
+   * Updates value indicator UI based on current value.
    * @param thumb Thumb whose value indicator to update.
    */
   private updateValueIndicatorUI(thumb?: Thumb) {
@@ -684,15 +705,11 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       if (this.valueStart === value) return;
 
       this.valueStart = value;
-      this.adapter.setThumbAttribute(
-          attributes.ARIA_VALUENOW, String(this.valueStart), Thumb.START);
     } else {
       // Exit early if current value is the same as the new value.
       if (this.value === value) return;
 
       this.value = value;
-      this.adapter.setThumbAttribute(
-          attributes.ARIA_VALUENOW, String(this.value), Thumb.END);
     }
 
     this.updateUI(thumb);

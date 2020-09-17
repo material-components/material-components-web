@@ -41,6 +41,9 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   private trackActive!: HTMLElement;  // Assigned in #initialize.
 
   private skipInitialUIUpdate = false;
+  // Function that maps a slider value to the value of the `aria-valuetext`
+  // attribute on the thumb element.
+  private valueToAriaValueTextFn: ((value: number) => string)|null = null;
 
   getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same
@@ -98,6 +101,7 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
                 `.${cssClasses.VALUE_INDICATOR_TEXT}`);
         valueIndicatorEl!.textContent = String(value);
       },
+      getValueToAriaValueTextFn: () => this.valueToAriaValueTextFn,
       updateTickMarks: (tickMarks: TickMark[]) => {
         let tickMarksContainer = this.root.querySelector<HTMLElement>(
             `.${cssClasses.TICK_MARKS_CONTAINER}`);
@@ -214,6 +218,14 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   /** Sets slider disabled state. */
   setDisabled(disabled: boolean) {
     this.foundation.setDisabled(disabled);
+  }
+
+  /**
+   * Sets a function that maps the slider value to the value of the
+   * `aria-valuetext` attribute on the thumb element.
+   */
+  setValueToAriaValueTextFn(mapFn: ((value: number) => string)|null) {
+    this.valueToAriaValueTextFn = mapFn;
   }
 
   private getThumbEl(thumb: Thumb) {
