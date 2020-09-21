@@ -5,12 +5,17 @@
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/typography/typography';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme-color';
 @use './variables';
 
 @mixin evolution($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
+
+  //
+  // Items
+  //
 
   @include evolution-item-primary-text-ink-color(
     text-primary-on-background,
@@ -363,6 +368,10 @@
     );
   }
 
+  //
+  // Grouping
+  //
+
   .mdc-evolution-list-group {
     @include feature-targeting.targets($feat-structure) {
       // Cancel top/bottom padding on individual lists within group
@@ -387,6 +396,65 @@
     @include feature-targeting.targets($feat-structure) {
       margin: $mdc-list-subheader-margin variables.$side-padding;
     }
+  }
+
+  //
+  // Dividers
+  //
+
+  $divider-color: if(
+    theme-color.tone(theme-color.$background) == 'dark',
+    variables.$divider-color-on-dark-bg,
+    variables.$divider-color-on-light-bg
+  );
+
+  @include evolution-divider-color($divider-color, $query: $query);
+
+  .mdc-evolution-list-divider {
+    @include feature-targeting.targets($feat-structure) {
+      height: 1px;
+      padding: 0;
+
+      // Allows the use of padding to specify leading and trailing insets
+      // independently.
+      background-clip: content-box;
+    }
+
+    @include evolution-padded-divider-leading-offset(16px, $query: $query);
+    @include evolution-inset-divider-trailing-offset(16px, $query: $query);
+  }
+
+  .mdc-evolution-list-divider--with-leading-icon {
+    @include evolution-inset-divider-leading-offset(72px, $query: $query);
+  }
+
+  .mdc-evolution-list-divider--with-leading-image {
+    @include evolution-inset-divider-leading-offset(88px, $query: $query);
+  }
+
+  .mdc-evolution-list-divider--with-leading-thumbnail {
+    @include evolution-inset-divider-leading-offset(72px, $query: $query);
+  }
+
+  .mdc-evolution-list-divider--with-leading-video {
+    @include evolution-padded-divider-leading-offset(0px, $query: $query);
+    @include evolution-inset-divider-leading-offset(116px, $query: $query);
+  }
+
+  .mdc-evolution-list-divider--with-leading-avatar {
+    @include evolution-inset-divider-leading-offset(72px, $query: $query);
+  }
+
+  .mdc-evolution-list-divider--with-leading-checkbox {
+    @include evolution-inset-divider-leading-offset(72px, $query: $query);
+  }
+
+  .mdc-evolution-list-divider--with-leading-switch {
+    @include evolution-inset-divider-leading-offset(84px, $query: $query);
+  }
+
+  .mdc-evolution-list-divider--with-leading-radio {
+    @include evolution-inset-divider-leading-offset(72px, $query: $query);
   }
 }
 
@@ -735,6 +803,55 @@
       @include feature-targeting.targets($feat-color) {
         @include theme.prop(color, $color);
       }
+    }
+  }
+}
+
+@mixin evolution-divider-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-divider {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
+    }
+  }
+}
+
+@mixin evolution-inset-divider-leading-offset(
+  $offset,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-divider--with-leading-inset {
+    @include feature-targeting.targets($feat-structure) {
+      // We rely on auto to avoid clobbering the opposite padding.
+      @include rtl-mixins.reflexive-property(padding, $offset, auto);
+    }
+  }
+}
+
+@mixin evolution-padded-divider-leading-offset(
+  $offset,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-divider--with-leading-padding {
+    @include feature-targeting.targets($feat-structure) {
+      // We rely on auto to avoid clobbering the opposite padding.
+      @include rtl-mixins.reflexive-property(padding, $offset, auto);
+    }
+  }
+}
+
+@mixin evolution-inset-divider-trailing-offset(
+  $offset,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-list-divider--with-trailing-inset {
+    @include feature-targeting.targets($feat-structure) {
+      // We rely on auto to avoid clobbering the opposite padding.
+      @include rtl-mixins.reflexive-property(padding, auto, $offset);
     }
   }
 }
