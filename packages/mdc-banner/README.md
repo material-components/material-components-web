@@ -71,6 +71,26 @@ const banner = new MDCBanner(document.querySelector('.mdc-banner'));
 
 ### Variants
 
+#### Centered
+
+By default, banners are positioned as leading.
+
+They can optionally be displayed centered by adding the `mdc-banner--centered` modifier class to the root element:
+
+```html
+<div class="mdc-banner mdc-banner--centered">
+  ...
+</div>
+```
+
+Alternatively, you can call the `position-centered` mixin from Sass:
+
+```scss
+.my-banner {
+  @include banner.position-centered;
+}
+```
+
 #### Banner with graphic
 
 Images can help communicate a banner’s message.

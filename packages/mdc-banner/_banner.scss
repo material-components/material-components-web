@@ -71,7 +71,6 @@ $_exit-duration: 250ms;
       box-sizing: border-box;
       display: none;
       height: 0;
-      justify-content: center;
       position: relative;
       width: 100%;
     }
@@ -113,15 +112,15 @@ $_exit-duration: 250ms;
     }
   }
 
+  .mdc-banner--centered {
+    @include banner-theme.position-centered($query: $query);
+  }
+
   .mdc-banner__content {
     @include feature-targeting.targets($feat-structure) {
       display: flex;
-      left: 0;
-      margin-left: auto;
-      margin-right: auto;
       min-height: 52px;
       position: absolute;
-      right: 0;
       transform: translateY(-100%);
       width: 720px;
     }

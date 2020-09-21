@@ -157,3 +157,19 @@ $mobile-breakpoint: 480px;
     }
   }
 }
+
+///
+/// Sets the banner content to centered instead of leading.
+///
+@mixin position-centered($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-banner__content {
+    @include feature-targeting.targets($feat-structure) {
+      left: 0;
+      margin-left: auto;
+      margin-right: auto;
+      right: 0;
+    }
+  }
+}
