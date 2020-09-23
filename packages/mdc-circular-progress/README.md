@@ -91,7 +91,7 @@ const circularProgress = new MDCCircularProgress(document.querySelector('.mdc-ci
 
 ### Sizing
 
-To set the stroke-width and container size strictly to one of three sizes defined by guidelines, replace each SVG of the baseline element with the following and apply the appropriate `mdc-circular-progress--{size}` modifier class (see [CSS Classes](#CSS-Classes) section).
+To set the stroke-width and container size strictly to one of three sizes defined by guidelines, replace the templates with the following.
 
 #### Large (48px)
 See [baseline template](#HTML-Structure) above.
