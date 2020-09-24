@@ -282,10 +282,13 @@
   }
 
   .mdc-evolution-list-item--with-leading-radio {
+    $leading: absorb-overflow(16px, $actual: 40px, $available: 24px);
+    $trailing: absorb-overflow(32px, $actual: 40px, $available: 24px);
+
     @include evolution-one-line-item-height(56px, $query: $query);
     @include evolution-two-line-item-height(72px, $query: $query);
-    @include evolution-item-start-spacing(16px, $query: $query);
-    @include evolution-item-start-size(24px, $query: $query);
+    @include evolution-item-start-spacing($leading, $trailing, $query: $query);
+    @include evolution-item-start-size(40px, $query: $query);
     @include _evolution-two-line-item-primary-baseline(
       32px,
       20px,
@@ -355,8 +358,17 @@
   }
 
   .mdc-evolution-list-item--with-trailing-radio {
-    @include evolution-item-end-spacing(16px, $query: $query);
-    @include evolution-item-end-size(24px, $query: $query);
+    $leading: absorb-overflow(32px, $actual: 40px, $available: 24px);
+    $trailing: absorb-overflow(16px, $actual: 40px, $available: 24px);
+    $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
+
+    @include evolution-item-end-spacing($leading, $trailing, $query: $query);
+    @include evolution-item-end-size(40px, $query: $query);
+    @include evolution-three-line-item-end-alignment(
+      $alignment: flex-start,
+      $offset: $top,
+      $query: $query
+    );
   }
 
   .mdc-evolution-list-item--with-trailing-switch {
@@ -421,6 +433,7 @@
     }
 
     @include evolution-padded-divider-leading-offset(16px, $query: $query);
+    @include evolution-inset-divider-leading-offset(16px, $query: $query);
     @include evolution-inset-divider-trailing-offset(16px, $query: $query);
   }
 
