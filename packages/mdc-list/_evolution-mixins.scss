@@ -421,6 +421,7 @@
     }
 
     @include evolution-padded-divider-leading-offset(16px, $query: $query);
+    @include evolution-inset-divider-leading-offset(16px, $query: $query);
     @include evolution-inset-divider-trailing-offset(16px, $query: $query);
   }
 
