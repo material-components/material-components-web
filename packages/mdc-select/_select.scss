@@ -120,7 +120,6 @@
       $right: select-theme.$anchor-padding-right,
       $query: $query
     );
-    @include select-theme.min-width(select-theme.$min-width, $query: $query);
     @include select-icon-theme.size(
       select-icon-theme.$icon-size,
       $query: $query
@@ -169,7 +168,9 @@
     );
 
     @include feature-targeting.targets($feat-structure) {
-      width: 100%;
+      width: select-theme.$default-width;
+      min-width: 0;
+      flex: 1 1 auto;
       position: relative;
       box-sizing: border-box;
       overflow: hidden;

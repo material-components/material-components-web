@@ -80,7 +80,9 @@
   }
 
   .mdc-data-table__pagination-rows-per-page-select {
-    @include select-theme.min-width(80px, $query: $query);
+    @include feature-targeting.targets($feat-structure) {
+      width: 80px;
+    }
     @include menu-theme.min-width(80px, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {

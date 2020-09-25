@@ -546,7 +546,6 @@ Mixin | Description
 `filled-with-leading-icon-height($height)` | Sets height of filled select with leading icon variant.
 `outlined-height($height)` | Sets height of outlined select variant (Excluding outlined select with leading icon).
 `outlined-with-leading-icon-height($height)` | Sets height of outlined select with leading icon variant.
-`min-width($min-width)` | Sets the min-width of the select.
 
 > _NOTE_: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 
