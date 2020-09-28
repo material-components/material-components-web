@@ -42,6 +42,7 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
   private secondaryActionEl!: HTMLElement|null;  // Assigned in #initialize.
   private textEl!: HTMLElement;                  // Assigned in #initialize.
   private contentEl!: HTMLElement;               // Assigned in #initialize.
+  private fixedWrapperEl!: HTMLElement|null;     // Assigned in #initialize.
 
   initialize() {
     this.contentEl = this.root.querySelector(selectors.CONTENT) as HTMLElement;
@@ -50,6 +51,8 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
         this.root.querySelector(selectors.PRIMARY_ACTION) as HTMLElement;
     this.secondaryActionEl =
         this.root.querySelector(selectors.SECONDARY_ACTION) as HTMLElement;
+    this.fixedWrapperEl =
+        this.root.querySelector(selectors.FIXED) as HTMLElement;
 
     this.handleContentClick = (evt) => {
       const target = evt.target as Element;
@@ -74,8 +77,8 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
    * Opens the banner and fires events.OPENING to indicate the beginning of its
    * opening animation and then events.OPENED once the animation finishes.
    */
-  open() {
-    this.foundation.open();
+  open(left: number = 0, right: number = 0) {
+    this.foundation.open(left, right);
   }
 
   /**
@@ -119,6 +122,11 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
       },
       setStyleProperty: (propertyName, value) => {
         this.root.style.setProperty(propertyName, value);
+      },
+      setFixedStyleProperty: (propertyName, value) => {
+        if (this.fixedWrapperEl) {
+          this.fixedWrapperEl.style.setProperty(propertyName, value);
+        }
       },
     };
     return new MDCBannerFoundation(adapter);

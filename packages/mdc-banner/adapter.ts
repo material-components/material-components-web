@@ -70,4 +70,9 @@ export interface MDCBannerAdapter {
    * Sets a style property of the banner root element to the passed value.
    */
   setStyleProperty(propertyName: string, value: string): void;
+
+  /**
+   * Sets a style property of the banner fixed element to the passed value.
+   */
+  setFixedStyleProperty(propertyName: string, value: string): void;
 }

@@ -38,6 +38,7 @@ describe('MDCBannerFoundation', () => {
       'notifyClosing',
       'notifyClosed',
       'setStyleProperty',
+      'setFixedStyleProperty',
       'removeClass',
     ]);
   });

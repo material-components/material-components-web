@@ -32,6 +32,7 @@ function setupTest(fixture: HTMLElement) {
   const textEl = fixture.querySelector(selectors.TEXT)!;
   const primaryActionEl = fixture.querySelector(selectors.PRIMARY_ACTION)!;
   const secondaryActionEl = fixture.querySelector(selectors.SECONDARY_ACTION)!;
+  const fixedWrapperEl = fixture.querySelector(selectors.FIXED)!;
   const component = new MDCBanner(fixture);
 
   return {
@@ -40,6 +41,7 @@ function setupTest(fixture: HTMLElement) {
     primaryActionEl,
     textEl,
     secondaryActionEl,
+    fixedWrapperEl,
   };
 }
 
@@ -51,21 +53,23 @@ describe('MDCBanner', () => {
   beforeEach(() => {
     fixture = getFixture(`<div>
       <div class="mdc-banner" role="banner">
-        <div class="mdc-banner__content">
-          <div class="mdc-banner__text"
-               role="status"
-               aria-live="assertive">
-            Single line banner.
-          </div>
-          <div class="mdc-banner__actions">
-            <button type="button" class="mdc-button mdc-banner__secondary-action">
-              <div class="mdc-button__ripple"></div>
-              <div class="mdc-button__label">Learn more</div>
-            </button>
-            <button type="button" class="mdc-button mdc-banner__primary-action">
-              <div class="mdc-button__ripple"></div>
-              <div class="mdc-button__label">Fix it</div>
-            </button>
+        <div class="mdc-banner__fixed">
+          <div class="mdc-banner__content">
+            <div class="mdc-banner__text"
+                 role="status"
+                 aria-live="assertive">
+              Single line banner.
+            </div>
+            <div class="mdc-banner__actions">
+              <button type="button" class="mdc-button mdc-banner__secondary-action">
+                <div class="mdc-button__ripple"></div>
+                <div class="mdc-button__label">Learn more</div>
+              </button>
+              <button type="button" class="mdc-button mdc-banner__primary-action">
+                <div class="mdc-button__ripple"></div>
+                <div class="mdc-button__label">Fix it</div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -190,6 +194,21 @@ describe('MDCBanner', () => {
     expect(fixture.offsetHeight)
         .toEqual((contentEl as HTMLElement).offsetHeight);
   });
+
+  it('#open sets the fixed element left, right, and width to the passed values',
+     () => {
+       const {component, fixedWrapperEl} = setupTest(fixture);
+
+       const left: number = 30;
+       const right: number = 20;
+       component.open(left, right);
+       jasmine.clock().tick(1);
+       expect((fixedWrapperEl as HTMLElement).style.left).toEqual(`${left}px`);
+       expect((fixedWrapperEl as HTMLElement).style.right)
+           .toEqual(`${right}px`);
+       expect((fixedWrapperEl as HTMLElement).style.width)
+           .toEqual('calc(100% - 50px)');
+     });
 
   it('#close sets the root element height back to 0', () => {
     const {component} = setupTest(fixture);

@@ -43,6 +43,7 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
       notifyOpening: () => undefined,
       removeClass: () => undefined,
       setStyleProperty: () => undefined,
+      setFixedStyleProperty: () => undefined,
     };
   }
 
@@ -65,13 +66,17 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
     this.animationTimer = 0;
   }
 
-  open() {
+  open(left: number = 0, right: number = 0) {
     this.isOpened = true;
     this.adapter.notifyOpening();
     this.adapter.removeClass(CLOSING);
     this.adapter.addClass(OPENING);
 
     const contentHeight = this.adapter.getContentHeight();
+    this.adapter.setFixedStyleProperty('left', `${left}px`);
+    this.adapter.setFixedStyleProperty('right', `${right}px`);
+    this.adapter.setFixedStyleProperty(
+        'width', `calc(100% - ${left}px - ${right}px`);
     this.animationFrame = requestAnimationFrame(() => {
       this.adapter.addClass(OPEN);
       this.adapter.setStyleProperty('height', `${contentHeight}px`);

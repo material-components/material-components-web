@@ -48,6 +48,7 @@ export const selectors = {
   PRIMARY_ACTION: '.mdc-banner__primary-action',
   SECONDARY_ACTION: '.mdc-banner__secondary-action',
   TEXT: '.mdc-banner__text',
+  FIXED: '.mdc-banner__fixed',
 };
 
 /** Reason as to why the banner was closed. */
