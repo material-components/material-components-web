@@ -1,0 +1,9 @@
+@use '@material/theme/theme-color';
+
+$ripple-target: '.mdc-evolution-list-item__ripple';
+$divider-color-on-light-bg: rgba(0, 0, 0, 0.12) !default;
+$divider-color-on-dark-bg: rgba(255, 255, 255, 0.2) !default;
+$content-disabled-opacity: theme-color.text-emphasis(disabled) !default;
+$content-disabled-color: on-surface !default;
+$content-selected-color: primary !default;
+$side-padding: 16px !default;
