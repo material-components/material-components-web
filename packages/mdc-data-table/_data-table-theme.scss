@@ -49,7 +49,7 @@ $checked-icon-color: primary !default;
 $divider-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 $divider-size: 1px !default;
 $row-hover-fill-color: rgba(theme-color.prop-value(on-surface), 0.04) !default;
-$checkbox-touch-dimension: 48px !default;
+$checkbox-touch-size: 48px !default;
 
 $header-row-text-color: rgba(theme-color.prop-value(on-surface), 0.87) !default;
 $row-text-color: rgba(theme-color.prop-value(on-surface), 0.87) !default;
@@ -336,9 +336,19 @@ $pagination-rows-per-page-select-height: 36px;
   }
 }
 
+///
+/// Sets cell padding including cell, header cell, row checkbox cell and header
+/// row checkbox cell.
+/// @param {Number} $leading-padding [$cell-leading-padding] Leading padding.
+/// @param {Number} $trailing-padding [$cell-trailing-padding] Trailing padding.
+/// @param {Number} $checkbox-touch-size [$checkbox-touch-size] Checkbox Touch
+///     Size. Use this to adjust row checkbox cell leading padding based on
+///     checkbox density scale.
+///
 @mixin cell-padding(
   $leading-padding: $cell-leading-padding,
   $trailing-padding: $cell-trailing-padding,
+  $checkbox-touch-size: $checkbox-touch-size,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -351,9 +361,37 @@ $pagination-rows-per-page-select-height: 36px;
     }
   }
 
+  @include checkbox-cell-padding(
+    $leading-padding: $leading-padding,
+    $checkbox-touch-size: $checkbox-touch-size,
+    $query: $query
+  );
+}
+
+///
+/// Sets only row checkbox cell and header row checkbox cell leading padding.
+/// Use `cell-padding()` to set all cell's padding.
+/// @param {Number} $leading-padding [$cell-leading-padding] Leading padding.
+/// @param {Number} $checkbox-touch-size [$checkbox-touch-size] Checkbox Touch
+///     Size. Use this to adjust row checkbox cell leading padding based on
+///     checkbox density scale.
+///
+@mixin checkbox-cell-padding(
+  $leading-padding: $cell-leading-padding,
+  $checkbox-touch-size: $checkbox-touch-size,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
   .mdc-data-table__header-cell--checkbox,
   .mdc-data-table__cell--checkbox {
     @include feature-targeting.targets($feat-structure) {
+      // Distance from leading cell bound to checkbox's icon bound should be
+      // 16dp (`$leading-padding`). Calculate required padding excluding
+      // checkbox bounds.
+      $checkbox-icon-size: 24px;
+      $leading-padding: $leading-padding -
+        ($checkbox-touch-size - $checkbox-icon-size) / 2;
       @include rtl-mixins.reflexive-property(padding, $leading-padding, 0);
     }
   }
