@@ -27,6 +27,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/theme/custom-properties';
+@use '@material/theme/css';
 @use '@material/theme/theme';
 
 // Shape categories
@@ -189,19 +190,7 @@ $category-keywords: (
 /// @param {Number | Map | List} $radius - List of 1 to 4 radius numbers.
 /// @return {List} a List of 4 radius numbers.
 @function unpack-radius($radius) {
-  @if meta.type-of($radius) == 'map' or list.length($radius) == 1 {
-    @return $radius $radius $radius $radius;
-  } @else if list.length($radius) == 4 {
-    @return $radius;
-  } @else if list.length($radius) == 3 {
-    @return list.nth($radius, 1) list.nth($radius, 2) list.nth($radius, 3)
-      list.nth($radius, 2);
-  } @else if list.length($radius) == 2 {
-    @return list.nth($radius, 1) list.nth($radius, 2) list.nth($radius, 1)
-      list.nth($radius, 2);
-  }
-
-  @error "Invalid radius: '#{$radius}' is more than 4 values";
+  @return css.unpack-value($radius);
 }
 
 /// Resolve a percentage radius into a number.

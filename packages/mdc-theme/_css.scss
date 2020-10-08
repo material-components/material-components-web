@@ -20,7 +20,9 @@
 // THE SOFTWARE.
 //
 
+@use 'sass:list';
 @use 'sass:map';
+@use 'sass:meta';
 @use './gss';
 
 /// When true, add an additional property/value declaration before declarations
@@ -76,4 +78,32 @@ $enable-fallback-declarations: true !default;
     @include gss.annotate($gss);
     #{$property}: #{$value} #{$important-rule};
   }
+}
+
+/// Unpacks shorthand values for CSS properties (i.e. lists of 1-3 values).
+/// If a list of 4 values is given, it is returned as-is.
+///
+/// Examples:
+///
+/// unpack-value(4px) => 4px 4px 4px 4px
+/// unpack-value(4px 2px) => 4px 2px 4px 2px
+/// unpack-value(4px 2px 2px) => 4px 2px 2px 2px
+/// unpack-value(4px 2px 0 2px) => 4px 2px 0 2px
+///
+/// @param {Number | Map | List} $value - List of 1 to 4 value numbers.
+/// @return {List} a List of 4 value numbers.
+@function unpack-value($value) {
+  @if meta.type-of($value) == 'map' or list.length($value) == 1 {
+    @return $value $value $value $value;
+  } @else if list.length($value) == 4 {
+    @return $value;
+  } @else if list.length($value) == 3 {
+    @return list.nth($value, 1) list.nth($value, 2) list.nth($value, 3)
+      list.nth($value, 2);
+  } @else if list.length($value) == 2 {
+    @return list.nth($value, 1) list.nth($value, 2) list.nth($value, 1)
+      list.nth($value, 2);
+  }
+
+  @error "Invalid CSS property value: '#{$value}' is more than 4 values";
 }
