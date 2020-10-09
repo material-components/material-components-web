@@ -30,8 +30,8 @@ import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
 import {MDCTextFieldIconFoundation} from './icon/foundation';
 import {MDCTextFieldFoundationMap, MDCTextFieldNativeInputElement} from './types';
 
-type PointerDownEventType = 'mousedown' | 'touchstart';
-type InteractionEventType = 'click' | 'keydown';
+type PointerDownEventType = 'mousedown'|'touchstart';
+type InteractionEventType = 'click'|'keydown';
 
 const POINTERDOWN_EVENTS: PointerDownEventType[] = ['mousedown', 'touchstart'];
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
@@ -55,7 +55,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   get shouldFloat(): boolean {
-    return this.shouldAlwaysFloat_ || this.isFocused_ || !!this.getValue() || this.isBadInput_();
+    return this.shouldAlwaysFloat_ || this.isFocused_ || !!this.getValue() ||
+        this.isBadInput_();
   }
 
   get shouldShake(): boolean {
@@ -63,7 +64,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * See {@link MDCTextFieldAdapter} for typing information on parameters and return types.
+   * See {@link MDCTextFieldAdapter} for typing information on parameters and
+   * return types.
    */
   static get defaultAdapter(): MDCTextFieldAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
@@ -101,14 +103,18 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   private receivedUserInput_ = false;
   private isValid_ = true;
   private useNativeValidation_ = true;
+  private validateOnValueChange_ = true;
 
   private readonly inputFocusHandler_: () => void;
   private readonly inputBlurHandler_: SpecificEventListener<'blur'>;
   private readonly inputInputHandler_: SpecificEventListener<'input'>;
-  private readonly setPointerXOffset_: SpecificEventListener<PointerDownEventType>;
-  private readonly textFieldInteractionHandler_: SpecificEventListener<InteractionEventType>;
-  private readonly validationAttributeChangeHandler_: (attributesList: string[]) => void;
-  private validationObserver_!: MutationObserver; // assigned in init()
+  private readonly setPointerXOffset_:
+      SpecificEventListener<PointerDownEventType>;
+  private readonly textFieldInteractionHandler_:
+      SpecificEventListener<InteractionEventType>;
+  private readonly validationAttributeChangeHandler_:
+      (attributesList: string[]) => void;
+  private validationObserver_!: MutationObserver;  // assigned in init()
 
   private readonly helperText_?: MDCTextFieldHelperTextFoundation;
   private readonly characterCounter_?: MDCTextFieldCharacterCounterFoundation;
@@ -119,7 +125,9 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * @param adapter
    * @param foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter?: Partial<MDCTextFieldAdapter>, foundationMap: Partial<MDCTextFieldFoundationMap> = {}) {
+  constructor(
+      adapter?: Partial<MDCTextFieldAdapter>,
+      foundationMap: Partial<MDCTextFieldFoundationMap> = {}) {
     super({...MDCTextFieldFoundation.defaultAdapter, ...adapter});
 
     this.helperText_ = foundationMap.helperText;
@@ -132,7 +140,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.inputInputHandler_ = () => this.handleInput();
     this.setPointerXOffset_ = (evt) => this.setTransformOrigin(evt);
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
-    this.validationAttributeChangeHandler_ = (attributesList) => this.handleValidationAttributeChange(attributesList);
+    this.validationAttributeChangeHandler_ = (attributesList) =>
+        this.handleValidationAttributeChange(attributesList);
   }
 
   init() {
@@ -148,31 +157,43 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
       this.styleFloating_(true);
     }
 
-    this.adapter.registerInputInteractionHandler('focus', this.inputFocusHandler_);
-    this.adapter.registerInputInteractionHandler('blur', this.inputBlurHandler_);
-    this.adapter.registerInputInteractionHandler('input', this.inputInputHandler_);
+    this.adapter.registerInputInteractionHandler(
+        'focus', this.inputFocusHandler_);
+    this.adapter.registerInputInteractionHandler(
+        'blur', this.inputBlurHandler_);
+    this.adapter.registerInputInteractionHandler(
+        'input', this.inputInputHandler_);
     POINTERDOWN_EVENTS.forEach((evtType) => {
-      this.adapter.registerInputInteractionHandler(evtType, this.setPointerXOffset_);
+      this.adapter.registerInputInteractionHandler(
+          evtType, this.setPointerXOffset_);
     });
     INTERACTION_EVENTS.forEach((evtType) => {
-      this.adapter.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
+      this.adapter.registerTextFieldInteractionHandler(
+          evtType, this.textFieldInteractionHandler_);
     });
     this.validationObserver_ =
-        this.adapter.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
+        this.adapter.registerValidationAttributeChangeHandler(
+            this.validationAttributeChangeHandler_);
     this.setCharacterCounter_(this.getValue().length);
   }
 
   destroy() {
-    this.adapter.deregisterInputInteractionHandler('focus', this.inputFocusHandler_);
-    this.adapter.deregisterInputInteractionHandler('blur', this.inputBlurHandler_);
-    this.adapter.deregisterInputInteractionHandler('input', this.inputInputHandler_);
+    this.adapter.deregisterInputInteractionHandler(
+        'focus', this.inputFocusHandler_);
+    this.adapter.deregisterInputInteractionHandler(
+        'blur', this.inputBlurHandler_);
+    this.adapter.deregisterInputInteractionHandler(
+        'input', this.inputInputHandler_);
     POINTERDOWN_EVENTS.forEach((evtType) => {
-      this.adapter.deregisterInputInteractionHandler(evtType, this.setPointerXOffset_);
+      this.adapter.deregisterInputInteractionHandler(
+          evtType, this.setPointerXOffset_);
     });
     INTERACTION_EVENTS.forEach((evtType) => {
-      this.adapter.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
+      this.adapter.deregisterTextFieldInteractionHandler(
+          evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter.deregisterValidationAttributeChangeHandler(this.validationObserver_);
+    this.adapter.deregisterValidationAttributeChangeHandler(
+        this.validationObserver_);
   }
 
   /**
@@ -244,15 +265,17 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * Sets the line ripple's transform origin, so that the line ripple activate
    * animation will animate out from the user's click location.
    */
-  setTransformOrigin(evt: TouchEvent | MouseEvent): void {
+  setTransformOrigin(evt: TouchEvent|MouseEvent): void {
     if (this.isDisabled() || this.adapter.hasOutline()) {
       return;
     }
 
     const touches = (evt as TouchEvent).touches;
     const targetEvent = touches ? touches[0] : evt;
-    const targetClientRect = (targetEvent.target as Element).getBoundingClientRect();
-    const normalizedX = (targetEvent as MouseEvent).clientX - targetClientRect.left;
+    const targetClientRect =
+        (targetEvent.target as Element).getBoundingClientRect();
+    const normalizedX =
+        (targetEvent as MouseEvent).clientX - targetClientRect.left;
     this.adapter.setLineRippleTransformOrigin(normalizedX);
   }
 
@@ -302,27 +325,33 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * @param value The value to set on the input Element.
    */
   setValue(value: string): void {
-    // Prevent Safari from moving the caret to the end of the input when the value has not changed.
+    // Prevent Safari from moving the caret to the end of the input when the
+    // value has not changed.
     if (this.getValue() !== value) {
       this.getNativeInput_().value = value;
     }
     this.setCharacterCounter_(value.length);
-    const isValid = this.isValid();
-    this.styleValidity_(isValid);
+    if (this.validateOnValueChange_) {
+      const isValid = this.isValid();
+      this.styleValidity_(isValid);
+    }
     if (this.adapter.hasLabel()) {
       this.notchOutline(this.shouldFloat);
       this.adapter.floatLabel(this.shouldFloat);
       this.styleFloating_(this.shouldFloat);
-      this.adapter.shakeLabel(this.shouldShake);
+      if (this.validateOnValueChange_) {
+        this.adapter.shakeLabel(this.shouldShake);
+      }
     }
   }
 
   /**
-   * @return The custom validity state, if set; otherwise, the result of a native validity check.
+   * @return The custom validity state, if set; otherwise, the result of a
+   *     native validity check.
    */
   isValid(): boolean {
-    return this.useNativeValidation_
-        ? this.isNativeInputValid_() : this.isValid_;
+    return this.useNativeValidation_ ? this.isNativeInputValid_() :
+                                       this.isValid_;
   }
 
   /**
@@ -339,8 +368,26 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * Enables or disables the use of native validation. Use this for custom validation.
-   * @param useNativeValidation Set this to false to ignore native input validation.
+   * @param shouldValidate Whether or not validity should be updated on
+   *     value change.
+   */
+  setValidateOnValueChange(shouldValidate: boolean): void {
+    this.validateOnValueChange_ = shouldValidate;
+  }
+
+  /**
+   * @return Whether or not validity should be updated on value change. `true`
+   *     by default.
+   */
+  getValidateOnValueChange(): boolean {
+    return this.validateOnValueChange_;
+  }
+
+  /**
+   * Enables or disables the use of native validation. Use this for custom
+   * validation.
+   * @param useNativeValidation Set this to false to ignore native input
+   *     validation.
    */
   setUseNativeValidation(useNativeValidation: boolean): void {
     this.useNativeValidation_ = useNativeValidation;
@@ -404,7 +451,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * Sets character counter values that shows characters used and the total character limit.
+   * Sets character counter values that shows characters used and the total
+   * character limit.
    */
   private setCharacterCounter_(currentLength: number): void {
     if (!this.characterCounter_) {
@@ -413,14 +461,16 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
 
     const maxLength = this.getNativeInput_().maxLength;
     if (maxLength === -1) {
-      throw new Error('MDCTextFieldFoundation: Expected maxlength html property on text input or textarea.');
+      throw new Error(
+          'MDCTextFieldFoundation: Expected maxlength html property on text input or textarea.');
     }
 
     this.characterCounter_.setCounterValue(currentLength, maxLength);
   }
 
   /**
-   * @return True if the Text Field input fails in converting the user-supplied value.
+   * @return True if the Text Field input fails in converting the user-supplied
+   *     value.
    */
   private isBadInput_(): boolean {
     // The badInput property is not supported in IE 11 💩.
@@ -511,12 +561,15 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * @return The native text input element from the host environment, or an object with the same shape for unit tests.
+   * @return The native text input element from the host environment, or an
+   *     object with the same shape for unit tests.
    */
   private getNativeInput_(): MDCTextFieldNativeInputElement {
-    // this.adapter may be undefined in foundation unit tests. This happens when testdouble is creating a mock object
-    // and invokes the shouldShake/shouldFloat getters (which in turn call getValue(), which calls this method) before
-    // init() has been called from the MDCTextField constructor. To work around that issue, we return a dummy object.
+    // this.adapter may be undefined in foundation unit tests. This happens when
+    // testdouble is creating a mock object and invokes the
+    // shouldShake/shouldFloat getters (which in turn call getValue(), which
+    // calls this method) before init() has been called from the MDCTextField
+    // constructor. To work around that issue, we return a dummy object.
     const nativeInput = this.adapter ? this.adapter.getNativeInput() : null;
     return nativeInput || {
       disabled: false,

@@ -545,5 +545,7 @@ Method Signature | Description
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
 `setTransformOrigin(evt: TouchEvent \| MouseEvent) => void` | Sets the line ripple's transform origin, so that the line ripple activate animation will animate out from the user's click location.
 `autoCompleteFocus() => void` | Activates the Text Field's focus state in cases when the input value is changed programmatically (i.e., without user action).
+`setAutovalidate(shouldAutovalidate: boolean) => void` | Sets whether or not the textfield should validate its input when `value` changes.
+`getAutovalidate() => boolean` | Whether or not the textfield should validate its input when `value` changes. `true` by default.
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
