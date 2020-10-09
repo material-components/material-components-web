@@ -113,8 +113,6 @@ $ripple-target: '.mdc-fab__ripple';
 
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
-  // postcss-bem-linter: define fab
-
   .mdc-fab {
     @include ripple.surface($query: $query, $ripple-target: $ripple-target);
     @include ripple.radius-bounded(
@@ -127,17 +125,18 @@ $ripple-target: '.mdc-fab__ripple';
       $ripple-target: $ripple-target
     );
 
-    // stylelint-disable-next-line plugin/selector-bem-pattern
     #{$ripple-target} {
       @include ripple.target-common($query: $query);
 
       @include feature-targeting.targets($feat-structure) {
         overflow: hidden;
+        // Fixes Safari on Mac & iOS issue where ripple overflows button
+        // rendered in square shape. Creating new stacking context fixes this
+        // issue.
+        z-index: -1;
       }
     }
   }
-
-  // postcss-bem-linter: end
 }
 
 @mixin accessible($container-color, $query: feature-targeting.all()) {

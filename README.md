@@ -26,6 +26,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 - [Supported browsers](docs/supported-browsers.md)
 - [All Components](packages/)
 - [Changelog](./CHANGELOG.md)
+- [Roadmap](./ROADMAP.md)
 
 ## Quick start
 
