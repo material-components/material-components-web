@@ -235,11 +235,11 @@
   // Position for the tap target that contains the thumb to align the thumb
   // correctly offset from the track.
   $tap-target-initial-position: -$ripple-size / 2 + variables.$thumb-diameter /
-    2 - variables.$thumb-offset;
+    2;
   // Value to cover the whole switch area (including the ripple) with the
   // native control.
   $native-control-width: variables.$track-width +
-    ($ripple-size - variables.$thumb-diameter) + variables.$thumb-offset * 2;
+    ($ripple-size - variables.$thumb-diameter);
 
   .mdc-switch__thumb-underlay {
     @include feature-targeting.targets($feat-structure) {
