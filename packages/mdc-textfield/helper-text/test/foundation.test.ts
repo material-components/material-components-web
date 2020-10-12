@@ -26,7 +26,7 @@ import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {MDCTextFieldHelperTextFoundation} from '../../../mdc-textfield/helper-text/foundation';
 
-const {cssClasses} = MDCTextFieldHelperTextFoundation;
+const {cssClasses, strings} = MDCTextFieldHelperTextFoundation;
 
 describe('MDCTextFieldHelperTextFoundation', () => {
   it('exports cssClasses', () => {
@@ -42,6 +42,7 @@ describe('MDCTextFieldHelperTextFoundation', () => {
       'addClass',
       'removeClass',
       'hasClass',
+      'getAttr',
       'setAttr',
       'removeAttr',
       'setContent',
@@ -56,6 +57,50 @@ describe('MDCTextFieldHelperTextFoundation', () => {
 
   it('istanbul code coverage', () => {
     expect(() => new MDCTextFieldHelperTextFoundation).not.toThrow();
+  });
+
+  it('#getId retrieves ID', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getAttr.and.returnValue('bar');
+
+    expect(foundation.getId('foo')).toEqual('bar');
+  });
+
+  it('#isPersistent retrieves correct value', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_PERSISTENT)
+        .and.returnValue(true);
+
+    expect(foundation.isPersistent()).toEqual(true);
+
+    mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_PERSISTENT)
+        .and.returnValue(false);
+
+    expect(foundation.isPersistent()).toEqual(false);
+  });
+
+  it('#isValidation retrieves correct value', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
+        .and.returnValue(true);
+
+    expect(foundation.isValidation()).toEqual(true);
+
+    mockAdapter.hasClass.withArgs(cssClasses.HELPER_TEXT_VALIDATION_MSG)
+        .and.returnValue(false);
+
+    expect(foundation.isValidation()).toEqual(false);
+  });
+
+  it('#isVisible retrieves correct value', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getAttr.withArgs(strings.ARIA_HIDDEN).and.returnValue('true');
+
+    expect(foundation.isVisible()).toEqual(false);
+
+    mockAdapter.getAttr.withArgs(strings.ARIA_HIDDEN).and.returnValue('false');
+
+    expect(foundation.isVisible()).toEqual(true);
   });
 
   it('#setContent sets the content of the helper text element', () => {

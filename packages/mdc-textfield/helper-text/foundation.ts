@@ -43,6 +43,7 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
       addClass: () => undefined,
       removeClass: () => undefined,
       hasClass: () => false,
+      getAttr: () => null,
       setAttr: () => undefined,
       removeAttr: () => undefined,
       setContent: () => undefined,
@@ -54,11 +55,24 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
     super({...MDCTextFieldHelperTextFoundation.defaultAdapter, ...adapter});
   }
 
+
+  getId(): string|null {
+    return this.adapter.getAttr('id');
+  }
+
+  isVisible(): boolean {
+    return this.adapter.getAttr(strings.ARIA_HIDDEN) !== 'true';
+  }
+
   /**
    * Sets the content of the helper text field.
    */
   setContent(content: string) {
     this.adapter.setContent(content);
+  }
+
+  isPersistent(): boolean {
+    return this.adapter.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
   }
 
   /**
@@ -70,6 +84,13 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
     } else {
       this.adapter.removeClass(cssClasses.HELPER_TEXT_PERSISTENT);
     }
+  }
+
+  /**
+   * @return whether the helper text acts as an error validation message.
+   */
+  isValidation(): boolean {
+    return this.adapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
   }
 
   /**
@@ -99,6 +120,7 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
 
     if (validationMsgNeedsDisplay) {
+      this.showToScreenReader();
       this.adapter.setAttr(strings.ROLE, 'alert');
     } else {
       this.adapter.removeAttr(strings.ROLE);

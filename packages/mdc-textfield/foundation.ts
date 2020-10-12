@@ -71,11 +71,14 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
       addClass: () => undefined,
       removeClass: () => undefined,
       hasClass: () => true,
+      setInputAttr: () => undefined,
+      removeInputAttr: () => undefined,
       registerTextFieldInteractionHandler: () => undefined,
       deregisterTextFieldInteractionHandler: () => undefined,
       registerInputInteractionHandler: () => undefined,
       deregisterInputInteractionHandler: () => undefined,
-      registerValidationAttributeChangeHandler: () => new MutationObserver(() => undefined),
+      registerValidationAttributeChangeHandler: () =>
+          new MutationObserver(() => undefined),
       deregisterValidationAttributeChangeHandler: () => undefined,
       getNativeInput: () => null,
       isFocused: () => false,
@@ -230,7 +233,9 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
       this.styleFloating_(this.shouldFloat);
       this.adapter.shakeLabel(this.shouldShake);
     }
-    if (this.helperText_) {
+    if (this.helperText_ &&
+        (this.helperText_.isPersistent() || !this.helperText_.isValidation() ||
+         !this.isValid_)) {
       this.helperText_.showToScreenReader();
     }
   }
@@ -441,6 +446,22 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     }
     if (this.helperText_) {
       this.helperText_.setValidity(isValid);
+
+      // We dynamically set or unset aria-describedby for validation helper text
+      // only, based on whether the field is valid
+      const helperTextValidation = this.helperText_.isValidation();
+      if (!helperTextValidation) {
+        return;
+      }
+
+      const helperTextVisible = this.helperText_.isVisible();
+      const helperTextId = this.helperText_.getId();
+
+      if (helperTextVisible && helperTextId) {
+        this.adapter.setInputAttr(strings.ARIA_DESCRIBEDBY, helperTextId);
+      } else {
+        this.adapter.removeInputAttr(strings.ARIA_DESCRIBEDBY);
+      }
     }
   }
 

@@ -602,6 +602,26 @@ describe('MDCTextField', () => {
     expect(root.classList.contains('foo')).toBeFalsy();
   });
 
+  it('#adapter.setInputAttr sets attribute on input element', () => {
+    const {root, component} = setupTest();
+    const input =
+        root.querySelector('.mdc-text-field__input') as HTMLInputElement;
+
+    (component.getDefaultFoundation() as any)
+        .adapter.setInputAttr('foo', 'bar');
+    expect(input.getAttribute('foo')).toEqual('bar');
+  });
+
+  it('#adapter.removeInputAttr removes attribute on input element', () => {
+    const {root, component} = setupTest();
+    const input =
+        root.querySelector('.mdc-text-field__input') as HTMLInputElement;
+
+    input.setAttribute('foo', 'bar!');
+    (component.getDefaultFoundation() as any).adapter.removeInputAttr('foo');
+    expect(input.getAttribute('foo')).toBe(null);
+  });
+
   it('#adapter.registerInputInteractionHandler adds a handler to the input element for a given event',
      () => {
        const {root, component} = setupTest();

@@ -27,7 +27,7 @@ import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {MDCTextFieldFoundation} from '../../mdc-textfield/foundation';
 
 const LABEL_WIDTH = 100;
-const {cssClasses, numbers} = MDCTextFieldFoundation;
+const {cssClasses, numbers, strings} = MDCTextFieldFoundation;
 
 describe('MDCTextFieldFoundation', () => {
   it('exports strings', () => {
@@ -47,6 +47,8 @@ describe('MDCTextFieldFoundation', () => {
       'addClass',
       'removeClass',
       'hasClass',
+      'setInputAttr',
+      'removeInputAttr',
       'registerTextFieldInteractionHandler',
       'deregisterTextFieldInteractionHandler',
       'registerInputInteractionHandler',
@@ -79,7 +81,11 @@ describe('MDCTextFieldFoundation', () => {
 
     const helperText = useHelperText ?
         jasmine.createSpyObj(
-            'helperText', ['setContent', 'showToScreenReader', 'setValidity']) :
+            'helperText',
+            [
+              'getId', 'isVisible', 'isPersistent', 'isValidation',
+              'setContent', 'showToScreenReader', 'setValidity'
+            ]) :
         undefined;
 
     const characterCounter = useCharacterCounter ?
@@ -344,6 +350,32 @@ describe('MDCTextFieldFoundation', () => {
     expect(mockAdapter.removeClass)
         .not.toHaveBeenCalledWith(cssClasses.DISABLED);
   });
+
+  it('#setValid sets aria-describedby if validation helper text is visible',
+     () => {
+       const {foundation, mockAdapter, helperText} =
+           setupTest({useHelperText: true});
+       helperText.isValidation.and.returnValue(true);
+       helperText.isVisible.and.returnValue(true);
+       helperText.getId.and.returnValue('foooo');
+
+       foundation.setValid(true);
+       expect(mockAdapter.setInputAttr)
+           .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY, 'foooo');
+     });
+
+  it('#setValid removes aria-describedby if validation helper text is hidden',
+     () => {
+       const {foundation, mockAdapter, helperText} =
+           setupTest({useHelperText: true});
+       helperText.isValidation.and.returnValue(true);
+       helperText.isVisible.and.returnValue(false);
+       helperText.getId.and.returnValue('foooo');
+
+       foundation.setValid(true);
+       expect(mockAdapter.removeInputAttr)
+           .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY);
+     });
 
   it('#setValid updates classes, but not label methods when hasLabel is false',
      () => {

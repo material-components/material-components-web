@@ -75,6 +75,13 @@ describe('MDCTextFieldHelperText', () => {
            .toBeFalsy();
      });
 
+  it('#adapter.getAttr retrieves a given attribute from the element', () => {
+    const {root, component} = setupTest();
+    root.setAttribute('foobar', 'baz');
+    expect(component.getDefaultFoundation()['adapter'].getAttr('foobar'))
+        .toEqual('baz');
+  });
+
   it('#adapter.setAttr adds a given attribute to the element', () => {
     const {root, component} = setupTest();
     (component.getDefaultFoundation() as any)

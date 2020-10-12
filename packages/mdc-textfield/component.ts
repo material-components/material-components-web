@@ -379,8 +379,12 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
       addClass: (className) => this.root.classList.add(className),
       removeClass: (className) => this.root.classList.remove(className),
       hasClass: (className) => this.root.classList.contains(className),
-      registerTextFieldInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
-      deregisterTextFieldInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),
+      registerTextFieldInteractionHandler: (evtType, handler) => {
+        this.listen(evtType, handler);
+      },
+      deregisterTextFieldInteractionHandler: (evtType, handler) => {
+        this.unlisten(evtType, handler);
+      },
       registerValidationAttributeChangeHandler: (handler) => {
         const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
           return mutationsList
@@ -392,7 +396,9 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
         observer.observe(this.input_, config);
         return observer;
       },
-      deregisterValidationAttributeChangeHandler: (observer) => observer.disconnect(),
+      deregisterValidationAttributeChangeHandler: (observer) => {
+        observer.disconnect();
+      },
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -401,11 +407,19 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getNativeInput: () => this.input_,
+      setInputAttr: (attr, value) => {
+        this.input_.setAttribute(attr, value);
+      },
+      removeInputAttr: (attr) => {
+        this.input_.removeAttribute(attr);
+      },
       isFocused: () => document.activeElement === this.input_,
-      registerInputInteractionHandler: (evtType, handler) =>
-        this.input_.addEventListener(evtType, handler, applyPassive()),
-      deregisterInputInteractionHandler: (evtType, handler) =>
-        this.input_.removeEventListener(evtType, handler, applyPassive()),
+      registerInputInteractionHandler: (evtType, handler) => {
+        this.input_.addEventListener(evtType, handler, applyPassive());
+      },
+      deregisterInputInteractionHandler: (evtType, handler) => {
+        this.input_.removeEventListener(evtType, handler, applyPassive());
+      },
     };
     // tslint:enable:object-literal-sort-keys
   }
