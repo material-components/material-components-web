@@ -71,6 +71,13 @@
     @include outline(variables.$outline-color, $query: $query);
   }
 
+  .mdc-card__content {
+    @include feature-targeting.targets($feat-structure) {
+      border-radius: inherit;
+      height: 100%;
+    }
+  }
+
   //
   // Media
   //
