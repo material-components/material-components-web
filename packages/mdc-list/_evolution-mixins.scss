@@ -1,14 +1,16 @@
 @use 'sass:list';
 @use 'sass:map';
 @use '@material/theme/theme';
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/typography/typography';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme-color';
-@use './variables';
+@use './evolution-variables' as variables;
 
-@mixin evolution($query: feature-targeting.all()) {
+@mixin without-ripple($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
@@ -33,15 +35,15 @@
     $query
   );
   @include evolution-item-disabled-content-opacity(
-    variables.$text-disabled-opacity,
+    variables.$content-disabled-opacity,
     $query
   );
   @include evolution-item-disabled-content-color(
-    variables.$text-disabled-color,
+    variables.$content-disabled-color,
     $query
   );
   @include evolution-item-selected-content-color(
-    variables.$text-selected-color,
+    variables.$content-selected-color,
     $query
   );
 
@@ -468,6 +470,39 @@
 
   .mdc-evolution-list-divider--with-leading-radio {
     @include evolution-inset-divider-leading-offset(72px, $query: $query);
+  }
+}
+
+@mixin with-ripple($query: feature-targeting.all()) {
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  :not(.mdc-evolution-list-item--disabled).mdc-evolution-list-item {
+    @include evolution-item-interactive-ripple_($query);
+  }
+
+  .mdc-evolution-list-item--disabled {
+    @include ripple.surface(
+      $ripple-target: variables.$ripple-target,
+      $query: $query
+    );
+    @include ripple.radius-bounded(
+      $ripple-target: variables.$ripple-target,
+      $query: $query
+    );
+    @include ripple-theme.states-base-color(
+      theme-color.prop-value(on-surface),
+      $ripple-target: variables.$ripple-target,
+      $query: $query
+    );
+    @include ripple-theme.states-focus-opacity(
+      ripple-theme.states-opacity(primary, focus),
+      $ripple-target: variables.$ripple-target,
+      $query: $query
+    );
+
+    #{variables.$ripple-target} {
+      @include ripple.target-common($query: $query);
+    }
   }
 }
 
@@ -909,5 +944,38 @@
     &:focus {
       outline: none;
     }
+  }
+}
+
+@mixin evolution-item-interactive-ripple_($query: feature-targeting.all()) {
+  @include ripple.surface(
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple.radius-bounded(
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple-theme.states(
+    theme-color.prop-value(on-surface),
+    false,
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple-theme.states-activated(
+    primary,
+    false,
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+  @include ripple-theme.states-selected(
+    primary,
+    false,
+    $ripple-target: variables.$ripple-target,
+    $query: $query
+  );
+
+  #{variables.$ripple-target} {
+    @include ripple.target-common($query: $query);
   }
 }

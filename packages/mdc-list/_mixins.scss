@@ -473,7 +473,7 @@
     }
   }
 
-  @include evolution-mixins.evolution($query: $query);
+  @include evolution-mixins.without-ripple($query: $query);
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
@@ -482,7 +482,6 @@
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // List items should support states by default, but it should be possible to opt out.
-  :not(.mdc-list-item--disabled).mdc-evolution-list-item,
   :not(.mdc-list-item--disabled).mdc-list-item {
     @include item-interactive-ripple_($query);
   }
@@ -512,6 +511,8 @@
       @include ripple.target-common($query: $query);
     }
   }
+
+  @include evolution-mixins.with-ripple($query: $query);
 }
 
 ///
