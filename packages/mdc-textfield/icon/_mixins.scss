@@ -139,11 +139,12 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(
-      margin,
-      variables.$trailing-icon-padding-left,
-      variables.$trailing-icon-padding-right
-    );
+    $padding: (variables.$touch-target-size - variables.$icon-size) / 2;
+    $left-margin: variables.$trailing-icon-padding-left - $padding;
+    $right-margin: variables.$trailing-icon-padding-right - $padding;
+
+    padding: $padding;
+    @include rtl-mixins.reflexive-property(margin, $left-margin, $right-margin);
   }
 }
 
