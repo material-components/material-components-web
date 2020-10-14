@@ -15,6 +15,7 @@
   },
   "sideEffects": false,
   "dependencies": {
+    "@material/dom": "^7.0.0",
     "@material/elevation": "^7.0.0",
     "@material/feature-targeting": "^7.0.0",
     "@material/ripple": "^7.0.0",

@@ -33,6 +33,7 @@
 @use '@material/theme/theme';
 @use './variables';
 @use '@material/theme/theme-color';
+@use '@material/dom/mixins' as dom-mixins;
 
 //
 // Public
@@ -64,11 +65,28 @@
     @include feature-targeting.targets($feat-structure) {
       @include container-layout_;
     }
+
+    // Transparent card border for high-contrast mode.
+    &::after {
+      @include shape-radius(variables.$shape-radius, $query: $query);
+      @include dom-mixins.transparent-border($query: $query);
+      @include feature-targeting.targets($feat-structure) {
+        pointer-events: none;
+      }
+    }
   }
 
   .mdc-card--outlined {
     @include elevation-mixins.elevation(0, $query: $query);
     @include outline(variables.$outline-color, $query: $query);
+
+    // Outlined card already displays border in high-contrast mode. Overwriting
+    // styles set above to remove a duplicate border.
+    &::after {
+      @include feature-targeting.targets($feat-structure) {
+        border: none;
+      }
+    }
   }
 
   .mdc-card__content {
