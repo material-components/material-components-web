@@ -231,6 +231,33 @@ describe('MDCTextFieldFoundation', () => {
         .toHaveBeenCalledWith(cssClasses.LABEL_FLOATING);
   });
 
+  it('#setValue valid and invalid input without autovalidation', () => {
+    const {foundation, mockAdapter, nativeInput, helperText} = setupValueTest(
+        {value: '', optIsValid: false, hasLabel: true, useHelperText: true});
+
+    expect(foundation.getValidateOnValueChange()).toBeTrue();
+    foundation.setValidateOnValueChange(false);
+    expect(foundation.getValidateOnValueChange()).toBeFalse();
+
+    foundation.setValue('invalid');
+    expect(mockAdapter.addClass).not.toHaveBeenCalledWith(cssClasses.INVALID);
+    expect(helperText.setValidity).not.toHaveBeenCalledWith(false);
+    expect(mockAdapter.shakeLabel).not.toHaveBeenCalledWith(true);
+    expect(mockAdapter.floatLabel).toHaveBeenCalledWith(true);
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.LABEL_FLOATING);
+
+    nativeInput.validity.valid = true;
+    foundation.setValue('valid');
+    expect(mockAdapter.removeClass)
+        .not.toHaveBeenCalledWith(cssClasses.INVALID);
+    expect(helperText.setValidity).not.toHaveBeenCalledWith(true);
+    expect(mockAdapter.shakeLabel).not.toHaveBeenCalledWith(false);
+    expect(mockAdapter.floatLabel).toHaveBeenCalledWith(true);
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.LABEL_FLOATING);
+  });
+
   it('#setValue with invalid status and empty value does not shake the label',
      () => {
        const {foundation, mockAdapter, helperText} = setupValueTest(
@@ -1319,18 +1346,14 @@ describe('MDCTextFieldFoundation', () => {
         .and.callFake((handler: Function) => attributeChange = handler);
     foundation.init();
 
-    mockAdapter.getNativeInput.and.returnValue({
-      required: true
-    });
+    mockAdapter.getNativeInput.and.returnValue({required: true});
 
     if (attributeChange !== undefined) {
       attributeChange(['required']);
     }
     expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(true);
 
-    mockAdapter.getNativeInput.and.returnValue({
-      required: false
-    });
+    mockAdapter.getNativeInput.and.returnValue({required: false});
 
     if (attributeChange !== undefined) {
       attributeChange(['required']);
