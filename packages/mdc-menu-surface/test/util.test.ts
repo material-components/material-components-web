@@ -63,7 +63,9 @@ describe('MDCMenuSurface - util', () => {
        expect(utils.getTransformPropertyName(mockWindow))
            .toEqual('transform', 'sanity check no force refresh');
 
-       delete mockElement.style.transform;
+       // TODO(b/168652857): The operand of a 'delete' operator must be
+       // optional.
+       delete (mockElement as any).style.transform;
        expect(utils.getTransformPropertyName(mockWindow)).toEqual('transform');
        expect(utils.getTransformPropertyName(mockWindow, true))
            .toEqual('webkitTransform');
