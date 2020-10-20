@@ -4,6 +4,7 @@
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/density/functions' as density-functions;
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/typography/typography';
 @use '@material/feature-targeting/feature-targeting';
@@ -55,9 +56,18 @@
     @include evolution-item-base_($query: $query);
     @include evolution-item-spacing(16px, $query: $query);
 
-    @include evolution-one-line-item-height(48px, $query: $query);
-    @include evolution-two-line-item-height(64px, $query: $query);
-    @include evolution-three-line-item-height(88px, $query: $query);
+    @include evolution-one-line-item-density_(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include evolution-two-line-item-density_(
+      variables.$two-line-item-density-scale,
+      $query: $query
+    );
+    @include evolution-three-line-item-density_(
+      variables.$three-line-item-density-scale,
+      $query: $query
+    );
 
     @include evolution-one-line-item-start-alignment(center, $query: $query);
     @include evolution-two-line-item-start-alignment(
@@ -187,13 +197,19 @@
   }
 
   .mdc-evolution-list-item--with-leading-avatar {
-    @include evolution-one-line-item-height(56px, $query: $query);
-    @include evolution-two-line-item-height(72px, $query: $query);
     @include evolution-item-start-spacing(16px, $query: $query);
     @include evolution-item-start-size(40px, $query: $query);
     @include _evolution-two-line-item-primary-baseline(
       32px,
       20px,
+      $query: $query
+    );
+    @include evolution-one-line-item-tall-density_(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include evolution-two-line-item-tall-density_(
+      variables.$two-line-item-density-scale,
       $query: $query
     );
 
@@ -205,8 +221,6 @@
   }
 
   .mdc-evolution-list-item--with-leading-icon {
-    @include evolution-one-line-item-height(56px, $query: $query);
-    @include evolution-two-line-item-height(72px, $query: $query);
     @include evolution-item-start-size(24px, $query: $query);
     @include evolution-item-start-spacing(
       $leading: 16px,
@@ -218,11 +232,17 @@
       20px,
       $query: $query
     );
+    @include evolution-one-line-item-tall-density_(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include evolution-two-line-item-tall-density_(
+      variables.$two-line-item-density-scale,
+      $query: $query
+    );
   }
 
   .mdc-evolution-list-item--with-leading-thumbnail {
-    @include evolution-one-line-item-height(56px, $query: $query);
-    @include evolution-two-line-item-height(72px, $query: $query);
     @include evolution-item-start-spacing(16px, $query: $query);
     @include evolution-item-start-size(40px, $query: $query);
     @include _evolution-two-line-item-primary-baseline(
@@ -230,11 +250,17 @@
       20px,
       $query: $query
     );
+    @include evolution-one-line-item-tall-density_(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include evolution-two-line-item-tall-density_(
+      variables.$two-line-item-density-scale,
+      $query: $query
+    );
   }
 
   .mdc-evolution-list-item--with-leading-image {
-    @include evolution-one-line-item-height(72px, $query: $query);
-    @include evolution-two-line-item-height(72px, $query: $query);
     @include evolution-item-start-spacing(16px, $query: $query);
     @include evolution-item-start-size(56px, $query: $query);
     @include _evolution-two-line-item-primary-baseline(
@@ -242,11 +268,17 @@
       20px,
       $query: $query
     );
+    @include evolution-one-line-item-taller-density_(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include evolution-two-line-item-tall-density_(
+      variables.$two-line-item-density-scale,
+      $query: $query
+    );
   }
 
   .mdc-evolution-list-item--with-leading-video {
-    @include evolution-one-line-item-height(72px, $query: $query);
-    @include evolution-two-line-item-height(72px, $query: $query);
     @include evolution-two-line-item-start-alignment(
       $alignment: flex-start,
       $offset: 8px,
@@ -267,19 +299,33 @@
       20px,
       $query: $query
     );
+    @include evolution-one-line-item-taller-density_(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include evolution-two-line-item-tall-density_(
+      variables.$two-line-item-density-scale,
+      $query: $query
+    );
   }
 
   .mdc-evolution-list-item--with-leading-checkbox {
     $leading: absorb-overflow(16px, $actual: 40px, $available: 24px);
     $trailing: absorb-overflow(32px, $actual: 40px, $available: 24px);
 
-    @include evolution-one-line-item-height(56px, $query: $query);
-    @include evolution-two-line-item-height(72px, $query: $query);
     @include evolution-item-start-spacing($leading, $trailing, $query: $query);
     @include evolution-item-start-size(40px, $query: $query);
     @include _evolution-two-line-item-primary-baseline(
       32px,
       20px,
+      $query: $query
+    );
+    @include evolution-one-line-item-tall-density_(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include evolution-two-line-item-tall-density_(
+      variables.$two-line-item-density-scale,
       $query: $query
     );
   }
@@ -288,8 +334,6 @@
     $leading: absorb-overflow(16px, $actual: 40px, $available: 24px);
     $trailing: absorb-overflow(32px, $actual: 40px, $available: 24px);
 
-    @include evolution-one-line-item-height(56px, $query: $query);
-    @include evolution-two-line-item-height(72px, $query: $query);
     @include evolution-item-start-spacing($leading, $trailing, $query: $query);
     @include evolution-item-start-size(40px, $query: $query);
     @include _evolution-two-line-item-primary-baseline(
@@ -297,11 +341,17 @@
       20px,
       $query: $query
     );
+    @include evolution-one-line-item-tall-density_(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include evolution-two-line-item-tall-density_(
+      variables.$two-line-item-density-scale,
+      $query: $query
+    );
   }
 
   .mdc-evolution-list-item--with-leading-switch {
-    @include evolution-one-line-item-height(56px, $query: $query);
-    @include evolution-two-line-item-height(72px, $query: $query);
     @include evolution-item-start-spacing(16px, $query: $query);
     @include evolution-item-start-size(
       $width: 36px,
@@ -311,6 +361,14 @@
     @include _evolution-two-line-item-primary-baseline(
       32px,
       20px,
+      $query: $query
+    );
+    @include evolution-one-line-item-tall-density_(
+      variables.$one-line-item-density-scale,
+      $query: $query
+    );
+    @include evolution-two-line-item-tall-density_(
+      variables.$two-line-item-density-scale,
       $query: $query
     );
   }
@@ -905,9 +963,144 @@
   }
 }
 
+// The public density mixins apply the appropriate density styles regardless of
+// the item's start contents.
+@mixin evolution-one-line-item-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  @include evolution-one-line-item-density_($density-scale, $query: $query);
+
+  &.mdc-evolution-list-item--with-leading-icon,
+  &.mdc-evolution-list-item--with-leading-thumbnail,
+  &.mdc-evolution-list-item--with-leading-checkbox,
+  &.mdc-evolution-list-item--with-leading-radio,
+  &.mdc-evolution-list-item--with-leading-switch {
+    @include evolution-one-line-item-tall-density_(
+      $density-scale,
+      $query: $query
+    );
+  }
+
+  &.mdc-evolution-list-item--with-leading-image,
+  &.mdc-evolution-list-item--with-leading-video {
+    @include evolution-one-line-item-taller-density_(
+      $density-scale,
+      $query: $query
+    );
+  }
+}
+
+@mixin evolution-two-line-item-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  @include evolution-two-line-item-density_($density-scale, $query: $query);
+
+  &.mdc-evolution-list-item--with-leading-icon,
+  &.mdc-evolution-list-item--with-leading-thumbnail,
+  &.mdc-evolution-list-item--with-leading-checkbox,
+  &.mdc-evolution-list-item--with-leading-radio,
+  &.mdc-evolution-list-item--with-leading-switch,
+  &.mdc-evolution-list-item--with-leading-image,
+  &.mdc-evolution-list-item--with-leading-video {
+    @include evolution-two-line-item-tall-density_(
+      $density-scale,
+      $query: $query
+    );
+  }
+}
+
+@mixin evolution-three-line-item-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  @include evolution-three-line-item-density_($density-scale, $query: $query);
+}
+
 //
 // Private
 //
+
+// The private density mixins allow density properties to be overridden
+// individually to avoid increasing specificity.
+@mixin evolution-one-line-item-density_(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$one-line-item-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include evolution-one-line-item-height($height, $query: $query);
+}
+
+@mixin evolution-one-line-item-tall-density_(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$one-line-item-tall-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include evolution-one-line-item-height($height, $query: $query);
+}
+
+@mixin evolution-one-line-item-taller-density_(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$one-line-item-taller-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include evolution-one-line-item-height($height, $query: $query);
+}
+
+@mixin evolution-two-line-item-density_(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$two-line-item-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include evolution-two-line-item-height($height, $query: $query);
+}
+
+@mixin evolution-two-line-item-tall-density_(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$two-line-item-tall-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include evolution-two-line-item-height($height, $query: $query);
+}
+
+@mixin evolution-three-line-item-density_(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: variables.$three-line-item-density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include evolution-three-line-item-height($height, $query: $query);
+}
 
 @mixin evolution-list-base_($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
