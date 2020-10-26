@@ -35,6 +35,7 @@ $primary-action-text-color: primary;
 $secondary-action-text-color: primary;
 
 $mobile-breakpoint: 480px;
+$z-index: 1;
 
 ///
 /// Customizes fill color.
@@ -183,5 +184,15 @@ $mobile-breakpoint: 480px;
       margin-right: auto;
       right: 0;
     }
+  }
+}
+
+// Sets the z-index of the banner.
+// @param {Number} $z-index
+@mixin z-index($z-index, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    z-index: $z-index;
   }
 }

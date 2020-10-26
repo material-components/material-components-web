@@ -64,6 +64,7 @@ $_exit-duration: 250ms;
       banner-theme.$divider-color,
       $query: $query
     );
+    @include banner-theme.z-index(banner-theme.$z-index, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       border-bottom-style: solid;
