@@ -199,6 +199,17 @@ describe('MDCBanner', () => {
     expect(fixture.offsetHeight).toEqual(0);
   });
 
+  it('#layout sets the root element height to the content element height',
+     () => {
+       const {component, contentEl} = setupTest(fixture);
+
+       (contentEl as HTMLElement).style.height = '50px';
+       component.layout();
+       jasmine.clock().tick(1);
+       expect(fixture.offsetHeight)
+           .toEqual((contentEl as HTMLElement).offsetHeight);
+     });
+
   it('get isOpen returns true when open', () => {
     const {component} = setupTest(fixture);
 

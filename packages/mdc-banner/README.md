@@ -213,6 +213,7 @@ Method Signature | Description
 `setPrimaryActionText(actionButtonText: string) => void` | Sets the banner's primary action text.
 `getSecondaryActionText() => string|null` | Gets the banner's secondary action text. Returns null if the banner has no secondary action.
 `setSecondaryActionText(actionButtonText: string) => void` | Sets the banner's secondary action text.
+`layout() => void` | Recalculates layout. With height being calculated dynamically recommended to call on window `resize` events.
 
 ### Usage Within Frameworks
 

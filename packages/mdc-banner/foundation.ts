@@ -126,6 +126,11 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
     this.close(CloseReason.SECONDARY);
   }
 
+  layout() {
+    const contentHeight = this.adapter.getContentHeight();
+    this.adapter.setStyleProperty('height', `${contentHeight}px`);
+  }
+
   private handleAnimationTimerEnd() {
     this.animationTimer = 0;
     this.adapter.removeClass(OPENING);

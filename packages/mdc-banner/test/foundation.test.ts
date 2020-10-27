@@ -57,6 +57,15 @@ describe('MDCBannerFoundation', () => {
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(cssClasses.OPEN);
   });
 
+  it('#layout sets the root element height to the content height', () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    foundation.layout();
+    expect(mockAdapter.getContentHeight).toHaveBeenCalled();
+    // 0px since nothing is being generated.
+    expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('height', '0px');
+  });
+
   it('#open adds CSS classes after rAF', () => {
     const {foundation, mockAdapter} = setupTest();
 
