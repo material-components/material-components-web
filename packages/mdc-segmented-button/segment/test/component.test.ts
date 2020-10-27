@@ -22,8 +22,9 @@
  */
 
 import {emitEvent} from '../../../../testing/dom/events';
+import {attributes, booleans, cssClasses, events} from '../constants';
 import {MDCSegmentedButtonSegment} from '../index';
-import {events, attributes, booleans, cssClasses} from '../constants';
+
 import {testStrings} from './constants';
 
 const getFixtureMultiSelectWithLabel = () => {
@@ -51,7 +52,10 @@ const setupTest = () => {
  */
 describe('MDCSegmentedButtonSegment', () => {
   it('attachTo return an MDCSegmentedButtonSegment instance', () => {
-    expect(MDCSegmentedButtonSegment.attachTo(getFixtureMultiSelectWithLabel()) instanceof MDCSegmentedButtonSegment).toBeTruthy();
+    expect(
+        MDCSegmentedButtonSegment.attachTo(getFixtureMultiSelectWithLabel())
+            instanceof MDCSegmentedButtonSegment)
+        .toBeTruthy();
   });
 
   it('#initialSyncWithDOM sets up event handlers', () => {
@@ -146,29 +150,33 @@ describe('MDCSegmentedButtonSegment', () => {
       component.destroy();
     });
 
-    it(`#notifySelectedChange emits ${events.SELECTED} event with SegmentDetail`, () => {
-      const {root, component, adapter} = setupTest();
-      const handler = jasmine.createSpy('selected handler');
-      component.listen(events.SELECTED, handler);
+    it(`#notifySelectedChange emits ${
+           events.SELECTED} event with SegmentDetail`,
+       () => {
+         const {root, component, adapter} = setupTest();
+         const handler = jasmine.createSpy('selected handler');
+         component.listen(events.SELECTED, handler);
 
-      const index = 0;
-      component.setIndex(index);
-      root.setAttribute(attributes.DATA_SEGMENT_ID, testStrings.SEGMENT_ID);
+         const index = 0;
+         component.setIndex(index);
+         root.setAttribute(attributes.DATA_SEGMENT_ID, testStrings.SEGMENT_ID);
 
-      adapter.notifySelectedChange(true);
-      expect(handler).toHaveBeenCalledWith(jasmine.anything());
-      expect(handler.calls.mostRecent().args[0].detail.index).toEqual(index);
-      expect(handler.calls.mostRecent().args[0].detail.selected).toBeTrue();
-      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(testStrings.SEGMENT_ID);
+         adapter.notifySelectedChange(true);
+         expect(handler).toHaveBeenCalledWith(jasmine.anything());
+         expect(handler.calls.mostRecent().args[0].detail.index).toEqual(index);
+         expect(handler.calls.mostRecent().args[0].detail.selected).toBeTrue();
+         expect(handler.calls.mostRecent().args[0].detail.segmentId)
+             .toEqual(testStrings.SEGMENT_ID);
 
-      adapter.notifySelectedChange(false);
-      expect(handler.calls.mostRecent().args[0].detail.index).toEqual(index);
-      expect(handler.calls.mostRecent().args[0].detail.selected).toBeFalse();
-      expect(handler.calls.mostRecent().args[0].detail.segmentId).toEqual(testStrings.SEGMENT_ID);
+         adapter.notifySelectedChange(false);
+         expect(handler.calls.mostRecent().args[0].detail.index).toEqual(index);
+         expect(handler.calls.mostRecent().args[0].detail.selected).toBeFalse();
+         expect(handler.calls.mostRecent().args[0].detail.segmentId)
+             .toEqual(testStrings.SEGMENT_ID);
 
-      component.unlisten(events.SELECTED, handler);
-      component.destroy();
-    });
+         component.unlisten(events.SELECTED, handler);
+         component.destroy();
+       });
   });
 
   it('#isSelected returns whether segment is selected', () => {

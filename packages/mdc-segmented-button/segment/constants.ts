@@ -36,7 +36,7 @@ export const attributes = {
   ARIA_CHECKED: 'aria-checked',
   ARIA_PRESSED: 'aria-pressed',
   DATA_SEGMENT_ID: 'data-segment-id'
-}
+};
 
 /**
  * Events received or emitted by segment
@@ -44,7 +44,7 @@ export const attributes = {
 export const events = {
   CLICK: 'click',
   SELECTED: 'selected'
-}
+};
 
 /**
  * Style classes for segment

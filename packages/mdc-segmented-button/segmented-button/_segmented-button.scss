@@ -22,6 +22,9 @@
 
 // Core: Define complete styles to render component, including base and theme styles
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
 @use '@material/feature-targeting/feature-targeting';
 @use './segmented-button-theme';
 

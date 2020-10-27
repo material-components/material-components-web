@@ -23,13 +23,19 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener} from '@material/base/types';
-import {MDCSegmentedButtonSegment, MDCSegmentedButtonSegmentFactory} from '../segment/component';
-import {SegmentDetail, MDCSegmentedButtonEvent} from '../types';
-import {MDCSegmentedButtonAdapter} from './adapter';
-import {MDCSegmentedButtonFoundation} from './foundation';
-import {selectors, events} from './constants';
 
-export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundation> {
+import {MDCSegmentedButtonSegment, MDCSegmentedButtonSegmentFactory} from '../segment/component';
+import {MDCSegmentedButtonEvent, SegmentDetail} from '../types';
+
+import {MDCSegmentedButtonAdapter} from './adapter';
+import {events, selectors} from './constants';
+import {MDCSegmentedButtonFoundation} from './foundation';
+
+// TODO(b/152410470): Remove trailing underscores from private properties
+// tslint:disable:strip-private-property-underscore
+
+export class MDCSegmentedButton extends
+    MDCComponent<MDCSegmentedButtonFoundation> {
   static attachTo(root: Element): MDCSegmentedButton {
     return new MDCSegmentedButton(root);
   }
@@ -38,13 +44,16 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
     return this.segments_.slice();
   }
 
-  private segments_!: MDCSegmentedButtonSegment[]; // assigned in initialize
+  private segments_!: MDCSegmentedButtonSegment[];  // assigned in initialize
   private segmentFactory!:
-      (el: Element) => MDCSegmentedButtonSegment; // assigned in initialize
+      (el: Element) => MDCSegmentedButtonSegment;  // assigned in initialize
   private handleSelected!:
-      CustomEventListener<MDCSegmentedButtonEvent>; // assigned in initialSyncWithDOM
+      CustomEventListener<MDCSegmentedButtonEvent>;  // assigned in
+                                                     // initialSyncWithDOM
 
-  initialize(segmentFactory: MDCSegmentedButtonSegmentFactory = (el) => new MDCSegmentedButtonSegment(el)) {
+  initialize(
+      segmentFactory: MDCSegmentedButtonSegmentFactory = (el) =>
+          new MDCSegmentedButtonSegment(el)) {
     this.segmentFactory = segmentFactory;
     this.segments_ = this.instantiateSegments(this.segmentFactory);
   }
@@ -53,15 +62,17 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
    * @param segmentFactory Factory to create new child segments
    * @return Returns list of child segments found in DOM
    */
-  private instantiateSegments(segmentFactory: MDCSegmentedButtonSegmentFactory): MDCSegmentedButtonSegment[] {
+  private instantiateSegments(segmentFactory: MDCSegmentedButtonSegmentFactory):
+      MDCSegmentedButtonSegment[] {
     const segmentElements: Element[] =
         [].slice.call(this.root.querySelectorAll(selectors.SEGMENT));
     return segmentElements.map((el: Element) => segmentFactory(el));
   }
 
   initialSyncWithDOM() {
-    this.handleSelected = (event) =>
-        this.foundation.handleSelected(event.detail);
+    this.handleSelected = (event) => {
+      this.foundation.handleSelected(event.detail);
+    };
     this.listen(events.SELECTED, this.handleSelected);
 
     const isSingleSelect = this.foundation.isSingleSelect();
@@ -70,11 +81,15 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
       segment.setIsSingleSelect(isSingleSelect);
     });
 
-    const selectedSegments = this.segments_.filter((segment) => segment.isSelected());
-    if (isSingleSelect && selectedSegments.length == 0 && this.segments_.length > 0) {
-      throw new Error('No segment selected in singleSelect mdc-segmented-button');
+    const selectedSegments =
+        this.segments_.filter((segment) => segment.isSelected());
+    if (isSingleSelect && selectedSegments.length == 0 &&
+        this.segments_.length > 0) {
+      throw new Error(
+          'No segment selected in singleSelect mdc-segmented-button');
     } else if (isSingleSelect && selectedSegments.length > 1) {
-      throw new Error('Multiple segments selected in singleSelect mdc-segmented-button');
+      throw new Error(
+          'Multiple segments selected in singleSelect mdc-segmented-button');
     }
   }
 
@@ -97,28 +112,24 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
         return this.mappedSegments();
       },
       selectSegment: (indexOrSegmentId) => {
-        const segmentDetail = this.mappedSegments().find((_segmentDetail) =>
-          _segmentDetail.index === indexOrSegmentId
-          || _segmentDetail.segmentId === indexOrSegmentId
-        );
+        const segmentDetail = this.mappedSegments().find(
+            (_segmentDetail) => _segmentDetail.index === indexOrSegmentId ||
+                _segmentDetail.segmentId === indexOrSegmentId);
         if (segmentDetail) {
           this.segments_[segmentDetail.index].setSelected();
         }
       },
       unselectSegment: (indexOrSegmentId) => {
-        const segmentDetail = this.mappedSegments().find((_segmentDetail) =>
-          _segmentDetail.index === indexOrSegmentId
-          || _segmentDetail.segmentId === indexOrSegmentId
-        );
+        const segmentDetail = this.mappedSegments().find(
+            (_segmentDetail) => _segmentDetail.index === indexOrSegmentId ||
+                _segmentDetail.segmentId === indexOrSegmentId);
         if (segmentDetail) {
           this.segments_[segmentDetail.index].setUnselected();
         }
       },
       notifySelectedChange: (detail) => {
         this.emit<SegmentDetail>(
-          events.CHANGE,
-          detail,
-          true /* shouldBubble */
+            events.CHANGE, detail, true /* shouldBubble */
         );
       }
     };
@@ -134,21 +145,21 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
 
   /**
    * Sets identified segment to be selected
-   * 
+   *
    * @param indexOrSegmentId Number index or string segmentId that identifies
    * child segment
    */
-  selectSegment(indexOrSegmentId: number | string) {
+  selectSegment(indexOrSegmentId: number|string) {
     this.foundation.selectSegment(indexOrSegmentId);
   }
 
   /**
    * Sets identified segment to be not selected
-   * 
+   *
    * @param indexOrSegmentId Number index or string segmentId that identifies
    * child segment
    */
-  unselectSegment(indexOrSegmentId: number | string) {
+  unselectSegment(indexOrSegmentId: number|string) {
     this.foundation.unselectSegment(indexOrSegmentId);
   }
 
@@ -158,7 +169,7 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
    * @return Returns true if identified child segment is currently selected,
    * otherwise returns false
    */
-  isSegmentSelected(indexOrSegmentId: number | string): boolean {
+  isSegmentSelected(indexOrSegmentId: number|string): boolean {
     return this.foundation.isSegmentSelected(indexOrSegmentId);
   }
 
@@ -166,12 +177,13 @@ export class MDCSegmentedButton extends MDCComponent<MDCSegmentedButtonFoundatio
    * @return Returns child segments mapped to readonly SegmentDetail list
    */
   private mappedSegments(): readonly SegmentDetail[] {
-    return this.segments_.map((segment: MDCSegmentedButtonSegment, index: number) => {
-      return {
-        index,
-        selected: segment.isSelected(),
-        segmentId: segment.getSegmentId()
-      };
-    });
+    return this.segments_.map(
+        (segment: MDCSegmentedButtonSegment, index: number) => {
+          return {
+            index,
+            selected: segment.isSelected(),
+            segmentId: segment.getSegmentId()
+          };
+        });
   }
 }

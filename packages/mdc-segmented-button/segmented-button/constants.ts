@@ -34,7 +34,7 @@ export const selectors = {
 export const events = {
   SELECTED: 'selected',
   CHANGE: 'change'
-}
+};
 
 /**
  * Style classes for segmented-button
