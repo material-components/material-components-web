@@ -74,7 +74,6 @@ const CSS_EXCLUDES = new Set([
   'feature-targeting',
   'progress-indicator',
   'rtl',
-  'segmented-button', // TODO(gschrag): Remove once segmented-button is released
   'shape',
   'touch-target',
 ]);
@@ -82,7 +81,6 @@ const CSS_EXCLUDES = new Set([
 const JS_EXCLUDES = new Set([
   'animation',
   'progress-indicator',
-  'segmented-button', // TODO(gschrag): Remove once segmented-button is released
 ]);
 
 const NOT_AUTOINIT = new Set([
@@ -90,7 +88,6 @@ const NOT_AUTOINIT = new Set([
   'base',
   'dom',
   'progress-indicator',
-  'segmented-button', // TODO(gschrag): Remove once segmented-button is released
   'tab', // Only makes sense in context of tab-bar
   'tab-indicator', // Only makes sense in context of tab-bar
   'tab-scroller', // Only makes sense in context of tab-bar
