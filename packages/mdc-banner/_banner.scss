@@ -69,6 +69,12 @@ $_exit-duration: 250ms;
     @include feature-targeting.targets($feat-structure) {
       // Mobile view styles.
       @media (max-width: banner-theme.$mobile-breakpoint) {
+        // Span across viewport for fixed mobile view.
+        .mdc-banner__fixed {
+          left: 0;
+          right: 0;
+        }
+
         .mdc-banner__content {
           flex-wrap: wrap;
         }

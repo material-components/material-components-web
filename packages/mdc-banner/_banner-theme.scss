@@ -141,8 +141,8 @@ $z-index: 1;
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-
-  .mdc-banner__content {
+  .mdc-banner__content,
+  .mdc-banner__fixed {
     @include feature-targeting.targets($feat-structure) {
       min-width: $min-width;
 
@@ -194,5 +194,18 @@ $z-index: 1;
 
   @include feature-targeting.targets($feat-structure) {
     z-index: $z-index;
+  }
+}
+
+// Sets the width of the banner fixed element. Use to adjust the width of the
+// fixed banner in cases where width is not the same as the viewport.
+// @param {Number} $width Width value in `px`.
+@mixin fixed-width($width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-banner__fixed {
+    @include feature-targeting.targets($feat-structure) {
+      width: $width;
+    }
   }
 }
