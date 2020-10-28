@@ -42,6 +42,7 @@ import * as menu from '@material/menu/index';
 import * as notchedOutline from '@material/notched-outline/index';
 import * as radio from '@material/radio/index';
 import * as ripple from '@material/ripple/index';
+import * as segmentedButton from '@material/segmented-button/index';
 import * as select from '@material/select/index';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
@@ -74,6 +75,7 @@ autoInit.register('MDCMenuSurface', menuSurface.MDCMenuSurface);
 autoInit.register('MDCNotchedOutline', notchedOutline.MDCNotchedOutline);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCRipple', ripple.MDCRipple);
+autoInit.register('MDCSegmentedButton', segmentedButton.MDCSegmentedButton);
 autoInit.register('MDCSelect', select.MDCSelect);
 autoInit.register('MDCSlider', slider.MDCSlider);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
@@ -106,6 +108,7 @@ export {
   notchedOutline,
   radio,
   ripple,
+  segmentedButton,
   select,
   slider,
   snackbar,

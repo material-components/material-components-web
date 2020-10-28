@@ -48,6 +48,7 @@
     "@material/radio": "^7.0.0",
     "@material/ripple": "^7.0.0",
     "@material/rtl": "^7.0.0",
+    "@material/segmented-button": "^0.0.0",
     "@material/select": "^7.0.0",
     "@material/shape": "^7.0.0",
     "@material/slider": "^7.0.0",
