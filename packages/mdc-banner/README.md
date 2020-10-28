@@ -56,8 +56,10 @@ const banner = new MDCBanner(document.querySelector('.mdc-banner'));
   <div class="mdc-banner__content"
        role="status"
        aria-live="assertive">
-    <div class="mdc-banner__text">
-      There was a problem processing a transaction on your credit card.
+    <div class="mdc-banner__graphic-text-wrapper">
+      <div class="mdc-banner__text">
+        There was a problem processing a transaction on your credit card.
+      </div>
     </div>
     <div class="mdc-banner__actions">
       <button type="button" class="mdc-button mdc-banner__primary-action">
@@ -101,8 +103,10 @@ When used below top app bars, banners should remain fixed at the top of the scre
     <div class="mdc-banner__content"
          role="status"
          aria-live="assertive">
-      <div class="mdc-banner__text">
-      There was a problem processing a transaction on your credit card.
+      <div class="mdc-banner__graphic-text-wrapper">
+        <div class="mdc-banner__text">
+          There was a problem processing a transaction on your credit card.
+        </div>
       </div>
       <div class="mdc-banner__actions">
         <button type="button" class="mdc-button mdc-banner__primary-action">
@@ -124,9 +128,11 @@ Images can help communicate a banner’s message.
   <div class="mdc-banner__content"
        role="status"
        aria-live="assertive">
-    <div class="mdc-banner__graphic" role="img" alt=""><i class="material-icons mdc-banner__icon">error_outline</i></div>
-    <div class="mdc-banner__text">
-      There was a problem processing a transaction on your credit card.
+    <div class="mdc-banner__graphic-text-wrapper">
+      <div class="mdc-banner__graphic" role="img" alt=""><i class="material-icons mdc-banner__icon">error_outline</i></div>
+      <div class="mdc-banner__text">
+        There was a problem processing a transaction on your credit card.
+      </div>
     </div>
     <div class="mdc-banner__actions">
       <button type="button" class="mdc-button mdc-banner__primary-action">
@@ -147,8 +153,10 @@ Banners may have one or two low-emphasis text buttons.
   <div class="mdc-banner__content"
        role="status"
        aria-live="assertive">
-    <div class="mdc-banner__text">
-      There was a problem processing a transaction on your credit card.
+    <div class="mdc-banner__graphic-text-wrapper">
+      <div class="mdc-banner__text">
+        There was a problem processing a transaction on your credit card.
+      </div>
     </div>
     <div class="mdc-banner__actions">
       <button type="button" class="mdc-button mdc-banner__secondary-action">

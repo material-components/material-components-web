@@ -67,6 +67,27 @@ $_exit-duration: 250ms;
     @include banner-theme.z-index(banner-theme.$z-index, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
+      // Mobile view styles.
+      @media (max-width: banner-theme.$mobile-breakpoint) {
+        .mdc-banner__content {
+          flex-wrap: wrap;
+        }
+
+        .mdc-banner__graphic {
+          margin-bottom: 12px;
+        }
+
+        .mdc-banner__text {
+          margin-left: 16px;
+          margin-right: 8px;
+          padding-bottom: 4px;
+        }
+
+        .mdc-banner__actions {
+          margin-left: auto;
+        }
+      }
+
       border-bottom-style: solid;
       border-bottom-width: 1px;
       box-sizing: border-box;
@@ -135,7 +156,14 @@ $_exit-duration: 250ms;
       min-height: 52px;
       position: absolute;
       transform: translateY(-100%);
-      width: 720px;
+      width: 100%;
+    }
+  }
+
+  .mdc-banner__graphic-text-wrapper {
+    @include feature-targeting.targets($feat-structure) {
+      display: flex;
+      width: 100%;
     }
   }
 
