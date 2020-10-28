@@ -158,17 +158,26 @@ $light-theme: (
 }
 
 ///
+/// @param {Number | String} $density-scale - Density scale value for component.
+///     Supported density scale values `-3`, `-2`, `-1`, `0`.
+/// @return Returns ripple size of checkbox for given density scale.
+///
+@function get-ripple-size($density-scale) {
+  @return density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: size
+  );
+}
+
+///
 /// Sets density scale for checkbox.
 ///
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values
 ///     `-3`, `-2`, `-1`, `0`.
 ///
 @mixin density($density-scale, $query: feature-targeting.all()) {
-  $size: density-functions.prop-value(
-    $density-config: $density-config,
-    $density-scale: $density-scale,
-    $property-name: size,
-  );
+  $size: get-ripple-size($density-scale);
 
   @include ripple-size($size, $query: $query);
 }
