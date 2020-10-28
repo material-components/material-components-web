@@ -70,6 +70,10 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
     this.deregisterContentClickHandler(this.handleContentClick);
   }
 
+  layout() {
+    this.foundation.layout();
+  }
+
   /**
    * Opens the banner and fires events.OPENING to indicate the beginning of its
    * opening animation and then events.OPENED once the animation finishes.
