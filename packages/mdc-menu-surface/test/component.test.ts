@@ -168,6 +168,7 @@ describe('MDCMenuSurface', () => {
   it(`${strings.CLOSED_EVENT} causes the body click handler to be deregistered`,
      () => {
        const {root, mockFoundation} = setupTest();
+       emitEvent(root, strings.OPENED_EVENT);
        emitEvent(root, strings.CLOSED_EVENT);
        emitEvent(document.body, 'click');
        expect(mockFoundation.handleBodyClick)
