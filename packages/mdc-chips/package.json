@@ -1,7 +1,7 @@
 {
   "name": "@material/chips",
   "description": "The Material Components for the Web chips component",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "license": "MIT",
   "main": "dist/mdc.chips.js",
   "module": "index.js",
@@ -21,19 +21,19 @@
     "access": "public"
   },
   "dependencies": {
-    "@material/animation": "^7.0.0",
-    "@material/base": "^7.0.0",
-    "@material/checkbox": "^7.0.0",
-    "@material/density": "^7.0.0",
-    "@material/dom": "^7.0.0",
-    "@material/elevation": "^7.0.0",
-    "@material/feature-targeting": "^7.0.0",
-    "@material/ripple": "^7.0.0",
-    "@material/rtl": "^7.0.0",
-    "@material/shape": "^7.0.0",
-    "@material/theme": "^7.0.0",
-    "@material/touch-target": "^7.0.0",
-    "@material/typography": "^7.0.0",
+    "@material/animation": "^8.0.0",
+    "@material/base": "^8.0.0",
+    "@material/checkbox": "^8.0.0",
+    "@material/density": "^8.0.0",
+    "@material/dom": "^8.0.0",
+    "@material/elevation": "^8.0.0",
+    "@material/feature-targeting": "^8.0.0",
+    "@material/ripple": "^8.0.0",
+    "@material/rtl": "^8.0.0",
+    "@material/shape": "^8.0.0",
+    "@material/theme": "^8.0.0",
+    "@material/touch-target": "^8.0.0",
+    "@material/typography": "^8.0.0",
     "tslib": "^1.9.3"
   }
 }
