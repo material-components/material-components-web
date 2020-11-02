@@ -1,6 +1,6 @@
 {
     "name": "@material/segmented-button",
-    "version": "0.0.0",
+    "version": "8.0.0",
     "description": "The Material Components for the web segmented button component",
     "license": "MIT",
     "repository": {
@@ -17,12 +17,12 @@
         "access": "public"
     },
     "dependencies": {
-        "@material/base": "^7.0.0",
-        "@material/elevation": "^7.0.0",
-        "@material/feature-targeting": "^7.0.0",
-        "@material/ripple": "^7.0.0",
-        "@material/theme": "^7.0.0",
-        "@material/touch-target": "7.0.0",
-        "@material/typography": "^7.0.0"
+        "@material/base": "^8.0.0",
+        "@material/elevation": "^8.0.0",
+        "@material/feature-targeting": "^8.0.0",
+        "@material/ripple": "^8.0.0",
+        "@material/theme": "^8.0.0",
+        "@material/touch-target": "^8.0.0",
+        "@material/typography": "^8.0.0"
     }
 }
