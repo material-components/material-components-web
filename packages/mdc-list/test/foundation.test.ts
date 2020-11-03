@@ -837,6 +837,41 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).not.toHaveBeenCalled();
      });
 
+  it('#focusLastElement focuses the last list item and returns that index',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+
+       mockAdapter.getListItemCount.and.returnValue(4);
+
+       expect(3).toEqual(foundation.focusLastElement());
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(3);
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledTimes(1);
+     });
+
+  it('#focusInitialElement focuses the first list item and returns that index',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+
+       mockAdapter.getListItemCount.and.returnValue(4);
+
+       expect(0).toEqual(foundation.focusInitialElement());
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledTimes(1);
+     });
+
+  it('#focusInitialElement focuses the first selected list item and returns that index',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+
+       mockAdapter.getListItemCount.and.returnValue(4);
+       foundation.setSingleSelection(true);
+       foundation.setSelectedIndex(2);
+
+       expect(2).toEqual(foundation.focusInitialElement());
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledTimes(1);
+     });
+
   it('#focusNextElement focuses next list item and returns that index', () => {
     const {foundation, mockAdapter} = setupTest();
 
