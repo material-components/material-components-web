@@ -81,8 +81,16 @@
 
     @include feature-targeting.targets($feat-structure) {
       align-items: stretch;
+      cursor: pointer;
     }
 
+    // Reset mouse cursor for disabled and non-interactive items.
+    &.mdc-evolution-list-item--disabled,
+    &.mdc-evolution-list-item--non-interactive {
+      @include feature-targeting.targets($feat-structure) {
+        cursor: auto;
+      }
+    }
     // For components using aria-activedescendant, the focus pseudoclass is
     // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
     &:not(.mdc-evolution-list-item--selected):focus::before,
@@ -96,13 +104,6 @@
         $border-style: double,
         $query: $query
       );
-    }
-
-    // Only change mouse cursor for list items which are not disabled.
-    &:not(.mdc-evolution-list-item--disabled) {
-      @include feature-targeting.targets($feat-structure) {
-        cursor: pointer;
-      }
     }
   }
 
