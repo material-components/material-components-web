@@ -208,6 +208,7 @@ Mixin | Description
 `divider-color($color)` | Sets the color of the banner's divider.
 `min-width($min-width, $mobile-breakpoint)` | Sets the `min-width` of the banner content on tablet/desktop devices. On mobile, the width is automatically set to 100%.
 `max-width($max-width)` | Sets the `max-width` of the banner content.
+`position-centered()` | Sets the banner content to centered instead of leading.
 `z-index($z-index)` | Sets the z-index of the banner.
 
 ### `MDCBanner` events
