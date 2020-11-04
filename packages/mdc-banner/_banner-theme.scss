@@ -21,6 +21,7 @@
 //
 
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
@@ -183,6 +184,34 @@ $z-index: 1;
       margin-left: auto;
       margin-right: auto;
       right: 0;
+    }
+  }
+}
+
+///
+/// Sets the banner content to centered instead of leading.
+///
+@mixin mobile-stacked($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    @media (max-width: $mobile-breakpoint) {
+      .mdc-banner__content {
+        flex-wrap: wrap;
+      }
+
+      .mdc-banner__graphic {
+        margin-bottom: 12px;
+      }
+
+      .mdc-banner__text {
+        @include rtl-mixins.reflexive-property(margin, 16px, 8px);
+        padding-bottom: 4px;
+      }
+
+      .mdc-banner__actions {
+        margin-left: auto;
+      }
     }
   }
 }

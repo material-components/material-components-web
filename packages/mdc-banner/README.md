@@ -172,6 +172,25 @@ Banners may have one or two low-emphasis text buttons.
 </div>
 ```
 
+
+#### Mobile Stacked
+
+On mobile view, banners with long text should have their action(s) be positioned _below_ the text instead of alongside it. This can be accomplished by adding the `mdc-banner--mobile-stacked` modifier class to the root element:
+
+```html
+<div class="mdc-banner mdc-banner--mobile-stacked">
+  ...
+</div>
+```
+
+Alternatively, you can call the `mobile-stacked` mixin from Sass:
+
+```scss
+.my-banner {
+  @include banner.mobile-stacked;
+}
+```
+
 ## API
 
 ### Sass mixins

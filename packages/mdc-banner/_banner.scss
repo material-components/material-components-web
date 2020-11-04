@@ -75,22 +75,8 @@ $_exit-duration: 250ms;
           right: 0;
         }
 
-        .mdc-banner__content {
-          flex-wrap: wrap;
-        }
-
-        .mdc-banner__graphic {
-          margin-bottom: 12px;
-        }
-
         .mdc-banner__text {
-          margin-left: 16px;
-          margin-right: 8px;
-          padding-bottom: 4px;
-        }
-
-        .mdc-banner__actions {
-          margin-left: auto;
+          @include rtl-mixins.reflexive-property(margin, 16px, 36px);
         }
       }
 
@@ -102,6 +88,10 @@ $_exit-duration: 250ms;
       height: 0;
       position: relative;
       width: 100%;
+    }
+
+    &.mdc-banner--mobile-stacked {
+      @include banner-theme.mobile-stacked($query: $query);
     }
   }
 
