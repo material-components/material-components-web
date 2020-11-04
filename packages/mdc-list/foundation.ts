@@ -246,6 +246,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     const isEnter = normalizeKey(event) === 'Enter';
     const isSpace = normalizeKey(event) === 'Spacebar';
 
+    // Have to check both upper and lower case, because having caps lock on affects the value.
+    const isLetterA = event.key === 'A' || event.key === 'a';
+
     if (this.adapter.isRootFocused()) {
       if (isArrowUp || isEnd) {
         event.preventDefault();
@@ -299,6 +302,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     } else if (isEnd) {
       preventDefaultEvent(event);
       this.focusLastElement();
+    } else if (isLetterA && event.ctrlKey && this.isCheckboxList_) {
+      event.preventDefault();
+      this.toggleAll(this.selectedIndex_ === numbers.UNSET_INDEX ? [] : this.selectedIndex_ as number[]);
     } else if (isEnter || isSpace) {
       if (isRootListItem) {
         // Return early if enter key is pressed on anchor element which triggers
@@ -647,6 +653,25 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private focusItemAtIndex(index: number) {
     this.adapter.focusItemAtIndex(index);
     this.focusedItemIndex = index;
+  }
+
+  private toggleAll(currentlySelectedIndexes: number[]) {
+    const count = this.adapter.getListItemCount();
+
+    // If all items are selected, deselect everything.
+    if (currentlySelectedIndexes.length === count) {
+      this.setCheckboxAtIndex_([]);
+    } else {
+      // Otherwise select all enabled options.
+      const allIndexes: number[] = [];
+      for (let i = 0; i < count; i++) {
+        if (!this.adapter.listItemAtIndexHasClass(i, cssClasses.LIST_ITEM_DISABLED_CLASS) ||
+            currentlySelectedIndexes.indexOf(i) > -1) {
+          allIndexes.push(i);
+        }
+      }
+      this.setCheckboxAtIndex_(allIndexes);
+    }
   }
 
   /**
