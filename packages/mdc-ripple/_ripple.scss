@@ -28,37 +28,48 @@
 @use '@material/animation/functions' as functions2;
 @use '@material/animation/variables' as variables2;
 @use '@material/base/mixins' as base-mixins;
+@use '@material/theme/custom-properties';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use './ripple-theme';
 
-@mixin core-styles($query: feature-targeting.all()) {
-  // postcss-bem-linter: define ripple-surface
-
+@mixin core-styles(
+  $query: feature-targeting.all(),
+  // TODO(b/151931961): Remove this param once resolved.
+    $include-will-change: true
+) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-ripple-surface {
-    @include surface($query: $query);
+    @include surface(
+      $include-will-change: $include-will-change,
+      $query: $query
+    );
     @include ripple-theme.states($query: $query);
     @include radius-bounded($query: $query);
     @include surface-styles($query: $query);
-
-    &[data-mdc-ripple-is-unbounded] {
-      @include radius-unbounded($query: $query);
-      @include unbounded-styles($query: $query);
-    }
-
-    &--primary {
-      @include ripple-theme.states(primary, $query: $query);
-    }
-
-    &--accent {
-      @include ripple-theme.states(secondary, $query: $query);
-    }
   }
 
-  // postcss-bem-linter: end
+  .mdc-ripple-surface[data-mdc-ripple-is-unbounded],
+  .mdc-ripple-upgraded--unbounded {
+    @include radius-unbounded($query: $query);
+    @include unbounded-styles($query: $query);
+  }
+}
+
+/// Sets all states (including hover, focus, press, activated and selected) with
+/// given color as base color.
+///
+/// This mixin is for internal use only. Use `ripple-theme.states($color)` mixin
+/// to set interactive states (hover, focus & press) color.
+///
+/// @param {Color|String} $color - Target base color. Can be valid CSS color or
+///     a color string literal (i.e., `primary`, `secondary`, etc).
+@mixin states-for-color($color, $query: feature-targeting.all()) {
+  @include ripple-theme.states($color, $query: $query);
+  @include ripple-theme.states-activated($color, $query: $query);
+  @include ripple-theme.states-selected($color, $query: $query);
 }
 
 @mixin surface-styles($query: feature-targeting.all()) {
@@ -133,7 +144,20 @@
     }
 
     @include feature-targeting.targets($feat-structure) {
-      z-index: 1; // Ensure that the ripple wash for hover/focus states is displayed on top of positioned child elements
+      // Ensure that the ripple wash for hover/focus states is displayed on top of positioned child elements
+      @include theme.property(
+        z-index,
+        custom-properties.create(--mdc-ripple-z-index, 1)
+      );
+    }
+  }
+
+  #{$ripple-target}::after {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(
+        z-index,
+        custom-properties.create(--mdc-ripple-z-index, 0)
+      );
     }
   }
 

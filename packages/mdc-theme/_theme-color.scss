@@ -246,3 +246,31 @@ $property-values: (
 @function text-emphasis($emphasis) {
   @return map.get($text-emphasis, $emphasis);
 }
+
+///
+/// @param {Color|String} Color property key name (i.e., `primary`, `secondary`,
+///     etc).
+/// @return Returns custom property map containing CSS custom property and
+///     fallback value (i.e., (varname: ..., fallback: ...). Returns color if
+///     valid color value is provided. Throws error otherwise.
+/// @examples
+///   1. get-custom-property(primary)
+///   => (varname: --mdc-theme-primary, fallback: #6200ee)
+///
+///   2. get-custom-property(#fff)
+///   => #fff
+///
+@function get-custom-property($color) {
+  @if custom-properties.is-custom-prop($color) or
+    is-valid-theme-prop-value_($color)
+  {
+    @return $color;
+  } @else if map.has-key($property-values, $color) {
+    @return custom-properties.create(
+      --mdc-theme-#{$color},
+      map.get($property-values, $color)
+    );
+  } @else {
+    @error "Invalid theme property: '#{$style}'. Choose one of: #{map.keys($property-values)}";
+  }
+}

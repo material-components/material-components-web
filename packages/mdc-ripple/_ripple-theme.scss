@@ -29,6 +29,8 @@
 @use '@material/animation/variables' as variables2;
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/css';
+@use '@material/theme/custom-properties';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 
@@ -70,11 +72,18 @@ $pressed-light-ink-opacity: 0.32 !default;
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
+  @if not custom-properties.is-custom-prop($color) {
+    $color: custom-properties.create(
+      --mdc-ripple-color,
+      theme-color.get-custom-property($color)
+    );
+  }
+
   #{$ripple-target}::before,
   #{$ripple-target}::after {
     @include feature-targeting.targets($feat-color) {
       @if color.alpha(theme-color.prop-value($color)) > 0 {
-        @include theme.prop(background-color, $color);
+        @include theme.property(background-color, $color);
       } @else {
         // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
         // This avoids unnecessary transitions and overflow.
@@ -131,11 +140,15 @@ $pressed-light-ink-opacity: 0.32 !default;
   $feat-color: feature-targeting.create-target($query, color);
 
   // Background wash styles, for both CSS-only and upgraded stateful surfaces
-  &:hover {
+  &:hover,
+  &.mdc-ripple-surface--hover {
     #{$ripple-target}::before {
       // Opacity falls under color because the chosen opacity is color-dependent in typical usage
       @include feature-targeting.targets($feat-color) {
-        opacity: $opacity;
+        @include theme.property(
+          opacity,
+          custom-properties.create(--mdc-ripple-hover-opacity, $opacity)
+        );
       }
     }
   }
@@ -192,7 +205,10 @@ $pressed-light-ink-opacity: 0.32 !default;
   }
 
   @include feature-targeting.targets($feat-color) {
-    opacity: $opacity;
+    @include theme.property(
+      opacity,
+      custom-properties.create(--mdc-ripple-focus-opacity, $opacity)
+    );
   }
 }
 
@@ -222,7 +238,10 @@ $pressed-light-ink-opacity: 0.32 !default;
 
         // Opacity falls under color because the chosen opacity is color-dependent in typical usage
         @include feature-targeting.targets($feat-color) {
-          opacity: $opacity;
+          @include theme.property(
+            opacity,
+            custom-properties.create(--mdc-ripple-press-opacity, $opacity)
+          );
         }
       }
     }
@@ -230,7 +249,7 @@ $pressed-light-ink-opacity: 0.32 !default;
 
   &.mdc-ripple-upgraded {
     @include feature-targeting.targets($feat-color) {
-      --mdc-ripple-fg-opacity: #{$opacity};
+      --mdc-ripple-fg-opacity: var(--mdc-ripple-press-opacity, #{$opacity});
     }
   }
 }
@@ -270,7 +289,13 @@ $pressed-light-ink-opacity: 0.32 !default;
     #{$ripple-target}::before {
       // Opacity falls under color because the chosen opacity is color-dependent.
       @include feature-targeting.targets($feat-color) {
-        opacity: $activated-opacity;
+        @include theme.property(
+          opacity,
+          custom-properties.create(
+            --mdc-ripple-activated-opacity,
+            $activated-opacity
+          )
+        );
       }
     }
 
@@ -300,7 +325,13 @@ $pressed-light-ink-opacity: 0.32 !default;
     #{$ripple-target}::before {
       // Opacity falls under color because the chosen opacity is color-dependent.
       @include feature-targeting.targets($feat-color) {
-        opacity: $selected-opacity;
+        @include theme.property(
+          opacity,
+          custom-properties.create(
+            --mdc-ripple-selected-opacity,
+            $selected-opacity
+          )
+        );
       }
     }
 
