@@ -22,12 +22,15 @@
  */
 
 import {checkNumTimesSpyCalledWithArgs, createMockAdapter, verifyDefaultAdapter} from '../../../testing/helpers/foundation';
+import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {cssClasses, numbers, strings} from '../constants';
 import {MDCSelectFoundation} from '../foundation';
 
 const LABEL_WIDTH = 100;
 
 describe('MDCSelectFoundation', () => {
+  setUpMdcTestEnvironment();
+
   it('exports cssClasses', () => {
     expect(MDCSelectFoundation.cssClasses).toEqual(cssClasses);
   });
@@ -404,6 +407,19 @@ describe('MDCSelectFoundation', () => {
     foundation.handleClick(0);
     expect(mockAdapter.setRippleCenter).not.toHaveBeenCalled();
     expect(mockAdapter.addClass).not.toHaveBeenCalled();
+  });
+
+  it('#handleClick debounces clicks', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.handleClick(0);
+    foundation['isMenuOpen'] = false;
+    foundation.handleClick(0);
+    expect(mockAdapter.openMenu).toHaveBeenCalledTimes(1);
+
+    foundation['isMenuOpen'] = false;
+    jasmine.clock().tick(numbers.CLICK_DEBOUNCE_TIMEOUT_MS);
+    foundation.handleClick(0);
+    expect(mockAdapter.openMenu).toHaveBeenCalledTimes(2);
   });
 
   it('#handleClick sets the ripple center if isMenuOpen=false', () => {

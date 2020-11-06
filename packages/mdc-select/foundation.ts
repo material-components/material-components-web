@@ -104,6 +104,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   private customValidity = true;
   private lastSelectedIndex = numbers.UNSET_INDEX;
 
+  private clickDebounceTimeout = 0;
+  private recentlyClicked = false;
+
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
    * @param adapter
@@ -289,9 +292,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   handleClick(normalizedX: number) {
-    if (this.disabled) {
+    if (this.disabled || this.recentlyClicked) {
       return;
     }
+
+    this.setClickDebounceTimeout();
 
     if (this.isMenuOpen) {
       this.adapter.closeMenu();
@@ -475,6 +480,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       // `aria-describedby` even if they are `aria-hidden`.
       this.adapter.removeSelectAnchorAttr(strings.ARIA_DESCRIBEDBY);
     }
+  }
+
+  private setClickDebounceTimeout() {
+    clearTimeout(this.clickDebounceTimeout);
+    this.clickDebounceTimeout = setTimeout(() => {
+      this.recentlyClicked = false;
+    }, numbers.CLICK_DEBOUNCE_TIMEOUT_MS);
+    this.recentlyClicked = true;
   }
 }
 

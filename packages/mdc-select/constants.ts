@@ -52,6 +52,7 @@ const strings = {
 const numbers = {
   LABEL_SCALE: 0.75,
   UNSET_INDEX: -1,
+  CLICK_DEBOUNCE_TIMEOUT_MS: 330,
 };
 
 export {cssClasses, strings, numbers};
