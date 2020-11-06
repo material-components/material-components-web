@@ -5,6 +5,7 @@ on:
     branches:
       - master
   pull_request:
+    types: [opened, synchronize, reopened, edited]
 
 jobs:
   lint:
@@ -16,6 +17,12 @@ jobs:
           node-version: 10
       - run: npm install
       - run: npm run lint
+  conventional-commit-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build-test:
     runs-on: ubuntu-latest
     steps:
