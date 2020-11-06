@@ -49,22 +49,22 @@
   );
 
   .mdc-evolution-list {
-    @include evolution-list-base_($query: $query);
+    @include _evolution-list-base($query: $query);
   }
 
   .mdc-evolution-list-item {
-    @include evolution-item-base_($query: $query);
+    @include _evolution-item-base($query: $query);
     @include evolution-item-spacing(16px, $query: $query);
 
-    @include evolution-one-line-item-density_(
+    @include _evolution-one-line-item-density(
       variables.$one-line-item-density-scale,
       $query: $query
     );
-    @include evolution-two-line-item-density_(
+    @include _evolution-two-line-item-density(
       variables.$two-line-item-density-scale,
       $query: $query
     );
-    @include evolution-three-line-item-density_(
+    @include _evolution-three-line-item-density(
       variables.$three-line-item-density-scale,
       $query: $query
     );
@@ -204,11 +204,11 @@
       20px,
       $query: $query
     );
-    @include evolution-one-line-item-tall-density_(
+    @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
     );
-    @include evolution-two-line-item-tall-density_(
+    @include _evolution-two-line-item-tall-density(
       variables.$two-line-item-density-scale,
       $query: $query
     );
@@ -232,11 +232,11 @@
       20px,
       $query: $query
     );
-    @include evolution-one-line-item-tall-density_(
+    @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
     );
-    @include evolution-two-line-item-tall-density_(
+    @include _evolution-two-line-item-tall-density(
       variables.$two-line-item-density-scale,
       $query: $query
     );
@@ -250,11 +250,11 @@
       20px,
       $query: $query
     );
-    @include evolution-one-line-item-tall-density_(
+    @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
     );
-    @include evolution-two-line-item-tall-density_(
+    @include _evolution-two-line-item-tall-density(
       variables.$two-line-item-density-scale,
       $query: $query
     );
@@ -268,11 +268,11 @@
       20px,
       $query: $query
     );
-    @include evolution-one-line-item-taller-density_(
+    @include _evolution-one-line-item-taller-density(
       variables.$one-line-item-density-scale,
       $query: $query
     );
-    @include evolution-two-line-item-tall-density_(
+    @include _evolution-two-line-item-tall-density(
       variables.$two-line-item-density-scale,
       $query: $query
     );
@@ -299,11 +299,11 @@
       20px,
       $query: $query
     );
-    @include evolution-one-line-item-taller-density_(
+    @include _evolution-one-line-item-taller-density(
       variables.$one-line-item-density-scale,
       $query: $query
     );
-    @include evolution-two-line-item-tall-density_(
+    @include _evolution-two-line-item-tall-density(
       variables.$two-line-item-density-scale,
       $query: $query
     );
@@ -312,19 +312,25 @@
   .mdc-evolution-list-item--with-leading-checkbox {
     $leading: absorb-overflow(16px, $actual: 40px, $available: 24px);
     $trailing: absorb-overflow(32px, $actual: 40px, $available: 24px);
+    $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
 
     @include evolution-item-start-spacing($leading, $trailing, $query: $query);
     @include evolution-item-start-size(40px, $query: $query);
+    @include evolution-two-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: $top,
+      $query: $query
+    );
     @include _evolution-two-line-item-primary-baseline(
       32px,
       20px,
       $query: $query
     );
-    @include evolution-one-line-item-tall-density_(
+    @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
     );
-    @include evolution-two-line-item-tall-density_(
+    @include _evolution-two-line-item-tall-density(
       variables.$two-line-item-density-scale,
       $query: $query
     );
@@ -333,19 +339,25 @@
   .mdc-evolution-list-item--with-leading-radio {
     $leading: absorb-overflow(16px, $actual: 40px, $available: 24px);
     $trailing: absorb-overflow(32px, $actual: 40px, $available: 24px);
+    $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
 
     @include evolution-item-start-spacing($leading, $trailing, $query: $query);
     @include evolution-item-start-size(40px, $query: $query);
+    @include evolution-two-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: $top,
+      $query: $query
+    );
     @include _evolution-two-line-item-primary-baseline(
       32px,
       20px,
       $query: $query
     );
-    @include evolution-one-line-item-tall-density_(
+    @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
     );
-    @include evolution-two-line-item-tall-density_(
+    @include _evolution-two-line-item-tall-density(
       variables.$two-line-item-density-scale,
       $query: $query
     );
@@ -358,16 +370,21 @@
       $height: 20px,
       $query: $query
     );
+    @include evolution-two-line-item-start-alignment(
+      $alignment: flex-start,
+      $offset: 16px,
+      $query: $query
+    );
     @include _evolution-two-line-item-primary-baseline(
       32px,
       20px,
       $query: $query
     );
-    @include evolution-one-line-item-tall-density_(
+    @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
     );
-    @include evolution-two-line-item-tall-density_(
+    @include _evolution-two-line-item-tall-density(
       variables.$two-line-item-density-scale,
       $query: $query
     );
@@ -437,6 +454,11 @@
     @include evolution-item-end-size(
       $width: 36px,
       $height: 20px,
+      $query: $query
+    );
+    @include evolution-three-line-item-end-alignment(
+      $alignment: flex-start,
+      $offset: 16px,
       $query: $query
     );
   }
@@ -536,7 +558,7 @@
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   :not(.mdc-evolution-list-item--disabled).mdc-evolution-list-item {
-    @include evolution-item-interactive-ripple_($query);
+    @include _evolution-item-interactive-ripple($query);
   }
 
   .mdc-evolution-list-item--disabled {
@@ -785,22 +807,6 @@
   }
 }
 
-// TODO: after merge, bring this to private section and move underscore.
-@mixin _evolution-two-line-item-primary-baseline(
-  $top,
-  $bottom,
-  $query: feature-targeting.all()
-) {
-  &.mdc-evolution-list-item--with-two-lines
-    .mdc-evolution-list-item__primary-text {
-    @include typography.text-baseline(
-      $top: $top,
-      $bottom: $bottom,
-      $query: $query
-    );
-  }
-}
-
 @mixin evolution-item-selected-content-color(
   $color,
   $query: feature-targeting.all()
@@ -969,14 +975,14 @@
   $density-scale,
   $query: feature-targeting.all()
 ) {
-  @include evolution-one-line-item-density_($density-scale, $query: $query);
+  @include _evolution-one-line-item-density($density-scale, $query: $query);
 
   &.mdc-evolution-list-item--with-leading-icon,
   &.mdc-evolution-list-item--with-leading-thumbnail,
   &.mdc-evolution-list-item--with-leading-checkbox,
   &.mdc-evolution-list-item--with-leading-radio,
   &.mdc-evolution-list-item--with-leading-switch {
-    @include evolution-one-line-item-tall-density_(
+    @include _evolution-one-line-item-tall-density(
       $density-scale,
       $query: $query
     );
@@ -984,7 +990,7 @@
 
   &.mdc-evolution-list-item--with-leading-image,
   &.mdc-evolution-list-item--with-leading-video {
-    @include evolution-one-line-item-taller-density_(
+    @include _evolution-one-line-item-taller-density(
       $density-scale,
       $query: $query
     );
@@ -995,7 +1001,7 @@
   $density-scale,
   $query: feature-targeting.all()
 ) {
-  @include evolution-two-line-item-density_($density-scale, $query: $query);
+  @include _evolution-two-line-item-density($density-scale, $query: $query);
 
   &.mdc-evolution-list-item--with-leading-icon,
   &.mdc-evolution-list-item--with-leading-thumbnail,
@@ -1004,7 +1010,7 @@
   &.mdc-evolution-list-item--with-leading-switch,
   &.mdc-evolution-list-item--with-leading-image,
   &.mdc-evolution-list-item--with-leading-video {
-    @include evolution-two-line-item-tall-density_(
+    @include _evolution-two-line-item-tall-density(
       $density-scale,
       $query: $query
     );
@@ -1015,7 +1021,7 @@
   $density-scale,
   $query: feature-targeting.all()
 ) {
-  @include evolution-three-line-item-density_($density-scale, $query: $query);
+  @include _evolution-three-line-item-density($density-scale, $query: $query);
 }
 
 //
@@ -1024,7 +1030,7 @@
 
 // The private density mixins allow density properties to be overridden
 // individually to avoid increasing specificity.
-@mixin evolution-one-line-item-density_(
+@mixin _evolution-one-line-item-density(
   $density-scale,
   $query: feature-targeting.all()
 ) {
@@ -1037,7 +1043,7 @@
   @include evolution-one-line-item-height($height, $query: $query);
 }
 
-@mixin evolution-one-line-item-tall-density_(
+@mixin _evolution-one-line-item-tall-density(
   $density-scale,
   $query: feature-targeting.all()
 ) {
@@ -1050,7 +1056,7 @@
   @include evolution-one-line-item-height($height, $query: $query);
 }
 
-@mixin evolution-one-line-item-taller-density_(
+@mixin _evolution-one-line-item-taller-density(
   $density-scale,
   $query: feature-targeting.all()
 ) {
@@ -1063,7 +1069,7 @@
   @include evolution-one-line-item-height($height, $query: $query);
 }
 
-@mixin evolution-two-line-item-density_(
+@mixin _evolution-two-line-item-density(
   $density-scale,
   $query: feature-targeting.all()
 ) {
@@ -1076,7 +1082,7 @@
   @include evolution-two-line-item-height($height, $query: $query);
 }
 
-@mixin evolution-two-line-item-tall-density_(
+@mixin _evolution-two-line-item-tall-density(
   $density-scale,
   $query: feature-targeting.all()
 ) {
@@ -1089,7 +1095,7 @@
   @include evolution-two-line-item-height($height, $query: $query);
 }
 
-@mixin evolution-three-line-item-density_(
+@mixin _evolution-three-line-item-density(
   $density-scale,
   $query: feature-targeting.all()
 ) {
@@ -1102,7 +1108,7 @@
   @include evolution-three-line-item-height($height, $query: $query);
 }
 
-@mixin evolution-list-base_($query: feature-targeting.all()) {
+@mixin _evolution-list-base($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
@@ -1125,7 +1131,7 @@
   }
 }
 
-@mixin evolution-item-base_($query: feature-targeting.all()) {
+@mixin _evolution-item-base($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
     display: flex;
@@ -1141,7 +1147,7 @@
   }
 }
 
-@mixin evolution-item-interactive-ripple_($query: feature-targeting.all()) {
+@mixin _evolution-item-interactive-ripple($query: feature-targeting.all()) {
   @include ripple.surface(
     $ripple-target: variables.$ripple-target,
     $query: $query
@@ -1171,5 +1177,20 @@
 
   #{variables.$ripple-target} {
     @include ripple.target-common($query: $query);
+  }
+}
+
+@mixin _evolution-two-line-item-primary-baseline(
+  $top,
+  $bottom,
+  $query: feature-targeting.all()
+) {
+  &.mdc-evolution-list-item--with-two-lines
+    .mdc-evolution-list-item__primary-text {
+    @include typography.text-baseline(
+      $top: $top,
+      $bottom: $bottom,
+      $query: $query
+    );
   }
 }
