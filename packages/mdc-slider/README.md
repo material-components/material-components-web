@@ -347,8 +347,8 @@ Mixin | Description
 `thumb-ripple-color($color)` | Sets the color of the thumb ripple.
 `tick-mark-active-color($color)` | Sets the color of tick marks on the active track.
 `tick-mark-inactive-color($color)` | Sets the color of tick marks on the inactive track.
-`value-indicator-color($color, $opaicty)` | Sets the color and opacity of the value indicator.
-`value-indicator-text-color($color, $opaicty)` | Sets the color of the value indicator text.
+`value-indicator-color($color, $opacity)` | Sets the color and opacity of the value indicator.
+`value-indicator-text-color($color, $opacity)` | Sets the color of the value indicator text.
 
 ### `MDCSlider` events
 
