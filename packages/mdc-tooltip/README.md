@@ -18,7 +18,7 @@ Tooltips display informative text when users hover over, focus on, or tap an ele
 * [Using tooltips](#using-tooltips)
 * [Tooltips](#tooltips)
 * [API](#api)
-* [Usage within web frameworks](#usage-within-web-frameworks)
+* [Usage within web frameworks](#usage-within-frameworks)
 
 ## Using tooltips
 
