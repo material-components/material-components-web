@@ -114,7 +114,7 @@
     }
   }
 
-  .mdc-notched-outline--no-label {
+  .mdc-notched-outline--no-label.mdc-notched-outline--notched {
     .mdc-notched-outline__notch {
       @include feature-targeting.targets($feat-structure) {
         padding: 0;
