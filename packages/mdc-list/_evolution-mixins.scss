@@ -130,6 +130,13 @@
   .mdc-evolution-list-item__start {
     @include feature-targeting.targets($feat-structure) {
       fill: currentColor;
+      flex-shrink: 0;
+    }
+  }
+
+  .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-structure) {
+      flex-shrink: 0;
     }
   }
 
@@ -137,7 +144,6 @@
     @include typography.overflow-ellipsis($query);
     @include feature-targeting.targets($feat-structure) {
       align-self: center;
-      min-width: 50%;
       flex: 1;
     }
 
