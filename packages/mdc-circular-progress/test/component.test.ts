@@ -40,11 +40,13 @@ function getFixture() {
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
           </svg>
-        </div><div class="mdc-circular-progress__gap-patch">
+        </div>
+        <div class="mdc-circular-progress__gap-patch">
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="3.8"/>
           </svg>
-        </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+        </div>
+        <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
           </svg>
@@ -56,11 +58,13 @@ function getFixture() {
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
           </svg>
-        </div><div class="mdc-circular-progress__gap-patch">
+        </div>
+        <div class="mdc-circular-progress__gap-patch">
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="3.8"/>
           </svg>
-        </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+        </div>
+        <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
           </svg>
@@ -72,11 +76,13 @@ function getFixture() {
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
           </svg>
-        </div><div class="mdc-circular-progress__gap-patch">
+        </div>
+        <div class="mdc-circular-progress__gap-patch">
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="3.8"/>
           </svg>
-        </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+        </div>
+        <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
           </svg>
@@ -88,11 +94,13 @@ function getFixture() {
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
           </svg>
-        </div><div class="mdc-circular-progress__gap-patch">
+        </div>
+        <div class="mdc-circular-progress__gap-patch">
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="3.8"/>
           </svg>
-        </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+        </div>
+        <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
           <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
           </svg>

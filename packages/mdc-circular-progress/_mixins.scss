@@ -79,6 +79,11 @@
 
   .mdc-circular-progress__indeterminate-container {
     @include feature-targeting.targets($feat-structure) {
+      // Font size, letter spacing and nowrap are required in order to ignore
+      // whitespaces between HTML elements.
+      font-size: 0;
+      letter-spacing: 0;
+      white-space: nowrap;
       opacity: 0;
     }
   }

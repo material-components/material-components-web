@@ -44,11 +44,13 @@ npm install @material/circular-progress
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
         </svg>
-      </div><div class="mdc-circular-progress__gap-patch">
+      </div>
+      <div class="mdc-circular-progress__gap-patch">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="3.2"/>
         </svg>
-      </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+      </div>
+      <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
         </svg>
@@ -57,7 +59,6 @@ npm install @material/circular-progress
   </div>
 </div>
 ```
-> _IMPORTANT_: Do not introduce space between the adjacent `</div><div>` tags above. Doing so will produce unwanted visual artifacts.
 
 ### Accessibility
 
@@ -111,11 +112,13 @@ See [baseline template](#HTML-Structure) above.
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
           <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27" stroke-width="3"/>
         </svg>
-      </div><div class="mdc-circular-progress__gap-patch">
+      </div>
+      <div class="mdc-circular-progress__gap-patch">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
           <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27" stroke-width="2.4"/>
         </svg>
-      </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+      </div>
+      <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
           <circle cx="16" cy="16" r="12.5" stroke-dasharray="78.54" stroke-dashoffset="39.27" stroke-width="3"/>
         </svg>
@@ -140,11 +143,13 @@ See [baseline template](#HTML-Structure) above.
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489" stroke-width="2.5"/>
         </svg>
-      </div><div class="mdc-circular-progress__gap-patch">
+      </div>
+      <div class="mdc-circular-progress__gap-patch">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489" stroke-width="2"/>
         </svg>
-      </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+      </div>
+      <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="8.75" stroke-dasharray="54.978" stroke-dashoffset="27.489" stroke-width="2.5"/>
         </svg>
@@ -172,11 +177,13 @@ This is done instead of animating the color property to reduce browser repaints.
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
         </svg>
-      </div><div class="mdc-circular-progress__gap-patch">
+      </div>
+      <div class="mdc-circular-progress__gap-patch">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="3.8"/>
         </svg>
-      </div><div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
+      </div>
+      <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">
         <svg class="mdc-circular-progress__indeterminate-circle-graphic" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <circle cx="24" cy="24" r="18" stroke-dasharray="113.097" stroke-dashoffset="56.549" stroke-width="4"/>
         </svg>
