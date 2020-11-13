@@ -23,3 +23,4 @@
 
 export * from './segmented-button/index';
 export * from './segment/index';
+export * from './types';
