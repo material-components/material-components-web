@@ -20,31 +20,32 @@
   // Items
   //
 
-  @include evolution-item-primary-text-ink-color(
+  @include evolution-list-primary-text-ink-color(
     text-primary-on-background,
     $query
   );
-  @include evolution-item-secondary-text-ink-color(
+  @include evolution-list-secondary-text-ink-color(
     text-secondary-on-background,
     $query
   );
-  @include evolution-item-start-fill-color(transparent, $query);
-  @include evolution-item-start-ink-color(text-icon-on-background, $query);
-  @include evolution-item-end-ink-color(text-hint-on-background, $query);
-  @include evolution-group-subheader-ink-color(
-    text-primary-on-background,
-    $query
-  );
-  @include evolution-item-disabled-content-opacity(
+  @include evolution-list-icon-fill-color(transparent, $query);
+  @include evolution-list-icon-ink-color(text-icon-on-background, $query);
+  @include evolution-list-meta-text-ink-color(text-hint-on-background, $query);
+  @include evolution-list-disabled-opacity(
     variables.$content-disabled-opacity,
     $query
   );
-  @include evolution-item-disabled-content-color(
+  @include evolution-list-disabled-ink-color(
     variables.$content-disabled-color,
     $query
   );
-  @include evolution-item-selected-content-color(
+  @include evolution-list-selected-ink-color(
     variables.$content-selected-color,
+    $query
+  );
+
+  @include evolution-group-subheader-ink-color(
+    text-primary-on-background,
     $query
   );
 
@@ -101,6 +102,7 @@
         cursor: auto;
       }
     }
+
     // For components using aria-activedescendant, the focus pseudoclass is
     // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
     &:not(.mdc-evolution-list-item--selected):focus::before,
@@ -210,6 +212,7 @@
       20px,
       $query: $query
     );
+    @include _evolution-two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
@@ -238,6 +241,7 @@
       20px,
       $query: $query
     );
+    @include _evolution-two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
@@ -256,6 +260,7 @@
       20px,
       $query: $query
     );
+    @include _evolution-two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
@@ -274,6 +279,7 @@
       20px,
       $query: $query
     );
+    @include _evolution-two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _evolution-one-line-item-taller-density(
       variables.$one-line-item-density-scale,
       $query: $query
@@ -305,6 +311,7 @@
       20px,
       $query: $query
     );
+    @include _evolution-two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _evolution-one-line-item-taller-density(
       variables.$one-line-item-density-scale,
       $query: $query
@@ -332,6 +339,7 @@
       20px,
       $query: $query
     );
+    @include _evolution-two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
@@ -359,6 +367,7 @@
       20px,
       $query: $query
     );
+    @include _evolution-two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
@@ -386,6 +395,7 @@
       20px,
       $query: $query
     );
+    @include _evolution-two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _evolution-one-line-item-tall-density(
       variables.$one-line-item-density-scale,
       $query: $query
@@ -412,18 +422,14 @@
       $trailing: 16px,
       $query: $query
     );
+    @include _evolution-two-line-item-end-baseline($top: 28px, $query: $query);
+    @include _evolution-three-line-item-end-baseline(
+      $top: 28px,
+      $query: $query
+    );
 
     .mdc-evolution-list-item__end {
       @include typography.typography(caption, $query);
-    }
-
-    &.mdc-evolution-list-item--with-two-lines .mdc-evolution-list-item__end,
-    &.mdc-evolution-list-item--with-three-lines .mdc-evolution-list-item__end {
-      @include typography.text-baseline(
-        $top: 28px,
-        $display: block,
-        $query: $query
-      );
     }
   }
 
@@ -669,10 +675,12 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-one-line .mdc-evolution-list-item__start {
-    @include feature-targeting.targets($feat-structure) {
-      align-self: $alignment;
-      margin-top: $offset;
+  &.mdc-evolution-list-item--with-one-line {
+    .mdc-evolution-list-item__start {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
     }
   }
 }
@@ -683,10 +691,12 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-two-lines .mdc-evolution-list-item__start {
-    @include feature-targeting.targets($feat-structure) {
-      align-self: $alignment;
-      margin-top: $offset;
+  &.mdc-evolution-list-item--with-two-lines {
+    .mdc-evolution-list-item__start {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
     }
   }
 }
@@ -697,10 +707,12 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-three-lines .mdc-evolution-list-item__start {
-    @include feature-targeting.targets($feat-structure) {
-      align-self: $alignment;
-      margin-top: $offset;
+  &.mdc-evolution-list-item--with-three-lines {
+    .mdc-evolution-list-item__start {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
     }
   }
 }
@@ -711,10 +723,12 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-one-line .mdc-evolution-list-item__end {
-    @include feature-targeting.targets($feat-structure) {
-      align-self: $alignment;
-      margin-top: $offset;
+  &.mdc-evolution-list-item--with-one-line {
+    .mdc-evolution-list-item__end {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
     }
   }
 }
@@ -725,10 +739,12 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-two-lines .mdc-evolution-list-item__end {
-    @include feature-targeting.targets($feat-structure) {
-      align-self: $alignment;
-      margin-top: $offset;
+  &.mdc-evolution-list-item--with-two-lines {
+    .mdc-evolution-list-item__end {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
     }
   }
 }
@@ -739,10 +755,12 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-three-lines .mdc-evolution-list-item__end {
-    @include feature-targeting.targets($feat-structure) {
-      align-self: $alignment;
-      margin-top: $offset;
+  &.mdc-evolution-list-item--with-three-lines {
+    .mdc-evolution-list-item__end {
+      @include feature-targeting.targets($feat-structure) {
+        align-self: $alignment;
+        margin-top: $offset;
+      }
     }
   }
 }
@@ -813,18 +831,7 @@
   }
 }
 
-@mixin evolution-item-selected-content-color(
-  $color,
-  $query: feature-targeting.all()
-) {
-  .mdc-evolution-list-item--selected,
-  .mdc-list-item--activated {
-    @include evolution-item-primary-text-ink-color($color, $query: $query);
-    @include evolution-item-start-ink-color($color, $query: $query);
-  }
-}
-
-@mixin evolution-item-primary-text-ink-color(
+@mixin evolution-list-primary-text-ink-color(
   $color,
   $query: feature-targeting.all()
 ) {
@@ -837,7 +844,7 @@
   }
 }
 
-@mixin evolution-item-secondary-text-ink-color(
+@mixin evolution-list-secondary-text-ink-color(
   $color,
   $query: feature-targeting.all()
 ) {
@@ -850,35 +857,87 @@
   }
 }
 
-@mixin evolution-item-start-fill-color(
+@mixin evolution-list-meta-text-ink-color(
   $color,
   $query: feature-targeting.all()
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item__start {
+  .mdc-evolution-list-item--with-trailing-meta {
+    .mdc-evolution-list-item__end {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.prop(color, $color);
+      }
+    }
+  }
+}
+
+@mixin evolution-list-icon-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-item--with-leading-icon .mdc-evolution-list-item__start,
+  .mdc-evolution-list-item--with-trailing-icon .mdc-evolution-list-item__end {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+@mixin evolution-list-icon-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-item--with-leading-icon .mdc-evolution-list-item__start,
+  .mdc-evolution-list-item--with-trailing-icon .mdc-evolution-list-item__end {
     @include feature-targeting.targets($feat-color) {
       @include theme.prop(background-color, $color);
     }
   }
 }
 
-@mixin evolution-item-start-ink-color($color, $query: feature-targeting.all()) {
+@mixin evolution-list-selected-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item__start {
-    @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
-    }
+  .mdc-evolution-list-item--selected,
+  .mdc-evolution-list-item--activated {
+    @include evolution-list-primary-text-ink-color($color, $query);
+    @include _evolution-item-icon-ink-color(
+      $color,
+      $leading-only: true,
+      $query: $query
+    );
   }
 }
 
-@mixin evolution-item-end-ink-color($color, $query: feature-targeting.all()) {
+@mixin evolution-list-disabled-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item__end {
-    @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+  .mdc-evolution-list-item--disabled {
+    @include evolution-list-primary-text-ink-color($color, $query);
+    @include evolution-list-secondary-text-ink-color($color, $query);
+    @include _evolution-item-icon-ink-color($color, $query: $query);
+    @include _evolution-item-meta-text-ink-color($color, $query);
+  }
+}
+
+@mixin evolution-list-disabled-opacity(
+  $opacity,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-list-item--disabled {
+    .mdc-evolution-list-item__start,
+    .mdc-evolution-list-item__content,
+    .mdc-evolution-list-item__end {
+      @include feature-targeting.targets($feat-color) {
+        opacity: $opacity;
+      }
     }
   }
 }
@@ -892,36 +951,6 @@
   .mdc-list-group__subheader {
     @include feature-targeting.targets($feat-color) {
       @include theme.prop(color, $color);
-    }
-  }
-}
-
-@mixin evolution-item-disabled-content-opacity(
-  $opacity,
-  $query: feature-targeting.all()
-) {
-  $feat-color: feature-targeting.create-target($query, color);
-
-  .mdc-evolution-list-item--disabled .mdc-evolution-list-item__content {
-    @include feature-targeting.targets($feat-color) {
-      opacity: $opacity;
-    }
-  }
-}
-
-@mixin evolution-item-disabled-content-color(
-  $color,
-  $query: feature-targeting.all()
-) {
-  $feat-color: feature-targeting.create-target($query, color);
-
-  .mdc-evolution-list-item--disabled {
-    .mdc-evolution-list-item__content,
-    .mdc-evolution-list-item__primary-text,
-    .mdc-evolution-list-item__secondary-text {
-      @include feature-targeting.targets($feat-color) {
-        @include theme.prop(color, $color);
-      }
     }
   }
 }
@@ -1191,12 +1220,101 @@
   $bottom,
   $query: feature-targeting.all()
 ) {
-  &.mdc-evolution-list-item--with-two-lines
+  &.mdc-evolution-list-item--with-two-lines {
     .mdc-evolution-list-item__primary-text {
-    @include typography.text-baseline(
-      $top: $top,
-      $bottom: $bottom,
-      $query: $query
-    );
+      @include typography.text-baseline(
+        $top: $top,
+        $bottom: $bottom,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _evolution-two-line-item-end-baseline(
+  $top,
+  $query: feature-targeting.all()
+) {
+  &.mdc-evolution-list-item--with-two-lines {
+    .mdc-evolution-list-item__end {
+      @include typography.text-baseline(
+        $display: block,
+        $top: $top,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _evolution-three-line-item-end-baseline(
+  $top,
+  $query: feature-targeting.all()
+) {
+  &.mdc-evolution-list-item--with-three-lines {
+    .mdc-evolution-list-item__end {
+      @include typography.text-baseline(
+        $display: block,
+        $top: $top,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _evolution-two-line-item-meta-baseline(
+  $top,
+  $query: feature-targeting.all()
+) {
+  &.mdc-evolution-list-item--with-two-lines {
+    &.mdc-evolution-list-item--with-trailing-meta {
+      .mdc-evolution-list-item__end {
+        @include typography.text-baseline(
+          $display: block,
+          $top: $top,
+          $query: $query
+        );
+      }
+    }
+  }
+}
+
+@mixin _evolution-item-meta-text-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  &.mdc-evolution-list-item--with-trailing-meta {
+    .mdc-evolution-list-item__end {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.prop(color, $color);
+      }
+    }
+  }
+}
+
+@mixin _evolution-item-icon-ink-color(
+  $color,
+  $leading-only: false,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  &.mdc-evolution-list-item--with-leading-icon {
+    .mdc-evolution-list-item__start {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.prop(color, $color);
+      }
+    }
+  }
+
+  @if (not $leading-only) {
+    &.mdc-evolution-list-item--with-trailing-icon {
+      .mdc-evolution-list-item__end {
+        @include feature-targeting.targets($feat-color) {
+          @include theme.prop(color, $color);
+        }
+      }
+    }
   }
 }
