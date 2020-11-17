@@ -509,7 +509,7 @@ describe('MDCTooltipFoundation', () => {
     const tooltipSize = {width: 100, height: 30};
 
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
-    mockAdapter.getViewportWidth.and.returnValue(500);
+    mockAdapter.getViewportWidth.and.returnValue(480);
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
 
@@ -796,7 +796,7 @@ describe('MDCTooltipFoundation', () => {
 
        const {foundation, mockAdapter} =
            setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.getViewportHeight.and.returnValue(120);
+       mockAdapter.getViewportHeight.and.returnValue(110);
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
        mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
 
