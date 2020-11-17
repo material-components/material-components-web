@@ -314,8 +314,14 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // Indicates that all potential positions would result in the tooltip
     // colliding with the viewport. This would only occur when the anchor
     // element itself collides with the viewport, or the viewport is very
-    // narrow.
-    return centerPos;
+    // narrow. In this case, we allow the tooltip to be mis-aligned from the
+    // anchor element.
+    if (anchorRect.left < 0) {
+      return this.minViewportTooltipThreshold;
+    } else {
+      const viewportWidth = this.adapter.getViewportWidth();
+      return viewportWidth - (tooltipWidth + this.minViewportTooltipThreshold);
+    }
   }
 
   /**
