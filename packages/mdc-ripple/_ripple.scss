@@ -34,18 +34,11 @@
 @use '@material/theme/theme-color';
 @use './ripple-theme';
 
-@mixin core-styles(
-  $query: feature-targeting.all(),
-  // TODO(b/151931961): Remove this param once resolved.
-    $include-will-change: true
-) {
+@mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-ripple-surface {
-    @include surface(
-      $include-will-change: $include-will-change,
-      $query: $query
-    );
+    @include surface($query: $query);
     @include ripple-theme.states($query: $query);
     @include radius-bounded($query: $query);
     @include surface-styles($query: $query);

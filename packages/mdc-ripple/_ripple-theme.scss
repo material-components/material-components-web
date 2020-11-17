@@ -395,19 +395,28 @@ $pressed-light-ink-opacity: 0.32 !default;
 }
 
 /// Keep the ripple (State overlay) behind the content.
-@mixin behind-content($ripple-target: '&', $query: feature-targeting.all()) {
+@mixin behind-content(
+  $ripple-target,
+  $content-root-selector: '&',
+  $query: feature-targeting.all()
+) {
   // Needed for IE11. Without this, IE11 renders the state layer completely
   // underneath the container, making it invisible.
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting.targets($feat-structure) {
-    z-index: 0;
+  #{$content-root-selector} {
+    @include feature-targeting.targets($feat-structure) {
+      z-index: 0;
+    }
   }
 
   #{$ripple-target}::before,
   #{$ripple-target}::after {
     @include feature-targeting.targets($feat-structure) {
-      z-index: -1;
+      @include theme.property(
+        z-index,
+        custom-properties.create(--mdc-ripple-z-index, -1)
+      );
     }
   }
 }
