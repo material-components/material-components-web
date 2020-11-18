@@ -74,7 +74,7 @@ We’re going to use `webpack-dev-server` to demonstrate how webpack bundles our
 ```json
 {
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack serve",
   }
 }
 ```
@@ -147,9 +147,9 @@ module.exports = [{
               webpackImporter: false,
             },
           },
-        ]
-      }
-    ]
+	    ],
+	  },
+    ],
   },
 }];
 ```
@@ -195,7 +195,7 @@ We also need to configure sass-loader to understand the `@material` imports used
     // See https://github.com/webpack-contrib/sass-loader/issues/804
     webpackImporter: false,
     sassOptions: {
-      includePaths: ['./node_modules']
+      includePaths: ['./node_modules'],
     },
   }
 }
@@ -218,13 +218,7 @@ You can install all of them by running this command:
 npm install --save-dev autoprefixer postcss-loader
 ```
 
-Add `autoprefixer` at the top of your `webpack.config.js`:
-
-```js
-const autoprefixer = require('autoprefixer');
-```
-
-Then add `postcss-loader`, using `autoprefixer` as a plugin:
+Add `postcss-loader`, using `autoprefixer` as a plugin:
 
 ```js
 { loader: 'extract-loader' },
@@ -232,21 +226,23 @@ Then add `postcss-loader`, using `autoprefixer` as a plugin:
 {
   loader: 'postcss-loader',
   options: {
-     plugins: () => [autoprefixer()]
-  }
+    postcssOptions: {
+      plugins: ['autoprefixer'],
+    },
+  },
 },
 {
   loader: 'sass-loader',
   options: {
-    sassOptions: {
-      includePaths: ['./node_modules']
-    },
     // Prefer Dart Sass
     implementation: require('sass'),
 
     // See https://github.com/webpack-contrib/sass-loader/issues/804
     webpackImporter: false,
-  }
+	sassOptions: {
+      includePaths: ['./node_modules'],
+    },
+  },
 },
 ```
 
@@ -307,9 +303,11 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
    ```js
    {
      test: /\.js$/,
-     loader: 'babel-loader',
-     query: {
-       presets: ['@babel/preset-env'],
+	 use: {
+       loader: 'babel-loader',
+       options: {
+         presets: ['@babel/preset-env'],
+       },
      },
    }
    ```
@@ -317,9 +315,7 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
 The final `webpack.config.js` file should look like this:
 
 ```js
-const autoprefixer = require('autoprefixer');
-
-module.exports = {
+module.exports = [{
   entry: ['./app.scss', './app.js'],
   output: {
     filename: 'bundle.js',
@@ -335,39 +331,43 @@ module.exports = {
               name: 'bundle.css',
             },
           },
-          {loader: 'extract-loader'},
-          {loader: 'css-loader'},
+          { loader: 'extract-loader' },
+          { loader: 'css-loader' },
           {
             loader: 'postcss-loader',
             options: {
-              plugins: () => [autoprefixer()]
-            }
+              postcssOptions: {
+                plugins: ['autoprefixer'],
+			  },
+		    },
           },
           {
             loader: 'sass-loader',
             options: {
               // Prefer Dart Sass
               implementation: require('sass'),
-
+              
               // See https://github.com/webpack-contrib/sass-loader/issues/804
               webpackImporter: false,
               sassOptions: {
-                includePaths: ['./node_modules'],
+                includePaths: [ './node_modules' ],
               },
-            },
-          }
-        ],
+		    },
+	      },
+	    ],
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['@babel/preset-env'],
-        },
-      }
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+	    },
+	  },
     ],
   },
-};
+}];
 ```
 
 Now run `npm start` again and open http://localhost:8080. You should see a “hello world” in the console.
@@ -404,7 +404,7 @@ Add another script to `package.json`:
 ```json
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
   }
 ```
 
@@ -463,7 +463,7 @@ Then update your `sass-loader` config to the following:
 {
   loader: 'sass-loader',
   options: {
-    importer: materialImporter
+    importer: materialImporter,
   },
 }
 ```
