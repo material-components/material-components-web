@@ -77,14 +77,11 @@ describe('MDCSliderFoundation', () => {
 
     it('throws error if attribute value is null', () => {
       const {foundation, mockAdapter} = setUpTest();
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUEMIN, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MIN, Thumb.END)
           .and.returnValue(null);
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUEMAX, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MAX, Thumb.END)
           .and.returnValue('100');
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUENOW, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
           .and.returnValue('50.5');
 
       expect(() => foundation.init()).toThrowError(/must be non-null/);
@@ -92,14 +89,11 @@ describe('MDCSliderFoundation', () => {
 
     it('throws error if attribute value is NaN', () => {
       const {foundation, mockAdapter} = setUpTest();
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUEMIN, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MIN, Thumb.END)
           .and.returnValue('0');
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUEMAX, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MAX, Thumb.END)
           .and.returnValue('foo');
-      mockAdapter.getThumbAttribute
-          .withArgs(attributes.ARIA_VALUENOW, Thumb.END)
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
           .and.returnValue('50.5');
 
       expect(() => foundation.init()).toThrowError(/must be a number/);
@@ -703,6 +697,31 @@ describe('MDCSliderFoundation', () => {
     });
   });
 
+  describe('input synchronization: ', () => {
+    it('updates input value attribute and property on value update', () => {
+      const {foundation, mockAdapter} = setUpAndInit(
+          {isDiscrete: true, valueStart: 10, value: 40, isRange: true});
+
+      mockAdapter.getInputValue.withArgs(Thumb.START).and.returnValue(10);
+      foundation.setValueStart(3);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_VALUE, '3', Thumb.START);
+      expect(mockAdapter.setInputValue).toHaveBeenCalledWith('3', Thumb.START);
+      // The min attribute for end input should also be updated.
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_MIN, '3', Thumb.END);
+
+      mockAdapter.getInputValue.withArgs(Thumb.END).and.returnValue(40);
+      foundation.setValue(30);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_VALUE, '30', Thumb.END);
+      expect(mockAdapter.setInputValue).toHaveBeenCalledWith('30', Thumb.END);
+      // The max attribute for start input should also be updated.
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_MAX, '30', Thumb.START);
+    });
+  });
+
   describe('value indicator', () => {
     it('does not update value indicator for continuous slider', () => {
       const {foundation, mockAdapter} = setUpAndInit({
@@ -1241,28 +1260,35 @@ describe('MDCSliderFoundation', () => {
   });
 
   describe('disabled state', () => {
-    it('updates class and thumb attributes according to disabled state', () => {
-      const {foundation, mockAdapter} = setUpAndInit();
-      expect(foundation.getDisabled()).toBe(false);
+    it('updates class and thumb/input attributes according to disabled state',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit();
+         expect(foundation.getDisabled()).toBe(false);
 
-      foundation.setDisabled(true);
-      expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.DISABLED);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith('tabindex', '-1', Thumb.END);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith('aria-disabled', 'true', Thumb.END);
-      expect(foundation.getDisabled()).toBe(true);
+         foundation.setDisabled(true);
+         expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.DISABLED);
+         expect(mockAdapter.setThumbAttribute)
+             .toHaveBeenCalledWith('tabindex', '-1', Thumb.END);
+         expect(mockAdapter.setThumbAttribute)
+             .toHaveBeenCalledWith('aria-disabled', 'true', Thumb.END);
+         expect(mockAdapter.setInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.END);
+         expect(foundation.getDisabled()).toBe(true);
 
-      foundation.setDisabled(false);
-      expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.DISABLED);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith('tabindex', '0', Thumb.END);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith('aria-disabled', 'false', Thumb.END);
-      expect(foundation.getDisabled()).toBe(false);
-    });
+         foundation.setDisabled(false);
+         expect(mockAdapter.removeClass)
+             .toHaveBeenCalledWith(cssClasses.DISABLED);
+         expect(mockAdapter.setThumbAttribute)
+             .toHaveBeenCalledWith('tabindex', '0', Thumb.END);
+         expect(mockAdapter.setThumbAttribute)
+             .toHaveBeenCalledWith('aria-disabled', 'false', Thumb.END);
+         expect(mockAdapter.removeInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.END);
+         expect(foundation.getDisabled()).toBe(false);
+       });
 
-    it('range slider: updates both thumbs\' attrs according to disabled state',
+    it('range slider: updates both thumb and inputs\' attrs according ' +
+           'to disabled state',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({isRange: true});
 
@@ -1275,6 +1301,10 @@ describe('MDCSliderFoundation', () => {
              .toHaveBeenCalledWith('aria-disabled', 'true', Thumb.END);
          expect(mockAdapter.setThumbAttribute)
              .toHaveBeenCalledWith('aria-disabled', 'true', Thumb.START);
+         expect(mockAdapter.setInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.END);
+         expect(mockAdapter.setInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.START);
 
          foundation.setDisabled(false);
          expect(mockAdapter.setThumbAttribute)
@@ -1285,6 +1315,10 @@ describe('MDCSliderFoundation', () => {
              .toHaveBeenCalledWith('aria-disabled', 'false', Thumb.START);
          expect(mockAdapter.setThumbAttribute)
              .toHaveBeenCalledWith('aria-disabled', 'false', Thumb.END);
+         expect(mockAdapter.removeInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.START);
+         expect(mockAdapter.removeInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.END);
        });
 
     it('events do not update slider value when disabled', () => {
@@ -1540,23 +1574,23 @@ function setUpAndInit({
   mockAdapter.hasClass.withArgs(cssClasses.RANGE)
       .and.returnValue(Boolean(isRange));
 
-  mockAdapter.getThumbAttribute.withArgs(attributes.ARIA_VALUEMIN, Thumb.END)
+  mockAdapter.getInputAttribute
+      .withArgs(attributes.INPUT_MIN, isRange ? Thumb.START : Thumb.END)
       .and.returnValue(
           String(min !== undefined ? min : 0),
       );
-  mockAdapter.getThumbAttribute.withArgs(attributes.ARIA_VALUEMAX, Thumb.END)
+  mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MAX, Thumb.END)
       .and.returnValue(String(max !== undefined ? max : 100));
 
   valueStart = valueStart !== undefined ? valueStart : 20;
   value = value !== undefined ? value : 50;
   if (isRange) {
-    mockAdapter.getThumbAttribute
-        .withArgs(attributes.ARIA_VALUENOW, Thumb.START)
+    mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.START)
         .and.returnValue(String(valueStart));
-    mockAdapter.getThumbAttribute.withArgs(attributes.ARIA_VALUENOW, Thumb.END)
+    mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
         .and.returnValue(String(value));
   } else {
-    mockAdapter.getThumbAttribute.withArgs(attributes.ARIA_VALUENOW, Thumb.END)
+    mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
         .and.returnValue(String(value));
   }
 

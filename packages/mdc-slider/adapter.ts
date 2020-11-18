@@ -80,6 +80,46 @@ export interface MDCSliderAdapter {
   setThumbAttribute(attribute: string, value: string, thumb: Thumb): void;
 
   /**
+   * - If thumb is `Thumb.START`, returns the value property on the start input
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, returns the value property on the end input (or
+   *   only input for single point slider).
+   */
+  getInputValue(thumb: Thumb): string;
+
+  /**
+   * - If thumb is `Thumb.START`, sets the value property on the start input
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, sets the value property on the end input (or
+   *   only input for single point slider).
+   */
+  setInputValue(value: string, thumb: Thumb): void;
+
+  /**
+   * - If thumb is `Thumb.START`, returns the attribute value on the start input
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, returns the attribute value on the end input (or
+   *   only input for single point slider).
+   */
+  getInputAttribute(attribute: string, thumb: Thumb): string|null;
+
+  /**
+   * - If thumb is `Thumb.START`, sets the attribute on the start input
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, sets the attribute on the end input (or
+   *   only input for single point slider).
+   */
+  setInputAttribute(attribute: string, value: string, thumb: Thumb): void;
+
+  /**
+   * - If thumb is `Thumb.START`, removes the attribute on the start input
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, removes the attribute on the end input (or
+   *   only input for single point slider).
+   */
+  removeInputAttribute(attribute: string, thumb: Thumb): void;
+
+  /**
    * @return Returns the width of the given thumb knob.
    */
   getThumbKnobWidth(thumb: Thumb): number;

@@ -37,6 +37,7 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   }
 
   root!: HTMLElement;                 // Assigned in MDCComponent constructor.
+  private inputs!: HTMLInputElement[];  // Assigned in #initialize.
   private thumbs!: HTMLElement[];     // Assigned in #initialize.
   private trackActive!: HTMLElement;  // Assigned in #initialize.
 
@@ -67,6 +68,18 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
           this.getThumbEl(thumb).getAttribute(attribute),
       setThumbAttribute: (attribute, value, thumb: Thumb) => {
         this.getThumbEl(thumb).setAttribute(attribute, value);
+      },
+      getInputValue: (thumb: Thumb) => this.getInput(thumb).value,
+      setInputValue: (value: string, thumb: Thumb) => {
+        this.getInput(thumb).value = value;
+      },
+      getInputAttribute: (attribute, thumb: Thumb) =>
+          this.getInput(thumb).getAttribute(attribute),
+      setInputAttribute: (attribute, value, thumb: Thumb) => {
+        this.getInput(thumb).setAttribute(attribute, value);
+      },
+      removeInputAttribute: (attribute, thumb: Thumb) => {
+        this.getInput(thumb).removeAttribute(attribute);
       },
       isThumbFocused: (thumb: Thumb) =>
           this.getThumbEl(thumb) === document.activeElement,
@@ -173,6 +186,9 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
    *   is set before component initialization.
    */
   initialize({skipInitialUIUpdate}: {skipInitialUIUpdate?: boolean} = {}) {
+    this.inputs =
+        [].slice.call(this.root.querySelectorAll(`.${cssClasses.INPUT}`)) as
+        HTMLInputElement[];
     this.thumbs =
         [].slice.call(this.root.querySelectorAll(`.${cssClasses.THUMB}`)) as
         HTMLElement[];
@@ -231,6 +247,11 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   private getThumbEl(thumb: Thumb) {
     return thumb === Thumb.END ? this.thumbs[this.thumbs.length - 1] :
                                  this.thumbs[0];
+  }
+
+  private getInput(thumb: Thumb) {
+    return thumb === Thumb.END ? this.inputs[this.inputs.length - 1] :
+                                 this.inputs[0];
   }
 
   /** Adds tick mark elements to the given container. */

@@ -23,6 +23,7 @@
 
 import {KEY} from '../../mdc-dom/keyboard';
 import {getFixture} from '../../../testing/dom';
+import {html} from '../../../testing/dom';
 import {createKeyboardEvent, createMouseEvent, emitEvent} from '../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {attributes, cssClasses, events, MDCSlider, MDCSliderFoundation, Thumb} from '../index';
@@ -436,6 +437,29 @@ describe('MDCSlider', () => {
     });
   });
 
+  describe('input synchronization: ', () => {
+    let startInput: HTMLInputElement|null, endInput: HTMLInputElement;
+
+    it('updates input value attribute and property on value update', () => {
+      ({component, startInput, endInput} = setUpTest({
+         isDiscrete: true,
+         valueStart: 10,
+         value: 50,
+         isRange: true,
+       }));
+
+      component.setValueStart(5);
+      expect(startInput!.value).toBe('5');
+      expect(startInput!.getAttribute(attributes.INPUT_VALUE)).toBe('5');
+      expect(endInput.getAttribute(attributes.INPUT_MIN)).toBe('5');
+
+      component.setValue(20);
+      expect(endInput.value).toBe('20');
+      expect(endInput.getAttribute(attributes.INPUT_VALUE)).toBe('20');
+      expect(startInput!.getAttribute(attributes.INPUT_MAX)).toBe('20');
+    });
+  });
+
   describe('disabled state', () => {
     let startThumb: HTMLElement|null, endThumb: HTMLElement;
 
@@ -589,8 +613,10 @@ describe('MDCSlider', () => {
     let root: HTMLElement, thumb: HTMLElement, trackActive: HTMLElement;
 
     beforeEach(() => {
-      root = getFixture(`
+      root = getFixture(html`
         <div class="mdc-slider mdc-slider--discrete" data-step="10">
+          <input class="mdc-slider__input" type="hidden" min="0" max="100"
+                        value="70">
           <div class="mdc-slider__track">
             <div class="mdc-slider__track--active">
               <div class="mdc-slider__track--active_fill"
@@ -672,6 +698,8 @@ function setUpTest(
     } = {}): {
   root: HTMLElement,
   component: MDCSlider,
+  startInput: HTMLInputElement|null,
+  endInput: HTMLInputElement,
   startThumb: HTMLElement|null,
   endThumb: HTMLElement,
   trackActive: HTMLElement
@@ -682,7 +710,20 @@ function setUpTest(
       isDiscrete ? `${attributes.DATA_ATTR_STEP}="${step || 1}"` : '';
   const tickMarksClass = hasTickMarks ? cssClasses.TICK_MARKS : '';
 
-  const valueIndicator = (valueNum: number) => `
+  const input =
+      ({min, max, value, step}:
+           {min: number, max: number, value: number, step?: number}) => {
+        const stepAttr = step !== undefined ? `step="${step}"` : '';
+        return `<input class="mdc-slider__input" type="range"
+      min="${min}" max="${max}" value=${value} ${stepAttr}>`;
+      };
+  const inputStart = isRange ?
+      input({min: 0, max: value || 0, value: valueStart || 0, step}) :
+      '';
+  const inputEnd = input(
+      {min: isRange ? valueStart || 0 : 0, max: 100, value: value || 0, step});
+
+  const valueIndicator = (valueNum: number) => html`
       <div class="mdc-slider__value-indicator-container">
         <div class="mdc-slider__value-indicator">
           <span class="mdc-slider__value-indicator-text">
@@ -692,7 +733,7 @@ function setUpTest(
         </div>`;
   const valueIndicatorStart = isDiscrete ? valueIndicator(valueStart || 0) : '';
   const valueIndicatorEnd = isDiscrete ? valueIndicator(valueStart || 0) : '';
-  const startThumbHtml = isRange ? `
+  const startThumbHtml = isRange ? html`
       <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0"
            aria-valuemax="100" aria-valuenow="${valueStart || 0}">
         ${valueIndicatorStart}
@@ -700,9 +741,11 @@ function setUpTest(
       </div>` :
                                    '';
 
-  const root = getFixture(`
+  const root = getFixture(html`
     <div class="mdc-slider ${discreteClass} ${rangeClass} ${tickMarksClass}" ${
       dataStepAttr}>
+      ${inputStart}
+      ${inputEnd}
       <div class="mdc-slider__track">
         <div class="mdc-slider__track--active">
           <div class="mdc-slider__track--active_fill"></div>
@@ -716,6 +759,10 @@ function setUpTest(
         <div class="mdc-slider__thumb-knob"></div>
       </div>
     </div>`);
+  const inputs =
+      root.querySelectorAll<HTMLInputElement>(`.${cssClasses.INPUT}`);
+  const startInput = isRange ? inputs[0] : null;
+  const endInput = inputs[inputs.length - 1];
   const thumbs = root.querySelectorAll(`.${cssClasses.THUMB}`);
   const startThumb = isRange ? thumbs[0] as HTMLElement : null;
   const endThumb = thumbs[thumbs.length - 1] as HTMLElement;
@@ -732,7 +779,15 @@ function setUpTest(
   const component = MDCSlider.attachTo(root);
   jasmine.clock().tick(1);  // Tick for RAF.
 
-  return {root, component, startThumb, endThumb, trackActive};
+  return {
+    root,
+    component,
+    startInput,
+    endInput,
+    startThumb,
+    endThumb,
+    trackActive
+  };
 }
 
 /**

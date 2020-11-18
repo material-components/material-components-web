@@ -118,8 +118,13 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       addThumbClass: () => undefined,
       removeThumbClass: () => undefined,
       getAttribute: () => null,
+      getInputValue: () => '',
+      setInputValue: () => undefined,
       getThumbAttribute: () => null,
       setThumbAttribute: () => null,
+      getInputAttribute: () => null,
+      setInputAttribute: () => null,
+      removeInputAttribute: () => null,
       getThumbKnobWidth: () => 0,
       isThumbFocused: () => false,
       focusThumb: () => undefined,
@@ -159,19 +164,19 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.isRange = this.adapter.hasClass(cssClasses.RANGE);
 
     const min = this.convertAttributeValueToNumber(
-        this.adapter.getThumbAttribute(attributes.ARIA_VALUEMIN, Thumb.END),
-        attributes.ARIA_VALUEMIN);
+        this.adapter.getInputAttribute(
+            attributes.INPUT_MIN, this.isRange ? Thumb.START : Thumb.END),
+        attributes.INPUT_MIN);
     const max = this.convertAttributeValueToNumber(
-        this.adapter.getThumbAttribute(attributes.ARIA_VALUEMAX, Thumb.END),
-        attributes.ARIA_VALUEMAX);
+        this.adapter.getInputAttribute(attributes.INPUT_MAX, Thumb.END),
+        attributes.INPUT_MAX);
     const value = this.convertAttributeValueToNumber(
-        this.adapter.getThumbAttribute(attributes.ARIA_VALUENOW, Thumb.END),
-        attributes.ARIA_VALUENOW);
+        this.adapter.getInputAttribute(attributes.INPUT_VALUE, Thumb.END),
+        attributes.INPUT_VALUE);
     const valueStart = this.isRange ?
         this.convertAttributeValueToNumber(
-            this.adapter.getThumbAttribute(
-                attributes.ARIA_VALUENOW, Thumb.START),
-            attributes.ARIA_VALUENOW) :
+            this.adapter.getInputAttribute(attributes.INPUT_VALUE, Thumb.START),
+            attributes.INPUT_VALUE) :
         min;
 
     this.validateProperties({min, max, value, valueStart});
@@ -307,18 +312,24 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       if (this.isRange) {
         this.adapter.setThumbAttribute('tabindex', '-1', Thumb.START);
         this.adapter.setThumbAttribute('aria-disabled', 'true', Thumb.START);
+        this.adapter.setInputAttribute(
+            attributes.INPUT_DISABLED, '', Thumb.START);
       }
       this.adapter.setThumbAttribute('tabindex', '-1', Thumb.END);
       this.adapter.setThumbAttribute('aria-disabled', 'true', Thumb.END);
+      this.adapter.setInputAttribute(attributes.INPUT_DISABLED, '', Thumb.END);
     } else {
       this.adapter.removeClass(cssClasses.DISABLED);
 
       if (this.isRange) {
         this.adapter.setThumbAttribute('tabindex', '0', Thumb.START);
         this.adapter.setThumbAttribute('aria-disabled', 'false', Thumb.START);
+        this.adapter.removeInputAttribute(
+            attributes.INPUT_DISABLED, Thumb.START);
       }
       this.adapter.setThumbAttribute('tabindex', '0', Thumb.END);
       this.adapter.setThumbAttribute('aria-disabled', 'false', Thumb.END);
+      this.adapter.removeInputAttribute(attributes.INPUT_DISABLED, Thumb.END);
     }
   }
 
@@ -615,23 +626,37 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    *     updated for both thumbs based on current internal state.
    */
   private updateUI(thumb?: Thumb) {
-    this.updateThumbAriaAttributes(thumb);
+    this.updateThumbAndInputAttributes(thumb);
     this.updateThumbAndTrackUI(thumb);
     this.updateValueIndicatorUI(thumb);
     this.updateTickMarksUI();
   }
 
   /**
-   * Updates thumb aria attributes based on current value.
+   * Updates thumb and input attributes based on current value.
    * @param thumb Thumb whose aria attributes to update.
    */
-  private updateThumbAriaAttributes(thumb?: Thumb) {
+  private updateThumbAndInputAttributes(thumb?: Thumb) {
     if (!thumb) return;
 
     const value =
         this.isRange && thumb === Thumb.START ? this.valueStart : this.value;
-    this.adapter.setThumbAttribute(
-        attributes.ARIA_VALUENOW, String(value), thumb);
+    const valueStr = String(value);
+    this.adapter.setInputAttribute(attributes.INPUT_VALUE, valueStr, thumb);
+    if (this.isRange && thumb === Thumb.START) {
+      this.adapter.setInputAttribute(attributes.INPUT_MIN, valueStr, Thumb.END);
+    } else if (this.isRange && thumb === Thumb.END) {
+      this.adapter.setInputAttribute(
+          attributes.INPUT_MAX, valueStr, Thumb.START);
+    }
+
+    // Sync attribute with property.
+    if (this.adapter.getInputValue(thumb) !== valueStr) {
+      this.adapter.setInputValue(valueStr, thumb);
+    }
+
+    this.adapter.setThumbAttribute(attributes.ARIA_VALUENOW, valueStr, thumb);
+
     const valueToAriaValueTextFn = this.adapter.getValueToAriaValueTextFn();
     if (valueToAriaValueTextFn) {
       this.adapter.setThumbAttribute(

@@ -91,6 +91,7 @@ a specific value.
 
 ```html
 <div class="mdc-slider">
+  <input class="mdc-slider__input" type="hidden" min="0" max="100" value="50" name="volume">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -110,6 +111,8 @@ a specific value.
 
 ```html
 <div class="mdc-slider mdc-slider--range">
+  <input class="mdc-slider__input" type="hidden" min="0" max="70" value="30" name="rangeStart">
+  <input class="mdc-slider__input" type="hidden" min="30" max="100" value="70" name="rangeEnd">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -142,6 +145,7 @@ To create a discrete slider, add the following:
 
 ```html
 <div class="mdc-slider mdc-slider--discrete" data-step="10">
+  <input class="mdc-slider__input" type="hidden" min="0" max="100" value="50" name="volume">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -178,6 +182,7 @@ To add tick marks to a discrete slider, add the following:
 
 ```html
 <div class="mdc-slider mdc-slider--discrete mdc-slider--tick-marks" data-step="10">
+  <input class="mdc-slider__input" type="hidden" min="0" max="100" value="50" name="volume">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -214,6 +219,8 @@ To add tick marks to a discrete slider, add the following:
 
 ```html
 <div class="mdc-slider mdc-slider--range mdc-slider--discrete" data-step="10">
+  <input class="mdc-slider__input" type="hidden" min="0" max="50" value="20" step="10" name="rangeStart">
+  <input class="mdc-slider__input" type="hidden" min="20" max="100" value="50" step="10" name="rangeEnd">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -255,6 +262,7 @@ To disable a slider, add the following:
 
 ```html
 <div class="mdc-slider mdc-slider--disabled">
+  <input class="mdc-slider__input" type="hidden" min="0" max="100" value="50" step="10" disabled name="volume">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
