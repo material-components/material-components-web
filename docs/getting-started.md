@@ -147,8 +147,8 @@ module.exports = [{
               webpackImporter: false,
             },
           },
-	    ],
-	  },
+        ],
+      },
     ],
   },
 }];
@@ -338,8 +338,8 @@ module.exports = [{
             options: {
               postcssOptions: {
                 plugins: ['autoprefixer'],
-			  },
-		    },
+              },
+            },
           },
           {
             loader: 'sass-loader',
@@ -352,9 +352,9 @@ module.exports = [{
               sassOptions: {
                 includePaths: [ './node_modules' ],
               },
-		    },
-	      },
-	    ],
+            },
+          },
+        ],
       },
       {
         test: /\.js$/,
@@ -363,8 +363,8 @@ module.exports = [{
           options: {
             presets: ['@babel/preset-env'],
           },
-	    },
-	  },
+        },
+      },
     ],
   },
 }];
@@ -402,10 +402,10 @@ Up to this point, we've used `webpack-dev-server` to preview our work with live 
 Add another script to `package.json`:
 
 ```json
-  "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server",
-  }
+"scripts": {
+  "build": "webpack",
+  "start": "webpack-dev-server",
+}
 ```
 
 Now run the following command:
