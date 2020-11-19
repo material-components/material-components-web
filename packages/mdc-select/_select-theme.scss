@@ -165,6 +165,20 @@ $error-color: error !default;
   }
 }
 
+/// Sets the select behavior to change width dynamically based on content.
+/// @param {Number} $min-width - The min-width of the select, which should be
+///     large enough to allow the label (if exists) to display in full.
+@mixin variable-width($min-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__anchor {
+    @include feature-targeting.targets($feat-structure) {
+      width: 100%;
+      min-width: $min-width;
+    }
+  }
+}
+
 @mixin ink-color($color-or-map, $query: feature-targeting.all()) {
   @include _if-enabled {
     @include _ink-color(state.get-default-state($color-or-map), $query: $query);
