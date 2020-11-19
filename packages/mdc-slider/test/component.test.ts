@@ -614,9 +614,9 @@ describe('MDCSlider', () => {
 
     beforeEach(() => {
       root = getFixture(html`
-        <div class="mdc-slider mdc-slider--discrete" data-step="10">
+        <div class="mdc-slider mdc-slider--discrete">
           <input class="mdc-slider__input" type="hidden" min="0" max="100"
-                        value="70">
+                        value="70" step="10">
           <div class="mdc-slider__track">
             <div class="mdc-slider__track--active">
               <div class="mdc-slider__track--active_fill"
@@ -706,8 +706,6 @@ function setUpTest(
 } {
   const discreteClass = isDiscrete ? cssClasses.DISCRETE : '';
   const rangeClass = isRange ? cssClasses.RANGE : '';
-  const dataStepAttr =
-      isDiscrete ? `${attributes.DATA_ATTR_STEP}="${step || 1}"` : '';
   const tickMarksClass = hasTickMarks ? cssClasses.TICK_MARKS : '';
 
   const input =
@@ -742,8 +740,7 @@ function setUpTest(
                                    '';
 
   const root = getFixture(html`
-    <div class="mdc-slider ${discreteClass} ${rangeClass} ${tickMarksClass}" ${
-      dataStepAttr}>
+    <div class="mdc-slider ${discreteClass} ${rangeClass} ${tickMarksClass}">
       ${inputStart}
       ${inputEnd}
       <div class="mdc-slider__track">

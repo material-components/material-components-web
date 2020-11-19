@@ -1594,10 +1594,8 @@ function setUpAndInit({
         .and.returnValue(String(value));
   }
 
-  if (isDiscrete) {
-    mockAdapter.getAttribute.withArgs(attributes.DATA_ATTR_STEP)
-        .and.returnValue(step || 1);
-  }
+  mockAdapter.getInputAttribute.withArgs(attributes.INPUT_STEP, Thumb.END)
+      .and.returnValue(step || numbers.STEP_SIZE);
   if (bigStep !== undefined) {
     mockAdapter.getAttribute.withArgs(attributes.DATA_ATTR_BIG_STEP)
         .and.returnValue(bigStep);

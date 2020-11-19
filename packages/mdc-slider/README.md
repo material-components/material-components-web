@@ -87,6 +87,10 @@ There are two types of sliders:
 Continuous sliders allow users to make meaningful selections that don’t require
 a specific value.
 
+Note: The step size for value quantization is, by default, 1. To specify
+a custom step size, provide a value for the `step` attribute on the `input`
+element.
+
 <img src="images/continuous-slider.png" alt="Continuous slider with a value of 50">
 
 ```html
@@ -138,14 +142,12 @@ allows a user to select an exact value.
 To create a discrete slider, add the following:
 
 *   `mdc-slider--discrete` class on the root element.
-*   `data-step` attribute on the root element. This will be the step size for
-    value quantization. If not set, the default is 1.
 *   Value indicator element (`mdc-slider__value-indicator-container`), as shown
     below.
 
 ```html
-<div class="mdc-slider mdc-slider--discrete" data-step="10">
-  <input class="mdc-slider__input" type="hidden" min="0" max="100" value="50" name="volume">
+<div class="mdc-slider mdc-slider--discrete">
+  <input class="mdc-slider__input" type="hidden" min="0" max="100" value="50" name="volume" step="10">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -181,8 +183,8 @@ To add tick marks to a discrete slider, add the following:
     elements as children of the `mdc-slider__tick-marks` element
 
 ```html
-<div class="mdc-slider mdc-slider--discrete mdc-slider--tick-marks" data-step="10">
-  <input class="mdc-slider__input" type="hidden" min="0" max="100" value="50" name="volume">
+<div class="mdc-slider mdc-slider--discrete mdc-slider--tick-marks">
+  <input class="mdc-slider__input" type="hidden" min="0" max="100" value="50" name="volume" step="10">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -218,7 +220,7 @@ To add tick marks to a discrete slider, add the following:
 #### Discrete range slider
 
 ```html
-<div class="mdc-slider mdc-slider--range mdc-slider--discrete" data-step="10">
+<div class="mdc-slider mdc-slider--range mdc-slider--discrete">
   <input class="mdc-slider__input" type="hidden" min="0" max="50" value="20" step="10" name="rangeStart">
   <input class="mdc-slider__input" type="hidden" min="20" max="100" value="50" step="10" name="rangeEnd">
   <div class="mdc-slider__track">

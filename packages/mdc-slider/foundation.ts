@@ -58,8 +58,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private isDisabled = false;
 
   private isDiscrete = false;
-  // Step value for discrete sliders.
-  private step = 1;
+  private step = numbers.STEP_SIZE;
   private bigStep = this.step * numbers.BIG_STEP_FACTOR;
   private hasTickMarks = false;
 
@@ -189,23 +188,23 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.valueBeforeDownEvent = value;
     this.valueStartBeforeDownEvent = valueStart;
 
-    if (this.isDiscrete) {
-      const step = this.convertAttributeValueToNumber(
-          this.adapter.getAttribute(attributes.DATA_ATTR_STEP),
-          attributes.DATA_ATTR_STEP);
-      if (step <= 0) {
-        throw new Error(
-            `MDCSliderFoundation: step must be a positive number. ` +
-            `Current step: ${step}`);
-      }
-      this.step = step;
-
-      const bigStep = this.adapter.getAttribute(attributes.DATA_ATTR_BIG_STEP);
-      this.bigStep = bigStep !== null ?
-          this.convertAttributeValueToNumber(
-              bigStep, attributes.DATA_ATTR_BIG_STEP) :
-          step * numbers.BIG_STEP_FACTOR;
+    const stepAttr =
+        this.adapter.getInputAttribute(attributes.INPUT_STEP, Thumb.END);
+    if (stepAttr) {
+      this.step =
+          this.convertAttributeValueToNumber(stepAttr, attributes.INPUT_STEP);
     }
+    if (this.step <= 0) {
+      throw new Error(
+          `MDCSliderFoundation: step must be a positive number. ` +
+          `Current step: ${this.step}`);
+    }
+
+    const bigStep = this.adapter.getAttribute(attributes.DATA_ATTR_BIG_STEP);
+    this.bigStep = bigStep !== null ?
+        this.convertAttributeValueToNumber(
+            bigStep, attributes.DATA_ATTR_BIG_STEP) :
+        this.step * numbers.BIG_STEP_FACTOR;
 
     this.mousedownOrTouchstartListener =
         this.handleMousedownOrTouchstart.bind(this);
@@ -710,10 +709,10 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     // Fit the percentage complete between the range [min,max]
     // by remapping from [0, 1] to [min, min+(max-min)].
     const value = this.min + pctComplete * (this.max - this.min);
-    if (this.isDiscrete && value !== this.max && value !== this.min) {
-      return this.quantize(value);
+    if (value === this.max || value === this.min) {
+      return value;
     }
-    return value;
+    return this.quantize(value);
   }
 
   /**
