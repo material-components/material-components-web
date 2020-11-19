@@ -106,6 +106,18 @@ export interface MDCTooltipAdapter {
       evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
+   * Registers an event listener to the window.
+   */
+  registerWindowEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener to the window.
+   */
+  deregisterWindowEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
    * Notification that the tooltip element has been fully hidden. Typically used
    * to wait for the hide animation to complete.
    */

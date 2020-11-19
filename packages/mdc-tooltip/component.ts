@@ -141,6 +141,12 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       deregisterDocumentEventHandler: (evt, handler) => {
         document.body.removeEventListener(evt, handler);
       },
+      registerWindowEventHandler: (evt, handler) => {
+        window.addEventListener(evt, handler);
+      },
+      deregisterWindowEventHandler: (evt, handler) => {
+        window.removeEventListener(evt, handler);
+      },
       notifyHidden: () => {
         this.emit(events.HIDDEN, {});
       },

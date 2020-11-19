@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {emitEvent} from '../../../testing/dom/events';
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {AnchorBoundaryType, CssClasses, numbers, XPosition, YPosition} from '../constants';
@@ -50,6 +51,8 @@ describe('MDCTooltipFoundation', () => {
       'isRTL',
       'registerDocumentEventHandler',
       'deregisterDocumentEventHandler',
+      'registerWindowEventHandler',
+      'deregisterWindowEventHandler',
       'notifyHidden',
     ]);
   });
@@ -126,6 +129,28 @@ describe('MDCTooltipFoundation', () => {
            .toHaveBeenCalledWith('click', jasmine.any(Function));
        expect(mockAdapter.deregisterDocumentEventHandler)
            .toHaveBeenCalledWith('keydown', jasmine.any(Function));
+     });
+
+  it('#show registers scroll and resize event listeners on the window', () => {
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    foundation.show();
+    expect(mockAdapter.registerWindowEventHandler)
+        .toHaveBeenCalledWith('scroll', jasmine.any(Function));
+    expect(mockAdapter.registerWindowEventHandler)
+        .toHaveBeenCalledWith('resize', jasmine.any(Function));
+  });
+
+  it('#hide deregisters scroll and resize event listeners on the window',
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       foundation.show();
+       foundation.hide();
+
+       expect(mockAdapter.deregisterWindowEventHandler)
+           .toHaveBeenCalledWith('scroll', jasmine.any(Function));
+       expect(mockAdapter.deregisterWindowEventHandler)
+           .toHaveBeenCalledWith('resize', jasmine.any(Function));
      });
 
   it('#hide modifies tooltip element so it is hidden', () => {
@@ -829,5 +854,55 @@ describe('MDCTooltipFoundation', () => {
            .toHaveBeenCalledWith('click', jasmine.any(Function));
        expect(mockAdapter.deregisterDocumentEventHandler)
            .toHaveBeenCalledWith('keydown', jasmine.any(Function));
+       expect(mockAdapter.deregisterWindowEventHandler)
+           .toHaveBeenCalledWith('scroll', jasmine.any(Function));
+       expect(mockAdapter.deregisterWindowEventHandler)
+           .toHaveBeenCalledWith('resize', jasmine.any(Function));
      });
+
+  it('recalculates position of tooltip if anchor position changes', () => {
+    const anchorBoundingRect =
+        {top: 0, bottom: 35, left: 0, right: 200, width: 200, height: 35};
+    const expectedTooltipTop =
+        anchorBoundingRect.height + numbers.BOUNDED_ANCHOR_GAP;
+    const expectedTooltipLeft = 80;
+    const tooltipSize = {width: 40, height: 30};
+
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    mockAdapter.getViewportWidth.and.returnValue(500);
+    mockAdapter.getViewportHeight.and.returnValue(500);
+    mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+    mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+    mockAdapter.registerWindowEventHandler.and.callFake(
+        (ev: string, handler: EventListener) => {
+          window.addEventListener(ev, handler);
+        });
+
+    foundation.show();
+    expect(mockAdapter.setStyleProperty)
+        .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
+    expect(mockAdapter.setStyleProperty)
+        .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
+
+    const yPositionDiff = 50;
+    const xPositionDiff = 20;
+    const newAnchorBoundingRect = {
+      top: anchorBoundingRect.top + yPositionDiff,
+      bottom: anchorBoundingRect.bottom + yPositionDiff,
+      left: anchorBoundingRect.left + xPositionDiff,
+      right: anchorBoundingRect.right + xPositionDiff,
+      width: anchorBoundingRect.width,
+      height: anchorBoundingRect.height,
+    };
+
+    mockAdapter.getAnchorBoundingRect.and.returnValue(newAnchorBoundingRect);
+    emitEvent(window, 'scroll');
+    jasmine.clock().tick(1);
+
+    expect(mockAdapter.setStyleProperty)
+        .toHaveBeenCalledWith('top', `${expectedTooltipTop + yPositionDiff}px`);
+    expect(mockAdapter.setStyleProperty)
+        .toHaveBeenCalledWith(
+            'left', `${expectedTooltipLeft + xPositionDiff}px`);
+  });
 });
