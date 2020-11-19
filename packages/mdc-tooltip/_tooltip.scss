@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern
 
 @use '@material/animation/functions' as animation-functions;
+@use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl' as rtl;
 @use './tooltip-theme';
@@ -39,6 +40,10 @@ $_min-height: 24px;
 // LINT.ThenChange(constants.ts:tooltip-dimensions)
 $_label-type-scale: caption;
 $_line-height: 16px;
+
+// Rich Tooltip variables
+$_rich_corner_radius: 8px;
+$_rich_padding: 8px;
 
 $enter-duration: 150ms;
 $exit-duration: 75ms;
@@ -78,6 +83,15 @@ $exit-duration: 75ms;
   .mdc-tooltip--hide {
     @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
+    }
+
+    &.mdc-tooltip--rich {
+      @include elevation-mixins.elevation(2, $query: $query);
+      @include feature-targeting.targets($feat-structure) {
+        display: inline-block;
+        border-radius: $_rich_corner_radius;
+        padding: $_rich_padding $_rich_padding;
+      }
     }
   }
 
