@@ -26,6 +26,38 @@
 @use 'sass:map';
 @use 'sass:meta';
 
+/// Global variable used to conditionally emit CSS selector fallback
+/// declarations in addition to CSS custom property overrides for IE11 support.
+/// Use `enable-css-selector-fallback-declarations()` mixin to configure this
+/// flag.
+///
+/// @example
+///
+///   @include shadow-dom.enable-css-selector-fallback-declarations();
+///   @include foo-bar-theme.theme($theme);
+///
+///   CSS output =>
+///
+///     --foo-bar: red;
+///
+///     // Fallback declarations for IE11 support
+///     .mdc-foo-bar__baz {
+///       color: red;
+///     }
+$css-selector-fallback-declarations: false;
+
+/// Enables CSS selector fallback declarations for IE11 support by setting
+/// global variable `$css-selector-fallback-declarations` to true. Call this
+/// mixin before theme mixin call.
+/// @param {Boolean} $enable Set to `true` to emit CSS selector fallback
+///     declarations.
+/// @example
+///   @include shadow-dom.enable-css-selector-fallback-declarations()
+///   @include foo-bar-theme.theme($theme);
+@mixin enable-css-selector-fallback-declarations($enable) {
+  $css-selector-fallback-declarations: $enable !global;
+}
+
 $_host: ':host';
 $_host-parens: ':host(';
 $_end-parens: ')';
