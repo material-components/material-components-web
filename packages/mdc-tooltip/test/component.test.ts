@@ -39,9 +39,9 @@ function setupTestWithMockFoundation(fixture: HTMLElement) {
 describe('MDCTooltip', () => {
   let fixture: HTMLElement;
   setUpMdcTestEnvironment();
-
-  beforeEach(() => {
-    fixture = getFixture(`<div>
+  describe('plain tooltip tests', () => {
+    beforeEach(() => {
+      fixture = getFixture(`<div>
         <button aria-describedby="tt0">
           anchor
         </button>
@@ -51,148 +51,156 @@ describe('MDCTooltip', () => {
           </div>
         </div>
       </div>`);
-    document.body.appendChild(fixture);
-  });
+      document.body.appendChild(fixture);
+    });
 
-  afterEach(() => {
-    document.body.removeChild(fixture);
-  });
+    afterEach(() => {
+      document.body.removeChild(fixture);
+    });
 
-  it('attachTo returns a component instance', () => {
-    expect(MDCTooltip.attachTo(
-               fixture.querySelector('.mdc-tooltip') as HTMLElement))
-        .toEqual(jasmine.any(MDCTooltip));
-  });
+    it('attachTo returns a component instance', () => {
+      expect(MDCTooltip.attachTo(
+                 fixture.querySelector('.mdc-tooltip') as HTMLElement))
+          .toEqual(jasmine.any(MDCTooltip));
+    });
 
-  it('attachTo throws an error when anchor element is missing', () => {
-    const container =
-        fixture.querySelector('[aria-describedby]') as HTMLElement;
-    container.parentElement!.removeChild(container);
-    expect(
-        () => MDCTooltip.attachTo(
-            container.querySelector('.mdc-tooltip') as HTMLElement))
-        .toThrow();
-  });
+    it('attachTo throws an error when anchor element is missing', () => {
+      const container =
+          fixture.querySelector('[aria-describedby]') as HTMLElement;
+      container.parentElement!.removeChild(container);
+      expect(
+          () => MDCTooltip.attachTo(
+              container.querySelector('.mdc-tooltip') as HTMLElement))
+          .toThrow();
+    });
 
-  it('#initialSyncWithDOM registers mouseenter event handler on the anchor element',
-     () => {
-       const {anchorElem, mockFoundation, component} =
-           setupTestWithMockFoundation(fixture);
-       emitEvent(anchorElem, 'mouseenter');
-       expect(mockFoundation.handleAnchorMouseEnter).toHaveBeenCalled();
-       component.destroy();
-     });
+    it('#initialSyncWithDOM registers mouseenter event handler on the anchor element',
+       () => {
+         const {anchorElem, mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         emitEvent(anchorElem, 'mouseenter');
+         expect(mockFoundation.handleAnchorMouseEnter).toHaveBeenCalled();
+         component.destroy();
+       });
 
-  it('#destroy deregisters mouseenter event handler on the anchor element',
-     () => {
-       const {anchorElem, mockFoundation, component} =
-           setupTestWithMockFoundation(fixture);
-       component.destroy();
-       emitEvent(anchorElem, 'mouseenter');
-       expect(mockFoundation.handleAnchorMouseEnter).not.toHaveBeenCalled();
-     });
+    it('#destroy deregisters mouseenter event handler on the anchor element',
+       () => {
+         const {anchorElem, mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         component.destroy();
+         emitEvent(anchorElem, 'mouseenter');
+         expect(mockFoundation.handleAnchorMouseEnter).not.toHaveBeenCalled();
+       });
 
-  it('#initialSyncWithDOM registers focus event handler on the anchor element',
-     () => {
-       const {anchorElem, mockFoundation, component} =
-           setupTestWithMockFoundation(fixture);
-       emitEvent(anchorElem, 'focus');
-       expect(mockFoundation.handleAnchorFocus).toHaveBeenCalled();
-       component.destroy();
-     });
+    it('#initialSyncWithDOM registers focus event handler on the anchor element',
+       () => {
+         const {anchorElem, mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         emitEvent(anchorElem, 'focus');
+         expect(mockFoundation.handleAnchorFocus).toHaveBeenCalled();
+         component.destroy();
+       });
 
-  it('#destroy deregisters focus event handler on the anchor element', () => {
-    const {anchorElem, mockFoundation, component} =
-        setupTestWithMockFoundation(fixture);
-    component.destroy();
-    emitEvent(anchorElem, 'focus');
-    expect(mockFoundation.handleAnchorFocus).not.toHaveBeenCalled();
-  });
+    it('#destroy deregisters focus event handler on the anchor element', () => {
+      const {anchorElem, mockFoundation, component} =
+          setupTestWithMockFoundation(fixture);
+      component.destroy();
+      emitEvent(anchorElem, 'focus');
+      expect(mockFoundation.handleAnchorFocus).not.toHaveBeenCalled();
+    });
 
-  it('#initialSyncWithDOM registers mouseleave event handler on the anchor element',
-     () => {
-       const {anchorElem, mockFoundation, component} =
-           setupTestWithMockFoundation(fixture);
-       emitEvent(anchorElem, 'mouseleave');
-       expect(mockFoundation.handleAnchorMouseLeave).toHaveBeenCalled();
-       component.destroy();
-     });
+    it('#initialSyncWithDOM registers mouseleave event handler on the anchor element',
+       () => {
+         const {anchorElem, mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         emitEvent(anchorElem, 'mouseleave');
+         expect(mockFoundation.handleAnchorMouseLeave).toHaveBeenCalled();
+         component.destroy();
+       });
 
-  it('#destroy deregisters mouseleave event handler on the anchor element',
-     () => {
-       const {anchorElem, mockFoundation, component} =
-           setupTestWithMockFoundation(fixture);
-       component.destroy();
-       emitEvent(anchorElem, 'mouseleave');
-       expect(mockFoundation.handleAnchorMouseLeave).not.toHaveBeenCalled();
-     });
+    it('#destroy deregisters mouseleave event handler on the anchor element',
+       () => {
+         const {anchorElem, mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         component.destroy();
+         emitEvent(anchorElem, 'mouseleave');
+         expect(mockFoundation.handleAnchorMouseLeave).not.toHaveBeenCalled();
+       });
 
-  it('#initialSyncWithDOM registers blur event handler on the anchor element',
-     () => {
-       const {anchorElem, mockFoundation, component} =
-           setupTestWithMockFoundation(fixture);
-       emitEvent(anchorElem, 'blur');
-       expect(mockFoundation.handleAnchorBlur).toHaveBeenCalled();
-       component.destroy();
-     });
+    it('#initialSyncWithDOM registers blur event handler on the anchor element',
+       () => {
+         const {anchorElem, mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         emitEvent(anchorElem, 'blur');
+         expect(mockFoundation.handleAnchorBlur).toHaveBeenCalled();
+         component.destroy();
+       });
 
-  it('#destroy deregisters blur event handler on the anchor element', () => {
-    const {anchorElem, mockFoundation, component} =
-        setupTestWithMockFoundation(fixture);
-    component.destroy();
-    emitEvent(anchorElem, 'blur');
-    expect(mockFoundation.handleAnchorBlur).not.toHaveBeenCalled();
-  });
+    it('#destroy deregisters blur event handler on the anchor element', () => {
+      const {anchorElem, mockFoundation, component} =
+          setupTestWithMockFoundation(fixture);
+      component.destroy();
+      emitEvent(anchorElem, 'blur');
+      expect(mockFoundation.handleAnchorBlur).not.toHaveBeenCalled();
+    });
 
-  it('#initialSyncWithDOM registers transitionend event handler on the tooltip',
-     () => {
-       const {mockFoundation, component} = setupTestWithMockFoundation(fixture);
-       emitEvent(component.root, 'transitionend');
-       expect(mockFoundation.handleTransitionEnd).toHaveBeenCalled();
-       component.destroy();
-     });
+    it('#initialSyncWithDOM registers transitionend event handler on the tooltip',
+       () => {
+         const {mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         emitEvent(component.root, 'transitionend');
+         expect(mockFoundation.handleTransitionEnd).toHaveBeenCalled();
+         component.destroy();
+       });
 
-  it('#destroy deregisters transitionend event handler on the tooltip', () => {
-    const {mockFoundation, component} = setupTestWithMockFoundation(fixture);
-    component.destroy();
-    emitEvent(component.root, 'transitionend');
-    expect(mockFoundation.handleTransitionEnd).not.toHaveBeenCalled();
-  });
+    it('#destroy deregisters transitionend event handler on the tooltip',
+       () => {
+         const {mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         component.destroy();
+         emitEvent(component.root, 'transitionend');
+         expect(mockFoundation.handleTransitionEnd).not.toHaveBeenCalled();
+       });
 
-  it('#setTooltipPosition fowards to MDCFoundation#setTooltipPosition', () => {
-    const {mockFoundation, component} = setupTestWithMockFoundation(fixture);
-    component.setTooltipPosition(
-        {xPos: XPosition.CENTER, yPos: YPosition.ABOVE});
-    expect(mockFoundation.setTooltipPosition)
-        .toHaveBeenCalledWith({xPos: XPosition.CENTER, yPos: YPosition.ABOVE});
-    component.destroy();
-  });
+    it('#setTooltipPosition forwards to MDCFoundation#setTooltipPosition',
+       () => {
+         const {mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         component.setTooltipPosition(
+             {xPos: XPosition.CENTER, yPos: YPosition.ABOVE});
+         expect(mockFoundation.setTooltipPosition).toHaveBeenCalledWith({
+           xPos: XPosition.CENTER,
+           yPos: YPosition.ABOVE
+         });
+         component.destroy();
+       });
 
-  it('#setAnchorBoundaryType fowards to MDCFoundation#setAnchorBoundaryType',
-     () => {
-       const {mockFoundation, component} = setupTestWithMockFoundation(fixture);
-       component.setAnchorBoundaryType(AnchorBoundaryType.UNBOUNDED);
-       expect(mockFoundation.setAnchorBoundaryType)
-           .toHaveBeenCalledWith(AnchorBoundaryType.UNBOUNDED);
-       component.destroy();
-     });
+    it('#setAnchorBoundaryType forwards to MDCFoundation#setAnchorBoundaryType',
+       () => {
+         const {mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         component.setAnchorBoundaryType(AnchorBoundaryType.UNBOUNDED);
+         expect(mockFoundation.setAnchorBoundaryType)
+             .toHaveBeenCalledWith(AnchorBoundaryType.UNBOUNDED);
+         component.destroy();
+       });
 
-  it('sets aria-hidden to false when showing tooltip on an anchor annotated with `aria-describedby`',
-     () => {
-       const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
-       const anchorElem =
-           fixture.querySelector<HTMLElement>('[aria-describedby]')!;
-       MDCTooltip.attachTo(tooltipElem);
+    it('sets aria-hidden to false when showing tooltip on an anchor annotated with `aria-describedby`',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
 
-       emitEvent(anchorElem, 'mouseenter');
-       jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-       expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
-     });
+         emitEvent(anchorElem, 'mouseenter');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+       });
 
-  it('leaves aria-hidden as true when showing tooltip on an anchor annotated with `data-tooltip-id`',
-     () => {
-       document.body.removeChild(fixture);
-       fixture = getFixture(`<div>
+    it('leaves aria-hidden as true when showing tooltip on an anchor annotated with `data-tooltip-id`',
+       () => {
+         document.body.removeChild(fixture);
+         fixture = getFixture(`<div>
         <button data-tooltip-id="tt0">
           anchor
         </button>
@@ -205,20 +213,20 @@ describe('MDCTooltip', () => {
           </div>
         </div>
       </div>`);
-       document.body.appendChild(fixture);
-       const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
-       const anchorElem =
-           fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
-       MDCTooltip.attachTo(tooltipElem);
+         document.body.appendChild(fixture);
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
+         MDCTooltip.attachTo(tooltipElem);
 
-       emitEvent(anchorElem, 'mouseenter');
-       jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-       expect(tooltipElem.getAttribute('aria-hidden')).toEqual('true');
-     });
+         emitEvent(anchorElem, 'mouseenter');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('true');
+       });
 
-  it('detects tooltip labels that span multiple lines', () => {
-    document.body.removeChild(fixture);
-    fixture = getFixture(`<div>
+    it('detects tooltip labels that span multiple lines', () => {
+      document.body.removeChild(fixture);
+      fixture = getFixture(`<div>
         <button data-tooltip-id="tt0">
           anchor
         </button>
@@ -232,17 +240,75 @@ describe('MDCTooltip', () => {
           </div>
         </div>
       </div>`);
-    document.body.appendChild(fixture);
-    const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
-    // Add a max-width and min-height since styles are not loaded in
-    // this test.
-    tooltipElem.style.maxWidth = `${numbers.MAX_WIDTH}px`;
-    tooltipElem.style.minHeight = `${numbers.MIN_HEIGHT}px`;
-    const anchorElem = fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
-    MDCTooltip.attachTo(tooltipElem);
+      document.body.appendChild(fixture);
+      const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+      // Add a max-width and min-height since styles are not loaded in
+      // this test.
+      tooltipElem.style.maxWidth = `${numbers.MAX_WIDTH}px`;
+      tooltipElem.style.minHeight = `${numbers.MIN_HEIGHT}px`;
+      const anchorElem =
+          fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
+      MDCTooltip.attachTo(tooltipElem);
 
-    emitEvent(anchorElem, 'mouseenter');
-    jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-    expect(tooltipElem.classList).toContain(CssClasses.MULTILINE_TOOLTIP);
+      emitEvent(anchorElem, 'mouseenter');
+      jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+      expect(tooltipElem.classList).toContain(CssClasses.MULTILINE_TOOLTIP);
+    });
+  });
+
+  describe('rich tooltip tests', () => {
+    beforeEach(() => {
+      fixture = getFixture(`<div>
+        <button aria-describedby="tt0" aria-haspopup="true" aria-expanded="false">
+          anchor
+        </button>
+        <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-role="dialog" aria-hidden="true">
+          <div class="mdc-tooltip__surface">
+            <p class="mdc-tooltip__content">
+              demo tooltip
+            </p>
+          </div>
+        </div>
+      </div>`);
+      document.body.appendChild(fixture);
+    });
+
+    afterEach(() => {
+      document.body.removeChild(fixture);
+    });
+
+    it('attachTo returns a component instance', () => {
+      expect(MDCTooltip.attachTo(
+                 fixture.querySelector('.mdc-tooltip--rich') as HTMLElement))
+          .toEqual(jasmine.any(MDCTooltip));
+    });
+
+    it('sets aria-expanded on anchor to true when showing rich tooltip`',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'mouseenter');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+       });
+
+    it('aria-expanded remains true on anchor when mouseleave anchor and mouseenter rich tooltip`',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'mouseenter');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+         emitEvent(anchorElem, 'mouseleave');
+         emitEvent(tooltipElem, 'mouseenter');
+
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+       });
   });
 });

@@ -134,7 +134,20 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       getAnchorAttribute: (attr) => {
         return this.anchorElem ? this.anchorElem.getAttribute(attr) : null;
       },
+      setAnchorAttribute: (attr, value) => {
+        this.anchorElem?.setAttribute(attr, value);
+      },
       isRTL: () => getComputedStyle(this.root).direction === 'rtl',
+      registerEventHandler: (evt, handler) => {
+        if (this.root instanceof HTMLElement) {
+          this.root.addEventListener(evt, handler);
+        }
+      },
+      deregisterEventHandler: (evt, handler) => {
+        if (this.root instanceof HTMLElement) {
+          this.root.removeEventListener(evt, handler);
+        }
+      },
       registerDocumentEventHandler: (evt, handler) => {
         document.body.addEventListener(evt, handler);
       },

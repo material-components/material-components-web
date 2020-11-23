@@ -89,9 +89,26 @@ export interface MDCTooltipAdapter {
   getAnchorAttribute(attr: string): string|null;
 
   /**
+   * Sets an attribute on the anchor element.
+   */
+  setAnchorAttribute(attr: string, value: string): void;
+
+  /**
    * @return true if the text direction is right-to-left.
    */
   isRTL(): boolean;
+
+  /**
+   * Registers an event listener to the root element.
+   */
+  registerEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener to the root element.
+   */
+  deregisterEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event listener to the document body.

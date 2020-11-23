@@ -22,6 +22,7 @@
  */
 
 enum CssClasses {
+  RICH = 'mdc-tooltip--rich',
   SHOWN = 'mdc-tooltip--shown',
   SHOWING = 'mdc-tooltip--showing',
   SHOWING_TRANSITION = 'mdc-tooltip--showing-transition',

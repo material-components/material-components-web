@@ -48,7 +48,10 @@ describe('MDCTooltipFoundation', () => {
       'getTooltipSize',
       'getAnchorBoundingRect',
       'getAnchorAttribute',
+      'setAnchorAttribute',
       'isRTL',
+      'registerEventHandler',
+      'deregisterEventHandler',
       'registerDocumentEventHandler',
       'deregisterDocumentEventHandler',
       'registerWindowEventHandler',
@@ -64,6 +67,20 @@ describe('MDCTooltipFoundation', () => {
         .toHaveBeenCalledWith('aria-hidden', 'false');
     expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.SHOWING);
   });
+
+  it('#show sets aria-expanded="true" on anchor element for rich tooltip',
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
+       foundation.init();
+
+       foundation.show();
+
+       expect(mockAdapter.hasClass).toHaveBeenCalledWith(CssClasses.RICH);
+       expect(mockAdapter.setAnchorAttribute)
+           .toHaveBeenCalledWith('aria-expanded', 'true');
+     });
 
   it('#show leaves aria-hidden="true" attribute on tooltips intended to be hidden from screenreader',
      () => {
@@ -106,6 +123,34 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.addClass)
         .not.toHaveBeenCalledWith(CssClasses.SHOWING_TRANSITION);
   });
+
+  it('#show registers mouseenter event listener on the tooltip for rich tooltip',
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
+       foundation.init();
+
+       foundation.show();
+
+       expect(mockAdapter.registerEventHandler)
+           .toHaveBeenCalledWith('mouseenter', jasmine.any(Function));
+     });
+
+  it('#hide deregisters mouseenter event listeners on the tooltip for rich tooltip',
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
+       foundation.init();
+
+       foundation.show();
+       foundation.hide();
+
+       expect(mockAdapter.deregisterEventHandler)
+           .toHaveBeenCalledWith('mouseenter', jasmine.any(Function));
+     });
+
 
   it('#show registers click and keydown event listeners on the document',
      () => {
@@ -423,6 +468,24 @@ describe('MDCTooltipFoundation', () => {
        expect(foundation.showTimeout).toEqual(null);
      });
 
+  it(`#handleRichTooltipMouseEnter shows the tooltip immediately`,
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
+       foundation.init();
+
+       foundation.handleRichTooltipMouseEnter();
+
+       expect(foundation.showTimeout).toEqual(null);
+       expect(mockAdapter.setAnchorAttribute)
+           .toHaveBeenCalledWith('aria-expanded', 'true');
+       expect(mockAdapter.setAttribute)
+           .toHaveBeenCalledWith('aria-hidden', 'false');
+       expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.HIDE);
+       expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.SHOWING);
+     });
+
   it(`does not re-animate a tooltip already shown in the dom (from focus)`,
      () => {
        const {foundation, mockAdapter} =
@@ -489,6 +552,21 @@ describe('MDCTooltipFoundation', () => {
         .not.toHaveBeenCalledWith('aria-hidden', 'false');
     expect(mockAdapter.removeClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.SHOWING);
+  });
+
+  it('#handleRichTooltipMouseEnter keeps tooltip visible', () => {
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
+    foundation.init();
+
+    foundation.handleAnchorMouseLeave();
+    expect(foundation.hideTimeout).not.toEqual(null);
+    foundation.handleRichTooltipMouseEnter();
+
+    expect(foundation.hideTimeout).toEqual(null);
+    expect(mockAdapter.setAttribute)
+        .not.toHaveBeenCalledWith('aria-hidden', 'true');
+    expect(foundation.isShown).toBeTrue();
   });
 
   it('#hide clears any pending showTimeout', () => {
@@ -835,6 +913,8 @@ describe('MDCTooltipFoundation', () => {
      () => {
        const {foundation, mockAdapter} =
            setUpFoundationTest(MDCTooltipFoundation);
+       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
+       foundation.init();
        foundation.handleAnchorMouseEnter();
        foundation.handleAnchorMouseLeave();
        foundation.destroy();
@@ -850,6 +930,8 @@ describe('MDCTooltipFoundation', () => {
        expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.HIDE);
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
+       expect(mockAdapter.deregisterEventHandler)
+           .toHaveBeenCalledWith('mouseenter', jasmine.any(Function));
        expect(mockAdapter.deregisterDocumentEventHandler)
            .toHaveBeenCalledWith('click', jasmine.any(Function));
        expect(mockAdapter.deregisterDocumentEventHandler)

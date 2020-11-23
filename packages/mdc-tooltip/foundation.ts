@@ -30,6 +30,7 @@ import {AnchorBoundaryType, CssClasses, numbers, XPosition, YPosition} from './c
 import {ShowTooltipOptions} from './types';
 
 const {
+  RICH,
   SHOWN,
   SHOWING,
   SHOWING_TRANSITION,
@@ -57,7 +58,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       getAnchorBoundingRect: () =>
           ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
       getAnchorAttribute: () => null,
+      setAnchorAttribute: () => null,
       isRTL: () => false,
+      registerEventHandler: () => undefined,
+      deregisterEventHandler: () => undefined,
       registerDocumentEventHandler: () => undefined,
       deregisterDocumentEventHandler: () => undefined,
       registerWindowEventHandler: () => undefined,
@@ -66,6 +70,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     };
   }
 
+  private isRich!: boolean;  // assigned in init()
   private isShown = false;
   private anchorGap = numbers.BOUNDED_ANCHOR_GAP;
   private xTooltipPos = XPosition.DETECTED;
@@ -83,6 +88,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   private readonly animFrame: AnimationFrame;
   private readonly documentClickHandler: SpecificEventListener<'click'>;
   private readonly documentKeydownHandler: SpecificEventListener<'keydown'>;
+  private readonly richTooltipMouseEnterHandler:
+      SpecificEventListener<'mouseenter'>;
   private readonly windowScrollHandler: SpecificEventListener<'scroll'>;
   private readonly windowResizeHandler: SpecificEventListener<'resize'>;
 
@@ -98,6 +105,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       this.handleKeydown(evt);
     };
 
+    this.richTooltipMouseEnterHandler = () => {
+      this.handleRichTooltipMouseEnter();
+    };
+
     this.windowScrollHandler = () => {
       this.handleWindowChangeEvent();
     };
@@ -105,6 +116,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     this.windowResizeHandler = () => {
       this.handleWindowChangeEvent();
     };
+  }
+
+  init() {
+    this.isRich = this.adapter.hasClass(RICH);
   }
 
   handleAnchorMouseEnter() {
@@ -155,6 +170,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
   }
 
+  private handleRichTooltipMouseEnter() {
+    this.show();
+  }
+
   /**
    * On window resize or scroll, check the anchor position and size and
    * repostion tooltip if necessary.
@@ -181,9 +200,14 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     if (!showTooltipOptions.hideFromScreenreader) {
       this.adapter.setAttribute('aria-hidden', 'false');
     }
+    if (this.isRich) {
+      this.adapter.setAnchorAttribute('aria-expanded', 'true');
+      this.adapter.registerEventHandler(
+          'mouseenter', this.richTooltipMouseEnterHandler);
+    }
     this.adapter.removeClass(HIDE);
     this.adapter.addClass(SHOWING);
-    if (this.isTooltipMultiline()) {
+    if (this.isTooltipMultiline() && !this.isRich) {
       this.adapter.addClass(MULTILINE_TOOLTIP);
     }
     this.anchorRect = this.adapter.getAnchorBoundingRect();
@@ -218,6 +242,11 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     this.isShown = false;
     this.adapter.setAttribute('aria-hidden', 'true');
+    if (this.isRich) {
+      this.adapter.setAnchorAttribute('aria-expanded', 'false');
+      this.adapter.deregisterEventHandler(
+          'mouseenter', this.richTooltipMouseEnterHandler);
+    }
     this.clearAllAnimationClasses();
     this.adapter.addClass(HIDE);
     this.adapter.addClass(HIDE_TRANSITION);
@@ -542,6 +571,11 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     this.adapter.removeClass(SHOWING);
     this.adapter.removeClass(HIDE);
     this.adapter.removeClass(HIDE_TRANSITION);
+
+    if (this.isRich) {
+      this.adapter.deregisterEventHandler(
+          'mouseenter', this.richTooltipMouseEnterHandler);
+    }
 
     this.adapter.deregisterDocumentEventHandler(
         'click', this.documentClickHandler);
