@@ -21,8 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {KEY} from '../../mdc-dom/keyboard';
-import {createKeyboardEvent, createMouseEvent} from '../../../testing/dom/events';
+import {createMouseEvent} from '../../../testing/dom/events';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {attributes, cssClasses, numbers} from '../constants';
 import {MDCSliderFoundation} from '../foundation';
@@ -248,8 +247,7 @@ describe('MDCSliderFoundation', () => {
          expect(mockAdapter.deregisterEventHandler)
              .toHaveBeenCalledWith('pointerup', jasmine.any(Function));
 
-         const thumbEvents =
-             ['keydown', 'focus', 'mouseenter', 'blur', 'mouseleave'];
+         const thumbEvents = ['mouseenter', 'mouseleave'];
          for (const event of thumbEvents) {
            expect(mockAdapter.deregisterThumbEventHandler)
                .toHaveBeenCalledWith(Thumb.END, event, jasmine.any(Function));
@@ -573,23 +571,6 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
     });
 
-    it('focuses end thumb after updating end thumb value', () => {
-      const {foundation, mockAdapter} = setUpAndInit({
-        valueStart: 10,
-        value: 50,
-        isRange: true,
-      });
-
-      // Down event on end thumb.
-      foundation.handleDown(createMouseEvent('mousedown', {
-        clientX: 70,
-      }));
-      jasmine.clock().tick(1);  // Tick for RAF.
-
-      expect(foundation.getValue()).toBe(70);
-      expect(mockAdapter.focusThumb).toHaveBeenCalledWith(Thumb.END);
-    });
-
     it('RTL, single point slider: updates track/thumb position with ' +
            'reversed values',
        () => {
@@ -720,6 +701,30 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.setInputAttribute)
           .toHaveBeenCalledWith(attributes.INPUT_MAX, '30', Thumb.START);
     });
+
+    it('updates values on input change', () => {
+      const {foundation, mockAdapter} =
+          setUpAndInit({valueStart: 10, value: 40, isRange: true});
+
+      mockAdapter.getInputValue.withArgs(Thumb.START).and.returnValue(5);
+      foundation.handleInputChange(Thumb.START);
+      expect(foundation.getValueStart()).toBe(5);
+
+      mockAdapter.getInputValue.withArgs(Thumb.END).and.returnValue(45);
+      foundation.handleInputChange(Thumb.END);
+      expect(foundation.getValue()).toBe(45);
+    });
+
+    it('focuses input on thumb down event', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 50,
+      });
+
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 20,
+      }));
+      expect(mockAdapter.focusInput).toHaveBeenCalledWith(Thumb.END);
+    });
   });
 
   describe('value indicator', () => {
@@ -773,64 +778,34 @@ describe('MDCSliderFoundation', () => {
     });
 
     it('range slider: adds THUMB_WITH_INDICATOR class to both thumbs on ' +
-       'thumb focus and mouseenter',
+           'thumb mouseenter',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({
            isDiscrete: true,
            isRange: true,
          });
 
-         foundation.handleThumbFocusOrMouseenter(
-             createMouseEvent('mouseenter'));
+         foundation.handleThumbMouseenter(createMouseEvent('mouseenter'));
          expect(mockAdapter.addThumbClass)
              .toHaveBeenCalledWith(
                  cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
-         expect(mockAdapter.addThumbClass)
-             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-
-         mockAdapter.addThumbClass.calls.reset();
-         foundation.handleThumbFocusOrMouseenter({type: 'focus'});
-         expect(mockAdapter.addThumbClass)
-             .toHaveBeenCalledWith(
-                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
-         expect(mockAdapter.addThumbClass)
-             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-       });
-
-    it('adds THUMB_WITH_INDICATOR class to thumb on thumb focus, but not mouseenter',
-       () => {
-         const {foundation, mockAdapter} = setUpAndInit({
-           isDiscrete: true,
-         });
-
-         foundation.handleThumbFocusOrMouseenter(
-             createMouseEvent('mouseenter'));
-         expect(mockAdapter.addThumbClass)
-             .not.toHaveBeenCalledWith(
-                 cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-
-         foundation.handleThumbFocusOrMouseenter({type: 'focus'});
          expect(mockAdapter.addThumbClass)
              .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
        });
 
     it('range slider: removes THUMB_WITH_INDICATOR class from both thumbs ' +
-       'on thumb blur and mouseleave',
+           'on thumb mouseleave',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({
            isDiscrete: true,
            isRange: true,
          });
 
-         foundation.handleThumbBlurOrMouseleave(createMouseEvent('mouseleave'));
-         expect(mockAdapter.removeThumbClass)
-             .toHaveBeenCalledWith(
-                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
-         expect(mockAdapter.removeThumbClass)
-             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+         mockAdapter.isInputFocused.withArgs(Thumb.START)
+             .and.returnValue(false);
+         mockAdapter.isInputFocused.withArgs(Thumb.END).and.returnValue(false);
 
-         mockAdapter.removeThumbClass.calls.reset();
-         foundation.handleThumbBlurOrMouseleave({type: 'blur'});
+         foundation.handleThumbMouseleave(createMouseEvent('mouseleave'));
          expect(mockAdapter.removeThumbClass)
              .toHaveBeenCalledWith(
                  cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
@@ -838,21 +813,23 @@ describe('MDCSliderFoundation', () => {
              .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
        });
 
-    it('removes THUMB_WITH_INDICATOR class from thumb on thumb blur but ' +
-       'not mouseleave',
+    it('range slider: does not remove THUMB_WITH_INDICATOR class on' +
+           'thumb mouseleave if an input is still focused',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({
            isDiscrete: true,
+           isRange: true,
          });
 
-         foundation.handleThumbBlurOrMouseleave(createMouseEvent('mouseleave'));
+         mockAdapter.isInputFocused.withArgs(Thumb.END).and.returnValue(true);
+
+         foundation.handleThumbMouseleave(createMouseEvent('mouseleave'));
+         expect(mockAdapter.removeThumbClass)
+             .not.toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
          expect(mockAdapter.removeThumbClass)
              .not.toHaveBeenCalledWith(
                  cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-
-         foundation.handleThumbBlurOrMouseleave({type: 'blur'});
-         expect(mockAdapter.removeThumbClass)
-             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
        });
   });
 
@@ -1093,184 +1070,26 @@ describe('MDCSliderFoundation', () => {
          mockAdapter.getValueToAriaValueTextFn.and.returnValue(
              (value: string) => `${value} value`);
 
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_DOWN,
-             }),
-             Thumb.START);
-         expect(mockAdapter.setThumbAttribute)
+         foundation.setValueStart(11);
+         expect(mockAdapter.setInputAttribute)
              .toHaveBeenCalledWith(
                  attributes.ARIA_VALUETEXT, '11 value', Thumb.START);
 
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_UP,
-             }),
-             Thumb.END);
-         expect(mockAdapter.setThumbAttribute)
+         foundation.setValue(16);
+         expect(mockAdapter.setInputAttribute)
              .toHaveBeenCalledWith(
                  attributes.ARIA_VALUETEXT, '16 value', Thumb.END);
        });
-
-    it('updates aria-valuenow on thumb value updates', () => {
-      const {foundation, mockAdapter} = setUpAndInit({
-        valueStart: 12,
-        value: 15,
-        isRange: true,
-      });
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_DOWN,
-          }),
-          Thumb.START);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith(attributes.ARIA_VALUENOW, '11', Thumb.START);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_UP,
-          }),
-          Thumb.END);
-      expect(mockAdapter.setThumbAttribute)
-          .toHaveBeenCalledWith(attributes.ARIA_VALUENOW, '16', Thumb.END);
-    });
-
-    it('increments value for ARROW_UP/ARROW_RIGHT/PAGE_UP keypresses', () => {
-      const {foundation} = setUpAndInit({
-        valueStart: 8,
-        value: 80,
-        isRange: true,
-        isDiscrete: true,
-        step: 2,
-        bigStep: 10,
-      });
-      expect(foundation.getValueStart()).toBe(8);
-      expect(foundation.getValue()).toBe(80);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_UP,
-          }),
-          Thumb.START);
-      expect(foundation.getValueStart()).toBe(10);
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_RIGHT,
-          }),
-          Thumb.START);
-      expect(foundation.getValueStart()).toBe(12);
-    });
-
-    it('decrements value for ARROW_DOWN/ARROW_LEFT/PAGE_DOWN keypresses',
-       () => {
-         const {foundation} = setUpAndInit({
-           value: 50,
-           isDiscrete: true,
-           step: 1,
-           bigStep: 3,
-         });
-         expect(foundation.getValue()).toBe(50);
-
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_DOWN,
-             }),
-             Thumb.END);
-         expect(foundation.getValue()).toBe(49);
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_LEFT,
-             }),
-             Thumb.END);
-         expect(foundation.getValue()).toBe(48);
-       });
-
-    it('RTL: increments/decrements value for ARROW_LEFT/ARROW_RIGHT keypresses',
-       () => {
-         const {foundation} = setUpAndInit({
-           value: 50,
-           isDiscrete: true,
-           step: 2,
-           isRTL: true,
-         });
-         expect(foundation.getValue()).toBe(50);
-
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_LEFT,
-             }),
-             Thumb.END);
-         expect(foundation.getValue()).toBe(52);
-
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_RIGHT,
-             }),
-             Thumb.END);
-         expect(foundation.getValue()).toBe(50);
-       });
-
-    it('changes value by bigStep for PAGE_UP/PAGE_DOWN keypresses', () => {
-      const {foundation} = setUpAndInit({
-        value: 50,
-        isDiscrete: true,
-        step: 1,
-        bigStep: 3,
-      });
-      expect(foundation.getValue()).toBe(50);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.PAGE_UP,
-          }),
-          Thumb.END);
-      expect(foundation.getValue()).toBe(53);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.PAGE_DOWN,
-          }),
-          Thumb.END);
-      expect(foundation.getValue()).toBe(50);
-    });
-
-    it('sets value to min/max for HOME/END keypresses', () => {
-      const {foundation} = setUpAndInit({
-        min: 100,
-        value: 138,
-        max: 1000,
-      });
-      expect(foundation.getValue()).toBe(138);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.HOME,
-          }),
-          Thumb.END);
-      expect(foundation.getValue()).toBe(100);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.END,
-          }),
-          Thumb.END);
-      expect(foundation.getValue()).toBe(1000);
-    });
   });
 
   describe('disabled state', () => {
-    it('updates class and thumb/input attributes according to disabled state',
+    it('updates class and input attributes according to disabled state',
        () => {
          const {foundation, mockAdapter} = setUpAndInit();
          expect(foundation.getDisabled()).toBe(false);
 
          foundation.setDisabled(true);
          expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.DISABLED);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('tabindex', '-1', Thumb.END);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('aria-disabled', 'true', Thumb.END);
          expect(mockAdapter.setInputAttribute)
              .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.END);
          expect(foundation.getDisabled()).toBe(true);
@@ -1278,43 +1097,22 @@ describe('MDCSliderFoundation', () => {
          foundation.setDisabled(false);
          expect(mockAdapter.removeClass)
              .toHaveBeenCalledWith(cssClasses.DISABLED);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('tabindex', '0', Thumb.END);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('aria-disabled', 'false', Thumb.END);
          expect(mockAdapter.removeInputAttribute)
              .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.END);
          expect(foundation.getDisabled()).toBe(false);
        });
 
-    it('range slider: updates both thumb and inputs\' attrs according ' +
-           'to disabled state',
+    it('range slider: updates inputs\' attrs according to disabled state',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({isRange: true});
 
          foundation.setDisabled(true);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('tabindex', '-1', Thumb.END);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('tabindex', '-1', Thumb.START);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('aria-disabled', 'true', Thumb.END);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('aria-disabled', 'true', Thumb.START);
          expect(mockAdapter.setInputAttribute)
              .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.END);
          expect(mockAdapter.setInputAttribute)
              .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.START);
 
          foundation.setDisabled(false);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('tabindex', '0', Thumb.START);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('tabindex', '0', Thumb.END);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('aria-disabled', 'false', Thumb.START);
-         expect(mockAdapter.setThumbAttribute)
-             .toHaveBeenCalledWith('aria-disabled', 'false', Thumb.END);
          expect(mockAdapter.removeInputAttribute)
              .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.START);
          expect(mockAdapter.removeInputAttribute)
@@ -1332,13 +1130,6 @@ describe('MDCSliderFoundation', () => {
       foundation.handleMove(createMouseEvent('mousedown', {
         clientX: 30,
       }));
-      expect(foundation.getValue()).toBe(40);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_DOWN,
-          }),
-          Thumb.END);
       expect(foundation.getValue()).toBe(40);
     });
   });
@@ -1421,83 +1212,6 @@ describe('MDCSliderFoundation', () => {
       foundation.handleUp(createMouseEvent('mouseup'));
       expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(77, Thumb.END);
     });
-
-    it('fires `input`/`change` events for key events', () => {
-      const {foundation, mockAdapter} = setUpAndInit({
-        value: 15,
-        isDiscrete: true,
-      });
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_DOWN,
-          }),
-          Thumb.END);
-      expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(14, Thumb.END);
-      expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(14, Thumb.END);
-
-      foundation.handleThumbKeydown(
-          createKeyboardEvent('keydown', {
-            key: KEY.ARROW_UP,
-          }),
-          Thumb.END);
-      expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(15, Thumb.END);
-      expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(15, Thumb.END);
-    });
-
-    it('does not fire `input`/`change` events for key events that do not ' +
-           'change value',
-       () => {
-         const {foundation, mockAdapter} = setUpAndInit({
-           min: 0,
-           value: 0,
-           isDiscrete: true,
-         });
-
-         foundation.handleThumbKeydown(
-             createKeyboardEvent('keydown', {
-               key: KEY.ARROW_DOWN,
-             }),
-             Thumb.END);
-
-         expect(foundation.getValue()).toBe(0);
-         expect(mockAdapter.emitInputEvent).not.toHaveBeenCalled();
-         expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
-       });
-
-    it('does not fire `input`/`change` events for pointer events that do not ' +
-           'change value',
-       () => {
-         const {foundation, mockAdapter} = setUpAndInit({
-           value: 70,
-           isDiscrete: true,
-           step: 5,
-         });
-
-         foundation.handleDown(createMouseEvent('mousedown', {
-           clientX: 70,
-         }));
-         foundation.handleMove(createMouseEvent('mousemove', {
-           clientX: 72,
-         }));
-         expect(mockAdapter.emitInputEvent).not.toHaveBeenCalled();
-
-         // Move thumb to value 80...
-         foundation.handleMove(createMouseEvent('mousemove', {
-           clientX: 80,
-         }));
-         expect(foundation.getValue()).toBe(80);
-         // Move thumb back to value 70 without releasing.
-         foundation.handleMove(createMouseEvent('mousemove', {
-           clientX: 71,
-         }));
-         expect(foundation.getValue()).toBe(70);
-
-         // `change` event should not have been called since the move to
-         // value 80 was not committed.
-         foundation.handleUp(createMouseEvent('mouseup'));
-         expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
-       });
 
     it('fires `dragStart`/`dragEnd` events across drag interaction', () => {
       const {foundation, mockAdapter} = setUpAndInit({

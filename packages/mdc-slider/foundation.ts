@@ -24,7 +24,6 @@
 import {getCorrectPropertyName} from '@material/animation/util';
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
-import {KEY, normalizeKey} from '@material/dom/keyboard';
 
 import {MDCSliderAdapter} from './adapter';
 import {attributes, cssClasses, numbers} from './constants';
@@ -92,14 +91,22 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       SpecificEventListener<'pointerdown'>;  // Assigned in #initialize.
   private pointerupListener!:
       SpecificEventListener<'pointerup'>;  // Assigned in #initialize.
-  private thumbStartKeydownListener!:
-      SpecificEventListener<'keydown'>;  // Assigned in #initialize.
-  private thumbEndKeydownListener!:
-      SpecificEventListener<'keydown'>;  // Assigned in #initialize.
-  private thumbFocusOrMouseenterListener!:
-      SpecificEventListener<'focus'|'mouseenter'>;  // Assigned in #initialize.
-  private thumbBlurOrMouseleaveListener!:
-      SpecificEventListener<'blur'|'mouseleave'>;  // Assigned in #initialize.
+  private thumbMouseenterListener!:
+      SpecificEventListener<'mouseenter'>;  // Assigned in #initialize.
+  private thumbMouseleaveListener!:
+      SpecificEventListener<'mouseleave'>;  // Assigned in #initialize.
+  private inputStartChangeListener!:
+      SpecificEventListener<'change'>;  // Assigned in #initialize.
+  private inputEndChangeListener!:
+      SpecificEventListener<'change'>;  // Assigned in #initialize.
+  private inputStartFocusListener!:
+      SpecificEventListener<'focus'>;  // Assigned in #initialize.
+  private inputEndFocusListener!:
+      SpecificEventListener<'focus'>;  // Assigned in #initialize.
+  private inputStartBlurListener!:
+      SpecificEventListener<'blur'>;  // Assigned in #initialize.
+  private inputEndBlurListener!:
+      SpecificEventListener<'blur'>;  // Assigned in #initialize.
   private resizeListener!:
       SpecificEventListener<'resize'>;  // Assigned in #initialize.
 
@@ -119,14 +126,12 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       getAttribute: () => null,
       getInputValue: () => '',
       setInputValue: () => undefined,
-      getThumbAttribute: () => null,
-      setThumbAttribute: () => null,
       getInputAttribute: () => null,
       setInputAttribute: () => null,
       removeInputAttribute: () => null,
+      focusInput: () => undefined,
+      isInputFocused: () => false,
       getThumbKnobWidth: () => 0,
-      isThumbFocused: () => false,
-      focusThumb: () => undefined,
       getThumbBoundingClientRect: () =>
           ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
       getBoundingClientRect: () =>
@@ -148,6 +153,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       deregisterEventHandler: () => undefined,
       registerThumbEventHandler: () => undefined,
       deregisterThumbEventHandler: () => undefined,
+      registerInputEventHandler: () => undefined,
+      deregisterInputEventHandler: () => undefined,
       registerBodyEventHandler: () => undefined,
       deregisterBodyEventHandler: () => undefined,
       registerWindowEventHandler: () => undefined,
@@ -211,16 +218,26 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.moveListener = this.handleMove.bind(this);
     this.pointerdownListener = this.handlePointerdown.bind(this);
     this.pointerupListener = this.handlePointerup.bind(this);
-    this.thumbStartKeydownListener = (event: KeyboardEvent) => {
-      this.handleThumbKeydown(event, Thumb.START);
+    this.thumbMouseenterListener = this.handleThumbMouseenter.bind(this);
+    this.thumbMouseleaveListener = this.handleThumbMouseleave.bind(this);
+    this.inputStartChangeListener = () => {
+      this.handleInputChange(Thumb.START);
     };
-    this.thumbEndKeydownListener = (event: KeyboardEvent) => {
-      this.handleThumbKeydown(event, Thumb.END);
+    this.inputEndChangeListener = () => {
+      this.handleInputChange(Thumb.END);
     };
-    this.thumbFocusOrMouseenterListener =
-        this.handleThumbFocusOrMouseenter.bind(this);
-    this.thumbBlurOrMouseleaveListener =
-        this.handleThumbBlurOrMouseleave.bind(this);
+    this.inputStartFocusListener = () => {
+      this.handleInputFocus(Thumb.START);
+    };
+    this.inputEndFocusListener = () => {
+      this.handleInputFocus(Thumb.END);
+    };
+    this.inputStartBlurListener = () => {
+      this.handleInputBlur(Thumb.START);
+    };
+    this.inputEndBlurListener = () => {
+      this.handleInputBlur(Thumb.END);
+    };
     this.resizeListener = this.handleResize.bind(this);
     this.registerEventHandlers();
   }
@@ -309,25 +326,17 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       this.adapter.addClass(cssClasses.DISABLED);
 
       if (this.isRange) {
-        this.adapter.setThumbAttribute('tabindex', '-1', Thumb.START);
-        this.adapter.setThumbAttribute('aria-disabled', 'true', Thumb.START);
         this.adapter.setInputAttribute(
             attributes.INPUT_DISABLED, '', Thumb.START);
       }
-      this.adapter.setThumbAttribute('tabindex', '-1', Thumb.END);
-      this.adapter.setThumbAttribute('aria-disabled', 'true', Thumb.END);
       this.adapter.setInputAttribute(attributes.INPUT_DISABLED, '', Thumb.END);
     } else {
       this.adapter.removeClass(cssClasses.DISABLED);
 
       if (this.isRange) {
-        this.adapter.setThumbAttribute('tabindex', '0', Thumb.START);
-        this.adapter.setThumbAttribute('aria-disabled', 'false', Thumb.START);
         this.adapter.removeInputAttribute(
             attributes.INPUT_DISABLED, Thumb.START);
       }
-      this.adapter.setThumbAttribute('tabindex', '0', Thumb.END);
-      this.adapter.setThumbAttribute('aria-disabled', 'false', Thumb.END);
       this.adapter.removeInputAttribute(attributes.INPUT_DISABLED, Thumb.END);
     }
   }
@@ -375,7 +384,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.thumb = this.getThumbFromDownEvent(clientX, value);
     if (this.thumb === null) return;
 
-    this.adapter.emitDragStartEvent(value, this.thumb);
+    this.handleDragStart(event, value, this.thumb);
 
     // Presses within the range do not invoke slider updates.
     const newValueInCurrentRange =
@@ -403,6 +412,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
     const value = this.mapClientXOnSliderScale(clientX);
     if (!dragAlreadyStarted) {
+      this.handleDragStart(event, value, this.thumb);
       this.adapter.emitDragStartEvent(value, this.thumb);
     }
     this.updateValue(value, this.thumb, {emitInputEvent: true});
@@ -427,65 +437,28 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 
   /**
-   * Handles keydown events on the slider thumbs.
+   * For range, discrete slider, shows the value indicator on both thumbs.
    */
-  handleThumbKeydown(event: KeyboardEvent, thumb: Thumb) {
-    if (this.isDisabled) return;
+  handleThumbMouseenter() {
+    if (!this.isDiscrete || !this.isRange) return;
 
-    const key = normalizeKey(event);
-    if (key !== KEY.ARROW_LEFT && key !== KEY.ARROW_UP &&
-        key !== KEY.ARROW_RIGHT && key !== KEY.ARROW_DOWN && key !== KEY.HOME &&
-        key !== KEY.END && key !== KEY.PAGE_UP && key !== KEY.PAGE_DOWN) {
+    this.adapter.addThumbClass(cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+    this.adapter.addThumbClass(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+  }
+
+  /**
+   * For range, discrete slider, hides the value indicator on both thumbs.
+   */
+  handleThumbMouseleave() {
+    if (!this.isDiscrete || !this.isRange) return;
+    if (this.adapter.isInputFocused(Thumb.START) ||
+        this.adapter.isInputFocused(Thumb.END)) {
+      // Leave value indicator shown if either input is focused.
       return;
     }
 
-    // Prevent scrolling.
-    event.preventDefault();
-
-    const value = this.getValueForKey(key, thumb);
-    const currentValue = thumb === Thumb.START ? this.valueStart : this.value;
-    if (value === currentValue) return;
-
-    this.updateValue(
-        this.getValueForKey(key, thumb), thumb,
-        {emitChangeEvent: true, emitInputEvent: true});
-  }
-
-  /**
-   * Shows the value indicator, as follows:
-   * - Range slider: Shows value indicator on both thumbs, on either hover or
-   *   focus.
-   * - Single point slider: Shows value indicator on thumb, only on focus.
-   */
-  handleThumbFocusOrMouseenter(event: FocusEvent|MouseEvent) {
-    if (!this.isDiscrete) return;
-
-    if (this.isRange) {
-      this.adapter.addThumbClass(cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
-      this.adapter.addThumbClass(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-    } else if (event.type === 'focus') {
-      // If single point slider, only show value indicator on focus, not hover.
-      this.adapter.addThumbClass(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-    }
-  }
-
-  /**
-   * Hides the value indicator, as follows:
-   * - Range slider: Hides value indicator on both thumbs, on either blur
-   *   or mouseleave, provided there is no thumb already focused.
-   * - Single point slider: Hides value indicator on thumb, on blur.
-   */
-  handleThumbBlurOrMouseleave(event: FocusEvent|MouseEvent) {
-    if (!this.isDiscrete) return;
-
-    if (this.isRange && !this.adapter.isThumbFocused(Thumb.START) &&
-        !this.adapter.isThumbFocused(Thumb.END)) {
-      this.adapter.removeThumbClass(
-          cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
-      this.adapter.removeThumbClass(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-    } else if (!this.isRange && event.type === 'blur') {
-      this.adapter.removeThumbClass(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
-    }
+    this.adapter.removeThumbClass(cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+    this.adapter.removeThumbClass(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
   }
 
   handleMousedownOrTouchstart(event: MouseEvent|TouchEvent) {
@@ -522,34 +495,51 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 
   /**
-   * @return Returns new value for the given thumb, based on key pressed.
-   *     E.g. ARROW_DOWN on discrete slider decrements the current thumb
-   *     value by the `step` value.
+   * Handles input `change` event by setting internal slider value to match
+   * input's new value.
    */
-  private getValueForKey(key: string, thumb: Thumb): number {
-    const delta = this.step || (this.max - this.min) / 100;
-    const deltaBigStep = this.bigStep || (this.max - this.min) / 10;
-    const value = thumb === Thumb.START ? this.valueStart : this.value;
-    switch (key) {
-      case KEY.ARROW_LEFT:
-        return this.adapter.isRTL() ? value + delta : value - delta;
-      case KEY.ARROW_DOWN:
-        return value - delta;
-      case KEY.ARROW_RIGHT:
-        return this.adapter.isRTL() ? value - delta : value + delta;
-      case KEY.ARROW_UP:
-        return value + delta;
-      case KEY.HOME:
-        return this.min;
-      case KEY.END:
-        return this.max;
-      case KEY.PAGE_DOWN:
-        return value - deltaBigStep;
-      case KEY.PAGE_UP:
-        return value + deltaBigStep;
-      default:
-        return value;
+  handleInputChange(thumb: Thumb) {
+    const value = Number(this.adapter.getInputValue(thumb));
+    if (thumb === Thumb.START) {
+      this.setValueStart(value);
+    } else {
+      this.setValue(value);
     }
+  }
+
+  /** Shows value indicator on thumb(s). */
+  handleInputFocus(thumb: Thumb) {
+    if (!this.isDiscrete) return;
+
+    this.adapter.addThumbClass(cssClasses.THUMB_WITH_INDICATOR, thumb);
+    if (this.isRange) {
+      const otherThumb = thumb === Thumb.START ? Thumb.END : Thumb.START;
+      this.adapter.addThumbClass(cssClasses.THUMB_WITH_INDICATOR, otherThumb);
+    }
+  }
+
+  /** Removes value indicator from thumb(s). */
+  handleInputBlur(thumb: Thumb) {
+    if (!this.isDiscrete) return;
+
+    this.adapter.removeThumbClass(cssClasses.THUMB_WITH_INDICATOR, thumb);
+    if (this.isRange) {
+      const otherThumb = thumb === Thumb.START ? Thumb.END : Thumb.START;
+      this.adapter.removeThumbClass(
+          cssClasses.THUMB_WITH_INDICATOR, otherThumb);
+    }
+  }
+
+  /**
+   * Emits custom dragStart event, along with focusing the underlying input.
+   */
+  private handleDragStart(
+      event: PointerEvent|MouseEvent|TouchEvent, value: number, thumb: Thumb) {
+    this.adapter.focusInput(thumb);
+    // Prevent the input (that we just focused) from losing focus.
+    event.preventDefault();
+
+    this.adapter.emitDragStartEvent(value, thumb);
   }
 
   /**
@@ -654,11 +644,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       this.adapter.setInputValue(valueStr, thumb);
     }
 
-    this.adapter.setThumbAttribute(attributes.ARIA_VALUENOW, valueStr, thumb);
-
     const valueToAriaValueTextFn = this.adapter.getValueToAriaValueTextFn();
     if (valueToAriaValueTextFn) {
-      this.adapter.setThumbAttribute(
+      this.adapter.setInputAttribute(
           attributes.ARIA_VALUETEXT, valueToAriaValueTextFn(value), thumb);
     }
   }
@@ -828,7 +816,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
         this.removeInitialStyles(isRtl);
         this.updateOverlappingThumbsUI(thumbStartPos, thumbEndPos, thumb);
-        this.focusThumbIfDragging(thumb);
       });
     } else {
       requestAnimationFrame(() => {
@@ -839,7 +826,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
             transformProp, `scaleX(${pctComplete})`);
 
         this.removeInitialStyles(isRtl);
-        this.focusThumbIfDragging(thumb);
       });
     }
   }
@@ -934,16 +920,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     }
   }
 
-  private focusThumbIfDragging(thumb?: Thumb) {
-    if (!thumb) return;
-    // Not dragging thumb via pointer interaction.
-    if (this.thumb === null) return;
-
-    if (!this.adapter.isThumbFocused(thumb)) {
-      this.adapter.focusThumb(thumb);
-    }
-  }
-
   /**
    * Converts attribute value to a number, e.g. '100' => 100. Throws errors
    * for invalid values.
@@ -1018,27 +994,29 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
     if (this.isRange) {
       this.adapter.registerThumbEventHandler(
-          Thumb.START, 'keydown', this.thumbStartKeydownListener);
+          Thumb.START, 'mouseenter', this.thumbMouseenterListener);
       this.adapter.registerThumbEventHandler(
-          Thumb.START, 'focus', this.thumbFocusOrMouseenterListener);
-      this.adapter.registerThumbEventHandler(
-          Thumb.START, 'mouseenter', this.thumbFocusOrMouseenterListener);
-      this.adapter.registerThumbEventHandler(
-          Thumb.START, 'blur', this.thumbBlurOrMouseleaveListener);
-      this.adapter.registerThumbEventHandler(
-          Thumb.START, 'mouseleave', this.thumbBlurOrMouseleaveListener);
+          Thumb.START, 'mouseleave', this.thumbMouseleaveListener);
+
+      this.adapter.registerInputEventHandler(
+          Thumb.START, 'change', this.inputStartChangeListener);
+      this.adapter.registerInputEventHandler(
+          Thumb.START, 'focus', this.inputStartFocusListener);
+      this.adapter.registerInputEventHandler(
+          Thumb.START, 'blur', this.inputStartBlurListener);
     }
 
     this.adapter.registerThumbEventHandler(
-        Thumb.END, 'keydown', this.thumbEndKeydownListener);
+        Thumb.END, 'mouseenter', this.thumbMouseenterListener);
     this.adapter.registerThumbEventHandler(
-        Thumb.END, 'focus', this.thumbFocusOrMouseenterListener);
-    this.adapter.registerThumbEventHandler(
-        Thumb.END, 'mouseenter', this.thumbFocusOrMouseenterListener);
-    this.adapter.registerThumbEventHandler(
-        Thumb.END, 'blur', this.thumbBlurOrMouseleaveListener);
-    this.adapter.registerThumbEventHandler(
-        Thumb.END, 'mouseleave', this.thumbBlurOrMouseleaveListener);
+        Thumb.END, 'mouseleave', this.thumbMouseleaveListener);
+
+    this.adapter.registerInputEventHandler(
+        Thumb.END, 'change', this.inputEndChangeListener);
+    this.adapter.registerInputEventHandler(
+        Thumb.END, 'focus', this.inputEndFocusListener);
+    this.adapter.registerInputEventHandler(
+        Thumb.END, 'blur', this.inputEndBlurListener);
   }
 
   private deregisterEventHandlers() {
@@ -1057,27 +1035,29 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
     if (this.isRange) {
       this.adapter.deregisterThumbEventHandler(
-          Thumb.START, 'keydown', this.thumbStartKeydownListener);
+          Thumb.START, 'mouseenter', this.thumbMouseenterListener);
       this.adapter.deregisterThumbEventHandler(
-          Thumb.START, 'focus', this.thumbFocusOrMouseenterListener);
-      this.adapter.deregisterThumbEventHandler(
-          Thumb.START, 'mouseenter', this.thumbFocusOrMouseenterListener);
-      this.adapter.deregisterThumbEventHandler(
-          Thumb.START, 'blur', this.thumbBlurOrMouseleaveListener);
-      this.adapter.deregisterThumbEventHandler(
-          Thumb.START, 'mouseleave', this.thumbBlurOrMouseleaveListener);
+          Thumb.START, 'mouseleave', this.thumbMouseleaveListener);
+
+      this.adapter.deregisterInputEventHandler(
+          Thumb.START, 'change', this.inputStartChangeListener);
+      this.adapter.deregisterInputEventHandler(
+          Thumb.START, 'focus', this.inputStartFocusListener);
+      this.adapter.deregisterInputEventHandler(
+          Thumb.START, 'blur', this.inputStartBlurListener);
     }
 
     this.adapter.deregisterThumbEventHandler(
-        Thumb.END, 'keydown', this.thumbEndKeydownListener);
+        Thumb.END, 'mouseenter', this.thumbMouseenterListener);
     this.adapter.deregisterThumbEventHandler(
-        Thumb.END, 'focus', this.thumbFocusOrMouseenterListener);
-    this.adapter.deregisterThumbEventHandler(
-        Thumb.END, 'mouseenter', this.thumbFocusOrMouseenterListener);
-    this.adapter.deregisterThumbEventHandler(
-        Thumb.END, 'blur', this.thumbBlurOrMouseleaveListener);
-    this.adapter.deregisterThumbEventHandler(
-        Thumb.END, 'mouseleave', this.thumbBlurOrMouseleaveListener);
+        Thumb.END, 'mouseleave', this.thumbMouseleaveListener);
+
+    this.adapter.deregisterInputEventHandler(
+        Thumb.END, 'change', this.inputEndChangeListener);
+    this.adapter.deregisterInputEventHandler(
+        Thumb.END, 'focus', this.inputEndFocusListener);
+    this.adapter.deregisterInputEventHandler(
+        Thumb.END, 'blur', this.inputEndBlurListener);
   }
 
   private handlePointerup() {

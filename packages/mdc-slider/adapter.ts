@@ -64,22 +64,6 @@ export interface MDCSliderAdapter {
   removeThumbClass(className: string, thumb: Thumb): void;
 
   /**
-   * - If thumb is `Thumb.START`, returns the value on the start thumb
-   *   (for range slider variant).
-   * - If thumb is `Thumb.END`, returns the value on the end thumb (or
-   *   only thumb for single point slider).
-   */
-  getThumbAttribute(attribute: string, thumb: Thumb): string|null;
-
-  /**
-   * - If thumb is `Thumb.START`, sets the attribute on the start thumb
-   *   (for range slider variant).
-   * - If thumb is `Thumb.END`, sets the attribute on the end thumb (or
-   *   only thumb for single point slider).
-   */
-  setThumbAttribute(attribute: string, value: string, thumb: Thumb): void;
-
-  /**
    * - If thumb is `Thumb.START`, returns the value property on the start input
    *   (for range slider variant).
    * - If thumb is `Thumb.END`, returns the value property on the end input (or
@@ -120,19 +104,21 @@ export interface MDCSliderAdapter {
   removeInputAttribute(attribute: string, thumb: Thumb): void;
 
   /**
+   * - If thumb is `Thumb.START`, focuses start input (range slider variant).
+   * - If thumb is `Thumb.END`, focuses end input (or only input for single
+   *   point slider).
+   */
+  focusInput(thumb: Thumb): void;
+
+  /**
+   * @return Returns true if the given input is focused.
+   */
+  isInputFocused(thumb: Thumb): boolean;
+
+  /**
    * @return Returns the width of the given thumb knob.
    */
   getThumbKnobWidth(thumb: Thumb): number;
-
-  /**
-   * @return Returns true if the given thumb is focused.
-   */
-  isThumbFocused(thumb: Thumb): boolean;
-
-  /**
-   * Adds browser focus to the given thumb.
-   */
-  focusThumb(thumb: Thumb): void;
 
   /**
    * @return Returns the bounding client rect of the given thumb.
@@ -258,6 +244,18 @@ export interface MDCSliderAdapter {
    * Deregisters an event listener on the given thumb element.
    */
   deregisterThumbEventHandler<K extends EventType>(
+      thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Registers an event listener on the given input element.
+   */
+  registerInputEventHandler<K extends EventType>(
+      thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener on the given input element.
+   */
+  deregisterInputEventHandler<K extends EventType>(
       thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
 
   /**

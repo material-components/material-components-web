@@ -21,10 +21,9 @@
  * THE SOFTWARE.
  */
 
-import {KEY} from '../../mdc-dom/keyboard';
 import {getFixture} from '../../../testing/dom';
 import {html} from '../../../testing/dom';
-import {createKeyboardEvent, createMouseEvent, emitEvent} from '../../../testing/dom/events';
+import {createMouseEvent, emitEvent} from '../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {attributes, cssClasses, events, MDCSlider, MDCSliderFoundation, Thumb} from '../index';
 
@@ -150,8 +149,7 @@ describe('MDCSlider', () => {
                   'touchstart', jasmine.any(Function), undefined);
         }
 
-        const thumbEvents =
-            ['keydown', 'focus', 'mouseenter', 'blur', 'mouseleave'];
+        const thumbEvents = ['mouseenter', 'mouseleave'];
         for (const event of thumbEvents) {
           expect(thumb.removeEventListener)
               .toHaveBeenCalledWith(event, jasmine.any(Function));
@@ -241,61 +239,6 @@ describe('MDCSlider', () => {
           .toBe(`translateX(${initialValueEnd + 10}px)`);
       expect(startThumb.style.transform)
           .toBe(`translateX(${initialValueStart}px)`);
-    });
-
-    it('Thumb event listeners are destroyed when component is destroyed.',
-       () => {
-         spyOn(startThumb, 'removeEventListener').and.callThrough();
-         spyOn(endThumb, 'removeEventListener').and.callThrough();
-
-         component.destroy();
-         expect(startThumb.removeEventListener)
-             .toHaveBeenCalledWith('keydown', jasmine.any(Function));
-         expect(endThumb.removeEventListener)
-             .toHaveBeenCalledWith('keydown', jasmine.any(Function));
-       });
-  });
-
-  describe('thumb states', () => {
-    it('single point slider: thumb is focused after value update', () => {
-      let thumb;
-      ({root, endThumb: thumb} =
-           setUpTest({isDiscrete: true, hasTickMarks: true}));
-
-      const downEvent = createEventFrom('pointer', 'down', {clientX: 65.3});
-      root.dispatchEvent(downEvent);
-      jasmine.clock().tick(1);  // Tick for RAF.
-      expect(document.activeElement).toBe(thumb);
-    });
-
-    it('range slider: thumb is focused after value update', () => {
-      let startThumb, endThumb;
-      const valueStart = 10;
-      const value = 40;
-      ({root, startThumb, endThumb} =
-           setUpTest({isDiscrete: true, isRange: true, valueStart, value}));
-
-      spyOn(startThumb as HTMLElement, 'getBoundingClientRect')
-          .and.returnValue({
-            left: valueStart - 3,
-            right: valueStart + 3,
-          } as DOMRect);
-      spyOn(endThumb, 'getBoundingClientRect').and.returnValue({
-        left: value - 3,
-        right: value + 3,
-      } as DOMRect);
-
-      // Update start thumb value.
-      const downEventStart = createEventFrom('pointer', 'down', {clientX: 3});
-      root.dispatchEvent(downEventStart);
-      jasmine.clock().tick(1);  // Tick for RAF.
-      expect(document.activeElement).toBe(startThumb);
-
-      // Update end thumb value.
-      const downEventEnd = createEventFrom('pointer', 'down', {clientX: 92});
-      root.dispatchEvent(downEventEnd);
-      jasmine.clock().tick(1);  // Tick for RAF.
-      expect(document.activeElement).toBe(endThumb);
     });
   });
 
@@ -388,53 +331,23 @@ describe('MDCSlider', () => {
   });
 
   describe('a11y support', () => {
-    let startThumb: HTMLElement|null, endThumb: HTMLElement;
+    let endInput: HTMLInputElement;
 
-    it('updates aria-valuenow on thumb value updates', () => {
-      ({root, endThumb} = setUpTest({isDiscrete: true, value: 30, step: 10}));
-      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('30');
-
-      const downEvent = createEventFrom('pointer', 'down', {clientX: 90});
-      root.dispatchEvent(downEvent);
-      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('90');
-    });
-
-    it('updates aria-valuetext on thumb value updates according to ' +
+    it('updates aria-valuetext on value updates according to ' +
            '`valueToAriaValueTextFn`',
        () => {
          let component: MDCSlider;
-         ({component, root, endThumb} =
+         ({component, root, endInput} =
               setUpTest({isDiscrete: true, value: 30, step: 10}));
          component.setValueToAriaValueTextFn(
              (value: number) => `${value} value`);
-         expect(endThumb.getAttribute(attributes.ARIA_VALUETEXT)).toBe(null);
+         expect(endInput.getAttribute(attributes.ARIA_VALUETEXT)).toBe(null);
 
          const downEvent = createEventFrom('pointer', 'down', {clientX: 90});
          root.dispatchEvent(downEvent);
-         expect(endThumb.getAttribute(attributes.ARIA_VALUETEXT))
+         expect(endInput.getAttribute(attributes.ARIA_VALUETEXT))
              .toBe('90 value');
        });
-
-    it('increments/decrements correct thumb value on keydown', () => {
-      ({root, startThumb, endThumb} = setUpTest({
-         isDiscrete: true,
-         valueStart: 10,
-         value: 50,
-         isRange: true,
-         step: 10
-       }));
-      expect(startThumb!.getAttribute(attributes.ARIA_VALUENOW)).toBe('10');
-      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('50');
-
-      const keyUpEvent = createKeyboardEvent('keydown', {key: KEY.ARROW_UP});
-      startThumb!.dispatchEvent(keyUpEvent);
-      expect(startThumb!.getAttribute(attributes.ARIA_VALUENOW)).toBe('20');
-
-      const keyDownEvent =
-          createKeyboardEvent('keydown', {key: KEY.ARROW_DOWN});
-      endThumb.dispatchEvent(keyDownEvent);
-      expect(endThumb.getAttribute(attributes.ARIA_VALUENOW)).toBe('40');
-    });
   });
 
   describe('input synchronization: ', () => {
@@ -458,10 +371,18 @@ describe('MDCSlider', () => {
       expect(endInput.getAttribute(attributes.INPUT_VALUE)).toBe('20');
       expect(startInput!.getAttribute(attributes.INPUT_MAX)).toBe('20');
     });
+
+    it('focuses input on thumb down event', () => {
+      ({root, endInput} = setUpTest({value: 30}));
+      const downEvent = createEventFrom('pointer', 'down', {clientX: 90});
+      root.dispatchEvent(downEvent);
+
+      expect(document.activeElement).toBe(endInput);
+    });
   });
 
   describe('disabled state', () => {
-    let startThumb: HTMLElement|null, endThumb: HTMLElement;
+    let startInput: HTMLInputElement|null, endInput: HTMLInputElement;
 
     it('updates disabled class when setting disabled state', () => {
       ({root, component} = setUpTest());
@@ -476,36 +397,27 @@ describe('MDCSlider', () => {
       expect(root.classList.contains(cssClasses.DISABLED)).toBe(false);
     });
 
-    it('updates thumb attrs when setting disabled state', () => {
-      ({root, component, endThumb} = setUpTest());
-      expect(endThumb.tabIndex).toBe(0);
+    it('updates input attrs when setting disabled state', () => {
+      ({root, component, endInput} = setUpTest());
 
       component.setDisabled(true);
-      expect(endThumb.tabIndex).toBe(-1);
-      expect(endThumb.getAttribute('aria-disabled')).toBe('true');
+      expect(endInput.getAttribute(attributes.INPUT_DISABLED)).toBe('');
 
       component.setDisabled(false);
-      expect(endThumb.tabIndex).toBe(0);
-      expect(endThumb.getAttribute('aria-disabled')).toBe('false');
+      expect(endInput.getAttribute(attributes.INPUT_DISABLED)).toBe(null);
     });
 
-    it('range slider: updates thumbs\' attrs when setting disabled state',
+    it('range slider: updates inputs\' attrs when setting disabled state',
        () => {
-         ({root, component, startThumb, endThumb} = setUpTest({isRange: true}));
-         expect(startThumb!.tabIndex).toBe(0);
-         expect(endThumb.tabIndex).toBe(0);
+         ({root, component, startInput, endInput} = setUpTest({isRange: true}));
 
          component.setDisabled(true);
-         expect(startThumb!.tabIndex).toBe(-1);
-         expect(endThumb.tabIndex).toBe(-1);
-         expect(startThumb!.getAttribute('aria-disabled')).toBe('true');
-         expect(endThumb.getAttribute('aria-disabled')).toBe('true');
+         expect(startInput!.getAttribute(attributes.INPUT_DISABLED)).toBe('');
+         expect(endInput.getAttribute(attributes.INPUT_DISABLED)).toBe('');
 
          component.setDisabled(false);
-         expect(startThumb!.tabIndex).toBe(0);
-         expect(endThumb.tabIndex).toBe(0);
-         expect(startThumb!.getAttribute('aria-disabled')).toBe('false');
-         expect(endThumb.getAttribute('aria-disabled')).toBe('false');
+         expect(startInput!.getAttribute(attributes.INPUT_DISABLED)).toBe(null);
+         expect(endInput.getAttribute(attributes.INPUT_DISABLED)).toBe(null);
        });
   });
 
@@ -732,8 +644,7 @@ function setUpTest(
   const valueIndicatorStart = isDiscrete ? valueIndicator(valueStart || 0) : '';
   const valueIndicatorEnd = isDiscrete ? valueIndicator(valueStart || 0) : '';
   const startThumbHtml = isRange ? html`
-      <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0"
-           aria-valuemax="100" aria-valuenow="${valueStart || 0}">
+      <div class="mdc-slider__thumb">
         ${valueIndicatorStart}
         <div class="mdc-slider__thumb-knob"></div>
       </div>` :
@@ -750,8 +661,7 @@ function setUpTest(
         <div class="mdc-slider__track--inactive"></div>
       </div>
       ${startThumbHtml}
-      <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0"
-           aria-valuemax="100" aria-valuenow="${value || 0}">
+      <div class="mdc-slider__thumb">
         ${valueIndicatorEnd}
         <div class="mdc-slider__thumb-knob"></div>
       </div>

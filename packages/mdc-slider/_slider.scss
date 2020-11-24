@@ -66,7 +66,7 @@ $_track-inactive-height: 4px;
       height: $_thumb-ripple-size;
       margin: 0 ($_thumb-ripple-size / 2);
       position: relative;
-      touch-action: none;
+      touch-action: pan-y;
     }
 
     &.mdc-slider--disabled {
@@ -89,6 +89,18 @@ $_track-inactive-height: 4px;
           }
         }
       }
+    }
+  }
+
+  .mdc-slider__input {
+    @include feature-targeting.targets($feat-structure) {
+      cursor: pointer;
+      left: 0;
+      margin: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
     }
   }
 }
