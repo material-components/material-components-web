@@ -49,6 +49,8 @@
     $query
   );
 
+  @include _high-contrast-mode($query);
+
   .mdc-evolution-list {
     @include _evolution-list-base($query: $query);
   }
@@ -839,7 +841,7 @@
 
   .mdc-evolution-list-item__primary-text {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -852,7 +854,7 @@
 
   .mdc-evolution-list-item__secondary-text {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -866,7 +868,7 @@
   .mdc-evolution-list-item--with-trailing-meta {
     .mdc-evolution-list-item__end {
       @include feature-targeting.targets($feat-color) {
-        @include theme.prop(color, $color);
+        @include theme.property(color, $color);
       }
     }
   }
@@ -878,7 +880,7 @@
   .mdc-evolution-list-item--with-leading-icon .mdc-evolution-list-item__start,
   .mdc-evolution-list-item--with-trailing-icon .mdc-evolution-list-item__end {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -889,7 +891,7 @@
   .mdc-evolution-list-item--with-leading-icon .mdc-evolution-list-item__start,
   .mdc-evolution-list-item--with-trailing-icon .mdc-evolution-list-item__end {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      @include theme.property(background-color, $color);
     }
   }
 }
@@ -950,7 +952,7 @@
 
   .mdc-list-group__subheader {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -960,7 +962,7 @@
 
   .mdc-evolution-list-divider {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      @include theme.property(background-color, $color);
     }
   }
 }
@@ -1287,7 +1289,7 @@
   &.mdc-evolution-list-item--with-trailing-meta {
     .mdc-evolution-list-item__end {
       @include feature-targeting.targets($feat-color) {
-        @include theme.prop(color, $color);
+        @include theme.property(color, $color);
       }
     }
   }
@@ -1303,7 +1305,7 @@
   &.mdc-evolution-list-item--with-leading-icon {
     .mdc-evolution-list-item__start {
       @include feature-targeting.targets($feat-color) {
-        @include theme.prop(color, $color);
+        @include theme.property(color, $color);
       }
     }
   }
@@ -1312,8 +1314,29 @@
     &.mdc-evolution-list-item--with-trailing-icon {
       .mdc-evolution-list-item__end {
         @include feature-targeting.targets($feat-color) {
-          @include theme.prop(color, $color);
+          @include theme.property(color, $color);
         }
+      }
+    }
+  }
+}
+
+@mixin _high-contrast-mode($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include dom-mixins.ie-high-contrast-mode {
+    .mdc-evolution-list-divider::after {
+      @include feature-targeting.targets($feat-structure) {
+        content: '';
+        display: block;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+      }
+
+      @include feature-targeting.targets($feat-color) {
+        // Color ensures border is shown, but will be overridden by the browser.
+        @include theme.property(border-bottom-color, white);
       }
     }
   }
