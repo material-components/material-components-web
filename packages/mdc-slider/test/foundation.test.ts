@@ -48,31 +48,13 @@ describe('MDCSliderFoundation', () => {
          expect(foundation.getValueStart()).toBe(-10);
        });
 
-    it('sets step based on data-step attribute', () => {
+    it('sets step based on step attribute', () => {
       const {foundation} =
           setUpAndInit({value: 50.5, step: 5, isDiscrete: true});
       foundation.init();
 
       expect(foundation.getStep()).toBe(5);
     });
-
-    it('sets bigStep based on data-big-step attribute', () => {
-      const {foundation} =
-          setUpAndInit({value: 50.5, step: 5, bigStep: 20, isDiscrete: true});
-      foundation.init();
-
-      expect(foundation.getBigStep()).toBe(20);
-    });
-
-    it('sets bigStep to a multiple of step if no data-big-step attribute',
-       () => {
-         const step = 2;
-         const {foundation} =
-             setUpAndInit({value: 50.5, step, isDiscrete: true});
-         foundation.init();
-
-         expect(foundation.getBigStep()).toBe(step * numbers.BIG_STEP_FACTOR);
-       });
 
     it('throws error if attribute value is null', () => {
       const {foundation, mockAdapter} = setUpTest();
@@ -1260,7 +1242,6 @@ function setUpAndInit({
   isDiscrete,
   isDisabled,
   step,
-  bigStep,
   hasTickMarks,
   isRange,
   isRTL,
@@ -1273,7 +1254,6 @@ function setUpAndInit({
   isDiscrete?: boolean,
   isDisabled?: boolean,
   step?: number,
-  bigStep?: number,
   hasTickMarks?: boolean,
   isRange?: boolean,
   isRTL?: boolean,
@@ -1310,10 +1290,6 @@ function setUpAndInit({
 
   mockAdapter.getInputAttribute.withArgs(attributes.INPUT_STEP, Thumb.END)
       .and.returnValue(step || numbers.STEP_SIZE);
-  if (bigStep !== undefined) {
-    mockAdapter.getAttribute.withArgs(attributes.DATA_ATTR_BIG_STEP)
-        .and.returnValue(bigStep);
-  }
 
   foundation.init();
 

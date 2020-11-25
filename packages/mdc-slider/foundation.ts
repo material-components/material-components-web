@@ -58,7 +58,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
   private isDiscrete = false;
   private step = numbers.STEP_SIZE;
-  private bigStep = this.step * numbers.BIG_STEP_FACTOR;
   private hasTickMarks = false;
 
   // The following properties are only set for range sliders.
@@ -207,12 +206,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
           `Current step: ${this.step}`);
     }
 
-    const bigStep = this.adapter.getAttribute(attributes.DATA_ATTR_BIG_STEP);
-    this.bigStep = bigStep !== null ?
-        this.convertAttributeValueToNumber(
-            bigStep, attributes.DATA_ATTR_BIG_STEP) :
-        this.step * numbers.BIG_STEP_FACTOR;
-
     this.mousedownOrTouchstartListener =
         this.handleMousedownOrTouchstart.bind(this);
     this.moveListener = this.handleMove.bind(this);
@@ -306,10 +299,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
   getStep() {
     return this.step;
-  }
-
-  getBigStep() {
-    return this.bigStep;
   }
 
   getDisabled() {

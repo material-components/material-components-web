@@ -46,9 +46,6 @@ export const cssClasses = {
 export const numbers = {
   // Default step size.
   STEP_SIZE: 1,
-  // Default factor to multiply `step` by for big step value, if
-  // `DATA_ATTR_BIG_STEP` is not set.
-  BIG_STEP_FACTOR: 4,
   // Minimum absolute difference between clientX of move event / down event
   // for which to update thumb, in the case of overlapping thumbs.
   // This is needed to reduce chances of choosing the thumb based on
@@ -63,8 +60,6 @@ export const attributes = {
   ARIA_VALUEMIN: 'aria-valuemin',
   ARIA_VALUENOW: 'aria-valuenow',
   ARIA_VALUETEXT: 'aria-valuetext',
-  // Step value to increment/decrement by for PAGE_UP or PAGE_DOWN keypresses.
-  DATA_ATTR_BIG_STEP: 'data-big-step',
   INPUT_DISABLED: 'disabled',
   INPUT_MIN: 'min',
   INPUT_MAX: 'max',
