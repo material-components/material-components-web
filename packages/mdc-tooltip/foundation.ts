@@ -90,6 +90,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   private readonly documentKeydownHandler: SpecificEventListener<'keydown'>;
   private readonly richTooltipMouseEnterHandler:
       SpecificEventListener<'mouseenter'>;
+  private readonly richTooltipMouseLeaveHandler:
+      SpecificEventListener<'mouseleave'>;
   private readonly windowScrollHandler: SpecificEventListener<'scroll'>;
   private readonly windowResizeHandler: SpecificEventListener<'resize'>;
 
@@ -107,6 +109,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     this.richTooltipMouseEnterHandler = () => {
       this.handleRichTooltipMouseEnter();
+    };
+
+    this.richTooltipMouseLeaveHandler = () => {
+      this.handleRichTooltipMouseLeave();
     };
 
     this.windowScrollHandler = () => {
@@ -174,6 +180,13 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     this.show();
   }
 
+  private handleRichTooltipMouseLeave() {
+    this.clearShowTimeout();
+    this.hideTimeout = setTimeout(() => {
+      this.hide();
+    }, this.hideDelayMs);
+  }
+
   /**
    * On window resize or scroll, check the anchor position and size and
    * repostion tooltip if necessary.
@@ -204,6 +217,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       this.adapter.setAnchorAttribute('aria-expanded', 'true');
       this.adapter.registerEventHandler(
           'mouseenter', this.richTooltipMouseEnterHandler);
+      this.adapter.registerEventHandler(
+          'mouseleave', this.richTooltipMouseLeaveHandler);
     }
     this.adapter.removeClass(HIDE);
     this.adapter.addClass(SHOWING);
@@ -246,6 +261,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       this.adapter.setAnchorAttribute('aria-expanded', 'false');
       this.adapter.deregisterEventHandler(
           'mouseenter', this.richTooltipMouseEnterHandler);
+      this.adapter.deregisterEventHandler(
+          'mouseleave', this.richTooltipMouseLeaveHandler);
     }
     this.clearAllAnimationClasses();
     this.adapter.addClass(HIDE);
@@ -575,6 +592,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     if (this.isRich) {
       this.adapter.deregisterEventHandler(
           'mouseenter', this.richTooltipMouseEnterHandler);
+      this.adapter.deregisterEventHandler(
+          'mouseleave', this.richTooltipMouseLeaveHandler);
     }
 
     this.adapter.deregisterDocumentEventHandler(

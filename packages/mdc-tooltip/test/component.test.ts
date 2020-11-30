@@ -310,5 +310,20 @@ describe('MDCTooltip', () => {
 
          expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
        });
+
+    it('aria-expanded remains true on anchor when mouseleave rich tooltip and mouseenter anchor`',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'mouseenter');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+         emitEvent(tooltipElem, 'mouseleave');
+         emitEvent(anchorElem, 'mouseenter');
+
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+       });
   });
 });
