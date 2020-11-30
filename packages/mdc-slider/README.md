@@ -257,8 +257,7 @@ To add tick marks to a discrete slider, add the following:
 To disable a slider, add the following:
 
 *   `mdc-slider--disabled` class on the root element
-*   `tabindex="-1"` attribute on the thumb(s)
-*   `aria-disabled="true"` on the thumb(s)
+*   `disabled` attribute on the input element
 
 ```html
 <div class="mdc-slider mdc-slider--disabled">
