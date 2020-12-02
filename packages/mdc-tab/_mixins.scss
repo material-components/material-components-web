@@ -220,6 +220,19 @@
   }
 }
 
+///
+/// Sets tab min-width.
+///
+/// @param {Number} $min-width Minimum width value in `px`.
+///
+@mixin min-width($min-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    min-width: $min-width;
+  }
+}
+
 //
 // Private
 //
@@ -231,6 +244,7 @@
   @include text-label-color(variables.$text-label-color-default, $query);
   @include icon-color(variables.$icon-color-default, $query);
   @include horizontal-padding(variables.$horizontal-padding, $query);
+  @include min-width(variables.$min-width, $query);
   @include tab-indicator-mixins.surface($query);
 
   @include feature-targeting.targets($feat-structure) {
