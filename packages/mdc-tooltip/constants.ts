@@ -43,6 +43,10 @@ const numbers = {
   // LINT.ThenChange(_tooltip.scss:tooltip-dimensions)
 };
 
+const attributes = {
+  PERSISTENT: 'data-mdc-tooltip-persistent',
+};
+
 const events = {
   HIDDEN: 'MDCTooltip:hidden',
 };
@@ -72,4 +76,12 @@ enum AnchorBoundaryType {
   UNBOUNDED = 1,
 }
 
-export {CssClasses, numbers, events, XPosition, AnchorBoundaryType, YPosition};
+export {
+  CssClasses,
+  numbers,
+  attributes,
+  events,
+  XPosition,
+  AnchorBoundaryType,
+  YPosition
+};
