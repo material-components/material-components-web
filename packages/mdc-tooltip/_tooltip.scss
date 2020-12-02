@@ -87,6 +87,14 @@ $exit-duration: 75ms;
 
     &.mdc-tooltip--rich {
       @include elevation-mixins.elevation(2, $query: $query);
+      @include tooltip-theme.fill-color(
+        tooltip-theme.$rich-background-color,
+        $query: $query
+      );
+      @include tooltip-theme.rich-text-ink-color(
+        tooltip-theme.$rich-text-color,
+        $query: $query
+      );
       @include feature-targeting.targets($feat-structure) {
         display: inline-block;
         border-radius: $_rich_corner_radius;

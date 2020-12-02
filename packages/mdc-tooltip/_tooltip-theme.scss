@@ -33,6 +33,11 @@
 $background-color: rgba(black, theme-color.text-emphasis(medium));
 $border-radius: small;
 $label-color: text-primary-on-dark;
+
+// Rich Tooltip variables
+$rich-background-color: rgba(white, theme-color.text-emphasis(medium));
+$rich-text-color: text-primary-on-light;
+
 // Use a custom property so IE11 does not use "normal" and instead uses provided
 // fall-back value.
 $word-break-custom-prop: custom-properties.create(
@@ -88,6 +93,17 @@ $z-index: 2;
 // Sets the color of the tooltip label.
 // @param {Color | String} $color
 @mixin label-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  @include feature-targeting.targets($feat-color) {
+    .mdc-tooltip__surface {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+// Sets the color of the rich tooltip text.
+// @param {Color | String} $color
+@mixin rich-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   @include feature-targeting.targets($feat-color) {
     .mdc-tooltip__surface {
