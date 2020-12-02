@@ -44,6 +44,8 @@ $_line-height: 16px;
 // Rich Tooltip variables
 $_rich_corner_radius: 8px;
 $_rich_padding: 8px;
+$_content-type-scale: body1;
+$_title-type-scale: subtitle2;
 
 $enter-duration: 150ms;
 $exit-duration: 75ms;
@@ -160,6 +162,22 @@ $exit-duration: 75ms;
       @include feature-targeting.targets($feat-animation) {
         transition: animation-functions.exit-permanent(opacity, $exit-duration);
       }
+    }
+
+    .mdc-tooltip__title {
+      @include typography.typography(
+        $_title-type-scale,
+        $exclude-props: (line-height),
+        $query: $query
+      );
+    }
+
+    .mdc-tooltip__content {
+      @include typography.typography(
+        $_content-type-scale,
+        $exclude-props: (line-height),
+        $query: $query
+      );
     }
   }
 }
