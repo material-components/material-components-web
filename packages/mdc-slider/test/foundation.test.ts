@@ -211,6 +211,17 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
       expect(mockAdapter.setTrackActiveStyleProperty).not.toHaveBeenCalled();
     });
+
+    it('#layout with no thumbs updates both thumbs\' value indicators', () => {
+      const {foundation, mockAdapter} = setUpAndInit(
+          {isRange: true, isDiscrete: true, valueStart: 5, value: 10});
+
+      foundation.layout();
+      expect(mockAdapter.setValueIndicatorText)
+          .toHaveBeenCalledWith(10, Thumb.END);
+      expect(mockAdapter.setValueIndicatorText)
+          .toHaveBeenCalledWith(5, Thumb.START);
+    });
   });
 
   describe('#destroy', () => {

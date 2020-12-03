@@ -642,15 +642,20 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
   /**
    * Updates value indicator UI based on current value.
-   * @param thumb Thumb whose value indicator to update.
+   * @param thumb Thumb whose value indicator to update. If undefined, all
+   *     thumbs' value indicators are updated.
    */
   private updateValueIndicatorUI(thumb?: Thumb) {
-    if (!this.isDiscrete || !thumb) return;
+    if (!this.isDiscrete) return;
 
     const value =
         this.isRange && thumb === Thumb.START ? this.valueStart : this.value;
     this.adapter.setValueIndicatorText(
         value, thumb === Thumb.START ? Thumb.START : Thumb.END);
+
+    if (!thumb && this.isRange) {
+      this.adapter.setValueIndicatorText(this.valueStart, Thumb.START);
+    }
   }
 
   /**
