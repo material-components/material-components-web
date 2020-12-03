@@ -13,7 +13,7 @@ Tooltips display informative text when users hover over, focus on, or tap an ele
 
 ![Tooltip example](images/tooltip.png)
 
-## Contents
+**Contents**
 
 * [Using tooltips](#using-tooltips)
 * [Tooltips](#tooltips)

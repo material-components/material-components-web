@@ -13,7 +13,7 @@ A banner displays a prominent message and related optional actions.
 
 ![Banner example](images/banner.png)
 
-## Content
+**Contents**
 
 * [Using banners](#using-banners)
 * [Banners](#banners)

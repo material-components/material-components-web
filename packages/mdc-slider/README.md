@@ -16,7 +16,7 @@ The MDC Slider implementation supports both single point sliders (one thumb)
 and range sliders (two thumbs). It is backed by the browser
 `<input type="range">` element, is fully accessible, and is RTL-aware.
 
-## Contents
+**Contents**
 
 *   [Using sliders](#using-sliders)
 *   [Sliders](#sliders)
