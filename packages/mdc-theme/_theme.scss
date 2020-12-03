@@ -180,3 +180,39 @@
     );
   }
 }
+
+/// Validates keys in provided theme configuration by comparing with original
+/// theme configuration.
+/// Use this in component's `theme()` mixin implementation to validate if
+/// provided theme configuration has supported theme configuration keys.
+/// @param {Map} $origin-theme Original theme configuration in Sass map format
+///     that has all supported keys.
+/// @param {Map} $custom-theme Provided theme configuration in Sass map format
+///     that should be validated against `$origin-theme`.
+/// @examples
+///     @mixin theme($theme) {
+///       @include theme.validate-keys($light-theme, $theme);
+///
+///       // ...
+///     }
+@mixin validate-keys($origin-theme, $custom-theme, $test-only: false) {
+  $origin-keys: map.keys($origin-theme);
+  $custom-keys: map.keys($custom-theme);
+  $unsupported-keys: ();
+
+  @each $key in $custom-keys {
+    @if (not list.index($origin-keys, $key)) {
+      $unsupported-keys: list.append($unsupported-keys, $key);
+    }
+  }
+
+  @if list.length($unsupported-keys) > 0 {
+    $error-message: 'Unsupported keys found: #{$unsupported-keys}. Expected one of: #{$origin-keys}.';
+
+    @if $test-only {
+      content: $error-message;
+    } @else {
+      @error $error-message;
+    }
+  }
+}

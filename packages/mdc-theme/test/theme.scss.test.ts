@@ -76,4 +76,11 @@ describe('theme.test.scss', () => {
     expect(css).toContain('--mdc-theme-primary: teal');
     expect(css).toContain('--mdc-theme-secondary: crimson');
   });
+
+  it('validate-keys Should throw error when unsupported key is provided',
+     () => {
+       const filePath = path.join(__dirname, 'theme-validate-keys.test.css');
+       const css = fs.readFileSync(filePath, 'utf8').trim();
+       expect(css).toContain('Unsupported keys found: foobar.');
+     });
 });

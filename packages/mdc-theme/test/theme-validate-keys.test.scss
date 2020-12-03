@@ -1,0 +1,45 @@
+@use '../theme';
+
+$origin-theme: (
+  one: 1,
+  two: '22',
+  three: 3px,
+  four: (
+    x: 1,
+    y: 2,
+  ),
+);
+
+// Should validate when subset of keys are provided.
+@include theme.validate-keys(
+  $origin-theme,
+  (
+    two: '22',
+    three: 3px,
+  )
+);
+
+// Should validate when theme configuration is empty.
+@include theme.validate-keys($origin-theme, ());
+
+// Should validate when nested theme keys are provided.
+@include theme.validate-keys(
+  $origin-theme,
+  (
+    four: (
+      x: 11,
+      y: 22,
+    ),
+  )
+);
+
+// Should throw error when unsupported key (i.e., foobar) is provided.
+.test {
+  @include theme.validate-keys(
+    $origin-theme,
+    (
+      foobar: 66px,
+    ),
+    $test-only: true
+  );
+}
