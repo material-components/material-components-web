@@ -129,6 +129,14 @@ $exit-duration: 75ms;
       outline: 1px solid transparent;
     }
 
+    .mdc-tooltip--rich & {
+      @include feature-targeting.targets($feat-structure) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
     .mdc-tooltip--multiline & {
       @include feature-targeting.targets($feat-structure) {
         /* @noflip */
