@@ -351,7 +351,7 @@ The MDC Chips package is composed of two JavaScript classes:
 
 To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.md) both classes from `@material/chips`.
 
-#### `MDCChip`
+### `MDCChip`
 
 Method Signature | Description
 --- | ---
@@ -372,7 +372,7 @@ Property | Value Type | Description
 
 > \*\*_NOTE_: If `shouldRemoveOnTrailingIconClick` is set to false, you must manually call `beginExit()` on the chip to remove it.
 
-##### Events
+#### Events
 
 Event Name | `event.detail` | Description
 --- | --- | ---
@@ -384,7 +384,7 @@ Event Name | `event.detail` | Description
 
 > _NOTE_: All of `MDCChip`'s emitted events bubble up through the DOM.
 
-#### `MDCChipSet`
+### `MDCChipSet`
 
 Method Signature | Description
 --- | ---

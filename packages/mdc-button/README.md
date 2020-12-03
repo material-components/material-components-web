@@ -128,7 +128,7 @@ To meet this requirement, add the following to your button:
 
 [Contained buttons](https://material.io/components/buttons/#contained-button) are high-emphasis, distinguished by their use of elevation and fill. They contain actions that are primary to your app.
 
-#### Contained button example
+### Contained button example
 
 <img src="images/contained-button.png" alt="Contained button example">
 
