@@ -95,7 +95,8 @@ $exit-duration: 75ms;
         $query: $query
       );
       @include tooltip-theme.rich-text-ink-color(
-        tooltip-theme.$rich-text-color,
+        tooltip-theme.$rich-title-text-color,
+        tooltip-theme.$rich-content-text-color,
         $query: $query
       );
       @include feature-targeting.targets($feat-structure) {
