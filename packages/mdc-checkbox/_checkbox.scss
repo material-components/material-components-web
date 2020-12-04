@@ -161,8 +161,14 @@
 
   .mdc-checkbox--touch {
     @include checkbox-theme.touch-target(
-      touch-target-variables.$height,
-      checkbox-theme.$ripple-size,
+      custom-properties.create(
+        checkbox-custom-properties.$touch-target-size,
+        touch-target-variables.$height
+      ),
+      custom-properties.create(
+        checkbox-custom-properties.$ripple-size,
+        checkbox-theme.$ripple-size
+      ),
       $query: $query
     );
   }
@@ -251,10 +257,7 @@
 @mixin base_ {
   display: inline-block;
   position: relative;
-  flex: 0 0 checkbox-theme.$icon-size;
   box-sizing: content-box;
-  width: checkbox-theme.$icon-size;
-  height: checkbox-theme.$icon-size;
   line-height: 0;
   white-space: nowrap;
   cursor: pointer;
