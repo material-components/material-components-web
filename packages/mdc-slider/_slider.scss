@@ -319,6 +319,7 @@ $_track-inactive-height: 4px;
       left: 50%;
       position: absolute;
       transform: translateX(-50%);
+      visibility: hidden;
     }
   }
 
@@ -355,13 +356,21 @@ $_track-inactive-height: 4px;
     }
   }
 
-  .mdc-slider__thumb--with-indicator .mdc-slider__value-indicator {
-    @include feature-targeting.targets($feat-animation) {
-      transition: animation.enter(transform, 100ms);
+  .mdc-slider__thumb--with-indicator {
+    .mdc-slider__value-indicator-container {
+      @include feature-targeting.targets($feat-structure) {
+        visibility: visible;
+      }
     }
 
-    @include feature-targeting.targets($feat-structure) {
-      transform: scale(1);
+    .mdc-slider__value-indicator {
+      @include feature-targeting.targets($feat-animation) {
+        transition: animation.enter(transform, 100ms);
+      }
+
+      @include feature-targeting.targets($feat-structure) {
+        transform: scale(1);
+      }
     }
   }
 
