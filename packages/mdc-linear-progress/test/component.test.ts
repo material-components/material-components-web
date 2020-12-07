@@ -92,6 +92,10 @@ describe('MDCLinearProgress', () => {
         .toBeTruthy();
     expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUENOW))
         .toEqual(null);
+    expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUEMAX))
+        .toEqual(null);
+    expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUEMIN))
+        .toEqual(null);
   });
 
   it('set progress', () => {

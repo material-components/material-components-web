@@ -85,6 +85,10 @@ describe('MDCLinearProgressFoundation', () => {
            .toHaveBeenCalledWith('flex-basis', '100%');
        expect(mockAdapter.removeAttribute)
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW);
+       expect(mockAdapter.removeAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMAX);
+       expect(mockAdapter.removeAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMIN);
      });
 
   it('#setDeterminate false updates custom props', () => {
@@ -207,6 +211,10 @@ describe('MDCLinearProgressFoundation', () => {
            .toHaveBeenCalledWith('transform', 'scaleX(0.123)');
        expect(mockAdapter.setAttribute)
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0.123');
+       expect(mockAdapter.setAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMAX, '1');
+       expect(mockAdapter.setAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMIN, '0');
      });
 
   it('#calculateAndSetDimensions called on initialization with indeterminate class',
