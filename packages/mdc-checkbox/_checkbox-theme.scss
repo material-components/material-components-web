@@ -85,12 +85,16 @@ $light-theme: (
 );
 
 /// Sets theme to checkbox based on provided theme configuration.
-/// Only emits theme related styles. Theme styles should be included after
-/// `static-styles()`.
+/// Only emits theme related styles.
 /// @param {Map} $theme - Theme configuration to use for theming checkbox.
 @mixin theme($theme, $query: feature-targeting.all()) {
+  @include theme.validate-keys($light-theme, $theme);
+
   $ripple-color: map.get($theme, ripple-color);
   $ripple-opacity: map.get($theme, ripple-opacity);
+  @if $ripple-opacity == null {
+    $ripple-opacity: ();
+  }
   @if $ripple-color {
     @include ripple-color(
       $color: $ripple-color,
@@ -101,6 +105,9 @@ $light-theme: (
 
   $ripple-checked-color: map.get($theme, ripple-checked-color);
   $ripple-checked-opacity: map.get($theme, ripple-checked-opacity);
+  @if $ripple-checked-opacity == null {
+    $ripple-checked-opacity: ();
+  }
   @if $ripple-checked-color {
     @include focus-indicator-color(
       $color: $ripple-checked-color,
@@ -116,6 +123,12 @@ $light-theme: (
 
   $outline-color: map.get($theme, outline-color);
   $container-checked-color: map.get($theme, container-checked-color);
+  @if (
+    ($outline-color and not $container-checked-color) or
+      (not $outline-color and $container-checked-color)
+  ) {
+    @error 'Both `outline-color` and `container-checked-color` keys should be provided.';
+  }
   @if ($outline-color and $container-checked-color) {
     @include container-colors(
       $unmarked-stroke-color: $outline-color,
@@ -130,6 +143,12 @@ $light-theme: (
     $theme,
     container-checked-hover-color
   );
+  @if (
+    ($outline-hover-color and not $container-checked-hover-color) or
+      (not $outline-hover-color and $container-checked-hover-color)
+  ) {
+    @error 'Both `outline-hover-color` and `container-checked-hover-color` keys should be provided.';
+  }
   @if ($outline-hover-color and $container-checked-hover-color) {
     @include ripple-theme.states-selector() {
       @include container-colors(

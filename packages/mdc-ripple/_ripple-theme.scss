@@ -422,16 +422,6 @@ $pressed-light-ink-opacity: 0.32 !default;
 }
 
 @function states-opacity($color, $state) {
-  $opacity-map: states-opacities_($color);
-
-  @if not map.has-key($opacity-map, $state) {
-    @error "Invalid state: '#{$state}'. Choose one of: #{map.keys($opacity-map)}";
-  }
-
-  @return map.get($opacity-map, $state);
-}
-
-@function states-opacities_($color) {
   $color-value: theme-color.prop-value($color);
   $opacity-map: if(
     theme-color.tone($color-value) == 'light',
@@ -439,5 +429,9 @@ $pressed-light-ink-opacity: 0.32 !default;
     $dark-ink-opacities
   );
 
-  @return $opacity-map;
+  @if not map.has-key($opacity-map, $state) {
+    @error "Invalid state: '#{$state}'. Choose one of: #{map.keys($opacity-map)}";
+  }
+
+  @return map.get($opacity-map, $state);
 }
