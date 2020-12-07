@@ -159,8 +159,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       },
       isRTL: () => getComputedStyle(this.root).direction === 'rtl',
       anchorContainsElement: (element) => {
-        const hasAnchorElem = Boolean(this.anchorElem);
-        return hasAnchorElem && this.anchorElem!.contains(element);
+        return !!this.anchorElem?.contains(element);
       },
       registerEventHandler: (evt, handler) => {
         if (this.root instanceof HTMLElement) {
