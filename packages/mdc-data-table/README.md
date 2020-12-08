@@ -285,7 +285,9 @@ user change the rows per page (page size) and navigate between data table pages.
         <div class="mdc-select mdc-select--outlined mdc-select--no-label mdc-data-table__pagination-rows-per-page-select">
           <div class="mdc-select__anchor" role="button" aria-haspopup="listbox"
                 aria-labelledby="demo-pagination-select" tabindex="0">
-            <span id="demo-pagination-select" class="mdc-select__selected-text">10</span>
+            <span class="mdc-select__selected-text-container">
+              <span id="demo-pagination-select" class="mdc-select__selected-text">10</span>
+            </span>
             <span class="mdc-select__dropdown-icon">
               <svg
                   class="mdc-select__dropdown-icon-graphic"
