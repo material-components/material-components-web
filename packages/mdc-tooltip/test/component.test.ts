@@ -453,6 +453,36 @@ describe('MDCTooltip', () => {
          expect(anchorElem.getAttribute('aria-expanded')).toEqual('false');
        });
 
+    it('aria-expanded remains true on anchor when mouseleave anchor while tooltip is shown',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'click');
+         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+         emitEvent(anchorElem, 'mouseleave');
+
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+       });
+
+    it('aria-expanded remains true on anchor when mouseleave tooltip while tooltip is shown',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'click');
+         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+         emitEvent(tooltipElem, 'mouseleave');
+
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+       });
+
     it('aria-expanded becomes false on anchor when anchor blurs and non-tooltip element is focused',
        () => {
          // FocusEvent is not supported on IE11 so this test will not be run on
