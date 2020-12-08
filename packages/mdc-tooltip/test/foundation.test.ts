@@ -107,6 +107,37 @@ function expectHideToBeCalled(
       .toHaveBeenCalledWith('resize', jasmine.any(Function));
 }
 
+function expectHideNotToBeCalled(
+    foundation: MDCTooltipFoundation,
+    mockAdapter: jasmine.SpyObj<MDCTooltipAdapter>) {
+  if (foundation.getIsRich()) {
+    expect(mockAdapter.setAnchorAttribute)
+        .not.toHaveBeenCalledWith('aria-expanded', 'false');
+    if (!foundation.getIsPersistent()) {
+      expect(mockAdapter.deregisterEventHandler)
+          .not.toHaveBeenCalledWith('mouseenter', jasmine.any(Function));
+      expect(mockAdapter.deregisterEventHandler)
+          .not.toHaveBeenCalledWith('mouseleave', jasmine.any(Function));
+    }
+  }
+
+  expect(mockAdapter.setAttribute)
+      .not.toHaveBeenCalledWith('aria-hidden', 'true');
+  expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
+  expect(mockAdapter.addClass)
+      .not.toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
+  expect(mockAdapter.removeClass).not.toHaveBeenCalledWith(CssClasses.SHOWN);
+
+  expect(mockAdapter.deregisterDocumentEventHandler)
+      .not.toHaveBeenCalledWith('click', jasmine.any(Function));
+  expect(mockAdapter.deregisterDocumentEventHandler)
+      .not.toHaveBeenCalledWith('keydown', jasmine.any(Function));
+  expect(mockAdapter.deregisterWindowEventHandler)
+      .not.toHaveBeenCalledWith('scroll', jasmine.any(Function));
+  expect(mockAdapter.deregisterWindowEventHandler)
+      .not.toHaveBeenCalledWith('resize', jasmine.any(Function));
+}
+
 describe('MDCTooltipFoundation', () => {
   setUpMdcTestEnvironment();
 
@@ -499,11 +530,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleKeydown({type: 'keydown', key: 'Space'});
 
-       expect(mockAdapter.setAttribute).toHaveBeenCalledTimes(1);
-       expect(mockAdapter.addClass).toHaveBeenCalledTimes(1);
-       expect(mockAdapter.removeClass).toHaveBeenCalledTimes(1);
-       expect(mockAdapter.deregisterDocumentEventHandler)
-           .not.toHaveBeenCalled();
+       expectHideNotToBeCalled(foundation, mockAdapter);
      });
 
   it('#handleDocumentClick hides the tooltip immediately for plain tooltips',
@@ -604,21 +631,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleDocumentClick(mockClickEvent);
 
-       expect(mockAdapter.setAttribute)
-           .not.toHaveBeenCalledWith('aria-hidden', 'true');
-       expect(mockAdapter.setAnchorAttribute)
-           .not.toHaveBeenCalledWith('aria-expanded', 'false');
-       expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
-       expect(mockAdapter.addClass)
-           .not.toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
-       expect(mockAdapter.removeClass)
-           .not.toHaveBeenCalledWith(CssClasses.SHOWN);
-       expect(mockAdapter.removeClass)
-           .not.toHaveBeenCalledWith(CssClasses.SHOWING_TRANSITION);
-       expect(mockAdapter.deregisterDocumentEventHandler)
-           .not.toHaveBeenCalledWith('click', jasmine.any(Function));
-       expect(mockAdapter.deregisterDocumentEventHandler)
-           .not.toHaveBeenCalledWith('keydown', jasmine.any(Function));
+       expectHideNotToBeCalled(foundation, mockAdapter);
      });
 
 
@@ -686,23 +699,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleAnchorBlur(mockFocusEvent);
 
-       expect(mockAdapter.setAnchorAttribute)
-           .not.toHaveBeenCalledWith('aria-expanded', 'false');
-       expect(mockAdapter.setAttribute)
-           .not.toHaveBeenCalledWith('aria-hidden', 'true');
-       expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
-       expect(mockAdapter.addClass)
-           .not.toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
-       expect(mockAdapter.removeClass)
-           .not.toHaveBeenCalledWith(CssClasses.SHOWN);
-       expect(mockAdapter.deregisterDocumentEventHandler)
-           .not.toHaveBeenCalledWith('click', jasmine.any(Function));
-       expect(mockAdapter.deregisterDocumentEventHandler)
-           .not.toHaveBeenCalledWith('keydown', jasmine.any(Function));
-       expect(mockAdapter.deregisterWindowEventHandler)
-           .not.toHaveBeenCalledWith('scroll', jasmine.any(Function));
-       expect(mockAdapter.deregisterWindowEventHandler)
-           .not.toHaveBeenCalledWith('resize', jasmine.any(Function));
+       expectHideNotToBeCalled(foundation, mockAdapter);
      });
 
   it(`#handleAnchorBlur hides the tooltip immediately when focus changes to non-HTMLElement related target for persistent rich tooltips`,
@@ -751,23 +748,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleAnchorBlur(mockFocusEvent);
 
-       expect(mockAdapter.setAnchorAttribute)
-           .not.toHaveBeenCalledWith('aria-expanded', 'false');
-       expect(mockAdapter.setAttribute)
-           .not.toHaveBeenCalledWith('aria-hidden', 'true');
-       expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
-       expect(mockAdapter.addClass)
-           .not.toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
-       expect(mockAdapter.removeClass)
-           .not.toHaveBeenCalledWith(CssClasses.SHOWN);
-       expect(mockAdapter.deregisterDocumentEventHandler)
-           .not.toHaveBeenCalledWith('click', jasmine.any(Function));
-       expect(mockAdapter.deregisterDocumentEventHandler)
-           .not.toHaveBeenCalledWith('keydown', jasmine.any(Function));
-       expect(mockAdapter.deregisterWindowEventHandler)
-           .not.toHaveBeenCalledWith('scroll', jasmine.any(Function));
-       expect(mockAdapter.deregisterWindowEventHandler)
-           .not.toHaveBeenCalledWith('resize', jasmine.any(Function));
+       expectHideNotToBeCalled(foundation, mockAdapter);
      });
 
   it(`#handleDocumentClick hides the tooltip immediately`, () => {
