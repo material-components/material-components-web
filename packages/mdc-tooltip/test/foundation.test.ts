@@ -138,6 +138,19 @@ function expectHideNotToBeCalled(
       .not.toHaveBeenCalledWith('resize', jasmine.any(Function));
 }
 
+function setUpFoundationTestForRichTooltip(
+    tooltipFoundation: typeof MDCTooltipFoundation,
+    {isPersistent}: {isPersistent?: boolean} = {}) {
+  const {foundation, mockAdapter} = setUpFoundationTest(tooltipFoundation);
+
+  mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
+  mockAdapter.getAttribute.withArgs(attributes.PERSISTENT)
+      .and.returnValue(isPersistent ? 'true' : 'false');
+  foundation.init();
+
+  return {foundation, mockAdapter};
+}
+
 describe('MDCTooltipFoundation', () => {
   setUpMdcTestEnvironment();
 
@@ -177,29 +190,22 @@ describe('MDCTooltipFoundation', () => {
   });
 
   it('#getIsRich returns true for rich tooltip', () => {
-    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
-    mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-    foundation.init();
+    const {foundation} =
+        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
     expect(foundation.getIsRich()).toBeTrue();
   });
 
   it('#getIsPersistent returns false for default rich tooltip', () => {
-    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
-    mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-    mockAdapter.getAttribute.withArgs(attributes.PERSISTENT)
-        .and.returnValue(null);
-    foundation.init();
+    const {foundation} =
+        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
     expect(foundation.getIsPersistent()).toBeFalse();
   });
 
   it('#getIsPersistent returns true for persistent rich tooltip', () => {
-    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
-    mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-    mockAdapter.getAttribute.withArgs(attributes.PERSISTENT)
-        .and.returnValue('true');
-    foundation.init();
+    const {foundation} = setUpFoundationTestForRichTooltip(
+        MDCTooltipFoundation, {isPersistent: true});
 
     expect(foundation.getIsPersistent()).toBeTrue();
   });
@@ -215,9 +221,7 @@ describe('MDCTooltipFoundation', () => {
   it('#show sets aria-expanded="true" on anchor element for rich tooltip',
      () => {
        const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       foundation.init();
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
        foundation.show();
 
@@ -271,9 +275,7 @@ describe('MDCTooltipFoundation', () => {
   it('#show registers mouseenter event listener on the tooltip for rich tooltip',
      () => {
        const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       foundation.init();
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
        foundation.show();
 
@@ -284,9 +286,7 @@ describe('MDCTooltipFoundation', () => {
   it('#show registers mouseleave event listener on the tooltip for rich tooltip',
      () => {
        const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       foundation.init();
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
        foundation.show();
 
@@ -297,9 +297,7 @@ describe('MDCTooltipFoundation', () => {
   it('#hide deregisters mouseenter event listeners on the tooltip for rich tooltip',
      () => {
        const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       foundation.init();
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
        foundation.show();
        foundation.hide();
@@ -311,9 +309,7 @@ describe('MDCTooltipFoundation', () => {
   it('#hide deregisters mouseleave event listeners on the tooltip for rich tooltip',
      () => {
        const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       foundation.init();
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
        foundation.show();
        foundation.hide();
@@ -548,10 +544,8 @@ describe('MDCTooltipFoundation', () => {
   it('#handleDocumentClick hides the tooltip immediately for default rich tooltips',
      () => {
        const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
        const mockClickEvent = createMouseEvent('click');
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       foundation.init();
 
        foundation.show();
        foundation.handleDocumentClick(mockClickEvent);
@@ -561,12 +555,8 @@ describe('MDCTooltipFoundation', () => {
 
   it('#handleDocumentClick hides the tooltip immediately for persistent rich tooltips if there is no event target',
      () => {
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       mockAdapter.getAttribute.withArgs(attributes.PERSISTENT)
-           .and.returnValue('true');
-       foundation.init();
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
        const mockClickEvent = createMouseEvent('click');
 
        foundation.show();
@@ -577,12 +567,8 @@ describe('MDCTooltipFoundation', () => {
 
   it('#handleDocumentClick hides the tooltip immediately for persistent rich tooltips if event target is not HTMLElement',
      () => {
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       mockAdapter.getAttribute.withArgs(attributes.PERSISTENT)
-           .and.returnValue('true');
-       foundation.init();
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
        const mockClickEvent = {
          ...createMouseEvent('click'),
          target: 'not an HTMLElement'
@@ -596,13 +582,9 @@ describe('MDCTooltipFoundation', () => {
 
   it('#handleDocumentClick hides the tooltip immediately for persistent rich tooltips if event target is not within anchorElement',
      () => {
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       mockAdapter.getAttribute.withArgs(attributes.PERSISTENT)
-           .and.returnValue('true');
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
        mockAdapter.anchorContainsElement.and.returnValue(false);
-       foundation.init();
        const mockClickEvent = {
          ...createMouseEvent('click'),
          target: document.createElement('div')
@@ -616,13 +598,9 @@ describe('MDCTooltipFoundation', () => {
 
   it('#handleDocumentClick does not hide the tooltip for persistent rich tooltips if event target is within anchorElement',
      () => {
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       mockAdapter.getAttribute.withArgs(attributes.PERSISTENT)
-           .and.returnValue('true');
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
        mockAdapter.anchorContainsElement.and.returnValue(true);
-       foundation.init();
        const mockClickEvent = {
          ...createMouseEvent('click'),
          target: document.createElement('div')
@@ -662,9 +640,7 @@ describe('MDCTooltipFoundation', () => {
   it(`#handleAnchorBlur hides the tooltip immediately when focus changes to non-HTMLElement related target for default rich tooltips`,
      () => {
        const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       foundation.init();
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
        foundation.show();
        foundation.handleAnchorBlur({});
@@ -675,10 +651,8 @@ describe('MDCTooltipFoundation', () => {
   it(`#handleAnchorBlur hides the tooltip immediately when focus changes to related target not within tooltip for default rich tooltips`,
      () => {
        const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
        mockAdapter.tooltipContainsElement.and.returnValue(false);
-       foundation.init();
 
        const mockFocusEvent = {relatedTarget: document.createElement('div')};
        foundation.show();
@@ -690,10 +664,8 @@ describe('MDCTooltipFoundation', () => {
   it(`#handleAnchorBlur doesn't hide the tooltip when focus changes to related target not within tooltip for default rich tooltips`,
      () => {
        const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
        mockAdapter.tooltipContainsElement.and.returnValue(true);
-       foundation.init();
 
        const mockFocusEvent = {relatedTarget: document.createElement('div')};
        foundation.show();
@@ -704,12 +676,8 @@ describe('MDCTooltipFoundation', () => {
 
   it(`#handleAnchorBlur hides the tooltip immediately when focus changes to non-HTMLElement related target for persistent rich tooltips`,
      () => {
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       mockAdapter.getAttribute.withArgs(attributes.PERSISTENT)
-           .and.returnValue('true');
-       foundation.init();
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
 
        foundation.show();
        foundation.handleAnchorBlur({});
@@ -719,13 +687,9 @@ describe('MDCTooltipFoundation', () => {
 
   it(`#handleAnchorBlur hides the tooltip immediately when focus changes to related target not within tooltip for persistent rich tooltips`,
      () => {
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       mockAdapter.getAttribute.withArgs(attributes.PERSISTENT)
-           .and.returnValue('true');
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
        mockAdapter.tooltipContainsElement.and.returnValue(false);
-       foundation.init();
 
        const mockFocusEvent = {relatedTarget: document.createElement('div')};
        foundation.show();
@@ -736,13 +700,9 @@ describe('MDCTooltipFoundation', () => {
 
   it(`#handleAnchorBlur doesn't hide the tooltip when focus changes to related target within tooltip for persistent rich tooltips`,
      () => {
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       mockAdapter.getAttribute.withArgs(attributes.PERSISTENT)
-           .and.returnValue('true');
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
        mockAdapter.tooltipContainsElement.and.returnValue(true);
-       foundation.init();
 
        const mockFocusEvent = {relatedTarget: document.createElement('div')};
        foundation.show();
@@ -785,12 +745,10 @@ describe('MDCTooltipFoundation', () => {
        expectShowToBeCalled(foundation, mockAdapter);
      });
 
-  it(`#handleAnchorClick shows the tooltip immediately when tooltip is hidden`,
+  it(`#handleAnchorClick shows the tooltip immediately when tooltip is hidden for persistent rich tooltips`,
      () => {
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       foundation.init();
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
 
        expect(foundation.isShown).toBe(false);
        foundation.handleAnchorClick();
@@ -798,12 +756,10 @@ describe('MDCTooltipFoundation', () => {
        expectShowToBeCalled(foundation, mockAdapter);
      });
 
-  it(`#handleAnchorClick hides the tooltip immediately when tooltip is shown`,
+  it(`#handleAnchorClick hides the tooltip immediately when tooltip is shown for persistent rich tooltips`,
      () => {
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       foundation.init();
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
 
        foundation.show();
        foundation.handleAnchorClick();
@@ -813,9 +769,8 @@ describe('MDCTooltipFoundation', () => {
 
 
   it(`#handleRichTooltipMouseEnter shows the tooltip immediately`, () => {
-    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
-    mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-    foundation.init();
+    const {foundation, mockAdapter} =
+        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
     foundation.handleRichTooltipMouseEnter();
 
@@ -826,9 +781,7 @@ describe('MDCTooltipFoundation', () => {
          numbers.HIDE_DELAY_MS}ms delay`,
      () => {
        const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-       foundation.init();
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
        foundation.show();
        foundation.handleRichTooltipMouseLeave();
@@ -839,9 +792,8 @@ describe('MDCTooltipFoundation', () => {
      });
 
   it('#handleRichTooltipMouseLeave clears any pending showTimeout', () => {
-    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
-    mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-    foundation.init();
+    const {foundation, mockAdapter} =
+        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
     foundation.handleAnchorMouseEnter();
     expect(foundation.showTimeout).not.toEqual(null);
@@ -924,9 +876,8 @@ describe('MDCTooltipFoundation', () => {
   });
 
   it('#handleRichTooltipMouseEnter keeps tooltip visible', () => {
-    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
-    mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
-    foundation.init();
+    const {foundation, mockAdapter} =
+        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
     foundation.handleAnchorMouseLeave();
     expect(foundation.hideTimeout).not.toEqual(null);
