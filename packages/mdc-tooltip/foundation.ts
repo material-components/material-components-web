@@ -62,6 +62,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       setAnchorAttribute: () => null,
       isRTL: () => false,
       anchorContainsElement: () => false,
+      tooltipContainsElement: () => false,
       registerEventHandler: () => undefined,
       deregisterEventHandler: () => undefined,
       registerDocumentEventHandler: () => undefined,
@@ -171,7 +172,16 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }, this.hideDelayMs);
   }
 
-  handleAnchorBlur() {
+  handleAnchorBlur(evt: FocusEvent) {
+    if (this.isRich) {
+      const tooltipContainsRelatedTargetElement =
+          evt.relatedTarget instanceof HTMLElement &&
+          this.adapter.tooltipContainsElement(evt.relatedTarget);
+      // If focus changed to the tooltip element, don't hide the tooltip.
+      if (tooltipContainsRelatedTargetElement) {
+        return;
+      }
+    }
     // Hide tooltip immediately on focus change.
     this.hide();
   }

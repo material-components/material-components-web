@@ -104,6 +104,11 @@ export interface MDCTooltipAdapter {
   anchorContainsElement(element: HTMLElement): boolean;
 
   /**
+   * Checks if element is contained within the tooltip element.
+   */
+  tooltipContainsElement(element: HTMLElement): boolean;
+
+  /**
    * Registers an event listener to the root element.
    */
   registerEventHandler<K extends EventType>(
