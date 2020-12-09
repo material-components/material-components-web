@@ -18,6 +18,7 @@ jobs:
       - run: npm install
       - run: npm run lint
   conventional-commit-check:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: amannn/action-semantic-pull-request@v1.2.0
