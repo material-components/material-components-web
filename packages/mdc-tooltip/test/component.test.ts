@@ -458,6 +458,35 @@ describe('MDCTooltip', () => {
       document.body.removeChild(fixture);
     });
 
+    it('#initialSyncWithDOM registers click event handler on the anchor element',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         const component = MDCTooltip.attachTo(tooltipElem);
+         const foundation = component['foundation'];
+         spyOn(foundation, 'handleAnchorClick');
+
+         emitEvent(anchorElem, 'click');
+
+         expect(foundation.handleAnchorClick).toHaveBeenCalled();
+         component.destroy();
+       });
+
+    it('#destroy deregisters click event handler on the anchor element', () => {
+      const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+      const anchorElem =
+          fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+      const component = MDCTooltip.attachTo(tooltipElem);
+      const foundation = component['foundation'];
+      spyOn(foundation, 'handleAnchorClick');
+
+      component.destroy();
+      emitEvent(anchorElem, 'click');
+
+      expect(foundation.handleAnchorClick).not.toHaveBeenCalled();
+    });
+
     it('aria-expanded remains false on anchor when mouseenter anchor', () => {
       const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
       const anchorElem =
