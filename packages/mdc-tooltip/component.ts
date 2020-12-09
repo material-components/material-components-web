@@ -33,8 +33,8 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     return new MDCTooltip(root);
   }
 
-  private anchorElem!: HTMLElement|null;  // assigned in initialSyncWithDOM
-  private tooltipElem!: HTMLElement|null; // assigned in initialSyncWithDOM
+  private anchorElem!: HTMLElement;        // assigned in initialize
+  private tooltipElem!: HTMLElement|null;  // assigned in initialize
   private isTooltipRich!: boolean;        // assigned in initialSyncWithDOM
   private isTooltipPersistent!: boolean;  // assigned in initialSyncWithDOM
 
@@ -45,21 +45,24 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   private handleTransitionEnd!: SpecificEventListener<'transitionend'>;
   private handleClick!: SpecificEventListener<'click'>;
 
-  initialSyncWithDOM() {
+  initialize() {
     const tooltipId = this.root.getAttribute('id');
     if (!tooltipId) {
       throw new Error('MDCTooltip: Tooltip component must have an id.');
     }
 
-    this.anchorElem = document.querySelector<HTMLElement>(
-                          `[aria-describedby="${tooltipId}"]`) ||
+    const anchorElem = document.querySelector<HTMLElement>(
+                           `[aria-describedby="${tooltipId}"]`) ||
         document.querySelector<HTMLElement>(`[data-tooltip-id="${tooltipId}"]`);
     this.tooltipElem = document.querySelector<HTMLElement>(`#${tooltipId}`);
-    if (!this.anchorElem) {
+    if (!anchorElem) {
       throw new Error(
           'MDCTooltip: Tooltip component requires an anchor element annotated with [aria-describedby] or [data-tooltip-id] anchor element.');
     }
+    this.anchorElem = anchorElem;
+  }
 
+  initialSyncWithDOM() {
     this.isTooltipRich = this.foundation.getIsRich();
     this.isTooltipPersistent = this.foundation.getIsPersistent();
 
