@@ -96,6 +96,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       SpecificEventListener<'mouseenter'>;
   private readonly richTooltipMouseLeaveHandler:
       SpecificEventListener<'mouseleave'>;
+  private readonly richTooltipFocusOutHandler:
+      SpecificEventListener<'focusout'>;
   private readonly windowScrollHandler: SpecificEventListener<'scroll'>;
   private readonly windowResizeHandler: SpecificEventListener<'resize'>;
 
@@ -117,6 +119,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     this.richTooltipMouseLeaveHandler = () => {
       this.handleRichTooltipMouseLeave();
+    };
+
+    this.richTooltipFocusOutHandler = (evt) => {
+      this.handleRichTooltipFocusOut(evt);
     };
 
     this.windowScrollHandler = () => {
@@ -228,6 +234,19 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }, this.hideDelayMs);
   }
 
+  private handleRichTooltipFocusOut(evt: FocusEvent) {
+    const anchorOrTooltipContainsRelatedTargetElement =
+        evt.relatedTarget instanceof HTMLElement &&
+        (this.adapter.anchorContainsElement(evt.relatedTarget) ||
+         this.adapter.tooltipContainsElement(evt.relatedTarget));
+    // If the focus is still within the anchor or the tooltip, do not hide the
+    // tooltip.
+    if (anchorOrTooltipContainsRelatedTargetElement) {
+      return;
+    }
+    this.hide();
+  }
+
   /**
    * On window resize or scroll, check the anchor position and size and
    * repostion tooltip if necessary.
@@ -256,6 +275,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
     if (this.isRich) {
       this.adapter.setAnchorAttribute('aria-expanded', 'true');
+      this.adapter.registerEventHandler(
+          'focusout', this.richTooltipFocusOutHandler);
       if (!this.isPersistent) {
         this.adapter.registerEventHandler(
             'mouseenter', this.richTooltipMouseEnterHandler);
@@ -300,6 +321,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     this.isShown = false;
     this.adapter.setAttribute('aria-hidden', 'true');
+    this.adapter.deregisterEventHandler(
+        'focusout', this.richTooltipFocusOutHandler);
     if (this.isRich) {
       this.adapter.setAnchorAttribute('aria-expanded', 'false');
       if (!this.isPersistent) {
@@ -634,11 +657,15 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     this.adapter.removeClass(HIDE);
     this.adapter.removeClass(HIDE_TRANSITION);
 
-    if (this.isRich && !this.isPersistent) {
+    if (this.isRich) {
       this.adapter.deregisterEventHandler(
-          'mouseenter', this.richTooltipMouseEnterHandler);
-      this.adapter.deregisterEventHandler(
-          'mouseleave', this.richTooltipMouseLeaveHandler);
+          'focusout', this.richTooltipFocusOutHandler);
+      if (!this.isPersistent) {
+        this.adapter.deregisterEventHandler(
+            'mouseenter', this.richTooltipMouseEnterHandler);
+        this.adapter.deregisterEventHandler(
+            'mouseleave', this.richTooltipMouseLeaveHandler);
+      }
     }
 
     this.adapter.deregisterDocumentEventHandler(

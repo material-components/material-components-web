@@ -371,6 +371,70 @@ describe('MDCTooltip', () => {
 
          expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
        });
+
+    it('aria-expanded becomes false on anchor when rich tooltip focuses out and anchor does not receive focus',
+       () => {
+         // FocusEvent is not supported on IE11 so this test will not be run on
+         // it.
+         if (isIE()) {
+           return;
+         }
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'focus');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+         tooltipElem.dispatchEvent(new FocusEvent('focusout'));
+
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('false');
+       });
+
+    it('aria-expanded remains true on anchor when rich tooltip focuses out and anchor receives focus',
+       () => {
+         // FocusEvent is not supported on IE11 so this test will not be run on
+         // it.
+         if (isIE()) {
+           return;
+         }
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'focus');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+         tooltipElem.dispatchEvent(
+             new FocusEvent('focusout', {relatedTarget: anchorElem}));
+
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+       });
+
+    it('aria-expanded remains true on anchor when rich tooltip focuses out and element within tooltip receives focus',
+       () => {
+         // FocusEvent is not supported on IE11 so this test will not be run on
+         // it.
+         if (isIE()) {
+           return;
+         }
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const tooltipContent =
+             fixture.querySelector<HTMLElement>('.mdc-tooltip__content')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'focus');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+         tooltipElem.dispatchEvent(
+             new FocusEvent('focusout', {relatedTarget: tooltipContent}));
+
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+       });
   });
 
   describe('persistent rich tooltip tests', () => {
