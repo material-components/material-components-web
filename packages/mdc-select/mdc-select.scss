@@ -20,12 +20,4 @@
 // THE SOFTWARE.
 //
 
-@use "./helper-text/mdc-select-helper-text";
-@use "./icon/mdc-select-icon";
-@use "./mixins";
-@use "@material/floating-label/mdc-floating-label"; // COPYBARA_COMMENT_THIS_LINE
-@use "@material/ripple/common"; // COPYBARA_COMMENT_THIS_LINE
-@use "@material/line-ripple/mdc-line-ripple"; // COPYBARA_COMMENT_THIS_LINE
-@use "@material/notched-outline/mdc-notched-outline"; // COPYBARA_COMMENT_THIS_LINE
-
-@include mixins.core-styles;
+@forward './styles';

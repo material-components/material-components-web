@@ -4,5 +4,5 @@
     "testing/featuretargeting/**",
   ],
   "extends": "./tsconfig-base.json",
-  "types": ["node"]
+  "types": ["node", "resize-observer-browser"]
 }

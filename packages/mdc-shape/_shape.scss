@@ -1,0 +1,280 @@
+//
+// Copyright 2018 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/theme/custom-properties';
+@use '@material/theme/css';
+@use '@material/theme/theme';
+
+// Shape categories
+$small-component-radius: 4px !default;
+$medium-component-radius: 4px !default;
+$large-component-radius: 0 !default;
+
+// Shape keyword mapping
+$category-keywords: (
+  small: (
+    varname: --mdc-shape-small,
+    fallback: $small-component-radius,
+  ),
+  medium: (
+    varname: --mdc-shape-medium,
+    fallback: $medium-component-radius,
+  ),
+  large: (
+    varname: --mdc-shape-large,
+    fallback: $large-component-radius,
+  ),
+) !default;
+
+//
+// Flips the radius values based on RTL context.
+//
+// Examples:
+//
+// 1. mdc-shape-flip-radius((0, 4px, 4px, 0)) => 4px 0 0 4px
+// 2. mdc-shape-flip-radius((0, 8px)) => 8px 0
+//
+@function flip-radius($radius) {
+  @if meta.type-of($radius) == 'list' {
+    @if list.length($radius) > 4 {
+      @error "Invalid radius: '#{$radius}' is more than 4 values";
+    }
+  }
+
+  @if list.length($radius) == 4 {
+    @return list.nth($radius, 2) list.nth($radius, 1) list.nth($radius, 4)
+      list.nth($radius, 3);
+  } @else if list.length($radius) == 3 {
+    @return list.nth($radius, 2) list.nth($radius, 1) list.nth($radius, 2)
+      list.nth($radius, 3);
+  } @else if list.length($radius) == 2 {
+    @return list.nth($radius, 2) list.nth($radius, 1);
+  } @else {
+    @return $radius;
+  }
+}
+
+/// Returns the resolved radius value of a shape category - `large`, `medium`,
+/// or `small`. If $radius is not a category, this function returns the value
+/// itself if valid. Valid values are numbers or percentages.
+///
+/// If a percentage is provided, $component-height should be specified if the
+/// width of the component does not match the height.
+///
+/// $radius may be a single value or a list of 1 to 4 values.
+///
+/// Examples:
+///
+/// shape.resolve-radius(small) => (varname: --mdc-shape-small, fallback: 4px)
+/// shape.resolve-radius((varname: --custom-shape, fallback: small)) =>
+///     (varname: --custom-shape, fallback: (varname: --mdc-shape-small, fallback: 4px))
+/// shape.resolve-radius(8px) => 8px
+/// shape.resolve-radius(50%, $component-height: 36px) => 16px
+///
+/// @param {String | Number | Map | List} $radius - the radius shape category or
+///     radius value to resolve. May be a number, custom property Map, or a List
+///     of those values.
+/// @return {Number | Map | List} the resolved radius value. May be a number,
+///     a custom property Map, or a List if $radius was a List.
+@function resolve-radius($radius, $component-height: null) {
+  @if meta.type-of($radius) == 'list' {
+    // $radius is a List
+    @if list.length($radius) > 4 or list.length($radius) < 1 {
+      @error "mdc-shape: Invalid radius: #{$radius}. Radius must be between 1 and 4 values.";
+    }
+
+    $radii: ();
+    @each $corner in $radius {
+      $radii: list.append(
+        $radii,
+        resolve-radius($corner, $component-height: $component-height)
+      );
+    }
+
+    @return $radii;
+  }
+
+  @if map.has-key($category-keywords, $radius) {
+    // $radius is a category value
+    @return resolve-radius(
+      map.get($category-keywords, $radius),
+      $component-height: $component-height
+    );
+  } @else if custom-properties.is-custom-prop($radius) {
+    // $radius is a custom property Map
+    $fallback: resolve-radius(
+      custom-properties.get-fallback($radius, $shallow: true),
+      $component-height: $component-height
+    );
+    @return custom-properties.set-fallback($radius, $fallback);
+  } @else {
+    // $radius is a value
+    @if meta.type-of($radius) != 'number' {
+      @error "mdc-shape: Invalid radius: #{$radius}. Must be a number.";
+    }
+
+    $radius-unit: math.unit($radius);
+    $component-height-type: meta.type-of($component-height);
+    @if $radius-unit == '%' and $component-height-type == 'number' {
+      $radius: _resolve-radius-percentage($radius, $component-height);
+    }
+
+    @return $radius;
+  }
+}
+
+//
+// Accepts radius number or list of 2-4 radius values and returns 4 value list with
+// masked corners as mentioned in `$masked-corners`
+//
+// Example:
+//
+// 1. mdc-shape-mask-radius(2px 3px, 1 1 0 0) => 2px 3px 0 0
+// 2. mdc-shape-mask-radius(8px, 0 0 1 1) => 0 0 8px 8px
+// 3. mdc-shape-mask-radius(4px 4px 4px 4px, 0 1 1 0) => 0 4px 4px 0
+//
+@function mask-radius($radius, $masked-corners) {
+  @if meta.type-of($radius) == 'list' {
+    @if list.length($radius) > 4 {
+      @error "Invalid radius: '#{$radius}' is more than 4 values";
+    }
+  }
+
+  @if list.length($masked-corners) != 4 {
+    @error "Expected masked-corners of length 4 but got '#{list.length($masked-corners)}'.";
+  }
+
+  $radius: unpack-radius($radius);
+
+  @return if(list.nth($masked-corners, 1) == 1, list.nth($radius, 1), 0)
+    if(list.nth($masked-corners, 2) == 1, list.nth($radius, 2), 0)
+    if(list.nth($masked-corners, 3) == 1, list.nth($radius, 3), 0)
+    if(list.nth($masked-corners, 4) == 1, list.nth($radius, 4), 0);
+}
+
+/// Unpacks shorthand values for border-radius (i.e. lists of 1-3 values).
+/// If a list of 4 values is given, it is returned as-is.
+///
+/// Examples:
+///
+/// shape.unpack-radius(4px) => 4px 4px 4px 4px
+/// shape.unpack-radius(4px 2px) => 4px 2px 4px 2px
+/// shape.unpack-radius(4px 2px 2px) => 4px 2px 2px 2px
+/// shape.unpack-radius(4px 2px 0 2px) => 4px 2px 0 2px
+///
+/// @param {Number | Map | List} $radius - List of 1 to 4 radius numbers.
+/// @return {List} a List of 4 radius numbers.
+@function unpack-radius($radius) {
+  @return css.unpack-value($radius);
+}
+
+/// Resolve a percentage radius into a number.
+///
+/// @param {Number} $percentage - the radius percentage.
+/// @param {Number} $component-height - the height of the component.
+/// @return {Number} the resolved radius as a number.
+@function _resolve-radius-percentage($percentage, $component-height) {
+  // Converts the percentage to number without unit. Example: 50% => 50.
+  $percentage: $percentage / ($percentage * 0 + 1);
+  @return $component-height * ($percentage / 100);
+}
+
+@mixin radius(
+  $radius,
+  $rtl-reflexive: false,
+  $component-height: null,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    $has-multiple-corners: meta.type-of($radius) == 'list' and
+      list.length($radius) > 1;
+    // Even if $rtl-reflexive is true, only emit RTL styles if we can't easily tell that the given radius is symmetrical
+    $needs-flip: $rtl-reflexive and $has-multiple-corners;
+    $radius: resolve-radius($radius, $component-height: $component-height);
+    @if not $has-multiple-corners {
+      @include theme.property(border-radius, $radius);
+    } @else {
+      $gss: (
+        noflip: $needs-flip,
+      );
+      $radii: unpack-radius($radius);
+      @include theme.property(
+        border-top-left-radius,
+        list.nth($radii, 1),
+        $gss: $gss
+      );
+      @include theme.property(
+        border-top-right-radius,
+        list.nth($radii, 2),
+        $gss: $gss
+      );
+      @include theme.property(
+        border-bottom-right-radius,
+        list.nth($radii, 3),
+        $gss: $gss
+      );
+      @include theme.property(
+        border-bottom-left-radius,
+        list.nth($radii, 4),
+        $gss: $gss
+      );
+    }
+
+    @if ($needs-flip) {
+      @include rtl-mixins.rtl {
+        // If it needs to be flipped, it will always have multiple corners
+        $gss: (
+          noflip: true,
+        );
+        $radii: flip-radius(unpack-radius($radius));
+        @include theme.property(
+          border-top-left-radius,
+          list.nth($radii, 1),
+          $gss: $gss
+        );
+        @include theme.property(
+          border-top-right-radius,
+          list.nth($radii, 2),
+          $gss: $gss
+        );
+        @include theme.property(
+          border-bottom-right-radius,
+          list.nth($radii, 3),
+          $gss: $gss
+        );
+        @include theme.property(
+          border-bottom-left-radius,
+          list.nth($radii, 4),
+          $gss: $gss
+        );
+      }
+    }
+  }
+}

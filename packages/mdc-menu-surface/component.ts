@@ -74,7 +74,8 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
           'click', this.handleBodyClick, {capture: true});
     };
     this.deregisterBodyClickListener = () => {
-      document.body.removeEventListener('click', this.handleBodyClick);
+      document.body.removeEventListener(
+          'click', this.handleBodyClick, {capture: true});
     };
 
     this.listen('keydown', this.handleKeydown);

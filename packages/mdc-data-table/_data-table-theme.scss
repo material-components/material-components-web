@@ -27,54 +27,43 @@
 @use 'sass:list';
 @use 'sass:meta';
 @use '@material/animation/functions';
-@use '@material/checkbox/mixins' as checkbox-mixins;
+@use '@material/checkbox/checkbox-theme';
 @use '@material/density/functions' as density-functions;
+@use '@material/density/variables' as density-variables;
 @use '@material/elevation/mixins';
-@use '@material/feature-targeting/functions' as feature-targeting-functions;
-@use '@material/feature-targeting/mixins' as feature-targeting-mixins;
+@use '@material/feature-targeting/feature-targeting';
 @use '@material/icon-button/mixins' as icon-button-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
-@use '@material/shape/mixins' as shape-mixins;
+@use '@material/select/select-theme';
 @use '@material/shape/functions' as shape-functions;
-@use '@material/theme/mixins' as theme-mixins;
-@use '@material/theme/variables' as variables2; // for mdc-theme-prop-value.
-@use '@material/typography/mixins' as typography-mixins;
-@use '@material/theme/variables' as theme-variables;
-@use '@material/density/variables' as density-variables;
-@use '@material/select/mixins' as select-theme;
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/touch-target/touch-target';
+@use '@material/typography/typography';
 
 $fill-color: surface !default;
 $header-row-fill-color: surface !default;
 $row-fill-color: inherit !default;
-$selected-row-fill-color: rgba(
-  theme-variables.prop-value(primary),
-  0.04
-) !default;
+$selected-row-fill-color: rgba(theme-color.prop-value(primary), 0.04) !default;
 $checked-icon-color: primary !default;
-$divider-color: rgba(theme-variables.prop-value(on-surface), 0.12) !default;
+$divider-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 $divider-size: 1px !default;
-$row-hover-fill-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.04
-) !default;
-$checkbox-touch-dimension: 48px !default;
+$row-hover-fill-color: rgba(theme-color.prop-value(on-surface), 0.04) !default;
 
-$header-row-text-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.87
-) !default;
-$row-text-color: rgba(theme-variables.prop-value(on-surface), 0.87) !default;
+$header-row-text-color: rgba(theme-color.prop-value(on-surface), 0.87) !default;
+$row-text-color: rgba(theme-color.prop-value(on-surface), 0.87) !default;
 
-$sort-icon-color: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
+$sort-icon-color: rgba(theme-color.prop-value(on-surface), 0.6) !default;
 $sort-icon-active-color: rgba(
-  theme-variables.prop-value(on-surface),
+  theme-color.prop-value(on-surface),
   0.87
 ) !default;
 $sort-icon-density-scale: -5 !default;
 
 $shape-radius: medium !default;
 $stroke-size: 1px !default;
-$stroke-color: rgba(theme-variables.prop-value(on-surface), 0.12) !default;
+$stroke-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 
 $cell-height: 52px !default;
 $header-cell-height: get-header-cell-height($cell-height) !default;
@@ -100,8 +89,8 @@ $pagination-rows-per-page-select-height: 36px;
 /// Sets the color of sort icon button when it is in idle state.
 /// (icon showed on header cell focus)
 /// @param {String} $color - Color of sort icon button
-@mixin sort-icon-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin sort-icon-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-data-table__sort-icon-button {
     @include icon-button-mixins.ink-color($color, $query: $query);
@@ -110,67 +99,58 @@ $pagination-rows-per-page-select-height: 36px;
 
 /// Sets the color of sort icon button when it is activated (sorted).
 /// @param {String} $color - Color of sort icon button
-@mixin sort-icon-active-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin sort-icon-active-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-data-table__header-cell--sorted .mdc-data-table__sort-icon-button {
     @include icon-button-mixins.ink-color($color, $query: $query);
   }
 }
 
-@mixin fill-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
-    @include theme-mixins.prop('background-color', $color);
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop('background-color', $color);
   }
 }
 
-@mixin header-row-fill-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin header-row-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   // Set background color to cell instead of row to support sticky header.
   .mdc-data-table__header-cell {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop('background-color', $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop('background-color', $color);
     }
   }
 }
 
-@mixin row-fill-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin row-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-data-table__row {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop('background-color', $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop('background-color', $color);
     }
   }
 }
 
-@mixin selected-row-fill-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin selected-row-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-data-table__row--selected {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop('background-color', $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop('background-color', $color);
     }
   }
 }
 
-@mixin checked-icon-color($color, $query: feature-targeting-functions.all()) {
+@mixin checked-icon-color($color, $query: feature-targeting.all()) {
   .mdc-data-table__header-row-checkbox,
   .mdc-data-table__row-checkbox {
-    @include checkbox-mixins.focus-indicator-color($color, $query: $query);
-    @include checkbox-mixins.container-colors(
+    @include checkbox-theme.focus-indicator-color($color, $query: $query);
+    @include checkbox-theme.container-colors(
       $marked-stroke-color: $color,
       $marked-fill-color: $color,
       $query: $query
@@ -183,11 +163,11 @@ $pagination-rows-per-page-select-height: 36px;
 /// select). Use `stroke-color()` to set table border color.
 /// @param {Color} $color Divider color.
 ///
-@mixin divider-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin divider-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-data-table__header-cell:after {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       border-bottom-color: $color;
     }
   }
@@ -197,17 +177,17 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__row,
   .mdc-data-table__pagination {
-    @include feature-targeting-mixins.targets($feat-color) {
+    @include feature-targeting.targets($feat-color) {
       border-top-color: $color;
     }
   }
 }
 
-@mixin divider-size($size, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin divider-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__header-cell:after {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border-bottom-style: solid;
       border-bottom-width: $size;
     }
@@ -215,32 +195,29 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__row,
   .mdc-data-table__pagination {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border-top-width: $size;
       border-top-style: solid;
     }
   }
 }
 
-@mixin row-hover-fill-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin row-hover-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-data-table__row:not(.mdc-data-table__row--selected):hover {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop('background-color', $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop('background-color', $color);
     }
   }
 }
 
-@mixin header-row-text-color(
-  $color,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin header-row-text-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-data-table__header-cell {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop('color', $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop('color', $color);
     }
   }
 }
@@ -249,14 +226,14 @@ $pagination-rows-per-page-select-height: 36px;
 /// Sets row text color (including pagination row text).
 /// @param {Color} $color Row text color
 ///
-@mixin row-text-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin row-text-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-data-table__pagination-total,
   .mdc-data-table__pagination-rows-per-page-label,
   .mdc-data-table__cell {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop('color', $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop('color', $color);
     }
   }
 }
@@ -270,9 +247,9 @@ $pagination-rows-per-page-select-height: 36px;
 @mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
 
@@ -286,11 +263,11 @@ $pagination-rows-per-page-select-height: 36px;
   );
 
   .mdc-data-table__header-cell:first-child {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include theme-mixins.property(border-top-left-radius, $top-left-radius);
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-top-left-radius, $top-left-radius);
 
       @include rtl-mixins.rtl {
-        @include theme-mixins.property(
+        @include theme.property(
           border-top-right-radius,
           if($rtl-reflexive, $top-left-radius, $top-right-radius)
         );
@@ -301,14 +278,11 @@ $pagination-rows-per-page-select-height: 36px;
   }
 
   .mdc-data-table__header-cell:last-child {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      @include theme-mixins.property(
-        border-top-right-radius,
-        $top-right-radius
-      );
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-top-right-radius, $top-right-radius);
 
       @include rtl-mixins.rtl {
-        @include theme-mixins.property(
+        @include theme.property(
           border-top-left-radius,
           if($rtl-reflexive, $top-right-radius, $top-left-radius)
         );
@@ -319,78 +293,130 @@ $pagination-rows-per-page-select-height: 36px;
   }
 }
 
-@mixin stroke-size($size, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin stroke-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     border-width: $size;
     border-style: solid;
   }
 }
 
-@mixin stroke-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin stroke-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
-  @include feature-targeting-mixins.targets($feat-color) {
+  @include feature-targeting.targets($feat-color) {
     border-color: $color;
   }
 }
 
-@mixin header-cell-height($height, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin header-cell-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__header-cell {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: $height;
     }
   }
 }
 
-@mixin cell-height($height, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin cell-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__cell {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       height: $height;
     }
   }
 
   .mdc-data-table__pagination {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       min-height: $height;
     }
   }
 }
 
+///
+/// Sets cell padding including cell, header cell, row checkbox cell and header
+/// row checkbox cell.
+/// @param {Number} $leading-padding [$cell-leading-padding] Leading padding.
+/// @param {Number} $trailing-padding [$cell-trailing-padding] Trailing padding.
+/// @param {Number} $checkbox-touch-size [$checkbox-touch-size] Checkbox Touch
+///     Size. Use this to adjust row checkbox cell leading padding based on
+///     checkbox density scale.
+/// @param {Number} $row-checkbox-density-scale [null] Density scale of row
+///     checkbox. Use this to adjust alignment of row checkbox within a cell.
+///     Ignore if data table's density scale is 0.
+///     See `checkbox-theme.density()` mixin for supported density scales.
+///
 @mixin cell-padding(
   $leading-padding: $cell-leading-padding,
   $trailing-padding: $cell-trailing-padding,
-  $query: feature-targeting-functions.all()
+  $row-checkbox-density-scale: null,
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__cell,
   .mdc-data-table__header-cell {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       padding-right: $trailing-padding;
       padding-left: $leading-padding;
     }
   }
 
+  @include checkbox-cell-padding(
+    $leading-padding: $leading-padding,
+    $row-checkbox-density-scale: $row-checkbox-density-scale,
+    $query: $query
+  );
+}
+
+///
+/// Sets only row checkbox cell and header row checkbox cell leading padding.
+/// Use `cell-padding()` to set all cell's padding.
+/// @param {Number} $leading-padding [$cell-leading-padding] Leading padding.
+/// @param {Number} $checkbox-touch-size [$checkbox-touch-size] Checkbox Touch
+///     Size. Use this to adjust row checkbox cell leading padding based on
+///     checkbox density scale.
+/// @param {Number} $row-checkbox-density-scale [null] Density scale of row
+///     checkbox. Use this to adjust alignment of row checkbox within a cell.
+///     Ignore if data table's density scale is 0.
+///     See `checkbox-theme.density()` mixin for supported density scales.
+///
+@mixin checkbox-cell-padding(
+  $leading-padding: $cell-leading-padding,
+  $row-checkbox-density-scale: null,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
   .mdc-data-table__header-cell--checkbox,
   .mdc-data-table__cell--checkbox {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
+      // Distance from leading cell bound to checkbox's icon bound should be
+      // 16dp (`$leading-padding`). Calculate required padding excluding
+      // checkbox bounds.
+      $checkbox-icon-size: 24px;
+      $checkbox-touch-size: touch-target.$height;
+      @if $row-checkbox-density-scale and $row-checkbox-density-scale < 0 {
+        $checkbox-touch-size: checkbox-theme.get-ripple-size(
+          $row-checkbox-density-scale
+        );
+      }
+      $leading-padding: $leading-padding -
+        ($checkbox-touch-size - $checkbox-icon-size) / 2;
       @include rtl-mixins.reflexive-property(padding, $leading-padding, 0);
     }
   }
 }
 
-@mixin column-widths($width-list, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin column-widths($width-list, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @for $i from 1 through list.length($width-list) {
     .mdc-data-table__row > :nth-child(#{$i}) {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         width: list.nth($width-list, $i);
       }
     }
@@ -403,8 +429,16 @@ $pagination-rows-per-page-select-height: 36px;
 ///
 /// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
 ///     `-3`, `-2`, `-1`, `0`.
+/// @param {Number} $row-checkbox-density-scale [null] Density scale of row
+///     checkbox. Use this to set density of row checkbox and also
+///     automatically adjust the alignment of row checkbox within a cell.
+///     See `checkbox.density()` mixin for supported density scales.
 ///
-@mixin density($density-scale, $query: feature-targeting-functions.all()) {
+@mixin density(
+  $density-scale,
+  $row-checkbox-density-scale: null,
+  $query: feature-targeting.all()
+) {
   $height: density-functions.prop-value(
     $density-config: $density-config,
     $density-scale: $density-scale,
@@ -413,6 +447,19 @@ $pagination-rows-per-page-select-height: 36px;
 
   @include cell-height($height, $query: $query);
   @include header-cell-height(get-header-cell-height($height), $query: $query);
+
+  @if $row-checkbox-density-scale {
+    @include checkbox-cell-padding(
+      $leading-padding: $cell-leading-padding,
+      $row-checkbox-density-scale: $row-checkbox-density-scale,
+      $query: $query
+    );
+
+    .mdc-data-table__header-row-checkbox,
+    .mdc-data-table__row-checkbox {
+      @include checkbox-theme.density($row-checkbox-density-scale);
+    }
+  }
 }
 
 ///
@@ -420,11 +467,11 @@ $pagination-rows-per-page-select-height: 36px;
 /// scrollable.
 /// @param {Number} $height
 ///
-@mixin max-height($height, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin max-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-data-table__table-container {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       max-height: $height;
     }
   }

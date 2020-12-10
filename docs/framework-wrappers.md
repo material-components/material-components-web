@@ -6,7 +6,7 @@ section: docs
 path: /docs/framework-wrappers/
 -->
 
-## MDC Web on other frameworks
+# MDC Web on other frameworks
 
 Material Components for the web are architected to be adaptable to various major web frameworks. The following wrapper libraries are available:
 

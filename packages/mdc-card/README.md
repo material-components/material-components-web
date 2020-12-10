@@ -253,6 +253,21 @@ The following is an example incorporating all of the above elements:
 </div>
 ```
 
+#### Non-semantic content
+
+It can occasionally be useful to add non-semantic elements to a card. For instance, some implementations might do this to add an overlay layer.
+
+In this case, it's important to delineate between semantic (real) content and non-semantic content added by the implementation. To achieve this, simply wrap the semantic content in an `mdc-card__content` element. The non-semantic content can remain at the card's top level:
+
+```html
+<div class="mdc-card">
+  <div class="mdc-card__content">
+    <!-- ... semantic content ... -->
+  </div>
+  <!-- ... non-semantic content ... -->
+</div>
+```
+
 ## API
 
 ### CSS classes
@@ -273,6 +288,7 @@ CSS Class | Description
 `mdc-card__action` | Optional. An individual action button or icon.
 `mdc-card__action--button` | Optional. An action button with text.
 `mdc-card__action--icon` | Optional. An action icon with no text. We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts.
+`mdc-card__content` | Optional. Used to delineate the card's semantic contents from any non-semantic elements (e.g., those used to implement an overlay).
 
 ### Sass mixins
 

@@ -146,6 +146,7 @@ class CssBundleFactory {
     return this.createCustomCss({
       bundleName: 'main-css-a-la-carte',
       chunks: {
+        'mdc.banner': getAbsolutePath('/packages/mdc-banner/styles.scss'),
         'mdc.button': getAbsolutePath('/packages/mdc-button/mdc-button.scss'),
         'mdc.card': getAbsolutePath('/packages/mdc-card/mdc-card.scss'),
         'mdc.checkbox': getAbsolutePath('/packages/mdc-checkbox/mdc-checkbox.scss'),
@@ -171,7 +172,7 @@ class CssBundleFactory {
         'mdc.ripple': getAbsolutePath('/packages/mdc-ripple/mdc-ripple.scss'),
         'mdc.segmented-button': getAbsolutePath('/packages/mdc-segmented-button/styles.scss'),
         'mdc.select': getAbsolutePath('/packages/mdc-select/mdc-select.scss'),
-        'mdc.slider': getAbsolutePath('/packages/mdc-slider/mdc-slider.scss'),
+        'mdc.slider': getAbsolutePath('/packages/mdc-slider/styles.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
         'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
         'mdc.tab': getAbsolutePath('/packages/mdc-tab/mdc-tab.scss'),
@@ -218,7 +219,7 @@ class CssBundleFactory {
         options: {
           sourceMap: true,
           includePaths: [getAbsolutePath('/packages/material-components-web/node_modules')],
-          implementation: require('dart-sass'),
+          implementation: require('sass'),
           fiber: require('fibers'),
         },
       },

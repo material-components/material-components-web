@@ -1,0 +1,35 @@
+{
+  "name": "@material/banner",
+  "description": "The Material Components Web banner component.",
+  "version": "8.0.0",
+  "license": "MIT",
+  "keywords": [
+    "material components",
+    "material design",
+    "banner"
+  ],
+  "main": "dist/mdc.banner.js",
+  "module": "index.js",
+  "sideEffects": false,
+  "types": "dist/mdc.banner.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git",
+    "directory": "packages/mdc-banner"
+  },
+  "dependencies": {
+    "@material/base": "^8.0.0",
+    "@material/button": "^8.0.0",
+    "@material/dom": "^8.0.0",
+    "@material/feature-targeting": "^8.0.0",
+    "@material/ripple": "^8.0.0",
+    "@material/rtl": "^8.0.0",
+    "@material/shape": "^8.0.0",
+    "@material/theme": "^8.0.0",
+    "@material/typography": "^8.0.0",
+    "tslib": "^1.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

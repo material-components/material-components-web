@@ -21,25 +21,50 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
-  SHOWN: 'mdc-tooltip--shown',
-  SHOWING: 'mdc-tooltip--showing',
-  HIDE: 'mdc-tooltip--hide',
-};
+enum CssClasses {
+  RICH = 'mdc-tooltip--rich',
+  SHOWN = 'mdc-tooltip--shown',
+  SHOWING = 'mdc-tooltip--showing',
+  SHOWING_TRANSITION = 'mdc-tooltip--showing-transition',
+  HIDE = 'mdc-tooltip--hide',
+  HIDE_TRANSITION = 'mdc-tooltip--hide-transition',
+  MULTILINE_TOOLTIP = 'mdc-tooltip--multiline',
+}
 
 const numbers = {
   BOUNDED_ANCHOR_GAP: 4,
   UNBOUNDED_ANCHOR_GAP: 8,
-  MIN_VIEWPORT_TOOLTIP_THRESHOLD: 32,
+  MIN_VIEWPORT_TOOLTIP_THRESHOLD: 8,
   HIDE_DELAY_MS: 600,
+  SHOW_DELAY_MS: 500,
+  // LINT.IfChange(tooltip-dimensions)
+  MIN_HEIGHT: 24,
+  MAX_WIDTH: 200,
+  // LINT.ThenChange(_tooltip.scss:tooltip-dimensions)
+};
+
+const attributes = {
+  ARIA_EXPANDED: 'aria-expanded',
+  ARIA_HASPOPUP: 'aria-haspopup',
+  PERSISTENT: 'data-mdc-tooltip-persistent',
+};
+
+const events = {
+  HIDDEN: 'MDCTooltip:hidden',
 };
 
 /** Enum for possible tooltip positioning relative to its anchor element. */
-enum Position {
+enum XPosition {
   DETECTED = 0,
   START = 1,
   CENTER = 2,
   END = 3,
+}
+
+enum YPosition {
+  DETECTED = 0,
+  ABOVE = 1,
+  BELOW = 2,
 }
 
 /**
@@ -53,4 +78,12 @@ enum AnchorBoundaryType {
   UNBOUNDED = 1,
 }
 
-export {cssClasses, numbers, Position, AnchorBoundaryType};
+export {
+  CssClasses,
+  numbers,
+  attributes,
+  events,
+  XPosition,
+  AnchorBoundaryType,
+  YPosition
+};

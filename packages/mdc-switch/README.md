@@ -14,7 +14,7 @@ Switches toggle the state of a single setting on or off. They are the preferred 
 
 ![Switch hero example for menu options](images/switch-hero.png)
 
-## Contents
+**Contents**
 
 * [Using switches](#using-switches)
 * [Switches](#switches)

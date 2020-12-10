@@ -400,7 +400,8 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
     const isRtl = this.adapter.isRtl();
     const isFlipRtl = this.hasBit(this.anchorCorner, CornerBit.FLIP_RTL);
-    const hasRightBit = this.hasBit(this.anchorCorner, CornerBit.RIGHT);
+    const hasRightBit = this.hasBit(this.anchorCorner, CornerBit.RIGHT) ||
+        this.hasBit(corner, CornerBit.RIGHT);
 
     // Whether surface attached to right side of anchor element.
     let isAnchoredToRight = false;

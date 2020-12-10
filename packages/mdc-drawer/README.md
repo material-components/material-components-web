@@ -13,7 +13,7 @@ path: /catalog/drawers/
 
 ![Hero navigation drawer image](images/drawer-hero.png)
 
-## Contents
+**Contents**
 
 * [Using navigation drawers](#using-navigation-drawers)
 * [Types](#types)

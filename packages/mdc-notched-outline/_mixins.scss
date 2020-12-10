@@ -20,19 +20,21 @@
 // THE SOFTWARE.
 //
 
-@use "sass:list";
-@use "@material/theme/custom-properties";
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/shape/functions" as shape-functions;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/floating-label/mixins" as floating-label-mixins;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/rtl/mixins" as rtl-mixins;
-@use "./variables";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@use 'sass:list';
+@use '@material/theme/custom-properties';
+@use '@material/theme/theme';
+@use '@material/shape/functions' as shape-functions;
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/floating-label/mixins' as floating-label-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/mixins' as rtl-mixins;
+@use './variables';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-notched-outline {
     @include base_($query);
@@ -40,7 +42,7 @@
     &__leading,
     &__notch,
     &__trailing {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         box-sizing: border-box;
         height: 100%;
         border-top: variables.$border-width solid;
@@ -50,7 +52,7 @@
     }
 
     &__leading {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-property(
           border,
           variables.$border-width solid,
@@ -62,7 +64,7 @@
     }
 
     &__trailing {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-property(
           border,
           none,
@@ -74,7 +76,7 @@
     }
 
     &__notch {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         flex: 0 0 auto;
         width: auto;
         max-width: calc(100% - #{variables.$leading-width} * 2);
@@ -82,7 +84,7 @@
     }
 
     .mdc-floating-label {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         display: inline-block;
         position: relative;
         max-width: 100%;
@@ -90,13 +92,13 @@
     }
 
     .mdc-floating-label--float-above {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         text-overflow: clip;
       }
     }
 
     &--upgraded .mdc-floating-label--float-above {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         max-width: calc(100% / 0.75);
       }
     }
@@ -104,7 +106,7 @@
 
   .mdc-notched-outline--notched {
     .mdc-notched-outline__notch {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-box(padding, right, 8px);
 
         border-top: none;
@@ -114,32 +116,32 @@
 
   .mdc-notched-outline--no-label {
     .mdc-notched-outline__notch {
-      @include feature-targeting-mixins.targets($feat-structure) {
-        padding: 0;
+      @include feature-targeting.targets($feat-structure) {
+        display: none;
       }
     }
   }
 }
 
-@mixin color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-notched-outline__leading,
   .mdc-notched-outline__notch,
   .mdc-notched-outline__trailing {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(border-color, $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(border-color, $color);
     }
   }
 }
 
-@mixin stroke-width($width, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin stroke-width($width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-notched-outline__leading,
   .mdc-notched-outline__notch,
   .mdc-notched-outline__trailing {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       border-width: $width;
     }
   }
@@ -150,11 +152,11 @@
 /// Use this when floating label is aligned to center to prevent label jump on focus.
 /// @param {Number} $stroke-width Stroke width of notched outline that needs to be offset.
 ///
-@mixin notch-offset($stroke-width, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin notch-offset($stroke-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-notched-outline--notched .mdc-notched-outline__notch {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       padding-top: $stroke-width;
     }
   }
@@ -164,9 +166,9 @@
   $radius,
   $rtl-reflexive: false,
   $component-height: null,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
   // Resolve the radius relative to the notched outline component's height. The
   // component should provide its current height from its density. The resolved
   // radius allows percentage radii to be converted to pixels.
@@ -197,7 +199,7 @@
       $query: $query
     );
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @if ($top-left-radius-px > variables.$leading-width) {
         // If the radius is bigger than the default leading width, we need to
         // increase the leading width
@@ -224,7 +226,7 @@
   // Similar to above, adjust the max-width of the notch if we adjusted the
   // leading's width.
   .mdc-notched-outline__notch {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       @if ($top-left-radius-px > variables.$leading-width) {
         max-width: calc(100% - #{$top-left-radius-px} * 2);
         @if ($top-left-is-custom-prop) {
@@ -256,9 +258,9 @@
   $positionY,
   $positionX: 0%,
   $scale: 0.75,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include floating-label-mixins.float-position(
     $positionY + variables.$label-adjust,
@@ -268,7 +270,7 @@
   );
 
   .mdc-floating-label--float-above {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       font-size: ($scale * 1rem);
     }
   }
@@ -285,7 +287,7 @@
 
     // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         font-size: 1rem;
       }
     }
@@ -306,9 +308,9 @@
   $positionY,
   $positionX: 0,
   $scale: 0.75,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include floating-label-mixins.float-position(
     $positionY + variables.$label-adjust-absolute,
@@ -318,7 +320,7 @@
   );
 
   .mdc-floating-label--float-above {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       font-size: ($scale * 1rem);
     }
   }
@@ -335,7 +337,7 @@
 
     // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         font-size: 1rem;
       }
     }
@@ -347,11 +349,11 @@
 ///
 /// @param {Number} $max-width Max-width for the notch
 ///
-@mixin notch-max-width($max-width, $query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+@mixin notch-max-width($max-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   :not(.mdc-notched-outline--notched) .mdc-notched-outline__notch {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       max-width: $max-width;
     }
   }
@@ -361,9 +363,9 @@
 // Private
 //
 @mixin base_($query) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include feature-targeting-mixins.targets($feat-structure) {
+  @include feature-targeting.targets($feat-structure) {
     display: flex;
     position: absolute;
     top: 0;

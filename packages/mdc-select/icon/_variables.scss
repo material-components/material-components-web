@@ -19,6 +19,4 @@
 //  THE SOFTWARE.
 //
 
-$icon-size: 24px !default;
-$dense-icon-size: 20px !default;
-$icon-horizontal-margin: 12px !default;
+@forward "../select-icon-theme" show $icon-size, $dense-icon-size, $icon-horizontal-margin, $icon-color, $disabled-icon-color;

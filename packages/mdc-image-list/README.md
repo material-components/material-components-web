@@ -104,7 +104,7 @@ should be displayed:
 
 ```scss
 .my-masonry-image-list {
-  @include image-listmasonry-columns(5);
+  @include image-list.masonry-columns(5);
 }
 ```
 

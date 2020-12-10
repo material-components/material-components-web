@@ -1,0 +1,313 @@
+//
+// Copyright 2016 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use 'sass:map';
+@use '@material/density/functions' as density-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+@use '@material/density/variables' as density-variables;
+@use '@material/theme/theme-color';
+
+$ripple-size: 40px !default;
+$icon-size: 20px !default;
+$transition-duration: 120ms !default;
+$ripple-opacity: 0.14 !default;
+$baseline-theme-color: secondary !default;
+$unchecked-color: rgba(theme-color.prop-value(on-surface), 0.54) !default;
+$disabled-circle-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
+
+$minimum-size: 28px !default;
+$maximum-size: $ripple-size !default;
+$density-scale: density-variables.$default-scale !default;
+$density-config: (
+  size: (
+    minimum: $minimum-size,
+    default: $ripple-size,
+    maximum: $maximum-size,
+  ),
+) !default;
+
+///
+/// Sets the stroke color of an unchecked, enabled radio button.
+/// @param {Color} $color - The desired stroke color.
+///
+@mixin unchecked-stroke-color($color, $query: feature-targeting.all()) {
+  @include _if-enabled-unchecked {
+    @include _stroke-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the stroke color of a checked, enabled radio button.
+/// @param {Color} $color - The desired stroke color.
+///
+@mixin checked-stroke-color($color, $query: feature-targeting.all()) {
+  @include _if-enabled-checked {
+    @include _stroke-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the ink color of an enabled radio button.
+/// @param {Color} $color - The desired ink color.
+///
+@mixin ink-color($color, $query: feature-targeting.all()) {
+  @include _if-enabled {
+    @include _ink-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the stroke color of an unchecked, disabled radio button.
+/// @param {Color} $color - The desired stroke color.
+///
+@mixin disabled-unchecked-stroke-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  @include _if-disabled-unchecked {
+    @include _stroke-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the stroke color of a checked, disabled radio button.
+/// @param {Color} $color - The desired stroke color.
+///
+@mixin disabled-checked-stroke-color($color, $query: feature-targeting.all()) {
+  @include if-disabled-checked_ {
+    @include _stroke-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the ink color of a disabled radio button.
+/// @param {Color} $color - The desired ink color
+///
+@mixin disabled-ink-color($color, $query: feature-targeting.all()) {
+  @include if-disabled_ {
+    @include _ink-color($color, $query: $query);
+  }
+}
+
+@mixin focus-indicator-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-radio__background::before {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
+    }
+  }
+}
+
+///
+/// Sets radio touch target size which can be more than the ripple size. Param `$ripple-size` is required for custom
+/// ripple size.
+///
+/// @param {Number} $size Size of touch target (Native input) in `px`.
+/// @param {Number} $ripple-size Size of ripple in `px`. Required only for custom ripple size.
+///
+@mixin touch-target(
+  $size: $ripple-size,
+  $ripple-size: $ripple-size,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $offset: ($ripple-size - $size) / 2;
+
+  .mdc-radio__native-control {
+    @include feature-targeting.targets($feat-structure) {
+      top: $offset;
+      right: $offset;
+      left: $offset;
+      width: $size;
+      height: $size;
+    }
+  }
+}
+
+///
+/// Sets density scale for radio.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values
+///     `-3`, `-2`, `-1`, `0`.
+///
+@mixin density($density-scale, $query: feature-targeting.all()) {
+  $size: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: size,
+  );
+
+  @include ripple-size($size, $query: $query);
+  // Sets touch target size same as ripple size.
+  @include touch-target($size: $size, $ripple-size: $size, $query: $query);
+
+  @if $density-scale != 0 {
+    @include touch-target-reset_($query: $query);
+  }
+}
+
+///
+/// Sets radio ripple size.
+///
+/// @param {Number} $size - Ripple size in `px`.
+///
+@mixin ripple-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $padding: ($size - $icon-size) / 2;
+
+  @include feature-targeting.targets($feat-structure) {
+    padding: $padding;
+  }
+
+  .mdc-radio__background::before {
+    @include feature-targeting.targets($feat-structure) {
+      top: -$padding;
+      left: -$padding;
+      width: $size;
+      height: $size;
+    }
+  }
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin touch-target-reset_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    margin: 0;
+  }
+}
+
+///
+/// Helps select the radio background only when its native control is in the
+/// enabled state.
+/// @access private
+///
+@mixin _if-enabled {
+  .mdc-radio__native-control:enabled + {
+    @content;
+  }
+}
+
+///
+/// Helps select the radio background only when its native control is in the
+/// enabled & unchecked state.
+/// @access private
+///
+@mixin _if-enabled-unchecked {
+  .mdc-radio__native-control:enabled:not(:checked) + {
+    @content;
+  }
+}
+
+///
+/// Helps select the radio background only when its native control is in the
+/// enabled & checked state.
+/// @access private
+///
+@mixin _if-enabled-checked {
+  .mdc-radio__native-control:enabled:checked + {
+    @content;
+  }
+}
+
+///
+/// Helps select the radio background only when its native control is in the
+/// disabled state.
+/// @access private
+///
+@mixin if-disabled_ {
+  [aria-disabled='true'] .mdc-radio__native-control,
+  .mdc-radio__native-control:disabled {
+    + {
+      @content;
+    }
+  }
+}
+
+///
+/// Helps select the radio background only when its native control is in the
+/// disabled & unchecked state.
+/// @access private
+///
+@mixin _if-disabled-unchecked {
+  [aria-disabled='true'] .mdc-radio__native-control,
+  .mdc-radio__native-control:disabled {
+    &:not(:checked) + {
+      @content;
+    }
+  }
+}
+
+///
+/// Helps select the radio background only when its native control is in the
+/// disabled & checked state.
+/// @access private
+///
+@mixin if-disabled-checked_ {
+  [aria-disabled='true'] .mdc-radio__native-control,
+  .mdc-radio__native-control:disabled {
+    &:checked + {
+      @content;
+    }
+  }
+}
+
+///
+/// Sets the ink color for radio. This is wrapped in a mixin
+/// that qualifies state such as `_if-enabled`
+/// @access private
+///
+@mixin _ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-radio__background .mdc-radio__inner-circle {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(border-color, $color);
+    }
+  }
+}
+
+///
+/// Sets the stroke color for radio. This is wrapped in a mixin
+/// that qualifies state such as `_if-enabled`
+/// @access private
+///
+@mixin _stroke-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-radio__background .mdc-radio__outer-circle {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(border-color, $color);
+    }
+  }
+}

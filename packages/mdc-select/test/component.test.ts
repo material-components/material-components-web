@@ -89,6 +89,7 @@ class FakeHelperText {
 function getFixture() {
   return createFixture(`
     <div class="mdc-select mdc-select--with-leading-icon">
+      <input type="hidden" name="test-input">
       <div class="mdc-select__anchor">
         <span class="mdc-select__ripple"></span>
         <i class="mdc-select__icon material-icons">code</i>
@@ -97,7 +98,7 @@ function getFixture() {
           <svg
               width="10px"
               height="5px"
-              viewBox="7 10 10 5">
+              viewBox="7 10 10 5" focusable="false">
             <polygon
                 class="mdc-select__dropdown-icon-inactive"
                 stroke="none"
@@ -134,6 +135,7 @@ function getFixture() {
 function getOutlineFixture() {
   return createFixture(`
     <div class="mdc-select mdc-select--outlined mdc-select--with-leading-icon">
+      <input type="hidden" name="test-input">
       <div class="mdc-select__anchor">
         <i class="mdc-select__icon material-icons">code</i>
         <span class="mdc-select__selected-text"></span>
@@ -141,7 +143,7 @@ function getOutlineFixture() {
           <svg
               width="10px"
               height="5px"
-              viewBox="7 10 10 5">
+              viewBox="7 10 10 5" focusable="false">
             <polygon
                 class="mdc-select__dropdown-icon-inactive"
                 stroke="none"
@@ -300,8 +302,10 @@ describe('MDCSelect', () => {
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     component.disabled = true;
     checkNumTimesSpyCalledWithArgs(mockFoundation.setDisabled, [true], 1);
+    expect((component as any).hiddenInput.disabled).toBeTrue();
     component.disabled = false;
     checkNumTimesSpyCalledWithArgs(mockFoundation.setDisabled, [false], 1);
+    expect((component as any).hiddenInput.disabled).toBeFalse();
   });
 
   it('#get/set required true', () => {
@@ -494,10 +498,12 @@ describe('MDCSelect', () => {
         .toHaveBeenCalledTimes(1);
   });
 
-  it('#initialSyncWithDOM sets the selected index if an option has the selected class',
+  it('#initialSyncWithDOM sets the selected index and hidden input value' +
+         ' if an option has the selected class',
      () => {
        const fixture = createFixture(`
         <div class="mdc-select">
+          <input type="hidden" name="test-input">
           <div class="mdc-select__anchor">
             <span class="mdc-select__ripple"></span>
             <i class="mdc-select__icon material-icons">code</i>
@@ -506,7 +512,7 @@ describe('MDCSelect', () => {
               <svg
                   width="10px"
                   height="5px"
-                  viewBox="7 10 10 5">
+                  viewBox="7 10 10 5" focusable="false">
                 <polygon
                     class="mdc-select__dropdown-icon-inactive"
                     stroke="none"
@@ -540,7 +546,56 @@ describe('MDCSelect', () => {
       `);
        const component = new MDCSelect(fixture, /* foundation */ undefined);
        expect(component.selectedIndex).toEqual(1);
+       expect((component as any).hiddenInput.value).toEqual('orange');
      });
+
+  it('#initialSyncWithDOM sets value if hidden input has value', () => {
+    const fixture = createFixture(`
+      <div class="mdc-select mdc-select--with-leading-icon">
+        <input type="hidden" name="test-input" value="orange">
+        <div class="mdc-select__anchor">
+          <span class="mdc-select__ripple"></span>
+          <i class="mdc-select__icon material-icons">code</i>
+          <span class="mdc-select__selected-text"></span>
+          <span class="mdc-select__dropdown-icon">
+            <svg
+                width="10px"
+                height="5px"
+                viewBox="7 10 10 5" focusable="false">
+              <polygon
+                  class="mdc-select__dropdown-icon-inactive"
+                  stroke="none"
+                  fill-rule="evenodd"
+                  points="7 10 12 15 17 10">
+              </polygon>
+              <polygon
+                  class="mdc-select__dropdown-icon-active"
+                  stroke="none"
+                  fill-rule="evenodd"
+                  points="7 15 12 10 17 15">
+              </polygon>
+            </svg>
+          </span>
+          <span class="mdc-floating-label">Pick a Food Group</span>
+          <span class="mdc-line-ripple"></span>
+        </div>
+
+        <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+          <ul class="mdc-list">
+            <li class="mdc-list-item" data-value=""></li>
+            <li class="mdc-list-item" data-value="orange">
+              <span class="mdc-list-item__text">Orange</span>
+            </li>
+            <li class="mdc-list-item" data-value="apple">
+              <span class="mdc-list-item__text">Apple</span>
+            </li>
+          </ul>
+        </div>
+      </div>`);
+
+    const component = new MDCSelect(fixture, /* foundation */ undefined);
+    expect(component.selectedIndex).toEqual(1);
+  });
 
   it('#initialSyncWithDOM sets the selected index if empty option has the selected class',
      () => {
@@ -554,7 +609,7 @@ describe('MDCSelect', () => {
               <svg
                   width="10px"
                   height="5px"
-                  viewBox="7 10 10 5">
+                  viewBox="7 10 10 5" focusable="false">
                 <polygon
                     class="mdc-select__dropdown-icon-inactive"
                     stroke="none"
@@ -602,7 +657,7 @@ describe('MDCSelect', () => {
           <svg
               width="10px"
               height="5px"
-              viewBox="7 10 10 5">
+              viewBox="7 10 10 5" focusable="false">
             <polygon
                 class="mdc-select__dropdown-icon-inactive"
                 stroke="none"
@@ -755,7 +810,7 @@ describe('MDCSelect', () => {
           <svg
               width="10px"
               height="5px"
-              viewBox="7 10 10 5">
+              viewBox="7 10 10 5" focusable="false">
             <polygon
                 class="mdc-select__dropdown-icon-inactive"
                 stroke="none"
@@ -806,7 +861,7 @@ describe('MDCSelect', () => {
           <svg
               width="10px"
               height="5px"
-              viewBox="7 10 10 5">
+              viewBox="7 10 10 5" focusable="false">
             <polygon
                 class="mdc-select__dropdown-icon-inactive"
                 stroke="none"
@@ -890,6 +945,12 @@ describe('MDCSelect', () => {
            .adapter.notchOutline(LABEL_WIDTH);
        expect(outline.notch).not.toHaveBeenCalledWith(LABEL_WIDTH);
      });
+
+  it('adapter#notifyChange updates hidden input', () => {
+    const {component} = setupTest();
+    component['getDefaultFoundation']()['adapter'].notifyChange('foo');
+    expect((component as any).hiddenInput.value).toEqual('foo');
+  });
 
   it('adapter#closeOutline closes the outline if there is an outline', () => {
     const hasOutline = true;
@@ -1185,13 +1246,6 @@ describe('MDCSelect', () => {
     const {anchor, mockFoundation} = setupWithMockFoundation();
     emitEvent(anchor, 'blur');
     expect(mockFoundation.handleBlur).toHaveBeenCalledTimes(1);
-  });
-
-  it('#destroy removes the change handler', () => {
-    const {component, anchor, mockFoundation} = setupWithMockFoundation();
-    component.destroy();
-    emitEvent(anchor, 'change');
-    expect(mockFoundation.handleChange).not.toHaveBeenCalled();
   });
 
   it('#destroy removes the focus handler', () => {

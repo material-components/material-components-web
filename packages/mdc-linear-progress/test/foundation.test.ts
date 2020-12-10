@@ -21,12 +21,22 @@
  * THE SOFTWARE.
  */
 
-
+import {animationDimensionPercentages as percentages} from '../../mdc-linear-progress/constants';
 import {MDCLinearProgressFoundation} from '../../mdc-linear-progress/foundation';
 import {checkNumTimesSpyCalledWithArgs, verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 
 const {cssClasses, strings} = MDCLinearProgressFoundation;
+
+const multiplyPercentages = (multipler: number) => {
+  return {
+    PRIMARY_HALF: percentages.PRIMARY_HALF * multipler,
+    PRIMARY_FULL: percentages.PRIMARY_FULL * multipler,
+    SECONDARY_QUARTER: percentages.SECONDARY_QUARTER * multipler,
+    SECONDARY_HALF: percentages.SECONDARY_HALF * multipler,
+    SECONDARY_FULL: percentages.SECONDARY_FULL * multipler,
+  };
+};
 
 describe('MDCLinearProgressFoundation', () => {
   it('exports strings', () => {
@@ -40,13 +50,16 @@ describe('MDCLinearProgressFoundation', () => {
   it('defaultAdapter returns a complete adapter implementation', () => {
     verifyDefaultAdapter(MDCLinearProgressFoundation, [
       'addClass',
+      'attachResizeObserver',
       'forceLayout',
+      'getWidth',
       'hasClass',
       'removeAttribute',
       'removeClass',
       'setAttribute',
       'setBufferBarStyle',
       'setPrimaryBarStyle',
+      'setStyle',
     ]);
   });
 
@@ -72,7 +85,74 @@ describe('MDCLinearProgressFoundation', () => {
            .toHaveBeenCalledWith('flex-basis', '100%');
        expect(mockAdapter.removeAttribute)
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW);
+       expect(mockAdapter.removeAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMAX);
+       expect(mockAdapter.removeAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMIN);
      });
+
+  it('#setDeterminate false updates custom props', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getWidth.and.returnValue(100);
+    mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+    mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
+        .and.returnValue(false);
+    foundation.init();
+    expect(mockAdapter.attachResizeObserver).toHaveBeenCalled();
+    expect(mockAdapter.setStyle).toHaveBeenCalledTimes(0);
+    foundation.setDeterminate(false);
+    expect(foundation.getDeterminate()).toBe(false);
+
+    if (!window.ResizeObserver) {
+      expect(mockAdapter.setStyle).toHaveBeenCalledTimes(0);
+      return;
+    }
+
+    expect(mockAdapter.setStyle).toHaveBeenCalledTimes(10);
+    const testPercentages = multiplyPercentages(100);
+    expect(mockAdapter.setStyle.calls.allArgs()).toEqual([
+      [
+        '--mdc-linear-progress-primary-half',
+        `${testPercentages.PRIMARY_HALF}px`
+      ],
+      [
+        '--mdc-linear-progress-primary-half-neg',
+        `-${testPercentages.PRIMARY_HALF}px`
+      ],
+      [
+        '--mdc-linear-progress-primary-full',
+        `${testPercentages.PRIMARY_FULL}px`
+      ],
+      [
+        '--mdc-linear-progress-primary-full-neg',
+        `-${testPercentages.PRIMARY_FULL}px`
+      ],
+      [
+        '--mdc-linear-progress-secondary-quarter',
+        `${testPercentages.SECONDARY_QUARTER}px`
+      ],
+      [
+        '--mdc-linear-progress-secondary-quarter-neg',
+        `-${testPercentages.SECONDARY_QUARTER}px`
+      ],
+      [
+        '--mdc-linear-progress-secondary-half',
+        `${testPercentages.SECONDARY_HALF}px`
+      ],
+      [
+        '--mdc-linear-progress-secondary-half-neg',
+        `-${testPercentages.SECONDARY_HALF}px`
+      ],
+      [
+        '--mdc-linear-progress-secondary-full',
+        `${testPercentages.SECONDARY_FULL}px`
+      ],
+      [
+        '--mdc-linear-progress-secondary-full-neg',
+        `-${testPercentages.SECONDARY_FULL}px`
+      ]
+    ]);
+  });
 
   it('#setDeterminate updates state and removes class', () => {
     const {foundation, mockAdapter} = setupTest();
@@ -131,6 +211,59 @@ describe('MDCLinearProgressFoundation', () => {
            .toHaveBeenCalledWith('transform', 'scaleX(0.123)');
        expect(mockAdapter.setAttribute)
            .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0.123');
+       expect(mockAdapter.setAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMAX, '1');
+       expect(mockAdapter.setAttribute)
+           .toHaveBeenCalledWith(strings.ARIA_VALUEMIN, '0');
+     });
+
+  it('#calculateAndSetDimensions called on initialization with indeterminate class',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
+           .and.returnValue(true);
+       mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+       foundation.init();
+       expect(mockAdapter.setStyle)
+           .toHaveBeenCalledTimes(window.ResizeObserver ? 10 : 0);
+     });
+
+  it('#calculateAndSetDimensions called only on setDeterminate(false)', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
+        .and.returnValue(true);
+    mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+    foundation.init();
+    expect(mockAdapter.setStyle)
+        .toHaveBeenCalledTimes(window.ResizeObserver ? 10 : 0);
+
+    foundation.setDeterminate(true);
+
+    expect(mockAdapter.setStyle)
+        .toHaveBeenCalledTimes(window.ResizeObserver ? 10 : 0);
+
+    foundation.setDeterminate(false);
+
+    expect(mockAdapter.setStyle)
+        .toHaveBeenCalledTimes(window.ResizeObserver ? 20 : 0);
+  });
+
+  it('#calculateAndSetDimensions restarts animation with a forced reflow',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
+           .and.returnValue(true);
+       mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+       foundation.init();
+       if (window.ResizeObserver) {
+         expect(mockAdapter.addClass)
+             .toHaveBeenCalledWith(cssClasses.ANIMATION_READY_CLASS);
+         expect(mockAdapter.forceLayout).toHaveBeenCalledTimes(1);
+         expect(mockAdapter.removeClass)
+             .toHaveBeenCalledWith(cssClasses.ANIMATION_READY_CLASS);
+       } else {
+         expect(mockAdapter.setStyle).toHaveBeenCalledTimes(0);
+       }
      });
 
   it('#setProgress updates state, sets transform and aria-valuenow', () => {
@@ -223,6 +356,8 @@ describe('MDCLinearProgressFoundation', () => {
     foundation.open();
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);
+    expect(mockAdapter.removeClass)
+        .toHaveBeenCalledWith(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
   });
 
   it('#close adds class', () => {
@@ -232,5 +367,31 @@ describe('MDCLinearProgressFoundation', () => {
     foundation.init();
     foundation.close();
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);
+    mockAdapter.hasClass.withArgs(cssClasses.CLOSED_CLASS)
+        .and.returnValue(true);
+    foundation.handleTransitionEnd();
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
+  });
+
+  it('#destroy disconnects the resize observer', () => {
+    const {foundation, mockAdapter} = setupTest();
+    let disconnected = false;
+    const mockedObserver = {
+      disconnect: () => {
+        disconnected = true;
+      }
+    };
+    mockAdapter.attachResizeObserver.and.returnValue(mockedObserver);
+    foundation.init();
+    const withObserver =
+        foundation as unknown as {observer: typeof mockedObserver};
+
+    expect(withObserver.observer).toEqual(mockedObserver);
+    expect(disconnected).toBeFalse();
+
+    foundation.destroy();
+
+    expect(disconnected).toBeTrue();
   });
 });

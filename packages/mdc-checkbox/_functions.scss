@@ -20,21 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use "@material/animation/functions";
-@use "./variables";
-
-@function transition-enter(
-  $property,
-  $delay: 0ms,
-  $duration: variables.$transition-duration
-) {
-  @return functions.enter($property, $duration, $delay);
-}
-
-@function transition-exit(
-  $property,
-  $delay: 0ms,
-  $duration: variables.$transition-duration
-) {
-  @return functions.exit-temporary($property, $duration, $delay);
-}
+/// @deprecated Import '_checkbox.scss' instead.
+@forward './checkbox' show transition-enter, transition-exit;

@@ -26,7 +26,6 @@ Material Components for the web is the successor to [Material Design Lite](https
 - [Supported browsers](docs/supported-browsers.md)
 - [All Components](packages/)
 - [Changelog](./CHANGELOG.md)
-- [Roadmap](./ROADMAP.md)
 
 ## Quick start
 
@@ -39,8 +38,8 @@ Material Components for the web is the successor to [Material Design Lite](https
 <!-- Render textfield component -->
 <label class="mdc-text-field mdc-text-field--filled">
   <span class="mdc-text-field__ripple"></span>
-  <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
   <span class="mdc-floating-label" id="my-label">Label</span>
+  <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
   <span class="mdc-line-ripple"></span>
 </label>
 
@@ -102,7 +101,7 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 
 This'll initialize text field component on a single `.mdc-text-field` element.
 
-> Please see [quick start demo](https://glitch.com/~mdc-web-quick-start) on glitch for full example.
+> Please see [quick start demo](https://glitch.com/edit/#!/remix/new-web) on glitch for full example.
 
 ## Need help?
 

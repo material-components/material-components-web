@@ -26,6 +26,7 @@ Finally, MDC Web has a number of text colors, which are used for rendering text 
 secondary and background colors. These are specified as either dark or light, in order to provide sufficient contrast to
 what's behind them, and have
 [different levels of opacity depending on usage](https://material.io/go/design-theming#color-color-schemes):
+
 - Primary, used for most text.
 - Secondary, used for text which is lower in the visual hierarchy.
 - Hint, used for text hints (such as those in text fields and labels).

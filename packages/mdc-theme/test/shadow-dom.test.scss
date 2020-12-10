@@ -1,0 +1,19 @@
+@use 'sass:selector';
+@use '../shadow-dom';
+
+:host,
+:host(:not(.hidden)[outlined]),
+:host .my-class,
+gm-fab {
+  @include shadow-dom.host-aware(selector.append(&, '[lowered]')) {
+    color: blue;
+
+    @include shadow-dom.host-aware(selector.append(&, ':hover')) {
+      background-color: red;
+    }
+  }
+
+  @include shadow-dom.host-aware(selector.append(&, ':focus'), &) {
+    border-color: green;
+  }
+}

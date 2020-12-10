@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2020 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
 
 import {EventType, SpecificEventListener} from '@material/base/types';
 
+import {Thumb, TickMark} from './types';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -32,126 +34,251 @@ import {EventType, SpecificEventListener} from '@material/base/types';
  */
 export interface MDCSliderAdapter {
   /**
-   * Returns true if className exists for the slider Element
+   * @return Returns true if the slider root element has the given class.
    */
   hasClass(className: string): boolean;
 
   /**
-   * Adds a class to the slider Element
+   * Adds the given class to the slider root element.
    */
   addClass(className: string): void;
 
   /**
-   * Removes a class from the slider Element
+   * Removes the given class from the slider root element.
    */
   removeClass(className: string): void;
 
   /**
-   * Returns a string if attribute name exists on the slider Element, otherwise
-   * returns null
+   * @return Returns the given attribute value on the slider root element.
    */
-  getAttribute(name: string): string|null;
+  getAttribute(attribute: string): string|null;
 
   /**
-   * Sets attribute name on slider Element to value
+   * Adds the class to the given thumb element.
    */
-  setAttribute(name: string, value: string): void;
+  addThumbClass(className: string, thumb: Thumb): void;
 
   /**
-   * Removes attribute name from slider Element
+   * Removes the class from the given thumb element.
    */
-  removeAttribute(name: string): void;
+  removeThumbClass(className: string, thumb: Thumb): void;
 
   /**
-   * Returns the bounding client rect for the slider Element
+   * - If thumb is `Thumb.START`, returns the value property on the start input
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, returns the value property on the end input (or
+   *   only input for single point slider).
    */
-  computeBoundingRect(): ClientRect;
+  getInputValue(thumb: Thumb): string;
 
   /**
-   * Returns the tab index of the slider Element
+   * - If thumb is `Thumb.START`, sets the value property on the start input
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, sets the value property on the end input (or
+   *   only input for single point slider).
    */
-  getTabIndex(): number;
+  setInputValue(value: string, thumb: Thumb): void;
 
   /**
-   * Registers an event handler on the root element for a given event.
+   * - If thumb is `Thumb.START`, returns the attribute value on the start input
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, returns the attribute value on the end input (or
+   *   only input for single point slider).
    */
-  registerInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+  getInputAttribute(attribute: string, thumb: Thumb): string|null;
 
   /**
-   * Deregisters an event handler on the root element for a given event.
+   * - If thumb is `Thumb.START`, sets the attribute on the start input
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, sets the attribute on the end input (or
+   *   only input for single point slider).
    */
-  deregisterInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+  setInputAttribute(attribute: string, value: string, thumb: Thumb): void;
 
   /**
-   * Registers an event handler on the thumb container element for a given
-   * event.
+   * - If thumb is `Thumb.START`, removes the attribute on the start input
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, removes the attribute on the end input (or
+   *   only input for single point slider).
    */
-  registerThumbContainerInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+  removeInputAttribute(attribute: string, thumb: Thumb): void;
 
   /**
-   * Deregisters an event handler on the thumb container element for a given
-   * event.
+   * - If thumb is `Thumb.START`, focuses start input (range slider variant).
+   * - If thumb is `Thumb.END`, focuses end input (or only input for single
+   *   point slider).
    */
-  deregisterThumbContainerInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+  focusInput(thumb: Thumb): void;
 
   /**
-   * Registers an event handler on the body for a given event.
+   * @return Returns true if the given input is focused.
    */
-  registerBodyInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+  isInputFocused(thumb: Thumb): boolean;
 
   /**
-   * Deregisters an event handler on the body for a given event.
+   * @return Returns the width of the given thumb knob.
    */
-  deregisterBodyInteractionHandler<K extends EventType>(
-      evtType: K, handler: SpecificEventListener<K>): void;
+  getThumbKnobWidth(thumb: Thumb): number;
 
   /**
-   * Registers an event handler for the window resize event
+   * @return Returns the bounding client rect of the given thumb.
    */
-  registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
+  getThumbBoundingClientRect(thumb: Thumb): ClientRect;
 
   /**
-   * Deregisters an event handler for the window resize event
+   * @return Returns the bounding client rect for the slider root element.
    */
-  deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
+  getBoundingClientRect(): ClientRect;
 
   /**
-   * Emits a custom event MDCSlider:input from the root
-   */
-  notifyInput(): void;
-
-  /**
-   * Emits a custom event MDCSlider:change from the root
-   */
-  notifyChange(): void;
-
-  /**
-   * Sets a style property of the thumb container element to the passed value
-   */
-  setThumbContainerStyleProperty(propertyName: string, value: string): void;
-
-  /**
-   * Sets a style property of the track element to the passed value
-   */
-  setTrackStyleProperty(propertyName: string, value: string): void;
-
-  /**
-   * Sets the inner text of the pin marker to the passed value
-   */
-  setMarkerValue(value: number): void;
-
-  /**
-   * Send track markers numbers to setup mark container element
-   */
-  setTrackMarkers(step: number, max: number, min: number): void;
-
-  /**
-   * Returns true if the root element is RTL, otherwise false
+   * @return Returns true if the root element is RTL, otherwise false
    */
   isRTL(): boolean;
+
+  /**
+   * Sets a style property of the thumb element to the passed value.
+   * - If thumb is `Thumb.START`, sets style on the start thumb (for
+   *   range slider variant).
+   * - If thumb is `Thumb.END`, sets style on the end thumb (or only thumb
+   *   for single point slider).
+   */
+  setThumbStyleProperty(propertyName: string, value: string, thumb: Thumb):
+      void;
+
+  /**
+   * Removes the given style property from the thumb element.
+   * - If thumb is `Thumb.START`, removes style from the start thumb (for
+   *   range slider variant).
+   * - If thumb is `Thumb.END`, removes style from the end thumb (or only thumb
+   *   for single point slider).
+   */
+  removeThumbStyleProperty(propertyName: string, thumb: Thumb): void;
+
+  /**
+   * Sets a style property of the active track element to the passed value.
+   */
+  setTrackActiveStyleProperty(propertyName: string, value: string): void;
+
+  /**
+   * Removes the given style property from the active track element.
+   */
+  removeTrackActiveStyleProperty(propertyName: string): void;
+
+  /**
+   * Sets value indicator text based on the given value.
+   * - If thumb is `Thumb.START`, updates value indicator on start thumb
+   *   (for range slider variant).
+   * - If thumb is `Thumb.END`, updates value indicator on end thumb (or
+   *   only thumb for single point slider).
+   */
+  setValueIndicatorText(value: number, thumb: Thumb): void;
+
+  /**
+   * Returns a function that maps the slider value to the value of the
+   * `aria-valuetext` attribute on the thumb element. If null, the
+   * `aria-valuetext` attribute is unchanged when the value changes.
+   */
+  getValueToAriaValueTextFn(): ((value: number) => string)|null;
+
+  /**
+   * Updates tick marks container element with tick mark elements and their
+   * active/inactive classes, based on the given mappings:
+   * - TickMark.ACTIVE => `cssClasses.TICK_MARK_ACTIVE`
+   * - TickMark.INACTIVE => `cssClasses.TICK_MARK_INACTIVE`
+   */
+  updateTickMarks(tickMarks: TickMark[]): void;
+
+  /**
+   * Sets pointer capture on the slider root.
+   * https://developer.mozilla.org/en-US/docs/Web/API/Element/setPointerCapture
+   */
+  setPointerCapture(pointerId: number): void;
+
+  /**
+   * Emits a `change` event from the slider root, indicating that the value
+   * has been changed and committed on the given thumb, from a user event.
+   * Mirrors the native `change` event:
+   * https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/change_event
+   */
+  emitChangeEvent(value: number, thumb: Thumb): void;
+
+  /**
+   * Emits an `input` event from the slider root, indicating that the value
+   * has been changed on the given thumb, from a user event.
+   * Mirrors the native `input` event:
+   * https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event
+   */
+  emitInputEvent(value: number, thumb: Thumb): void;
+
+  /**
+   * Emits an event on drag start, containing the current value on the
+   * thumb being dragged.
+   */
+  emitDragStartEvent(value: number, thumb: Thumb): void;
+
+  /**
+   * Emits an event on drag end, containing the final value on the
+   * thumb that was dragged.
+   */
+  emitDragEndEvent(value: number, thumb: Thumb): void;
+
+  /**
+   * Registers an event listener on the root element.
+   */
+  registerEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener on the root element.
+   */
+  deregisterEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Registers an event listener on the given thumb element.
+   */
+  registerThumbEventHandler<K extends EventType>(
+      thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener on the given thumb element.
+   */
+  deregisterThumbEventHandler<K extends EventType>(
+      thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Registers an event listener on the given input element.
+   */
+  registerInputEventHandler<K extends EventType>(
+      thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener on the given input element.
+   */
+  deregisterInputEventHandler<K extends EventType>(
+      thumb: Thumb, evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Registers an event listener on the body element.
+   */
+  registerBodyEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener on the body element.
+   */
+  deregisterBodyEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Registers an event listener on the window.
+   */
+  registerWindowEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener on the window.
+   */
+  deregisterWindowEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
 }

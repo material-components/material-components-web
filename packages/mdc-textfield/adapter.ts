@@ -84,6 +84,16 @@ export interface MDCTextFieldInputAdapter {
   getNativeInput(): MDCTextFieldNativeInputElement | null;
 
   /**
+   * Sets the specified attribute to the specified value on the input element.
+   */
+  setInputAttr(attr: string, value: string): void;
+
+  /**
+   * Removes the specified attribute from the input element.
+   */
+  removeInputAttr(attr: string): void;
+
+  /**
    * @return true if the textfield is focused. We achieve this via `document.activeElement === this.root`.
    */
   isFocused(): boolean;

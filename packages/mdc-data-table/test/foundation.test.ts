@@ -124,6 +124,24 @@ describe('MDCDataTableFoundation', () => {
        expect(mockAdapter.setHeaderRowCheckboxChecked).toHaveBeenCalledTimes(1);
      });
 
+  it('#layout should set header row checkbox unchecked when there are no rows',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+
+       mockAdapter.isRowsSelectable.and.returnValue(true);
+       mockAdapter.getSelectedRowCount.and.returnValue(0);
+       mockAdapter.getRowCount.and.returnValue(0);
+
+       foundation.layout();
+       expect(mockAdapter.setHeaderRowCheckboxIndeterminate)
+           .toHaveBeenCalledWith(false);
+       expect(mockAdapter.setHeaderRowCheckboxIndeterminate)
+           .toHaveBeenCalledTimes(1);
+       expect(mockAdapter.setHeaderRowCheckboxChecked)
+           .toHaveBeenCalledWith(false);
+       expect(mockAdapter.setHeaderRowCheckboxChecked).toHaveBeenCalledTimes(1);
+     });
+
   it('#layout should set header row checkbox indeterminate when some of the checkboxes are checked',
      () => {
        const {foundation, mockAdapter} = setupTest();

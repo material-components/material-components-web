@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-$height: 48px !default;
-$width: $height !default;
+/// @deprecated Import '_touch-target.scss' file instead
+@forward './touch-target' show $height, $width;

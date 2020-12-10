@@ -44,6 +44,7 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
       removeClass: () => undefined,
       hasClass: () => false,
       setAttr: () => undefined,
+      getAttr: () => null,
       removeAttr: () => undefined,
       setContent: () => undefined,
     };
@@ -52,6 +53,20 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
 
   constructor(adapter?: Partial<MDCSelectHelperTextAdapter>) {
     super({...MDCSelectHelperTextFoundation.defaultAdapter, ...adapter});
+  }
+
+  /**
+   * @return The ID of the helper text, or null if none is set.
+   */
+  getId(): string|null {
+    return this.adapter.getAttr('id');
+  }
+
+  /**
+   * @return Whether the helper text is currently visible.
+   */
+  isVisible(): boolean {
+    return this.adapter.getAttr(strings.ARIA_HIDDEN) !== 'true';
   }
 
   /**
@@ -92,13 +107,6 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
   }
 
   /**
-   * Makes the helper text visible to screen readers.
-   */
-  showToScreenReader() {
-    this.adapter.removeAttr(strings.ARIA_HIDDEN);
-  }
-
-  /**
    * When acting as a validation message, shows/hides the helper text and
    * triggers alerts as necessary based on the select's validity.
    */
@@ -134,6 +142,13 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
     // Hide everything.
     this.adapter.removeAttr(strings.ROLE);
     this.hide();
+  }
+
+  /**
+   * Makes the helper text visible to screen readers.
+   */
+  private showToScreenReader() {
+    this.adapter.removeAttr(strings.ARIA_HIDDEN);
   }
 
   /**

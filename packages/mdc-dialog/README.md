@@ -72,7 +72,7 @@ indication that child components are being instantiated before the dialog has fi
 
 ### Making dialogs accessible
 
-##### Using `aria-hidden` as a fallback for `aria-modal`
+#### Using `aria-hidden` as a fallback for `aria-modal`
 
 `aria-modal` is part of the ARIA 1.1 specification, and indicates to screen readers that they should confine themselves to a single element. We recommend adding `aria-modal="true"` to the root element of its DOM structure.
 

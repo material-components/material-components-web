@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "@material/density/variables" as density-variables;
-@use "@material/theme/variables" as theme-variables; // for mdc-theme-prop-value
+@use '@material/density/variables' as density-variables;
+@use '@material/theme/theme-color';
 
 $height: 36px !default;
 $horizontal-padding: 8px !default;
@@ -39,14 +39,11 @@ $density-config: (
 ) !default;
 
 $outlined-border-width: 1px !default;
-$outline-color: rgba(theme-variables.prop-value(on-surface), 0.12) !default;
+$outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 $shape-radius: small !default;
 
 $disabled-container-color: rgba(
-  theme-variables.prop-value(on-surface),
+  theme-color.prop-value(on-surface),
   0.12
 ) !default;
-$disabled-ink-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.38
-) !default;
+$disabled-ink-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;

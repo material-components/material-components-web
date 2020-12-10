@@ -20,47 +20,5 @@
 // THE SOFTWARE.
 //
 
-// MDC Ripple keyframes are split into their own file so that _mixins.scss can rely on them.
-
-@use "@material/animation/variables";
-@use "./variables" as variables2;
-
-@mixin keyframes_ {
-  @keyframes mdc-ripple-fg-radius-in {
-    from {
-      animation-timing-function: variables.$standard-curve-timing-function;
-      // NOTE: For these keyframes, we do not need custom property fallbacks because they are only
-      // used in conjunction with `.mdc-ripple-upgraded`. Since MDCRippleFoundation checks to ensure
-      // that custom properties are supported within the browser before adding this class, we can
-      // safely use them without a fallback.
-      transform: translate(var(--mdc-ripple-fg-translate-start, 0)) scale(1);
-    }
-
-    to {
-      transform: translate(var(--mdc-ripple-fg-translate-end, 0))
-        scale(var(--mdc-ripple-fg-scale, 1));
-    }
-  }
-
-  @keyframes mdc-ripple-fg-opacity-in {
-    from {
-      animation-timing-function: linear;
-      opacity: 0;
-    }
-
-    to {
-      opacity: var(--mdc-ripple-fg-opacity, 0);
-    }
-  }
-
-  @keyframes mdc-ripple-fg-opacity-out {
-    from {
-      animation-timing-function: linear;
-      opacity: var(--mdc-ripple-fg-opacity, 0);
-    }
-
-    to {
-      opacity: 0;
-    }
-  }
-}
+/// @deprecated Import '_ripple.scss' instead.
+@forward './ripple' show keyframes_;

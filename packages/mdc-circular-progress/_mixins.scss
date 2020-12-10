@@ -20,20 +20,23 @@
 // THE SOFTWARE.
 //
 
-@use "@material/animation/functions" as animation-functions;
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/theme/mixins" as theme-mixins;
-@use "./variables";
-@use "./keyframes";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@use '@material/animation/functions' as animation-functions;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+@use './variables';
+@use './keyframes';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include color(variables.$color, $query);
+  @include track-color(variables.$track-color, $query: $query);
 
-  @include feature-targeting-mixins.targets($feat-animation) {
+  @include feature-targeting.targets($feat-animation) {
     @include keyframes.container-rotate-keyframes_;
     @include keyframes.spinner-layer-rotate-keyframes_;
     @include keyframes.color-1-fade-in-out-keyframes_;
@@ -45,14 +48,14 @@
   }
 
   .mdc-circular-progress {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      display: inline-block;
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-flex;
       position: relative;
       /* @noflip */
       direction: ltr;
     }
 
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: animation-functions.exit-temporary(opacity, 250ms);
     }
   }
@@ -61,7 +64,7 @@
   .mdc-circular-progress__indeterminate-circle-graphic,
   .mdc-circular-progress__indeterminate-container,
   .mdc-circular-progress__spinner-layer {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: absolute;
       width: 100%;
       height: 100%;
@@ -69,32 +72,37 @@
   }
 
   .mdc-circular-progress__determinate-container {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       transform: rotate(-90deg);
     }
   }
 
   .mdc-circular-progress__indeterminate-container {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
+      // Font size, letter spacing and nowrap are required in order to ignore
+      // whitespaces between HTML elements.
+      font-size: 0;
+      letter-spacing: 0;
+      white-space: nowrap;
       opacity: 0;
     }
   }
 
   .mdc-circular-progress__determinate-circle-graphic,
   .mdc-circular-progress__indeterminate-circle-graphic {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       fill: transparent;
     }
   }
 
   .mdc-circular-progress__determinate-circle {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       transition: animation-functions.enter(stroke-dashoffset, 500ms);
     }
   }
 
   .mdc-circular-progress__gap-patch {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: absolute;
       top: 0;
       /* @noflip */
@@ -106,7 +114,7 @@
     }
 
     .mdc-circular-progress__indeterminate-circle-graphic {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         /* @noflip */
         left: -900%;
         width: 2000%;
@@ -116,8 +124,8 @@
   }
 
   .mdc-circular-progress__circle-clipper {
-    @include feature-targeting-mixins.targets($feat-structure) {
-      display: inline-block;
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-flex;
       position: relative;
       width: 50%;
       height: 100%;
@@ -125,7 +133,7 @@
     }
 
     .mdc-circular-progress__indeterminate-circle-graphic {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         width: 200%;
       }
     }
@@ -133,7 +141,7 @@
 
   .mdc-circular-progress__circle-right {
     .mdc-circular-progress__indeterminate-circle-graphic {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         /* @noflip */
         left: -100%;
       }
@@ -142,13 +150,13 @@
 
   .mdc-circular-progress--indeterminate {
     .mdc-circular-progress__determinate-container {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         opacity: 0;
       }
     }
 
     .mdc-circular-progress__indeterminate-container {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         opacity: 1;
       }
     }
@@ -157,7 +165,7 @@
   }
 
   .mdc-circular-progress--closed {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       opacity: 0;
     }
   }
@@ -170,13 +178,26 @@
 /// four-color mixin is applied.
 /// @param {Color} $color - The desired stroke color.
 /// @see {mixin} indeterminate-colors
-@mixin color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-circular-progress__determinate-circle,
   .mdc-circular-progress__indeterminate-circle-graphic {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop('stroke', $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(stroke, $color);
+    }
+  }
+}
+
+/// Customizes the track color of the indicator. Applies to the
+/// determinate variant only.
+/// @param {Color} $color - The desired track color.
+@mixin track-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-circular-progress__determinate-track {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(stroke, $color);
     }
   }
 }
@@ -186,11 +207,8 @@
 /// currently set.
 /// @param {List} $colors - A list of four desired colors.
 /// @see {mixin} color
-@mixin indeterminate-colors(
-  $colors,
-  $query: feature-targeting-functions.all()
-) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+@mixin indeterminate-colors($colors, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
   @if length($colors) != 4 {
     @error "`mdc-circular-progress-colors` accepts exactly 4 colors";
@@ -199,8 +217,8 @@
   @for $i from 1 through 4 {
     .mdc-circular-progress__color-#{$i}
       .mdc-circular-progress__indeterminate-circle-graphic {
-      @include feature-targeting-mixins.targets($feat-color) {
-        stroke: nth($colors, $i);
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(stroke, nth($colors, $i));
       }
     }
   }
@@ -210,13 +228,11 @@
 
 /// Sets the animations for the indicator in indeterminate mode.
 /// @access private
-@mixin indeterminate-active-animations_(
-  $query: feature-targeting-functions.all()
-) {
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin indeterminate-active-animations_($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   .mdc-circular-progress__indeterminate-container {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       $duration: 360deg * variables.$arc-time /
         (variables.$arc-start-rotation-interval + (360 - variables.$arc-size));
 
@@ -229,7 +245,7 @@
     variables.$arc-time variables.$timing-function infinite both;
 
   .mdc-circular-progress__spinner-layer {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       animation: $spinner-rotate-animation;
     }
   }
@@ -243,7 +259,7 @@
       both;
 
     .mdc-circular-progress__color-#{$i} {
-      @include feature-targeting-mixins.targets($feat-animation) {
+      @include feature-targeting.targets($feat-animation) {
         animation: $spinner-rotate-animation, $color-fade-in-out-animation;
       }
     }
@@ -251,7 +267,7 @@
 
   .mdc-circular-progress__circle-left
     .mdc-circular-progress__indeterminate-circle-graphic {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       animation: mdc-circular-progress-left-spin variables.$arc-time
         variables.$timing-function infinite both;
     }
@@ -259,7 +275,7 @@
 
   .mdc-circular-progress__circle-right
     .mdc-circular-progress__indeterminate-circle-graphic {
-    @include feature-targeting-mixins.targets($feat-animation) {
+    @include feature-targeting.targets($feat-animation) {
       animation: mdc-circular-progress-right-spin variables.$arc-time
         variables.$timing-function infinite both;
     }

@@ -51,6 +51,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
   private selectAnchor!: HTMLElement;       // assigned in initialize()
   private selectedText!: HTMLElement;       // assigned in initialize()
+  private hiddenInput!: HTMLInputElement|null;  // assigned in initialize()
 
   private menuElement!: Element;                  // assigned in menuSetup()
   private menuItemValues!: string[];              // assigned in menuSetup()
@@ -59,8 +60,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private lineRipple!: MDCLineRipple|null;        // assigned in initialize()
   private label!: MDCFloatingLabel|null;          // assigned in initialize()
   private outline!: MDCNotchedOutline|null;       // assigned in initialize()
-  private handleChange!:
-      SpecificEventListener<'change'>;  // assigned in initialize()
+
+  // Event handlers
   private handleFocus!:
       SpecificEventListener<'focus'>;  // assigned in initialize()
   private handleBlur!:
@@ -86,6 +87,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         this.root.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
     this.selectedText =
         this.root.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
+    this.hiddenInput = this.root.querySelector(strings.HIDDEN_INPUT_SELECTOR) as
+        HTMLInputElement;
 
     if (!this.selectedText) {
       throw new Error(
@@ -130,9 +133,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
    * on the environment's state.
    */
   initialSyncWithDOM() {
-    this.handleChange = () => {
-      this.foundation.handleChange();
-    };
     this.handleFocus = () => {
       this.foundation.handleFocus();
     };
@@ -169,10 +169,23 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened);
     this.menu.listen(
         menuConstants.strings.SELECTED_EVENT, this.handleMenuItemAction);
+
+    if (this.hiddenInput) {
+      if (this.hiddenInput.value) {
+        // If the hidden input already has a value, use it to restore the
+        // select's value. This can happen e.g. if the user goes back or (in
+        // some browsers) refreshes the page.
+        this.foundation.setValue(
+            this.hiddenInput.value, /** skipNotify */ true);
+        this.foundation.layout();
+        return;
+      }
+
+      this.hiddenInput.value = this.value;
+    }
   }
 
   destroy() {
-    this.selectAnchor.removeEventListener('change', this.handleChange);
     this.selectAnchor.removeEventListener('focus', this.handleFocus);
     this.selectAnchor.removeEventListener('blur', this.handleBlur);
     this.selectAnchor.removeEventListener('keydown', this.handleKeydown);
@@ -225,6 +238,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
   set disabled(disabled: boolean) {
     this.foundation.setDisabled(disabled);
+    if (this.hiddenInput) {
+      this.hiddenInput.disabled = disabled;
+    }
   }
 
   set leadingIconAriaLabel(label: string) {
@@ -301,6 +317,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     // Update cached menuItemValues for adapter.
     this.menuItemValues =
         this.menu.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || '');
+
+    if (this.hiddenInput) {
+      this.hiddenInput.value = this.value;
+    }
   }
 
   getDefaultFoundation() {
@@ -428,6 +448,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       notifyChange: (value: string) => {
         const index = this.selectedIndex;
         this.emit<MDCSelectEventDetail>(strings.CHANGE_EVENT, {value, index}, true /* shouldBubble  */);
+
+        if (this.hiddenInput) {
+          this.hiddenInput.value = value;
+        }
       },
     };
     // tslint:enable:object-literal-sort-keys

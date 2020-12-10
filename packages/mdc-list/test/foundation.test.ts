@@ -837,6 +837,41 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).not.toHaveBeenCalled();
      });
 
+  it('#focusLastElement focuses the last list item and returns that index',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+
+       mockAdapter.getListItemCount.and.returnValue(4);
+
+       expect(3).toEqual(foundation.focusLastElement());
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(3);
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledTimes(1);
+     });
+
+  it('#focusInitialElement focuses the first list item and returns that index',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+
+       mockAdapter.getListItemCount.and.returnValue(4);
+
+       expect(0).toEqual(foundation.focusInitialElement());
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledTimes(1);
+     });
+
+  it('#focusInitialElement focuses the first selected list item and returns that index',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+
+       mockAdapter.getListItemCount.and.returnValue(4);
+       foundation.setSingleSelection(true);
+       foundation.setSelectedIndex(2);
+
+       expect(2).toEqual(foundation.focusInitialElement());
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
+       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledTimes(1);
+     });
+
   it('#focusNextElement focuses next list item and returns that index', () => {
     const {foundation, mockAdapter} = setupTest();
 
@@ -859,6 +894,141 @@ describe('MDCListFoundation', () => {
        expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
        expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledTimes(1);
      });
+
+  it('#handleKeydown should select all items on ctrl + A, if nothing is selected', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const preventDefault = jasmine.createSpy('preventDefault');
+    const event = {key: 'A', ctrlKey: true, preventDefault};
+
+    mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+    mockAdapter.getListItemCount.and.returnValue(3);
+    foundation.layout();
+    foundation.handleKeydown(event, false, -1);
+
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledTimes(3);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(0, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(1, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(2, true);
+  });
+
+  it('#handleKeydown should select all items on ctrl + lowercase A, if nothing is selected', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const preventDefault = jasmine.createSpy('preventDefault');
+    const event = {key: 'a', ctrlKey: true, preventDefault};
+
+    mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+    mockAdapter.getListItemCount.and.returnValue(3);
+    foundation.layout();
+    foundation.handleKeydown(event, false, -1);
+
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledTimes(3);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(0, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(1, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(2, true);
+  });
+
+  it('#handleKeydown should select all items on ctrl + A, if some items are selected', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const preventDefault = jasmine.createSpy('preventDefault');
+    const event = {key: 'A', ctrlKey: true, preventDefault};
+
+    mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+    mockAdapter.getListItemCount.and.returnValue(4);
+    foundation.layout();
+    foundation.setSelectedIndex([1, 2]);
+
+    // Reset the calls since `setSelectedIndex` will throw it off.
+    mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
+    foundation.handleKeydown(event, false, -1);
+
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledTimes(4);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(0, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(1, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(2, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(3, true);
+  });
+
+  it('#handleKeydown should deselect all items on ctrl + A, if all items are selected', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const preventDefault = jasmine.createSpy('preventDefault');
+    const event = {key: 'A', ctrlKey: true, preventDefault};
+
+    mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+    mockAdapter.getListItemCount.and.returnValue(3);
+    foundation.layout();
+    foundation.setSelectedIndex([0, 1, 2]);
+
+    // Reset the calls since `setSelectedIndex` will throw it off.
+    mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
+    foundation.handleKeydown(event, false, -1);
+
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledTimes(3);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(0, false);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(1, false);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(2, false);
+  });
+
+  it('#handleKeydown should not select disabled items on ctrl + A', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const preventDefault = jasmine.createSpy('preventDefault');
+    const event = {key: 'A', ctrlKey: true, preventDefault};
+
+    mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+    mockAdapter.listItemAtIndexHasClass
+        .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+        .and.returnValue(true);
+    mockAdapter.getListItemCount.and.returnValue(3);
+    foundation.layout();
+    foundation.handleKeydown(event, false, -1);
+
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledTimes(3);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(0, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(1, false);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(2, true);
+  });
+
+  it('#handleKeydown should not handle ctrl + A on a non-checkbox list', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const preventDefault = jasmine.createSpy('preventDefault');
+    const event = {key: 'a', ctrlKey: true, preventDefault};
+
+    mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(false);
+    mockAdapter.getListItemCount.and.returnValue(3);
+    foundation.layout();
+    foundation.handleKeydown(event, false, -1);
+
+    expect(preventDefault).not.toHaveBeenCalled();
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).not.toHaveBeenCalled();
+  });
+
+  it('#handleKeydown should not deselect a selected disabled item on ctrl + A', () => {
+    const {foundation, mockAdapter} = setupTest();
+    const preventDefault = jasmine.createSpy('preventDefault');
+    const event = {key: 'A', ctrlKey: true, preventDefault};
+
+    mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+    mockAdapter.listItemAtIndexHasClass
+        .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
+        .and.returnValue(true);
+    mockAdapter.getListItemCount.and.returnValue(3);
+    foundation.layout();
+    foundation.setSelectedIndex([1]);
+
+    // Reset the calls since `setSelectedIndex` will throw it off.
+    mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
+    foundation.handleKeydown(event, false, -1);
+
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledTimes(3);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(0, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(1, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(2, true);
+  });
 
   it('#focusNextElement retains the focus on last item when wrapFocus=false and returns that index',
      () => {

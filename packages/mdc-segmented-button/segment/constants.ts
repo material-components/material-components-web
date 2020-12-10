@@ -22,14 +22,28 @@
  */
 
 /**
- * Strings constants used by segment
+ * Boolean strings for segment
  */
-export const strings = {
-  ARIA_CHECKED: 'aria-checked',
-  ARIA_PRESSED: 'aria-pressed',
-  DATA_SEGMENT_ID: 'data-segment-id',
+export const booleans = {
   TRUE: 'true',
   FALSE: 'false'
+};
+
+/**
+ * Attributes referenced by segment
+ */
+export const attributes = {
+  ARIA_CHECKED: 'aria-checked',
+  ARIA_PRESSED: 'aria-pressed',
+  DATA_SEGMENT_ID: 'data-segment-id'
+};
+
+/**
+ * Events received or emitted by segment
+ */
+export const events = {
+  CLICK: 'click',
+  SELECTED: 'selected'
 };
 
 /**

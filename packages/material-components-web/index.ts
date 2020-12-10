@@ -22,6 +22,7 @@
  */
 
 import autoInit from '@material/auto-init/index';
+import * as banner from '@material/banner/index';
 import * as base from '@material/base/index';
 import * as checkbox from '@material/checkbox/index';
 import * as chips from '@material/chips/index';
@@ -41,6 +42,7 @@ import * as menu from '@material/menu/index';
 import * as notchedOutline from '@material/notched-outline/index';
 import * as radio from '@material/radio/index';
 import * as ripple from '@material/ripple/index';
+import * as segmentedButton from '@material/segmented-button/index';
 import * as select from '@material/select/index';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
@@ -54,6 +56,7 @@ import * as tooltip from '@material/tooltip/index';
 import * as topAppBar from '@material/top-app-bar/index';
 
 // Register all components
+autoInit.register('MDCBanner', banner.MDCBanner);
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCChip', chips.MDCChip);
 autoInit.register('MDCChipSet', chips.MDCChipSet);
@@ -72,6 +75,7 @@ autoInit.register('MDCMenuSurface', menuSurface.MDCMenuSurface);
 autoInit.register('MDCNotchedOutline', notchedOutline.MDCNotchedOutline);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCRipple', ripple.MDCRipple);
+autoInit.register('MDCSegmentedButton', segmentedButton.MDCSegmentedButton);
 autoInit.register('MDCSelect', select.MDCSelect);
 autoInit.register('MDCSlider', slider.MDCSlider);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
@@ -84,6 +88,7 @@ autoInit.register('MDCTopAppBar', topAppBar.MDCTopAppBar);
 // Export all components.
 export {
   autoInit,
+  banner,
   base,
   checkbox,
   chips,
@@ -103,6 +108,7 @@ export {
   notchedOutline,
   radio,
   ripple,
+  segmentedButton,
   select,
   slider,
   snackbar,

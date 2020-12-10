@@ -1,0 +1,1181 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:meta';
+@use '@material/density/functions' as density-functions;
+@use '@material/density/variables' as density-variables;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/floating-label/mixins' as floating-label-mixins;
+@use '@material/floating-label/variables' as floating-label-variables;
+@use '@material/line-ripple/mixins' as line-ripple-mixins;
+@use '@material/list/mixins' as list-mixins;
+@use '@material/notched-outline/mixins' as notched-outline-mixins;
+@use '@material/notched-outline/variables' as notched-outline-variables;
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/shape/functions' as shape-functions;
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/custom-properties';
+@use '@material/theme/gss';
+@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/state';
+@use '@material/theme/variables' as theme-variables;
+@use '@material/typography/mixins' as typography-mixins;
+@use './select-icon-theme';
+
+$ripple-target: '.mdc-select__ripple';
+
+@function get-outlined-label-position-y($select-anchor-height) {
+  @return $select-anchor-height / 2 +
+    notched-outline-variables.$label-box-height / 2;
+}
+
+$arrow-padding: 52px !default;
+$label-padding: 16px !default;
+$height: 56px !default;
+$minimum-height-for-filled-label: 52px !default;
+$filled-baseline-top: 40px !default;
+$selected-text-height: 28px !default;
+$anchor-padding-left: 16px !default;
+$anchor-padding-left-with-leading-icon: 0 !default;
+$anchor-padding-right: 0 !default;
+$outlined-stroke-width: 2px !default;
+$default-width: 200px !default;
+$shape-radius: small !default;
+
+$minimum-height: 40px !default;
+$minimum-height-for-filled-label: 52px !default;
+$maximum-height: $height !default;
+$density-scale: density-variables.$default-scale !default;
+$density-config: (
+  height: (
+    default: $height,
+    maximum: $maximum-height,
+    minimum: $minimum-height,
+  ),
+) !default;
+
+$ink-color: rgba(theme-variables.prop-value(on-surface), 0.87) !default;
+$dropdown-icon-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.54
+) !default;
+$label-color: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
+$focused-label-color: rgba(theme-variables.prop-value(primary), 0.87) !default;
+$bottom-line-idle-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.42
+) !default;
+$bottom-line-hover-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.87
+) !default;
+
+$fill-color: color.mix(
+  theme-variables.prop-value(on-surface),
+  theme-variables.prop-value(surface),
+  4%
+) !default;
+
+// Disabled Styles
+$disabled-label-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+$disabled-ink-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+$disabled-fill-color: color.mix(
+  theme-variables.prop-value(on-surface),
+  theme-variables.prop-value(surface),
+  2%
+) !default;
+$disabled-fill-border: rgba(
+  theme-variables.prop-value(on-surface),
+  0.06
+) !default;
+$disabled-bottom-line-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.06
+) !default;
+$disabled-dropdown-icon-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+$disabled-outline-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.06
+) !default;
+
+$outlined-idle-border: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+$outlined-hover-border: rgba(
+  theme-variables.prop-value(on-surface),
+  0.87
+) !default;
+
+$label-position-y: 106% !default;
+$outline-label-offset: 16px !default;
+$outlined-label-position-y: get-outlined-label-position-y($height) !default;
+$outlined-with-leading-icon-label-position-x: 32px !default;
+
+$dropdown-transition-duration: 150ms !default;
+// Transition durartions to active state
+$icon-active-fade-out-duration: 0.33 * $dropdown-transition-duration !default;
+$icon-active-fade-in-duration: 0.67 * $dropdown-transition-duration !default;
+// Transition durartions to inactive state
+$icon-inactive-fade-out-duration: 0.5 * $dropdown-transition-duration !default;
+$icon-inactive-fade-in-duration: 0.5 * $dropdown-transition-duration !default;
+
+// Error colors
+$error-color: error !default;
+
+/// Sets the min-width of the select.
+/// @param {Number} $min-width - The desired min-width.
+/// @deprecated using this mixin is no longer required, and clients may set
+///             the attribute directly
+@mixin min-width($min-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    min-width: $min-width;
+  }
+}
+
+/// Sets the select behavior to change width dynamically based on content.
+/// @param {Number} $min-width - The min-width of the select, which should be
+///     large enough to allow the label (if exists) to display in full.
+@mixin variable-width($min-width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__anchor {
+    @include feature-targeting.targets($feat-structure) {
+      width: 100%;
+      min-width: $min-width;
+    }
+  }
+}
+
+@mixin ink-color($color-or-map, $query: feature-targeting.all()) {
+  @include _if-enabled {
+    @include _ink-color(state.get-default-state($color-or-map), $query: $query);
+  }
+
+  @include _if-disabled {
+    @include _ink-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
+  }
+}
+
+@mixin container-fill-color($color-or-map, $query: feature-targeting.all()) {
+  @include _if-enabled {
+    @include _container-fill-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+  }
+
+  @include _if-disabled {
+    @include _container-fill-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
+  }
+}
+
+@mixin dropdown-icon-color($color-or-map, $query: feature-targeting.all()) {
+  @include _if-enabled {
+    @include _dropdown-icon-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    &:not(.mdc-select--focused):hover {
+      @include _dropdown-icon-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    @include _if-focused {
+      @include _dropdown-icon-color(
+        state.get-focus-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+
+  @include _if-disabled {
+    @include _dropdown-icon-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
+  }
+}
+
+@mixin label-floating-color($color-or-map, $query: feature-targeting.all()) {
+  @include _if-enabled {
+    @include _label-floating-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    &:not(.mdc-select--focused):hover {
+      @include _label-floating-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin bottom-line-color($color-or-map, $query: feature-targeting.all()) {
+  @include _if-enabled {
+    @include _bottom-line-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    // bottom line inactive/active are on different elements, does not need
+    // to check for :not() focused
+    &:hover {
+      @include _bottom-line-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    @include _focused-line-ripple-color(
+      state.get-focus-state($color-or-map),
+      $query: $query
+    );
+  }
+
+  @include _if-disabled {
+    @include _bottom-line-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
+  }
+}
+
+@mixin label-color($color-or-map, $query: feature-targeting.all()) {
+  @include _if-enabled {
+    @include _label-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    @include _if-focused {
+      @include _label-color(
+        state.get-focus-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    &:not(.mdc-select--focused):hover {
+      @include _label-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+
+  @include _if-disabled {
+    @include _label-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
+  }
+}
+
+@mixin outline-color($color-or-map, $query: feature-targeting.all()) {
+  @include _if-enabled {
+    @include _outline-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    // stylelint-disable-next-line selector-combinator-space-after
+    &:not(.mdc-select--focused) .mdc-select__anchor:hover {
+      @include _hover-outline-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    @include _if-focused {
+      @include _focused-outline-color(
+        state.get-focus-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+
+  @include _if-disabled {
+    @include _outline-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
+  }
+}
+
+///
+/// Sets the dropdown icon to the specified size.
+///
+@mixin dropdown-icon-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__dropdown-icon {
+    @include feature-targeting.targets($feat-structure) {
+      width: $size;
+      height: $size;
+    }
+  }
+}
+
+@mixin filled-shape-radius(
+  $radius,
+  $density-scale: $density-scale,
+  $rtl-reflexive: false,
+  $query: feature-targeting.all()
+) {
+  @if meta.type-of($radius) == 'list' and list.length($radius) > 2 {
+    @error "mdc-select: Invalid radius #{$radius}. Only top-left and top-right corners may be customized.";
+  }
+
+  $height: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  $masked-radius: shape-functions.mask-radius($radius, 1 1 0 0);
+
+  .mdc-select__anchor {
+    @include shape-mixins.radius(
+      $masked-radius,
+      $rtl-reflexive,
+      $component-height: $height,
+      $query: $query
+    );
+  }
+}
+
+@mixin outline-shape-radius(
+  $radius,
+  $density-scale: $density-scale,
+  $rtl-reflexive: false,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  $height: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  .mdc-notched-outline {
+    @include notched-outline-mixins.shape-radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height: $height,
+      $query: $query
+    );
+  }
+
+  $resolved-radius: shape-functions.resolve-radius(
+    $radius,
+    $component-height: $height
+  );
+  $unpacked-radius: shape-functions.unpack-radius($resolved-radius);
+  $top-left-radius: list.nth($unpacked-radius, 1);
+  $top-left-is-custom-prop: custom-properties.is-custom-prop($top-left-radius);
+  $top-left-radius-px: $top-left-radius;
+  @if ($top-left-is-custom-prop) {
+    $top-left-radius-px: custom-properties.get-fallback($top-left-radius);
+  }
+
+  @if (
+    $top-left-is-custom-prop or
+      $top-left-radius-px >
+      notched-outline-variables.$leading-width
+  ) {
+    .mdc-select__anchor {
+      @include _apply-outline-shape-padding(
+        padding-left,
+        $top-left-radius,
+        $add-label-padding: true,
+        $query: $query
+      );
+
+      @include rtl-mixins.rtl {
+        @include feature-targeting.targets($feat-structure) {
+          /* @noflip */
+          padding-left: 0;
+        }
+        @include _apply-outline-shape-padding(
+          padding-right,
+          $top-left-radius,
+          $add-label-padding: true,
+          $query: $query
+        );
+      }
+    }
+
+    + .mdc-select-helper-text {
+      @include _apply-outline-shape-padding(
+        margin-left,
+        $top-left-radius,
+        $add-label-padding: true,
+        $query: $query
+      );
+
+      @include rtl-mixins.rtl {
+        @include feature-targeting.targets($feat-structure) {
+          /* @noflip */
+          margin-left: 0;
+        }
+        @include _apply-outline-shape-padding(
+          margin-right,
+          $top-left-radius,
+          $add-label-padding: true,
+          $query: $query
+        );
+      }
+    }
+
+    // Unlike textfield, select does not need to re-apply leading icon padding.
+    // This is because select only has one potential leading class, not two
+    // extra classes like textfield (leading + trailing). Textfield's two extra
+    // classes can cause specificity conflicts, requiring everything to be
+    // re-applied.
+  }
+}
+
+///
+/// Sets density scale for filled select variant.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+/// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
+///     filled selects at which to allow floating labels.
+///
+@mixin filled-density(
+  $density-scale,
+  $minimum-height-for-filled-label: $minimum-height-for-filled-label,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include filled-height(
+    $height,
+    $minimum-height-for-filled-label: $minimum-height-for-filled-label,
+    $query: $query
+  );
+  @include list-mixins.single-line-density($density-scale, $query: $query);
+}
+
+///
+/// Sets density scale for filled select variant with leading icon.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+/// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
+///     filled selects at which to allow floating labels.
+///
+@mixin filled-with-leading-icon-density(
+  $density-scale,
+  $minimum-height-for-filled-label: $minimum-height-for-filled-label,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include filled-with-leading-icon-height(
+    $height,
+    $minimum-height-for-filled-label: $minimum-height-for-filled-label,
+    $query: $query
+  );
+  @include list-mixins.single-line-density($density-scale, $query: $query);
+}
+
+///
+/// Sets density scale for outlined select (Excluding outlined select with leading icon).
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+///
+@mixin outlined-density($density-scale, $query: feature-targeting.all()) {
+  $height: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include outlined-height($height, $query: $query);
+  @include list-mixins.single-line-density($density-scale, $query: $query);
+}
+
+///
+/// Sets density scale for outlined select with leading icon.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-4`,
+///     `-3`, `-2`, `-1`, `0`. Default is `0`.
+///
+@mixin outlined-with-leading-icon-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include outlined-with-leading-icon-height($height, $query: $query);
+  @include list-mixins.single-line-density($density-scale, $query: $query);
+}
+
+///
+/// Sets height of default select variant.
+///
+/// @param {Number} $new-height
+/// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
+///     filled selects at which to allow floating labels.
+/// @param {Number} $filled-baseline-top The baseline from the top of the anchor
+///     that the input should be aligned to for a filled variant with a label
+/// @access public
+///
+@mixin filled-height(
+  $new-height,
+  $minimum-height-for-filled-label: $minimum-height-for-filled-label,
+  $filled-baseline-top: $filled-baseline-top,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__anchor {
+    @include feature-targeting.targets($feat-structure) {
+      height: $new-height;
+    }
+
+    // Filled variant is aligned to baseline...
+    @include typography-mixins.baseline(
+      $top: $filled-baseline-top,
+      $display: flex,
+      $query: $query
+    );
+    // ...unless it is too small to display a label
+    @if $new-height < $minimum-height-for-filled-label {
+      @include center-aligned($query: $query);
+
+      @include feature-targeting.targets($feat-structure) {
+        .mdc-floating-label {
+          display: none;
+        }
+      }
+    }
+  }
+
+  // No-label variants are always centered
+  &.mdc-select--no-label .mdc-select__anchor {
+    @include center-aligned($query: $query);
+  }
+
+  @if $new-height < $height {
+    @include dropdown-icon-size(
+      select-icon-theme.$dense-icon-size,
+      $query: $query
+    );
+
+    &.mdc-select--filled {
+      @include truncate-floating-label-max-width(
+        $leading-icon-size: 0,
+        $dropdown-icon-size: select-icon-theme.$dense-icon-size,
+        $query: $query
+      );
+    }
+  }
+}
+
+///
+/// Sets height of filled select variant with leading icon.
+///
+/// @param {Number} $height
+/// @param {Number} $minimum-height-for-filled-label Sets the minimum height for
+///     filled selects at which to allow floating labels.
+/// @param {Number} $filled-baseline-top The baseline from the top of the anchor
+///     that the input should be aligned to for a filled variant with a label
+/// @access public
+///
+@mixin filled-with-leading-icon-height(
+  $new-height,
+  $minimum-height-for-filled-label: $minimum-height-for-filled-label,
+  $filled-baseline-top: $filled-baseline-top,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include filled-height(
+    $new-height,
+    $minimum-height-for-filled-label: $minimum-height-for-filled-label,
+    $filled-baseline-top: $filled-baseline-top,
+    $query: $query
+  );
+
+  @if $new-height < $height {
+    @include select-icon-theme.size(
+      select-icon-theme.$dense-icon-size,
+      $query: $query
+    );
+
+    &.mdc-select--filled {
+      @include truncate-floating-label-max-width(
+        $leading-icon-size: select-icon-theme.$dense-icon-size,
+        $dropdown-icon-size: select-icon-theme.$dense-icon-size,
+        $query: $query
+      );
+    }
+
+    .mdc-list-item__graphic {
+      width: select-icon-theme.$dense-icon-size;
+      height: select-icon-theme.$dense-icon-size;
+    }
+
+    .mdc-select__anchor {
+      @include leading-icon-floating-label-position(
+        select-icon-theme.$dense-icon-size,
+        $query: $query
+      );
+    }
+  }
+}
+
+///
+/// Sets height of outlined select variant (Excluding outlined select with leading icon).
+///
+/// @param {Number} $new-height
+/// @param {String} $keyframe-suffix - Optional suffix to use for generated
+///     floating label keyframes
+///
+@mixin outlined-height(
+  $new-height,
+  $keyframe-suffix: select-outlined-#{$new-height},
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $positionY: get-outlined-label-position-y($new-height);
+
+  .mdc-select__anchor {
+    // Floating label position
+    @include notched-outline-mixins.floating-label-float-position-absolute(
+      $positionY,
+      $query: $query
+    );
+
+    // Floating label animation
+    @include floating-label-mixins.shake-animation(
+      $keyframe-suffix,
+      $query: $query
+    );
+    @at-root {
+      @include floating-label-mixins.shake-keyframes(
+        $keyframe-suffix,
+        $positionY,
+        $query: $query
+      );
+    }
+
+    @include feature-targeting.targets($feat-structure) {
+      height: $new-height;
+    }
+  }
+
+  @if $new-height < $height {
+    @include dropdown-icon-size(
+      select-icon-theme.$dense-icon-size,
+      $query: $query
+    );
+
+    &.mdc-select--outlined {
+      @include truncate-notched-outline-max-width(
+        $leading-icon-size: 0,
+        $dropdown-icon-size: select-icon-theme.$dense-icon-size,
+        $query: $query
+      );
+    }
+  }
+}
+
+///
+/// Sets height of outlined select with leading icon variant.
+///
+/// @param {Number} $new-height
+/// @param {String} $keyframe-suffix - Optional suffix to use for generated
+///     floating label keyframes
+///
+@mixin outlined-with-leading-icon-height(
+  $new-height,
+  $keyframe-suffix: null,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__anchor {
+    @if $new-height < $height {
+      @include dropdown-icon-size(
+        select-icon-theme.$dense-icon-size,
+        $query: $query
+      );
+      @include outlined-with-leading-icon-floating-label-position-animation(
+        $new-height,
+        select-icon-theme.$dense-icon-size,
+        $keyframe-suffix,
+        $query: $query
+      );
+    } @else {
+      @include outlined-with-leading-icon-floating-label-position-animation(
+        $new-height,
+        select-icon-theme.$icon-size,
+        $keyframe-suffix,
+        $query: $query
+      );
+    }
+
+    @include feature-targeting.targets($feat-structure) {
+      height: $new-height;
+    }
+  }
+
+  @if $new-height < $height {
+    .mdc-list-item__graphic {
+      width: select-icon-theme.$dense-icon-size;
+      height: select-icon-theme.$dense-icon-size;
+    }
+
+    @include select-icon-theme.size(
+      select-icon-theme.$dense-icon-size,
+      $query: $query
+    );
+
+    &.mdc-select--outlined {
+      @include truncate-notched-outline-max-width(
+        $leading-icon-size: select-icon-theme.$dense-icon-size,
+        $dropdown-icon-size: select-icon-theme.$dense-icon-size,
+        $query: $query
+      );
+    }
+  }
+}
+
+// $add-label-padding is copied from textfield's mixin, even though select
+// always sets it to true. This is to try and keep things aligned between select
+// and textfield for when these styles are refactored into shared styles.
+@mixin _apply-outline-shape-padding(
+  $property,
+  $padding,
+  $add-label-padding: false,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $padding-is-custom-prop: custom-properties.is-custom-prop($padding);
+  $padding-px: $padding;
+  @if ($padding-is-custom-prop) {
+    $padding-px: custom-properties.get-fallback($padding);
+  }
+
+  @include feature-targeting.targets($feat-structure) {
+    // The shape should only change the padding if the radius becomes greater
+    // than the default padding. That means we need to add more padding.
+    @if ($padding-px > notched-outline-variables.$leading-width) {
+      // Set a px value if it's greater. This is either the only value (if
+      // we're given an exact value), or an IE11 fallback if we're given a
+      // custom property and the fallback value is greater than the padding.
+      $value: $padding-px;
+      @if ($add-label-padding) {
+        // If this is for the top-left leading, add the notched outline padding
+        // to keep it aligned with the label
+        $value: $padding-px + notched-outline-variables.$padding;
+      }
+
+      /* @noflip */
+      #{$property}: $value;
+      @include gss.annotate(
+        (
+          alternate: $padding-is-custom-prop,
+        )
+      );
+    }
+    @if ($padding-is-custom-prop) {
+      // If it's a custom property, always add it since the value may change
+      // to be greater than the padding at runtime, even if the fallback is
+      // not currently greater than the default padding.
+      $value: custom-properties.create-var($padding);
+      @if ($add-label-padding) {
+        $value: calc(#{$value} + #{notched-outline-variables.$padding});
+      }
+
+      @supports (top: max(0%)) {
+        // A max() function makes this runtime dynamic. The padding will be
+        // whichever is greater: the default horizontal padding, or the
+        // calculated custom property plus extra padding.
+        /* @noflip */
+        #{$property}: max(#{$anchor-padding-left}, #{$value});
+      }
+    }
+  }
+}
+
+// Removes filled baseline alignment
+@mixin center-aligned($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-select__selected-text {
+    @include typography-mixins.zero-width-prefix($query: $query);
+  }
+
+  @include feature-targeting.targets($feat-structure) {
+    // In order for a flexbox container to participate in baseline alignment,
+    // it follows these rules to determine where its baseline is:
+    // https://www.w3.org/TR/css-flexbox-1/#flex-baselines
+    //
+    // In order to avoid leading icons "controlling" the baseline (since they
+    // are the first child), flexbox will generate a baseline from any child
+    // flex items that participate in baseline alignment.
+    //
+    // Icons are set to "align-self: center", while all other children are
+    // aligned to baseline. The next problem is deciding which child is
+    // used to determine the baseline.
+    //
+    // According to spec, the item with the largest distance between its
+    // baseline and the edge of the cross axis is placed flush with that edge,
+    // making it the baseline of the container.
+    // https://www.w3.org/TR/css-flexbox-1/#baseline-participation
+    //
+    // For the filled variant, the pseudo ::before strut is the "largest"
+    // child since the input has a height of 28px and the strut is 40px. We
+    // can emulate center alignment and force the baseline to use the input
+    // text by making the input the full height of the container and removing
+    // the baseline strut.
+    //
+    // IE11 does not respect this, and makes the leading icon (if present)
+    // the baseline.
+    .mdc-select__selected-text-container {
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
+}
+
+///
+/// Sets the position of the floating label for a select with leading icon.
+/// @param {number} $icon-size - The size of the leading icon.
+///
+@mixin leading-icon-floating-label-position(
+  $icon-size: select-icon-theme.$icon-size,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $icon-total-width: $icon-size + 2 * select-icon-theme.$icon-horizontal-margin;
+
+  .mdc-floating-label {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl-mixins.reflexive-position(left, $icon-total-width);
+    }
+  }
+}
+
+///
+/// Sets the floating label position and animations for a given height for an
+/// outlined select with leaing icon.
+/// @param {number} $icon-size - The size of the leading icon.
+/// @param {string} $keyframe-suffix - The suffix for the newly generated keyframes.
+///
+@mixin outlined-with-leading-icon-floating-label-position-animation(
+  $height,
+  $icon-size,
+  $keyframe-suffix: select-outlined-leading-icon-#{$height},
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  $icon-total-width: $icon-size + 2 * select-icon-theme.$icon-horizontal-margin;
+  $resting-position-x: $icon-total-width -
+    select-icon-theme.$icon-horizontal-margin;
+  $float-position-y: get-outlined-label-position-y($height);
+  $float-position-x: $icon-size + select-icon-theme.$icon-horizontal-margin -
+    notched-outline-variables.$notch-gutter-size;
+
+  // Resting label position
+  .mdc-floating-label {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl-mixins.reflexive-position(left, $resting-position-x);
+    }
+  }
+
+  // Floating label position
+  @include notched-outline-mixins.floating-label-float-position-absolute(
+    $float-position-y,
+    $float-position-x,
+    $query: $query
+  );
+
+  // Floating label animation
+  @include floating-label-mixins.shake-animation(
+    $keyframe-suffix,
+    $query: $query
+  );
+  @at-root {
+    @include floating-label-mixins.shake-keyframes(
+      $keyframe-suffix,
+      $float-position-y,
+      $float-position-x,
+      $query: $query
+    );
+  }
+
+  $keyframe-suffix-rtl: #{$keyframe-suffix}-rtl;
+  @include rtl-mixins.rtl {
+    @include floating-label-mixins.shake-animation(
+      $keyframe-suffix,
+      $query: $query
+    );
+  }
+  @at-root {
+    @include floating-label-mixins.shake-keyframes(
+      $keyframe-suffix-rtl,
+      $float-position-y,
+      -($float-position-x),
+      $query: $query
+    );
+  }
+}
+
+///
+/// Truncates the max-width of the floating label according to sizes of the
+/// leading icon and dropdown icon.
+///
+/// @param {Number} $leading-icon-size - Size of leading icon.
+/// @param {Number} $dropdown-icon-size - Size of dropdown icon.
+///
+@mixin truncate-floating-label-max-width(
+  $leading-icon-size,
+  $dropdown-icon-size,
+  $query: feature-targeting.all()
+) {
+  $truncation: select-icon-theme.$icon-horizontal-margin * 2 +
+    $dropdown-icon-size;
+
+  @if $leading-icon-size > 0 {
+    $truncation: $truncation +
+      select-icon-theme.$icon-horizontal-margin *
+      2 +
+      $leading-icon-size;
+  } @else {
+    $truncation: $truncation + $outline-label-offset;
+  }
+
+  .mdc-floating-label {
+    @include floating-label-mixins.max-width(
+      calc(100% - #{$truncation}),
+      $query: $query
+    );
+  }
+
+  .mdc-floating-label--float-above {
+    $scale: floating-label-variables.$float-scale;
+    @include floating-label-mixins.max-width(
+      calc(100% / #{$scale} - #{$truncation} / #{$scale}),
+      $query: $query
+    );
+  }
+}
+
+///
+/// Truncates the max-width of the notched outline according to the sizes of
+/// the leading icon and dropdown icon.
+///
+/// @param {Number} $leading-icon-size - Size of leading icon.
+/// @param {Number} $dropdown-icon-size - Size of dropdown icon.
+///
+@mixin truncate-notched-outline-max-width(
+  $leading-icon-size,
+  $dropdown-icon-size,
+  $query: feature-targeting.all()
+) {
+  $truncation: select-icon-theme.$icon-horizontal-margin * 2 +
+    $dropdown-icon-size + notched-outline-variables.$leading-width;
+
+  @if $leading-icon-size > 0 {
+    $truncation: $truncation +
+      select-icon-theme.$icon-horizontal-margin +
+      $leading-icon-size;
+  }
+  .mdc-select__anchor {
+    @include notched-outline-mixins.notch-max-width(
+      calc(100% - #{$truncation}),
+      $query: $query
+    );
+  }
+}
+
+/// Selector for focused state
+/// @access private
+@mixin _if-focused {
+  &.mdc-select--focused {
+    @content;
+  }
+}
+
+/// Selector for enabled state
+/// @access private
+@mixin _if-enabled {
+  &:not(.mdc-select--disabled) {
+    @content;
+  }
+}
+
+/// Selector for disabled state
+/// @access private
+@mixin _if-disabled {
+  &.mdc-select--disabled {
+    @content;
+  }
+}
+
+@mixin _ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if $color {
+    .mdc-select__selected-text {
+      @include feature-targeting.targets($feat-color) {
+        @include theme-mixins.property(color, $color);
+      }
+    }
+  }
+}
+
+@mixin _container-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if $color {
+    .mdc-select__anchor {
+      @include feature-targeting.targets($feat-color) {
+        @include theme-mixins.property(background-color, $color);
+      }
+    }
+  }
+}
+
+@mixin _bottom-line-color($color, $query: feature-targeting.all()) {
+  @if $color {
+    .mdc-line-ripple {
+      @include line-ripple-mixins.inactive-color($color, $query: $query);
+    }
+  }
+}
+
+@mixin _focused-line-ripple-color($color, $query: feature-targeting.all()) {
+  @if $color {
+    .mdc-line-ripple {
+      @include line-ripple-mixins.active-color($color, $query: $query);
+    }
+  }
+}
+
+@mixin _outline-color($color, $query: feature-targeting.all()) {
+  @if $color {
+    @include notched-outline-mixins.color($color, $query: $query);
+  }
+}
+
+@mixin _hover-outline-color($color, $query: feature-targeting.all()) {
+  @if $color {
+    .mdc-notched-outline {
+      @include notched-outline-mixins.color($color, $query: $query);
+    }
+  }
+}
+
+@mixin _focused-outline-color($color, $query: feature-targeting.all()) {
+  @if $color {
+    .mdc-notched-outline {
+      @include notched-outline-mixins.stroke-width(
+        $outlined-stroke-width,
+        $query: $query
+      );
+      @include notched-outline-mixins.color($color, $query: $query);
+    }
+  }
+}
+
+@mixin _label-color($color, $query: feature-targeting.all()) {
+  @if $color {
+    .mdc-floating-label {
+      @include floating-label-mixins.ink-color($color, $query: $query);
+    }
+  }
+}
+
+@mixin _label-floating-color($color, $query: feature-targeting.all()) {
+  @if $color {
+    .mdc-floating-label--float-above {
+      @include floating-label-mixins.ink-color($color, $query: $query);
+    }
+  }
+}
+
+///
+/// Sets the dropdown icon to the specified color.
+/// @access private
+///
+@mixin _dropdown-icon-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if $color {
+    @include feature-targeting.targets($feat-color) {
+      .mdc-select__dropdown-icon {
+        @include theme-mixins.property(fill, $color);
+      }
+    }
+  }
+}

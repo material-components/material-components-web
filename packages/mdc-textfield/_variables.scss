@@ -20,11 +20,14 @@
 // THE SOFTWARE.
 //
 
-@use "sass:color";
-@use "@material/density/variables" as density-variables;
-@use "@material/floating-label/variables" as floating-label-variables;
-@use "@material/notched-outline/variables" as notched-outline-variables;
-@use "@material/theme/variables" as theme-variables;
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use 'sass:color';
+@use '@material/density/variables' as density-variables;
+@use '@material/floating-label/variables' as floating-label-variables;
+@use '@material/notched-outline/variables' as notched-outline-variables;
+@use '@material/theme/theme-color';
 
 ///
 /// Returns outlined text field floating label position for given height.
@@ -38,72 +41,54 @@
 }
 
 $error: error !default;
-$disabled-border: rgba(theme-variables.prop-value(on-surface), 0.06) !default;
-$disabled-icon: rgba(theme-variables.prop-value(on-surface), 0.3) !default;
-$bottom-line-hover: rgba(theme-variables.prop-value(on-surface), 0.87) !default;
-$bottom-line-idle: rgba(theme-variables.prop-value(on-surface), 0.42) !default;
-$label: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
+$disabled-border: rgba(theme-color.prop-value(on-surface), 0.06) !default;
+$disabled-icon: rgba(theme-color.prop-value(on-surface), 0.3) !default;
+$bottom-line-hover: rgba(theme-color.prop-value(on-surface), 0.87) !default;
+$bottom-line-idle: rgba(theme-color.prop-value(on-surface), 0.42) !default;
+$label: rgba(theme-color.prop-value(on-surface), 0.6) !default;
 
-$ink-color: rgba(theme-variables.prop-value(on-surface), 0.87) !default;
-$helper-text-color: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
-$icon-color: rgba(theme-variables.prop-value(on-surface), 0.54) !default;
-$focused-label-color: rgba(theme-variables.prop-value(primary), 0.87) !default;
-$placeholder-ink-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.54
-) !default;
-$affix-color: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
+$ink-color: rgba(theme-color.prop-value(on-surface), 0.87) !default;
+$helper-text-color: rgba(theme-color.prop-value(on-surface), 0.6) !default;
+$icon-color: rgba(theme-color.prop-value(on-surface), 0.54) !default;
+$focused-label-color: rgba(theme-color.prop-value(primary), 0.87) !default;
+$placeholder-ink-color: rgba(theme-color.prop-value(on-surface), 0.54) !default;
+$affix-color: rgba(theme-color.prop-value(on-surface), 0.6) !default;
 
-$disabled-label-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.38
-) !default;
-$disabled-ink-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.38
-) !default;
+$disabled-label-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
+$disabled-ink-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
 $disabled-placeholder-ink-color: rgba(
-  theme-variables.prop-value(on-surface),
+  theme-color.prop-value(on-surface),
   0.38
 ) !default;
 $disabled-helper-text-color: rgba(
-  theme-variables.prop-value(on-surface),
+  theme-color.prop-value(on-surface),
   0.38
 ) !default;
-$disabled-affix-color: rgba(
-  theme-variables.prop-value(on-surface),
-  0.38
-) !default;
+$disabled-affix-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
 
 $background: color.mix(
-  theme-variables.prop-value(on-surface),
-  theme-variables.prop-value(surface),
+  theme-color.prop-value(on-surface),
+  theme-color.prop-value(surface),
   4%
 ) !default;
 $disabled-background: color.mix(
-  theme-variables.prop-value(on-surface),
-  theme-variables.prop-value(surface),
+  theme-color.prop-value(on-surface),
+  theme-color.prop-value(surface),
   2%
 ) !default;
-$secondary-text: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
+$secondary-text: rgba(theme-color.prop-value(on-surface), 0.6) !default;
 
-$outlined-idle-border: rgba(
-  theme-variables.prop-value(on-surface),
-  0.38
-) !default;
+$outlined-idle-border: rgba(theme-color.prop-value(on-surface), 0.38) !default;
 $outlined-disabled-border: rgba(
-  theme-variables.prop-value(on-surface),
+  theme-color.prop-value(on-surface),
   0.06
 ) !default;
-$outlined-hover-border: rgba(
-  theme-variables.prop-value(on-surface),
-  0.87
-) !default;
+$outlined-hover-border: rgba(theme-color.prop-value(on-surface), 0.87) !default;
 
-$textarea-border: rgba(theme-variables.prop-value(on-surface), 0.73) !default;
-$textarea-background: rgba(theme-variables.prop-value(surface), 1) !default;
+$textarea-border: rgba(theme-color.prop-value(on-surface), 0.73) !default;
+$textarea-background: rgba(theme-color.prop-value(surface), 1) !default;
 $textarea-disabled-border-color: rgba(
-  theme-variables.prop-value(on-surface),
+  theme-color.prop-value(on-surface),
   0.26
 ) !default;
 // cannot be transparent because multiline textarea input

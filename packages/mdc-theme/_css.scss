@@ -1,0 +1,109 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use './gss';
+
+/// When true, add an additional property/value declaration before declarations
+/// that use advanced features such as custom properties or CSS functions. This
+/// adds fallback support for older browsers such as IE11 that do not support
+/// these features at the cost of additional CSS. Set this variable to false to
+/// disable generating fallback declarations.
+$enable-fallback-declarations: true !default;
+
+/// Writes a CSS property/value declaration. This mixin is used throughout the
+/// theme package for consistency for dynamically setting CSS property values.
+///
+/// This mixin may optionally take a fallback value. For advanced features such
+/// as custom properties or CSS functions like min and max, a fallback value is
+/// recommended to support older browsers.
+///
+/// @param {String} $property - The CSS property of the declaration.
+/// @param {*} $value - The value of the CSS declaration. The value should be
+///     resolved by other theme functions first (i.e. custom property Maps and
+///     Material theme keys are not supported in this mixin). If the value is
+///     null, no declarations will be emitted.
+/// @param {*} $fallback - An optional fallback value for older browsers. If
+///     provided, a second property/value declaration will be added before the
+///     main property/value declaration.
+/// @param {Map} $gss - An optional Map of GSS annotations to add.
+/// @param {Bool} $important - If true, add `!important` to the declaration.
+@mixin declaration(
+  $property,
+  $value,
+  $fallback-value: null,
+  $gss: (),
+  $important: false
+) {
+  // Normally setting a null value to a property will not emit CSS, so mixins
+  // wouldn't need to check this. However, Sass will throw an error if the
+  // interpolated property is a custom property.
+  @if $value != null {
+    $important-rule: if($important, '!important', '');
+
+    @if $fallback-value and $enable-fallback-declarations {
+      @include gss.annotate($gss);
+      #{$property}: #{$fallback-value} #{$important-rule};
+
+      // Add @alternate to annotations.
+      $gss: map.merge(
+        $gss,
+        (
+          alternate: true,
+        )
+      );
+    }
+
+    @include gss.annotate($gss);
+    #{$property}: #{$value} #{$important-rule};
+  }
+}
+
+/// Unpacks shorthand values for CSS properties (i.e. lists of 1-3 values).
+/// If a list of 4 values is given, it is returned as-is.
+///
+/// Examples:
+///
+/// unpack-value(4px) => 4px 4px 4px 4px
+/// unpack-value(4px 2px) => 4px 2px 4px 2px
+/// unpack-value(4px 2px 2px) => 4px 2px 2px 2px
+/// unpack-value(4px 2px 0 2px) => 4px 2px 0 2px
+///
+/// @param {Number | Map | List} $value - List of 1 to 4 value numbers.
+/// @return {List} a List of 4 value numbers.
+@function unpack-value($value) {
+  @if meta.type-of($value) == 'map' or list.length($value) == 1 {
+    @return $value $value $value $value;
+  } @else if list.length($value) == 4 {
+    @return $value;
+  } @else if list.length($value) == 3 {
+    @return list.nth($value, 1) list.nth($value, 2) list.nth($value, 3)
+      list.nth($value, 2);
+  } @else if list.length($value) == 2 {
+    @return list.nth($value, 1) list.nth($value, 2) list.nth($value, 1)
+      list.nth($value, 2);
+  }
+
+  @error "Invalid CSS property value: '#{$value}' is more than 4 values";
+}

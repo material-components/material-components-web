@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use "./mixins";
-@include mixins.core-styles;
+/// @deprecated Import 'styles.scss' Sass module instead.
+@forward './styles';

@@ -13,7 +13,7 @@ Tooltips display informative text when users hover over, focus on, or tap an ele
 
 ![Tooltip example](images/tooltip.png)
 
-## Content
+**Contents**
 
 * [Using tooltips](#using-tooltips)
 * [Tooltips](#tooltips)
@@ -36,8 +36,8 @@ Common use cases include:
 ### Tooltip positioning
 Tooltip positioning is based on the anchor element (the element that, on user
 interaction, results in showing or hiding of a tooltip). They appear directly
-below this anchor element and can be placed flush with either the end, center,
-or start of the anchor.
+below or above this anchor element and can be placed flush with either the end,
+center, or start of the anchor.
 
 ![End, center, and start alignment of tooltip on icon button in a LTR page](images/plain_tooltip_alignment.png)
 <p align="center"> *Tooltips aligned with the end, center, and start of an anchor element (in a LTR page flow).* </p>
@@ -45,9 +45,10 @@ or start of the anchor.
 
 A threshold distance of 32px is expected to be maintained between the tooltip
 and the viewport edge. A valid tooltip position is calculated based on which of
-the position options (start, center, or end) maintain this threshold. If all
-possible alignment options violate the threshold, then a valid tooltip position
-is one that does not collide with the viewport.
+the position options (start, center, or end for x-axis alignment and above or
+below for y-axis alignment) maintain this threshold. If all possible alignment
+options violate the threshold, then a valid tooltip position is one that does
+not collide with the viewport.
 
 A user specified position is honored only if the specified position is
 considered valid based on the logic outlined above.
@@ -58,7 +59,7 @@ considered valid based on the logic outlined above.
 npm install @material/tooltip
 ```
 
-### Styes
+### Styles
 
 ```scss
 @use "@material/tooltip/styles";
@@ -120,6 +121,28 @@ attribute.
 <button class="mdc-icon-button material-icons" aria-describedby="tooltip-id">favorite</button>
 ```
 
+If the information provided in the tooltip is duplicated from the anchor
+element's `aria-label`, the tooltip can be hidden from the screenreader by
+annotating the anchor element with `data-tooltip-id` instead of
+`aria-describedby`. Hiding the tooltip from the screenreader will prevent the
+same information from being announced twice (once from the `aria-label` and
+a second time from the tooltip).
+
+```html
+<button class="mdc-icon-button material-icons"
+        aria-label="toggle favorite"
+        data-tooltip-id="tooltip-id">
+  favorite
+</button>
+
+<div id="tooltip-id" class="mdc-tooltip" role="tooltip" aria-hidden="true">
+  <div class="mdc-tooltip__surface">
+    toggle favorite
+  </div>
+</div>
+```
+
+
 ## API
 
 ### Sass mixins
@@ -135,12 +158,14 @@ Mixin | Description
 `fill-color($color)` | Sets the fill color of the tooltip.
 `label-ink-color($color)` | Sets the color of the tooltip's label text.
 `shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to tooltip surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`word-break($value, $fallbackValue)` | Sets the `word-break` property for the tooltip label. This is used to force-wrap long tooltip labels that lack spaces and hyphens. The optional $fallbackValue param can be used for IE11 as it does not support the `break-word` option. Users for IE11 who do not want their tooltip labels to be broken in the middle of the word can use this mixin to remove the default IE11 behavior of `break-all`.
+`z-index($z-index)` | Sets the z-index of the tooltip.
 
 ### `MDCTooltip` Methods
 
 Method Signature | Description
 --- | ---
-`setTooltipPosition(pos: Position) => void` | Specify how the tooltip should be aligned with the anchor element. See [tooltip positioning](#tooltip-positioning) section for more information.
+`setTooltipPosition(position: {xPos?: XPosition, yPos?: YPosition}) => void` | Specify how the tooltip should be aligned with the anchor element. See [tooltip positioning](#tooltip-positioning) section for more information.
 `setAnchorBoundaryType(type: AnchorBoundaryType) => void` | Specify whether the anchor element is `bounded` (element has an identifiable boundary such as a button) or `unbounded` (element does not have a visually declared boundary such as a text link). Tooltips are placed closer to bounded anchor elements compared to unbounded anchor elements. If no type is specified, defaults to `bounded`
 
 ### Usage Within Frameworks

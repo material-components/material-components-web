@@ -38,7 +38,7 @@ jobs:
         run: |
           npx lerna version --conventional-commits --no-git-tag-version --no-push --yes
       - name: Create PR
-        uses: peter-evans/create-pull-request@v2
+        uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: Release"

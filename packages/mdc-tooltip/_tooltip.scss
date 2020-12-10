@@ -20,24 +20,40 @@
 // THE SOFTWARE.
 //
 
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/animation/functions" as animation-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/typography/mixins" as typography-mixins;
-@use "./tooltip-theme";
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/animation/functions' as animation-functions;
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl' as rtl;
+@use './tooltip-theme';
+@use '@material/typography/typography';
 
 $_padding-x: 4px;
 $_padding-y: 8px;
-$_max-width: 120px;
 $_min-width: 40px;
+$_max-height: 40vh;
+//LINT.IfChange(tooltip-dimensions)
+$_max-width: 200px;
+$_min-height: 24px;
+// LINT.ThenChange(constants.ts:tooltip-dimensions)
 $_label-type-scale: caption;
+$_line-height: 16px;
+
+// Rich Tooltip variables
+$_rich_corner_radius: 8px;
+$_rich_padding: 8px;
+$_content-margin-x: 8px;
+$_content-type-scale: body1;
+$_title-type-scale: subtitle2;
 
 $enter-duration: 150ms;
 $exit-duration: 75ms;
 
-@mixin core-styles($query: feature-targeting-functions.all()) {
-  $feat-structure: feature-targeting-functions.create-target($query, structure);
-  $feat-animation: feature-targeting-functions.create-target($query, animation);
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include tooltip-theme.shape-radius(
     tooltip-theme.$border-radius,
@@ -51,9 +67,15 @@ $exit-duration: 75ms;
     tooltip-theme.$background-color,
     $query: $query
   );
+  @include tooltip-theme.word-break(
+    tooltip-theme.$word-break-default,
+    tooltip-theme.$word-break-ie11-fallback,
+    $query: $query
+  );
+  @include tooltip-theme.z-index(tooltip-theme.$z-index, $query: $query);
 
   .mdc-tooltip {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       position: fixed;
       display: none;
     }
@@ -62,42 +84,117 @@ $exit-duration: 75ms;
   .mdc-tooltip--shown,
   .mdc-tooltip--showing,
   .mdc-tooltip--hide {
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
+    }
+
+    &.mdc-tooltip--rich {
+      @include elevation-mixins.elevation(2, $query: $query);
+      @include tooltip-theme.fill-color(
+        tooltip-theme.$rich-background-color,
+        $query: $query
+      );
+      @include tooltip-theme.rich-text-ink-color(
+        tooltip-theme.$rich-title-text-color,
+        tooltip-theme.$rich-content-text-color,
+        $query: $query
+      );
+      @include feature-targeting.targets($feat-structure) {
+        display: inline-block;
+        border-radius: $_rich_corner_radius;
+        padding: $_rich_padding $_rich_padding;
+      }
     }
   }
 
   .mdc-tooltip__surface {
-    @include typography-mixins.typography($_label-type-scale, $query: $query);
+    @include typography.typography(
+      $_label-type-scale,
+      $exclude-props: (line-height),
+      $query: $query
+    );
 
-    @include feature-targeting-mixins.targets($feat-structure) {
+    @include feature-targeting.targets($feat-structure) {
+      line-height: $_line-height;
       padding: $_padding-x $_padding-y;
       min-width: $_min-width;
       max-width: $_max-width;
-      text-align: center;
+      min-height: $_min-height;
+      max-height: $_max-height;
+      box-sizing: border-box;
+      overflow: hidden;
       transform: scale(0.8);
+      text-align: center;
       opacity: 0;
+      outline: 1px solid transparent;
+    }
+
+    .mdc-tooltip--rich & {
+      @include feature-targeting.targets($feat-structure) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    .mdc-tooltip--multiline & {
+      @include feature-targeting.targets($feat-structure) {
+        /* @noflip */
+        text-align: left;
+        @include rtl.rtl {
+          /* @noflip */
+          text-align: right;
+        }
+      }
     }
 
     .mdc-tooltip--shown & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         transform: scale(1);
         opacity: 1;
       }
+    }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+    .mdc-tooltip--showing-transition & {
+      @include feature-targeting.targets($feat-animation) {
         transition: animation-functions.enter(opacity, $enter-duration),
           animation-functions.enter(transform, $enter-duration);
       }
     }
 
     .mdc-tooltip--hide & {
-      @include feature-targeting-mixins.targets($feat-structure) {
+      @include feature-targeting.targets($feat-structure) {
         transform: scale(1);
       }
+    }
 
-      @include feature-targeting-mixins.targets($feat-animation) {
+    .mdc-tooltip--hide-transition & {
+      @include feature-targeting.targets($feat-animation) {
         transition: animation-functions.exit-permanent(opacity, $exit-duration);
+      }
+    }
+
+    .mdc-tooltip__title {
+      @include typography.text-baseline($top: 20px, $query: $query);
+      @include typography.typography(
+        $_title-type-scale,
+        $exclude-props: (line-height),
+        $query: $query
+      );
+      @include feature-targeting.targets($feat-structure) {
+        margin: 0 $_content-margin-x;
+      }
+    }
+
+    .mdc-tooltip__content {
+      @include typography.text-baseline($top: 24px, $query: $query);
+      @include typography.typography(
+        $_content-type-scale,
+        $exclude-props: (line-height),
+        $query: $query
+      );
+      @include feature-targeting.targets($feat-structure) {
+        margin: 0 $_content-margin-x 16px $_content-margin-x;
       }
     }
   }

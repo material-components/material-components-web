@@ -168,6 +168,7 @@ class JsBundleFactory {
       chunks: {
         animation: getAbsolutePath('/packages/mdc-animation/index.ts'),
         autoInit: getAbsolutePath('/packages/mdc-auto-init/index.ts'),
+        banner: getAbsolutePath('/packages/mdc-banner/index.ts'),
         base: getAbsolutePath('/packages/mdc-base/index.ts'),
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.ts'),
         chips: getAbsolutePath('/packages/mdc-chips/index.ts'),
@@ -187,6 +188,7 @@ class JsBundleFactory {
         notchedOutline: getAbsolutePath('/packages/mdc-notched-outline/index.ts'),
         radio: getAbsolutePath('/packages/mdc-radio/index.ts'),
         ripple: getAbsolutePath('/packages/mdc-ripple/index.ts'),
+        segmentedButton: getAbsolutePath('/packages/mdc-segmented-button/index.ts'),
         select: getAbsolutePath('/packages/mdc-select/index.ts'),
         slider: getAbsolutePath('/packages/mdc-slider/index.ts'),
         snackbar: getAbsolutePath('/packages/mdc-snackbar/index.ts'),

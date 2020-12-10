@@ -1,0 +1,56 @@
+@use '@material/theme/theme-color';
+@use '@material/density/variables' as density-variables;
+
+$ripple-target: '.mdc-evolution-list-item__ripple';
+$divider-color-on-light-bg: rgba(0, 0, 0, 0.12) !default;
+$divider-color-on-dark-bg: rgba(255, 255, 255, 0.2) !default;
+$content-disabled-opacity: theme-color.text-emphasis(disabled) !default;
+$content-disabled-color: on-surface !default;
+$content-selected-color: primary !default;
+$side-padding: 16px !default;
+
+$one-line-item-density-scale: density-variables.$default-scale !default;
+$two-line-item-density-scale: density-variables.$default-scale !default;
+$three-line-item-density-scale: density-variables.$default-scale !default;
+$one-line-item-density-config: (
+  height: (
+    default: 48px,
+    maximum: 48px,
+    minimum: 24px,
+  ),
+) !default;
+$one-line-item-tall-density-config: (
+  height: (
+    default: 56px,
+    maximum: 56px,
+    minimum: 40px,
+  ),
+) !default;
+$one-line-item-taller-density-config: (
+  height: (
+    default: 72px,
+    maximum: 72px,
+    minimum: 56px,
+  ),
+) !default;
+$two-line-item-density-config: (
+  height: (
+    default: 64px,
+    maximum: 64px,
+    minimum: 48px,
+  ),
+) !default;
+$two-line-item-tall-density-config: (
+  height: (
+    default: 72px,
+    maximum: 72px,
+    minimum: 56px,
+  ),
+) !default;
+$three-line-item-density-config: (
+  height: (
+    default: 88px,
+    maximum: 88px,
+    minimum: 56px,
+  ),
+) !default;

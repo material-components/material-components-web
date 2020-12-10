@@ -843,6 +843,17 @@ describe('MDCMenuSurfaceFoundation', () => {
       });
 
   testFoundation(
+      '#open Surface is positioned from right side in LTR when corner is flipped horizontally and anchor is wider than menu.',
+      ({foundation, mockAdapter}) => {
+        initAnchorLayout(mockAdapter, wideTopLeft);
+        foundation.flipCornerHorizontally();
+        foundation.open();
+        jasmine.clock().tick(1);  // Run to frame.
+        expect(mockAdapter.setTransformOrigin).toHaveBeenCalledWith('center top');
+        expect(mockAdapter.setPosition).toHaveBeenCalledWith({right: 0, top: 0});
+      });
+
+  testFoundation(
       '#open Surface is positioned from left side in LTR when corner is flipped horizontally and space is not available on the left side.',
       ({foundation, mockAdapter}) => {
         initAnchorLayout(mockAdapter, smallTopLeft);

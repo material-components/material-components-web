@@ -1,5 +1,5 @@
-@use "../mixins" as trailingaction;
-@use "@material/feature-targeting/functions" as feature-functions;
+@use '../mixins' as trailingaction;
+@use '@material/feature-targeting/functions' as feature-functions;
 
 @mixin test($query) {
   .test {

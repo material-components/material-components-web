@@ -21,870 +21,1319 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '../../mdc-animation/index';
-import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
+import {createMouseEvent} from '../../../testing/dom/events';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {cssClasses, numbers, strings} from '../constants';
+import {attributes, cssClasses, numbers} from '../constants';
 import {MDCSliderFoundation} from '../foundation';
-
-const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
+import {Thumb, TickMark} from '../types';
 
 describe('MDCSliderFoundation', () => {
   setUpMdcTestEnvironment();
 
-  it('exports cssClasses', () => {
-    expect(MDCSliderFoundation.cssClasses).toEqual(cssClasses);
+  describe('#init sets values based on DOM', () => {
+    it('sets min, max, value based on aria attributes', () => {
+      const {foundation} = setUpAndInit({min: 0, max: 100, value: 50.5});
+      expect(foundation.getMin()).toBe(0);
+      expect(foundation.getMax()).toBe(100);
+      expect(foundation.getValue()).toBe(50.5);
+    });
+
+    it('range slider: sets min, max, value, valueStart based on aria attributes',
+       () => {
+         const {foundation} = setUpAndInit(
+             {min: -20, max: 20, valueStart: -10, value: -5, isRange: true});
+         expect(foundation.getMin()).toBe(-20);
+         expect(foundation.getMax()).toBe(20);
+         expect(foundation.getValue()).toBe(-5);
+         expect(foundation.getValueStart()).toBe(-10);
+       });
+
+    it('sets step based on step attribute', () => {
+      const {foundation} =
+          setUpAndInit({value: 50.5, step: 5, isDiscrete: true});
+      foundation.init();
+
+      expect(foundation.getStep()).toBe(5);
+    });
+
+    it('throws error if attribute value is null', () => {
+      const {foundation, mockAdapter} = setUpTest();
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MIN, Thumb.END)
+          .and.returnValue(null);
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MAX, Thumb.END)
+          .and.returnValue('100');
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
+          .and.returnValue('50.5');
+
+      expect(() => foundation.init()).toThrowError(/must be non-null/);
+    });
+
+    it('throws error if attribute value is NaN', () => {
+      const {foundation, mockAdapter} = setUpTest();
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MIN, Thumb.END)
+          .and.returnValue('0');
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MAX, Thumb.END)
+          .and.returnValue('foo');
+      mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
+          .and.returnValue('50.5');
+
+      expect(() => foundation.init()).toThrowError(/must be a number/);
+    });
+
+    it('throws error if min > max', () => {
+      expect(() => setUpAndInit({value: 0.5, min: 1, max: 0}))
+          .toThrowError(/min must be strictly less than max/);
+    });
+
+    it('throws error if min == max', () => {
+      expect(() => setUpAndInit({value: 0, min: 0, max: 0}))
+          .toThrowError(/min must be strictly less than max/);
+    });
+
+    it('throws error if value < min', () => {
+      expect(() => setUpAndInit({value: 5, min: 10, max: 50}))
+          .toThrowError(/value must be in \[min, max\] range/);
+    });
+
+    it('throws error if value > max', () => {
+      expect(() => setUpAndInit({value: 55, min: 10, max: 50}))
+          .toThrowError(/value must be in \[min, max\] range/);
+    });
+
+    it('throws error if step <= 0', () => {
+      expect(() => setUpAndInit({value: 20, isDiscrete: true, step: -5}))
+          .toThrowError(/step must be a positive number/);
+    });
+
+    it('throws error if valueStart < min', () => {
+      expect(
+          () => setUpAndInit(
+              {value: 20, valueStart: 25, min: 22, max: 30, isRange: true}))
+          .toThrowError(/values must be in \[min, max\] range/);
+    });
+
+    it('throws error if valueStart > max', () => {
+      expect(
+          () => setUpAndInit(
+              {value: 10, valueStart: 25, min: 0, max: 23, isRange: true}))
+          .toThrowError(/values must be in \[min, max\] range/);
+    });
+
+    it('throws error if start value > end value', () => {
+      expect(() => setUpAndInit({value: 10, valueStart: 25, isRange: true}))
+          .toThrowError(/start value must be <= end value/);
+    });
   });
 
-  it('exports strings', () => {
-    expect(MDCSliderFoundation.strings).toEqual(strings);
+  describe('#layout', () => {
+    it('initial layout removes thumb styles, and subsequent layouts ' +
+           'do not',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({isRange: true});
+         expect(mockAdapter.removeThumbStyleProperty)
+             .toHaveBeenCalledWith('left', Thumb.END);
+         expect(mockAdapter.removeThumbStyleProperty)
+             .toHaveBeenCalledWith('left', Thumb.START);
+
+         mockAdapter.removeThumbStyleProperty.calls.reset();
+         foundation.layout();
+         jasmine.clock().tick(1);
+         expect(mockAdapter.removeThumbStyleProperty)
+             .not.toHaveBeenCalledWith('left', Thumb.END);
+         expect(mockAdapter.removeThumbStyleProperty)
+             .not.toHaveBeenCalledWith('left', Thumb.START);
+       });
+
+    it('initial layout resets thumb/track animations, and subsequent layouts ' +
+           'do not',
+       () => {
+         const {foundation, mockAdapter} =
+             setUpAndInit({isRange: true, isDiscrete: true});
+
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transition', 'all 0s ease 0s', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transition', 'all 0s ease 0s', Thumb.START);
+         expect(mockAdapter.setTrackActiveStyleProperty)
+             .toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+         jasmine.clock().tick(1);  // Tick for RAF.
+         // Newly added inline styles should be removed in next frame.
+         expect(mockAdapter.removeThumbStyleProperty)
+             .toHaveBeenCalledWith('transition', Thumb.END);
+         expect(mockAdapter.removeThumbStyleProperty)
+             .toHaveBeenCalledWith('transition', Thumb.START);
+         expect(mockAdapter.removeTrackActiveStyleProperty)
+             .toHaveBeenCalledWith('transition');
+
+         mockAdapter.setThumbStyleProperty.calls.reset();
+         mockAdapter.setTrackActiveStyleProperty.calls.reset();
+
+         foundation.layout();
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(mockAdapter.setThumbStyleProperty)
+             .not.toHaveBeenCalledWith(
+                 'transition', 'all 0s ease 0s', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .not.toHaveBeenCalledWith(
+                 'transition', 'all 0s ease 0s', Thumb.START);
+         expect(mockAdapter.setTrackActiveStyleProperty)
+             .not.toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+       });
+
+    it('initial layout does not reset thumb/track animations for continuous sliders',
+       () => {
+         const {mockAdapter} = setUpAndInit({isRange: true, isDiscrete: false});
+         expect(mockAdapter.setThumbStyleProperty)
+             .not.toHaveBeenCalledWith(
+                 'transition', 'all 0s ease 0s', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .not.toHaveBeenCalledWith(
+                 'transition', 'all 0s ease 0s', Thumb.START);
+         expect(mockAdapter.setTrackActiveStyleProperty)
+             .not.toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+       });
+
+    it('RTL: initial layout removes thumb styles', () => {
+      const {mockAdapter} = setUpAndInit({isRange: true, isRTL: true});
+      expect(mockAdapter.removeThumbStyleProperty)
+          .toHaveBeenCalledWith('right', Thumb.END);
+      expect(mockAdapter.removeThumbStyleProperty)
+          .toHaveBeenCalledWith('right', Thumb.START);
+    });
+
+    it('`skipUpdateUI` skips updating the UI', () => {
+      const {foundation, mockAdapter} = setUpAndInit({isRange: true});
+      mockAdapter.setThumbStyleProperty.calls.reset();
+      mockAdapter.setTrackActiveStyleProperty.calls.reset();
+
+      foundation.layout({skipUpdateUI: true});
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
+      expect(mockAdapter.setTrackActiveStyleProperty).not.toHaveBeenCalled();
+    });
+
+    it('#layout with no thumbs updates both thumbs\' value indicators', () => {
+      const {foundation, mockAdapter} = setUpAndInit(
+          {isRange: true, isDiscrete: true, valueStart: 5, value: 10});
+
+      foundation.layout();
+      expect(mockAdapter.setValueIndicatorText)
+          .toHaveBeenCalledWith(10, Thumb.END);
+      expect(mockAdapter.setValueIndicatorText)
+          .toHaveBeenCalledWith(5, Thumb.START);
+    });
   });
 
-  it('exports numbers', () => {
-    expect(MDCSliderFoundation.numbers).toEqual(numbers);
-  });
+  describe('#destroy', () => {
+    it('Pointer events: Event listeners are deregistered when foundation is ' +
+           'destroyed.',
+       () => {
+         const supportsPointerEvents =
+             MDCSliderFoundation.SUPPORTS_POINTER_EVENTS;
+         MDCSliderFoundation.SUPPORTS_POINTER_EVENTS = true;
+         const {foundation, mockAdapter} = setUpAndInit();
 
-  it('default adapter returns a complete adapter implementation', () => {
-    verifyDefaultAdapter(MDCSliderFoundation, [
-      'hasClass',
-      'addClass',
-      'removeClass',
-      'getAttribute',
-      'setAttribute',
-      'removeAttribute',
-      'computeBoundingRect',
-      'getTabIndex',
-      'registerInteractionHandler',
-      'deregisterInteractionHandler',
-      'registerThumbContainerInteractionHandler',
-      'deregisterThumbContainerInteractionHandler',
-      'registerBodyInteractionHandler',
-      'deregisterBodyInteractionHandler',
-      'registerResizeHandler',
-      'deregisterResizeHandler',
-      'notifyInput',
-      'notifyChange',
-      'setThumbContainerStyleProperty',
-      'setTrackStyleProperty',
-      'setMarkerValue',
-      'setTrackMarkers',
-      'isRTL',
-    ]);
-  });
+         foundation.destroy();
 
-  const setupTest =
-      () => {
-        const {foundation, mockAdapter} =
-            setUpFoundationTest(MDCSliderFoundation);
-        return {foundation, mockAdapter};
-      }
+         expect(mockAdapter.deregisterEventHandler)
+             .toHaveBeenCalledWith('pointerdown', jasmine.any(Function));
+         expect(mockAdapter.deregisterEventHandler)
+             .toHaveBeenCalledWith('pointerup', jasmine.any(Function));
 
-  it('#constructor sets the default slider value to 0', () => {
-    const {foundation} = setupTest();
-    expect(foundation.getValue()).toEqual(0);
-  });
+         const thumbEvents = ['mouseenter', 'mouseleave'];
+         for (const event of thumbEvents) {
+           expect(mockAdapter.deregisterThumbEventHandler)
+               .toHaveBeenCalledWith(Thumb.END, event, jasmine.any(Function));
+         }
 
-  it('#constructor sets the default slider max to 100', () => {
-    const {foundation} = setupTest();
-    expect(foundation.getMax()).toEqual(100);
-  });
+         // Reset to original value.
+         MDCSliderFoundation.SUPPORTS_POINTER_EVENTS = supportsPointerEvents;
+       });
 
-  it('#constructor sets the default slider min to 0', () => {
-    const {foundation} = setupTest();
-    expect(foundation.getMin()).toEqual(0);
-  });
+    it('Pointer events not supported: mousedown/touchstart listeners are ' +
+           'deregistered when foundation is destroyed.',
+       () => {
+         const supportsPointerEvents =
+             MDCSliderFoundation.SUPPORTS_POINTER_EVENTS;
+         MDCSliderFoundation.SUPPORTS_POINTER_EVENTS = false;
+         const {foundation, mockAdapter} = setUpAndInit();
 
-  it('#constructor sets the default slider step to 0 (no step)', () => {
-    const {foundation} = setupTest();
-    expect(foundation.getStep()).toEqual(0);
-  });
+         foundation.destroy();
 
-  it('#constructor sets the default disabled state to enabled', () => {
-    const {foundation} = setupTest();
-    expect(foundation.isDisabled()).toBe(false);
-  });
+         expect(mockAdapter.deregisterEventHandler)
+             .toHaveBeenCalledWith('mousedown', jasmine.any(Function));
+         expect(mockAdapter.deregisterEventHandler)
+             .toHaveBeenCalledWith('touchstart', jasmine.any(Function));
 
-  it('#init registers all necessary event handlers for the component', () => {
-    const {foundation, mockAdapter} = setupTest();
-    const isA = jasmine.any;
+         // Reset to original value.
+         MDCSliderFoundation.SUPPORTS_POINTER_EVENTS = supportsPointerEvents;
+       });
 
-    mockAdapter.computeBoundingRect.and.returnValue({width: 0, left: 0});
-    foundation.init();
-
-    const hasPointer = !!window.PointerEvent;
-
-    if (hasPointer) {
-      expect(mockAdapter.registerInteractionHandler)
-          .toHaveBeenCalledWith('pointerdown', isA(Function));
-      expect(mockAdapter.registerThumbContainerInteractionHandler)
-          .toHaveBeenCalledWith('pointerdown', isA(Function));
-    } else {
-      expect(mockAdapter.registerInteractionHandler)
-          .toHaveBeenCalledWith('mousedown', isA(Function));
-      expect(mockAdapter.registerInteractionHandler)
-          .toHaveBeenCalledWith('touchstart', isA(Function));
-      expect(mockAdapter.registerThumbContainerInteractionHandler)
-          .toHaveBeenCalledWith('mousedown', isA(Function));
-      expect(mockAdapter.registerThumbContainerInteractionHandler)
-          .toHaveBeenCalledWith('touchstart', isA(Function));
-    }
-
-    expect(mockAdapter.registerInteractionHandler)
-        .toHaveBeenCalledWith('keydown', isA(Function));
-    expect(mockAdapter.registerInteractionHandler)
-        .toHaveBeenCalledWith('focus', isA(Function));
-    expect(mockAdapter.registerInteractionHandler)
-        .toHaveBeenCalledWith('blur', isA(Function));
-    expect(mockAdapter.registerResizeHandler)
-        .toHaveBeenCalledWith(isA(Function));
-  });
-
-  it('#init disables touch action if pointerevents are supported', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({width: 0, left: 0});
-    foundation.init();
-
-    const hasPointer = !!window.PointerEvent;
-
-    if (hasPointer) {
-      expect(mockAdapter.addClass)
-          .toHaveBeenCalledWith(cssClasses.DISABLE_TOUCH_ACTION);
-    } else {
-      expect(mockAdapter.addClass)
-          .not.toHaveBeenCalledWith(cssClasses.DISABLE_TOUCH_ACTION);
-    }
-  });
-
-  it('#init checks if slider is discrete and if display track markers', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({width: 100, left: 200});
-    foundation.init();
-
-    jasmine.clock().tick(1);
-
-    expect(mockAdapter.hasClass).toHaveBeenCalledWith(cssClasses.IS_DISCRETE);
-    expect(mockAdapter.hasClass)
-        .toHaveBeenCalledWith(cssClasses.HAS_TRACK_MARKER);
-  });
-
-  it('#init sets step to one if slider is discrete but step is zero', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({width: 100, left: 200});
-    mockAdapter.hasClass.withArgs(cssClasses.IS_DISCRETE).and.returnValue(true);
-    foundation.init();
-
-    jasmine.clock().tick(1);
-
-    expect(foundation.getStep()).toEqual(1);
-  });
-
-  it('#init performs an initial layout of the component', () => {
-    const {foundation, mockAdapter} = setupTest();
-    const anything = jasmine.anything;
-
-    mockAdapter.computeBoundingRect.and.returnValue({width: 100, left: 200});
-    foundation.init();
-
-    jasmine.clock().tick(1);
-
-    expect(mockAdapter.setThumbContainerStyleProperty)
-        .toHaveBeenCalledWith(anything(), anything());
-    expect(mockAdapter.setTrackStyleProperty)
-        .toHaveBeenCalledWith(anything(), anything());
-  });
-
-  it('#destroy deregisters all component event handlers registered during init()',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       const isA = jasmine.any;
+    it('Resize listener is deregistered when foundation is destroyed', () => {
+       const {foundation, mockAdapter} = setUpAndInit();
 
        foundation.destroy();
 
-       const hasPointer = !!window.PointerEvent;
-
-       if (hasPointer) {
-         expect(mockAdapter.deregisterInteractionHandler)
-           .toHaveBeenCalledWith('pointerdown', isA(Function));
-         expect(mockAdapter.deregisterThumbContainerInteractionHandler)
-           .toHaveBeenCalledWith('pointerdown', isA(Function));
-       } else {
-         expect(mockAdapter.deregisterInteractionHandler)
-             .toHaveBeenCalledWith('mousedown', isA(Function));
-         expect(mockAdapter.deregisterInteractionHandler)
-             .toHaveBeenCalledWith('touchstart', isA(Function));
-         expect(mockAdapter.deregisterThumbContainerInteractionHandler)
-             .toHaveBeenCalledWith('mousedown', isA(Function));
-         expect(mockAdapter.deregisterThumbContainerInteractionHandler)
-             .toHaveBeenCalledWith('touchstart', isA(Function));
-       }
-
-       expect(mockAdapter.deregisterInteractionHandler)
-           .toHaveBeenCalledWith('keydown', isA(Function));
-       expect(mockAdapter.deregisterInteractionHandler)
-           .toHaveBeenCalledWith('focus', isA(Function));
-       expect(mockAdapter.deregisterInteractionHandler)
-           .toHaveBeenCalledWith('blur', isA(Function));
-       expect(mockAdapter.deregisterResizeHandler)
-           .toHaveBeenCalledWith(isA(Function));
-     });
-
-  it('#setupTrackMarker sets correct number of markers to discrete slider with markers',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       mockAdapter.hasClass.withArgs(cssClasses.IS_DISCRETE)
-           .and.returnValue(true);
-       mockAdapter.hasClass.withArgs(cssClasses.HAS_TRACK_MARKER)
-           .and.returnValue(true);
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setMax(100);
-       foundation.setMin(0);
-       foundation.setStep(10);
-       foundation.setupTrackMarker();
-
-       expect(mockAdapter.setTrackMarkers).toHaveBeenCalledWith(10, 100, 0);
-     });
-
-  it('#setupTrackMarker does execute if it is continuous slider', () => {
-    const {foundation, mockAdapter} = setupTest();
-    const isA = jasmine.any;
-
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-    mockAdapter.hasClass.withArgs(cssClasses.IS_DISCRETE)
-        .and.returnValue(false);
-    mockAdapter.hasClass.withArgs(cssClasses.HAS_TRACK_MARKER)
-        .and.returnValue(true);
-    foundation.init();
-    jasmine.clock().tick(1);
-
-    foundation.setMax(100);
-    foundation.setMin(0);
-    foundation.setStep(10);
-    foundation.setupTrackMarker();
-
-    expect(mockAdapter.setTrackMarkers)
-        .not.toHaveBeenCalledWith(isA(Number), isA(Number), isA(Number));
+       expect(mockAdapter.deregisterWindowEventHandler)
+           .toHaveBeenCalledWith('resize', jasmine.any(Function));
+    });
   });
 
-  it('#setupTrackMarker does execute if discrete slider does not display markers',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       const isA = jasmine.any;
+  describe('Value updates via user events', () => {
+    it('throws error if move event occurs with no preceding down event', () => {
+      const {foundation} = setUpAndInit();
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       mockAdapter.hasClass.withArgs(cssClasses.IS_DISCRETE)
-           .and.returnValue(true);
-       mockAdapter.hasClass.withArgs(cssClasses.HAS_TRACK_MARKER)
-           .and.returnValue(false);
-       foundation.init();
-       jasmine.clock().tick(1);
+      expect(() => {
+        foundation.handleMove(createMouseEvent('mousemove', {
+          clientX: 80,
+        }));
+      }).toThrowError();
+    });
 
-       foundation.setMax(100);
-       foundation.setMin(0);
-       foundation.setStep(10);
-       foundation.setupTrackMarker();
+    it('sets slider value to updated value', () => {
+      const left = 10;
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 50,
+        rect: {
+          left,
+          right: 110,
+          width: 100,
+        }
+      });
 
-       expect(mockAdapter.setTrackMarkers)
-           .not.toHaveBeenCalledWith(isA(Number), isA(Number), isA(Number));
-     });
+      const value = 60;
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: left + value,
+      }));
+      foundation.handleMove(createMouseEvent('mousemove', {
+        clientX: left + value,
+      }));
+      expect(foundation.getValue()).toBe(value);
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              'transform', `translateX(${value}px)`, Thumb.END);
+      expect(mockAdapter.setTrackActiveStyleProperty)
+          .toHaveBeenCalledWith('transform', `scaleX(${value / 100})`);
+    });
 
-  it('#layout re-computes the bounding rect for the component on each call',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       let numComputations = 0;
+    it('clips value to min value', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        min: 10,
+        max: 100,
+        value: 50,
+        rect: {
+          left: 10,
+          right: 110,
+          width: 100,
+        }
+      });
 
-       // NOTE: Using a counter for numComputations here since we do indeed need
-       // to stub getComputedBoundingRect(), but verifying a stub gives a
-       // warning from testdouble (rightfully so).
-       mockAdapter.computeBoundingRect.and.callFake(() => {
-         numComputations++;
-         return /* dummy value */ {};
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 9,
+      }));
+      foundation.handleMove(createMouseEvent('mousemove', {
+        clientX: 9,
+      }));
+      expect(foundation.getValue()).toBe(10);
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', `translateX(${0}px)`, Thumb.END);
+      expect(mockAdapter.setTrackActiveStyleProperty)
+          .toHaveBeenCalledWith('transform', `scaleX(${0})`);
+    });
+
+    it('clips value to max value', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 50,
+      });
+
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 101,
+      }));
+      foundation.handleMove(createMouseEvent('mousemove', {
+        clientX: 101,
+      }));
+      expect(foundation.getValue()).toBe(100);
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', `translateX(${100}px)`, Thumb.END);
+      expect(mockAdapter.setTrackActiveStyleProperty)
+          .toHaveBeenCalledWith('transform', `scaleX(${1})`);
+    });
+
+    it('quantizes value based on step', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 50,
+        isDiscrete: true,
+        step: 5,
+      });
+
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 58,
+      }));
+      expect(foundation.getValue()).toBe(60);
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', `translateX(${60}px)`, Thumb.END);
+      expect(mockAdapter.setTrackActiveStyleProperty)
+          .toHaveBeenCalledWith('transform', `scaleX(${0.6})`);
+    });
+
+    it('down event does not update value if value is inside the range', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 10,
+        value: 50,
+        isRange: true,
+      });
+
+      // Reset UI update calls from initialization, so we can test
+      // that the next #handleDown call invokes no UI updates.
+      mockAdapter.setThumbStyleProperty.calls.reset();
+      mockAdapter.setTrackActiveStyleProperty.calls.reset();
+
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 40,
+      }));
+      jasmine.clock().tick(1);  // Tick for RAF.
+
+      expect(foundation.getValueStart()).toBe(10);
+      expect(foundation.getValue()).toBe(50);
+      expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
+      expect(mockAdapter.setTrackActiveStyleProperty).not.toHaveBeenCalled();
+    });
+
+    it('move event after down event (on end thumb) updates end thumb value ' +
+       'inside the range',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 10,
+           value: 50,
+           isRange: true,
+         });
+
+         // Down event on end thumb.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 48,
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+         // Move end thumb towards middle of the range.
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 25,
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValueStart()).toBe(10);
+         expect(foundation.getValue()).toBe(25);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transform', `translateX(25px)`, Thumb.END);
        });
 
-       foundation.layout();
-       foundation.layout();
+    it('moves the start thumb if value < start value', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 10,
+        value: 50,
+        isRange: true,
+      });
 
-       expect(numComputations).toEqual(2);
-     });
+      // Down event on start thumb.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 5,
+      }));
+      jasmine.clock().tick(1);  // Tick for RAF.
 
-  it('#layout re-updates the UI for the current value', () => {
-    const {foundation, mockAdapter} = setupTest();
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 50});
+      expect(foundation.getValueStart()).toBe(5);
+      expect(foundation.getValue()).toBe(50);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', `translateX(5px)`, Thumb.START);
+    });
 
-    foundation.init();
-    jasmine.clock().tick(1);
+    it('moves the end thumb if value > end value', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 10,
+        value: 50,
+        isRange: true,
+      });
 
-    const halfMaxValue = 50;
-    foundation.setValue(halfMaxValue);
-    jasmine.clock().tick(1);
-    // Sanity check
-    expect(mockAdapter.setThumbContainerStyleProperty)
-        .toHaveBeenCalledWith(
-            TRANSFORM_PROP, 'translateX(25px) translateX(-50%)');
+      // Down event on end thumb.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 70,
+      }));
+      jasmine.clock().tick(1);  // Tick for RAF.
 
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-    foundation.layout();
-    jasmine.clock().tick(1);
-    expect(mockAdapter.setThumbContainerStyleProperty)
-        .toHaveBeenCalledWith(
-            TRANSFORM_PROP, 'translateX(50px) translateX(-50%)');
+      expect(foundation.getValueStart()).toBe(10);
+      expect(foundation.getValue()).toBe(70);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', `translateX(70px)`, Thumb.END);
+    });
+
+    it('does not move the start thumb to be greater than the end thumb', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 45,
+        value: 53,
+        isRange: true,
+      });
+
+      // Down event on start thumb.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 45,
+      }));
+      // Move event to a clientX greater than end thumb.
+      foundation.handleMove(createMouseEvent('mousemove', {
+        clientX: 60,
+      }));
+
+      jasmine.clock().tick(1);  // Tick for RAF.
+
+      expect(foundation.getValueStart()).toBe(53);
+      expect(foundation.getValue()).toBe(53);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', `translateX(53px)`, Thumb.START);
+    });
+
+    it('does not move the end thumb to be less than than the start thumb',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 45,
+           value: 80,
+           isRange: true,
+         });
+
+         // Down event on end thumb.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 80,
+         }));
+         // Move event to a clientX less than start thumb.
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 40,
+         }));
+
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValueStart()).toBe(45);
+         expect(foundation.getValue()).toBe(45);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transform', `translateX(45px)`, Thumb.END);
+       });
+
+    it('does not update UI if start value is updated to the same value', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 40,
+        value: 80,
+        isRange: true,
+        isDiscrete: true,
+        step: 10,
+      });
+
+      // Reset UI update calls from initialization, so we can test
+      // that the next #handleDown invokes no calls.
+      mockAdapter.setThumbStyleProperty.calls.reset();
+
+      // Down event near start value.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 37,
+      }));
+
+      jasmine.clock().tick(1);  // Tick for RAF.
+
+      expect(foundation.getValueStart()).toBe(40);
+      expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
+    });
+
+    it('does not update UI if end value is updated to the same value', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 40,
+        value: 80,
+        isRange: true,
+        isDiscrete: true,
+        step: 10,
+      });
+
+      // Reset UI update calls from initialization, so we can test
+      // that the next #handleDown invokes no calls.
+      mockAdapter.setThumbStyleProperty.calls.reset();
+
+      // Down event near end value.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 84.5,
+      }));
+
+      jasmine.clock().tick(1);  // Tick for RAF.
+
+      expect(foundation.getValue()).toBe(80);
+      expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
+    });
+
+    it('RTL, single point slider: updates track/thumb position with ' +
+           'reversed values',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           value: 50,
+           isRTL: true,
+         });
+
+         // Down event on end thumb.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 10,  // In RTL, maps to value update of 90.
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValue()).toBe(90);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transform', `translateX(10px)`, Thumb.END);
+       });
+
+    it('RTL, range slider: updates track/thumb position with reversed values',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 10,
+           value: 50,
+           isRange: true,
+           isRTL: true,
+         });
+
+         // Down event on end thumb.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 25,  // In RTL, maps to value update of 75.
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValue()).toBe(75);
+         expect(mockAdapter.setTrackActiveStyleProperty)
+             .toHaveBeenCalledWith('transform-origin', 'right');
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transform', `translateX(25px)`, Thumb.END);
+       });
   });
 
-  it('#getValue/#setValue retrieves / sets the max value, respectively', () => {
-    const {foundation, mockAdapter} = setupTest();
+  describe('#get/setValue', () => {
+    it('throws error if #get/setValueStart is invoked on single point slider',
+       () => {
+         const {foundation} = setUpAndInit();
 
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-    foundation.init();
-    jasmine.clock().tick(1);
+         expect(() => {
+           foundation.getValueStart();
+         }).toThrowError(/only applicable for range sliders/);
+         expect(() => {
+           foundation.setValueStart(10);
+         }).toThrowError(/only applicable for range sliders/);
+       });
 
-    foundation.setValue(10);
-    expect(foundation.getValue()).toEqual(10);
+    it('throws error if #setValue/setValueStart is set to invalid number',
+       () => {
+         const {foundation} =
+             setUpAndInit({isRange: true, valueStart: 10, value: 50});
+
+         expect(() => {
+           foundation.setValueStart(51);
+         }).toThrowError(/must be <= end thumb value/);
+         expect(() => {
+           foundation.setValue(9);
+         }).toThrowError(/must be >= start thumb value/);
+       });
+
+    it('single point slider: #setValue updates value and UI', () => {
+      const {foundation, mockAdapter} =
+          setUpAndInit({isDiscrete: true, value: 33});
+
+      foundation.setValue(64);
+      expect(foundation.getValue()).toBe(64);
+
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', 'translateX(64px)', Thumb.END);
+      expect(mockAdapter.setTrackActiveStyleProperty)
+          .toHaveBeenCalledWith('transform', 'scaleX(0.64)');
+    });
+
+    it('range: #setValue updates end thumb value and UI', () => {
+      const {foundation, mockAdapter} = setUpAndInit(
+          {isDiscrete: true, valueStart: 10, value: 40, isRange: true});
+
+      foundation.setValue(64);
+      expect(foundation.getValue()).toBe(64);
+
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', 'translateX(64px)', Thumb.END);
+    });
+
+    it('range: #setValueStart updates end thumb value and UI', () => {
+      const {foundation, mockAdapter} = setUpAndInit(
+          {isDiscrete: true, valueStart: 10, value: 40, isRange: true});
+
+      foundation.setValueStart(3);
+      expect(foundation.getValueStart()).toBe(3);
+
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', 'translateX(3px)', Thumb.START);
+    });
   });
 
-  it('#getValue returns the current value of the slider (0 by default)', () => {
-    const {foundation} = setupTest();
-    expect(foundation.getValue()).toEqual(0);
+  describe('input synchronization: ', () => {
+    it('updates input value attribute and property on value update', () => {
+      const {foundation, mockAdapter} = setUpAndInit(
+          {isDiscrete: true, valueStart: 10, value: 40, isRange: true});
+
+      mockAdapter.getInputValue.withArgs(Thumb.START).and.returnValue(10);
+      foundation.setValueStart(3);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_VALUE, '3', Thumb.START);
+      expect(mockAdapter.setInputValue).toHaveBeenCalledWith('3', Thumb.START);
+      // The min attribute for end input should also be updated.
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_MIN, '3', Thumb.END);
+
+      mockAdapter.getInputValue.withArgs(Thumb.END).and.returnValue(40);
+      foundation.setValue(30);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_VALUE, '30', Thumb.END);
+      expect(mockAdapter.setInputValue).toHaveBeenCalledWith('30', Thumb.END);
+      // The max attribute for start input should also be updated.
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_MAX, '30', Thumb.START);
+    });
+
+    it('updates values on input change', () => {
+      const {foundation, mockAdapter} =
+          setUpAndInit({valueStart: 10, value: 40, isRange: true});
+
+      mockAdapter.getInputValue.withArgs(Thumb.START).and.returnValue(5);
+      foundation.handleInputChange(Thumb.START);
+      expect(foundation.getValueStart()).toBe(5);
+
+      mockAdapter.getInputValue.withArgs(Thumb.END).and.returnValue(45);
+      foundation.handleInputChange(Thumb.END);
+      expect(foundation.getValue()).toBe(45);
+    });
+
+    it('focuses input on thumb down event', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 50,
+      });
+
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 20,
+      }));
+      expect(mockAdapter.focusInput).toHaveBeenCalledWith(Thumb.END);
+    });
   });
 
-  it('#setValue does nothing if the value being set is the same as the current value',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
+  describe('value indicator', () => {
+    it('does not update value indicator for continuous slider', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 50,
+      });
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       foundation.init();
-       jasmine.clock().tick(1);
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 20,
+      }));
+      expect(mockAdapter.setValueIndicatorText).not.toHaveBeenCalled();
+    });
 
-       foundation.setValue(50);
-       jasmine.clock().tick(1);
+    it('updates value indicator for single point slider', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 50,
+        isDiscrete: true,
+        step: 5,
+      });
 
-       foundation.setValue(50);
-       jasmine.clock().tick(1);
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 20,
+      }));
+      expect(mockAdapter.setValueIndicatorText)
+          .toHaveBeenCalledWith(20, Thumb.END);
+    });
 
-       expect(mockAdapter.setThumbContainerStyleProperty)
-           .toHaveBeenCalledWith(
-               TRANSFORM_PROP, 'translateX(50px) translateX(-50%)');
-     });
+    it('updates value indicator for range slider', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 30,
+        value: 50,
+        isDiscrete: true,
+        step: 5,
+        isRange: true,
+      });
 
-  it('#setValue quantizes the given value to the nearest step value when a step is set',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
+      // Update start thumb value.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 20,
+      }));
+      expect(mockAdapter.setValueIndicatorText)
+          .toHaveBeenCalledWith(20, Thumb.START);
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       foundation.init();
-       jasmine.clock().tick(1);
+      // Update end thumb value.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 75,
+      }));
+      expect(mockAdapter.setValueIndicatorText)
+          .toHaveBeenCalledWith(75, Thumb.END);
+    });
 
-       foundation.setStep(1);
+    it('range slider: adds THUMB_WITH_INDICATOR class to both thumbs on ' +
+           'thumb mouseenter',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           isDiscrete: true,
+           isRange: true,
+         });
 
-       foundation.setValue(2.4);
-       expect(foundation.getValue()).toEqual(2);
+         foundation.handleThumbMouseenter(createMouseEvent('mouseenter'));
+         expect(mockAdapter.addThumbClass)
+             .toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.addThumbClass)
+             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+       });
 
-       foundation.setValue(2.6);
-       expect(foundation.getValue()).toEqual(3);
-     });
+    it('range slider: removes THUMB_WITH_INDICATOR class from both thumbs ' +
+           'on thumb mouseleave',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           isDiscrete: true,
+           isRange: true,
+         });
 
-  it('#setValue does not quantize the given value if the value is set to the minimum value',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
+         mockAdapter.isInputFocused.withArgs(Thumb.START)
+             .and.returnValue(false);
+         mockAdapter.isInputFocused.withArgs(Thumb.END).and.returnValue(false);
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       foundation.init();
-       jasmine.clock().tick(1);
+         foundation.handleThumbMouseleave(createMouseEvent('mouseleave'));
+         expect(mockAdapter.removeThumbClass)
+             .toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.removeThumbClass)
+             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+       });
 
-       foundation.setMin(5);
-       foundation.setStep(10);
-       foundation.setValue(5);
+    it('range slider: does not remove THUMB_WITH_INDICATOR class on' +
+           'thumb mouseleave if an input is still focused',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           isDiscrete: true,
+           isRange: true,
+         });
 
-       expect(foundation.getValue()).toEqual(5);
-     });
+         mockAdapter.isInputFocused.withArgs(Thumb.END).and.returnValue(true);
 
-  it('#setValue does not quantize the given value if the value is set to the maximum value',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setMax(102);
-       foundation.setStep(20);
-       foundation.setValue(102);
-
-       expect(foundation.getValue()).toEqual(102);
-     });
-
-  it('#setValue clamps the value to the minimum value if given value is less than the minimum',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setValue(foundation.getMin() - 1);
-
-       expect(foundation.getValue()).toEqual(foundation.getMin());
-     });
-
-  it('#setValue clamps the value to the maximum value if given value is less than the maximum',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setValue((foundation.getMax() as number) + 1);
-       expect(foundation.getValue()).toEqual(foundation.getMax());
-     });
-
-  it('#setValue updates "aria-valuenow" with the current value', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-    foundation.init();
-    jasmine.clock().tick(1);
-
-    foundation.setValue(10);
-
-    expect(mockAdapter.setAttribute)
-        .toHaveBeenCalledWith('aria-valuenow', '10');
+         foundation.handleThumbMouseleave(createMouseEvent('mouseleave'));
+         expect(mockAdapter.removeThumbClass)
+             .not.toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.removeThumbClass)
+             .not.toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+       });
   });
 
-  it('#setValue updates the slider thumb to represent the current value of the slider',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
+  describe('tick marks', () => {
+    it('single point slider: sets correct number of tick marks for value update',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           value: 50,
+           isDiscrete: true,
+           step: 10,
+           hasTickMarks: true,
+         });
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       foundation.init();
-       jasmine.clock().tick(1);
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 0,
+         }));
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 0,
+         }));
+         expect(mockAdapter.updateTickMarks).toHaveBeenCalledWith([
+           TickMark.ACTIVE
+         ].concat(Array.from<TickMark>({length: 10}).fill(TickMark.INACTIVE)));
 
-       foundation.setValue(75);
-       jasmine.clock().tick(1);
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 100,
+         }));
+         expect(mockAdapter.updateTickMarks)
+             .toHaveBeenCalledWith(
+                 Array.from<TickMark>({length: 11}).fill(TickMark.ACTIVE));
 
-       expect(mockAdapter.setThumbContainerStyleProperty)
-           .toHaveBeenCalledWith(
-               TRANSFORM_PROP, 'translateX(75px) translateX(-50%)');
-     });
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 33.5,
+         }));
+         expect(mockAdapter.updateTickMarks)
+             .toHaveBeenCalledWith(Array.from<TickMark>({length: 4})
+                                       .fill(TickMark.ACTIVE)
+                                       .concat(Array.from<TickMark>({length: 7})
+                                                   .fill(TickMark.INACTIVE)));
+       });
 
-  it('#setValue updates the slider track to represent the current value of the slider',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
+    it('range slider: sets correct number of tick marks for value update',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 20,
+           value: 40,
+           isDiscrete: true,
+           step: 10,
+           hasTickMarks: true,
+           isRange: true,
+         });
+         expect(mockAdapter.updateTickMarks).toHaveBeenCalledWith([
+           TickMark.INACTIVE,
+           TickMark.INACTIVE,
+           TickMark.ACTIVE,
+           TickMark.ACTIVE,
+           TickMark.ACTIVE,
+         ].concat(Array.from<TickMark>({length: 6}).fill(TickMark.INACTIVE)));
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       foundation.init();
-       jasmine.clock().tick(1);
+         // Update start thumb value to 0.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 0,
+         }));
+         expect(mockAdapter.updateTickMarks)
+             .toHaveBeenCalledWith(Array.from<TickMark>({length: 5})
+                                       .fill(TickMark.ACTIVE)
+                                       .concat(Array.from<TickMark>({length: 6})
+                                                   .fill(TickMark.INACTIVE)));
 
-       foundation.setValue(75);
-       jasmine.clock().tick(1);
-
-       expect(mockAdapter.setTrackStyleProperty)
-           .toHaveBeenCalledWith(TRANSFORM_PROP, 'scaleX(0.75)');
-     });
-
-  it('#setValue respects the width of the slider when setting the thumb container transform',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 200});
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setValue(75);
-       jasmine.clock().tick(1);
-
-       expect(mockAdapter.setThumbContainerStyleProperty)
-           .toHaveBeenCalledWith(
-               TRANSFORM_PROP, 'translateX(150px) translateX(-50%)');
-     });
-
-  it('#setValue flips the slider thumb position across the X-axis when in an RTL context',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       mockAdapter.isRTL.and.returnValue(true);
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setValue(75);
-       jasmine.clock().tick(1);
-
-       expect(mockAdapter.setThumbContainerStyleProperty)
-           .toHaveBeenCalledWith(
-               TRANSFORM_PROP, 'translateX(25px) translateX(-50%)');
-     });
-
-  it('#setValue does not cause any events to be fired', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({width: 0, left: 0});
-    foundation.init();
-    jasmine.clock().tick(1);
-
-    foundation.setValue(20);
-
-    expect(mockAdapter.notifyInput).not.toHaveBeenCalled();
-    expect(mockAdapter.notifyChange).not.toHaveBeenCalled();
+         // Update end thumb value to 100.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 100,
+         }));
+         expect(mockAdapter.updateTickMarks)
+             .toHaveBeenCalledWith(
+                 Array.from<TickMark>({length: 11}).fill(TickMark.ACTIVE));
+       });
   });
 
-  it('#getMax/#setMax retrieves / sets the maximum value, respectively', () => {
-    const {foundation, mockAdapter} = setupTest();
+  describe('range slider: overlapping thumbs', () => {
+    it('when thumbs overlap, adds THUMB_TOP class to active thumb', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 12,
+        value: 58,
+        isRange: true,
+      });
 
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-    foundation.init();
-    jasmine.clock().tick(1);
+      // Down event on start thumb.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 10,
+      }));
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.addThumbClass)
+          .not.toHaveBeenCalledWith(cssClasses.THUMB_TOP, Thumb.START);
 
-    foundation.setMax(50);
-    expect(foundation.getMax()).toEqual(50);
+      // Move start thumb to overlap with end thumb.
+      foundation.handleMove(createMouseEvent('mousemove', {
+        clientX: 56,
+      }));
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_TOP, Thumb.START);
+      expect(mockAdapter.removeThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_TOP, Thumb.END);
+    });
+
+    it('when thumbs do not overlap, removes THUMB_TOP class', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 12,
+        value: 15,
+        isRange: true,
+      });
+
+      // Down event on end thumb.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 15,
+      }));
+      jasmine.clock().tick(1);  // Tick for RAF.
+
+      // Move end thumb to not overlap with start thumb.
+      foundation.handleMove(createMouseEvent('mousemove', {
+        clientX: 80,
+      }));
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.removeThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_TOP, Thumb.START);
+      expect(mockAdapter.removeThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_TOP, Thumb.END);
+    });
+
+    it('RTL: when thumbs overlap, adds THUMB_TOP class to active thumb', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 10,  // Start thumb is at clientX == 90.
+        value: 60,       // End thumb is at clientX == 40.
+        isRange: true,
+        isRTL: true,
+      });
+
+      // Down event on start thumb.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 90,
+      }));
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.addThumbClass)
+          .not.toHaveBeenCalledWith(cssClasses.THUMB_TOP, Thumb.START);
+
+      // Move start thumb to overlap with end thumb.
+      foundation.handleMove(createMouseEvent('mousemove', {
+        clientX: 40,
+      }));
+      jasmine.clock().tick(1);  // Tick for RAF.
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_TOP, Thumb.START);
+      expect(mockAdapter.removeThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_TOP, Thumb.END);
+    });
+
+    it('when thumbs overlap, thumb to be moved is based on drag direction',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 10,
+           value: 12,
+           isRange: true,
+         });
+         // Reset calls from initial layout.
+         mockAdapter.setThumbStyleProperty.calls.reset();
+
+         // Down event on overlapping thumbs.
+         const downEventClientX = 10;
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: downEventClientX,
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
+
+         // Move to left by less than THUMB_UPDATE_MIN_PX.
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: downEventClientX - 3,
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
+
+         // Move to left by more than THUMB_UPDATE_MIN_PX.
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: downEventClientX - 7,
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 'transform', `translateX(${downEventClientX - 7}px)`,
+                 Thumb.START);
+         expect(foundation.getValueStart()).toBe(3);
+       });
+
+    it('RTL: when thumbs overlap, thumb to be moved is based on drag ' +
+           'direction, and reversed from LTR',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 10,  // clientX of 90.
+           value: 12,       // clientX of 88.
+           isRange: true,
+           isRTL: true,
+           isDiscrete: true,
+         });
+         // Reset calls from initial layout.
+         mockAdapter.setThumbStyleProperty.calls.reset();
+
+         // Down event on overlapping thumbs.
+         const downEventClientX = 88;
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: downEventClientX,
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+         expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
+
+         // Move to left by more than THUMB_UPDATE_MIN_PX.
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: downEventClientX - 6,
+         }));
+         jasmine.clock().tick(1);
+         // Dragging to left in RTL mode moves the end thumb.
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 'transform', `translateX(${downEventClientX - 6}px)`,
+                 Thumb.END);
+         expect(foundation.getValue()).toBe(18);
+       });
   });
 
-  it('#setMax throws if the maximum value given is less than the minimum value',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
+  describe('a11y support', () => {
+    it('updates aria-valuetext on value update according to ' +
+           '`Adapter#getValueToAriaValueTextFn`',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 12,
+           value: 15,
+           isRange: true,
+         });
+         mockAdapter.getValueToAriaValueTextFn.and.returnValue(
+             (value: string) => `${value} value`);
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-       foundation.init();
-       jasmine.clock().tick(1);
+         foundation.setValueStart(11);
+         expect(mockAdapter.setInputAttribute)
+             .toHaveBeenCalledWith(
+                 attributes.ARIA_VALUETEXT, '11 value', Thumb.START);
 
-       foundation.setMin(50);
-       expect(() => foundation.setMax(49)).toThrow();
-     });
-
-  it('#setMax clamps the value to the new maximum if above the new maximum',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setValue(100);
-       foundation.setMax(50);
-
-       expect(foundation.getValue()).toEqual(50);
-       expect(mockAdapter.setAttribute)
-           .toHaveBeenCalledWith('aria-valuenow', '50');
-     });
-
-  it('#setMax updates the slider\'s UI when clamping the value to a new maximum',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setValue(50);
-       jasmine.clock().tick(1);
-       // Sanity check
-       expect(mockAdapter.setTrackStyleProperty)
-           .toHaveBeenCalledWith(TRANSFORM_PROP, 'scaleX(0.5)');
-
-       foundation.setMax(50);
-       jasmine.clock().tick(1);
-
-       expect(mockAdapter.setThumbContainerStyleProperty)
-           .toHaveBeenCalledWith(
-               TRANSFORM_PROP, 'translateX(100px) translateX(-50%)');
-       expect(mockAdapter.setTrackStyleProperty)
-           .toHaveBeenCalledWith(TRANSFORM_PROP, 'scaleX(1)');
-     });
-
-  it('#setMax updates "aria-valuemax" to the new maximum', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-    foundation.init();
-    jasmine.clock().tick(1);
-
-    foundation.setMax(50);
-
-    expect(mockAdapter.setAttribute)
-        .toHaveBeenCalledWith('aria-valuemax', '50');
+         foundation.setValue(16);
+         expect(mockAdapter.setInputAttribute)
+             .toHaveBeenCalledWith(
+                 attributes.ARIA_VALUETEXT, '16 value', Thumb.END);
+       });
   });
 
-  it('#setMax re-renders track markers if slider is discrete and displays markers',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       const isA = jasmine.any;
+  describe('disabled state', () => {
+    it('updates class and input attributes according to disabled state',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit();
+         expect(foundation.getDisabled()).toBe(false);
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       mockAdapter.hasClass.withArgs(cssClasses.IS_DISCRETE)
-           .and.returnValue(true);
-       mockAdapter.hasClass.withArgs(cssClasses.HAS_TRACK_MARKER)
-           .and.returnValue(true);
-       foundation.init();
-       jasmine.clock().tick(1);
+         foundation.setDisabled(true);
+         expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.DISABLED);
+         expect(mockAdapter.setInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.END);
+         expect(foundation.getDisabled()).toBe(true);
 
-       foundation.setMax(50);
+         foundation.setDisabled(false);
+         expect(mockAdapter.removeClass)
+             .toHaveBeenCalledWith(cssClasses.DISABLED);
+         expect(mockAdapter.removeInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.END);
+         expect(foundation.getDisabled()).toBe(false);
+       });
 
-       expect(mockAdapter.setTrackMarkers)
-           .toHaveBeenCalledWith(isA(Number), isA(Number), isA(Number));
-     });
+    it('range slider: updates inputs\' attrs according to disabled state',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({isRange: true});
 
+         foundation.setDisabled(true);
+         expect(mockAdapter.setInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.END);
+         expect(mockAdapter.setInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, '', Thumb.START);
 
-  it('#getMin/#setMin retrieves / sets the minimum value, respectively', () => {
-    const {foundation, mockAdapter} = setupTest();
+         foundation.setDisabled(false);
+         expect(mockAdapter.removeInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.START);
+         expect(mockAdapter.removeInputAttribute)
+             .toHaveBeenCalledWith(attributes.INPUT_DISABLED, Thumb.END);
+       });
 
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-    foundation.init();
-    jasmine.clock().tick(1);
+    it('events do not update slider value when disabled', () => {
+      const {foundation} =
+          setUpAndInit({value: 40, isDiscrete: true, isDisabled: true});
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 35,
+      }));
+      expect(foundation.getValue()).toBe(40);
 
-    foundation.setMin(10);
-    expect(foundation.getMin()).toEqual(10);
+      foundation.handleMove(createMouseEvent('mousedown', {
+        clientX: 30,
+      }));
+      expect(foundation.getValue()).toBe(40);
+    });
   });
 
-  it('#setMin throws if the minimum value given is greater than the maximum value',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
+  describe('events: ', () => {
+    it('single point slider: fires `input` and `change` events for value changes',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           value: 20,
+           isDiscrete: true,
+         });
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-       foundation.init();
-       jasmine.clock().tick(1);
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 20,
+         }));
+         expect(mockAdapter.emitInputEvent).not.toHaveBeenCalled();
+         expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
-       foundation.setMax(10);
-       expect(() => foundation.setMin(11)).toThrow();
-     });
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 40,
+         }));
+         expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(40, Thumb.END);
+         expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
-  it('#setMin clamps the value to the new minimum if above the new minimum',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 55,
+         }));
+         expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(55, Thumb.END);
+         expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-       foundation.init();
-       jasmine.clock().tick(1);
+         mockAdapter.emitInputEvent.calls.reset();
+         foundation.handleUp(createMouseEvent('mouseup', {
+           clientX: 55,
+         }));
+         expect(mockAdapter.emitInputEvent).not.toHaveBeenCalled();
+         // `change` event should only be fired when value has been committed
+         // (on pointer up).
+         expect(mockAdapter.emitChangeEvent)
+             .toHaveBeenCalledWith(55, Thumb.END);
+       });
 
-       foundation.setValue(5);
-       foundation.setMin(10);
+    it('range slider: fires `input`/`change` events on start thumb', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 20,
+        value: 50,
+        isRange: true,
+        isDiscrete: true,
+      });
 
-       expect(foundation.getValue()).toEqual(10);
-       expect(mockAdapter.setAttribute)
-           .toHaveBeenCalledWith('aria-valuenow', '10');
-     });
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 20,
+      }));
+      foundation.handleMove(createMouseEvent('mousemove', {
+        clientX: 14,
+      }));
+      expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(14, Thumb.START);
+      expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
-  it('#setMin updates the slider\'s UI when clamping the value to a new minimum',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
+      foundation.handleUp(createMouseEvent('mouseup'));
+      expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(14, Thumb.START);
+    });
 
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       foundation.init();
-       jasmine.clock().tick(1);
+    it('range slider: fires `input`/`change` events on end thumb', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 20,
+        value: 50,
+        isRange: true,
+        isDiscrete: true,
+      });
 
-       foundation.setValue(10);
-       jasmine.clock().tick(1);
-       // Sanity check
-       expect(mockAdapter.setTrackStyleProperty)
-           .toHaveBeenCalledWith(TRANSFORM_PROP, 'scaleX(0.1)');
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 50,
+      }));
+      foundation.handleMove(createMouseEvent('mousemove', {
+        clientX: 77,
+      }));
+      expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(77, Thumb.END);
+      expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
-       foundation.setMin(10);
-       jasmine.clock().tick(1);
+      foundation.handleUp(createMouseEvent('mouseup'));
+      expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(77, Thumb.END);
+    });
 
-       expect(mockAdapter.setThumbContainerStyleProperty)
-           .toHaveBeenCalledWith(
-               TRANSFORM_PROP, 'translateX(0px) translateX(-50%)');
-       expect(mockAdapter.setTrackStyleProperty)
-           .toHaveBeenCalledWith(TRANSFORM_PROP, 'scaleX(0)');
-     });
+    it('fires `dragStart`/`dragEnd` events across drag interaction', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 20,
+        value: 50,
+        isRange: true,
+        isDiscrete: true,
+      });
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 20,
+      }));
+      // Move thumb to value 5...
+      foundation.handleMove(createMouseEvent('mousemove', {
+        clientX: 5,
+      }));
+      foundation.handleUp(createMouseEvent('mouseup'));
 
-  it('#setMin updates "aria-valuemin" to the new minimum', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-    foundation.init();
-    jasmine.clock().tick(1);
-
-    foundation.setMin(10);
-
-    expect(mockAdapter.setAttribute)
-        .toHaveBeenCalledWith('aria-valuemin', '10');
+      expect(mockAdapter.emitDragStartEvent)
+          .toHaveBeenCalledWith(20, Thumb.START);
+      expect(mockAdapter.emitDragStartEvent).toHaveBeenCalledTimes(1);
+      expect(mockAdapter.emitDragEndEvent).toHaveBeenCalledWith(5, Thumb.START);
+      expect(mockAdapter.emitDragEndEvent).toHaveBeenCalledTimes(1);
+    });
   });
-
-  it('#setMin re-renders track markers if slider is discrete and displays markers',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       const isA = jasmine.any;
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       mockAdapter.hasClass.withArgs(cssClasses.IS_DISCRETE)
-           .and.returnValue(true);
-       mockAdapter.hasClass.withArgs(cssClasses.HAS_TRACK_MARKER)
-           .and.returnValue(true);
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setMin(10);
-
-       expect(mockAdapter.setTrackMarkers)
-           .toHaveBeenCalledWith(isA(Number), isA(Number), isA(Number));
-     });
-
-  it('#getStep/#setStep retrieves / sets the step value, respectively', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-    foundation.init();
-    jasmine.clock().tick(1);
-
-    foundation.setStep(2);
-    expect(foundation.getStep()).toEqual(2);
-  });
-
-  it('#setStep allows floating-point values to be used as step values', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-    foundation.init();
-    jasmine.clock().tick(1);
-
-    foundation.setStep(0.2);
-
-    foundation.setValue(0.46);
-    expect(foundation.getValue()).toEqual(0.4);
-
-    foundation.setValue(1.52);
-    expect(foundation.getValue()).toEqual(1.6);
-  });
-
-  it('#setStep throws if the step value given is less than 0', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-    foundation.init();
-    jasmine.clock().tick(1);
-
-    expect(() => foundation.setStep(-1)).toThrow();
-  });
-
-  it('#setStep set discrete slider step to 1 if the provided step is invalid',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 0});
-       mockAdapter.hasClass.withArgs(cssClasses.IS_DISCRETE)
-           .and.returnValue(true);
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setStep(0.5);
-
-       expect(foundation.getStep()).toEqual(1);
-     });
-
-  it('#setStep updates the slider\'s UI when altering the step value', () => {
-    const {foundation, mockAdapter} = setupTest();
-
-    mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-    foundation.init();
-    jasmine.clock().tick(1);
-
-    foundation.setValue(9.8);
-    jasmine.clock().tick(1);
-    // Sanity check
-    expect(mockAdapter.setTrackStyleProperty)
-        .toHaveBeenCalledWith(TRANSFORM_PROP, 'scaleX(0.098)');
-
-    foundation.setStep(1);
-    jasmine.clock().tick(1);
-
-    expect(mockAdapter.setThumbContainerStyleProperty)
-        .toHaveBeenCalledWith(
-            TRANSFORM_PROP, 'translateX(10px) translateX(-50%)');
-    expect(mockAdapter.setTrackStyleProperty)
-        .toHaveBeenCalledWith(TRANSFORM_PROP, 'scaleX(0.1)');
-  });
-
-  it('#setStep re-renders track markers if slider is discrete and displays markers',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       const isA = jasmine.any;
-
-       mockAdapter.computeBoundingRect.and.returnValue({left: 0, width: 100});
-       mockAdapter.hasClass.withArgs(cssClasses.IS_DISCRETE)
-           .and.returnValue(true);
-       mockAdapter.hasClass.withArgs(cssClasses.HAS_TRACK_MARKER)
-           .and.returnValue(true);
-       foundation.init();
-       jasmine.clock().tick(1);
-
-       foundation.setStep(10);
-
-       expect(mockAdapter.setTrackMarkers)
-           .toHaveBeenCalledWith(isA(Number), isA(Number), isA(Number));
-     });
-
-  it('#isDisabled/#setDisabled retrieves / sets the disabled state, respectively',
-     () => {
-       const {foundation} = setupTest();
-       foundation.setDisabled(true);
-
-       expect(foundation.isDisabled()).toBe(true);
-     });
-
-  it('#setDisabled adds the mdc-slider--disabled class when given true', () => {
-    const {foundation, mockAdapter} = setupTest();
-    foundation.setDisabled(true);
-
-    expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.DISABLED);
-  });
-
-  it('#setDisabled adds "aria-disabled=true" when given true', () => {
-    const {foundation, mockAdapter} = setupTest();
-    foundation.setDisabled(true);
-
-    expect(mockAdapter.setAttribute)
-        .toHaveBeenCalledWith('aria-disabled', 'true');
-  });
-
-  it('#setDisabled removes the tabindex attribute when given true', () => {
-    const {foundation, mockAdapter} = setupTest();
-    foundation.setDisabled(true);
-
-    expect(mockAdapter.removeAttribute).toHaveBeenCalledWith('tabindex');
-  });
-
-  it('#setDisabled removes the mdc-slider--disabled class when given false',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       foundation.setDisabled(false);
-
-       expect(mockAdapter.removeClass)
-           .toHaveBeenCalledWith(cssClasses.DISABLED);
-     });
-
-  it('#setDisabled removes the "aria-disabled" attribute when given false',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       foundation.setDisabled(false);
-
-       expect(mockAdapter.removeAttribute)
-           .toHaveBeenCalledWith('aria-disabled');
-     });
-
-  it('#setDisabled restores any previously set tabindices when given false',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       mockAdapter.getTabIndex.and.returnValue(0);
-
-       // Save the mock tab index set above
-       foundation.setDisabled(true);
-       foundation.setDisabled(false);
-
-       expect(mockAdapter.setAttribute).toHaveBeenCalledWith('tabindex', '0');
-     });
-
-  it('#setDisabled does not touch the tabindex property if no previous tabindex saved when given false',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-
-       foundation.setDisabled(false);
-
-       expect(mockAdapter.setAttribute)
-           .not.toHaveBeenCalledWith('tabindex', jasmine.anything());
-     });
 });
+
+function setUpTest() {
+  const {foundation, mockAdapter} = setUpFoundationTest(MDCSliderFoundation);
+  return {foundation, mockAdapter};
+}
+
+/*
+ * Sets up foundation, mock adapter, and calls Foundation#init with the given
+ * initialization options.
+ * By default, sets up a continuous slider with the following properties:
+ * - min: 0
+ * - max: 100
+ * - rect: {left: 0, right: 100, width: 100}
+ */
+function setUpAndInit({
+  value,
+  valueStart,
+  min,
+  max,
+  rect,
+  isDiscrete,
+  isDisabled,
+  step,
+  hasTickMarks,
+  isRange,
+  isRTL,
+}: {
+  value?: number,
+  valueStart?: number,
+  min?: number,
+  max?: number,
+  rect?: Partial<ClientRect>,
+  isDiscrete?: boolean,
+  isDisabled?: boolean,
+  step?: number,
+  hasTickMarks?: boolean,
+  isRange?: boolean,
+  isRTL?: boolean,
+} = {}) {
+  const {foundation, mockAdapter} = setUpFoundationTest(MDCSliderFoundation);
+  mockAdapter.hasClass.withArgs(cssClasses.DISCRETE)
+      .and.returnValue(Boolean(isDiscrete));
+  mockAdapter.hasClass.withArgs(cssClasses.DISABLED)
+      .and.returnValue(Boolean(isDisabled));
+  mockAdapter.hasClass.withArgs(cssClasses.TICK_MARKS)
+      .and.returnValue(Boolean(hasTickMarks));
+  mockAdapter.hasClass.withArgs(cssClasses.RANGE)
+      .and.returnValue(Boolean(isRange));
+
+  mockAdapter.getInputAttribute
+      .withArgs(attributes.INPUT_MIN, isRange ? Thumb.START : Thumb.END)
+      .and.returnValue(
+          String(min !== undefined ? min : 0),
+      );
+  mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MAX, Thumb.END)
+      .and.returnValue(String(max !== undefined ? max : 100));
+
+  valueStart = valueStart !== undefined ? valueStart : 20;
+  value = value !== undefined ? value : 50;
+  if (isRange) {
+    mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.START)
+        .and.returnValue(String(valueStart));
+    mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
+        .and.returnValue(String(value));
+  } else {
+    mockAdapter.getInputAttribute.withArgs(attributes.INPUT_VALUE, Thumb.END)
+        .and.returnValue(String(value));
+  }
+
+  mockAdapter.getInputAttribute.withArgs(attributes.INPUT_STEP, Thumb.END)
+      .and.returnValue(step || numbers.STEP_SIZE);
+
+  foundation.init();
+
+  if (isRTL) {
+    mockAdapter.isRTL.and.returnValue(true);
+  }
+  mockAdapter.getBoundingClientRect.and.returnValue(rect || {
+    left: 0,
+    right: 100,
+    width: 100,
+  });
+  if (isRTL) {
+    mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.END).and.returnValue(
+        {left: 100 - value - 5, right: 100 - value + 5});
+  } else {
+    mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.END).and.returnValue(
+        {left: value - 5, right: value + 5});
+  }
+  if (isRange) {
+    if (isRTL) {
+      mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.START)
+          .and.returnValue(
+              {left: 100 - valueStart - 5, right: 100 - valueStart + 5});
+    } else {
+      mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.START)
+          .and.returnValue({left: valueStart - 5, right: valueStart + 5});
+    }
+    mockAdapter.getThumbKnobWidth.withArgs(Thumb.START).and.returnValue(10);
+    mockAdapter.getThumbKnobWidth.withArgs(Thumb.END).and.returnValue(10);
+  }
+
+  foundation.layout();
+  jasmine.clock().tick(1);  // Tick for RAF from UI update.
+
+  return {foundation, mockAdapter};
+}

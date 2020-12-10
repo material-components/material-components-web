@@ -18,10 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@use "sass:list";
-@use "sass:map";
-@use "sass:math";
-@use "./variables";
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use './variables';
 
 // returns the lower grid boundary or null if the smallest grid is selected
 @function breakpoint-min($size) {

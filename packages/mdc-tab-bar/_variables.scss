@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use "@material/density/variables" as density-variables;
-@use "@material/tab/variables" as tab-variables;
+@use '@material/density/variables' as density-variables;
+@use '@material/tab/variables' as tab-variables;
 
 $height: tab-variables.$height !default;
 $minimum-height: 30px !default;

@@ -1,0 +1,100 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:list';
+@use 'sass:meta';
+@use 'sass:string';
+@use './custom-properties';
+
+/// Replaces all name instances in the provided string with values from the
+/// provided replacement Map whose keys correspond to the name instances.
+/// Returns a new string with the replacements applied.
+///
+/// @example
+///   replace-string('calc(x + y)', (x: 16px, y: 50%)); // 'calc(16px + 50%)'
+///
+/// If a replacement value is a custom property, it will be replaced in the
+/// returned string with the `var()` declaration. If `$fallback` is set to true,
+/// it will be replaced in the returned string with the fallback value.
+///
+/// @example
+///   $foo: custom-properties.create(--foo, 8px);
+///   replace-string('calc(foo)', (foo: $foo)); // 'calc(var(--foo, 8px))';
+///   replace-string('calc(foo)', (foo: $foo), $fallback: true); // 'calc(8px)';
+///
+/// @access private
+/// @param {String} $string - The string to make replacements on.
+/// @param {Map} $replace-map - A Map of name/value replacements. The keys of
+///     the Map are names that will be replaced in the string with the keys'
+///     respective values.
+/// @param {Bool} $fallback - If true, use the fallback value of any custom
+///     property value replacements instead of the `var()` declaration.
+/// @return {String} The string with replacements made, if any.
+@function replace-string($string, $replace-map, $fallback: false) {
+  @if meta.type-of($replace-map) != 'map' {
+    @error 'mdc-theme: Invalid replacement #{$replace-map}. Must be a Map.';
+  }
+
+  @each $name, $replacement in $replace-map {
+    // Since the replacement values may contain the name themselves (such as
+    // a custom property: name "foo" and value "--foo"), gather the indices
+    // first before replacing.
+    $indices: ();
+    $substring: $string;
+    $prev-index: null;
+    $index: string.index($substring, $name);
+    @while $index {
+      $substring: string.slice($substring, $index + string.length($name));
+
+      @if $prev-index {
+        // Add previous index's value to switch from "substring index" to
+        // absolute string index.
+        $index: $index + $prev-index;
+      }
+
+      // Use list.join() to "prepend" the index to the start of the list. This
+      // allows us to iterate "backwards" later.
+      $indices: list.join($index, $indices);
+      $prev-index: $index;
+      $index: string.index($substring, $name);
+    }
+
+    // Since we "prepended" the indices, the list is sorted backwards, with the
+    // last index first. Replacing values last index to first index removes the
+    // need for us to adjust the indices as we replace them.
+    @each $index in $indices {
+      @if custom-properties.is-custom-prop($replacement) {
+        @if $fallback {
+          $replacement: custom-properties.get-fallback($replacement);
+        } @else {
+          $replacement: custom-properties.create-var($replacement);
+        }
+      }
+
+      $before: string.slice($string, 1, $index - 1);
+      $after: string.slice($string, $index + string.length($name));
+      $string: $before + $replacement + $after;
+    }
+  }
+
+  @return $string;
+}

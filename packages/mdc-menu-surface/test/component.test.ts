@@ -168,6 +168,7 @@ describe('MDCMenuSurface', () => {
   it(`${strings.CLOSED_EVENT} causes the body click handler to be deregistered`,
      () => {
        const {root, mockFoundation} = setupTest();
+       emitEvent(root, strings.OPENED_EVENT);
        emitEvent(root, strings.CLOSED_EVENT);
        emitEvent(document.body, 'click');
        expect(mockFoundation.handleBodyClick)
@@ -383,11 +384,11 @@ describe('MDCMenuSurface', () => {
        expect((component.getDefaultFoundation() as any)
                   .adapter.getAnchorDimensions()
                   .height)
-           .toEqual(21);
+           .toBeCloseTo(21);
        expect((component.getDefaultFoundation() as any)
                   .adapter.getAnchorDimensions()
                   .width)
-           .toEqual(42);
+           .toBeCloseTo(42);
        document.body.removeChild(anchor);
      });
 

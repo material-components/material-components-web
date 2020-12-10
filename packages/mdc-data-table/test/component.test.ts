@@ -123,6 +123,7 @@ interface DataTableRowTemplateProps {
   isSelected: boolean;
   rowId: string;
   content: string;
+  withoutRowSelection?: boolean;
 }
 
 function mdcDataTableRowTemplate(props: DataTableRowTemplateProps): string {
@@ -144,7 +145,7 @@ function mdcDataTableRowTemplate(props: DataTableRowTemplateProps): string {
     class="${classMap(classes)}"
     aria-selected="${ariaSelectedValue}"
   >
-    ${rowCheckbox} ${props.content}
+    ${props.withoutRowSelection ? '' : rowCheckbox} ${props.content}
   </tr>
   `;
 }
@@ -217,14 +218,17 @@ const mdcDataTableData = {
 interface RenderComponentProps {
   data: DataTableData;
   excludeProgressIndicator?: boolean;
+  withoutRowSelection?: boolean;
 }
 
 function renderComponent(props: RenderComponentProps): HTMLElement {
-  const headerRowContent = mdcDataTableHeaderCellTemplate({
-                             content: mdcCheckboxTemplate({
-                               classNames: cssClasses.HEADER_ROW_CHECKBOX,
-                             }),
-                           }) +
+  const headerRowContent = (props.withoutRowSelection ? ''
+      : mdcDataTableHeaderCellTemplate({
+          content: mdcCheckboxTemplate({
+            classNames: cssClasses.HEADER_ROW_CHECKBOX,
+          }),
+        })
+      ) +
       props.data.headers
           .map((header: DataTableHeader) => mdcDataTableHeaderCellTemplate({
                  content: header.name,
@@ -244,6 +248,7 @@ function renderComponent(props: RenderComponentProps): HTMLElement {
                             {content: cell, isNumeric});
                       })
                        .join(''),
+          withoutRowSelection: props.withoutRowSelection,
         });
       });
 
@@ -278,12 +283,14 @@ function renderComponent(props: RenderComponentProps): HTMLElement {
 
 interface SetupProps {
   excludeProgressIndicator?: boolean;
+  withoutRowSelection?: boolean;
 }
 
 function setupTest(props: SetupProps = {}) {
   const root = renderComponent({
     data: mdcDataTableData,
-    excludeProgressIndicator: props.excludeProgressIndicator
+    excludeProgressIndicator: props.excludeProgressIndicator,
+    withoutRowSelection: props.withoutRowSelection,
   });
   const component = new MDCDataTable(root);
   // This is an intentionally reference to adapter instance for testing.
@@ -509,6 +516,19 @@ describe('MDCDataTable', () => {
     component.destroy();
   });
 
+  describe('Removing Rows', () => {
+    it('removes all rows while the header checkbox is checked.', () => {
+      const {component, root, adapter} = setupTest();
+      adapter.setHeaderRowCheckboxChecked(true);
+      expect(adapter.isHeaderRowCheckboxChecked()).toBe(true);
+      const tableContent =
+          root.querySelector<HTMLElement>(`.${cssClasses.CONTENT}`);
+      tableContent!.textContent = ``;
+      component.layout();
+      expect(adapter.isHeaderRowCheckboxChecked()).toBe(false);
+    });
+  });
+
   describe('Column sorting', () => {
     it('emits sort event when clicked on sort button of sortable column header',
        () => {
@@ -683,6 +703,14 @@ describe('MDCDataTable', () => {
              .toBe('');
 
          component.destroy();
+       });
+
+    it('should not throw error when destroy() is called without row selection',
+       () => {
+         const {component} = setupTest({withoutRowSelection: true});
+         expect(() => {
+           component.destroy();
+         }).not.toThrowError();
        });
   });
 

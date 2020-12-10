@@ -20,50 +20,128 @@
 // THE SOFTWARE.
 //
 
-@use "@material/feature-targeting/functions" as feature-targeting-functions;
-@use "@material/feature-targeting/mixins" as feature-targeting-mixins;
-@use "@material/shape/mixins" as shape-mixins;
-@use "@material/theme/mixins" as theme-mixins;
-@use "@material/theme/variables" as theme-variables;
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
 
-$background-color: rgba(black, theme-variables.text-emphasis(medium));
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/theme';
+@use '@material/theme/custom-properties';
+@use '@material/theme/css';
+@use '@material/theme/theme-color';
+
+$background-color: rgba(black, theme-color.text-emphasis(medium));
 $border-radius: small;
 $label-color: text-primary-on-dark;
 
-/// Sets the border-radius for the tooltip element.
-/// @param {Number | String} $radius Desired border radius value, accepts either
-///   a shape category or number value. $radius can be a singel value, or a
-///   list of up to 4 values.
-/// @param {Boolean} $rtl-reflexive [false] If a rule should be created for a
-///    flipped $radius for a RTL layout.
+// Rich Tooltip variables
+$rich-background-color: rgba(white, theme-color.text-emphasis(medium));
+$rich-title-text-color: text-primary-on-light;
+$rich-content-text-color: rgba(black, theme-color.text-emphasis(medium));
+
+// Use a custom property so IE11 does not use "normal" and instead uses provided
+// fall-back value.
+$word-break-custom-prop: custom-properties.create(
+  --mdc-tooltip-word-break,
+  normal
+);
+$word-break-default: custom-properties.create-var($word-break-custom-prop);
+$word-break-ie11-fallback: break-all;
+$z-index: 2;
+
+// Sets the border-radius for the tooltip element.
+// @param {Number | String} $radius Desired border radius value, accepts either
+//   a shape category or number value. $radius can be a singel value, or a
+//   list of up to 4 values.
+// @param {Boolean} $rtl-reflexive [false] If a rule should be created for a
+//    flipped $radius for a RTL layout.
 @mixin shape-radius(
   $radius,
   $rtl-reflexive: false,
-  $query: feature-targeting-functions.all()
+  $query: feature-targeting.all()
 ) {
   .mdc-tooltip__surface {
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
   }
 }
 
-/// Sets the color of the tooltip label.
-/// @param {Color | String} $color
-@mixin label-ink-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
-  @include feature-targeting-mixins.targets($feat-color) {
+// Sets the word-break property for the tooltip label. Users of IE11 can
+// overwrite the fallback if their tooltip labels will never contain long
+// strings without spaces or hyphens.
+// @param {String} $value
+// @param {String} $fallbackValue A fallback value to be set for word-break.
+//    This can be used to cover IE11 which does not support
+//    "overflow-wrap: anywhere".
+@mixin word-break(
+  $value,
+  $fallbackValue: $word-break-ie11-fallback,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
     .mdc-tooltip__surface {
-      @include theme-mixins.prop(color, $color);
+      @include css.declaration(
+        word-break,
+        $value,
+        $fallback-value: $fallbackValue
+      );
+      overflow-wrap: anywhere;
     }
   }
 }
 
-/// Sets the fill/surface color of the tooltip.
-/// @param {Color | String} $color
-@mixin fill-color($color, $query: feature-targeting-functions.all()) {
-  $feat-color: feature-targeting-functions.create-target($query, color);
+// Sets the color of the tooltip label.
+// @param {Color | String} $color
+@mixin label-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  @include feature-targeting.targets($feat-color) {
+    .mdc-tooltip__surface {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+// Sets the color of the rich tooltip text.
+// @param {Color | String} $color
+@mixin rich-text-ink-color(
+  $title-color,
+  $content-color,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+  @include feature-targeting.targets($feat-color) {
+    .mdc-tooltip__surface {
+      .mdc-tooltip__title {
+        @include theme.prop(color, $title-color);
+      }
+
+      .mdc-tooltip__content {
+        @include theme.prop(color, $content-color);
+      }
+    }
+  }
+}
+
+// Sets the fill/surface color of the tooltip.
+// @param {Color | String} $color
+@mixin fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
   .mdc-tooltip__surface {
-    @include feature-targeting-mixins.targets($feat-color) {
-      @include theme-mixins.prop(background-color, $color);
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(background-color, $color);
+    }
+  }
+}
+
+// Sets the z-index of the tooltip.
+// @param {Number} $z-index
+@mixin z-index($z-index, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    .mdc-tooltip {
+      z-index: $z-index;
     }
   }
 }

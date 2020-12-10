@@ -23,3 +23,4 @@
 
 export * from './adapter';
 export * from './foundation';
+export * from './component';

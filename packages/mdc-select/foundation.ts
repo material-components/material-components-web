@@ -104,6 +104,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   private customValidity = true;
   private lastSelectedIndex = numbers.UNSET_INDEX;
 
+  private clickDebounceTimeout = 0;
+  private recentlyClicked = false;
+
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
    * @param adapter
@@ -145,9 +148,9 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.lastSelectedIndex = index;
   }
 
-  setValue(value: string) {
+  setValue(value: string, skipNotify = false) {
     const index = this.adapter.getMenuItemValues().indexOf(value);
-    this.setSelectedIndex(index);
+    this.setSelectedIndex(index, /** closeMenu */ false, skipNotify);
   }
 
   getValue() {
@@ -261,9 +264,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const isRequired = this.adapter.hasClass(cssClasses.REQUIRED);
     if (isRequired && this.useDefaultValidation) {
       this.setValid(this.isValid());
-      if (this.helperText) {
-        this.helperText.setValidity(this.isValid());
-      }
     }
   }
 
@@ -292,9 +292,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   handleClick(normalizedX: number) {
-    if (this.disabled) {
+    if (this.disabled || this.recentlyClicked) {
       return;
     }
+
+    this.setClickDebounceTimeout();
 
     if (this.isMenuOpen) {
       this.adapter.closeMenu();
@@ -403,6 +405,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       this.adapter.addClass(cssClasses.INVALID);
       this.adapter.addMenuClass(cssClasses.MENU_INVALID);
     }
+
+    this.syncHelperTextValidity(isValid);
   }
 
   isValid() {
@@ -440,6 +444,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter.setMenuWrapFocus(false);
 
     this.setDisabled(this.adapter.hasClass(cssClasses.DISABLED));
+    this.syncHelperTextValidity(!this.adapter.hasClass(cssClasses.INVALID));
     this.layout();
     this.layoutOptions();
   }
@@ -455,10 +460,34 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const isRequired = this.adapter.hasClass(cssClasses.REQUIRED);
     if (isRequired && this.useDefaultValidation) {
       this.setValid(this.isValid());
-      if (this.helperText) {
-        this.helperText.setValidity(this.isValid());
-      }
     }
+  }
+
+  private syncHelperTextValidity(isValid: boolean) {
+    if (!this.helperText) {
+      return;
+    }
+
+    this.helperText.setValidity(isValid);
+
+    const helperTextVisible = this.helperText.isVisible();
+    const helperTextId = this.helperText.getId();
+
+    if (helperTextVisible && helperTextId) {
+      this.adapter.setSelectAnchorAttr(strings.ARIA_DESCRIBEDBY, helperTextId);
+    } else {
+      // Needed because screenreaders will read labels pointed to by
+      // `aria-describedby` even if they are `aria-hidden`.
+      this.adapter.removeSelectAnchorAttr(strings.ARIA_DESCRIBEDBY);
+    }
+  }
+
+  private setClickDebounceTimeout() {
+    clearTimeout(this.clickDebounceTimeout);
+    this.clickDebounceTimeout = setTimeout(() => {
+      this.recentlyClicked = false;
+    }, numbers.CLICK_DEBOUNCE_TIMEOUT_MS);
+    this.recentlyClicked = true;
   }
 }
 

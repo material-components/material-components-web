@@ -5,6 +5,7 @@ on:
     branches:
       - master
   pull_request:
+    types: [opened, synchronize, reopened, edited]
 
 jobs:
   lint:
@@ -16,6 +17,13 @@ jobs:
           node-version: 10
       - run: npm install
       - run: npm run lint
+  conventional-commit-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build-test:
     runs-on: ubuntu-latest
     steps:
@@ -24,7 +32,10 @@ jobs:
         with:
           node-version: 10
       - run: npm install
-      - run: npm run dist
+      - run: |
+          npm run dist
+          node scripts/cp-pkgs.js
+          node scripts/verify-pkg-main.js
   site-generator-test:
     runs-on: ubuntu-latest
     steps:
@@ -47,15 +58,15 @@ jobs:
         run: |
           # Unit tests does not run on forked repositories because GitHub
           # secrets (that includes Sauce access info) are not shared.
-          # TODO: Figure out a way to Set a warning or set status message
 
           if [[ -z "$SAUCE_USERNAME$SAUCE_ACCESS_KEY" ]]; then
-            echo "Unit tests do not run on forked repos because of Sauce labs access"
-            exit 0
+            echo "Unit tests do not run on forked repos because of Sauce labs access. Run 'npm run test:unit' manually to verify."
+            exit 1
+          else
+            export SAUCE_BUILD_ID=mdc-tests-${GITHUB_EVENT_NAME}-${GITHUB_ACTION}-${GITHUB_SHA}
+            export SAUCE_TUNNEL_ID=${SAUCE_BUILD_ID}-tunnel
+            npm run test:unit
           fi
-          export SAUCE_BUILD_ID=mdc-tests-${GITHUB_EVENT_NAME}-${GITHUB_ACTION}-${GITHUB_SHA}
-          export SAUCE_TUNNEL_ID=${SAUCE_BUILD_ID}-tunnel
-          npm run test:unit
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}

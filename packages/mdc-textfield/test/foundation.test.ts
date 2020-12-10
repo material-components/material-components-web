@@ -27,7 +27,7 @@ import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {MDCTextFieldFoundation} from '../../mdc-textfield/foundation';
 
 const LABEL_WIDTH = 100;
-const {cssClasses, numbers} = MDCTextFieldFoundation;
+const {cssClasses, numbers, strings} = MDCTextFieldFoundation;
 
 describe('MDCTextFieldFoundation', () => {
   it('exports strings', () => {
@@ -47,6 +47,8 @@ describe('MDCTextFieldFoundation', () => {
       'addClass',
       'removeClass',
       'hasClass',
+      'setInputAttr',
+      'removeInputAttr',
       'registerTextFieldInteractionHandler',
       'deregisterTextFieldInteractionHandler',
       'registerInputInteractionHandler',
@@ -79,7 +81,11 @@ describe('MDCTextFieldFoundation', () => {
 
     const helperText = useHelperText ?
         jasmine.createSpyObj(
-            'helperText', ['setContent', 'showToScreenReader', 'setValidity']) :
+            'helperText',
+            [
+              'getId', 'isVisible', 'isPersistent', 'isValidation',
+              'setContent', 'showToScreenReader', 'setValidity'
+            ]) :
         undefined;
 
     const characterCounter = useCharacterCounter ?
@@ -225,6 +231,33 @@ describe('MDCTextFieldFoundation', () => {
         .toHaveBeenCalledWith(cssClasses.LABEL_FLOATING);
   });
 
+  it('#setValue valid and invalid input without autovalidation', () => {
+    const {foundation, mockAdapter, nativeInput, helperText} = setupValueTest(
+        {value: '', optIsValid: false, hasLabel: true, useHelperText: true});
+
+    expect(foundation.getValidateOnValueChange()).toBeTrue();
+    foundation.setValidateOnValueChange(false);
+    expect(foundation.getValidateOnValueChange()).toBeFalse();
+
+    foundation.setValue('invalid');
+    expect(mockAdapter.addClass).not.toHaveBeenCalledWith(cssClasses.INVALID);
+    expect(helperText.setValidity).not.toHaveBeenCalledWith(false);
+    expect(mockAdapter.shakeLabel).not.toHaveBeenCalledWith(true);
+    expect(mockAdapter.floatLabel).toHaveBeenCalledWith(true);
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.LABEL_FLOATING);
+
+    nativeInput.validity.valid = true;
+    foundation.setValue('valid');
+    expect(mockAdapter.removeClass)
+        .not.toHaveBeenCalledWith(cssClasses.INVALID);
+    expect(helperText.setValidity).not.toHaveBeenCalledWith(true);
+    expect(mockAdapter.shakeLabel).not.toHaveBeenCalledWith(false);
+    expect(mockAdapter.floatLabel).toHaveBeenCalledWith(true);
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.LABEL_FLOATING);
+  });
+
   it('#setValue with invalid status and empty value does not shake the label',
      () => {
        const {foundation, mockAdapter, helperText} = setupValueTest(
@@ -344,6 +377,32 @@ describe('MDCTextFieldFoundation', () => {
     expect(mockAdapter.removeClass)
         .not.toHaveBeenCalledWith(cssClasses.DISABLED);
   });
+
+  it('#setValid sets aria-describedby if validation helper text is visible',
+     () => {
+       const {foundation, mockAdapter, helperText} =
+           setupTest({useHelperText: true});
+       helperText.isValidation.and.returnValue(true);
+       helperText.isVisible.and.returnValue(true);
+       helperText.getId.and.returnValue('foooo');
+
+       foundation.setValid(true);
+       expect(mockAdapter.setInputAttr)
+           .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY, 'foooo');
+     });
+
+  it('#setValid removes aria-describedby if validation helper text is hidden',
+     () => {
+       const {foundation, mockAdapter, helperText} =
+           setupTest({useHelperText: true});
+       helperText.isValidation.and.returnValue(true);
+       helperText.isVisible.and.returnValue(false);
+       helperText.getId.and.returnValue('foooo');
+
+       foundation.setValid(true);
+       expect(mockAdapter.removeInputAttr)
+           .toHaveBeenCalledWith(strings.ARIA_DESCRIBEDBY);
+     });
 
   it('#setValid updates classes, but not label methods when hasLabel is false',
      () => {
@@ -648,9 +707,20 @@ describe('MDCTextFieldFoundation', () => {
         .not.toHaveBeenCalledWith(jasmine.anything());
   });
 
-  it('#notchOutline width is set to 0 if no label is present', () => {
+  it('#notchOutline does nothing if no label is present', () => {
     const {foundation, mockAdapter} = setupBareBonesTest();
     mockAdapter.hasOutline.and.returnValue(true);
+    mockAdapter.hasLabel.and.returnValue(false);
+
+    foundation.notchOutline(true);
+    expect(mockAdapter.notchOutline)
+        .not.toHaveBeenCalledWith(jasmine.anything());
+  });
+
+  it('#notchOutline width is set to 0 if no label text is present', () => {
+    const {foundation, mockAdapter} = setupBareBonesTest();
+    mockAdapter.hasOutline.and.returnValue(true);
+    mockAdapter.hasLabel.and.returnValue(true);
     mockAdapter.getLabelWidth.and.returnValue(0);
 
     foundation.notchOutline(true);
@@ -1276,18 +1346,14 @@ describe('MDCTextFieldFoundation', () => {
         .and.callFake((handler: Function) => attributeChange = handler);
     foundation.init();
 
-    mockAdapter.getNativeInput.and.returnValue({
-      required: true
-    });
+    mockAdapter.getNativeInput.and.returnValue({required: true});
 
     if (attributeChange !== undefined) {
       attributeChange(['required']);
     }
     expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(true);
 
-    mockAdapter.getNativeInput.and.returnValue({
-      required: false
-    });
+    mockAdapter.getNativeInput.and.returnValue({required: false});
 
     if (attributeChange !== undefined) {
       attributeChange(['required']);

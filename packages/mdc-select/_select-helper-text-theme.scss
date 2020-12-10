@@ -1,0 +1,93 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/state';
+@use '@material/theme/variables' as theme-variables;
+
+$helper-text-color: rgba(theme-variables.prop-value(on-surface), 0.6) !default;
+$disabled-helper-text-color: rgba(
+  theme-variables.prop-value(on-surface),
+  0.38
+) !default;
+
+@mixin helper-text-color($color-or-map, $query: feature-targeting.all()) {
+  &:not(.mdc-select--disabled) {
+    @include _helper-text-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+  }
+
+  &.mdc-select--disabled {
+    @include _helper-text-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
+  }
+}
+
+@mixin helper-text-validation-color(
+  $color-or-map,
+  $query: feature-targeting.all()
+) {
+  &:not(.mdc-select--disabled) {
+    @include _helper-text-validation-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    &:not(.mdc-select--focused):hover {
+      @include _helper-text-validation-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+}
+
+// Private mixins
+
+@mixin _helper-text-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if $color {
+    & + .mdc-select-helper-text {
+      @include feature-targeting.targets($feat-color) {
+        @include theme-mixins.property(color, $color);
+      }
+    }
+  }
+}
+
+@mixin _helper-text-validation-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if $color {
+    &.mdc-select--invalid + .mdc-select-helper-text--validation-msg {
+      @include feature-targeting.targets($feat-color) {
+        @include theme-mixins.property(color, $color);
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
-@use "../mixins" as tab-bar;
-@use "@material/feature-targeting/functions" as feature;
+@use '../mixins' as tab-bar;
+@use '@material/feature-targeting/feature-targeting';
 
 @mixin test($query) {
   .test {
@@ -11,4 +11,4 @@
 }
 
 // This shouldn't output any CSS.
-@include test(feature.any());
+@include test(feature-targeting.any());
