@@ -98,6 +98,7 @@ $exit-duration: 75ms;
       @include tooltip-theme.rich-text-ink-color(
         tooltip-theme.$rich-title-text-color,
         tooltip-theme.$rich-content-text-color,
+        tooltip-theme.$rich-content-link-color,
         $query: $query
       );
       @include feature-targeting.targets($feat-structure) {
@@ -199,6 +200,12 @@ $exit-duration: 75ms;
       );
       @include feature-targeting.targets($feat-structure) {
         margin: 0 $_content-margin-x 16px $_content-margin-x;
+      }
+    }
+
+    .mdc-tooltip__content-link {
+      @include feature-targeting.targets($feat-structure) {
+        text-decoration: none;
       }
     }
   }

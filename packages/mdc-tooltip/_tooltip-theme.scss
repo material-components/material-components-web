@@ -38,6 +38,7 @@ $label-color: text-primary-on-dark;
 $rich-background-color: rgba(white, theme-color.text-emphasis(medium));
 $rich-title-text-color: text-primary-on-light;
 $rich-content-text-color: rgba(black, theme-color.text-emphasis(medium));
+$rich-content-link-color: primary;
 
 // Use a custom property so IE11 does not use "normal" and instead uses provided
 // fall-back value.
@@ -107,18 +108,21 @@ $z-index: 2;
 @mixin rich-text-ink-color(
   $title-color,
   $content-color,
+  $content-link-color,
   $query: feature-targeting.all()
 ) {
   $feat-color: feature-targeting.create-target($query, color);
   @include feature-targeting.targets($feat-color) {
-    .mdc-tooltip__surface {
-      .mdc-tooltip__title {
-        @include theme.prop(color, $title-color);
-      }
+    .mdc-tooltip__title {
+      @include theme.prop(color, $title-color);
+    }
 
-      .mdc-tooltip__content {
-        @include theme.prop(color, $content-color);
-      }
+    .mdc-tooltip__content {
+      @include theme.prop(color, $content-color);
+    }
+
+    .mdc-tooltip__content-link {
+      @include theme.prop(color, $content-link-color);
     }
   }
 }
