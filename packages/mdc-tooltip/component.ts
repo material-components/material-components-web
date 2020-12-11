@@ -34,7 +34,6 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   }
 
   private anchorElem!: HTMLElement;        // assigned in initialize
-  private tooltipElem!: HTMLElement|null;  // assigned in initialize
   private isTooltipRich!: boolean;        // assigned in initialSyncWithDOM
   private isTooltipPersistent!: boolean;  // assigned in initialSyncWithDOM
 
@@ -54,7 +53,6 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     const anchorElem = document.querySelector<HTMLElement>(
                            `[aria-describedby="${tooltipId}"]`) ||
         document.querySelector<HTMLElement>(`[data-tooltip-id="${tooltipId}"]`);
-    this.tooltipElem = document.querySelector<HTMLElement>(`#${tooltipId}`);
     if (!anchorElem) {
       throw new Error(
           'MDCTooltip: Tooltip component requires an anchor element annotated with [aria-describedby] or [data-tooltip-id] anchor element.');
@@ -167,7 +165,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
         return !!this.anchorElem?.contains(element);
       },
       tooltipContainsElement: (element) => {
-        return !!this.tooltipElem?.contains(element);
+        return this.root.contains(element);
       },
       registerEventHandler: (evt, handler) => {
         if (this.root instanceof HTMLElement) {
