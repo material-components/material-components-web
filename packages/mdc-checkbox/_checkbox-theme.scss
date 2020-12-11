@@ -27,17 +27,16 @@
 @use 'sass:math';
 @use '@material/animation/functions' as functions2;
 @use '@material/density/functions' as density-functions;
+@use '@material/density/variables' as density-variables;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/touch-target/mixins' as touch-target-mixins;
-@use '@material/theme/theme-color';
-@use './checkbox-custom-properties';
-@use '@material/theme/theme';
 @use '@material/theme/color-custom-properties';
 @use '@material/theme/custom-properties';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
 @use '@material/touch-target/variables' as touch-target-variables;
-@use '@material/density/variables' as density-variables;
+@use './checkbox-custom-properties';
 
 $baseline-theme-color: secondary !default;
 $mark-color: theme-color.prop-value(on-secondary) !default;
@@ -212,19 +211,8 @@ $light-theme: (
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
+
   $checkbox-padding: ($ripple-size - $icon-size) / 2;
-
-  @include feature-targeting.targets($feat-structure) {
-    padding: $checkbox-padding;
-  }
-
-  .mdc-checkbox__background {
-    @include feature-targeting.targets($feat-structure) {
-      top: $checkbox-padding;
-      left: $checkbox-padding;
-    }
-  }
-
   .mdc-checkbox__background::before {
     @include feature-targeting.targets($feat-structure) {
       top: -($border-width) - $checkbox-padding;
@@ -234,9 +222,36 @@ $light-theme: (
     }
   }
 
-  @if ($touch-target-size == null) {
+  $ripple-size: custom-properties.create(
+    checkbox-custom-properties.$ripple-size,
+    $ripple-size
+  );
+  $checkbox-padding: calc((_ripple-size - _icon-size) / 2);
+  $replace: (
+    _ripple-size: $ripple-size,
+    _icon-size: $icon-size,
+  );
+
+  @include feature-targeting.targets($feat-structure) {
+    @include theme.property(padding, $checkbox-padding, $replace: $replace);
+  }
+
+  .mdc-checkbox__background {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(top, $checkbox-padding, $replace: $replace);
+      @include theme.property(left, $checkbox-padding, $replace: $replace);
+    }
+  }
+
+  @if ($touch-target-size) {
+    $touch-target-size: custom-properties.create(
+      checkbox-custom-properties.$touch-target-size,
+      $touch-target-size
+    );
+  } @else {
     $touch-target-size: $ripple-size;
   }
+
   @include touch-target(
     $touch-target-size: $touch-target-size,
     $ripple-size: $ripple-size,
@@ -492,23 +507,25 @@ $light-theme: (
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include touch-target-mixins.margin(
-    $component-height: $ripple-size,
-    $component-width: $ripple-size,
-    $touch-target-height: $touch-target-size,
-    $touch-target-width: $touch-target-size,
-    $query: $query
+  $margin: calc((_touch-target-size - _ripple-size) / 2);
+  $replace: (
+    _touch-target-size: $touch-target-size,
+    _ripple-size: $ripple-size,
   );
 
-  $offset: ($ripple-size - $touch-target-size) / 2;
+  @include feature-targeting.targets($feat-structure) {
+    @include theme.property(margin, $margin, $replace: $replace);
+  }
+
+  $offset: calc((_ripple-size - _touch-target-size) / 2);
 
   @include feature-targeting.targets($feat-structure) {
     .mdc-checkbox__native-control {
-      top: $offset;
-      right: $offset;
-      left: $offset;
-      width: $touch-target-size;
-      height: $touch-target-size;
+      @include theme.property(top, $offset, $replace: $replace);
+      @include theme.property(right, $offset, $replace: $replace);
+      @include theme.property(left, $offset, $replace: $replace);
+      @include theme.property(width, $touch-target-size);
+      @include theme.property(height, $touch-target-size);
     }
   }
 }
