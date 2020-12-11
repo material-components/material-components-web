@@ -43,6 +43,7 @@ $_line-height: 16px;
 
 // Rich Tooltip variables
 $_rich_corner_radius: 8px;
+$_rich_max-width: 320px;
 $_rich_padding: 8px;
 $_content-margin-x: 8px;
 $_content-type-scale: body1;
@@ -131,9 +132,12 @@ $exit-duration: 75ms;
 
     .mdc-tooltip--rich & {
       @include feature-targeting.targets($feat-structure) {
+        align-items: flex-start;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        min-height: $_min-height;
+        min-width: $_min-width;
+        max-width: $_rich_max-width;
       }
     }
 
