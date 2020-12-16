@@ -68,8 +68,8 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       this.foundation.handleAnchorMouseEnter();
     };
 
-    this.handleFocus = () => {
-      this.foundation.handleAnchorFocus();
+    this.handleFocus = (evt) => {
+      this.foundation.handleAnchorFocus(evt);
     };
 
     this.handleMouseLeave = () => {
@@ -166,6 +166,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       },
       tooltipContainsElement: (element) => {
         return this.root.contains(element);
+      },
+      focusAnchorElement: () => {
+        this.anchorElem?.focus();
       },
       registerEventHandler: (evt, handler) => {
         if (this.root instanceof HTMLElement) {

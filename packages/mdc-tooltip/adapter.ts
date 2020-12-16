@@ -109,6 +109,11 @@ export interface MDCTooltipAdapter {
   tooltipContainsElement(element: HTMLElement): boolean;
 
   /**
+   * Sets focus on the anchor element.
+   */
+  focusAnchorElement(): void;
+
+  /**
    * Registers an event listener to the root element.
    */
   registerEventHandler<K extends EventType>(

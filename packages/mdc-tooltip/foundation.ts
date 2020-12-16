@@ -63,6 +63,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       isRTL: () => false,
       anchorContainsElement: () => false,
       tooltipContainsElement: () => false,
+      focusAnchorElement: () => undefined,
       registerEventHandler: () => undefined,
       deregisterEventHandler: () => undefined,
       registerDocumentEventHandler: () => undefined,
@@ -166,10 +167,19 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
   }
 
-  handleAnchorFocus() {
+  handleAnchorFocus(evt: FocusEvent) {
     // TODO(b/157075286): Need to add some way to distinguish keyboard
     // navigation focus events from other focus events, and only show the
     // tooltip on the former of these events.
+    const {relatedTarget} = evt;
+    const tooltipContainsRelatedTarget = relatedTarget instanceof HTMLElement &&
+        this.adapter.tooltipContainsElement(relatedTarget);
+    // Do not show tooltip if the previous focus was on a tooltip element. This
+    // occurs when a rich tooltip is closed and focus is restored to the anchor
+    // or when user tab-navigates back into the anchor from the rich tooltip.
+    if (tooltipContainsRelatedTarget) {
+      return;
+    }
     this.showTimeout = setTimeout(() => {
       this.show();
     }, this.showDelayMs);
@@ -223,6 +233,12 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // Hide the tooltip immediately on ESC key.
     const key = normalizeKey(evt);
     if (key === KEY.ESCAPE) {
+      const tooltipContainsActiveElement =
+          document.activeElement instanceof HTMLElement &&
+          this.adapter.tooltipContainsElement(document.activeElement);
+      if (tooltipContainsActiveElement) {
+        this.adapter.focusAnchorElement();
+      }
       this.hide();
     }
   }

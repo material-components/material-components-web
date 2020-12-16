@@ -21,8 +21,10 @@
  * THE SOFTWARE.
  */
 
+import {KEY} from '@material/dom/keyboard';
+
 import {getFixture} from '../../../testing/dom';
-import {emitEvent} from '../../../testing/dom/events';
+import {createKeyboardEvent, emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {AnchorBoundaryType, CssClasses, numbers, XPosition, YPosition} from '../constants';
@@ -267,13 +269,18 @@ describe('MDCTooltip', () => {
         <button aria-describedby="tt0" aria-haspopup="true" aria-expanded="false">
           anchor
         </button>
-        <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-role="dialog" aria-hidden="true">
+        <aside id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true">
           <div class="mdc-tooltip__surface">
-            <p class="mdc-tooltip__content">
-              demo tooltip
-            </p>
+            <h2 class="mdc-tooltip__title">Title</h2>
+            <p class="mdc-tooltip__content">Content <a class="mdc-tooltip__content-link" href="google.com">link</a></p>
+            <div class="mdc-tooltip--rich-actions">
+              <button class="mdc-button mdc-tooltip__action" aria-label="action">
+                <div class="mdc-button__ripple"></div>
+                <span class="mdc-button__label">Action</span>
+              </button>
+            </div>
           </div>
-        </div>
+        </aside>
       </div>`);
       document.body.appendChild(fixture);
     });
@@ -328,6 +335,52 @@ describe('MDCTooltip', () => {
          emitEvent(anchorElem, 'mouseenter');
 
          expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+       });
+
+    it('aria-expanded becomes true on anchor when anchor is focused', () => {
+      const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+      const anchorElem =
+          fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+      MDCTooltip.attachTo(tooltipElem);
+
+      emitEvent(anchorElem, 'focus');
+      jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+
+      expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+    });
+
+    it('aria-expanded becomes false on anchor when ESC is pressed from the tooltip',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'focus');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+         tooltipElem.dispatchEvent(
+             createKeyboardEvent('keydown', {key: KEY.ESCAPE, bubbles: true}));
+
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('false');
+       });
+
+    it('anchor becomes focused when ESC is pressed from the tooltip while focus is in tooltip',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         const tooltipActionButton =
+             fixture.querySelector<HTMLElement>('.mdc-tooltip__action')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'focus');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+         tooltipActionButton.focus();
+         tooltipElem.dispatchEvent(
+             createKeyboardEvent('keydown', {key: KEY.ESCAPE, bubbles: true}));
+
+         expect(document.activeElement).toBe(anchorElem);
        });
 
     it('aria-expanded becomes false on anchor when anchor blurs and non-tooltip element is focused',
@@ -443,13 +496,13 @@ describe('MDCTooltip', () => {
         <button aria-describedby="tt0" aria-haspopup="true" aria-expanded="false">
           anchor
         </button>
-        <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-role="dialog" aria-hidden="true" data-mdc-tooltip-persistent="true">
+        <aside id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" data-mdc-tooltip-persistent="true">
           <div class="mdc-tooltip__surface">
             <p class="mdc-tooltip__content">
               demo tooltip
             </p>
           </div>
-        </div>
+        </aside>
       </div>`);
       document.body.appendChild(fixture);
     });
