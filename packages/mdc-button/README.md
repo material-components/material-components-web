@@ -59,9 +59,9 @@ To meet this requirement, add the following to your button:
 ```html
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-button mdc-button--touch">
-    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__ripple"></span>
     <span class="mdc-button__label">My Accessible Button</span>
-    <div class="mdc-button__touch"></div>
+    <span class="mdc-button__touch"></span>
   </button>
 </div>
 ```
@@ -77,7 +77,7 @@ To meet this requirement, add the following to your button:
 
 ```html
  <button class="mdc-button">
-   <div class="mdc-button__ripple"></div>
+   <span class="mdc-button__ripple"></span>
    <span class="mdc-button__label">Text Button</span>
 </button>
 ```
@@ -88,7 +88,7 @@ To meet this requirement, add the following to your button:
 
 ```html
 <button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true"
     >bookmark</i
   >
@@ -107,7 +107,7 @@ To meet this requirement, add the following to your button:
 
 ```html
 <button class="mdc-button mdc-button--outlined">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
   <span class="mdc-button__label">Outlined Button</span>
 </button>
 ```
@@ -118,7 +118,7 @@ To meet this requirement, add the following to your button:
 
 ```html
 <button class="mdc-button mdc-button--outlined">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">bookmark</i>
   <span class="mdc-button__label">Outlined Button plus Icon</span>
 </button>
@@ -147,7 +147,7 @@ and `mdc-button--unelevated` is applied for a contained button flush with the su
 
 ```html
 <button class="mdc-button mdc-button--raised">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true"
     >bookmark</i
   >
@@ -192,7 +192,7 @@ To add an icon, add an element with the `mdc-button__icon` class inside the butt
 
 ```html
 <button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
   <span class="mdc-button__label">Button</span>
 </button>
@@ -202,7 +202,7 @@ It's also possible to use an SVG icon:
 
 ```html
 <button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
   <svg class="mdc-button__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="...">
   ...
   </svg>
@@ -217,7 +217,7 @@ putting the icon markup _after_ the `mdc-button__label` element.
 
 ```html
 <button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
   <span class="mdc-button__label">Button</span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
 </button>
@@ -232,7 +232,7 @@ Disabled buttons cannot be interacted with and have no visual interaction effect
 
 ```html
 <button class="mdc-button" disabled>
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
   <span class="mdc-button__label">Button</span>
 </button>
 ```
