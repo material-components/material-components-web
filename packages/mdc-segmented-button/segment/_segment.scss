@@ -30,6 +30,7 @@
 @use '@material/touch-target/touch-target';
 @use '@material/elevation/elevation';
 @use '@material/elevation/elevation-theme';
+@use '@material/ripple/ripple-theme';
 @use './segment-theme';
 
 @mixin core-styles($query: feature-targeting.all()) {
@@ -53,7 +54,7 @@
     }
 
     // Removes ripple's focus outline
-    &:focus {
+    @include ripple-theme.focus {
       @include feature-targeting.targets($feat-structure) {
         outline-width: 0;
       }

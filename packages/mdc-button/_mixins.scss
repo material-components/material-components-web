@@ -536,8 +536,11 @@ $ripple-target: '.mdc-button__ripple';
 
   @include elevation-mixins.elevation(2, $query: $query);
 
-  &:hover,
-  &:focus {
+  &:hover {
+    @include elevation-mixins.elevation(4, $query: $query);
+  }
+
+  @include ripple-theme.focus {
     @include elevation-mixins.elevation(4, $query: $query);
   }
 

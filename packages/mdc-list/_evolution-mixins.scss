@@ -105,9 +105,16 @@
       }
     }
 
+    &:not(.mdc-evolution-list-item--selected) {
+      @include ripple-theme.focus {
+        &::before {
+          @include dom-mixins.transparent-border($query: $query);
+        }
+      }
+    }
+
     // For components using aria-activedescendant, the focus pseudoclass is
     // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
-    &:not(.mdc-evolution-list-item--selected):focus::before,
     &.mdc-ripple-upgraded--background-focused::before {
       @include dom-mixins.transparent-border($query: $query);
     }
@@ -1162,7 +1169,7 @@
     padding: 8px 0;
     list-style-type: none;
 
-    &:focus {
+    &.mdc-focus-visible {
       outline: none;
     }
   }
@@ -1178,7 +1185,7 @@
     overflow: hidden;
     padding: 0;
 
-    &:focus {
+    &.mdc-focus-visible {
       outline: none;
     }
   }

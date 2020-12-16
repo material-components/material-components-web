@@ -211,7 +211,7 @@ $ripple-target: '.mdc-fab__ripple';
     math.max(list.nth($padding, 3), $width)
     math.max(list.nth($padding, 4), $width);
 
-  &:focus {
+  @include ripple-theme.focus {
     @include feature-targeting.targets($feat-structure) {
       border-style: solid;
       border-width: $width;
@@ -233,7 +233,7 @@ $ripple-target: '.mdc-fab__ripple';
 @mixin focus-outline-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  &:focus {
+  @include ripple-theme.focus {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(border-color, $color);
     }
@@ -401,8 +401,11 @@ $icon-enter-duration_: 180ms;
     }
   }
 
-  &:hover,
-  &:focus {
+  &:hover {
+    @include elevation-mixins.elevation(8, $query: $query);
+  }
+
+  @include ripple-theme.focus {
     @include elevation-mixins.elevation(8, $query: $query);
   }
 
@@ -410,12 +413,17 @@ $icon-enter-duration_: 180ms;
     @include elevation-mixins.elevation(12, $query: $query);
   }
 
-  &:active,
-  &:focus {
+  &:active {
     // TODO(acdvorak): Should this be paired with states and/or ripple? We don't want to disable outline
     // (an accessibility/usability feature) unless we're confident that there is also a visual indication that the
     // element has focus. If the client has customized the DOM in some unexpected way, and is certain that another
     // element will receive focus instead, they can always override this property manually in their CSS.
+    @include feature-targeting.targets($feat-structure) {
+      outline: none;
+    }
+  }
+
+  @include ripple-theme.focus {
     @include feature-targeting.targets($feat-structure) {
       outline: none;
     }

@@ -182,13 +182,17 @@ $pressed-light-ink-opacity: 0.32 !default;
   } @else {
     // JS-enabled selectors.
     &.mdc-ripple-upgraded--background-focused,
+    &.focus-visible,
     // CSS-only selectors.
-    &:not(.mdc-ripple-upgraded):focus {
-      #{$ripple-target}::before {
-        @include states-focus-opacity-properties_(
-          $opacity: $opacity,
-          $query: $query
-        );
+    &:not(.mdc-ripple-upgraded) {
+      &:focus,
+      &:focus-visible {
+        #{$ripple-target}::before {
+          @include states-focus-opacity-properties_(
+            $opacity: $opacity,
+            $query: $query
+          );
+        }
       }
     }
   }
@@ -388,8 +392,20 @@ $pressed-light-ink-opacity: 0.32 !default;
 @mixin states-selector() {
   &:hover,
   &:active,
-  &:focus,
   &.mdc-ripple-upgraded--background-focused {
+    @content;
+  }
+
+  @include focus {
+    @content;
+  }
+}
+
+/// Specific selector for focus state.
+@mixin focus() {
+  &:focus, // TODO(b/): Remove once ready to make focus-visible default
+  &:focus-visible,
+  &.focus-visible {
     @content;
   }
 }

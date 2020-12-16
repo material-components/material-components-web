@@ -237,7 +237,7 @@
       user-select: none;
     }
 
-    &:focus {
+    @include ripple-theme.focus {
       @include feature-targeting.targets($feat-structure) {
         outline: none;
       }

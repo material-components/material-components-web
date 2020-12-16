@@ -247,15 +247,17 @@ $ripple-target: '.mdc-radio__ripple';
     }
   }
 
-  .mdc-radio__native-control:focus {
-    + .mdc-radio__background::before {
-      @include feature-targeting.targets($feat-structure) {
-        transform: scale(1);
-        opacity: map.get(ripple-theme.$dark-ink-opacities, focus);
-      }
+  .mdc-radio__native-control {
+    @include ripple-theme.focus {
+      + .mdc-radio__background::before {
+        @include feature-targeting.targets($feat-structure) {
+          transform: scale(1);
+          opacity: map.get(ripple-theme.$dark-ink-opacities, focus);
+        }
 
-      @include feature-targeting.targets($feat-animation) {
-        transition: enter(opacity), enter(transform);
+        @include feature-targeting.targets($feat-animation) {
+          transition: enter(opacity), enter(transform);
+        }
       }
     }
   }
