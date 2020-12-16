@@ -37,69 +37,33 @@ const ESC_EVENTS = [
 const ANIMATION_FRAME = 1;
 
 // This function assumes that the foundation has already been initialized for
-// rich tooltips. If isRich and isPersistent have not been initialized, the
-// checks for rich tooltip and persistent rich tooltips will not be called. This
-// function also assumes that isShown is false, since the checks for isShown
-// being true is trivial.
-function expectShowToBeCalled(
+// interactive rich tooltips. If isRich and isInteractive have not been
+// initialized, the checks for interactive rich tooltips will not be called.
+function expectTooltipToHaveBeenShown(
     foundation: MDCTooltipFoundation,
     mockAdapter: jasmine.SpyObj<MDCTooltipAdapter>) {
-  expect(foundation['hideTimeout']).toEqual(null);
-  expect(foundation['showTimeout']).toEqual(null);
-
   if (foundation.getIsRich()) {
-    expect(mockAdapter.registerEventHandler)
-        .toHaveBeenCalledWith('focusout', jasmine.any(Function));
     if (foundation['isInteractive']) {
       expect(mockAdapter.setAnchorAttribute)
           .toHaveBeenCalledWith('aria-expanded', 'true');
-    }
-    if (!foundation.getIsPersistent()) {
-      expect(mockAdapter.registerEventHandler)
-          .toHaveBeenCalledWith('mouseenter', jasmine.any(Function));
-      expect(mockAdapter.registerEventHandler)
-          .toHaveBeenCalledWith('mouseleave', jasmine.any(Function));
     }
   }
 
   expect(mockAdapter.setAttribute).toHaveBeenCalledWith('aria-hidden', 'false');
   expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.HIDE);
   expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.SHOWING);
-
-  expect(mockAdapter.registerDocumentEventHandler)
-      .toHaveBeenCalledWith('click', jasmine.any(Function));
-  expect(mockAdapter.registerDocumentEventHandler)
-      .toHaveBeenCalledWith('keydown', jasmine.any(Function));
-
-  expect(mockAdapter.registerWindowEventHandler)
-      .toHaveBeenCalledWith('scroll', jasmine.any(Function));
-  expect(mockAdapter.registerWindowEventHandler)
-      .toHaveBeenCalledWith('resize', jasmine.any(Function));
 }
 
 // This function assumes that the foundation has already been initialized for
-// rich tooltips. If isRich and isPersistent have not been initialized, the
-// checks for rich tooltip and persistent rich tooltips will not be called. This
-// function also assumes that isShown is true, since the checks for isShown
-// being false is trivial.
-function expectHideToBeCalled(
+// interactive rich tooltips. If isRich and isInteractive have not been
+// initialized, the checks for interactive rich tooltips will not be called.
+function expectTooltipToHaveBeenHidden(
     foundation: MDCTooltipFoundation,
     mockAdapter: jasmine.SpyObj<MDCTooltipAdapter>) {
-  expect(foundation['hideTimeout']).toEqual(null);
-  expect(foundation['showTimeout']).toEqual(null);
-
   if (foundation.getIsRich()) {
-    expect(mockAdapter.deregisterEventHandler)
-        .toHaveBeenCalledWith('focusout', jasmine.any(Function));
     if (foundation['isInteractive']) {
       expect(mockAdapter.setAnchorAttribute)
           .toHaveBeenCalledWith('aria-expanded', 'false');
-    }
-    if (!foundation.getIsPersistent()) {
-      expect(mockAdapter.deregisterEventHandler)
-          .toHaveBeenCalledWith('mouseenter', jasmine.any(Function));
-      expect(mockAdapter.deregisterEventHandler)
-          .toHaveBeenCalledWith('mouseleave', jasmine.any(Function));
     }
   }
 
@@ -107,32 +71,18 @@ function expectHideToBeCalled(
   expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.HIDE);
   expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
   expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.SHOWN);
-
-  expect(mockAdapter.deregisterDocumentEventHandler)
-      .toHaveBeenCalledWith('click', jasmine.any(Function));
-  expect(mockAdapter.deregisterDocumentEventHandler)
-      .toHaveBeenCalledWith('keydown', jasmine.any(Function));
-  expect(mockAdapter.deregisterWindowEventHandler)
-      .toHaveBeenCalledWith('scroll', jasmine.any(Function));
-  expect(mockAdapter.deregisterWindowEventHandler)
-      .toHaveBeenCalledWith('resize', jasmine.any(Function));
 }
 
-function expectHideNotToBeCalled(
+// This function assumes that the foundation has already been initialized for
+// interactive rich tooltips. If isRich and isInteractive have not been
+// initialized, the checks for interactive rich tooltips will not be called.
+function expectTooltipNotToHaveBeenHidden(
     foundation: MDCTooltipFoundation,
     mockAdapter: jasmine.SpyObj<MDCTooltipAdapter>) {
   if (foundation.getIsRich()) {
-    expect(mockAdapter.deregisterEventHandler)
-        .not.toHaveBeenCalledWith('focusout', jasmine.any(Function));
     if (foundation['isInteractive']) {
       expect(mockAdapter.setAnchorAttribute)
           .not.toHaveBeenCalledWith('aria-expanded', 'false');
-    }
-    if (!foundation.getIsPersistent()) {
-      expect(mockAdapter.deregisterEventHandler)
-          .not.toHaveBeenCalledWith('mouseenter', jasmine.any(Function));
-      expect(mockAdapter.deregisterEventHandler)
-          .not.toHaveBeenCalledWith('mouseleave', jasmine.any(Function));
     }
   }
 
@@ -142,15 +92,6 @@ function expectHideNotToBeCalled(
   expect(mockAdapter.addClass)
       .not.toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
   expect(mockAdapter.removeClass).not.toHaveBeenCalledWith(CssClasses.SHOWN);
-
-  expect(mockAdapter.deregisterDocumentEventHandler)
-      .not.toHaveBeenCalledWith('click', jasmine.any(Function));
-  expect(mockAdapter.deregisterDocumentEventHandler)
-      .not.toHaveBeenCalledWith('keydown', jasmine.any(Function));
-  expect(mockAdapter.deregisterWindowEventHandler)
-      .not.toHaveBeenCalledWith('scroll', jasmine.any(Function));
-  expect(mockAdapter.deregisterWindowEventHandler)
-      .not.toHaveBeenCalledWith('resize', jasmine.any(Function));
 }
 
 function setUpFoundationTestForRichTooltip(
@@ -557,7 +498,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleKeydown({type: 'keydown', key: 'Space'});
 
-       expectHideNotToBeCalled(foundation, mockAdapter);
+       expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it('#handleKeydown does not restore focus to the anchorElement if the activeElement is not a HTMLElement',
@@ -606,7 +547,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleDocumentClick(mockClickEvent);
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it('#handleDocumentClick hides the tooltip immediately for default rich tooltips',
@@ -618,7 +559,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleDocumentClick(mockClickEvent);
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it('#handleDocumentClick hides the tooltip immediately for persistent rich tooltips if there is no event target',
@@ -630,7 +571,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleDocumentClick(mockClickEvent);
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it('#handleDocumentClick hides the tooltip immediately for persistent rich tooltips if event target is not HTMLElement',
@@ -645,7 +586,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleDocumentClick(mockClickEvent);
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it('#handleDocumentClick hides the tooltip immediately for persistent rich tooltips if event target is not within anchorElement',
@@ -661,7 +602,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleDocumentClick(mockClickEvent);
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it('#handleDocumentClick does not hide the tooltip for persistent rich tooltips if event target is within anchorElement',
@@ -677,7 +618,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleDocumentClick(mockClickEvent);
 
-       expectHideNotToBeCalled(foundation, mockAdapter);
+       expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
 
 
@@ -691,7 +632,7 @@ describe('MDCTooltipFoundation', () => {
        expect(foundation.hideTimeout).not.toEqual(null);
 
        jasmine.clock().tick(numbers.HIDE_DELAY_MS);
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it(`#handleAnchorBlur hides the tooltip immediately for plain tooltips`,
@@ -702,7 +643,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleAnchorBlur();
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it(`#handleAnchorBlur hides the tooltip immediately when focus changes to non-HTMLElement related target for default rich tooltips`,
@@ -713,7 +654,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleAnchorBlur({});
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it(`#handleAnchorBlur hides the tooltip immediately when focus changes to related target not within tooltip for default rich tooltips`,
@@ -726,7 +667,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleAnchorBlur(mockFocusEvent);
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it(`#handleAnchorBlur doesn't hide the tooltip when focus changes to related target not within tooltip for default rich tooltips`,
@@ -739,7 +680,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleAnchorBlur(mockFocusEvent);
 
-       expectHideNotToBeCalled(foundation, mockAdapter);
+       expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it(`#handleAnchorBlur hides the tooltip immediately when focus changes to non-HTMLElement related target for persistent rich tooltips`,
@@ -750,7 +691,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleAnchorBlur({});
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it(`#handleAnchorBlur hides the tooltip immediately when focus changes to related target not within tooltip for persistent rich tooltips`,
@@ -763,7 +704,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleAnchorBlur(mockFocusEvent);
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it(`#handleAnchorBlur doesn't hide the tooltip when focus changes to related target within tooltip for persistent rich tooltips`,
@@ -776,7 +717,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleAnchorBlur(mockFocusEvent);
 
-       expectHideNotToBeCalled(foundation, mockAdapter);
+       expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it(`#handleDocumentClick hides the tooltip immediately`, () => {
@@ -786,7 +727,7 @@ describe('MDCTooltipFoundation', () => {
     foundation.show();
     foundation.handleDocumentClick(mockClickEvent);
 
-    expectHideToBeCalled(foundation, mockAdapter);
+    expectTooltipToHaveBeenHidden(foundation, mockAdapter);
   });
 
   it(`#handleAnchorMouseEnter shows the tooltip after a ${
@@ -798,7 +739,7 @@ describe('MDCTooltipFoundation', () => {
        expect(foundation.showTimeout).not.toEqual(null);
 
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-       expectShowToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenShown(foundation, mockAdapter);
      });
 
   it(`#handleAnchorFocus shows the tooltip after a ${
@@ -811,7 +752,7 @@ describe('MDCTooltipFoundation', () => {
        expect(foundation.showTimeout).not.toEqual(null);
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
 
-       expectShowToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenShown(foundation, mockAdapter);
      });
 
   it(`#handleAnchorFocus shows the tooltip if the relatedTarget is not within tooltip`,
@@ -825,7 +766,7 @@ describe('MDCTooltipFoundation', () => {
        expect(foundation.showTimeout).not.toEqual(null);
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
 
-       expectShowToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenShown(foundation, mockAdapter);
      });
 
   it(`#handleAnchorFocus doesn't show the tooltip if the relatedTarget is within tooltip`,
@@ -855,7 +796,7 @@ describe('MDCTooltipFoundation', () => {
        expect(foundation.isShown).toBe(false);
        foundation.handleAnchorClick();
 
-       expectShowToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenShown(foundation, mockAdapter);
      });
 
   it(`#handleAnchorClick hides the tooltip immediately when tooltip is shown for persistent rich tooltips`,
@@ -866,7 +807,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleAnchorClick();
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
 
@@ -876,7 +817,7 @@ describe('MDCTooltipFoundation', () => {
 
     foundation.handleRichTooltipMouseEnter();
 
-    expectShowToBeCalled(foundation, mockAdapter);
+    expectTooltipToHaveBeenShown(foundation, mockAdapter);
   });
 
   it(`#handleRichTooltipMouseLeave hides the tooltip after a ${
@@ -890,7 +831,7 @@ describe('MDCTooltipFoundation', () => {
        expect(foundation.hideTimeout).not.toEqual(null);
        jasmine.clock().tick(numbers.HIDE_DELAY_MS);
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it('#handleRichTooltipMouseLeave clears any pending showTimeout', () => {
@@ -917,7 +858,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        foundation.handleRichTooltipFocusOut({});
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it('#handleRichTooltipFocusOut hides the tooltip immediately if related target is not within the anchor or the tooltip',
@@ -931,7 +872,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.handleRichTooltipFocusOut(
            {relatedTarget: document.createElement('div')});
 
-       expectHideToBeCalled(foundation, mockAdapter);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it('#handleRichTooltipFocusOut does not hide the tooltip if related target is within the anchor',
@@ -945,7 +886,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.handleRichTooltipFocusOut(
            {relatedTarget: document.createElement('div')});
 
-       expectHideNotToBeCalled(foundation, mockAdapter);
+       expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it('#handleRichTooltipFocusOut does not hide the tooltip if related target is within the tooltip',
@@ -959,7 +900,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.handleRichTooltipFocusOut(
            {relatedTarget: document.createElement('div')});
 
-       expectHideNotToBeCalled(foundation, mockAdapter);
+       expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
 
   it(`does not re-animate a tooltip already shown in the dom (from focus)`,
