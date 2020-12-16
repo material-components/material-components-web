@@ -57,6 +57,7 @@ const events = {
 enum XPosition {
   DETECTED = 0,
   START = 1,
+  // Note: CENTER is not valid for rich tooltips.
   CENTER = 2,
   END = 3,
 }

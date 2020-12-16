@@ -104,6 +104,10 @@ $exit-duration: 75ms;
       @include feature-targeting.targets($feat-structure) {
         display: inline-block;
         border-radius: $_rich_corner_radius;
+        // Moves the rich tooltip out of the viewport/parent element initially
+        // so that the initial width is not affected and a 'correct' width can
+        // be used to calculate the position of the tooltip.
+        left: -$_rich_max_width;
         padding: $_rich_padding $_rich_padding;
       }
     }
