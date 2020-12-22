@@ -213,15 +213,6 @@ $light-theme: (
   $feat-structure: feature-targeting.create-target($query, structure);
 
   $checkbox-padding: ($ripple-size - $icon-size) / 2;
-  .mdc-checkbox__background::before {
-    @include feature-targeting.targets($feat-structure) {
-      top: -($border-width) - $checkbox-padding;
-      left: -($border-width) - $checkbox-padding;
-      width: $ripple-size;
-      height: $ripple-size;
-    }
-  }
-
   $ripple-size: custom-properties.create(
     checkbox-custom-properties.$ripple-size,
     $ripple-size
@@ -467,16 +458,6 @@ $light-theme: (
   $query: feature-targeting.all()
 ) {
   $feat-color: feature-targeting.create-target($query, color);
-
-  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background::before,
-  .mdc-checkbox__native-control:indeterminate
-    ~ .mdc-checkbox__background::before,
-  .mdc-checkbox__native-control[data-indeterminate='true']
-    ~ .mdc-checkbox__background::before {
-    @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
-    }
-  }
 
   &.mdc-checkbox--selected {
     @include ripple-theme.states(

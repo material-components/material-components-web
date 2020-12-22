@@ -138,15 +138,6 @@
     }
   }
 
-  // The frame's ::before element is used as a focus indicator for the checkbox
-  .mdc-checkbox__background::before {
-    @include focus-indicator_($query);
-  }
-
-  .mdc-checkbox__native-control:focus ~ .mdc-checkbox__background::before {
-    @include focus-indicator--focused_($query);
-  }
-
   .mdc-checkbox__native-control {
     @include feature-targeting.targets($feat-structure) {
       @include native-control_;
@@ -245,12 +236,6 @@
 
   #{checkbox-theme.$ripple-target} {
     @include ripple.target-common($query: $query);
-  }
-
-  .mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {
-    @include feature-targeting.targets($feat-structure) {
-      content: none;
-    }
   }
 }
 
@@ -381,12 +366,6 @@
     will-change: background-color, border-color;
   }
 
-  .mdc-checkbox__background::before {
-    @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, on-surface);
-    }
-  }
-
   @include feature-targeting.targets($feat-animation) {
     transition: transition-exit(background-color), transition-exit(border-color);
   }
@@ -396,40 +375,10 @@
   transition: transition-enter(border-color), transition-enter(background-color);
 }
 
-// Focus indicator
-
+// For backward compatibility.
 @mixin focus-indicator_($query: feature-targeting.all()) {
-  $feat-animation: feature-targeting.create-target($query, animation);
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    position: absolute;
-    transform: scale(0, 0);
-    border-radius: 50%;
-    opacity: 0;
-    pointer-events: none;
-    content: '';
-    will-change: opacity, transform;
-  }
-
-  @include feature-targeting.targets($feat-animation) {
-    transition: transition-exit(opacity), transition-exit(transform);
-  }
 }
-
 @mixin focus-indicator--focused_($query: feature-targeting.all()) {
-  $feat-animation: feature-targeting.create-target($query, animation);
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    transform: scale(1);
-    opacity: checkbox-theme.$focus-indicator-opacity;
-  }
-
-  @include feature-targeting.targets($feat-animation) {
-    transition: transition-enter(opacity, 0ms, 80ms),
-      transition-enter(transform, 0ms, 80ms);
-  }
 }
 
 // Native input
