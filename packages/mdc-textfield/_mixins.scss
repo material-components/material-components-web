@@ -21,7 +21,8 @@
 //
 
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
+// TODO: document why this disable is neccessary
 
 @use 'sass:list';
 @use 'sass:meta';
@@ -234,7 +235,8 @@
   }
 
   // postcss-bem-linter: define text-field-helper-text
-  // stylelint-disable plugin/selector-bem-pattern
+  // stylelint-disable plugin/selector-bem-pattern --
+  // TODO: document why this disable is neccessary
   .mdc-text-field-helper-line {
     @include feature-targeting.targets($feat-structure) {
       display: flex;
@@ -253,7 +255,8 @@
   // postcss-bem-linter: end
 
   // mdc-form-field tweaks to align text field label correctly
-  // stylelint-disable selector-max-type
+  // stylelint-disable selector-max-type --
+  // TODO: document why this disable is neccessary
   .mdc-form-field > .mdc-text-field + label {
     @include feature-targeting.targets($feat-structure) {
       align-self: flex-start;
@@ -1922,7 +1925,9 @@
     max-height: 100%;
     max-width: 100%;
     min-height: variables.$height;
-    // stylelint-disable declaration-block-no-duplicate-properties
+    // stylelint-disable declaration-block-no-duplicate-properties --
+    // TODO: document why this disable is neccessary
+
     // 'stretch' is the preferred rule here. It will allow the textarea to grow
     // to the min/max width of the container, but if an explicit width is set,
     // it cannot be resized horizontally.
