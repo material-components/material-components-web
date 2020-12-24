@@ -53,7 +53,7 @@ There are corresponding `.d.ts` files for each foundation/component/adapter/etc.
 ### CommonJS
 
 ```js
-const mdcFoo = require('mdc-foo');
+const mdcFoo = require('@material/foo');
 const MDCFoo = mdcFoo.MDCFoo;
 const MDCFooFoundation = mdcFoo.MDCFooFoundation;
 ```
