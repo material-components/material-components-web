@@ -583,7 +583,7 @@ describe('MDCTooltip', () => {
          expect(anchorElem.getAttribute('aria-expanded')).toEqual('false');
        });
 
-    it('set aria-expanded to false on anchor when element other than anchor is clicked while tooltip is shown',
+    it('set aria-expanded to false on anchor when element other than anchor or the tooltip is clicked while tooltip is shown',
        () => {
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
@@ -597,6 +597,22 @@ describe('MDCTooltip', () => {
 
          expect(tooltipElem.getAttribute('aria-hidden')).toEqual('true');
          expect(anchorElem.getAttribute('aria-expanded')).toEqual('false');
+       });
+
+    it('aria-expanded remains true on anchor when tooltip is clicked while tooltip is shown',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'click');
+         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
+         emitEvent(tooltipElem, 'click');
+
+         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
        });
 
     it('aria-expanded remains true on anchor when mouseleave anchor while tooltip is shown',

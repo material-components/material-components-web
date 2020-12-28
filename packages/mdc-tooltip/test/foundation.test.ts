@@ -589,11 +589,12 @@ describe('MDCTooltipFoundation', () => {
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
-  it('#handleDocumentClick hides the tooltip immediately for persistent rich tooltips if event target is not within anchorElement',
+  it('#handleDocumentClick hides the tooltip immediately for persistent rich tooltips if event target is not within anchorElement or tooltipElement',
      () => {
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {isPersistent: true});
        mockAdapter.anchorContainsElement.and.returnValue(false);
+       mockAdapter.tooltipContainsElement.and.returnValue(false);
        const mockClickEvent = {
          ...createMouseEvent('click'),
          target: document.createElement('div')
@@ -610,6 +611,24 @@ describe('MDCTooltipFoundation', () => {
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {isPersistent: true});
        mockAdapter.anchorContainsElement.and.returnValue(true);
+       mockAdapter.tooltipContainsElement.and.returnValue(false);
+       const mockClickEvent = {
+         ...createMouseEvent('click'),
+         target: document.createElement('div')
+       };
+
+       foundation.show();
+       foundation.handleDocumentClick(mockClickEvent);
+
+       expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
+     });
+
+  it('#handleDocumentClick does not hide the tooltip for persistent rich tooltips if event target is within tooltipElement',
+     () => {
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
+       mockAdapter.anchorContainsElement.and.returnValue(false);
+       mockAdapter.tooltipContainsElement.and.returnValue(true);
        const mockClickEvent = {
          ...createMouseEvent('click'),
          target: document.createElement('div')

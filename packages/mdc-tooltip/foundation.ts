@@ -215,14 +215,19 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   handleDocumentClick(evt: MouseEvent) {
-    const anchorContainsTargetElement = evt.target instanceof HTMLElement &&
-        this.adapter.anchorContainsElement(evt.target);
-    // For persistent rich tooltips, we will only hide if the click target is
-    // not within the anchor element, otherwise both the anchor element's click
-    // handler and this handler will handle the click (due to event
-    // propagation), resulting in a shown tooltip being immediately hidden if
-    // the tooltip was initially hidden.
-    if (this.isRich && this.isPersistent && anchorContainsTargetElement) {
+    const anchorOrTooltipContainsTargetElement =
+        evt.target instanceof HTMLElement &&
+        (this.adapter.anchorContainsElement(evt.target) ||
+         this.adapter.tooltipContainsElement(evt.target));
+    // For persistent rich tooltips, we will not hide if:
+    // - The click target is within the anchor element. Otherwise, both
+    //   the anchor element's click handler and this handler will handle the
+    //   click (due to event propagation), resulting in a shown tooltip
+    //   being immediately hidden if the tooltip was initially hidden.
+    // - The click target is within the tooltip element, since clicks
+    //   on the tooltip do not close the tooltip.
+    if (this.isRich && this.isPersistent &&
+        anchorOrTooltipContainsTargetElement) {
       return;
     }
     // Hide the tooltip immediately on click.
