@@ -61,7 +61,7 @@ const MDCFooFoundation = mdcFoo.MDCFooFoundation;
 ### AMD
 
 ```js
-require(['path/to/mdc-foo'], mdcFoo => {
+require(['path/to/@material/foo'], mdcFoo => {
   const MDCFoo = mdcFoo.MDCFoo;
   const MDCFooFoundation = mdcFoo.MDCFooFoundation;
 });
