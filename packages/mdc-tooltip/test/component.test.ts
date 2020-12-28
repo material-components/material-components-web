@@ -269,7 +269,7 @@ describe('MDCTooltip', () => {
         <button aria-describedby="tt0" aria-haspopup="true" aria-expanded="false">
           anchor
         </button>
-        <aside id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true">
+        <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" role="dialog">
           <div class="mdc-tooltip__surface">
             <h2 class="mdc-tooltip__title">Title</h2>
             <p class="mdc-tooltip__content">Content <a class="mdc-tooltip__content-link" href="google.com">link</a></p>
@@ -280,7 +280,7 @@ describe('MDCTooltip', () => {
               </button>
             </div>
           </div>
-        </aside>
+        </div>
       </div>`);
       document.body.appendChild(fixture);
     });
@@ -496,13 +496,13 @@ describe('MDCTooltip', () => {
         <button aria-describedby="tt0" aria-haspopup="true" aria-expanded="false">
           anchor
         </button>
-        <aside id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" data-mdc-tooltip-persistent="true">
+        <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" data-mdc-tooltip-persistent="true" role="tooltip" tabindex="-1">
           <div class="mdc-tooltip__surface">
             <p class="mdc-tooltip__content">
               demo tooltip
             </p>
           </div>
-        </aside>
+        </div>
       </div>`);
       document.body.appendChild(fixture);
     });
