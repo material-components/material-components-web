@@ -1,7 +1,7 @@
 {
   "name": "@material/tab",
   "description": "The Material Components for the web tab component",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -18,13 +18,13 @@
   "sideEffects": false,
   "types": "dist/mdc.tab.d.ts",
   "dependencies": {
-    "@material/base": "^8.0.0",
-    "@material/feature-targeting": "^8.0.0",
-    "@material/ripple": "^8.0.0",
-    "@material/rtl": "^8.0.0",
-    "@material/tab-indicator": "^8.0.0",
-    "@material/theme": "^8.0.0",
-    "@material/typography": "^8.0.0",
+    "@material/base": "^9.0.0",
+    "@material/feature-targeting": "^9.0.0",
+    "@material/ripple": "^9.0.0",
+    "@material/rtl": "^9.0.0",
+    "@material/tab-indicator": "^9.0.0",
+    "@material/theme": "^9.0.0",
+    "@material/typography": "^9.0.0",
     "tslib": "^1.9.3"
   },
   "publishConfig": {

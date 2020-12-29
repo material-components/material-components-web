@@ -3,6 +3,96 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/material-components/material-components-web/compare/v8.0.0...v9.0.0) (2020-12-29)
+
+
+### Bug Fixes
+
+* **data-table:** fix style ordering wrt select & use new variable-width mixin ([afb6889](https://github.com/material-components/material-components-web/commit/afb68894e63c9ed4bb3b3d523cbb4072480117a6)), closes [#6599](https://github.com/material-components/material-components-web/issues/6599)
+* **list:** add support for density scaling. ([419e035](https://github.com/material-components/material-components-web/commit/419e035729c1ca1ee2b572ae4b1937e2d8cf04bc))
+* **list:** add support for non-interactive list roles. ([fc8b045](https://github.com/material-components/material-components-web/commit/fc8b045f1127709c5929a3cd1c9c7d622db8ed42))
+* **list:** ensure divider appears in IE high contrast mode. ([eff7b46](https://github.com/material-components/material-components-web/commit/eff7b46ac916d2eb130f7d826eee047c5f19e6f2))
+* Adding tests. ([240c5f7](https://github.com/material-components/material-components-web/commit/240c5f74f381967ede9eb1fa13754d2f0282da9e))
+* adjust meta baseline and update color mixins. ([07f3e01](https://github.com/material-components/material-components-web/commit/07f3e01b75306a7481c7077cd3ed12a87399958e))
+* Document stylelint exceptions ([f89d8b8](https://github.com/material-components/material-components-web/commit/f89d8b8f295c80c7b7e691ec712a30de8a0b26d5))
+* **notched-outline:** fix notched outline no-label style ([99cfb6b](https://github.com/material-components/material-components-web/commit/99cfb6bd53f72240fe76852d0fdaa0b82e7dca39))
+* **select:** debounce click on anchor ([b39094d](https://github.com/material-components/material-components-web/commit/b39094d145f9b96c1c75e2b5fcce7b76c9b31bf1))
+* **slider:** Adjust hidden input dimensions to take slider dimensions, such that screenreader focus indicators show a highlight around the entire slider. ([fd22355](https://github.com/material-components/material-components-web/commit/fd22355f72ab304aec043f53ced92fa9adfef457))
+* **slider:** Fix bug where value indicator container took space and could be hovered over / clicked when hidden. ([832668d](https://github.com/material-components/material-components-web/commit/832668d33389a0b6194d3d8ef53aa8c252aa8f5d))
+* **slider:** Remove big step options. Now that we're using a native range input, big step is not customizable - we follow browser defaults for big step. ([ae27b44](https://github.com/material-components/material-components-web/commit/ae27b44b078ebdad3669b03abc9f28ed184db803))
+* **slider:** Update both thumbs' value indicator UI's if layout is invoked with undefined `thumb`. ([489d4c2](https://github.com/material-components/material-components-web/commit/489d4c219d1747a8e5de3f210f00898c18201b24))
+* **tabs:** Expose min width mixin and set to 90px per spec. ([c4ab987](https://github.com/material-components/material-components-web/commit/c4ab987221d5a3b9ab588321bb0347f5d665505a))
+
+
+### Code Refactoring
+
+* Remove MDC theme's deep-get, used sass:map's get API instead. ([37fbae1](https://github.com/material-components/material-components-web/commit/37fbae10d6fb993c0ea866959fb5564c052002cc))
+
+
+### Features
+
+* **banner:** Add mobile-stacked variant support to banner. ([a0b2db2](https://github.com/material-components/material-components-web/commit/a0b2db26b550162d2e409489c5ded3381b7c7dc2))
+* **checkbox:** Add CSS custom properties to MDC checkbox for density theming ([9244508](https://github.com/material-components/material-components-web/commit/9244508bd82ab65635169cfacd74f1a25ebaab7e))
+* **checkbox:** Add validation to MDC Checkbox theme mixin ([2d5f32d](https://github.com/material-components/material-components-web/commit/2d5f32d41cda48ca8e3c1d2244d6fb3bb4c6aa7d))
+* **circular-progress:** do not require HTML without whitespaces ([8648b82](https://github.com/material-components/material-components-web/commit/8648b8258f7f87edcc1d58a2bc7db3d78425508f))
+* **linear-progress:** remove aria-valuemin/max attrs for indeterminate ([4321323](https://github.com/material-components/material-components-web/commit/4321323e4bea2da8192b81ebdf8c6a9ee1e76aa0))
+* **list:** support ctrl + a keyboard shortcut ([eefef49](https://github.com/material-components/material-components-web/commit/eefef49d86c69b1985aa4e5fa5b8809ba1f0a1f4)), closes [#6366](https://github.com/material-components/material-components-web/issues/6366)
+* **select:** add mixin for variable width ([30c11bf](https://github.com/material-components/material-components-web/commit/30c11bfc24e426c0647645758e4f9d98f589e85c))
+* **slider:** Add hidden input to slider, to support forms submission. This is also prep for moving to use an \<input type="range"\> behind the scenes, in order to support touch-based AT's. ([b98d15d](https://github.com/material-components/material-components-web/commit/b98d15d90b19e69066c0b417ee0d8b11ab733e20))
+* **slider:** Modify continuous slider to use step value by default, and give clients the option to customize step value for continuous sliders. ([7ad038e](https://github.com/material-components/material-components-web/commit/7ad038e1d37171dc1fc931112b17f085533f7048))
+* **slider:** Use input with type="range" to back slider component. This ensures that sliders can be adjusted with touch-based assistive technologies, as the current ARIA spec for sliders is not compatible with e.g. TalkBack/Android. ([9083b7d](https://github.com/material-components/material-components-web/commit/9083b7d61b1dda2c5acefda6e8939870a358e98f))
+* **theme:** Added validation mixin to validate provided theme configuration keys ([1c156d6](https://github.com/material-components/material-components-web/commit/1c156d69d76efcfa39c706f7f6ae74e96c2bd541))
+* **tooltip:** Add positioning adjustment and position specification for rich tooltips. Rich tooltips default to the END position and does not support CENTER positioning. ([384a8ee](https://github.com/material-components/material-components-web/commit/384a8eeb163798df6655c8a49c36428ede852e15))
+* **tooltip:** Added persistent variant for rich tooltips that shows/hides based on mouse clicks on the anchor element. Clicks on elements other than the anchor will also hide the persistent variant. ([9775856](https://github.com/material-components/material-components-web/commit/9775856508a7256cb7dc93d0c3e47f6d87c08c93))
+* **tooltip:** Adjust  tooltip position on `scroll` and `resize` events. This ensures that the tooltip remains pinned to the anchor element despite page movement. ([a415276](https://github.com/material-components/material-components-web/commit/a41527604048d218879240aaaf04aff7389053d1))
+* **tooltip:** Adjusting tooltip positioning logic so that the tooltip remains within the viewport even if the anchor element is partially off-screen. ([482ff90](https://github.com/material-components/material-components-web/commit/482ff909132b2e8f81791d7128cb0a3d2ff371a8))
+* **tooltip:** Hide rich tooltip if mouse leaves rich tooltip. Rich tooltip persists if mouse leaves rich tooltip and enters anchor. ([6d8574f](https://github.com/material-components/material-components-web/commit/6d8574fe1db3a60dfb5a45ce8c6c6718700c2dfd))
+* **tooltip:** Make persistent rich tooltips persist when click target is within the rich tooltip. ([fb194dd](https://github.com/material-components/material-components-web/commit/fb194dd354d2c912f997c500347557edcba1440d))
+* **tooltip:** Reducing minimum threshold distance between tooltip and viewport from 32px to 8px. ([23491cf](https://github.com/material-components/material-components-web/commit/23491cf85b8831896f95879e8aea258d5ca7f653))
+* **tooltip:** Restore focus to the anchor element when the ESC button is pressed while the focus is in the tooltip for rich tooltips. Default rich tooltips should have focus restored to anchor and not have rich tooltips show. ([eabf9d5](https://github.com/material-components/material-components-web/commit/eabf9d5c2d9b56e316db98f2d8e16bf12f1ef501))
+* **tooltip:** Set up base sass for rich tooltip. Rich tooltips are currently in development and is not yet ready for use. ([4ae94ff](https://github.com/material-components/material-components-web/commit/4ae94ff7816d87fde3285a0c2fd48b94ff0bbdab))
+* **tooltip:** Set up rich tooltip to persist if mouse leaves anchor and enters rich tooltip. ([c927a5d](https://github.com/material-components/material-components-web/commit/c927a5d05761d0a80f886b2b7627e600df38c467))
+* **tooltip:** The aria-expanded attribute of the anchor element will only be changed for anchor elements with interactive rich tooltips. Non-interactive rich tooltip anchor elements do not have the aria-haspopup and aria-expanded attributes. ([c5dda80](https://github.com/material-components/material-components-web/commit/c5dda809d5e4c110f3b4bb37c9646e572026d58d))
+* **tooltip:** When the anchor element blurs, the rich tooltip will only be hidden if the focus is changed to a non-rich tooltip element. ([6871336](https://github.com/material-components/material-components-web/commit/6871336f11f3cc7d94c6314dc049092e0427106c))
+* **tooltip:** When the rich tooltip element focuses out, hide the rich tooltip if the new focused element is not the anchor element or an element within the rich tooltip. ([1085c3b](https://github.com/material-components/material-components-web/commit/1085c3b2df7d3c1b528e1b9ba5557975fa959401))
+* Added global variable to conditionally emit CSS selector fallback declarations ([7b0e2b3](https://github.com/material-components/material-components-web/commit/7b0e2b3775d006126161bd688851d490d19e9558))
+
+
+### BREAKING CHANGES
+
+* **tooltip:**   Added adapter method:
+  - tooltipContainsElement(element: HTMLElement): boolean;
+Rich tooltips are currently in development and is not yet ready for use.
+
+PiperOrigin-RevId: 346325244
+* Removed `deep-get()` API from mdc-theme, use `sass:map`'s get() API instead.
+
+PiperOrigin-RevId: 345257138
+* **tooltip:**   Added adapter method:
+  - anchorContainsElement(element: HTMLElement): boolean;
+Rich tooltips are currently in development and is not yet ready for use.
+
+PiperOrigin-RevId: 345221617
+* **slider:** Slider is now backed by an input of type="range". Additionally, adapter methods (focusInput, isInputFocused, registerInputEventHandler, deregisterInputEventHandler) were added.
+
+PiperOrigin-RevId: 344116908
+* **tooltip:**   Added adapter methods:
+  - setAnchorAttribute(attr: string, value: string): void;
+  - registerEventHandler<K extends EventType>(
+        evtType: K, handler: SpecificEventListener<K>): void;
+  - deregisterEventHandler<K extends EventType>(
+        evtType: K, handler: SpecificEventListener<K>): void;
+Rich tooltips are currently in development and is not yet ready for use.
+
+PiperOrigin-RevId: 343894231
+* **slider:** Adds slider adapter methods (get/setInputValue, get/setInputAttribute, removeInputAttribute). Slider DOM structure now contains a hidden input.
+
+PiperOrigin-RevId: 343157208
+
+
+
+
+
 # [8.0.0](https://github.com/material-components/material-components-web/compare/v7.0.0...v8.0.0) (2020-11-02)
 
 
