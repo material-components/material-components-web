@@ -274,7 +274,7 @@ describe('MDCTooltip', () => {
             <h2 class="mdc-tooltip__title">Title</h2>
             <p class="mdc-tooltip__content">Content <a class="mdc-tooltip__content-link" href="google.com">link</a></p>
             <div class="mdc-tooltip--rich-actions">
-              <button class="mdc-button mdc-tooltip__action" aria-label="action">
+              <button class="mdc-button mdc-tooltip__action">
                 <div class="mdc-button__ripple"></div>
                 <span class="mdc-button__label">Action</span>
               </button>
