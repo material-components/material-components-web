@@ -39,7 +39,11 @@ const HAS_WINDOW = typeof window !== 'undefined';
  * - Updating DOM after slider property updates (e.g. min, max).
  */
 export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
-  static SUPPORTS_POINTER_EVENTS = HAS_WINDOW && Boolean(window.PointerEvent);
+  static SUPPORTS_POINTER_EVENTS = HAS_WINDOW && Boolean(window.PointerEvent) &&
+      // #setPointerCapture is buggy on iOS, so we can't use pointer events
+      // until the following bug is fixed:
+      // https://bugs.webkit.org/show_bug.cgi?id=220196
+      !isIOS();
 
   // Whether the initial styles (to position the thumb, before component
   // initialization) have been removed.
@@ -1059,4 +1063,15 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
     this.adapter.deregisterEventHandler('pointermove', this.moveListener);
   }
+}
+
+function isIOS() {
+  // Source:
+  // https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
+  return [
+    'iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone',
+    'iPod'
+  ].includes(navigator.platform)
+      // iPad on iOS 13 detection
+      || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
 }
