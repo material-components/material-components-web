@@ -374,7 +374,7 @@ Method Signature | Description
 `setValue(value: number) => void` | Sets the value of the thumb (for single point sliders), or the end thumb (for range sliders).
 `getDisabled() => boolean` | Gets the disabled state of the slider.
 `setDisabled(disabled: boolean) => void` | Sets the disabled state of the slider.
-`setValueToAriaValueTextFn((mapFn: ((value: number) => string)|null) => void` | Sets a function that maps the slider value to value of the `aria-valuetext` attribute on the thumb element. If not set, the `aria-valuetext` attribute is unchanged when the value changes.
+`setValueToAriaValueTextFn((mapFn: ((value: number) => string) \| null) => void` | Sets a function that maps the slider value to value of the `aria-valuetext` attribute on the thumb element. If not set, the `aria-valuetext` attribute is unchanged when the value changes.
 
 ### Usage within frameworks
 
