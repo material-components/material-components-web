@@ -30,10 +30,12 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/custom-properties';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/touch-target/variables' as touch-target-variables;
 @use '@material/typography/typography';
+@use './dialog-custom-properties';
 @use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
@@ -78,7 +80,11 @@
     @include feature-targeting.targets($feat-structure) {
       // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
       display: none;
-      z-index: variables.$z-index;
+      $z-index: custom-properties.create(
+        dialog-custom-properties.$z-index,
+        variables.$z-index
+      );
+      @include theme.property(z-index, $z-index);
     }
   }
 
