@@ -375,11 +375,12 @@
   transition: transition-enter(border-color), transition-enter(background-color);
 }
 
-// For backward compatibility.
+// stylelint-disable block-no-empty -- For backward compatibility.
 @mixin focus-indicator_($query: feature-targeting.all()) {
 }
 @mixin focus-indicator--focused_($query: feature-targeting.all()) {
 }
+// stylelint-enable block-no-empty
 
 // Native input
 
