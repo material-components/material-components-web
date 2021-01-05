@@ -140,7 +140,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * initializes the internal state to match the selected item.
    */
   private maybeInitializeSingleSelection() {
-    for (let i = 0; i < this.adapter.getListItemCount(); i++) {
+    const listItemsCount = this.adapter.getListItemCount();
+    for (let i = 0; i < listItemsCount; i++) {
       const hasSelectedClass = this.adapter.listItemAtIndexHasClass(
           i, cssClasses.LIST_ITEM_SELECTED_CLASS);
       const hasActivatedClass = this.adapter.listItemAtIndexHasClass(
