@@ -654,6 +654,18 @@ describe('MDCTooltipFoundation', () => {
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
+  it('#handleAnchorMouseLeave does not clear showTimeout after #handleAnchorMouseEnter is called',
+     () => {
+       const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
+
+       foundation.handleAnchorMouseLeave();
+       jasmine.clock().tick(numbers.HIDE_DELAY_MS / 2);
+       foundation.handleAnchorMouseEnter();
+       jasmine.clock().tick(numbers.HIDE_DELAY_MS / 2);
+
+       expect(foundation.showTimeout).not.toEqual(null);
+     });
+
   it(`#handleAnchorBlur hides the tooltip immediately for plain tooltips`,
      () => {
        const {foundation, mockAdapter} =
@@ -760,6 +772,16 @@ describe('MDCTooltipFoundation', () => {
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
        expectTooltipToHaveBeenShown(foundation, mockAdapter);
      });
+
+  it('#handleAnchorMouseEnter clears any pending hideTimeout', () => {
+    const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
+    foundation.handleAnchorMouseLeave();
+    expect(foundation.hideTimeout).not.toEqual(null);
+
+    foundation.handleAnchorMouseEnter();
+
+    expect(foundation.hideTimeout).toEqual(null);
+  });
 
   it(`#handleAnchorFocus shows the tooltip after a ${
          numbers.SHOW_DELAY_MS}ms delay if relatedTarget is not a HTMLElement`,

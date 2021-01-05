@@ -204,6 +204,23 @@ describe('MDCTooltip', () => {
          expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
        });
 
+    // This test accounts for rapid anchor mouseenter/leave.
+    it('sets aria-hidden to false when going from anchor leave to anchor enter',
+       () => {
+         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
+         const anchorElem =
+             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+         MDCTooltip.attachTo(tooltipElem);
+
+         emitEvent(anchorElem, 'mouseleave');
+         jasmine.clock().tick(numbers.HIDE_DELAY_MS / 2);
+         emitEvent(anchorElem, 'mouseenter');
+         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+         jasmine.clock().tick(numbers.HIDE_DELAY_MS / 2);
+
+         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+       });
+
     it('leaves aria-hidden as true when showing tooltip on an anchor annotated with `data-tooltip-id`',
        () => {
          document.body.removeChild(fixture);

@@ -161,6 +161,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       // again.
       this.show();
     } else {
+      // clearHideTimeout here since handleAnchorMouseLeave sets a hideTimeout
+      // and that can execute before the showTimeout executes, resulting in hide
+      // being called and the showTimeout set below to be cleared.
+      this.clearHideTimeout();
       this.showTimeout = setTimeout(() => {
         this.show();
       }, this.showDelayMs);
