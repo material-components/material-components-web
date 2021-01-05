@@ -42,19 +42,15 @@ const strings = {
   ARIA_ORIENTATION_HORIZONTAL: 'horizontal',
   ARIA_ROLE_CHECKBOX_SELECTOR: '[role="checkbox"]',
   ARIA_SELECTED: 'aria-selected',
+  ARIA_INTERACTIVE_ROLES_SELECTOR: '[role="listbox"], [role="menu"]',
+  ARIA_MULTI_SELECTABLE_SELECTOR: '[aria-multiselectable="true"]',
   CHECKBOX_RADIO_SELECTOR: 'input[type="checkbox"], input[type="radio"]',
   CHECKBOX_SELECTOR: 'input[type="checkbox"]',
-  CHILD_ELEMENTS_TO_TOGGLE_TABINDEX: `
-    .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
-    .${cssClasses.LIST_ITEM_CLASS} a
-  `,
-  FOCUSABLE_CHILD_ELEMENTS: `
-    .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
-    .${cssClasses.LIST_ITEM_CLASS} a,
-    .${cssClasses.LIST_ITEM_CLASS} input[type="radio"]:not(:disabled),
-    .${cssClasses.LIST_ITEM_CLASS} input[type="checkbox"]:not(:disabled)
-  `,
+  CHILD_ELEMENTS_TO_TOGGLE_TABINDEX: 'button:not(:disabled), a',
+  FOCUSABLE_CHILD_ELEMENTS:
+      'button:not(:disabled), a, input[type="radio"]:not(:disabled), input[type="checkbox"]:not(:disabled)',
   RADIO_SELECTOR: 'input[type="radio"]',
+  SELECTED_ITEM_SELECTOR: '[aria-selected="true"], [aria-current="true"]',
 };
 
 const numbers = {
@@ -62,4 +58,25 @@ const numbers = {
   TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS: 300
 };
 
-export {strings, cssClasses, numbers};
+const evolutionClassNameMap = {
+  [`${cssClasses.LIST_ITEM_ACTIVATED_CLASS}`]:
+      'mdc-evolution-list-item--activated',
+  [`${cssClasses.LIST_ITEM_CLASS}`]: 'mdc-evolution-list-item',
+  [`${cssClasses.LIST_ITEM_DISABLED_CLASS}`]:
+      'mdc-evolution-list-item--disabled',
+  [`${cssClasses.LIST_ITEM_SELECTED_CLASS}`]:
+      'mdc-evolution-list-item--selected',
+  [`${cssClasses.LIST_ITEM_PRIMARY_TEXT_CLASS}`]:
+      'mdc-evolution-list-item__primary-text',
+  [`${cssClasses.ROOT}`]: 'mdc-evolution-list',
+};
+
+const evolutionAttribute = 'evolution';
+
+export {
+  strings,
+  cssClasses,
+  numbers,
+  evolutionAttribute,
+  evolutionClassNameMap
+};

@@ -285,8 +285,11 @@ describe('MDCList', () => {
        document.body.appendChild(root);
        const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
        (component.getDefaultFoundation() as any)
-           .adapter.addClassForElementIndex(1, 'foo');
-       expect(selectedNode.classList.contains('foo')).toBe(true);
+           .adapter.addClassForElementIndex(
+               1, cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+       expect(selectedNode.classList.contains(
+                  cssClasses.LIST_ITEM_ACTIVATED_CLASS))
+           .toBe(true);
        document.body.removeChild(root);
      });
 
@@ -307,10 +310,13 @@ describe('MDCList', () => {
        const {root, component} = setupTest();
        document.body.appendChild(root);
        const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
-       selectedNode.classList.add('foo');
+       selectedNode.classList.add(cssClasses.LIST_ITEM_ACTIVATED_CLASS);
        (component.getDefaultFoundation() as any)
-           .adapter.removeClassForElementIndex(1, 'foo');
-       expect(selectedNode.classList.contains('foo')).toBe(false);
+           .adapter.removeClassForElementIndex(
+               1, cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+       expect(selectedNode.classList.contains(
+                  cssClasses.LIST_ITEM_ACTIVATED_CLASS))
+           .toBe(false);
        document.body.removeChild(root);
      });
 
@@ -533,11 +539,11 @@ describe('MDCList', () => {
      () => {
        const {component} = setupTest();
 
-       expect((component.getDefaultFoundation() as any)
-                  .adapter.hasRadioAtIndex(3))
+       expect(
+           (component.getDefaultFoundation() as any).adapter.hasRadioAtIndex(3))
            .toBe(true);
-       expect((component.getDefaultFoundation() as any)
-                  .adapter.hasRadioAtIndex(0))
+       expect(
+           (component.getDefaultFoundation() as any).adapter.hasRadioAtIndex(0))
            .toBe(false);
      });
 
