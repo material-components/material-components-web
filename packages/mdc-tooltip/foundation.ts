@@ -145,6 +145,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         this.adapter.getAnchorAttribute(attributes.ARIA_HASPOPUP) === 'true';
   }
 
+  getIsShown() {
+    return this.isShown;
+  }
+
   getIsRich() {
     return this.isRich;
   }

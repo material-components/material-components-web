@@ -127,6 +127,14 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     this.foundation.setAnchorBoundaryType(type);
   }
 
+  hide() {
+    this.foundation.hide();
+  }
+
+  isShown() {
+    this.foundation.getIsShown();
+  }
+
   getDefaultFoundation() {
     const adapter: MDCTooltipAdapter = {
       getAttribute: (attr) => this.root.getAttribute(attr),

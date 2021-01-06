@@ -172,6 +172,21 @@ describe('MDCTooltipFoundation', () => {
     expect(foundation.getIsPersistent()).toBeTrue();
   });
 
+  it('#getIsShown returns true if the tooltip is currently shown', () => {
+    const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
+    foundation.show();
+
+    expect(foundation.getIsShown()).toBeTrue();
+  });
+
+  it('#getIsShown returns false if the tooltip is currently hidden', () => {
+    const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
+    foundation.show();
+    foundation.hide();
+
+    expect(foundation.getIsShown()).toBeFalse();
+  });
+
   it('#show modifies tooltip element so it is shown', () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
     foundation.show();

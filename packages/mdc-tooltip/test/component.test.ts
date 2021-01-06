@@ -192,6 +192,20 @@ describe('MDCTooltip', () => {
          component.destroy();
        });
 
+    it('#hide forwards to MDCFoundation#hide', () => {
+      const {mockFoundation, component} = setupTestWithMockFoundation(fixture);
+      component.hide();
+      expect(mockFoundation.hide).toHaveBeenCalled();
+      component.destroy();
+    });
+
+    it('#isShown forwards to MDCFoundation#getIsShown', () => {
+      const {mockFoundation, component} = setupTestWithMockFoundation(fixture);
+      component.isShown();
+      expect(mockFoundation.getIsShown).toHaveBeenCalled();
+      component.destroy();
+    });
+
     it('sets aria-hidden to false when showing tooltip on an anchor annotated with `aria-describedby`',
        () => {
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
