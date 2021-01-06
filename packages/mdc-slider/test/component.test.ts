@@ -539,7 +539,7 @@ describe('MDCSlider', () => {
           </div>
           <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0"
                aria-valuemax="100" aria-valuenow="70" style="left:calc(70% - 24px)">
-            <div class="mdc-slider__value-indicator-container">
+            <div class="mdc-slider__value-indicator-container" aria-hidden="true">
               <div class="mdc-slider__value-indicator">
                 <span class="mdc-slider__value-indicator-text">70</span>
               </div>
@@ -634,7 +634,7 @@ function setUpTest(
       {min: isRange ? valueStart || 0 : 0, max: 100, value: value || 0, step});
 
   const valueIndicator = (valueNum: number) => html`
-      <div class="mdc-slider__value-indicator-container">
+      <div class="mdc-slider__value-indicator-container" aria-hidden="true">
         <div class="mdc-slider__value-indicator">
           <span class="mdc-slider__value-indicator-text">
             ${valueNum}

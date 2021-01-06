@@ -153,7 +153,7 @@ To create a discrete slider, add the following:
     </div>
   </div>
   <div class="mdc-slider__thumb">
-    <div class="mdc-slider__value-indicator-container">
+    <div class="mdc-slider__value-indicator-container" aria-hidden="true">
       <div class="mdc-slider__value-indicator">
         <span class="mdc-slider__value-indicator-text">
           50
@@ -203,7 +203,7 @@ To add tick marks to a discrete slider, add the following:
     </div>
   </div>
   <div class="mdc-slider__thumb">
-    <div class="mdc-slider__value-indicator-container">
+    <div class="mdc-slider__value-indicator-container" aria-hidden="true">
       <div class="mdc-slider__value-indicator">
         <span class="mdc-slider__value-indicator-text">
           50
@@ -228,7 +228,7 @@ To add tick marks to a discrete slider, add the following:
     </div>
   </div>
   <div class="mdc-slider__thumb">
-    <div class="mdc-slider__value-indicator-container">
+    <div class="mdc-slider__value-indicator-container" aria-hidden="true">
       <div class="mdc-slider__value-indicator">
         <span class="mdc-slider__value-indicator-text">
           20
@@ -238,7 +238,7 @@ To add tick marks to a discrete slider, add the following:
     <div class="mdc-slider__thumb-knob"></div>
   </div>
   <div class="mdc-slider__thumb">
-    <div class="mdc-slider__value-indicator-container">
+    <div class="mdc-slider__value-indicator-container" aria-hidden="true">
       <div class="mdc-slider__value-indicator">
         <span class="mdc-slider__value-indicator-text">
           50
