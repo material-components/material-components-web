@@ -61,8 +61,8 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   }
 
   initialSyncWithDOM() {
-    this.isTooltipRich = this.foundation.getIsRich();
-    this.isTooltipPersistent = this.foundation.getIsPersistent();
+    this.isTooltipRich = this.foundation.isRich();
+    this.isTooltipPersistent = this.foundation.isPersistent();
 
     this.handleMouseEnter = () => {
       this.foundation.handleAnchorMouseEnter();
@@ -132,7 +132,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   }
 
   isShown() {
-    this.foundation.getIsShown();
+    this.foundation.isShown();
   }
 
   getDefaultFoundation() {

@@ -199,10 +199,10 @@ describe('MDCTooltip', () => {
       component.destroy();
     });
 
-    it('#isShown forwards to MDCFoundation#getIsShown', () => {
+    it('#isShown forwards to MDCFoundation#isShown', () => {
       const {mockFoundation, component} = setupTestWithMockFoundation(fixture);
       component.isShown();
-      expect(mockFoundation.getIsShown).toHaveBeenCalled();
+      expect(mockFoundation.isShown).toHaveBeenCalled();
       component.destroy();
     });
 
