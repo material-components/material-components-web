@@ -21,8 +21,10 @@
 //
 
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
+// Internal styling for Tooltip MDC component.
 
+@use '@material/animation/functions' as animation-functions;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
@@ -33,6 +35,9 @@
 $background-color: rgba(black, theme-color.text-emphasis(medium));
 $border-radius: small;
 $label-color: text-primary-on-dark;
+
+$enter-duration: 150ms;
+$exit-duration: 75ms;
 
 // Rich Tooltip variables
 $rich-background-color: rgba(white, theme-color.text-emphasis(medium));
@@ -146,6 +151,31 @@ $z-index: 2;
   @include feature-targeting.targets($feat-structure) {
     .mdc-tooltip {
       z-index: $z-index;
+    }
+  }
+}
+
+// Sets the duration for the animation that shows the tooltip.
+// @param {Number} $enter-duration
+@mixin show-transition($enter-duration, $query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-animation) {
+    .mdc-tooltip--showing-transition .mdc-tooltip__surface {
+      transition: animation-functions.enter(opacity, $enter-duration),
+        animation-functions.enter(transform, $enter-duration);
+    }
+  }
+}
+
+// Sets the duration for the animation that hides the tooltip.
+// @param {Number} $exit-duration
+@mixin hide-transition($exit-duration, $query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-animation) {
+    .mdc-tooltip--hide-transition .mdc-tooltip__surface {
+      transition: animation-functions.exit-permanent(opacity, $exit-duration);
     }
   }
 }

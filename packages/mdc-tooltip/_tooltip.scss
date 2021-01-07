@@ -21,9 +21,9 @@
 //
 
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
+// Internal styling for Tooltip MDC component.
 
-@use '@material/animation/functions' as animation-functions;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl' as rtl;
@@ -49,12 +49,8 @@ $_content-margin-x: 8px;
 $_content-type-scale: body1;
 $_title-type-scale: subtitle2;
 
-$enter-duration: 150ms;
-$exit-duration: 75ms;
-
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  $feat-animation: feature-targeting.create-target($query, animation);
 
   @include tooltip-theme.shape-radius(
     tooltip-theme.$border-radius,
@@ -74,6 +70,14 @@ $exit-duration: 75ms;
     $query: $query
   );
   @include tooltip-theme.z-index(tooltip-theme.$z-index, $query: $query);
+  @include tooltip-theme.show-transition(
+    tooltip-theme.$enter-duration,
+    $query: $query
+  );
+  @include tooltip-theme.hide-transition(
+    tooltip-theme.$exit-duration,
+    $query: $query
+  );
 
   .mdc-tooltip {
     @include feature-targeting.targets($feat-structure) {
@@ -164,22 +168,9 @@ $exit-duration: 75ms;
       }
     }
 
-    .mdc-tooltip--showing-transition & {
-      @include feature-targeting.targets($feat-animation) {
-        transition: animation-functions.enter(opacity, $enter-duration),
-          animation-functions.enter(transform, $enter-duration);
-      }
-    }
-
     .mdc-tooltip--hide & {
       @include feature-targeting.targets($feat-structure) {
         transform: scale(1);
-      }
-    }
-
-    .mdc-tooltip--hide-transition & {
-      @include feature-targeting.targets($feat-animation) {
-        transition: animation-functions.exit-permanent(opacity, $exit-duration);
       }
     }
 
