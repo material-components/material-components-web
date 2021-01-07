@@ -16,6 +16,7 @@
   "sideEffects": false,
   "dependencies": {
     "@material/density": "^9.0.0",
+    "@material/dom": "^9.0.0",
     "@material/elevation": "^9.0.0",
     "@material/feature-targeting": "^9.0.0",
     "@material/ripple": "^9.0.0",

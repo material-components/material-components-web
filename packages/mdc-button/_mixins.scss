@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern
 
 @use 'sass:math';
+@use '@material/dom/mixins' as dom-mixins;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
@@ -422,6 +423,25 @@ $ripple-target: '.mdc-button__ripple';
 @mixin label-overflow-ellipsis($query: feature-targeting.all()) {
   .mdc-button__label {
     @include typography.overflow-ellipsis($query: $query);
+  }
+}
+
+///
+/// Includes ad-hoc high contrast mode support.
+///
+@mixin high-contrast-mode-shim($query: feature-targeting.all()) {
+  &::before {
+    @include dom-mixins.transparent-border($query: $query);
+  }
+
+  &:focus {
+    &::before {
+      @include dom-mixins.transparent-border(
+        $border-width: 5px,
+        $border-style: double,
+        $query: $query
+      );
+    }
   }
 }
 
