@@ -35,9 +35,7 @@ npm install @material/slider
 ### Styles
 
 ```scss
-@use "@material/slider";
-
-@include slider.core-styles;
+@use "@material/slider/styles";
 ```
 
 ### JavaScript instantiation
