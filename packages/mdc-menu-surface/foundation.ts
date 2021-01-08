@@ -381,8 +381,8 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     let availableTop;
     let availableBottom;
     if (isAnchoredToBottom) {
-      availableTop = viewportDistance.top - MARGIN_TO_EDGE + anchorSize.height +
-          this.anchorMargin.bottom;
+      availableTop =
+          viewportDistance.top - MARGIN_TO_EDGE + this.anchorMargin.bottom;
       availableBottom =
           viewportDistance.bottom - MARGIN_TO_EDGE - this.anchorMargin.bottom;
     } else {
@@ -393,7 +393,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     }
 
     const isAvailableBottom = availableBottom - surfaceSize.height > 0;
-    if (!isAvailableBottom && availableTop >= availableBottom) {
+    if (!isAvailableBottom && availableTop > availableBottom) {
       // Attach bottom side of surface to the anchor.
       corner = this.setBit(corner, CornerBit.BOTTOM);
     }

@@ -675,6 +675,20 @@ describe('MDCMenuSurfaceFoundation', () => {
       });
 
   testFoundation(
+      '#open from anchor center of viewport with large menu surface height, ' +
+          'BOTTOM_START anchor corner',
+      ({foundation, mockAdapter}) => {
+        initAnchorLayout(mockAdapter, wideCenter, true, 500);
+        foundation.setAnchorCorner(Corner.BOTTOM_START);
+        foundation.open();
+        jasmine.clock().tick(1);  // Run to frame.
+        expect(mockAdapter.setTransformOrigin)
+            .toHaveBeenCalledWith('center top');
+        expect(mockAdapter.setPosition)
+            .toHaveBeenCalledWith({right: 0, top: 20});
+      });
+
+  testFoundation(
       '#open from wide anchor center of viewport, BOTTOM_END anchor corner, RTL',
       ({foundation, mockAdapter}) => {
         initAnchorLayout(mockAdapter, wideCenter, true);
@@ -849,8 +863,10 @@ describe('MDCMenuSurfaceFoundation', () => {
         foundation.flipCornerHorizontally();
         foundation.open();
         jasmine.clock().tick(1);  // Run to frame.
-        expect(mockAdapter.setTransformOrigin).toHaveBeenCalledWith('center top');
-        expect(mockAdapter.setPosition).toHaveBeenCalledWith({right: 0, top: 0});
+        expect(mockAdapter.setTransformOrigin)
+            .toHaveBeenCalledWith('center top');
+        expect(mockAdapter.setPosition)
+            .toHaveBeenCalledWith({right: 0, top: 0});
       });
 
   testFoundation(
