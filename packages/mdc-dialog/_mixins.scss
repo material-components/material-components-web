@@ -21,7 +21,8 @@
 //
 
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
+// stylelint-disable selector-class-pattern --
+// Internal styling for Dialog MDC component.
 
 @use 'sass:math';
 @use '@material/animation/functions' as animation-functions;
@@ -36,6 +37,7 @@
 @use '@material/touch-target/variables' as touch-target-variables;
 @use '@material/typography/typography';
 @use './dialog-custom-properties';
+@use '@material/icon-button/mixins' as iconbutton-mixins;
 @use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
@@ -166,6 +168,30 @@
       // Adjust bottom padding to make title height align to spec when divider is present.
       // (Titles for alert dialogs w/o dividers align based on text baseline. All spec values are divisible by 4.)
       padding-bottom: variables.$title-bottom-padding + 6px;
+    }
+  }
+
+  .mdc-dialog--fullscreen {
+    .mdc-dialog__header {
+      @include feature-targeting.targets($feat-structure) {
+        display: inline-flex;
+        padding: 0 variables.$header-side-padding
+          variables.$title-bottom-padding;
+        border-bottom: 1px solid transparent;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+    }
+
+    .mdc-dialog__title {
+      @include feature-targeting.targets($feat-structure) {
+        padding: 0;
+        border-bottom: 0;
+      }
+    }
+
+    .mdc-dialog__close {
+      @include iconbutton-mixins.size($size: 24px, $query: $query);
     }
   }
 
