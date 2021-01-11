@@ -100,7 +100,7 @@ function setUpFoundationTestForRichTooltip(
   mockAdapter.getAnchorAttribute.withArgs(attributes.ARIA_EXPANDED)
       .and.returnValue(isInteractive ? 'false' : null);
   mockAdapter.getAnchorAttribute.withArgs(attributes.ARIA_HASPOPUP)
-      .and.returnValue(isInteractive ? 'true' : 'false');
+      .and.returnValue(isInteractive ? 'dialog' : 'false');
   foundation.init();
 
   return {foundation, mockAdapter};

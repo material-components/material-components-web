@@ -297,7 +297,7 @@ describe('MDCTooltip', () => {
   describe('default interactive rich tooltip tests', () => {
     beforeEach(() => {
       fixture = getFixture(`<div>
-        <button aria-describedby="tt0" aria-haspopup="true" aria-expanded="false">
+        <button aria-describedby="tt0" aria-haspopup="dialog" aria-expanded="false">
           anchor
         </button>
         <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" role="dialog">

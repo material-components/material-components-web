@@ -142,7 +142,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         this.adapter.getAttribute(attributes.PERSISTENT) === 'true';
     this.interactiveTooltip =
         !!this.adapter.getAnchorAttribute(attributes.ARIA_EXPANDED) &&
-        this.adapter.getAnchorAttribute(attributes.ARIA_HASPOPUP) === 'true';
+        this.adapter.getAnchorAttribute(attributes.ARIA_HASPOPUP) === 'dialog';
   }
 
   isShown() {
