@@ -37,14 +37,6 @@ path: /catalog/<COMPONENT_ID>/
 
 # <COMPONENT_TITLE>
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="<LINK_TO_CATALOG_SERVER>">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/<SCREENSHOT_NAME>.png"
-    width="<SCREENSHOT_WIDTH>" alt="<COMPONENT_NAME> screenshot">
-  </a>
-</div>-->
-
 <ONE_SENTENCE_FROM_SPEC>
 
 ## Design & API Documentation

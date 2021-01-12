@@ -9,13 +9,6 @@ path: /catalog/menu-surface/
 
 # Menu Surface
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/menu">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="178" alt="Menus screenshot">
-  </a>
-</div>-->
-
 The MDC Menu Surface component is a reusable surface that appears above the content of the
 page and can be positioned adjacent to an element. Menu Surfaces require JavaScript to properly position
 themselves when opening.

@@ -9,13 +9,6 @@ path: /catalog/menus/
 
 # Menus
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/menu">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="178" alt="Menus screenshot">
-  </a>
-</div>-->
-
 A menu displays a list of choices on a temporary surface. They appear when users interact with a button, action,
 or other control.
 
