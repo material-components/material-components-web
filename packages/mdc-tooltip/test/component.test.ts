@@ -297,7 +297,7 @@ describe('MDCTooltip', () => {
   describe('default interactive rich tooltip tests', () => {
     beforeEach(() => {
       fixture = getFixture(`<div>
-        <button aria-describedby="tt0" aria-haspopup="dialog" aria-expanded="false">
+        <button data-tooltip-id="tt0" aria-haspopup="dialog" aria-expanded="false">
           anchor
         </button>
         <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" role="dialog">
@@ -329,7 +329,7 @@ describe('MDCTooltip', () => {
     it('sets aria-expanded on anchor to true when showing rich tooltip', () => {
       const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
       const anchorElem =
-          fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+          fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
       MDCTooltip.attachTo(tooltipElem);
 
       emitEvent(anchorElem, 'mouseenter');
@@ -342,7 +342,7 @@ describe('MDCTooltip', () => {
        () => {
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'mouseenter');
@@ -357,7 +357,7 @@ describe('MDCTooltip', () => {
        () => {
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'mouseenter');
@@ -371,7 +371,7 @@ describe('MDCTooltip', () => {
     it('aria-expanded becomes true on anchor when anchor is focused', () => {
       const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
       const anchorElem =
-          fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+          fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
       MDCTooltip.attachTo(tooltipElem);
 
       emitEvent(anchorElem, 'focus');
@@ -384,7 +384,7 @@ describe('MDCTooltip', () => {
        () => {
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'focus');
@@ -400,7 +400,7 @@ describe('MDCTooltip', () => {
        () => {
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
          const tooltipActionButton =
              fixture.querySelector<HTMLElement>('.mdc-tooltip__action')!;
          MDCTooltip.attachTo(tooltipElem);
@@ -423,7 +423,7 @@ describe('MDCTooltip', () => {
          }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'focus');
@@ -444,7 +444,7 @@ describe('MDCTooltip', () => {
          }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'focus');
@@ -465,7 +465,7 @@ describe('MDCTooltip', () => {
          }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'focus');
@@ -485,7 +485,7 @@ describe('MDCTooltip', () => {
          }
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
          const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'focus');
@@ -508,7 +508,7 @@ describe('MDCTooltip', () => {
          const tooltipContent =
              fixture.querySelector<HTMLElement>('.mdc-tooltip__content')!;
          const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
+             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'focus');
