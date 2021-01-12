@@ -26,7 +26,7 @@
 
 @use 'sass:math';
 @use '@material/animation/functions' as animation-functions;
-@use '@material/button/variables' as button-variables;
+@use '@material/button/button-theme';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/mixins' as rtl-mixins;
@@ -555,9 +555,8 @@
 // Applied to dialogs that have buttons with an increased touch target.
 @mixin with-touch-target($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  $touch-target-margin: (
-      touch-target-variables.$height - button-variables.$height
-    ) / 2;
+  $touch-target-margin: (touch-target-variables.$height - button-theme.$height) /
+    2;
   $vertical-padding: math.max(
     0,
     variables.$actions-padding - $touch-target-margin

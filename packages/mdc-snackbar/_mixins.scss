@@ -22,7 +22,7 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/animation/functions' as animation-functions;
-@use '@material/button/mixins' as button-mixins;
+@use '@material/button/button-theme';
 @use '@material/icon-button/mixins' as icon-button-mixins;
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
@@ -176,7 +176,7 @@
   }
 
   .mdc-snackbar__action {
-    @include button-mixins.ink-color(
+    @include button-theme.ink-color(
       variables.$action-ink-color,
       $query: $query
     );

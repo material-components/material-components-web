@@ -22,7 +22,7 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/typography/typography';
-@use '@material/button/mixins' as button-mixins;
+@use '@material/button/button-theme';
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use './banner-theme';
@@ -211,7 +211,7 @@ $_exit-duration: 250ms;
   }
 
   .mdc-banner__primary-action {
-    @include button-mixins.ink-color(
+    @include button-theme.ink-color(
       banner-theme.$primary-action-text-color,
       $query: $query
     );
@@ -222,7 +222,7 @@ $_exit-duration: 250ms;
   }
 
   .mdc-banner__secondary-action {
-    @include button-mixins.ink-color(
+    @include button-theme.ink-color(
       banner-theme.$secondary-action-text-color,
       $query: $query
     );

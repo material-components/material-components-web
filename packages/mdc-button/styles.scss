@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc.
+// Copyright 2020 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import '_button.scss' (partners) or '_button-theme.scss' (clients) instead.
-@forward './button' show core-styles, without-ripple, deprecated-base, deprecated-icon;
-@forward './button-outlined' show deprecated-outlined;
-@forward './button-theme' show ripple-states, filled-accessible, container-fill-color, disabled-container-fill-color, outline-color, disabled-outline-color, icon-color, disabled-icon-color, ink-color, disabled-ink-color, density, height, shape-radius, horizontal-padding, outline-width, label-overflow-ellipsis, high-contrast-mode-shim, $ripple-target;
+@use './button';
+
+@include button.core-styles;

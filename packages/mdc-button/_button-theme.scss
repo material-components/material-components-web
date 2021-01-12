@@ -1,0 +1,384 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use 'sass:math';
+@use '@material/density/functions' as density-functions;
+@use '@material/density/variables' as density-variables;
+@use '@material/dom/mixins' as dom-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple-theme';
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/typography/typography';
+
+$height: 36px !default;
+$horizontal-padding: 8px !default;
+$contained-horizontal-padding: 16px !default;
+
+$minimum-height: 24px !default;
+$maximum-height: $height !default;
+$density-scale: density-variables.$default-scale !default;
+$density-config: (
+  height: (
+    default: $height,
+    maximum: $maximum-height,
+    minimum: $minimum-height,
+  ),
+) !default;
+
+$outlined-border-width: 1px !default;
+$outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
+$shape-radius: small !default;
+
+$disabled-container-color: rgba(
+  theme-color.prop-value(on-surface),
+  0.12
+) !default;
+$disabled-ink-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
+
+$ripple-target: '.mdc-button__ripple';
+
+///
+/// Sets ripple color for button.
+///
+@mixin ripple-states($color, $query: feature-targeting.all()) {
+  @include ripple-theme.states(
+    $color: $color,
+    $query: $query,
+    $ripple-target: $ripple-target
+  );
+}
+
+@mixin filled-accessible(
+  $container-fill-color,
+  $query: feature-targeting.all()
+) {
+  $fill-tone: theme-color.tone($container-fill-color);
+
+  @include container-fill-color($container-fill-color, $query);
+
+  @if ($fill-tone == 'dark') {
+    @include ink-color(text-primary-on-dark, $query);
+    @include ripple-states($color: text-primary-on-dark, $query: $query);
+  } @else {
+    @include ink-color(text-primary-on-light, $query);
+    @include ripple-states($color: text-primary-on-light, $query: $query);
+  }
+}
+
+///
+/// Sets the container fill color to the given color for an enabled button.
+/// @param {Color} $color - The desired container fill color.
+///
+@mixin container-fill-color($color, $query: feature-targeting.all()) {
+  // :not(:disabled) is used to support link styled as button
+  // as link does not support :enabled style
+  &:not(:disabled) {
+    @include _container-fill-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the container fill color to the given color for a disabled button.
+/// @param {Color} $color - The desired container fill color.
+///
+@mixin disabled-container-fill-color($color, $query: feature-targeting.all()) {
+  &:disabled {
+    @include _container-fill-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the outline color to the given color for an enabled button.
+/// @param {Color} $color - The desired outline color.
+///
+@mixin outline-color($color, $query: feature-targeting.all()) {
+  &:not(:disabled) {
+    @include _outline-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the outline color to the given color for a disabled button.
+/// @param {Color} $color - The desired outline color.
+///
+@mixin disabled-outline-color($color, $query: feature-targeting.all()) {
+  &:disabled {
+    @include _outline-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the icon color to the given color for an enabled button.
+/// @param {Color} $color - The desired icon color.
+///
+@mixin icon-color($color, $query: feature-targeting.all()) {
+  &:not(:disabled) {
+    @include _icon-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the icon color to the given color for a disabled button.
+/// @param {Color} $color - The desired icon color.
+///
+@mixin disabled-icon-color($color, $query: feature-targeting.all()) {
+  &:disabled {
+    @include _icon-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the ink color to the given color for an enabled button,
+/// and sets the icon color to the given color unless `mdc-button-icon-color`
+/// is also used.
+/// @param {Color} $color - The desired ink color.
+///
+@mixin ink-color($color, $query: feature-targeting.all()) {
+  &:not(:disabled) {
+    @include _ink-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets the ink color to the given color for a disabled button,
+/// and sets the icon color to the given color unless `mdc-button-icon-color`
+/// is also used.
+/// @param {Color} $color - The desired ink color.
+///
+@mixin disabled-ink-color($color, $query: feature-targeting.all()) {
+  &:disabled {
+    @include _ink-color($color, $query: $query);
+  }
+}
+
+///
+/// Sets density scale for button.
+///
+/// @param {Number | String} $density-scale - Density scale value for component. Supported density scale values `-3`,
+///     `-2`, `-1`, `0`.
+///
+@mixin density($density-scale, $query: feature-targeting.all()) {
+  $height: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include height($height, $query: $query);
+
+  @if $density-scale != 0 {
+    @include _touch-target-reset($query: $query);
+  }
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin _touch-target-reset($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .mdc-button__touch {
+    @include feature-targeting.targets($feat-structure) {
+      display: none;
+    }
+  }
+}
+
+///
+/// Sets custom height for button.
+/// @param {Number} $height - Height of button in `px`.
+///
+@mixin height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    height: $height;
+  }
+}
+
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density-functions.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include shape-mixins.radius(
+    $radius,
+    $rtl-reflexive,
+    $component-height: $height,
+    $query: $query
+  );
+
+  #{$ripple-target} {
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height: $height,
+      $query: $query
+    );
+  }
+}
+
+///
+/// Sets horizontal padding to the given number.
+/// @param {Number} $padding
+///
+@mixin horizontal-padding($padding, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    // $padding should be a single value; enforce it by specifying all 4 sides in the output
+    padding: 0 $padding 0 $padding;
+  }
+}
+
+@mixin outline-width(
+  $outline-width,
+  $padding: $contained-horizontal-padding,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  // Note: Adjust padding to maintain consistent width with non-outlined buttons
+  $padding-value: math.max($padding - $outline-width, 0);
+
+  @include horizontal-padding($padding-value, $query);
+
+  @include feature-targeting.targets($feat-structure) {
+    border-width: $outline-width;
+  }
+
+  #{$ripple-target} {
+    @include feature-targeting.targets($feat-structure) {
+      top: -$outline-width;
+      left: -$outline-width;
+      border: $outline-width solid transparent;
+    }
+  }
+
+  .mdc-button__touch {
+    @include feature-targeting.targets($feat-structure) {
+      left: -$outline-width;
+      width: calc(100% + 2 * #{$outline-width});
+    }
+  }
+}
+
+///
+/// Sets the button label to overflow as ellipsis
+///
+@mixin label-overflow-ellipsis($query: feature-targeting.all()) {
+  .mdc-button__label {
+    @include typography.overflow-ellipsis($query: $query);
+  }
+}
+
+///
+/// Includes ad-hoc high contrast mode support.
+///
+@mixin high-contrast-mode-shim($query: feature-targeting.all()) {
+  &::before {
+    @include dom-mixins.transparent-border($query: $query);
+  }
+
+  &:focus {
+    &::before {
+      @include dom-mixins.transparent-border(
+        $border-width: 5px,
+        $border-style: double,
+        $query: $query
+      );
+    }
+  }
+}
+
+///
+/// Sets the container fill color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin _container-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(background-color, $color);
+  }
+}
+
+///
+/// Sets the outline color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin _outline-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(border-color, $color);
+  }
+}
+
+///
+/// Sets the icon color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin _icon-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-button__icon {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.prop(color, $color);
+    }
+  }
+}
+
+///
+/// Sets the ink color to the given color. This mixin should be
+/// wrapped in a selector that qualifies button state.
+/// @access private
+///
+@mixin _ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.prop(color, $color);
+  }
+}

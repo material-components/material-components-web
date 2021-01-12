@@ -20,30 +20,4 @@
 // THE SOFTWARE.
 //
 
-@use '@material/density/variables' as density-variables;
-@use '@material/theme/theme-color';
-
-$height: 36px !default;
-$horizontal-padding: 8px !default;
-$contained-horizontal-padding: 16px !default;
-
-$minimum-height: 24px !default;
-$maximum-height: $height !default;
-$density-scale: density-variables.$default-scale !default;
-$density-config: (
-  height: (
-    default: $height,
-    maximum: $maximum-height,
-    minimum: $minimum-height,
-  ),
-) !default;
-
-$outlined-border-width: 1px !default;
-$outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
-$shape-radius: small !default;
-
-$disabled-container-color: rgba(
-  theme-color.prop-value(on-surface),
-  0.12
-) !default;
-$disabled-ink-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
+@forward './button-theme' show $height, $horizontal-padding, $contained-horizontal-padding, $minimum-height, $maximum-height, $density-scale, $density-config, $outlined-border-width, $outline-color, $shape-radius, $disabled-container-color, $disabled-ink-color;

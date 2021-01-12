@@ -14,4 +14,5 @@
 @forward "@material/typography" as mdc-* hide mdc-base, mdc-baseline-bottom, mdc-baseline-strut-, mdc-baseline-top, mdc-core-styles, mdc-overflow-ellipsis, mdc-get-global-variable-, mdc-set-styles-, mdc-get-letter-spacing-;
 @forward "@material/shape" as mdc-shape-*;
 @forward "@material/density" as mdc-density-*;
-@forward "./index" as mdc-button-*;
+@forward "./mixins" as mdc-button-*;
+@forward "./variables" as mdc-button-*;

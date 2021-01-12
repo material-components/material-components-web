@@ -1,0 +1,235 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/touch-target/mixins' as touch-target-mixins;
+@use '@material/typography/typography';
+@use './button-filled';
+@use './button-outlined';
+@use './button-protected';
+@use './button-ripple';
+@use './button-theme';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  @include without-ripple($query);
+  @include button-ripple.core-styles($query);
+}
+
+@mixin without-ripple($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
+  // prettier-ignore
+  @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  // postcss-bem-linter: define button
+  .mdc-button {
+    @include base($query);
+    @include button-theme.shape-radius(
+      button-theme.$shape-radius,
+      $query: $query
+    );
+    @include button-theme.density(button-theme.$density-scale, $query: $query);
+    @include button-theme.container-fill-color(transparent, $query);
+    @include button-theme.disabled-container-fill-color(transparent, $query);
+    // The icon CSS class overrides styles defined in the .material-icons CSS
+    // class, which is loaded separately so the order of CSS definitions is not
+    // guaranteed. Therefore, increase specifity by nesting this class to ensure
+    // overrides apply.
+    .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        @include icon;
+      }
+    }
+
+    .mdc-button__touch {
+      @include touch-target-mixins.touch-target($query: $query);
+    }
+
+    @include button-theme.ink-color(primary, $query);
+    @include button-theme.disabled-ink-color(
+      button-theme.$disabled-ink-color,
+      $query
+    );
+  }
+
+  .mdc-button__label + .mdc-button__icon {
+    @include feature-targeting.targets($feat-structure) {
+      @include icon-trailing;
+    }
+  }
+
+  // stylelint-disable-next-line selector-no-qualifying-type
+  svg.mdc-button__icon {
+    @include feature-targeting.targets($feat-structure) {
+      @include icon-svg;
+    }
+  }
+
+  .mdc-button--raised,
+  .mdc-button--unelevated,
+  .mdc-button--outlined {
+    .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        // Icons inside contained buttons have different styles due to increased button padding
+        @include icon-contained;
+      }
+    }
+
+    .mdc-button__label + .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        @include icon-contained-trailing;
+      }
+    }
+  }
+
+  .mdc-button--touch {
+    @include touch-target-mixins.margin(
+      $component-height: button-theme.$height,
+      $query: $query
+    );
+  }
+  @include button-filled.core-styles($query);
+  @include button-protected.core-styles($query);
+  @include button-outlined.core-styles($query);
+  // postcss-bem-linter: end
+}
+
+@mixin deprecated-base($query) {
+  @include base($query);
+}
+
+@mixin base($query) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include typography.typography(button, $query);
+  @include button-theme.horizontal-padding(
+    button-theme.$horizontal-padding,
+    $query
+  );
+  @include elevation-mixins.overlay-surface-position($query: $query);
+  @include elevation-mixins.overlay-dimensions(100%, $query: $query);
+
+  @include feature-targeting.targets($feat-structure) {
+    display: inline-flex;
+    // position: relative; already set in mdc-elevation-overlay-surface-position
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 64px;
+    border: none;
+    outline: none;
+    /* @alternate */
+    line-height: inherit;
+    user-select: none;
+    -webkit-appearance: none;
+    // Even though `visible` is the default, IE 11 computes the property as
+    // `hidden` in some cases, unless it's explicitly defined here.
+    overflow: visible;
+    vertical-align: middle;
+  }
+
+  &::-moz-focus-inner {
+    @include feature-targeting.targets($feat-structure) {
+      padding: 0;
+      border: 0;
+    }
+  }
+
+  // postcss-bem-linter: ignore
+  &:active {
+    @include feature-targeting.targets($feat-structure) {
+      outline: none;
+    }
+  }
+
+  &:hover {
+    @include feature-targeting.targets($feat-structure) {
+      cursor: pointer;
+    }
+  }
+
+  &:disabled {
+    @include feature-targeting.targets($feat-structure) {
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+}
+
+@mixin icon {
+  @include rtl-mixins.reflexive-box(margin, right, 8px);
+
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  vertical-align: top;
+}
+
+@mixin icon-trailing {
+  @include rtl-mixins.reflexive-box(margin, left, 8px);
+}
+
+@mixin icon-svg {
+  fill: currentColor;
+}
+
+@mixin icon-contained {
+  @include rtl-mixins.reflexive-property(margin, -4px, 8px);
+}
+
+@mixin icon-contained-trailing {
+  @include rtl-mixins.reflexive-property(margin, 8px, -4px);
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-icon {
+  @include icon;
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-icon-trailing {
+  @include icon-trailing;
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-icon-svg {
+  @include icon-svg;
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-icon-contained {
+  @include icon-contained;
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-icon-contained-trailing {
+  @include icon-contained-trailing;
+}

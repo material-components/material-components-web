@@ -1,0 +1,63 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/elevation/functions' as elevation-functions;
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/feature-targeting/feature-targeting';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  .mdc-button--raised {
+    @include raised($query);
+  }
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-raised($query) {
+  @include raised($query);
+}
+
+@mixin raised($query) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include elevation-mixins.elevation(2, $query: $query);
+
+  &:hover,
+  &:focus {
+    @include elevation-mixins.elevation(4, $query: $query);
+  }
+
+  &:active {
+    @include elevation-mixins.elevation(8, $query: $query);
+  }
+
+  &:disabled {
+    @include elevation-mixins.elevation(0, $query: $query);
+  }
+
+  @include feature-targeting.targets($feat-animation) {
+    transition: elevation-functions.transition-value();
+  }
+}

@@ -10,7 +10,10 @@ Material Web strives to seamlessly incorporate into a wider range of usage conte
 
 Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/). In addition to implementing the [Material Design guidelines](https://material.io/design), it provides more flexible theming customization, not only in terms of color, but also typography, shape, states, and more. It is also specifically [architected](docs/code/architecture.md) for adaptability to various [major web frameworks](docs/framework-wrappers.md).
 
-> NOTE: Try out our in-progress [Material Web Components](https://github.com/material-components/material-components-web-components) built on the W3C web components standard. Use them in your next web project and let us know how to improve by filing [bugs and feature requests](https://github.com/material-components/material-components-web-components/issues).
+> NOTE: Material Components Web tends to release breaking changes on a monthly basis, but follows
+> [semver](https://semver.org/) so you can control when you incorporate them.
+> We typically follow a 2-week release schedule which includes one major release per month with breaking changes,
+> and intermediate patch releases with bug fixes.
 
 ## Important links
 
