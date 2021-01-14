@@ -425,6 +425,8 @@ Method Signature | Description
 `handleClick(event: MouseEvent)` | Handles `click` events on or within the dialog's root element.
 `handleKeydown(event: KeyboardEvent)` | Handles `keydown` events on or within the dialog's root element.
 `handleDocumentKeydown(event: Event)` | Handles `keydown` events on or within the document while the dialog is open.
+`getSuppressDefaultPressSelector() => string` | Returns the selector string for elements that suppress the default dialog press action, such as pressing enter in a textarea.
+`setSuppressDefaultPressSelector(selector: string)` | Customize the selector string to suppress the default dialog press action. An empty string indicates that no elements should suppress the default action.
 
 #### Event handlers
 

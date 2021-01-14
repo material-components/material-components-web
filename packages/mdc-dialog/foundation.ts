@@ -228,8 +228,10 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     //   </horizontal-layout>
     // </mwc-dialog>
     const target = evt.composedPath ? evt.composedPath()[0] : evt.target;
-    const isDefault = !this.adapter.eventTargetMatches(
-        target, this.suppressDefaultPressSelector);
+    const isDefault = this.suppressDefaultPressSelector ?
+        !this.adapter.eventTargetMatches(
+            target, this.suppressDefaultPressSelector) :
+        true;
     if (isEnter && isDefault) {
       this.adapter.clickDefaultButton();
     }
