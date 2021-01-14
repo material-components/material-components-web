@@ -22,6 +22,7 @@
     "@material/base": "^9.0.0",
     "@material/feature-targeting": "^9.0.0",
     "@material/progress-indicator": "^9.0.0",
+    "@material/rtl": "^9.0.0",
     "@material/theme": "^9.0.0",
     "tslib": "^1.9.3"
   },

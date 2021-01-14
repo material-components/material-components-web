@@ -85,7 +85,6 @@ The provided modifiers are:
 | Class                 | Description                                             |
 | --------------------- | ------------------------------------------------------- |
 | `mdc-linear-progress--indeterminate`   | Puts the linear progress indicator in an indeterminate state. |
-| `mdc-linear-progress--reversed`  | Reverses the direction of the linear progress indicator.   |
 | `mdc-linear-progress--closed`  | Hides the linear progress indicator. |
 
 ### Sass Mixins
@@ -124,7 +123,6 @@ MDC Linear Progress Foundation exposes the following methods:
 | `setDeterminate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state. |
 | `setProgress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
 | `setBuffer(value: number) => void` | Sets the buffer bar to this value. Value should be between [0, 1]. |
-| `setReverse(value: boolean) => void` | Reverses the direction of the linear progress indicator. |
 | `open() => void` | Puts the component in the open state. |
 | `close() => void` | Puts the component in the closed state. |
 
@@ -137,6 +135,5 @@ MDC Linear Progress exposes the following methods:
 | `set determinate(value: boolean) => void` | Toggles the component between the determinate and indeterminate state. |
 | `set progress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
 | `set buffer(value: number) => void` | Sets the buffer bar to this value. Value should be between [0, 1]. |
-| `set reverse(value: boolean) => void` | Reverses the direction of the linear progress indicator. |
 | `open() => void` | Puts the component in the open state. |
 | `close() => void` | Puts the component in the closed state. |
