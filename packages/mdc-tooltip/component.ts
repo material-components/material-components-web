@@ -148,6 +148,10 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       removeClass: (className) => {
         this.root.classList.remove(className);
       },
+      getComputedStyleProperty: (propertyName) => {
+        return window.getComputedStyle(this.root).getPropertyValue(
+            propertyName);
+      },
       setStyleProperty: (propertyName, value) => {
         (this.root as HTMLElement).style.setProperty(propertyName, value);
       },
@@ -161,6 +165,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       },
       getAnchorBoundingRect: () => {
         return this.anchorElem ? this.anchorElem.getBoundingClientRect() : null;
+      },
+      getParentBoundingRect: () => {
+        return this.root.parentElement?.getBoundingClientRect() ?? null;
       },
       getAnchorAttribute: (attr) => {
         return this.anchorElem ? this.anchorElem.getAttribute(attr) : null;

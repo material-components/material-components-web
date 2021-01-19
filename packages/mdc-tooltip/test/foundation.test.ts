@@ -116,11 +116,13 @@ describe('MDCTooltipFoundation', () => {
       'addClass',
       'hasClass',
       'removeClass',
+      'getComputedStyleProperty',
       'setStyleProperty',
       'getViewportWidth',
       'getViewportHeight',
       'getTooltipSize',
       'getAnchorBoundingRect',
+      'getParentBoundingRect',
       'getAnchorAttribute',
       'setAnchorAttribute',
       'isRTL',
@@ -1125,37 +1127,33 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('left', `80px`);
   });
 
-  it('properly calculates rich tooltip position (START alignment)', () => {
-    const anchorBoundingRect =
-        {top: 0, bottom: 35, left: 100, right: 150, width: 50, height: 35};
-    const expectedTooltipHeight =
-        anchorBoundingRect.height + numbers.BOUNDED_ANCHOR_GAP;
-    const tooltipSize = {width: 40, height: 30};
+  it('sets width of rich tooltip after positioning', () => {
     const {foundation, mockAdapter} =
         setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
-    mockAdapter.getViewportWidth.and.returnValue(150);
-    mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
-    mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+    const testWidth = '50px';
+    mockAdapter.getComputedStyleProperty.and.returnValue(testWidth);
 
     foundation.show();
 
     expect(mockAdapter.setStyleProperty)
-        .toHaveBeenCalledWith('top', `${expectedTooltipHeight}px`);
-    expect(mockAdapter.setStyleProperty)
-        .toHaveBeenCalledWith(
-            'left', `${anchorBoundingRect.left - tooltipSize.width}px`);
+        .toHaveBeenCalledWith('width', testWidth);
   });
 
-  it('properly calculates rich tooltip position (END alignment)', () => {
+  it('properly calculates rich tooltip position (START alignment)', () => {
     const anchorBoundingRect =
-        {top: 0, bottom: 35, left: 0, right: 50, width: 50, height: 35};
-    const expectedTooltipTop =
-        anchorBoundingRect.height + numbers.BOUNDED_ANCHOR_GAP;
+        {top: 0, bottom: 35, left: 100, right: 150, width: 50, height: 35};
+    const parentBoundingRect =
+        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
     const tooltipSize = {width: 40, height: 30};
+    const expectedTooltipTop = anchorBoundingRect.height +
+        numbers.BOUNDED_ANCHOR_GAP - parentBoundingRect.top;
+    const expectedTooltipLeft =
+        anchorBoundingRect.left - tooltipSize.width - parentBoundingRect.left;
     const {foundation, mockAdapter} =
         setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
     mockAdapter.getViewportWidth.and.returnValue(150);
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+    mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
 
     foundation.show();
@@ -1163,7 +1161,30 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.setStyleProperty)
         .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
     expect(mockAdapter.setStyleProperty)
-        .toHaveBeenCalledWith('left', `${anchorBoundingRect.right}px`);
+        .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
+  });
+
+  it('properly calculates rich tooltip position (END alignment)', () => {
+    const anchorBoundingRect =
+        {top: 0, bottom: 35, left: 0, right: 50, width: 50, height: 35};
+    const parentBoundingRect =
+        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const expectedTooltipTop = anchorBoundingRect.height +
+        numbers.BOUNDED_ANCHOR_GAP - parentBoundingRect.top;
+    const expectedTooltipLeft =
+        anchorBoundingRect.right - parentBoundingRect.left;
+    const {foundation, mockAdapter} =
+        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
+    mockAdapter.getViewportWidth.and.returnValue(150);
+    mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+    mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
+
+    foundation.show();
+
+    expect(mockAdapter.setStyleProperty)
+        .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
+    expect(mockAdapter.setStyleProperty)
+        .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
   });
 
   it('allows users to specify the tooltip position for plain tooltips (START alignment instead of CENTER)',
@@ -1240,13 +1261,18 @@ describe('MDCTooltipFoundation', () => {
      () => {
        const anchorBoundingRect =
            {top: 0, bottom: 35, left: 132, right: 232, width: 100, height: 35};
-       const expectedTooltipTop =
-           anchorBoundingRect.height + numbers.BOUNDED_ANCHOR_GAP;
+       const parentBoundingRect =
+           {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
        const tooltipSize = {width: 40, height: 30};
+       const expectedTooltipTop = anchorBoundingRect.height +
+           numbers.BOUNDED_ANCHOR_GAP - parentBoundingRect.top;
+       const expectedTooltipLeft = anchorBoundingRect.left - tooltipSize.width -
+           parentBoundingRect.left;
        const {foundation, mockAdapter} =
            setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
        mockAdapter.getViewportWidth.and.returnValue(500);
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+       mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
        mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
 
        foundation.setTooltipPosition({xPos: XPosition.START});
@@ -1255,22 +1281,24 @@ describe('MDCTooltipFoundation', () => {
        expect(mockAdapter.setStyleProperty)
            .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
        expect(mockAdapter.setStyleProperty)
-           .toHaveBeenCalledWith(
-               'left', `${anchorBoundingRect.left - tooltipSize.width}px`);
+           .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
      });
 
   it('ignores user specification if positioning violates threshold for rich tooltips (END alignment instead of START)',
      () => {
        const anchorBoundingRect =
            {top: 0, bottom: 35, left: 0, right: 200, width: 200, height: 35};
-       const expectedTooltipTop =
-           anchorBoundingRect.height + numbers.BOUNDED_ANCHOR_GAP;
-       const tooltipSize = {width: 40, height: 30};
+       const parentBoundingRect =
+           {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+       const expectedTooltipTop = anchorBoundingRect.height +
+           numbers.BOUNDED_ANCHOR_GAP - parentBoundingRect.top;
+       const expectedTooltipLeft =
+           anchorBoundingRect.right - parentBoundingRect.left;
        const {foundation, mockAdapter} =
            setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
        mockAdapter.getViewportWidth.and.returnValue(500);
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
-       mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+       mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
 
        foundation.setTooltipPosition({xPos: XPosition.START});
        foundation.show();
@@ -1278,28 +1306,32 @@ describe('MDCTooltipFoundation', () => {
        expect(mockAdapter.setStyleProperty)
            .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
        expect(mockAdapter.setStyleProperty)
-           .toHaveBeenCalledWith('left', `${anchorBoundingRect.right}px`);
+           .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
      });
 
   it('ignores user specification if positioning is not supported for rich tooltips (END alignment instead of CENTER)',
      () => {
        const anchorBoundingRect =
            {top: 0, bottom: 35, left: 0, right: 100, width: 100, height: 35};
-       const expectedTooltipHeight =
-           anchorBoundingRect.height + numbers.BOUNDED_ANCHOR_GAP;
+       const parentBoundingRect =
+           {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+       const expectedTooltipTop = anchorBoundingRect.height +
+           numbers.BOUNDED_ANCHOR_GAP - parentBoundingRect.top;
+       const expectedTooltipLeft =
+           anchorBoundingRect.right - parentBoundingRect.left;
        const {foundation, mockAdapter} =
            setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
        mockAdapter.getViewportWidth.and.returnValue(500);
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
-       mockAdapter.getTooltipSize.and.returnValue({width: 50, height: 30});
+       mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
 
        foundation.setTooltipPosition({xPos: XPosition.CENTER});
        foundation.show();
 
        expect(mockAdapter.setStyleProperty)
-           .toHaveBeenCalledWith('top', `${expectedTooltipHeight}px`);
+           .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
        expect(mockAdapter.setStyleProperty)
-           .toHaveBeenCalledWith('left', `${anchorBoundingRect.right}px`);
+           .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
      });
 
 

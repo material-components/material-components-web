@@ -52,11 +52,14 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       addClass: () => undefined,
       hasClass: () => false,
       removeClass: () => undefined,
+      getComputedStyleProperty: () => '',
       setStyleProperty: () => undefined,
       getViewportWidth: () => 0,
       getViewportHeight: () => 0,
       getTooltipSize: () => ({width: 0, height: 0}),
       getAnchorBoundingRect: () =>
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+      getParentBoundingRect: () =>
           ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
       getAnchorAttribute: () => null,
       setAnchorAttribute: () => null,
@@ -88,6 +91,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   private readonly showDelayMs = numbers.SHOW_DELAY_MS;
 
   private anchorRect: ClientRect|null = null;
+  private parentRect: ClientRect|null = null;
   private frameId: number|null = null;
   private hideTimeout: number|null = null;
   private showTimeout: number|null = null;
@@ -325,7 +329,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       this.adapter.addClass(MULTILINE_TOOLTIP);
     }
     this.anchorRect = this.adapter.getAnchorBoundingRect();
-    this.positionTooltip();
+    this.parentRect = this.adapter.getParentBoundingRect();
+    this.richTooltip ? this.positionRichTooltip() : this.positionPlainTooltip();
 
     this.adapter.registerDocumentEventHandler(
         'click', this.documentClickHandler);
@@ -437,10 +442,38 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         tooltipSize.width >= numbers.MAX_WIDTH;
   }
 
-  private positionTooltip() {
+  private positionPlainTooltip() {
+    // A plain tooltip has `fixed` positioning and is placed as an immediate
+    // child of the document body. Its positioning is calculated with respect to
+    // the viewport.
     const {top, left} = this.calculateTooltipDistance(this.anchorRect);
     this.adapter.setStyleProperty('top', `${top}px`);
     this.adapter.setStyleProperty('left', `${left}px`);
+  }
+
+  private positionRichTooltip() {
+    // TODO(b/177686782): Remove width setting when max-content is used to style
+    // the rich tooltip.
+
+    // getComputedStyleProperty is used instead of getTooltipSize since
+    // getTooltipSize returns the offSetWidth, which includes the border and
+    // padding. What we need is the width of the tooltip without border and
+    // padding.
+    const width = this.adapter.getComputedStyleProperty('width');
+    // When rich tooltips are positioned within their parent containers, the
+    // tooltip width might be shrunk if it collides with the edge of the parent
+    // container. We set the width of the tooltip to prevent this.
+    this.adapter.setStyleProperty('width', width);
+
+    const {top, left} = this.calculateTooltipDistance(this.anchorRect);
+    // A rich tooltip has `absolute` positioning and is placed as a sibling to
+    // the anchor element. Its positioning is calculated with respect to the
+    // parent element, and so the values need to be adjusted against the parent
+    // element.
+    const leftAdjustment = left - (this.parentRect?.left ?? 0);
+    const topAdjustment = top - (this.parentRect?.top ?? 0);
+    this.adapter.setStyleProperty('top', `${topAdjustment}px`);
+    this.adapter.setStyleProperty('left', `${leftAdjustment}px`);
   }
 
   /**
@@ -497,7 +530,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
     if (this.xTooltipPos === XPosition.CENTER &&
         positionOptions.has(centerPos)) {
-      return centerPos;
+      // This code path is only executed if calculating the distance for plain
+      // tooltips. In this instance, centerPos will always be defined, so we can
+      // safely assert that the returned value is non-null/undefined.
+      return centerPos!;
     }
 
     // If no user position is supplied, rich tooltips default to end pos, then
@@ -655,7 +691,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         newAnchorRect.height !== this.anchorRect.height ||
         newAnchorRect.width !== this.anchorRect.width) {
       this.anchorRect = newAnchorRect;
-      this.positionTooltip();
+      this.parentRect = this.adapter.getParentBoundingRect();
+      this.richTooltip ? this.positionRichTooltip() :
+                         this.positionPlainTooltip();
     }
   }
 
