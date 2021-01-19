@@ -128,14 +128,6 @@ describe('MDCLinearProgress', () => {
     expect('50%').toEqual(buffer.style.flexBasis as string);
   });
 
-  it('set reverse', () => {
-    const {root, component} = setupTest();
-
-    component.reverse = true;
-    expect(root.classList.contains('mdc-linear-progress--reversed'))
-        .toBeTruthy();
-  });
-
   it('open and close', () => {
     const {root, component} = setupTest();
 

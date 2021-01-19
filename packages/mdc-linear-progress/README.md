@@ -61,6 +61,11 @@ Progress bars conform to the [WAI-ARIA Progressbar Specification](https://www.w3
 
 Note that `aria-label`, `aria-valuemin`, and `aria-valuemax` are static and must be configured in the HTML. `aria-valuenow` is updated dynamically by the foundation when the progress value is updated in determinate progress bars.
 
+### RTL Localization
+
+The direction of the progress bar follows the `dir` attribute on its nearest ancestor. For example, setting `dir="rtl"` on the progress root reverses the direction of the indicator.
+Where multiple `dir` attributes are specified in the tree, the one on the progress bar root takes precedence.
+
 ### Styles
 ```scss
 @use "@material/linear-progress";

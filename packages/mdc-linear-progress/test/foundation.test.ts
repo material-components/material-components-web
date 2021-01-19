@@ -165,16 +165,6 @@ describe('MDCLinearProgressFoundation', () => {
         .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
   });
 
-  it('#setDeterminate false calls forceLayout to correctly reset animation timers when reversed',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       mockAdapter.hasClass.withArgs(cssClasses.REVERSED_CLASS)
-           .and.returnValue(true);
-       foundation.init();
-       foundation.setDeterminate(false);
-       expect(mockAdapter.forceLayout).toHaveBeenCalled();
-     });
-
   it('#setDeterminate restores previous progress value after toggled from false to true',
      () => {
        const {foundation, mockAdapter} = setupTest();
@@ -308,50 +298,8 @@ describe('MDCLinearProgressFoundation', () => {
     expect(mockAdapter.setBufferBarStyle).not.toHaveBeenCalled();
   });
 
-  it('#setReverse adds class', () => {
-    const {foundation, mockAdapter} = setupTest();
-    mockAdapter.hasClass.withArgs(cssClasses.REVERSED_CLASS)
-        .and.returnValue(false);
-    foundation.init();
-    foundation.setReverse(true);
-    expect(mockAdapter.addClass)
-        .toHaveBeenCalledWith(cssClasses.REVERSED_CLASS);
-  });
-
-  it('#setReverse removes class', () => {
-    const {foundation, mockAdapter} = setupTest();
-    mockAdapter.hasClass.withArgs(cssClasses.REVERSED_CLASS)
-        .and.returnValue(true);
-    foundation.init();
-    foundation.setReverse(false);
-    expect(mockAdapter.removeClass)
-        .toHaveBeenCalledWith(cssClasses.REVERSED_CLASS);
-  });
-
-  it('#setReverse true calls forceLayout to correctly reset animation timers when indeterminate',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
-           .and.returnValue(true);
-       foundation.init();
-       foundation.setReverse(true);
-       expect(mockAdapter.forceLayout).toHaveBeenCalled();
-     });
-
-  it('#setReverse false calls forceLayout to correctly reset animation timers when indeterminate',
-     () => {
-       const {foundation, mockAdapter} = setupTest();
-       mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
-           .and.returnValue(true);
-       foundation.init();
-       foundation.setReverse(false);
-       expect(mockAdapter.forceLayout).toHaveBeenCalled();
-     });
-
   it('#open removes class', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.hasClass.withArgs(cssClasses.REVERSED_CLASS)
-        .and.returnValue(true);
     foundation.init();
     foundation.open();
     expect(mockAdapter.removeClass)
@@ -362,8 +310,6 @@ describe('MDCLinearProgressFoundation', () => {
 
   it('#close adds class', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.hasClass.withArgs(cssClasses.REVERSED_CLASS)
-        .and.returnValue(true);
     foundation.init();
     foundation.close();
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);

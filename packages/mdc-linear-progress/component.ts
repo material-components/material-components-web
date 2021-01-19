@@ -44,10 +44,6 @@ export class MDCLinearProgress extends
     this.foundation.setBuffer(value);
   }
 
-  set reverse(value: boolean) {
-    this.foundation.setReverse(value);
-  }
-
   open() {
     this.foundation.open();
   }

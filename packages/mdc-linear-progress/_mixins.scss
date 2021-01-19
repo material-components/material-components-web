@@ -137,10 +137,13 @@
     }
 
     @include indeterminate_($query: $query);
-    @include reversed_($query: $query);
 
     @include rtl.rtl() {
-      @include _rtl-styles($query: $query);
+      // The rtl() mixin does not account for nested `dir` attributes. Set
+      // `dir` attribute on root to take highest priority.
+      &:not([dir='ltr']) {
+        @include _rtl-styles($query: $query);
+      }
     }
 
     &--closed {
@@ -265,27 +268,6 @@
               infinite linear;
           }
         }
-      }
-    }
-  }
-}
-
-/// @deprecated - this will soon be removed in favor of auto-reversal in RTL.
-@mixin reversed_($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  &--reversed {
-    @include _rtl-styles($query: $query);
-
-    .mdc-linear-progress__buffer-dots {
-      @include feature-targeting.targets($feat-structure) {
-        order: 0;
-      }
-    }
-
-    .mdc-linear-progress__buffer-bar {
-      @include feature-targeting.targets($feat-structure) {
-        order: 1;
       }
     }
   }
