@@ -25,6 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {MDCProgressIndicator} from '@material/progress-indicator/component';
 import {MDCLinearProgressAdapter} from './adapter';
 import {MDCLinearProgressFoundation} from './foundation';
+import {WithMDCResizeObserver} from './types';
 
 export class MDCLinearProgress extends
     MDCComponent<MDCLinearProgressFoundation> implements MDCProgressIndicator {
@@ -96,9 +97,10 @@ export class MDCLinearProgress extends
       setStyle: (name: string, value: string) => {
         (this.root as HTMLElement).style.setProperty(name, value);
       },
-      attachResizeObserver: (callback: ResizeObserverCallback) => {
-        if (window.ResizeObserver) {
-          const ro = new ResizeObserver(callback);
+      attachResizeObserver: (callback) => {
+        const RO = (window as unknown as WithMDCResizeObserver).ResizeObserver;
+        if (RO) {
+          const ro = new RO(callback);
           ro.observe(this.root);
           return ro;
         }

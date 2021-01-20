@@ -27,6 +27,7 @@ import {MDCProgressIndicatorFoundation} from '@material/progress-indicator/found
 
 import {MDCLinearProgressAdapter} from './adapter';
 import {animationDimensionPercentages as percents, cssClasses, strings} from './constants';
+import {MDCResizeObserver} from './types';
 
 export class MDCLinearProgressFoundation extends
     MDCFoundation<MDCLinearProgressAdapter> implements
@@ -58,7 +59,7 @@ export class MDCLinearProgressFoundation extends
   private isDeterminate!: boolean;
   private progress!: number;
   private buffer!: number;
-  private observer: ResizeObserver|null = null;
+  private observer: MDCResizeObserver|null = null;
 
   constructor(adapter?: Partial<MDCLinearProgressAdapter>) {
     super({...MDCLinearProgressFoundation.defaultAdapter, ...adapter});

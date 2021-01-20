@@ -27,7 +27,6 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@types/resize-observer-browser": "^0.1.3"
   },
   "publishConfig": {
     "access": "public"

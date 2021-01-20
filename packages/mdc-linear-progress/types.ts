@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2019 Google Inc.
+ * Copyright 2021 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,8 +21,21 @@
  * THE SOFTWARE.
  */
 
-export * from './adapter';
-export * from './component';
-export * from './constants';
-export * from './foundation';
-export * from './types';
+// Opt-in resize observer types
+
+export interface MDCResizeObserverEntry {
+  contentRect: DOMRectReadOnly;
+}
+
+export interface MDCResizeObserver {
+  new(callback: MDCResizeObserverCallback): MDCResizeObserver;
+  disconnect(): void;
+  observe(target: Element): void;
+}
+
+export interface WithMDCResizeObserver {
+  ResizeObserver: MDCResizeObserver;
+}
+
+export type MDCResizeObserverCallback =
+    (entries: MDCResizeObserverEntry[], observer: MDCResizeObserver) => void;

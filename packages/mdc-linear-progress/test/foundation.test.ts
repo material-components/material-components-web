@@ -23,10 +23,13 @@
 
 import {animationDimensionPercentages as percentages} from '../../mdc-linear-progress/constants';
 import {MDCLinearProgressFoundation} from '../../mdc-linear-progress/foundation';
+import {WithMDCResizeObserver} from '../../mdc-linear-progress/types';
 import {checkNumTimesSpyCalledWithArgs, verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 
 const {cssClasses, strings} = MDCLinearProgressFoundation;
+
+const RO = (window as unknown as WithMDCResizeObserver).ResizeObserver;
 
 const multiplyPercentages = (multipler: number) => {
   return {
@@ -94,7 +97,7 @@ describe('MDCLinearProgressFoundation', () => {
   it('#setDeterminate false updates custom props', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.getWidth.and.returnValue(100);
-    mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+    mockAdapter.attachResizeObserver.and.returnValue(RO);
     mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
         .and.returnValue(false);
     foundation.init();
@@ -103,7 +106,7 @@ describe('MDCLinearProgressFoundation', () => {
     foundation.setDeterminate(false);
     expect(foundation.getDeterminate()).toBe(false);
 
-    if (!window.ResizeObserver) {
+    if (!RO) {
       expect(mockAdapter.setStyle).toHaveBeenCalledTimes(0);
       return;
     }
@@ -212,30 +215,26 @@ describe('MDCLinearProgressFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
            .and.returnValue(true);
-       mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+       mockAdapter.attachResizeObserver.and.returnValue(RO);
        foundation.init();
-       expect(mockAdapter.setStyle)
-           .toHaveBeenCalledTimes(window.ResizeObserver ? 10 : 0);
+       expect(mockAdapter.setStyle).toHaveBeenCalledTimes(RO ? 10 : 0);
      });
 
   it('#calculateAndSetDimensions called only on setDeterminate(false)', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
         .and.returnValue(true);
-    mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+    mockAdapter.attachResizeObserver.and.returnValue(RO);
     foundation.init();
-    expect(mockAdapter.setStyle)
-        .toHaveBeenCalledTimes(window.ResizeObserver ? 10 : 0);
+    expect(mockAdapter.setStyle).toHaveBeenCalledTimes(RO ? 10 : 0);
 
     foundation.setDeterminate(true);
 
-    expect(mockAdapter.setStyle)
-        .toHaveBeenCalledTimes(window.ResizeObserver ? 10 : 0);
+    expect(mockAdapter.setStyle).toHaveBeenCalledTimes(RO ? 10 : 0);
 
     foundation.setDeterminate(false);
 
-    expect(mockAdapter.setStyle)
-        .toHaveBeenCalledTimes(window.ResizeObserver ? 20 : 0);
+    expect(mockAdapter.setStyle).toHaveBeenCalledTimes(RO ? 20 : 0);
   });
 
   it('#calculateAndSetDimensions restarts animation with a forced reflow',
@@ -243,9 +242,9 @@ describe('MDCLinearProgressFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
            .and.returnValue(true);
-       mockAdapter.attachResizeObserver.and.returnValue(window.ResizeObserver);
+       mockAdapter.attachResizeObserver.and.returnValue(RO);
        foundation.init();
-       if (window.ResizeObserver) {
+       if (RO) {
          expect(mockAdapter.addClass)
              .toHaveBeenCalledWith(cssClasses.ANIMATION_READY_CLASS);
          expect(mockAdapter.forceLayout).toHaveBeenCalledTimes(1);
