@@ -189,6 +189,23 @@
   }
 }
 
+///
+/// Includes ad-hoc high contrast mode support.
+///
+@mixin high-contrast-mode-shim($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    // TODO(b/175806874): Use the DOM border mixin after the ripple is moved
+    // away from :before to a dedicated element.
+    outline: solid 3px transparent;
+
+    &:focus {
+      outline: double 5px transparent;
+    }
+  }
+}
+
 @mixin base_($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
