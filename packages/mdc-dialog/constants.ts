@@ -28,6 +28,15 @@ export const cssClasses = {
   SCROLLABLE: 'mdc-dialog--scrollable',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
   STACKED: 'mdc-dialog--stacked',
+  FULLSCREEN: 'mdc-dialog--fullscreen',
+  // Class for showing a scroll divider on full-screen dialog header element.
+  // Should only be displayed on scrollable content, when the dialog content is
+  // scrolled "underneath" the header.
+  SCROLL_DIVIDER_HEADER: 'mdc-dialog-scroll-divider-header',
+  // Class for showing a scroll divider on a full-screen dialog footer element.
+  // Should only be displayed on scrolalble content, when the dialog content is
+  // obscured "underneath" the footer.
+  SCROLL_DIVIDER_FOOTER: 'mdc-dialog-scroll-divider-footer',
 };
 
 export const strings = {
