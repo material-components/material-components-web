@@ -23,4 +23,4 @@
 /// @deprecated Import '_button.scss' (partners) or '_button-theme.scss' (clients) instead.
 @forward './button' show core-styles, without-ripple, deprecated-base, deprecated-icon;
 @forward './button-outlined' show deprecated-outlined;
-@forward './button-theme' show ripple-states, filled-accessible, container-fill-color, disabled-container-fill-color, outline-color, disabled-outline-color, icon-color, disabled-icon-color, ink-color, disabled-ink-color, density, height, shape-radius, horizontal-padding, outline-width, label-overflow-ellipsis, high-contrast-mode-shim, $ripple-target;
+@forward './button-theme' show ripple-states, filled-accessible, container-fill-color, disabled-container-fill-color, outline-color, disabled-outline-color, icon-color, disabled-icon-color, ink-color, disabled-ink-color, density, height, shape-radius, horizontal-padding, outline-width, label-overflow-ellipsis, high-contrast-mode-shim, $ripple-target, $horizontal-padding;

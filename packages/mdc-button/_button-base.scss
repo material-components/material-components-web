@@ -1,0 +1,213 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/elevation/elevation';
+@use '@material/elevation/elevation-theme';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
+@use '@material/touch-target/touch-target';
+@use '@material/typography/typography';
+@use './button-ripple';
+@use './button-shared-theme';
+
+@mixin static-styles($query: feature-targeting.all()) {
+  @include static-styles-without-ripple($query: $query);
+  @include button-ripple.static-styles($query: $query);
+}
+
+@mixin static-styles-without-ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include touch-target.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
+  // prettier-ignore
+  @include elevation.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  // postcss-bem-linter: define button
+  .mdc-button {
+    @include base($query);
+    // The icon CSS class overrides styles defined in the .material-icons CSS
+    // class, which is loaded separately so the order of CSS definitions is not
+    // guaranteed. Therefore, increase specifity by nesting this class to ensure
+    // overrides apply.
+    .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        @include icon;
+      }
+    }
+
+    .mdc-button__touch {
+      @include touch-target.touch-target($query: $query);
+    }
+  }
+
+  .mdc-button__label + .mdc-button__icon {
+    @include feature-targeting.targets($feat-structure) {
+      @include icon-trailing;
+    }
+  }
+
+  svg.mdc-button__icon {
+    @include feature-targeting.targets($feat-structure) {
+      @include icon-svg;
+    }
+  }
+
+  // TODO: figure out the correct place for this rule.
+  .mdc-button--raised,
+  .mdc-button--unelevated,
+  .mdc-button--outlined {
+    .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        // Icons inside contained buttons have different styles due to increased button padding
+        @include icon-contained;
+      }
+    }
+
+    .mdc-button__label + .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        @include icon-contained-trailing;
+      }
+    }
+  }
+
+  .mdc-button--touch {
+    // Touch target doesn't change with height. It simply gets removed if
+    // density (height) changes. Therefore, it is a static style.
+    @include touch-target.margin(
+      $component-height: button-shared-theme.$height,
+      $query: $query
+    );
+  }
+  // postcss-bem-linter: end
+}
+
+@mixin deprecated-base($query) {
+  @include base($query);
+}
+
+@mixin base($query) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include typography.typography(button, $query);
+  @include elevation-theme.overlay-surface-position($query: $query);
+  @include elevation-theme.overlay-dimensions(100%, $query: $query);
+
+  @include feature-targeting.targets($feat-structure) {
+    display: inline-flex;
+    // position: relative; already set in mdc-elevation-overlay-surface-position
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 64px;
+    border: none;
+    outline: none;
+    /* @alternate */
+    line-height: inherit;
+    user-select: none;
+    -webkit-appearance: none;
+    // Even though `visible` is the default, IE 11 computes the property as
+    // `hidden` in some cases, unless it's explicitly defined here.
+    overflow: visible;
+    vertical-align: middle;
+  }
+
+  &::-moz-focus-inner {
+    @include feature-targeting.targets($feat-structure) {
+      padding: 0;
+      border: 0;
+    }
+  }
+
+  // postcss-bem-linter: ignore
+  &:active {
+    @include feature-targeting.targets($feat-structure) {
+      outline: none;
+    }
+  }
+
+  &:hover {
+    @include feature-targeting.targets($feat-structure) {
+      cursor: pointer;
+    }
+  }
+
+  &:disabled {
+    @include feature-targeting.targets($feat-structure) {
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+}
+
+@mixin icon {
+  @include rtl.reflexive-box(margin, right, 8px);
+
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  vertical-align: top;
+}
+
+@mixin icon-trailing {
+  @include rtl.reflexive-box(margin, left, 8px);
+}
+
+@mixin icon-svg {
+  fill: currentColor;
+}
+
+@mixin icon-contained {
+  @include rtl.reflexive-property(margin, -4px, 8px);
+}
+
+@mixin icon-contained-trailing {
+  @include rtl.reflexive-property(margin, 8px, -4px);
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-icon {
+  @include icon;
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-icon-trailing {
+  @include icon-trailing;
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-icon-svg {
+  @include icon-svg;
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-icon-contained {
+  @include icon-contained;
+}
+
+/// @deprecated Private style mixin for partners; not available for public use.
+@mixin deprecated-icon-contained-trailing {
+  @include icon-contained-trailing;
+}

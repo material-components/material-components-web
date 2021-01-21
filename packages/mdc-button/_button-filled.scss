@@ -26,13 +26,32 @@
 @use '@material/elevation/functions' as elevation-functions;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use './button-theme';
+@use './button-base';
+@use './button-shared-theme';
 
-@mixin core-styles($query: feature-targeting.all()) {
-  .mdc-button--raised,
+@mixin styles($query: feature-targeting.all()) {
+  @include button-base.static-styles($query: $query);
+  @include static-styles($query: $query);
+  @include theme-styles($query: $query);
+}
+
+@mixin theme-styles($query: feature-targeting.all()) {
   .mdc-button--unelevated {
-    @include filled($query);
+    @include filled($query: $query);
   }
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
+  // Intentionally left blank for future-proofing.
+}
+
+@mixin filled($query) {
+  @include _filled-without-ripple($query: $query);
+
+  @include button-shared-theme.ripple-states(
+    $color: on-primary,
+    $query: $query
+  );
 }
 
 /// @deprecated Private style mixin for partners; not available for public use.
@@ -40,19 +59,29 @@
   @include filled($query);
 }
 
-@mixin filled($query) {
-  @include button-theme.horizontal-padding(
-    button-theme.$contained-horizontal-padding,
+@mixin deprecated-theme-styles-without-ripple($query: feature-targeting.all()) {
+  .mdc-button--raised,
+  .mdc-button--unelevated {
+    @include _filled-without-ripple($query: $query);
+  }
+}
+
+@mixin _filled-without-ripple($query: feature-targeting.all()) {
+  // TODO: move into theme config.
+  @include button-shared-theme.horizontal-padding(
+    button-shared-theme.$contained-horizontal-padding,
     $query
   );
-  @include button-theme.container-fill-color(primary, $query);
-  @include button-theme.ink-color(on-primary, $query);
-  @include button-theme.disabled-container-fill-color(
-    button-theme.$disabled-container-color,
+  // TODO(b/175614964): Replace with map that nulls out default ripple values
+  // when theme mixin is implemented.
+  @include button-shared-theme.container-fill-color(primary, $query);
+  @include button-shared-theme.ink-color(on-primary, $query);
+  @include button-shared-theme.disabled-container-fill-color(
+    button-shared-theme.$disabled-container-color,
     $query
   );
-  @include button-theme.disabled-ink-color(
-    button-theme.$disabled-ink-color,
+  @include button-shared-theme.disabled-ink-color(
+    button-shared-theme.$disabled-ink-color,
     $query
   );
 }
