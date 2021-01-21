@@ -81,6 +81,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
       notifyClose: () => undefined,
       notifyOpen: () => undefined,
+      notifyClosing: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -231,6 +232,8 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
       return;
     }
 
+    this.adapter.notifyClosing();
+
     if (this.isQuickOpen) {
       this.isSurfaceOpen = false;
       if (!skipRestoreFocus) {
@@ -242,25 +245,25 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
           MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
       this.adapter.notifyClose();
 
-    } else {
-      this.adapter.addClass(
-          MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
-      requestAnimationFrame(() => {
-        this.adapter.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
-        this.adapter.removeClass(
-            MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
-        this.closeAnimationEndTimerId = setTimeout(() => {
-          this.closeAnimationEndTimerId = 0;
-          this.adapter.removeClass(
-              MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
-          this.adapter.notifyClose();
-        }, numbers.TRANSITION_CLOSE_DURATION);
-      });
+      return;
+    }
 
-      this.isSurfaceOpen = false;
-      if (!skipRestoreFocus) {
-        this.maybeRestoreFocus();
-      }
+    this.adapter.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
+    requestAnimationFrame(() => {
+      this.adapter.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
+      this.adapter.removeClass(
+          MDCMenuSurfaceFoundation.cssClasses.IS_OPEN_BELOW);
+      this.closeAnimationEndTimerId = setTimeout(() => {
+        this.closeAnimationEndTimerId = 0;
+        this.adapter.removeClass(
+            MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
+        this.adapter.notifyClose();
+      }, numbers.TRANSITION_CLOSE_DURATION);
+    });
+
+    this.isSurfaceOpen = false;
+    if (!skipRestoreFocus) {
+      this.maybeRestoreFocus();
     }
   }
 

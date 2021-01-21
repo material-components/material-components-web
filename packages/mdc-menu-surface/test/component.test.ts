@@ -299,6 +299,15 @@ describe('MDCMenuSurface', () => {
        expect(handler).toHaveBeenCalled();
      });
 
+  it(`adapter#notifyClosing fires an ${strings.CLOSING_EVENT} custom event`,
+     () => {
+       const {root, component} = setupTest();
+       const handler = jasmine.createSpy('notifyClosing handler');
+       root.addEventListener(strings.CLOSING_EVENT, handler);
+       (component.getDefaultFoundation() as any).adapter.notifyClosing();
+       expect(handler).toHaveBeenCalled();
+     });
+
   it(`adapter#notifyOpen fires an ${strings.OPENED_EVENT} custom event`, () => {
     const {root, component} = setupTest();
     const handler = jasmine.createSpy('notifyOpen handler');

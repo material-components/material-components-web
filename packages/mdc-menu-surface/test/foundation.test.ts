@@ -195,6 +195,7 @@ describe('MDCMenuSurfaceFoundation', () => {
       'hasClass',
       'hasAnchor',
       'notifyClose',
+      'notifyClosing',
       'notifyOpen',
       'isElementInContainer',
       'isRtl',
@@ -1004,6 +1005,14 @@ describe('MDCMenuSurfaceFoundation', () => {
         jasmine.clock().tick(numbers.TRANSITION_CLOSE_DURATION);
         jasmine.clock().tick(1);  // Run to frame.
         expect(mockAdapter.notifyClose).toHaveBeenCalled();
+      });
+
+  testFoundation(
+      '#close emits the closing event immediately',
+      ({foundation, mockAdapter}) => {
+        (foundation as unknown as WithIsSurfaceOpen).isSurfaceOpen = true;
+        foundation.close();
+        expect(mockAdapter.notifyClosing).toHaveBeenCalled();
       });
 
   testFoundation(

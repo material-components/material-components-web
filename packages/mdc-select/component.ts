@@ -62,18 +62,14 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private outline!: MDCNotchedOutline|null;       // assigned in initialize()
 
   // Event handlers
-  private handleFocus!:
-      SpecificEventListener<'focus'>;  // assigned in initialize()
-  private handleBlur!:
-      SpecificEventListener<'blur'>;  // assigned in initialize()
-  private handleClick!:
-      SpecificEventListener<'click'>;  // assigned in initialize()
-  private handleKeydown!:
-      SpecificEventListener<'keydown'>;      // assigned in initialize()
-  private handleMenuOpened!: EventListener;  // assigned in initialize()
-  private handleMenuClosed!: EventListener;  // assigned in initialize()
-  private handleMenuItemAction!:
-      CustomEventListener<MDCMenuItemEvent>;  // assigned in initialize()
+  private handleFocus!: SpecificEventListener<'focus'>;
+  private handleBlur!: SpecificEventListener<'blur'>;
+  private handleClick!: SpecificEventListener<'click'>;
+  private handleKeydown!: SpecificEventListener<'keydown'>;
+  private handleMenuOpened!: EventListener;
+  private handleMenuClosed!: EventListener;
+  private handleMenuClosing!: EventListener;
+  private handleMenuItemAction!: CustomEventListener<MDCMenuItemEvent>;
 
   initialize(
       labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
@@ -155,6 +151,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.handleMenuClosed = () => {
       this.foundation.handleMenuClosed();
     };
+    this.handleMenuClosing = () => {
+      this.foundation.handleMenuClosing();
+    };
 
     this.selectAnchor.addEventListener('focus', this.handleFocus);
     this.selectAnchor.addEventListener('blur', this.handleBlur);
@@ -165,6 +164,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.selectAnchor.addEventListener('keydown', this.handleKeydown);
     this.menu.listen(
         menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed);
+    this.menu.listen(
+        menuSurfaceConstants.strings.CLOSING_EVENT, this.handleMenuClosing);
     this.menu.listen(
         menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened);
     this.menu.listen(

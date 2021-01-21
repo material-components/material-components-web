@@ -1439,6 +1439,30 @@ describe('MDCSelect', () => {
     document.body.removeChild(fixture);
   });
 
+  it('menu surface closed event sets aria-expanded to false', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = false;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {fixture, menuSurface, mockFoundation} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    document.body.appendChild(fixture);
+    const evtType = MDCMenuSurfaceFoundation.strings.CLOSING_EVENT;
+    let evt;
+    if (typeof CustomEvent === 'function') {
+      evt = new CustomEvent(evtType, {
+        bubbles: false,
+      });
+    } else {
+      evt = document.createEvent('CustomEvent');
+      evt.initCustomEvent(evtType, false, false, null);
+    }
+    menuSurface.dispatchEvent(evt);
+    expect(mockFoundation.handleMenuClosing).toHaveBeenCalledTimes(1);
+
+    document.body.removeChild(fixture);
+  });
+
   it('#constructor instantiates a leading icon if an icon element is present',
      () => {
        const root = getFixture();

@@ -34,10 +34,15 @@ const cssClasses = {
 // tslint:disable:object-literal-sort-keys
 const strings = {
   CLOSED_EVENT: 'MDCMenuSurface:closed',
+  CLOSING_EVENT: 'MDCMenuSurface:closing',
   OPENED_EVENT: 'MDCMenuSurface:opened',
   FOCUSABLE_ELEMENTS: [
-    'button:not(:disabled)', '[href]:not([aria-disabled="true"])', 'input:not(:disabled)',
-    'select:not(:disabled)', 'textarea:not(:disabled)', '[tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
+    'button:not(:disabled)',
+    '[href]:not([aria-disabled="true"])',
+    'input:not(:disabled)',
+    'select:not(:disabled)',
+    'textarea:not(:disabled)',
+    '[tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
   ].join(', '),
 };
 // tslint:enable:object-literal-sort-keys

@@ -178,6 +178,7 @@ Method Signature | Description
 Event Name | Data | Description
 --- | --- | ---
 `MDCMenuSurface:closed` | none | Event emitted after the menu surface is closed.
+`MDCMenuSurface:closing` | none | Event emitted when the menu surface is closing, but animation may not have completed yet.
 `MDCMenuSurface:opened` | none | Event emitted after the menu surface is opened.
 
 ## Usage Within Frameworks

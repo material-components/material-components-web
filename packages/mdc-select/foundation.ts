@@ -243,10 +243,13 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.adapter.focusMenuItemAtIndex(focusItemIndex);
   }
 
+  handleMenuClosing() {
+    this.adapter.setSelectAnchorAttr('aria-expanded', 'false');
+  }
+
   handleMenuClosed() {
     this.adapter.removeClass(cssClasses.ACTIVATED);
     this.isMenuOpen = false;
-    this.adapter.setSelectAnchorAttr('aria-expanded', 'false');
 
     // Unfocus the select if menu is closed without a selection
     if (!this.adapter.isSelectAnchorFocused()) {

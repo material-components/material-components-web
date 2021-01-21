@@ -227,9 +227,9 @@ describe('MDCSelectFoundation', () => {
     expect((foundation as any).isMenuOpen).toBe(false);
   });
 
-  it('#handleMenuClosed set aria-expanded attribute to false', () => {
+  it('#handleMenuClosing set aria-expanded attribute to false', () => {
     const {foundation, mockAdapter} = setupTest();
-    foundation.handleMenuClosed();
+    foundation.handleMenuClosing();
     expect(mockAdapter.setSelectAnchorAttr)
         .toHaveBeenCalledWith('aria-expanded', 'false');
   });

@@ -155,6 +155,9 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       hasAnchor: () => !!this.anchorElement,
       notifyClose: () =>
           this.emit(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, {}),
+      notifyClosing: () => {
+        this.emit(MDCMenuSurfaceFoundation.strings.CLOSING_EVENT, {});
+      },
       notifyOpen: () =>
           this.emit(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, {}),
       isElementInContainer: (el) => this.root.contains(el),

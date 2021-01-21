@@ -58,6 +58,9 @@ export interface MDCMenuSurfaceAdapter {
   /** Emits an event when the menu surface is closed. */
   notifyClose(): void;
 
+  /** Emits an event when the menu surface is closing. */
+  notifyClosing(): void;
+
   /** Emits an event when the menu surface is opened. */
   notifyOpen(): void;
 }
