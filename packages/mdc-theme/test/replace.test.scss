@@ -18,3 +18,7 @@
 .multiple {
   @include theme.property(width, calc(x + x + x), $replace: (x: 8px));
 }
+
+.list {
+  @include theme.property(padding, 0 value, $replace: (value: 16px));
+}

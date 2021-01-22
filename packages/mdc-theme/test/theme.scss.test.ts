@@ -67,6 +67,10 @@ describe('theme.test.scss', () => {
 
 .multiple {
   width: calc(8px + 8px + 8px);
+}
+
+.list {
+  padding: 0 16px;
 }`);
   });
 

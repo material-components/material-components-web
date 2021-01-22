@@ -132,18 +132,29 @@
     // $value is a standard CSS value
     $fallback: null;
     @if $replace {
-      @if meta.type-of($value) != 'string' {
-        // theme.property() should support non-string replacements in the
-        // future, such as List types
-        // e.g. theme.property(border-radius, 8px foo, $replace: (foo: $foo));
-        @error 'mdc-theme: Invalid replacement value #{$value}. $replace may only be used with string values.';
+      @if meta.type-of($replace) != 'map' {
+        @error 'mdc-theme: Invalid replacement #{$replace}. Must be a Map.';
       }
 
-      $fallback: replace.replace-string($value, $replace, $fallback: true);
-      $value: replace.replace-string($value, $replace);
-      @if $fallback == $value {
-        // The replacements don't contain custom properties with fallbacks
-        $fallback: null;
+      $needs-fallback: false;
+      @each $name, $value in $replace {
+        @if custom-properties.is-custom-prop($value) {
+          $needs-fallback: true;
+        }
+      }
+
+      @if meta.type-of($value) == 'string' {
+        @if $needs-fallback {
+          $fallback: replace.replace-string($value, $replace, $fallback: true);
+        }
+        $value: replace.replace-string($value, $replace);
+      } @else if meta.type-of($value) == 'list' {
+        @if $needs-fallback {
+          $fallback: replace.replace-list($value, $replace, $fallback: true);
+        }
+        $value: replace.replace-list($value, $replace);
+      } @else {
+        @error 'mdc-theme: Invalid replacement value #{$value}. $replace may only be used with string or list values.';
       }
     }
 

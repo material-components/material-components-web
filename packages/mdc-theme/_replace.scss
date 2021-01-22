@@ -98,3 +98,44 @@
 
   @return $string;
 }
+
+/// Replaces all value instances in the provided list with values from the
+/// provided replacement Map whose keys correspond to the name instances.
+/// Returns a new list with the replacements applied.
+///
+/// @example
+///   replace-list(0 value, (value: 16px)); // (0 16px)
+///
+/// @see {mixin} replace-string
+///
+/// @access private
+/// @param {List} $list - The list to make replacements on.
+/// @param {Map} $replace-map - A Map of name/value replacements. The keys of
+///     the Map are names that will be replaced in the list with the keys'
+///     respective values.
+/// @param {Bool} $fallback - If true, use the fallback value of any custom
+///     property value replacements instead of the `var()` declaration.
+/// @return {List} A new list with replacements made, if any.
+@function replace-list($list, $replace-map, $fallback: false) {
+  $separator: list.separator($list);
+  $replaced-list: ();
+  @each $value in $list {
+    @if meta.type-of($value) == 'string' {
+      $replaced-list: list.append(
+        $replaced-list,
+        replace-string($value, $replace-map, $fallback),
+        $separator
+      );
+    } @else if meta.type-of($value) == 'list' {
+      $replaced-list: list.append(
+        $replaced-list,
+        replace-list($value, $replace-map, $fallback),
+        $separator
+      );
+    } @else {
+      $replaced-list: list.append($replaced-list, $value, $separator);
+    }
+  }
+
+  @return $replaced-list;
+}
