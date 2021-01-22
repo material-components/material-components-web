@@ -25,11 +25,13 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
+@use '@material/theme/custom-properties';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/animation/variables' as animation-variables;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/rtl/mixins' as rtl-mixins;
 @use './variables';
+@use './menu-surface-custom-properties';
 
 //
 // Public
@@ -125,8 +127,17 @@
     display: none;
     position: absolute;
     box-sizing: border-box;
-    max-width: calc(100vw - #{variables.$min-distance-from-edge});
-    max-height: calc(100vh - #{variables.$min-distance-from-edge});
+
+    $max-width: custom-properties.create(
+      menu-surface-custom-properties.$max-width,
+      calc(100vw - #{variables.$min-distance-from-edge})
+    );
+    @include theme.property(max-width, $max-width);
+    $max-height: custom-properties.create(
+      menu-surface-custom-properties.$max-height,
+      calc(100vh - #{variables.$min-distance-from-edge})
+    );
+    @include theme.property(max-height, $max-height);
     margin: 0;
     padding: 0;
     transform: scale(1);

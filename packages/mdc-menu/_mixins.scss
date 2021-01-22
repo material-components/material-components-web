@@ -30,6 +30,9 @@
 @use '@material/list/mixins' as list-mixins;
 @use '@material/list/variables' as list-variables;
 @use '@material/ripple/ripple';
+@use '@material/theme/theme';
+@use '@material/theme/custom-properties';
+@use './menu-custom-properties';
 @use './variables';
 
 @mixin core-styles($query: feature-targeting.all()) {
@@ -141,6 +144,10 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    min-width: $min-width;
+    $min-width-custom-property: custom-properties.create(
+      menu-custom-properties.$min-width,
+      $min-width
+    );
+    @include theme.property(min-width, $min-width-custom-property);
   }
 }
