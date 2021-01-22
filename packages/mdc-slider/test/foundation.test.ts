@@ -1206,6 +1206,23 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(77, Thumb.END);
     });
 
+    it('fires `change` event on input change', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        valueStart: 20,
+        value: 50,
+        isRange: true,
+        isDiscrete: true,
+      });
+
+      mockAdapter.getInputValue.withArgs(Thumb.START).and.returnValue(5);
+      foundation.handleInputChange(Thumb.START);
+      expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(5, Thumb.START);
+
+      mockAdapter.getInputValue.withArgs(Thumb.END).and.returnValue(60);
+      foundation.handleInputChange(Thumb.END);
+      expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(60, Thumb.END);
+    });
+
     it('fires `dragStart`/`dragEnd` events across drag interaction', () => {
       const {foundation, mockAdapter} = setUpAndInit({
         valueStart: 20,

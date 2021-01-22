@@ -498,6 +498,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     } else {
       this.setValue(value);
     }
+
+    this.adapter.emitChangeEvent(
+        thumb === Thumb.START ? this.valueStart : this.value, thumb);
   }
 
   /** Shows value indicator on thumb(s). */
