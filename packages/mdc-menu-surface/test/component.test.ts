@@ -25,7 +25,7 @@ import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {Corner, cssClasses, strings} from '../constants';
 import {MDCMenuSurface, MDCMenuSurfaceFoundation} from '../index';
-import {getTransformPropertyName} from '../util';
+import {getCorrectPropertyName} from '@material/animation/util';
 
 function getFixture(open = false, fixedPosition = false) {
   const openClass = open ? 'mdc-menu-surface--open' : '';
@@ -533,14 +533,14 @@ describe('MDCMenuSurface', () => {
        // Write expected value and read canonical value from browser.
        root.style.transformOrigin = 'left top 10px';
        const expected = root.style.getPropertyValue(
-           `${getTransformPropertyName(window)}-origin`);
+           `${getCorrectPropertyName(window, 'transform')}-origin`);
        // Reset value.
        root.style.transformOrigin = '';
 
        (component.getDefaultFoundation() as any)
            .adapter.setTransformOrigin('left top 10px');
        expect(root.style.getPropertyValue(
-                  `${getTransformPropertyName(window)}-origin`))
+                  `${getCorrectPropertyName(window, 'transform')}-origin`))
            .toEqual(expected);
      });
 
