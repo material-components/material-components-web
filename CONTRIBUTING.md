@@ -64,7 +64,6 @@ You can find much more information with respect to building components within ou
 npm run build # Cleans out build/ and builds unminified files for each MDC Web package
 npm run build:min # Builds minified files for each MDC Web package
 npm run dist # Runs both of the above commands sequentially
-npm run build:demos # Cleans out build/ and builds demo CSS/JS files, e.g. for deploying to App Engine
 ```
 
 ### Linting / Testing / Coverage Enforcement
