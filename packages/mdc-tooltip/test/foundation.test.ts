@@ -118,6 +118,7 @@ describe('MDCTooltipFoundation', () => {
       'removeClass',
       'getComputedStyleProperty',
       'setStyleProperty',
+      'setSurfaceStyleProperty',
       'getViewportWidth',
       'getViewportHeight',
       'getTooltipSize',
@@ -1072,6 +1073,25 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('left', `32px`);
   });
 
+  it('properly sets tooltip transform origin (top left)', () => {
+    const anchorHeight = 35;
+
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    mockAdapter.getViewportWidth.and.returnValue(500);
+    mockAdapter.getAnchorBoundingRect.and.returnValue({
+      top: 0,
+      bottom: anchorHeight,
+      left: 32,
+      right: 82,
+      width: 50,
+      height: anchorHeight
+    });
+    mockAdapter.getTooltipSize.and.returnValue({width: 100, height: 30});
+    foundation.show();
+    expect(mockAdapter.setSurfaceStyleProperty)
+        .toHaveBeenCalledWith('transform-origin', 'top left');
+  });
+
   it('properly calculates tooltip position (END alignment)', () => {
     const anchorBoundingRect =
         {top: 0, bottom: 35, left: 400, right: 450, width: 50, height: 35};
@@ -1090,6 +1110,21 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('left', `350px`);
   });
 
+  it('properly sets tooltip transform origin (top right)', () => {
+    const anchorBoundingRect =
+        {top: 0, bottom: 35, left: 400, right: 450, width: 50, height: 35};
+    const tooltipSize = {width: 100, height: 30};
+
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    mockAdapter.getViewportWidth.and.returnValue(480);
+    mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+    mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+
+    foundation.show();
+    expect(mockAdapter.setSurfaceStyleProperty)
+        .toHaveBeenCalledWith('transform-origin', 'top right');
+  });
+
   it('properly calculates tooltip position (CENTER alignment)', () => {
     const anchorBoundingRect =
         {top: 0, bottom: 35, left: 0, right: 200, width: 200, height: 35};
@@ -1106,6 +1141,21 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.setStyleProperty)
         .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
     expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('left', `80px`);
+  });
+
+  it('properly sets tooltip transform origin (top center)', () => {
+    const anchorBoundingRect =
+        {top: 0, bottom: 35, left: 0, right: 200, width: 200, height: 35};
+    const tooltipSize = {width: 40, height: 30};
+
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    mockAdapter.getViewportWidth.and.returnValue(500);
+    mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+    mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+
+    foundation.show();
+    expect(mockAdapter.setSurfaceStyleProperty)
+        .toHaveBeenCalledWith('transform-origin', 'top center');
   });
 
   it('properly calculates tooltip position with an UNBOUNDED anchor', () => {
@@ -1164,6 +1214,24 @@ describe('MDCTooltipFoundation', () => {
         .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
   });
 
+  it('properly sets rich tooltip transform origin (top right)', () => {
+    const anchorBoundingRect =
+        {top: 0, bottom: 35, left: 100, right: 150, width: 50, height: 35};
+    const parentBoundingRect =
+        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const tooltipSize = {width: 40, height: 30};
+    const {foundation, mockAdapter} =
+        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
+    mockAdapter.getViewportWidth.and.returnValue(150);
+    mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+    mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
+    mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+
+    foundation.show();
+    expect(mockAdapter.setSurfaceStyleProperty)
+        .toHaveBeenCalledWith('transform-origin', 'top right');
+  });
+
   it('properly calculates rich tooltip position (END alignment)', () => {
     const anchorBoundingRect =
         {top: 0, bottom: 35, left: 0, right: 50, width: 50, height: 35};
@@ -1185,6 +1253,22 @@ describe('MDCTooltipFoundation', () => {
         .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
     expect(mockAdapter.setStyleProperty)
         .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
+  });
+
+  it('properly calculates rich tooltip transform origin (top left)', () => {
+    const anchorBoundingRect =
+        {top: 0, bottom: 35, left: 0, right: 50, width: 50, height: 35};
+    const parentBoundingRect =
+        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const {foundation, mockAdapter} =
+        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
+    mockAdapter.getViewportWidth.and.returnValue(150);
+    mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+    mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
+
+    foundation.show();
+    expect(mockAdapter.setSurfaceStyleProperty)
+        .toHaveBeenCalledWith('transform-origin', 'top left');
   });
 
   it('allows users to specify the tooltip position for plain tooltips (START alignment instead of CENTER)',
@@ -1334,7 +1418,6 @@ describe('MDCTooltipFoundation', () => {
            .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
      });
 
-
   it('properly calculates START tooltip position in RTL', () => {
     const anchorBoundingRect =
         {top: 0, bottom: 35, left: 0, right: 100, width: 100, height: 35};
@@ -1355,6 +1438,23 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('left', `50px`);
   });
 
+  it('properly calculates \"top right\" transform origin in RTL', () => {
+    const anchorBoundingRect =
+        {top: 0, bottom: 35, left: 0, right: 100, width: 100, height: 35};
+    const tooltipSize = {width: 50, height: 30};
+
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    mockAdapter.getViewportWidth.and.returnValue(500);
+    mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+    mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+    mockAdapter.isRTL.and.returnValue(true);
+
+    foundation.setTooltipPosition({xPos: XPosition.START});
+    foundation.show();
+    expect(mockAdapter.setSurfaceStyleProperty)
+        .toHaveBeenCalledWith('transform-origin', 'top right');
+  });
+
   it('properly calculates END tooltip position in RTL', () => {
     const anchorBoundingRect =
         {top: 0, bottom: 35, left: 32, right: 132, width: 100, height: 35};
@@ -1373,6 +1473,23 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.setStyleProperty)
         .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
     expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('left', `32px`);
+  });
+
+  it('properly calculates \"top left\" transform origin in RTL', () => {
+    const anchorBoundingRect =
+        {top: 0, bottom: 35, left: 32, right: 132, width: 100, height: 35};
+    const tooltipSize = {width: 50, height: 30};
+
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    mockAdapter.getViewportWidth.and.returnValue(500);
+    mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+    mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+    mockAdapter.isRTL.and.returnValue(true);
+
+    foundation.setTooltipPosition({xPos: XPosition.END});
+    foundation.show();
+    expect(mockAdapter.setSurfaceStyleProperty)
+        .toHaveBeenCalledWith('transform-origin', 'top left');
   });
 
   it('positions tooltip within viewport if threshold cannot be maintained (x-axis)',
@@ -1435,6 +1552,23 @@ describe('MDCTooltipFoundation', () => {
     foundation.show();
     expect(mockAdapter.setStyleProperty)
         .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
+  });
+
+  it('properly calculates tooltip transform origin (bottom left)', () => {
+    const anchorBoundingRect =
+        {top: 100, bottom: 125, left: 10, right: 60, width: 50, height: 25};
+    const tooltipSize = {width: 60, height: 20};
+
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    mockAdapter.getViewportWidth.and.returnValue(500);
+    mockAdapter.getViewportHeight.and.returnValue(300);
+    mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+    mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+
+    foundation.setTooltipPosition({yPos: YPosition.ABOVE});
+    foundation.show();
+    expect(mockAdapter.setSurfaceStyleProperty)
+        .toHaveBeenCalledWith('transform-origin', 'bottom left');
   });
 
   it('properly calculates tooltip y-position (BELOW alignment)', () => {

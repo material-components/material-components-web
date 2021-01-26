@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 
 import {MDCTooltipAdapter} from './adapter';
-import {AnchorBoundaryType, events, XPosition, YPosition} from './constants';
+import {AnchorBoundaryType, CssClasses, events, XPosition, YPosition} from './constants';
 import {MDCTooltipFoundation} from './foundation';
 
 export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
@@ -154,6 +154,11 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       },
       setStyleProperty: (propertyName, value) => {
         (this.root as HTMLElement).style.setProperty(propertyName, value);
+      },
+      setSurfaceStyleProperty: (propertyName, value) => {
+        const surface =
+            this.root.querySelector<HTMLElement>(`.${CssClasses.SURFACE}`);
+        surface?.style.setProperty(propertyName, value);
       },
       getViewportWidth: () => window.innerWidth,
       getViewportHeight: () => window.innerHeight,

@@ -29,6 +29,7 @@ enum CssClasses {
   HIDE = 'mdc-tooltip--hide',
   HIDE_TRANSITION = 'mdc-tooltip--hide-transition',
   MULTILINE_TOOLTIP = 'mdc-tooltip--multiline',
+  SURFACE = 'mdc-tooltip__surface',
 }
 
 const numbers = {
@@ -79,6 +80,14 @@ enum AnchorBoundaryType {
   UNBOUNDED = 1,
 }
 
+const strings = {
+  LEFT: 'left',
+  RIGHT: 'right',
+  CENTER: 'center',
+  TOP: 'top',
+  BOTTOM: 'bottom'
+};
+
 export {
   CssClasses,
   numbers,
@@ -86,5 +95,6 @@ export {
   events,
   XPosition,
   AnchorBoundaryType,
-  YPosition
+  YPosition,
+  strings
 };

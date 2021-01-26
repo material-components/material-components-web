@@ -22,12 +22,13 @@
  */
 
 import {AnimationFrame} from '@material/animation/animationframe';
+import {getCorrectPropertyName} from '@material/animation/util';
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
 import {KEY, normalizeKey} from '@material/dom/keyboard';
 
 import {MDCTooltipAdapter} from './adapter';
-import {AnchorBoundaryType, attributes, CssClasses, numbers, XPosition, YPosition} from './constants';
+import {AnchorBoundaryType, attributes, CssClasses, numbers, strings, XPosition, YPosition} from './constants';
 import {ShowTooltipOptions} from './types';
 
 const {
@@ -44,6 +45,9 @@ enum AnimationKeys {
   POLL_ANCHOR = 'poll_anchor'
 }
 
+// Accessing `window` without a `typeof` check will throw on Node environments.
+const HAS_WINDOW = typeof window !== 'undefined';
+
 export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   static get defaultAdapter(): MDCTooltipAdapter {
     return {
@@ -54,6 +58,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       removeClass: () => undefined,
       getComputedStyleProperty: () => '',
       setStyleProperty: () => undefined,
+      setSurfaceStyleProperty: () => undefined,
       getViewportWidth: () => 0,
       getViewportHeight: () => 0,
       getTooltipSize: () => ({width: 0, height: 0}),
@@ -446,7 +451,14 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // A plain tooltip has `fixed` positioning and is placed as an immediate
     // child of the document body. Its positioning is calculated with respect to
     // the viewport.
-    const {top, left} = this.calculateTooltipDistance(this.anchorRect);
+    const {top, yTransformOrigin, left, xTransformOrigin} =
+        this.calculateTooltipStyles(this.anchorRect);
+
+    const transformProperty =
+        HAS_WINDOW ? getCorrectPropertyName(window, 'transform') : 'transform';
+    this.adapter.setSurfaceStyleProperty(
+        `${transformProperty}-origin`,
+        `${yTransformOrigin} ${xTransformOrigin}`);
     this.adapter.setStyleProperty('top', `${top}px`);
     this.adapter.setStyleProperty('left', `${left}px`);
   }
@@ -465,7 +477,14 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // container. We set the width of the tooltip to prevent this.
     this.adapter.setStyleProperty('width', width);
 
-    const {top, left} = this.calculateTooltipDistance(this.anchorRect);
+    const {top, yTransformOrigin, left, xTransformOrigin} =
+        this.calculateTooltipStyles(this.anchorRect);
+
+    const transformProperty =
+        HAS_WINDOW ? getCorrectPropertyName(window, 'transform') : 'transform';
+    this.adapter.setSurfaceStyleProperty(
+        `${transformProperty}-origin`,
+        `${yTransformOrigin} ${xTransformOrigin}`);
     // A rich tooltip has `absolute` positioning and is placed as a sibling to
     // the anchor element. Its positioning is calculated with respect to the
     // parent element, and so the values need to be adjusted against the parent
@@ -490,7 +509,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
    * Users can specify an alignment, however, if this alignment results in the
    * tooltip colliding with the viewport, this specification is overwritten.
    */
-  private calculateTooltipDistance(anchorRect: ClientRect|null) {
+  private calculateTooltipStyles(anchorRect: ClientRect|null) {
     if (!anchorRect) {
       return {top: 0, left: 0};
     }
@@ -498,23 +517,39 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     const tooltipSize = this.adapter.getTooltipSize();
     const top = this.calculateYTooltipDistance(anchorRect, tooltipSize.height);
     const left = this.calculateXTooltipDistance(anchorRect, tooltipSize.width);
-    return {top, left};
+
+    return {
+      top: top.distance,
+      yTransformOrigin: top.yTransformOrigin,
+      left: left.distance,
+      xTransformOrigin: left.xTransformOrigin
+    };
   }
 
   /**
    * Calculates the `left` distance for the tooltip.
+   * Returns the distance value and a string indicating the x-axis transform-
+   * origin that should be used when animating the tooltip.
    */
   private calculateXTooltipDistance(
-      anchorRect: ClientRect, tooltipWidth: number) {
+      anchorRect: ClientRect,
+      tooltipWidth: number): ({distance: number, xTransformOrigin: string}) {
     const isLTR = !this.adapter.isRTL();
     let startPos, endPos, centerPos: number|undefined;
+    let startTransformOrigin, endTransformOrigin: string;
     if (this.richTooltip) {
       startPos = isLTR ? anchorRect.left - tooltipWidth : anchorRect.right;
       endPos = isLTR ? anchorRect.right : anchorRect.left - tooltipWidth;
+
+      startTransformOrigin = isLTR ? strings.RIGHT : strings.LEFT;
+      endTransformOrigin = isLTR ? strings.LEFT : strings.RIGHT;
     } else {
       startPos = isLTR ? anchorRect.left : anchorRect.right - tooltipWidth;
       endPos = isLTR ? anchorRect.right - tooltipWidth : anchorRect.left;
       centerPos = anchorRect.left + (anchorRect.width - tooltipWidth) / 2;
+
+      startTransformOrigin = isLTR ? strings.LEFT : strings.RIGHT;
+      endTransformOrigin = isLTR ? strings.RIGHT : strings.LEFT;
     }
 
     const positionOptions = this.richTooltip ?
@@ -523,26 +558,34 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         this.determineValidPositionOptions(centerPos!, startPos, endPos);
 
     if (this.xTooltipPos === XPosition.START && positionOptions.has(startPos)) {
-      return startPos;
+      return {distance: startPos, xTransformOrigin: startTransformOrigin};
     }
     if (this.xTooltipPos === XPosition.END && positionOptions.has(endPos)) {
-      return endPos;
+      return {distance: endPos, xTransformOrigin: endTransformOrigin};
     }
     if (this.xTooltipPos === XPosition.CENTER &&
         positionOptions.has(centerPos)) {
       // This code path is only executed if calculating the distance for plain
       // tooltips. In this instance, centerPos will always be defined, so we can
       // safely assert that the returned value is non-null/undefined.
-      return centerPos!;
+      return {distance: centerPos!, xTransformOrigin: strings.CENTER};
     }
 
     // If no user position is supplied, rich tooltips default to end pos, then
     // start position. Plain tooltips default to center, start, then end.
-    const possiblePositions =
-        this.richTooltip ? [endPos, startPos] : [centerPos, startPos, endPos];
+    const possiblePositions = this.richTooltip ?
+        [
+          {distance: endPos, xTransformOrigin: endTransformOrigin},
+          {distance: startPos, xTransformOrigin: startTransformOrigin}
+        ] :
+        [
+          {distance: centerPos!, xTransformOrigin: strings.CENTER},
+          {distance: startPos, xTransformOrigin: startTransformOrigin},
+          {distance: endPos, xTransformOrigin: endTransformOrigin}
+        ];
 
     const validPosition =
-        possiblePositions.find(pos => positionOptions.has(pos));
+        possiblePositions.find(({distance}) => positionOptions.has(distance));
     if (validPosition) {
       return validPosition;
     }
@@ -553,10 +596,15 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // narrow. In this case, we allow the tooltip to be mis-aligned from the
     // anchor element.
     if (anchorRect.left < 0) {
-      return this.minViewportTooltipThreshold;
+      return {
+        distance: this.minViewportTooltipThreshold,
+        xTransformOrigin: strings.LEFT
+      };
     } else {
       const viewportWidth = this.adapter.getViewportWidth();
-      return viewportWidth - (tooltipWidth + this.minViewportTooltipThreshold);
+      const distance =
+          viewportWidth - (tooltipWidth + this.minViewportTooltipThreshold);
+      return {distance, xTransformOrigin: strings.RIGHT};
     }
   }
 
@@ -604,6 +652,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
   /**
    * Calculates the `top` distance for the tooltip.
+   * Returns the distance value and a string indicating the y-axis transform-
+   * origin that should be used when animating the tooltip.
    */
   private calculateYTooltipDistance(
       anchorRect: ClientRect, tooltipHeight: number) {
@@ -614,25 +664,25 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     if (this.yTooltipPos === YPosition.ABOVE &&
         yPositionOptions.has(aboveYPos)) {
-      return aboveYPos;
+      return {distance: aboveYPos, yTransformOrigin: strings.BOTTOM};
     } else if (
         this.yTooltipPos === YPosition.BELOW &&
         yPositionOptions.has(belowYPos)) {
-      return belowYPos;
+      return {distance: belowYPos, yTransformOrigin: strings.TOP};
     }
 
     if (yPositionOptions.has(belowYPos)) {
-      return belowYPos;
+      return {distance: belowYPos, yTransformOrigin: strings.TOP};
     }
 
     if (yPositionOptions.has(aboveYPos)) {
-      return aboveYPos;
+      return {distance: aboveYPos, yTransformOrigin: strings.BOTTOM};
     }
 
     // Indicates that all potential positions would result in the tooltip
     // colliding with the viewport. This would only occur when the viewport is
     // very short.
-    return belowYPos;
+    return {distance: belowYPos, yTransformOrigin: strings.TOP};
   }
 
   /**
