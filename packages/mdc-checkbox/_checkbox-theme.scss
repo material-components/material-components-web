@@ -630,13 +630,13 @@ $light-theme: (
   .mdc-checkbox__background {
     .mdc-checkbox__checkmark {
       @include feature-targeting.targets($feat-color) {
-        @include theme.prop(color, $color);
+        @include theme.property(color, $color);
       }
     }
 
     .mdc-checkbox__mixedmark {
       @include feature-targeting.targets($feat-color) {
-        @include theme.prop(border-color, $color);
+        @include theme.property(border-color, $color);
       }
     }
   }

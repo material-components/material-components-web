@@ -352,7 +352,7 @@ $disabled-container-color: rgba(
   @if $color {
     .mdc-button__icon {
       @include feature-targeting.targets($feat-color) {
-        @include theme.prop(color, $color);
+        @include theme.property(color, $color);
       }
     }
   }
@@ -368,7 +368,7 @@ $disabled-container-color: rgba(
 
   @if $color {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }

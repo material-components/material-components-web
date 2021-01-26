@@ -224,7 +224,7 @@ $styles: set-styles_(
 
   @include smooth-font($query: $query);
   @include feature-targeting.targets($feat-typography) {
-    @include theme.prop(
+    @include theme.property(
       font-family,
       (
         varname: --mdc-typography-font-family,
@@ -257,7 +257,7 @@ $styles: set-styles_(
           );
         }
 
-        @include theme.prop(
+        @include theme.property(
           $key,
           (
             varname: --mdc-typography-#{$style}-#{$key},

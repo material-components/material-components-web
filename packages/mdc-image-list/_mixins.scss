@@ -82,7 +82,7 @@
 
   .mdc-image-list__supporting {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, text-primary-on-background);
+      @include theme.property(color, text-primary-on-background);
     }
 
     @include feature-targeting.targets($feat-structure) {

@@ -39,11 +39,11 @@
 //
 
 @mixin ink-color($color) {
-  @include theme.prop(color, $color);
+  @include theme.property(color, $color);
 }
 
 @mixin fill-color($color) {
-  @include theme.prop(background-color, $color);
+  @include theme.property(background-color, $color);
 }
 
 @mixin fill-color-accessible($color) {
@@ -54,7 +54,7 @@
 @mixin icon-ink-color($color) {
   .mdc-top-app-bar__action-item,
   .mdc-top-app-bar__navigation-icon {
-    @include theme.prop(color, $color);
+    @include theme.property(color, $color);
     @include ripple-theme.states($color);
   }
 }

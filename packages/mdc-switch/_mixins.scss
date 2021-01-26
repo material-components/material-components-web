@@ -163,7 +163,7 @@
 
   &.mdc-switch--checked .mdc-switch__track {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      @include theme.property(background-color, $color);
     }
   }
 }
@@ -173,8 +173,8 @@
 
   &.mdc-switch--checked .mdc-switch__thumb {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
-      @include theme.prop(border-color, $color);
+      @include theme.property(background-color, $color);
+      @include theme.property(border-color, $color);
     }
   }
 }
@@ -190,7 +190,7 @@
 
   &:not(.mdc-switch--checked) .mdc-switch__track {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      @include theme.property(background-color, $color);
     }
   }
 }
@@ -200,8 +200,8 @@
 
   &:not(.mdc-switch--checked) .mdc-switch__thumb {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
-      @include theme.prop(border-color, $color);
+      @include theme.property(background-color, $color);
+      @include theme.property(border-color, $color);
     }
   }
 }

@@ -86,7 +86,7 @@
 
   @include feature-targeting.targets($feat-color) {
     &::after {
-      @include theme.prop(border-bottom-color, $color);
+      @include theme.property(border-bottom-color, $color);
     }
   }
 }
@@ -96,7 +96,7 @@
 
   @include feature-targeting.targets($feat-color) {
     &::before {
-      @include theme.prop(border-bottom-color, $color);
+      @include theme.property(border-bottom-color, $color);
     }
   }
 }

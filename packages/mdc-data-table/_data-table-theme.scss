@@ -111,7 +111,7 @@ $pagination-rows-per-page-select-height: 36px;
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme.prop('background-color', $color);
+    @include theme.property('background-color', $color);
   }
 }
 
@@ -121,7 +121,7 @@ $pagination-rows-per-page-select-height: 36px;
   // Set background color to cell instead of row to support sticky header.
   .mdc-data-table__header-cell {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('background-color', $color);
+      @include theme.property('background-color', $color);
     }
   }
 }
@@ -131,7 +131,7 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__row {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('background-color', $color);
+      @include theme.property('background-color', $color);
     }
   }
 }
@@ -141,7 +141,7 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__row--selected {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('background-color', $color);
+      @include theme.property('background-color', $color);
     }
   }
 }
@@ -207,7 +207,7 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__row:not(.mdc-data-table__row--selected):hover {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('background-color', $color);
+      @include theme.property('background-color', $color);
     }
   }
 }
@@ -217,7 +217,7 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__header-cell {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('color', $color);
+      @include theme.property('color', $color);
     }
   }
 }
@@ -233,7 +233,7 @@ $pagination-rows-per-page-select-height: 36px;
   .mdc-data-table__pagination-rows-per-page-label,
   .mdc-data-table__cell {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop('color', $color);
+      @include theme.property('color', $color);
     }
   }
 }

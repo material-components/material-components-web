@@ -153,7 +153,7 @@
 
   .mdc-text-field__icon--leading {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -163,7 +163,7 @@
 
   .mdc-text-field__icon--trailing {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }

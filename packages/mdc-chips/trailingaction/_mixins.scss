@@ -116,7 +116,7 @@ $ripple-target: '.mdc-chip-trailing-action__ripple';
 
   .mdc-chip-trailing-action {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }

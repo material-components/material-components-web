@@ -100,7 +100,7 @@
   .mdc-text-field-character-counter,
   + .mdc-text-field-helper-line .mdc-text-field-character-counter {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }

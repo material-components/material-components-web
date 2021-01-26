@@ -97,7 +97,7 @@
 
   + .mdc-text-field-helper-line .mdc-text-field-helper-text {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -109,7 +109,7 @@
     + .mdc-text-field-helper-line
     .mdc-text-field-helper-text--validation-msg {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }

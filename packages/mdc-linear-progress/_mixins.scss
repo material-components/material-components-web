@@ -183,7 +183,7 @@
     @include feature-targeting.targets($feat-color) {
       // Border is used rather than background-color to ensure that the
       // bar is visible in Windows High Contrast Mode.
-      @include theme.prop(border-color, $color);
+      @include theme.property(border-color, $color);
     }
   }
 }

@@ -95,7 +95,7 @@ $outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 
   @if $color {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(border-color, $color);
+      @include theme.property(border-color, $color);
     }
   }
 }

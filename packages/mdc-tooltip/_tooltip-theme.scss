@@ -103,7 +103,7 @@ $z-index: 2;
   $feat-color: feature-targeting.create-target($query, color);
   @include feature-targeting.targets($feat-color) {
     .mdc-tooltip__surface {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -119,15 +119,15 @@ $z-index: 2;
   $feat-color: feature-targeting.create-target($query, color);
   @include feature-targeting.targets($feat-color) {
     .mdc-tooltip__title {
-      @include theme.prop(color, $title-color);
+      @include theme.property(color, $title-color);
     }
 
     .mdc-tooltip__content {
-      @include theme.prop(color, $content-color);
+      @include theme.property(color, $content-color);
     }
 
     .mdc-tooltip__content-link {
-      @include theme.prop(color, $content-link-color);
+      @include theme.property(color, $content-link-color);
     }
   }
 }
@@ -138,7 +138,7 @@ $z-index: 2;
   $feat-color: feature-targeting.create-target($query, color);
   .mdc-tooltip__surface {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      @include theme.property(background-color, $color);
     }
   }
 }

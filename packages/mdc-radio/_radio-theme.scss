@@ -117,7 +117,7 @@ $density-config: (
 
   .mdc-radio__background::before {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(background-color, $color);
+      @include theme.property(background-color, $color);
     }
   }
 }
@@ -292,7 +292,7 @@ $density-config: (
 
   .mdc-radio__background .mdc-radio__inner-circle {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(border-color, $color);
+      @include theme.property(border-color, $color);
     }
   }
 }
@@ -307,7 +307,7 @@ $density-config: (
 
   .mdc-radio__background .mdc-radio__outer-circle {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(border-color, $color);
+      @include theme.property(border-color, $color);
     }
   }
 }

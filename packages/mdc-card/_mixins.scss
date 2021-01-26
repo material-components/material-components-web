@@ -209,7 +209,7 @@
 
   .mdc-card__action-icons {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, variables.$action-icon-color);
+      @include theme.property(color, variables.$action-icon-color);
     }
 
     @include feature-targeting.targets($feat-structure) {
@@ -299,7 +299,7 @@
 
   .mdc-card__action--icon:not(:disabled) {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, variables.$action-icon-color);
+      @include theme.property(color, variables.$action-icon-color);
     }
   }
 
@@ -322,7 +322,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme.prop(background-color, $color);
+    @include theme.property(background-color, $color);
   }
 }
 

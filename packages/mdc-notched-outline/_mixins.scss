@@ -130,7 +130,7 @@
   .mdc-notched-outline__notch,
   .mdc-notched-outline__trailing {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(border-color, $color);
+      @include theme.property(border-color, $color);
     }
   }
 }

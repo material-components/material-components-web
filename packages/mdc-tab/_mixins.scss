@@ -131,7 +131,7 @@
 
   .mdc-tab__text-label {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
     }
   }
 }
@@ -141,7 +141,7 @@
 
   .mdc-tab__icon {
     @include feature-targeting.targets($feat-color) {
-      @include theme.prop(color, $color);
+      @include theme.property(color, $color);
 
       fill: currentColor;
     }
