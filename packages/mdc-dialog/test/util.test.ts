@@ -93,6 +93,80 @@ describe('MDCDialog - util', () => {
        }
      });
 
+  it('isScrollAtTop returns true when scrollable content has not been scrolled',
+     () => {
+       const parent = getElement(`
+         <div style="height: 20px; overflow: auto;">
+           <div style="height: 30px;"></div>
+         </div>`);
+
+       // Element.scrollHeight only returns the correct value when the element
+       // is attached to the DOM.
+       document.body.appendChild(parent);
+       try {
+         expect(util.isScrollable(parent)).toBe(true);
+         expect(util.isScrollAtTop(parent)).toBe(true);
+       } finally {
+         document.body.removeChild(parent);
+       }
+     });
+
+  it('isScrollAtTop returns false when scrollable content has been scrolled',
+     () => {
+       const parent = getElement(`
+         <div style="height: 20px; overflow: auto;">
+           <div style="height: 30px;"></div>
+         </div>`);
+
+       // Element.scrollHeight only returns the correct value when the element
+       // is attached to the DOM.
+       document.body.appendChild(parent);
+       try {
+         expect(util.isScrollable(parent)).toBe(true);
+         parent.scrollTop = 10;
+         expect(util.isScrollAtTop(parent)).toBe(false);
+       } finally {
+         document.body.removeChild(parent);
+       }
+     });
+
+  it('isScrollAtBottom returns false when scrollable content is not scrolled to the bottom',
+     () => {
+       const parent = getElement(`
+         <div style="height: 20px; overflow: auto;">
+           <div style="height: 30px;"></div>
+         </div>`);
+
+       // Element.scrollHeight only returns the correct value when the element
+       // is attached to the DOM.
+       document.body.appendChild(parent);
+       try {
+         expect(util.isScrollable(parent)).toBe(true);
+         expect(util.isScrollAtBottom(parent)).toBe(false);
+       } finally {
+         document.body.removeChild(parent);
+       }
+     });
+
+  it('isScrollAtBottom returns true when scrollable content has been scrolled to the bottom',
+     () => {
+       const parent = getElement(`
+         <div style="height: 20px; overflow: auto;">
+           <div style="height: 30px;"></div>
+         </div>`);
+
+       // Element.scrollHeight only returns the correct value when the element
+       // is attached to the DOM.
+       document.body.appendChild(parent);
+       try {
+         expect(util.isScrollable(parent)).toBe(true);
+         parent.scrollTop = 10;
+         expect(util.isScrollAtBottom(parent)).toBe(true);
+       } finally {
+         document.body.removeChild(parent);
+       }
+     });
+
   it('areTopsMisaligned returns false when array is empty', () => {
     expect(util.areTopsMisaligned([])).toBe(false);
   });

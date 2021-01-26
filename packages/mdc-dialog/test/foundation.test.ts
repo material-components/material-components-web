@@ -66,11 +66,19 @@ describe('MDCDialogFoundation', () => {
       'notifyOpened',
       'notifyClosing',
       'notifyClosed',
+      'registerContentEventHandler',
+      'deregisterContentEventHandler',
+      'isScrollableContentAtTop',
+      'isScrollableContentAtBottom',
     ]);
   });
 
-  function setupTest() {
+  function setupTest(dialogOptions: {isFullscreen?: boolean} = {}) {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCDialogFoundation);
+    if (dialogOptions.isFullscreen) {
+      mockAdapter.hasClass.withArgs(cssClasses.FULLSCREEN)
+          .and.returnValue(true);
+    }
     foundation.init();
     return {foundation, mockAdapter};
   }
@@ -115,6 +123,17 @@ describe('MDCDialogFoundation', () => {
 
        expect(mockAdapter.areButtonsStacked).not.toHaveBeenCalled();
        expect(mockAdapter.isContentScrollable).not.toHaveBeenCalled();
+     });
+
+  it('#destroy deregisters event handlers on dialog content if they exist',
+     () => {
+       const {foundation, mockAdapter} = setupTest({isFullscreen: true});
+       mockAdapter.isContentScrollable.and.returnValue(true);
+
+       foundation.open();
+       foundation.destroy();
+       expect(mockAdapter.deregisterContentEventHandler)
+           .toHaveBeenCalledWith('scroll', jasmine.any(Function));
      });
 
   it('#open adds CSS classes after rAF', () => {
@@ -298,6 +317,40 @@ describe('MDCDialogFoundation', () => {
     expect(foundation.layout).toHaveBeenCalled();
   });
 
+  it('#open registers scroll event handler if dialog is full-screen and scrollable',
+     () => {
+       const {foundation, mockAdapter} = setupTest({isFullscreen: true});
+       mockAdapter.isContentScrollable.and.returnValue(true);
+
+       foundation.open();
+
+       expect(mockAdapter.registerContentEventHandler)
+           .toHaveBeenCalledWith('scroll', jasmine.any(Function));
+     });
+
+  it('#open doesn\'t registers scroll event handler if dialog is not full-screen',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.isContentScrollable.and.returnValue(true);
+
+       foundation.open();
+
+       expect(mockAdapter.registerContentEventHandler)
+           .not.toHaveBeenCalledWith('scroll', jasmine.any(Function));
+     });
+
+  it('#close deregisters scroll event handler if dialog is full-screen and scrollable',
+     () => {
+       const {foundation, mockAdapter} = setupTest({isFullscreen: true});
+       mockAdapter.isContentScrollable.and.returnValue(true);
+
+       foundation.open();
+       foundation.close();
+
+       expect(mockAdapter.deregisterContentEventHandler)
+           .toHaveBeenCalledWith('scroll', jasmine.any(Function));
+     });
+
   it(`#layout removes ${
          cssClasses.STACKED} class, detects stacked buttons, and adds class`,
      () => {
@@ -347,6 +400,32 @@ describe('MDCDialogFoundation', () => {
     jasmine.clock().tick(1);
     expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.SCROLLABLE);
   });
+
+  it('#layout adds header scroll divider if dialog is fullscreen and content is scrolled',
+     () => {
+       const {foundation, mockAdapter} = setupTest({isFullscreen: true});
+       mockAdapter.isContentScrollable.and.returnValue(true);
+       mockAdapter.isScrollableContentAtTop.and.returnValue(false);
+
+       foundation.layout();
+       jasmine.clock().tick(1);
+
+       expect(mockAdapter.addClass)
+           .toHaveBeenCalledWith(cssClasses.SCROLL_DIVIDER_HEADER);
+     });
+
+  it('#layout adds footer scroll divider if dialog is fullscreen and content is scrollable',
+     () => {
+       const {foundation, mockAdapter} = setupTest({isFullscreen: true});
+       mockAdapter.isContentScrollable.and.returnValue(true);
+       mockAdapter.isScrollableContentAtBottom.and.returnValue(false);
+
+       foundation.layout();
+       jasmine.clock().tick(1);
+
+       expect(mockAdapter.addClass)
+           .toHaveBeenCalledWith(cssClasses.SCROLL_DIVIDER_FOOTER);
+     });
 
   it(`#handleClick: Click closes dialog when ${
          strings.ACTION_ATTRIBUTE} attribute is present`,
@@ -530,4 +609,72 @@ describe('MDCDialogFoundation', () => {
     foundation.setScrimClickAction(action);
     expect(foundation.getScrimClickAction()).toBe(action);
   });
+
+  it('shows header scroll divider on scrollable full-screen dialogs', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.FULLSCREEN).and.returnValue(true);
+    mockAdapter.isContentScrollable.and.returnValue(true);
+    mockAdapter.registerContentEventHandler.and.callThrough();
+    mockAdapter.isScrollableContentAtTop.and.returnValue(false);
+
+    foundation.open();
+    foundation['handleScrollEvent']();
+    jasmine.clock().tick(1);
+
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.SCROLL_DIVIDER_HEADER);
+  });
+
+  it('removes header scroll divider on scrollable full-screen dialogs when content is at top',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.hasClass.withArgs(cssClasses.FULLSCREEN)
+           .and.returnValue(true);
+       mockAdapter.isContentScrollable.and.returnValue(true);
+       mockAdapter.registerContentEventHandler.and.callThrough();
+       mockAdapter.isScrollableContentAtTop.and.returnValue(true);
+       mockAdapter.hasClass.withArgs(cssClasses.SCROLL_DIVIDER_HEADER)
+           .and.returnValue(true);
+
+       foundation.open();
+       foundation['handleScrollEvent']();
+       jasmine.clock().tick(1);
+
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(cssClasses.SCROLL_DIVIDER_HEADER);
+     });
+
+  it('shows footer scroll divider on scrollable full-screen dialogs', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.FULLSCREEN).and.returnValue(true);
+    mockAdapter.isContentScrollable.and.returnValue(true);
+    mockAdapter.registerContentEventHandler.and.callThrough();
+    mockAdapter.isScrollableContentAtBottom.and.returnValue(false);
+
+    foundation.open();
+    foundation['handleScrollEvent']();
+    jasmine.clock().tick(1);
+
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.SCROLL_DIVIDER_FOOTER);
+  });
+
+  it('removes footer scroll divider on scrollable full-screen dialogs when content is at bottom',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.hasClass.withArgs(cssClasses.FULLSCREEN)
+           .and.returnValue(true);
+       mockAdapter.isContentScrollable.and.returnValue(true);
+       mockAdapter.registerContentEventHandler.and.callThrough();
+       mockAdapter.isScrollableContentAtBottom.and.returnValue(true);
+       mockAdapter.hasClass.withArgs(cssClasses.SCROLL_DIVIDER_FOOTER)
+           .and.returnValue(true);
+
+       foundation.open();
+       foundation['handleScrollEvent']();
+       jasmine.clock().tick(1);
+
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(cssClasses.SCROLL_DIVIDER_FOOTER);
+     });
 });

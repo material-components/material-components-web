@@ -197,6 +197,18 @@
     .mdc-dialog__close {
       @include iconbutton-mixins.size($size: 24px, $query: $query);
     }
+
+    &.mdc-dialog--scrollable .mdc-dialog__actions {
+      // If full-screen dialog is scrollable, the scroll divider over the action
+      // buttons (i.e. the "footer") should only be visible when the content is
+      // "cut off" by the footer. To toggle this divider, we override the
+      // styling set by the mdc-dialog--scrollable class, and instead rely on
+      // the mdc-dialog-scroll-divider-footer class to determine when the
+      // border-top should be visible.
+      @include feature-targeting.targets($feat-structure) {
+        border-top: 1px solid transparent;
+      }
+    }
   }
 
   .mdc-dialog__content {
@@ -454,10 +466,17 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   &.mdc-dialog--scrollable .mdc-dialog__title,
-  &.mdc-dialog--scrollable .mdc-dialog__actions {
+  &.mdc-dialog--scrollable .mdc-dialog__actions,
+  &.mdc-dialog--scrollable.mdc-dialog-scroll-divider-footer
+    .mdc-dialog__actions {
     @include feature-targeting.targets($feat-color) {
       border-color: rgba(theme-color.prop-value($color), $opacity);
     }
+  }
+
+  &.mdc-dialog-scroll-divider-header.mdc-dialog--fullscreen
+    .mdc-dialog__header {
+    @include elevation-mixins.elevation(2, $query: $query);
   }
 }
 
