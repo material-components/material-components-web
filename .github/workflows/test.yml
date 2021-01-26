@@ -15,7 +15,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci --ignore-scripts
+      - run: npm run bootstrap
       - run: npm run lint
   conventional-commit-check:
     if: github.event_name == 'pull_request'
@@ -31,7 +38,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci --ignore-scripts
+      - run: npm run bootstrap
       - run: |
           npm run dist
           node scripts/cp-pkgs.js
@@ -44,7 +58,14 @@ jobs:
         with:
           # Node v8 is required.
           node-version: 8
-      - run: npm install
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node8-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node8-
+      - run: npm ci --ignore-scripts
+      - run: npm run bootstrap
       - run: npm run test:site
   unit-test:
     runs-on: ubuntu-latest
@@ -53,7 +74,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci --ignore-scripts
+      - run: npm run bootstrap
       - name: Run unit tests
         run: |
           # Unit tests does not run on forked repositories because GitHub
@@ -77,7 +105,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci --ignore-scripts
+      - run: npm run bootstrap
       - name: Run dependency tests
         run: |
           npm run test:dependency
@@ -88,7 +123,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci --ignore-scripts
+      - run: npm run bootstrap
       - name: Run Sass tests
         run: |
           npm run test:sass

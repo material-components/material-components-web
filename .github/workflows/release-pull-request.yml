@@ -8,11 +8,11 @@ on:
     branches:
       - master
     paths:
-      - 'packages/**/*.ts'
-      - 'packages/**/*.scss'
-      - '**/package*.json'
-      - '**/.npmignore'
-      - '**/*.md'
+      - "packages/**/*.ts"
+      - "packages/**/*.scss"
+      - "**/package*.json"
+      - "**/.npmignore"
+      - "**/*.md"
 
 jobs:
   release-pull-request:
@@ -31,9 +31,17 @@ jobs:
         with:
           node-version: 10
           registry-url: https://registry.npmjs.org/
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install dependencies
         run: |
-          npm install
+          npm ci --ignore-scripts
+          npm run bootstrap
       - name: Bump version
         run: |
           npx lerna version --conventional-commits --no-git-tag-version --no-push --yes
