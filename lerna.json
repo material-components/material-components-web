@@ -9,6 +9,12 @@
         "*.md",
         "*.test-increment3"
       ]
+    },
+    "bootstrap": {
+      "hoist": true,
+      "npmClientArgs": [
+        "--no-package-lock"
+      ]
     }
   },
   "packages": [
