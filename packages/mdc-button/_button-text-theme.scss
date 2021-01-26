@@ -26,13 +26,13 @@
 $light-theme: (
   container-color: transparent,
   container-disabled-color: transparent,
-  label-color: primary,
-  label-disabled-color: button-shared-theme.$disabled-ink-color,
+  density: button-shared-theme.$density-scale,
   icon-color: null,
   icon-disabled-color: null,
+  label-color: primary,
+  label-disabled-color: button-shared-theme.$disabled-ink-color,
   ripple-color: primary,
   ripple-opacity: null,
-  density: button-shared-theme.$density-scale,
   shape: button-shared-theme.$shape-radius,
 );
 
