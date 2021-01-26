@@ -168,28 +168,9 @@
   }
 }
 
-// Applies the correct theme color style to the specified property.
-// $property is typically color or background-color, but can be any CSS property that accepts color values.
-// $style should be one of the map keys in $mdc-theme-property-values (_variables.scss), or a color value.
 // @deprecated use the `property()` mixin instead
 @mixin prop($property, $style, $important: false) {
-  @if custom-properties.is-custom-prop($style) {
-    @include custom-properties.apply($property, $style, $important: $important);
-  } @else if theme-color.is-valid-theme-prop-value_($style) {
-    @include css.declaration($property, $style, $important: $important);
-  } @else {
-    @if not map.has-key(theme-color.$property-values, $style) {
-      @error "Invalid style: '#{$style}'. Choose one of: #{map.keys(theme-color.$property-values)}";
-    }
-    $value: map.get(theme-color.$property-values, $style);
-
-    @include css.declaration(
-      $property,
-      $value: var(--mdc-theme-#{$style}, $value),
-      $fallback-value: $value,
-      $important: $important
-    );
-  }
+  @include property($property, $style, $important: $important);
 }
 
 /// Validates keys in provided theme configuration by comparing with original
