@@ -29,6 +29,7 @@
 @use './button-base';
 @use './button-protected-theme';
 @use './button-shared-theme';
+@use '@material/ripple/ripple-theme';
 
 @mixin styles($query: feature-targeting.all()) {
   @include button-base.static-styles($query: $query);
@@ -64,12 +65,16 @@
 
   @include elevation-mixins.elevation(2, $query: $query);
 
-  &:hover,
-  &:focus {
+  &:hover {
     @include elevation-mixins.elevation(4, $query: $query);
   }
 
-  &:active {
+  @include ripple-theme.focus() {
+    @include elevation-mixins.elevation(4, $query: $query);
+  }
+
+  &:active,
+  &:focus:active {
     @include elevation-mixins.elevation(8, $query: $query);
   }
 

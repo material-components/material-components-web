@@ -34,6 +34,7 @@
 @use '@material/typography/typography';
 @use './data-table-theme';
 @use './data-table-cell';
+@use '@material/ripple/ripple-theme';
 
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
