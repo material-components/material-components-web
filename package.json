@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "bootstrap": "lerna bootstrap",
+    "link": "lerna link",
     "build": "npm run clean && mkdirp build && webpack --mode=development --progress --colors --display=minimal",
     "build:esmodules": "tsc --project ./tsconfig.json --module esnext --outDir ./packages --importHelpers",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --mode=production --progress --colors --display=minimal",

@@ -8,7 +8,7 @@ on:
     types: [opened, synchronize, reopened, edited]
 
 jobs:
-  lint:
+  install:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,8 +21,31 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            packages/*/node_modules
+            !packages/*/node_modules/@material
+          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
       - run: npm ci --ignore-scripts
       - run: npm run bootstrap
+  lint:
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            packages/*/node_modules
+            !packages/*/node_modules/@material
+          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run link
       - run: npm run lint
   conventional-commit-check:
     if: github.event_name == 'pull_request'
@@ -33,6 +56,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build-test:
     runs-on: ubuntu-latest
+    needs: install
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -40,18 +64,19 @@ jobs:
           node-version: 10
       - uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci --ignore-scripts
-      - run: npm run bootstrap
+          path: |
+            node_modules
+            packages/*/node_modules
+            !packages/*/node_modules/@material
+          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run link
       - run: |
           npm run dist
           node scripts/cp-pkgs.js
           node scripts/verify-pkg-main.js
   site-generator-test:
     runs-on: ubuntu-latest
+    needs: install
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -60,15 +85,16 @@ jobs:
           node-version: 8
       - uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node8-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node8-
-      - run: npm ci --ignore-scripts
-      - run: npm run bootstrap
+          path: |
+            node_modules
+            packages/*/node_modules
+            !packages/*/node_modules/@material
+          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run link
       - run: npm run test:site
   unit-test:
     runs-on: ubuntu-latest
+    needs: install
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -76,12 +102,12 @@ jobs:
           node-version: 10
       - uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci --ignore-scripts
-      - run: npm run bootstrap
+          path: |
+            node_modules
+            packages/*/node_modules
+            !packages/*/node_modules/@material
+          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run link
       - name: Run unit tests
         run: |
           # Unit tests does not run on forked repositories because GitHub
@@ -100,6 +126,7 @@ jobs:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
   dependency-test:
     runs-on: ubuntu-latest
+    needs: install
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -107,17 +134,18 @@ jobs:
           node-version: 10
       - uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci --ignore-scripts
-      - run: npm run bootstrap
+          path: |
+            node_modules
+            packages/*/node_modules
+            !packages/*/node_modules/@material
+          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run link
       - name: Run dependency tests
         run: |
           npm run test:dependency
   sass-test:
     runs-on: ubuntu-latest
+    needs: install
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -125,12 +153,12 @@ jobs:
           node-version: 10
       - uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci --ignore-scripts
-      - run: npm run bootstrap
+          path: |
+            node_modules
+            packages/*/node_modules
+            !packages/*/node_modules/@material
+          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run link
       - name: Run Sass tests
         run: |
           npm run test:sass
