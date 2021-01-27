@@ -27,6 +27,7 @@
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use './button-base';
+@use './button-protected-theme';
 @use './button-shared-theme';
 
 @mixin styles($query: feature-targeting.all()) {
@@ -42,22 +43,8 @@
       button-shared-theme.$contained-horizontal-padding,
       $query
     );
-    // TODO(b/175614964): Replace with map that nulls out default ripple values
-    // when theme mixin is implemented.
-    @include button-shared-theme.container-fill-color(primary, $query);
-    @include button-shared-theme.ink-color(on-primary, $query);
-    @include button-shared-theme.disabled-container-fill-color(
-      button-shared-theme.$disabled-container-color,
-      $query
-    );
-    @include button-shared-theme.disabled-ink-color(
-      button-shared-theme.$disabled-ink-color,
-      $query
-    );
-    @include button-shared-theme.ripple-states(
-      $color: on-primary,
-      $query: $query
-    );
+    $theme: button-protected-theme.$light-theme;
+    @include button-protected-theme.theme($theme, $query: $query);
   }
 }
 
