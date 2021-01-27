@@ -23,6 +23,7 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use 'sass:map';
 @use 'sass:math';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
@@ -33,6 +34,36 @@
 
 $outlined-border-width: 1px !default;
 $outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
+
+$light-theme: (
+  container-color: transparent,
+  container-disabled-color: transparent,
+  density: button-shared-theme.$density-scale,
+  icon-color: null,
+  icon-disabled-color: null,
+  label-color: primary,
+  label-disabled-color: button-shared-theme.$disabled-ink-color,
+  outline-width: $outlined-border-width,
+  outline-color: $outline-color,
+  outline-disabled-color: button-shared-theme.$disabled-container-color,
+  ripple-color: primary,
+  ripple-opacity: null,
+  shape: button-shared-theme.$shape-radius,
+);
+
+/// Sets theme based on provided theme configuration.
+/// Only emits theme related styles.
+/// @param {Map} $theme - Theme configuration to use.
+@mixin theme($theme, $query: feature-targeting.all()) {
+  @include theme.validate-keys($light-theme, $theme);
+  @include button-shared-theme.theme($theme, $query: $query);
+  @include outline-color(map.get($theme, outline-color), $query: $query);
+  @include disabled-outline-color(
+    map.get($theme, outline-disabled-color),
+    $query: $query
+  );
+  @include outline-width(map.get($theme, outline-width), $query: $query);
+}
 
 ///
 /// Sets the outline color to the given color for an enabled button.
@@ -59,28 +90,30 @@ $outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
   $padding: button-shared-theme.$contained-horizontal-padding,
   $query: feature-targeting.all()
 ) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-  // Note: Adjust padding to maintain consistent width with non-outlined buttons
-  $padding-value: math.max($padding - $outline-width, 0);
+  @if $outline-width != null {
+    $feat-structure: feature-targeting.create-target($query, structure);
+    // Note: Adjust padding to maintain consistent width with non-outlined buttons
+    $padding-value: math.max($padding - $outline-width, 0);
 
-  @include button-shared-theme.horizontal-padding($padding-value, $query);
+    @include button-shared-theme.horizontal-padding($padding-value, $query);
 
-  @include feature-targeting.targets($feat-structure) {
-    border-width: $outline-width;
-  }
-
-  #{button-ripple.$ripple-target} {
     @include feature-targeting.targets($feat-structure) {
-      top: -$outline-width;
-      left: -$outline-width;
-      border: $outline-width solid transparent;
+      border-width: $outline-width;
     }
-  }
 
-  .mdc-button__touch {
-    @include feature-targeting.targets($feat-structure) {
-      left: -$outline-width;
-      width: calc(100% + 2 * #{$outline-width});
+    #{button-ripple.$ripple-target} {
+      @include feature-targeting.targets($feat-structure) {
+        top: -$outline-width;
+        left: -$outline-width;
+        border: $outline-width solid transparent;
+      }
+    }
+
+    .mdc-button__touch {
+      @include feature-targeting.targets($feat-structure) {
+        left: -$outline-width;
+        width: calc(100% + 2 * #{$outline-width});
+      }
     }
   }
 }

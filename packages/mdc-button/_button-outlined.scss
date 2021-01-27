@@ -23,6 +23,7 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use 'sass:map';
 @use '@material/feature-targeting/feature-targeting';
 @use './button-base';
 @use './button-outlined-theme';
@@ -47,23 +48,21 @@
 }
 
 @mixin deprecated-theme-styles-without-ripple($query: feature-targeting.all()) {
-  // TODO(b/175614964): Replace stub when theme mixin is implemented.
-  @include theme-styles($query: $query);
+  .mdc-button--outlined {
+    $theme: map.merge(
+      button-outlined-theme.$light-theme,
+      (
+        ripple-color: null,
+      )
+    );
+    @include button-outlined-theme.theme($theme, $query: $query);
+  }
 }
 
 @mixin _theme-styles($query: feature-targeting.all()) {
-  // TODO(b/175614964): Call theme mixin
-  @include button-outlined-theme.outline-width(
-    button-outlined-theme.$outlined-border-width,
+  @include button-outlined-theme.theme(
+    button-outlined-theme.$light-theme,
     $query: $query
-  );
-  @include button-outlined-theme.outline-color(
-    button-outlined-theme.$outline-color,
-    $query
-  );
-  @include button-outlined-theme.disabled-outline-color(
-    button-shared-theme.$disabled-container-color,
-    $query
   );
 }
 
