@@ -23,10 +23,12 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use 'sass:map';
 @use '@material/elevation/functions' as elevation-functions;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use './button-base';
+@use './button-filled-theme';
 @use './button-shared-theme';
 
 @mixin styles($query: feature-targeting.all()) {
@@ -46,12 +48,14 @@
 }
 
 @mixin filled($query) {
-  @include _filled-without-ripple($query: $query);
-
-  @include button-shared-theme.ripple-states(
-    $color: on-primary,
+  // TODO: move into theme config.
+  @include button-shared-theme.horizontal-padding(
+    button-shared-theme.$contained-horizontal-padding,
     $query: $query
   );
+
+  $theme: button-filled-theme.$light-theme;
+  @include button-filled-theme.theme($theme, $query: $query);
 }
 
 /// @deprecated Private style mixin for partners; not available for public use.
@@ -62,26 +66,18 @@
 @mixin deprecated-theme-styles-without-ripple($query: feature-targeting.all()) {
   .mdc-button--raised,
   .mdc-button--unelevated {
-    @include _filled-without-ripple($query: $query);
-  }
-}
+    // TODO: move into theme config.
+    @include button-shared-theme.horizontal-padding(
+      button-shared-theme.$contained-horizontal-padding,
+      $query: $query
+    );
 
-@mixin _filled-without-ripple($query: feature-targeting.all()) {
-  // TODO: move into theme config.
-  @include button-shared-theme.horizontal-padding(
-    button-shared-theme.$contained-horizontal-padding,
-    $query
-  );
-  // TODO(b/175614964): Replace with map that nulls out default ripple values
-  // when theme mixin is implemented.
-  @include button-shared-theme.container-fill-color(primary, $query);
-  @include button-shared-theme.ink-color(on-primary, $query);
-  @include button-shared-theme.disabled-container-fill-color(
-    button-shared-theme.$disabled-container-color,
-    $query
-  );
-  @include button-shared-theme.disabled-ink-color(
-    button-shared-theme.$disabled-ink-color,
-    $query
-  );
+    $theme: map.merge(
+      button-filled-theme.$light-theme,
+      (
+        ripple-color: null,
+      )
+    );
+    @include button-filled-theme.theme($theme, $query: $query);
+  }
 }
