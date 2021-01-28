@@ -87,4 +87,11 @@ describe('theme.test.scss', () => {
        const css = fs.readFileSync(filePath, 'utf8').trim();
        expect(css).toContain('Unsupported keys found: foobar.');
      });
+
+  it('validate-keys Should throw error when custom properties are provided', () => {
+    const filePath = path.join(__dirname, 'theme-validate-keys.test.css');
+    const css = fs.readFileSync(filePath, 'utf8').trim();
+    expect(css).toContain(
+        'Custom properties are not supported for theme map keys: one, two, three');
+  });
 });

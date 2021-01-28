@@ -43,3 +43,19 @@ $origin-theme: (
     $test-only: true
   );
 }
+
+// Should throw error when custom properties are provided
+.no-custom-props {
+  @include theme.validate-keys(
+    $origin-theme,
+    (
+      one: var(--one),
+      two: var(--two, 4px),
+      three: (
+        varname: --three,
+        fallback: teal,
+      ),
+    ),
+    $test-only: true
+  );
+}

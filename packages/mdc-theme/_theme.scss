@@ -177,9 +177,9 @@
 /// theme configuration.
 /// Use this in component's `theme()` mixin implementation to validate if
 /// provided theme configuration has supported theme configuration keys.
-/// @param {Map} $origin-theme Original theme configuration in Sass map format
+/// @param {Map} $origin-theme - Original theme configuration in Sass map format
 ///     that has all supported keys.
-/// @param {Map} $custom-theme Provided theme configuration in Sass map format
+/// @param {Map} $custom-theme - Provided theme configuration in Sass map format
 ///     that should be validated against `$origin-theme`.
 /// @examples
 ///     @mixin theme($theme) {
@@ -189,17 +189,41 @@
 ///     }
 @mixin validate-keys($origin-theme, $custom-theme, $test-only: false) {
   $origin-keys: map.keys($origin-theme);
-  $custom-keys: map.keys($custom-theme);
   $unsupported-keys: ();
+  $unsupported-custom-prop-keys: ();
 
-  @each $key in $custom-keys {
+  @each $key, $value in $custom-theme {
     @if (not list.index($origin-keys, $key)) {
-      $unsupported-keys: list.append($unsupported-keys, $key);
+      $unsupported-keys: list.append(
+        $unsupported-keys,
+        $key,
+        $separator: comma
+      );
+    }
+
+    $is-prop: custom-properties.is-custom-prop($value) or
+      custom-properties.is-custom-prop-string($value);
+    @if $is-prop {
+      $unsupported-custom-prop-keys: list.append(
+        $unsupported-custom-prop-keys,
+        $key,
+        $separator: comma
+      );
     }
   }
 
   @if list.length($unsupported-keys) > 0 {
     $error-message: 'Unsupported keys found: #{$unsupported-keys}. Expected one of: #{$origin-keys}.';
+
+    @if $test-only {
+      content: $error-message;
+    } @else {
+      @error $error-message;
+    }
+  }
+
+  @if list.length($unsupported-custom-prop-keys) > 0 {
+    $error-message: 'Custom properties are not supported for theme map keys: #{$unsupported-custom-prop-keys}';
 
     @if $test-only {
       content: $error-message;

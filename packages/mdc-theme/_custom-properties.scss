@@ -21,6 +21,7 @@
 //
 @use 'sass:map';
 @use 'sass:meta';
+@use 'sass:string';
 @use './css';
 @use './gss';
 
@@ -30,6 +31,11 @@
 /// @return true if the value is a custom property Map, or false if not.
 @function is-custom-prop($value) {
   @return meta.type-of($value) == 'map' and map.has-key($value, 'varname');
+}
+
+@function is-custom-prop-string($value) {
+  @return meta.type-of($value) == 'string' and string.slice($value, 1, 4) ==
+    'var(';
 }
 
 /// Returns true if $prop1's varname and fallback values are deeply equal to
