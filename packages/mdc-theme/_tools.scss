@@ -20,15 +20,15 @@
 // THE SOFTWARE.
 //
 
-/// Returns either the first provided value if it is truthy, or the second
-/// value if not.
+/// Returns either the first provided value if it is not null, or the second
+/// value if the first is null.
 ///
 /// @example scss
 ///   $value: either(map.get($theme, key), 1rem);
 ///
-/// @param {*} $first - The first value to use if the first value is truthy.
-/// @param {*} $second - The second value to use if the first value is falsy.
+/// @param {*} $first - The first value to use, if it is not null.
+/// @param {*} $second - The second value to use if the first value is null.
 /// @return Either the first or the second value.
 @function either($first, $second) {
-  @return if($first, $first, $second);
+  @return if($first != null, $first, $second);
 }
