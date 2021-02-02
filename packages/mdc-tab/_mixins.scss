@@ -112,9 +112,7 @@
 @mixin ripple($query: feature-targeting.all()) {
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
-  .mdc-tab__ripple {
-    @include ripple_($query);
-  }
+  @include ripple_($query);
 }
 
 @mixin horizontal-padding($padding, $query: feature-targeting.all()) {
@@ -149,9 +147,11 @@
 }
 
 @mixin states-color($color, $query: feature-targeting.all()) {
-  .mdc-tab__ripple {
-    @include ripple-theme.states($color, $query: $query);
-  }
+  @include ripple-theme.states(
+    $color,
+    $query: $query,
+    $ripple-target: variables.$ripple-target
+  );
 }
 
 @mixin ink-color($color, $query: feature-targeting.all()) {
@@ -276,17 +276,34 @@
 @mixin ripple_($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include ripple.surface($query);
-  @include ripple.radius-bounded($query: $query);
-  @include ripple-theme.states($color: primary, $query: $query);
+  .mdc-tab {
+    @include ripple.surface(
+      $query,
+      $ripple-target: variables.$ripple-target,
+      $include-will-change: false
+    );
+    @include ripple.radius-bounded(
+      $query: $query,
+      $ripple-target: variables.$ripple-target
+    );
+    @include ripple-theme.states(
+      $color: primary,
+      $query: $query,
+      $ripple-target: variables.$ripple-target
+    );
+  }
 
-  @include feature-targeting.targets($feat-structure) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  #{variables.$ripple-target} {
+    @include feature-targeting.targets($feat-structure) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      // TODO(b/151931961): Remove the following line once resolved
+      will-change: transform, opacity;
+    }
   }
 }
 
