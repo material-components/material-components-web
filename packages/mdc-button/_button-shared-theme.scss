@@ -30,6 +30,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
 @use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/typography/typography';
@@ -60,23 +61,26 @@ $disabled-container-color: rgba(
 
 @mixin theme($theme, $query: feature-targeting.all()) {
   @include container-fill-color(
-    map.get($theme, container-color),
-    $query: $query
-  );
-  @include disabled-container-fill-color(
-    map.get($theme, container-disabled-color),
-    $query: $query
-  );
-
-  @include ink-color(map.get($theme, label-color), $query: $query);
-  @include disabled-ink-color(
-    map.get($theme, label-disabled-color),
+    (
+      default: map.get($theme, container-color),
+      disabled: map.get($theme, container-disabled-color),
+    ),
     $query: $query
   );
 
-  @include icon-color(map.get($theme, icon-color), $query: $query);
-  @include disabled-icon-color(
-    map.get($theme, icon-disabled-color),
+  @include ink-color(
+    (
+      default: map.get($theme, label-color),
+      disabled: map.get($theme, label-disabled-color),
+    ),
+    $query: $query
+  );
+
+  @include icon-color(
+    (
+      default: map.get($theme, icon-color),
+      disabled: map.get($theme, icon-disabled-color),
+    ),
     $query: $query
   );
 
@@ -139,55 +143,153 @@ $disabled-container-color: rgba(
 
 ///
 /// Sets the container fill color to the given color for an enabled button.
-/// @param {Color} $color - The desired container fill color.
+/// @param {Color|map} $color-or-map - The desired container fill color,
+///     specified either as a flat value or a map of colors with states
+///     {default, hover, focused, pressed, disabled} as keys.
 ///
-@mixin container-fill-color($color, $query: feature-targeting.all()) {
+@mixin container-fill-color($color-or-map, $query: feature-targeting.all()) {
   // :not(:disabled) is used to support link styled as button
   // as link does not support :enabled style
   &:not(:disabled) {
-    @include _container-fill-color($color, $query: $query);
+    @include _container-fill-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    &:hover {
+      @include _container-fill-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    &:focus {
+      @include _container-fill-color(
+        state.get-focus-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    &:active {
+      @include _container-fill-color(
+        state.get-pressed-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+
+  &:disabled {
+    @include _container-fill-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
   }
 }
 
 ///
 /// Sets the container fill color to the given color for a disabled button.
 /// @param {Color} $color - The desired container fill color.
+/// @deprecated - call `icon-color` instead with `disabled` as a map key.
 ///
 @mixin disabled-container-fill-color($color, $query: feature-targeting.all()) {
-  &:disabled {
-    @include _container-fill-color($color, $query: $query);
-  }
+  @include container-fill-color(
+    (
+      disabled: $color,
+    ),
+    $query: $query
+  );
 }
 
 ///
 /// Sets the icon color to the given color for an enabled button.
-/// @param {Color} $color - The desired icon color.
+/// @param {Color} $color-or-map - The desired icon color, specified either
+///     as a flat value or a map of colors with states
+///     {default, hover, focused, pressed, disabled} as keys.
 ///
-@mixin icon-color($color, $query: feature-targeting.all()) {
+@mixin icon-color($color-or-map, $query: feature-targeting.all()) {
   &:not(:disabled) {
-    @include _icon-color($color, $query: $query);
+    @include _icon-color(
+      state.get-default-state($color-or-map),
+      $query: $query
+    );
+
+    &:hover {
+      @include _icon-color(
+        state.get-hover-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    &:focus {
+      @include _icon-color(
+        state.get-focus-state($color-or-map),
+        $query: $query
+      );
+    }
+
+    &:active {
+      @include _icon-color(
+        state.get-pressed-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+
+  &:disabled {
+    @include _icon-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
   }
 }
 
 ///
 /// Sets the icon color to the given color for a disabled button.
 /// @param {Color} $color - The desired icon color.
+/// @deprecated - call `icon-color` instead with `disabled` as a map key.
 ///
 @mixin disabled-icon-color($color, $query: feature-targeting.all()) {
-  &:disabled {
-    @include _icon-color($color, $query: $query);
-  }
+  @include icon-color(
+    (
+      disabled: $color,
+    ),
+    $query: $query
+  );
 }
 
 ///
 /// Sets the ink color to the given color for an enabled button,
 /// and sets the icon color to the given color unless `mdc-button-icon-color`
 /// is also used.
-/// @param {Color} $color - The desired ink color.
+/// @param {Color} $color-or-map - The desired ink color, specified either
+///     as a flat value or a map of colors with states
+///     {default, hover, focused, pressed, disabled} as keys.
 ///
-@mixin ink-color($color, $query: feature-targeting.all()) {
+@mixin ink-color($color-or-map, $query: feature-targeting.all()) {
   &:not(:disabled) {
-    @include _ink-color($color, $query: $query);
+    @include _ink-color(state.get-default-state($color-or-map), $query: $query);
+
+    &:hover {
+      @include _ink-color(state.get-hover-state($color-or-map), $query: $query);
+    }
+
+    &:focus {
+      @include _ink-color(state.get-focus-state($color-or-map), $query: $query);
+    }
+
+    &:active {
+      @include _ink-color(
+        state.get-pressed-state($color-or-map),
+        $query: $query
+      );
+    }
+  }
+
+  &:disabled {
+    @include _ink-color(
+      state.get-disabled-state($color-or-map),
+      $query: $query
+    );
   }
 }
 
@@ -196,11 +298,15 @@ $disabled-container-color: rgba(
 /// and sets the icon color to the given color unless `mdc-button-icon-color`
 /// is also used.
 /// @param {Color} $color - The desired ink color.
+/// @deprecated - call `ink-color` instead with `disabled` as a map key.
 ///
 @mixin disabled-ink-color($color, $query: feature-targeting.all()) {
-  &:disabled {
-    @include _ink-color($color, $query: $query);
-  }
+  @include ink-color(
+    (
+      disabled: $color,
+    ),
+    $query: $query
+  );
 }
 
 ///

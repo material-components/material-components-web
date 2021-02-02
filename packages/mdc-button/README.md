@@ -329,16 +329,12 @@ These mixins will override the color of the container, ink, outline or ripple. I
 
 Mixin | Description
 --- | ---
-`container-fill-color($color)` | Sets the container fill color to the given color for an enabled button.
-`disabled-container-fill-color($color)` | Sets the container fill color to the given color for a disabled button.
-`icon-color($color)` | Sets the icon color to the given color for an enabled button.
-`disabled-icon-color($color)` | Sets the icon color to the given color for a disabled button.
-`ink-color($color)` | Sets the ink color to the given color for an enabled button, and sets the icon color to the given color unless `icon-color` is also used.
-`disabled-ink-color($color)` | Sets the ink color to the given color for a disabled button, and sets the icon color to the given color unless `icon-color` is also used.
+`container-fill-color($color-or-map)` | If a color is passed, sets the default container fill color to the given color. If a map is passed whose keys are in the set {default, hover, focus, pressed, disabled}, sets the color in each specified state to its corresponding value.
+`icon-color($color-or-map)` | If a color is passed, sets the default icon color to the given color. If a map is passed whose keys are in the set {default, hover, focus, pressed, disabled}, sets the color in each specified state to its corresponding value.
+`ink-color($color-or-map)` | If a color is passed, sets the default ink color to the given color, and sets the icon color to the given color unless `icon-color` is also used. If a map is passed whose keys are in the set {default, hover, focus, pressed, disabled}, sets the color in each specified state to its corresponding value.
 `density($density-scale)` | Sets density scale for button. Supported density scale values (`-3`, `-2`, `-1`, `0`).
 `height($height)` | Sets custom height for button.
 `shape-radius($radius, $density-scale, $rtl-reflexive)` | Sets rounded shape to button with given radius size. `$density-scale` is only required when `$radius` value is in percentage unit, defaults to `$density-default-scale`. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `horizontal-padding($padding)` | Sets horizontal padding to the given number.
-`outline-color($color)` | Sets the outline color to the given color for an enabled button.
-`disabled-outline-color($color)` | Sets the outline color to the given color for a disabled button.
+`outline-color($color-or-map)` | If a color is passed, sets the default outline color to the given color. If a map is passed whose keys are in the set {default, hover, focus, pressed, disabled}, sets the color in each specified state to its corresponding value.
 `outline-width($width, $padding)` | Sets the outline width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `$horizontal-padding` is also included with a custom value.
