@@ -32,6 +32,8 @@
 @use '@material/theme/theme';
 @use './variables';
 
+$ripple-target: '.mdc-icon-button__ripple';
+
 @mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query);
   @include ripple($query);
@@ -80,9 +82,22 @@
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-icon-button {
-    @include ripple.surface($query: $query);
-    @include ripple.radius-unbounded($query: $query);
-    @include ripple-theme.states($query: $query);
+    @include ripple.surface($query: $query, $ripple-target: $ripple-target);
+    @include ripple.radius-unbounded(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+    @include ripple-theme.states(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+
+    .mdc-icon-button__ripple {
+      $feat-structure: feature-targeting.create-target($query, structure);
+      @include feature-targeting.targets($feat-structure) {
+        z-index: 1;
+      }
+    }
   }
 }
 
@@ -160,7 +175,11 @@
 ///
 @mixin ink-color($color, $query: feature-targeting.all()) {
   @include ink-color_($color, $query: $query);
-  @include ripple-theme.states($color, $query: $query);
+  @include ripple-theme.states(
+    $color,
+    $query: $query,
+    $ripple-target: $ripple-target
+  );
 }
 
 ///

@@ -58,7 +58,10 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ## Icon button
 
 ```html
-<button class="mdc-icon-button material-icons">favorite</button>
+<button class="mdc-icon-button material-icons">
+  <div class="mdc-icon-button__ripple"></div>
+  favorite
+</button>
 ```
 
 **Note**: The MDC Icon Button can be used with both `<button>` and `<a>` tags.
@@ -78,6 +81,7 @@ If the button should be initialized in the "on" state, then add the `mdc-icon-bu
    class="mdc-icon-button"
    aria-label="Add to favorites"
    aria-pressed="false">
+   <div class="mdc-icon-button__ripple"></div>
    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
    <i class="material-icons mdc-icon-button__icon">favorite_border</i>
 </button>
@@ -99,6 +103,7 @@ The icon button toggle can be used with SVGs.
    class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
    aria-pressed="true">
+   <div class="mdc-icon-button__ripple"></div>
    <svg class="mdc-icon-button__icon">
      ...
    </svg>
@@ -117,6 +122,7 @@ The icon button toggle can be used with `img` tags.
    class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
    aria-pressed="true">
+   <div class="mdc-icon-button__ripple"></div>
    <img src="" class="mdc-icon-button__icon"/>
    <img src="" class="mdc-icon-button__icon mdc-icon-button__icon--on"/>
 </button>
@@ -135,6 +141,7 @@ and `aria-data-label-off` (aria label in off state) attributes, and omit the
    aria-label="Add to favorites"
    data-aria-label-on="Remove from favorites"
    data-aria-label-off="Add to favorites">
+   <div class="mdc-icon-button__ripple"></div>
    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
    <i class="material-icons mdc-icon-button__icon">favorite_border</i>
 </button>
@@ -147,6 +154,7 @@ and `aria-data-label-off` (aria label in off state) attributes, and omit the
 CSS Class | Description
 --- | ---
 `mdc-icon-button` | Mandatory.
+`mdc-icon-button__ripple` | Mandatory. Indicates the element which shows the ripple styling.
 `mdc-icon-button--on` | This class is applied to the root element and is used to indicate if the icon button toggle is in the "on" state.
 `mdc-icon-button__icon` | This class is applied to each icon element for the icon button toggle.
 `mdc-icon-button__icon--on` | This class is applied to a icon element and is used to indicate the toggle button icon that is represents the "on" icon.
