@@ -140,9 +140,10 @@ $_title-type-scale: subtitle2;
       max-height: $_max-height;
       box-sizing: border-box;
       overflow: hidden;
-      transform: scale(0.8);
       text-align: center;
+      transform: scale(0.8);
       opacity: 0;
+      will-change: transform, opacity;
       outline: 1px solid transparent;
     }
 
