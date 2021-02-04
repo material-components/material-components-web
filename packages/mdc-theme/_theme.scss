@@ -48,13 +48,13 @@
     @if $style != 'background' and $style != 'surface' {
       .mdc-theme--#{$style} {
         @include feature-targeting.targets($feat-color) {
-          @include prop(color, $style, true);
+          @include property(color, $style, $important: true);
         }
       }
     } @else {
       .mdc-theme--#{$style} {
         @include feature-targeting.targets($feat-color) {
-          @include prop(background-color, $style);
+          @include property(background-color, $style);
         }
       }
     }
@@ -64,7 +64,7 @@
   @each $style in ('primary', 'secondary') {
     .mdc-theme--#{$style}-bg {
       @include feature-targeting.targets($feat-color) {
-        @include prop(background-color, $style, true);
+        @include property(background-color, $style, $important: true);
       }
     }
   }
@@ -113,7 +113,7 @@
 ) {
   @if custom-properties.is-custom-prop($value) {
     // $value is a custom property Map
-    @include custom-properties.apply(
+    @include custom-properties.declaration(
       $property,
       $value,
       $gss: $gss,
@@ -122,7 +122,7 @@
   } @else if map.has-key(theme-color.$property-values, $value) {
     // $value is a theme property String
     $custom-prop: theme-color.get-custom-property($value);
-    @include custom-properties.apply(
+    @include custom-properties.declaration(
       $property,
       $custom-prop,
       $gss: $gss,
@@ -131,7 +131,7 @@
   } @else {
     // $value is a standard CSS value
     $fallback: null;
-    @if $replace {
+    @if $replace and $value {
       @if meta.type-of($replace) != 'map' {
         @error 'mdc-theme: Invalid replacement #{$replace}. Must be a Map.';
       }

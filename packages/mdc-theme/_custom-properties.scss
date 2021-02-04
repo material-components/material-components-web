@@ -125,23 +125,58 @@
   }
 }
 
-/// Applies a custom property value to the specified property.
+/// Emits a CSS declaration for a custom property. A custom property may either
+/// be provided as the value to a CSS property string to be emitted as a var()
+/// function, or as a standalone value to be emitted as a custom property
+/// declaration.
 ///
-/// @param {String} $property - the name of the CSS property.
-/// @param {Map} $custom-prop - a custom property Map for the property's value.
-/// @param {Map} $gss - optional Map of GSS annotations to set.
-/// @param {Bool} $important - set to true to add an `!important` rule. Defaults
-///     to false.
-@mixin apply($property, $custom-prop, $gss: (), $important: false) {
-  @if not is-custom-prop($custom-prop) {
-    @error "mdc-theme: Invalid custom property: #{$custom-prop}. Must be a Map with 'varname' and 'fallback'.";
-  }
+/// @example - scss
+///   @include declaration(color, create(--foo, teal));
+///   // color: var(--foo, teal);
+///   @include declaration(create(--foo, teal));
+///   // --foo: teal;
+///
+/// Standalone custom properties must have a fallback value to emit as a CSS
+/// declaration.
+///
+/// @see {mixin} css.declaration
+///
+/// @param {String} $property - The CSS property of the declaration or the
+///     custom property Map to emit.
+/// @param {Map} $custom-prop - A custom property Map for the property's value.
+///     Optional if $property is the custom property Map to emit.
+/// @param {Map} $gss - An optional Map of GSS annotations to add.
+/// @param {Bool} $important - If true, add `!important` to the declaration.
+@mixin declaration($property, $custom-prop: null, $gss: (), $important: false) {
+  @if $property {
+    $value: null;
+    $fallback-value: null;
+    @if is-custom-prop($property) {
+      $custom-prop: $property;
+      $property: get-varname($custom-prop);
+      $value: get-fallback($custom-prop, $shallow: true);
+      @if not $value {
+        @error 'Custom property #{$property} does not have a fallback value to emit for a CSS declaration.';
+      }
 
-  @include css.declaration(
-    $property,
-    $value: create-var($custom-prop),
-    $fallback-value: get-fallback($custom-prop),
-    $gss: $gss,
-    $important: $important
-  );
+      @if is-custom-prop($value) {
+        $value: create-var($value);
+      }
+    } @else {
+      @if not is-custom-prop($custom-prop) {
+        @error "Invalid custom property: #{$custom-prop}. Must be a Map with 'varname' and 'fallback'.";
+      }
+
+      $value: create-var($custom-prop);
+      $fallback-value: get-fallback($custom-prop);
+    }
+
+    @include css.declaration(
+      $property,
+      $value,
+      $fallback-value: $fallback-value,
+      $gss: $gss,
+      $important: $important
+    );
+  }
 }
