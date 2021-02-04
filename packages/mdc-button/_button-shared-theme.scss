@@ -63,6 +63,9 @@ $disabled-container-color: rgba(
   @include container-fill-color(
     (
       default: map.get($theme, container-color),
+      hover: map.get($theme, container-hover-color),
+      focus: map.get($theme, container-focus-color),
+      pressed: map.get($theme, container-pressed-color),
       disabled: map.get($theme, container-disabled-color),
     ),
     $query: $query
@@ -71,6 +74,9 @@ $disabled-container-color: rgba(
   @include ink-color(
     (
       default: map.get($theme, label-color),
+      hover: map.get($theme, label-hover-color),
+      focus: map.get($theme, label-focus-color),
+      pressed: map.get($theme, label-pressed-color),
       disabled: map.get($theme, label-disabled-color),
     ),
     $query: $query
@@ -79,6 +85,9 @@ $disabled-container-color: rgba(
   @include icon-color(
     (
       default: map.get($theme, icon-color),
+      hover: map.get($theme, icon-hover-color),
+      focus: map.get($theme, icon-focus-color),
+      pressed: map.get($theme, icon-pressed-color),
       disabled: map.get($theme, icon-disabled-color),
     ),
     $query: $query

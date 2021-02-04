@@ -38,14 +38,26 @@ $outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 
 $light-theme: (
   container-color: transparent,
+  container-hover-color: null,
+  container-focus-color: null,
+  container-pressed-color: null,
   container-disabled-color: transparent,
   density: button-shared-theme.$density-scale,
   icon-color: null,
+  icon-hover-color: null,
+  icon-focus-color: null,
+  icon-pressed-color: null,
   icon-disabled-color: null,
   label-color: primary,
+  label-hover-color: null,
+  label-focus-color: null,
+  label-pressed-color: null,
   label-disabled-color: button-shared-theme.$disabled-ink-color,
   outline-width: $outlined-border-width,
   outline-color: $outline-color,
+  outline-hover-color: null,
+  outline-focus-color: null,
+  outline-pressed-color: null,
   outline-disabled-color: button-shared-theme.$disabled-container-color,
   ripple-color: primary,
   ripple-opacity: null,
@@ -61,6 +73,9 @@ $light-theme: (
   @include outline-color(
     (
       default: map.get($theme, outline-color),
+      hover: map.get($theme, outline-hover-color),
+      focus: map.get($theme, outline-focus-color),
+      pressed: map.get($theme, outline-pressed-color),
       disabled: map.get($theme, outline-disabled-color),
     ),
     $query: $query
