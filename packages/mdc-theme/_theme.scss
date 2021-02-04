@@ -136,23 +136,49 @@
         @error 'mdc-theme: Invalid replacement #{$replace}. Must be a Map.';
       }
 
+      $replace-map-fallback: ();
+      $replace-map-value: ();
       $needs-fallback: false;
-      @each $name, $value in $replace {
-        @if custom-properties.is-custom-prop($value) {
-          $needs-fallback: true;
+      @each $name, $replacement in $replace {
+        @if custom-properties.is-custom-prop($replacement) {
+          $replace-value: custom-properties.get-declaration-value($replacement);
+          $replace-fallback: custom-properties.get-declaration-fallback(
+            $replacement
+          );
+          @if $replace-fallback {
+            $needs-fallback: true;
+          }
+
+          $replace-map-value: map.set(
+            $replace-map-value,
+            $name,
+            $replace-value
+          );
+          $replace-map-fallback: map.set(
+            $replace-map-fallback,
+            $name,
+            $replace-fallback
+          );
+        } @else {
+          $replace-map-value: map.set($replace-map-value, $name, $replacement);
+          $replace-map-fallback: map.set(
+            $replace-map-fallback,
+            $name,
+            $replacement
+          );
         }
       }
 
       @if meta.type-of($value) == 'string' {
         @if $needs-fallback {
-          $fallback: replace.replace-string($value, $replace, $fallback: true);
+          $fallback: replace.replace-string($value, $replace-map-fallback);
         }
-        $value: replace.replace-string($value, $replace);
+        $value: replace.replace-string($value, $replace-map-value);
       } @else if meta.type-of($value) == 'list' {
         @if $needs-fallback {
-          $fallback: replace.replace-list($value, $replace, $fallback: true);
+          $fallback: replace.replace-list($value, $replace-map-fallback);
         }
-        $value: replace.replace-list($value, $replace);
+        $value: replace.replace-list($value, $replace-map-value);
       } @else {
         @error 'mdc-theme: Invalid replacement value #{$value}. $replace may only be used with string or list values.';
       }

@@ -125,6 +125,27 @@
   }
 }
 
+/// Retrieves the CSS declaration value for a custom property Map. This is
+/// typically a `var()` function.
+///
+/// @param {Map} $custom-prop - The custom property Map to retrieve a
+///     declaration value for.
+/// @return {String} The CSS declaration value.
+@function get-declaration-value($custom-prop) {
+  @return create-var($custom-prop);
+}
+
+/// Retrieves the CSS fallback declaration value for a custom property Map.
+/// This is typically a static CSS value if a custom property has a fallback, or
+/// null if it does not.
+///
+/// @param {Map} $custom-prop - The custom property Map to retrieve a fallback
+///     declaration value for.
+/// @return {String | null} The CSS fallback declaration value.
+@function get-declaration-fallback($custom-prop) {
+  @return get-fallback($custom-prop);
+}
+
 /// Emits a CSS declaration for a custom property. A custom property may either
 /// be provided as the value to a CSS property string to be emitted as a var()
 /// function, or as a standalone value to be emitted as a custom property
@@ -167,8 +188,8 @@
         @error "Invalid custom property: #{$custom-prop}. Must be a Map with 'varname' and 'fallback'.";
       }
 
-      $value: create-var($custom-prop);
-      $fallback-value: get-fallback($custom-prop);
+      $value: get-declaration-value($custom-prop);
+      $fallback-value: get-declaration-fallback($custom-prop);
     }
 
     @include css.declaration(

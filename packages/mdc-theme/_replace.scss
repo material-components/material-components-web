@@ -23,7 +23,6 @@
 @use 'sass:list';
 @use 'sass:meta';
 @use 'sass:string';
-@use './custom-properties';
 
 /// Replaces all name instances in the provided string with values from the
 /// provided replacement Map whose keys correspond to the name instances.
@@ -32,31 +31,24 @@
 /// @example
 ///   replace-string('calc(x + y)', (x: 16px, y: 50%)); // 'calc(16px + 50%)'
 ///
-/// If a replacement value is a custom property, it will be replaced in the
-/// returned string with the `var()` declaration. If `$fallback` is set to true,
-/// it will be replaced in the returned string with the fallback value.
-///
 /// @example
-///   $foo: custom-properties.create(--foo, 8px);
+///   $foo: custom-properties.create-var(custom-properties.create(--foo, 8px));
 ///   replace-string('calc(foo)', (foo: $foo)); // 'calc(var(--foo, 8px))';
-///   replace-string('calc(foo)', (foo: $foo), $fallback: true); // 'calc(8px)';
 ///
 /// @access private
 /// @param {String} $string - The string to make replacements on.
 /// @param {Map} $replace-map - A Map of name/value replacements. The keys of
 ///     the Map are names that will be replaced in the string with the keys'
 ///     respective values.
-/// @param {Bool} $fallback - If true, use the fallback value of any custom
-///     property value replacements instead of the `var()` declaration.
 /// @return {String} The string with replacements made, if any.
-@function replace-string($string, $replace-map, $fallback: false) {
+@function replace-string($string, $replace-map) {
   @if meta.type-of($replace-map) != 'map' {
     @error 'mdc-theme: Invalid replacement #{$replace-map}. Must be a Map.';
   }
 
   @each $name, $replacement in $replace-map {
     // Since the replacement values may contain the name themselves (such as
-    // a custom property: name "foo" and value "--foo"), gather the indices
+    // a custom property: name "foo" and value "var(--foo)"), gather the indices
     // first before replacing.
     $indices: ();
     $substring: $string;
@@ -82,14 +74,6 @@
     // last index first. Replacing values last index to first index removes the
     // need for us to adjust the indices as we replace them.
     @each $index in $indices {
-      @if custom-properties.is-custom-prop($replacement) {
-        @if $fallback {
-          $replacement: custom-properties.get-fallback($replacement);
-        } @else {
-          $replacement: custom-properties.create-var($replacement);
-        }
-      }
-
       $before: string.slice($string, 1, $index - 1);
       $after: string.slice($string, $index + string.length($name));
       $string: $before + $replacement + $after;
@@ -113,23 +97,22 @@
 /// @param {Map} $replace-map - A Map of name/value replacements. The keys of
 ///     the Map are names that will be replaced in the list with the keys'
 ///     respective values.
-/// @param {Bool} $fallback - If true, use the fallback value of any custom
 ///     property value replacements instead of the `var()` declaration.
 /// @return {List} A new list with replacements made, if any.
-@function replace-list($list, $replace-map, $fallback: false) {
+@function replace-list($list, $replace-map) {
   $separator: list.separator($list);
   $replaced-list: ();
   @each $value in $list {
     @if meta.type-of($value) == 'string' {
       $replaced-list: list.append(
         $replaced-list,
-        replace-string($value, $replace-map, $fallback),
+        replace-string($value, $replace-map),
         $separator
       );
     } @else if meta.type-of($value) == 'list' {
       $replaced-list: list.append(
         $replaced-list,
-        replace-list($value, $replace-map, $fallback),
+        replace-list($value, $replace-map),
         $separator
       );
     } @else {
