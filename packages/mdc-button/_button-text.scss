@@ -33,10 +33,13 @@
   @include theme-styles($theme, $query: $query);
 }
 
-@mixin theme-styles($theme, $query: feature-targeting.all()) {
+@mixin theme-styles(
+  $theme: button-text-theme.$light-theme,
+  $query: feature-targeting.all()
+) {
   .mdc-button {
     @include button-text-theme.theme($theme, $query: $query);
-    // TODO(b/177914123): move this into theme config
+    // TODO(b/179402677): move this into theme config
     @include button-shared-theme.horizontal-padding(
       button-shared-theme.$horizontal-padding,
       $query: $query
@@ -59,7 +62,7 @@
 
   .mdc-button {
     @include button-text-theme.theme($theme, $query: $query);
-    // TODO(b/177914123): move this into theme config
+    // TODO(b/179402677): move this into theme config
     @include button-shared-theme.horizontal-padding(
       button-shared-theme.$horizontal-padding,
       $query: $query

@@ -30,20 +30,25 @@
 @use './button-protected-theme';
 @use './button-shared-theme';
 
-@mixin styles($query: feature-targeting.all()) {
+@mixin styles(
+  $theme: button-protected-theme.$light-theme,
+  $query: feature-targeting.all()
+) {
   @include button-base.static-styles($query: $query);
   @include static-styles($query: $query);
-  @include theme-styles($query: $query);
+  @include theme-styles($theme, $query: $query);
 }
 
-@mixin theme-styles($query: feature-targeting.all()) {
+@mixin theme-styles(
+  $theme: button-protected-theme.$light-theme,
+  $query: feature-targeting.all()
+) {
   .mdc-button--raised {
-    // TODO: move into theme config.
+    // TODO(b/179402677): move into theme config.
     @include button-shared-theme.horizontal-padding(
       button-shared-theme.$contained-horizontal-padding,
       $query
     );
-    $theme: button-protected-theme.$light-theme;
     @include button-protected-theme.theme($theme, $query: $query);
   }
 }
