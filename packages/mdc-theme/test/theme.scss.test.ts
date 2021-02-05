@@ -63,6 +63,9 @@ describe('theme.test.scss', () => {
   width: calc(16px + 8px);
   /* @alternate */
   width: calc(var(--m-foo, 16px) + var(--m-bar, 8px));
+  height: calc(16px + 8px + 16px + 8px);
+  /* @alternate */
+  height: calc(var(--m-foo, 16px) + var(--m-bar, 8px) + var(--m-foo, 16px) + var(--m-bar, 8px));
 }
 
 .multiple {

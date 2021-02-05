@@ -13,6 +13,12 @@
     calc(first + second),
     $replace: (first: $first, second: $second)
   );
+
+  @include theme.property(
+    height,
+    calc(first + second + first + second),
+    $replace: (first: $first, second: $second)
+  );
 }
 
 .multiple {

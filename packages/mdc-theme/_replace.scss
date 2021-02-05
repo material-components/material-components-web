@@ -59,8 +59,9 @@
 
       @if $prev-index {
         // Add previous index's value to switch from "substring index" to
-        // absolute string index.
-        $index: $index + $prev-index;
+        // absolute string index. Also add length - 1 since slice removes
+        // the entire word as well as lists being 1 indexed
+        $index: $index + $prev-index + string.length($name) - 1;
       }
 
       // Use list.join() to "prepend" the index to the start of the list. This
