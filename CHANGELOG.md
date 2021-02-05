@@ -12,7 +12,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **dialog:** add property to customize suppressDefaultPressSelector ([772cc10](https://github.com/material-components/material-components-web/commit/772cc10686cc8994033a556ab70f4be106e902ee))
 * **linear-progress:** fix RTL rendering ([c7c5da2](https://github.com/material-components/material-components-web/commit/c7c5da28f2cd2c1b54dd201d3797e112288fa86c))
 * **list:** add support for density scaling. ([419e035](https://github.com/material-components/material-components-web/commit/419e035729c1ca1ee2b572ae4b1937e2d8cf04bc))
-* Document stylelint exceptions ([f89d8b8](https://github.com/material-components/material-components-web/commit/f89d8b8f295c80c7b7e691ec712a30de8a0b26d5))
 * **list:** add support for non-interactive list roles. ([fc8b045](https://github.com/material-components/material-components-web/commit/fc8b045f1127709c5929a3cd1c9c7d622db8ed42))
 * **list:** ensure divider appears in IE high contrast mode. ([eff7b46](https://github.com/material-components/material-components-web/commit/eff7b46ac916d2eb130f7d826eee047c5f19e6f2))
 * **menu:** Remove anchorSize height from calculations when anchored to bottom ([1631198](https://github.com/material-components/material-components-web/commit/16311983787cf46ccd22eaa4d6a076254cb32eea))
@@ -34,7 +33,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **tooltip:** Change foundation to check for "dialog" on the anchor element's aria-haspopup attribute instead of checking for "true". ([b8a1a58](https://github.com/material-components/material-components-web/commit/b8a1a58e4ebb49a73725d2e7ae8aef09c07db09d))
 * **tooltip:** Clear hideTimeout in handleAnchorMouseEnter so that the tooltip will not be hidden if the user rapidly moves the mouse in and out of the anchor element. ([365c693](https://github.com/material-components/material-components-web/commit/365c69360230540a67dd141f6bec999b2541a7e8))
 * **tooltip:** Fix rich tooltip tests to not use aria-describedby to associate rich tooltips with their anchor elements. This is because interactive rich tooltips should not be used with aria-describedby per a11y guidance. ([251ac04](https://github.com/material-components/material-components-web/commit/251ac04c0a976d48a6be33cc7fcd76f6e2700aac))
-* Adding tests. ([240c5f7](https://github.com/material-components/material-components-web/commit/240c5f74f381967ede9eb1fa13754d2f0282da9e))
 * adjust meta baseline and update color mixins. ([07f3e01](https://github.com/material-components/material-components-web/commit/07f3e01b75306a7481c7077cd3ed12a87399958e))
 
 
@@ -92,29 +90,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### BREAKING CHANGES
 
 * **theme:** custom-properties.apply() has been renamed to declaration() to better align with css.declaration()
-
-PiperOrigin-RevId: 355659381
 * **tooltip:**   Added adapter methods:
   - getComputedStyleProperty(propertyName: string): string;
   - getParentBoundingRect(): ClientRect|null;
-
-PiperOrigin-RevId: 352659136
 * **tooltip:**   Added adapter method:
   - tooltipContainsElement(element: HTMLElement): boolean;
 Rich tooltips are currently in development and is not yet ready for use.
-
-PiperOrigin-RevId: 346325244
 * Removed `deep-get()` API from mdc-theme, use `sass:map`'s get() API instead.
-
-PiperOrigin-RevId: 345257138
 * **tooltip:**   Added adapter method:
   - anchorContainsElement(element: HTMLElement): boolean;
 Rich tooltips are currently in development and is not yet ready for use.
-
-PiperOrigin-RevId: 345221617
 * **slider:** Slider is now backed by an input of type="range". Additionally, adapter methods (focusInput, isInputFocused, registerInputEventHandler, deregisterInputEventHandler) were added.
-
-PiperOrigin-RevId: 344116908
 * **tooltip:**   Added adapter methods:
   - setAnchorAttribute(attr: string, value: string): void;
   - registerEventHandler<K extends EventType>(
@@ -122,19 +108,8 @@ PiperOrigin-RevId: 344116908
   - deregisterEventHandler<K extends EventType>(
         evtType: K, handler: SpecificEventListener<K>): void;
 Rich tooltips are currently in development and is not yet ready for use.
-
-PiperOrigin-RevId: 343894231
 * **slider:** Adds slider adapter methods (get/setInputValue, get/setInputAttribute, removeInputAttribute). Slider DOM structure now contains a hidden input.
-
-PiperOrigin-RevId: 343157208
-
-
-
-# 8.0.0 (2020-11-02)
-
-
-
-
+  
 
 # [9.0.0](https://github.com/material-components/material-components-web/compare/v8.0.0...v9.0.0) (2020-12-29)
 
