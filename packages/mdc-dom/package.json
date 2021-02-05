@@ -1,7 +1,7 @@
 {
   "name": "@material/dom",
   "description": "DOM manipulation utilities for Material Components for the web",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "license": "MIT",
   "main": "dist/mdc.dom.js",
   "module": "index.js",
@@ -16,7 +16,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@material/feature-targeting": "^9.0.0",
+    "@material/feature-targeting": "^10.0.0",
     "tslib": "^1.9.3"
   }
 }

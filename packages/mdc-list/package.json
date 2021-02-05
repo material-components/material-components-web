@@ -1,7 +1,7 @@
 {
   "name": "@material/list",
   "description": "The Material Components for the web list component",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "license": "MIT",
   "main": "dist/mdc.list.js",
   "module": "index.js",
@@ -18,15 +18,15 @@
     "directory": "packages/mdc-list"
   },
   "dependencies": {
-    "@material/base": "^9.0.0",
-    "@material/density": "^9.0.0",
-    "@material/dom": "^9.0.0",
-    "@material/feature-targeting": "^9.0.0",
-    "@material/ripple": "^9.0.0",
-    "@material/rtl": "^9.0.0",
-    "@material/shape": "^9.0.0",
-    "@material/theme": "^9.0.0",
-    "@material/typography": "^9.0.0",
+    "@material/base": "^10.0.0",
+    "@material/density": "^10.0.0",
+    "@material/dom": "^10.0.0",
+    "@material/feature-targeting": "^10.0.0",
+    "@material/ripple": "^10.0.0",
+    "@material/rtl": "^10.0.0",
+    "@material/shape": "^10.0.0",
+    "@material/theme": "^10.0.0",
+    "@material/typography": "^10.0.0",
     "tslib": "^1.9.3"
   }
 }

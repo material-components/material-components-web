@@ -1,7 +1,7 @@
 {
   "name": "@material/tab-scroller",
   "description": "The Material Components for the web tab scroller component",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -19,11 +19,11 @@
     "directory": "packages/mdc-tab-scroller"
   },
   "dependencies": {
-    "@material/animation": "^9.0.0",
-    "@material/base": "^9.0.0",
-    "@material/dom": "^9.0.0",
-    "@material/feature-targeting": "^9.0.0",
-    "@material/tab": "^9.0.0",
+    "@material/animation": "^10.0.0",
+    "@material/base": "^10.0.0",
+    "@material/dom": "^10.0.0",
+    "@material/feature-targeting": "^10.0.0",
+    "@material/tab": "^10.0.0",
     "tslib": "^1.9.3"
   },
   "publishConfig": {
