@@ -80,7 +80,7 @@
 ///
 /// @example
 ///   @include theme.property(color, teal);
-///   @include theme.property(color, custom-properties.create(--mdc-foo, blue));
+///   @include theme.property(color, custom-properties.create(foo, blue));
 ///   @include theme.property(color, primary);
 ///
 /// A `$replace` Map parameter may be provided to replace key/value pairs for
@@ -91,7 +91,7 @@
 ///   @include theme.property(
 ///     width,
 ///     calc(foo + bar),
-///     $replace: (foo: custom-properties.create(--mdc-foo), bar: 8px)
+///     $replace: (foo: custom-properties.create(foo), bar: 8px)
 ///   );
 ///
 /// Note: Material theme key Strings (e.g. `primary`) are not supported as

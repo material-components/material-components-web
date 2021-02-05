@@ -33,6 +33,14 @@
   @return meta.type-of($value) == 'map' and map.has-key($value, 'varname');
 }
 
+/// Indicates whether or not a value is a custom property var() string.
+///
+/// @example - scss
+///   $is-prop-string: is-custom-prop-string('var(--foo)'); // true
+///
+/// @param {*} $value - The value to test.
+/// @return {Bool} True if the value is a custom property var() string, or
+///     false if not.
 @function is-custom-prop-string($value) {
   @return meta.type-of($value) == 'string' and string.slice($value, 1, 4) ==
     'var(';
@@ -55,7 +63,25 @@
 ///     property Map). May be null.
 /// @return a custom property Map.
 @function create($varname, $fallback: null) {
+  @if string.slice($varname, 1, 2) != '--' {
+    $varname: create-varname($varname);
+  }
+
   @return (varname: $varname, fallback: $fallback);
+}
+
+/// Global prefix for all custom properties.
+$_varname-prefix: 'mdc';
+
+/// Create a custom property variable name with the global prefix.
+///
+/// @example - scss
+///   $varname: create-varname(foo); // --mdc-foo
+///
+/// @param {String} $name - The name of the custom property.
+/// @return {String} The full CSS custom property variable name.
+@function create-varname($name) {
+  @return --#{$_varname-prefix}-#{$name};
 }
 
 /// Returns the custom property variable name of a custom property Map.
