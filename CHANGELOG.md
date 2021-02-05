@@ -95,11 +95,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
   - getParentBoundingRect(): ClientRect|null;
 * **tooltip:**   Added adapter method:
   - tooltipContainsElement(element: HTMLElement): boolean;
-Rich tooltips are currently in development and is not yet ready for use.
 * Removed `deep-get()` API from mdc-theme, use `sass:map`'s get() API instead.
 * **tooltip:**   Added adapter method:
   - anchorContainsElement(element: HTMLElement): boolean;
-Rich tooltips are currently in development and is not yet ready for use.
 * **slider:** Slider is now backed by an input of type="range". Additionally, adapter methods (focusInput, isInputFocused, registerInputEventHandler, deregisterInputEventHandler) were added.
 * **tooltip:**   Added adapter methods:
   - setAnchorAttribute(attr: string, value: string): void;
@@ -107,7 +105,6 @@ Rich tooltips are currently in development and is not yet ready for use.
         evtType: K, handler: SpecificEventListener<K>): void;
   - deregisterEventHandler<K extends EventType>(
         evtType: K, handler: SpecificEventListener<K>): void;
-Rich tooltips are currently in development and is not yet ready for use.
 * **slider:** Adds slider adapter methods (get/setInputValue, get/setInputAttribute, removeInputAttribute). Slider DOM structure now contains a hidden input.
   
 
