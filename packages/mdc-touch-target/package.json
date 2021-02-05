@@ -1,7 +1,7 @@
 {
   "name": "@material/touch-target",
   "description": "Touch target mixins and variables for Material Components for the web",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -16,8 +16,8 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@material/base": "^9.0.0",
-    "@material/feature-targeting": "^9.0.0"
+    "@material/base": "^10.0.0",
+    "@material/feature-targeting": "^10.0.0"
   },
   "publishConfig": {
     "access": "public"
