@@ -147,6 +147,7 @@ $_title-type-scale: subtitle2;
     }
 
     .mdc-tooltip--rich & {
+      @include elevation-mixins.overlay-dimensions(100%, $query: $query);
       @include elevation-mixins.elevation(2, $query: $query);
       @include feature-targeting.targets($feat-structure) {
         align-items: flex-start;
@@ -155,6 +156,7 @@ $_title-type-scale: subtitle2;
         min-height: $_min-height;
         min-width: $_min-width;
         max-width: $_rich_max-width;
+        position: relative;
       }
     }
 
