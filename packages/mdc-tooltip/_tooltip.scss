@@ -46,7 +46,7 @@ $_rich_corner_radius: 8px;
 $_rich_max-width: 320px;
 $_rich_padding: 8px;
 $_content-margin-x: 8px;
-$_content-type-scale: body1;
+$_content-type-scale: body2;
 $_title-type-scale: subtitle2;
 
 @mixin core-styles($query: feature-targeting.all()) {
