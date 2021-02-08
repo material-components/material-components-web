@@ -165,9 +165,13 @@ $_track-inactive-height: 4px;
       width: 100%;
       position: relative;
       /* @noflip */
+      -webkit-transform-origin: left;
+      /* @noflip */
       transform-origin: left;
 
       @include rtl-mixins.rtl {
+        /* @noflip */
+        -webkit-transform-origin: right;
         /* @noflip */
         transform-origin: right;
       }

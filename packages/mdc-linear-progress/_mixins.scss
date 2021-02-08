@@ -282,6 +282,8 @@
       /* @noflip */
       right: 0;
       /* @noflip */
+      -webkit-transform-origin: center right;
+      /* @noflip */
       transform-origin: center right;
     }
   }

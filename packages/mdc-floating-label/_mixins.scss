@@ -48,6 +48,8 @@
       /* @noflip */
       left: 0;
       /* @noflip */
+      -webkit-transform-origin: left top;
+      /* @noflip */
       transform-origin: left top;
       line-height: 1.15rem;
       text-align: left;
@@ -66,6 +68,8 @@
         right: 0;
         /* @noflip */
         left: auto;
+        /* @noflip */
+        -webkit-transform-origin: right top;
         /* @noflip */
         transform-origin: right top;
         /* @noflip */
