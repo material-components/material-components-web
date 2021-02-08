@@ -148,6 +148,19 @@ $z-index: 2;
   }
 }
 
+// Sets the fill/surface color of the rich tooltip.
+// @param {Color | String} $color
+@mixin rich-fill-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  &.mdc-tooltip--rich {
+    .mdc-tooltip__surface {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(background-color, $color);
+      }
+    }
+  }
+}
+
 // Sets the z-index of the tooltip.
 // @param {Number} $z-index
 @mixin z-index($z-index, $query: feature-targeting.all()) {

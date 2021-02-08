@@ -90,6 +90,10 @@ $_title-type-scale: subtitle2;
       position: fixed;
       display: none;
     }
+    @include tooltip-theme.rich-fill-color(
+      tooltip-theme.$rich-background-color,
+      $query: $query
+    );
   }
 
   .mdc-tooltip-wrapper--rich {
@@ -106,11 +110,6 @@ $_title-type-scale: subtitle2;
     }
 
     &.mdc-tooltip--rich {
-      @include elevation-mixins.elevation(2, $query: $query);
-      @include tooltip-theme.fill-color(
-        tooltip-theme.$rich-background-color,
-        $query: $query
-      );
       @include feature-targeting.targets($feat-structure) {
         display: inline-block;
         border-radius: $_rich_corner_radius;
@@ -148,6 +147,7 @@ $_title-type-scale: subtitle2;
     }
 
     .mdc-tooltip--rich & {
+      @include elevation-mixins.elevation(2, $query: $query);
       @include feature-targeting.targets($feat-structure) {
         align-items: flex-start;
         display: flex;

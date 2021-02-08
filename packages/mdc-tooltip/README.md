@@ -297,6 +297,7 @@ Access to theme mixins require importing the tooltip's theme style module.
 Mixin | Description
 --- | ---
 `fill-color($color)` | Sets the fill color of the tooltip.
+`rich-fill-color($color)` | Sets the fill color of the rich tooltip.
 `label-ink-color($color)` | Sets the color of the tooltip's label text.
 `rich-text-ink-color($title-color, $content-color, $content-link-color)` | Sets the color of the text for the content inside a rich tooltip.
 `shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to tooltip surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
