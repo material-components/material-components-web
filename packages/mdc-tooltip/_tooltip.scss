@@ -116,6 +116,7 @@ $_title-type-scale: subtitle2;
         // Moves the rich tooltip out of the viewport/parent element initially
         // so that the initial width is not affected and a 'correct' width can
         // be used to calculate the position of the tooltip.
+        /* @noflip */
         left: -$_rich_max_width;
         padding: $_rich_padding $_rich_padding;
         position: absolute;
