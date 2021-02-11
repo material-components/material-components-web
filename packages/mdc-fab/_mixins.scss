@@ -30,11 +30,13 @@
 @use '@material/shape/functions' as shape-functions;
 @use '@material/theme/css';
 @use '@material/theme/custom-properties';
+@use '@material/theme/replace';
 @use '@material/theme/state';
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/typography/typography';
+@use './fab-custom-properties';
 @use './variables';
 @use 'sass:math';
 @use 'sass:list';
@@ -204,23 +206,215 @@ $ripple-target: '.mdc-fab__ripple';
   $feat-structure: feature-targeting.create-target($query, structure);
 
   $padding: css.unpack-value($padding);
+  $padding-fallbacks: (0 0 0 0);
+  $is-padding-custom-prop: (false false false false);
+  $is-width-custom-prop: custom-properties.is-custom-prop($width);
+  $width-fallback: if(
+    custom-properties.is-custom-prop($width),
+    custom-properties.get-fallback($width),
+    $width
+  );
+  $width: if(
+    custom-properties.is-custom-prop($width),
+    custom-properties.get-declaration-value($width),
+    $width
+  );
+
+  // conform padding values and extract custom property metadata from them
+  @for $i from 1 through list.length($padding) {
+    $value: list.nth($padding, $i);
+    $value-is-custom-prop: custom-properties.is-custom-prop($value);
+    // css max will fail to compare a bare 0 to a px value
+    $value: if($value == 0, 0px, $value);
+    $value-fallback: if(
+      $value-is-custom-prop,
+      custom-properties.get-fallback($value),
+      $value
+    );
+    $value: if(
+      $value-is-custom-prop,
+      custom-properties.get-declaration-value($value),
+      $value
+    );
+
+    $padding: list.set-nth($padding, $i, $value);
+    $padding-fallbacks: list.set-nth($padding-fallbacks, $i, $value-fallback);
+    $is-padding-custom-prop: list.set-nth(
+      $is-padding-custom-prop,
+      $i,
+      $value-is-custom-prop
+    );
+  }
 
   // Padding should include outline width which will be set on focus.
-  padding: math.max(list.nth($padding, 1), $width)
-    math.max(list.nth($padding, 2), $width)
-    math.max(list.nth($padding, 3), $width)
-    math.max(list.nth($padding, 4), $width);
+  // sass math required for IE since IE doesn't support css max
+  $padding-top-fallback: math.max(
+    list.nth($padding-fallbacks, 1),
+    $width-fallback
+  );
+  $padding-right-fallback: math.max(
+    list.nth($padding-fallbacks, 2),
+    $width-fallback
+  );
+  $padding-bottom-fallback: math.max(
+    list.nth($padding-fallbacks, 3),
+    $width-fallback
+  );
+  $padding-left-fallback: math.max(
+    list.nth($padding-fallbacks, 4),
+    $width-fallback
+  );
+
+  $padding-top: replace.replace-string(
+    'max(paddingval, width)',
+    (
+      paddingval: list.nth($padding, 1),
+      width: $width,
+    )
+  );
+  $padding-right: replace.replace-string(
+    'max(paddingval, width)',
+    (
+      paddingval: list.nth($padding, 2),
+      width: $width,
+    )
+  );
+  $padding-bottom: replace.replace-string(
+    'max(paddingval, width)',
+    (
+      paddingval: list.nth($padding, 3),
+      width: $width,
+    )
+  );
+  $padding-left: replace.replace-string(
+    'max(paddingval, width)',
+    (
+      paddingval: list.nth($padding, 4),
+      width: $width,
+    )
+  );
+
+  @include css.declaration(
+    padding-top,
+    $padding-top-fallback,
+    $gss: (alternate: true)
+  );
+  @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 1) {
+    @include css.declaration(padding-top, $padding-top);
+  }
+
+  @include css.declaration(
+    padding-right,
+    $padding-right-fallback,
+    $gss: (alternate: true)
+  );
+  @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 2) {
+    @include css.declaration(padding-right, $padding-right);
+  }
+
+  @include css.declaration(
+    padding-bottom,
+    $padding-bottom-fallback,
+    $gss: (alternate: true)
+  );
+  @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 3) {
+    @include css.declaration(padding-bottom, $padding-bottom);
+  }
+
+  @include css.declaration(
+    padding-left,
+    $padding-left-fallback,
+    $gss: (alternate: true)
+  );
+  @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 4) {
+    @include css.declaration(padding-left, $padding-left);
+  }
 
   &:focus {
     @include feature-targeting.targets($feat-structure) {
       border-style: solid;
-      border-width: $width;
+      @include theme.property(border-width, $width);
 
-      // Offset border width from padding.
-      padding: math.abs(list.nth($padding, 1) - $width)
-        math.abs(list.nth($padding, 2) - $width)
-        math.abs(list.nth($padding, 3) - $width)
-        math.abs(list.nth($padding, 4) - $width);
+      // sass math required for IE since IE doesn't support css max
+      $padding-top-fallback: math.abs(
+        list.nth($padding-fallbacks, 1) - $width-fallback
+      );
+      $padding-right-fallback: math.abs(
+        list.nth($padding-fallbacks, 2) - $width-fallback
+      );
+      $padding-bottom-fallback: math.abs(
+        list.nth($padding-fallbacks, 3) - $width-fallback
+      );
+      $padding-left-fallback: math.abs(
+        list.nth($padding-fallbacks, 4) - $width-fallback
+      );
+
+      // max(a, calc(a * -1)) is equivalent to math.abs
+      $padding-top: replace.replace-string(
+        'max(paddingcalc, calc(paddingcalc * -1))',
+        (
+          paddingcalc: 'calc(paddingval - width)',
+          paddingval: list.nth($padding, 1),
+          width: $width,
+        )
+      );
+      $padding-right: replace.replace-string(
+        'max(paddingcalc, calc(paddingcalc * -1))',
+        (
+          paddingcalc: 'calc(paddingval - width)',
+          paddingval: list.nth($padding, 2),
+          width: $width,
+        )
+      );
+      $padding-bottom: replace.replace-string(
+        'max(paddingcalc, calc(paddingcalc * -1))',
+        (
+          paddingcalc: 'calc(paddingval - width)',
+          paddingval: list.nth($padding, 3),
+          width: $width,
+        )
+      );
+      $padding-left: replace.replace-string(
+        'max(paddingcalc, calc(paddingcalc * -1))',
+        (
+          paddingcalc: 'calc(paddingval - width)',
+          paddingval: list.nth($padding, 4),
+          width: $width,
+        )
+      );
+
+      @include css.declaration(
+        padding-top,
+        $padding-top-fallback,
+        $gss: (alternate: true)
+      );
+      @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 1) {
+        @include css.declaration(padding-top, $padding-top);
+      }
+      @include css.declaration(
+        padding-right,
+        $padding-right-fallback,
+        $gss: (alternate: true)
+      );
+      @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 2) {
+        @include css.declaration(padding-right, $padding-right);
+      }
+      @include css.declaration(
+        padding-bottom,
+        $padding-bottom-fallback,
+        $gss: (alternate: true)
+      );
+      @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 3) {
+        @include css.declaration(padding-bottom, $padding-bottom);
+      }
+      @include css.declaration(
+        padding-left,
+        $padding-left-fallback,
+        $gss: (alternate: true)
+      );
+      @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 4) {
+        @include css.declaration(padding-left, $padding-left);
+      }
     }
   }
 }
@@ -452,9 +646,17 @@ $icon-enter-duration_: 180ms;
 @mixin extended_($query: feature-targeting.all()) {
   @include typography.typography(button, $query: $query);
   @include extended-shape-radius(variables.$shape-radius, $query: $query);
+  $extended-icon-padding: custom-properties.create(
+    fab-custom-properties.$extended-icon-padding,
+    variables.$extended-icon-padding
+  );
+  $extended-label-padding: custom-properties.create(
+    fab-custom-properties.$extended-label-padding,
+    variables.$extended-label-padding
+  );
   @include extended-padding(
-    variables.$extended-icon-padding,
-    variables.$extended-label-padding,
+    $extended-icon-padding,
+    $extended-label-padding,
     $query: $query
   );
 
