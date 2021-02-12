@@ -1,0 +1,343 @@
+// Copyright 2016 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/animation/functions' as animation-functions;
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/elevation/variables' as elevation-variables;
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/dom/mixins' as dom-mixins;
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/shape/mixins' as shape-mixins;
+@use '@material/shape/functions' as shape-functions;
+@use '@material/theme/css';
+@use '@material/theme/custom-properties';
+@use '@material/theme/replace';
+@use '@material/theme/state';
+@use '@material/theme/theme-color';
+@use '@material/theme/theme';
+@use '@material/touch-target/mixins' as touch-target-mixins;
+@use '@material/typography/typography';
+@use './fab-custom-properties';
+@use './fab-extended-theme';
+@use './fab-theme';
+@use 'sass:math';
+@use 'sass:list';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  @include without-ripple($query);
+  @include ripple($query);
+}
+
+@mixin without-ripple($query: feature-targeting.all()) {
+  // postcss-bem-linter: define fab
+
+  @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
+  // prettier-ignore
+  @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  .mdc-fab {
+    @include base_($query: $query);
+    @include fab-theme.container-color(secondary, $query: $query);
+    @include fab-theme.icon-size(24px, $query: $query);
+    @include fab-theme.ink-color(on-secondary, $query: $query);
+    @include fab-theme.shape-radius(fab-theme.$shape-radius, $query: $query);
+    @include elevation-mixins.elevation(6, $query: $query);
+  }
+
+  .mdc-fab--mini {
+    @include mini_($query: $query);
+  }
+
+  .mdc-fab--extended {
+    @include extended_($query: $query);
+  }
+
+  .mdc-fab--touch {
+    @include touch-target-mixins.margin(
+      $component-height: fab-theme.$mini-height,
+      $component-width: fab-theme.$mini-height,
+      $query: $query
+    );
+
+    .mdc-fab__touch {
+      @include touch-target-mixins.touch-target(
+        $set-width: true,
+        $query: $query
+      );
+    }
+  }
+
+  .mdc-fab::before {
+    @include dom-mixins.transparent-border($query: $query);
+  }
+
+  .mdc-fab__label {
+    @include label_($query: $query);
+  }
+
+  .mdc-fab__icon {
+    @include icon_($query: $query);
+  }
+
+  // Increase specificity for FAB icon styles that need to override styles defined for .material-icons
+  // (which is loaded separately so the order of CSS definitions is not guaranteed)
+  .mdc-fab .mdc-fab__icon {
+    @include icon-overrides_($query: $query);
+  }
+
+  .mdc-fab--exited {
+    @include exited_($query: $query);
+  }
+
+  // postcss-bem-linter: end
+}
+
+@mixin ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  .mdc-fab {
+    @include ripple.surface(
+      $query: $query,
+      $ripple-target: fab-theme.$ripple-target
+    );
+    @include ripple.radius-bounded(
+      $query: $query,
+      $ripple-target: fab-theme.$ripple-target
+    );
+    @include fab-theme.ripple-color(on-secondary, $query: $query);
+
+    #{fab-theme.$ripple-target} {
+      @include ripple.target-common($query: $query);
+
+      @include feature-targeting.targets($feat-structure) {
+        overflow: hidden;
+        // Fixes Safari on Mac & iOS issue where ripple overflows button
+        // rendered in square shape. Creating new stacking context fixes this
+        // issue.
+        z-index: -1;
+      }
+    }
+  }
+}
+
+$icon-enter-delay_: 90ms;
+$icon-enter-duration_: 180ms;
+
+@mixin base_($query: feature-targeting.all()) {
+  @include elevation-mixins.overlay-surface-position($query: $query);
+  @include elevation-mixins.overlay-dimensions(100%, $query: $query);
+
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: fab-theme.$height;
+    height: fab-theme.$height;
+    padding: 0;
+    border: none;
+    fill: currentColor;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    // Even though `visible` is the default, IE 11 computes the property as
+    // `hidden` in some cases, unless it's explicitly defined here.
+    overflow: visible;
+  }
+
+  @include feature-targeting.targets($feat-animation) {
+    transition: box-shadow elevation-variables.$transition-duration
+        elevation-variables.$transition-timing-function,
+      opacity 15ms linear 30ms,
+      animation-functions.enter(
+        transform,
+        $icon-enter-duration_ + $icon-enter-delay_
+      );
+  }
+
+  &::-moz-focus-inner {
+    @include feature-targeting.targets($feat-structure) {
+      padding: 0;
+      border: 0;
+    }
+  }
+
+  &:hover {
+    @include elevation-mixins.elevation(8, $query: $query);
+  }
+
+  @include ripple-theme.focus() {
+    @include elevation-mixins.elevation(8, $query: $query);
+  }
+
+  // Increase active state specificity due to ripple-theme.focus().
+  &:active,
+  &:focus:active {
+    @include elevation-mixins.elevation(12, $query: $query);
+  }
+
+  &:active,
+  &:focus {
+    // TODO(acdvorak): Should this be paired with states and/or ripple? We don't want to disable outline
+    // (an accessibility/usability feature) unless we're confident that there is also a visual indication that the
+    // element has focus. If the client has customized the DOM in some unexpected way, and is certain that another
+    // element will receive focus instead, they can always override this property manually in their CSS.
+    @include feature-targeting.targets($feat-structure) {
+      outline: none;
+    }
+  }
+
+  &:hover {
+    @include feature-targeting.targets($feat-structure) {
+      cursor: pointer;
+    }
+  }
+
+  // This allows for using SVGs within them to align properly in all browsers.
+  // Can remove once: https://bugzilla.mozilla.org/show_bug.cgi?id=1294515 is resolved.
+
+  // stylelint-disable selector-max-type
+  // postcss-bem-linter: ignore
+  > svg {
+    @include feature-targeting.targets($feat-structure) {
+      width: 100%;
+    }
+  }
+  // stylelint-enable selector-max-type
+}
+
+@mixin mini_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    width: fab-theme.$mini-height;
+    height: fab-theme.$mini-height;
+  }
+}
+
+@mixin extended_($query: feature-targeting.all()) {
+  @include typography.typography(button, $query: $query);
+  @include fab-extended-theme.extended-shape-radius(
+    fab-theme.$shape-radius,
+    $query: $query
+  );
+  $extended-icon-padding: custom-properties.create(
+    fab-custom-properties.$extended-icon-padding,
+    fab-extended-theme.$extended-icon-padding
+  );
+  $extended-label-padding: custom-properties.create(
+    fab-custom-properties.$extended-label-padding,
+    fab-extended-theme.$extended-label-padding
+  );
+  @include fab-extended-theme.extended-padding(
+    fab-extended-theme.$extended-icon-padding,
+    fab-extended-theme.$extended-label-padding,
+    $query: $query
+  );
+
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    width: auto;
+    max-width: 100%;
+    height: fab-extended-theme.$extended-height;
+    // This allows the text within the extended fab to be centered for varying font sizes.
+    /* @alternate */
+    line-height: normal;
+  }
+}
+
+@mixin icon_($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-animation) {
+    transition: animation-functions.enter(
+      transform,
+      $icon-enter-duration_,
+      $icon-enter-delay_
+    );
+  }
+
+  @include feature-targeting.targets($feat-structure) {
+    fill: currentColor;
+    will-change: transform;
+  }
+}
+
+@mixin label_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    justify-content: flex-start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+}
+
+@mixin icon-overrides_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@mixin exited_($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  @include feature-targeting.targets($feat-animation) {
+    transition: opacity 15ms linear 150ms,
+      animation-functions.exit-permanent(transform, 180ms);
+  }
+
+  .mdc-fab__icon {
+    @include feature-targeting.targets($feat-structure) {
+      transform: scale(0);
+    }
+
+    @include feature-targeting.targets($feat-animation) {
+      transition: animation-functions.exit-permanent(transform, 135ms);
+    }
+  }
+}
