@@ -34,9 +34,7 @@ npm install @material/button
 ### Styles
 
 ```scss
-@use "@material/button";
-
-@include button.core-styles;
+@use "@material/button/styles";
 ```
 
 ### JavaScript instantiation
@@ -261,8 +259,6 @@ the `custom-text-button` and `custom-outlined-button` classes to your buttons:
 ```scss
 @use "@material/button";
 
-@include button.core-styles;
-
 .custom-text-button,
 .custom-outlined-button {
   @include button.ink-color(#84565E);
@@ -276,8 +272,6 @@ across the app, you can also use CSS custom properties:
 
 ```scss
 @use "@material/button";
-
-@include button.core-styles;
 
 .custom-text-button,
 .custom-outlined-button {
