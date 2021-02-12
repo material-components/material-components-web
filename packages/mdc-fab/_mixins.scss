@@ -330,7 +330,7 @@ $ripple-target: '.mdc-fab__ripple';
     @include css.declaration(padding-left, $padding-left);
   }
 
-  &:focus {
+  @include ripple-theme.focus() {
     @include feature-targeting.targets($feat-structure) {
       border-style: solid;
       @include theme.property(border-width, $width);
@@ -427,7 +427,7 @@ $ripple-target: '.mdc-fab__ripple';
 @mixin focus-outline-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  &:focus {
+  @include ripple-theme.focus() {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(border-color, $color);
     }
@@ -595,12 +595,17 @@ $icon-enter-duration_: 180ms;
     }
   }
 
-  &:hover,
-  &:focus {
+  &:hover {
     @include elevation-mixins.elevation(8, $query: $query);
   }
 
-  &:active {
+  @include ripple-theme.focus() {
+    @include elevation-mixins.elevation(8, $query: $query);
+  }
+
+  // Increase active state specificity due to ripple-theme.focus().
+  &:active,
+  &:focus:active {
     @include elevation-mixins.elevation(12, $query: $query);
   }
 
