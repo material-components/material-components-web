@@ -169,6 +169,40 @@ describe('MDCTooltip', () => {
          expect(mockFoundation.handleTransitionEnd).not.toHaveBeenCalled();
        });
 
+    it('#initialSyncWithDOM registers touchstart event handler on the tooltip',
+       () => {
+         const {anchorElem, mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         emitEvent(anchorElem, 'touchstart');
+         expect(mockFoundation.handleAnchorTouchstart).toHaveBeenCalled();
+         component.destroy();
+       });
+
+    it('#destroy deregisters touchstart event handler on the tooltip', () => {
+      const {anchorElem, mockFoundation, component} =
+          setupTestWithMockFoundation(fixture);
+      component.destroy();
+      emitEvent(anchorElem, 'touchstart');
+      expect(mockFoundation.handleAnchorTouchstart).not.toHaveBeenCalled();
+    });
+
+    it('#initialSyncWithDOM registers touchend event handler on the tooltip',
+       () => {
+         const {anchorElem, mockFoundation, component} =
+             setupTestWithMockFoundation(fixture);
+         emitEvent(anchorElem, 'touchend');
+         expect(mockFoundation.handleAnchorTouchend).toHaveBeenCalled();
+         component.destroy();
+       });
+
+    it('#destroy deregisters touchend event handler on the tooltip', () => {
+      const {anchorElem, mockFoundation, component} =
+          setupTestWithMockFoundation(fixture);
+      component.destroy();
+      emitEvent(anchorElem, 'touchend');
+      expect(mockFoundation.handleAnchorTouchend).not.toHaveBeenCalled();
+    });
+
     it('#setTooltipPosition forwards to MDCFoundation#setTooltipPosition',
        () => {
          const {mockFoundation, component} =

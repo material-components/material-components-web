@@ -1052,6 +1052,65 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.SHOWING);
   });
 
+  it(`#handleAnchorTouchstart shows a tooltip if the user long-presses for ${
+         numbers.SHOW_DELAY_MS}ms`,
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       foundation.handleAnchorTouchstart();
+
+       jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+       expectTooltipToHaveBeenShown(foundation, mockAdapter);
+     });
+
+  it(`#handleAnchorTouchstart adds event handler for "contextmenu" event`,
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       foundation.handleAnchorTouchstart();
+
+       expect(mockAdapter.registerWindowEventHandler)
+           .toHaveBeenCalledWith('contextmenu', jasmine.any(Function));
+     });
+
+  it(`#handleAnchorTouchend clears any pending showTimeout`, () => {
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    foundation.handleAnchorTouchstart();
+
+    expect(foundation.showTimeout).not.toEqual(null);
+    foundation.handleAnchorTouchend();
+    expect(foundation.showTimeout).toEqual(null);
+
+    jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+    expect(mockAdapter.setAttribute)
+        .not.toHaveBeenCalledWith('aria-hidden', 'false');
+    expect(mockAdapter.removeClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
+    expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.SHOWING);
+  });
+
+  it(`#handleAnchorTouchend removes event handler for "contextmenu" event if tooltip is not shown`,
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       foundation.handleAnchorTouchstart();
+       foundation.handleAnchorTouchend();
+
+       expect(mockAdapter.registerWindowEventHandler)
+           .toHaveBeenCalledWith('contextmenu', jasmine.any(Function));
+       expect(mockAdapter.deregisterWindowEventHandler)
+           .toHaveBeenCalledWith('contextmenu', jasmine.any(Function));
+     });
+
+  it('#hide deregisters "contextmenu" event listeners on the window', () => {
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+    foundation.handleAnchorTouchstart();
+    jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+    foundation.hide();
+
+    expect(mockAdapter.deregisterWindowEventHandler)
+        .toHaveBeenCalledWith('contextmenu', jasmine.any(Function));
+  });
+
   it('properly calculates tooltip position (START alignment)', () => {
     const anchorHeight = 35;
     const expectedTooltipHeight = anchorHeight + numbers.BOUNDED_ANCHOR_GAP;

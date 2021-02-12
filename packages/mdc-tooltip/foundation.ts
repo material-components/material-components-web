@@ -184,6 +184,31 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
   }
 
+  handleAnchorTouchstart() {
+    this.showTimeout = setTimeout(() => {
+      this.show();
+    }, this.showDelayMs);
+    // Prevent a context menu from appearing if user is long-pressing on a
+    // tooltip anchor.
+    this.adapter.registerWindowEventHandler(
+        'contextmenu', this.preventContextMenuOnLongTouch);
+  }
+
+  private preventContextMenuOnLongTouch(evt: MouseEvent) {
+    evt.preventDefault();
+  }
+
+  handleAnchorTouchend() {
+    this.clearShowTimeout();
+
+    // Only remove the 'contextmenu' listener if the tooltip is not shown. When
+    // the tooltip *is* shown, listener is removed in the close method.
+    if (!this.isShown()) {
+      this.adapter.deregisterWindowEventHandler(
+          'contextmenu', this.preventContextMenuOnLongTouch);
+    }
+  }
+
   handleAnchorFocus(evt: FocusEvent) {
     // TODO(b/157075286): Need to add some way to distinguish keyboard
     // navigation focus events from other focus events, and only show the
@@ -392,6 +417,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         'scroll', this.windowScrollHandler);
     this.adapter.deregisterWindowEventHandler(
         'resize', this.windowResizeHandler);
+    this.adapter.deregisterWindowEventHandler(
+        'contextmenu', this.preventContextMenuOnLongTouch);
   }
 
   handleTransitionEnd() {

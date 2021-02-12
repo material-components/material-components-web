@@ -43,6 +43,8 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   private handleBlur!: SpecificEventListener<'blur'>;
   private handleTransitionEnd!: SpecificEventListener<'transitionend'>;
   private handleClick!: SpecificEventListener<'click'>;
+  private handleTouchstart!: SpecificEventListener<'touchstart'>;
+  private handleTouchend!: SpecificEventListener<'touchend'>;
 
   initialize() {
     const tooltipId = this.root.getAttribute('id');
@@ -88,6 +90,14 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       this.foundation.handleAnchorClick();
     };
 
+    this.handleTouchstart = () => {
+      this.foundation.handleAnchorTouchstart();
+    };
+
+    this.handleTouchend = () => {
+      this.foundation.handleAnchorTouchend();
+    };
+
     this.anchorElem.addEventListener('blur', this.handleBlur);
     if (this.isTooltipRich && this.isTooltipPersistent) {
       this.anchorElem.addEventListener('click', this.handleClick);
@@ -96,6 +106,8 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       // TODO(b/157075286): Listening for a 'focus' event is too broad.
       this.anchorElem.addEventListener('focus', this.handleFocus);
       this.anchorElem.addEventListener('mouseleave', this.handleMouseLeave);
+      this.anchorElem.addEventListener('touchstart', this.handleTouchstart);
+      this.anchorElem.addEventListener('touchend', this.handleTouchend);
     }
 
     this.listen('transitionend', this.handleTransitionEnd);
@@ -112,6 +124,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
         this.anchorElem.removeEventListener('focus', this.handleFocus);
         this.anchorElem.removeEventListener(
             'mouseleave', this.handleMouseLeave);
+        this.anchorElem.removeEventListener(
+            'touchstart', this.handleTouchstart);
+        this.anchorElem.removeEventListener('touchend', this.handleTouchend);
       }
     }
 
