@@ -388,8 +388,17 @@ $pressed-light-ink-opacity: 0.32 !default;
 @mixin states-selector() {
   &:hover,
   &:active,
-  &:focus,
+  &:not(.mdc-ripple-upgraded):focus,
   &.mdc-ripple-upgraded--background-focused {
+    @content;
+  }
+}
+
+// Selector for focus state. Using ':not(.mdc-ripple-upgraded)' to control focus
+// when JS-enabled with '.mdc-ripple-upgraded--background-focused'.
+@mixin focus() {
+  &.mdc-ripple-upgraded--background-focused,
+  &:not(.mdc-ripple-upgraded):focus {
     @content;
   }
 }
