@@ -209,39 +209,47 @@ $ripple-target: '.mdc-fab__ripple';
     )
   );
 
+  $top-has-custom-prop: $is-width-custom-prop or
+    list.nth($is-padding-custom-prop, 1);
   @include css.declaration(
     padding-top,
     $padding-top-fallback,
-    $gss: (alternate: true)
+    $gss: (alternate: $top-has-custom-prop)
   );
-  @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 1) {
+  @if $top-has-custom-prop {
     @include css.declaration(padding-top, $padding-top);
   }
 
+  $right-has-custom-prop: $is-width-custom-prop or
+    list.nth($is-padding-custom-prop, 2);
   @include css.declaration(
     padding-right,
     $padding-right-fallback,
-    $gss: (alternate: true)
+    $gss: (alternate: $right-has-custom-prop)
   );
-  @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 2) {
+  @if $right-has-custom-prop {
     @include css.declaration(padding-right, $padding-right);
   }
 
+  $bottom-has-custom-prop: $is-width-custom-prop or
+    list.nth($is-padding-custom-prop, 3);
   @include css.declaration(
     padding-bottom,
     $padding-bottom-fallback,
-    $gss: (alternate: true)
+    $gss: (alternate: $bottom-has-custom-prop)
   );
-  @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 3) {
+  @if $bottom-has-custom-prop {
     @include css.declaration(padding-bottom, $padding-bottom);
   }
 
+  $left-has-custom-prop: $is-width-custom-prop or
+    list.nth($is-padding-custom-prop, 4);
   @include css.declaration(
     padding-left,
     $padding-left-fallback,
-    $gss: (alternate: true)
+    $gss: (alternate: $left-has-custom-prop)
   );
-  @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 4) {
+  @if $left-has-custom-prop {
     @include css.declaration(padding-left, $padding-left);
   }
 
@@ -301,33 +309,33 @@ $ripple-target: '.mdc-fab__ripple';
       @include css.declaration(
         padding-top,
         $padding-top-fallback,
-        $gss: (alternate: true)
+        $gss: (alternate: $top-has-custom-prop)
       );
-      @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 1) {
+      @if $top-has-custom-prop {
         @include css.declaration(padding-top, $padding-top);
       }
       @include css.declaration(
         padding-right,
         $padding-right-fallback,
-        $gss: (alternate: true)
+        $gss: (alternate: $right-has-custom-prop)
       );
-      @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 2) {
+      @if $right-has-custom-prop {
         @include css.declaration(padding-right, $padding-right);
       }
       @include css.declaration(
         padding-bottom,
         $padding-bottom-fallback,
-        $gss: (alternate: true)
+        $gss: (alternate: $bottom-has-custom-prop)
       );
-      @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 3) {
+      @if $bottom-has-custom-prop {
         @include css.declaration(padding-bottom, $padding-bottom);
       }
       @include css.declaration(
         padding-left,
         $padding-left-fallback,
-        $gss: (alternate: true)
+        $gss: (alternate: $left-has-custom-prop)
       );
-      @if $is-width-custom-prop or list.nth($is-padding-custom-prop, 4) {
+      @if $left-has-custom-prop {
         @include css.declaration(padding-left, $padding-left);
       }
     }
