@@ -135,12 +135,12 @@
 
       @include feature-targeting.targets($feat-structure) {
         overflow: hidden;
-        // Fixes Safari on Mac & iOS issue where ripple overflows button
-        // rendered in square shape. Creating new stacking context fixes this
-        // issue.
-        z-index: -1;
       }
     }
+    @include ripple-theme.behind-content(
+      fab-theme.$ripple-target,
+      $query: $query
+    );
   }
 }
 

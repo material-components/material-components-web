@@ -106,7 +106,7 @@ $pressed-light-ink-opacity: 0.32 !default;
   $query: feature-targeting.all()
 ) {
   // Ensure sufficient specificity to override base state opacities
-  @if map.has-key($opacity-map, hover) {
+  @if map.get($opacity-map, hover) {
     @include states-hover-opacity(
       map.get($opacity-map, hover),
       $ripple-target: $ripple-target,
@@ -114,7 +114,7 @@ $pressed-light-ink-opacity: 0.32 !default;
     );
   }
 
-  @if map.has-key($opacity-map, focus) {
+  @if map.get($opacity-map, focus) {
     @include states-focus-opacity(
       map.get($opacity-map, focus),
       $ripple-target: $ripple-target,
@@ -123,7 +123,7 @@ $pressed-light-ink-opacity: 0.32 !default;
     );
   }
 
-  @if map.has-key($opacity-map, press) {
+  @if map.get($opacity-map, press) {
     @include states-press-opacity(
       map.get($opacity-map, press),
       $ripple-target: $ripple-target,

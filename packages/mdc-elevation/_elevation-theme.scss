@@ -205,6 +205,10 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
   @return $box-shadow;
 }
 
+@function get-elevation($level) {
+  @return (box-shadow: elevation-box-shadow($level));
+}
+
 ///
 /// Sets the shadow of the element.
 ///

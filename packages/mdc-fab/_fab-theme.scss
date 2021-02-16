@@ -21,36 +21,92 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use '@material/elevation/elevation-theme';
 @use '@material/animation/functions' as animation-functions;
-@use '@material/elevation/mixins' as elevation-mixins;
-@use '@material/elevation/variables' as elevation-variables;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/dom/mixins' as dom-mixins;
-@use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
-@use '@material/shape/functions' as shape-functions;
 @use '@material/theme/css';
 @use '@material/theme/custom-properties';
 @use '@material/theme/replace';
 @use '@material/theme/state';
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
-@use '@material/touch-target/mixins' as touch-target-mixins;
-@use '@material/typography/typography';
 @use './fab-custom-properties';
 @use 'sass:math';
 @use 'sass:list';
+@use 'sass:map';
 
 $height: 56px !default;
 $mini-height: 40px !default;
 $shape-radius: 50% !default;
 $ripple-target: '.mdc-fab__ripple';
 
-@mixin ripple-color($color, $query: feature-targeting.all()) {
+$_light-theme: (
+  container-color: secondary,
+  container-elevation: elevation-theme.get-elevation(6),
+  container-height: 56px,
+  container-shape: $shape-radius,
+  container-width: 56px,
+  focus-container-elevation: null,
+  focus-icon-color: null,
+  focus-state-layer-color: theme-color.$primary,
+  focus-state-layer-opacity: null,
+  hover-container-elevation: null,
+  hover-icon-color: null,
+  hover-state-layer-color: theme-color.$primary,
+  hover-state-layer-opacity: null,
+  icon-color: on-secondary,
+  icon-size: 24px,
+  pressed-container-elevation: null,
+  pressed-icon-color: null,
+  pressed-ripple-color: theme-color.$primary,
+  pressed-ripple-opacity: null,
+);
+
+@mixin theme($theme) {
+  @include theme.validate-keys($_light-theme, $theme);
+  @include container-color(map.get($theme, container-color));
+  @include _container-elevation(
+    (
+      default: map.get($theme, container-elevation),
+      hover: map.get($theme, hover-container-elevation),
+      focus: map.get($theme, focus-container-elevation),
+      pressed: map.get($theme, pressed-container-elevation),
+    )
+  );
+  @include _container-height(map.get($theme, container-height));
+  @include _container-width(map.get($theme, container-width));
+  @include icon-size(map.get($theme, icon-size));
+  @include _icon-color(
+    (
+      default: map.get($theme, icon-color),
+      hover: map.get($theme, hover-icon-color),
+      focus: map.get($theme, focus-icon-color),
+      pressed: map.get($theme, pressed-icon-color),
+    )
+  );
+
+  $shape-radius: map.get($theme, container-shape);
+  @if $shape-radius {
+    @include shape-radius($shape-radius);
+  }
+
+  $opacity-map: (
+    hover: map.get($theme, hover-state-layer-opacity),
+    focus: map.get($theme, focus-state-layer-opacity),
+    press: map.get($theme, pressed-ripple-opacity),
+  );
+  $hover-state-layer-color: map.get($theme, hover-state-layer-color);
+  @if $hover-state-layer-color {
+    @include ripple-color($hover-state-layer-color, $opacity-map: $opacity-map);
+  }
+}
+
+@mixin ripple-color($color, $opacity-map: (), $query: feature-targeting.all()) {
   @include ripple-theme.states(
     $color,
+    $opacity-map: $opacity-map,
     $query: $query,
     $ripple-target: $ripple-target
   );
@@ -103,6 +159,92 @@ $ripple-target: '.mdc-fab__ripple';
 
   @include feature-targeting.targets($feat-color) {
     @include theme.property(color, $color);
+  }
+}
+
+@mixin _label-color($color) {
+  .mdc-fab__label {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _container-height($height) {
+  height: $height;
+}
+
+@mixin _container-width($width) {
+  width: $width;
+}
+
+@mixin _icon-color($color-or-map) {
+  &:not(:disabled) {
+    @include _set-icon-color(state.get-default-state($color-or-map));
+
+    &:hover {
+      @include _set-icon-color(state.get-hover-state($color-or-map));
+    }
+
+    &:focus {
+      @include _set-icon-color(state.get-focus-state($color-or-map));
+    }
+
+    &:active {
+      @include _set-icon-color(state.get-pressed-state($color-or-map));
+    }
+  }
+
+  &:disabled {
+    @include _set-icon-color(state.get-disabled-state($color-or-map));
+  }
+}
+
+@mixin _set-icon-color($color) {
+  .mdc-fab__icon {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _container-elevation($elevation-or-map) {
+  &:not(:disabled) {
+    @include _set-container-elevation(
+      state.get-default-state($elevation-or-map)
+    );
+
+    &:hover {
+      @include _set-container-elevation(
+        state.get-hover-state($elevation-or-map)
+      );
+    }
+
+    &:focus {
+      @include _set-container-elevation(
+        state.get-focus-state($elevation-or-map)
+      );
+    }
+
+    &:active {
+      @include _set-container-elevation(
+        state.get-pressed-state($elevation-or-map)
+      );
+    }
+  }
+
+  &:disabled {
+    @include _set-container-elevation(
+      state.get-disabled-state($elevation-or-map)
+    );
+  }
+}
+
+@mixin _set-container-elevation($elevation) {
+  @if $elevation and map.get($elevation, box-shadow) {
+    @include elevation-theme.shadow(map.get($elevation, box-shadow));
+  }
+
+  @if $elevation and map.get($elevation, overlay-opacity) {
+    @include elevation-theme.overlay-opacity(
+      map.get($elevation, overlay-opacity)
+    );
   }
 }
 
