@@ -25,12 +25,52 @@
 @use 'sass:meta';
 @use './gss';
 
-/// When true, add an additional property/value declaration before declarations
-/// that use advanced features such as custom properties or CSS functions. This
-/// adds fallback support for older browsers such as IE11 that do not support
-/// these features at the cost of additional CSS. Set this variable to false to
-/// disable generating fallback declarations.
-$enable-fallback-declarations: true !default;
+/// CSS configuration.
+/// @see {mixin} configure
+$_config: (
+  emit-fallback-declarations: true,
+);
+
+/// Configure options for emitting CSS. The configuration will be applied
+/// within the scope of the mixin's content.
+///
+/// @example - scss
+///   @include configure($emit-fallback-declarations: false) {
+///     // No fallback values will be emitted within this mixin scope
+///     @include another-mixin();
+///   }
+///
+/// All parameters must be provided as argument lists.
+///
+/// @link https://sass-lang.com/documentation/values/lists#argument-lists
+///
+/// @param {Bool} $emit-fallback-declarations [true] - Enable or disable
+///     emitting a second declaration if a fallback value is provided to
+///     `css.declaration()`.
+/// @content The scope of the configuration.
+@mixin configure($config...) {
+  @if not meta.content-exists() {
+    @error 'content is required for configure()';
+  }
+
+  $config: meta.keywords($config);
+  @each $key, $value in $config {
+    @if $value == null {
+      $config: map.remove($config, $key);
+    }
+  }
+
+  @if list.length($config) == 0 {
+    @content;
+  } @else {
+    $previous: $_config;
+    // Use !global to avoid shadowing
+    // https://sass-lang.com/documentation/variables#shadowing
+    $_config: map.merge($_config, $config) !global;
+    @content;
+    $_config: $previous !global;
+  }
+}
 
 /// Writes a CSS property/value declaration. This mixin is used throughout the
 /// theme package for consistency for dynamically setting CSS property values.
@@ -62,7 +102,7 @@ $enable-fallback-declarations: true !default;
   @if $value != null {
     $important-rule: if($important, ' !important', '');
 
-    @if $fallback-value and $enable-fallback-declarations {
+    @if $fallback-value and map.get($_config, emit-fallback-declarations) {
       @include gss.annotate($gss);
       #{$property}: #{$fallback-value} #{$important-rule};
 

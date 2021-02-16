@@ -1,0 +1,356 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use './css';
+@use './custom-properties';
+
+/// User-provided option values.
+/// @type {Map}
+$_options: ();
+/// Default option values.
+/// @see {mixin} options
+$_default-options: (
+  runtime-theming: true,
+  support-ie11: true,
+  shallow-properties: false,
+  emit-selectors: true,
+);
+
+/// Configure theme options. The configuration will be applied within the scope
+/// of the mixin's content.
+///
+/// @example - scss
+///   @include theme.options($support-ie11: false) {
+///     @include checkbox.styles();
+///
+///     .my-checkbox {
+///       @include checkbox.theme($my-theme);
+///     }
+///   }
+///
+/// All parameters must be provided as argument lists.
+///
+/// @link https://sass-lang.com/documentation/values/lists#argument-lists
+///
+/// @param {Bool} $runtime-theming [true] - Enable or disable all runtime
+///     theming capabilities. Setting this to false will prevent custom
+///     properties from being emitted. When true, IE11 support can be enabled or
+///     disabled (IE11 is always supported when runtime theming is disabled).
+/// @param {Bool} $support-ie11 [true] - Enable or disable IE11 support. This
+///     value only takes effect if `$runtime-theming` is enabled.
+/// @param {Bool} $shallow-properties [false] - Enable or disable shallow custom
+///     properties. Shallow custom properties can emit a smaller CSS bundle size
+///     by avoiding repeated custom property fallback values. Shallow properties
+///     are more optimized for web components and when `$support-ie11` is false.
+/// @param {Bool} $emit-selectors [true] - Enable or disable selectors from
+///     being emitted. If set to false, custom properties will be emitted as
+///     declarations to customize values instead of traditional selectors and
+///     CSS declarations. Setting this value to false may result in nothing
+///     being emitted if `$runtime-theming` is false.
+/// @content The scope of the configuration.
+@mixin options($config...) {
+  @if not meta.content-exists() {
+    @error 'content is required for options()';
+  }
+
+  $config: meta.keywords($config);
+  @each $key, $value in $config {
+    @if $value == null {
+      $config: map.remove($config, $key);
+    }
+  }
+
+  @if list.length($config) == 0 {
+    @content;
+  } @else {
+    $reset: $_options;
+    // Use !global to avoid shadowing
+    // https://sass-lang.com/documentation/variables#shadowing
+    $_options: $config !global;
+    @include custom-properties.configure(
+      $emit-custom-properties: get-option(runtime-theming)
+    ) {
+      @include css.configure(
+        $emit-fallback-declarations: get-option(support-ie11)
+      ) {
+        @content;
+      }
+    }
+    $_options: $reset !global;
+  }
+}
+
+/// Override the default theme options for the provided content. This mixin is
+/// intended to be used by components that are either supporting new features
+/// early, or extending legacy support for deprecated features.
+///
+/// @example - scss
+///   @mixin theme-styles($theme: checkbox-theme.$light-theme) {
+///     // Upgrade this component to use shallow properties by default
+///     @include theme-config.default-options($shallow-properties: true) {
+///       @include checkbox-theme.theme($theme);
+///     }
+///   }
+///
+/// Any options provided by a user with `theme.options()` will override default
+/// options.
+///
+/// All parameters must be provided as argument lists.
+///
+/// @link https://sass-lang.com/documentation/values/lists#argument-lists
+/// @see {mixin} options
+///
+/// @param {Bool} $runtime-theming [true] - Enable or disable all runtime
+///     theming capabilities. Setting this to false will prevent custom
+///     properties from being emitted. When true, IE11 support can be enabled or
+///     disabled (IE11 is always supported when runtime theming is disabled).
+/// @param {Bool} $support-ie11 [true] - Enable or disable IE11 support. This
+///     value only takes effect if `$runtime-theming` is enabled.
+/// @param {Bool} $shallow-properties [false] - Enable or disable shallow custom
+///     properties. Shallow custom properties can emit a smaller CSS bundle size
+///     by avoiding repeated custom property fallback values. Shallow properties
+///     are more optimized for web components and when `$support-ie11` is false.
+/// @param {Bool} $emit-selectors [true] - Enable or disable selectors from
+///     being emitted. If set to false, custom properties will be emitted as
+///     declarations to customize values instead of traditional selectors and
+///     CSS declarations. Setting this value to false may result in nothing
+///     being emitted if `$runtime-theming` is false.
+/// @content The scope of the configuration.
+@mixin default-options($config...) {
+  @if not meta.content-exists() {
+    @error 'content is required for default-options()';
+  }
+
+  $config: meta.keywords($config);
+  @each $key, $value in $config {
+    @if $value == null {
+      $config: map.remove($config, $key);
+    }
+  }
+
+  @if list.length($config) == 0 {
+    @content;
+  } @else {
+    $reset: $_default-options;
+    // Use !global to avoid shadowing
+    // https://sass-lang.com/documentation/variables#shadowing
+    $_default-options: map.merge($_default-options, $config) !global;
+    @content;
+    $_default-options: $reset !global;
+  }
+}
+
+/// Retrieve the current value of a theme option.
+///
+/// @example - scss
+///   @if theme-config.get-option(runtime-theming) {
+///     // Runtime theming is enabled
+///   }
+///
+/// @param {String} $option - The name of the option to get.
+/// @return {*} The option's value, may be `null`. Most options are booleans.
+@function get-option($option) {
+  $config: map.merge($_default-options, $_options);
+  @return map.get($config, $option);
+}
+
+/// A content mixin to organize `theme-styles()` content based on the current
+/// theme options.
+///
+/// @example - scss
+///   @mixin theme-styles($theme: checkbox-theme.$light-theme) {
+///     .mdc-checkbox {
+///       @include theme-config.organize-theme-styles {
+///         @include checkbox-theme.theme($theme);
+///       }
+///     }
+///   }
+///
+/// A `theme()` mixin that is organized with `theme-config.selectors` and
+/// `theme-config.custom-property-declarations` will emit different CSS with
+/// different `theme.options()`.
+///
+/// @example - scss
+///   // Default options
+///   @include theme.options(
+///     $runtime-theming: true,
+///     $support-ie11: true,
+///     $shallow-properties: false,
+///   ) {
+///     @include checkbox.styles(); // Calls checkbox.theme-styles();
+///   }
+///
+/// @example - css
+///   .mdc-checkbox {
+///     width: 24px;
+///     height: 24px;
+///     color: purple;
+///     color: var(--mdc-checkbox-checked-color, var(--mdc-theme-primary, purple));
+///   }
+///
+/// @example - scss
+///   @include theme.options(
+///     $runtime-theming: true,
+///     $support-ie11: false,
+///     $shallow-properties: true,
+///   ) {
+///     @include checkbox.styles(); // Calls checkbox.theme-styles();
+///   }
+///
+/// @example - css
+///   .mdc-checkbox {
+///     width: 24px;
+///     height: 24px;
+///     color: var(--mdc-checkbox-checked-color);
+///   }
+///
+///   :root {
+///     --mdc-theme-primary: purple;
+///     --mdc-checkbox-checked-color: var(--mdc-theme-primary);
+///   }
+///
+/// @content A `theme()` mixin inclusion. `organize-theme-styles()` should be
+///     included _after_ the component's selector and should not have a direct
+///     child selector before including the `theme()` mixin.
+@mixin organize-theme-styles() {
+  @if not meta.content-exists() {
+    @error 'content is required for organize-theme-styles()';
+  }
+
+  @if & == null {
+    // Can't really detect this, but assuming the common use case if the mixin
+    // is wrapped at the top then the parent selector will be null. We can
+    // catch this and guide engineers.
+    @error 'organize-theme-styles() must not have selectors in its content';
+  }
+
+  @if get-option(runtime-theming) {
+    // Static styles
+    @include options($emit-selectors: true) {
+      @include custom-properties.configure(
+        $emit-fallback-values: if(get-option(shallow-properties), false, null),
+        $emit-fallback-vars: if(get-option(shallow-properties), false, null)
+      ) {
+        @content;
+      }
+    }
+
+    @if get-option(shallow-properties) {
+      // Runtime theme values
+      @at-root {
+        :root {
+          @include options($emit-selectors: false) {
+            @include custom-properties.configure(
+              $emit-fallback-values: false,
+              $emit-fallback-vars: false
+            ) {
+              @content;
+            }
+          }
+        }
+      }
+
+      // Fallback values
+      @if get-option(support-ie11) {
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+          @include options($emit-selectors: true) {
+            @include custom-properties.configure(
+              $emit-custom-properties: false
+            ) {
+              @content;
+            }
+          }
+        }
+      }
+    }
+  } @else {
+    @include options($emit-selectors: true) {
+      @include custom-properties.configure($emit-custom-properties: false) {
+        @content;
+      }
+    }
+  }
+}
+
+/// A content mixin to organize selector and normal CSS declarations within
+/// theme mixins.
+///
+/// @example - scss
+///   @mixin width($width) {
+///     @include theme-config.selectors {
+///       @include theme.property(width, $width);
+///     }
+///   }
+///
+///   @mixin label-color($color) {
+///     @include theme-config.selectors {
+///       .mdc-button__label {
+///         @include theme.property(color, $color);
+///       }
+///     }
+///   }
+///
+/// @see {mixin} organize-theme-styles
+///
+/// @content Selectors and normal CSS declarations emitted from
+///     `theme.property()`.
+@mixin selectors() {
+  @if not meta.content-exists() {
+    @error 'content is required for selectors()';
+  }
+
+  @if get-option(emit-selectors) {
+    @content;
+  }
+}
+
+/// A content mixin to organize custom property declarations within theme
+/// mixins.
+///
+/// @example - scss
+///   @mixin width($width) {
+///     @include theme-config.custom-property-declarations {
+///       @include custom-properties.declaration($width);
+///     }
+///   }
+///
+///   @mixin label-color($color) {
+///     @include theme-config.custom-property-declarations {
+///       @include custom-properties.declaration($color);
+///     }
+///   }
+///
+/// @see {mixin} organize-theme-styles
+///
+/// @content Only `custom-properties.declaration()` inclusions.
+@mixin custom-property-declarations() {
+  @if not meta.content-exists() {
+    @error 'content is required for custom-property-declarations()';
+  }
+
+  @if not get-option(emit-selectors) {
+    @content;
+  }
+}

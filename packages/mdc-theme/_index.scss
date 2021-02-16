@@ -15,4 +15,6 @@
   text-emphasis,
   tone;
 @forward './theme' show core-styles, property;
+// TODO(b/180431062): expose theme.options() as an API
+// @forward './theme-config' show options;
 @forward './color-palette';

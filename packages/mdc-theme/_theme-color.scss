@@ -28,6 +28,7 @@
 @use 'sass:string';
 @use './constants';
 @use './custom-properties';
+@use './keys';
 
 // Calculate the luminance for a color.
 // See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
@@ -190,6 +191,11 @@ $property-values: (
   text-icon-on-dark: ink-color-for-fill_(icon, dark),
 ) !default;
 
+@include keys.set-values(
+  $property-values,
+  $meta: (custom-property-prefix: theme)
+);
+
 // @deprecated use theme.property(). If you need to ensure the value is not a
 // custom property, use custom-properties.is-custom-prop() to check if the value
 // is a custom prop, then custom-properties.get-fallback() to get its value.
@@ -214,11 +220,7 @@ $property-values: (
     @return $style;
   }
 
-  @if not map.has-key($property-values, $style) {
-    @error "Invalid theme property: '#{$style}'. Choose one of: #{map.keys($property-values)}";
-  }
-
-  @return map.get($property-values, $style);
+  @return keys.resolve($style);
 }
 
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
@@ -247,6 +249,14 @@ $property-values: (
   @return map.get($text-emphasis, $emphasis);
 }
 
+@function is-theme-key($style) {
+  @return map.has-key($property-values, $style);
+}
+
+@function get-theme-keys() {
+  @return map.keys($property-values);
+}
+
 ///
 /// @param {Color|String} Color property key name (i.e., `primary`, `secondary`,
 ///     etc).
@@ -265,12 +275,9 @@ $property-values: (
     is-valid-theme-prop-value_($color)
   {
     @return $color;
-  } @else if map.has-key($property-values, $color) {
-    @return custom-properties.create(
-      --mdc-theme-#{$color},
-      map.get($property-values, $color)
-    );
+  } @else if is-theme-key($color) {
+    @return keys.create-custom-property($color);
   } @else {
-    @error "Invalid theme property: '#{$style}'. Choose one of: #{map.keys($property-values)}";
+    @error "Invalid theme property: '#{$style}'. Choose one of: #{get-theme-keys()}";
   }
 }
