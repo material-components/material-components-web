@@ -206,6 +206,7 @@ $_title-type-scale: subtitle2;
         $query: $query
       );
       @include feature-targeting.targets($feat-structure) {
+        max-width: calc(100% - 2 * #{$_content-margin-x});
         margin: 0 $_content-margin-x 16px $_content-margin-x;
         /* @noflip */
         text-align: left;
