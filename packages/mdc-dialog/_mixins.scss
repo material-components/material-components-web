@@ -163,9 +163,8 @@
       position: relative;
       flex-shrink: 0;
       box-sizing: border-box;
-      margin: 0;
+      margin: 0 0 1px;
       padding: 0 24px variables.$title-bottom-padding;
-      border-bottom: 1px solid transparent;
 
       @include rtl-mixins.rtl('.mdc-dialog') {
         /* @noflip */
@@ -177,6 +176,7 @@
   // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-dialog--scrollable .mdc-dialog__title {
     @include feature-targeting.targets($feat-structure) {
+      margin-bottom: 1px;
       // Adjust bottom padding to make title height align to spec when divider is present.
       // (Titles for alert dialogs w/o dividers align based on text baseline. All spec values are divisible by 4.)
       padding-bottom: variables.$title-bottom-padding + 6px;
@@ -201,8 +201,16 @@
 
     .mdc-dialog__title {
       @include feature-targeting.targets($feat-structure) {
+        margin-bottom: 0;
         padding: 0;
         border-bottom: 0;
+      }
+    }
+
+    &.mdc-dialog--scrollable .mdc-dialog__title {
+      @include feature-targeting.targets($feat-structure) {
+        border-bottom: 0;
+        margin-bottom: 0;
       }
     }
 
@@ -539,6 +547,13 @@
     .mdc-dialog__actions {
     @include feature-targeting.targets($feat-color) {
       border-color: rgba(theme-color.prop-value($color), $opacity);
+    }
+  }
+
+  &.mdc-dialog--scrollable .mdc-dialog__title {
+    @include feature-targeting.targets($feat-color) {
+      border-bottom: 1px solid rgba(theme-color.prop-value($color), $opacity);
+      margin-bottom: 0;
     }
   }
 
