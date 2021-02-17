@@ -42,7 +42,8 @@ $_label-type-scale: caption;
 $_line-height: 16px;
 
 // Rich Tooltip variables
-$_rich_corner_radius: 8px;
+$_rich_corner_radius: 4px;
+$_rich_line-height: 20px;
 $_rich_max-width: 320px;
 $_rich_padding: 8px;
 $_content-margin-x: 8px;
@@ -112,7 +113,6 @@ $_title-type-scale: subtitle2;
     &.mdc-tooltip--rich {
       @include feature-targeting.targets($feat-structure) {
         display: inline-block;
-        border-radius: $_rich_corner_radius;
         // Moves the rich tooltip out of the viewport/parent element initially
         // so that the initial width is not affected and a 'correct' width can
         // be used to calculate the position of the tooltip.
@@ -151,8 +151,10 @@ $_title-type-scale: subtitle2;
       @include elevation-mixins.elevation(2, $query: $query);
       @include feature-targeting.targets($feat-structure) {
         align-items: flex-start;
+        border-radius: $_rich_corner_radius;
         display: flex;
         flex-direction: column;
+        line-height: $_rich_line-height;
         min-height: $_min-height;
         min-width: $_min-width;
         max-width: $_rich_max-width;
