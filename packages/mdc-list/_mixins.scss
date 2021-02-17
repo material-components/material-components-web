@@ -35,7 +35,108 @@
 @use './evolution-mixins';
 
 //
-// Public
+// WARNING: All mixins in this file are being deprecated.
+// Please use "_evolution-mixins.scss" instead (see: go/gm-web-list-docs).
+//
+// If absolutely necessary, you may use the aliases in the following section.
+//
+
+@mixin deprecated-base_($args...) {
+  @include base_($args...);
+}
+@mixin deprecated-core-styles($args...) {
+  @include core-styles($args...);
+}
+@mixin deprecated-divider-color($args...) {
+  @include divider-color($args...);
+}
+@mixin deprecated-divider-inset($args...) {
+  @include divider-inset($args...);
+}
+@mixin deprecated-divider-insets($args...) {
+  @include divider-insets($args...);
+}
+@mixin deprecated-divider-insets-variant($args...) {
+  @include divider-insets-variant($args...);
+}
+@mixin deprecated-divider-inset-variant($args...) {
+  @include divider-inset-variant($args...);
+}
+@mixin deprecated-graphic-size($args...) {
+  @include graphic-size($args...);
+}
+@mixin deprecated-graphic-size-dense_($args...) {
+  @include graphic-size-dense_($args...);
+}
+@mixin deprecated-graphic-size-variant($args...) {
+  @include graphic-size-variant($args...);
+}
+@mixin deprecated-group-subheader-ink-color($args...) {
+  @include group-subheader-ink-color($args...);
+}
+@mixin deprecated-icon-margin($args...) {
+  @include icon-margin($args...);
+}
+@mixin deprecated-item-disabled-text-color($args...) {
+  @include item-disabled-text-color($args...);
+}
+@mixin deprecated-item-disabled-text-opacity($args...) {
+  @include item-disabled-text-opacity($args...);
+}
+@mixin deprecated-item-graphic-fill-color($args...) {
+  @include item-graphic-fill-color($args...);
+}
+@mixin deprecated-item-graphic-ink-color($args...) {
+  @include item-graphic-ink-color($args...);
+}
+@mixin deprecated-item-interactive-ripple_($args...) {
+  @include item-interactive-ripple_($args...);
+}
+@mixin deprecated-item-meta-ink-color($args...) {
+  @include item-meta-ink-color($args...);
+}
+@mixin deprecated-item-primary-text-ink-color($args...) {
+  @include item-primary-text-ink-color($args...);
+}
+@mixin deprecated-item-secondary-text-ink-color($args...) {
+  @include item-secondary-text-ink-color($args...);
+}
+@mixin deprecated-item-selected-text-color($args...) {
+  @include item-selected-text-color($args...);
+}
+@mixin deprecated-list-item-height($args...) {
+  @include list-item-height($args...);
+}
+@mixin deprecated-list-item-height-variant($args...) {
+  @include list-item-height-variant($args...);
+}
+@mixin deprecated-list-item-padding($args...) {
+  @include list-item-padding($args...);
+}
+@mixin deprecated-list-item-padding-variant($args...) {
+  @include list-item-padding-variant($args...);
+}
+@mixin deprecated-ripple($args...) {
+  @include ripple($args...);
+}
+@mixin deprecated-ripple-states($args...) {
+  @include ripple-states($args...);
+}
+@mixin deprecated-single-line-density($args...) {
+  @include single-line-density($args...);
+}
+@mixin deprecated-single-line-height($args...) {
+  @include single-line-height($args...);
+}
+@mixin deprecated-single-line-shape-radius($args...) {
+  @include single-line-shape-radius($args...);
+}
+@mixin deprecated-without-ripple($args...) {
+  @include without-ripple($args...);
+}
+
+//
+// DO NOT USE any mixins below this line.
 //
 
 @mixin core-styles($query: feature-targeting.all()) {

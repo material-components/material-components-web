@@ -21,6 +21,11 @@
 @use '@material/density/variables' as density-variables;
 @use '@material/theme/theme-color';
 
+//
+// DO NOT USE: These variables are being removed (go/gm-web-list-docs).
+// Please use the alternatives at the bottom of this file.
+//
+
 $ripple-target: '.mdc-list-item__ripple';
 
 $divider-color-on-light-bg: rgba(0, 0, 0, 0.12) !default;
@@ -122,3 +127,36 @@ $video-variant-config: (
   leading-padding: 0px,
   text-offset: 116px,
 ) !default;
+
+//
+// DEPRECATED: Use these aliases if necessary; else, prefer list evolution.
+//
+
+$deprecated-avatar-variant-config: $avatar-variant-config !default;
+$deprecated-dense-item-primary-text-baseline-height: $dense-item-primary-text-baseline-height !default;
+$deprecated-deprecated-graphic-config: $deprecated-graphic-config !default;
+$deprecated-divider-color-on-dark-bg: $divider-color-on-dark-bg !default;
+$deprecated-divider-color-on-light-bg: $divider-color-on-light-bg !default;
+$deprecated-icon-variant-config: $icon-variant-config !default;
+$deprecated-image-variant-config: $image-variant-config !default;
+$deprecated-item-primary-text-baseline-height: $item-primary-text-baseline-height !default;
+$deprecated-item-primary-text-baseline-height-with-graphic: $item-primary-text-baseline-height-with-graphic !default;
+$deprecated-item-secondary-text-baseline-height: $item-secondary-text-baseline-height !default;
+$deprecated-ripple-target: $ripple-target !default;
+$deprecated-side-padding: $side-padding !default;
+$deprecated-single-line-density-config: $single-line-density-config !default;
+$deprecated-single-line-density-scale: $single-line-density-scale !default;
+$deprecated-single-line-height: $single-line-height !default;
+$deprecated-single-line-maximum-height: $single-line-maximum-height !default;
+$deprecated-single-line-minimum-height: $single-line-minimum-height !default;
+$deprecated-text-disabled-color: $text-disabled-color !default;
+$deprecated-text-disabled-opacity: $text-disabled-opacity !default;
+$deprecated-text-offset: $text-offset !default;
+$deprecated-text-selected-color: $text-selected-color !default;
+$deprecated-textual-variant-config: $textual-variant-config !default;
+$deprecated-thumbnail-variant-config: $thumbnail-variant-config !default;
+$deprecated-trailing-padding: $trailing-padding !default;
+$deprecated-two-line-graphic-height: $two-line-graphic-height !default;
+$deprecated-two-line-height: $two-line-height !default;
+$deprecated-two-line-icon-top-margin: $two-line-icon-top-margin !default;
+$deprecated-video-variant-config: $video-variant-config !default;
