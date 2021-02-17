@@ -355,6 +355,17 @@ describe('MDCSelect', () => {
     expect(mockFoundation.setValue).toHaveBeenCalledTimes(1);
   });
 
+  it('#setValue calls foundation.setValue with params', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {component, mockFoundation} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    component.setValue('orange', /** skipNotify */ true);
+    expect(mockFoundation.setValue).toHaveBeenCalledWith('orange', true);
+  });
+
   it('#layout calls foundation.layout', () => {
     const hasMockFoundation = true;
     const hasMockMenu = true;
@@ -449,6 +460,18 @@ describe('MDCSelect', () => {
     component.selectedIndex = 1;
     expect(mockFoundation.setSelectedIndex)
         .toHaveBeenCalledWith(1, /** closeMenu */ true);
+  });
+
+  it('#setSelectedIndex calls foundation.setSelectedIndex with params', () => {
+    const hasMockFoundation = true;
+    const hasMockMenu = true;
+    const hasOutline = false;
+    const hasLabel = true;
+    const {component, mockFoundation} =
+        setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+    component.setSelectedIndex(1, true);
+    expect(mockFoundation.setSelectedIndex)
+        .toHaveBeenCalledWith(1, /** closeMenu */ true, /** skipNotify */ true);
   });
 
   it('#set disabled calls foundation.setDisabled', () => {
