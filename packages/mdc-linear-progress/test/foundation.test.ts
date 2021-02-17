@@ -79,7 +79,7 @@ describe('MDCLinearProgressFoundation', () => {
            .and.returnValue(false);
        foundation.init();
        foundation.setDeterminate(false);
-       expect(foundation.getDeterminate()).toBe(false);
+       expect(foundation.isDeterminate()).toBe(false);
        expect(mockAdapter.addClass)
            .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
        expect(mockAdapter.setPrimaryBarStyle)
@@ -104,7 +104,7 @@ describe('MDCLinearProgressFoundation', () => {
     expect(mockAdapter.attachResizeObserver).toHaveBeenCalled();
     expect(mockAdapter.setStyle).toHaveBeenCalledTimes(0);
     foundation.setDeterminate(false);
-    expect(foundation.getDeterminate()).toBe(false);
+    expect(foundation.isDeterminate()).toBe(false);
 
     if (!RO) {
       expect(mockAdapter.setStyle).toHaveBeenCalledTimes(0);
@@ -163,7 +163,7 @@ describe('MDCLinearProgressFoundation', () => {
         .and.returnValue(false);
     foundation.init();
     foundation.setDeterminate(true);
-    expect(foundation.getDeterminate()).toBe(true);
+    expect(foundation.isDeterminate()).toBe(true);
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.INDETERMINATE_CLASS);
   });
@@ -317,6 +317,7 @@ describe('MDCLinearProgressFoundation', () => {
     foundation.handleTransitionEnd();
     expect(mockAdapter.addClass)
         .toHaveBeenCalledWith(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
+    expect(foundation.isClosed()).toBeTrue();
   });
 
   it('#destroy disconnects the resize observer', () => {

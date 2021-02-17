@@ -56,7 +56,7 @@ export class MDCLinearProgressFoundation extends
     };
   }
 
-  private isDeterminate!: boolean;
+  private determinate!: boolean;
   private progress!: number;
   private buffer!: number;
   private observer: MDCResizeObserver|null = null;
@@ -66,13 +66,13 @@ export class MDCLinearProgressFoundation extends
   }
 
   init() {
-    this.isDeterminate = !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
+    this.determinate = !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
     this.adapter.addClass(cssClasses.ANIMATION_READY_CLASS);
     this.progress = 0;
     this.buffer = 1;
 
     this.observer = this.adapter.attachResizeObserver((entries) => {
-      if (this.isDeterminate) {
+      if (this.determinate) {
         return;
       }
 
@@ -83,15 +83,15 @@ export class MDCLinearProgressFoundation extends
       }
     });
 
-    if (!this.isDeterminate && this.observer) {
+    if (!this.determinate && this.observer) {
       this.calculateAndSetDimensions(this.adapter.getWidth());
     }
   }
 
   setDeterminate(isDeterminate: boolean) {
-    this.isDeterminate = isDeterminate;
+    this.determinate = isDeterminate;
 
-    if (this.isDeterminate) {
+    if (this.determinate) {
       this.adapter.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.adapter.setAttribute(
           strings.ARIA_VALUENOW, this.progress.toString());
@@ -115,13 +115,13 @@ export class MDCLinearProgressFoundation extends
     this.setBufferBarProgress(1);
   }
 
-  getDeterminate() {
-    return this.isDeterminate;
+  isDeterminate() {
+    return this.determinate;
   }
 
   setProgress(value: number) {
     this.progress = value;
-    if (this.isDeterminate) {
+    if (this.determinate) {
       this.setPrimaryBarProgress(value);
       this.adapter.setAttribute(strings.ARIA_VALUENOW, value.toString());
     }
@@ -133,7 +133,7 @@ export class MDCLinearProgressFoundation extends
 
   setBuffer(value: number) {
     this.buffer = value;
-    if (this.isDeterminate) {
+    if (this.determinate) {
       this.setBufferBarProgress(value);
     }
   }
@@ -145,6 +145,10 @@ export class MDCLinearProgressFoundation extends
 
   close() {
     this.adapter.addClass(cssClasses.CLOSED_CLASS);
+  }
+
+  isClosed() {
+    return this.adapter.hasClass(cssClasses.CLOSED_CLASS);
   }
 
   /**
