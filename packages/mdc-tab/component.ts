@@ -50,15 +50,8 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
       tabIndicatorFactory: MDCTabIndicatorFactory = (el) => new MDCTabIndicator(el),
   ) {
     this.id = this.root.id;
-    const rippleSurface = this.root.querySelector<HTMLElement>(
-        MDCTabFoundation.strings.RIPPLE_SELECTOR)!;
-    const rippleAdapter = {
-      ...MDCRipple.createAdapter(this),
-      addClass: (className: string) => rippleSurface.classList.add(className),
-      removeClass: (className: string) => rippleSurface.classList.remove(className),
-      updateCssVariable: (varName: string, value: string) => rippleSurface.style.setProperty(varName, value),
-    };
-    const rippleFoundation = new MDCRippleFoundation(rippleAdapter);
+    const rippleFoundation =
+        new MDCRippleFoundation(MDCRipple.createAdapter(this));
     this.ripple_ = rippleFactory(this.root, rippleFoundation);
 
     const tabIndicatorElement = this.root.querySelector(
