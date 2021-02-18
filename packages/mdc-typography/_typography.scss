@@ -27,15 +27,39 @@
 @use 'sass:map';
 @use 'sass:string';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/custom-properties';
+@use '@material/theme/keys';
 @use '@material/theme/theme';
 
+/// @deprecated Avoid calling this function directly. Instead, configure the
+/// `$styles-<style>` variable Maps.
 @function set-styles_($base-styles, $scale-styles, $override-styles) {
+  $options: (
+    custom-property-prefix: typography,
+  );
+
+  $base-styles: keys.set-values($base-styles, $options: $options);
+
   @each $style, $style-props in $scale-styles {
+    @each $base-key in map.keys($base-styles) {
+      // Ignore the return result, it's not needed
+      $unused: keys.add-link(keys.combine($style, $base-key), $base-key);
+    }
+
     // Merge base properties for all styles.
     $style-props: map.merge($base-styles, $style-props);
 
     // Merge overrides onto each style.
     $style-props: map.merge($style-props, map.get($override-styles, $style));
+
+    // Register keys for this style
+    @each $property, $value in $style-props {
+      $unused: keys.set-value(
+        keys.combine($style, $property),
+        $value,
+        $options: $options
+      );
+    }
 
     // Override original styles with new styles.
     $scale-styles: map.merge($scale-styles, (#{$style}: $style-props));
@@ -69,6 +93,8 @@ $styles-caption: () !default;
 $styles-button: () !default;
 $styles-overline: () !default;
 
+/// @deprecated Do not override this variable. Use the $styles-<style> override
+/// Map variables instead, or $font-family to set the base font family.
 $base: (
   font-family: $font-family,
 ) !default;
@@ -82,6 +108,8 @@ $font-weight-values: (
   black: 900,
 ) !default;
 
+/// @deprecated Do not override this variable. Use the $styles-<style> override
+/// Map variables instead.
 $styles: set-styles_(
   $base,
   (
@@ -207,12 +235,24 @@ $styles: set-styles_(
   )
 ) !default;
 
+// A copy of the styles Map that is used to detect compile-time changes for
+// Angular support.
+$_styles-copy: $styles;
+
+@function is-typography-style($style) {
+  @return map.has-key($styles, $style);
+}
+
+@function get-typography-styles() {
+  @return map.keys($styles);
+}
+
 @mixin core-styles($query: feature-targeting.all()) {
   .mdc-typography {
     @include base($query: $query);
   }
 
-  @each $style in map.keys($styles) {
+  @each $style in get-typography-styles() {
     .mdc-typography--#{$style} {
       @include typography($style, $query: $query);
     }
@@ -224,46 +264,41 @@ $styles: set-styles_(
 
   @include smooth-font($query: $query);
   @include feature-targeting.targets($feat-typography) {
-    @include theme.property(
-      font-family,
-      (
-        varname: --mdc-typography-font-family,
-        fallback: map.get($base, 'font-family'),
-      )
-    );
+    @include theme.property(font-family, font-family);
   }
 }
 
 @mixin typography($style, $query: feature-targeting.all(), $exclude-props: ()) {
   $feat-typography: feature-targeting.create-target($query, typography);
-  $style-props: map.get($styles, $style);
 
-  @if not map.has-key($styles, $style) {
-    @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{map.keys($styles)}";
+  @if not is-typography-style($style) {
+    @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{get-typography-styles()}";
   }
 
   @include smooth-font($query: $query);
   @include feature-targeting.targets($feat-typography) {
-    @each $key, $value in $style-props {
-      @if list.index($exclude-props, $key) == null {
-        $fallback: $value;
-        @if $key == 'font-family' {
-          // Each style has its own font-family custom property, but should
-          // fallback to a generic font-family property. This allows
-          // customizing the font-family for all styles or only specific ones.
-          $fallback: (
-            varname: --mdc-typography-font-family,
-            fallback: $fallback,
+    @each $key in keys.get-keys($style) {
+      // <style>-<property>: headline1-font-size
+      // Slice the string past the first key separator to retrieve the
+      // property name
+      $property: string.slice($key, string.index($key, '-') + 1);
+      @if list.index($exclude-props, $property) == null {
+        $current-global-value: map.get($styles, $style, $property);
+        $configured-global-value: map.get($_styles-copy, $style, $property);
+        @if $current-global-value != $configured-global-value {
+          // A compile time change was made to $mdc-typography-styles. To
+          // support Angular, use this value instead of the key's value.
+          $custom-prop: keys.create-custom-property($key);
+          $custom-prop: custom-properties.set-fallback(
+            $custom-prop,
+            $current-global-value
           );
+          @include theme.property($property, $custom-prop);
+        } @else {
+          // Otherwise, use the key, which may be different from the original
+          // configured global value.
+          @include theme.property($property, $key);
         }
-
-        @include theme.property(
-          $key,
-          (
-            varname: --mdc-typography-#{$style}-#{$key},
-            fallback: $fallback,
-          )
-        );
       }
     }
   }

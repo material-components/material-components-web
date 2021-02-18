@@ -1,0 +1,494 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:string';
+@use './custom-properties';
+
+/// A flat Map of keys and their values. Keys may be set to any static CSS
+/// value, or another key's name to resolve to that key's value.
+///
+/// @example - scss
+///   $_store: (
+///     primary: purple, // keys may be set to CSS values...
+///     button-color: primary, // ...or resolve to another key's value
+///   );
+///
+/// @type {Map}
+$_store: ();
+/// A flat Map of relationship links between keys. While key values may
+/// resolve to another key's value in the key store, the store does not
+/// preserve or infer relationships between keys.
+///
+/// Instead, this link Map records the original relationship between keys as
+/// their values are updated and potentially overridden with customizations.
+///
+/// @example - scss
+///   // Given these keys...
+///   $primary: purple;
+///   $button-color: $primary; // ...button-color is linked to the primary key
+///
+///   // A key store with value customizations may look like this:
+///   $_store: (
+///     primary: amber,
+///     button-color: teal, // the relationship is lost with a customization
+///   );
+///
+///   // The links Map preserves the relationship for custom property
+///   // generation, while the store Map is only focused on values.
+///   $_links: (
+///     button-color: primary,
+///   );
+///
+/// @type {Map}
+$_links: ();
+/// A map of key options. If a key has options, it will have an entry in this
+/// variable with a Map value with options for the key.
+///
+/// @example - scss
+///   // Option structure
+///   $_options: (
+///     key-name: (
+///       // An additional prefix to add when generating the varname of a
+///       // key's custom property
+///       // --mdc-<prefix>-key-name
+///       custom-property-prefix: prefix
+///     )
+///   );
+///
+/// @type {Map}
+$_options: ();
+
+/// Indicates whether or not the provided value is a registered key.
+///
+/// @param {String} $key - One or more key parts to check
+/// @return {Bool} True if the key is registered, or false if it is not.
+@function is-key($key...) {
+  $key: combine($key...);
+  @return map.has-key($_store, $key);
+}
+
+/// Retrieves a List of all keys matching the provided key group prefix.
+///
+/// @example - scss
+///   $keys: get-keys(typography);
+///   // (typography-headline,
+///   //  typography-body,
+///   //  typography-body-font,
+///   //  typography-body-size)
+///
+/// @param {String} $group - Optional group prefix to search by. If ommitted,
+///     all registered keys will be returned.
+/// @return {List} A List of all keys matching the group prefix.
+@function get-keys($group: '') {
+  $keys: ();
+  @each $key in map.keys($_store) {
+    @if string.index($key, $group) == 1 {
+      $keys: list.append($keys, $key);
+    }
+  }
+
+  @return $keys;
+}
+
+/// Registers a Map of keys and their values with the key store. Key values may
+/// either be CSS values or other key strings.
+///
+/// @example - scss
+///   @include set-values((
+///     primary: teal,
+///     label-color: primary
+///   ));
+///
+/// Options may also be added for each key by providing an `$options` parameter.
+///
+/// @example - scss
+///   @include set-values(
+///     $key-map,
+///     $options: (
+///       // An additional prefix to add when generating the varname of a
+///       // key's custom property
+///       // --mdc-<prefix>-key-name
+///       custom-property-prefix: prefix
+///     )
+///   );
+///
+/// Note that this mixin only sets key values. If a key points to another key,
+/// it does not link those keys when custom properties are emitted. Use
+/// `add-link()` or `register-theme()` to create links between keys.
+///
+/// @see {mixin} set-value
+/// @see {mixin} add-link
+/// @see {mixin} register-theme
+///
+/// @param {Map} $key-map - A Map of keys to register.
+/// @param {Map} $options [null] - Optional Map of options to add for each key.
+@mixin set-values($key-map, $options: null) {
+  $unused: set-values($key-map, $options: $options);
+}
+
+/// Function version of `set-values()`.
+///
+/// Mixins cannot be invoked within functions in Sass. Use this when
+/// `set-values()` must be used within a function. The return value may be
+/// discarded or re-assigned to the `$key-map` provided.
+///
+/// @example - scss
+///   @function foo() {
+///     $unused: set-values((primary: teal));
+///   }
+///
+///   @function bar() {
+///     $key-map: (primary: teal);
+///     $key-map: set-values($key-map);
+///   }
+///
+/// @see {mixin} set-values
+///
+/// @return {Map} `$key-map`, unmodified, for convenience.
+@function set-values($key-map, $options: null) {
+  @each $key, $value in $key-map {
+    $key: set-value($key, $value, $options: $options);
+  }
+
+  @return $key-map;
+}
+
+/// Sets the value of a key. Key values may either be CSS values or other key
+/// strings.
+///
+/// @example - scss
+///   @include set-value(primary, teal);
+///   @include set-value(label-color, primary);
+///
+/// Options may also be added for each key by providing an `$options` parameter.
+///
+/// @example - scss
+///   @include set-value(key-name, teal, $options: (
+///     // An additional prefix to add when generating the varname of a
+///     // key's custom property
+///     // --mdc-<prefix>-key-name
+///     custom-property-prefix: prefix
+///   ));
+///
+/// Note that this mixin only sets the key's value. If the key points to another
+/// key, it does not link those keys when custom properties are emitted. Use
+/// `add-link()` or `register-theme()` to create links between keys.
+///
+/// @see {mixin} add-link
+/// @see {mixin} register-theme
+///
+/// @param {String} $key - The key to set a value for.
+/// @param {*} $value - The value of the key.
+/// @param {Map} $options [null] - Optional Map of options to add for each key.
+@mixin set-value($key, $value, $options: null) {
+  $unused: set-value($key, $value, $options: $options);
+}
+
+/// Function version of `set-value()`.
+///
+/// Mixins cannot be invoked within functions in Sass. Use this when
+/// `set-value()` must be used within a function. The return value may be
+/// discarded or re-assigned to the `$key` provided.
+///
+/// @example - scss
+///   @function foo() {
+///     $unused: set-value(primary, teal);
+///   }
+///
+///   @function bar() {
+///     $key: primary;
+///     $key: set-value($key, teal);
+///   }
+///
+/// @see {mixin} set-value
+///
+/// @return {String} `$key`, unmodified, for convenience.
+@function set-value($key, $value, $options: null) {
+  // Use !global to avoid shadowing
+  // https://sass-lang.com/documentation/variables#shadowing
+  $_store: map.set($_store, $key, $value) !global;
+  @if $options {
+    $_options: map.set($_options, $key, $options) !global;
+  }
+
+  @return $key;
+}
+
+/// Add a link between two keys.
+///
+/// When keys are linked and chained custom properties are emitted, the value
+/// of `$key` will always include the `var()` function of its linked key, even
+/// if it overrides its linked key's value.
+///
+/// @example - scss
+///   @include add-link(label-color, primary);
+///   @include set-values((
+///     primary: teal,
+///     label-color: amber
+///   ));
+///
+///   .primary {
+///     @include theme.property(color, primary);
+///   }
+///
+///   .label-color {
+///     @include theme.property(color, label-color);
+///   }
+///
+/// @example - css
+///   .primary {
+///     color: var(--primary, teal);
+///   }
+///
+///   .label-color {
+///     color: var(--label-color, var(--primary, amber));
+///   }
+///
+///
+/// If a key does not already have a value set, its value will be set to the
+/// linked key provided.
+///
+/// @param {String} $key - The key to add a link to.
+/// @param {String} $link - The name to link to `$key`.
+/// @throw When attempting to change the link of a key that has already been
+///     linked.
+@mixin add-link($key, $link) {
+  $unused: add-link($key, $link);
+}
+
+/// Function version of `add-link()`.
+///
+/// Mixins cannot be invoked within functions in Sass. Use this when
+/// `add-link()` must be used within a function. The return value may be
+/// discarded or re-assigned to the `$key` provided.
+///
+/// @example - scss
+///   @function foo() {
+///     $unused: add-link(label-color, primary);
+///   }
+///
+///   @function bar() {
+///     $key: label-color;
+///     $key: set-value($key, primary);
+///   }
+///
+/// @see {mixin} `add-link()`
+///
+/// @return {String} `$key` for convenience.
+@function add-link($key, $link) {
+  @if map.has-key($_links, $key) {
+    @error '#{$key} already has a link';
+  }
+
+  // Use !global to avoid shadowing
+  // https://sass-lang.com/documentation/variables#shadowing
+  $_links: map.set($_links, $key, $link) !global;
+  @if not map.has-key($_store, $key) {
+    $key: set-value($key, $link);
+  }
+
+  @return $key;
+}
+
+/// Resolve a key to its CSS value. This may be a static CSS value or a dynamic
+/// `var()` value.
+///
+/// The value that this function returns may change depending on configuration
+/// options if a key's value points to another key.
+///
+/// To always retrieve the static CSS value a key resolves to, even if it points
+/// to another key, provide `$deep: true` as a parameter to the function.
+///
+/// @param {String...} $key - One or more key parts to resolve to a CSS value.
+/// @param {Bool} $deep [false] - Set to true as a named parameter to always
+///     resolve the key to its static CSS value and not a dynamic `var()` value.
+/// @return {*} The value the key resolves to. This may be `null` if the key
+///     (or the key it points to) has not been registered.
+@function resolve($key...) {
+  $deep: map.get(meta.keywords($key), deep);
+  $key: combine($key...);
+
+  $value: map.get($_store, $key);
+  @if is-key($value) {
+    $value: resolve($value);
+  }
+
+  @return $value;
+}
+
+/// Register a `$theme` Map variable's keys. This should only be done once in
+/// the `theme-styles()` mixin with the canonical `$theme` Map to initialize
+/// default values and linked keys.
+///
+/// @example - scss
+///   @mixin theme-styles($theme: button-filled-theme.$light-theme) {
+///     @include keys.register-theme($theme, button-filled);
+///     @include button-filled-theme.theme($theme);
+///   }
+///
+/// A component's `$theme` Map may have shared keys (such as color, shape, and
+/// typography) that need linked before user customization with the `theme()`
+/// mixin.
+///
+/// The `register-theme()` mixin handles adding these links with `add-link()`
+/// dynamically from a canonical `$theme` configuration provided by a trusted
+/// source in `theme-styles()`. Subsequent calls to `theme()` will not invoke
+/// `register-theme()` or change the linked keys' registration.
+///
+/// @param {Map} $theme - The theme Map to register keys for.
+/// @param {String} $prefix [null] - Optional prefix to prepend before each key.
+/// @param {Map} $options [null] - Optional Map of options to add for each key.
+@mixin register-theme($theme, $prefix: null, $options: null) {
+  // The first $theme Map received in theme-styles() should be used to
+  // register keys.
+  // Subsequent calls to theme() to customize key values will not be
+  // wrapped within theme-styles() and will not change the registered
+  // key values (or more importantly, their links), since
+  // customizations may be simple one-offs.
+  @each $key, $value in $theme {
+    @if $value != null {
+      $key: combine($prefix, $key);
+      @include set-value($key, $value, $options: $options);
+      @if is-key($value) {
+        @include add-link($key, $link: $value);
+      }
+    }
+  }
+}
+
+/// Create and resolve custom properties from a user-provided `$theme` Map
+/// variable. The created custom properties are returned in a Map that matches
+/// the key structure of `$theme`.
+///
+/// This function should be used within a `theme()` mixin after validation and
+/// before providing any values to subsequent mixins. This will ensure that all
+/// values are custom properties to support runtime theming.
+///
+/// @example - scss
+///   $light-theme: (
+///     label-color: on-primary
+///   );
+///
+///   @mixin theme($theme) {
+///     @include theme.validate-keys($light-theme, $theme);
+///     $theme: keys.create-theme-properties($theme, button-filled);
+///     /*(
+///       label-color: (
+///         varname: --mdc-button-filled-label-color,
+///         fallback: (
+///           varname: --mdc-theme-on-primary,
+///           fallback: white,
+///         )
+///       )
+///     )*/
+///   }
+///
+/// @param {Map} $theme - The theme Map to create custom properties for.
+/// @param {String} $prefix [null] - Optional prefix to prepend for each key's
+///     custom property.
+/// @return {Map} A similar `$theme` Map whose values are replaced with the
+///     newly created and resolved custom properties.
+@function create-theme-properties($theme, $prefix: null) {
+  $theme-with-props: ();
+  @each $name, $value in $theme {
+    @if $value != null {
+      $key: combine($prefix, $name);
+      @if is-key($value) {
+        $value: create-custom-property($value);
+      }
+
+      $theme-with-props: map.set(
+        $theme-with-props,
+        $name,
+        custom-properties.create(_create-varname($key), $value)
+      );
+    }
+  }
+
+  @return $theme-with-props;
+}
+
+/// Create a custom property for a key that represents the key's linked
+/// relationships and final resolved static value.
+///
+/// This function ignores customization options and is intended to return the
+/// most accurate data structure representation of a key. Customization options
+/// (such as custom property configuration) will change how the returned value
+/// is emitted.
+///
+/// @param {$tring...} $key - One or more key parts to create a custom property
+///     for.
+/// @return {Map} A custom property Map for the key.
+@function create-custom-property($key...) {
+  $key: combine($key...);
+  $prop: custom-properties.create(_create-varname($key));
+  $link: map.get($_links, $key);
+  @if $link {
+    $prop: custom-properties.set-fallback($prop, create-custom-property($link));
+  }
+
+  @return custom-properties.set-fallback($prop, resolve($key, $deep: true));
+}
+
+/// Creates a custom property varname for a key. This function will add a key's
+/// option's `custom-property-prefix` if it exists.
+///
+/// @param {String...} $key - One or more key parts to create a varname for.
+/// @return {String} The key's custom property varname.
+@function _create-varname($key...) {
+  $key: combine($key...);
+  $prefix: map.get($_options, $key, custom-property-prefix);
+  @if $prefix {
+    $key: combine($prefix, $key);
+  }
+
+  @return custom-properties.create-varname($key);
+}
+
+/// Combines one or more key parts into a key.
+///
+/// @example - scss
+///   $key: combine(body, font-size);
+///   // body-font-size
+///
+/// @param {String...} $parts - Arbitrary number of string key parts to combine.
+/// @return {String} A combined key string.
+@function combine($parts...) {
+  // Allow extra keywords to be passed to other functions without impacting this
+  // function, which does not expect any keywords.
+  $unused: meta.keywords($parts);
+  $key: '';
+  @each $part in $parts {
+    @if $part {
+      @if $key == '' {
+        $key: $part;
+      } @else {
+        $key: #{$key}-#{$part};
+      }
+    }
+  }
+
+  @return $key;
+}

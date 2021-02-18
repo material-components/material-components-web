@@ -30,6 +30,7 @@
 @use './css';
 @use './custom-properties';
 @use './gss';
+@use './keys';
 @use './replace';
 @use './theme-color';
 
@@ -38,13 +39,15 @@
 
   :root {
     @include feature-targeting.targets($feat-color) {
-      @each $style in map.keys(theme-color.$property-values) {
-        --mdc-theme-#{$style}: #{map.get(theme-color.$property-values, $style)};
+      @each $style in theme-color.get-theme-keys() {
+        @include custom-properties.declaration(
+          keys.create-custom-property($style)
+        );
       }
     }
   }
 
-  @each $style in map.keys(theme-color.$property-values) {
+  @each $style in theme-color.get-theme-keys() {
     @if $style != 'background' and $style != 'surface' {
       .mdc-theme--#{$style} {
         @include feature-targeting.targets($feat-color) {
@@ -119,9 +122,31 @@
       $gss: $gss,
       $important: $important
     );
-  } @else if map.has-key(theme-color.$property-values, $value) {
-    // $value is a theme property String
-    $custom-prop: theme-color.get-custom-property($value);
+  } @else if keys.is-key($value) {
+    // $value is a key String
+    $custom-prop: keys.create-custom-property($value);
+
+    @if theme-color.is-theme-key($value) {
+      // Determine if we need to use a compile-time updated value to support
+      // Angular.
+      $key: $value;
+      // (changed: Bool, value: *)
+      $result: theme-color.deprecated-get-global-theme-key-value-if-changed(
+        $key
+      );
+
+      @if map.get($result, changed) {
+        // $mdc-theme-property-values was changed at compile time. Use the
+        // global value instead. Otherwise if it was not changed, continue
+        // using the key store normally.
+        $custom-prop: keys.create-custom-property($key);
+        $custom-prop: custom-properties.set-fallback(
+          $custom-prop,
+          map.get($result, value)
+        );
+      }
+    }
+
     @include custom-properties.declaration(
       $property,
       $custom-prop,
