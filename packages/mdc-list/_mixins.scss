@@ -77,6 +77,9 @@
 @mixin deprecated-icon-margin($args...) {
   @include icon-margin($args...);
 }
+@mixin deprecated-item-base_($args...) {
+  @include item-base_($args...);
+}
 @mixin deprecated-item-disabled-text-color($args...) {
   @include item-disabled-text-color($args...);
 }
