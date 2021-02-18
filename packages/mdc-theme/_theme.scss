@@ -131,6 +131,16 @@
   } @else {
     // $value is a standard CSS value
     $fallback: null;
+    @if $replace {
+      // If any replacements are null, treat the entire value as null (do not
+      // emit anything).
+      @each $name, $replacement in $replace {
+        @if $replacement == null {
+          $value: null;
+        }
+      }
+    }
+
     @if $replace and $value {
       @if meta.type-of($replace) != 'map' {
         @error 'mdc-theme: Invalid replacement #{$replace}. Must be a Map.';

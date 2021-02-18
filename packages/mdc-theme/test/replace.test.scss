@@ -28,3 +28,8 @@
 .list {
   @include theme.property(padding, 0 value, $replace: (value: 16px));
 }
+
+.replace-nulls {
+  // Entire block should be dropped. This should not be emitted.
+  @include theme.property(padding, a b, $replace: (a: 16px, b: null));
+}
