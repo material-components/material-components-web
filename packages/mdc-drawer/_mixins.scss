@@ -302,7 +302,7 @@
   $rtl-reflexive: true,
   $query: feature-targeting.all()
 ) {
-  @include list-mixins.single-line-shape-radius(
+  @include list-mixins.deprecated-single-line-shape-radius(
     $radius,
     $rtl-reflexive,
     $query: $query
@@ -326,7 +326,7 @@
 @mixin divider-color($color, $query: feature-targeting.all()) {
   $value: rgba(theme-color.prop-value($color), variables.$divider-opacity);
 
-  @include list-mixins.divider-color($value, $query: $query);
+  @include list-mixins.deprecated-divider-color($value, $query: $query);
 }
 
 @mixin title-ink-color($color, $query: feature-targeting.all()) {
@@ -344,7 +344,10 @@
   $feat-color: feature-targeting.create-target($query, color);
   $value: rgba(theme-color.prop-value($color), variables.$subtitle-ink-opacity);
 
-  @include list-mixins.group-subheader-ink-color($value, $query: $query);
+  @include list-mixins.deprecated-group-subheader-ink-color(
+    $value,
+    $query: $query
+  );
 
   .mdc-drawer__subtitle {
     @include feature-targeting.targets($feat-color) {
@@ -369,7 +372,10 @@
     variables.$item-inactive-icon-ink-opacity
   );
 
-  @include list-mixins.item-graphic-ink-color($value, $query: $query);
+  @include list-mixins.deprecated-item-graphic-ink-color(
+    $value,
+    $query: $query
+  );
 }
 
 @mixin item-activated-icon-ink-color($color, $query: feature-targeting.all()) {
@@ -379,7 +385,10 @@
   );
 
   .mdc-list-item--activated {
-    @include list-mixins.item-graphic-ink-color($value, $query: $query);
+    @include list-mixins.deprecated-item-graphic-ink-color(
+      $value,
+      $query: $query
+    );
   }
 }
 
@@ -390,7 +399,10 @@
   );
 
   .mdc-list-item--activated {
-    @include list-mixins.item-primary-text-ink-color($value, $query: $query);
+    @include list-mixins.deprecated-item-primary-text-ink-color(
+      $value,
+      $query: $query
+    );
   }
 }
 
@@ -401,7 +413,10 @@
   );
 
   .mdc-list-item {
-    @include list-mixins.item-primary-text-ink-color($value, $query: $query);
+    @include list-mixins.deprecated-item-primary-text-ink-color(
+      $value,
+      $query: $query
+    );
   }
 }
 

@@ -212,7 +212,10 @@
 
   .mdc-select__menu .mdc-list {
     @include select-icon-theme.icon-horizontal-margins(0, 0, $query: $query);
-    @include list-mixins.item-selected-text-color(on-surface, $query: $query);
+    @include list-mixins.deprecated-item-selected-text-color(
+      on-surface,
+      $query: $query
+    );
   }
 
   @include select-filled.core-styles($query: $query);

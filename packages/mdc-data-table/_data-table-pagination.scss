@@ -94,7 +94,7 @@
       $query: $query
     );
     .mdc-list-item {
-      @include list-theme.single-line-height(
+      @include list-theme.deprecated-single-line-height(
         data-table-theme.$pagination-rows-per-page-select-height,
         $query: $query
       );

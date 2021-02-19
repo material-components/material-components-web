@@ -45,12 +45,18 @@
 
   // Customize the menu-surface and contained list to match the mdc-menu styles.
   .mdc-menu {
-    @include list-mixins.item-meta-ink-color(variables.$ink-color, $query);
-    @include list-mixins.item-graphic-ink-color(variables.$ink-color, $query);
+    @include list-mixins.deprecated-item-meta-ink-color(
+      variables.$ink-color,
+      $query
+    );
+    @include list-mixins.deprecated-item-graphic-ink-color(
+      variables.$ink-color,
+      $query
+    );
     @include min-width(variables.$min-width, $query: $query);
     // Include mdc-list selector to ensure list-inside-menu overrides default list styles
     .mdc-list {
-      @include list-mixins.item-primary-text-ink-color(
+      @include list-mixins.deprecated-item-primary-text-ink-color(
         variables.$ink-color,
         $query
       );
@@ -98,7 +104,7 @@
         @include rtl-mixins.reflexive-property(
           padding,
           56px,
-          list-variables.$side-padding
+          list-variables.$deprecated-side-padding
         );
       }
     }

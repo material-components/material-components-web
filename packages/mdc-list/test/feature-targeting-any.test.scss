@@ -3,24 +3,24 @@
 
 @mixin test($query) {
   .test {
-    @include list.core-styles($query: $query);
-    @include list.item-primary-text-ink-color(red, $query: $query);
-    @include list.item-secondary-text-ink-color(red, $query: $query);
-    @include list.item-graphic-fill-color(red, $query: $query);
-    @include list.item-graphic-ink-color(red, $query: $query);
-    @include list.item-meta-ink-color(red, $query: $query);
-    @include list.single-line-shape-radius(
+    @include list.deprecated-core-styles($query: $query);
+    @include list.deprecated-item-primary-text-ink-color(red, $query: $query);
+    @include list.deprecated-item-secondary-text-ink-color(red, $query: $query);
+    @include list.deprecated-item-graphic-fill-color(red, $query: $query);
+    @include list.deprecated-item-graphic-ink-color(red, $query: $query);
+    @include list.deprecated-item-meta-ink-color(red, $query: $query);
+    @include list.deprecated-single-line-shape-radius(
       42,
       $rtl-reflexive: false,
       $density-scale: 0,
       $query: $query
     );
-    @include list.single-line-height(0, $query: $query);
-    @include list.single-line-density(0, $query: $query);
-    @include list.divider-color(red, $query: $query);
-    @include list.group-subheader-ink-color(red, $query: $query);
-    @include list.ripple($query: $query);
-    @include list.without-ripple($query: $query);
+    @include list.deprecated-single-line-height(0, $query: $query);
+    @include list.deprecated-single-line-density(0, $query: $query);
+    @include list.deprecated-divider-color(red, $query: $query);
+    @include list.deprecated-group-subheader-ink-color(red, $query: $query);
+    @include list.deprecated-ripple($query: $query);
+    @include list.deprecated-without-ripple($query: $query);
   }
 }
 

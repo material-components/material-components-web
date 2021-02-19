@@ -503,7 +503,10 @@ $error-color: error !default;
     $minimum-height-for-filled-label: $minimum-height-for-filled-label,
     $query: $query
   );
-  @include list-mixins.single-line-density($density-scale, $query: $query);
+  @include list-mixins.deprecated-single-line-density(
+    $density-scale,
+    $query: $query
+  );
 }
 
 ///
@@ -530,7 +533,10 @@ $error-color: error !default;
     $minimum-height-for-filled-label: $minimum-height-for-filled-label,
     $query: $query
   );
-  @include list-mixins.single-line-density($density-scale, $query: $query);
+  @include list-mixins.deprecated-single-line-density(
+    $density-scale,
+    $query: $query
+  );
 }
 
 ///
@@ -547,7 +553,10 @@ $error-color: error !default;
   );
 
   @include outlined-height($height, $query: $query);
-  @include list-mixins.single-line-density($density-scale, $query: $query);
+  @include list-mixins.deprecated-single-line-density(
+    $density-scale,
+    $query: $query
+  );
 }
 
 ///
@@ -567,7 +576,10 @@ $error-color: error !default;
   );
 
   @include outlined-with-leading-icon-height($height, $query: $query);
-  @include list-mixins.single-line-density($density-scale, $query: $query);
+  @include list-mixins.deprecated-single-line-density(
+    $density-scale,
+    $query: $query
+  );
 }
 
 ///
