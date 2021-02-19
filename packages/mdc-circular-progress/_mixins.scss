@@ -25,6 +25,7 @@
 
 @use '@material/animation/functions' as animation-functions;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/gss';
 @use '@material/theme/theme';
 @use './variables';
 @use './keyframes';
@@ -268,6 +269,11 @@
   .mdc-circular-progress__circle-left
     .mdc-circular-progress__indeterminate-circle-graphic {
     @include feature-targeting.targets($feat-animation) {
+      @include gss.annotate(
+        (
+          noflip: true,
+        )
+      );
       animation: mdc-circular-progress-left-spin variables.$arc-time
         variables.$timing-function infinite both;
     }
@@ -276,6 +282,11 @@
   .mdc-circular-progress__circle-right
     .mdc-circular-progress__indeterminate-circle-graphic {
     @include feature-targeting.targets($feat-animation) {
+      @include gss.annotate(
+        (
+          noflip: true,
+        )
+      );
       animation: mdc-circular-progress-right-spin variables.$arc-time
         variables.$timing-function infinite both;
     }
