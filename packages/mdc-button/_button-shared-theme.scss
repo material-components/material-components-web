@@ -172,16 +172,14 @@ $disabled-container-color: rgba(
       );
     }
 
-    @include ripple-theme.focus() {
+    &:focus {
       @include _container-fill-color(
         state.get-focus-state($color-or-map),
         $query: $query
       );
     }
 
-    // Increase active state specificity due to ripple-theme.focus().
-    &:active,
-    &:focus:active {
+    &:active {
       @include _container-fill-color(
         state.get-pressed-state($color-or-map),
         $query: $query
@@ -231,16 +229,14 @@ $disabled-container-color: rgba(
       );
     }
 
-    @include ripple-theme.focus() {
+    &:focus {
       @include _icon-color(
         state.get-focus-state($color-or-map),
         $query: $query
       );
     }
 
-    // Increase active state specificity due to ripple-theme.focus().
-    &:active,
-    &:focus:active {
+    &:active {
       @include _icon-color(
         state.get-pressed-state($color-or-map),
         $query: $query
@@ -286,13 +282,11 @@ $disabled-container-color: rgba(
       @include _ink-color(state.get-hover-state($color-or-map), $query: $query);
     }
 
-    @include ripple-theme.focus() {
+    &:focus {
       @include _ink-color(state.get-focus-state($color-or-map), $query: $query);
     }
 
-    // Increase active state specificity due to ripple-theme.focus().
-    &:active,
-    &:focus:active {
+    &:active {
       @include _ink-color(
         state.get-pressed-state($color-or-map),
         $query: $query
