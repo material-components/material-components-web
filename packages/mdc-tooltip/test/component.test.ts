@@ -134,23 +134,6 @@ describe('MDCTooltip', () => {
          expect(mockFoundation.handleAnchorMouseLeave).not.toHaveBeenCalled();
        });
 
-    it('#initialSyncWithDOM registers blur event handler on the anchor element',
-       () => {
-         const {anchorElem, mockFoundation, component} =
-             setupTestWithMockFoundation(fixture);
-         emitEvent(anchorElem, 'blur');
-         expect(mockFoundation.handleAnchorBlur).toHaveBeenCalled();
-         component.destroy();
-       });
-
-    it('#destroy deregisters blur event handler on the anchor element', () => {
-      const {anchorElem, mockFoundation, component} =
-          setupTestWithMockFoundation(fixture);
-      component.destroy();
-      emitEvent(anchorElem, 'blur');
-      expect(mockFoundation.handleAnchorBlur).not.toHaveBeenCalled();
-    });
-
     it('#initialSyncWithDOM registers transitionend event handler on the tooltip',
        () => {
          const {mockFoundation, component} =

@@ -142,6 +142,18 @@ export interface MDCTooltipAdapter {
       evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
+   * Registers an event listener to the anchor element.
+   */
+  registerAnchorEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener to the anchor element.
+   */
+  deregisterAnchorEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
    * Registers an event listener to the document body.
    */
   registerDocumentEventHandler<K extends EventType>(

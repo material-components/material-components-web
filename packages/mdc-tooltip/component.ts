@@ -40,7 +40,6 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   private handleMouseEnter!: SpecificEventListener<'mouseenter'>;
   private handleFocus!: SpecificEventListener<'focus'>;
   private handleMouseLeave!: SpecificEventListener<'mouseleave'>;
-  private handleBlur!: SpecificEventListener<'blur'>;
   private handleTransitionEnd!: SpecificEventListener<'transitionend'>;
   private handleClick!: SpecificEventListener<'click'>;
   private handleTouchstart!: SpecificEventListener<'touchstart'>;
@@ -78,10 +77,6 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       this.foundation.handleAnchorMouseLeave();
     };
 
-    this.handleBlur = (evt) => {
-      this.foundation.handleAnchorBlur(evt);
-    };
-
     this.handleTransitionEnd = () => {
       this.foundation.handleTransitionEnd();
     };
@@ -98,7 +93,6 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       this.foundation.handleAnchorTouchend();
     };
 
-    this.anchorElem.addEventListener('blur', this.handleBlur);
     if (this.isTooltipRich && this.isTooltipPersistent) {
       this.anchorElem.addEventListener('click', this.handleClick);
     } else {
@@ -115,7 +109,6 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
 
   destroy() {
     if (this.anchorElem) {
-      this.anchorElem.removeEventListener('blur', this.handleBlur);
       if (this.isTooltipRich && this.isTooltipPersistent) {
         this.anchorElem.removeEventListener('click', this.handleClick);
       } else {
@@ -214,6 +207,12 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
         if (this.root instanceof HTMLElement) {
           this.root.removeEventListener(evt, handler);
         }
+      },
+      registerAnchorEventHandler: (evt, handler) => {
+        this.anchorElem?.addEventListener(evt, handler);
+      },
+      deregisterAnchorEventHandler: (evt, handler) => {
+        this.anchorElem?.addEventListener(evt, handler);
       },
       registerDocumentEventHandler: (evt, handler) => {
         document.body.addEventListener(evt, handler);

@@ -74,6 +74,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       focusAnchorElement: () => undefined,
       registerEventHandler: () => undefined,
       deregisterEventHandler: () => undefined,
+      registerAnchorEventHandler: () => undefined,
+      deregisterAnchorEventHandler: () => undefined,
       registerDocumentEventHandler: () => undefined,
       deregisterDocumentEventHandler: () => undefined,
       registerWindowEventHandler: () => undefined,
@@ -101,6 +103,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   private hideTimeout: number|null = null;
   private showTimeout: number|null = null;
   private readonly animFrame: AnimationFrame;
+  private readonly anchorBlurHandler: SpecificEventListener<'blur'>;
   private readonly documentClickHandler: SpecificEventListener<'click'>;
   private readonly documentKeydownHandler: SpecificEventListener<'keydown'>;
   private readonly richTooltipMouseEnterHandler:
@@ -115,6 +118,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   constructor(adapter?: Partial<MDCTooltipAdapter>) {
     super({...MDCTooltipFoundation.defaultAdapter, ...adapter});
     this.animFrame = new AnimationFrame();
+
+    this.anchorBlurHandler = (evt) => {
+      this.handleAnchorBlur(evt);
+    };
 
     this.documentClickHandler = (evt) => {
       this.handleDocumentClick(evt);
@@ -234,20 +241,6 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }, this.hideDelayMs);
   }
 
-  handleAnchorBlur(evt: FocusEvent) {
-    if (this.richTooltip) {
-      const tooltipContainsRelatedTargetElement =
-          evt.relatedTarget instanceof HTMLElement &&
-          this.adapter.tooltipContainsElement(evt.relatedTarget);
-      // If focus changed to the tooltip element, don't hide the tooltip.
-      if (tooltipContainsRelatedTargetElement) {
-        return;
-      }
-    }
-    // Hide tooltip immediately on focus change.
-    this.hide();
-  }
-
   handleAnchorClick() {
     if (this.tooltipShown) {
       this.hide();
@@ -288,6 +281,20 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       }
       this.hide();
     }
+  }
+
+  private handleAnchorBlur(evt: FocusEvent) {
+    if (this.richTooltip) {
+      const tooltipContainsRelatedTargetElement =
+          evt.relatedTarget instanceof HTMLElement &&
+          this.adapter.tooltipContainsElement(evt.relatedTarget);
+      // If focus changed to the tooltip element, don't hide the tooltip.
+      if (tooltipContainsRelatedTargetElement) {
+        return;
+      }
+    }
+    // Hide tooltip immediately on focus change.
+    this.hide();
   }
 
   private handleRichTooltipMouseEnter() {
@@ -362,6 +369,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     this.parentRect = this.adapter.getParentBoundingRect();
     this.richTooltip ? this.positionRichTooltip() : this.positionPlainTooltip();
 
+    this.adapter.registerAnchorEventHandler('blur', this.anchorBlurHandler);
     this.adapter.registerDocumentEventHandler(
         'click', this.documentClickHandler);
     this.adapter.registerDocumentEventHandler(
@@ -409,6 +417,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     this.adapter.addClass(HIDE_TRANSITION);
     this.adapter.removeClass(SHOWN);
 
+    this.adapter.deregisterAnchorEventHandler('blur', this.anchorBlurHandler);
     this.adapter.deregisterDocumentEventHandler(
         'click', this.documentClickHandler);
     this.adapter.deregisterDocumentEventHandler(

@@ -132,6 +132,8 @@ describe('MDCTooltipFoundation', () => {
       'focusAnchorElement',
       'registerEventHandler',
       'deregisterEventHandler',
+      'registerAnchorEventHandler',
+      'deregisterAnchorEventHandler',
       'registerDocumentEventHandler',
       'deregisterDocumentEventHandler',
       'registerWindowEventHandler',
@@ -303,6 +305,15 @@ describe('MDCTooltipFoundation', () => {
      });
 
 
+  it('#show registers blur event listener on the anchor element', () => {
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+
+    foundation.show();
+
+    expect(mockAdapter.registerAnchorEventHandler)
+        .toHaveBeenCalledWith('blur', jasmine.any(Function));
+  });
+
   it('#show registers click and keydown event listeners on the document',
      () => {
        const {foundation, mockAdapter} =
@@ -313,6 +324,16 @@ describe('MDCTooltipFoundation', () => {
        expect(mockAdapter.registerDocumentEventHandler)
            .toHaveBeenCalledWith('keydown', jasmine.any(Function));
      });
+
+  it('#hide deregisters blur event listeners on the anchor', () => {
+    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+
+    foundation.show();
+    foundation.hide();
+
+    expect(mockAdapter.deregisterAnchorEventHandler)
+        .toHaveBeenCalledWith('blur', jasmine.any(Function));
+  });
 
   it('#hide deregisters click and keydown event listeners on the document',
      () => {
