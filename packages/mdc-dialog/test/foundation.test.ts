@@ -351,6 +351,14 @@ describe('MDCDialogFoundation', () => {
            .toHaveBeenCalledWith('scroll', jasmine.any(Function));
      });
 
+  it('#open hides the scrim if \"isAboveFullscreenDialog" is true', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.open({isAboveFullscreenDialog: true});
+
+    expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.SCRIM_HIDDEN);
+    expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.OPENING);
+  });
+
   it(`#layout removes ${
          cssClasses.STACKED} class, detects stacked buttons, and adds class`,
      () => {
@@ -676,5 +684,39 @@ describe('MDCDialogFoundation', () => {
 
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(cssClasses.SCROLL_DIVIDER_FOOTER);
+     });
+
+  it('#showSurfaceScrim adds css classes to show surface scrim', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.showSurfaceScrim();
+
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.SURFACE_SCRIM_SHOWING);
+    // tick to wait for next animation frame
+    jasmine.clock().tick(1);
+    jasmine.clock().tick(100);
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.SURFACE_SCRIM_SHOWN);
+  });
+
+  it('#hideSurfaceScrim adds css classes to hide surface scrim', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.hideSurfaceScrim();
+
+    expect(mockAdapter.removeClass)
+        .toHaveBeenCalledWith(cssClasses.SURFACE_SCRIM_SHOWN);
+    expect(mockAdapter.addClass)
+        .toHaveBeenCalledWith(cssClasses.SURFACE_SCRIM_HIDING);
+  });
+
+  it('#handleSurfaceScrimTransitionEnd removes surface-scrim animation classes',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.handleSurfaceScrimTransitionEnd();
+
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(cssClasses.SURFACE_SCRIM_SHOWING);
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(cssClasses.SURFACE_SCRIM_HIDING);
      });
 });

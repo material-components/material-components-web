@@ -27,6 +27,7 @@ import {SpecificEventListener} from '@material/base/types';
 
 import {MDCDialogAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
+import {DialogConfigOptions} from './types';
 
 enum AnimationKeys {
   POLL_SCROLL_POS = 'poll_scroll_position'
@@ -123,13 +124,16 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     }
   }
 
-  open() {
+  open(dialogOptions?: DialogConfigOptions) {
     this.dialogOpen = true;
     this.adapter.notifyOpening();
     this.adapter.addClass(cssClasses.OPENING);
     if (this.isFullscreen && this.adapter.isContentScrollable()) {
       this.adapter.registerContentEventHandler(
           'scroll', this.contentScrollHandler);
+    }
+    if (dialogOptions && dialogOptions.isAboveFullscreenDialog) {
+      this.adapter.addClass(cssClasses.SCRIM_HIDDEN);
     }
 
     // Wait a frame once display is no longer "none", to establish basis for
@@ -174,6 +178,35 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       this.handleAnimationTimerEnd();
       this.adapter.notifyClosed(action);
     }, numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
+  }
+
+  /**
+   * Used only in instances of showing a secondary dialog over a full-screen
+   * dialog. Shows the "surface scrim" displayed over the full-screen dialog.
+   */
+  showSurfaceScrim() {
+    this.adapter.addClass(cssClasses.SURFACE_SCRIM_SHOWING);
+    this.runNextAnimationFrame(() => {
+      this.adapter.addClass(cssClasses.SURFACE_SCRIM_SHOWN);
+    });
+  }
+
+  /**
+   * Used only in instances of showing a secondary dialog over a full-screen
+   * dialog. Hides the "surface scrim" displayed over the full-screen dialog.
+   */
+  hideSurfaceScrim() {
+    this.adapter.removeClass(cssClasses.SURFACE_SCRIM_SHOWN);
+    this.adapter.addClass(cssClasses.SURFACE_SCRIM_HIDING);
+  }
+
+  /**
+   * Handles `transitionend` event triggered when surface scrim animation is
+   * finished.
+   */
+  handleSurfaceScrimTransitionEnd() {
+    this.adapter.removeClass(cssClasses.SURFACE_SCRIM_HIDING);
+    this.adapter.removeClass(cssClasses.SURFACE_SCRIM_SHOWING);
   }
 
   isOpen() {

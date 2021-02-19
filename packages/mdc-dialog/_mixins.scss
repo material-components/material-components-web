@@ -92,6 +92,14 @@
     &.mdc-dialog--fullscreen {
       @include _fullscreen-dialog-size($query: $query);
     }
+
+    &.mdc-dialog__scrim--hidden {
+      .mdc-dialog__scrim {
+        @include feature-targeting.targets($feat-structure) {
+          opacity: 0;
+        }
+      }
+    }
   }
 
   .mdc-dialog__scrim {
@@ -378,6 +386,40 @@
         opacity: 1;
       }
     }
+
+    &.mdc-dialog__surface-scrim--shown {
+      .mdc-dialog__surface-scrim {
+        @include feature-targeting.targets($feat-structure) {
+          opacity: 1;
+          z-index: 1;
+        }
+      }
+    }
+
+    &.mdc-dialog__surface-scrim--hiding {
+      .mdc-dialog__surface-scrim {
+        @include feature-targeting.targets($feat-animation) {
+          transition: opacity 75ms linear;
+        }
+      }
+    }
+
+    &.mdc-dialog__surface-scrim--showing {
+      .mdc-dialog__surface-scrim {
+        @include feature-targeting.targets($feat-animation) {
+          transition: opacity 150ms linear;
+        }
+      }
+    }
+  }
+
+  .mdc-dialog__surface-scrim {
+    @include feature-targeting.targets($feat-structure) {
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   // postcss-bem-linter: end
@@ -408,6 +450,12 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-dialog__scrim {
+    @include feature-targeting.targets($feat-color) {
+      background-color: rgba(theme-color.prop-value($color), $opacity);
+    }
+  }
+
+  .mdc-dialog__surface-scrim {
     @include feature-targeting.targets($feat-color) {
       background-color: rgba(theme-color.prop-value($color), $opacity);
     }

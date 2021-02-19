@@ -30,3 +30,14 @@ export interface MDCDialogCloseEventDetail {
 export interface MDCDialogCloseEvent extends Event {
   readonly detail: MDCDialogCloseEventDetail;
 }
+
+
+/**
+ * Options for how to configure the dialog.
+ */
+export interface DialogConfigOptions {
+  // Boolean indicating whether or not the dialog being opened is a confirmation
+  // dialog opened on top of a full-screen dialog (the only time multiple
+  // dialogs should be open on top of one another).
+  isAboveFullscreenDialog?: boolean;
+}
