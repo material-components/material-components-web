@@ -62,6 +62,8 @@ $_light-theme: (
   pressed-icon-color: null,
   pressed-ripple-color: theme-color.$primary,
   pressed-ripple-opacity: null,
+  focus-outline-color: null,
+  focus-outline-width: null,
 );
 
 @mixin theme($theme) {
@@ -100,6 +102,15 @@ $_light-theme: (
   $hover-state-layer-color: map.get($theme, hover-state-layer-color);
   @if $hover-state-layer-color {
     @include ripple-color($hover-state-layer-color, $opacity-map: $opacity-map);
+  }
+
+  $focus-outline-color: map.get($theme, focus-outline-color);
+  @if $focus-outline-color {
+    @include focus-outline-color($focus-outline-color);
+  }
+  $focus-outline-width: map.get($theme, focus-outline-width);
+  @if $focus-outline-width {
+    @include focus-outline-width($focus-outline-width);
   }
 }
 
@@ -395,90 +406,92 @@ $_light-theme: (
     @include css.declaration(padding-left, $padding-left);
   }
 
-  @include ripple-theme.focus() {
-    @include feature-targeting.targets($feat-structure) {
-      border-style: solid;
-      @include theme.property(border-width, $width);
+  &:not(:disabled) {
+    @include ripple-theme.focus() {
+      @include feature-targeting.targets($feat-structure) {
+        border-style: solid;
+        @include theme.property(border-width, $width);
 
-      // sass math required for IE since IE doesn't support css max
-      $padding-top-fallback: math.abs(
-        list.nth($padding-fallbacks, 1) - $width-fallback
-      );
-      $padding-right-fallback: math.abs(
-        list.nth($padding-fallbacks, 2) - $width-fallback
-      );
-      $padding-bottom-fallback: math.abs(
-        list.nth($padding-fallbacks, 3) - $width-fallback
-      );
-      $padding-left-fallback: math.abs(
-        list.nth($padding-fallbacks, 4) - $width-fallback
-      );
+        // sass math required for IE since IE doesn't support css max
+        $padding-top-fallback: math.abs(
+          list.nth($padding-fallbacks, 1) - $width-fallback
+        );
+        $padding-right-fallback: math.abs(
+          list.nth($padding-fallbacks, 2) - $width-fallback
+        );
+        $padding-bottom-fallback: math.abs(
+          list.nth($padding-fallbacks, 3) - $width-fallback
+        );
+        $padding-left-fallback: math.abs(
+          list.nth($padding-fallbacks, 4) - $width-fallback
+        );
 
-      // max(a, calc(a * -1)) is equivalent to math.abs
-      $padding-top: replace.replace-string(
-        'max(paddingcalc, calc(paddingcalc * -1))',
-        (
-          paddingcalc: 'calc(paddingval - width)',
-          paddingval: list.nth($padding, 1),
-          width: $width,
-        )
-      );
-      $padding-right: replace.replace-string(
-        'max(paddingcalc, calc(paddingcalc * -1))',
-        (
-          paddingcalc: 'calc(paddingval - width)',
-          paddingval: list.nth($padding, 2),
-          width: $width,
-        )
-      );
-      $padding-bottom: replace.replace-string(
-        'max(paddingcalc, calc(paddingcalc * -1))',
-        (
-          paddingcalc: 'calc(paddingval - width)',
-          paddingval: list.nth($padding, 3),
-          width: $width,
-        )
-      );
-      $padding-left: replace.replace-string(
-        'max(paddingcalc, calc(paddingcalc * -1))',
-        (
-          paddingcalc: 'calc(paddingval - width)',
-          paddingval: list.nth($padding, 4),
-          width: $width,
-        )
-      );
+        // max(a, calc(a * -1)) is equivalent to math.abs
+        $padding-top: replace.replace-string(
+          'max(paddingcalc, calc(paddingcalc * -1))',
+          (
+            paddingcalc: 'calc(paddingval - width)',
+            paddingval: list.nth($padding, 1),
+            width: $width,
+          )
+        );
+        $padding-right: replace.replace-string(
+          'max(paddingcalc, calc(paddingcalc * -1))',
+          (
+            paddingcalc: 'calc(paddingval - width)',
+            paddingval: list.nth($padding, 2),
+            width: $width,
+          )
+        );
+        $padding-bottom: replace.replace-string(
+          'max(paddingcalc, calc(paddingcalc * -1))',
+          (
+            paddingcalc: 'calc(paddingval - width)',
+            paddingval: list.nth($padding, 3),
+            width: $width,
+          )
+        );
+        $padding-left: replace.replace-string(
+          'max(paddingcalc, calc(paddingcalc * -1))',
+          (
+            paddingcalc: 'calc(paddingval - width)',
+            paddingval: list.nth($padding, 4),
+            width: $width,
+          )
+        );
 
-      @include css.declaration(
-        padding-top,
-        $padding-top-fallback,
-        $gss: (alternate: $top-has-custom-prop)
-      );
-      @if $top-has-custom-prop {
-        @include css.declaration(padding-top, $padding-top);
-      }
-      @include css.declaration(
-        padding-right,
-        $padding-right-fallback,
-        $gss: (alternate: $right-has-custom-prop)
-      );
-      @if $right-has-custom-prop {
-        @include css.declaration(padding-right, $padding-right);
-      }
-      @include css.declaration(
-        padding-bottom,
-        $padding-bottom-fallback,
-        $gss: (alternate: $bottom-has-custom-prop)
-      );
-      @if $bottom-has-custom-prop {
-        @include css.declaration(padding-bottom, $padding-bottom);
-      }
-      @include css.declaration(
-        padding-left,
-        $padding-left-fallback,
-        $gss: (alternate: $left-has-custom-prop)
-      );
-      @if $left-has-custom-prop {
-        @include css.declaration(padding-left, $padding-left);
+        @include css.declaration(
+          padding-top,
+          $padding-top-fallback,
+          $gss: (alternate: $top-has-custom-prop)
+        );
+        @if $top-has-custom-prop {
+          @include css.declaration(padding-top, $padding-top);
+        }
+        @include css.declaration(
+          padding-right,
+          $padding-right-fallback,
+          $gss: (alternate: $right-has-custom-prop)
+        );
+        @if $right-has-custom-prop {
+          @include css.declaration(padding-right, $padding-right);
+        }
+        @include css.declaration(
+          padding-bottom,
+          $padding-bottom-fallback,
+          $gss: (alternate: $bottom-has-custom-prop)
+        );
+        @if $bottom-has-custom-prop {
+          @include css.declaration(padding-bottom, $padding-bottom);
+        }
+        @include css.declaration(
+          padding-left,
+          $padding-left-fallback,
+          $gss: (alternate: $left-has-custom-prop)
+        );
+        @if $left-has-custom-prop {
+          @include css.declaration(padding-left, $padding-left);
+        }
       }
     }
   }
@@ -492,9 +505,11 @@ $_light-theme: (
 @mixin focus-outline-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include ripple-theme.focus() {
-    @include feature-targeting.targets($feat-color) {
-      @include theme.property(border-color, $color);
+  &:not(:disabled) {
+    @include ripple-theme.focus() {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(border-color, $color);
+      }
     }
   }
 }
