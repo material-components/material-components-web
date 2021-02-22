@@ -52,7 +52,7 @@ export class FocusTrap {
     this.elFocusedBeforeTrapFocus =
         document.activeElement instanceof HTMLElement ? document.activeElement :
                                                         null;
-    this.wrapTabFocus(this.root, focusableEls);
+    this.wrapTabFocus(this.root);
 
     if (!this.options.skipInitialFocus) {
       this.focusInitialElement(focusableEls, this.options.initialFocusEl);
@@ -81,16 +81,18 @@ export class FocusTrap {
    * children elements of the tabbable region, ensuring that focus is trapped
    * within that region.
    */
-  private wrapTabFocus(el: HTMLElement, focusableEls: HTMLElement[]) {
+  private wrapTabFocus(el: HTMLElement) {
     const sentinelStart = this.createSentinel();
     const sentinelEnd = this.createSentinel();
 
     sentinelStart.addEventListener('focus', () => {
+      const focusableEls = this.getFocusableElements(el);
       if (focusableEls.length > 0) {
         focusableEls[focusableEls.length - 1].focus();
       }
     });
     sentinelEnd.addEventListener('focus', () => {
+      const focusableEls = this.getFocusableElements(el);
       if (focusableEls.length > 0) {
         focusableEls[0].focus();
       }
