@@ -22,6 +22,7 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use '@material/animation/functions' as animation-functions;
+@use '@material/elevation/elevation-theme';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/elevation/variables' as elevation-variables;
 @use '@material/feature-targeting/feature-targeting';
@@ -41,11 +42,64 @@
 @use '@material/typography/typography';
 @use './fab-theme';
 @use 'sass:math';
+@use 'sass:map';
 @use 'sass:list';
 
 $extended-icon-padding: 12px !default;
 $extended-label-padding: 20px !default;
 $extended-height: 48px !default;
+
+$_extended-light-theme: (
+  container-color: theme-color.$surface,
+  container-shape: 50%,
+  container-height: 56px,
+  container-elevation: elevation-theme.get-elevation(3),
+  icon-size: 36px,
+  icon-color: null,
+  label-text-font: typography.get-font(button),
+  label-text-size: typography.get-size(button),
+  label-text-weight: typography.get-weight(button),
+  label-text-tracking: typography.get-tracking(button),
+  label-text-color: theme-color.$on-surface,
+  hover-container-elevation: null,
+  hover-state-layer-color: theme-color.$primary,
+  hover-state-layer-opacity: null,
+  hover-icon-color: null,
+  hover-label-text-color: null,
+  focus-container-elevation: null,
+  focus-state-layer-color: theme-color.$primary,
+  focus-state-layer-opacity: null,
+  focus-outline-color: null,
+  focus-outline-width: null,
+  focus-icon-color: null,
+  focus-label-text-color: null,
+  pressed-container-elevation: null,
+  pressed-ripple-color: theme-color.$primary,
+  pressed-ripple-opacity: null,
+  pressed-icon-color: null,
+  pressed-label-text-color: null,
+);
+
+@mixin theme($theme) {
+  @include theme.validate-keys($_extended-light-theme, $theme);
+  @include fab-theme.base-theme($theme);
+  @include _label-color(
+    (
+      default: map.get($theme, label-text-color),
+      hover: map.get($theme, hover-label-text-color),
+      focus: map.get($theme, focus-label-text-color),
+      pressed: map.get($theme, pressed-label-text-color),
+    )
+  );
+  @include _label-typography(
+    (
+      font: map.get($theme, label-text-font),
+      size: map.get($theme, label-text-size),
+      weight: map.get($theme, label-text-weight),
+      tracking: map.get($theme, label-text-tracking),
+    )
+  );
+}
 
 @mixin extended-fluid($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -139,4 +193,39 @@ $extended-height: 48px !default;
       $query: $query
     );
   }
+}
+
+@mixin _label-color($color-or-map) {
+  &:not(:disabled) {
+    @include _set-label-color(state.get-default-state($color-or-map));
+
+    &:hover {
+      @include _set-label-color(state.get-hover-state($color-or-map));
+    }
+
+    &:focus {
+      @include _set-label-color(state.get-focus-state($color-or-map));
+    }
+
+    &:active {
+      @include _set-label-color(state.get-pressed-state($color-or-map));
+    }
+  }
+
+  &:disabled {
+    @include _set-label-color(state.get-disabled-state($color-or-map));
+  }
+}
+
+@mixin _set-label-color($color) {
+  .mdc-fab__label {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _label-typography($typography-map) {
+  font-family: map.get($typography-map, font);
+  font-size: map.get($typography-map, size);
+  font-weight: map.get($typography-map, weight);
+  letter-spacing: map.get($typography-map, tracking);
 }

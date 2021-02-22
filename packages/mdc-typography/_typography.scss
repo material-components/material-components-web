@@ -481,3 +481,23 @@ $_styles-copy: $styles;
   height: $distance;
   content: '';
 }
+
+@function get-font($typography) {
+  @return map.get($styles, $typography, font-family);
+}
+
+@function get-line-height($typography) {
+  @return map.get($styles, $typography, line-height);
+}
+
+@function get-size($typography) {
+  @return map.get($styles, $typography, font-size);
+}
+
+@function get-weight($typography) {
+  @return map.get($styles, $typography, font-weight);
+}
+
+@function get-tracking($typography) {
+  @return map.get($styles, $typography, letter-spacing);
+}

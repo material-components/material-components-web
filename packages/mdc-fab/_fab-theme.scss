@@ -68,6 +68,10 @@ $_light-theme: (
 
 @mixin theme($theme) {
   @include theme.validate-keys($_light-theme, $theme);
+  @include base-theme($theme);
+}
+
+@mixin base-theme($theme) {
   @include container-color(map.get($theme, container-color));
   @include _container-elevation(
     (
@@ -169,13 +173,13 @@ $_light-theme: (
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    @include theme.property(color, $color);
-  }
-}
-
-@mixin _label-color($color) {
-  .mdc-fab__label {
-    @include theme.property(color, $color);
+    &,
+    &:not(:disabled) .mdc-fab__icon,
+    &:not(:disabled) .mdc-fab__label,
+    &:disabled .mdc-fab__icon,
+    &:disabled .mdc-fab__label {
+      @include theme.property(color, $color);
+    }
   }
 }
 
@@ -241,8 +245,9 @@ $_light-theme: (
   }
 
   &:disabled {
+    // FAB does not have disabled state. Use default state's elevation.
     @include _set-container-elevation(
-      state.get-disabled-state($elevation-or-map)
+      state.get-default-state($elevation-or-map)
     );
   }
 }

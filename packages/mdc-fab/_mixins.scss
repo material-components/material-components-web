@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-/// @deprecated Import '_fab.scss', '_fab-theme.scss' or '_fab-extended-theme.scss' instead.
-@forward './fab-extended-theme' show extended-fluid, extended-padding, extended-icon-padding, extended-label-padding, extended-shape-radius;
+/// @deprecated Import '_fab.scss', '_fab-theme.scss' or '_extended-fab-theme.scss' instead.
+@forward './extended-fab-theme' show extended-fluid, extended-padding, extended-icon-padding, extended-label-padding, extended-shape-radius;
 @forward './fab-theme' show $ripple-target, ripple-color, accessible, container-color, icon-size, ink-color, focus-outline-width, focus-outline-color, shape-radius;
 @forward './fab' show core-styles, without-ripple, ripple, $icon-enter-delay_, $icon-enter-duration_, base_, mini_, extended_, icon_, label_, icon-overrides_, exited_;

@@ -40,7 +40,7 @@
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/typography/typography';
 @use './fab-custom-properties';
-@use './fab-extended-theme';
+@use './extended-fab-theme';
 @use './fab-theme';
 @use 'sass:math';
 @use 'sass:list';
@@ -247,21 +247,21 @@ $icon-enter-duration_: 180ms;
 
 @mixin extended_($query: feature-targeting.all()) {
   @include typography.typography(button, $query: $query);
-  @include fab-extended-theme.extended-shape-radius(
+  @include extended-fab-theme.extended-shape-radius(
     fab-theme.$shape-radius,
     $query: $query
   );
   $extended-icon-padding: custom-properties.create(
     fab-custom-properties.$extended-icon-padding,
-    fab-extended-theme.$extended-icon-padding
+    extended-fab-theme.$extended-icon-padding
   );
   $extended-label-padding: custom-properties.create(
     fab-custom-properties.$extended-label-padding,
-    fab-extended-theme.$extended-label-padding
+    extended-fab-theme.$extended-label-padding
   );
-  @include fab-extended-theme.extended-padding(
-    fab-extended-theme.$extended-icon-padding,
-    fab-extended-theme.$extended-label-padding,
+  @include extended-fab-theme.extended-padding(
+    extended-fab-theme.$extended-icon-padding,
+    extended-fab-theme.$extended-label-padding,
     $query: $query
   );
 
@@ -270,7 +270,7 @@ $icon-enter-duration_: 180ms;
   @include feature-targeting.targets($feat-structure) {
     width: auto;
     max-width: 100%;
-    height: fab-extended-theme.$extended-height;
+    height: extended-fab-theme.$extended-height;
     // This allows the text within the extended fab to be centered for varying font sizes.
     /* @alternate */
     line-height: normal;

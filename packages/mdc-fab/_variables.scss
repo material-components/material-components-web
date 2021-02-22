@@ -20,6 +20,6 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import '_fab-theme.scss' or '_fab-extended-theme.scss' instead.
-@forward './fab-extended-theme' show $extended-icon-padding, $extended-label-padding, $extended-height;
+/// @deprecated Import '_fab-theme.scss' or '_extended-fab-theme.scss' instead.
+@forward './extended-fab-theme' show $extended-icon-padding, $extended-label-padding, $extended-height;
 @forward './fab-theme' show $height, $mini-height, $shape-radius;
