@@ -1555,6 +1555,26 @@ describe('MDCListFoundation', () => {
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
     });
 
+    it('does not activate when ctrl/meta key is pressed', () => {
+      const {foundation, mockAdapter} = setupTypeaheadTest();
+
+      mockAdapter.isRootFocused.and.returnValue(true);
+      const ctrlEvent = {
+        key: 'B',
+        ctrlKey: true,
+        preventDefault: jasmine.createSpy()
+      };
+      const metaEvent = {
+        key: 'B',
+        metaKey: true,
+        preventDefault: jasmine.createSpy()
+      };
+
+      foundation.handleKeydown(ctrlEvent, false, -1);
+      foundation.handleKeydown(metaEvent, false, -1);
+      expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalledWith(0);
+    });
+
     it('slow typing when first item focused yields correct focus jump order',
        () => {
          const {foundation, mockAdapter} = setupTypeaheadTest();
