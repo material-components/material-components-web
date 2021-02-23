@@ -203,7 +203,9 @@
     }
 
     .mdc-dialog__close {
-      @include iconbutton-mixins.size($size: 24px, $query: $query);
+      @include feature-targeting.targets($feat-structure) {
+        top: 4px;
+      }
     }
 
     &.mdc-dialog--scrollable .mdc-dialog__actions {
@@ -246,7 +248,8 @@
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-dialog__title + .mdc-dialog__content {
+  .mdc-dialog__title + .mdc-dialog__content,
+  .mdc-dialog__header + .mdc-dialog__content {
     @include feature-targeting.targets($feat-structure) {
       // Eliminate padding to bring as close to spec as possible, relying on title padding.
       // (Spec seems inconsistent RE title/body spacing on alert vs. simple variants.)
@@ -488,6 +491,10 @@
       color: rgba(theme-color.prop-value($color), $opacity);
     }
   }
+
+  .mdc-dialog__close {
+    @include iconbutton-mixins.ink_color($color: $color, $query: $query);
+  }
 }
 
 @mixin content-padding(
@@ -659,6 +666,9 @@
       @include feature-targeting.targets($feat-structure) {
         max-height: 560px;
         max-width: 560px;
+        @include _modal-header(
+          $close-icon-padding: variables.$close-icon-padding
+        );
       }
     }
 
@@ -675,6 +685,9 @@
           $horizontal-margin: $min-horizontal-small-margin,
           $max-width: $max-small-width
         );
+        @include _modal-header(
+          $close-icon-padding: variables.$close-icon-padding
+        );
       }
     }
 
@@ -685,6 +698,10 @@
         width: 100vw;
         max-height: 100vh;
         height: 100vh;
+        @include _fullscreen-header(
+          $close-icon-padding: variables.$close-icon-padding,
+          $title-side-padding: variables.$title-side-padding
+        );
       }
       @include shape-mixins.radius(0, $query: $query);
     }
@@ -696,6 +713,10 @@
         width: 100vw;
         max-height: 100vh;
         height: 100vh;
+        @include _fullscreen-header(
+          $close-icon-padding: variables.$close-icon-padding,
+          $title-side-padding: variables.$title-side-padding
+        );
       }
       @include shape-mixins.radius(0, $query: $query);
     }
@@ -705,6 +726,9 @@
       @include feature-targeting.targets($feat-structure) {
         $min-horizontal-margin: 200px;
         max-width: calc(100vw - #{$min-horizontal-margin * 2});
+        @include _modal-header(
+          $close-icon-padding: variables.$close-icon-padding
+        );
       }
     }
   }
@@ -740,5 +764,34 @@
   }
   @media (min-height: $max-height-breakpoint) {
     max-height: $max-height;
+  }
+}
+
+/// Defines styles for the header bar when a dialog takes up the full screen.
+/// @param  {Number} $close-icon-padding - Padding on close icon button.
+/// @param  {Number} $title-side-padding - Space between the edge of the close
+///   icon button and edge of the title.
+@mixin _fullscreen-header($close-icon-padding, $title-side-padding) {
+  .mdc-dialog__close {
+    order: -1;
+    @include theme.property(left, -#{$close-icon-padding});
+  }
+  .mdc-dialog__header {
+    justify-content: flex-start;
+  }
+  .mdc-dialog__title {
+    @include theme.property(
+      padding-left,
+      calc(title - 2 * close),
+      $replace: (title: $title-side-padding, close: $close-icon-padding)
+    );
+  }
+}
+
+/// Defines styles for the header bar when a dialog is modal.
+/// @param  {Number} $close-icon-padding - Padding on close icon button.
+@mixin _modal-header($close-icon-padding) {
+  .mdc-dialog__close {
+    @include theme.property(right, -#{$close-icon-padding});
   }
 }
