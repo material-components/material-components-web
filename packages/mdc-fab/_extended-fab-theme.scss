@@ -112,6 +112,7 @@ $_extended-light-theme: (
 @mixin extended-padding(
   $icon-padding,
   $label-padding,
+  $focus-outline-width: null,
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -134,6 +135,13 @@ $_extended-light-theme: (
         $is-icon-at-end: true
       );
     }
+  }
+
+  @if $focus-outline-width {
+    @include fab-theme.focus-outline-width(
+      $focus-outline-width,
+      $padding: 0 $label-padding
+    );
   }
 }
 
