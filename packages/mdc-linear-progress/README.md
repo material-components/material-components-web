@@ -130,6 +130,7 @@ MDC Linear Progress Foundation exposes the following methods:
 | `setProgress(value: number) => void` | Sets the progress bar to this value. Value should be between [0, 1]. |
 | `getProgress() => number` | The current progress value in the interval [0,1]. |
 | `setBuffer(value: number) => void` | Sets the buffer bar to this value. Value should be between [0, 1]. |
+| `getBuffer() => number` | The current buffer value in the interval [0,1]. |
 | `open() => void` | Puts the component in the open state. |
 | `close() => void` | Puts the component in the closed state. |
 | `isClosed() => boolean` | Whether or not the progress indicator is closed. |

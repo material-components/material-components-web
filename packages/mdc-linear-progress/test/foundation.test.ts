@@ -266,6 +266,7 @@ describe('MDCLinearProgressFoundation', () => {
         .toHaveBeenCalledWith('transform', 'scaleX(0.5)');
     expect(mockAdapter.setAttribute)
         .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '0.5');
+    expect(foundation.getProgress()).toEqual(0.5);
   });
 
   it('#setProgress on indeterminate does nothing', () => {
@@ -286,6 +287,7 @@ describe('MDCLinearProgressFoundation', () => {
     foundation.setBuffer(0.5);
     expect(mockAdapter.setBufferBarStyle)
         .toHaveBeenCalledWith('flex-basis', '50%');
+    expect(foundation.getBuffer()).toEqual(0.5);
   });
 
   it('#setBuffer on indeterminate does nothing', () => {
