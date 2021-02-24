@@ -199,11 +199,11 @@ $_light-theme: (
       @include _set-icon-color(state.get-hover-state($color-or-map));
     }
 
-    &:focus {
+    @include ripple-theme.focus() {
       @include _set-icon-color(state.get-focus-state($color-or-map));
     }
 
-    &:active {
+    @include ripple-theme.active() {
       @include _set-icon-color(state.get-pressed-state($color-or-map));
     }
   }
@@ -231,13 +231,13 @@ $_light-theme: (
       );
     }
 
-    &:focus {
+    @include ripple-theme.focus() {
       @include _set-container-elevation(
         state.get-focus-state($elevation-or-map)
       );
     }
 
-    &:active {
+    @include ripple-theme.active() {
       @include _set-container-elevation(
         state.get-pressed-state($elevation-or-map)
       );

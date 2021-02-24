@@ -211,11 +211,11 @@ $_extended-light-theme: (
       @include _set-label-color(state.get-hover-state($color-or-map));
     }
 
-    &:focus {
+    @include ripple-theme.focus() {
       @include _set-label-color(state.get-focus-state($color-or-map));
     }
 
-    &:active {
+    @include ripple-theme.active() {
       @include _set-label-color(state.get-pressed-state($color-or-map));
     }
   }
