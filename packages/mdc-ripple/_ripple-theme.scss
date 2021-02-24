@@ -394,11 +394,19 @@ $pressed-light-ink-opacity: 0.32 !default;
   }
 }
 
-// Selector for focus state. Using ':not(.mdc-ripple-upgraded)' to control focus
-// when JS-enabled with '.mdc-ripple-upgraded--background-focused'.
+// Selector for focus state. Using ':not(.mdc-ripple-upgraded)' to continue
+// applying focus styles on JS-disabled components, and control focus
+// on JS-enabled components with '.mdc-ripple-upgraded--background-focused'.
 @mixin focus() {
   &.mdc-ripple-upgraded--background-focused,
   &:not(.mdc-ripple-upgraded):focus {
+    @content;
+  }
+}
+
+// Selector for active state. Using `:active:active` to override focus styles.
+@mixin active() {
+  &:active:active {
     @content;
   }
 }
