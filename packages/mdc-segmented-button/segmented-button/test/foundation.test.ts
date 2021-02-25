@@ -77,7 +77,7 @@ describe('MDCSegmentedButtonFoundation', () => {
     const {foundation, mockAdapter} = setupSegmentTest();
     const selectedSegment = mockAdapter.getSegments()[testIndices.SELECTED];
 
-    foundation.unselectSegment(selectedSegment.segmentId);
+    foundation.unselectSegment(selectedSegment.segmentId!);
     expect(mockAdapter.notifySelectedChange).toHaveBeenCalledTimes(0);
   });
 
@@ -233,7 +233,7 @@ describe('MDCSegmentedButtonFoundation', () => {
          const unselectedSegment =
              mockAdapter.getSegments()[testIndices.UNSELECTED];
 
-         foundation.selectSegment(unselectedSegment.segmentId);
+         foundation.selectSegment(unselectedSegment.segmentId!);
          expect(mockAdapter.selectSegment)
              .toHaveBeenCalledWith(unselectedSegment.segmentId);
        });
@@ -243,7 +243,7 @@ describe('MDCSegmentedButtonFoundation', () => {
          const {foundation, mockAdapter} = setupSegmentTest();
          const selectedSegment = mockAdapter.getSegments()[testIndices.SELECTED];
 
-         foundation.unselectSegment(selectedSegment.segmentId);
+         foundation.unselectSegment(selectedSegment.segmentId!);
          expect(mockAdapter.unselectSegment)
              .toHaveBeenCalledWith(selectedSegment.segmentId);
        });

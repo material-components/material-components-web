@@ -27,8 +27,8 @@ import {cssClasses, numbers, strings} from '../constants';
 import {MDCDialogFoundation} from '../foundation';
 
 const ENTER_EVENTS = [
-  {type: 'keydown', key: 'Enter', target: {}},
-  {type: 'keydown', keyCode: 13, target: {}},
+  {type: 'keydown', key: 'Enter', target: {}} as KeyboardEvent,
+  {type: 'keydown', keyCode: 13, target: {}} as KeyboardEvent,
 ];
 
 describe('MDCDialogFoundation', () => {
@@ -442,7 +442,7 @@ describe('MDCDialogFoundation', () => {
        const action = 'action';
        foundation.close = jasmine.createSpy('close');
 
-       const event = {target: {}};
+       const event = {target: {}} as MouseEvent;
        mockAdapter.getActionFromEvent.withArgs(event).and.returnValue(action);
        foundation.open();
        foundation.handleClick(event);
@@ -454,7 +454,8 @@ describe('MDCDialogFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const action = 'action';
-       const event = {type: 'keydown', key: 'Shift', target: {}};
+       const event = {type: 'keydown', key: 'Shift', target: {}} as
+           KeyboardEvent;
        foundation.close = jasmine.createSpy('close');
        mockAdapter.getActionFromEvent.withArgs(event).and.returnValue(action);
 
@@ -470,7 +471,7 @@ describe('MDCDialogFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        foundation.close = jasmine.createSpy('close');
 
-       const event = {target: {}};
+       const event = {target: {}} as MouseEvent;
        mockAdapter.getActionFromEvent.withArgs(event).and.returnValue('');
        foundation.open();
        foundation.handleClick(event);
@@ -519,7 +520,7 @@ describe('MDCDialogFoundation', () => {
          strings.SCRIM_SELECTOR} selector matches`,
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const evt = {type: 'click', target: {}};
+       const evt = {type: 'click', target: {}} as MouseEvent;
        foundation.close = jasmine.createSpy('close');
        mockAdapter.eventTargetMatches
            .withArgs(evt.target, strings.SCRIM_SELECTOR)
@@ -537,7 +538,7 @@ describe('MDCDialogFoundation', () => {
     empty string`,
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const evt = {type: 'click', target: {}};
+       const evt = {type: 'click', target: {}} as MouseEvent;
        foundation.close = jasmine.createSpy('close');
        mockAdapter.eventTargetMatches
            .withArgs(evt.target, strings.SCRIM_SELECTOR)
@@ -555,7 +556,7 @@ describe('MDCDialogFoundation', () => {
     foundation.close = jasmine.createSpy('close');
 
     foundation.open();
-    foundation.handleDocumentKeydown({key: 'Escape'});
+    foundation.handleDocumentKeydown({key: 'Escape'} as KeyboardEvent);
 
     expect(foundation.close)
         .toHaveBeenCalledWith(foundation.getEscapeKeyAction());
@@ -566,7 +567,7 @@ describe('MDCDialogFoundation', () => {
     foundation.close = jasmine.createSpy('close');
 
     foundation.open();
-    foundation.handleDocumentKeydown({keyCode: 27});
+    foundation.handleDocumentKeydown({keyCode: 27} as KeyboardEvent);
 
     expect(foundation.close)
         .toHaveBeenCalledWith(foundation.getEscapeKeyAction());
@@ -579,7 +580,7 @@ describe('MDCDialogFoundation', () => {
 
        foundation.setEscapeKeyAction('');
        foundation.open();
-       foundation.handleDocumentKeydown({key: 'Escape'});
+       foundation.handleDocumentKeydown({key: 'Escape'} as KeyboardEvent);
 
        expect(foundation.close)
            .not.toHaveBeenCalledWith(foundation.getEscapeKeyAction());
@@ -590,7 +591,7 @@ describe('MDCDialogFoundation', () => {
     foundation.close = jasmine.createSpy('close');
 
     foundation.open();
-    foundation.handleDocumentKeydown({key: 'Enter'});
+    foundation.handleDocumentKeydown({key: 'Enter'} as KeyboardEvent);
 
     expect(foundation.close)
         .not.toHaveBeenCalledWith(foundation.getEscapeKeyAction());

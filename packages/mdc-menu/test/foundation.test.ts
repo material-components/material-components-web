@@ -82,7 +82,7 @@ describe('MDCMenuFoundation', () => {
          key: 'Space',
          target: 'My Element',
          preventDefault: jasmine.createSpy('preventDefault')
-       };
+       } as unknown as KeyboardEvent;
        mockAdapter.elementContainsClass
            .withArgs(event.target, listClasses.LIST_ITEM_CLASS)
            .and.returnValue(true);
@@ -105,7 +105,7 @@ describe('MDCMenuFoundation', () => {
 
   it('handleKeydown does nothing if key is not space, enter, or tab', () => {
     const {foundation, mockAdapter} = setupTest();
-    const event = {key: 'N'};
+    const event = {key: 'N'} as KeyboardEvent;
 
     foundation.handleKeydown(event);
     expect(mockAdapter.closeSurface).not.toHaveBeenCalled();
@@ -115,7 +115,7 @@ describe('MDCMenuFoundation', () => {
 
   it('handleKeydown tab key causes the menu to close', () => {
     const {foundation, mockAdapter} = setupTest();
-    const event = {key: 'Tab'};
+    const event = {key: 'Tab'} as KeyboardEvent;
 
     foundation.handleKeydown(event);
     expect(mockAdapter.closeSurface)
@@ -153,14 +153,14 @@ describe('MDCMenuFoundation', () => {
          key: 'Space',
          target: {tagName: 'input'},
          preventDefault: jasmine.createSpy('preventDefault')
-       };
+       } as unknown as KeyboardEvent;
        mockAdapter.elementContainsClass
            .withArgs(event.target, listClasses.LIST_ITEM_CLASS)
            .and.returnValue(true);
        mockAdapter.getElementIndex.withArgs(event.target).and.returnValue(0);
 
        foundation.handleKeydown(event);
-       event.key = 'Enter';
+       (event as any).key = 'Enter';
        foundation.handleKeydown(event);
 
        expect(event.preventDefault).not.toHaveBeenCalled();
@@ -256,7 +256,7 @@ describe('MDCMenuFoundation', () => {
        mockAdapter.getElementIndex.withArgs(itemEl).and.returnValue(0);
        mockAdapter.elementContainsClass
            .withArgs(itemEl, cssClasses.MENU_SELECTION_GROUP)
-           .and.returnValue(false, true);
+           .and.returnValues(false, true);
        mockAdapter.isSelectableItemAtIndex.withArgs(0).and.returnValue(true);
        mockAdapter.getMenuItemCount.and.returnValue(5);
 
@@ -284,7 +284,7 @@ describe('MDCMenuFoundation', () => {
            .withArgs(itemEl, cssClasses.MENU_SELECTION_GROUP)
            .and.returnValue(false);
        mockAdapter.elementContainsClass.withArgs(itemEl, listClasses.ROOT)
-           .and.returnValue(false, true);
+           .and.returnValues(false, true);
        mockAdapter.isSelectableItemAtIndex.withArgs(0).and.returnValue(false);
        mockAdapter.getMenuItemCount.and.returnValue(5);
 

@@ -138,7 +138,9 @@ describe('MDCDrawer', () => {
         setupTestWithMocks({variantClass: cssClasses.MODAL});
     const scrimEl = root.querySelector('.mdc-drawer-scrim') as HTMLElement;
     emitEvent(scrimEl, 'click');
-    expect(mockFoundation.handleScrimClick).toHaveBeenCalledTimes(1);
+    expect((mockFoundation as jasmine.SpyObj<MDCModalDrawerFoundation>)
+               .handleScrimClick)
+        .toHaveBeenCalledTimes(1);
   });
 
   it('keydown event calls foundation.handleKeydown method', () => {

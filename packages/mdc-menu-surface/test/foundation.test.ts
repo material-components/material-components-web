@@ -1101,7 +1101,7 @@ describe('MDCMenuSurfaceFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const target = {};
-       const event = {target, key: 'Escape'};
+       const event = {target, key: 'Escape'} as KeyboardEvent;
 
        (foundation as unknown as WithIsSurfaceOpen).isSurfaceOpen = true;
        foundation.init();
@@ -1116,8 +1116,9 @@ describe('MDCMenuSurfaceFoundation', () => {
      () => {
        const {foundation} = setupTest();
        const target = {};
-       const preventDefault = jasmine.createSpy('event.preventDefault');
-       const event = {target, key: 'Foo', preventDefault};
+       const preventDefault =
+           jasmine.createSpy('event.preventDefault') as Function;
+       const event = {target, key: 'Foo', preventDefault} as KeyboardEvent;
 
        foundation.init();
        foundation.handleKeydown(event);
@@ -1130,7 +1131,7 @@ describe('MDCMenuSurfaceFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     const mockEvt = {
       target: {},
-    };
+    } as MouseEvent;
 
     mockAdapter.hasClass.withArgs(MDCMenuSurfaceFoundation.cssClasses.OPEN)
         .and.returnValue(true);
@@ -1152,7 +1153,7 @@ describe('MDCMenuSurfaceFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     const mockEvt = {
       target: {},
-    };
+    } as MouseEvent;
     mockAdapter.isElementInContainer.withArgs(jasmine.anything())
         .and.returnValue(true);
     foundation.init();

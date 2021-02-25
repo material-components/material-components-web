@@ -63,7 +63,7 @@ describe('MDCTextFieldHelperTextFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.getAttr.and.returnValue('bar');
 
-    expect(foundation.getId('foo')).toEqual('bar');
+    expect(foundation.getId()).toEqual('bar');
   });
 
   it('#isPersistent retrieves correct value', () => {

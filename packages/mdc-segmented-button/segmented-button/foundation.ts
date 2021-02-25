@@ -78,7 +78,7 @@ export class MDCSegmentedButtonFoundation extends
    * @return Returns true if identified child segment is currently selected,
    * otherwise returns false
    */
-  isSegmentSelected(indexOrSegmentId: number|string): boolean {
+  isSegmentSelected(indexOrSegmentId: number|string|undefined): boolean {
     return this.adapter.getSegments().some(
         segmentDetail => (segmentDetail.index === indexOrSegmentId ||
                           segmentDetail.segmentId === indexOrSegmentId) &&
