@@ -29,8 +29,8 @@ import {AnchorBoundaryType, attributes, CssClasses, numbers, XPosition, YPositio
 import {MDCTooltipFoundation} from '../foundation';
 
 const ESC_EVENTS = [
-  {type: 'keydown', key: 'Escape', target: {}},
-  {type: 'keydown', keyCode: 27, target: {}},
+  {type: 'keydown', key: 'Escape', target: {}} as KeyboardEvent,
+  {type: 'keydown', keyCode: 27, target: {}} as KeyboardEvent,
 ];
 
 // Constant for the animationFrame mock found in setUpMdcTestEnvironment
@@ -393,9 +393,9 @@ describe('MDCTooltipFoundation', () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
     foundation.show();
     foundation.handleAnchorMouseLeave();
-    expect(foundation.hideTimeout).not.toEqual(null);
+    expect((foundation as any).hideTimeout).not.toEqual(null);
     foundation.show();
-    expect(foundation.hideTimeout).toEqual(null);
+    expect((foundation as any).hideTimeout).toEqual(null);
 
     jasmine.clock().tick(numbers.HIDE_DELAY_MS);
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
@@ -506,7 +506,7 @@ describe('MDCTooltipFoundation', () => {
       foundation.show();
       foundation.handleKeydown(evt);
 
-      expect(foundation.hideTimeout).toEqual(null);
+      expect((foundation as any).hideTimeout).toEqual(null);
       expect(mockAdapter.setAttribute)
           .toHaveBeenCalledWith('aria-hidden', 'true');
       expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.HIDE);
@@ -529,7 +529,8 @@ describe('MDCTooltipFoundation', () => {
        foundation.hide = jasmine.createSpy('hide');
 
        foundation.show();
-       foundation.handleKeydown({type: 'keydown', key: 'Space'});
+       foundation.handleKeydown(
+           {type: 'keydown', key: 'Space'} as KeyboardEvent);
 
        expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -542,7 +543,8 @@ describe('MDCTooltipFoundation', () => {
          document.activeElement.blur();
        }
 
-       foundation.handleKeydown({type: 'keydown', key: 'Escape'});
+       foundation.handleKeydown(
+           {type: 'keydown', key: 'Escape'} as KeyboardEvent);
 
        expect(mockAdapter.focusAnchorElement).not.toHaveBeenCalled();
      });
@@ -554,7 +556,8 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.tooltipContainsElement.and.returnValue(false);
 
        document.body.focus();
-       foundation.handleKeydown({type: 'keydown', key: 'Escape'});
+       foundation.handleKeydown(
+           {type: 'keydown', key: 'Escape'} as KeyboardEvent);
 
        expect(mockAdapter.focusAnchorElement).not.toHaveBeenCalled();
      });
@@ -566,7 +569,8 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.tooltipContainsElement.and.returnValue(true);
 
        document.body.focus();
-       foundation.handleKeydown({type: 'keydown', key: 'Escape'});
+       foundation.handleKeydown(
+           {type: 'keydown', key: 'Escape'} as KeyboardEvent);
 
        expect(mockAdapter.focusAnchorElement).toHaveBeenCalled();
      });
@@ -614,7 +618,7 @@ describe('MDCTooltipFoundation', () => {
        const mockClickEvent = {
          ...createMouseEvent('click'),
          target: 'not an HTMLElement'
-       };
+       } as unknown as MouseEvent;
 
        foundation.show();
        foundation.handleDocumentClick(mockClickEvent);
@@ -681,7 +685,7 @@ describe('MDCTooltipFoundation', () => {
            setUpFoundationTest(MDCTooltipFoundation);
        foundation.show();
        foundation.handleAnchorMouseLeave();
-       expect(foundation.hideTimeout).not.toEqual(null);
+       expect((foundation as any).hideTimeout).not.toEqual(null);
 
        jasmine.clock().tick(numbers.HIDE_DELAY_MS);
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
@@ -696,7 +700,7 @@ describe('MDCTooltipFoundation', () => {
        foundation.handleAnchorMouseEnter();
        jasmine.clock().tick(numbers.HIDE_DELAY_MS / 2);
 
-       expect(foundation.showTimeout).not.toEqual(null);
+       expect((foundation as any).showTimeout).not.toEqual(null);
      });
 
   it(`#handleAnchorBlur hides the tooltip immediately for plain tooltips`,
@@ -705,7 +709,7 @@ describe('MDCTooltipFoundation', () => {
            setUpFoundationTest(MDCTooltipFoundation);
 
        foundation.show();
-       foundation.handleAnchorBlur();
+       (foundation as any).handleAnchorBlur();
 
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -716,7 +720,7 @@ describe('MDCTooltipFoundation', () => {
            setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
        foundation.show();
-       foundation.handleAnchorBlur({});
+       (foundation as any).handleAnchorBlur({});
 
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -729,7 +733,7 @@ describe('MDCTooltipFoundation', () => {
 
        const mockFocusEvent = {relatedTarget: document.createElement('div')};
        foundation.show();
-       foundation.handleAnchorBlur(mockFocusEvent);
+       (foundation as any).handleAnchorBlur(mockFocusEvent);
 
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -742,7 +746,7 @@ describe('MDCTooltipFoundation', () => {
 
        const mockFocusEvent = {relatedTarget: document.createElement('div')};
        foundation.show();
-       foundation.handleAnchorBlur(mockFocusEvent);
+       (foundation as any).handleAnchorBlur(mockFocusEvent);
 
        expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -753,7 +757,7 @@ describe('MDCTooltipFoundation', () => {
            MDCTooltipFoundation, {isPersistent: true});
 
        foundation.show();
-       foundation.handleAnchorBlur({});
+       (foundation as any).handleAnchorBlur({});
 
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -766,7 +770,7 @@ describe('MDCTooltipFoundation', () => {
 
        const mockFocusEvent = {relatedTarget: document.createElement('div')};
        foundation.show();
-       foundation.handleAnchorBlur(mockFocusEvent);
+       (foundation as any).handleAnchorBlur(mockFocusEvent);
 
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -779,7 +783,7 @@ describe('MDCTooltipFoundation', () => {
 
        const mockFocusEvent = {relatedTarget: document.createElement('div')};
        foundation.show();
-       foundation.handleAnchorBlur(mockFocusEvent);
+       (foundation as any).handleAnchorBlur(mockFocusEvent);
 
        expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -800,7 +804,7 @@ describe('MDCTooltipFoundation', () => {
        const {foundation, mockAdapter} =
            setUpFoundationTest(MDCTooltipFoundation);
        foundation.handleAnchorMouseEnter();
-       expect(foundation.showTimeout).not.toEqual(null);
+       expect((foundation as any).showTimeout).not.toEqual(null);
 
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
        expectTooltipToHaveBeenShown(foundation, mockAdapter);
@@ -809,11 +813,11 @@ describe('MDCTooltipFoundation', () => {
   it('#handleAnchorMouseEnter clears any pending hideTimeout', () => {
     const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
     foundation.handleAnchorMouseLeave();
-    expect(foundation.hideTimeout).not.toEqual(null);
+    expect((foundation as any).hideTimeout).not.toEqual(null);
 
     foundation.handleAnchorMouseEnter();
 
-    expect(foundation.hideTimeout).toEqual(null);
+    expect((foundation as any).hideTimeout).toEqual(null);
   });
 
   it(`#handleAnchorFocus shows the tooltip after a ${
@@ -822,8 +826,8 @@ describe('MDCTooltipFoundation', () => {
        const {foundation, mockAdapter} =
            setUpFoundationTest(MDCTooltipFoundation);
 
-       foundation.handleAnchorFocus({relatedTarget: null});
-       expect(foundation.showTimeout).not.toEqual(null);
+       foundation.handleAnchorFocus({relatedTarget: null} as FocusEvent);
+       expect((foundation as any).showTimeout).not.toEqual(null);
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
 
        expectTooltipToHaveBeenShown(foundation, mockAdapter);
@@ -836,8 +840,9 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.tooltipContainsElement.and.returnValue(false);
 
        foundation.handleAnchorFocus(
-           {relatedTarget: document.createElement('div')});
-       expect(foundation.showTimeout).not.toEqual(null);
+           {relatedTarget: document.createElement('div')} as unknown as
+           FocusEvent);
+       expect((foundation as any).showTimeout).not.toEqual(null);
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
 
        expectTooltipToHaveBeenShown(foundation, mockAdapter);
@@ -850,8 +855,9 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.tooltipContainsElement.and.returnValue(true);
 
        foundation.handleAnchorFocus(
-           {relatedTarget: document.createElement('div')});
-       expect(foundation.showTimeout).toEqual(null);
+           {relatedTarget: document.createElement('div')} as unknown as
+           FocusEvent);
+       expect((foundation as any).showTimeout).toEqual(null);
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
 
        expect(mockAdapter.setAttribute)
@@ -889,7 +895,7 @@ describe('MDCTooltipFoundation', () => {
     const {foundation, mockAdapter} =
         setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
-    foundation.handleRichTooltipMouseEnter();
+    (foundation as any).handleRichTooltipMouseEnter();
 
     expectTooltipToHaveBeenShown(foundation, mockAdapter);
   });
@@ -901,8 +907,8 @@ describe('MDCTooltipFoundation', () => {
            setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
        foundation.show();
-       foundation.handleRichTooltipMouseLeave();
-       expect(foundation.hideTimeout).not.toEqual(null);
+       (foundation as any).handleRichTooltipMouseLeave();
+       expect((foundation as any).hideTimeout).not.toEqual(null);
        jasmine.clock().tick(numbers.HIDE_DELAY_MS);
 
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
@@ -913,10 +919,10 @@ describe('MDCTooltipFoundation', () => {
         setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
     foundation.handleAnchorMouseEnter();
-    expect(foundation.showTimeout).not.toEqual(null);
-    foundation.handleRichTooltipMouseLeave();
+    expect((foundation as any).showTimeout).not.toEqual(null);
+    (foundation as any).handleRichTooltipMouseLeave();
 
-    expect(foundation.showTimeout).toEqual(null);
+    expect((foundation as any).showTimeout).toEqual(null);
     jasmine.clock().tick(numbers.SHOW_DELAY_MS);
     expect(mockAdapter.setAttribute)
         .not.toHaveBeenCalledWith('aria-hidden', 'false');
@@ -930,7 +936,7 @@ describe('MDCTooltipFoundation', () => {
            setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
        foundation.show();
-       foundation.handleRichTooltipFocusOut({});
+       (foundation as any).handleRichTooltipFocusOut({});
 
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -943,8 +949,9 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        mockAdapter.anchorContainsElement.and.returnValue(false);
        mockAdapter.tooltipContainsElement.and.returnValue(false);
-       foundation.handleRichTooltipFocusOut(
-           {relatedTarget: document.createElement('div')});
+       (foundation as any).handleRichTooltipFocusOut({
+         relatedTarget: document.createElement('div')
+       });
 
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -957,8 +964,9 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        mockAdapter.anchorContainsElement.and.returnValue(true);
        mockAdapter.tooltipContainsElement.and.returnValue(false);
-       foundation.handleRichTooltipFocusOut(
-           {relatedTarget: document.createElement('div')});
+       (foundation as any).handleRichTooltipFocusOut({
+         relatedTarget: document.createElement('div')
+       });
 
        expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -971,8 +979,9 @@ describe('MDCTooltipFoundation', () => {
        foundation.show();
        mockAdapter.anchorContainsElement.and.returnValue(false);
        mockAdapter.tooltipContainsElement.and.returnValue(true);
-       foundation.handleRichTooltipFocusOut(
-           {relatedTarget: document.createElement('div')});
+       (foundation as any).handleRichTooltipFocusOut({
+         relatedTarget: document.createElement('div')
+       });
 
        expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
      });
@@ -981,12 +990,12 @@ describe('MDCTooltipFoundation', () => {
      () => {
        const {foundation, mockAdapter} =
            setUpFoundationTest(MDCTooltipFoundation);
-       foundation.handleAnchorFocus({relatedTarget: null});
+       foundation.handleAnchorFocus({relatedTarget: null} as FocusEvent);
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
 
        foundation.handleAnchorMouseLeave();
        jasmine.clock().tick(numbers.HIDE_DELAY_MS / 2);
-       foundation.handleAnchorFocus({relatedTarget: null});
+       foundation.handleAnchorFocus({relatedTarget: null} as FocusEvent);
 
        expect(mockAdapter.setAttribute)
            .toHaveBeenCalledWith('aria-hidden', 'false');
@@ -1034,9 +1043,9 @@ describe('MDCTooltipFoundation', () => {
   it('#handleAnchorMouseLeave clears any pending showTimeout', () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
     foundation.handleAnchorMouseEnter();
-    expect(foundation.showTimeout).not.toEqual(null);
+    expect((foundation as any).showTimeout).not.toEqual(null);
     foundation.handleAnchorMouseLeave();
-    expect(foundation.showTimeout).toEqual(null);
+    expect((foundation as any).showTimeout).toEqual(null);
 
     jasmine.clock().tick(numbers.SHOW_DELAY_MS);
     expect(mockAdapter.setAttribute)
@@ -1050,10 +1059,10 @@ describe('MDCTooltipFoundation', () => {
         setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
     foundation.handleAnchorMouseLeave();
-    expect(foundation.hideTimeout).not.toEqual(null);
-    foundation.handleRichTooltipMouseEnter();
+    expect((foundation as any).hideTimeout).not.toEqual(null);
+    (foundation as any).handleRichTooltipMouseEnter();
 
-    expect(foundation.hideTimeout).toEqual(null);
+    expect((foundation as any).hideTimeout).toEqual(null);
     expect(mockAdapter.setAttribute)
         .not.toHaveBeenCalledWith('aria-hidden', 'true');
     expect(foundation.isShown()).toBeTrue();
@@ -1062,9 +1071,9 @@ describe('MDCTooltipFoundation', () => {
   it('#hide clears any pending showTimeout', () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
     foundation.handleAnchorMouseEnter();
-    expect(foundation.showTimeout).not.toEqual(null);
+    expect((foundation as any).showTimeout).not.toEqual(null);
     foundation.hide();
-    expect(foundation.showTimeout).toEqual(null);
+    expect((foundation as any).showTimeout).toEqual(null);
 
     jasmine.clock().tick(numbers.SHOW_DELAY_MS);
     expect(mockAdapter.setAttribute)
@@ -1098,9 +1107,9 @@ describe('MDCTooltipFoundation', () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
     foundation.handleAnchorTouchstart();
 
-    expect(foundation.showTimeout).not.toEqual(null);
+    expect((foundation as any).showTimeout).not.toEqual(null);
     foundation.handleAnchorTouchend();
-    expect(foundation.showTimeout).toEqual(null);
+    expect((foundation as any).showTimeout).toEqual(null);
 
     jasmine.clock().tick(numbers.SHOW_DELAY_MS);
     expect(mockAdapter.setAttribute)
@@ -1735,7 +1744,7 @@ describe('MDCTooltipFoundation', () => {
     foundation.handleAnchorMouseEnter();
     foundation.destroy();
 
-    expect(foundation.showTimeout).toEqual(null);
+    expect((foundation as any).showTimeout).toEqual(null);
   });
 
   it('#destroy clears requestAnimationFrame from show', () => {
@@ -1764,7 +1773,7 @@ describe('MDCTooltipFoundation', () => {
     foundation.handleAnchorMouseLeave();
     foundation.destroy();
 
-    expect(foundation.hideTimeout).toEqual(null);
+    expect((foundation as any).hideTimeout).toEqual(null);
   });
 
   it('#destroy removes tooltip classes', () => {
@@ -1784,7 +1793,7 @@ describe('MDCTooltipFoundation', () => {
   it('#destroy cancels all animation frame requests', () => {
     const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
 
-    foundation.handleWindowChangeEvent();
+    (foundation as any).handleWindowChangeEvent();
     foundation.destroy();
 
     expect(foundation['animFrame']['rafIDs'].size).toEqual(0);
