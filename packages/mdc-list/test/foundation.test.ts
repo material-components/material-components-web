@@ -105,8 +105,8 @@ describe('MDCListFoundation', () => {
   it('#handleFocusIn switches list item button/a elements to tabindex=0',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const target = {classList: ['mdc-list-item']};
-       const event = {target};
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {target} as unknown as FocusEvent;
 
        foundation.handleFocusIn(event, 1);
 
@@ -117,8 +117,8 @@ describe('MDCListFoundation', () => {
   it('#handleFocusOut switches list item button/a elements to tabindex=-1',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const target = {classList: ['mdc-list-item']};
-       const event = {target};
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {target} as unknown as FocusEvent;
 
        foundation.handleFocusOut(event, 1);
 
@@ -131,7 +131,7 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const parentElement = {classList: ['mdc-list-item']};
        const target = {classList: [], parentElement};
-       const event = {target};
+       const event = {target} as unknown as FocusEvent;
 
        foundation.handleFocusIn(event, 1);
 
@@ -144,7 +144,7 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
        const parentElement = {classList: ['mdc-list-item']};
        const target = {classList: [], parentElement};
-       const event = {target};
+       const event = {target} as unknown as FocusEvent;
 
        foundation.handleFocusOut(event, 1);
 
@@ -156,7 +156,7 @@ describe('MDCListFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const target = {classList: ['']};
-       const event = {target};
+       const event = {target} as unknown as FocusEvent;
 
        foundation.handleFocusIn(event, -1);
 
@@ -168,7 +168,7 @@ describe('MDCListFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const target = {classList: ['']};
-       const event = {target};
+       const event = {target} as unknown as FocusEvent;
 
        foundation.handleFocusOut(event, -1);
 
@@ -191,7 +191,7 @@ describe('MDCListFoundation', () => {
        foundation.setSelectedIndex(
            2);  // Selected index values may not be in sequence.
        const target = {classList: ['']};
-       const event = {target};
+       const event = {target} as unknown as FocusEvent;
        foundation.handleFocusOut(event, 3);
        jasmine.clock().tick(1);
        expect(mockAdapter.setAttributeForElementIndex)
@@ -209,7 +209,7 @@ describe('MDCListFoundation', () => {
        mockAdapter.isFocusInsideList.and.returnValue(false);
 
        const target = {classList: ['']};
-       const event = {target};
+       const event = {target} as unknown as FocusEvent;
        foundation.handleFocusOut(event, 3);
        jasmine.clock().tick(1);
        expect(mockAdapter.setAttributeForElementIndex)
@@ -228,7 +228,7 @@ describe('MDCListFoundation', () => {
 
        foundation.setSelectedIndex(2);
        const target = {classList: ['']};
-       const event = {target};
+       const event = {target} as unknown as FocusEvent;
        foundation.handleFocusOut(event, 3);
        jasmine.clock().tick(1);
        expect(mockAdapter.setAttributeForElementIndex)
@@ -248,7 +248,7 @@ describe('MDCListFoundation', () => {
        foundation.setSelectedIndex(
            [3, 2]);  // Selected index values may not be in sequence.
        const target = {classList: ['']};
-       const event = {target};
+       const event = {target} as unknown as FocusEvent;
 
        foundation.handleFocusOut(event, 2);
        jasmine.clock().tick(1);
@@ -259,7 +259,7 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown does nothing if key received on root element and not used for navigation',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const event = {key: 'A'};
+       const event = {key: 'A'} as KeyboardEvent;
 
        mockAdapter.isRootFocused.and.returnValue(true);
        foundation.handleKeydown(event, false, -1);
@@ -270,8 +270,8 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown should focus on last item when UP arrow key received on list root',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const event = {key: 'ArrowUp', preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const event = {key: 'ArrowUp', preventDefault} as KeyboardEvent;
 
        mockAdapter.isRootFocused.and.returnValue(true);
        mockAdapter.getListItemCount.and.returnValue(5);
@@ -286,8 +286,8 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown should focus on first item when DOWN arrow key received on list root',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const event = {key: 'ArrowDown', preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const event = {key: 'ArrowDown', preventDefault} as KeyboardEvent;
 
        mockAdapter.isRootFocused.and.returnValue(true);
        foundation.handleKeydown(event, false, -1);
@@ -301,9 +301,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown does nothing if the key is not used for navigation',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {tagName: 'li'};
-       const event = {key: 'A', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {tagName: 'li'} as unknown;
+       const event = {key: 'A', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(1);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -317,9 +317,10 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown moves focus to index+1 if the ArrowDown key is pressed',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {tagName: 'li'};
-       const event = {key: 'ArrowDown', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {tagName: 'li'} as unknown;
+       const event = {key: 'ArrowDown', target, preventDefault} as
+           KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(1);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -333,9 +334,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown moves focus to index-1 if the ArrowUp key is pressed',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {tagName: 'li'};
-       const event = {key: 'ArrowUp', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {tagName: 'li'} as unknown;
+       const event = {key: 'ArrowUp', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(1);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -349,9 +350,10 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown ArrowRight key does nothing if isVertical_ is true',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {tagName: 'li'};
-       const event = {key: 'ArrowRight', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {tagName: 'li'} as unknown;
+       const event = {key: 'ArrowRight', target, preventDefault} as
+           KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(1);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -364,9 +366,9 @@ describe('MDCListFoundation', () => {
 
   it('#handleKeydown ArrowLeft key does nothing if isVertical_ is true', () => {
     const {foundation, mockAdapter} = setupTest();
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const target = {tagName: 'li'};
-    const event = {key: 'ArrowLeft', target, preventDefault};
+    const preventDefault = jasmine.createSpy('preventDefault') as Function;
+    const target = {tagName: 'li'} as unknown;
+    const event = {key: 'ArrowLeft', target, preventDefault} as KeyboardEvent;
 
     mockAdapter.getFocusedElementIndex.and.returnValue(1);
     mockAdapter.getListItemCount.and.returnValue(3);
@@ -380,9 +382,10 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown ArrowRight key causes the next item to gain focus if isVertical_ is false',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {tagName: 'li'};
-       const event = {key: 'ArrowRight', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {tagName: 'li'} as unknown;
+       const event = {key: 'ArrowRight', target, preventDefault} as
+           KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(1);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -397,9 +400,10 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown ArrowLeft key causes the previous item to gain focus if isVertical_ is false',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {tagName: 'li'};
-       const event = {key: 'ArrowLeft', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {tagName: 'li'} as unknown;
+       const event = {key: 'ArrowLeft', target, preventDefault} as
+           KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(1);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -414,9 +418,10 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown ArrowDown key causes first item to focus if last item is focused and wrapFocus is true',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {tagName: 'li'};
-       const event = {key: 'ArrowDown', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {tagName: 'li'} as unknown;
+       const event = {key: 'ArrowDown', target, preventDefault} as
+           KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(2);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -431,9 +436,10 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown ArrowDown key if last item is focused and wrapFocus is false does not focus an item',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {tagName: 'li'};
-       const event = {key: 'ArrowDown', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {tagName: 'li'} as unknown;
+       const event = {key: 'ArrowDown', target, preventDefault} as
+           KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(2);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -447,9 +453,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown ArrowUp key causes last item to focus if first item is focused and wrapFocus is true',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {tagName: 'li'};
-       const event = {key: 'ArrowUp', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {tagName: 'li'} as unknown;
+       const event = {key: 'ArrowUp', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -464,9 +470,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown ArrowUp key if first item is focused and wrapFocus is false does not focus an item',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {tagName: 'li'};
-       const event = {key: 'ArrowUp', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {tagName: 'li'} as unknown;
+       const event = {key: 'ArrowUp', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -479,9 +485,9 @@ describe('MDCListFoundation', () => {
 
   it('#handleKeydown Home key causes the first item to be focused', () => {
     const {foundation, mockAdapter} = setupTest();
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const target = {tagName: 'li'};
-    const event = {key: 'Home', target, preventDefault};
+    const preventDefault = jasmine.createSpy('preventDefault') as Function;
+    const target = {tagName: 'li'} as unknown;
+    const event = {key: 'Home', target, preventDefault} as KeyboardEvent;
 
     mockAdapter.getFocusedElementIndex.and.returnValue(1);
     mockAdapter.getListItemCount.and.returnValue(3);
@@ -494,9 +500,9 @@ describe('MDCListFoundation', () => {
 
   it('#handleKeydown End key causes the last item to be focused', () => {
     const {foundation, mockAdapter} = setupTest();
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const target = {tagName: 'li'};
-    const event = {key: 'End', target, preventDefault};
+    const preventDefault = jasmine.createSpy('preventDefault') as Function;
+    const target = {tagName: 'li'} as unknown;
+    const event = {key: 'End', target, preventDefault} as KeyboardEvent;
 
     mockAdapter.getFocusedElementIndex.and.returnValue(0);
     mockAdapter.getListItemCount.and.returnValue(3);
@@ -511,14 +517,15 @@ describe('MDCListFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const inputs = ['input', 'button', 'select', 'textarea'];
-       const preventDefault = jasmine.createSpy('preventDefault');
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
 
        inputs.forEach((input) => {
-         const target = {tagName: input};
-         const event = {key: 'ArrowUp', target, preventDefault};
+         const target = {tagName: input} as unknown;
+         const event = {key: 'ArrowUp', target, preventDefault} as
+             KeyboardEvent;
          foundation.handleKeydown(event, false, 0);
        });
        expect(preventDefault).not.toHaveBeenCalled();
@@ -528,9 +535,9 @@ describe('MDCListFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        const parentElement = {classList: ['mdc-list-item']};
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: [], parentElement};
-       const event = {key: 'ArrowUp', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: [], parentElement} as unknown;
+       const event = {key: 'ArrowUp', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(-1);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -544,9 +551,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown space key causes preventDefault to be called on keydown event',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Spacebar', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Spacebar', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -559,9 +566,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown enter key causes preventDefault to be called on keydown event',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Enter', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Enter', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -575,9 +582,9 @@ describe('MDCListFoundation', () => {
          'event when singleSelection=true ',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Enter', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Enter', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -590,9 +597,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown space/enter key cause event.preventDefault if a checkbox or radio button is present',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Spacebar', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Spacebar', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -601,7 +608,7 @@ describe('MDCListFoundation', () => {
        foundation.setSingleSelection(false);
        foundation.layout();
        foundation.handleKeydown(event, true, 0);
-       event.key = 'Enter';
+       (event as any).key = 'Enter';
        foundation.handleKeydown(event, true, 0);
 
        expect(preventDefault).toHaveBeenCalledTimes(2);
@@ -610,8 +617,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown space key calls notifyAction for anchor element regardless of singleSelection',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const target = {tagName: 'A', classList: ['mdc-list-item']};
-       const event = {key: 'Spacebar', target, preventDefault: () => {}};
+       const target = {tagName: 'A', classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Spacebar', target, preventDefault: () => {}} as
+           KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -627,8 +635,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown space key does not call notifyAction for disabled element',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const target = {tagName: 'A', classList: ['mdc-list-item']};
-       const event = {key: 'Spacebar', target, preventDefault: () => {}};
+       const target = {tagName: 'A', classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Spacebar', target, preventDefault: () => {}} as
+           KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -643,8 +652,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown enter key does not call notifyAction for anchor element',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const target = {tagName: 'A', classList: ['mdc-list-item']};
-       const event = {key: 'Enter', target, preventDefault: () => {}};
+       const target = {tagName: 'A', classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Enter', target, preventDefault: () => {}} as
+           KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -661,9 +671,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown notifies of action when enter key pressed on list item ',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Enter', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Enter', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -676,9 +686,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown selects the list item when enter key is triggered, singleSelection=true',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Enter', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Enter', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -698,9 +708,9 @@ describe('MDCListFoundation', () => {
          'enter key is triggered, singleSelection=true, #adapter.isListItemDisabled=true',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Enter', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Enter', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -719,9 +729,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown space key is triggered when singleSelection is true selects the list item',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Spacebar', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Spacebar', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -741,9 +751,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown space key when singleSelection=true does not select an element is isRootListItem=false',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Spacebar', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Spacebar', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -761,9 +771,9 @@ describe('MDCListFoundation', () => {
          'space key is triggered, singleSelection=true, #adapter.isListItemDisabled=true',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Spacebar', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Spacebar', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -782,9 +792,9 @@ describe('MDCListFoundation', () => {
   it('#handleKeydown space key is triggered 2x when singleSelection does not un-select the item.',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Spacebar', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Spacebar', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(0);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -805,9 +815,9 @@ describe('MDCListFoundation', () => {
          'element updates first element tabindex',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const target = {classList: ['mdc-list-item']};
-       const event = {key: 'Spacebar', target, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const target = {classList: ['mdc-list-item']} as unknown;
+       const event = {key: 'Spacebar', target, preventDefault} as KeyboardEvent;
 
        mockAdapter.getFocusedElementIndex.and.returnValue(1);
        mockAdapter.getListItemCount.and.returnValue(3);
@@ -829,8 +839,9 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
 
        mockAdapter.getFocusedElementIndex.and.returnValue(-1);
-       const preventDefault = jasmine.createSpy('preventDefault');
-       const event = {key: 'ArrowDown', keyCode: 40, preventDefault};
+       const preventDefault = jasmine.createSpy('preventDefault') as Function;
+       const event = {key: 'ArrowDown', keyCode: 40, preventDefault} as
+           KeyboardEvent;
        foundation.handleKeydown(
            event, /** isRootListItem */ true, /** listItemIndex */ -1);
 
@@ -897,8 +908,8 @@ describe('MDCListFoundation', () => {
 
   it('#handleKeydown should select all items on ctrl + A, if nothing is selected', () => {
     const {foundation, mockAdapter} = setupTest();
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {key: 'A', ctrlKey: true, preventDefault};
+    const preventDefault = jasmine.createSpy('preventDefault') as Function;
+    const event = {key: 'A', ctrlKey: true, preventDefault} as KeyboardEvent;
 
     mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
     mockAdapter.getListItemCount.and.returnValue(3);
@@ -914,8 +925,8 @@ describe('MDCListFoundation', () => {
 
   it('#handleKeydown should select all items on ctrl + lowercase A, if nothing is selected', () => {
     const {foundation, mockAdapter} = setupTest();
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {key: 'a', ctrlKey: true, preventDefault};
+    const preventDefault = jasmine.createSpy('preventDefault') as Function;
+    const event = {key: 'a', ctrlKey: true, preventDefault} as KeyboardEvent;
 
     mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
     mockAdapter.getListItemCount.and.returnValue(3);
@@ -931,8 +942,8 @@ describe('MDCListFoundation', () => {
 
   it('#handleKeydown should select all items on ctrl + A, if some items are selected', () => {
     const {foundation, mockAdapter} = setupTest();
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {key: 'A', ctrlKey: true, preventDefault};
+    const preventDefault = jasmine.createSpy('preventDefault') as Function;
+    const event = {key: 'A', ctrlKey: true, preventDefault} as KeyboardEvent;
 
     mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
     mockAdapter.getListItemCount.and.returnValue(4);
@@ -953,8 +964,8 @@ describe('MDCListFoundation', () => {
 
   it('#handleKeydown should deselect all items on ctrl + A, if all items are selected', () => {
     const {foundation, mockAdapter} = setupTest();
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {key: 'A', ctrlKey: true, preventDefault};
+    const preventDefault = jasmine.createSpy('preventDefault') as Function;
+    const event = {key: 'A', ctrlKey: true, preventDefault} as KeyboardEvent;
 
     mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
     mockAdapter.getListItemCount.and.returnValue(3);
@@ -974,8 +985,8 @@ describe('MDCListFoundation', () => {
 
   it('#handleKeydown should not select disabled items on ctrl + A', () => {
     const {foundation, mockAdapter} = setupTest();
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {key: 'A', ctrlKey: true, preventDefault};
+    const preventDefault = jasmine.createSpy('preventDefault') as Function;
+    const event = {key: 'A', ctrlKey: true, preventDefault} as KeyboardEvent;
 
     mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
     mockAdapter.listItemAtIndexHasClass
@@ -994,8 +1005,8 @@ describe('MDCListFoundation', () => {
 
   it('#handleKeydown should not handle ctrl + A on a non-checkbox list', () => {
     const {foundation, mockAdapter} = setupTest();
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {key: 'a', ctrlKey: true, preventDefault};
+    const preventDefault = jasmine.createSpy('preventDefault') as Function;
+    const event = {key: 'a', ctrlKey: true, preventDefault} as KeyboardEvent;
 
     mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(false);
     mockAdapter.getListItemCount.and.returnValue(3);
@@ -1008,8 +1019,8 @@ describe('MDCListFoundation', () => {
 
   it('#handleKeydown should not deselect a selected disabled item on ctrl + A', () => {
     const {foundation, mockAdapter} = setupTest();
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {key: 'A', ctrlKey: true, preventDefault};
+    const preventDefault = jasmine.createSpy('preventDefault') as Function;
+    const event = {key: 'A', ctrlKey: true, preventDefault} as KeyboardEvent;
 
     mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
     mockAdapter.listItemAtIndexHasClass
@@ -1304,7 +1315,7 @@ describe('MDCListFoundation', () => {
        const {foundation, mockAdapter} = setupTest();
 
        mockAdapter.getListItemCount.and.returnValue(4);
-       foundation.setSelectedIndex('some_random_input');
+       foundation.setSelectedIndex('some_random_input' as any);
        expect(mockAdapter.setAttributeForElementIndex)
            .not.toHaveBeenCalledWith(-1, 'tabindex', 0);
      });
@@ -1488,7 +1499,7 @@ describe('MDCListFoundation', () => {
 
     mockAdapter.getListItemCount.and.returnValue(4);
     foundation.setSelectedIndex(2);
-    expect(2).toEqual(foundation.getSelectedIndex());
+    expect(foundation.getSelectedIndex()).toEqual(2);
   });
 
   it('#getSelectedIndex should be in-sync with setter method for multi-select checkbox based list',
@@ -1500,7 +1511,7 @@ describe('MDCListFoundation', () => {
        foundation.layout();
 
        foundation.setSelectedIndex([0, 2, 3]);
-       expect([0, 2, 3]).toEqual(foundation.getSelectedIndex());
+       expect(foundation.getSelectedIndex()).toEqual([0, 2, 3]);
      });
 
   it('#setEnabled should remove disabled class and set aria-disabled to false',
@@ -1549,7 +1560,10 @@ describe('MDCListFoundation', () => {
       const {foundation, mockAdapter} = setupTypeaheadTest();
 
       mockAdapter.isRootFocused.and.returnValue(true);
-      const event = {key: 'B', preventDefault: jasmine.createSpy()};
+      const event = {
+        key: 'B',
+        preventDefault: jasmine.createSpy() as Function
+      } as KeyboardEvent;
 
       foundation.handleKeydown(event, false, -1);
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
@@ -1562,13 +1576,13 @@ describe('MDCListFoundation', () => {
       const ctrlEvent = {
         key: 'B',
         ctrlKey: true,
-        preventDefault: jasmine.createSpy()
-      };
+        preventDefault: jasmine.createSpy() as Function
+      } as KeyboardEvent;
       const metaEvent = {
         key: 'B',
         metaKey: true,
-        preventDefault: jasmine.createSpy()
-      };
+        preventDefault: jasmine.createSpy() as Function
+      } as KeyboardEvent;
 
       foundation.handleKeydown(ctrlEvent, false, -1);
       foundation.handleKeydown(metaEvent, false, -1);
@@ -1584,9 +1598,9 @@ describe('MDCListFoundation', () => {
            key: 'B',
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
-         };
+         } as unknown as KeyboardEvent;
          // start with focus on first item
-         foundation.focusedItemIndex = 0;
+         (foundation as any).focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
@@ -1614,8 +1628,8 @@ describe('MDCListFoundation', () => {
            key: 'B',
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
-         };
-         foundation.focusedItemIndex = 3;
+         } as unknown as KeyboardEvent;
+         (foundation as any).focusedItemIndex = 3;
 
          foundation.handleKeydown(event, true, 3);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(4);
@@ -1639,13 +1653,13 @@ describe('MDCListFoundation', () => {
            key: 'B',
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
-         };
-         foundation.focusedItemIndex = 0;
+         } as unknown as KeyboardEvent;
+         (foundation as any).focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
 
-         foundation.focusedItemIndex = 5;
+         (foundation as any).focusedItemIndex = 5;
 
          jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
          foundation.handleKeydown(event, true, 5);
@@ -1661,25 +1675,25 @@ describe('MDCListFoundation', () => {
            key: 'B',
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
-         };
+         } as unknown as KeyboardEvent;
          // start with focus on first item
-         foundation.focusedItemIndex = 0;
+         (foundation as any).focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
 
          jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
-         event.key = 'A';
+         (event as any).key = 'A';
          foundation.handleKeydown(event, true, 2);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(6);
 
          jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
-         event.key = 'T';
+         (event as any).key = 'T';
          foundation.handleKeydown(event, true, 2);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(6);
 
          jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
-         event.key = 'Z';
+         (event as any).key = 'Z';
          foundation.handleKeydown(event, true, 6);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(1);
        });
@@ -1692,17 +1706,17 @@ describe('MDCListFoundation', () => {
         key: 'B',
         preventDefault: jasmine.createSpy(),
         target: {tagName: 'span'}
-      };
-      foundation.focusedItemIndex = 0;
+      } as unknown as KeyboardEvent;
+      (foundation as any).focusedItemIndex = 0;
 
       foundation.handleKeydown(event, true, 0);
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
 
-      event.key = 'A';
+      (event as any).key = 'A';
       foundation.handleKeydown(event, true, 2);
       expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalledWith(3);
 
-      event.key = 'B';
+      (event as any).key = 'B';
       foundation.handleKeydown(event, true, 2);
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(4);
     });
@@ -1716,21 +1730,21 @@ describe('MDCListFoundation', () => {
            key: 'Z',
            preventDefault: jasmine.createSpy(),
            target: {tagName: 'span'}
-         };
-         foundation.focusedItemIndex = 0;
+         } as unknown as KeyboardEvent;
+         (foundation as any).focusedItemIndex = 0;
 
          foundation.handleKeydown(event, true, 0);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(1);
 
-         event.key = 'Spacebar';
+         (event as any).key = 'Spacebar';
          foundation.handleKeydown(event, true, 1);
          expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalledWith(5);
 
-         event.key = 'A';
+         (event as any).key = 'A';
          foundation.handleKeydown(event, true, 1);
          expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalledWith(5);
 
-         event.key = 'C';
+         (event as any).key = 'C';
          foundation.handleKeydown(event, true, 1);
          expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(5);
        });
@@ -1744,20 +1758,20 @@ describe('MDCListFoundation', () => {
         key: 'A',
         preventDefault: jasmine.createSpy(),
         target: {tagName: 'span'}
-      };
+      } as unknown as KeyboardEvent;
       // start with focus on first item
-      foundation.focusedItemIndex = 0;
+      (foundation as any).focusedItemIndex = 0;
 
       foundation.handleKeydown(event, true, 0);
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(6);
 
       jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
 
-      event.key = 'B';
+      (event as any).key = 'B';
       foundation.handleKeydown(event, true, 6);
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(0);
 
-      event.key = 'A';
+      (event as any).key = 'A';
       foundation.handleKeydown(event, true, 0);
       expect(mockAdapter.focusItemAtIndex).toHaveBeenCalledWith(2);
     });
@@ -1770,17 +1784,17 @@ describe('MDCListFoundation', () => {
         key: 'M',
         preventDefault: jasmine.createSpy(),
         target: {tagName: 'span'}
-      };
+      } as unknown as KeyboardEvent;
       // start with focus on first item
-      foundation.focusedItemIndex = 0;
+      (foundation as any).focusedItemIndex = 0;
 
       foundation.handleKeydown(event, true, 0);
       jasmine.clock().tick(numbers.TYPEAHEAD_BUFFER_CLEAR_TIMEOUT_MS);
 
-      event.key = 'I';
+      (event as any).key = 'I';
       foundation.handleKeydown(event, true, 0);
 
-      event.key = 'O';
+      (event as any).key = 'O';
       foundation.handleKeydown(event, true, 0);
 
       expect(mockAdapter.focusItemAtIndex).not.toHaveBeenCalled();
@@ -1794,9 +1808,9 @@ describe('MDCListFoundation', () => {
         key: 'Z',
         preventDefault: jasmine.createSpy(),
         target: {tagName: 'span'}
-      };
+      } as unknown as KeyboardEvent;
       // start with focus on first item
-      foundation.focusedItemIndex = 0;
+      (foundation as any).focusedItemIndex = 0;
 
       mockAdapter.listItemAtIndexHasClass
           .withArgs(1, cssClasses.LIST_ITEM_DISABLED_CLASS)
