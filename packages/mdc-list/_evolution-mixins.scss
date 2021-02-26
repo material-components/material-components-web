@@ -11,6 +11,147 @@
 @use '@material/theme/theme-color';
 @use './evolution-variables' as variables;
 
+//
+// WARNING: The mixins in this file are being renamed. Please only use mixins
+// without the "evolution" or "_evolution" prefix (directly below this comment).
+//
+
+@mixin divider-color($args...) {
+  @include evolution-divider-color($args...);
+}
+@mixin group-subheader-ink-color($args...) {
+  @include evolution-group-subheader-ink-color($args...);
+}
+@mixin inset-divider-leading-offset($args...) {
+  @include evolution-inset-divider-leading-offset($args...);
+}
+@mixin inset-divider-trailing-offset($args...) {
+  @include evolution-inset-divider-trailing-offset($args...);
+}
+@mixin _item-base($args...) {
+  @include _evolution-item-base($args...);
+}
+@mixin item-end-size($args...) {
+  @include evolution-item-end-size($args...);
+}
+@mixin item-end-spacing($args...) {
+  @include evolution-item-end-spacing($args...);
+}
+@mixin _item-icon-ink-color($args...) {
+  @include _evolution-item-icon-ink-color($args...);
+}
+@mixin _item-interactive-ripple($args...) {
+  @include _evolution-item-interactive-ripple($args...);
+}
+@mixin _item-meta-text-ink-color($args...) {
+  @include _evolution-item-meta-text-ink-color($args...);
+}
+@mixin item-spacing($args...) {
+  @include evolution-item-spacing($args...);
+}
+@mixin item-start-size($args...) {
+  @include evolution-item-start-size($args...);
+}
+@mixin item-start-spacing($args...) {
+  @include evolution-item-start-spacing($args...);
+}
+@mixin _list-base($args...) {
+  @include _evolution-list-base($args...);
+}
+@mixin list-disabled-ink-color($args...) {
+  @include evolution-list-disabled-ink-color($args...);
+}
+@mixin list-disabled-opacity($args...) {
+  @include evolution-list-disabled-opacity($args...);
+}
+@mixin list-icon-fill-color($args...) {
+  @include evolution-list-icon-fill-color($args...);
+}
+@mixin list-icon-ink-color($args...) {
+  @include evolution-list-icon-ink-color($args...);
+}
+@mixin list-meta-text-ink-color($args...) {
+  @include evolution-list-meta-text-ink-color($args...);
+}
+@mixin list-primary-text-ink-color($args...) {
+  @include evolution-list-primary-text-ink-color($args...);
+}
+@mixin list-secondary-text-ink-color($args...) {
+  @include evolution-list-secondary-text-ink-color($args...);
+}
+@mixin list-selected-ink-color($args...) {
+  @include evolution-list-selected-ink-color($args...);
+}
+@mixin _one-line-item-density($args...) {
+  @include _evolution-one-line-item-density($args...);
+}
+@mixin one-line-item-density($args...) {
+  @include evolution-one-line-item-density($args...);
+}
+@mixin one-line-item-end-alignment($args...) {
+  @include evolution-one-line-item-end-alignment($args...);
+}
+@mixin one-line-item-height($args...) {
+  @include evolution-one-line-item-height($args...);
+}
+@mixin one-line-item-start-alignment($args...) {
+  @include evolution-one-line-item-start-alignment($args...);
+}
+@mixin _one-line-item-tall-density($args...) {
+  @include _evolution-one-line-item-tall-density($args...);
+}
+@mixin _one-line-item-taller-density($args...) {
+  @include _evolution-one-line-item-taller-density($args...);
+}
+@mixin padded-divider-leading-offset($args...) {
+  @include evolution-padded-divider-leading-offset($args...);
+}
+@mixin _three-line-item-density($args...) {
+  @include _evolution-three-line-item-density($args...);
+}
+@mixin three-line-item-density($args...) {
+  @include evolution-three-line-item-density($args...);
+}
+@mixin three-line-item-end-alignment($args...) {
+  @include evolution-three-line-item-end-alignment($args...);
+}
+@mixin _three-line-item-end-baseline($args...) {
+  @include _evolution-three-line-item-end-baseline($args...);
+}
+@mixin three-line-item-height($args...) {
+  @include evolution-three-line-item-height($args...);
+}
+@mixin three-line-item-start-alignment($args...) {
+  @include evolution-three-line-item-start-alignment($args...);
+}
+@mixin _two-line-item-density($args...) {
+  @include _evolution-two-line-item-density($args...);
+}
+@mixin two-line-item-density($args...) {
+  @include evolution-two-line-item-density($args...);
+}
+@mixin two-line-item-end-alignment($args...) {
+  @include evolution-two-line-item-end-alignment($args...);
+}
+@mixin _two-line-item-end-baseline($args...) {
+  @include _evolution-two-line-item-end-baseline($args...);
+}
+@mixin two-line-item-height($args...) {
+  @include evolution-two-line-item-height($args...);
+}
+@mixin _two-line-item-meta-baseline($args...) {
+  @include _evolution-two-line-item-meta-baseline($args...);
+}
+@mixin _two-line-item-primary-baseline($args...) {
+  @include _evolution-two-line-item-primary-baseline($args...);
+}
+@mixin two-line-item-start-alignment($args...) {
+  @include evolution-two-line-item-start-alignment($args...);
+}
+@mixin _two-line-item-tall-density($args...) {
+  @include _evolution-two-line-item-tall-density($args...);
+}
+
 @mixin without-ripple($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -107,10 +248,13 @@
 
     // For components using aria-activedescendant, the focus pseudoclass is
     // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
-    &:not(.mdc-evolution-list-item--selected):focus::before,
+    // stylelint-disable selector-class-pattern --
+    // NOTE: Selector '.mdc-*' should only be used in this project.
+    &:not(.mdc-evolution-list-item--selected):focus::before, // lint-disable-focus-psuedo-selector
     &.mdc-ripple-upgraded--background-focused::before {
       @include dom-mixins.transparent-border($query: $query);
     }
+    // stylelint-enable selector-class-pattern
 
     &.mdc-evolution-list-item--selected::before {
       @include dom-mixins.transparent-border(
@@ -1162,7 +1306,8 @@
     padding: 8px 0;
     list-style-type: none;
 
-    &:focus {
+    &:focus // lint-disable-focus-psuedo-selector
+    {
       outline: none;
     }
   }
@@ -1178,7 +1323,8 @@
     overflow: hidden;
     padding: 0;
 
-    &:focus {
+    &:focus // lint-disable-focus-psuedo-selector
+    {
       outline: none;
     }
   }
