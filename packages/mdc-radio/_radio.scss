@@ -282,6 +282,7 @@ $ripple-target: '.mdc-radio__ripple';
       $ripple-target: $ripple-target
     );
 
+    &.mdc-ripple-upgraded,
     &.mdc-ripple-upgraded--background-focused {
       .mdc-radio__background::before {
         @include feature-targeting.targets($feat-structure) {
