@@ -288,12 +288,15 @@ $_styles-copy: $styles;
         @if $current-global-value != $configured-global-value {
           // A compile time change was made to $mdc-typography-styles. To
           // support Angular, use this value instead of the key's value.
-          $custom-prop: keys.create-custom-property($key);
-          $custom-prop: custom-properties.set-fallback(
-            $custom-prop,
-            $current-global-value
-          );
-          @include theme.property($property, $custom-prop);
+          @if $current-global-value {
+            // Only emit if the overridden value exists
+            $custom-prop: keys.create-custom-property($key);
+            $custom-prop: custom-properties.set-fallback(
+              $custom-prop,
+              $current-global-value
+            );
+            @include theme.property($property, $custom-prop);
+          }
         } @else {
           // Otherwise, use the key, which may be different from the original
           // configured global value.
