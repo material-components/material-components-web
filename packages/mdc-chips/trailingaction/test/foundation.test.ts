@@ -143,12 +143,12 @@ function mockKeyDown(key: string) {
   return {
     stopPropagation,
     key,
-  };
+  } as unknown as KeyboardEvent;
 }
 
 function mockClick() {
   const stopPropagation = jasmine.createSpy('stopPropagation');
   return {
     stopPropagation,
-  };
+  } as unknown as MouseEvent;
 }

@@ -24,6 +24,7 @@
 
 import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
+import {MDCChipTrailingActionNavigationEvent} from '../../trailingaction/types';
 import {EventSource} from '../constants';
 import {MDCChipFoundation} from '../foundation';
 
@@ -215,7 +216,7 @@ describe('MDCChipFoundation', () => {
     const mockEvt = {
       type: 'keydown',
       key: 'Shift',
-    };
+    } as KeyboardEvent;
 
     foundation.handleKeydown(mockEvt);
     expect(mockAdapter.notifyInteraction).not.toHaveBeenCalled();
@@ -267,11 +268,11 @@ describe('MDCChipFoundation', () => {
     {
       type: 'keydown',
       key: 'Enter',
-    },
+    } as KeyboardEvent,
     {
       type: 'keydown',
       key: ' ',  // Space bar
-    },
+    } as KeyboardEvent,
   ];
 
   for (const evt of validKeyDownTable) {
@@ -310,7 +311,7 @@ describe('MDCChipFoundation', () => {
          type: 'transitionend',
          target: {},
          propertyName: 'width',
-       };
+       } as TransitionEvent;
        mockAdapter.eventTargetHasClass.and.returnValue(true);
 
        foundation.handleTransitionEnd(mockEvt);
@@ -325,7 +326,7 @@ describe('MDCChipFoundation', () => {
          type: 'transitionend',
          target: {},
          propertyName: 'width',
-       };
+       } as TransitionEvent;
        mockAdapter.eventTargetHasClass.and.returnValue(true);
        mockAdapter.getAttribute.and.returnValue('Removed foo');
 
@@ -341,7 +342,7 @@ describe('MDCChipFoundation', () => {
          type: 'transitionend',
          target: {},
          propertyName: 'opacity',
-       };
+       } as TransitionEvent;
        mockAdapter.eventTargetHasClass.and.returnValue(true);
        mockAdapter.getComputedStyleValue.and.returnValue('100px');
 
@@ -367,7 +368,7 @@ describe('MDCChipFoundation', () => {
          type: 'transitionend',
          target: {},
          propertyName: 'opacity',
-       };
+       } as TransitionEvent;
        mockAdapter.eventTargetHasClass
            .withArgs(mockEvt.target, cssClasses.CHIP_EXIT)
            .and.returnValue(false);
@@ -390,7 +391,7 @@ describe('MDCChipFoundation', () => {
          type: 'transitionend',
          target: {},
          propertyName: 'opacity',
-       };
+       } as TransitionEvent;
        mockAdapter.eventTargetHasClass.and.returnValue(true);
 
        foundation.handleTransitionEnd(mockEvt);
@@ -408,7 +409,7 @@ describe('MDCChipFoundation', () => {
          type: 'transitionend',
          target: {},
          propertyName: 'opacity',
-       };
+       } as TransitionEvent;
        mockAdapter.eventTargetHasClass
            .withArgs(mockEvt.target, cssClasses.CHECKMARK)
            .and.returnValue(true);
@@ -426,7 +427,7 @@ describe('MDCChipFoundation', () => {
          type: 'transitionend',
          target: {},
          propertyName: 'opacity',
-       };
+       } as TransitionEvent;
        mockAdapter.eventTargetHasClass.and.returnValue(true);
        mockAdapter.hasClass.and.returnValue(true);
 
@@ -443,7 +444,7 @@ describe('MDCChipFoundation', () => {
          type: 'transitionend',
          target: {},
          propertyName: 'width',
-       };
+       } as TransitionEvent;
 
        foundation.handleTransitionEnd(mockEvt);
 
@@ -498,9 +499,9 @@ describe('MDCChipFoundation', () => {
       const {foundation, mockAdapter} = setupTest();
       const mockEvt = {
         type: 'keydown',
-        preventDefault: jasmine.createSpy('.preventDefault'),
+        preventDefault: jasmine.createSpy('.preventDefault') as Function,
         key,
-      };
+      } as KeyboardEvent;
       foundation.handleKeydown(mockEvt);
       expect(mockAdapter.notifyNavigation)
           .toHaveBeenCalledWith(key, EventSource.PRIMARY);
@@ -512,8 +513,8 @@ describe('MDCChipFoundation', () => {
     const mockEvt = {
       type: 'keydown',
       key: strings.ARROW_LEFT_KEY,
-      preventDefault: jasmine.createSpy('.preventDefault'),
-    };
+      preventDefault: jasmine.createSpy('.preventDefault') as Function,
+    } as KeyboardEvent;
 
     foundation.handleKeydown(mockEvt);
     expect(mockEvt.preventDefault).toHaveBeenCalledTimes(1);
@@ -525,7 +526,7 @@ describe('MDCChipFoundation', () => {
        const mockEvt = {
          type: 'keydown',
          key: ' ',
-       };
+       } as KeyboardEvent;
 
        foundation.handleKeydown(mockEvt);
        expect(mockAdapter.notifyNavigation)
@@ -540,7 +541,7 @@ describe('MDCChipFoundation', () => {
        mockAdapter.eventTargetHasClass.and.returnValue(true);
        const mockFocusIn = {
          type: 'focusin',
-       };
+       } as FocusEvent;
 
        foundation.handleFocusIn(mockFocusIn);
        expect(mockAdapter.addClass)
@@ -553,7 +554,7 @@ describe('MDCChipFoundation', () => {
        mockAdapter.eventTargetHasClass.and.returnValue(false);
        const mockFocusIn = {
          type: 'focusin',
-       };
+       } as FocusEvent;
 
        foundation.handleFocusIn(mockFocusIn);
        expect(mockAdapter.addClass)
@@ -575,7 +576,7 @@ describe('MDCChipFoundation', () => {
      () => {
        const {mockAdapter, foundation} =
            setupFocusOutTest({isEventFromPrimaryAction: true});
-       foundation.handleFocusOut({type: 'focusout'});
+       foundation.handleFocusOut({type: 'focusout'} as FocusEvent);
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(cssClasses.PRIMARY_ACTION_FOCUSED);
      });
@@ -584,7 +585,7 @@ describe('MDCChipFoundation', () => {
      () => {
        const {mockAdapter, foundation} =
            setupFocusOutTest({isEventFromPrimaryAction: true, isEditing: true});
-       foundation.handleFocusOut({type: 'focusout'});
+       foundation.handleFocusOut({type: 'focusout'} as FocusEvent);
        expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.EDITING);
        expect(mockAdapter.notifyEditFinish).toHaveBeenCalled();
      });
@@ -593,7 +594,7 @@ describe('MDCChipFoundation', () => {
      () => {
        const {mockAdapter, foundation} = setupFocusOutTest(
            {isEventFromPrimaryAction: true, isEditing: false});
-       foundation.handleFocusOut({type: 'focusout'});
+       foundation.handleFocusOut({type: 'focusout'} as FocusEvent);
        expect(mockAdapter.removeClass)
            .not.toHaveBeenCalledWith(cssClasses.EDITING);
        expect(mockAdapter.notifyEditFinish).not.toHaveBeenCalled();
@@ -603,7 +604,7 @@ describe('MDCChipFoundation', () => {
      () => {
        const {mockAdapter, foundation} =
            setupFocusOutTest({isEventFromPrimaryAction: false});
-       foundation.handleFocusOut({type: 'focusout'});
+       foundation.handleFocusOut({type: 'focusout'} as FocusEvent);
        expect(mockAdapter.removeClass)
            .not.toHaveBeenCalledWith(cssClasses.PRIMARY_ACTION_FOCUSED);
      });
@@ -637,7 +638,7 @@ describe('MDCChipFoundation', () => {
       stopPropagation: jasmine.createSpy('.stopPropagation'),
       target: jasmine.createSpy('.target'),
       key,
-    };
+    } as unknown as KeyboardEvent;
   }
 
   const rightKeyNavigationTable = [
@@ -686,7 +687,8 @@ describe('MDCChipFoundation', () => {
          const {foundation, mockAdapter} = setupNavigationTest({
            isRTL: true,
          });
-         foundation.handleTrailingActionNavigation({detail: {key}});
+         foundation.handleTrailingActionNavigation(
+             {detail: {key}} as MDCChipTrailingActionNavigationEvent);
          expect(mockAdapter.notifyNavigation)
              .toHaveBeenCalledWith(key, EventSource.TRAILING);
        });
@@ -710,7 +712,8 @@ describe('MDCChipFoundation', () => {
          const {foundation, mockAdapter} = setupNavigationTest({
            isTrailingActionNavigable: true,
          });
-         foundation.handleTrailingActionNavigation({detail: {key}});
+         foundation.handleTrailingActionNavigation(
+             {detail: {key}} as MDCChipTrailingActionNavigationEvent);
          expect(mockAdapter.removeTrailingActionFocus).toHaveBeenCalled();
          expect(mockAdapter.setPrimaryActionAttr)
              .toHaveBeenCalledWith('tabindex', '0');
@@ -737,7 +740,8 @@ describe('MDCChipFoundation', () => {
 
     it(`#handleTrailingActionNavigation ${key} emits appropriate event`, () => {
       const {foundation, mockAdapter} = setupNavigationTest();
-      foundation.handleTrailingActionNavigation({detail: {key}});
+      foundation.handleTrailingActionNavigation(
+          {detail: {key}} as MDCChipTrailingActionNavigationEvent);
       expect(mockAdapter.notifyNavigation)
           .toHaveBeenCalledWith(key, EventSource.TRAILING);
     });
@@ -761,7 +765,8 @@ describe('MDCChipFoundation', () => {
            isTrailingActionNavigable: true,
            isRTL: true,
          });
-         foundation.handleTrailingActionNavigation({detail: {key}});
+         foundation.handleTrailingActionNavigation(
+             {detail: {key}} as MDCChipTrailingActionNavigationEvent);
          expect(mockAdapter.removeTrailingActionFocus).toHaveBeenCalled();
          expect(mockAdapter.setPrimaryActionAttr)
              .toHaveBeenCalledWith('tabindex', '0');
