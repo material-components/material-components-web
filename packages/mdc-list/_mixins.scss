@@ -34,122 +34,14 @@
 @use '@material/theme/theme-color';
 @use './evolution-mixins';
 
-//
-// WARNING: All mixins in this file are being deprecated.
-// Please use "_evolution-mixins.scss" instead (see: go/gm-web-list-docs).
-//
-// If absolutely necessary, you may use the aliases in the following section.
-//
-
-@mixin deprecated-base_($args...) {
-  @include base_($args...);
-}
-@mixin deprecated-core-styles($args...) {
-  @include core-styles($args...);
-}
-@mixin deprecated-divider-color($args...) {
-  @include divider-color($args...);
-}
-@mixin deprecated-divider-inset($args...) {
-  @include divider-inset($args...);
-}
-@mixin deprecated-divider-insets($args...) {
-  @include divider-insets($args...);
-}
-@mixin deprecated-divider-insets-variant($args...) {
-  @include divider-insets-variant($args...);
-}
-@mixin deprecated-divider-inset-variant($args...) {
-  @include divider-inset-variant($args...);
-}
-@mixin deprecated-graphic-size($args...) {
-  @include graphic-size($args...);
-}
-@mixin deprecated-graphic-size-dense_($args...) {
-  @include graphic-size-dense_($args...);
-}
-@mixin deprecated-graphic-size-variant($args...) {
-  @include graphic-size-variant($args...);
-}
-@mixin deprecated-group-subheader-ink-color($args...) {
-  @include group-subheader-ink-color($args...);
-}
-@mixin deprecated-icon-margin($args...) {
-  @include icon-margin($args...);
-}
-@mixin deprecated-item-base_($args...) {
-  @include item-base_($args...);
-}
-@mixin deprecated-item-disabled-text-color($args...) {
-  @include item-disabled-text-color($args...);
-}
-@mixin deprecated-item-disabled-text-opacity($args...) {
-  @include item-disabled-text-opacity($args...);
-}
-@mixin deprecated-item-graphic-fill-color($args...) {
-  @include item-graphic-fill-color($args...);
-}
-@mixin deprecated-item-graphic-ink-color($args...) {
-  @include item-graphic-ink-color($args...);
-}
-@mixin deprecated-item-interactive-ripple_($args...) {
-  @include item-interactive-ripple_($args...);
-}
-@mixin deprecated-item-meta-ink-color($args...) {
-  @include item-meta-ink-color($args...);
-}
-@mixin deprecated-item-primary-text-ink-color($args...) {
-  @include item-primary-text-ink-color($args...);
-}
-@mixin deprecated-item-secondary-text-ink-color($args...) {
-  @include item-secondary-text-ink-color($args...);
-}
-@mixin deprecated-item-selected-text-color($args...) {
-  @include item-selected-text-color($args...);
-}
-@mixin deprecated-list-item-height($args...) {
-  @include list-item-height($args...);
-}
-@mixin deprecated-list-item-height-variant($args...) {
-  @include list-item-height-variant($args...);
-}
-@mixin deprecated-list-item-padding($args...) {
-  @include list-item-padding($args...);
-}
-@mixin deprecated-list-item-padding-variant($args...) {
-  @include list-item-padding-variant($args...);
-}
-@mixin deprecated-ripple($args...) {
-  @include ripple($args...);
-}
-@mixin deprecated-ripple-states($args...) {
-  @include ripple-states($args...);
-}
-@mixin deprecated-single-line-density($args...) {
-  @include single-line-density($args...);
-}
-@mixin deprecated-single-line-height($args...) {
-  @include single-line-height($args...);
-}
-@mixin deprecated-single-line-shape-radius($args...) {
-  @include single-line-shape-radius($args...);
-}
-@mixin deprecated-without-ripple($args...) {
-  @include without-ripple($args...);
-}
-
-//
-// DO NOT USE any mixins below this line.
-//
-
-@mixin core-styles($query: feature-targeting.all()) {
-  @include without-ripple($query);
-  @include ripple($query);
+@mixin deprecated-core-styles($query: feature-targeting.all()) {
+  @include deprecated-without-ripple($query);
+  @include deprecated-ripple($query);
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // list styles. It is recommended that most users use `mdc-list-core-styles` instead.
-@mixin without-ripple($query: feature-targeting.all()) {
+@mixin deprecated-without-ripple($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
@@ -161,27 +53,33 @@
   );
 
   .mdc-list {
-    @include base_($query);
+    @include deprecated-base_($query);
   }
 
-  @include single-line-density(
+  @include deprecated-single-line-density(
     variables.$deprecated-single-line-density-scale,
     $query: $query
   );
-  @include item-secondary-text-ink-color(text-secondary-on-background, $query);
-  @include item-graphic-fill-color(transparent, $query);
-  @include item-graphic-ink-color(text-icon-on-background, $query);
-  @include item-meta-ink-color(text-hint-on-background, $query);
-  @include group-subheader-ink-color(text-primary-on-background, $query);
-  @include item-disabled-text-opacity(
+  @include deprecated-item-secondary-text-ink-color(
+    text-secondary-on-background,
+    $query
+  );
+  @include deprecated-item-graphic-fill-color(transparent, $query);
+  @include deprecated-item-graphic-ink-color(text-icon-on-background, $query);
+  @include deprecated-item-meta-ink-color(text-hint-on-background, $query);
+  @include deprecated-group-subheader-ink-color(
+    text-primary-on-background,
+    $query
+  );
+  @include deprecated-item-disabled-text-opacity(
     variables.$deprecated-text-disabled-opacity,
     $query
   );
-  @include item-disabled-text-color(
+  @include deprecated-item-disabled-text-color(
     variables.$deprecated-text-disabled-color,
     $query
   );
-  @include item-selected-text-color(
+  @include deprecated-item-selected-text-color(
     variables.$deprecated-text-selected-color,
     $query
   );
@@ -196,15 +94,18 @@
 
   .mdc-list-item {
     @include feature-targeting.targets($feat-structure) {
-      @include item-base_;
+      @include deprecated-item-base_;
     }
 
     // For components using aria-activedescendant, the focus pseudoclass is
     // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
-    &:not(.mdc-list-item--selected):focus::before,
+    // stylelint-disable selector-class-pattern --
+    // NOTE: Selector '.mdc-*' should only be used in this project.
+    &:not(.mdc-list-item--selected):focus::before, // lint-disable-focus-psuedo-selector
     &.mdc-ripple-upgraded--background-focused::before {
       @include dom-mixins.transparent-border($query: $query);
     }
+    // stylelint-enable selector-class-pattern
 
     &.mdc-list-item--selected::before {
       @include dom-mixins.transparent-border(
@@ -214,65 +115,65 @@
       );
     }
 
-    @include list-item-padding-variant(
+    @include deprecated-list-item-padding-variant(
       variables.$deprecated-textual-variant-config,
       $query
     );
-    @include list-item-height-variant(
+    @include deprecated-list-item-height-variant(
       variables.$deprecated-textual-variant-config,
       $query
     );
 
     .mdc-list--icon-list & {
-      @include list-item-padding-variant(
+      @include deprecated-list-item-padding-variant(
         variables.$deprecated-icon-variant-config,
         $query
       );
-      @include list-item-height-variant(
+      @include deprecated-list-item-height-variant(
         variables.$deprecated-icon-variant-config,
         $query
       );
     }
 
     .mdc-list--avatar-list & {
-      @include list-item-padding-variant(
+      @include deprecated-list-item-padding-variant(
         variables.$deprecated-avatar-variant-config,
         $query
       );
-      @include list-item-height-variant(
+      @include deprecated-list-item-height-variant(
         variables.$deprecated-avatar-variant-config,
         $query
       );
     }
 
     .mdc-list--thumbnail-list & {
-      @include list-item-padding-variant(
+      @include deprecated-list-item-padding-variant(
         variables.$deprecated-thumbnail-variant-config,
         $query
       );
-      @include list-item-height-variant(
+      @include deprecated-list-item-height-variant(
         variables.$deprecated-thumbnail-variant-config,
         $query
       );
     }
 
     .mdc-list--image-list & {
-      @include list-item-padding-variant(
+      @include deprecated-list-item-padding-variant(
         variables.$deprecated-image-variant-config,
         $query
       );
-      @include list-item-height-variant(
+      @include deprecated-list-item-height-variant(
         variables.$deprecated-image-variant-config,
         $query
       );
     }
 
     .mdc-list--video-list & {
-      @include list-item-padding-variant(
+      @include deprecated-list-item-padding-variant(
         variables.$deprecated-video-variant-config,
         $query
       );
-      @include list-item-height-variant(
+      @include deprecated-list-item-height-variant(
         variables.$deprecated-video-variant-config,
         $query
       );
@@ -283,7 +184,7 @@
   // graphic styles must take priority).
   // TODO(b/157038316): regroup this with density styles when nesting is fixed.
   .mdc-list--dense .mdc-list-item__graphic {
-    @include graphic-size-dense_(20px, $query);
+    @include deprecated-graphic-size-dense_(20px, $query);
   }
 
   .mdc-list-item__graphic {
@@ -296,20 +197,20 @@
     }
 
     // TODO(b/156624966): this retains legacy spacing but should be updated.
-    @include graphic-size-variant(
+    @include deprecated-graphic-size-variant(
       variables.$deprecated-deprecated-graphic-config,
       $query
     );
 
     .mdc-list--icon-list & {
-      @include graphic-size-variant(
+      @include deprecated-graphic-size-variant(
         variables.$deprecated-icon-variant-config,
         $query
       );
     }
 
     .mdc-list--avatar-list & {
-      @include graphic-size-variant(
+      @include deprecated-graphic-size-variant(
         variables.$deprecated-avatar-variant-config,
         $query
       );
@@ -319,21 +220,21 @@
     }
 
     .mdc-list--thumbnail-list & {
-      @include graphic-size-variant(
+      @include deprecated-graphic-size-variant(
         variables.$deprecated-thumbnail-variant-config,
         $query
       );
     }
 
     .mdc-list--image-list & {
-      @include graphic-size-variant(
+      @include deprecated-graphic-size-variant(
         variables.$deprecated-image-variant-config,
         $query
       );
     }
 
     .mdc-list--video-list & {
-      @include graphic-size-variant(
+      @include deprecated-graphic-size-variant(
         variables.$deprecated-video-variant-config,
         $query
       );
@@ -472,7 +373,7 @@
   }
 
   .mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
-    @include graphic-size-dense_(36px, $query);
+    @include deprecated-graphic-size-dense_(36px, $query);
   }
 
   // Only change mouse cursor for list items which are not disabled.
@@ -504,12 +405,12 @@
 
   // Note: ideally we'd be able to hoist this to the top-level `$feat-color`, but doing so
   // will cause the `border` declaration on `.mdc-list-divider` above to override it.
-  @include divider-color($divider-color, $query);
+  @include deprecated-divider-color($divider-color, $query);
 
   // Deprecated. Use the specialized inset classes instead.
   // Items are fully inset using padding.
   .mdc-list-divider--padded {
-    @include divider-inset-variant(
+    @include deprecated-divider-inset-variant(
       variables.$deprecated-textual-variant-config,
       $use-padding: true,
       $query: $query
@@ -520,7 +421,7 @@
   // Items's leading, but not trailing, edge is inset to account for *avatar*
   // width.
   .mdc-list-divider--inset {
-    @include divider-inset-variant(
+    @include deprecated-divider-inset-variant(
       variables.$deprecated-avatar-variant-config,
       $trailing: false,
       $query: $query
@@ -530,49 +431,49 @@
   // Deprecated. Use the specialized inset classes instead.
   // Item's leading and trailing edges are inset to account for *avatar* width.
   .mdc-list-divider--inset.mdc-list-divider--padded {
-    @include divider-inset-variant(
+    @include deprecated-divider-inset-variant(
       variables.$deprecated-avatar-variant-config,
       $query: $query
     );
   }
 
   .mdc-list {
-    @include divider-insets-variant(
+    @include deprecated-divider-insets-variant(
       variables.$deprecated-textual-variant-config,
       $query: $query
     );
   }
 
   .mdc-list--icon-list {
-    @include divider-insets-variant(
+    @include deprecated-divider-insets-variant(
       variables.$deprecated-icon-variant-config,
       $query: $query
     );
   }
 
   .mdc-list--avatar-list {
-    @include divider-insets-variant(
+    @include deprecated-divider-insets-variant(
       variables.$deprecated-avatar-variant-config,
       $query: $query
     );
   }
 
   .mdc-list--thumbnail-list {
-    @include divider-insets-variant(
+    @include deprecated-divider-insets-variant(
       variables.$deprecated-thumbnail-variant-config,
       $query: $query
     );
   }
 
   .mdc-list--image-list {
-    @include divider-insets-variant(
+    @include deprecated-divider-insets-variant(
       variables.$deprecated-image-variant-config,
       $query: $query
     );
   }
 
   .mdc-list--video-list {
-    @include divider-insets-variant(
+    @include deprecated-divider-insets-variant(
       variables.$deprecated-video-variant-config,
       $query: $query
     );
@@ -610,12 +511,12 @@
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // list styles. It is recommended that most users use `mdc-list-core-styles` instead.
-@mixin ripple($query: feature-targeting.all()) {
+@mixin deprecated-ripple($query: feature-targeting.all()) {
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // List items should support states by default, but it should be possible to opt out.
   :not(.mdc-list-item--disabled).mdc-list-item {
-    @include item-interactive-ripple_($query);
+    @include deprecated-item-interactive-ripple_($query);
   }
 
   // Set styles only for focus state on disabled list item.
@@ -650,7 +551,7 @@
 ///
 /// Sets ripple color for a list item.
 ///
-@mixin ripple-states($color, $query: feature-targeting.all()) {
+@mixin deprecated-ripple-states($color, $query: feature-targeting.all()) {
   @include ripple-theme.states(
     $color: $color,
     $query: $query,
@@ -660,17 +561,23 @@
 
 /// Sets the text color of the list item in selected or activated state.
 /// @param {color} $color - The desired text color.
-@mixin item-selected-text-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-selected-text-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
   .mdc-list-item--selected,
   .mdc-list-item--activated {
-    @include item-primary-text-ink-color($color, $query: $query);
-    @include item-graphic-ink-color($color, $query: $query);
+    @include deprecated-item-primary-text-ink-color($color, $query: $query);
+    @include deprecated-item-graphic-ink-color($color, $query: $query);
   }
 }
 
-@mixin item-primary-text-ink-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-primary-text-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
@@ -678,7 +585,10 @@
   }
 }
 
-@mixin item-secondary-text-ink-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-secondary-text-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item__secondary-text {
@@ -688,7 +598,10 @@
   }
 }
 
-@mixin item-graphic-fill-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-graphic-fill-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item__graphic {
@@ -698,7 +611,10 @@
   }
 }
 
-@mixin item-graphic-ink-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-graphic-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item__graphic {
@@ -708,7 +624,7 @@
   }
 }
 
-@mixin item-meta-ink-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-meta-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item__meta {
@@ -729,7 +645,7 @@
 ///
 /// @access public
 ///
-@mixin single-line-shape-radius(
+@mixin deprecated-single-line-shape-radius(
   $radius,
   $rtl-reflexive: false,
   $density-scale: variables.$deprecated-single-line-density-scale,
@@ -751,7 +667,7 @@
   }
 }
 
-@mixin divider-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-divider-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-divider {
@@ -761,7 +677,10 @@
   }
 }
 
-@mixin group-subheader-ink-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-group-subheader-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-group__subheader {
@@ -771,7 +690,10 @@
   }
 }
 
-@mixin item-disabled-text-opacity($opacity, $query: feature-targeting.all()) {
+@mixin deprecated-item-disabled-text-opacity(
+  $opacity,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item--disabled .mdc-list-item__text {
@@ -781,7 +703,10 @@
   }
 }
 
-@mixin item-disabled-text-color($color, $query: feature-targeting.all()) {
+@mixin deprecated-item-disabled-text-color(
+  $color,
+  $query: feature-targeting.all()
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-list-item--disabled {
@@ -802,12 +727,12 @@
 ///
 /// @access public
 ///
-@mixin list-item-padding-variant(
+@mixin deprecated-list-item-padding-variant(
   $variant-config,
   $query: feature-targeting.all()
 ) {
   $leading-padding: map.get($variant-config, leading-padding);
-  @include list-item-padding($leading-padding, $query);
+  @include deprecated-list-item-padding($leading-padding, $query);
 }
 
 ///
@@ -817,7 +742,10 @@
 ///
 /// @access public
 ///
-@mixin list-item-padding($leading-padding, $query: feature-targeting.all()) {
+@mixin deprecated-list-item-padding(
+  $leading-padding,
+  $query: feature-targeting.all()
+) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
@@ -836,12 +764,12 @@
 ///
 /// @access public
 ///
-@mixin list-item-height-variant(
+@mixin deprecated-list-item-height-variant(
   $variant-config,
   $query: feature-targeting.all()
 ) {
   $single-line-height: map.get($variant-config, single-line-height);
-  @include list-item-height($single-line-height, $query);
+  @include deprecated-list-item-height($single-line-height, $query);
 }
 
 ///
@@ -851,7 +779,7 @@
 ///
 /// @access public
 ///
-@mixin list-item-height($height, $query: feature-targeting.all()) {
+@mixin deprecated-list-item-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
@@ -866,7 +794,7 @@
 ///
 /// @access public
 ///
-@mixin icon-margin($margin, $query: feature-targeting.all()) {
+@mixin deprecated-icon-margin($margin, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
@@ -883,13 +811,13 @@
 ///
 /// @access public
 ///
-@mixin divider-insets-variant(
+@mixin deprecated-divider-insets-variant(
   $variant-config,
   $query: feature-targeting.all()
 ) {
   $leading-padding: map.get($variant-config, leading-padding);
   $text-offset: map.get($variant-config, text-offset);
-  @include divider-insets($leading-padding, $text-offset, $query);
+  @include deprecated-divider-insets($leading-padding, $text-offset, $query);
 }
 
 ///
@@ -900,13 +828,13 @@
 ///
 /// @access public
 ///
-@mixin divider-insets(
+@mixin deprecated-divider-insets(
   $leading-padding,
   $text-offset,
   $query: feature-targeting.all()
 ) {
   .mdc-list-divider--inset-leading {
-    @include divider-inset(
+    @include deprecated-divider-inset(
       $leading-padding,
       $text-offset,
       $trailing: false,
@@ -915,7 +843,7 @@
   }
 
   .mdc-list-divider--inset-trailing {
-    @include divider-inset(
+    @include deprecated-divider-inset(
       $leading-padding,
       $text-offset,
       $leading: false,
@@ -924,11 +852,15 @@
   }
 
   .mdc-list-divider--inset-leading.mdc-list-divider--inset-trailing {
-    @include divider-inset($leading-padding, $text-offset, $query: $query);
+    @include deprecated-divider-inset(
+      $leading-padding,
+      $text-offset,
+      $query: $query
+    );
   }
 
   .mdc-list-divider--inset-leading.mdc-list-divider--padding {
-    @include divider-inset(
+    @include deprecated-divider-inset(
       $leading-padding,
       $text-offset,
       $trailing: false,
@@ -938,7 +870,7 @@
   }
 
   .mdc-list-divider--inset-leading.mdc-list-divider--inset-trailing.mdc-list-divider--inset-padding {
-    @include divider-inset(
+    @include deprecated-divider-inset(
       $leading-padding,
       $text-offset,
       $use-padding: true,
@@ -948,13 +880,16 @@
 }
 
 // Sets the width and height of the graphic element using a variant config.
-@mixin graphic-size-variant($variant-config, $query: feature-targeting.all()) {
+@mixin deprecated-graphic-size-variant(
+  $variant-config,
+  $query: feature-targeting.all()
+) {
   $leading-padding: map.get($variant-config, leading-padding);
   $text-offset: map.get($variant-config, text-offset);
   $width: map.get(map.get($variant-config, graphic-size), width);
   $height: map.get(map.get($variant-config, graphic-size), height);
 
-  @include graphic-size(
+  @include deprecated-graphic-size(
     $leading-padding,
     $text-offset,
     $width,
@@ -968,7 +903,7 @@
 // from the item's leading edge by 72px, which is defined within the spec. If
 // height isn't specified, the graphic is assumed to be square.
 // TODO(b/155397992): restructure to use symmetric margins.
-@mixin graphic-size(
+@mixin deprecated-graphic-size(
   $leading-padding,
   $text-offset,
   $width,
@@ -988,8 +923,8 @@
 }
 
 // Deprecated. Supports legacy density styles.
-@mixin graphic-size-dense_($size, $query: feature-targeting.all()) {
-  @include graphic-size(
+@mixin deprecated-graphic-size-dense_($size, $query: feature-targeting.all()) {
+  @include deprecated-graphic-size(
     $leading-padding: 16px,
     $text-offset: 16px,
     $width: $size,
@@ -1008,7 +943,7 @@
 ///
 /// @access private
 ///
-@mixin divider-inset-variant(
+@mixin deprecated-divider-inset-variant(
   $variant-config,
   $leading: true,
   $trailing: true,
@@ -1018,7 +953,7 @@
   $leading-padding: map.get($variant-config, leading-padding);
   $text-offset: map.get($variant-config, text-offset);
 
-  @include divider-inset(
+  @include deprecated-divider-inset(
     $leading-padding,
     $text-offset,
     $leading,
@@ -1028,7 +963,7 @@
   );
 }
 
-@mixin divider-inset(
+@mixin deprecated-divider-inset(
   $leading-padding,
   $text-offset,
   $leading: true,
@@ -1059,7 +994,10 @@
 ///
 /// @access public
 ///
-@mixin single-line-density($density-scale, $query: feature-targeting.all()) {
+@mixin deprecated-single-line-density(
+  $density-scale,
+  $query: feature-targeting.all()
+) {
   $height: density-functions.prop-value(
     $density-config: variables.$deprecated-single-line-density-config,
     $density-scale: $density-scale,
@@ -1067,7 +1005,7 @@
   );
 
   .mdc-list-item {
-    @include single-line-height($height, $query: $query);
+    @include deprecated-single-line-height($height, $query: $query);
   }
 }
 
@@ -1078,7 +1016,7 @@
 ///
 /// @access public
 ///
-@mixin single-line-height($height, $query: feature-targeting.all()) {
+@mixin deprecated-single-line-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
@@ -1090,7 +1028,7 @@
 // Private
 //
 
-@mixin base_($query: feature-targeting.all()) {
+@mixin deprecated-base_($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
@@ -1109,15 +1047,19 @@
     padding: 8px 0;
     list-style-type: none;
 
-    &:focus {
+    &:focus // lint-disable-focus-psuedo-selector
+    {
       outline: none;
     }
   }
 
-  @include item-primary-text-ink-color(text-primary-on-background, $query);
+  @include deprecated-item-primary-text-ink-color(
+    text-primary-on-background,
+    $query
+  );
 }
 
-@mixin item-base_ {
+@mixin deprecated-item-base_ {
   display: flex;
   position: relative;
   align-items: center;
@@ -1125,13 +1067,14 @@
   overflow: hidden;
   padding: 0;
 
-  &:focus {
+  &:focus // lint-disable-focus-psuedo-selector
+  {
     outline: none;
   }
 }
 
 // Ripple styles for an interactive list item (one that is enabled and inside an interactive list).
-@mixin item-interactive-ripple_($query: feature-targeting.all()) {
+@mixin deprecated-item-interactive-ripple_($query: feature-targeting.all()) {
   @include ripple.surface(
     $ripple-target: variables.$deprecated-ripple-target,
     $query: $query
