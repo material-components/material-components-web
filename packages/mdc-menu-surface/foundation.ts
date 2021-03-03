@@ -91,6 +91,8 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   private isHoistedElement = false;
   private isFixedPosition = false;
 
+  private maxHeight = 0;
+
   private openAnimationEndTimerId = 0;
   private closeAnimationEndTimerId = 0;
   private animationRequestId = 0;
@@ -184,6 +186,15 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
   setQuickOpen(quickOpen: boolean) {
     this.isQuickOpen = quickOpen;
+  }
+
+  /**
+   * Sets maximum menu-surface height on open.
+   * @param maxHeight The desired max-height. Set to 0 (default) to
+   *     automatically calculate max height based on available viewport space.
+   */
+  setMaxHeight(maxHeight: number) {
+    this.maxHeight = maxHeight;
   }
 
   isOpen() {
@@ -455,6 +466,10 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
    * @return Maximum height of the menu surface, based on available space. 0 indicates should not be set.
    */
   private getMenuSurfaceMaxHeight(corner: Corner): number {
+    if (this.maxHeight > 0) {
+      return this.maxHeight;
+    }
+
     const {viewportDistance} = this.measurements;
 
     let maxHeight = 0;

@@ -611,6 +611,17 @@ describe('MDCMenuSurfaceFoundation', () => {
       });
 
   testFoundation(
+      '#open tall surface restricts max height if set',
+      ({foundation, mockAdapter}) => {
+        initAnchorLayout(mockAdapter, smallAboveMiddleLeft, false, 700);
+        foundation.setAnchorCorner(Corner.BOTTOM_START);
+        foundation.setMaxHeight(150);
+        foundation.open();
+        jasmine.clock().tick(1);  // Run to frame.
+        expect(mockAdapter.setMaxHeight).toHaveBeenCalledWith('150px');
+      });
+
+  testFoundation(
       '#open tall surface from small anchor in left above middle of viewport, BOTTOM_START anchor corner, LTR',
       ({foundation, mockAdapter}) => {
         initAnchorLayout(mockAdapter, smallAboveMiddleLeft, false, 700);
