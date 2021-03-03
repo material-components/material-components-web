@@ -673,7 +673,7 @@ describe('MDCTextField', () => {
      (done) => {
        const {root, component} = setupTest();
        const handler = jasmine.createSpy('ValidationAttributeChangeHandler');
-       handler.withArgs(jasmine.any(Array)).and.callFake((arr) => {
+       handler.withArgs(jasmine.any(Array)).and.callFake((arr: string[]) => {
          if (arr.indexOf('required') !== -1) {
            done();
          }

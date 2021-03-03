@@ -161,7 +161,7 @@ describe('MDCComponent', () => {
     const f = new FakeComponent(root);
     const handler = jasmine.createSpy('eventHandler');
     let evt: any = null;
-    handler.withArgs(jasmine.any(Object)).and.callFake((evt_) => {
+    handler.withArgs(jasmine.any(Object)).and.callFake((evt_: any) => {
       evt = evt_;
     });
     const data = {evtData: true};
@@ -184,7 +184,7 @@ describe('MDCComponent', () => {
        const f = new FakeComponent(root);
        const handler = jasmine.createSpy('eventHandler');
        let evt: any = null;
-       handler.withArgs(jasmine.any(Object)).and.callFake((evt_) => {
+       handler.withArgs(jasmine.any(Object)).and.callFake((evt_: any) => {
          evt = evt_;
        });
        const data = {evtData: true};

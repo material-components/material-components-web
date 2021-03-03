@@ -13,6 +13,6 @@
     "directory": "packages/mdc-base"
   },
   "dependencies": {
-    "tslib": "^1.9.3"
+    "tslib": "^2.1.0"
   }
 }
