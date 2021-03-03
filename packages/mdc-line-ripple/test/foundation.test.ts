@@ -94,7 +94,7 @@ describe('MDCLineRippleFoundation', () => {
            .and.returnValue(true);
        const event = {
          propertyName: 'opacity',
-       };
+       } as TransitionEvent;
 
        foundation.init();
        foundation.handleTransitionEnd(event);
@@ -112,7 +112,7 @@ describe('MDCLineRippleFoundation', () => {
            .and.returnValue(true);
        const event = {
          propertyName: 'not-opacity',
-       };
+       } as TransitionEvent;
        foundation.init();
 
        foundation.handleTransitionEnd(event);
@@ -130,7 +130,7 @@ describe('MDCLineRippleFoundation', () => {
            .and.returnValue(false);
        const event = {
          propertyName: 'opacity',
-       };
+       } as TransitionEvent;
        foundation.init();
        foundation.handleTransitionEnd(event);
        expect(mockAdapter.removeClass)

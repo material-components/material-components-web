@@ -138,7 +138,7 @@ describe('MDCIconButtonToggle', () => {
   it('click handler is added to root element', () => {
     const {root, mockFoundation} = setupTest({createMockFoundation: true});
     emitEvent(root, 'click');
-    expect(mockFoundation.handleClick).toHaveBeenCalledTimes(1);
+    expect(mockFoundation!.handleClick).toHaveBeenCalledTimes(1);
   });
 
   it('click handler is removed from the root element on destroy', () => {
@@ -146,6 +146,6 @@ describe('MDCIconButtonToggle', () => {
         setupTest({createMockFoundation: true});
     component.destroy();
     emitEvent(root, 'click');
-    expect(mockFoundation.handleClick).not.toHaveBeenCalled();
+    expect(mockFoundation!.handleClick).not.toHaveBeenCalled();
   });
 });

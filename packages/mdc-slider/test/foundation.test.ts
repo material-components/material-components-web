@@ -778,7 +778,7 @@ describe('MDCSliderFoundation', () => {
            isRange: true,
          });
 
-         foundation.handleThumbMouseenter(createMouseEvent('mouseenter'));
+         foundation.handleThumbMouseenter();
          expect(mockAdapter.addThumbClass)
              .toHaveBeenCalledWith(
                  cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
@@ -798,7 +798,7 @@ describe('MDCSliderFoundation', () => {
              .and.returnValue(false);
          mockAdapter.isInputFocused.withArgs(Thumb.END).and.returnValue(false);
 
-         foundation.handleThumbMouseleave(createMouseEvent('mouseleave'));
+         foundation.handleThumbMouseleave();
          expect(mockAdapter.removeThumbClass)
              .toHaveBeenCalledWith(
                  cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
@@ -816,7 +816,7 @@ describe('MDCSliderFoundation', () => {
 
          mockAdapter.isInputFocused.withArgs(Thumb.END).and.returnValue(true);
 
-         foundation.handleThumbMouseleave(createMouseEvent('mouseleave'));
+         foundation.handleThumbMouseleave();
          expect(mockAdapter.removeThumbClass)
              .not.toHaveBeenCalledWith(
                  cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
@@ -1154,9 +1154,7 @@ describe('MDCSliderFoundation', () => {
          expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
          mockAdapter.emitInputEvent.calls.reset();
-         foundation.handleUp(createMouseEvent('mouseup', {
-           clientX: 55,
-         }));
+         foundation.handleUp();
          expect(mockAdapter.emitInputEvent).not.toHaveBeenCalled();
          // `change` event should only be fired when value has been committed
          // (on pointer up).
@@ -1181,7 +1179,7 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(14, Thumb.START);
       expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
-      foundation.handleUp(createMouseEvent('mouseup'));
+      foundation.handleUp();
       expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(14, Thumb.START);
     });
 
@@ -1202,7 +1200,7 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(77, Thumb.END);
       expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
 
-      foundation.handleUp(createMouseEvent('mouseup'));
+      foundation.handleUp();
       expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(77, Thumb.END);
     });
 
@@ -1237,7 +1235,7 @@ describe('MDCSliderFoundation', () => {
       foundation.handleMove(createMouseEvent('mousemove', {
         clientX: 5,
       }));
-      foundation.handleUp(createMouseEvent('mouseup'));
+      foundation.handleUp();
 
       expect(mockAdapter.emitDragStartEvent)
           .toHaveBeenCalledWith(20, Thumb.START);

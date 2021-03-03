@@ -294,7 +294,7 @@ describe('MDCDataTableFoundation', () => {
 
        mockAdapter.getRowIndexByChildElement.withArgs(jasmine.anything())
            .and.returnValue(-1);
-       foundation.handleRowCheckboxChange({});
+       foundation.handleRowCheckboxChange({} as Event);
 
        expect(mockAdapter.notifyRowSelectionChanged).not.toHaveBeenCalledWith();
      });
@@ -307,7 +307,7 @@ describe('MDCDataTableFoundation', () => {
            .withArgs(jasmine.any(HTMLInputElement))
            .and.returnValue(2);
 
-       foundation.handleRowCheckboxChange({});
+       foundation.handleRowCheckboxChange({} as Event);
 
        expect(mockAdapter.notifyRowSelectionChanged).not.toHaveBeenCalledWith();
      });
@@ -322,7 +322,8 @@ describe('MDCDataTableFoundation', () => {
            true);
        mockAdapter.getRowIdAtIndex.withArgs(2).and.returnValue('testRowId-u2');
 
-       foundation.handleRowCheckboxChange({target: {checked: true}});
+       foundation.handleRowCheckboxChange(
+           {target: {checked: true}} as unknown as Event);
 
        expect(mockAdapter.addClassAtRowIndex)
            .toHaveBeenCalledWith(2, cssClasses.ROW_SELECTED);
@@ -346,7 +347,8 @@ describe('MDCDataTableFoundation', () => {
            false);
        mockAdapter.getRowIdAtIndex.withArgs(2).and.returnValue('testRowId-u2');
 
-       foundation.handleRowCheckboxChange({target: {checked: false}});
+       foundation.handleRowCheckboxChange(
+           {target: {checked: false}} as unknown as Event);
 
        expect(mockAdapter.removeClassAtRowIndex)
            .toHaveBeenCalledWith(2, cssClasses.ROW_SELECTED);

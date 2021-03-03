@@ -122,24 +122,18 @@ describe('MDCTopAppBar', () => {
     const navIcon =
         root.querySelector('.mdc-top-app-bar__navigation-icon') as HTMLElement;
     emitEvent(navIcon, 'click');
-    expect(mockFoundation.handleNavigationClick)
-        .toHaveBeenCalledWith(jasmine.any(Object));
     expect(mockFoundation.handleNavigationClick).toHaveBeenCalledTimes(1);
   });
 
   it('scroll event triggers #foundation.handleTargetScroll', () => {
     const {mockFoundation} = setupTest();
     emitEvent(window, 'scroll');
-    expect(mockFoundation.handleTargetScroll)
-        .toHaveBeenCalledWith(jasmine.any(Object));
     expect(mockFoundation.handleTargetScroll).toHaveBeenCalledTimes(1);
   });
 
   it('resize event triggers #foundation.handleWindowResize', () => {
     const {mockFoundation} = setupTest();
     emitEvent(window, 'resize');
-    expect(mockFoundation.handleWindowResize)
-        .toHaveBeenCalledWith(jasmine.any(Object));
     expect(mockFoundation.handleWindowResize).toHaveBeenCalledTimes(1);
   });
 
@@ -155,16 +149,14 @@ describe('MDCTopAppBar', () => {
     const {mockFoundation, component} = setupTest();
     component.destroy();
     emitEvent(window, 'scroll');
-    expect(mockFoundation.handleTargetScroll)
-        .not.toHaveBeenCalledWith(jasmine.any(Object));
+    expect(mockFoundation.handleTargetScroll).not.toHaveBeenCalled();
   });
 
   it('destroy destroys resize event handler', () => {
     const {mockFoundation, component} = setupTest();
     component.destroy();
     emitEvent(window, 'resize');
-    expect(mockFoundation.handleWindowResize)
-        .not.toHaveBeenCalledWith(jasmine.any(Object));
+    expect(mockFoundation.handleWindowResize).not.toHaveBeenCalled();
   });
 
   it('destroy destroys handleNavigationClick handler', () => {
@@ -173,8 +165,7 @@ describe('MDCTopAppBar', () => {
         root.querySelector('.mdc-top-app-bar__navigation-icon') as HTMLElement;
     component.destroy();
     emitEvent(navIcon, 'resize');
-    expect(mockFoundation.handleNavigationClick)
-        .not.toHaveBeenCalledWith(jasmine.any(Object));
+    expect(mockFoundation.handleNavigationClick).not.toHaveBeenCalled();
   });
 
   it('#setScrollTarget deregisters and registers scroll handler on provided target',

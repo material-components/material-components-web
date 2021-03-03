@@ -22,15 +22,15 @@
  */
 
 import 'core-js/es'; // COPYBARA_COMMENT_THIS_LINE
-import {MDCFoundation} from '../../packages/mdc-base/foundation';
+import {MDCFoundationConstructor} from '@material/base/foundation';
 
-import {createMockAdapter, FoundationConstructor} from './foundation';
+import {createMockAdapter} from './foundation';
 
-export function setUpFoundationTest<F extends MDCFoundation>(
-    FoundationClass: FoundationConstructor<F>) {
+export function setUpFoundationTest<C extends MDCFoundationConstructor>(
+    FoundationClass: C) {
   const mockAdapter = createMockAdapter(FoundationClass);
   // TODO(b/149489603): Remove `any` cast.
-  const foundation = new FoundationClass(mockAdapter) as any;
+  const foundation = new FoundationClass(mockAdapter) as InstanceType<C>;
   return {foundation, mockAdapter};
 }
 

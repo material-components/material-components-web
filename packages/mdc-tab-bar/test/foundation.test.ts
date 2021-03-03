@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {MDCTabInteractionEvent} from '../../mdc-tab/types';
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
 import {MDCTabBarFoundation} from '../foundation';
@@ -81,14 +82,14 @@ describe('MDCTabBarFoundation', () => {
           key,
           keyCode,
           preventDefault,
-        };
+        } as unknown as KeyboardEvent;
 
         return {preventDefault, fakeEvent};
       };
 
   it('#handleTabInteraction() activates the tab', () => {
     const {foundation, mockAdapter} = setupKeyDownTest();
-    foundation.handleTabInteraction({detail: {}});
+    foundation.handleTabInteraction({detail: {}} as MDCTabInteractionEvent);
     expect(mockAdapter.setActiveTab).toHaveBeenCalled();
   });
 

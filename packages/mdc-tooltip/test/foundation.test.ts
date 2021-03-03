@@ -1249,7 +1249,7 @@ describe('MDCTooltipFoundation', () => {
 
   it('properly calculates tooltip position with an UNBOUNDED anchor', () => {
     const anchorBoundingRect =
-        {top: 0, bottom: 35, left: 0, width: 200, height: 35};
+        {top: 0, bottom: 35, left: 0, width: 200, height: 35} as ClientRect;
     const expectedTooltipTop =
         anchorBoundingRect.height + numbers.UNBOUNDED_ANCHOR_GAP;
     const tooltipSize = {width: 40, height: 30};
@@ -1682,7 +1682,7 @@ describe('MDCTooltipFoundation', () => {
   it('positions tooltip within viewport if threshold cannot be maintained (y-axis)',
      () => {
        const anchorBoundingRect =
-           {top: 0, bottom: 30, left: 450, right: 500, width: 50};
+           {top: 0, bottom: 30, left: 450, right: 500, width: 50} as ClientRect;
        const expectedTooltipTop =
            anchorBoundingRect.bottom + numbers.BOUNDED_ANCHOR_GAP;
        const tooltipSize = {width: 100, height: 30};
@@ -1701,7 +1701,8 @@ describe('MDCTooltipFoundation', () => {
   it('ignores user specification if positioning violates threshold (BELOW alignment instead of ABOVE)',
      () => {
        const anchorBoundingRect =
-           {top: 40, bottom: 70, left: 450, right: 500, width: 50};
+           {top: 40, bottom: 70, left: 450, right: 500, width: 50} as
+           ClientRect;
        const tooltipSize = {width: 100, height: 30};
        const expectedTooltipTop =
            anchorBoundingRect.bottom + numbers.BOUNDED_ANCHOR_GAP;
@@ -1721,7 +1722,8 @@ describe('MDCTooltipFoundation', () => {
   it('allows users to specify a position within viewport if threshold cannot be maintained (ABOVE alignment instead of BELOW)',
      () => {
        const anchorBoundingRect =
-           {top: 40, bottom: 70, left: 450, right: 500, width: 50};
+           {top: 40, bottom: 70, left: 450, right: 500, width: 50} as
+           ClientRect;
        const tooltipSize = {width: 100, height: 30};
        const expectedTooltipTop = anchorBoundingRect.top -
            (numbers.BOUNDED_ANCHOR_GAP + tooltipSize.height);

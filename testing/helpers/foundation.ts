@@ -21,25 +21,15 @@
  * THE SOFTWARE.
  */
 
-import {MDCFoundation} from '../../packages/mdc-base/foundation';
-
-type MDCFoundationStatics = typeof MDCFoundation;
-
-// `extends MDCFoundationStatics` to include MDCFoundation statics in type
-// definition.
-export interface FoundationConstructor<F extends MDCFoundation> extends
-    MDCFoundationStatics {
-  new(...args: any[]): F;
-}
+import {MDCFoundationAdapter, MDCFoundationConstructor} from '@material/base/foundation';
 
 /**
  * @returns Method names of the given foundation class, including all MDC
  *     superclasses.
  */
-function getFoundationMethods<F extends MDCFoundation>(
+function getFoundationMethods<C extends MDCFoundationConstructor>(
     // tslint:disable-next-line:enforce-name-casing
-    FoundationCtor: FoundationConstructor<F>,
-    foundationMethods: string[] = []): string[] {
+    FoundationCtor: C, foundationMethods: string[] = []): string[] {
   const methods = foundationMethods;
   for (const methodName of Object.getOwnPropertyNames(FoundationCtor.prototype)) {
     methods.push(methodName);
@@ -58,9 +48,9 @@ function getFoundationMethods<F extends MDCFoundation>(
  * Creates a mockFoundation object with spy functions for each of the
  * foundation class' methods.
  */
-export function createMockFoundation<F extends MDCFoundation>(
+export function createMockFoundation<C extends MDCFoundationConstructor>(
     // tslint:disable-next-line:enforce-name-casing
-    FoundationCtor: FoundationConstructor<F>) {
+    FoundationCtor: C): jasmine.SpyObj<InstanceType<C>> {
   const mockFoundationMethods = getFoundationMethods(FoundationCtor);
   const mockFoundation =
       jasmine.createSpyObj(FoundationCtor.name, mockFoundationMethods);
@@ -71,18 +61,24 @@ export function createMockFoundation<F extends MDCFoundation>(
  * Creates a mockAdapter object with spy functions for each of the
  * adapter class' methods.
  */
-export function createMockAdapter<F extends MDCFoundation>(
+export function createMockAdapter<C extends MDCFoundationConstructor>(
     // tslint:disable-next-line:enforce-name-casing
-    FoundationCtor: FoundationConstructor<F>) {
-  const mockAdapterMethods = {};
-  Object.keys(FoundationCtor.defaultAdapter).forEach((methodName) => {
-    const value = (FoundationCtor.defaultAdapter as any)[methodName];
-    (mockAdapterMethods as any)[methodName] =
-        typeof value === 'function' ? value() : value;
+    FoundationCtor: C): jasmine.SpyObj<MDCFoundationAdapter<InstanceType<C>>> {
+  const mockAdapter = {
+    ...FoundationCtor.defaultAdapter as MDCFoundationAdapter<InstanceType<C>>
+  };
+
+  const keys = Object.keys(mockAdapter) as Array<keyof typeof mockAdapter>;
+  keys.forEach(key => {
+    const value = mockAdapter[key];
+    if (typeof value === 'function') {
+      spyOn(mockAdapter,
+            key as typeof value extends Function ? typeof key : never)
+          .and.returnValue(value());
+    }
   });
-  const mockAdapter =
-      jasmine.createSpyObj(FoundationCtor.name, mockAdapterMethods);
-  return mockAdapter;
+
+  return mockAdapter as jasmine.SpyObj<MDCFoundationAdapter<InstanceType<C>>>;
 }
 
 /**
@@ -92,9 +88,9 @@ export function createMockAdapter<F extends MDCFoundation>(
  * - Invoking any of the default methods does not throw an error.
  * Every foundation test suite includes this verification.
  */
-export function verifyDefaultAdapter<F extends MDCFoundation>(
+export function verifyDefaultAdapter<C extends MDCFoundationConstructor>(
     // tslint:disable-next-line:enforce-name-casing
-    FoundationCtor: FoundationConstructor<F>, expectedMethodNames: string[]) {
+    FoundationCtor: C, expectedMethodNames: string[]) {
   const defaultAdapter = FoundationCtor.defaultAdapter as {
     [key: string]: any;
   };

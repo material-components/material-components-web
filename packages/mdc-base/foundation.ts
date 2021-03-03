@@ -58,5 +58,24 @@ export class MDCFoundation<AdapterType extends {} = {}> {
   }
 }
 
+/**
+ * The constructor for MDCFoundation.
+ */
+export interface MDCFoundationConstructor<AdapterType extends object = {}> {
+  readonly cssClasses: Record<string, string>;
+  readonly strings: Record<string, string>;
+  readonly numbers: Record<string, number>;
+  readonly defaultAdapter: AdapterType;
+
+  new(adapter?: Partial<AdapterType>): MDCFoundation<AdapterType>;
+  readonly prototype: MDCFoundation<AdapterType>;
+}
+
+/**
+ * Retrieves the AdapaterType from the provided MDCFoundation generic type.
+ */
+export type MDCFoundationAdapter<T> =
+    T extends MDCFoundation<infer A>? A : never;
+
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 export default MDCFoundation;

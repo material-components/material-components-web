@@ -24,7 +24,8 @@
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest} from '../../../testing/helpers/setup';
-import {MDCTextFieldFoundation} from '../../mdc-textfield/foundation';
+import {MDCTextFieldFoundation} from '../foundation';
+import {MDCTextFieldNativeInputElement} from '../types';
 
 const LABEL_WIDTH = 100;
 const {cssClasses, numbers, strings} = MDCTextFieldFoundation;
@@ -173,7 +174,7 @@ describe('MDCTextFieldFoundation', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.getNativeInput.and.returnValue({
       value: 'initValue',
-    });
+    } as MDCTextFieldNativeInputElement);
     expect('initValue')
         .toEqual(foundation.getValue(), 'getValue does not match input value.');
   });
@@ -357,7 +358,7 @@ describe('MDCTextFieldFoundation', () => {
     mockAdapter.hasLabel.and.returnValue(true);
     mockAdapter.getNativeInput.and.returnValue({
       value: 'test',
-    });
+    } as MDCTextFieldNativeInputElement);
 
     foundation.setValid(false);
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.INVALID);
@@ -433,7 +434,7 @@ describe('MDCTextFieldFoundation', () => {
 
   it('#setDisabled flips disabled when a native input is given', () => {
     const {foundation, mockAdapter} = setupTest();
-    const nativeInput = {disabled: false};
+    const nativeInput = {disabled: false} as MDCTextFieldNativeInputElement;
     mockAdapter.getNativeInput.and.returnValue(nativeInput);
     foundation.setDisabled(true);
     expect(foundation.isDisabled()).toBeTruthy();
@@ -448,7 +449,7 @@ describe('MDCTextFieldFoundation', () => {
   it('#setDisabled set the disabled property on the native input when there is one',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const nativeInput = {disabled: false};
+       const nativeInput = {disabled: false} as MDCTextFieldNativeInputElement;
        mockAdapter.getNativeInput.and.returnValue(nativeInput);
        foundation.setDisabled(true);
        expect(nativeInput.disabled).toBeTruthy();
@@ -508,7 +509,7 @@ describe('MDCTextFieldFoundation', () => {
        mockAdapter.hasLabel.and.returnValue(true);
        mockAdapter.getNativeInput.and.returnValue({
          value: '',
-       });
+       } as MDCTextFieldNativeInputElement);
        foundation.setValid(false);
        expect(mockAdapter.shakeLabel).toHaveBeenCalledWith(false);
      });
@@ -795,7 +796,7 @@ describe('MDCTextFieldFoundation', () => {
     const mockInput = {
       disabled: false,
       value: '',
-    };
+    } as MDCTextFieldNativeInputElement;
     let keydown: Function|undefined;
     let input: Function|undefined;
 
@@ -1094,7 +1095,7 @@ describe('MDCTextFieldFoundation', () => {
     mockAdapter.getNativeInput.and.returnValue({
       disabled: false,
       value: '',
-    });
+    } as MDCTextFieldNativeInputElement);
     foundation.init();
     expect(foundation['receivedUserInput_']).toEqual(false);
     if (keydown !== undefined) {
@@ -1111,7 +1112,7 @@ describe('MDCTextFieldFoundation', () => {
     const mockInput = {
       disabled: true,
       value: '',
-    };
+    } as MDCTextFieldNativeInputElement;
     let click: Function|undefined;
 
     mockAdapter.getNativeInput.and.returnValue(mockInput);
@@ -1346,14 +1347,16 @@ describe('MDCTextFieldFoundation', () => {
         .and.callFake((handler: Function) => attributeChange = handler);
     foundation.init();
 
-    mockAdapter.getNativeInput.and.returnValue({required: true});
+    mockAdapter.getNativeInput.and.returnValue(
+        {required: true} as MDCTextFieldNativeInputElement);
 
     if (attributeChange !== undefined) {
       attributeChange(['required']);
     }
     expect(mockAdapter.setLabelRequired).toHaveBeenCalledWith(true);
 
-    mockAdapter.getNativeInput.and.returnValue({required: false});
+    mockAdapter.getNativeInput.and.returnValue(
+        {required: false} as MDCTextFieldNativeInputElement);
 
     if (attributeChange !== undefined) {
       attributeChange(['required']);

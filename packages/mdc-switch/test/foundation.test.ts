@@ -107,7 +107,7 @@ describe('MDCSwitchFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
 
-       foundation.handleChange({target: {checked: true}});
+       foundation.handleChange({target: {checked: true}} as unknown as Event);
        expect(mockAdapter.addClass)
            .toHaveBeenCalledWith(MDCSwitchFoundation.cssClasses.CHECKED);
      });
@@ -116,7 +116,7 @@ describe('MDCSwitchFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
 
-       foundation.handleChange({target: {checked: false}});
+       foundation.handleChange({target: {checked: false}} as unknown as Event);
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(MDCSwitchFoundation.cssClasses.CHECKED);
      });
