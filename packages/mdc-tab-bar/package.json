@@ -25,7 +25,7 @@
     "@material/feature-targeting": "^10.0.0",
     "@material/tab": "^10.0.0",
     "@material/tab-scroller": "^10.0.0",
-    "tslib": "^1.9.3"
+    "tslib": "^2.1.0"
   },
   "publishConfig": {
     "access": "public"

@@ -69,7 +69,7 @@ module.exports = function(config) {
     // karma-typescript: https://github.com/monounity/karma-typescript/tree/master/packages/karma-typescript
     karmaTypescriptConfig: {
       exclude: EXCLUDE_FILES,
-      tsconfig: './tsconfig-base.json',
+      tsconfig: './tsconfig-testing.json',
     },
     preprocessors: FILES_TO_USE.reduce((obj, file) => {
       obj[file] = 'karma-typescript';

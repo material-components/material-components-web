@@ -15,6 +15,9 @@
     "url": "https://github.com/material-components/material-components-web.git",
     "directory": "packages/mdc-layout-grid"
   },
+  "dependencies": {
+    "tslib": "^2.1.0"
+  },
   "publishConfig": {
     "access": "public"
   }

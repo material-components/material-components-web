@@ -16,6 +16,7 @@
     "directory": "packages/mdc-rtl"
   },
   "dependencies": {
-    "@material/theme": "^10.0.0"
+    "@material/theme": "^10.0.0",
+    "tslib": "^2.1.0"
   }
 }

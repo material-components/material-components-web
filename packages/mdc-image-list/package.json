@@ -18,7 +18,8 @@
     "@material/feature-targeting": "^10.0.0",
     "@material/shape": "^10.0.0",
     "@material/theme": "^10.0.0",
-    "@material/typography": "^10.0.0"
+    "@material/typography": "^10.0.0",
+    "tslib": "^2.1.0"
   },
   "publishConfig": {
     "access": "public"

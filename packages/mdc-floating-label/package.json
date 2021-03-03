@@ -29,6 +29,6 @@
     "@material/rtl": "^10.0.0",
     "@material/theme": "^10.0.0",
     "@material/typography": "^10.0.0",
-    "tslib": "^1.9.3"
+    "tslib": "^2.1.0"
   }
 }

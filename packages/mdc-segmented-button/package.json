@@ -23,6 +23,7 @@
         "@material/ripple": "^10.0.0",
         "@material/theme": "^10.0.0",
         "@material/touch-target": "^10.0.0",
-        "@material/typography": "^10.0.0"
+        "@material/typography": "^10.0.0",
+        "tslib": "^2.1.0"
     }
 }
