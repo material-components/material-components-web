@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig-base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@material/base/*": ["packages/mdc-base/*"],
+      "jasmine": ["node_modules/@types/jasmine/index.d.ts"]
+    }
+  }
+}

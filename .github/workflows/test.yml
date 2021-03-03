@@ -18,7 +18,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       - uses: actions/cache@v2
@@ -27,7 +27,7 @@ jobs:
             node_modules
             packages/*/node_modules
             !packages/*/node_modules/@material
-          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
       - run: npm ci --ignore-scripts
       - run: npm run bootstrap
   lint:
@@ -44,7 +44,7 @@ jobs:
             node_modules
             packages/*/node_modules
             !packages/*/node_modules/@material
-          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
       - run: npm run link
       - run: npm run lint
   conventional-commit-check:
@@ -68,7 +68,7 @@ jobs:
             node_modules
             packages/*/node_modules
             !packages/*/node_modules/@material
-          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
       - run: npm run link
       - run: |
           npm run dist
@@ -89,7 +89,7 @@ jobs:
             node_modules
             packages/*/node_modules
             !packages/*/node_modules/@material
-          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
       - run: npm run link
       - run: npm run test:site
   unit-test:
@@ -106,7 +106,7 @@ jobs:
             node_modules
             packages/*/node_modules
             !packages/*/node_modules/@material
-          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
       - run: npm run link
       - name: Run unit tests
         run: |
@@ -138,7 +138,7 @@ jobs:
             node_modules
             packages/*/node_modules
             !packages/*/node_modules/@material
-          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
       - run: npm run link
       - name: Run dependency tests
         run: |
@@ -157,7 +157,7 @@ jobs:
             node_modules
             packages/*/node_modules
             !packages/*/node_modules/@material
-          key: ${{ runner.os }}-lerna-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
       - run: npm run link
       - name: Run Sass tests
         run: |
