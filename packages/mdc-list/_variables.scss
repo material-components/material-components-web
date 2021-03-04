@@ -21,7 +21,8 @@
 @use '@material/density/variables' as density-variables;
 @use '@material/theme/theme-color';
 
-$deprecated-ripple-target: '.mdc-list-item__ripple';
+$deprecated-ripple-target: '.mdc-deprecated-list-item__ripple';
+$deprecated-temporary-ripple-target: '.mdc-list-item__ripple';
 
 $deprecated-divider-color-on-light-bg: rgba(0, 0, 0, 0.12) !default;
 $deprecated-divider-color-on-dark-bg: rgba(255, 255, 255, 0.2) !default;
