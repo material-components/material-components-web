@@ -324,10 +324,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     const isSpace = normalizeKey(event) === KEY.SPACEBAR;
     const arrowUp = normalizeKey(event) === KEY.ARROW_UP;
     const arrowDown = normalizeKey(event) === KEY.ARROW_DOWN;
-
+    const isModifier = event.ctrlKey || event.metaKey;
     // Typeahead
-    if (!isSpace && event.key && event.key.length === 1 ||
-        isSpace && this.adapter.isTypeaheadInProgress()) {
+    if (!isModifier &&
+        (!isSpace && event.key && event.key.length === 1 ||
+         isSpace && this.adapter.isTypeaheadInProgress())) {
       const key = isSpace ? ' ' : event.key;
       const typeaheadNextIndex =
           this.adapter.typeaheadMatchItem(key, this.getSelectedIndex());

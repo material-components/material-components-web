@@ -633,6 +633,24 @@ describe('MDCSelectFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(3);
      });
 
+  it('#handleKeydown with modifier key + alpha character does not call adapter.getTypeaheadNextIndex',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const preventDefault = jasmine.createSpy('');
+       const event =
+           {key: 'a', preventDefault, ctrlKey: true, metaKey: false} as any;
+       mockAdapter.hasClass.withArgs(cssClasses.FOCUSED).and.returnValue(true);
+
+       foundation.handleKeydown(event);
+       event.key = 'Z';
+       event.metaKey = true;
+       event.ctrlKey = false;
+       foundation.handleKeydown(event);
+
+       expect(mockAdapter.typeaheadMatchItem).not.toHaveBeenCalled()
+       expect(preventDefault).not.toHaveBeenCalled();
+     });
+
   it('#handleKeydown with spacebar character when typeahead is in progress ' +
          'calls adapter.getTypeaheadNextIndex',
      () => {
