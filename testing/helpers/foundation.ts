@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCFoundationAdapter, MDCFoundationConstructor} from '@material/base/foundation';
+import {MDCFoundationAdapter, MDCFoundationConstructor, MDCFoundationDeprecatedConstructor} from '@material/base/foundation';
 
 /**
  * @returns Method names of the given foundation class, including all MDC
@@ -31,7 +31,8 @@ function getFoundationMethods<C extends MDCFoundationConstructor>(
     // tslint:disable-next-line:enforce-name-casing
     FoundationCtor: C, foundationMethods: string[] = []): string[] {
   const methods = foundationMethods;
-  for (const methodName of Object.getOwnPropertyNames(FoundationCtor.prototype)) {
+  for (const methodName of Object.getOwnPropertyNames(
+           FoundationCtor.prototype)) {
     methods.push(methodName);
   }
 
@@ -61,7 +62,7 @@ export function createMockFoundation<C extends MDCFoundationConstructor>(
  * Creates a mockAdapter object with spy functions for each of the
  * adapter class' methods.
  */
-export function createMockAdapter<C extends MDCFoundationConstructor>(
+export function createMockAdapter<C extends MDCFoundationDeprecatedConstructor>(
     // tslint:disable-next-line:enforce-name-casing
     FoundationCtor: C): jasmine.SpyObj<MDCFoundationAdapter<InstanceType<C>>> {
   const mockAdapter = {
@@ -69,14 +70,12 @@ export function createMockAdapter<C extends MDCFoundationConstructor>(
   };
 
   const keys = Object.keys(mockAdapter) as Array<keyof typeof mockAdapter>;
-  keys.forEach(key => {
+  for (const key of keys) {
     const value = mockAdapter[key];
     if (typeof value === 'function') {
-      spyOn(mockAdapter,
-            key as typeof value extends Function ? typeof key : never)
-          .and.returnValue(value());
+      spyOn(mockAdapter, key).and.returnValue(value());
     }
-  });
+  }
 
   return mockAdapter as jasmine.SpyObj<MDCFoundationAdapter<InstanceType<C>>>;
 }
@@ -88,7 +87,7 @@ export function createMockAdapter<C extends MDCFoundationConstructor>(
  * - Invoking any of the default methods does not throw an error.
  * Every foundation test suite includes this verification.
  */
-export function verifyDefaultAdapter<C extends MDCFoundationConstructor>(
+export function verifyDefaultAdapter<C extends MDCFoundationDeprecatedConstructor>(
     // tslint:disable-next-line:enforce-name-casing
     FoundationCtor: C, expectedMethodNames: string[]) {
   const defaultAdapter = FoundationCtor.defaultAdapter as {

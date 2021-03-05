@@ -22,15 +22,33 @@
  */
 
 import 'core-js/es'; // COPYBARA_COMMENT_THIS_LINE
-import {MDCFoundationConstructor} from '@material/base/foundation';
+import {MDCFoundation, MDCFoundationAdapter as FoundationAdapter, MDCFoundationConstructor as FoundationCtor, MDCFoundationDeprecatedConstructor as FoundationDeprecatedCtor} from '@material/base/foundation';
 
 import {createMockAdapter} from './foundation';
+import {spyOnAllFunctions} from './jasmine';
 
-export function setUpFoundationTest<C extends MDCFoundationConstructor>(
-    FoundationClass: C) {
-  const mockAdapter = createMockAdapter(FoundationClass);
-  // TODO(b/149489603): Remove `any` cast.
-  const foundation = new FoundationClass(mockAdapter) as InstanceType<C>;
+export interface FoundationTest<F extends MDCFoundation> {
+  foundation: F;
+  mockAdapter: jasmine.SpyObj<FoundationAdapter<F>>;
+}
+
+// Alias type imports for shorter names due to clang-format's formatting
+export function setUpFoundationTest<C extends FoundationCtor>(
+    FoundationClass: C, defaultAdapter: FoundationAdapter<InstanceType<C>>):
+    FoundationTest<InstanceType<C>>;
+export function setUpFoundationTest<C extends FoundationDeprecatedCtor>(
+    FoundationClass: C): FoundationTest<InstanceType<C>>;
+export function setUpFoundationTest(
+    FoundationClass: FoundationCtor|FoundationDeprecatedCtor,
+    defaultAdapter?: FoundationAdapter<InstanceType<typeof FoundationClass>>) {
+  let mockAdapter: jasmine.SpyObj<typeof defaultAdapter>;
+  if (defaultAdapter) {
+    mockAdapter = spyOnAllFunctions(defaultAdapter).and.callThrough();
+  } else {
+    mockAdapter =
+        createMockAdapter(FoundationClass as FoundationDeprecatedCtor);
+  }
+  const foundation = new FoundationClass(mockAdapter);
   return {foundation, mockAdapter};
 }
 
@@ -45,7 +63,9 @@ export function setUpMdcTestEnvironment() {
     // Replace RAF with setTimeout, since setTimeout is overridden to be
     // synchronous in Jasmine clock installation.
     window.requestAnimationFrame = (fn: Function) => setTimeout(fn, 1);
-    window.cancelAnimationFrame = (id: number) => { clearTimeout(id); };
+    window.cancelAnimationFrame = (id: number) => {
+      clearTimeout(id);
+    };
   });
 
   beforeEach(() => {

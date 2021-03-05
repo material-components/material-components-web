@@ -24,6 +24,7 @@
 import * as util from './util';
 
 export {util}; // New namespace
+export * from './animation';
 export * from './animationframe';
 export * from './types';
 export * from './util'; // Old namespace for backward compatibility

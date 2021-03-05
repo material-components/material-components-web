@@ -61,7 +61,15 @@ export class MDCFoundation<AdapterType extends {} = {}> {
 /**
  * The constructor for MDCFoundation.
  */
-export interface MDCFoundationConstructor<AdapterType extends object = {}> {
+export interface MDCFoundationConstructor<AdapterType extends object = any> {
+  new(adapter: AdapterType): MDCFoundation<AdapterType>;
+  readonly prototype: MDCFoundation<AdapterType>;
+}
+
+/**
+ * The deprecated constructor for MDCFoundation.
+ */
+export interface MDCFoundationDeprecatedConstructor<AdapterType extends object = any> {
   readonly cssClasses: Record<string, string>;
   readonly strings: Record<string, string>;
   readonly numbers: Record<string, number>;
