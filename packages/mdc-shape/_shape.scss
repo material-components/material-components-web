@@ -141,7 +141,7 @@ $category-keywords: (
       custom-properties.get-fallback($radius, $shallow: true),
       $component-height: $component-height
     );
-    @return custom-properties.set-fallback($radius, $fallback);
+    @return custom-properties.set-fallback($radius, $fallback, $shallow: true);
   } @else {
     // $radius is a value
     @if meta.type-of($radius) != 'number' {
