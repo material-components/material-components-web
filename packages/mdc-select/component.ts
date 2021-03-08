@@ -456,12 +456,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         this.lineRipple && this.lineRipple.deactivate();
       },
       notifyChange: (value: string) => {
-        const index = this.selectedIndex;
-        this.emit<MDCSelectEventDetail>(strings.CHANGE_EVENT, {value, index}, true /* shouldBubble  */);
-
         if (this.hiddenInput) {
           this.hiddenInput.value = value;
         }
+
+        const index = this.selectedIndex;
+        this.emit<MDCSelectEventDetail>(
+            strings.CHANGE_EVENT, {value, index}, true /* shouldBubble  */);
       },
     };
     // tslint:enable:object-literal-sort-keys
