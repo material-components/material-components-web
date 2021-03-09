@@ -192,6 +192,10 @@
         border-bottom: 1px solid transparent;
         justify-content: space-between;
         align-items: baseline;
+
+        @include _modal-header(
+          $close-icon-padding: variables.$close-icon-padding
+        );
       }
     }
 
@@ -204,7 +208,7 @@
 
     .mdc-dialog__close {
       @include feature-targeting.targets($feat-structure) {
-        top: 4px;
+        top: 5px;
       }
     }
 
@@ -777,11 +781,13 @@
     @include theme.property(left, -#{$close-icon-padding});
   }
   .mdc-dialog__header {
+    padding: 0 variables.$fullscreen-header-side-padding
+      variables.$title-bottom-padding;
     justify-content: flex-start;
   }
   .mdc-dialog__title {
     @include theme.property(
-      padding-left,
+      margin-left,
       calc(title - 2 * close),
       $replace: (title: $title-side-padding, close: $close-icon-padding)
     );
