@@ -69,7 +69,7 @@ export class FocusTrap {
           sentinelEl.parentElement!.removeChild(sentinelEl);
         });
 
-    if (this.elFocusedBeforeTrapFocus) {
+    if (!this.options.skipRestoreFocus && this.elFocusedBeforeTrapFocus) {
       this.elFocusedBeforeTrapFocus.focus();
     }
   }
@@ -159,4 +159,8 @@ export interface FocusOptions {
   // By default, focus is set on the first focusable child element of the root.
   // This is useful if the caller wants to handle setting initial focus.
   skipInitialFocus?: boolean;
+
+  // Whether to restore focus on the previously focused element when releasing
+  // focus. This is useful if the caller wants to handle restoring focus.
+  skipRestoreFocus?: boolean;
 }

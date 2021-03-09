@@ -158,6 +158,21 @@ describe('FocusTrap', () => {
     expect(document.activeElement).toBe(button);
   });
 
+  it('does not restore focus when skipRestoreFocus=true', () => {
+    const {button, container2} = setUp();
+    const focusTrap = new FocusTrap(container2, {skipRestoreFocus: true});
+
+    // First, set focus to button.
+    button.focus();
+    expect(document.activeElement).toBe(button);
+    // Trap focus in `container2`.
+    focusTrap.trapFocus();
+    expect(document.activeElement!.id).toBe('con2a');
+    // Expect focus not to have changed.
+    focusTrap.releaseFocus();
+    expect(document.activeElement!.id).toBe('con2a');
+  });
+
   it('throws an error when trapping focus in an element with 0 focusable elements',
      () => {
        const {container5} = setUp();
