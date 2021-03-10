@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {closest, matches} from '@material/dom/ponyfill';
 import {MDCListAdapter} from './adapter';
-import {cssClasses, evolutionAttribute, evolutionClassNameMap, numbers, strings} from './constants';
+import {cssClasses, deprecatedClassNameMap, evolutionAttribute, evolutionClassNameMap, numbers, strings} from './constants';
 import {MDCListFoundation} from './foundation';
 import {MDCListActionEventDetail, MDCListIndex} from './types';
 
@@ -94,13 +94,19 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   initialSyncWithDOM() {
     this.isEvolutionEnabled =
         evolutionAttribute in (this.root as HTMLElement).dataset;
-    this.classNameMap = this.isEvolutionEnabled ?
-        evolutionClassNameMap :
-        Object.values(cssClasses)
-            .reduce((obj: {[className: string]: string}, className) => {
-              obj[className] = className;
-              return obj;
-            }, {});
+
+    if (this.isEvolutionEnabled) {
+      this.classNameMap = evolutionClassNameMap;
+    } else if (matches(this.root, strings.DEPRECATED_SELECTOR)) {
+      this.classNameMap = deprecatedClassNameMap;
+    } else {
+      this.classNameMap =
+          Object.values(cssClasses)
+              .reduce((obj: {[className: string]: string}, className) => {
+                obj[className] = className;
+                return obj;
+              }, {});
+    }
 
     this.handleClick = this.handleClickEvent.bind(this);
     this.handleKeydown = this.handleKeydownEvent.bind(this);
