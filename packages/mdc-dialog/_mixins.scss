@@ -422,10 +422,19 @@
 
   .mdc-dialog__surface-scrim {
     @include feature-targeting.targets($feat-structure) {
+      display: none;
       opacity: 0;
       position: absolute;
       width: 100%;
       height: 100%;
+    }
+
+    .mdc-dialog__surface-scrim--shown &,
+    .mdc-dialog__surface-scrim--showing &,
+    .mdc-dialog__surface-scrim--hiding & {
+      @include feature-targeting.targets($feat-structure) {
+        display: block;
+      }
     }
   }
 
