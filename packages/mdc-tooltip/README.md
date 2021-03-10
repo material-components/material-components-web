@@ -144,7 +144,7 @@ Default rich tooltip without interactive content
     <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">Button</span>
   </button>
-  <div id="tt0" class="mdc-tooltip--rich" aria-hidden="true" role="tooltip">
+  <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" role="tooltip">
      <div class="mdc-tooltip__surface">
        <p class="mdc-tooltip__content">
          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
@@ -168,7 +168,7 @@ Default rich tooltip with interactive content
     <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">Button</span>
   </button>
-  <div id="tt0" class="mdc-tooltip--rich" aria-hidden="true" role="dialog">
+  <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" role="dialog">
      <div class="mdc-tooltip__surface">
         <h2 class="mdc-tooltip__title"> Lorem Ipsum </h2>
         <p class="mdc-tooltip__content">
@@ -199,7 +199,7 @@ Persistent rich tooltip with interactive content
     <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">Button</span>
   </button>
-  <div id="tt0" class="mdc-tooltip--rich" aria-hidden="true" tabindex="-1" data-mdc-tooltip-persist="true" role="dialog">
+  <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" tabindex="-1" data-mdc-tooltip-persist="true" role="dialog">
      <div class="mdc-tooltip__surface">
         <h2 class="mdc-tooltip__title"> Lorem Ipsum </h2>
         <p class="mdc-tooltip__content">
