@@ -20,4 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use '../deprecated/chip/mdc-chip';
+@use '../../mixins';
+@include mixins.core-styles;

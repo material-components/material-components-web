@@ -22,8 +22,8 @@
  */
 
 
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
-import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
+import {verifyDefaultAdapter} from '../../../../../testing/helpers/foundation';
+import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../../testing/helpers/setup';
 import {MDCChipTrailingActionNavigationEvent} from '../../trailingaction/types';
 import {EventSource} from '../constants';
 import {MDCChipFoundation} from '../foundation';

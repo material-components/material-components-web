@@ -21,40 +21,4 @@
  * THE SOFTWARE.
  */
 
-import {EventSource} from './constants';
-
-export interface MDCChipInteractionEventDetail {
-  chipId: string;
-}
-
-export interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail {
-  selected: boolean;
-  shouldIgnore: boolean;
-}
-
-export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
-  removedAnnouncement: string|null;
-}
-
-export interface MDCChipNavigationEventDetail extends MDCChipInteractionEventDetail {
-  key: string;
-  source: EventSource;
-}
-
-// Note: CustomEvent<T> is not supported by Closure Compiler.
-
-export interface MDCChipInteractionEvent extends Event {
-  readonly detail: MDCChipInteractionEventDetail;
-}
-
-export interface MDCChipSelectionEvent extends Event {
-  readonly detail: MDCChipSelectionEventDetail;
-}
-
-export interface MDCChipRemovalEvent extends Event {
-  readonly detail: MDCChipRemovalEventDetail;
-}
-
-export interface MDCChipNavigationEvent extends Event {
-  readonly detail: MDCChipNavigationEventDetail;
-}
+export * from '../deprecated/chip/types';

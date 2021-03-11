@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,4 +21,40 @@
  * THE SOFTWARE.
  */
 
-export * from '../deprecated/chip/component';
+import {EventSource} from './constants';
+
+export interface MDCChipInteractionEventDetail {
+  chipId: string;
+}
+
+export interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail {
+  selected: boolean;
+  shouldIgnore: boolean;
+}
+
+export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
+  removedAnnouncement: string|null;
+}
+
+export interface MDCChipNavigationEventDetail extends MDCChipInteractionEventDetail {
+  key: string;
+  source: EventSource;
+}
+
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCChipInteractionEvent extends Event {
+  readonly detail: MDCChipInteractionEventDetail;
+}
+
+export interface MDCChipSelectionEvent extends Event {
+  readonly detail: MDCChipSelectionEventDetail;
+}
+
+export interface MDCChipRemovalEvent extends Event {
+  readonly detail: MDCChipRemovalEventDetail;
+}
+
+export interface MDCChipNavigationEvent extends Event {
+  readonly detail: MDCChipNavigationEventDetail;
+}

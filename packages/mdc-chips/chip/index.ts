@@ -21,8 +21,4 @@
  * THE SOFTWARE.
  */
 
-export * from './adapter';
-export * from './component';
-export * from './foundation';
-export * from './types';
-export {cssClasses as chipCssClasses, strings as chipStrings} from './constants';
+export * from '../deprecated/chip/index';

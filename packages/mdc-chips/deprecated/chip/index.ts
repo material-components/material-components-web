@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,4 +21,8 @@
  * THE SOFTWARE.
  */
 
-export * from '../deprecated/chip/component';
+export * from './adapter';
+export * from './component';
+export * from './foundation';
+export * from './types';
+export {cssClasses as chipCssClasses, strings as chipStrings} from './constants';
