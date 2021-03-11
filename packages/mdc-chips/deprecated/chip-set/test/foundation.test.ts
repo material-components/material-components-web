@@ -22,10 +22,10 @@
  */
 
 
-import {EventSource, strings} from '../../../mdc-chips/chip/constants';
-import {MDCChipSetFoundation} from '../../../mdc-chips/chip-set/foundation';
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
-import {setUpFoundationTest} from '../../../../testing/helpers/setup';
+import {verifyDefaultAdapter} from '../../../../../testing/helpers/foundation';
+import {setUpFoundationTest} from '../../../../../testing/helpers/setup';
+import {EventSource, strings} from '../../../deprecated/chip/constants';
+import {MDCChipSetFoundation} from '../../../deprecated/chip-set/foundation';
 
 const {cssClasses} = MDCChipSetFoundation;
 

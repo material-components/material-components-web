@@ -21,4 +21,7 @@
  * THE SOFTWARE.
  */
 
-export * from '../deprecated/chip-set/index';
+export * from './adapter';
+export * from './component';
+export * from './foundation';
+export {cssClasses as chipSetCssClasses, strings as chipSetStrings} from './constants';

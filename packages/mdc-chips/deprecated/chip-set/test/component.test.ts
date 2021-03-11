@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {emitEvent} from '../../../../testing/dom/events';
-import {createMockFoundation} from '../../../../testing/helpers/foundation';
+import {emitEvent} from '../../../../../testing/dom/events';
+import {createMockFoundation} from '../../../../../testing/helpers/foundation';
 import {MDCChipFoundation} from '../../chip/index';
 import {MDCChipSet, MDCChipSetFoundation} from '../index';
 
