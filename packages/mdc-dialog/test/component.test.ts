@@ -174,32 +174,6 @@ describe('MDCDialog', () => {
        expect(mockFoundation.handleDocumentKeydown).toHaveBeenCalledTimes(1);
      });
 
-  it(`${strings.OPENING_EVENT} registers window resize handler and ${
-         strings.CLOSING_EVENT} deregisters it`,
-     () => {
-       const {root, mockFoundation} = setupTestWithMocks();
-       emitEvent(root, strings.OPENING_EVENT);
-       emitEvent(window, 'resize');
-       expect(mockFoundation.layout).toHaveBeenCalledTimes(1);
-
-       emitEvent(root, strings.CLOSING_EVENT);
-       emitEvent(window, 'resize');
-       expect(mockFoundation.layout).toHaveBeenCalledTimes(1);
-     });
-
-  it(`${strings.OPENING_EVENT} registers window orientationchange handler and ${
-         strings.CLOSING_EVENT} deregisters it`,
-     () => {
-       const {root, mockFoundation} = setupTestWithMocks();
-       emitEvent(root, strings.OPENING_EVENT);
-       emitEvent(window, 'orientationchange');
-       expect(mockFoundation.layout).toHaveBeenCalledTimes(1);
-
-       emitEvent(root, strings.CLOSING_EVENT);
-       emitEvent(window, 'orientationchange');
-       expect(mockFoundation.layout).toHaveBeenCalledTimes(1);
-     });
-
   it('#initialize attaches ripple elements to all footer buttons', function() {
     if (!supportsCssVariables(window, true)) {
       return;

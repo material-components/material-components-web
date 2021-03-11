@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {EventType, SpecificEventListener} from '@material/base/types';
+import {EventType, SpecificEventListener, SpecificWindowEventListener, WindowEventType} from '@material/base/types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -82,4 +82,16 @@ export interface MDCDialogAdapter {
    *     "cut-off" by the footer bar.
    */
   isScrollableContentAtBottom(): boolean;
+
+  /**
+   * Registers an event listener to the window.
+   */
+  registerWindowEventHandler<K extends WindowEventType>(
+      evtType: K, handler: SpecificWindowEventListener<K>): void;
+
+  /**
+   * Deregisters an event listener to the window.
+   */
+  deregisterWindowEventHandler<K extends WindowEventType>(
+      evtType: K, handler: SpecificWindowEventListener<K>): void;
 }

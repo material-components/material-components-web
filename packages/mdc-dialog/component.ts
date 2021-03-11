@@ -83,7 +83,6 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       SpecificEventListener<'keydown'>;  // assigned in initialSyncWithDOM()
   private handleDocumentKeydown!:
       SpecificEventListener<'keydown'>;   // assigned in initialSyncWithDOM()
-  private handleLayout!: EventListener;   // assigned in initialSyncWithDOM()
   private handleOpening!: EventListener;  // assigned in initialSyncWithDOM()
   private handleClosing!: () => void;     // assigned in initialSyncWithDOM()
 
@@ -119,19 +118,12 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.handleKeydown = this.foundation.handleKeydown.bind(this.foundation);
     this.handleDocumentKeydown =
         this.foundation.handleDocumentKeydown.bind(this.foundation);
-    this.handleLayout = this.layout.bind(this);
+    // this.handleLayout = this.layout.bind(this);
 
-    const LAYOUT_EVENTS = ['resize', 'orientationchange'];
     this.handleOpening = () => {
-      LAYOUT_EVENTS.forEach((evtType) => {
-        window.addEventListener(evtType, this.handleLayout);
-      });
       document.addEventListener('keydown', this.handleDocumentKeydown);
     };
     this.handleClosing = () => {
-      LAYOUT_EVENTS.forEach((evtType) => {
-        window.removeEventListener(evtType, this.handleLayout);
-      });
       document.removeEventListener('keydown', this.handleDocumentKeydown);
     };
 
@@ -225,6 +217,12 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       },
       isScrollableContentAtBottom: () => {
         return util.isScrollAtBottom(this.content);
+      },
+      registerWindowEventHandler: (evt, handler) => {
+        window.addEventListener(evt, handler);
+      },
+      deregisterWindowEventHandler: (evt, handler) => {
+        window.removeEventListener(evt, handler);
       },
     };
     return new MDCDialogFoundation(adapter);

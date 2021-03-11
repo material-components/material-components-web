@@ -23,14 +23,15 @@
 
 import {AnimationFrame} from '@material/animation/animationframe';
 import {MDCFoundation} from '@material/base/foundation';
-import {SpecificEventListener} from '@material/base/types';
+import {SpecificEventListener, SpecificWindowEventListener} from '@material/base/types';
 
 import {MDCDialogAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 import {DialogConfigOptions} from './types';
 
 enum AnimationKeys {
-  POLL_SCROLL_POS = 'poll_scroll_position'
+  POLL_SCROLL_POS = 'poll_scroll_position',
+  POLL_LAYOUT_CHANGE = 'poll_layout_change'
 }
 
 export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
@@ -70,6 +71,8 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       deregisterContentEventHandler: () => undefined,
       isScrollableContentAtTop: () => false,
       isScrollableContentAtBottom: () => false,
+      registerWindowEventHandler: () => undefined,
+      deregisterWindowEventHandler: () => undefined,
     };
   }
 
@@ -77,7 +80,6 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   private isFullscreen = false;
   private animationFrame = 0;
   private animationTimer = 0;
-  private layoutFrame = 0;
   private escapeKeyAction = strings.CLOSE_ACTION;
   private scrimClickAction = strings.CLOSE_ACTION;
   private autoStackButtons = true;
@@ -86,6 +88,9 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       strings.SUPPRESS_DEFAULT_PRESS_SELECTOR;
   private readonly contentScrollHandler: SpecificEventListener<'scroll'>;
   private readonly animFrame: AnimationFrame;
+  private readonly windowResizeHandler: SpecificWindowEventListener<'resize'>;
+  private readonly windowOrientationChangeHandler:
+      SpecificWindowEventListener<'orientationchange'>;
 
   constructor(adapter?: Partial<MDCDialogAdapter>) {
     super({...MDCDialogFoundation.defaultAdapter, ...adapter});
@@ -93,6 +98,14 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     this.animFrame = new AnimationFrame();
     this.contentScrollHandler = () => {
       this.handleScrollEvent();
+    };
+
+    this.windowResizeHandler = () => {
+      this.layout();
+    };
+
+    this.windowOrientationChangeHandler = () => {
+      this.layout();
     };
   }
 
@@ -113,28 +126,36 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       this.handleAnimationTimerEnd();
     }
 
-    if (this.layoutFrame) {
-      cancelAnimationFrame(this.layoutFrame);
-      this.layoutFrame = 0;
-    }
-
-    if (this.isFullscreen && this.adapter.isContentScrollable()) {
+    if (this.isFullscreen) {
       this.adapter.deregisterContentEventHandler(
           'scroll', this.contentScrollHandler);
     }
+
+    this.animFrame.cancelAll();
+    this.adapter.deregisterWindowEventHandler(
+        'resize', this.windowResizeHandler);
+    this.adapter.deregisterWindowEventHandler(
+        'orientationchange', this.windowOrientationChangeHandler);
   }
 
   open(dialogOptions?: DialogConfigOptions) {
     this.dialogOpen = true;
     this.adapter.notifyOpening();
     this.adapter.addClass(cssClasses.OPENING);
-    if (this.isFullscreen && this.adapter.isContentScrollable()) {
+    if (this.isFullscreen) {
+      // A scroll event listener is registered even if the dialog is not
+      // scrollable on open, since the window resize event, or orientation
+      // change may make the dialog scrollable after it is opened.
       this.adapter.registerContentEventHandler(
           'scroll', this.contentScrollHandler);
     }
     if (dialogOptions && dialogOptions.isAboveFullscreenDialog) {
       this.adapter.addClass(cssClasses.SCRIM_HIDDEN);
     }
+
+    this.adapter.registerWindowEventHandler('resize', this.windowResizeHandler);
+    this.adapter.registerWindowEventHandler(
+        'orientationchange', this.windowOrientationChangeHandler);
 
     // Wait a frame once display is no longer "none", to establish basis for
     // animation
@@ -164,10 +185,14 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     this.adapter.addClass(cssClasses.CLOSING);
     this.adapter.removeClass(cssClasses.OPEN);
     this.adapter.removeBodyClass(cssClasses.SCROLL_LOCK);
-    if (this.isFullscreen && this.adapter.isContentScrollable()) {
+    if (this.isFullscreen) {
       this.adapter.deregisterContentEventHandler(
           'scroll', this.contentScrollHandler);
     }
+    this.adapter.deregisterWindowEventHandler(
+        'resize', this.windowResizeHandler);
+    this.adapter.deregisterWindowEventHandler(
+        'orientationchange', this.windowOrientationChangeHandler);
 
     cancelAnimationFrame(this.animationFrame);
     this.animationFrame = 0;
@@ -246,12 +271,8 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   }
 
   layout() {
-    if (this.layoutFrame) {
-      cancelAnimationFrame(this.layoutFrame);
-    }
-    this.layoutFrame = requestAnimationFrame(() => {
+    this.animFrame.request(AnimationKeys.POLL_LAYOUT_CHANGE, () => {
       this.layoutInternal();
-      this.layoutFrame = 0;
     });
   }
 

@@ -70,6 +70,8 @@ describe('MDCDialogFoundation', () => {
       'deregisterContentEventHandler',
       'isScrollableContentAtTop',
       'isScrollableContentAtBottom',
+      'registerWindowEventHandler',
+      'deregisterWindowEventHandler',
     ]);
   });
 
@@ -135,6 +137,18 @@ describe('MDCDialogFoundation', () => {
        expect(mockAdapter.deregisterContentEventHandler)
            .toHaveBeenCalledWith('scroll', jasmine.any(Function));
      });
+
+  it('#destroy deregisters event handlers on the window', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.isContentScrollable.and.returnValue(true);
+
+    foundation.open();
+    foundation.destroy();
+    expect(mockAdapter.deregisterWindowEventHandler)
+        .toHaveBeenCalledWith('resize', jasmine.any(Function));
+    expect(mockAdapter.deregisterWindowEventHandler)
+        .toHaveBeenCalledWith('orientationchange', jasmine.any(Function));
+  });
 
   it('#open adds CSS classes after rAF', () => {
     const {foundation, mockAdapter} = setupTest();
@@ -328,6 +342,17 @@ describe('MDCDialogFoundation', () => {
            .toHaveBeenCalledWith('scroll', jasmine.any(Function));
      });
 
+  it('#open registers scroll event handler if dialog is full-screen and not scrollable',
+     () => {
+       const {foundation, mockAdapter} = setupTest({isFullscreen: true});
+       mockAdapter.isContentScrollable.and.returnValue(false);
+
+       foundation.open();
+
+       expect(mockAdapter.registerContentEventHandler)
+           .toHaveBeenCalledWith('scroll', jasmine.any(Function));
+     });
+
   it('#open doesn\'t registers scroll event handler if dialog is not full-screen',
      () => {
        const {foundation, mockAdapter} = setupTest();
@@ -351,6 +376,18 @@ describe('MDCDialogFoundation', () => {
            .toHaveBeenCalledWith('scroll', jasmine.any(Function));
      });
 
+  it('#close deregisters scroll event handler if dialog is full-screen and not scrollable',
+     () => {
+       const {foundation, mockAdapter} = setupTest({isFullscreen: true});
+       mockAdapter.isContentScrollable.and.returnValue(false);
+
+       foundation.open();
+       foundation.close();
+
+       expect(mockAdapter.deregisterContentEventHandler)
+           .toHaveBeenCalledWith('scroll', jasmine.any(Function));
+     });
+
   it('#open hides the scrim if \"isAboveFullscreenDialog" is true', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.open({isAboveFullscreenDialog: true});
@@ -358,6 +395,29 @@ describe('MDCDialogFoundation', () => {
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.SCRIM_HIDDEN);
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.OPENING);
   });
+
+  it('#open registers resize and orientationchange event listeners on the window',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.open();
+
+       expect(mockAdapter.registerWindowEventHandler)
+           .toHaveBeenCalledWith('resize', jasmine.any(Function));
+       expect(mockAdapter.registerWindowEventHandler)
+           .toHaveBeenCalledWith('orientationchange', jasmine.any(Function));
+     });
+
+  it('#close deregisters resize and orientationchange event listeners on the window',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.open();
+       foundation.close();
+
+       expect(mockAdapter.deregisterWindowEventHandler)
+           .toHaveBeenCalledWith('resize', jasmine.any(Function));
+       expect(mockAdapter.deregisterWindowEventHandler)
+           .toHaveBeenCalledWith('orientationchange', jasmine.any(Function));
+     });
 
   it(`#layout removes ${
          cssClasses.STACKED} class, detects stacked buttons, and adds class`,
