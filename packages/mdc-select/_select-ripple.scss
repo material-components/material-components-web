@@ -20,6 +20,10 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// NOTE: this is the implementation of the aforementioned classes.
+
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/list/mixins' as list-mixins;
 @use '@material/ripple/ripple';
@@ -55,7 +59,7 @@
     }
   }
 
-  .mdc-select__menu .mdc-list .mdc-list-item--selected {
+  .mdc-select__menu .mdc-deprecated-list .mdc-deprecated-list-item--selected {
     @include list-mixins.deprecated-ripple-states(on-surface, $query: $query);
   }
 }

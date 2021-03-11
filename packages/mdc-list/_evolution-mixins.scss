@@ -1,3 +1,7 @@
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// NOTE: this is the implementation of the aforementioned classes.
+
 @use 'sass:list';
 @use 'sass:map';
 @use '@material/theme/theme';
@@ -89,13 +93,10 @@
 
     // For components using aria-activedescendant, the focus pseudoclass is
     // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
-    // stylelint-disable selector-class-pattern --
-    // NOTE: Selector '.mdc-*' should only be used in this project.
     &:not(.mdc-evolution-list-item--selected):focus::before, // lint-disable-focus-psuedo-selector
     &.mdc-ripple-upgraded--background-focused::before {
       @include dom-mixins.transparent-border($query: $query);
     }
-    // stylelint-enable selector-class-pattern
 
     &.mdc-evolution-list-item--selected::before {
       @include dom-mixins.transparent-border(
@@ -411,7 +412,7 @@
   .mdc-evolution-list-group {
     @include feature-targeting.targets($feat-structure) {
       // Cancel top/bottom padding on individual lists within group
-      .mdc-list {
+      .mdc-deprecated-list {
         padding: 0;
       }
     }
@@ -839,7 +840,7 @@
 @mixin group-subheader-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-group__subheader {
+  .mdc-deprecated-list-group__subheader {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
     }

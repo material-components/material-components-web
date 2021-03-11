@@ -20,6 +20,10 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// NOTE: this is the implementation of the aforementioned classes.
+
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/floating-label/mixins' as floating-label-mixins;
@@ -210,7 +214,7 @@
     @include _option-side-padding(12px, $query: $query);
   }
 
-  .mdc-select__menu .mdc-list {
+  .mdc-select__menu .mdc-deprecated-list {
     @include select-icon-theme.icon-horizontal-margins(0, 0, $query: $query);
     @include list-mixins.deprecated-item-selected-text-color(
       on-surface,
@@ -319,7 +323,7 @@
 @mixin _option-side-padding($side-padding, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-select__menu .mdc-list-item {
+  .mdc-select__menu .mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(
         padding,
@@ -340,7 +344,7 @@
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-select__menu .mdc-list-item__graphic {
+  .mdc-select__menu .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-box(margin, right, $margin-right);
     }

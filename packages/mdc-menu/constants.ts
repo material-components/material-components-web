@@ -31,7 +31,7 @@ const strings = {
   ARIA_CHECKED_ATTR: 'aria-checked',
   ARIA_DISABLED_ATTR: 'aria-disabled',
   CHECKBOX_SELECTOR: 'input[type="checkbox"]',
-  LIST_SELECTOR: '.mdc-list',
+  LIST_SELECTOR: '.mdc-list,.mdc-deprecated-list',
   SELECTED_EVENT: 'MDCMenu:selected',
 };
 
