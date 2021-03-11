@@ -69,6 +69,11 @@ $_light-theme: (
 @mixin theme($theme) {
   @include theme.validate-keys($_light-theme, $theme);
   @include base-theme($theme);
+
+  $shape-radius: map.get($theme, container-shape);
+  @if $shape-radius {
+    @include shape-radius($shape-radius);
+  }
 }
 
 @mixin base-theme($theme) {
@@ -92,11 +97,6 @@ $_light-theme: (
       pressed: map.get($theme, pressed-icon-color),
     )
   );
-
-  $shape-radius: map.get($theme, container-shape);
-  @if $shape-radius {
-    @include shape-radius($shape-radius);
-  }
 
   $opacity-map: (
     hover: map.get($theme, hover-state-layer-opacity),

@@ -83,6 +83,10 @@ $_extended-light-theme: (
 @mixin theme($theme) {
   @include theme.validate-keys($_extended-light-theme, $theme);
   @include fab-theme.base-theme($theme);
+  $container-shape: map.get($theme, container-shape);
+  @if $container-shape {
+    @include extended-shape-radius($container-shape);
+  }
   @include _label-color(
     (
       default: map.get($theme, label-text-color),
