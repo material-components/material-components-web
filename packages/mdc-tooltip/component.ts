@@ -52,11 +52,12 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     }
 
     const anchorElem = document.querySelector<HTMLElement>(
-                           `[aria-describedby="${tooltipId}"]`) ||
-        document.querySelector<HTMLElement>(`[data-tooltip-id="${tooltipId}"]`);
+                           `[data-tooltip-id="${tooltipId}"]`) ||
+        document.querySelector<HTMLElement>(
+            `[aria-describedby="${tooltipId}"]`);
     if (!anchorElem) {
       throw new Error(
-          'MDCTooltip: Tooltip component requires an anchor element annotated with [aria-describedby] or [data-tooltip-id] anchor element.');
+          'MDCTooltip: Tooltip component requires an anchor element annotated with [aria-describedby] or [data-tooltip-id].');
     }
     this.anchorElem = anchorElem;
   }
