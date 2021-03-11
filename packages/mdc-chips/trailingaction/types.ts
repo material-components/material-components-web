@@ -21,22 +21,4 @@
  * THE SOFTWARE.
  */
 
-import {InteractionTrigger} from './constants';
-
-export interface MDCChipTrailingActionInteractionEventDetail {
-  trigger: InteractionTrigger;
-}
-
-export interface MDCChipTrailingActionNavigationEventDetail {
-  key: string;
-}
-
-// Note: CustomEvent<T> is not supported by Closure Compiler.
-
-export interface MDCChipTrailingActionInteractionEvent extends Event {
-  readonly detail: MDCChipTrailingActionInteractionEventDetail;
-}
-
-export interface MDCChipTrailingActionNavigationEvent extends Event {
-  readonly detail: MDCChipTrailingActionNavigationEventDetail;
-}
+export * from '../deprecated/trailingaction/types';

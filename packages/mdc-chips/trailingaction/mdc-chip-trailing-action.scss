@@ -20,5 +20,4 @@
 // THE SOFTWARE.
 //
 
-@use './mixins';
-@include mixins.core-styles;
+@use '../deprecated/trailingaction/mdc-chip-trailing-action';

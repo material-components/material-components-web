@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple} from '../../../mdc-ripple/index';
-import {emitEvent} from '../../../../testing/dom/events';
-import {createMockFoundation} from '../../../../testing/helpers/foundation';
+import {MDCRipple} from '../../../../mdc-ripple/index';
+import {emitEvent} from '../../../../../testing/dom/events';
+import {createMockFoundation} from '../../../../../testing/helpers/foundation';
 import {MDCChipTrailingAction, MDCChipTrailingActionFoundation, trailingActionStrings as strings} from '../index';
 
 const getFixture = () => {

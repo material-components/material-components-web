@@ -24,8 +24,8 @@
 
 import {KEY} from '@material/dom/keyboard';
 
-import {verifyDefaultAdapter} from '../../../../testing/helpers/foundation';
-import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
+import {verifyDefaultAdapter} from '../../../../../testing/helpers/foundation';
+import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../../testing/helpers/setup';
 import {InteractionTrigger, strings} from '../constants';
 import {MDCChipTrailingActionFoundation} from '../foundation';
 

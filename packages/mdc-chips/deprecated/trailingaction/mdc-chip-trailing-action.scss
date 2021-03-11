@@ -20,4 +20,5 @@
 // THE SOFTWARE.
 //
 
-@forward '../deprecated/trailingaction/variables';
+@use './mixins';
+@include mixins.core-styles;

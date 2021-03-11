@@ -20,4 +20,9 @@
 // THE SOFTWARE.
 //
 
-@forward '../deprecated/trailingaction/variables';
+$size: 18px !default;
+$margin-right: -4px !default;
+$margin-left: 4px !default;
+$touch-target-width: 26px !default;
+$color: on-surface !default;
+$ripple-color: on-surface !default;

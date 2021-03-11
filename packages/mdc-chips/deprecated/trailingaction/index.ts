@@ -21,12 +21,8 @@
  * THE SOFTWARE.
  */
 
-import 'jasmine';
-
-import * as path from 'path';
-import {expectStylesWithNoFeaturesToBeEmpty} from '../../../../testing/featuretargeting';
-
-describe('mdc-chip-trailing-action.scss', () => {
-  expectStylesWithNoFeaturesToBeEmpty(
-      path.join(__dirname, 'feature-targeting-any.test.css'));
-});
+export * from './adapter';
+export * from './component';
+export * from './foundation';
+export * from './types';
+export {strings as trailingActionStrings} from './constants';
