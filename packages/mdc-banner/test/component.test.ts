@@ -53,7 +53,7 @@ describe('MDCBanner', () => {
       <div class="mdc-banner" role="banner">
         <div class="mdc-banner__content">
           <div class="mdc-banner__text"
-               role="status"
+               role="alertdialog"
                aria-live="assertive">
             Single line banner.
           </div>
@@ -262,7 +262,7 @@ describe('MDCBanner', () => {
       <div class="mdc-banner" role="banner">
         <div class="mdc-banner__content">
           <div class="mdc-banner__text"
-               role="status"
+               role="alertdialog"
                aria-live="assertive">
             Single line banner.
           </div>
@@ -286,5 +286,31 @@ describe('MDCBanner', () => {
 
     component.setSecondaryActionText('foo');
     expect(component.getSecondaryActionText()).toEqual('foo');
+  });
+
+  it('#open sets focus on primary action', () => {
+    const {component, primaryActionEl} = setupTest(fixture);
+    component.open();
+
+    jasmine.clock().tick(1);
+    jasmine.clock().tick(numbers.BANNER_ANIMATION_OPEN_TIME_MS);
+    expect(document.activeElement).toEqual(primaryActionEl);
+  });
+
+  it('#close releases focus to previously focused element', () => {
+    const {component} = setupTest(fixture);
+
+    const backgroundElement = document.createElement('button');
+    document.body.appendChild(backgroundElement);
+    backgroundElement.focus();
+    expect(document.activeElement).toEqual(backgroundElement);
+
+    component.open();
+    jasmine.clock().tick(1);
+    jasmine.clock().tick(numbers.BANNER_ANIMATION_OPEN_TIME_MS);
+    expect(document.activeElement).not.toEqual(backgroundElement);
+    component.close(CloseReason.UNSPECIFIED);
+    jasmine.clock().tick(numbers.BANNER_ANIMATION_CLOSE_TIME_MS);
+    expect(document.activeElement).toEqual(backgroundElement);
   });
 });

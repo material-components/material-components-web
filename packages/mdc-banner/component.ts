@@ -23,10 +23,11 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
+import {FocusTrap} from '@material/dom/focus-trap';
 import {closest} from '@material/dom/ponyfill';
 
 import {MDCBannerAdapter} from './adapter';
-import {CloseReason, events, MDCBannerCloseEventDetail, selectors} from './constants';
+import {CloseReason, events, MDCBannerCloseEventDetail, MDCBannerFocusTrapFactory, selectors} from './constants';
 import {MDCBannerFoundation} from './foundation';
 
 /** Vanilla JS implementation of banner component. */
@@ -42,14 +43,21 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
   private secondaryActionEl!: HTMLElement|null;  // Assigned in #initialize.
   private textEl!: HTMLElement;                  // Assigned in #initialize.
   private contentEl!: HTMLElement;               // Assigned in #initialize.
+  private focusTrap!: FocusTrap;  // assigned in initialSyncWithDOM()
+  private focusTrapFactory!:
+      MDCBannerFocusTrapFactory;  // assigned in initialize()
 
-  initialize() {
+  initialize(
+      focusTrapFactory: MDCBannerFocusTrapFactory = (el, focusOptions) =>
+          new FocusTrap(el, focusOptions),
+  ) {
     this.contentEl = this.root.querySelector(selectors.CONTENT) as HTMLElement;
     this.textEl = this.root.querySelector(selectors.TEXT) as HTMLElement;
     this.primaryActionEl =
         this.root.querySelector(selectors.PRIMARY_ACTION) as HTMLElement;
     this.secondaryActionEl =
         this.root.querySelector(selectors.SECONDARY_ACTION) as HTMLElement;
+    this.focusTrapFactory = focusTrapFactory;
 
     this.handleContentClick = (evt) => {
       const target = evt.target as Element;
@@ -63,6 +71,8 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
 
   initialSyncWithDOM() {
     this.registerContentClickHandler(this.handleContentClick);
+    this.focusTrap = this.focusTrapFactory(
+        this.root, {initialFocusEl: this.primaryActionEl});
   }
 
   destroy() {
@@ -118,11 +128,17 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
       notifyOpening: () => {
         this.emit(events.OPENING, {});
       },
+      releaseFocus: () => {
+        this.focusTrap.releaseFocus();
+      },
       removeClass: (className) => {
         this.root.classList.remove(className);
       },
       setStyleProperty: (propertyName, value) => {
         this.root.style.setProperty(propertyName, value);
+      },
+      trapFocus: () => {
+        this.focusTrap.trapFocus();
       },
     };
     return new MDCBannerFoundation(adapter);

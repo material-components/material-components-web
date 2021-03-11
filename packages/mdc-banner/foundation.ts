@@ -41,8 +41,10 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
       notifyClosing: () => undefined,
       notifyOpened: () => undefined,
       notifyOpening: () => undefined,
+      releaseFocus: () => undefined,
       removeClass: () => undefined,
       setStyleProperty: () => undefined,
+      trapFocus: () => undefined,
     };
   }
 
@@ -78,6 +80,7 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
 
       this.animationTimer = setTimeout(() => {
         this.handleAnimationTimerEnd();
+        this.adapter.trapFocus();
         this.adapter.notifyOpened();
       }, numbers.BANNER_ANIMATION_OPEN_TIME_MS);
     });
@@ -109,6 +112,7 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
 
     clearTimeout(this.animationTimer);
     this.animationTimer = setTimeout(() => {
+      this.adapter.releaseFocus();
       this.handleAnimationTimerEnd();
       this.adapter.notifyClosed(reason);
     }, numbers.BANNER_ANIMATION_CLOSE_TIME_MS);

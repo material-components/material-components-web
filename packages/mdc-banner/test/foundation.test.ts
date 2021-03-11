@@ -39,6 +39,8 @@ describe('MDCBannerFoundation', () => {
       'notifyClosed',
       'setStyleProperty',
       'removeClass',
+      'trapFocus',
+      'releaseFocus',
     ]);
   });
 
@@ -163,6 +165,26 @@ describe('MDCBannerFoundation', () => {
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(cssClasses.CLOSING);
     expect(mockAdapter.notifyClosing).not.toHaveBeenCalledWith('');
     expect(mockAdapter.notifyClosed).not.toHaveBeenCalledWith('');
+    expect(mockAdapter.releaseFocus).not.toHaveBeenCalled();
+  });
+
+  it('#open activates focus trapping on the banner', () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    foundation.open();
+    jasmine.clock().tick(1);
+    jasmine.clock().tick(numbers.BANNER_ANIMATION_OPEN_TIME_MS);
+    expect(mockAdapter.trapFocus).toHaveBeenCalled();
+  });
+
+  it('#close deactivates focus trapping on the dialog surface', () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    foundation.open();
+    foundation.close(CloseReason.UNSPECIFIED);
+    jasmine.clock().tick(1);
+    jasmine.clock().tick(numbers.BANNER_ANIMATION_OPEN_TIME_MS);
+    expect(mockAdapter.releaseFocus).toHaveBeenCalled();
   });
 
   it('#isOpen returns false when the banner has never been opened', () => {

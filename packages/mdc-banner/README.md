@@ -54,7 +54,7 @@ const banner = new MDCBanner(document.querySelector('.mdc-banner'));
 ```html
 <div class="mdc-banner" role="banner">
   <div class="mdc-banner__content"
-       role="status"
+       role="alertdialog"
        aria-live="assertive">
     <div class="mdc-banner__graphic-text-wrapper">
       <div class="mdc-banner__text">
@@ -101,7 +101,7 @@ When used below top app bars, banners should remain fixed at the top of the scre
 <div class="mdc-banner" role="banner">
   <div class="mdc-banner__fixed">
     <div class="mdc-banner__content"
-         role="status"
+         role="alertdialog"
          aria-live="assertive">
       <div class="mdc-banner__graphic-text-wrapper">
         <div class="mdc-banner__text">
@@ -126,7 +126,7 @@ Images can help communicate a banner’s message.
 ```html
 <div class="mdc-banner" role="banner">
   <div class="mdc-banner__content"
-       role="status"
+       role="alertdialog"
        aria-live="assertive">
     <div class="mdc-banner__graphic-text-wrapper">
       <div class="mdc-banner__graphic" role="img" alt=""><i class="material-icons mdc-banner__icon">error_outline</i></div>
@@ -151,7 +151,7 @@ Banners may have one or two low-emphasis text buttons.
 ```html
 <div class="mdc-banner" role="banner">
   <div class="mdc-banner__content"
-       role="status"
+       role="alertdialog"
        aria-live="assertive">
     <div class="mdc-banner__graphic-text-wrapper">
       <div class="mdc-banner__text">
