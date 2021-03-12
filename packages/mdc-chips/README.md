@@ -1,5 +1,5 @@
 <!--docs:
-title: "Chips"
+title: "Chips (deprecated)"
 layout: detail
 section: components
 excerpt: "Chips are compact elements that represent an attribute, text, entity, or action."
@@ -7,7 +7,7 @@ iconId: chip
 path: /catalog/chips/
 -->
 
-# Chips
+# Chips (deprecated)
 
 Chips are compact elements that allow users to enter information, select a choice, filter content, or trigger an action.
 
