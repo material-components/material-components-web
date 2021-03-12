@@ -209,7 +209,7 @@ input.addEventListener('keydown', function(event) {
 
 #### Removing Chips from the DOM
 
-By default, input chips are removed in response to clicking the trailing remove icon in the chip. Removal can also be triggered by calling `MDCChip`'s `beginExit()` method.
+Input chips are removed in response to clicking the trailing remove icon in the chip if the trailing icon element has the class `mdc-chip-trailing-action`. Removal can also be triggered by calling `MDCChip`'s `beginExit()` method.
 
 Individual `MDCChip` instances will emit a `MDCChip:removal` event once the exit transition ends. `MDCChipSet` will handle destroying the `MDCChip` instance in response to `MDCChip:removal`, but it must be removed from the DOM manually. You can listen for `MDCChip:removal` from the parent Chip Set or any ancestor, since the event bubbles:
 
