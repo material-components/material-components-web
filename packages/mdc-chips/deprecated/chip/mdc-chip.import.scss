@@ -13,8 +13,8 @@
 @forward "@material/touch-target/variables" as mdc-touch-target-*;
 @forward "@material/typography/variables" as mdc-typography-*;
 @forward "@material/shape/variables" as mdc-shape-*;
-@forward "../../variables" as mdc-chip-*;
-@forward "../../mixins" as mdc-chip-*;
+@forward "../variables" as mdc-chip-*;
+@forward "../mixins" as mdc-chip-*;
 @forward "@material/theme/mixins" as mdc-theme-*;
 @forward "@material/elevation/mixins" as mdc-* hide mdc-core-styles, mdc-overlay-common, mdc-overlay-dimensions, mdc-overlay-fill-color, mdc-overlay-opacity, mdc-overlay-selector-, mdc-overlay-surface-position, mdc-shadow;
 @forward "@material/elevation/mixins" as mdc-elevation-* hide mdc-elevation-elevation;
