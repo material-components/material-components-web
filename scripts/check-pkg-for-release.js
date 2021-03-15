@@ -81,6 +81,7 @@ const CSS_EXCLUDES = new Set([
 const JS_EXCLUDES = new Set([
   'animation',
   'progress-indicator',
+  'chips', // Temporarily added during deprecation migration.
 ]);
 
 const NOT_AUTOINIT = new Set([
