@@ -21,4 +21,10 @@
  * THE SOFTWARE.
  */
 
-export * from './deprecated/index';
+/**
+ * Backwards compatibility for Angular Material.
+ */
+import * as deprecated from './deprecated/index';
+export {
+  deprecated,
+};
