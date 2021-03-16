@@ -51,7 +51,7 @@ function getFixture(removeIcon = false) {
           alt="Bookmark this page">bookmark</a>
           <div class="mdc-menu-anchor">
             <div class="mdc-menu" tabindex="-1" id="demo-menu">
-              <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true" style="transform: scale(1, 1);">
+              <ul class="mdc-menu__items mdc-deprecated-list" role="menu" aria-hidden="true" style="transform: scale(1, 1);">
               </ul>
             </div>
           </section>

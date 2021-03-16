@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCList, MDCListFoundation} from '../../mdc-list/index';
+import {MDCList} from '../../mdc-list/index';
 import {getFixture} from '../../../testing/dom';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
@@ -42,10 +42,10 @@ const defaultSetupOptions = {variantClass: cssClasses.DISMISSIBLE, shadowRoot: f
 function getDrawerFixture(options: Partial<DrawerSetupOptions>): HTMLElement|
     DocumentFragment {
   const listContent = `
-    <div class="mdc-list-group">
-      <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+    <div class="mdc-deprecated-list-group">
+      <nav class="mdc-deprecated-list">
+        <a class="mdc-deprecated-list-item mdc-deprecated-list-item--activated" href="#" aria-current="page">
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">inbox</i>Inbox
         </a>
       </nav>
     </div>
@@ -145,7 +145,8 @@ describe('MDCDrawer', () => {
 
   it('keydown event calls foundation.handleKeydown method', () => {
     const {drawer, mockFoundation} = setupTestWithMocks();
-    (drawer.querySelector('.mdc-list-item') as HTMLElement).focus();
+    // TODO(b/182902089): use list constants once code is migrated to evolution.
+    (drawer.querySelector('.mdc-deprecated-list-item') as HTMLElement).focus();
     emitEvent(drawer, 'keydown');
     expect(mockFoundation.handleKeydown)
         .toHaveBeenCalledWith(jasmine.any(Object));
@@ -171,7 +172,8 @@ describe('MDCDrawer', () => {
   it('#destroy removes keydown event listener', () => {
     const {component, drawer, mockFoundation} = setupTestWithMocks();
     component.destroy();
-    (drawer.querySelector('.mdc-list-item') as HTMLElement).focus();
+    // TODO(b/182902089): use list constants once code is migrated to evolution.
+    (drawer.querySelector('.mdc-deprecated-list-item') as HTMLElement).focus();
     emitEvent(drawer, 'keydown');
     expect(mockFoundation.handleKeydown)
         .not.toHaveBeenCalledWith(jasmine.any(Object));
@@ -250,9 +252,7 @@ describe('MDCDrawer', () => {
     button.focus();
 
     (component.getDefaultFoundation() as any).adapter.saveFocus();
-    (root.querySelector(
-         `.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`) as
-     HTMLElement)
+    (root.querySelector(strings.LIST_ITEM_ACTIVATED_SELECTOR) as HTMLElement)
         .focus();
     (component.getDefaultFoundation() as any).adapter.restoreFocus();
 
@@ -289,10 +289,8 @@ describe('MDCDrawer', () => {
        document.body.appendChild(root);
        button.focus();
 
-       const navItem =
-           root.querySelector(
-               `.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`) as
-           HTMLElement;
+       const navItem = root.querySelector(
+                           strings.LIST_ITEM_ACTIVATED_SELECTOR) as HTMLElement;
        navItem.focus();
        (component.getDefaultFoundation() as any).adapter.restoreFocus();
 
@@ -347,8 +345,8 @@ describe('MDCDrawer', () => {
        (component.getDefaultFoundation() as any)
            .adapter.focusActiveNavigationItem();
 
-       const activatedNavigationItemEl = root.querySelector(
-           `.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+       const activatedNavigationItemEl =
+           root.querySelector(strings.LIST_ITEM_ACTIVATED_SELECTOR);
        expect(document.activeElement).toEqual(activatedNavigationItemEl);
        document.body.removeChild(root);
      });
@@ -359,11 +357,11 @@ describe('MDCDrawer', () => {
        const prevActiveElement = document.activeElement;
        document.body.appendChild(root);
        const activatedNavigationItemEl =
-           root.querySelector(
-               `.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`) as
+           root.querySelector(strings.LIST_ITEM_ACTIVATED_SELECTOR) as
            HTMLElement;
+       // TODO(b/182902089): use list constants once code has been migrated.
        activatedNavigationItemEl.classList.remove(
-           MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+           'mdc-deprecated-list-item--activated');
        (component.getDefaultFoundation() as any)
            .adapter.focusActiveNavigationItem();
 

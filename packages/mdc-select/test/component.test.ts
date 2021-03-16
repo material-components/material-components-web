@@ -118,13 +118,13 @@ function getFixture() {
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-        <ul class="mdc-list">
-          <li class="mdc-list-item" data-value=""></li>
-          <li class="mdc-list-item" data-value="orange">
-            <span class="mdc-list-item__text">Orange</span>
+        <ul class="mdc-deprecated-list">
+          <li class="mdc-deprecated-list-item" data-value=""></li>
+          <li class="mdc-deprecated-list-item" data-value="orange">
+            <span class="mdc-deprecated-list-item__text">Orange</span>
           </li>
-          <li class="mdc-list-item" data-value="apple">
-            <span class="mdc-list-item__text">Apple</span>
+          <li class="mdc-deprecated-list-item" data-value="apple">
+            <span class="mdc-deprecated-list-item__text">Apple</span>
           </li>
         </ul>
       </div>
@@ -168,13 +168,13 @@ function getOutlineFixture() {
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-        <ul class="mdc-list">
-          <li class="mdc-list-item" data-value=""></li>
-          <li class="mdc-list-item" data-value="orange">
-            <span class="mdc-list-item__text">Orange</span>
+        <ul class="mdc-deprecated-list">
+          <li class="mdc-deprecated-list-item" data-value=""></li>
+          <li class="mdc-deprecated-list-item" data-value="orange">
+            <span class="mdc-deprecated-list-item__text">Orange</span>
           </li>
-          <li class="mdc-list-item" data-value="apple">
-            <span class="mdc-list-item__text">Apple</span>
+          <li class="mdc-deprecated-list-item" data-value="apple">
+            <span class="mdc-deprecated-list-item__text">Apple</span>
           </li>
         </ul>
       </div>
@@ -288,7 +288,8 @@ describe('MDCSelect', () => {
     component.selectedIndex = 1;
     component.selectedIndex = 2;
     expect(component.selectedIndex).toEqual(2);
-    expect(menuSurface.querySelectorAll('.mdc-list-item--selected').length)
+    expect(menuSurface.querySelectorAll('.mdc-deprecated-list-item--selected')
+               .length)
         .toEqual(1);
     menuSurface.parentElement!.removeChild(menuSurface);
   });
@@ -555,13 +556,13 @@ describe('MDCSelect', () => {
           </div>
 
           <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-            <ul class="mdc-list">
-              <li class="mdc-list-item" data-value=""></li>
-              <li class="mdc-list-item mdc-list-item--selected" data-value="orange">
-                <span class="mdc-list-tem__text">Orange</span>
+            <ul class="mdc-deprecated-list">
+              <li class="mdc-deprecated-list-item" data-value=""></li>
+              <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" data-value="orange">
+                <span class="mdc-deprecated-list-tem__text">Orange</span>
               </li>
-              <li class="mdc-list-item" data-value="apple">
-                <span class="mdc-list-tem__text">Apple</span>
+              <li class="mdc-deprecated-list-item" data-value="apple">
+                <span class="mdc-deprecated-list-tem__text">Apple</span>
               </li>
             </ul>
           </div>
@@ -604,13 +605,13 @@ describe('MDCSelect', () => {
         </div>
 
         <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-          <ul class="mdc-list">
-            <li class="mdc-list-item" data-value=""></li>
-            <li class="mdc-list-item" data-value="orange">
-              <span class="mdc-list-item__text">Orange</span>
+          <ul class="mdc-deprecated-list">
+            <li class="mdc-deprecated-list-item" data-value=""></li>
+            <li class="mdc-deprecated-list-item" data-value="orange">
+              <span class="mdc-deprecated-list-item__text">Orange</span>
             </li>
-            <li class="mdc-list-item" data-value="apple">
-              <span class="mdc-list-item__text">Apple</span>
+            <li class="mdc-deprecated-list-item" data-value="apple">
+              <span class="mdc-deprecated-list-item__text">Apple</span>
             </li>
           </ul>
         </div>
@@ -652,12 +653,12 @@ describe('MDCSelect', () => {
           </div>
 
           <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-            <ul class="mdc-list">
-              <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
-              <li class="mdc-list-item" data-value="orange">
+            <ul class="mdc-deprecated-list">
+              <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" data-value=""></li>
+              <li class="mdc-deprecated-list-item" data-value="orange">
                 Orange
               </li>
-              <li class="mdc-list-item" data-value="apple">
+              <li class="mdc-deprecated-list-item" data-value="apple">
                 Apple
               </li>
             </ul>
@@ -700,13 +701,13 @@ describe('MDCSelect', () => {
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-        <ul class="mdc-list">
-          <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
-          <li class="mdc-list-item" data-value="orange">
-            <span class="mdc-list-item__text">Orange</span>
+        <ul class="mdc-deprecated-list">
+          <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" data-value=""></li>
+          <li class="mdc-deprecated-list-item" data-value="orange">
+            <span class="mdc-deprecated-list-item__text">Orange</span>
           </li>
-          <li class="mdc-list-item" data-value="apple">
-            <span class="mdc-list-item__text">Apple</span>
+          <li class="mdc-deprecated-list-item" data-value="apple">
+            <span class="mdc-deprecated-list-item__text">Apple</span>
           </li>
         </ul>
       </div>
@@ -852,13 +853,13 @@ describe('MDCSelect', () => {
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-        <ul class="mdc-list">
-          <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
-          <li class="mdc-list-item" data-value="orange">
-            <span class="mdc-list-item__text">Orange</span>
+        <ul class="mdc-deprecated-list">
+          <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" data-value=""></li>
+          <li class="mdc-deprecated-list-item" data-value="orange">
+            <span class="mdc-deprecated-list-item__text">Orange</span>
           </li>
-          <li class="mdc-list-item" data-value="apple">
-            <span class="mdc-list-item__text">Apple</span>
+          <li class="mdc-deprecated-list-item" data-value="apple">
+            <span class="mdc-deprecated-list-item__text">Apple</span>
           </li>
         </ul>
       </div>
@@ -903,13 +904,13 @@ describe('MDCSelect', () => {
       </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-        <ul class="mdc-list">
-          <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
-          <li class="mdc-list-item" data-value="orange">
-            <span class="mdc-list-item__text">Orange</span>
+        <ul class="mdc-deprecated-list">
+          <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" data-value=""></li>
+          <li class="mdc-deprecated-list-item" data-value="orange">
+            <span class="mdc-deprecated-list-item__text">Orange</span>
           </li>
-          <li class="mdc-list-item" data-value="apple">
-            <span class="mdc-list-item__text">Apple</span>
+          <li class="mdc-deprecated-list-item" data-value="apple">
+            <span class="mdc-deprecated-list-item__text">Apple</span>
           </li>
         </ul>
       </div>
@@ -1016,7 +1017,8 @@ describe('MDCSelect', () => {
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
     document.body.appendChild(fixture);
     const index = 1;
-    const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
+    const menuItem =
+        menuSurface.querySelectorAll('.mdc-deprecated-list-item')[index];
     const adapter = (component.getDefaultFoundation() as any).adapter;
 
     adapter.focusMenuItemAtIndex(index);
@@ -1219,7 +1221,8 @@ describe('MDCSelect', () => {
         setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
 
     const index = 1;
-    const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
+    const menuItem =
+        menuSurface.querySelectorAll('.mdc-deprecated-list-item')[index];
     const adapter = (component.getDefaultFoundation() as any).adapter;
 
     expect(adapter.getMenuItemAttr(menuItem, strings.VALUE_ATTR))
@@ -1367,7 +1370,7 @@ describe('MDCSelect', () => {
            {bubbles: false, cancelable: true});
 
        expect(document.activeElement)
-           .toEqual(menuSurface.querySelector('.mdc-list-item'));
+           .toEqual(menuSurface.querySelector('.mdc-deprecated-list-item'));
        document.body.removeChild(fixture);
      });
 
@@ -1406,7 +1409,8 @@ describe('MDCSelect', () => {
         {bubbles: false, cancelable: true});
 
     expect(document.activeElement)
-        .toEqual(menuSurface.querySelector('.mdc-list-item--selected'));
+        .toEqual(
+            menuSurface.querySelector('.mdc-deprecated-list-item--selected'));
     expect(component.selectedIndex).toEqual(1);
     document.body.removeChild(fixture);
   });

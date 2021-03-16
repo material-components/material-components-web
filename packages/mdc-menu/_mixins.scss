@@ -54,7 +54,7 @@
       $query
     );
     @include min-width(variables.$min-width, $query: $query);
-    // Include mdc-list selector to ensure list-inside-menu overrides default list styles
+    // Include mdc-deprecated-list selector to ensure list-inside-menu overrides default list styles
     .mdc-deprecated-list {
       @include list-mixins.deprecated-item-primary-text-ink-color(
         variables.$ink-color,
@@ -109,7 +109,7 @@
       }
     }
 
-    // Extra specificity required to override `display` property on `mdc-list-item__graphic`.
+    // Extra specificity required to override `display` property on `mdc-deprecated-list-item__graphic`.
     .mdc-menu__selection-group-icon {
       @include feature-targeting.targets($feat-structure) {
         @include rtl-mixins.reflexive-position(left, 16px);

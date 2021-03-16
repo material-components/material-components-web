@@ -25,7 +25,6 @@ import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {FocusTrap} from '@material/dom/focus-trap';
 import {MDCList, MDCListFactory} from '@material/list/component';
-import {MDCListFoundation} from '@material/list/foundation';
 import {MDCDrawerAdapter} from './adapter';
 import {MDCDismissibleDrawerFoundation} from './dismissible/foundation';
 import {MDCModalDrawerFoundation} from './modal/foundation';
@@ -62,18 +61,23 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     }
   }
 
-  private previousFocus_?: Element | null;
-  private scrim_!: HTMLElement | null; // assigned in initialSyncWithDOM()
-  private list_?: MDCList; // assigned in initialize()
+  private previousFocus_?: Element|null;
+  private scrim_!: HTMLElement|null;  // assigned in initialSyncWithDOM()
+  private list_?: MDCList;            // assigned in initialize()
 
-  private focusTrap_?: FocusTrap; // assigned in initialSyncWithDOM()
-  private focusTrapFactory_!: MDCDrawerFocusTrapFactory; // assigned in initialize()
+  private focusTrap_?: FocusTrap;  // assigned in initialSyncWithDOM()
+  private focusTrapFactory_!:
+      MDCDrawerFocusTrapFactory;  // assigned in initialize()
 
-  private handleScrimClick_?: SpecificEventListener<'click'>; // initialized in initialSyncWithDOM()
-  private handleKeydown_!: SpecificEventListener<'keydown'>; // initialized in initialSyncWithDOM()
-  private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // initialized in initialSyncWithDOM()
+  private handleScrimClick_?:
+      SpecificEventListener<'click'>;  // initialized in initialSyncWithDOM()
+  private handleKeydown_!:
+      SpecificEventListener<'keydown'>;  // initialized in initialSyncWithDOM()
+  private handleTransitionEnd_!:
+      SpecificEventListener<'transitionend'>;  // initialized in
+                                               // initialSyncWithDOM()
 
-  get list(): MDCList | undefined {
+  get list(): MDCList|undefined {
     return this.list_;
   }
 
@@ -81,8 +85,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       focusTrapFactory: MDCDrawerFocusTrapFactory = (el) => new FocusTrap(el),
       listFactory: MDCListFactory = (el) => new MDCList(el),
   ) {
-    const listEl =
-        this.root.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`);
+    const listEl = this.root.querySelector(strings.LIST_SELECTOR);
     if (listEl) {
       this.list_ = listFactory(listEl);
       this.list_.wrapFocus = true;
@@ -131,8 +134,9 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   }
 
   getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // DO NOT INLINE this variable. For backward compatibility, foundations take
+    // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+    // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCDrawerAdapter = {
       addClass: (className) => this.root.classList.add(className),
@@ -150,7 +154,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       },
       focusActiveNavigationItem: () => {
         const activeNavItemEl = this.root.querySelector<HTMLElement>(
-            `.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+            strings.LIST_ITEM_ACTIVATED_SELECTOR);
         if (activeNavItemEl) {
           activeNavItemEl.focus();
         }
@@ -171,7 +175,8 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       return new MDCModalDrawerFoundation(adapter);
     } else {
       throw new Error(
-          `MDCDrawer: Failed to instantiate component. Supported variants are ${DISMISSIBLE} and ${MODAL}.`);
+          `MDCDrawer: Failed to instantiate component. Supported variants are ${
+              DISMISSIBLE} and ${MODAL}.`);
     }
   }
 }

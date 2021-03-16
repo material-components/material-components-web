@@ -34,25 +34,25 @@ function getFixture(open = false) {
   wrapper.innerHTML = `
     <div class="mdc-menu mdc-menu-surface ${
       open ? 'mdc-menu-surface--open' : ''}">
-      <ul class="mdc-list" role="menu" tabIndex="-1">
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
-          <span class="mdc-list-item__ripple"></span>
-          <span class="mdc-list-item__text">Item</span>
+      <ul class="mdc-deprecated-list" role="menu" tabIndex="-1">
+        <li tabIndex="-1" class="mdc-deprecated-list-item" role="menuitem">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <span class="mdc-deprecated-list-item__text">Item</span>
         </li>
         <li role="separator"></li>
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
-          <span class="mdc-list-item__ripple"></span>
-          <span class="mdc-list-item__text">Another Item</span>
+        <li tabIndex="-1" class="mdc-deprecated-list-item" role="menuitem">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <span class="mdc-deprecated-list-item__text">Another Item</span>
         </li>
         <li>
           <ul class="mdc-menu__selection-group" role="menu">
-            <li tabIndex="-1" class="mdc-list-item" role="menuitem">
-              <span class="mdc-list-item__ripple"></span>
-              <span class="mdc-list-item__text">Item</span>
+            <li tabIndex="-1" class="mdc-deprecated-list-item" role="menuitem">
+              <span class="mdc-deprecated-list-item__ripple"></span>
+              <span class="mdc-deprecated-list-item__text">Item</span>
             </li>
-            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">
-              <span class="mdc-list-item__ripple"></span>
-              <span class="mdc-list-item__text">Another Item</span>
+            <li tabIndex="-1" class="mdc-deprecated-list-item mdc-menu-item--selected" role="menuitem">
+              <span class="mdc-deprecated-list-item__ripple"></span>
+              <span class="mdc-deprecated-list-item__text">Another Item</span>
             </li>
           </ul>
         </li>
@@ -69,38 +69,38 @@ function getFixtureWithMultipleSelectionGroups(open = false) {
   wrapper.innerHTML = `
     <div class="mdc-menu mdc-menu-surface ${
       open ? 'mdc-menu-surface--open' : ''}">
-      <ul class="mdc-list" role="menu" tabIndex="-1">
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
-          <span class="mdc-list-item__ripple"></span>
-          <span class="mdc-list-item__text">Item</span>
+      <ul class="mdc-deprecated-list" role="menu" tabIndex="-1">
+        <li tabIndex="-1" class="mdc-deprecated-list-item" role="menuitem">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <span class="mdc-deprecated-list-item__text">Item</span>
         </li>
-        <li class="mdc-list-divider" role="separator"></li>
-        <li tabIndex="-1" class="mdc-list-item" role="menuitem">
-          <span class="mdc-list-item__ripple"></span>
-          <span class="mdc-list-item__text">Another Item</span>
+        <li class="mdc-deprecated-list-divider" role="separator"></li>
+        <li tabIndex="-1" class="mdc-deprecated-list-item" role="menuitem">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <span class="mdc-deprecated-list-item__text">Another Item</span>
         </li>
         <li>
           <ul class="mdc-menu__selection-group" role="menu">
-            <li tabIndex="-1" class="mdc-list-item" role="menuitem">
-              <span class="mdc-list-item__ripple"></span>
-              <span class="mdc-list-item__text">Item</span>
+            <li tabIndex="-1" class="mdc-deprecated-list-item" role="menuitem">
+              <span class="mdc-deprecated-list-item__ripple"></span>
+              <span class="mdc-deprecated-list-item__text">Item</span>
             </li>
-            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">
-              <span class="mdc-list-item__ripple"></span>
-              <span class="mdc-list-item__text">Another Item</span>
+            <li tabIndex="-1" class="mdc-deprecated-list-item mdc-menu-item--selected" role="menuitem">
+              <span class="mdc-deprecated-list-item__ripple"></span>
+              <span class="mdc-deprecated-list-item__text">Another Item</span>
             </li>
           </ul>
         </li>
-        <li class="mdc-list-divider" role="separator"></li>
+        <li class="mdc-deprecated-list-divider" role="separator"></li>
         <li>
           <ul class="mdc-menu__selection-group" role="menu">
-            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">
-              <span class="mdc-list-item__ripple"></span>
-              <span class="mdc-list-item__text">Item2</span>
+            <li tabIndex="-1" class="mdc-deprecated-list-item mdc-menu-item--selected" role="menuitem">
+              <span class="mdc-deprecated-list-item__ripple"></span>
+              <span class="mdc-deprecated-list-item__text">Item2</span>
             </li>
-            <li tabIndex="-1" class="mdc-list-item" role="menuitem">
-              <span class="mdc-list-item__ripple"></span>
-              <span class="mdc-list-item__text">Another Item2</span>
+            <li tabIndex="-1" class="mdc-deprecated-list-item" role="menuitem">
+              <span class="mdc-deprecated-list-item__ripple"></span>
+              <span class="mdc-deprecated-list-item__text">Another Item2</span>
             </li>
           </ul>
         </li>
@@ -123,7 +123,8 @@ class FakeList {
   getPrimaryText: jasmine.Spy = jasmine.createSpy('.getPrimaryText');
 
   constructor(root: HTMLElement) {
-    this.listElements = [].slice.call(root.querySelectorAll('.mdc-list-item'))
+    this.listElements =
+        [].slice.call(root.querySelectorAll('.mdc-deprecated-list-item'))
   }
 }
 
@@ -149,7 +150,8 @@ function setupTestWithFakes(open = false) {
   const menuSurface = new FakeMenuSurface();
   const mockFoundation = createMockFoundation(MDCMenuFoundation);
 
-  const list = new FakeList(root.querySelector('.mdc-list') as HTMLElement);
+  const list =
+      new FakeList(root.querySelector('.mdc-deprecated-list') as HTMLElement);
   const component =
       new MDCMenu(root, mockFoundation, () => menuSurface, () => list);
   return {root, component, menuSurface, list, mockFoundation};
@@ -184,7 +186,7 @@ describe('MDCMenu', () => {
 
   it('destroy does not throw an error if the list is not instantiated', () => {
     const fixture = getFixture();
-    const list = fixture.querySelector('.mdc-list') as HTMLElement;
+    const list = fixture.querySelector('.mdc-deprecated-list') as HTMLElement;
     (list.parentElement as HTMLElement).removeChild(list);
     const component = new MDCMenu(fixture);
 
@@ -389,8 +391,9 @@ describe('MDCMenu', () => {
     event.initEvent(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, false, true);
     root.dispatchEvent(event);
 
+    // TODO(b/182902089): use list constants once this code has been migrated.
     expect((document.activeElement as HTMLElement)
-               .classList.contains(MDCListFoundation.cssClasses.ROOT))
+               .classList.contains('mdc-deprecated-list'))
         .toBe(true);
     document.body.removeChild(root);
   });
@@ -430,7 +433,7 @@ describe('MDCMenu', () => {
        const {component, root, list} = setupTestWithFakes();
        list.listElements = [];
        document.body.appendChild(root);
-       root.querySelector('.mdc-list-item');
+       root.querySelector('.mdc-deprecated-list-item');
        expect(() => {
          component.open = true;
        }).not.toThrow();
@@ -451,7 +454,8 @@ describe('MDCMenu', () => {
   it('adapter#addClassToElementAtIndex adds a class to the element at the index provided',
      () => {
        const {root, component} = setupTest();
-       const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
+       const firstItem =
+           root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
        (component.getDefaultFoundation() as any)
            .adapter.addClassToElementAtIndex(0, 'foo');
        expect(firstItem.classList.contains('foo')).toBe(true);
@@ -460,7 +464,8 @@ describe('MDCMenu', () => {
   it('adapter#removeClassFromElementAtIndex adds a class to the element at the index provided',
      () => {
        const {root, component} = setupTest();
-       const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
+       const firstItem =
+           root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
        firstItem.classList.add('foo');
        (component.getDefaultFoundation() as any)
            .adapter.removeClassFromElementAtIndex(0, 'foo');
@@ -470,7 +475,8 @@ describe('MDCMenu', () => {
   it('adapter#addAttributeToElementAtIndex adds a class to the element at the index provided',
      () => {
        const {root, component} = setupTest();
-       const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
+       const firstItem =
+           root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
        (component.getDefaultFoundation() as any)
            .adapter.addAttributeToElementAtIndex(0, 'foo', 'true');
        expect(firstItem.getAttribute('foo') === 'true').toBe(true);
@@ -479,7 +485,8 @@ describe('MDCMenu', () => {
   it('adapter#removeAttributeFromElementAtIndex adds a class to the element at the index provided',
      () => {
        const {root, component} = setupTest();
-       const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
+       const firstItem =
+           root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
        firstItem.setAttribute('foo', 'true');
        (component.getDefaultFoundation() as any)
            .adapter.removeAttributeFromElementAtIndex(0, 'foo');
@@ -489,7 +496,8 @@ describe('MDCMenu', () => {
   it('adapter#elementContainsClass returns true if the class exists on the element',
      () => {
        const {root, component} = setupTest();
-       const firstItem = root.querySelector('.mdc-list-item') as HTMLElement;
+       const firstItem =
+           root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
        firstItem.classList.add('foo');
        const containsFoo = (component.getDefaultFoundation() as any)
                                .adapter.elementContainsClass(firstItem, 'foo');
@@ -499,7 +507,7 @@ describe('MDCMenu', () => {
   it('adapter#elementContainsClass returns false if the class does not exist on the element',
      () => {
        const {root, component} = setupTest();
-       const firstItem = root.querySelector('.mdc-list-item');
+       const firstItem = root.querySelector('.mdc-deprecated-list-item');
        const containsFoo = (component.getDefaultFoundation() as any)
                                .adapter.elementContainsClass(firstItem, 'foo');
        expect(containsFoo).toBe(false);
@@ -516,7 +524,7 @@ describe('MDCMenu', () => {
   it('adapter#getElementIndex returns the index value of an element in the list',
      () => {
        const {root, component} = setupTest();
-       const firstItem = root.querySelector('.mdc-list-item');
+       const firstItem = root.querySelector('.mdc-deprecated-list-item');
        const indexValue = (component.getDefaultFoundation() as any)
                               .adapter.getElementIndex(firstItem);
        expect(indexValue).toEqual(0);
@@ -561,8 +569,9 @@ describe('MDCMenu', () => {
     document.body.appendChild(root);
 
     (component.getDefaultFoundation() as any).adapter.focusListRoot();
+    // TODO(b/182902089): use list constants once this code has been migrated.
     expect(document.activeElement)
-        .toEqual(root.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
+        .toEqual(root.querySelector('.mdc-deprecated-list'));
 
     document.body.removeChild(root);
   });

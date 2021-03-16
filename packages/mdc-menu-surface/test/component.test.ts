@@ -34,10 +34,10 @@ function getFixture(open = false, fixedPosition = false) {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
     <div class="mdc-menu-surface ${openClass} ${fixedClass}" tabindex="-1">
-      <ul class="mdc-list" role="menu">
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item</a>
+      <ul class="mdc-deprecated-list" role="menu">
+        <li class="mdc-deprecated-list-item" role="menuitem" tabindex="0">Item</a>
         <li role="separator"></li>
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Another Item</a>
+        <li class="mdc-deprecated-list-item" role="menuitem" tabindex="0">Another Item</a>
       </nav>
     </div>
   `;
