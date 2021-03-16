@@ -158,8 +158,8 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__track--active_fill {
     @include feature-targeting.targets($feat-structure) {
-      // Use border rather than background-color to fill thumb, for HCM.
-      border: $_track-active-height solid;
+      // Use border rather than background-color to fill track, for HCM.
+      border-top: $_track-active-height solid;
       box-sizing: border-box;
       height: 100%;
       width: 100%;
