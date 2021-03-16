@@ -171,7 +171,7 @@ class JsBundleFactory {
         banner: getAbsolutePath('/packages/mdc-banner/index.ts'),
         base: getAbsolutePath('/packages/mdc-base/index.ts'),
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.ts'),
-        chips: getAbsolutePath('/packages/mdc-chips/index.ts'),
+        chips: getAbsolutePath('/packages/mdc-chips/deprecated/index.ts'),
         circularProgress: getAbsolutePath('packages/mdc-circular-progress/index.ts'),
         dataTable: getAbsolutePath('/packages/mdc-data-table/index.ts'),
         dialog: getAbsolutePath('/packages/mdc-dialog/index.ts'),
