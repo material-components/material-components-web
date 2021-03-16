@@ -380,6 +380,26 @@ describe('MDCSliderFoundation', () => {
           .toHaveBeenCalledWith('transform', `scaleX(${0.6})`);
     });
 
+    it('quantizes value based on step and min', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        min: -25,
+        max: 75,
+        value: 5,
+        isDiscrete: true,
+        step: 10,
+      });
+
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 10,
+      }));
+      expect(foundation.getValue()).toBe(-15);  // -25 + 10
+      jasmine.clock().tick(1);                  // Tick for RAF.
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith('transform', `translateX(${10}px)`, Thumb.END);
+      expect(mockAdapter.setTrackActiveStyleProperty)
+          .toHaveBeenCalledWith('transform', `scaleX(${0.1})`);
+    });
+
     it('down event does not update value if value is inside the range', () => {
       const {foundation, mockAdapter} = setUpAndInit({
         valueStart: 10,

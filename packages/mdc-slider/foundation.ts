@@ -739,8 +739,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
   /** Calculates the quantized value based on step value. */
   private quantize(value: number): number {
-    const numSteps = Math.round(value / this.step);
-    return numSteps * this.step;
+    const numSteps = Math.round((value - this.min) / this.step);
+    return this.min + numSteps * this.step;
   }
 
   /**
