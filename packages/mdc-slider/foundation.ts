@@ -62,6 +62,10 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
   private isDiscrete = false;
   private step = numbers.STEP_SIZE;
+  // Number of digits after the decimal point to round to, when computing
+  // values. This is based on the step size by default and is used to
+  // avoid floating point precision errors in JS.
+  private numDecimalPlaces!: number;  // Assigned in init()
   private hasTickMarks = false;
 
   // The following properties are only set for range sliders.
@@ -209,6 +213,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
           `MDCSliderFoundation: step must be a positive number. ` +
           `Current step: ${this.step}`);
     }
+    this.numDecimalPlaces = getNumDecimalPlaces(this.step);
 
     this.mousedownOrTouchstartListener =
         this.handleMousedownOrTouchstart.bind(this);
@@ -688,7 +693,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 
   /** Maps clientX to a value on the slider scale. */
-  private mapClientXOnSliderScale(clientX: number) {
+  private mapClientXOnSliderScale(clientX: number): number {
     const xPos = clientX - this.rect.left;
     let pctComplete = xPos / this.rect.width;
     if (this.adapter.isRTL()) {
@@ -701,7 +706,13 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     if (value === this.max || value === this.min) {
       return value;
     }
-    return this.quantize(value);
+    return Number(this.quantize(value).toFixed(this.numDecimalPlaces));
+  }
+
+  /** Calculates the quantized value based on step value. */
+  private quantize(value: number): number {
+    const numSteps = Math.round((value - this.min) / this.step);
+    return this.min + numSteps * this.step;
   }
 
   /**
@@ -735,12 +746,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       this.adapter.emitChangeEvent(
           thumb === Thumb.START ? this.valueStart : this.value, thumb);
     }
-  }
-
-  /** Calculates the quantized value based on step value. */
-  private quantize(value: number): number {
-    const numSteps = Math.round((value - this.min) / this.step);
-    return this.min + numSteps * this.step;
   }
 
   /**
@@ -1077,4 +1082,28 @@ function isIOS() {
   ].includes(navigator.platform)
       // iPad on iOS 13 detection
       || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+}
+
+/**
+ * Given a number, returns the number of digits that appear after the
+ * decimal point.
+ * See
+ * https://stackoverflow.com/questions/9539513/is-there-a-reliable-way-in-javascript-to-obtain-the-number-of-decimal-places-of
+ */
+function getNumDecimalPlaces(n: number): number {
+  // Pull out the fraction and the exponent.
+  const match = /(?:\.(\d+))?(?:[eE]([+\-]?\d+))?$/.exec(String(n));
+  // NaN or Infinity or integer.
+  // We arbitrarily decide that Infinity is integral.
+  if (!match) return 0;
+
+  const fraction = match[1] || '';  // E.g. 1.234e-2 => 234
+  const exponent = match[2] || 0;   // E.g. 1.234e-2 => -2
+  // Count the number of digits in the fraction and subtract the
+  // exponent to simulate moving the decimal point left by exponent places.
+  // 1.234e+2 has 1 fraction digit and '234'.length -  2 == 1
+  // 1.234e-2 has 5 fraction digit and '234'.length - -2 == 5
+  return Math.max(
+      0,  // lower limit
+      (fraction === '0' ? 0 : fraction.length) - Number(exponent));
 }

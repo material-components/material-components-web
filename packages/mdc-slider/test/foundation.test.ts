@@ -400,6 +400,35 @@ describe('MDCSliderFoundation', () => {
           .toHaveBeenCalledWith('transform', `scaleX(${0.1})`);
     });
 
+    it('rounds values based on step decimal places', () => {
+      const {foundation} = setUpAndInit({
+        min: 0,
+        max: 1,
+        value: 0,
+        isDiscrete: true,
+        step: 0.1,
+      });
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 30,
+      }));
+      expect(foundation.getValue()).toBe(0.3);
+    });
+
+    it('rounds values (using scientific notation) based on step decimal places',
+       () => {
+         const {foundation} = setUpAndInit({
+           min: 0,
+           max: 1e-8,
+           value: 0,
+           isDiscrete: true,
+           step: 1e-9,
+         });
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 30,
+         }));
+         expect(foundation.getValue()).toBe(3e-9);
+       });
+
     it('down event does not update value if value is inside the range', () => {
       const {foundation, mockAdapter} = setUpAndInit({
         valueStart: 10,
