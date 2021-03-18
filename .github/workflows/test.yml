@@ -74,24 +74,6 @@ jobs:
           npm run dist
           node scripts/cp-pkgs.js
           node scripts/verify-pkg-main.js
-  site-generator-test:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          # Node v8 is required.
-          node-version: 8
-      - uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            packages/*/node_modules
-            !packages/*/node_modules/@material
-          key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
-      - run: npm run link
-      - run: npm run test:site
   unit-test:
     runs-on: ubuntu-latest
     needs: install

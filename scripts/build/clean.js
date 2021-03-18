@@ -7,7 +7,6 @@ const del = require('del');
 const fs = require('fs');
 
 const {sync: globSync} = require('glob');
-const SITE_GENERATOR = 'site-generator-tmp';
 
 function main() {
   removeDirectory('build');
@@ -34,9 +33,4 @@ function removeFilesOfType(type) {
   });
 }
 
-if (process.argv.includes(`--${SITE_GENERATOR}`)) {
-  removeDirectory(`.${SITE_GENERATOR}`);
-} else {
-  main();
-}
-
+main();
