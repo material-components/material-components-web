@@ -1253,7 +1253,7 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(77, Thumb.END);
     });
 
-    it('fires `change` event on input change', () => {
+    it('fires `change` and `input` events on input change', () => {
       const {foundation, mockAdapter} = setUpAndInit({
         valueStart: 20,
         value: 50,
@@ -1264,10 +1264,12 @@ describe('MDCSliderFoundation', () => {
       mockAdapter.getInputValue.withArgs(Thumb.START).and.returnValue(5);
       foundation.handleInputChange(Thumb.START);
       expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(5, Thumb.START);
+      expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(5, Thumb.START);
 
       mockAdapter.getInputValue.withArgs(Thumb.END).and.returnValue(60);
       foundation.handleInputChange(Thumb.END);
       expect(mockAdapter.emitChangeEvent).toHaveBeenCalledWith(60, Thumb.END);
+      expect(mockAdapter.emitInputEvent).toHaveBeenCalledWith(60, Thumb.END);
     });
 
     it('fires `dragStart`/`dragEnd` events across drag interaction', () => {

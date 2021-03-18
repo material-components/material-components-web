@@ -506,6 +506,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
     this.adapter.emitChangeEvent(
         thumb === Thumb.START ? this.valueStart : this.value, thumb);
+    this.adapter.emitInputEvent(
+        thumb === Thumb.START ? this.valueStart : this.value, thumb);
   }
 
   /** Shows value indicator on thumb(s). */
@@ -720,8 +722,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    */
   private updateValue(value: number, thumb: Thumb, {
     emitInputEvent,
-    emitChangeEvent
-  }: {emitInputEvent?: boolean, emitChangeEvent?: boolean} = {}) {
+  }: {emitInputEvent?: boolean} = {}) {
     value = this.clampValue(value, thumb);
 
     if (this.isRange && thumb === Thumb.START) {
@@ -740,10 +741,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
     if (emitInputEvent) {
       this.adapter.emitInputEvent(
-          thumb === Thumb.START ? this.valueStart : this.value, thumb);
-    }
-    if (emitChangeEvent) {
-      this.adapter.emitChangeEvent(
           thumb === Thumb.START ? this.valueStart : this.value, thumb);
     }
   }
