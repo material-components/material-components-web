@@ -121,6 +121,7 @@ export class MDCCircularProgressFoundation extends
   open() {
     this.closed = false;
     this.adapter.removeClass(cssClasses.CLOSED_CLASS);
+    this.adapter.removeAttribute(strings.ARIA_HIDDEN);
   }
 
   /**
@@ -129,6 +130,7 @@ export class MDCCircularProgressFoundation extends
   close() {
     this.closed = true;
     this.adapter.addClass(cssClasses.CLOSED_CLASS);
+    this.adapter.setAttribute(strings.ARIA_HIDDEN, 'true');
   }
 
   /**

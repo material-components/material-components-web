@@ -30,6 +30,7 @@ export const cssClasses = {
 };
 
 export const strings = {
+  ARIA_HIDDEN: 'aria-hidden',
   ARIA_VALUEMAX: 'aria-valuemax',
   ARIA_VALUEMIN: 'aria-valuemin',
   ARIA_VALUENOW: 'aria-valuenow',

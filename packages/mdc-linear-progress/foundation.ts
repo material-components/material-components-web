@@ -145,10 +145,12 @@ export class MDCLinearProgressFoundation extends
   open() {
     this.adapter.removeClass(cssClasses.CLOSED_CLASS);
     this.adapter.removeClass(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
+    this.adapter.removeAttribute(strings.ARIA_HIDDEN);
   }
 
   close() {
     this.adapter.addClass(cssClasses.CLOSED_CLASS);
+    this.adapter.setAttribute(strings.ARIA_HIDDEN, 'true');
   }
 
   isClosed() {

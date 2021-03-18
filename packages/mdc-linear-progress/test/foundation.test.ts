@@ -299,7 +299,7 @@ describe('MDCLinearProgressFoundation', () => {
     expect(mockAdapter.setBufferBarStyle).not.toHaveBeenCalled();
   });
 
-  it('#open removes class', () => {
+  it('#open removes class and aria-hidden', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.init();
     foundation.open();
@@ -307,13 +307,17 @@ describe('MDCLinearProgressFoundation', () => {
         .toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.CLOSED_ANIMATION_OFF_CLASS);
+    expect(mockAdapter.removeAttribute)
+        .toHaveBeenCalledWith(strings.ARIA_HIDDEN);
   });
 
-  it('#close adds class', () => {
+  it('#close adds class and aria-hidden', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.init();
     foundation.close();
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.CLOSED_CLASS);
+    expect(mockAdapter.setAttribute)
+        .toHaveBeenCalledWith(strings.ARIA_HIDDEN, 'true');
     mockAdapter.hasClass.withArgs(cssClasses.CLOSED_CLASS)
         .and.returnValue(true);
     foundation.handleTransitionEnd();
