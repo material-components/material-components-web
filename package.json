@@ -9,7 +9,6 @@
     "build:esmodules": "tsc --project ./tsconfig.json --module esnext --outDir ./packages --importHelpers",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --mode=production --progress --colors --display=minimal",
     "clean": "node ./scripts/build/clean",
-    "clean:site": "node ./scripts/build/clean --site-generator-tmp",
     "dist": "npm run build && npm run build:min && npm run build:esmodules",
     "docgen": "npm run clean && npm run build:esmodules && tsc ./scripts/documentation/tsdoc.ts --resolveJsonModule && node ./scripts/documentation/tsdoc.js",
     "fix:js": "eslint --fix scripts webpack.config.js karma.conf.js",
@@ -25,7 +24,6 @@
     "test": "npm run test:unit && npm run test:dependency && npm run build && npm run clean",
     "test:sass": "jasmine --config=jasmine-node.json",
     "test:dependency": "./scripts/dependency-test.sh",
-    "test:site": "npm run clean:site && ./scripts/site-generator-test.sh",
     "test:unit": "karma start --single-run",
     "test:watch": "karma start --auto-watch",
     "version": "cat lerna.json | grep -e '^  \"version\": ' | awk '{print $2}' | sed 's/[\",]//g'"
