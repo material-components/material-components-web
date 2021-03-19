@@ -1,0 +1,942 @@
+//
+// Copyright 2020 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// Internal styling for Chip MDC component.
+
+@use 'sass:color';
+@use '@material/density/density';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/shape/shape';
+@use '@material/ripple/ripple-theme';
+@use '@material/rtl/rtl';
+@use '@material/theme/theme';
+@use '@material/theme/state';
+@use '@material/theme/theme-color';
+@use '@material/typography/typography';
+
+$height: 32px;
+$minimum-height: 24px;
+$maximum-height: $height;
+$density-scale: density.$default-scale;
+$density-config: (
+  height: (
+    default: $height,
+    maximum: $maximum-height,
+    minimum: $minimum-height,
+  ),
+);
+$radius: $height / 2;
+$type-scale: body2;
+$container-color: color.mix(
+  theme-color.prop-value(on-surface),
+  theme-color.prop-value(surface),
+  12%
+);
+$text-label-color: rgba(theme-color.prop-value(on-surface), 0.87);
+$icon-color: rgba(theme-color.prop-value(on-surface), 0.87);
+$checkmark-color: rgba(theme-color.prop-value(on-surface), 0.87);
+$trailing-action-color: rgba(theme-color.prop-value(on-surface), 0.87);
+$ripple-color: on-surface;
+$checkmark-size: 20px;
+$leading-icon-size: 20px;
+$trailing-action-size: 18px;
+$leading-padding: 12px;
+$trailing-padding: 12px;
+$avatar-size: 24px;
+$avatar-leading-padding: 4px;
+$avatar-trailing-padding: 8px;
+$graphic-leading-padding: 6px;
+$graphic-trailing-padding: 6px;
+$trailing-action-leading-padding: 8px;
+$trailing-action-trailing-padding: 8px;
+$ripple-target: '.mdc-evolution-chip__ripple';
+$ripple-target-primary: '.mdc-evolution-chip__ripple--primary';
+$ripple-target-trailing: '.mdc-evolution-chip__ripple--trailing';
+
+// Filter chip colors
+$filter-selected-container-color: color.mix(
+  theme-color.prop-value(on-surface),
+  $container-color,
+  8%
+);
+
+///
+/// Sets the ripple color of the chip.
+/// @param {Color} $color - The color of the ripple.
+/// @param {Map} $opacity-map [null] - The optional opacity map for the states.
+///
+@mixin ripple-color(
+  $color,
+  $opacity-map: null,
+  $query: feature-targeting.all()
+) {
+  @include _ripple-color($color, $opacity-map, $query);
+}
+
+///
+/// Sets the selected ripple color of the chip.
+/// @param {Color} $color - The color of the ripple.
+/// @param {Map} $opacity-map [null] - The optional opacity map for the states.
+///
+@mixin selected-ripple-color(
+  $color,
+  $opacity-map: null,
+  $query: feature-targeting.all()
+) {
+  &.mdc-evolution-chip--selected {
+    @include ripple-color($color, $opacity-map, $query: $query);
+  }
+}
+
+@mixin _ripple-color($color, $opacity-map, $query) {
+  .mdc-evolution-chip__action--primary {
+    @include ripple-theme.states(
+      $color: $color,
+      $opacity-map: $opacity-map,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+  }
+}
+
+///
+/// Sets the ripple color of the chip's trailing action.
+/// @param {Color} $color - The color of the ripple.
+/// @param {Map} $opacity-map [null] - The optional opacity map for the states.
+///
+@mixin trailing-action-ripple-color(
+  $color,
+  $opacity-map: null,
+  $query: feature-targeting.all()
+) {
+  .mdc-evolution-chip__action--trailing {
+    @include ripple-theme.states(
+      $color: $color,
+      $opacity-map: $opacity-map,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+  }
+}
+
+///
+/// Sets the size of the trailing action's ripple.
+/// @param {Number} $size - The size of the ripple.
+///
+@mixin trailing-action-ripple-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  .mdc-evolution-chip__ripple--trailing {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $size);
+      @include theme.property(width, $size);
+    }
+  }
+}
+
+///
+/// Sets the density scale for the chip.
+/// @param {Number | String} $density-scale - Density scale value for component.
+///     Supported density scale values are `-2`, `-1`, `0`.
+///
+@mixin density($density-scale, $query: feature-targeting.all()) {
+  $height: density.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include height($height, $query: $query);
+
+  @if $density-scale != 0 {
+    @include _reset-touch-target($query: $query);
+  }
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin _reset-touch-target($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  // Selector is necessary here to override original specificity.
+  &.mdc-evolution-chip--touch {
+    @include feature-targeting.targets($feat-structure) {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .mdc-evolution-chip__action-touch {
+    @include feature-targeting.targets($feat-structure) {
+      display: none;
+    }
+  }
+}
+
+///
+/// Sets custom height for the chip.
+/// @param {Number} $height - The height of the chip.
+///
+@mixin height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    @include theme.property(height, $height);
+  }
+}
+
+///
+/// Sets the shape radius of the chip.
+/// @param {Number|List} $radius - Shape radius in `border-radius` CSS format.
+/// @param {Boolean} $rtl-reflexive - True flips radius corners in RTL.
+///
+@mixin shape-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: $density-scale,
+  $query: feature-targeting.all()
+) {
+  $height: density.prop-value(
+    $density-config: $density-config,
+    $density-scale: $density-scale,
+    $property-name: height,
+  );
+
+  @include shape.radius(
+    $radius,
+    $rtl-reflexive,
+    $component-height: $height,
+    $query: $query
+  );
+
+  #{$ripple-target} {
+    @include shape.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height: $height,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-chip__action--primary:before,
+  .mdc-evolution-chip__action--primary:after {
+    @include shape.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height: $height,
+      $query: $query
+    );
+  }
+
+  .mdc-evolution-chip__icon--primary {
+    @include shape.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height: $height,
+      $query: $query
+    );
+  }
+}
+
+///
+/// Sets the width of the chip outline.
+/// @param {Number} $width - The width of the chip outline.
+///
+@mixin outline-width($width, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-evolution-chip__action--primary:before {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-width, $width);
+    }
+  }
+}
+
+///
+/// Customizes the outline color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `focus`, `disabled`.
+///
+/// @example
+///   @include outline-color(blue);
+///   @include outline-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The outline's color or a state Map
+///
+@mixin outline-color($color-or-map, $query: feature-targeting.all()) {
+  @include _outline-color(state.get-default-state($color-or-map), $query);
+  @include _focus-outline-color(state.get-focus-state($color-or-map), $query);
+  &.mdc-evolution-chip--disabled {
+    @include _outline-color(state.get-disabled-state($color-or-map), $query);
+  }
+}
+
+///
+/// Customizes the selected outline color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `focus`, `disabled`.
+///
+/// @example
+///   @include selected-outline-color(blue);
+///   @include selected-outline-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The outline's color or a state Map
+///
+@mixin selected-outline-color($color-or-map, $query: feature-targeting.all()) {
+  &.mdc-evolution-chip--selected {
+    @include outline-color($color-or-map, $query: $query);
+  }
+}
+
+@mixin _outline-color($color, $query) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-chip__action--primary:before {
+    @include feature-targeting.targets($feat-color) {
+      @if $color {
+        @include theme.property(border-color, $color);
+      }
+    }
+  }
+}
+
+@mixin _focus-outline-color($color, $query) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-chip__action--primary {
+    @include ripple-theme.focus() {
+      &:before {
+        @include feature-targeting.targets($feat-color) {
+          @if $color {
+            @include theme.property(border-color, $color);
+          }
+        }
+      }
+    }
+  }
+}
+
+///
+/// Sets the style of the chip outline.
+/// @param {String} $style - The style of the chip outline.
+///
+@mixin outline-style($style, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-evolution-chip__action--primary:before {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-style, $style);
+    }
+  }
+}
+
+///
+/// Customizes the container color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `disabled`.
+///
+/// @example
+///   @include container-color(blue);
+///   @include container-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The container's color or a state Map
+///
+@mixin container-color($color-or-map, $query: feature-targeting.all()) {
+  @include _container-color(state.get-default-state($color-or-map), $query);
+  &.mdc-evolution-chip--disabled {
+    @include _container-color(state.get-disabled-state($color-or-map), $query);
+  }
+}
+
+///
+/// Customizes the selected container color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `disabled`.
+///
+/// @example
+///   @include selected-container-color(blue);
+///   @include selected-container-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The container's color or a state Map
+///
+@mixin selected-container-color(
+  $color-or-map,
+  $query: feature-targeting.all()
+) {
+  &.mdc-evolution-chip--selected {
+    @include container-color($color-or-map, $query: $query);
+  }
+}
+
+@mixin _container-color($color, $query) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @if $color {
+      @include theme.property(background-color, $color);
+    }
+  }
+}
+
+///
+/// Customizes the text label color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `hover`, `focus`, `disabled`.
+///
+/// @example
+///   @include text-label-color(blue);
+///   @include text-label-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The label's color or a state Map
+///
+@mixin text-label-color($color-or-map, $query: feature-targeting.all()) {
+  @include _text-label-color(state.get-default-state($color-or-map), $query);
+  .mdc-evolution-chip__action--primary:hover {
+    @include _text-label-color(state.get-hover-state($color-or-map), $query);
+  }
+
+  .mdc-evolution-chip__action--primary {
+    @include ripple-theme.focus() {
+      @include _text-label-color(state.get-focus-state($color-or-map), $query);
+    }
+  }
+
+  &.mdc-evolution-chip--disabled {
+    @include _text-label-color(state.get-disabled-state($color-or-map), $query);
+  }
+}
+
+///
+/// Customizes the selected text label color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `hover`, `focus`, `disabled`.
+///
+/// @example
+///   @include selected-text-label-color(blue);
+///   @include selected-text-label-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The label's color or a state Map
+///
+@mixin selected-text-label-color(
+  $color-or-map,
+  $query: feature-targeting.all()
+) {
+  &.mdc-evolution-chip--selected {
+    @include text-label-color($color-or-map, $query: $query);
+  }
+}
+
+@mixin _text-label-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-chip__text-label {
+    @include feature-targeting.targets($feat-color) {
+      @if $color {
+        @include theme.property(color, $color);
+      }
+    }
+  }
+}
+
+///
+/// Sets the type scale of the text label.
+/// @param {String} $type-scale - The type scale of the text label.
+///
+@mixin text-label-type-scale($type-scale, $query: feature-targeting.all()) {
+  .mdc-evolution-chip__text-label {
+    @include typography.typography($type-scale, $query: $query);
+  }
+}
+
+///
+/// Sets the size of the graphic.
+/// @param {Number} $size - The size of the graphic.
+///
+@mixin graphic-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  // Expose the width as a readable custom property that can be used when
+  // computing the chip bounding client rect as an additive value for the chip
+  // width. This solves for selectable chips without icons growing/shrinking as
+  // they toggle their selected state. The ripple dimensions will have been
+  // computed based on the unselected bounding client react which will not have
+  // enough horizontal space to account for the growth in width.
+  &.mdc-evolution-chip--selectable:not(.mdc-evolution-chip--with-primary-icon) {
+    --mdc-chip-graphic-selected-width: #{$size};
+  }
+
+  .mdc-evolution-chip__graphic {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $size);
+      @include theme.property(width, $size);
+      @include theme.property(font-size, $size);
+    }
+  }
+}
+
+///
+/// Customizes the icon color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `focus`, `disabled`.
+///
+/// @example
+///   @include icon-color(blue);
+///   @include icon-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The icon's color or a state Map
+///
+@mixin icon-color($color-or-map, $query: feature-targeting.all()) {
+  @include _icon-color(state.get-default-state($color-or-map), $query);
+
+  .mdc-evolution-chip__action--primary:hover {
+    @include _icon-color(state.get-hover-state($color-or-map), $query);
+  }
+
+  .mdc-evolution-chip__action--primary {
+    @include ripple-theme.focus() {
+      @include _icon-color(state.get-focus-state($color-or-map), $query);
+    }
+  }
+
+  &.mdc-evolution-chip--disabled {
+    @include _icon-color(state.get-disabled-state($color-or-map), $query);
+  }
+}
+
+@mixin _icon-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-chip__icon--primary {
+    @include feature-targeting.targets($feat-color) {
+      @if $color {
+        @include theme.property(color, $color);
+      }
+    }
+  }
+}
+
+///
+/// Customizes the icon container color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `hover`, `focus`, `disabled`.
+///
+/// @example
+///   @include icon-container-color(blue);
+///   @include icon-container-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The icon's container color or a state Map
+///
+@mixin icon-container-color($color-or-map, $query: feature-targeting.all()) {
+  @include _icon-container-color(
+    state.get-default-state($color-or-map),
+    $query
+  );
+
+  .mdc-evolution-chip__action--primary:hover {
+    @include _icon-container-color(
+      state.get-hover-state($color-or-map),
+      $query
+    );
+  }
+
+  .mdc-evolution-chip__action--primary {
+    @include ripple-theme.focus() {
+      @include _icon-container-color(
+        state.get-focus-state($color-or-map),
+        $query
+      );
+    }
+  }
+
+  &.mdc-evolution-chip--disabled {
+    @include _icon-container-color(
+      state.get-disabled-state($color-or-map),
+      $query
+    );
+  }
+}
+
+@mixin _icon-container-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-chip__icon--primary {
+    @include feature-targeting.targets($feat-color) {
+      @if $color {
+        @include theme.property(background-color, $color);
+      }
+    }
+  }
+}
+
+///
+/// Sets the size of the icon.
+/// @param {Number} $size - The size of the icon.
+///
+@mixin icon-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-evolution-chip__icon--primary {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $size);
+      @include theme.property(width, $size);
+      @include theme.property(font-size, $size);
+    }
+  }
+}
+
+///
+/// Sets the size of the trailing action.
+/// @param {Number} $size - The size of the trailing action.
+///
+@mixin trailing-action-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-evolution-chip__icon--trailing,
+  // :after pseudo-element is used for Windows high-contrast mode focus indicator
+  .mdc-evolution-chip__action--trailing:after {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $size);
+      @include theme.property(width, $size);
+      @include theme.property(font-size, $size);
+    }
+  }
+}
+
+///
+/// Customizes the trailing action color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `hover`, `focus`, `disabled`.
+///
+/// @example
+///   @include trailing-action-color(blue);
+///   @include trailing-action-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The trailing action's color or a state Map
+///
+@mixin trailing-action-color($color-or-map, $query: feature-targeting.all()) {
+  @include _trailing-action-color(
+    state.get-default-state($color-or-map),
+    $query
+  );
+
+  .mdc-evolution-chip__action--trailing:hover {
+    @include _trailing-action-color(
+      state.get-hover-state($color-or-map),
+      $query
+    );
+  }
+
+  .mdc-evolution-chip__action--trailing {
+    @include ripple-theme.focus() {
+      @include _trailing-action-color(
+        state.get-focus-state($color-or-map),
+        $query
+      );
+    }
+  }
+
+  &.mdc-evolution-chip--disabled {
+    @include _trailing-action-color(
+      state.get-disabled-state($color-or-map),
+      $query
+    );
+  }
+}
+
+@mixin _trailing-action-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-chip__icon--trailing {
+    @include feature-targeting.targets($feat-color) {
+      @if $color {
+        @include theme.property(color, $color);
+      }
+    }
+  }
+}
+
+///
+/// Sets the size of the checkmark.
+/// @param {Number} $size - The size of the checkmark.
+///
+@mixin checkmark-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-evolution-chip__checkmark {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $size);
+      @include theme.property(width, $size);
+    }
+  }
+}
+
+///
+/// Customizes the checkmark color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `hover`, `focus`, `disabled`.
+///
+/// @example
+///   @include checkmark-color(blue);
+///   @include checkmark-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The checkmark's color or a state Map
+///
+@mixin checkmark-color($color-or-map, $query: feature-targeting.all()) {
+  @include _checkmark-color(state.get-default-state($color-or-map), $query);
+
+  .mdc-evolution-chip__action--primary:hover {
+    @include _checkmark-color(state.get-hover-state($color-or-map), $query);
+  }
+
+  .mdc-evolution-chip__action--primary {
+    @include ripple-theme.focus() {
+      @include _checkmark-color(state.get-focus-state($color-or-map), $query);
+    }
+  }
+
+  &.mdc-evolution-chip--disabled {
+    @include _checkmark-color(state.get-disabled-state($color-or-map), $query);
+  }
+}
+
+@mixin _checkmark-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-chip__checkmark {
+    @include feature-targeting.targets($feat-color) {
+      @if $color {
+        @include theme.property(color, $color);
+      }
+    }
+  }
+}
+
+///
+/// Customizes the checkmark container color, using a Color or state Map.
+/// - To set only the default color, provide a single Color.
+/// - To set one or more state colors, provide a state Map with optional keys.
+/// - Supported state Map keys: `default`, `hover`, `focus`, `disabled`.
+///
+/// @example
+///   @include checkmark-container-color(blue);
+///   @include checkmark-container-color((disabled: gray));
+///
+/// @param {Color | Map} $color-or-map - The checkmark container's color or a state Map
+///
+@mixin checkmark-container-color(
+  $color-or-map,
+  $query: feature-targeting.all()
+) {
+  @include _checkmark-container-color(
+    state.get-default-state($color-or-map),
+    $query
+  );
+
+  &.mdc-evolution-chip--disabled {
+    @include _checkmark-container-color(
+      state.get-disabled-state($color-or-map),
+      $query
+    );
+  }
+}
+
+@mixin _checkmark-container-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-evolution-chip__checkmark-background {
+    @include feature-targeting.targets($feat-color) {
+      @if $color {
+        @include theme.property(background-color, $color);
+      }
+    }
+  }
+}
+
+///
+/// Sets the horizontal padding for the chip.
+/// @param {Number} $leading - The leading padding for the chip.
+/// @param {Number} $trailing [$leading] - The trailing padding for the chip.
+///
+@mixin horizontal-padding(
+  $leading,
+  $trailing: $leading,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-evolution-chip__action--primary {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl.reflexive-property(padding, $leading, $trailing);
+    }
+  }
+}
+
+///
+/// Sets the horizontal padding for chips with a graphic.
+/// @param {Number} $graphic-leading - The leading padding for the graphic.
+/// @param {Number} $graphic-trailing - The trailing padding for the graphic.
+/// @param {Number} $primary-trailing - The trailing padding for the primary action.
+///
+@mixin with-graphic-horizontal-padding(
+  $graphic-leading,
+  $graphic-trailing,
+  $primary-trailing,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  &.mdc-evolution-chip--with-primary-graphic {
+    .mdc-evolution-chip__graphic {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-property(
+          padding,
+          $graphic-leading,
+          $graphic-trailing
+        );
+      }
+    }
+
+    .mdc-evolution-chip__action--primary {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-property(padding, 0, $primary-trailing);
+      }
+    }
+  }
+}
+
+///
+/// Sets the horizontal padding for chips with a trailing action.
+/// @param {Number} $primary-leading - The leading padding for the primary action.
+/// @param {Number} $trailing-action-leading - The leading padding for the trailing action.
+/// @param {Number} $trailing-action-trailing - The trailing padding for the trailing action.
+///
+@mixin with-trailing-action-horizontal-padding(
+  $primary-leading,
+  $trailing-action-leading,
+  $trailing-action-trailing,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  &.mdc-evolution-chip--with-trailing-action {
+    .mdc-evolution-chip__action--trailing {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-property(
+          padding,
+          $trailing-action-leading,
+          $trailing-action-trailing
+        );
+      }
+    }
+
+    #{$ripple-target-trailing} {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-position(left, $trailing-action-leading);
+      }
+    }
+
+    // :after is used for high-contrast mode focus indicator
+    .mdc-evolution-chip__action--trailing:after {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-position(left, $trailing-action-leading);
+      }
+    }
+
+    .mdc-evolution-chip__action--primary {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-property(padding, $primary-leading, 0);
+      }
+    }
+  }
+}
+
+///
+/// Sets the horizontal padding for chips with a graphic and trailing action.
+/// @param {Number} $graphic-leading - The leading padding for the graphic.
+/// @param {Number} $graphic-trailing - The trailing padding for the graphic.
+/// @param {Number} $trailing-action-leading - The leading padding for the trailing action.
+/// @param {Number} $trailing-action-trailing - The trailing padding for the trailing action.
+///
+@mixin with-graphic-and-trailing-action-horizontal-padding(
+  $graphic-leading,
+  $graphic-trailing,
+  $trailing-action-leading,
+  $trailing-action-trailing,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-evolution-chip--with-primary-graphic.mdc-evolution-chip--with-trailing-action {
+    .mdc-evolution-chip__graphic {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-property(
+          padding,
+          $graphic-leading,
+          $graphic-trailing
+        );
+      }
+    }
+
+    .mdc-evolution-chip__action--trailing {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-property(
+          padding,
+          $trailing-action-leading,
+          $trailing-action-trailing
+        );
+      }
+    }
+
+    #{$ripple-target-trailing} {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-position(left, $trailing-action-leading);
+      }
+    }
+
+    // :after is used for high-contrast mode focus indicator
+    .mdc-evolution-chip__action--trailing:after {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-position(left, $trailing-action-leading);
+      }
+    }
+
+    .mdc-evolution-chip__action--primary {
+      @include feature-targeting.targets($feat-structure) {
+        @include rtl.reflexive-property(padding, 0, 0);
+      }
+    }
+  }
+}
