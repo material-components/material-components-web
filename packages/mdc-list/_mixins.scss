@@ -57,7 +57,6 @@
     variables.$deprecated-divider-color-on-light-bg
   );
 
-  .mdc-list,
   .mdc-deprecated-list {
     @include deprecated-base_($query);
   }
@@ -90,7 +89,6 @@
     $query
   );
 
-  .mdc-list--dense,
   .mdc-deprecated-list--dense {
     @include feature-targeting.targets($feat-structure) {
       padding-top: 4px;
@@ -99,7 +97,6 @@
     }
   }
 
-  .mdc-list-item,
   .mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       @include deprecated-item-base_;
@@ -107,13 +104,11 @@
 
     // For components using aria-activedescendant, the focus pseudoclass is
     // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
-    &:not(.mdc-list-item--selected):focus::before,
     &:not(.mdc-deprecated-list-item--selected):focus::before,
     &.mdc-ripple-upgraded--background-focused::before {
       @include dom-mixins.transparent-border($query: $query);
     }
 
-    &.mdc-list-item--selected::before,
     &.mdc-deprecated-list-item--selected::before {
       @include dom-mixins.transparent-border(
         $border-width: 3px,
@@ -131,7 +126,6 @@
       $query
     );
 
-    .mdc-list--icon-list &,
     .mdc-deprecated-list--icon-list & {
       @include deprecated-list-item-padding-variant(
         variables.$deprecated-icon-variant-config,
@@ -143,7 +137,6 @@
       );
     }
 
-    .mdc-list--avatar-list &,
     .mdc-deprecated-list--avatar-list & {
       @include deprecated-list-item-padding-variant(
         variables.$deprecated-avatar-variant-config,
@@ -155,7 +148,6 @@
       );
     }
 
-    .mdc-list--thumbnail-list &,
     .mdc-deprecated-list--thumbnail-list & {
       @include deprecated-list-item-padding-variant(
         variables.$deprecated-thumbnail-variant-config,
@@ -167,7 +159,6 @@
       );
     }
 
-    .mdc-list--image-list &,
     .mdc-deprecated-list--image-list & {
       @include deprecated-list-item-padding-variant(
         variables.$deprecated-image-variant-config,
@@ -179,7 +170,6 @@
       );
     }
 
-    .mdc-list--video-list &,
     .mdc-deprecated-list--video-list & {
       @include deprecated-list-item-padding-variant(
         variables.$deprecated-video-variant-config,
@@ -195,12 +185,10 @@
   // This is included here to preserve expected specificity behavior (avatar
   // graphic styles must take priority).
   // TODO(b/157038316): regroup this with density styles when nesting is fixed.
-  .mdc-list--dense .mdc-list-item__graphic,
   .mdc-deprecated-list--dense .mdc-deprecated-list-item__graphic {
     @include deprecated-graphic-size-dense_(20px, $query);
   }
 
-  .mdc-list-item__graphic,
   .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-structure) {
       flex-shrink: 0;
@@ -216,7 +204,6 @@
       $query
     );
 
-    .mdc-list--icon-list &,
     .mdc-deprecated-list--icon-list & {
       @include deprecated-graphic-size-variant(
         variables.$deprecated-icon-variant-config,
@@ -224,7 +211,6 @@
       );
     }
 
-    .mdc-list--avatar-list &,
     .mdc-deprecated-list--avatar-list & {
       @include deprecated-graphic-size-variant(
         variables.$deprecated-avatar-variant-config,
@@ -235,7 +221,6 @@
       }
     }
 
-    .mdc-list--thumbnail-list &,
     .mdc-deprecated-list--thumbnail-list & {
       @include deprecated-graphic-size-variant(
         variables.$deprecated-thumbnail-variant-config,
@@ -243,7 +228,6 @@
       );
     }
 
-    .mdc-list--image-list &,
     .mdc-deprecated-list--image-list & {
       @include deprecated-graphic-size-variant(
         variables.$deprecated-image-variant-config,
@@ -251,7 +235,6 @@
       );
     }
 
-    .mdc-list--video-list &,
     .mdc-deprecated-list--video-list & {
       @include deprecated-graphic-size-variant(
         variables.$deprecated-video-variant-config,
@@ -263,7 +246,6 @@
   // Extra specificity is to override .material-icons display style if used in
   // conjunction with mdc-deprecated-list-item__graphic
   // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list .mdc-list-item__graphic,
   .mdc-deprecated-list .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
@@ -271,7 +253,6 @@
   }
   // stylelint-enable plugin/selector-bem-pattern
 
-  .mdc-list-item__meta,
   .mdc-deprecated-list-item__meta {
     &:not(.material-icons) {
       @include typography.typography(caption, $query);
@@ -284,25 +265,21 @@
         0,
         '.mdc-deprecated-list-item'
       );
-      @include rtl-mixins.reflexive-property(margin, auto, 0, '.mdc-list-item');
     }
   }
 
-  .mdc-list-item__text,
   .mdc-deprecated-list-item__text {
     @include typography.overflow-ellipsis($query);
   }
 
   // Disable interaction on label elements that may automatically
   // toggle corresponding checkbox / radio input.
-  .mdc-list-item__text[for],
   .mdc-deprecated-list-item__text[for] {
     @include feature-targeting.targets($feat-structure) {
       pointer-events: none;
     }
   }
 
-  .mdc-list-item__primary-text,
   .mdc-deprecated-list-item__primary-text {
     @include typography.overflow-ellipsis($query);
     @include typography.text-baseline(
@@ -312,11 +289,6 @@
       $query: $query
     );
 
-    .mdc-list--video-list &,
-    .mdc-list--image-list &,
-    .mdc-list--thumbnail-list &,
-    .mdc-list--avatar-list &,
-    .mdc-list--icon-list &,
     .mdc-deprecated-list--video-list &,
     .mdc-deprecated-list--image-list &,
     .mdc-deprecated-list--thumbnail-list &,
@@ -331,7 +303,6 @@
     }
 
     // stylelint-disable plugin/selector-bem-pattern
-    .mdc-list--dense &,
     .mdc-deprecated-list--dense & {
       @include typography.text-baseline(
         $top: variables.$deprecated-dense-item-primary-text-baseline-height,
@@ -342,7 +313,6 @@
     // stylelint-enable plugin/selector-bem-pattern
   }
 
-  .mdc-list-item__secondary-text,
   .mdc-deprecated-list-item__secondary-text {
     @include typography.typography(body2, $query);
     @include typography.overflow-ellipsis($query);
@@ -353,7 +323,6 @@
     );
 
     // stylelint-disable plugin/selector-bem-pattern
-    .mdc-list--dense &,
     .mdc-deprecated-list--dense & {
       @include feature-targeting.targets($feat-structure) {
         font-size: inherit;
@@ -363,34 +332,25 @@
   }
 
   // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list--dense .mdc-list-item,
   .mdc-deprecated-list--dense .mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       height: 40px;
     }
   }
 
-  .mdc-list--two-line .mdc-list-item__text,
   .mdc-deprecated-list--two-line .mdc-deprecated-list-item__text {
     @include feature-targeting.targets($feat-structure) {
       align-self: flex-start;
     }
   }
 
-  .mdc-list--two-line,
   .mdc-deprecated-list--two-line {
-    .mdc-list-item,
     .mdc-deprecated-list-item {
       @include feature-targeting.targets($feat-structure) {
         height: variables.$deprecated-two-line-height;
       }
     }
 
-    &.mdc-list--video-list .mdc-list-item,
-    &.mdc-list--image-list .mdc-list-item,
-    &.mdc-list--thumbnail-list .mdc-list-item,
-    &.mdc-list--avatar-list .mdc-list-item,
-    &.mdc-list--icon-list .mdc-list-item,
     &.mdc-deprecated-list--video-list .mdc-deprecated-list-item,
     &.mdc-deprecated-list--image-list .mdc-deprecated-list-item,
     &.mdc-deprecated-list--thumbnail-list .mdc-deprecated-list-item,
@@ -402,7 +362,6 @@
     }
 
     // Icons in multiline lists are the only graphic that isn't centered.
-    &.mdc-list--icon-list .mdc-list-item__graphic,
     &.mdc-deprecated-list--icon-list .mdc-deprecated-list-item__graphic {
       @include feature-targeting.targets($feat-structure) {
         align-self: flex-start;
@@ -411,8 +370,6 @@
     }
   }
 
-  .mdc-list--two-line.mdc-list--dense .mdc-list-item,
-  .mdc-list--avatar-list.mdc-list--dense .mdc-list-item,
   .mdc-deprecated-list--two-line.mdc-deprecated-list--dense
     .mdc-deprecated-list-item,
   .mdc-deprecated-list--avatar-list.mdc-deprecated-list--dense
@@ -422,14 +379,12 @@
     }
   }
 
-  .mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic,
   .mdc-deprecated-list--avatar-list.mdc-deprecated-list--dense
     .mdc-deprecated-list-item__graphic {
     @include deprecated-graphic-size-dense_(36px, $query);
   }
 
   // Only change mouse cursor for list items which are not disabled.
-  :not(.mdc-list-item--disabled).mdc-list-item,
   :not(.mdc-deprecated-list-item--disabled).mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       cursor: pointer;
@@ -438,7 +393,6 @@
 
   // Override anchor tag styles for the use-case of a list being used for navigation
   // stylelint-disable selector-max-type,selector-no-qualifying-type
-  a.mdc-list-item,
   a.mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       color: inherit;
@@ -447,7 +401,6 @@
   }
   // stylelint-enable selector-max-type,selector-no-qualifying-type
 
-  .mdc-list-divider,
   .mdc-deprecated-list-divider {
     @include feature-targeting.targets($feat-structure) {
       height: 0;
@@ -465,7 +418,6 @@
 
   // Deprecated. Use the specialized inset classes instead.
   // Items are fully inset using padding.
-  .mdc-list-divider--padded,
   .mdc-deprecated-list-divider--padded {
     @include deprecated-divider-inset-variant(
       variables.$deprecated-textual-variant-config,
@@ -477,7 +429,6 @@
   // Deprecated. Use the specialized inset classes instead.
   // Items's leading, but not trailing, edge is inset to account for *avatar*
   // width.
-  .mdc-list-divider--inset,
   .mdc-deprecated-list-divider--inset {
     @include deprecated-divider-inset-variant(
       variables.$deprecated-avatar-variant-config,
@@ -488,7 +439,6 @@
 
   // Deprecated. Use the specialized inset classes instead.
   // Item's leading and trailing edges are inset to account for *avatar* width.
-  .mdc-list-divider--inset.mdc-list-divider--padded,
   .mdc-deprecated-list-divider--inset.mdc-deprecated-list-divider--padded {
     @include deprecated-divider-inset-variant(
       variables.$deprecated-avatar-variant-config,
@@ -496,7 +446,6 @@
     );
   }
 
-  .mdc-list,
   .mdc-deprecated-list {
     @include deprecated-divider-insets-variant(
       variables.$deprecated-textual-variant-config,
@@ -504,7 +453,6 @@
     );
   }
 
-  .mdc-list--icon-list,
   .mdc-deprecated-list--icon-list {
     @include deprecated-divider-insets-variant(
       variables.$deprecated-icon-variant-config,
@@ -512,7 +460,6 @@
     );
   }
 
-  .mdc-list--avatar-list,
   .mdc-deprecated-list--avatar-list {
     @include deprecated-divider-insets-variant(
       variables.$deprecated-avatar-variant-config,
@@ -520,7 +467,6 @@
     );
   }
 
-  .mdc-list--thumbnail-list,
   .mdc-deprecated-list--thumbnail-list {
     @include deprecated-divider-insets-variant(
       variables.$deprecated-thumbnail-variant-config,
@@ -528,7 +474,6 @@
     );
   }
 
-  .mdc-list--image-list,
   .mdc-deprecated-list--image-list {
     @include deprecated-divider-insets-variant(
       variables.$deprecated-image-variant-config,
@@ -536,7 +481,6 @@
     );
   }
 
-  .mdc-list--video-list,
   .mdc-deprecated-list--video-list {
     @include deprecated-divider-insets-variant(
       variables.$deprecated-video-variant-config,
@@ -544,18 +488,15 @@
     );
   }
 
-  .mdc-list-group,
   .mdc-deprecated-list-group {
     @include feature-targeting.targets($feat-structure) {
       // Cancel top/bottom padding on individual lists within group
-      .mdc-list,
       .mdc-deprecated-list {
         padding: 0;
       }
     }
   }
 
-  .mdc-list-group__subheader,
   .mdc-deprecated-list-group__subheader {
     $list-subheader-virtual-height: 3rem;
     $list-subheader-leading: map.get(
@@ -582,13 +523,11 @@
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
   // List items should support states by default, but it should be possible to opt out.
-  :not(.mdc-list-item--disabled).mdc-list-item,
   :not(.mdc-deprecated-list-item--disabled).mdc-deprecated-list-item {
     @include deprecated-item-interactive-ripple_($query);
   }
 
   // Set styles only for focus state on disabled list item.
-  .mdc-list-item--disabled,
   .mdc-deprecated-list-item--disabled {
     @include ripple.surface(
       $ripple-target: variables.$deprecated-ripple-target,
@@ -660,8 +599,6 @@
 ) {
   // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
-  .mdc-list-item--selected,
-  .mdc-list-item--activated,
   .mdc-deprecated-list-item--selected,
   .mdc-deprecated-list-item--activated {
     @include deprecated-item-primary-text-ink-color($color, $query: $query);
@@ -686,7 +623,6 @@
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item__secondary-text,
   .mdc-deprecated-list-item__secondary-text {
     @include feature-targeting.targets($feat-color) {
       @include theme.prop(color, $color);
@@ -700,7 +636,6 @@
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item__graphic,
   .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-color) {
       @include theme.prop(background-color, $color);
@@ -714,7 +649,6 @@
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item__graphic,
   .mdc-deprecated-list-item__graphic {
     @include feature-targeting.targets($feat-color) {
       @include theme.prop(color, $color);
@@ -725,7 +659,6 @@
 @mixin deprecated-item-meta-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item__meta,
   .mdc-deprecated-list-item__meta {
     @include feature-targeting.targets($feat-color) {
       @include theme.prop(color, $color);
@@ -756,7 +689,6 @@
     $property-name: height,
   );
 
-  .mdc-list-item,
   .mdc-deprecated-list-item {
     @include shape-mixins.radius(
       $radius,
@@ -770,7 +702,6 @@
 @mixin deprecated-divider-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-divider,
   .mdc-deprecated-list-divider {
     @include feature-targeting.targets($feat-color) {
       @include theme.prop(border-bottom-color, $color);
@@ -784,7 +715,6 @@
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-group__subheader,
   .mdc-deprecated-list-group__subheader {
     @include feature-targeting.targets($feat-color) {
       @include theme.prop(color, $color);
@@ -798,7 +728,6 @@
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item--disabled .mdc-list-item__text,
   .mdc-deprecated-list-item--disabled .mdc-deprecated-list-item__text {
     @include feature-targeting.targets($feat-color) {
       opacity: $opacity;
@@ -812,15 +741,6 @@
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item--disabled {
-    .mdc-list-item__text,
-    .mdc-list-item__primary-text,
-    .mdc-list-item__secondary-text {
-      @include feature-targeting.targets($feat-color) {
-        @include theme.prop(color, $color);
-      }
-    }
-  }
   .mdc-deprecated-list-item--disabled {
     .mdc-deprecated-list-item__text,
     .mdc-deprecated-list-item__primary-text,
@@ -910,7 +830,6 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    .mdc-list-item__graphic,
     .mdc-deprecated-list-item__graphic {
       @include rtl-mixins.reflexive-box(margin, right, $margin);
     }
@@ -946,7 +865,6 @@
   $text-offset,
   $query: feature-targeting.all()
 ) {
-  .mdc-list-divider--inset-leading,
   .mdc-deprecated-list-divider--inset-leading {
     @include deprecated-divider-inset(
       $leading-padding,
@@ -956,7 +874,6 @@
     );
   }
 
-  .mdc-list-divider--inset-trailing,
   .mdc-deprecated-list-divider--inset-trailing {
     @include deprecated-divider-inset(
       $leading-padding,
@@ -966,7 +883,6 @@
     );
   }
 
-  .mdc-list-divider--inset-leading.mdc-list-divider--inset-trailing,
   .mdc-deprecated-list-divider--inset-leading.mdc-deprecated-list-divider--inset-trailing {
     @include deprecated-divider-inset(
       $leading-padding,
@@ -975,7 +891,6 @@
     );
   }
 
-  .mdc-list-divider--inset-leading.mdc-list-divider--padding,
   .mdc-deprecated-list-divider--inset-leading.mdc-deprecated-list-divider--padding {
     @include deprecated-divider-inset(
       $leading-padding,
@@ -986,7 +901,6 @@
     );
   }
 
-  .mdc-list-divider--inset-leading.mdc-list-divider--inset-trailing.mdc-list-divider--inset-padding,
   .mdc-deprecated-list-divider--inset-leading.mdc-deprecated-list-divider--inset-trailing.mdc-deprecated-list-divider--inset-padding {
     @include deprecated-divider-inset(
       $leading-padding,
@@ -1122,7 +1036,6 @@
     $property-name: height,
   );
 
-  .mdc-list-item,
   .mdc-deprecated-list-item {
     @include deprecated-single-line-height($height, $query: $query);
   }
