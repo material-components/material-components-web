@@ -494,6 +494,16 @@
   .mdc-evolution-list-divider--with-leading-radio {
     @include inset-divider-leading-offset(72px, $query: $query);
   }
+
+  // This is needed to ensure that left-to-right padding doesn't override right-
+  // to-left padding.
+  .mdc-evolution-list-divider {
+    @include feature-targeting.targets($feat-structure) {
+      @include rtl-mixins.rtl {
+        padding: 0;
+      }
+    }
+  }
 }
 
 @mixin with-ripple($query: feature-targeting.all()) {
