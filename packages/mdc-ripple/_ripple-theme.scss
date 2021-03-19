@@ -386,10 +386,13 @@ $pressed-light-ink-opacity: 0.32 !default;
 
 /// Selector for hover, active and focus states.
 @mixin states-selector() {
-  &:hover,
-  &:active,
-  &:not(.mdc-ripple-upgraded):focus,
-  &.mdc-ripple-upgraded--background-focused {
+  &:hover {
+    @content;
+  }
+  @include focus {
+    @content;
+  }
+  @include active {
     @content;
   }
 }
