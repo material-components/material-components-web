@@ -30,17 +30,16 @@ function getFixture() {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
     <div>
-      <div class="mdc-snackbar">
-        <div class="mdc-snackbar__surface">
-          <div class="mdc-snackbar__label"
-               role="status"
-               aria-live="polite">Can't send photo. Retry in 5 seconds.</div>
-          <div class="mdc-snackbar__actions">
+      <aside class="mdc-snackbar">
+        <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
+          <div class="mdc-snackbar__label" aria-atomic="false">
+            Can't send photo. Retry in 5 seconds.</div>
+          <div class="mdc-snackbar__actions" aria-atomic="true">
             <button type="button" class="mdc-button mdc-snackbar__action">Retry</button>
             <button class="mdc-icon-button mdc-snackbar__dismiss material-icons" title="Dismiss">close</button>
           </div>
         </div>
-      </div>
+      </aside>
     </div>`;
   const el = wrapper.firstElementChild as HTMLElement;
   wrapper.removeChild(el);
@@ -334,7 +333,7 @@ describe('MDCSnackbar', () => {
        component.unlisten(strings.CLOSED_EVENT, handler);
 
        expect(handler).toHaveBeenCalledWith(
-        jasmine.objectContaining({detail: {}}));
+           jasmine.objectContaining({detail: {}}));
      });
 
   it(`adapter#notifyClosed emits ${strings.CLOSED_EVENT} with reason`, () => {
