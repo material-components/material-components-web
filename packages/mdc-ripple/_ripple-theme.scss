@@ -65,6 +65,11 @@ $light-ink-opacities: (
 $pressed-dark-ink-opacity: 0.16 !default;
 $pressed-light-ink-opacity: 0.32 !default;
 
+// State selector variables used for state selector mixins below.
+$_hover-selector: '&:hover';
+$_focus-selector: '&.mdc-ripple-upgraded--background-focused, &:not(.mdc-ripple-upgraded):focus';
+$_active-selector: '&:active:active';
+
 @mixin states-base-color(
   $color,
   $query: feature-targeting.all(),
@@ -386,13 +391,9 @@ $pressed-light-ink-opacity: 0.32 !default;
 
 /// Selector for hover, active and focus states.
 @mixin states-selector() {
-  &:hover {
-    @content;
-  }
-  @include focus {
-    @content;
-  }
-  @include active {
+  #{$_hover-selector},
+  #{$_focus-selector},
+  #{$_active-selector} {
     @content;
   }
 }
@@ -401,15 +402,14 @@ $pressed-light-ink-opacity: 0.32 !default;
 // applying focus styles on JS-disabled components, and control focus
 // on JS-enabled components with '.mdc-ripple-upgraded--background-focused'.
 @mixin focus() {
-  &.mdc-ripple-upgraded--background-focused,
-  &:not(.mdc-ripple-upgraded):focus {
+  #{$_focus-selector} {
     @content;
   }
 }
 
 // Selector for active state. Using `:active:active` to override focus styles.
 @mixin active() {
-  &:active:active {
+  #{$_active-selector} {
     @content;
   }
 }
