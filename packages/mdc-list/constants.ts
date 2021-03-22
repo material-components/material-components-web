@@ -60,16 +60,12 @@ const numbers = {
 };
 
 const evolutionClassNameMap = {
-  [`${cssClasses.LIST_ITEM_ACTIVATED_CLASS}`]:
-      'mdc-evolution-list-item--activated',
-  [`${cssClasses.LIST_ITEM_CLASS}`]: 'mdc-evolution-list-item',
-  [`${cssClasses.LIST_ITEM_DISABLED_CLASS}`]:
-      'mdc-evolution-list-item--disabled',
-  [`${cssClasses.LIST_ITEM_SELECTED_CLASS}`]:
-      'mdc-evolution-list-item--selected',
-  [`${cssClasses.LIST_ITEM_PRIMARY_TEXT_CLASS}`]:
-      'mdc-evolution-list-item__primary-text',
-  [`${cssClasses.ROOT}`]: 'mdc-evolution-list',
+  [`${cssClasses.LIST_ITEM_ACTIVATED_CLASS}`]: 'mdc-list-item--activated',
+  [`${cssClasses.LIST_ITEM_CLASS}`]: 'mdc-list-item',
+  [`${cssClasses.LIST_ITEM_DISABLED_CLASS}`]: 'mdc-list-item--disabled',
+  [`${cssClasses.LIST_ITEM_SELECTED_CLASS}`]: 'mdc-list-item--selected',
+  [`${cssClasses.LIST_ITEM_PRIMARY_TEXT_CLASS}`]: 'mdc-list-item__primary-text',
+  [`${cssClasses.ROOT}`]: 'mdc-list',
 };
 
 const deprecatedClassNameMap = {

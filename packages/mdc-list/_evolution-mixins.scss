@@ -37,11 +37,11 @@
 
   @include _high-contrast-mode($query);
 
-  .mdc-evolution-list {
+  .mdc-list {
     @include _list-base($query: $query);
   }
 
-  .mdc-evolution-list-item {
+  .mdc-list-item {
     @include _item-base($query: $query);
     @include item-spacing(16px, $query: $query);
 
@@ -84,8 +84,8 @@
     }
 
     // Reset mouse cursor for disabled and non-interactive items.
-    &.mdc-evolution-list-item--disabled,
-    &.mdc-evolution-list-item--non-interactive {
+    &.mdc-list-item--disabled,
+    &.mdc-list-item--non-interactive {
       @include feature-targeting.targets($feat-structure) {
         cursor: auto;
       }
@@ -93,12 +93,12 @@
 
     // For components using aria-activedescendant, the focus pseudoclass is
     // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
-    &:not(.mdc-evolution-list-item--selected):focus::before, // lint-disable-focus-psuedo-selector
+    &:not(.mdc-list-item--selected):focus::before, // lint-disable-focus-psuedo-selector
     &.mdc-ripple-upgraded--background-focused::before {
       @include dom-mixins.transparent-border($query: $query);
     }
 
-    &.mdc-evolution-list-item--selected::before {
+    &.mdc-list-item--selected::before {
       @include dom-mixins.transparent-border(
         $border-width: 3px,
         $border-style: double,
@@ -109,7 +109,7 @@
 
   // Override anchor tag styles for the use-case of a list being used for navigation
   // stylelint-disable selector-max-type,selector-no-qualifying-type
-  a.mdc-evolution-list-item {
+  a.mdc-list-item {
     @include feature-targeting.targets($feat-structure) {
       color: inherit;
       text-decoration: none;
@@ -117,28 +117,28 @@
   }
   // stylelint-enable selector-max-type,selector-no-qualifying-type
 
-  .mdc-evolution-list-item__start {
+  .mdc-list-item__start {
     @include feature-targeting.targets($feat-structure) {
       fill: currentColor;
       flex-shrink: 0;
     }
   }
 
-  .mdc-evolution-list-item__end {
+  .mdc-list-item__end {
     @include feature-targeting.targets($feat-structure) {
       flex-shrink: 0;
     }
   }
 
-  .mdc-evolution-list-item__content {
+  .mdc-list-item__content {
     @include typography.overflow-ellipsis($query);
     @include feature-targeting.targets($feat-structure) {
       align-self: center;
       flex: 1;
     }
 
-    .mdc-evolution-list-item--with-two-lines &,
-    .mdc-evolution-list-item--with-three-lines & {
+    .mdc-list-item--with-two-lines &,
+    .mdc-list-item--with-three-lines & {
       @include feature-targeting.targets($feat-structure) {
         align-self: stretch;
       }
@@ -153,12 +153,12 @@
     }
   }
 
-  .mdc-evolution-list-item__primary-text {
+  .mdc-list-item__primary-text {
     @include typography.typography(subtitle1, $query);
     @include typography.overflow-ellipsis($query);
 
-    .mdc-evolution-list-item--with-two-lines &,
-    .mdc-evolution-list-item--with-three-lines & {
+    .mdc-list-item--with-two-lines &,
+    .mdc-list-item--with-three-lines & {
       @include typography.text-baseline(
         $top: 28px,
         $bottom: 20px,
@@ -167,7 +167,7 @@
     }
   }
 
-  .mdc-evolution-list-item__secondary-text {
+  .mdc-list-item__secondary-text {
     @include typography.typography(body2, $query);
     // TODO (b/168048902): disable this for three-line (multi-line) lists.
     @include typography.overflow-ellipsis($query);
@@ -178,12 +178,12 @@
     );
   }
 
-  .mdc-evolution-list-item__overline-text {
+  .mdc-list-item__overline-text {
     // TODO (b/168043604): fully style overline.
     @include typography.overflow-ellipsis($query);
 
-    .mdc-evolution-list-item--with-two-lines &,
-    .mdc-evolution-list-item--with-three-lines & {
+    .mdc-list-item--with-two-lines &,
+    .mdc-list-item--with-three-lines & {
       @include typography.text-baseline(
         $top: 24px,
         $bottom: 20px,
@@ -192,7 +192,7 @@
     }
   }
 
-  .mdc-evolution-list-item--with-leading-avatar {
+  .mdc-list-item--with-leading-avatar {
     @include item-start-spacing(16px, $query: $query);
     @include item-start-size(40px, $query: $query);
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
@@ -206,14 +206,14 @@
       $query: $query
     );
 
-    .mdc-evolution-list-item__start {
+    .mdc-list-item__start {
       @include feature-targeting.targets($feat-structure) {
         border-radius: 50%;
       }
     }
   }
 
-  .mdc-evolution-list-item--with-leading-icon {
+  .mdc-list-item--with-leading-icon {
     @include item-start-size(24px, $query: $query);
     @include item-start-spacing(
       $leading: 16px,
@@ -232,7 +232,7 @@
     );
   }
 
-  .mdc-evolution-list-item--with-leading-thumbnail {
+  .mdc-list-item--with-leading-thumbnail {
     @include item-start-spacing(16px, $query: $query);
     @include item-start-size(40px, $query: $query);
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
@@ -247,7 +247,7 @@
     );
   }
 
-  .mdc-evolution-list-item--with-leading-image {
+  .mdc-list-item--with-leading-image {
     @include item-start-spacing(16px, $query: $query);
     @include item-start-size(56px, $query: $query);
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
@@ -262,7 +262,7 @@
     );
   }
 
-  .mdc-evolution-list-item--with-leading-video {
+  .mdc-list-item--with-leading-video {
     @include two-line-item-start-alignment(
       $alignment: flex-start,
       $offset: 8px,
@@ -282,7 +282,7 @@
     );
   }
 
-  .mdc-evolution-list-item--with-leading-checkbox {
+  .mdc-list-item--with-leading-checkbox {
     $leading: absorb-overflow(16px, $actual: 40px, $available: 24px);
     $trailing: absorb-overflow(32px, $actual: 40px, $available: 24px);
     $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
@@ -306,7 +306,7 @@
     );
   }
 
-  .mdc-evolution-list-item--with-leading-radio {
+  .mdc-list-item--with-leading-radio {
     $leading: absorb-overflow(16px, $actual: 40px, $available: 24px);
     $trailing: absorb-overflow(32px, $actual: 40px, $available: 24px);
     $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
@@ -330,7 +330,7 @@
     );
   }
 
-  .mdc-evolution-list-item--with-leading-switch {
+  .mdc-list-item--with-leading-switch {
     @include item-start-spacing(16px, $query: $query);
     @include item-start-size($width: 36px, $height: 20px, $query: $query);
     @include two-line-item-start-alignment(
@@ -350,24 +350,24 @@
     );
   }
 
-  .mdc-evolution-list-item--with-trailing-icon {
+  .mdc-list-item--with-trailing-icon {
     @include item-end-spacing(16px, $query: $query);
     @include item-end-size(24px, $query: $query);
   }
 
-  .mdc-evolution-list-item--with-trailing-meta {
+  .mdc-list-item--with-trailing-meta {
     @include two-line-item-end-alignment(flex-start, $query: $query);
     @include three-line-item-end-alignment(flex-start, $query: $query);
     @include item-end-spacing($leading: 28px, $trailing: 16px, $query: $query);
     @include _two-line-item-end-baseline($top: 28px, $query: $query);
     @include _three-line-item-end-baseline($top: 28px, $query: $query);
 
-    .mdc-evolution-list-item__end {
+    .mdc-list-item__end {
       @include typography.typography(caption, $query);
     }
   }
 
-  .mdc-evolution-list-item--with-trailing-checkbox {
+  .mdc-list-item--with-trailing-checkbox {
     $leading: absorb-overflow(32px, $actual: 40px, $available: 24px);
     $trailing: absorb-overflow(16px, $actual: 40px, $available: 24px);
     $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
@@ -381,7 +381,7 @@
     );
   }
 
-  .mdc-evolution-list-item--with-trailing-radio {
+  .mdc-list-item--with-trailing-radio {
     $leading: absorb-overflow(32px, $actual: 40px, $available: 24px);
     $trailing: absorb-overflow(16px, $actual: 40px, $available: 24px);
     $top: absorb-overflow(16px, $actual: 40px, $available: 24px);
@@ -395,7 +395,7 @@
     );
   }
 
-  .mdc-evolution-list-item--with-trailing-switch {
+  .mdc-list-item--with-trailing-switch {
     @include item-end-spacing(16px, $query: $query);
     @include item-end-size($width: 36px, $height: 20px, $query: $query);
     @include three-line-item-end-alignment(
@@ -409,7 +409,7 @@
   // Grouping
   //
 
-  .mdc-evolution-list-group {
+  .mdc-list-group {
     @include feature-targeting.targets($feat-structure) {
       // Cancel top/bottom padding on individual lists within group
       .mdc-deprecated-list {
@@ -418,7 +418,7 @@
     }
   }
 
-  .mdc-evolution-list-group__subheader {
+  .mdc-list-group__subheader {
     $mdc-list-subheader-virtual-height: 3rem;
     $mdc-list-subheader-leading: map.get(
       map.get(typography.$styles, body1),
@@ -447,7 +447,7 @@
 
   @include divider-color($divider-color, $query: $query);
 
-  .mdc-evolution-list-divider {
+  .mdc-list-divider {
     @include feature-targeting.targets($feat-structure) {
       height: 1px;
       padding: 0;
@@ -462,42 +462,42 @@
     @include inset-divider-trailing-offset(16px, $query: $query);
   }
 
-  .mdc-evolution-list-divider--with-leading-icon {
+  .mdc-list-divider--with-leading-icon {
     @include inset-divider-leading-offset(72px, $query: $query);
   }
 
-  .mdc-evolution-list-divider--with-leading-image {
+  .mdc-list-divider--with-leading-image {
     @include inset-divider-leading-offset(88px, $query: $query);
   }
 
-  .mdc-evolution-list-divider--with-leading-thumbnail {
+  .mdc-list-divider--with-leading-thumbnail {
     @include inset-divider-leading-offset(72px, $query: $query);
   }
 
-  .mdc-evolution-list-divider--with-leading-video {
+  .mdc-list-divider--with-leading-video {
     @include padded-divider-leading-offset(0px, $query: $query);
     @include inset-divider-leading-offset(116px, $query: $query);
   }
 
-  .mdc-evolution-list-divider--with-leading-avatar {
+  .mdc-list-divider--with-leading-avatar {
     @include inset-divider-leading-offset(72px, $query: $query);
   }
 
-  .mdc-evolution-list-divider--with-leading-checkbox {
+  .mdc-list-divider--with-leading-checkbox {
     @include inset-divider-leading-offset(72px, $query: $query);
   }
 
-  .mdc-evolution-list-divider--with-leading-switch {
+  .mdc-list-divider--with-leading-switch {
     @include inset-divider-leading-offset(84px, $query: $query);
   }
 
-  .mdc-evolution-list-divider--with-leading-radio {
+  .mdc-list-divider--with-leading-radio {
     @include inset-divider-leading-offset(72px, $query: $query);
   }
 
   // This is needed to ensure that left-to-right padding doesn't override right-
   // to-left padding.
-  .mdc-evolution-list-divider {
+  .mdc-list-divider {
     @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.rtl {
         padding: 0;
@@ -509,11 +509,11 @@
 @mixin with-ripple($query: feature-targeting.all()) {
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
-  :not(.mdc-evolution-list-item--disabled).mdc-evolution-list-item {
+  :not(.mdc-list-item--disabled).mdc-list-item {
     @include _item-interactive-ripple($query);
   }
 
-  .mdc-evolution-list-item--disabled {
+  .mdc-list-item--disabled {
     @include ripple.surface(
       $ripple-target: variables.$ripple-target,
       $query: $query
@@ -565,7 +565,7 @@
 
 @mixin one-line-item-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-one-line {
+  &.mdc-list-item--with-one-line {
     @include feature-targeting.targets($feat-structure) {
       height: $height;
     }
@@ -574,7 +574,7 @@
 
 @mixin two-line-item-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-two-lines {
+  &.mdc-list-item--with-two-lines {
     @include feature-targeting.targets($feat-structure) {
       height: $height;
     }
@@ -582,7 +582,7 @@
 }
 @mixin three-line-item-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-three-lines {
+  &.mdc-list-item--with-three-lines {
     @include feature-targeting.targets($feat-structure) {
       height: $height;
     }
@@ -606,8 +606,8 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-one-line {
-    .mdc-evolution-list-item__start {
+  &.mdc-list-item--with-one-line {
+    .mdc-list-item__start {
       @include feature-targeting.targets($feat-structure) {
         align-self: $alignment;
         margin-top: $offset;
@@ -622,8 +622,8 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-two-lines {
-    .mdc-evolution-list-item__start {
+  &.mdc-list-item--with-two-lines {
+    .mdc-list-item__start {
       @include feature-targeting.targets($feat-structure) {
         align-self: $alignment;
         margin-top: $offset;
@@ -638,8 +638,8 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-three-lines {
-    .mdc-evolution-list-item__start {
+  &.mdc-list-item--with-three-lines {
+    .mdc-list-item__start {
       @include feature-targeting.targets($feat-structure) {
         align-self: $alignment;
         margin-top: $offset;
@@ -654,8 +654,8 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-one-line {
-    .mdc-evolution-list-item__end {
+  &.mdc-list-item--with-one-line {
+    .mdc-list-item__end {
       @include feature-targeting.targets($feat-structure) {
         align-self: $alignment;
         margin-top: $offset;
@@ -670,8 +670,8 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-two-lines {
-    .mdc-evolution-list-item__end {
+  &.mdc-list-item--with-two-lines {
+    .mdc-list-item__end {
       @include feature-targeting.targets($feat-structure) {
         align-self: $alignment;
         margin-top: $offset;
@@ -686,8 +686,8 @@
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-item--with-three-lines {
-    .mdc-evolution-list-item__end {
+  &.mdc-list-item--with-three-lines {
+    .mdc-list-item__end {
       @include feature-targeting.targets($feat-structure) {
         align-self: $alignment;
         margin-top: $offset;
@@ -704,12 +704,12 @@
   $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
     // Extra specificity needed to override default customizations.
-    &.mdc-evolution-list-item {
+    &.mdc-list-item {
       // We rely on auto to avoid clobbering the opposite padding.
       @include rtl-mixins.reflexive-property(padding, 0, auto);
     }
 
-    .mdc-evolution-list-item__start {
+    .mdc-list-item__start {
       @include rtl-mixins.reflexive-property(margin, $leading, $trailing);
     }
   }
@@ -723,12 +723,12 @@
   $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
     // Extra specificity needed to override default customizations.
-    &.mdc-evolution-list-item {
+    &.mdc-list-item {
       // We rely on auto to avoid clobbering the opposite padding.
       @include rtl-mixins.reflexive-property(padding, auto, 0);
     }
 
-    .mdc-evolution-list-item__end {
+    .mdc-list-item__end {
       @include rtl-mixins.reflexive-property(margin, $leading, $trailing);
     }
   }
@@ -741,7 +741,7 @@
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
-    .mdc-evolution-list-item__start {
+    .mdc-list-item__start {
       width: $width;
       height: $height;
     }
@@ -751,7 +751,7 @@
 @mixin item-end-size($width, $height: $width, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
-    .mdc-evolution-list-item__end {
+    .mdc-list-item__end {
       width: $width;
       height: $height;
     }
@@ -761,7 +761,7 @@
 @mixin list-primary-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item__primary-text {
+  .mdc-list-item__primary-text {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
     }
@@ -771,7 +771,7 @@
 @mixin list-secondary-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item__secondary-text {
+  .mdc-list-item__secondary-text {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
     }
@@ -781,8 +781,8 @@
 @mixin list-meta-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item--with-trailing-meta {
-    .mdc-evolution-list-item__end {
+  .mdc-list-item--with-trailing-meta {
+    .mdc-list-item__end {
       @include feature-targeting.targets($feat-color) {
         @include theme.property(color, $color);
       }
@@ -793,8 +793,8 @@
 @mixin list-icon-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item--with-leading-icon .mdc-evolution-list-item__start,
-  .mdc-evolution-list-item--with-trailing-icon .mdc-evolution-list-item__end {
+  .mdc-list-item--with-leading-icon .mdc-list-item__start,
+  .mdc-list-item--with-trailing-icon .mdc-list-item__end {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
     }
@@ -804,8 +804,8 @@
 @mixin list-icon-fill-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item--with-leading-icon .mdc-evolution-list-item__start,
-  .mdc-evolution-list-item--with-trailing-icon .mdc-evolution-list-item__end {
+  .mdc-list-item--with-leading-icon .mdc-list-item__start,
+  .mdc-list-item--with-trailing-icon .mdc-list-item__end {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
     }
@@ -815,8 +815,8 @@
 @mixin list-selected-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item--selected,
-  .mdc-evolution-list-item--activated {
+  .mdc-list-item--selected,
+  .mdc-list-item--activated {
     @include list-primary-text-ink-color($color, $query);
     @include _item-icon-ink-color($color, $leading-only: true, $query: $query);
   }
@@ -825,7 +825,7 @@
 @mixin list-disabled-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item--disabled {
+  .mdc-list-item--disabled {
     @include list-primary-text-ink-color($color, $query);
     @include list-secondary-text-ink-color($color, $query);
     @include _item-icon-ink-color($color, $query: $query);
@@ -836,10 +836,10 @@
 @mixin list-disabled-opacity($opacity, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-item--disabled {
-    .mdc-evolution-list-item__start,
-    .mdc-evolution-list-item__content,
-    .mdc-evolution-list-item__end {
+  .mdc-list-item--disabled {
+    .mdc-list-item__start,
+    .mdc-list-item__content,
+    .mdc-list-item__end {
       @include feature-targeting.targets($feat-color) {
         opacity: $opacity;
       }
@@ -860,7 +860,7 @@
 @mixin divider-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-list-divider {
+  .mdc-list-divider {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
     }
@@ -869,7 +869,7 @@
 
 @mixin inset-divider-leading-offset($offset, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-divider--with-leading-inset {
+  &.mdc-list-divider--with-leading-inset {
     @include feature-targeting.targets($feat-structure) {
       // We rely on auto to avoid clobbering the opposite padding.
       @include rtl-mixins.reflexive-property(padding, $offset, auto);
@@ -879,7 +879,7 @@
 
 @mixin padded-divider-leading-offset($offset, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-divider--with-leading-padding {
+  &.mdc-list-divider--with-leading-padding {
     @include feature-targeting.targets($feat-structure) {
       // We rely on auto to avoid clobbering the opposite padding.
       @include rtl-mixins.reflexive-property(padding, $offset, auto);
@@ -889,7 +889,7 @@
 
 @mixin inset-divider-trailing-offset($offset, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-evolution-list-divider--with-trailing-inset {
+  &.mdc-list-divider--with-trailing-inset {
     @include feature-targeting.targets($feat-structure) {
       // We rely on auto to avoid clobbering the opposite padding.
       @include rtl-mixins.reflexive-property(padding, auto, $offset);
@@ -902,16 +902,16 @@
 @mixin one-line-item-density($density-scale, $query: feature-targeting.all()) {
   @include _one-line-item-density($density-scale, $query: $query);
 
-  &.mdc-evolution-list-item--with-leading-icon,
-  &.mdc-evolution-list-item--with-leading-thumbnail,
-  &.mdc-evolution-list-item--with-leading-checkbox,
-  &.mdc-evolution-list-item--with-leading-radio,
-  &.mdc-evolution-list-item--with-leading-switch {
+  &.mdc-list-item--with-leading-icon,
+  &.mdc-list-item--with-leading-thumbnail,
+  &.mdc-list-item--with-leading-checkbox,
+  &.mdc-list-item--with-leading-radio,
+  &.mdc-list-item--with-leading-switch {
     @include _one-line-item-tall-density($density-scale, $query: $query);
   }
 
-  &.mdc-evolution-list-item--with-leading-image,
-  &.mdc-evolution-list-item--with-leading-video {
+  &.mdc-list-item--with-leading-image,
+  &.mdc-list-item--with-leading-video {
     @include _one-line-item-taller-density($density-scale, $query: $query);
   }
 }
@@ -919,13 +919,13 @@
 @mixin two-line-item-density($density-scale, $query: feature-targeting.all()) {
   @include _two-line-item-density($density-scale, $query: $query);
 
-  &.mdc-evolution-list-item--with-leading-icon,
-  &.mdc-evolution-list-item--with-leading-thumbnail,
-  &.mdc-evolution-list-item--with-leading-checkbox,
-  &.mdc-evolution-list-item--with-leading-radio,
-  &.mdc-evolution-list-item--with-leading-switch,
-  &.mdc-evolution-list-item--with-leading-image,
-  &.mdc-evolution-list-item--with-leading-video {
+  &.mdc-list-item--with-leading-icon,
+  &.mdc-list-item--with-leading-thumbnail,
+  &.mdc-list-item--with-leading-checkbox,
+  &.mdc-list-item--with-leading-radio,
+  &.mdc-list-item--with-leading-switch,
+  &.mdc-list-item--with-leading-image,
+  &.mdc-list-item--with-leading-video {
     @include _two-line-item-tall-density($density-scale, $query: $query);
   }
 }
@@ -1094,8 +1094,8 @@
   $bottom,
   $query: feature-targeting.all()
 ) {
-  &.mdc-evolution-list-item--with-two-lines {
-    .mdc-evolution-list-item__primary-text {
+  &.mdc-list-item--with-two-lines {
+    .mdc-list-item__primary-text {
       @include typography.text-baseline(
         $top: $top,
         $bottom: $bottom,
@@ -1106,8 +1106,8 @@
 }
 
 @mixin _two-line-item-end-baseline($top, $query: feature-targeting.all()) {
-  &.mdc-evolution-list-item--with-two-lines {
-    .mdc-evolution-list-item__end {
+  &.mdc-list-item--with-two-lines {
+    .mdc-list-item__end {
       @include typography.text-baseline(
         $display: block,
         $top: $top,
@@ -1118,8 +1118,8 @@
 }
 
 @mixin _three-line-item-end-baseline($top, $query: feature-targeting.all()) {
-  &.mdc-evolution-list-item--with-three-lines {
-    .mdc-evolution-list-item__end {
+  &.mdc-list-item--with-three-lines {
+    .mdc-list-item__end {
       @include typography.text-baseline(
         $display: block,
         $top: $top,
@@ -1130,9 +1130,9 @@
 }
 
 @mixin _two-line-item-meta-baseline($top, $query: feature-targeting.all()) {
-  &.mdc-evolution-list-item--with-two-lines {
-    &.mdc-evolution-list-item--with-trailing-meta {
-      .mdc-evolution-list-item__end {
+  &.mdc-list-item--with-two-lines {
+    &.mdc-list-item--with-trailing-meta {
+      .mdc-list-item__end {
         @include typography.text-baseline(
           $display: block,
           $top: $top,
@@ -1146,8 +1146,8 @@
 @mixin _item-meta-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  &.mdc-evolution-list-item--with-trailing-meta {
-    .mdc-evolution-list-item__end {
+  &.mdc-list-item--with-trailing-meta {
+    .mdc-list-item__end {
       @include feature-targeting.targets($feat-color) {
         @include theme.property(color, $color);
       }
@@ -1162,8 +1162,8 @@
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  &.mdc-evolution-list-item--with-leading-icon {
-    .mdc-evolution-list-item__start {
+  &.mdc-list-item--with-leading-icon {
+    .mdc-list-item__start {
       @include feature-targeting.targets($feat-color) {
         @include theme.property(color, $color);
       }
@@ -1171,8 +1171,8 @@
   }
 
   @if (not $leading-only) {
-    &.mdc-evolution-list-item--with-trailing-icon {
-      .mdc-evolution-list-item__end {
+    &.mdc-list-item--with-trailing-icon {
+      .mdc-list-item__end {
         @include feature-targeting.targets($feat-color) {
           @include theme.property(color, $color);
         }
@@ -1186,7 +1186,7 @@
   $feat-color: feature-targeting.create-target($query, color);
 
   @include dom-mixins.ie-high-contrast-mode {
-    .mdc-evolution-list-divider::after {
+    .mdc-list-divider::after {
       @include feature-targeting.targets($feat-structure) {
         content: '';
         display: block;
