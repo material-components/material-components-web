@@ -429,28 +429,46 @@ describe('MDCSliderFoundation', () => {
          expect(foundation.getValue()).toBe(3e-9);
        });
 
-    it('down event does not update value if value is inside the range', () => {
-      const {foundation, mockAdapter} = setUpAndInit({
-        valueStart: 10,
-        value: 50,
-        isRange: true,
-      });
+    it('down event updates end value if value is inside the range and ' +
+           'closer to end thumb',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 10,
+           value: 50,
+           isRange: true,
+         });
 
-      // Reset UI update calls from initialization, so we can test
-      // that the next #handleDown call invokes no UI updates.
-      mockAdapter.setThumbStyleProperty.calls.reset();
-      mockAdapter.setTrackActiveStyleProperty.calls.reset();
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 40,
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
 
-      foundation.handleDown(createMouseEvent('mousedown', {
-        clientX: 40,
-      }));
-      jasmine.clock().tick(1);  // Tick for RAF.
+         expect(foundation.getValueStart()).toBe(10);
+         expect(foundation.getValue()).toBe(40);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transform', 'translateX(40px)', Thumb.END);
+       });
 
-      expect(foundation.getValueStart()).toBe(10);
-      expect(foundation.getValue()).toBe(50);
-      expect(mockAdapter.setThumbStyleProperty).not.toHaveBeenCalled();
-      expect(mockAdapter.setTrackActiveStyleProperty).not.toHaveBeenCalled();
-    });
+    it('down event updates start value if value is inside the range and ' +
+           'closer to start thumb',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 10,
+           value: 50,
+           isRange: true,
+         });
+
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 25,
+         }));
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValueStart()).toBe(25);
+         expect(foundation.getValue()).toBe(50);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 'transform', 'translateX(25px)', Thumb.START);
+       });
 
     it('move event after down event (on end thumb) updates end thumb value ' +
        'inside the range',

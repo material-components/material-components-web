@@ -189,11 +189,9 @@ describe('MDCSlider', () => {
 
     it('press + move on start thumb updates start thumb value', () => {
       const downEvent =
-          createEventFrom('pointer', 'down', {clientX: initialValueStart + 2});
+          createEventFrom('pointer', 'down', {clientX: initialValueStart});
       root.dispatchEvent(downEvent);
       jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
-      // Start thumb value should be the same as initial value, since press
-      // was in the middle of the range.
       expect(startThumb.style.transform)
           .toBe(`translateX(${initialValueStart}px)`);
 
@@ -203,13 +201,11 @@ describe('MDCSlider', () => {
       expect(startThumb.style.transform).toBe('translateX(50px)');
     });
 
-    it('press + move on end thumb updates start thumb value', () => {
+    it('press + move on end thumb updates end thumb value', () => {
       const downEvent =
-          createEventFrom('pointer', 'down', {clientX: initialValueEnd - 2});
+          createEventFrom('pointer', 'down', {clientX: initialValueEnd});
       root.dispatchEvent(downEvent);
       jasmine.clock().tick(1);  // Tick for RAF from slider UI updates.
-      // End thumb value should be the same as initial value, since press
-      // was in the middle of the range.
       expect(endThumb.style.transform).toBe(`translateX(${initialValueEnd}px)`);
 
       const moveEvent = createEventFrom('pointer', 'move', {clientX: 40});

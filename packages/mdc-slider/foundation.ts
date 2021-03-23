@@ -383,12 +383,6 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     if (this.thumb === null) return;
 
     this.handleDragStart(event, value, this.thumb);
-
-    // Presses within the range do not invoke slider updates.
-    const newValueInCurrentRange =
-        this.isRange && value >= this.valueStart && value <= this.value;
-    if (newValueInCurrentRange) return;
-
     this.updateValue(value, this.thumb, {emitInputEvent: true});
   }
 
@@ -575,8 +569,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       return Thumb.END;
     }
 
-    // Otherwise, if press occurred outside of the range, return either start
-    // or end thumb based on which the press is closer to.
+    // For presses outside the range, return whichever thumb is closer.
     if (value < this.valueStart) {
       return Thumb.START;
     }
@@ -584,7 +577,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       return Thumb.END;
     }
 
-    return null;
+    // For presses inside the range, return whichever thumb is closer.
+    return (value - this.valueStart <= this.value - value) ? Thumb.START :
+                                                             Thumb.END;
   }
 
   /**
