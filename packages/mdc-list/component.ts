@@ -134,20 +134,23 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
 
     const itemSelector =
         `.${this.classNameMap[cssClasses.LIST_ITEM_CLASS]}:not([tabindex])`;
-    const childSelector = `.${this.classNameMap[cssClasses.LIST_ITEM_CLASS]} ${
-        strings.FOCUSABLE_CHILD_ELEMENTS}`;
+    const childSelector = strings.FOCUSABLE_CHILD_ELEMENTS;
 
     // List items need to have at least tabindex=-1 to be focusable.
-    Array.prototype.forEach.call(
-        this.root.querySelectorAll(itemSelector), (el: Element) => {
-          el.setAttribute('tabindex', '-1');
-        });
+    const itemEls = this.root.querySelectorAll(itemSelector);
+    if (itemEls.length) {
+      Array.prototype.forEach.call(itemEls, (el: Element) => {
+        el.setAttribute('tabindex', '-1');
+      });
+    }
 
     // Child button/a elements are not tabbable until the list item is focused.
-    Array.prototype.forEach.call(
-        this.root.querySelectorAll(childSelector), (el: Element) => {
-          el.setAttribute('tabindex', '-1');
-        });
+    const focusableChildEls = this.root.querySelectorAll(childSelector);
+    if (focusableChildEls.length) {
+      Array.prototype.forEach.call(focusableChildEls, (el: Element) => {
+        el.setAttribute('tabindex', '-1');
+      });
+    }
 
     if (this.isEvolutionEnabled) {
       this.foundation.setUseSelectedAttribute(true);
@@ -306,8 +309,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       },
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
         const element = this.listElements[listItemIndex];
-        const selector = `.${this.classNameMap[cssClasses.LIST_ITEM_CLASS]} ${
-            strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX}`;
+        const selector = strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX;
         Array.prototype.forEach.call(
             element.querySelectorAll(selector), (el: Element) => {
               el.setAttribute('tabindex', tabIndexValue);
