@@ -29,10 +29,10 @@ import {MDCChipTrailingAction, MDCChipTrailingActionFoundation, trailingActionSt
 const getFixture = () => {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
-  <button class="mdc-chip-trailing-action" tabindex="-1">
-    <span class="mdc-chip-trailing-action__ripple"></span>
-    <span class="mdc-chip-trailing-action__touch-target"></span>
-    <span class="mdc-chip-trailing-action__icon">X</span>
+  <button class="mdc-deprecated-chip-trailing-action" tabindex="-1">
+    <span class="mdc-deprecated-chip-trailing-action__ripple"></span>
+    <span class="mdc-deprecated-chip-trailing-action__touch-target"></span>
+    <span class="mdc-deprecated-chip-trailing-action__icon">X</span>
   </div>`;
 
   const el = wrapper.firstElementChild as HTMLElement;

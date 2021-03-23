@@ -7,18 +7,18 @@ The trailing action is used in removable input chips. It is a subcomponent of th
 ### HTML Structure
 
 ```html
-<button class="mdc-chip-trailing-action"
+<button class="mdc-deprecated-chip-trailing-action"
         aria-label="Remove chip"
         tabindex="-1">
-  <span class="mdc-chip-trailing-action__ripple"></span>
-  <span class="mdc-chip-trailing-action__icon material-icons">close</span>
+  <span class="mdc-deprecated-chip-trailing-action__ripple"></span>
+  <span class="mdc-deprecated-chip-trailing-action__icon material-icons">close</span>
 </button>
 ```
 
 ### Styles
 
 ```scss
-@use "@material/chips/mdc-chip-trailing-action";
+@use "@material/chips/mdc-deprecated-chip-trailing-action";
 ```
 
 ## Variants
@@ -28,10 +28,10 @@ The trailing action is used in removable input chips. It is a subcomponent of th
 In some cases, the trailing action should be non-navigable. To accomplish this, swap the `aria-label` for `aria-hidden="true"`.
 
 ```html
-<button class="mdc-chip-trailing-action"
+<button class="mdc-deprecated-chip-trailing-action"
         aria-hidden="true"
         tabindex="-1">
-  <span class="mdc-chip-trailing-action__icon material-icons">close</span>
+  <span class="mdc-deprecated-chip-trailing-action__icon material-icons">close</span>
 </button>
 ```
 
@@ -41,12 +41,12 @@ Material Design spec advises that touch targets should be at least 48 x 48 px.
 To meet this requirement, add the following to your trailing action:
 
 ```html
-<button class="mdc-chip-trailing-action"
+<button class="mdc-deprecated-chip-trailing-action"
         aria-label="Remove chip"
         tabindex="-1">
-  <span class="mdc-chip-trailing-action__ripple"></span>
-  <span class="mdc-chip-trailing-action__touch"></span>
-  <span class="mdc-chip-trailing-action__icon material-icons">close</span>
+  <span class="mdc-deprecated-chip-trailing-action__ripple"></span>
+  <span class="mdc-deprecated-chip-trailing-action__touch"></span>
+  <span class="mdc-deprecated-chip-trailing-action__icon material-icons">close</span>
 </button>
 ```
 
@@ -56,10 +56,10 @@ To meet this requirement, add the following to your trailing action:
 
 CSS Class | Description
 --- | ---
-`mdc-chip-trailing-action` | Mandatory.
-`mdc-chip-trailing-action__icon` | Mandatory. Indicates the chip icon.
-`mdc-chip-trailing-action__ripple` | Mandatory. Indicates the chip ripple.
-`mdc-chip-trailing-action__touch` | Optional. Renders an accessible touch target.
+`mdc-deprecated-chip-trailing-action` | Mandatory.
+`mdc-deprecated-chip-trailing-action__icon` | Mandatory. Indicates the chip icon.
+`mdc-deprecated-chip-trailing-action__ripple` | Mandatory. Indicates the chip ripple.
+`mdc-deprecated-chip-trailing-action__touch` | Optional. Renders an accessible touch target.
 
 ### Sass Mixins
 
@@ -120,5 +120,5 @@ When wrapping the trailing action foundation, the following events must be bound
 
 Events | Element Selector | Foundation Handler
 --- | --- | ---
-`click` | `.mdc-chip-trailing-action` (root) | `handleClick()`
-`keydown` | `.mdc-chip-trailing-action` (root) | `handleKeydown()`
+`click` | `.mdc-deprecated-chip-trailing-action` (root) | `handleClick()`
+`keydown` | `.mdc-deprecated-chip-trailing-action` (root) | `handleKeydown()`

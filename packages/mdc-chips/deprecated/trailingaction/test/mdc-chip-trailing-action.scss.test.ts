@@ -26,7 +26,7 @@ import 'jasmine';
 import * as path from 'path';
 import {expectStylesWithNoFeaturesToBeEmpty} from '../../../../../testing/featuretargeting';
 
-describe('mdc-chip-trailing-action.scss', () => {
+describe('mdc-deprecated-chip-trailing-action.scss', () => {
   expectStylesWithNoFeaturesToBeEmpty(
       path.join(__dirname, 'feature-targeting-any.test.css'));
 });
