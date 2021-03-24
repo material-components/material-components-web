@@ -32,7 +32,8 @@ describe('MDCSliderFoundation', () => {
 
   describe('#init sets values based on DOM', () => {
     it('sets min, max, value based on aria attributes', () => {
-      const {foundation} = setUpAndInit({min: 0, max: 100, value: 50.5});
+      const {foundation} =
+          setUpAndInit({min: 0, max: 100, value: 50.5, step: 0.5});
       expect(foundation.getMin()).toBe(0);
       expect(foundation.getMax()).toBe(100);
       expect(foundation.getValue()).toBe(50.5);
@@ -49,8 +50,7 @@ describe('MDCSliderFoundation', () => {
        });
 
     it('sets step based on step attribute', () => {
-      const {foundation} =
-          setUpAndInit({value: 50.5, step: 5, isDiscrete: true});
+      const {foundation} = setUpAndInit({value: 50, step: 5, isDiscrete: true});
       foundation.init();
 
       expect(foundation.getStep()).toBe(5);
@@ -122,6 +122,21 @@ describe('MDCSliderFoundation', () => {
     it('throws error if start value > end value', () => {
       expect(() => setUpAndInit({value: 10, valueStart: 25, isRange: true}))
           .toThrowError(/start value must be <= end value/);
+    });
+
+    it('range slider: throws error if start value is not divisible by step',
+       () => {
+         expect(() => setUpAndInit({valueStart: 2, step: 5, isRange: true}))
+             .toThrowError(/values must be valid based on the step value/);
+       });
+
+    it('throws error if value is not divisible by step', () => {
+      expect(() => setUpAndInit({value: 12, step: 5}))
+          .toThrowError(/value must be valid based on the step value/);
+    });
+
+    it('does not throw error with valid value and step < 1', () => {
+      expect(() => setUpAndInit({value: 12, step: 0.2})).not.toThrow();
     });
   });
 

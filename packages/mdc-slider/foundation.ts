@@ -191,29 +191,23 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
             this.adapter.getInputAttribute(attributes.INPUT_VALUE, Thumb.START),
             attributes.INPUT_VALUE) :
         min;
+    const stepAttr =
+        this.adapter.getInputAttribute(attributes.INPUT_STEP, Thumb.END);
+    const step = stepAttr ?
+        this.convertAttributeValueToNumber(stepAttr, attributes.INPUT_STEP) :
+        this.step;
 
-    this.validateProperties({min, max, value, valueStart});
+    this.validateProperties({min, max, value, valueStart, step});
 
     this.min = min;
     this.max = max;
     this.value = value;
     this.valueStart = valueStart;
+    this.step = step;
+    this.numDecimalPlaces = getNumDecimalPlaces(this.step);
 
     this.valueBeforeDownEvent = value;
     this.valueStartBeforeDownEvent = valueStart;
-
-    const stepAttr =
-        this.adapter.getInputAttribute(attributes.INPUT_STEP, Thumb.END);
-    if (stepAttr) {
-      this.step =
-          this.convertAttributeValueToNumber(stepAttr, attributes.INPUT_STEP);
-    }
-    if (this.step <= 0) {
-      throw new Error(
-          `MDCSliderFoundation: step must be a positive number. ` +
-          `Current step: ${this.step}`);
-    }
-    this.numDecimalPlaces = getNumDecimalPlaces(this.step);
 
     this.mousedownOrTouchstartListener =
         this.handleMousedownOrTouchstart.bind(this);
@@ -942,13 +936,23 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 
   /** Checks that the given properties are valid slider values. */
-  private validateProperties(
-      {min, max, value, valueStart}:
-          {min: number, max: number, value: number, valueStart: number}) {
+  private validateProperties({min, max, value, valueStart, step}: {
+    min: number,
+    max: number,
+    value: number,
+    valueStart: number,
+    step: number
+  }) {
     if (min >= max) {
       throw new Error(
           `MDCSliderFoundation: min must be strictly less than max. ` +
           `Current: [min: ${min}, max: ${max}]`);
+    }
+
+    if (step <= 0) {
+      throw new Error(
+          `MDCSliderFoundation: step must be a positive number. ` +
+          `Current step: ${this.step}`);
     }
 
     if (this.isRange) {
@@ -965,11 +969,28 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
             `Current values: [start value: ${valueStart}, end value: ${
                 value}]`);
       }
+
+      const numStepsValueStartFromMin = (valueStart - min) / step;
+      const numStepsValueFromMin = (value - min) / step;
+      if ((numStepsValueStartFromMin % 1) !== 0 ||
+          (numStepsValueFromMin % 1) !== 0) {
+        throw new Error(
+            `MDCSliderFoundation: Slider values must be valid based on the ` +
+            `step value. Current values: [start value: ${valueStart}, ` +
+            `end value: ${value}]`);
+      }
     } else {  // Single point slider.
       if (value < min || value > max) {
         throw new Error(
             `MDCSliderFoundation: value must be in [min, max] range. ` +
             `Current value: ${value}`);
+      }
+
+      const numStepsValueFromMin = (value - min) / step;
+      if ((numStepsValueFromMin % 1) !== 0) {
+        throw new Error(
+            `MDCSliderFoundation: Slider value must be valid based on the ` +
+            `step value. Current value: ${value}`);
       }
     }
   }
