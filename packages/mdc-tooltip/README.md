@@ -92,7 +92,7 @@ There are two types of tooltips:
 
 ```html
 <div id="tooltip-id" class="mdc-tooltip" role="tooltip" aria-hidden="true">
-  <div class="mdc-tooltip__surface">
+  <div class="mdc-tooltip__surface mdc-tooltip__surface-animation">
     lorem ipsum dolor
   </div>
 </div>
@@ -145,7 +145,7 @@ Default rich tooltip without interactive content
     <span class="mdc-button__label">Button</span>
   </button>
   <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" role="tooltip">
-     <div class="mdc-tooltip__surface">
+     <div class="mdc-tooltip__surface mdc-tooltip__surface-animation">
        <p class="mdc-tooltip__content">
          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
          pretium vitae est et dapibus. Aenean sit amet felis eu lorem fermentum
@@ -169,7 +169,7 @@ Default rich tooltip with interactive content
     <span class="mdc-button__label">Button</span>
   </button>
   <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" role="dialog">
-     <div class="mdc-tooltip__surface">
+     <div class="mdc-tooltip__surface mdc-tooltip__surface-animation">
         <h2 class="mdc-tooltip__title"> Lorem Ipsum </h2>
         <p class="mdc-tooltip__content">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
@@ -200,7 +200,7 @@ Persistent rich tooltip with interactive content
     <span class="mdc-button__label">Button</span>
   </button>
   <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" tabindex="-1" data-mdc-tooltip-persist="true" role="dialog">
-     <div class="mdc-tooltip__surface">
+     <div class="mdc-tooltip__surface mdc-tooltip__surface-animation">
         <h2 class="mdc-tooltip__title"> Lorem Ipsum </h2>
         <p class="mdc-tooltip__content">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
@@ -252,7 +252,7 @@ change is necessary for this variant of tooltip.
 </button>
 
 <div id="tooltip-id" class="mdc-tooltip" role="tooltip" aria-hidden="true">
-  <div class="mdc-tooltip__surface">
+  <div class="mdc-tooltip__surface mdc-tooltip__surface-animation">
     toggle favorite
   </div>
 </div>
