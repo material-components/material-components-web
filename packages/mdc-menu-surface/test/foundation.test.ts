@@ -512,6 +512,22 @@ describe('MDCMenuSurfaceFoundation', () => {
       });
 
   testFoundation(
+      '#open from anchor in top left of viewport, absolute position, hoisted menu surface, horizontally centered on viewport ' +
+          '5px/10px',
+      ({foundation, mockAdapter}) => {
+        initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
+        foundation.setIsHoisted(true);
+        foundation.setIsHorizontallyCenteredOnViewport(true);
+        foundation.open();
+        jasmine.clock().tick(1);  // Run to frame.
+        expect(mockAdapter.setTransformOrigin).toHaveBeenCalledWith('left top');
+        expect(mockAdapter.setPosition).toHaveBeenCalledWith({
+          left: (mockAdapter.getWindowDimensions().width - 100) / 2,
+          top: 30
+        });
+      });
+
+  testFoundation(
       '#open in absolute position at x/y=100, absolute position, hoisted menu surface, scrollX/scrollY ' +
           '5px/10px',
       ({foundation, mockAdapter}) => {

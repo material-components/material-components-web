@@ -90,6 +90,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   private isQuickOpen = false;
   private isHoistedElement = false;
   private isFixedPosition = false;
+  private isHorizontallyCenteredOnViewport = false;
 
   private maxHeight = 0;
 
@@ -182,6 +183,11 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   setAbsolutePosition(x: number, y: number) {
     this.position.x = this.isFinite(x) ? x : 0;
     this.position.y = this.isFinite(y) ? y : 0;
+  }
+
+  /** Sets whether menu-surface should be horizontally centered to viewport. */
+  setIsHorizontallyCenteredOnViewport(isCentered: boolean) {
+    this.isHorizontallyCenteredOnViewport = isCentered;
   }
 
   setQuickOpen(quickOpen: boolean) {
@@ -552,12 +558,19 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
   /** Calculates the offsets for positioning the menu-surface when the menu-surface has been hoisted to the body. */
   private adjustPositionForHoistedElement(position: Partial<MDCMenuDistance>) {
-    const {windowScroll, viewportDistance} = this.measurements;
+    const {windowScroll, viewportDistance, surfaceSize, viewportSize} =
+        this.measurements;
 
     const props = Object.keys(position) as Array<keyof Partial<MDCMenuDistance>>;
 
     for (const prop of props) {
       let value = position[prop] || 0;
+
+      if (this.isHorizontallyCenteredOnViewport &&
+          (prop === 'left' || prop === 'right')) {
+        position[prop] = (viewportSize.width - surfaceSize.width) / 2;
+        continue;
+      }
 
       // Hoisted surfaces need to have the anchor elements location on the page added to the
       // position properties for proper alignment on the body.
