@@ -65,3 +65,46 @@ export function spyOnAllFunctions<T extends object>(obj: T) {
   };
   return spyObj;
 }
+
+// Spy on all functions, including those from the prototype chain. Use this
+// when spying on a class instance to install spies on its methods and
+// superclass methods.
+//
+// Use spyOnAllFunctions() when spying on a plain object to only install spies
+// on function properties and not prototype methods (such as
+// Object.prototype.toString).
+export function spyOnAllPrototypeFunctions<T extends object>(obj: T) {
+  const functionKeys = new Set<keyof T>();
+  let target: object|null = obj;
+  while (target) {
+    const keys =
+        Object.getOwnPropertyNames(target) as Array<keyof typeof target>;
+    for (const key of keys) {
+      if (target.hasOwnProperty(key) && typeof target[key] === 'function') {
+        functionKeys.add(key);
+      }
+    }
+    target = Object.getPrototypeOf(target);
+  }
+  for (const key of functionKeys) {
+    spyOn(obj, key);
+  }
+
+  const spyObj = obj as SpyGroup<T>;
+  spyObj.and = {
+    callThrough() {
+      for (const key of functionKeys) {
+        (spyObj[key] as jasmine.Spy).and.callThrough();
+      }
+      return spyObj;
+    },
+    stub() {
+      for (const key of functionKeys) {
+        (spyObj[key] as jasmine.Spy).and.stub();
+      }
+      return spyObj;
+    },
+  };
+
+  return spyObj;
+}
