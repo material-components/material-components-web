@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2019 Google Inc.
+ * Copyright 2021 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,22 +21,9 @@
  * THE SOFTWARE.
  */
 
-export type EventType = keyof GlobalEventHandlersEventMap;
-export type SpecificEventListener<K extends EventType> = (evt: GlobalEventHandlersEventMap[K]) => void;
-export type CustomEventListener<E extends Event> = (evt: E) => void;
-export type WindowEventType = keyof WindowEventMap;
-export type SpecificWindowEventListener<K extends WindowEventType> =
-    (evt: WindowEventMap[K]) => void;
+import 'jasmine';
 
-// `any` is required for mixin constructors
-// tslint:disable:no-any
-/**
- * A generic type for the constructor of an instance type. Note that this type
- * does not preserve accurate constructor parameters.
- *
- * @template T The instance type.
- */
-export type Constructor<T = any> = {
-  new (...args: any[]): T;
-};
-// tslint:enable:no-any
+import {mdcObserver, observeProperty, setObserversEnabled} from '../observer';
+import {createObserverTests} from './observer-tests';
+
+createObserverTests(mdcObserver, observeProperty, setObserversEnabled);
