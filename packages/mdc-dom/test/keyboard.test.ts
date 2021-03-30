@@ -33,6 +33,10 @@ describe('normalizeKey', () => {
       key: KEY.BACKSPACE,
     },
     {
+      keyCode: 9,  // Tab
+      key: KEY.TAB,
+    },
+    {
       keyCode: 13,  // Enter
       key: KEY.ENTER,
     },
@@ -129,6 +133,7 @@ describe('normalizeKey', () => {
 
   const keyTestTable = [
     KEY.BACKSPACE,
+    KEY.TAB,
     KEY.ENTER,
     KEY.SPACEBAR,
     KEY.PAGE_UP,
