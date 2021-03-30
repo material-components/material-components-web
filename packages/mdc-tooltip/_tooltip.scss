@@ -45,7 +45,6 @@ $_line-height: 16px;
 $_rich_corner_radius: 4px;
 $_rich_line-height: 20px;
 $_rich_max-width: 320px;
-$_rich_padding: 8px;
 $_content-margin-x: 8px;
 $_content-type-scale: body2;
 $_title-type-scale: subtitle2;
@@ -119,7 +118,6 @@ $_caret-size: 24px;
         // be used to calculate the position of the tooltip.
         /* @noflip */
         left: -$_rich_max_width;
-        padding: $_rich_padding $_rich_padding;
         position: absolute;
       }
     }
