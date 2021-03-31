@@ -141,10 +141,6 @@ $_title-type-scale: subtitle2;
       box-sizing: border-box;
       overflow: hidden;
       text-align: center;
-      transform: scale(0.8);
-      opacity: 0;
-      will-change: transform, opacity;
-      outline: 1px solid transparent;
     }
 
     .mdc-tooltip--rich & {
@@ -171,19 +167,6 @@ $_title-type-scale: subtitle2;
           /* @noflip */
           text-align: right;
         }
-      }
-    }
-
-    .mdc-tooltip--shown & {
-      @include feature-targeting.targets($feat-structure) {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .mdc-tooltip--hide & {
-      @include feature-targeting.targets($feat-structure) {
-        transform: scale(1);
       }
     }
 
@@ -221,6 +204,28 @@ $_title-type-scale: subtitle2;
     .mdc-tooltip__content-link {
       @include feature-targeting.targets($feat-structure) {
         text-decoration: none;
+      }
+    }
+  }
+
+  .mdc-tooltip__surface-animation {
+    @include feature-targeting.targets($feat-structure) {
+      opacity: 0;
+      outline: 1px solid transparent;
+      transform: scale(0.8);
+      will-change: transform, opacity;
+    }
+
+    .mdc-tooltip--shown & {
+      @include feature-targeting.targets($feat-structure) {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .mdc-tooltip--hide & {
+      @include feature-targeting.targets($feat-structure) {
+        transform: scale(1);
       }
     }
   }
