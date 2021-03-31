@@ -69,6 +69,11 @@ $z-index: 2;
   .mdc-tooltip__surface {
     @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
   }
+
+  .mdc-tooltip__caret-surface-top,
+  .mdc-tooltip__caret-surface-bottom {
+    @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
+  }
 }
 
 // Sets the word-break property for the tooltip label. Users of IE11 can
@@ -154,6 +159,13 @@ $z-index: 2;
   $feat-color: feature-targeting.create-target($query, color);
   &.mdc-tooltip--rich {
     .mdc-tooltip__surface {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(background-color, $color);
+      }
+    }
+
+    .mdc-tooltip__caret-surface-top,
+    .mdc-tooltip__caret-surface-bottom {
       @include feature-targeting.targets($feat-color) {
         @include theme.property(background-color, $color);
       }

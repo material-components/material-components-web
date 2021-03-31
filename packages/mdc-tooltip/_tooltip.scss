@@ -49,6 +49,7 @@ $_rich_padding: 8px;
 $_content-margin-x: 8px;
 $_content-type-scale: body2;
 $_title-type-scale: subtitle2;
+$_caret-size: 24px;
 
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -227,6 +228,26 @@ $_title-type-scale: subtitle2;
       @include feature-targeting.targets($feat-structure) {
         transform: scale(1);
       }
+    }
+  }
+
+  .mdc-tooltip__caret-surface-top,
+  .mdc-tooltip__caret-surface-bottom {
+    @include feature-targeting.targets($feat-structure) {
+      bottom: 0;
+      height: $_caret-size;
+      position: absolute;
+      right: 24px;
+      transform: rotate(-45deg);
+      transform-origin: bottom right;
+      width: $_caret-size;
+    }
+  }
+
+  .mdc-tooltip__caret-surface-bottom {
+    @include elevation-mixins.elevation(2, $query: $query);
+    @include feature-targeting.targets($feat-structure) {
+      z-index: -1;
     }
   }
 }
