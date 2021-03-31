@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {SpecificEventListener} from '@material/base/types';
+import {EventType, SpecificEventListener} from '@material/base/types';
 
 import {MDCTooltipAdapter} from './adapter';
 import {AnchorBoundaryType, CssClasses, events, XPosition, YPosition} from './constants';
@@ -142,6 +142,29 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
 
   isShown() {
     this.foundation.isShown();
+  }
+
+  /**
+   * Method that allows user to specify additional elements that should have a
+   * scroll event listener attached to it. This should be used in instances
+   * where the anchor element is placed inside a scrollable container (that is
+   * not the body element), and will ensure that the tooltip will stay attached
+   * to the anchor on scroll.
+   */
+  attachScrollHandler(
+      addEventListenerFn: <K extends EventType>(
+          event: K, handler: SpecificEventListener<K>) => void) {
+    this.foundation.attachScrollHandler(addEventListenerFn);
+  }
+
+  /**
+   * Must be used in conjunction with #attachScrollHandler. Removes the scroll
+   * event handler from elements on the page.
+   */
+  removeScrollHandler(
+      removeEventHandlerFn: <K extends EventType>(
+          event: K, handler: SpecificEventListener<K>) => void) {
+    this.foundation.removeScrollHandler(removeEventHandlerFn);
   }
 
   getDefaultFoundation() {

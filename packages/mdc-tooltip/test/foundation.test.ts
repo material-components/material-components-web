@@ -1912,4 +1912,104 @@ describe('MDCTooltipFoundation', () => {
         .toHaveBeenCalledWith(
             'left', `${expectedTooltipLeft + xPositionDiff}px`);
   });
+
+  it('#show registers additional user-specified scroll handlers', () => {
+    const scrollableAncestor = document.createElement('div');
+    scrollableAncestor.setAttribute('id', 'scrollable');
+    document.body.appendChild(scrollableAncestor);
+    const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
+
+    (foundation as any).repositionTooltipOnAnchorMove =
+        jasmine.createSpy('repositionTooltipOnAnchorMove');
+
+
+    foundation.attachScrollHandler((evt, handler) => {
+      scrollableAncestor.addEventListener(evt, handler);
+    });
+    foundation.show();
+
+    emitEvent(scrollableAncestor, 'scroll');
+    jasmine.clock().tick(1);
+
+    expect((foundation as any).repositionTooltipOnAnchorMove)
+        .toHaveBeenCalled();
+  });
+
+  it('#hide deregisters additional user-specified scroll handlers', () => {
+    const scrollableAncestor = document.createElement('div');
+    scrollableAncestor.setAttribute('id', 'scrollable');
+    document.body.appendChild(scrollableAncestor);
+    const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
+
+    (foundation as any).repositionTooltipOnAnchorMove =
+        jasmine.createSpy('repositionTooltipOnAnchorMove');
+
+
+    foundation.attachScrollHandler((evt, handler) => {
+      scrollableAncestor.addEventListener(evt, handler);
+    });
+    foundation.removeScrollHandler((evt, handler) => {
+      scrollableAncestor.removeEventListener(evt, handler);
+    });
+    foundation.show();
+    foundation.hide();
+
+    emitEvent(scrollableAncestor, 'scroll');
+    jasmine.clock().tick(1);
+
+    expect((foundation as any).repositionTooltipOnAnchorMove)
+        .not.toHaveBeenCalled();
+  });
+
+  it('recalculates position of tooltip if user specified ancestor is scrolled',
+     () => {
+       const anchorBoundingRect =
+           {top: 0, bottom: 35, left: 0, right: 200, width: 200, height: 35};
+       const expectedTooltipTop =
+           anchorBoundingRect.height + numbers.BOUNDED_ANCHOR_GAP;
+       const expectedTooltipLeft = 80;
+       const tooltipSize = {width: 40, height: 30};
+
+       const scrollableAncestor = document.createElement('div');
+       scrollableAncestor.setAttribute('id', 'scrollable');
+       document.body.appendChild(scrollableAncestor);
+
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       mockAdapter.getViewportWidth.and.returnValue(500);
+       mockAdapter.getViewportHeight.and.returnValue(500);
+       mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+       mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+
+       foundation.attachScrollHandler((evt, handler) => {
+         scrollableAncestor.addEventListener(evt, handler);
+       });
+       foundation.show();
+       expect(mockAdapter.setStyleProperty)
+           .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
+       expect(mockAdapter.setStyleProperty)
+           .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
+
+       const yPositionDiff = 50;
+       const xPositionDiff = 20;
+       const newAnchorBoundingRect = {
+         top: anchorBoundingRect.top + yPositionDiff,
+         bottom: anchorBoundingRect.bottom + yPositionDiff,
+         left: anchorBoundingRect.left + xPositionDiff,
+         right: anchorBoundingRect.right + xPositionDiff,
+         width: anchorBoundingRect.width,
+         height: anchorBoundingRect.height,
+       };
+
+       mockAdapter.getAnchorBoundingRect.and.returnValue(newAnchorBoundingRect);
+       emitEvent(scrollableAncestor, 'scroll');
+       jasmine.clock().tick(1);
+
+       expect(mockAdapter.setStyleProperty)
+           .toHaveBeenCalledWith(
+               'top', `${expectedTooltipTop + yPositionDiff}px`);
+       expect(mockAdapter.setStyleProperty)
+           .toHaveBeenCalledWith(
+               'left', `${expectedTooltipLeft + xPositionDiff}px`);
+     });
 });

@@ -24,7 +24,7 @@
 import {AnimationFrame} from '@material/animation/animationframe';
 import {getCorrectPropertyName} from '@material/animation/util';
 import {MDCFoundation} from '@material/base/foundation';
-import {SpecificEventListener} from '@material/base/types';
+import {EventType, SpecificEventListener} from '@material/base/types';
 import {KEY, normalizeKey} from '@material/dom/keyboard';
 
 import {MDCTooltipAdapter} from './adapter';
@@ -114,6 +114,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       SpecificEventListener<'focusout'>;
   private readonly windowScrollHandler: SpecificEventListener<'scroll'>;
   private readonly windowResizeHandler: SpecificEventListener<'resize'>;
+
+  private readonly addAncestorScrollEventListeners = new Array<() => void>();
+  private readonly removeAncestorScrollEventListeners = new Array<() => void>();
 
   constructor(adapter?: Partial<MDCTooltipAdapter>) {
     super({...MDCTooltipFoundation.defaultAdapter, ...adapter});
@@ -377,6 +380,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     this.adapter.registerWindowEventHandler('scroll', this.windowScrollHandler);
     this.adapter.registerWindowEventHandler('resize', this.windowResizeHandler);
+    // Register any additional scroll handlers
+    for (const fn of this.addAncestorScrollEventListeners) {
+      fn();
+    }
 
     this.frameId = requestAnimationFrame(() => {
       this.clearAllAnimationClasses();
@@ -428,6 +435,11 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         'resize', this.windowResizeHandler);
     this.adapter.deregisterWindowEventHandler(
         'contextmenu', this.preventContextMenuOnLongTouch);
+
+    // Deregister any additional scroll handlers
+    for (const fn of this.removeAncestorScrollEventListeners) {
+      fn();
+    }
   }
 
   handleTransitionEnd() {
@@ -797,6 +809,33 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
   }
 
+  /**
+   * Method that allows user to specify additional elements that should have a
+   * scroll event listener attached to it. This should be used in instances
+   * where the anchor element is placed inside a scrollable container, and will
+   * ensure that the tooltip will stay attached to the anchor on scroll.
+   */
+  attachScrollHandler(
+      addEventListenerFn: <K extends EventType>(
+          event: K, handler: SpecificEventListener<K>) => void) {
+    this.addAncestorScrollEventListeners.push(() => {
+      addEventListenerFn('scroll', this.windowScrollHandler);
+    });
+  }
+
+  /**
+   * Must be used in conjunction with #attachScrollHandler. Removes the scroll
+   * event handler from elements on the page.
+   */
+  removeScrollHandler(
+      removeEventHandlerFn: <K extends EventType>(
+          event: K, handler: SpecificEventListener<K>) => void) {
+    this.removeAncestorScrollEventListeners.push(() => {
+      removeEventHandlerFn('scroll', this.windowScrollHandler);
+    });
+  }
+
+
   destroy() {
     if (this.frameId) {
       cancelAnimationFrame(this.frameId);
@@ -832,6 +871,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         'scroll', this.windowScrollHandler);
     this.adapter.deregisterWindowEventHandler(
         'resize', this.windowResizeHandler);
+    for (const fn of this.removeAncestorScrollEventListeners) {
+      fn();
+    }
 
     this.animFrame.cancelAll();
   }

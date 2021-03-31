@@ -314,6 +314,8 @@ Method Signature | Description
 `setAnchorBoundaryType(type: AnchorBoundaryType) => void` | Specify whether the anchor element is `bounded` (element has an identifiable boundary such as a button) or `unbounded` (element does not have a visually declared boundary such as a text link). Tooltips are placed closer to bounded anchor elements compared to unbounded anchor elements. If no type is specified, defaults to `bounded`.
 `hide() => void` | Proxies to the foundation's `hide` method, immediately hides the tooltip if it is shown.
 `isShown() => boolean` | Returns whether or not the tooltip is shown.
+`attachScrollHandler(addEventListenerFn: (event, handler) => void)` | Provided with a method that registers an event listener on a given element, will attach a `scroll` event handler on said element when the tooltip is shown. This should be used in situations where the anchor element is placed inside a scrollable container (that is not the body element), and will keep the tooltip "attached" to the anchor element when this element is scrolled.
+`removeScrollHandler(removeEventHandlerFn: (event, handler) => void)` | Should be used in conjunction with the above `attachScrollHandler` method. Removes the additional scroll handlers attached in the above method when the tooltip is hidden.
 
 ### Usage Within Frameworks
 
