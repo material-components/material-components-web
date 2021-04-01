@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern
 
 @use '@material/animation/animation';
+@use '@material/dom/mixins' as dom-mixins;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
@@ -179,11 +180,14 @@ $_track-inactive-height: 4px;
   }
 
   .mdc-slider__track--inactive {
+    &::before {
+      @include dom-mixins.transparent-border($query: $query); // For HCM.
+    }
+
     @include feature-targeting.targets($feat-structure) {
       border-radius: 2px;
       height: $_track-inactive-height;
       left: 0;
-      outline: 1px solid transparent; // For HCM.
       top: 0;
     }
   }
@@ -214,6 +218,7 @@ $_track-inactive-height: 4px;
     @include feature-targeting.targets($feat-structure) {
       display: flex;
       height: $_thumb-ripple-size;
+      /* @noflip */
       left: -$_thumb-ripple-size / 2;
       outline: none;
       position: absolute;
@@ -320,6 +325,7 @@ $_track-inactive-height: 4px;
     @include feature-targeting.targets($feat-structure) {
       bottom: $_thumb-ripple-size / 2 + $_thumb-size / 2 +
         $_value-indicator-caret-width + 4px;
+      /* @noflip */
       left: 50%;
       pointer-events: none;
       position: absolute;
@@ -337,7 +343,6 @@ $_track-inactive-height: 4px;
       border-radius: 4px;
       display: flex;
       height: 32px;
-      outline: 1px solid transparent; // For HCM.
       padding: 0 12px;
       transform: scale(0);
       transform-origin: bottom;
@@ -352,11 +357,16 @@ $_track-inactive-height: 4px;
         bottom: -$_value-indicator-caret-width + 1;
         content: '';
         height: 0;
+        /* @noflip */
         left: 50%;
         position: absolute;
         transform: translateX(-50%);
         width: 0;
       }
+    }
+
+    &::after {
+      @include dom-mixins.transparent-border($query: $query); // For HCM.
     }
   }
 
