@@ -27,6 +27,7 @@
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl' as rtl;
+@use '@material/dom/mixins' as dom-mixins;
 @use './tooltip-theme';
 @use '@material/typography/typography';
 
@@ -124,6 +125,10 @@ $_caret-size: 24px;
   }
 
   .mdc-tooltip__surface {
+    &::before {
+      @include dom-mixins.transparent-border($query: $query);
+    }
+
     @include typography.typography(
       $_label-type-scale,
       $exclude-props: (line-height),
@@ -210,7 +215,6 @@ $_caret-size: 24px;
   .mdc-tooltip__surface-animation {
     @include feature-targeting.targets($feat-structure) {
       opacity: 0;
-      outline: 1px solid transparent;
       transform: scale(0.8);
       will-change: transform, opacity;
     }
