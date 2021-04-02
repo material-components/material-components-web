@@ -38,11 +38,11 @@
   @include _high-contrast-mode($query);
 
   .mdc-list {
-    @include _list-base($query: $query);
+    @include list-base($query: $query);
   }
 
   .mdc-list-item {
-    @include _item-base($query: $query);
+    @include item-base($query: $query);
 
     @include _one-line-item-density(
       variables.$one-line-item-density-scale,
@@ -1003,7 +1003,7 @@
   @include three-line-item-height($height, $query: $query);
 }
 
-@mixin _list-base($query: feature-targeting.all()) {
+@mixin list-base($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
@@ -1027,7 +1027,7 @@
   }
 }
 
-@mixin _item-base($query: feature-targeting.all()) {
+@mixin item-base($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
     display: flex;
