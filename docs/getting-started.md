@@ -142,6 +142,9 @@ module.exports = [{
             options: {
               // Prefer Dart Sass
               implementation: require('sass'),
+
+              // See https://github.com/webpack-contrib/sass-loader/issues/804
+              webpackImporter: false,
             },
           },
         ]
@@ -172,7 +175,7 @@ npm install @material/button
 We need to tell our `app.scss` to import the Sass files for `@material/button`. We can also use Sass mixins to customize the button. Replace your “hello world” version of `app.scss` with this code:
 
 ```scss
-@use '@material/button/styles';
+@use '@material/button/mdc-button';
 @use '@material/button';
 
 .foo-button {
@@ -188,6 +191,9 @@ We also need to configure sass-loader to understand the `@material` imports used
   options: {
     // Prefer Dart Sass
     implementation: require('sass'),
+
+    // See https://github.com/webpack-contrib/sass-loader/issues/804
+    webpackImporter: false,
     sassOptions: {
       includePaths: ['./node_modules']
     },
@@ -236,11 +242,14 @@ Then add `postcss-loader`, using `autoprefixer` as a plugin:
 {
   loader: 'sass-loader',
   options: {
-    // Prefer Dart Sass
-    implementation: require('sass'),
     sassOptions: {
       includePaths: ['./node_modules']
     },
+    // Prefer Dart Sass
+    implementation: require('sass'),
+
+    // See https://github.com/webpack-contrib/sass-loader/issues/804
+    webpackImporter: false,
   }
 },
 ```
@@ -303,7 +312,7 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
    {
      test: /\.js$/,
      loader: 'babel-loader',
-     options: {
+     query: {
        presets: ['@babel/preset-env'],
      },
    }
@@ -347,6 +356,9 @@ module.exports = {
             options: {
               // Prefer Dart Sass
               implementation: require('sass'),
+
+              // See https://github.com/webpack-contrib/sass-loader/issues/804
+              webpackImporter: false,
               sassOptions: {
                 includePaths: ['./node_modules'],
               },
@@ -357,7 +369,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        options: {
+        query: {
           presets: ['@babel/preset-env'],
         },
       }
@@ -461,6 +473,9 @@ Then update your `sass-loader` config to the following:
    options: {   
      // Prefer Dart Sass
      implementation: require('sass'),
+
+     // See https://github.com/webpack-contrib/sass-loader/issues/804
+     webpackImporter: false,
      sassOptions: {
        importer: materialImporter,
        includePaths: ['./node_modules'],

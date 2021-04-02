@@ -121,12 +121,14 @@
     @include feature-targeting.targets($feat-structure) {
       fill: currentColor;
       flex-shrink: 0;
+      pointer-events: none;
     }
   }
 
   .mdc-list-item__end {
     @include feature-targeting.targets($feat-structure) {
       flex-shrink: 0;
+      pointer-events: none;
     }
   }
 
@@ -135,6 +137,7 @@
     @include feature-targeting.targets($feat-structure) {
       align-self: center;
       flex: 1;
+      pointer-events: none;
     }
 
     .mdc-list-item--with-two-lines &,
