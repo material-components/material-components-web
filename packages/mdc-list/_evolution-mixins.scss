@@ -38,11 +38,11 @@
   @include _high-contrast-mode($query);
 
   .mdc-list {
-    @include _list-base($query: $query);
+    @include list-base($query: $query);
   }
 
   .mdc-list-item {
-    @include _item-base($query: $query);
+    @include item-base($query: $query);
     @include item-spacing(16px, $query: $query);
 
     @include _one-line-item-density(
@@ -93,7 +93,7 @@
 
     // For components using aria-activedescendant, the focus pseudoclass is
     // never applied and use `.mdc-ripple-upgraded--background-focused` instead.
-    &:not(.mdc-list-item--selected):focus::before, // lint-disable-focus-psuedo-selector
+    &:not(.mdc-list-item--selected):focus::before, // lint-disable-focus-pseudo-selector
     &.mdc-ripple-upgraded--background-focused::before {
       @include dom-mixins.transparent-border($query: $query);
     }
@@ -1015,7 +1015,7 @@
   @include three-line-item-height($height, $query: $query);
 }
 
-@mixin _list-base($query: feature-targeting.all()) {
+@mixin list-base($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
@@ -1032,14 +1032,14 @@
     padding: 8px 0;
     list-style-type: none;
 
-    &:focus // lint-disable-focus-psuedo-selector
+    &:focus // lint-disable-focus-pseudo-selector
     {
       outline: none;
     }
   }
 }
 
-@mixin _item-base($query: feature-targeting.all()) {
+@mixin item-base($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
     display: flex;
@@ -1049,7 +1049,7 @@
     overflow: hidden;
     padding: 0;
 
-    &:focus // lint-disable-focus-psuedo-selector
+    &:focus // lint-disable-focus-pseudo-selector
     {
       outline: none;
     }
