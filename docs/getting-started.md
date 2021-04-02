@@ -461,9 +461,6 @@ Then update your `sass-loader` config to the following:
    options: {   
      // Prefer Dart Sass
      implementation: require('sass'),
-
-     // See https://github.com/webpack-contrib/sass-loader/issues/804
-     webpackImporter: false,
      sassOptions: {
        importer: materialImporter,
        includePaths: ['./node_modules'],
