@@ -235,6 +235,7 @@ $_caret-size: 24px;
 
   .mdc-tooltip__caret-surface-top,
   .mdc-tooltip__caret-surface-bottom {
+    @include elevation-mixins.overlay-dimensions(100%, $query: $query);
     @include feature-targeting.targets($feat-structure) {
       bottom: 0;
       height: $_caret-size;
@@ -249,6 +250,7 @@ $_caret-size: 24px;
   .mdc-tooltip__caret-surface-bottom {
     @include elevation-mixins.elevation(2, $query: $query);
     @include feature-targeting.targets($feat-structure) {
+      outline: 1px solid transparent;
       z-index: -1;
     }
   }
