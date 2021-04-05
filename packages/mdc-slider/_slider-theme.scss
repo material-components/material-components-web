@@ -161,6 +161,19 @@ $tick-mark-opacity: 0.6;
   }
 }
 
+/// Customizes thumb color when thumb is activated (hover, focused, or pressed
+/// state).
+///
+/// @param {Color} $color - The thumb's color
+@mixin thumb-activated-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-slider__thumb:hover,
+  .mdc-slider__thumb--focused {
+    @include _set-thumb-color($color, $query);
+  }
+}
+
 /// Customizes color of active tick marks, using a Color or state Map.
 /// - To set only the default color, provide a single Color.
 /// - To set one or more state colors, provide a state Map with optional keys.

@@ -294,6 +294,19 @@ describe('MDCSliderFoundation', () => {
     });
   });
 
+  describe('Focused thumb style', () => {
+    it('adds/removes focused style from thumb on input focus/blur', () => {
+      const {foundation, mockAdapter} = setUpAndInit();
+      foundation.handleInputFocus(Thumb.START);
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_FOCUSED, Thumb.START);
+
+      foundation.handleInputBlur(Thumb.START);
+      expect(mockAdapter.removeThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_FOCUSED, Thumb.START);
+    });
+  });
+
   describe('Value updates via user events', () => {
     it('throws error if move event occurs with no preceding down event', () => {
       const {foundation} = setUpAndInit();

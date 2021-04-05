@@ -498,8 +498,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
         thumb === Thumb.START ? this.valueStart : this.value, thumb);
   }
 
-  /** Shows value indicator on thumb(s). */
+  /** Shows activated state and value indicator on thumb(s). */
   handleInputFocus(thumb: Thumb) {
+    this.adapter.addThumbClass(cssClasses.THUMB_FOCUSED, thumb);
     if (!this.isDiscrete) return;
 
     this.adapter.addThumbClass(cssClasses.THUMB_WITH_INDICATOR, thumb);
@@ -509,8 +510,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     }
   }
 
-  /** Removes value indicator from thumb(s). */
+  /** Removes activated state and value indicator from thumb(s). */
   handleInputBlur(thumb: Thumb) {
+    this.adapter.removeThumbClass(cssClasses.THUMB_FOCUSED, thumb);
     if (!this.isDiscrete) return;
 
     this.adapter.removeThumbClass(cssClasses.THUMB_WITH_INDICATOR, thumb);

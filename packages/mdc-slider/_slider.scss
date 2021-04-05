@@ -232,7 +232,9 @@ $_track-inactive-height: 4px;
       }
     }
 
-    &--top .mdc-slider__thumb-knob {
+    &--top .mdc-slider__thumb-knob,
+    &--top.mdc-slider__thumb:hover .mdc-slider__thumb-knob,
+    &--top.mdc-slider__thumb--focused .mdc-slider__thumb-knob {
       @include feature-targeting.targets($feat-structure) {
         border: 1px solid;
         box-sizing: content-box;
