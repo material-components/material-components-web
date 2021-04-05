@@ -45,7 +45,6 @@
 @use 'icon/mixins' as icon-mixins;
 @use 'icon/variables' as icon-variables;
 @use './variables';
-@use './functions';
 @use '@material/rtl/mixins' as rtl-mixins;
 
 @mixin core-styles($query: feature-targeting.all()) {
@@ -2186,7 +2185,7 @@
   }
 
   @include feature-targeting.targets($feat-animation) {
-    transition: functions.transition(opacity);
+    transition: helper-text-mixins.transition(opacity);
   }
 }
 
@@ -2230,7 +2229,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-animation) {
-    transition: functions.transition(opacity, $duration: 67ms);
+    transition: helper-text-mixins.transition(opacity, $duration: 67ms);
   }
 
   @include feature-targeting.targets($feat-structure) {
