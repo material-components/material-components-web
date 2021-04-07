@@ -22,6 +22,7 @@
     "@material/base": "^10.0.0",
     "@material/density": "^10.0.0",
     "@material/dom": "^10.0.0",
+    "@material/dom": "^10.0.0",
     "@material/elevation": "^10.0.0",
     "@material/feature-targeting": "^10.0.0",
     "@material/ripple": "^10.0.0",

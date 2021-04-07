@@ -32,6 +32,7 @@
 @use '@material/theme/theme';
 @use './functions';
 @use './variables';
+@use '@material/dom/mixins' as dom-mixins;
 
 //
 // Public
@@ -394,4 +395,13 @@
 @mixin native-control-disabled_ {
   cursor: default;
   pointer-events: none;
+}
+
+///
+/// Includes ad-hoc high contrast mode support.
+///
+@mixin high-contrast-mode-shim($query: feature-targeting.all()) {
+  & .mdc-ripple-upgraded--background-focused .mdc-switch__thumb::before {
+    @include dom-mixins.transparent-border($border-width: 3px);
+  }
 }
