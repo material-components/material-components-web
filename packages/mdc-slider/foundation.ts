@@ -54,8 +54,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   // initialization) have been removed.
   private initialStylesRemoved = false;
 
-  private min!: number;       // Assigned in init()
-  private max!: number;       // Assigned in init()
+  private min!: number;  // Assigned in init()
+  private max!: number;  // Assigned in init()
   // If `isRange`, this is the value of Thumb.START. Otherwise, defaults to min.
   private valueStart!: number;  // Assigned in init()
   // If `isRange`, this it the value of Thumb.END. Otherwise, it is the
@@ -251,6 +251,19 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.deregisterEventHandlers();
   }
 
+  setMin(value: number) {
+    this.min = value;
+    if (!this.isRange) {
+      this.valueStart = value;
+    }
+    this.updateUI();
+  }
+
+  setMax(value: number) {
+    this.max = value;
+    this.updateUI();
+  }
+
   getMin() {
     return this.min;
   }
@@ -309,8 +322,26 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.updateValue(valueStart, Thumb.START);
   }
 
+  setStep(value: number) {
+    this.step = value;
+    this.numDecimalPlaces = getNumDecimalPlaces(value);
+
+    this.updateUI();
+  }
+
+  setIsDiscrete(value: boolean) {
+    this.isDiscrete = value;
+    this.updateValueIndicatorUI();
+    this.updateTickMarksUI();
+  }
+
   getStep() {
     return this.step;
+  }
+
+  setHasTickMarks(value: boolean) {
+    this.hasTickMarks = value;
+    this.updateTickMarksUI();
   }
 
   getDisabled() {
