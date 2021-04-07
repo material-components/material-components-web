@@ -237,12 +237,8 @@ $_caret-size: 24px;
   .mdc-tooltip__caret-surface-bottom {
     @include elevation-mixins.overlay-dimensions(100%, $query: $query);
     @include feature-targeting.targets($feat-structure) {
-      bottom: 0;
-      height: $_caret-size;
       position: absolute;
-      right: 24px;
-      transform: rotate(-45deg);
-      transform-origin: bottom right;
+      height: $_caret-size;
       width: $_caret-size;
     }
   }

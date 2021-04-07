@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/base/types';
 
 import {MDCTooltipAdapter} from './adapter';
-import {AnchorBoundaryType, CssClasses, events, XPosition, YPosition} from './constants';
+import {AnchorBoundaryType, CssClasses, events, PositionWithCaret, XPosition, YPosition} from './constants';
 import {MDCTooltipFoundation} from './foundation';
 
 export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
@@ -33,7 +33,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     return new MDCTooltip(root);
   }
 
-  private anchorElem!: HTMLElement;        // assigned in initialize
+  private anchorElem!: HTMLElement;       // assigned in initialize
   private isTooltipRich!: boolean;        // assigned in initialSyncWithDOM
   private isTooltipPersistent!: boolean;  // assigned in initialSyncWithDOM
 
@@ -128,7 +128,11 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     super.destroy();
   }
 
-  setTooltipPosition(position: {xPos?: XPosition, yPos?: YPosition}) {
+  setTooltipPosition(position: {
+    xPos?: XPosition,
+    yPos?: YPosition,
+    withCaretPos?: PositionWithCaret
+  }) {
     this.foundation.setTooltipPosition(position);
   }
 
@@ -252,6 +256,40 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       },
       notifyHidden: () => {
         this.emit(events.HIDDEN, {});
+      },
+      getTooltipCaretSize: () => {
+        const caret = this.root.querySelector<HTMLElement>(
+            `.${CssClasses.TOOLTIP_CARET_TOP}`);
+        if (!caret) {
+          return null;
+        }
+
+        return {width: caret.offsetWidth, height: caret.offsetHeight};
+      },
+      setTooltipCaretStyle: (propertyName, value) => {
+        const topCaret = this.root.querySelector<HTMLElement>(
+            `.${CssClasses.TOOLTIP_CARET_TOP}`);
+        const bottomCaret = this.root.querySelector<HTMLElement>(
+            `.${CssClasses.TOOLTIP_CARET_BOTTOM}`);
+
+        if (!topCaret || !bottomCaret) {
+          return;
+        }
+
+        topCaret.style.setProperty(propertyName, value);
+        bottomCaret.style.setProperty(propertyName, value);
+      },
+      clearTooltipCaretStyles: () => {
+        const topCaret = this.root.querySelector<HTMLElement>(
+            `.${CssClasses.TOOLTIP_CARET_TOP}`);
+        const bottomCaret = this.root.querySelector<HTMLElement>(
+            `.${CssClasses.TOOLTIP_CARET_BOTTOM}`);
+
+        if (!topCaret || !bottomCaret) {
+          return;
+        }
+        topCaret.removeAttribute('style');
+        bottomCaret.removeAttribute('style');
       },
     };
 

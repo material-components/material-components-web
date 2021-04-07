@@ -25,13 +25,128 @@ import {createMouseEvent, emitEvent} from '../../../testing/dom/events';
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {MDCTooltipAdapter} from '../adapter';
-import {AnchorBoundaryType, attributes, CssClasses, numbers, XPosition, YPosition} from '../constants';
+import {AnchorBoundaryType, attributes, CssClasses, numbers, PositionWithCaret, XPosition, YPosition} from '../constants';
 import {MDCTooltipFoundation} from '../foundation';
 
 const ESC_EVENTS = [
   {type: 'keydown', key: 'Escape', target: {}} as KeyboardEvent,
   {type: 'keydown', keyCode: 27, target: {}} as KeyboardEvent,
 ];
+
+const CARET_SIZE = 24;
+const CARET_DIAGONAL = CARET_SIZE * Math.sqrt(2);
+const RICH_TOOLTIP_WIDTH = '300px';
+const RICH_TOOLTIP_HEIGHT = '140px';
+const CARET_POSITION_STYLES = new Map([
+  [
+    PositionWithCaret.ABOVE_START, {
+      yAlignment: 'bottom',
+      xAlignment: 'left',
+      yAxisPx: '0',
+      xAxisPx: `${numbers.CARET_INDENTATION}px`,
+      rotation: '45deg'
+    }
+  ],
+  [
+    PositionWithCaret.ABOVE_CENTER, {
+      yAlignment: 'bottom',
+      xAlignment: 'left',
+      yAxisPx: '0',
+      xAxisPx: `calc((${RICH_TOOLTIP_WIDTH} - ${CARET_DIAGONAL}px) / 2)`,
+      rotation: '45deg'
+    }
+  ],
+  [
+    PositionWithCaret.ABOVE_END, {
+      yAlignment: 'bottom',
+      xAlignment: 'right',
+      yAxisPx: '0',
+      xAxisPx: `${numbers.CARET_INDENTATION}px`,
+      rotation: '-45deg'
+    }
+  ],
+  [
+    PositionWithCaret.TOP_SIDE_START, {
+      yAlignment: 'top',
+      xAlignment: 'right',
+      yAxisPx: `${numbers.CARET_INDENTATION}px`,
+      xAxisPx: '0',
+      rotation: '-45deg'
+    }
+  ],
+  [
+    PositionWithCaret.CENTER_SIDE_START, {
+      yAlignment: 'top',
+      xAlignment: 'right',
+      yAxisPx: `calc((${RICH_TOOLTIP_HEIGHT} - ${CARET_DIAGONAL}px) / 2)`,
+      xAxisPx: '0',
+      rotation: '-45deg'
+    }
+  ],
+  [
+    PositionWithCaret.BOTTOM_SIDE_START, {
+      yAlignment: 'bottom',
+      xAlignment: 'right',
+      yAxisPx: `${numbers.CARET_INDENTATION}px`,
+      xAxisPx: '0',
+      rotation: '45deg'
+    }
+  ],
+  [
+    PositionWithCaret.TOP_SIDE_END, {
+      yAlignment: 'top',
+      xAlignment: 'left',
+      yAxisPx: `${numbers.CARET_INDENTATION}px`,
+      xAxisPx: '0',
+      rotation: '45deg'
+    }
+  ],
+  [
+    PositionWithCaret.CENTER_SIDE_END, {
+      yAlignment: 'top',
+      xAlignment: 'left',
+      yAxisPx: `calc((${RICH_TOOLTIP_HEIGHT} - ${CARET_DIAGONAL}px) / 2)`,
+      xAxisPx: '0',
+      rotation: '45deg'
+    }
+  ],
+  [
+    PositionWithCaret.BOTTOM_SIDE_END, {
+      yAlignment: 'bottom',
+      xAlignment: 'left',
+      yAxisPx: `${numbers.CARET_INDENTATION}px`,
+      xAxisPx: '0',
+      rotation: '-45deg'
+    }
+  ],
+  [
+    PositionWithCaret.BELOW_START, {
+      yAlignment: 'top',
+      xAlignment: 'left',
+      yAxisPx: '0',
+      xAxisPx: `${numbers.CARET_INDENTATION}px`,
+      rotation: '-45deg'
+    }
+  ],
+  [
+    PositionWithCaret.BELOW_CENTER, {
+      yAlignment: 'top',
+      xAlignment: 'left',
+      yAxisPx: '0',
+      xAxisPx: `calc((${RICH_TOOLTIP_WIDTH} - ${CARET_DIAGONAL}px) / 2)`,
+      rotation: '-45deg'
+    }
+  ],
+  [
+    PositionWithCaret.BELOW_END, {
+      yAlignment: 'top',
+      xAlignment: 'right',
+      yAxisPx: '0',
+      xAxisPx: `${numbers.CARET_INDENTATION}px`,
+      rotation: '45deg'
+    }
+  ]
+]);
 
 // Constant for the animationFrame mock found in setUpMdcTestEnvironment
 const ANIMATION_FRAME = 1;
@@ -90,8 +205,10 @@ function expectTooltipNotToHaveBeenHidden(
 
 function setUpFoundationTestForRichTooltip(
     tooltipFoundation: typeof MDCTooltipFoundation,
-    {isInteractive,
-     isPersistent}: {isInteractive?: boolean, isPersistent?: boolean} = {}) {
+    {isInteractive, isPersistent, hasCaret}:
+        {isInteractive?: boolean,
+         isPersistent?: boolean,
+         hasCaret?: boolean} = {}) {
   const {foundation, mockAdapter} = setUpFoundationTest(tooltipFoundation);
 
   mockAdapter.hasClass.withArgs(CssClasses.RICH).and.returnValue(true);
@@ -101,6 +218,9 @@ function setUpFoundationTestForRichTooltip(
       .and.returnValue(isInteractive ? 'false' : null);
   mockAdapter.getAnchorAttribute.withArgs(attributes.ARIA_HASPOPUP)
       .and.returnValue(isInteractive ? 'dialog' : 'false');
+  mockAdapter.getAttribute.withArgs(attributes.HAS_CARET)
+      .and.returnValue(hasCaret ? 'true' : 'false');
+
   foundation.init();
 
   return {foundation, mockAdapter};
@@ -139,6 +259,9 @@ describe('MDCTooltipFoundation', () => {
       'registerWindowEventHandler',
       'deregisterWindowEventHandler',
       'notifyHidden',
+      'getTooltipCaretSize',
+      'setTooltipCaretStyle',
+      'clearTooltipCaretStyles',
     ]);
   });
 
@@ -2012,4 +2135,33 @@ describe('MDCTooltipFoundation', () => {
            .toHaveBeenCalledWith(
                'left', `${expectedTooltipLeft + xPositionDiff}px`);
      });
+
+  for (const pos of CARET_POSITION_STYLES.keys()) {
+    it(`correctly positions a ${pos} aligned caret`, () => {
+      const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+          MDCTooltipFoundation, {hasCaret: true});
+
+      mockAdapter.getComputedStyleProperty.withArgs('width').and.returnValue(
+          RICH_TOOLTIP_WIDTH);
+      mockAdapter.getComputedStyleProperty.withArgs('height').and.returnValue(
+          RICH_TOOLTIP_HEIGHT);
+      mockAdapter.getTooltipCaretSize.and.returnValue(
+          {width: CARET_SIZE, height: CARET_SIZE});
+
+      foundation.setTooltipPosition({withCaretPos: pos});
+      foundation.show();
+
+      const styleValues = CARET_POSITION_STYLES.get(pos)!;
+      expect(mockAdapter.setTooltipCaretStyle)
+          .toHaveBeenCalledWith(styleValues.yAlignment, styleValues.yAxisPx);
+      expect(mockAdapter.setTooltipCaretStyle)
+          .toHaveBeenCalledWith(styleValues.xAlignment, styleValues.xAxisPx);
+      expect(mockAdapter.setTooltipCaretStyle)
+          .toHaveBeenCalledWith('transform', `rotate(${styleValues.rotation})`);
+      expect(mockAdapter.setTooltipCaretStyle)
+          .toHaveBeenCalledWith(
+              'transform-origin',
+              `${styleValues.yAlignment} ${styleValues.xAlignment}`);
+    });
+  }
 });

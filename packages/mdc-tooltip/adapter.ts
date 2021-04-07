@@ -182,4 +182,20 @@ export interface MDCTooltipAdapter {
    * to wait for the hide animation to complete.
    */
   notifyHidden(): void;
+
+  /**
+   * @return the width and height of the tooltip caret element if it exists.
+   */
+  getTooltipCaretSize(): {width: number, height: number}|null;
+
+  /**
+   * Sets the property value of the given style property on both the caret-top
+   * and caret-bottom elements.
+   */
+  setTooltipCaretStyle(propertyName: string, value: string): void;
+
+  /**
+   * Clears all inline styles set on the caret-top and caret-bottom elements.
+   */
+  clearTooltipCaretStyles(): void;
 }
