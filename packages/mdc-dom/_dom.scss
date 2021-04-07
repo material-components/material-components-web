@@ -45,6 +45,7 @@
     border: $border-width $border-style transparent;
     border-radius: inherit;
     content: '';
+    pointer-events: none;
   }
 }
 
