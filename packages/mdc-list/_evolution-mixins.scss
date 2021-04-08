@@ -459,47 +459,27 @@
       // independently.
       background-clip: content-box;
     }
-
-    @include padded-divider-leading-offset(16px, $query: $query);
-    @include inset-divider-leading-offset(16px, $query: $query);
-    @include inset-divider-trailing-offset(16px, $query: $query);
   }
 
-  .mdc-list-divider--with-leading-icon {
-    @include inset-divider-leading-offset(72px, $query: $query);
-  }
-
-  .mdc-list-divider--with-leading-image {
-    @include inset-divider-leading-offset(88px, $query: $query);
-  }
-
-  .mdc-list-divider--with-leading-thumbnail {
-    @include inset-divider-leading-offset(72px, $query: $query);
+  // The base inset variant corresponds to the item's padding.
+  .mdc-list-divider,
+  .mdc-list-divider--with-leading-text,
+  .mdc-list-divider--with-leading-icon,
+  .mdc-list-divider--with-leading-image,
+  .mdc-list-divider--with-leading-thumbnail,
+  .mdc-list-divider--with-leading-avatar,
+  .mdc-list-divider--with-leading-checkbox,
+  .mdc-list-divider--with-leading-switch,
+  .mdc-list-divider--with-leading-radio {
+    @include divider-leading-inset(16px, $query: $query);
+    @include divider-trailing-inset(16px, $query: $query);
   }
 
   .mdc-list-divider--with-leading-video {
-    @include padded-divider-leading-offset(0px, $query: $query);
-    @include inset-divider-leading-offset(116px, $query: $query);
+    @include divider-leading-inset(0px, $query: $query);
   }
 
-  .mdc-list-divider--with-leading-avatar {
-    @include inset-divider-leading-offset(72px, $query: $query);
-  }
-
-  .mdc-list-divider--with-leading-checkbox {
-    @include inset-divider-leading-offset(72px, $query: $query);
-  }
-
-  .mdc-list-divider--with-leading-switch {
-    @include inset-divider-leading-offset(84px, $query: $query);
-  }
-
-  .mdc-list-divider--with-leading-radio {
-    @include inset-divider-leading-offset(72px, $query: $query);
-  }
-
-  // This is needed to ensure that left-to-right padding doesn't override right-
-  // to-left padding.
+  // This is needed to ensure that default padding isn't applied in RTL locales.
   .mdc-list-divider {
     @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.rtl {
@@ -870,32 +850,22 @@
   }
 }
 
-@mixin inset-divider-leading-offset($offset, $query: feature-targeting.all()) {
+@mixin divider-leading-inset($inset, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   &.mdc-list-divider--with-leading-inset {
     @include feature-targeting.targets($feat-structure) {
       // We rely on auto to avoid clobbering the opposite padding.
-      @include rtl-mixins.reflexive-property(padding, $offset, auto);
+      @include rtl-mixins.reflexive-property(padding, $inset, auto);
     }
   }
 }
 
-@mixin padded-divider-leading-offset($offset, $query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-  &.mdc-list-divider--with-leading-padding {
-    @include feature-targeting.targets($feat-structure) {
-      // We rely on auto to avoid clobbering the opposite padding.
-      @include rtl-mixins.reflexive-property(padding, $offset, auto);
-    }
-  }
-}
-
-@mixin inset-divider-trailing-offset($offset, $query: feature-targeting.all()) {
+@mixin divider-trailing-inset($inset, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   &.mdc-list-divider--with-trailing-inset {
     @include feature-targeting.targets($feat-structure) {
       // We rely on auto to avoid clobbering the opposite padding.
-      @include rtl-mixins.reflexive-property(padding, auto, $offset);
+      @include rtl-mixins.reflexive-property(padding, auto, $inset);
     }
   }
 }
