@@ -23,6 +23,7 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use '@material/animation/animation';
 @use '@material/animation/variables';
 @use '@material/theme/theme';
 @use '@material/typography/typography';
@@ -47,7 +48,7 @@
     }
 
     @include feature-targeting.targets($feat-animation) {
-      transition: transition(opacity);
+      transition: animation.standard(opacity, 150ms);
     }
   }
 
@@ -113,8 +114,4 @@
       @include theme.property(color, $color);
     }
   }
-}
-
-@function transition($property, $duration: 150ms) {
-  @return #{$property} #{$duration} variables.$standard-curve-timing-function;
 }

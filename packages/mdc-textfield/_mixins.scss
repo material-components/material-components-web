@@ -26,6 +26,7 @@
 
 @use 'sass:list';
 @use 'sass:meta';
+@use '@material/animation/animation';
 @use '@material/density/functions' as density-functions;
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/floating-label/variables' as floating-label-variables;
@@ -2185,7 +2186,7 @@
   }
 
   @include feature-targeting.targets($feat-animation) {
-    transition: helper-text-mixins.transition(opacity);
+    transition: animation.standard(opacity, 150ms);
   }
 }
 
@@ -2229,7 +2230,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-animation) {
-    transition: helper-text-mixins.transition(opacity, $duration: 67ms);
+    transition: animation.standard(opacity, 67ms);
   }
 
   @include feature-targeting.targets($feat-structure) {
