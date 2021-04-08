@@ -23,13 +23,14 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
 
+// stylelint-disable selector-class-pattern -- MDC internal usage.
+
 $space-between-chips: 8px;
 
 @mixin space-between-chips($space, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-evolution-chip:nth-child(n + 2),
-  .mdc-touch-target-wrapper:nth-child(n + 2) {
+  .mdc-evolution-chip:nth-child(n + 2) {
     @include feature-targeting.targets($feat-structure) {
       @include rtl.reflexive-property(margin, $space, 0);
     }
