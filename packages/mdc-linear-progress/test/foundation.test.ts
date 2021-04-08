@@ -299,6 +299,79 @@ describe('MDCLinearProgressFoundation', () => {
     expect(mockAdapter.setBufferBarStyle).not.toHaveBeenCalled();
   });
 
+  it('#setMax with max value > progress preserves progress value', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
+        .and.returnValue(false);
+    foundation.init();
+    foundation.setMax(7);
+    foundation.setProgress(1.5);
+    foundation.setBuffer(1.8);
+    foundation.setMax(3);
+    expect(foundation.getMax()).toEqual(3);
+    expect(foundation.getProgress()).toEqual(1.5);
+    expect(mockAdapter.setPrimaryBarStyle)
+        .toHaveBeenCalledWith('transform', 'scaleX(0.5)');
+    expect(mockAdapter.setBufferBarStyle)
+        .toHaveBeenCalledWith('flex-basis', '60%');
+  });
+
+  it('#setMax with max value < progress clamps progress value', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
+        .and.returnValue(false);
+    foundation.init();
+    foundation.setMax(7);
+    foundation.setProgress(6);
+    foundation.setBuffer(5);
+    foundation.setMax(3);
+    expect(foundation.getMax()).toEqual(3);
+    expect(foundation.getProgress()).toEqual(3);
+    expect(mockAdapter.setPrimaryBarStyle)
+        .toHaveBeenCalledWith('transform', 'scaleX(1)');
+    expect(mockAdapter.setBufferBarStyle)
+        .toHaveBeenCalledWith('flex-basis', '100%');
+  });
+
+  it('#setMax updates aria attributes and subsequent style mods', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
+        .and.returnValue(false);
+    foundation.init();
+    foundation.setMax(7);
+    expect(foundation.getMax()).toEqual(7);
+    expect(mockAdapter.setAttribute)
+        .toHaveBeenCalledWith(strings.ARIA_VALUEMAX, '7');
+
+    foundation.setProgress(3.85);
+    foundation.setBuffer(3.5);
+    expect(mockAdapter.setPrimaryBarStyle)
+        .toHaveBeenCalledWith('transform', 'scaleX(0.55)');
+    expect(mockAdapter.setBufferBarStyle)
+        .toHaveBeenCalledWith('flex-basis', '50%');
+    expect(mockAdapter.setAttribute)
+        .toHaveBeenCalledWith(strings.ARIA_VALUENOW, '3.85');
+  });
+
+  it('#setMax does not set aria attrs if indeterminate', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
+        .and.returnValue(true);
+    foundation.init();
+    foundation.setProgress(0.6);
+    foundation.setMax(7);
+    expect(mockAdapter.setAttribute)
+        .not.toHaveBeenCalledWith(strings.ARIA_VALUEMAX, '7');
+  });
+
+  it('#setMax throws if supplied value is invalid', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.hasClass.withArgs(cssClasses.INDETERMINATE_CLASS)
+        .and.returnValue(true);
+    foundation.init();
+    expect(() => foundation.setMax(-1)).toThrow();
+  });
+
   it('#open removes class and aria-hidden', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.init();

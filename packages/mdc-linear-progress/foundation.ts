@@ -59,6 +59,7 @@ export class MDCLinearProgressFoundation extends
   private determinate!: boolean;
   private progress!: number;
   private buffer!: number;
+  private max!: number;
   private observer: MDCResizeObserver|null = null;
 
   constructor(adapter?: Partial<MDCLinearProgressAdapter>) {
@@ -69,7 +70,8 @@ export class MDCLinearProgressFoundation extends
     this.determinate = !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
     this.adapter.addClass(cssClasses.ANIMATION_READY_CLASS);
     this.progress = 0;
-    this.buffer = 1;
+    this.max = 1;
+    this.buffer = this.max;
 
     this.observer = this.adapter.attachResizeObserver((entries) => {
       if (this.determinate) {
@@ -95,7 +97,7 @@ export class MDCLinearProgressFoundation extends
       this.adapter.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.adapter.setAttribute(
           strings.ARIA_VALUENOW, this.progress.toString());
-      this.adapter.setAttribute(strings.ARIA_VALUEMAX, '1');
+      this.adapter.setAttribute(strings.ARIA_VALUEMAX, `${this.max}`);
       this.adapter.setAttribute(strings.ARIA_VALUEMIN, '0');
       this.setPrimaryBarProgress(this.progress);
       this.setBufferBarProgress(this.buffer);
@@ -111,8 +113,8 @@ export class MDCLinearProgressFoundation extends
     this.adapter.removeAttribute(strings.ARIA_VALUENOW);
     this.adapter.removeAttribute(strings.ARIA_VALUEMAX);
     this.adapter.removeAttribute(strings.ARIA_VALUEMIN);
-    this.setPrimaryBarProgress(1);
-    this.setBufferBarProgress(1);
+    this.setPrimaryBarProgress(this.max);
+    this.setBufferBarProgress(this.max);
   }
 
   isDeterminate() {
@@ -140,6 +142,29 @@ export class MDCLinearProgressFoundation extends
 
   getBuffer() {
     return this.buffer;
+  }
+
+  setMax(max: number) {
+    if (max <= 0) {
+      throw new Error(
+          'MDCLinearProgressFoundation: max value must be positive');
+    }
+
+    this.progress = Math.min(this.progress, max);
+    this.buffer = Math.min(this.buffer, max);
+    this.max = max;
+    if (!this.determinate) {
+      return;
+    }
+
+    this.adapter.setAttribute(strings.ARIA_VALUEMAX, max.toString());
+    this.adapter.setAttribute(strings.ARIA_VALUENOW, `${this.progress}`);
+    this.setPrimaryBarProgress(this.progress);
+    this.setBufferBarProgress(this.buffer);
+  }
+
+  getMax(): number {
+    return this.max;
   }
 
   open() {
@@ -183,7 +208,7 @@ export class MDCLinearProgressFoundation extends
   }
 
   private setPrimaryBarProgress(progressValue: number) {
-    const value = `scaleX(${progressValue})`;
+    const value = `scaleX(${progressValue / this.max})`;
 
     // Accessing `window` without a `typeof` check will throw on Node
     // environments.
@@ -194,7 +219,7 @@ export class MDCLinearProgressFoundation extends
   }
 
   private setBufferBarProgress(progressValue: number) {
-    const value = `${progressValue * 100}%`;
+    const value = `${(progressValue / this.max) * 100}%`;
     this.adapter.setBufferBarStyle(strings.FLEX_BASIS, value);
   }
 

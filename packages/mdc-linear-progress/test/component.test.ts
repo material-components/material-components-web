@@ -131,6 +131,37 @@ describe('MDCLinearProgress', () => {
     expect('50%').toEqual(buffer.style.flexBasis as string);
   });
 
+  it('set max', () => {
+    const {root, component} = setupTest();
+
+    component.progress = 0.5;
+    component.buffer = 0.8;
+    component.max = 10;
+
+    const primaryBar =
+        root.querySelector(
+            MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR) as
+        HTMLElement;
+    // External GitHub TS compiler insists that `primaryBar.style.transform`
+    // could be null
+    // tslint:disable-next-line:no-unnecessary-type-assertion
+    expect('scaleX(0.05)').toEqual(primaryBar.style.transform as string);
+    expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUENOW))
+        .toEqual('0.5');
+    expect(root.getAttribute(MDCLinearProgressFoundation.strings.ARIA_VALUEMAX))
+        .toEqual('10');
+
+    const buffer =
+        root.querySelector(
+            MDCLinearProgressFoundation.strings.BUFFER_BAR_SELECTOR) as
+        HTMLElement;
+    // External GitHub TS compiler insists that `buffer.style.transform` could
+    // be null
+    // tslint:disable-next-line:no-unnecessary-type-assertion
+    expect('8%').toEqual(buffer.style.flexBasis as string);
+  });
+
+
   it('open and close', () => {
     const {root, component} = setupTest();
 

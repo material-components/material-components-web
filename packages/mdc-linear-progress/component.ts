@@ -45,6 +45,10 @@ export class MDCLinearProgress extends
     this.foundation.setBuffer(value);
   }
 
+  set max(value: number) {
+    this.foundation.setMax(value);
+  }
+
   open() {
     this.foundation.open();
   }
