@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {AnimationFrame} from '@material/animation/animationframe';
 import {getCorrectPropertyName} from '@material/animation/util';
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
@@ -28,6 +29,10 @@ import {SpecificEventListener} from '@material/base/types';
 import {MDCSliderAdapter} from './adapter';
 import {attributes, cssClasses, numbers} from './constants';
 import {Thumb, TickMark} from './types';
+
+enum AnimationKeys {
+  SLIDER_UPDATE = 'slider_update'
+}
 
 // Accessing `window` without a `typeof` check will throw on Node environments.
 const HAS_WINDOW = typeof window !== 'undefined';
@@ -88,6 +93,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   // Width of the end thumb knob.
   private endThumbKnobWidth = 0;
 
+  private readonly animFrame: AnimationFrame;
+
   // Assigned in #initialize.
   private mousedownOrTouchstartListener!:
       SpecificEventListener<'mousedown'|'touchstart'>;
@@ -119,6 +126,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
   constructor(adapter?: Partial<MDCSliderAdapter>) {
     super({...MDCSliderFoundation.defaultAdapter, ...adapter});
+
+    this.animFrame = new AnimationFrame();
   }
 
   static get defaultAdapter(): MDCSliderAdapter {
@@ -778,7 +787,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
           (this.valueStart - min) / (max - min) * this.rect.width;
       const thumbRightPos = thumbLeftPos + rangePx;
 
-      requestAnimationFrame(() => {
+      this.animFrame.request(AnimationKeys.SLIDER_UPDATE, () => {
         // Set active track styles, accounting for animation direction by
         // setting `transform-origin`.
         const trackAnimatesFromRight = (!isRtl && thumb === Thumb.START) ||
@@ -812,7 +821,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
         this.updateOverlappingThumbsUI(thumbStartPos, thumbEndPos, thumb);
       });
     } else {
-      requestAnimationFrame(() => {
+      this.animFrame.request(AnimationKeys.SLIDER_UPDATE, () => {
         const thumbStartPos = isRtl ? this.rect.width - rangePx : rangePx;
         this.adapter.setThumbStyleProperty(
             transformProp, `translateX(${thumbStartPos}px)`, Thumb.END);
