@@ -27,12 +27,49 @@
 
 $space-between-chips: 8px;
 
-@mixin space-between-chips($space, $query: feature-targeting.all()) {
+///
+/// Sets the horiontal space between the chips in the chip set.
+/// @param {Number} $space - The horizontal space between the chips.
+///
+@mixin horizontal-space-between-chips($space, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-evolution-chip:nth-child(n + 2) {
+  ///
+  /// We should use the column-gap property when our browser matrix allows.
+  ///
+
+  .mdc-evolution-chip-set__chips {
+    @include feature-targeting.targets($feat-structure) {
+      // Set the margin to the negative horizontal space to account for chips
+      // being inset on the leading edge.
+      @include rtl.reflexive-property(margin, -$space, 0);
+    }
+  }
+
+  .mdc-evolution-chip {
     @include feature-targeting.targets($feat-structure) {
       @include rtl.reflexive-property(margin, $space, 0);
+    }
+  }
+}
+
+///
+/// Sets the vertical space between the chips in the chip set.
+/// @param {Number} $space - The vertical space between the chips.
+///
+@mixin vertical-space-between-chips($space, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  ///
+  /// We should use the row-gap property when our browser matrix allows.
+  ///
+
+  .mdc-evolution-chip {
+    @include feature-targeting.targets($feat-structure) {
+      // Set top and bottom to half the vertical space since there's no
+      // well supported method for vertical wrapping gaps.
+      margin-top: $space / 2;
+      margin-bottom: $space / 2;
     }
   }
 }

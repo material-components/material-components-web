@@ -24,6 +24,8 @@
 @use '@material/feature-targeting/feature-targeting';
 @use './chip-set-theme';
 
+// stylelint-disable selector-class-pattern -- MDC internal usage.
+
 @mixin core-styles($query: feature-targeting.all()) {
   @include _static-styles($query);
   @include _theme-styles($query);
@@ -44,11 +46,29 @@
       outline: none;
     }
   }
+
+  .mdc-evolution-chip-set__chips {
+    @include feature-targeting.targets($feat-structure) {
+      display: flex;
+      flex-flow: wrap;
+    }
+  }
+
+  .mdc-evolution-chip-set--overflow .mdc-evolution-chip-set__chips {
+    @include feature-targeting.targets($feat-structure) {
+      flex-flow: nowrap;
+    }
+  }
 }
 
 @mixin _theme-styles($query: feature-targeting.all()) {
   .mdc-evolution-chip-set {
-    @include chip-set-theme.space-between-chips(
+    @include chip-set-theme.horizontal-space-between-chips(
+      chip-set-theme.$space-between-chips,
+      $query
+    );
+
+    @include chip-set-theme.vertical-space-between-chips(
       chip-set-theme.$space-between-chips,
       $query
     );

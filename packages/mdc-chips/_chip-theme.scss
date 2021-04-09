@@ -182,14 +182,6 @@ $filter-selected-container-color: color.mix(
 @mixin _reset-touch-target($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  // Selector is necessary here to override original specificity.
-  &.mdc-evolution-chip--touch {
-    @include feature-targeting.targets($feat-structure) {
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-  }
-
   .mdc-evolution-chip__action-touch {
     @include feature-targeting.targets($feat-structure) {
       display: none;
