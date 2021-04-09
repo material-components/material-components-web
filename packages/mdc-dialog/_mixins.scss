@@ -27,6 +27,7 @@
 @use 'sass:math';
 @use '@material/animation/functions' as animation-functions;
 @use '@material/button/button-theme';
+@use '@material/dom/dom';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/mixins' as rtl-mixins;
@@ -147,6 +148,24 @@
       @include rtl-mixins.rtl('.mdc-dialog') {
         /* @noflip */
         text-align: right;
+      }
+
+      @include dom.ie-high-contrast-mode {
+        // Colored outline is used for IE11 HCM instead of transparent border
+        // below to prevent scrolling content overflow.
+        outline: 2px solid windowText;
+      }
+    }
+
+    &::before {
+      @include dom.transparent-border($border-width: 2px, $query: $query);
+      @include feature-targeting.targets($feat-structure) {
+        // Prevent IE11 from rendering this element, because it causes scrolling
+        // content to overflow.
+        @media screen and (-ms-high-contrast: active),
+          screen and (-ms-high-contrast: none) {
+          content: none;
+        }
       }
     }
   }
