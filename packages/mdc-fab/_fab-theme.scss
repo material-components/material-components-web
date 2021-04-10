@@ -89,7 +89,7 @@ $_light-theme: (
   @include _container-height(map.get($theme, container-height));
   @include _container-width(map.get($theme, container-width));
   @include icon-size(map.get($theme, icon-size));
-  @include _icon-color(
+  @include icon-color(
     (
       default: map.get($theme, icon-color),
       hover: map.get($theme, hover-icon-color),
@@ -162,9 +162,9 @@ $_light-theme: (
 
   .mdc-fab__icon {
     @include feature-targeting.targets($feat-structure) {
-      width: $width;
-      height: $height;
-      font-size: $height;
+      @include theme.property(width, $width);
+      @include theme.property(height, $height);
+      @include theme.property(font-size, $height);
     }
   }
 }
@@ -191,25 +191,29 @@ $_light-theme: (
   width: $width;
 }
 
-@mixin _icon-color($color-or-map) {
-  &:not(:disabled) {
-    @include _set-icon-color(state.get-default-state($color-or-map));
+@mixin icon-color($color-or-map, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
 
-    &:hover {
-      @include _set-icon-color(state.get-hover-state($color-or-map));
+  @include feature-targeting.targets($feat-color) {
+    &:not(:disabled) {
+      @include _set-icon-color(state.get-default-state($color-or-map));
+
+      &:hover {
+        @include _set-icon-color(state.get-hover-state($color-or-map));
+      }
+
+      @include ripple-theme.focus {
+        @include _set-icon-color(state.get-focus-state($color-or-map));
+      }
+
+      @include ripple-theme.active {
+        @include _set-icon-color(state.get-pressed-state($color-or-map));
+      }
     }
 
-    &:focus {
-      @include _set-icon-color(state.get-focus-state($color-or-map));
+    &:disabled {
+      @include _set-icon-color(state.get-disabled-state($color-or-map));
     }
-
-    &:active {
-      @include _set-icon-color(state.get-pressed-state($color-or-map));
-    }
-  }
-
-  &:disabled {
-    @include _set-icon-color(state.get-disabled-state($color-or-map));
   }
 }
 
@@ -367,53 +371,53 @@ $_light-theme: (
     )
   );
 
-  $top-has-custom-prop: $is-width-custom-prop or
-    list.nth($is-padding-custom-prop, 1);
-  @include css.declaration(
-    padding-top,
-    $padding-top-fallback,
-    $gss: (alternate: $top-has-custom-prop)
-  );
-  @if $top-has-custom-prop {
-    @include css.declaration(padding-top, $padding-top);
-  }
+  @include feature-targeting.targets($feat-structure) {
+    $top-has-custom-prop: $is-width-custom-prop or
+      list.nth($is-padding-custom-prop, 1);
+    @include css.declaration(
+      padding-top,
+      $padding-top-fallback,
+      $gss: (alternate: $top-has-custom-prop)
+    );
+    @if $top-has-custom-prop {
+      @include css.declaration(padding-top, $padding-top);
+    }
 
-  $right-has-custom-prop: $is-width-custom-prop or
-    list.nth($is-padding-custom-prop, 2);
-  @include css.declaration(
-    padding-right,
-    $padding-right-fallback,
-    $gss: (alternate: $right-has-custom-prop)
-  );
-  @if $right-has-custom-prop {
-    @include css.declaration(padding-right, $padding-right);
-  }
+    $right-has-custom-prop: $is-width-custom-prop or
+      list.nth($is-padding-custom-prop, 2);
+    @include css.declaration(
+      padding-right,
+      $padding-right-fallback,
+      $gss: (alternate: $right-has-custom-prop)
+    );
+    @if $right-has-custom-prop {
+      @include css.declaration(padding-right, $padding-right);
+    }
 
-  $bottom-has-custom-prop: $is-width-custom-prop or
-    list.nth($is-padding-custom-prop, 3);
-  @include css.declaration(
-    padding-bottom,
-    $padding-bottom-fallback,
-    $gss: (alternate: $bottom-has-custom-prop)
-  );
-  @if $bottom-has-custom-prop {
-    @include css.declaration(padding-bottom, $padding-bottom);
-  }
+    $bottom-has-custom-prop: $is-width-custom-prop or
+      list.nth($is-padding-custom-prop, 3);
+    @include css.declaration(
+      padding-bottom,
+      $padding-bottom-fallback,
+      $gss: (alternate: $bottom-has-custom-prop)
+    );
+    @if $bottom-has-custom-prop {
+      @include css.declaration(padding-bottom, $padding-bottom);
+    }
 
-  $left-has-custom-prop: $is-width-custom-prop or
-    list.nth($is-padding-custom-prop, 4);
-  @include css.declaration(
-    padding-left,
-    $padding-left-fallback,
-    $gss: (alternate: $left-has-custom-prop)
-  );
-  @if $left-has-custom-prop {
-    @include css.declaration(padding-left, $padding-left);
-  }
+    $left-has-custom-prop: $is-width-custom-prop or
+      list.nth($is-padding-custom-prop, 4);
+    @include css.declaration(
+      padding-left,
+      $padding-left-fallback,
+      $gss: (alternate: $left-has-custom-prop)
+    );
+    @if $left-has-custom-prop {
+      @include css.declaration(padding-left, $padding-left);
+    }
 
-  &:not(:disabled) {
-    @include ripple-theme.focus() {
-      @include feature-targeting.targets($feat-structure) {
+    &:not(:disabled) {
+      @include ripple-theme.focus() {
         border-style: solid;
         @include theme.property(border-width, $width);
 

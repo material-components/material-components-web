@@ -26,10 +26,12 @@
 @use 'sass:map';
 @use 'sass:math';
 @use 'sass:meta';
+@use 'sass:string';
 @use '@material/animation/variables' as animation-variables;
 @use '@material/theme/custom-properties';
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/css';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 
@@ -218,8 +220,7 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    /* @alternate */
-    box-shadow: $box-shadow;
+    @include theme.property(box-shadow, $box-shadow, $gss: (alternate: true));
   }
 }
 
@@ -307,6 +308,7 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
   $z-value,
   $color: $baseline-color,
   $opacity-boost: 0,
+  $custom-prop: null,
   $query: feature-targeting.all()
 ) {
   $box-shadow: elevation-box-shadow(
@@ -314,6 +316,35 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
     $color: $color,
     $opacity-boost: $opacity-boost
   );
+  $gss-shim-name: null;
+  @if custom-properties.is-custom-prop($custom-prop) {
+    // GSS will transform var(--custom-prop, 0 1px 3px 0 red,0 4px 8px 3px blue)
+    // into var(--custom-prop, 0px) every time. This shim gets around that since
+    // GSS will not break on --custom-prop-gss: #{value};
+    $custom-prop-name: custom-properties.get-varname($custom-prop);
+    $gss-shim-name: #{$custom-prop-name}-gss;
+    $fallback: custom-properties.create($gss-shim-name, $box-shadow);
+
+    $custom-prop: custom-properties.set-fallback($custom-prop, $fallback);
+    $box-shadow: $custom-prop;
+  }
 
   @include shadow($box-shadow, $query: $query);
+
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @if $gss-shim-name {
+      // Applies the fallback value to the gss custom prop shim so the final
+      // output should be:
+      //   box-shadow: $value;
+      //   box-shadow: var(--custom-prop, var(--custom-prop-gss, 0px));
+      //   --custom-prop-gss: $value;
+      $gss-shim-custom-prop: custom-properties.create(
+        $gss-shim-name,
+        custom-properties.get-fallback($box-shadow)
+      );
+      @include custom-properties.declaration($gss-shim-custom-prop);
+    }
+  }
 }

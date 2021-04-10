@@ -25,6 +25,8 @@
 
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/custom-properties';
+@use '@material/theme/theme';
 
 $height: 48px !default;
 $width: $height !default;
@@ -87,19 +89,71 @@ $width: $height !default;
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  $vertical-margin-value: ($touch-target-height - $component-height) / 2;
+  @if (
+    custom-properties.is-custom-prop($touch-target-height) or
+      custom-properties.is-custom-prop($component-height)
+  ) {
+    $vertical-margin-value: 'calc((touch-target-height - component-height) / 2)';
 
-  @include feature-targeting.targets($feat-structure) {
-    margin-top: $vertical-margin-value;
-    margin-bottom: $vertical-margin-value;
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(
+        margin-top,
+        $vertical-margin-value,
+        $replace: (
+          'touch-target-height': $touch-target-height,
+          'component-height': $component-height
+        )
+      );
+      @include theme.property(
+        margin-bottom,
+        $vertical-margin-value,
+        $replace: (
+          'touch-target-height': $touch-target-height,
+          'component-height': $component-height
+        )
+      );
+    }
+  } @else {
+    $vertical-margin-value: ($touch-target-height - $component-height) / 2;
+
+    @include feature-targeting.targets($feat-structure) {
+      margin-top: $vertical-margin-value;
+      margin-bottom: $vertical-margin-value;
+    }
   }
 
   @if $component-width {
-    $horizontal-margin-value: ($touch-target-width - $component-width) / 2;
+    @if (
+      custom-properties.is-custom-prop($touch-target-width) or
+        custom-properties.is-custom-prop($component-width)
+    ) {
+      $horizontal-margin-value: 'calc((touch-target-width - component-width) / 2)';
 
-    @include feature-targeting.targets($feat-structure) {
-      margin-right: $horizontal-margin-value;
-      margin-left: $horizontal-margin-value;
+      @include feature-targeting.targets($feat-structure) {
+        @include theme.property(
+          margin-right,
+          $horizontal-margin-value,
+          $replace: (
+            'touch-target-width': $touch-target-width,
+            'component-width': $component-width
+          )
+        );
+        @include theme.property(
+          margin-left,
+          $horizontal-margin-value,
+          $replace: (
+            'touch-target-width': $touch-target-width,
+            'component-width': $component-width
+          )
+        );
+      }
+    } @else {
+      $horizontal-margin-value: ($touch-target-width - $component-width) / 2;
+
+      @include feature-targeting.targets($feat-structure) {
+        margin-right: $horizontal-margin-value;
+        margin-left: $horizontal-margin-value;
+      }
     }
   }
 }

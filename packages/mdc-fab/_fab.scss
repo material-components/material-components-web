@@ -60,10 +60,35 @@
   .mdc-fab {
     @include base_($query: $query);
     @include fab-theme.container-color(secondary, $query: $query);
-    @include fab-theme.icon-size(24px, $query: $query);
+    $icon-size: custom-properties.create(
+      fab-custom-properties.$icon-size,
+      24px
+    );
+    @include fab-theme.icon-size($icon-size, $query: $query);
     @include fab-theme.ink-color(on-secondary, $query: $query);
-    @include fab-theme.shape-radius(fab-theme.$shape-radius, $query: $query);
-    @include elevation-theme.elevation(6, $query: $query);
+    $icon-color: custom-properties.create(
+      fab-custom-properties.$icon-color,
+      theme-color.get-custom-property(on-secondary)
+    );
+    @include fab-theme.icon-color($icon-color, $query: $query);
+    $shape-radius: custom-properties.create(
+      fab-custom-properties.$shape-radius,
+      fab-theme.$shape-radius
+    );
+    @include fab-theme.shape-radius($shape-radius, $query: $query);
+    $container-elevation-box-shadow: custom-properties.create(
+      fab-custom-properties.$container-elevation-box-shadow
+    );
+    @include elevation-theme.elevation(
+      6,
+      $custom-prop: $container-elevation-box-shadow,
+      $query: $query
+    );
+    $outline-color: custom-properties.create(
+      fab-custom-properties.$focus-outline-color,
+      initial
+    );
+    @include fab-theme.focus-outline-color($outline-color, $query: $query);
   }
 
   .mdc-fab--mini {
@@ -75,9 +100,14 @@
   }
 
   .mdc-fab--touch {
+    $height: custom-properties.create(
+      fab-custom-properties.$height,
+      fab-theme.$mini-height
+    );
+
     @include touch-target-mixins.margin(
-      $component-height: fab-theme.$mini-height,
-      $component-width: fab-theme.$mini-height,
+      $component-height: $height,
+      $component-width: $height,
       $query: $query
     );
 
@@ -165,8 +195,16 @@ $icon-enter-duration_: 180ms;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    width: fab-theme.$height;
-    height: fab-theme.$height;
+    $width: custom-properties.create(
+      fab-custom-properties.$width,
+      fab-theme.$height
+    );
+    @include theme.property(width, $width);
+    $height: custom-properties.create(
+      fab-custom-properties.$height,
+      fab-theme.$height
+    );
+    @include theme.property(height, $height);
     padding: 0;
     border: none;
     fill: currentColor;
@@ -198,25 +236,42 @@ $icon-enter-duration_: 180ms;
   }
 
   &:hover {
-    @include elevation-theme.elevation(8, $query: $query);
+    $container-elevation-box-shadow: custom-properties.create(
+      fab-custom-properties.$container-elevation-box-shadow
+    );
+    @include elevation-theme.elevation(
+      8,
+      $custom-prop: $container-elevation-box-shadow,
+      $query: $query
+    );
   }
 
   @include ripple-theme.focus() {
-    @include elevation-theme.elevation(8, $query: $query);
+    $container-elevation-box-shadow: custom-properties.create(
+      fab-custom-properties.$container-elevation-box-shadow
+    );
+    @include elevation-theme.elevation(
+      8,
+      $custom-prop: $container-elevation-box-shadow,
+      $query: $query
+    );
   }
 
   // Increase active state specificity due to ripple-theme.focus().
   &:active,
   &:focus:active {
-    @include elevation-theme.elevation(12, $query: $query);
+    $container-elevation-box-shadow: custom-properties.create(
+      fab-custom-properties.$container-elevation-box-shadow
+    );
+    @include elevation-theme.elevation(
+      12,
+      $custom-prop: $container-elevation-box-shadow,
+      $query: $query
+    );
   }
 
   &:active,
   &:focus {
-    // TODO(acdvorak): Should this be paired with states and/or ripple? We don't want to disable outline
-    // (an accessibility/usability feature) unless we're confident that there is also a visual indication that the
-    // element has focus. If the client has customized the DOM in some unexpected way, and is certain that another
-    // element will receive focus instead, they can always override this property manually in their CSS.
     @include feature-targeting.targets($feat-structure) {
       outline: none;
     }
@@ -245,15 +300,31 @@ $icon-enter-duration_: 180ms;
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    width: fab-theme.$mini-height;
-    height: fab-theme.$mini-height;
+    $width: custom-properties.create(
+      fab-custom-properties.$width,
+      fab-theme.$mini-height
+    );
+    @include theme.property(width, $width);
+    $height: custom-properties.create(
+      fab-custom-properties.$height,
+      fab-theme.$mini-height
+    );
+    @include theme.property(height, $height);
   }
 }
 
 @mixin extended_($query: feature-targeting.all()) {
+  $label-color: custom-properties.create(
+    fab-custom-properties.$label-color,
+    theme-color.get-custom-property(on-secondary)
+  );
   @include typography.typography(button, $query: $query);
+  $shape-radius: custom-properties.create(
+    fab-custom-properties.$shape-radius,
+    fab-theme.$shape-radius
+  );
   @include extended-fab-theme.extended-shape-radius(
-    fab-theme.$shape-radius,
+    $shape-radius,
     $query: $query
   );
   $extended-icon-padding: custom-properties.create(
@@ -271,11 +342,21 @@ $icon-enter-duration_: 180ms;
   );
 
   $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include extended-fab-theme.label-color($label-color);
+  }
 
   @include feature-targeting.targets($feat-structure) {
-    width: auto;
+    $width: custom-properties.create(fab-custom-properties.$width, auto);
+    @include theme.property(width, $width);
     max-width: 100%;
-    height: extended-fab-theme.$extended-height;
+    $height: custom-properties.create(
+      fab-custom-properties.$height,
+      extended-fab-theme.$extended-height
+    );
+    @include theme.property(height, $height);
     // This allows the text within the extended fab to be centered for varying font sizes.
     /* @alternate */
     line-height: normal;

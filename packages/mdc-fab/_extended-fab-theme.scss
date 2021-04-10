@@ -85,7 +85,7 @@ $_extended-light-theme: (
   @if $container-shape {
     @include extended-shape-radius($container-shape);
   }
-  @include _label-color(
+  @include label-color(
     (
       default: map.get($theme, label-text-color),
       hover: map.get($theme, hover-label-text-color),
@@ -205,7 +205,7 @@ $_extended-light-theme: (
   }
 }
 
-@mixin _label-color($color-or-map) {
+@mixin label-color($color-or-map) {
   &:not(:disabled) {
     @include _set-label-color(state.get-default-state($color-or-map));
 
@@ -213,11 +213,11 @@ $_extended-light-theme: (
       @include _set-label-color(state.get-hover-state($color-or-map));
     }
 
-    &:focus {
+    @include ripple-theme.focus {
       @include _set-label-color(state.get-focus-state($color-or-map));
     }
 
-    &:active {
+    @include ripple-theme.active {
       @include _set-label-color(state.get-pressed-state($color-or-map));
     }
   }
