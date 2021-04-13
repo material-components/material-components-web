@@ -145,7 +145,7 @@
       // IE 11: Otherwise, scrolling content in `mdc-dialog__content` overflows.
       overflow-y: auto;
 
-      @include rtl-mixins.rtl('.mdc-dialog') {
+      @include rtl-mixins.rtl {
         /* @noflip */
         text-align: right;
       }
@@ -185,7 +185,7 @@
       margin: 0 0 1px;
       padding: 0 24px variables.$title-bottom-padding;
 
-      @include rtl-mixins.rtl('.mdc-dialog') {
+      @include rtl-mixins.rtl {
         /* @noflip */
         text-align: right;
       }
@@ -355,7 +355,7 @@
       /* @noflip */
       text-align: right;
 
-      @include rtl-mixins.rtl('.mdc-dialog') {
+      @include rtl-mixins.rtl {
         /* @noflip */
         text-align: left;
       }

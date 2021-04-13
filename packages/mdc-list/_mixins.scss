@@ -259,12 +259,20 @@
     }
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(
-        margin,
-        auto,
-        0,
-        '.mdc-deprecated-list-item'
-      );
+      /* @noflip */
+      margin-left: auto;
+      /* @noflip */
+      margin-right: 0;
+
+      @at-root {
+        .mdc-deprecated-list-item[dir='rtl'] &,
+        [dir='rtl'] .mdc-deprecated-list-item & {
+          /* @noflip */
+          margin-left: 0;
+          /* @noflip */
+          margin-right: auto;
+        }
+      }
     }
   }
 
