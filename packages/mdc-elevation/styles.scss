@@ -21,4 +21,7 @@
 //
 
 @use './elevation';
+@forward './overlay-styles';
+
+@include elevation.overlay-common;
 @include elevation.core-styles;
