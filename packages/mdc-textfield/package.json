@@ -1,7 +1,7 @@
 {
   "name": "@material/textfield",
   "description": "The Material Components for the web text field component",
-  "version": "10.0.0",
+  "version": "11.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -19,19 +19,19 @@
     "directory": "packages/mdc-textfield"
   },
   "dependencies": {
-    "@material/animation": "^10.0.0",
-    "@material/base": "^10.0.0",
-    "@material/density": "^10.0.0",
-    "@material/dom": "^10.0.0",
-    "@material/feature-targeting": "^10.0.0",
-    "@material/floating-label": "^10.0.0",
-    "@material/line-ripple": "^10.0.0",
-    "@material/notched-outline": "^10.0.0",
-    "@material/ripple": "^10.0.0",
-    "@material/rtl": "^10.0.0",
-    "@material/shape": "^10.0.0",
-    "@material/theme": "^10.0.0",
-    "@material/typography": "^10.0.0",
+    "@material/animation": "^11.0.0",
+    "@material/base": "^11.0.0",
+    "@material/density": "^11.0.0",
+    "@material/dom": "^11.0.0",
+    "@material/feature-targeting": "^11.0.0",
+    "@material/floating-label": "^11.0.0",
+    "@material/line-ripple": "^11.0.0",
+    "@material/notched-outline": "^11.0.0",
+    "@material/ripple": "^11.0.0",
+    "@material/rtl": "^11.0.0",
+    "@material/shape": "^11.0.0",
+    "@material/theme": "^11.0.0",
+    "@material/typography": "^11.0.0",
     "tslib": "^2.1.0"
   }
 }
