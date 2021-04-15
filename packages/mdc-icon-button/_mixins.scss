@@ -48,7 +48,7 @@
 
   .mdc-icon-button__icon {
     @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
+      display: inline-flex;
     }
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
@@ -210,7 +210,8 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    display: inline-block;
+    align-items: center;
+    display: inline-flex;
     position: relative;
     box-sizing: border-box;
     border: none;
