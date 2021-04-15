@@ -164,11 +164,13 @@
 @mixin icon {
   @include rtl.reflexive-box(margin, right, 8px);
 
+  $icon-size: typography.px-to-rem(18px);
+
   display: inline-block;
-  width: 18px;
-  height: 18px;
-  font-size: 18px;
+  font-size: $icon-size;
+  height: $icon-size;
   vertical-align: top;
+  width: $icon-size;
 }
 
 @mixin icon-trailing {
