@@ -51,6 +51,7 @@
     @include feature-targeting.targets($feat-structure) {
       display: flex;
       flex-flow: wrap;
+      min-width: 0;
     }
   }
 

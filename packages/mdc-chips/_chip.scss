@@ -116,6 +116,7 @@
   .mdc-evolution-chip {
     @include feature-targeting.targets($feat-structure) {
       position: relative;
+      max-width: 100%;
     }
     @include elevation-theme.overlay-dimensions(100%, $query: $query);
   }
@@ -124,6 +125,18 @@
   .mdc-evolution-chip__action {
     @include feature-targeting.targets($feat-structure) {
       height: 100%;
+    }
+  }
+
+  .mdc-evolution-chip__cell--primary {
+    @include feature-targeting.targets($feat-structure) {
+      overflow-x: hidden;
+    }
+  }
+
+  .mdc-evolution-chip__cell--trailing {
+    @include feature-targeting.targets($feat-structure) {
+      flex: 1 0 auto;
     }
   }
 
@@ -150,6 +163,12 @@
   .mdc-evolution-chip__action:disabled {
     @include feature-targeting.targets($feat-structure) {
       pointer-events: none;
+    }
+  }
+
+  .mdc-evolution-chip__action--primary {
+    @include feature-targeting.targets($feat-structure) {
+      overflow-x: hidden;
     }
   }
 
@@ -188,6 +207,8 @@
     @include feature-targeting.targets($feat-structure) {
       white-space: nowrap;
       user-select: none;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 
@@ -199,6 +220,7 @@
       overflow: hidden;
       pointer-events: none;
       position: relative;
+      flex: 1 0 auto;
     }
   }
 
