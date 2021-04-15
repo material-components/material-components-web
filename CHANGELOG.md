@@ -3,6 +3,135 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.0.0](https://github.com/material-components/material-components-web/compare/v10.0.0...v11.0.0) (2021-04-15)
+
+
+### Bug Fixes
+
+* **banner:** Use role alertdialog. ([a07b6d4](https://github.com/material-components/material-components-web/commit/a07b6d486a7852a2089c9c13d5cf80d4ab65a425))
+* **button:** add missing feature-targeting import ([71fe9a0](https://github.com/material-components/material-components-web/commit/71fe9a067878c810fe6a7d01b8e839764d7a802c))
+* **button:** Fixed button's icon size scaling on browser zoom ([bc104ba](https://github.com/material-components/material-components-web/commit/bc104bae7c4e1bbcbedb085e6079432f06865cbf))
+* **chips:** Expose deprecated resources in top-level TypeScript file ([67d780c](https://github.com/material-components/material-components-web/commit/67d780c795e2a61772f5d1639c202ced3fbc4dc4))
+* **chips:** Fix incorrect references between deprecated and non-deprecated resources ([f8579b7](https://github.com/material-components/material-components-web/commit/f8579b7eaa22bf9da04ea5e4ec27418e001a0813))
+* **chips:** Make chips wrap by default ([24255c4](https://github.com/material-components/material-components-web/commit/24255c408518dff48ed59c2529ee3d0496d6b40c))
+* **chips:** Remove obsolete chips resources now in chips/deprecated/* ([87ac2fd](https://github.com/material-components/material-components-web/commit/87ac2fd5ca4ec7814216d16a0b0ef6a4474d7e92))
+* **chips:** Remove obsolete resources ([40dd242](https://github.com/material-components/material-components-web/commit/40dd242d5ce4586002a8e5cb59ce2711572f1cf3))
+* **chips:** rename deprecated trailing action classes ([48f4b67](https://github.com/material-components/material-components-web/commit/48f4b67fbd0d43377670673e56cb5868b3a11e1d))
+* **chips:** Un-remove obsolete chips resources now in chips/deprecated/* ([7cf6782](https://github.com/material-components/material-components-web/commit/7cf67823ec45a93f5b458060b2ec632479d813c9))
+* **chips:** Use deprecated chips in autoinit ([d2a39d3](https://github.com/material-components/material-components-web/commit/d2a39d300e3b9dee6c0d58d34522075f62b261c3))
+* **circular-progress:** add annotation ([06dead2](https://github.com/material-components/material-components-web/commit/06dead2d69d09dfde582d0d9fb1473a61358a5f6))
+* **dialog:** Add transparent border to dialog surface for HCM support. ([b2fa996](https://github.com/material-components/material-components-web/commit/b2fa996a1faa513fae691920cb339091d65b6c9b))
+* **dialog:** Remove the unnecessary border on the dialog title when not needed, this adds an extra line in the UI on high contrast mode. With margins it is possible to keep the previous spacing and only add the border when needed. ([3344d12](https://github.com/material-components/material-components-web/commit/3344d12ad2eb74cfc4ef270290bcc0322ebe8566))
+* **dom:** do not cache focusable elements in focus-trap ([7899e0f](https://github.com/material-components/material-components-web/commit/7899e0fe0a87cb255a5216333054207ef2687933))
+* **fab:** add alternate decorator only when necessary ([0fd56a8](https://github.com/material-components/material-components-web/commit/0fd56a86b30846de63d7d1520dcecc4d5ece2347))
+* **fab:** Apply extended shape radius in Extended FAB's theme mixin ([81911b7](https://github.com/material-components/material-components-web/commit/81911b7077801590c0f47bf17743f3b2b320b863))
+* **list:** Correcting the selector mapping for CHILD_ELEMENTS_TO_TOGGLE_TABINDEX and FOCUSABLE_CHILD_ELEMENTS. ([8943b99](https://github.com/material-components/material-components-web/commit/8943b991fd04caab88ae543bad16ba9b47bc7634)), closes [#6829](https://github.com/material-components/material-components-web/issues/6829) [#6829](https://github.com/material-components/material-components-web/issues/6829)
+* **list:** do not activate typeahead on certain modifier keys ([f1b1fd5](https://github.com/material-components/material-components-web/commit/f1b1fd5d3fa72c0a5dab305e3d7e782ff1421d7e))
+* **progress-indicators:** hide from screenreaders on close ([d3a6862](https://github.com/material-components/material-components-web/commit/d3a6862af3ff4f0e157ebe95bd5f54a47fc14c48))
+* **ripple:** Update states-selector() to use `:active:active` to match active specificity styles. ([faa7d32](https://github.com/material-components/material-components-web/commit/faa7d3226edbb15bdfca69e5ae98b2d7afdd861a))
+* **select:** do not conduct anchor typeahead when modifier keys pressed ([6f678a9](https://github.com/material-components/material-components-web/commit/6f678a91a400ac3408e06523d18a134cf3513f6b))
+* **select:** set hidden input value before firing change event ([2d6ba2c](https://github.com/material-components/material-components-web/commit/2d6ba2c239dfc7d4c2516507b11a32537c163852)), closes [#6904](https://github.com/material-components/material-components-web/issues/6904)
+* **shape:** duplication bug with nested custom properties ([f77a4dd](https://github.com/material-components/material-components-web/commit/f77a4dd1a3eb4f6af2b5a7695081408de41211b7))
+* **slider:** Fire custom `input` event on input change (i.e. value change via keyboard), mirroring the native `input` event behavior for range inputs. ([ec8f846](https://github.com/material-components/material-components-web/commit/ec8f8465f40bd13f61e2ad26c52314fc27fd5420))
+* **slider:** Fix #quantize to use min value as the baseline. ([0f358dd](https://github.com/material-components/material-components-web/commit/0f358ddae37a8703b8b6f0b8e4de846a196d443a))
+* **slider:** Fix JS floating point rounding errors by rounding values to a set number of decimal places based on the step size. ([6072ed6](https://github.com/material-components/material-components-web/commit/6072ed6040e1f65e099b876a4065fbb07378c186))
+* **slider:** Fix track height. ([67eb0df](https://github.com/material-components/material-components-web/commit/67eb0df80920a53e04fc151b3ab065959e3e84dc))
+* **slider:** Improve HCM borders, add missing [@noflip](https://github.com/noflip) annotations. ([e7202cb](https://github.com/material-components/material-components-web/commit/e7202cb576ff762664a3636ec01cebfa5a61be49))
+* **slider:** Modify behavior such that for range sliders, presses in the middle of the range change the value (of the closest thumb). This provides a single-pointer alternative option to an otherwise gesture-based interaction. ([0b8cff7](https://github.com/material-components/material-components-web/commit/0b8cff73421489a5322dd39b8504c16ba0f26120))
+* **slider:** Throttle slider UI updates. ([7d6a4bb](https://github.com/material-components/material-components-web/commit/7d6a4bb72f210c94161568f964e33cd8b06a8315))
+* **slider:** Throw error for invalid initial values based on the step. ([3955d8d](https://github.com/material-components/material-components-web/commit/3955d8d3d2ba2766b59338f0ed7ae640388ce926))
+* **tab:** Update ripple adapter to reflect sass ripple-target. ([97c4d40](https://github.com/material-components/material-components-web/commit/97c4d40356fcc89d9eb854ecf322ec7474aa597c))
+* **theme:** do not emit when theme.property() replacements are null ([aa0aaf0](https://github.com/material-components/material-components-web/commit/aa0aaf026aae13532b3e3790992e9cc06397aa91))
+* **theme:** parsing error when [@import-ing](https://github.com/import-ing) mdc-theme ([b62b126](https://github.com/material-components/material-components-web/commit/b62b1266d66734fcd9d60c7893ea048f83883f8f))
+* **theme:** replace works for multiple replacements ([95322b1](https://github.com/material-components/material-components-web/commit/95322b11e3b0c938d9b4de56a1ba80d1ff42596b))
+* update README to correct links. ([71e615b](https://github.com/material-components/material-components-web/commit/71e615bc8fa757d22190641db0c2940e24bdf59b))
+* **tooltip:** flip precedence of data-tooltip-id and aria-describedby when finding TT id ([b2d22df](https://github.com/material-components/material-components-web/commit/b2d22df5b62003247fa5ca60a23b2ce8b6a17b33))
+* **typography:** do not emit styles when setting null from global variable ([f5f1b61](https://github.com/material-components/material-components-web/commit/f5f1b613ce5c0dda39f617adbcfd2bb3f1862a74))
+
+
+### Code Refactoring
+
+* **snackbar:** Update a11y structure ([c60449b](https://github.com/material-components/material-components-web/commit/c60449bc8a967e14436bec9471df99678a78515a))
+* **tooltip:** Moved the anchor element blur event listener from the component to within the foundation. ([0b4a4b2](https://github.com/material-components/material-components-web/commit/0b4a4b2ebe245f2382cb08bbbc34e7ffb4f43763))
+* **typography:** Rename typography Sass function from pxToRem() to px-to-rem() ([8f0a11e](https://github.com/material-components/material-components-web/commit/8f0a11e32895f998c326ab4a10601a2e4d5e18db))
+
+
+### Features
+
+* **base:** add non-statics foundation constructor type ([e3ec22f](https://github.com/material-components/material-components-web/commit/e3ec22f4579292c962ab81d7fee1d31b38b7d036))
+* **base:** add observer mixin ([4ceb422](https://github.com/material-components/material-components-web/commit/4ceb42220043f0ca90c57d77efec89ed29ae4508))
+* **chips:** Expose "action" component ([03d34bb](https://github.com/material-components/material-components-web/commit/03d34bbad14df501f5faf9d03e62c0727ef6f7da))
+* **chips:** Expose "chip" component ([cbc57c6](https://github.com/material-components/material-components-web/commit/cbc57c600f972ec88098d7ad9c4763f57dce0eb4))
+* **chips:** Expose "chipset" component ([d6c5bcf](https://github.com/material-components/material-components-web/commit/d6c5bcf3743048e44d5462a2266804a7a75678a7))
+* **chips:** Expose top-level resources ([fefc668](https://github.com/material-components/material-components-web/commit/fefc668d77004762598e0cd88f3248a03a6aab1b))
+* **chips:** Remove touch target wrapper selector from chip set spacing ([367d88b](https://github.com/material-components/material-components-web/commit/367d88bdb32a24c73f935154d616d1d7abfd9dd8))
+* **chips:** Start deprecation of chip ([e683bdf](https://github.com/material-components/material-components-web/commit/e683bdf4a0f6642b87f099b51425898dd4a1b644))
+* **chips:** Start deprecation of chip root directory ([73a2271](https://github.com/material-components/material-components-web/commit/73a227194d7c0caf305329f1a8b22eb801a6114b))
+* **chips:** Start deprecation of chip set ([148e8cf](https://github.com/material-components/material-components-web/commit/148e8cfccac563305b9fa6fd4a6e8602620d6426))
+* **chips:** Start deprecation of chip trailing action ([9eeb35c](https://github.com/material-components/material-components-web/commit/9eeb35c384c78a65215bf8885d5ebb5fb1592cd9))
+* **chips:** Truncate long chip labels by default ([f5c6db8](https://github.com/material-components/material-components-web/commit/f5c6db8fc71c654c47c68a4c717f8d8995f43e30))
+* **dialog:** Adding `resize` and `orientationchange` event handlers into `MDCDialogFoundation`. ([1e06534](https://github.com/material-components/material-components-web/commit/1e06534774df290b9a29210ee3bcf57515da6e43))
+* **dialog:** Adds support for "surface-scrim" over full-screen dialogs. This prevents a "double scrim" from appearing when showing a secondary dialog over a full-screen dialog on larger screens. ([cddb035](https://github.com/material-components/material-components-web/commit/cddb0355362acb031da308f98283f9d4ad9a2c84))
+* **dom:** add option to skip restoring focus on release focus ([5c0ab74](https://github.com/material-components/material-components-web/commit/5c0ab74019c6a1925ee8ef7946d8df6d9494bf88))
+* **dom:** add tab key keyboard.ts ([dc9c840](https://github.com/material-components/material-components-web/commit/dc9c8402374f46402c73f97e60206517e3186389))
+* **fab:** Add theming API to Extended FABs ([f19c86d](https://github.com/material-components/material-components-web/commit/f19c86d13447d984b13b0e1d7e9651e498d8de04))
+* **fab:** Added `$focus-outline-width` param to extended-padding() FAB mixin ([8ecd7c9](https://github.com/material-components/material-components-web/commit/8ecd7c9a93c5b885fad9a1e6fd8d17da77c05360))
+* **fab:** Added focus outline theme keys to FAB theme mixin ([d6d8d04](https://github.com/material-components/material-components-web/commit/d6d8d04768f9904488a6814ec47a251a03313627))
+* **fab:** Added theme mixin to primary FAB variant. ([f19bbc4](https://github.com/material-components/material-components-web/commit/f19bbc4af6493f642dc4b5b45a2dc0083fa293f0))
+* **fab:** border custom prop support & add CPs for padding ([a6b3101](https://github.com/material-components/material-components-web/commit/a6b3101fb7641daab20db735b70421311534083b))
+* **fix:** Ensure that secondary controls do not ripple. ([1f636b2](https://github.com/material-components/material-components-web/commit/1f636b205b9609d19a96bef707ab87a0f8ca4f1a))
+* **fix:** Fix divider layout in right-to-left locales. ([f524626](https://github.com/material-components/material-components-web/commit/f5246264d139124f6abf2cf5e9f8ca98762eb0f7))
+* **fix:** Remove old MDC list class names, preparing to release evolution. ([5f0fc44](https://github.com/material-components/material-components-web/commit/5f0fc444a706626a106c2b36116a56e9dc5b8c79))
+* **fix:** Remove the "evolution" prefix from list evolution's class names. ([0cde52f](https://github.com/material-components/material-components-web/commit/0cde52f5a007f4b7da16afd45f7445d615d5a2f6))
+* **fix:** Simplify divider styles to reflect new design guidance. ([f77c508](https://github.com/material-components/material-components-web/commit/f77c508600d4b0f4ce4a66c63d1064b545149570))
+* **linear-progress:** add getBuffer ([9c85d50](https://github.com/material-components/material-components-web/commit/9c85d505bddf9c63ef52508c385ec59f1f947b8e))
+* **list:** Add "deprecated" aliases for old list mixins / variables. ([f9cac96](https://github.com/material-components/material-components-web/commit/f9cac96cc2ad0422d73140a65dcffc5e4e8ec519))
+* **list:** Add missing "deprecated" aliases for old list mixin. ([302c7a9](https://github.com/material-components/material-components-web/commit/302c7a960f3b2787f253908d963eaaaa0b8adfd4))
+* **list:** Finalize list mixin/variable rename. ([c97d7d8](https://github.com/material-components/material-components-web/commit/c97d7d88102f96c4c61a1b7c3329f3efac3727f4))
+* **list:** Rename deprecated MDC list class names. ([a678806](https://github.com/material-components/material-components-web/commit/a678806f5618f21a6bd28e3b881f92130b723f6e))
+* **list:** Rename deprecated MDC list class names. ([941ca3b](https://github.com/material-components/material-components-web/commit/941ca3b3c4c53ea296149a983b0159c5567e1b2c))
+* **list:** Update deprecated list class names so evolution can become default. ([606e767](https://github.com/material-components/material-components-web/commit/606e767ef6d1d98461d8910ece874b65d0143981))
+* **list:** Update styles to reference "deprecated" mixins/variables. ([3201cae](https://github.com/material-components/material-components-web/commit/3201cae479a0dbf97c40dda1b9d32a5818d6ab62))
+* **list:** Update styles to remove "evolution" prefix from mixins/variables. ([f9c9e39](https://github.com/material-components/material-components-web/commit/f9c9e39d6c0cddf796de7e821ec59e199aeab851))
+* **menu:** add maxHeight setter ([bf670da](https://github.com/material-components/material-components-web/commit/bf670dad7247d7ac1db9bf00905921b5c09a5b4d))
+* **menu-surface:** add option to always horizontally center on viewport ([23ea2d8](https://github.com/material-components/material-components-web/commit/23ea2d85e760325371c2529af7c99316d876c044))
+* **ripple:** add active() mixin for styling active styles. ([9f2e85f](https://github.com/material-components/material-components-web/commit/9f2e85fb8453cab94f54eeb9e2d9e18600ed7fa0))
+* **select:** allow programmatic change without firing event ([79ce087](https://github.com/material-components/material-components-web/commit/79ce0878b3233592c3188548711b311e5706d3dd)), closes [#6166](https://github.com/material-components/material-components-web/issues/6166)
+* **slider:** Add mixin to customize thumb color in the activated (hover, focus, pressed) state. ([94f50b2](https://github.com/material-components/material-components-web/commit/94f50b260dd6cbf6cca5fbedd2a8681746e2cc1d))
+* Add support for "mdc-deprecated-list-*" class names. ([9e52f55](https://github.com/material-components/material-components-web/commit/9e52f554437fa438c9b4c266f8e87ff370ec5dea))
+* **switch:** add high-contrast mode focus shim mixin ([c91e8d1](https://github.com/material-components/material-components-web/commit/c91e8d141bc8b519ae1d8c7d1771c0d5110e84ad))
+* **theme:** add configuration support for custom-properties ([1f318ff](https://github.com/material-components/material-components-web/commit/1f318ff0f033f9f51c8bf7f76ef997161ff62fd4))
+* **theme:** add create-varname() for custom properties ([b522724](https://github.com/material-components/material-components-web/commit/b5227247d730171c02bd71e9b44106cd179aaf2a))
+* **theme:** add key store ([07ff0c4](https://github.com/material-components/material-components-web/commit/07ff0c452c896f9f8131532538742bed0ad207c9))
+* **tooltip:** Adding logic to position the caret relative to the tooltip. ([76da787](https://github.com/material-components/material-components-web/commit/76da7876cd1452cdabed5169bdbdfd06b4629cda))
+* **tooltip:** Adding touchstart/touchend event listeners to tooltip. This allows tooltips attached to non-focusable elements to be surfaced on mobile. ([7cd26af](https://github.com/material-components/material-components-web/commit/7cd26af4dd2033dacce75d2df2d179f81286fe71))
+* **tooltip:** Creating an `mdc-tooltip__surface-animation` class that holds all the style properties responsible for animating the tooltip in and out of the page. The existing `mdc-tooltip__surface` class will hold all the style properties that impact the visual appearance of the tooltip. ([56fc269](https://github.com/material-components/material-components-web/commit/56fc26962126e24a7c56124de7f36078409254a7))
+* **tooltip:** Expose method that allows users to register additional scroll handlers on elements in the DOM. This should be used in situations where the tooltip anchor is a child of a scrollable element, and will ensure that the tooltip remains attached to the anchor when this element is scrolled. ([24609b8](https://github.com/material-components/material-components-web/commit/24609b82225f763c1dc9da16b1ee9e0dd3c52197))
+
+
+### BREAKING CHANGES
+
+* **typography:** Renamed typography Sass function from pxToRem() to px-to-rem()
+
+PiperOrigin-RevId: 368489085
+* **fix:** the old list implementation has been deprecated and now requires that class names use an "mdc-deprecated-list-*" prefix. The new implementation (list evolution), no longer uses a prefix ("mdc-evolution-list-*" is now just "mdc-list-*").
+
+PiperOrigin-RevId: 364441086
+* **snackbar:** Dom structure change, see README.md
+
+PiperOrigin-RevId: 363926666
+* **tooltip:**   Added adapter method:
+  - registerAnchorEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+  - deregisterAnchorEventHandler<K extends EventType>(
+      evtType: K, handler: SpecificEventListener<K>): void;
+
+PiperOrigin-RevId: 358401984
+
+
+
+
+
 # [10.0.0](https://github.com/material-components/material-components-web/compare/v9.0.0...v10.0.0) (2021-02-05)
 
 
