@@ -28,7 +28,7 @@ import {EventType, SpecificEventListener} from '@material/base/types';
 import {KEY, normalizeKey} from '@material/dom/keyboard';
 
 import {MDCTooltipAdapter} from './adapter';
-import {AnchorBoundaryType, attributes, CssClasses, numbers, PositionWithCaret, strings, XPosition, YPosition} from './constants';
+import {AnchorBoundaryType, attributes, CssClasses, numbers, PositionWithCaret, strings, XPosition, XPositionWithCaret, YPosition, YPositionWithCaret} from './constants';
 import {ShowTooltipOptions} from './types';
 
 const {
@@ -379,12 +379,6 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     this.parentRect = this.adapter.getParentBoundingRect();
     this.richTooltip ? this.positionRichTooltip() : this.positionPlainTooltip();
 
-    // TODO(b/182906431): Position of the tooltip caret should be informed by
-    // the position of the tooltip.
-    if (this.hasCaret) {
-      this.setCaretPositionStyles(this.tooltipPositionWithCaret);
-    }
-
     this.adapter.registerAnchorEventHandler('blur', this.anchorBlurHandler);
     this.adapter.registerDocumentEventHandler(
         'click', this.documentClickHandler);
@@ -547,7 +541,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // container. We set the width of the tooltip to prevent this.
     this.adapter.setStyleProperty('width', width);
 
-    const {top, yTransformOrigin, left, xTransformOrigin} =
+    const {top, yTransformOrigin, left, xTransformOrigin} = this.hasCaret ?
+        this.calculateTooltipWithCaretStyles(this.anchorRect) :
         this.calculateTooltipStyles(this.anchorRect);
 
     const transformProperty =
@@ -802,6 +797,103 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     return yPos + tooltipHeight <= viewportHeight && yPos >= 0;
   }
 
+  private calculateTooltipWithCaretStyles(anchorRect: ClientRect|null) {
+    const caretSize = this.adapter.getTooltipCaretSize();
+    if (!anchorRect || !caretSize) {
+      return {position: PositionWithCaret.DETECTED, top: 0, left: 0};
+    }
+
+    // The caret for the rich tooltip is created by rotating a square div 45deg
+    // and hiding half of it so it looks like a triangle. To determine the
+    // actual height and width of the visible caret, we have to calculate the
+    // length of the square's diagonal.
+    const caretWidth = caretSize.width * Math.sqrt(2);
+    const caretHeight = caretWidth / 2;
+    const tooltipSize = this.adapter.getTooltipSize();
+
+    const yOptions = this.calculateYWithCaretDistanceOptions(
+        anchorRect, tooltipSize.height, {caretWidth, caretHeight});
+    const xOptions = this.calculateXWithCaretDistanceOptions(
+        anchorRect, tooltipSize.width, {caretWidth, caretHeight});
+
+    const validOptions =
+        this.validateTooltipWithCaretDistances(yOptions, xOptions);
+    const {position, xDistance, yDistance} =
+        this.determineTooltipWithCaretDistance(validOptions);
+
+    // After determining the position of the tooltip relative to the anchor,
+    // place the caret in the corresponding position and retrieve the necessary
+    // x/y transform origins needed to properly animate the tooltip entrance.
+    const {yTransformOrigin, xTransformOrigin} =
+        this.setCaretPositionStyles(position);
+
+    return {
+      yTransformOrigin,
+      xTransformOrigin,
+      top: yDistance,
+      left: xDistance
+    };
+  }
+
+  private calculateXWithCaretDistanceOptions(
+      anchorRect: ClientRect, tooltipWidth: number,
+      caretSize: {caretHeight: number, caretWidth: number}):
+      Map<XPositionWithCaret, number> {
+    const {caretWidth, caretHeight} = caretSize;
+    const isLTR = !this.adapter.isRTL();
+    const anchorMidpoint = anchorRect.left + anchorRect.width / 2;
+
+    const sideLeftAligned =
+        anchorRect.left - (tooltipWidth + this.anchorGap + caretHeight);
+    const sideRightAligned = anchorRect.right + this.anchorGap + caretHeight;
+    const sideStartPos = isLTR ? sideLeftAligned : sideRightAligned;
+    const sideEndPos = isLTR ? sideRightAligned : sideLeftAligned;
+
+    const verticalLeftAligned =
+        anchorMidpoint - (numbers.CARET_INDENTATION + caretWidth / 2);
+    const verticalRightAligned = anchorMidpoint -
+        (tooltipWidth - numbers.CARET_INDENTATION - caretWidth / 2);
+    const verticalStartPos = isLTR ? verticalLeftAligned : verticalRightAligned;
+    const verticalEndPos = isLTR ? verticalRightAligned : verticalLeftAligned;
+    const verticalCenterPos = anchorMidpoint - tooltipWidth / 2;
+
+    const possiblePositionsMap = new Map([
+      [XPositionWithCaret.START, verticalStartPos],
+      [XPositionWithCaret.CENTER, verticalCenterPos],
+      [XPositionWithCaret.END, verticalEndPos],
+      [XPositionWithCaret.SIDE_END, sideEndPos],
+      [XPositionWithCaret.SIDE_START, sideStartPos],
+    ]);
+    return possiblePositionsMap;
+  }
+
+  private calculateYWithCaretDistanceOptions(
+      anchorRect: ClientRect, tooltipHeight: number,
+      caretSize: {caretHeight: number, caretWidth: number}):
+      Map<YPositionWithCaret, number> {
+    const {caretWidth, caretHeight} = caretSize;
+    const anchorMidpoint = anchorRect.top + anchorRect.height / 2;
+
+    const belowYPos = anchorRect.bottom + this.anchorGap + caretHeight;
+    const aboveYPos =
+        anchorRect.top - (this.anchorGap + tooltipHeight + caretHeight);
+    const sideTopYPos =
+        anchorMidpoint - (numbers.CARET_INDENTATION + caretWidth / 2);
+    const sideCenterYPos = anchorMidpoint - (tooltipHeight / 2);
+    const sideBottomYPos = anchorMidpoint -
+        (tooltipHeight - numbers.CARET_INDENTATION - caretWidth / 2);
+
+    const possiblePositionsMap = new Map([
+      [YPositionWithCaret.ABOVE, aboveYPos],
+      [YPositionWithCaret.BELOW, belowYPos],
+      [YPositionWithCaret.SIDE_TOP, sideTopYPos],
+      [YPositionWithCaret.SIDE_CENTER, sideCenterYPos],
+      [YPositionWithCaret.SIDE_BOTTOM, sideBottomYPos],
+    ]);
+
+    return possiblePositionsMap;
+  }
+
   private repositionTooltipOnAnchorMove() {
     const newAnchorRect = this.adapter.getAnchorBoundingRect();
     if (!newAnchorRect || !this.anchorRect) return;
@@ -815,6 +907,180 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       this.richTooltip ? this.positionRichTooltip() :
                          this.positionPlainTooltip();
     }
+  }
+
+  /**
+   * Given a list of x/y position options for a rich tooltip with caret, checks
+   * if valid x/y combinations of these position options are either within the
+   * viewport threshold, or simply within the viewport. Returns a map with the
+   * valid x/y position combinations that all either honor the viewport
+   * threshold or are simply inside within the viewport.
+   */
+  private validateTooltipWithCaretDistances(
+      yOptions: Map<YPositionWithCaret, number>,
+      xOptions: Map<XPositionWithCaret, number>) {
+    const posWithinThreshold =
+        new Map<PositionWithCaret, {xDistance: number, yDistance: number}>();
+    const posWithinViewport =
+        new Map<PositionWithCaret, {xDistance: number, yDistance: number}>();
+
+    // If a tooltip has a caret, not all combinations of YPositionWithCarets and
+    // XPositionWithCarets are possible. Because of this we only check the
+    // validity of a given XPositionWithCaret if a potential corresponding
+    // YPositionWithCaret is valid.
+    const validMappings = new Map([
+      [
+        YPositionWithCaret.ABOVE,
+        [
+          XPositionWithCaret.START, XPositionWithCaret.CENTER,
+          XPositionWithCaret.END
+        ]
+      ],
+      [
+        YPositionWithCaret.BELOW,
+        [
+          XPositionWithCaret.START, XPositionWithCaret.CENTER,
+          XPositionWithCaret.END
+        ]
+      ],
+      [
+        YPositionWithCaret.SIDE_TOP,
+        [XPositionWithCaret.SIDE_START, XPositionWithCaret.SIDE_END]
+      ],
+      [
+        YPositionWithCaret.SIDE_CENTER,
+        [XPositionWithCaret.SIDE_START, XPositionWithCaret.SIDE_END]
+      ],
+      [
+        YPositionWithCaret.SIDE_BOTTOM,
+        [XPositionWithCaret.SIDE_START, XPositionWithCaret.SIDE_END]
+      ],
+    ]);
+
+    for (const y of validMappings.keys()) {
+      const yDistance = yOptions.get(y)!;
+      if (this.yPositionHonorsViewportThreshold(yDistance)) {
+        for (const x of validMappings.get(y)!) {
+          const xDistance = xOptions.get(x)!;
+          if (this.positionHonorsViewportThreshold(xDistance)) {
+            const caretPositionName = this.caretPositionOptionsMapping(x, y);
+            posWithinThreshold.set(caretPositionName, {xDistance, yDistance});
+          }
+        }
+      } else if (this.yPositionDoesntCollideWithViewport(yDistance)) {
+        for (const x of validMappings.get(y)!) {
+          const xDistance = xOptions.get(x)!;
+          if (this.positionDoesntCollideWithViewport(xDistance)) {
+            const caretPositionName = this.caretPositionOptionsMapping(x, y);
+            posWithinViewport.set(caretPositionName, {xDistance, yDistance});
+          }
+        }
+      }
+    }
+
+    return posWithinThreshold.size ? posWithinThreshold : posWithinViewport;
+  }
+
+  /**
+   * Given a list of valid position options for a rich tooltip with caret,
+   * returns the option that should be used.
+   */
+  private determineTooltipWithCaretDistance(
+      options: Map<PositionWithCaret, {xDistance: number, yDistance: number}>):
+      {position: PositionWithCaret, xDistance: number, yDistance: number} {
+    if (options.has(this.tooltipPositionWithCaret)) {
+      const tooltipPos = options.get(this.tooltipPositionWithCaret)!;
+      return {
+        position: this.tooltipPositionWithCaret,
+        xDistance: tooltipPos.xDistance,
+        yDistance: tooltipPos.yDistance,
+      };
+    }
+
+    const orderPref = [
+      PositionWithCaret.ABOVE_START, PositionWithCaret.ABOVE_CENTER,
+      PositionWithCaret.ABOVE_END, PositionWithCaret.TOP_SIDE_START,
+      PositionWithCaret.CENTER_SIDE_START, PositionWithCaret.BOTTOM_SIDE_START,
+      PositionWithCaret.TOP_SIDE_END, PositionWithCaret.CENTER_SIDE_END,
+      PositionWithCaret.BOTTOM_SIDE_END, PositionWithCaret.BELOW_START,
+      PositionWithCaret.BELOW_CENTER, PositionWithCaret.BELOW_END
+    ];
+
+    const validPosition = orderPref.find((pos) => options.has(pos));
+    if (validPosition) {
+      const pos = options.get(validPosition)!;
+      return {
+        position: validPosition,
+        xDistance: pos.xDistance,
+        yDistance: pos.yDistance,
+      };
+    }
+
+    // TODO(b/182906431): Handle situation where there is no valid tooltip
+    // position from the provided map of options.
+    const backUp = options.keys().next().value;
+    return {
+      position: backUp,
+      xDistance: options.get(backUp)!.xDistance,
+      yDistance: options.get(backUp)!.yDistance,
+    };
+  }
+
+  /**
+   * Returns the corresponding PositionWithCaret enum for the proivded
+   * XPositionWithCaret and YPositionWithCaret enums. This mapping exists so our
+   * public API accepts only PositionWithCaret enums (as all combinations of
+   * XPositionWithCaret and YPositionWithCaret are not valid), but internally we
+   * can calculate the X and Y positions of a rich tooltip with caret
+   * separately.
+   */
+  private caretPositionOptionsMapping(
+      xPos: XPositionWithCaret, yPos: YPositionWithCaret): PositionWithCaret {
+    switch (yPos) {
+      case YPositionWithCaret.ABOVE:
+        if (xPos === XPositionWithCaret.START) {
+          return PositionWithCaret.ABOVE_START;
+        } else if (xPos === XPositionWithCaret.CENTER) {
+          return PositionWithCaret.ABOVE_CENTER;
+        } else if (xPos === XPositionWithCaret.END) {
+          return PositionWithCaret.ABOVE_END;
+        }
+        break;
+      case YPositionWithCaret.BELOW:
+        if (xPos === XPositionWithCaret.START) {
+          return PositionWithCaret.BELOW_START;
+        } else if (xPos === XPositionWithCaret.CENTER) {
+          return PositionWithCaret.BELOW_CENTER;
+        } else if (xPos === XPositionWithCaret.END) {
+          return PositionWithCaret.BELOW_END;
+        }
+        break;
+      case YPositionWithCaret.SIDE_TOP:
+        if (xPos === XPositionWithCaret.SIDE_START) {
+          return PositionWithCaret.TOP_SIDE_START;
+        } else if (xPos === XPositionWithCaret.SIDE_END) {
+          return PositionWithCaret.TOP_SIDE_END;
+        }
+        break;
+      case YPositionWithCaret.SIDE_CENTER:
+        if (xPos === XPositionWithCaret.SIDE_START) {
+          return PositionWithCaret.CENTER_SIDE_START;
+        } else if (xPos === XPositionWithCaret.SIDE_END) {
+          return PositionWithCaret.CENTER_SIDE_END;
+        }
+        break;
+      case YPositionWithCaret.SIDE_BOTTOM:
+        if (xPos === XPositionWithCaret.SIDE_START) {
+          return PositionWithCaret.BOTTOM_SIDE_START;
+        } else if (xPos === XPositionWithCaret.SIDE_END) {
+          return PositionWithCaret.BOTTOM_SIDE_END;
+        }
+        break;
+      default:
+        break;
+    }
+    throw new Error(
+        `MDCTooltipFoundation: Invalid caret position of ${xPos}, ${yPos}`);
   }
 
   /**

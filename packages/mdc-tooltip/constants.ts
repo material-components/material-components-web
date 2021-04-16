@@ -120,6 +120,22 @@ enum PositionWithCaret {
   BELOW_END = 12,
 }
 
+enum YPositionWithCaret {
+  ABOVE = 1,
+  BELOW = 2,
+  SIDE_TOP = 3,
+  SIDE_CENTER = 4,
+  SIDE_BOTTOM = 5,
+}
+
+enum XPositionWithCaret {
+  START = 1,
+  CENTER = 2,
+  END = 3,
+  SIDE_START = 4,
+  SIDE_END = 5,
+}
+
 export {
   CssClasses,
   numbers,
@@ -130,4 +146,6 @@ export {
   YPosition,
   strings,
   PositionWithCaret,
+  YPositionWithCaret,
+  XPositionWithCaret
 };
