@@ -117,10 +117,6 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   }
 
   destroy() {
-    if (this.dialogOpen) {
-      this.close(strings.DESTROY_ACTION);
-    }
-
     if (this.animationTimer) {
       clearTimeout(this.animationTimer);
       this.handleAnimationTimerEnd();

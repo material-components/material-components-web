@@ -94,21 +94,12 @@ describe('MDCDialogFoundation', () => {
        expect(foundation.getAutoStackButtons()).toBe(false);
      });
 
-  it('#destroy closes the dialog if it is still open', () => {
-    const {foundation} = setupTest();
-    foundation.close = jasmine.createSpy('close');
-
-    foundation.open();
-    foundation.destroy();
-
-    expect(foundation.close).toHaveBeenCalledWith(strings.DESTROY_ACTION);
-  });
-
   it('#destroy removes animating classes if called when the dialog is animating',
      () => {
        const {foundation, mockAdapter} = setupTest();
 
        foundation.open();
+       jasmine.clock().tick(1);
        foundation.destroy();
 
        expect(mockAdapter.removeClass).toHaveBeenCalledWith(cssClasses.OPENING);
