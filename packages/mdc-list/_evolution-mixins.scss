@@ -888,6 +888,7 @@
 @mixin one-line-item-density($density-scale, $query: feature-targeting.all()) {
   @include _one-line-item-density($density-scale, $query: $query);
 
+  &.mdc-list-item--with-leading-avatar,
   &.mdc-list-item--with-leading-icon,
   &.mdc-list-item--with-leading-thumbnail,
   &.mdc-list-item--with-leading-checkbox,
@@ -905,6 +906,7 @@
 @mixin two-line-item-density($density-scale, $query: feature-targeting.all()) {
   @include _two-line-item-density($density-scale, $query: $query);
 
+  &.mdc-list-item--with-leading-avatar,
   &.mdc-list-item--with-leading-icon,
   &.mdc-list-item--with-leading-thumbnail,
   &.mdc-list-item--with-leading-checkbox,
