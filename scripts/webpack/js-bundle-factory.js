@@ -193,6 +193,7 @@ class JsBundleFactory {
         slider: getAbsolutePath('/packages/mdc-slider/index.ts'),
         snackbar: getAbsolutePath('/packages/mdc-snackbar/index.ts'),
         switch: getAbsolutePath('/packages/mdc-switch/index.ts'),
+        switchDeprecated: getAbsolutePath('/packages/mdc-switch/deprecated/index.ts'),
         tab: getAbsolutePath('/packages/mdc-tab/index.ts'),
         tabBar: getAbsolutePath('/packages/mdc-tab-bar/index.ts'),
         tabIndicator: getAbsolutePath('/packages/mdc-tab-indicator/index.ts'),

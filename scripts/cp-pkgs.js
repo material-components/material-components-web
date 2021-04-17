@@ -38,6 +38,17 @@ const ALL_IN_ONE_PACKAGE = 'material-components-web';
 const PACKAGES_DIRECTORY = path.resolve(__dirname, '../packages');
 const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
 
+// Record of asset entries to paths that will not be matched by regex
+const ASSETS = {
+  'mdc.switch.deprecated.css': 'mdc-switch/deprecated/',
+  'mdc.switch.deprecated.css.map': 'mdc-switch/deprecated/',
+  'mdc.switch.deprecated.min.css': 'mdc-switch/deprecated/',
+  'mdc.switch.deprecated.min.css.map': 'mdc-switch/deprecated/',
+  'mdc.switchDeprecated.js': 'mdc-switch/deprecated/',
+  'mdc.switchDeprecated.js.map': 'mdc-switch/deprecated/',
+  'mdc.switchDeprecated.min.js': 'mdc-switch/deprecated/',
+};
+
 const isValidCwd = (
   path.basename(process.cwd()) === ALL_IN_ONE_PACKAGE &&
   fs.existsSync('packages') &&
@@ -57,7 +68,7 @@ if (!isValidCwd) {
  * @return {string} dashedName converted to camelCase. E.g., "mdcLinearProgress".
  */
 function toCamelCase(dashedName) {
-  return dashedName.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+  return dashedName.replace(/[-/]([a-z])/g, (_, letter) => letter.toUpperCase());
 }
 
 /**
@@ -78,6 +89,11 @@ function cleanPkgDistDirs() {
  * @return {string} destination package name
  */
 function getAssetEntry(asset) {
+  const assetName = path.parse(asset).base;
+  if (ASSETS[assetName]) {
+    return ASSETS[assetName];
+  }
+
   const [entryName] = path.parse(asset).name.match(PKG_RE);
   const [MDC, componentName] = entryName.split('.');
   const dealingWithSubpackage = Boolean(MDC && componentName);
@@ -110,14 +126,16 @@ async function cpAsset(asset) {
  */
 function dtsBundler() {
   const packageDirectories = fs.readdirSync(PACKAGES_DIRECTORY);
+  // Subdirectories
+  packageDirectories.push('mdc-switch/deprecated');
   packageDirectories.forEach((packageDirectory) => {
-    const main = path.join(PACKAGES_DIRECTORY, packageDirectory, './index.d.ts');
+    const main = path.resolve(PACKAGES_DIRECTORY, packageDirectory, './index.d.ts');
     fs.access(main, fs.constants.F_OK, (error) => {
       if (error) {
         return;
       }
       // d.ts file exists
-      const packagePath = path.join(PACKAGES_DIRECTORY, packageDirectory);
+      const packagePath = path.resolve(PACKAGES_DIRECTORY, packageDirectory);
       const name = JSON.parse(fs.readFileSync(path.join(packagePath, 'package.json'), 'utf8')).name;
       const isAllInOne = packageDirectory === ALL_IN_ONE_PACKAGE;
       const destBasename

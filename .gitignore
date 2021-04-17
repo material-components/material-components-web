@@ -14,7 +14,7 @@ node_modules/
 /build/
 /dist/
 /coverage/
-packages/*/dist
+packages/**/dist/
 packages/**/*.js
 packages/**/*.d.ts
 packages/**/*.map
