@@ -53,7 +53,7 @@ $word-break-custom-prop: custom-properties.create(
 );
 $word-break-default: custom-properties.create-var($word-break-custom-prop);
 $word-break-ie11-fallback: break-all;
-$z-index: 2;
+$z-index: 9;
 
 // Sets the border-radius for the tooltip element.
 // @param {Number | String} $radius Desired border radius value, accepts either
