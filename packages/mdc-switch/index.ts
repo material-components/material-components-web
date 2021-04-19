@@ -21,6 +21,10 @@
  * THE SOFTWARE.
  */
 
+// TODO(b/185410690): remove deprecated export
+import * as deprecated from './deprecated';
+export {deprecated};
+
 export * from './adapter';
 export * from './component';
 export * from './constants';
