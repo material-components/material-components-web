@@ -105,6 +105,14 @@
         $query: $query
       );
     }
+
+    // lint-disable-focus-psuedo-selector
+    &.mdc-list-item--selected:focus::before {
+      @include dom-mixins.transparent-border(
+        $border-width: 3px,
+        $query: $query
+      );
+    }
   }
 
   // Override anchor tag styles for the use-case of a list being used for navigation
