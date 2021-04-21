@@ -114,6 +114,7 @@ interacted with via keyboard.
 <div class="mdc-card">
   <div class="mdc-card__primary-action" tabindex="0">
     <!-- content within actionable area -->
+    <div class="mdc-card__ripple"></div>
   </div>
   <!-- ... content ... -->
 </div>
@@ -233,6 +234,7 @@ The following is an example incorporating all of the above elements:
       <div class="mdc-card__media-content">Title</div>
     </div>
     <!-- ... additional primary action content ... -->
+    <div class="mdc-card__ripple"></div>
   </div>
   <div class="mdc-card__actions">
     <div class="mdc-card__action-buttons">
@@ -277,6 +279,7 @@ CSS Class | Description
 `mdc-card` | Mandatory. The main card element.
 `mdc-card--outlined` | Optional. Removes the shadow and displays a hairline outline instead.
 `mdc-card__primary-action` | Optional. The main tappable area of the card. Typically contains most (or all) card content _except_ `mdc-card__actions`. Only applicable to cards that have a primary action that the main surface should trigger.
+`mdc-card__ripple` | Optional. The element that shows the ripple styling. This is mandatory if `mdc-card__primary-action` is used. Only applicable to cards that have a primary action that the main surface should trigger.
 `mdc-card__media` | Optional. Media area that displays a custom `background-image` with `background-size: cover`.
 `mdc-card__media--square` | Optional. Automatically scales the media area's height to equal its width.
 `mdc-card__media--16-9` | Optional. Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio.

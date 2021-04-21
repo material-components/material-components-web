@@ -39,6 +39,8 @@
 // Public
 //
 
+$ripple-target: '.mdc-card__ripple';
+
 @mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query);
   @include ripple($query);
@@ -310,11 +312,31 @@
 // card styles. It is recommended that most users use `mdc-card-core-styles` instead.
 @mixin ripple($query: feature-targeting.all()) {
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   .mdc-card__primary-action {
-    @include ripple.surface($query);
-    @include ripple.radius-bounded($query: $query);
-    @include ripple-theme.states($query: $query);
+    @include ripple.surface($query, $ripple-target: $ripple-target);
+    @include ripple.radius-bounded(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+    @include ripple-theme.states(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+
+    #{$ripple-target} {
+      @include feature-targeting.targets($feat-structure) {
+        box-sizing: content-box;
+        height: 100%;
+        overflow: hidden;
+        left: 0;
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        width: 100%;
+      }
+    }
   }
 }
 
