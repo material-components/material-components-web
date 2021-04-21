@@ -337,6 +337,16 @@ $ripple-target: '.mdc-card__ripple';
         width: 100%;
       }
     }
+
+    @include ripple-theme.focus {
+      &::after {
+        @include dom-mixins.transparent-border(
+          $border-width: 5px,
+          $border-style: double,
+          $query: $query
+        );
+      }
+    }
   }
 }
 
