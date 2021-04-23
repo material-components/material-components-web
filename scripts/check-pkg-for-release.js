@@ -37,6 +37,7 @@ const childProcess = require('child_process');
 const {default: traverse} = require('babel-traverse');
 const camelCase = require('camel-case');
 const recast = require('recast');
+const typescriptParser = require('recast/parsers/typescript');
 
 const CLI_PACKAGE_JSON_RELATIVE_PATH = process.argv[2];
 if (!CLI_PACKAGE_JSON_RELATIVE_PATH) {
@@ -208,9 +209,7 @@ function checkJSDependencyAddedInMDCPackage() {
 
   const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
   const src = fs.readFileSync(path.join(process.env.PWD, MASTER_TS_RELATIVE_PATH), 'utf8');
-  const ast = recast.parse(src, {
-    parser: require('recast/parsers/typescript'),
-  });
+  const ast = recast.parse(src, {parser: typescriptParser});
   assert(checkComponentImportedAddedInMDCPackage(ast), 'FAILURE: Component ' +
     CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' + 'Please add ' + nameCamel +
     ' to '+ MASTER_TS_RELATIVE_PATH + ' import rule before commit.');
@@ -254,10 +253,25 @@ function checkAutoInitAddedInMDCPackage(ast) {
       const args = node.expression.arguments;
       if (callee.object.name === 'autoInit' && callee.property.name === 'register') {
         for (let value of args) {
+          // When searching for a MemberExpression, if a typescript "as a"
+          // expression is found, recursively search its expression, since TS
+          // may define something "as a" multiple times.
+          //
+          // Example: object.foo as unknown as any as Interface
           while (value.type === 'TSAsExpression') {
             value = value.expression;
           }
 
+          // For the given ExpressionStatement node whose callee name is 
+          // "autoInit" and call property name is "register":
+          //
+          // autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
+          //
+          // We are searching the arguments provided to the expression to find
+          // the object with the package name ("checkbox" in the example).
+          // These node expression types which access an object's members are
+          // called MemberExpressions. The name of the object should be the
+          // package name.
           if (value.type === 'MemberExpression' && value.object.name === nameCamel) {
             autoInitedCount++;
             break;
