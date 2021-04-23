@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2021 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,14 @@
 // THE SOFTWARE.
 //
 
-@use '@material/animation/variables';
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
 
-@function transition($property) {
-  @return $property 90ms variables.$standard-curve-timing-function;
+@use './switch-theme';
+@use './switch';
+
+@include switch.static-styles();
+
+.mdc-switch {
+  @include switch-theme.theme(switch-theme.$light-theme);
 }

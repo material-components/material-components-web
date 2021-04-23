@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2019 Google Inc.
+ * Copyright 2021 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,5 +27,5 @@ export {deprecated};
 
 export * from './adapter';
 export * from './component';
-export * from './constants';
+// export * from './constants';
 export * from './foundation';

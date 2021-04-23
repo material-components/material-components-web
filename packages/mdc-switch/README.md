@@ -38,7 +38,7 @@ npm install @material/switch
 ### Styles
 
 ```scss
-@use "@material/switch";
+@use "@material/switch/deprecated" as switch;
 
 @include switch.core-styles;
 ```
@@ -48,7 +48,7 @@ npm install @material/switch
 The switch requires JavaScript to function, so it is necessary to instantiate `MDCSwitch` on the `mdc-switch` element.
 
 ```js
-import {MDCSwitch} from '@material/switch';
+import {MDCSwitch} from '@material/switch/deprecated';
 
 const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
 ```

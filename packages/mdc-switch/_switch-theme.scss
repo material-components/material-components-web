@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2021 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,30 +20,8 @@
 // THE SOFTWARE.
 //
 
-@use '@material/density/variables' as density-variables;
+$light-theme: ();
 
-$track-width: 36px !default;
-$track-height: 14px !default;
-$thumb-diameter: 20px !default;
-$ripple-size: 48px !default;
-
-$minimum-size: 28px !default;
-$maximum-size: $ripple-size !default;
-$density-scale: density-variables.$default-scale !default;
-$density-config: (
-  size: (
-    minimum: $minimum-size,
-    default: $maximum-size,
-    maximum: $maximum-size,
-  ),
-) !default;
-
-$thumb-active-margin: $track-width - $thumb-diameter !default;
-
-$toggled-off-thumb-color: surface !default;
-$toggled-off-track-color: on-surface !default;
-$toggled-off-ripple-color: #9e9e9e !default;
-$disabled-thumb-color: surface !default;
-$disabled-track-color: on-surface !default;
-
-$baseline-theme-color: secondary !default;
+@mixin theme($theme) {
+  // TODO(b/185410690)
+}
