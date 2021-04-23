@@ -35,7 +35,6 @@ const path = require('path');
 const childProcess = require('child_process');
 
 const {default: traverse} = require('babel-traverse');
-const parser = require('@babel/parser');
 const camelCase = require('camel-case');
 const recast = require('recast');
 
