@@ -174,7 +174,7 @@ class CssBundleFactory {
         'mdc.select': getAbsolutePath('/packages/mdc-select/mdc-select.scss'),
         'mdc.slider': getAbsolutePath('/packages/mdc-slider/styles.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
-        'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
+        'mdc.switch': getAbsolutePath('/packages/mdc-switch/deprecated/mdc-switch.scss'),
         'mdc.tab': getAbsolutePath('/packages/mdc-tab/mdc-tab.scss'),
         'mdc.tab-bar': getAbsolutePath('/packages/mdc-tab-bar/mdc-tab-bar.scss'),
         'mdc.tab-indicator': getAbsolutePath('/packages/mdc-tab-indicator/mdc-tab-indicator.scss'),
