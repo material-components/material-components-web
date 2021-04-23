@@ -1300,6 +1300,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
             'mouseleave', this.richTooltipMouseLeaveHandler);
       }
     }
+    this.adapter.deregisterAnchorEventHandler('blur', this.anchorBlurHandler);
 
     this.adapter.deregisterDocumentEventHandler(
         'click', this.documentClickHandler);

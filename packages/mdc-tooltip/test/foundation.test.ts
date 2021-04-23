@@ -1943,6 +1943,8 @@ describe('MDCTooltipFoundation', () => {
         .toHaveBeenCalledWith('scroll', jasmine.any(Function));
     expect(mockAdapter.deregisterWindowEventHandler)
         .toHaveBeenCalledWith('resize', jasmine.any(Function));
+    expect(mockAdapter.deregisterAnchorEventHandler)
+        .toHaveBeenCalledWith('blur', jasmine.any(Function));
   });
 
   it('#destroy removes the event listeners for default rich tooltips', () => {

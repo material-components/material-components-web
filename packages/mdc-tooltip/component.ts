@@ -240,7 +240,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
         this.anchorElem?.addEventListener(evt, handler);
       },
       deregisterAnchorEventHandler: (evt, handler) => {
-        this.anchorElem?.addEventListener(evt, handler);
+        this.anchorElem?.removeEventListener(evt, handler);
       },
       registerDocumentEventHandler: (evt, handler) => {
         document.body.addEventListener(evt, handler);
