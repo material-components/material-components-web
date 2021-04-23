@@ -262,7 +262,7 @@ function checkAutoInitAddedInMDCPackage(ast) {
             value = value.expression;
           }
 
-          // For the given ExpressionStatement node whose callee name is 
+          // For the given ExpressionStatement node whose callee name is
           // "autoInit" and call property name is "register":
           //
           // autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
