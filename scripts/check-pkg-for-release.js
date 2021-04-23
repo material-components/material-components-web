@@ -210,9 +210,7 @@ function checkJSDependencyAddedInMDCPackage() {
   const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
   const src = fs.readFileSync(path.join(process.env.PWD, MASTER_TS_RELATIVE_PATH), 'utf8');
   const ast = recast.parse(src, {
-    parser: {
-      parse: (code) => parser.parse(code, {sourceType: 'module'}),
-    },
+    parser: require('recast/parsers/typescript'),
   });
   assert(checkComponentImportedAddedInMDCPackage(ast), 'FAILURE: Component ' +
     CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' + 'Please add ' + nameCamel +
@@ -256,11 +254,15 @@ function checkAutoInitAddedInMDCPackage(ast) {
       const callee = node.expression.callee;
       const args = node.expression.arguments;
       if (callee.object.name === 'autoInit' && callee.property.name === 'register') {
-        const expression = args.find((value) => {
-          return value.type === 'MemberExpression';
-        });
-        if (expression.object.name === nameCamel) {
-          autoInitedCount++;
+        for (let value of args) {
+          while (value.type === 'TSAsExpression') {
+            value = value.expression;
+          }
+
+          if (value.type === 'MemberExpression' && value.object.name === nameCamel) {
+            autoInitedCount++;
+            break;
+          }
         }
       }
     },
