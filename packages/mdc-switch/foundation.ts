@@ -22,10 +22,125 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {MDCSwitchAdapter} from './adapter';
+import {mdcObserver} from '@material/base/observer';
+import {MDCSwitchAdapter, MDCSwitchRenderAdapter} from './adapter';
+import {CssClasses} from './constants';
 
-export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
+const baseClass =
+    mdcObserver<MDCFoundation<MDCSwitchAdapter>, typeof MDCFoundation>(
+        MDCFoundation);
+/**
+ * `MDCSwitchFoundation` provides a state-only foundation for a switch
+ * component.
+ *
+ * State observers and event handler entrypoints update a component's adapter's
+ * state with the logic needed for switch to function.
+ */
+export class MDCSwitchFoundation extends baseClass {
   constructor(adapter: MDCSwitchAdapter) {
     super(adapter);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  /**
+   * Initializes the foundation and starts observing state changes.
+   */
+  init() {
+    this.observe(this.adapter.state, {
+      disabled: this.stopProcessingIfDisabled,
+      processing: this.stopProcessingIfDisabled,
+    });
+  }
+
+  /**
+   * Cleans up the foundation and stops observing state changes.
+   */
+  destroy() {
+    this.unobserve();
+  }
+
+  /**
+   * Event handler for switch click events. Clicking on a switch will toggle its
+   * selected state.
+   */
+  handleClick() {
+    if (this.adapter.state.disabled) {
+      return;
+    }
+
+    this.adapter.state.selected = !this.adapter.state.selected;
+  }
+
+  protected stopProcessingIfDisabled() {
+    if (this.adapter.state.disabled) {
+      this.adapter.state.processing = false;
+    }
+  }
+}
+/**
+ * `MDCSwitchRenderFoundation` provides a state and rendering foundation for a
+ * switch component.
+ *
+ * State observers and event handler entrypoints update a component's
+ * adapter's state with the logic needed for switch to function.
+ *
+ * In response to state changes, the rendering foundation uses the component's
+ * render adapter to keep the component's DOM updated with the state.
+ */
+export class MDCSwitchRenderFoundation extends MDCSwitchFoundation {
+  protected adapter!: MDCSwitchRenderAdapter;
+
+  /**
+   * Initializes the foundation and starts observing state changes.
+   */
+  init() {
+    super.init();
+    this.observe(this.adapter.state, {
+      disabled: this.onDisabledChange,
+      processing: this.onProcessingChange,
+      selected: this.onSelectedChange,
+    })
+  }
+
+  /**
+   * Initializes the foundation from a server side rendered (SSR) component.
+   * This will sync the adapter's state with the current state of the DOM.
+   *
+   * This method should be called after `init()`.
+   */
+  initFromDOM() {
+    // Turn off observers while setting state
+    this.setObserversEnabled(this.adapter.state, false);
+
+    this.adapter.state.selected = this.adapter.getAriaChecked() === 'true';
+    // Ensure aria-checked is set if attribute is not present
+    this.onSelectedChange();
+    this.adapter.state.disabled = this.adapter.isDisabled();
+    this.adapter.state.processing =
+        this.adapter.hasClass(CssClasses.PROCESSING);
+
+    // Re-observe state
+    this.setObserversEnabled(this.adapter.state, true);
+    this.stopProcessingIfDisabled();
+  }
+
+  protected onDisabledChange() {
+    this.adapter.setDisabled(this.adapter.state.disabled);
+  }
+
+  protected onProcessingChange() {
+    this.toggleClass(this.adapter.state.processing, CssClasses.PROCESSING);
+  }
+
+  protected onSelectedChange() {
+    this.adapter.setAriaChecked(String(this.adapter.state.selected));
+  }
+
+  private toggleClass(addClass: boolean, className: CssClasses) {
+    if (addClass) {
+      this.adapter.addClass(className);
+    } else {
+      this.adapter.removeClass(className);
+    }
   }
 }

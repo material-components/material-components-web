@@ -21,5 +21,186 @@
  * THE SOFTWARE.
  */
 
+import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+import {CssClasses} from '../constants';
+import {MDCSwitchFoundation, MDCSwitchRenderFoundation} from '../foundation';
+
 describe('MDCSwitchFoundation', () => {
+  setUpMdcTestEnvironment();
+
+  function setupTest() {
+    return setUpFoundationTest(
+        MDCSwitchFoundation,
+        {state: {disabled: false, processing: false, selected: false}});
+  }
+
+  it('#destroy() removes state observers', () => {
+    const {foundation} = setupTest();
+    foundation.init();
+    spyOn(foundation, 'unobserve').and.callThrough();
+    foundation.destroy();
+    expect(foundation.unobserve).toHaveBeenCalled();
+  });
+
+  it('#handleClick() toggles selected', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.init();
+    foundation.handleClick();
+    expect(mockAdapter.state.selected)
+        .toBe(true, 'toggled from initial false to true');
+    foundation.handleClick();
+    expect(mockAdapter.state.selected).toBe(false);
+  });
+
+  it('#handleClick() does nothing when disabled', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.init();
+    mockAdapter.state.disabled = true;
+    foundation.handleClick();
+    expect(mockAdapter.state.selected).toBe(false, 'should not toggle to true');
+  });
+
+  it('#stopProcessingIfDisabled() sets processing to false when disabling',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.init();
+       mockAdapter.state.processing = true;
+       mockAdapter.state.disabled = true;
+       expect(mockAdapter.state.processing)
+           .toBe(false, 'processing set to false when disabled = true');
+     });
+
+  it('#stopProcessingIfDisabled() disallows processing if already disabled',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.init();
+       mockAdapter.state.disabled = true;
+       mockAdapter.state.processing = true;
+       expect(mockAdapter.state.processing)
+           .toBe(
+               false,
+               'processing should be set back to false when already disabled');
+     });
+
+  it('#stopProcessingIfDisabled() allows processing if enabled', () => {
+    const {foundation, mockAdapter} = setupTest();
+    foundation.init();
+    mockAdapter.state.processing = true;
+    expect(mockAdapter.state.processing)
+        .toBe(true, 'should be true when not disabled');
+  });
+});
+
+describe('MDCSwitchRenderFoundation', () => {
+  setUpMdcTestEnvironment();
+
+  function setupTest() {
+    return setUpFoundationTest(MDCSwitchRenderFoundation, {
+      state: {disabled: false, processing: false, selected: false},
+      addClass: () => {},
+      getAriaChecked: () => 'false',
+      hasClass: () => false,
+      isDisabled: () => false,
+      removeClass: () => false,
+      setAriaChecked: () => {},
+      setDisabled: () => {},
+    });
+  }
+
+  it('#initFromDOM() sets selected to true if aria-checked is "true"', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getAriaChecked.and.returnValue('true');
+    foundation.init();
+    foundation.initFromDOM();
+    expect(mockAdapter.state.selected).toBe(true);
+  });
+
+  it('#initFromDOM() sets selected to false if aria-checked is "false"', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getAriaChecked.and.returnValue('false');
+    foundation.init();
+    foundation.initFromDOM();
+    expect(mockAdapter.state.selected).toBe(false);
+  });
+
+  it('#initFromDOM() sets selected to true if aria-checked is null', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getAriaChecked.and.returnValue(null);
+    foundation.init();
+    foundation.initFromDOM();
+    expect(mockAdapter.state.selected).toBe(false);
+  });
+
+  it('#initFromDOM() sets aria-checked if it does not exist', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.getAriaChecked.and.returnValue(null);
+    foundation.init();
+    foundation.initFromDOM();
+    expect(mockAdapter.setAriaChecked).toHaveBeenCalledWith('false');
+  });
+
+  it('#initFromDOM() sets disabled from adapter.isDisabled', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.isDisabled.and.returnValue(true);
+    foundation.init();
+    foundation.initFromDOM();
+    expect(mockAdapter.state.disabled).toBe(true);
+  });
+
+  it('#initFromDOM() sets processing if adapter has class', () => {
+    const {foundation, mockAdapter} = setupTest();
+    // TODO(b/183749291): remove explicit arg type when Jasmine is updated
+    mockAdapter.hasClass.and.callFake(
+        (name: CssClasses) => name === CssClasses.PROCESSING);
+    foundation.init();
+    foundation.initFromDOM();
+    expect(mockAdapter.state.processing).toBe(true);
+  });
+
+  it('#initFromDOM() stops processing if adapter is disabled and has processing class',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       // TODO(b/183749291): remove explicit arg type when Jasmine is updated
+       mockAdapter.hasClass.and.callFake(
+           (name: CssClasses) => name === CssClasses.PROCESSING);
+       mockAdapter.isDisabled.and.returnValue(true);
+       foundation.init();
+       foundation.initFromDOM();
+       expect(mockAdapter.state.processing)
+           .toBe(
+               false,
+               'should not be processing if adapter.isDisabled() returns false');
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(CssClasses.PROCESSING);
+     });
+
+  it('#onDisabledChange() calls adapter.setDisabled when disabled changes',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.init();
+       mockAdapter.state.disabled = true;
+       expect(mockAdapter.setDisabled).toHaveBeenCalledWith(true);
+     });
+
+  it(`#onProcessingChange() updates ${
+         CssClasses.PROCESSING} when processing changes`,
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.init();
+       mockAdapter.state.processing = true;
+       expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.PROCESSING);
+       mockAdapter.state.processing = false;
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(CssClasses.PROCESSING);
+     });
+
+  it('#onSelectedChange() calls adapter.setAriaChecked when selected changes',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.init();
+       mockAdapter.state.selected = true;
+       expect(mockAdapter.setAriaChecked).toHaveBeenCalledWith('true');
+       mockAdapter.state.selected = false;
+       expect(mockAdapter.setAriaChecked).toHaveBeenCalledWith('false');
+     });
 });

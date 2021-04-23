@@ -22,18 +22,63 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCSwitchAdapter} from './adapter';
-import {MDCSwitchFoundation} from './foundation';
+import {MDCSwitchRenderAdapter, MDCSwitchState} from './adapter';
+import {MDCSwitchRenderFoundation} from './foundation';
 
-export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> {
-  static attachTo(root: HTMLElement) {
+/**
+ * `MDCSwitch` provides a component implementation of a Material Design switch.
+ */
+export class MDCSwitch extends
+    MDCComponent<MDCSwitchRenderFoundation> implements MDCSwitchState {
+  /**
+   * Creates a new `MDCSwitch` and attaches it to the given root element.
+   * @param root The root to attach to.
+   * @return the new component instance.
+   */
+  static attachTo(root: HTMLButtonElement) {
     return new MDCSwitch(root);
   }
 
+  disabled!: boolean;
+  processing!: boolean;
+  selected!: boolean;
+
+  constructor(
+      public root: HTMLButtonElement, foundation?: MDCSwitchRenderFoundation) {
+    super(root, foundation);
+  }
+
+  initialSyncWithDOM() {
+    this.root.addEventListener('click', this.foundation.handleClick);
+    this.foundation.initFromDOM();
+  }
+
+  destroy() {
+    super.destroy();
+    this.root.removeEventListener('click', this.foundation.handleClick);
+  }
+
   getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    const adapter: MDCSwitchAdapter = {};
-    return new MDCSwitchFoundation(adapter);
+    return new MDCSwitchRenderFoundation(this.createAdapter());
+  }
+
+  protected createAdapter(): MDCSwitchRenderAdapter {
+    return {
+      addClass: className => {
+        this.root.classList.add(className)
+      },
+      getAriaChecked: () => this.root.getAttribute('aria-checked'),
+      hasClass: className => this.root.classList.contains(className),
+      isDisabled: () => this.root.disabled,
+      removeClass: className => {
+        this.root.classList.remove(className);
+      },
+      setAriaChecked: ariaChecked =>
+          this.root.setAttribute('aria-checked', ariaChecked),
+      setDisabled: disabled => {
+        this.root.disabled = disabled;
+      },
+      state: this,
+    };
   }
 }
