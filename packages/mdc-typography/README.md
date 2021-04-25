@@ -238,11 +238,11 @@ Sass module variables:
 ```scss
 @use "@material/typography" with (
   $styles-headline1: (
-    $font-family: unquote("Arial, Helvetica, sans-serif")
+    font-family: unquote("Arial, Helvetica, sans-serif")
   ),
   $styles-headline2: (
-    $font-family: unquote("Arial, Helvetica, sans-serif"),
-    $font-size: 3.25rem
+    font-family: unquote("Arial, Helvetica, sans-serif"),
+    font-size: 3.25rem
   )
 );
 
