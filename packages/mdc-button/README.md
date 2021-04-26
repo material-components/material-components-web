@@ -85,7 +85,7 @@ To meet this requirement, add the following to your button:
 <img src="images/text-icon-button.png" alt="Text button with bookmark icon example">
 
 ```html
-<button class="mdc-button">
+<button class="mdc-button mdc-button--icon-leading">
   <span class="mdc-button__ripple"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true"
     >bookmark</i
@@ -115,7 +115,7 @@ To meet this requirement, add the following to your button:
 <img src="images/outlined-icon-button.png" alt="Outlined button with bookmark icon">
 
 ```html
-<button class="mdc-button mdc-button--outlined">
+<button class="mdc-button mdc-button--outlined mdc-button--icon-leading">
   <span class="mdc-button__ripple"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">bookmark</i>
   <span class="mdc-button__label">Outlined Button plus Icon</span>
@@ -144,7 +144,7 @@ and `mdc-button--unelevated` is applied for a contained button flush with the su
 <img src="images/contained-icon-button.png" alt="Contained button with a bookmark icon">
 
 ```html
-<button class="mdc-button mdc-button--raised">
+<button class="mdc-button mdc-button--raised mdc-button--leading">
   <span class="mdc-button__ripple"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true"
     >bookmark</i
@@ -214,7 +214,7 @@ Certain icons make more sense to appear after the button's text label rather tha
 putting the icon markup _after_ the `mdc-button__label` element.
 
 ```html
-<button class="mdc-button">
+<button class="mdc-button mdc-button--icon-trailing">
   <span class="mdc-button__ripple"></span>
   <span class="mdc-button__label">Button</span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
@@ -296,14 +296,15 @@ CSS Class | Description
 `mdc-button--raised` | Optional. Styles a contained button that is elevated above the surface.
 `mdc-button--unelevated` | Optional. Styles a contained button that is flush with the surface.
 `mdc-button--outlined` | Optional. Styles an outlined button that is flush with the surface.
+`mdc-button--icon-leading` | Optional. Styles a button with a leading icon.
+`mdc-button--icon-trailing` | Optional. Styles a button with a trailing icon.
 `mdc-button__label` | Recommended.\* Indicates the element containing the button's text label.
 `mdc-button__icon` | Optional. Indicates the element containing the button's icon.
 
 **Note: The `mdc-button__label` element is required for buttons with a trailing icon, but it is currently optional for
  buttons with no icon or a leading icon. In the latter cases, it is acceptable for the text label to simply exist
  directly within the `mdc-button` element.<br>
- However, the `mdc-button__label` class may become mandatory for all cases in the future so we recommended to
- always include it.**
+ However, the `mdc-button__label` class may become mandatory for all cases in the future so we recommend always including it.**
 
 ### Sass mixins
 

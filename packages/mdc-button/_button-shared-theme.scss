@@ -39,6 +39,9 @@
 $height: 36px !default;
 $horizontal-padding: 8px !default;
 $contained-horizontal-padding: 16px !default;
+// For a contained button with an icon, the padding on the side of the
+// button with the icon.
+$contained-horizontal-padding-icon: 12px !default;
 
 $minimum-height: 24px !default;
 $maximum-height: $height !default;
@@ -409,13 +412,38 @@ $disabled-container-color: rgba(
 ///
 /// Sets horizontal padding to the given number.
 /// @param {Number} $padding
+/// @param {Number} $padding-icon [null] For buttons with an icon, the
+///     horizontal padding on the side with the icon, if different from
+///     $padding.
 ///
-@mixin horizontal-padding($padding, $query: feature-targeting.all()) {
+@mixin horizontal-padding(
+  $padding,
+  $padding-icon: null,
+  $query: feature-targeting.all()
+) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
     // $padding should be a single value; enforce it by specifying all 4 sides in the output
     padding: 0 $padding 0 $padding;
+  }
+
+  @if $padding-icon != null {
+    &.mdc-button--icon-trailing {
+      @include feature-targeting.targets($feat-structure) {
+        // $padding should be a single value; enforce it by specifying all 4
+        // sides in the output.
+        padding: 0 $padding-icon 0 $padding;
+      }
+    }
+
+    &.mdc-button--icon-leading {
+      @include feature-targeting.targets($feat-structure) {
+        // $padding should be a single value; enforce it by specifying all 4
+        // sides in the output.
+        padding: 0 $padding 0 $padding-icon;
+      }
+    }
   }
 }
 

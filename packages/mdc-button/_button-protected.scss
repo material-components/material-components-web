@@ -46,9 +46,11 @@
   .mdc-button--raised {
     // TODO(b/179402677): move into theme config.
     @include button-shared-theme.horizontal-padding(
-      button-shared-theme.$contained-horizontal-padding,
-      $query
+      $padding: button-shared-theme.$contained-horizontal-padding,
+      $padding-icon: button-shared-theme.$contained-horizontal-padding-icon,
+      $query: $query
     );
+
     @include button-protected-theme.theme($theme, $query: $query);
   }
 }

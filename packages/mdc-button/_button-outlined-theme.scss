@@ -146,14 +146,22 @@ $light-theme: (
 @mixin outline-width(
   $outline-width,
   $padding: button-shared-theme.$contained-horizontal-padding,
+  // For a button with an icon, the padding on the side of the button with the
+  // icon.
+  $padding-icon: button-shared-theme.$contained-horizontal-padding-icon,
   $query: feature-targeting.all()
 ) {
   @if $outline-width != null {
     $feat-structure: feature-targeting.create-target($query, structure);
     // Note: Adjust padding to maintain consistent width with non-outlined buttons
     $padding-value: math.max($padding - $outline-width, 0);
+    $padding-icon-value: math.max($padding-icon - $outline-width, 0);
 
-    @include button-shared-theme.horizontal-padding($padding-value, $query);
+    @include button-shared-theme.horizontal-padding(
+      $padding: $padding-value,
+      $padding-icon: $padding-icon-value,
+      $query: $query
+    );
 
     @include feature-targeting.targets($feat-structure) {
       border-width: $outline-width;
