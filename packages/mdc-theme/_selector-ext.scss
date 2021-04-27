@@ -1,0 +1,464 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:list';
+@use 'sass:math';
+@use 'sass:selector';
+@use 'sass:string';
+
+// A collection of extensions to the sass:selector module
+// https://sass-lang.com/documentation/modules/selector
+
+/// Identical to `selector.append()`, but adheres strictly to CSS compound
+/// selector order.
+///
+/// @example - scss
+///   .foo::before {
+///     &[dir=rtl] { /* Invalid */ }
+///   }
+///
+///   .foo::before {
+///     @include append-strict(&, '[dir=rtl]') { /* Valid */ }
+///   }
+///
+/// @example - css
+///   .foo::before[dir=rtl] {
+///     /* Invalid */
+///   }
+///
+///   .foo[dir=rtl]::before {
+///     /* Valid */
+///   }
+///
+/// This is useful for mixins where the parent selector is unknown and the
+/// appended selector's position is critical to maintain valid CSS.
+///
+/// @param {List} $selectors - One or more selectors to append.
+@mixin append-strict($selectors...) {
+  @at-root {
+    #{append-strict($selectors...)} {
+      @content;
+    }
+  }
+}
+
+/// Function version of `append-strict()`. Use this instead of the mixin along
+/// with `@at-root` when combining the result of `append-strict()` with other
+/// selectors.
+///
+/// @example - scss
+///   .foo::before {
+///     // Cannot add a list of other selectors with an @include mixin.
+///     // @include append-strict(&, ':hover'), & {}
+///
+///     @at-root {
+///       // Use @at-root and interpolation to add additional selectors
+///       #{append-strict(&, ':hover')},
+///       & {
+///         color: inherit;
+///       }
+///     }
+///   }
+///
+/// @example - css
+///   .foo:hover::before,
+///   .foo::before {
+///     color: inherit;
+///   }
+///
+/// @see {mixin} append-strict
+///
+/// @param {List} $selectors - One or more selectors to append.
+/// @return {List} The appended selectors in selector value format.
+@function append-strict($selectors...) {
+  $selector-lists: ();
+  @each $selector in $selectors {
+    $selector-lists: list.append($selector-lists, selector.parse($selector));
+  }
+
+  @return _append-strict($selector-lists);
+}
+
+/// Iterates through multiple selector Lists and strictly appends every
+/// combination of each selector lists' complex selectors.
+///
+/// @see {mixin} _append-strict-complex-selectors
+///
+/// @param {List} $selector-lists - A List of selector lists to append.
+/// @return {List} A single selector List resulting from appending all the
+///     provided selector lists.
+@function _append-strict($selector-lists) {
+  $length: list.length($selector-lists);
+  // Track the current index of each complex selector (within each selector
+  // list) that we are creating a combination of.
+  //
+  // Selectors: ((1), (2a, 2b), (3))
+  // Combinations: (1, 2a, 3), (1, 2b, 3)
+  //
+  // Initialize it to the first complex selector index for each selector list.
+  $current-indices: ();
+  @for $i from 1 through $length {
+    $current-indices: list.append($current-indices, 1);
+  }
+
+  // The final result: a single selector list resulting from appending the
+  // provided selector lists.
+  $selector-list-result: ();
+
+  $has-more-combinations: true;
+  @while $has-more-combinations {
+    // A combination of complex selectors to add to the selector list result.
+    $complex-selector-combination: ();
+    @for $i from 1 through $length {
+      $selector-list: list.nth($selector-lists, $i);
+      $current-index: list.nth($current-indices, $i);
+      $complex-selector: list.nth($selector-list, $current-index);
+      $complex-selector-combination: _append-strict-complex-selectors(
+        $complex-selector-combination,
+        $complex-selector
+      );
+    }
+
+    $selector-list-result: list.append(
+      $selector-list-result,
+      $complex-selector-combination,
+      $separator: comma
+    );
+
+    // Increase the index of the last selector list's complex selector to its
+    // next one. If it reaches the length of the array, reset to 1 and bump the
+    // next selector list index.
+    //
+    // Given selector lists: ((1), (2a, 2b), (3))
+    // At indices:    ((1), (1), (1))
+    // Try bumping:   ((1), (1), (2*)) *This index is >length of 1 for the list
+    // Bump the next: ((1), (2), (1))
+    $bump-next-list-index: true;
+    @for $neg-i from $length * -1 through -1 {
+      @if $bump-next-list-index {
+        $i: math.abs($neg-i);
+        $selector-list: list.nth($selector-lists, $i);
+        $current-index: list.nth($current-indices, $i);
+        $next-index: $current-index + 1;
+        @if $next-index > list.length($selector-list) {
+          // Reset to start for the list and bump the next list (technically
+          // previous since we're iterating backwards).
+          $next-index: 1;
+          $bump-next-list-index: true;
+        } @else {
+          // If we bumped to the next index for this selector list, we can
+          // "break" the loop and continue to form the next combination.
+          $bump-next-list-index: false;
+        }
+
+        // Save the new current index for this selector list.
+        $current-indices: list.set-nth($current-indices, $i, $next-index);
+      }
+    }
+
+    // When the first selector list reaches its length, it will ask to bump the
+    // next selector list index. There are no more selector lists, which means
+    // there are no more combinations and the loop may end.
+    @if $bump-next-list-index {
+      $has-more-combinations: false;
+    }
+  }
+
+  @return $selector-list-result;
+}
+
+/// Appends two complex selectors together, strictly adhering to the CSS
+/// `<compound-selector>` type definition to avoid forming invalid resulting
+/// compound selectors.
+///
+/// @param {List} $complex-selector-a - The first List of space-separated
+///     compound selectors.
+/// @param {List} $complex-selector-a - The second List of space-separated
+///     compound selectors.
+/// @return {List} A resulting appended complex selector.
+@function _append-strict-complex-selectors(
+  $complex-selector-a,
+  $complex-selector-b
+) {
+  // If one of the lists is empty, return the other list.
+  @if list.length($complex-selector-a) < 1 {
+    @return $complex-selector-b;
+  }
+
+  @if list.length($complex-selector-b) < 1 {
+    @return $complex-selector-a;
+  }
+
+  // The "joining" of A and B happens at the last compound selector of A and the
+  // first compound selector of B.
+  //
+  // Example:
+  // ".foo .bar" and ".baz :hover" will append as
+  // ".foo .bar.baz :hover"
+  $last-compound-selector-a: list.nth(
+    $complex-selector-a,
+    list.length($complex-selector-a)
+  );
+  $first-compound-selector-b: list.nth($complex-selector-b, 1);
+
+  // The compound selector CSS joining (".bar" and ".baz") and their sorting
+  // only needs to happen on the last/first of A/B.
+  $simple-selectors-a: selector.simple-selectors($last-compound-selector-a);
+  $simple-selectors-b: selector.simple-selectors($first-compound-selector-b);
+  $sorted-simple-selectors: _sort-simple-selectors(
+    list.join($simple-selectors-a, $simple-selectors-b)
+  );
+
+  // The result can start to form by setting the last compound selector of A to
+  // the result of the sorted and joined ".bar.baz"...
+  $result: list.set-nth(
+    $complex-selector-a,
+    list.length($complex-selector-a),
+    _join-simple-selectors($sorted-simple-selectors)
+  );
+
+  // ...then adding the remaining compound selectors (excluding the first one,
+  // which was already appended) from B.
+  @if list.length($complex-selector-b) > 1 {
+    @for $i from 2 through list.length($complex-selector-b) {
+      $result: list.append(list.nth($complex-selector-b, $i));
+    }
+  }
+
+  @return $result;
+}
+
+/// Combines a List of simple selectors together to form a compound selector.
+/// If there are any pseudo class function selectors that should nest their
+/// selectors within their parentheses, this function will do so.
+///
+/// @param {List} $simple-selectors - A List of simple selectors to join.
+/// @return {String} A compound selector.
+@function _join-simple-selectors($simple-selectors) {
+  $compound-selector: '';
+  $parens-index: _get-nestable-parens-index($simple-selectors);
+  @if $parens-index {
+    // Contains a selector, such as :host() that other selectors must be placed
+    // within the parentheses of. This selector should be moved to the front of
+    // the compound selector.
+    $compound-selector: list.nth($simple-selectors, $parens-index);
+    @if string.index($compound-selector, '(') != null {
+      // Already has parens. Remove the final closing parens so that additional
+      // selectors are placed within the parentheses.
+      $compound-selector: string.slice(
+        $compound-selector,
+        1,
+        string.length($compound-selector) - 1
+      );
+    } @else {
+      // Otherwise, add an opening parens.
+      $compound-selector: #{$compound-selector}#{string.unquote('(')};
+    }
+  }
+
+  @for $i from 1 through list.length($simple-selectors) {
+    @if $i != $parens-index {
+      // Skip the parens selector that was moved to the front, if any
+      $simple-selector: list.nth($simple-selectors, $i);
+      $compound-selector: #{$compound-selector}#{$simple-selector};
+    }
+  }
+
+  @if $parens-index {
+    // Add the closing parens
+    $compound-selector: #{$compound-selector}#{string.unquote(')')};
+  }
+
+  @return $compound-selector;
+}
+
+/// Searches a List of simple selectors for any pseudo class functions that can
+/// and should be nested with other selectors. If one is found, the index is
+/// returned.
+///
+/// @see {mixin} _can-and-should-nest-pseudo-class
+///
+/// @param {List} $simple-selectors - A List of simple selectors to search.
+/// @return {Number} The index of the selector with parens to nest, or null if
+///     there is none.
+@function _get-nestable-parens-index($simple-selectors) {
+  @for $i from 1 through list.length($simple-selectors) {
+    $simple-selector: list.nth($simple-selectors, $i);
+    @if _can-and-should-nest-pseudo-class($simple-selector) {
+      @return $i;
+    }
+  }
+
+  @return null;
+}
+
+/// Checks two things:
+///
+/// 1. If a simple selector is a pseudo class function that accepts selectors
+///    as its arguments.
+/// 2. If this selector is commonly used for nesting within.
+///
+/// For example, `:host` satisfies both #1 and #2, but the `:not()` pseudo class
+/// is not commonly used in abstract nesting within Sass.
+///
+/// @example - scss
+///   :host(:hover) {
+///     :enabled {
+///       // commonly expect :host(:hover:enabled),
+///       // since :host(:hover):enabled is invalid CSS
+///     }
+///   }
+///
+///   :not(:hover) {
+///     :enabled {
+///       // commonly expect :not(:hover):enabled
+///       // do not expect :not(:hover:enabled) as the intention
+///     }
+///   }
+///
+/// @param {String} $simple-selector - The simple selector to check.
+/// @return {Bool} True if the simple selector is a pseudo class function that
+///     should nest additional selectors within its parentheses.
+@function _can-and-should-nest-pseudo-class($simple-selector) {
+  @return string.index($simple-selector, ':host') != null or
+    string.index($simple-selector, '::slotted') != null;
+}
+
+/// Sorts a List of simple selectors according to the `<compound-selector>` CSS
+/// type definition.
+///
+/// ```
+/// <compound-selector> = [ <type-selector>? <subclass-selector>*
+///                     [ <pseudo-element-selector> <pseudo-class-selector>* ]* ]!
+/// ```
+///
+/// @example - scss
+///   $unsorted: (':hover', '::before', 'h1');
+///   #{selector.append(_sort-simple-selectors($unsorted...))} {}
+///
+/// @example - css
+///   h1::before:hover {}
+///
+/// @link https://drafts.csswg.org/selectors/#typedef-compound-selector
+///
+/// @param {List} $simple-selectors - A List of simple selectors.
+/// @return {List} A List of sorted simple selectors.
+@function _sort-simple-selectors($simple-selectors) {
+  @if list.length($simple-selectors) <= 1 {
+    @return $simple-selectors;
+  }
+
+  $type-selectors: ();
+  $pseudo-element-selectors: ();
+  $subclass-selectors: ();
+
+  @each $simple-selector in $simple-selectors {
+    @if _is-type-selector($simple-selector) {
+      $type-selectors: list.append($type-selectors, $simple-selector);
+    } @else if _is-pseudo-element-selector($simple-selector) {
+      $pseudo-element-selectors: list.append(
+        $pseudo-element-selectors,
+        $simple-selector
+      );
+    } @else {
+      $subclass-selectors: list.append($subclass-selectors, $simple-selector);
+    }
+  }
+
+  @return list.join(
+    $type-selectors,
+    list.join($subclass-selectors, $pseudo-element-selectors)
+  );
+}
+
+/// Checks if a simple selector is a `<type-selector>`.
+///
+/// @link https://drafts.csswg.org/selectors/#typedef-type-selector
+///
+/// @param {String} $simple-selector - The simple selector to check.
+/// @return {Bool} True if the selector is a type selector.
+@function _is-type-selector($simple-selector) {
+  @return not _is-subclass-selector($simple-selector);
+}
+
+/// Checks if a simple selector is a `<subclass-selector>`.
+///
+/// @link https://drafts.csswg.org/selectors/#typedef-subclass-selector
+///
+/// @param {String} $simple-selector - The simple selector to check.
+/// @return {Bool} True if the selector is a subclass selector.
+@function _is-subclass-selector($simple-selector) {
+  @return _is-id-selector($simple-selector) or
+    _is-class-selector($simple-selector) or
+    _is-attribute-selector($simple-selector) or
+    _is-pseudo-class-selector($simple-selector);
+}
+
+/// Checks if a simple selector is an `<id-selector>`.
+///
+/// @link https://drafts.csswg.org/selectors/#typedef-id-selector
+///
+/// @param {String} $simple-selector - The simple selector to check.
+/// @return {Bool} True if the selector is an ID selector.
+@function _is-id-selector($simple-selector) {
+  @return string.index($simple-selector, '#') == 1;
+}
+
+/// Checks if a simple selector is a `<class-selector>`.
+///
+/// @link https://drafts.csswg.org/selectors/#typedef-class-selector
+///
+/// @param {String} $simple-selector - The simple selector to check.
+/// @return {Bool} True if the selector is a class selector.
+@function _is-class-selector($simple-selector) {
+  @return string.index($simple-selector, '.') == 1;
+}
+
+/// Checks if a simple selector is an `<attribute-selector>`.
+///
+/// @link https://drafts.csswg.org/selectors/#typedef-attribute-selector
+///
+/// @param {String} $simple-selector - The simple selector to check.
+/// @return {Bool} True if the selector is an attribute selector.
+@function _is-attribute-selector($simple-selector) {
+  @return string.index($simple-selector, '[') == 1;
+}
+
+/// Checks if a simple selector is a `<pseudo-class-selector>`.
+///
+/// @link https://drafts.csswg.org/selectors/#typedef-pseudo-class-selector
+///
+/// @param {String} $simple-selector - The simple selector to check.
+/// @return {Bool} True if the selector is a pseudo class selector.
+@function _is-pseudo-class-selector($simple-selector) {
+  @return string.index($simple-selector, ':') == 1;
+}
+
+/// Checks if a simple selector is a `<pseudo-element-selector>`.
+///
+/// @link https://drafts.csswg.org/selectors/#typedef-pseudo-element-selector
+///
+/// @param {String} $simple-selector - The simple selector to check.
+/// @return {Bool} True if the selector is a pseudo element selector.
+@function _is-pseudo-element-selector($simple-selector) {
+  @return string.index($simple-selector, '::') == 1;
+}

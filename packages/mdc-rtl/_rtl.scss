@@ -25,7 +25,9 @@
 
 @use 'sass:list';
 @use 'sass:meta';
+@use 'sass:selector';
 @use '@material/theme/theme';
+@use '@material/theme/selector-ext';
 
 $include: true !default;
 
@@ -70,9 +72,17 @@ $include: true !default;
 /// @content Content to be styled in an RTL context.
 @mixin rtl() {
   @if ($include) {
-    [dir='rtl'] &,
-    &[dir='rtl'] {
-      @content;
+    $dir-rtl: '[dir=rtl]';
+
+    $rtl-selectors: list.join(
+      selector.nest($dir-rtl, &),
+      selector-ext.append-strict(&, $dir-rtl)
+    );
+
+    @at-root {
+      #{$rtl-selectors} {
+        @content;
+      }
     }
   }
 }
