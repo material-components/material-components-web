@@ -203,7 +203,8 @@ $disabled-container-color: rgba(
 ///
 /// Sets the container fill color to the given color for a disabled button.
 /// @param {Color} $color - The desired container fill color.
-/// @deprecated - call `icon-color` instead with `disabled` as a map key.
+/// @deprecated - call `container-fill-color` instead with `disabled` as a map
+///     key.
 ///
 @mixin disabled-container-fill-color($color, $query: feature-targeting.all()) {
   @include container-fill-color(
