@@ -132,18 +132,37 @@ $_varname-prefix: 'mdc';
 /// @example - scss
 ///   $varname: create-varname(foo); // --mdc-foo
 ///
+/// Variable names can be notated as private with an `_` prefix to indicate
+/// internal usage only.
+///
+/// @example - scss
+///   $private-varname: create-varname(foo, $private: true); // --_mdc-foo
+///
 /// @param {String} $name - The name of the custom property.
+/// @param {Bool} $private [false] - If true, add an `_` prefix to indicate the
+///     variable name is intended for internal usage.
 /// @return {String} The full CSS custom property variable name.
-@function create-varname($name) {
-  @return --#{$_varname-prefix}-#{$name};
+@function create-varname($name, $private: false) {
+  $visibility: if($private, '_', '');
+  @return --#{$visibility}#{$_varname-prefix}-#{$name};
 }
 
 /// Returns the custom property variable name of a custom property Map.
 ///
-/// @param {Map} $custom-prop - a custom property Map.
+/// @param {Map} $custom-prop - A custom property Map.
+/// @param {Bool} $exclude-prefix - If true, exclude the global prefix from the
+///     returned String.
 /// @return the custom property variable name defined by the Map.
-@function get-varname($custom-prop) {
-  @return map.get($custom-prop, 'varname');
+@function get-varname($custom-prop, $exclude-prefix: false) {
+  $varname: map.get($custom-prop, 'varname');
+  @if $exclude-prefix {
+    $varname: string.slice(
+      $varname,
+      string.index($varname, $_varname-prefix) + 1
+    );
+  }
+
+  @return $varname;
 }
 
 /// Returns the fallback value of a custom property Map. May be null if the

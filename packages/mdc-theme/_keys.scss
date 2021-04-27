@@ -25,6 +25,7 @@
 @use 'sass:meta';
 @use 'sass:string';
 @use './custom-properties';
+@use './tools';
 
 /// A flat Map of keys and their values. Keys may be set to any static CSS
 /// value, or another key's name to resolve to that key's value.
@@ -66,27 +67,29 @@ $_links: ();
 /// A map of key options. If a key has options, it will have an entry in this
 /// variable with a Map value with options for the key.
 ///
-/// @example - scss
-///   // Option structure
-///   $_options: (
-///     key-name: (
-///       // An additional prefix to add when generating the varname of a
-///       // key's custom property
-///       // --mdc-<prefix>-key-name
-///       custom-property-prefix: prefix
-///     )
-///   );
-///
+/// @see {mixin} set-options
 /// @type {Map}
 $_options: ();
 
 /// Indicates whether or not the provided value is a registered key.
 ///
-/// @param {String} $key - One or more key parts to check
+/// @param {String...} $key - One or more key parts to check.
 /// @return {Bool} True if the key is registered, or false if it is not.
 @function is-key($key...) {
   $key: combine($key...);
-  @return map.has-key($_store, $key);
+  @return map.has-key($_store, $key) and not _is-private-key($key);
+}
+
+/// Checks if a key is private or not. Private keys should be for internal
+/// usage only and should not appear externally.
+///
+/// @param {String...} $key - One or more key parts to check.
+/// @param {Map} $options [null] - Optional options Map to use instead of the
+///     key's stored options.
+/// @return {Bool} True if the key is private, or false if it is not.
+@function _is-private-key($key...) {
+  $options: get-options($key...);
+  @return map.get($options, private);
 }
 
 /// Retrieves a List of all keys matching the provided key group prefix.
@@ -104,7 +107,7 @@ $_options: ();
 @function get-keys($group: '') {
   $keys: ();
   @each $key in map.keys($_store) {
-    @if string.index($key, $group) == 1 {
+    @if string.index($key, $group) == 1 and not _is-private-key($key) {
       $keys: list.append($keys, $key);
     }
   }
@@ -192,6 +195,8 @@ $_options: ();
 ///     custom-property-prefix: prefix
 ///   ));
 ///
+/// @see {mixin} set-options For more details on available options.
+///
 /// Note that this mixin only sets the key's value. If the key points to another
 /// key, it does not link those keys when custom properties are emitted. Use
 /// `add-link()` or `register-theme()` to create links between keys.
@@ -230,10 +235,67 @@ $_options: ();
   // https://sass-lang.com/documentation/variables#shadowing
   $_store: map.set($_store, $key, $value) !global;
   @if $options {
-    $_options: map.set($_options, $key, $options) !global;
+    $key: set-options($key, $options);
   }
 
   @return $key;
+}
+
+/// Sets the options for a key. Options control various aspects about keys,
+/// such as how custom properties are generated from them.
+///
+/// The following example lists all available options:
+///
+/// @example - scss
+///   @include set-options(primary, (
+///     // An additional prefix to add when generating the varname of a
+///     // key's custom property
+///     // --mdc-<prefix>-key-name
+///     custom-property-prefix: prefix,
+///
+///     // Whether or not the key should be for internal usage only. If true,
+///     // custom properties will be generated with an `_` prefix. Private
+///     // keys are not returns in is-key() or get-key().
+///     private: false,
+///   ));
+///
+/// @param {String} $key - The key to set options for.
+/// @param {Map} $options - The options Map for the key.
+@mixin set-options($key, $options) {
+  $unused: set-options($key, $options);
+}
+
+/// Function version of `set-options()`.
+///
+/// Mixins cannot be invoked within functions in Sass. Use this when
+/// `set-options()` must be used within a function. The return value may be
+/// discarded or re-assigned to the `$key` provided.
+///
+/// @see {mixin} set-options
+///
+/// @return {String} `$key`, unmodified, for convenience.
+@function set-options($key, $options) {
+  $_options: map.set($_options, $key, $options) !global;
+  @return $key;
+}
+
+/// Retrieves the options for a key.
+///
+/// When used internally, a named `$options` parameter may be provided to
+/// override the options returned for the key.
+///
+/// @param {String...} $key - One or more key parts to retrieve options for.
+/// @param {Map} $options [null] - Optional options Map to use instead of the
+///     key's stored options.
+/// @return {Map} A Map of the key's options, or an empty Map if the key does
+///     not have any stored options.
+@function get-options($key...) {
+  $options: map.get(meta.keywords($key), options);
+  @if $options {
+    @return $options;
+  }
+
+  @return tools.either(map.get($_options, combine($key...)), ());
 }
 
 /// Add a link between two keys.
@@ -408,21 +470,26 @@ $_options: ();
 /// @param {Map} $theme - The theme Map to create custom properties for.
 /// @param {String} $prefix [null] - Optional prefix to prepend for each key's
 ///     custom property.
+/// @param {Map} $options [null] - Optional options Map to use instead of the
+///     key's stored options.
 /// @return {Map} A similar `$theme` Map whose values are replaced with the
 ///     newly created and resolved custom properties.
-@function create-theme-properties($theme, $prefix: null) {
+@function create-theme-properties($theme, $prefix: null, $options: null) {
   $theme-with-props: ();
   @each $name, $value in $theme {
     @if $value != null {
       $key: combine($prefix, $name);
       @if is-key($value) {
-        $value: create-custom-property($value);
+        $value: create-custom-property($value, $options: $options);
       }
 
       $theme-with-props: map.set(
         $theme-with-props,
         $name,
-        custom-properties.create(_create-varname($key), $value)
+        custom-properties.create(
+          _create-varname($key, $options: $options),
+          $value
+        )
       );
     }
   }
@@ -438,15 +505,21 @@ $_options: ();
 /// (such as custom property configuration) will change how the returned value
 /// is emitted.
 ///
-/// @param {$tring...} $key - One or more key parts to create a custom property
+/// @param {String...} $key - One or more key parts to create a custom property
 ///     for.
+/// @param {Map} $options [null] - Optional options Map to use instead of the
+///     key's stored options.
 /// @return {Map} A custom property Map for the key.
 @function create-custom-property($key...) {
+  $options: get-options($key...);
   $key: combine($key...);
-  $prop: custom-properties.create(_create-varname($key));
+  $prop: custom-properties.create(_create-varname($key, $options: $options));
   $link: map.get($_links, $key);
   @if $link {
-    $prop: custom-properties.set-fallback($prop, create-custom-property($link));
+    $prop: custom-properties.set-fallback(
+      $prop,
+      create-custom-property($link, $options: $options)
+    );
   }
 
   @return custom-properties.set-fallback($prop, resolve($key, $deep: true));
@@ -456,15 +529,21 @@ $_options: ();
 /// option's `custom-property-prefix` if it exists.
 ///
 /// @param {String...} $key - One or more key parts to create a varname for.
+/// @param {Map} $options [null] - Optional options Map to use instead of the
+///     key's stored options.
 /// @return {String} The key's custom property varname.
 @function _create-varname($key...) {
+  $options: get-options($key...);
   $key: combine($key...);
-  $prefix: map.get($_options, $key, custom-property-prefix);
+  $prefix: map.get($options, custom-property-prefix);
   @if $prefix {
     $key: combine($prefix, $key);
   }
 
-  @return custom-properties.create-varname($key);
+  @return custom-properties.create-varname(
+    $key,
+    $private: _is-private-key($key, $options: $options)
+  );
 }
 
 /// Combines one or more key parts into a key.
