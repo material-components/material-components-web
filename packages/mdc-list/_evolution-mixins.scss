@@ -43,7 +43,6 @@
 
   .mdc-list-item {
     @include _item-base($query: $query);
-    @include item-spacing(16px, $query: $query);
 
     @include _one-line-item-density(
       variables.$one-line-item-density-scale,
@@ -414,6 +413,12 @@
       $offset: 16px,
       $query: $query
     );
+  }
+
+  // This must be specified last to ensure that RTL padding takes priority over
+  // LTR padding in the cascade.
+  .mdc-list-item {
+    @include item-spacing(16px, $query: $query);
   }
 
   //
