@@ -30,8 +30,161 @@
 @use '@material/theme/custom-properties';
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/theme/theme';
+@use '@material/theme/keys';
 @use '@material/theme/theme-color';
+@use '@material/theme/theme';
+
+$_box-shadows: (
+  0: (
+    key: 0 0,
+    ambient: 0 0,
+  ),
+  1: (
+    key: 0 1px 2px,
+    ambient: 0 1px 3px 1px,
+  ),
+  3: (
+    key: 0 1px 2px,
+    ambient: 0 2px 6px 2px,
+  ),
+  6: (
+    key: 0 1px 3px,
+    ambient: 0 4px 8px 3px,
+  ),
+  8: (
+    key: 0 2px 3px,
+    ambient: 0 6px 10px 4px,
+  ),
+  12: (
+    key: 0 4px 4px,
+    ambient: 0 8px 12px 6px,
+  ),
+);
+
+$_overlay-opacities: (
+  0: 0,
+  1: 0.05,
+  3: 0.08,
+  6: 0.11,
+  8: 0.12,
+  12: 0.14,
+);
+
+$light-theme: (
+  elevation: 1,
+  overlay-color: null,
+  shadow-color: black,
+);
+
+$dark-theme: (
+  elevation: 1,
+  overlay-color: white,
+  shadow-color: black,
+);
+
+@mixin theme($theme) {
+  @include theme.validate-keys($light-theme, $theme);
+  $theme: map.merge($theme, get-private-theme($theme));
+  $theme: keys.create-theme-properties($theme, elevation);
+  @include theme-internal($theme);
+}
+
+@mixin theme-internal($theme) {
+  @include _ambient-box-shadow(
+    map.get($theme, ambient-elevation),
+    map.get($theme, shadow-color)
+  );
+  @include _key-box-shadow(
+    map.get($theme, key-elevation),
+    map.get($theme, shadow-color)
+  );
+  @include _overlay-color(map.get($theme, overlay-color));
+  @include _overlay-opacity(map.get($theme, overlay-opacity));
+}
+
+@function get-private-theme($theme) {
+  // TODO: Check if emitting custom property declarations:
+  // --mdc-elevation-color: gray;
+  // Keys are not dependent in this situation.
+  $dp-value: map.get($theme, elevation);
+  $shadow-color: map.get($theme, shadow-color);
+  @if ($dp-value or $shadow-color) and
+    ($dp-value == null or $shadow-color == null)
+  {
+    @error "elevation and shadow-color must both be provided when not emitting custom property declarations";
+  }
+
+  $key-box-shadow: null;
+  $ambient-box-shadow: null;
+  $overlay-opacity: null;
+  @if $dp-value {
+    $box-shadow: map.get($_box-shadows, $dp-value);
+    @if not $box-shadow {
+      @error "#{$dp-value}dp does not have a supported box shadow.";
+    }
+
+    $key-box-shadow: map.get($box-shadow, key);
+    $ambient-box-shadow: map.get($box-shadow, key);
+    $overlay-opacity: map.get($_overlay-opacities, $dp-value);
+    @if not $overlay-opacity {
+      @error "#{$dp-value}dp does not have a supported overlay opacity.";
+    }
+  }
+
+  @return (
+    ambient-elevation: $ambient-box-shadow,
+    key-elevation: $key-box-shadow,
+    overlay-opacity: $overlay-opacity
+  );
+}
+
+@function _create-private-prop($original, $suffix, $value) {
+  $varname: custom-properties.get-varname($original, $exclude-prefix: true);
+  $fallback: custom-properties.get-fallback($original, $shallow: true);
+  @if custom-properties.is-custom-prop($fallback) {
+    $fallback: custom-properties.set-fallback($fallback, $value);
+  } @else {
+    $fallback: $value;
+  }
+
+  $varname: custom-properties.create-varname(
+    $varname-#{$suffix},
+    $private: true
+  );
+  @return custom-properties.create($varname, $fallback);
+}
+
+@mixin _ambient-box-shadow($elevation, $shadow-color) {
+  &::before {
+    @include theme.property(
+      box-shadow,
+      elevation color,
+      $replace: (elevation: $elevation, color: $shadow-color)
+    );
+  }
+}
+
+@mixin _key-box-shadow($elevation, $shadow-color) {
+  &::after {
+    @include theme.property(
+      box-shadow,
+      elevation color,
+      $replace: (elevation: $elevation, color: $shadow-color)
+    );
+  }
+}
+
+@mixin _overlay-color($color) {
+  & :first-child {
+    @include theme.property(background, $color);
+  }
+}
+
+@mixin _overlay-opacity($opacity) {
+  & :first-child {
+    @include theme.property(opacity, $opacity);
+  }
+}
 
 $baseline-color: black !default;
 $umbra-opacity: 0.2 !default;

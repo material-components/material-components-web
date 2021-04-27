@@ -23,9 +23,10 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
-@use '@material/theme/custom-properties';
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/custom-properties';
+@use '@material/theme/gss';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use './elevation-theme';
@@ -85,5 +86,43 @@
       );
       @include elevation-theme.overlay-fill-color($fill-color, $query: $query);
     }
+  }
+}
+
+@mixin shadow() {
+  $noflip: (
+    noflip: true,
+  );
+
+  &,
+  // Key
+  &::before,
+  // Ambient
+  &::after,
+  // Overlay
+  & :first-child {
+    border-radius: inherit;
+    bottom: 0;
+    @include gss.annotate($noflip);
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    @include gss.annotate($noflip);
+    right: 0;
+    top: 0;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    display: flex;
+  }
+
+  &::before {
+    opacity: 0.3;
+  }
+
+  &::after {
+    opacity: 0.15;
   }
 }
