@@ -81,7 +81,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       registerWindowEventHandler: () => undefined,
       deregisterWindowEventHandler: () => undefined,
       notifyHidden: () => undefined,
-      getTooltipCaretSize: () => null,
+      getTooltipCaretBoundingRect: () =>
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
       setTooltipCaretStyle: () => undefined,
       clearTooltipCaretStyles: () => undefined,
     };
@@ -798,17 +799,27 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   private calculateTooltipWithCaretStyles(anchorRect: ClientRect|null) {
-    const caretSize = this.adapter.getTooltipCaretSize();
+    // Prior to grabbing the caret bounding rect, we clear all styles set on the
+    // caret. This will ensure the width/height is consistent (since we rotate
+    // the caret 90deg in some positions which would result in the height and
+    // width bounding rect measurements flipping).
+    this.adapter.clearTooltipCaretStyles();
+    const caretSize = this.adapter.getTooltipCaretBoundingRect();
     if (!anchorRect || !caretSize) {
       return {position: PositionWithCaret.DETECTED, top: 0, left: 0};
     }
 
-    // The caret for the rich tooltip is created by rotating a square div 45deg
-    // and hiding half of it so it looks like a triangle. To determine the
-    // actual height and width of the visible caret, we have to calculate the
-    // length of the square's diagonal.
-    const caretWidth = caretSize.width * Math.sqrt(2);
-    const caretHeight = caretWidth / 2;
+    // The caret for the rich tooltip is created by rotating/skewing/scaling
+    // square div into a diamond shape and then hiding half of it so it looks
+    // like a triangle. We use the boundingClientRect to calculate the
+    // width/height of the element after the transforms (to the caret) have been
+    // applied. Since the full tooltip is scaled by 0.8 for the entrance
+    // animation, we divide by this value to retrieve the actual caret
+    // dimensions.
+    const caretWidth = caretSize.width / numbers.ANIMATION_SCALE;
+    // Since we hide half of caret, we divide the returned ClientRect height
+    // by 2.
+    const caretHeight = (caretSize.height / numbers.ANIMATION_SCALE) / 2;
     const tooltipSize = this.adapter.getTooltipSize();
 
     const yOptions = this.calculateYWithCaretDistanceOptions(
@@ -825,7 +836,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // place the caret in the corresponding position and retrieve the necessary
     // x/y transform origins needed to properly animate the tooltip entrance.
     const {yTransformOrigin, xTransformOrigin} =
-        this.setCaretPositionStyles(position);
+        this.setCaretPositionStyles(position, {caretWidth, caretHeight});
 
     return {
       yTransformOrigin,
@@ -1089,8 +1100,11 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
    * Returns the x and y positions of the caret, to be used as the
    * transform-origin on the tooltip itself for entrance animations.
    */
-  private setCaretPositionStyles(position: PositionWithCaret) {
-    const values = this.calculateCaretPositionOnTooltip(position);
+  private setCaretPositionStyles(position: PositionWithCaret, caretSize: {
+    caretWidth: number,
+    caretHeight: number
+  }) {
+    const values = this.calculateCaretPositionOnTooltip(position, caretSize);
     if (!values) {
       return {yTransformOrigin: 0, xTransformOrigin: 0};
     }
@@ -1102,8 +1116,15 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     this.adapter.setTooltipCaretStyle(values.yAlignment, values.yAxisPx);
     this.adapter.setTooltipCaretStyle(values.xAlignment, values.xAxisPx);
+    // Value of scaleX is cos(skew), Math.cos() expects radians though, so we
+    // must first convert the skew value (which is in degrees) to radians.
+    const skewRadians = values.skew * (Math.PI / 180);
+    const scaleX = Math.cos(skewRadians);
+
     this.adapter.setTooltipCaretStyle(
-        'transform', `rotate(${values.rotation})`);
+        'transform',
+        `rotate(${values.rotation}deg) skewY(${values.skew}deg) scaleX(${
+            scaleX})`);
     this.adapter.setTooltipCaretStyle(
         'transform-origin', `${values.yAlignment} ${values.xAlignment}`);
     return {yTransformOrigin: values.yAxisPx, xTransformOrigin: values.xAxisPx};
@@ -1113,22 +1134,25 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
    * Given a PositionWithCaret, determines the correct styles to position the
    * caret properly on the rich tooltip.
    */
-  private calculateCaretPositionOnTooltip(tooltipPos: PositionWithCaret) {
+  private calculateCaretPositionOnTooltip(
+      tooltipPos: PositionWithCaret,
+      caretSize: {caretWidth: number, caretHeight: number}) {
     const isLTR = !this.adapter.isRTL();
     const tooltipWidth = this.adapter.getComputedStyleProperty('width');
     const tooltipHeight = this.adapter.getComputedStyleProperty('height');
-    const caretDimensions = this.adapter.getTooltipCaretSize();
-    if (!tooltipWidth || !tooltipHeight || !caretDimensions) {
+    if (!tooltipWidth || !tooltipHeight || !caretSize) {
       return;
     }
-    const caretDiagonal = caretDimensions.width * Math.sqrt(2);
 
-    const midpointWidth = `calc((${tooltipWidth} - ${caretDiagonal}px) / 2)`;
-    const midpointHeight = `calc((${tooltipHeight} - ${caretDiagonal}px) / 2)`;
+    const midpointWidth =
+        `calc((${tooltipWidth} - ${caretSize.caretWidth}px) / 2)`;
+    const midpointHeight =
+        `calc((${tooltipHeight} - ${caretSize.caretWidth}px) / 2)`;
     const flushWithEdge = '0';
     const indentedFromEdge = `${numbers.CARET_INDENTATION}px`;
-    const positiveRot = '45deg';
-    const negativeRot = '-45deg';
+    const verticalRotation = 35;
+    const horizontalRotation = Math.abs(90 - verticalRotation);
+    const skewDeg = 20;
 
     switch (tooltipPos) {
       case PositionWithCaret.BELOW_CENTER:
@@ -1137,7 +1161,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: strings.LEFT,
           yAxisPx: flushWithEdge,
           xAxisPx: midpointWidth,
-          rotation: negativeRot
+          rotation: -1 * verticalRotation,
+          skew: -1 * skewDeg,
         };
       case PositionWithCaret.BELOW_END:
         return {
@@ -1145,7 +1170,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: isLTR ? strings.RIGHT : strings.LEFT,
           yAxisPx: flushWithEdge,
           xAxisPx: indentedFromEdge,
-          rotation: isLTR ? positiveRot : negativeRot
+          rotation: isLTR ? verticalRotation : -1 * verticalRotation,
+          skew: isLTR ? skewDeg : -1 * skewDeg,
         };
       case PositionWithCaret.BELOW_START:
         return {
@@ -1153,7 +1179,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: isLTR ? strings.LEFT : strings.RIGHT,
           yAxisPx: flushWithEdge,
           xAxisPx: indentedFromEdge,
-          rotation: isLTR ? negativeRot : positiveRot
+          rotation: isLTR ? -1 * verticalRotation : verticalRotation,
+          skew: isLTR ? -1 * skewDeg : skewDeg,
         };
 
       case PositionWithCaret.TOP_SIDE_END:
@@ -1162,7 +1189,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: isLTR ? strings.LEFT : strings.RIGHT,
           yAxisPx: indentedFromEdge,
           xAxisPx: flushWithEdge,
-          rotation: isLTR ? positiveRot : negativeRot
+          rotation: isLTR ? horizontalRotation : -1 * horizontalRotation,
+          skew: isLTR ? -1 * skewDeg : skewDeg,
         };
       case PositionWithCaret.CENTER_SIDE_END:
         return {
@@ -1170,7 +1198,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: isLTR ? strings.LEFT : strings.RIGHT,
           yAxisPx: midpointHeight,
           xAxisPx: flushWithEdge,
-          rotation: isLTR ? positiveRot : negativeRot
+          rotation: isLTR ? horizontalRotation : -1 * horizontalRotation,
+          skew: isLTR ? -1 * skewDeg : skewDeg,
         };
       case PositionWithCaret.BOTTOM_SIDE_END:
         return {
@@ -1178,7 +1207,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: isLTR ? strings.LEFT : strings.RIGHT,
           yAxisPx: indentedFromEdge,
           xAxisPx: flushWithEdge,
-          rotation: isLTR ? negativeRot : positiveRot
+          rotation: isLTR ? -1 * horizontalRotation : horizontalRotation,
+          skew: isLTR ? skewDeg : -1 * skewDeg,
         };
 
       case PositionWithCaret.TOP_SIDE_START:
@@ -1187,7 +1217,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: isLTR ? strings.RIGHT : strings.LEFT,
           yAxisPx: indentedFromEdge,
           xAxisPx: flushWithEdge,
-          rotation: isLTR ? negativeRot : positiveRot
+          rotation: isLTR ? -1 * horizontalRotation : horizontalRotation,
+          skew: isLTR ? skewDeg : -1 * skewDeg,
         };
       case PositionWithCaret.CENTER_SIDE_START:
         return {
@@ -1195,7 +1226,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: isLTR ? strings.RIGHT : strings.LEFT,
           yAxisPx: midpointHeight,
           xAxisPx: flushWithEdge,
-          rotation: isLTR ? negativeRot : positiveRot
+          rotation: isLTR ? -1 * horizontalRotation : horizontalRotation,
+          skew: isLTR ? skewDeg : -1 * skewDeg,
         };
       case PositionWithCaret.BOTTOM_SIDE_START:
         return {
@@ -1203,7 +1235,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: isLTR ? strings.RIGHT : strings.LEFT,
           yAxisPx: indentedFromEdge,
           xAxisPx: flushWithEdge,
-          rotation: isLTR ? positiveRot : negativeRot
+          rotation: isLTR ? horizontalRotation : -1 * horizontalRotation,
+          skew: isLTR ? -1 * skewDeg : skewDeg,
         };
 
       case PositionWithCaret.ABOVE_CENTER:
@@ -1212,7 +1245,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: strings.LEFT,
           yAxisPx: flushWithEdge,
           xAxisPx: midpointWidth,
-          rotation: positiveRot
+          rotation: verticalRotation,
+          skew: skewDeg,
         };
       case PositionWithCaret.ABOVE_END:
         return {
@@ -1220,7 +1254,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: isLTR ? strings.RIGHT : strings.LEFT,
           yAxisPx: flushWithEdge,
           xAxisPx: indentedFromEdge,
-          rotation: isLTR ? negativeRot : positiveRot
+          rotation: isLTR ? -1 * verticalRotation : verticalRotation,
+          skew: isLTR ? -1 * skewDeg : skewDeg,
         };
       default:
       case PositionWithCaret.ABOVE_START:
@@ -1229,7 +1264,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAlignment: isLTR ? strings.LEFT : strings.RIGHT,
           yAxisPx: flushWithEdge,
           xAxisPx: indentedFromEdge,
-          rotation: isLTR ? positiveRot : negativeRot
+          rotation: isLTR ? verticalRotation : -1 * verticalRotation,
+          skew: isLTR ? skewDeg : -1 * skewDeg,
         };
     }
   }

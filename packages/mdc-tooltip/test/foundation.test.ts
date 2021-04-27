@@ -33,8 +33,8 @@ const ESC_EVENTS = [
   {type: 'keydown', keyCode: 27, target: {}} as KeyboardEvent,
 ];
 
-const CARET_SIZE = 24;
-const CARET_DIAGONAL = CARET_SIZE * Math.sqrt(2);
+const CARET_WIDTH = 24;
+const CARET_HEIGHT = 32;
 const RICH_TOOLTIP_WIDTH = '300px';
 const RICH_TOOLTIP_HEIGHT = '140px';
 const CARET_POSITION_STYLES = new Map([
@@ -44,7 +44,9 @@ const CARET_POSITION_STYLES = new Map([
       xAlignment: 'left',
       yAxisPx: '0',
       xAxisPx: `${numbers.CARET_INDENTATION}px`,
-      rotation: '45deg'
+      rotation: 35,
+      skew: 20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
@@ -52,8 +54,11 @@ const CARET_POSITION_STYLES = new Map([
       yAlignment: 'bottom',
       xAlignment: 'left',
       yAxisPx: '0',
-      xAxisPx: `calc((${RICH_TOOLTIP_WIDTH} - ${CARET_DIAGONAL}px) / 2)`,
-      rotation: '45deg'
+      xAxisPx: `calc((${RICH_TOOLTIP_WIDTH} - ${
+          CARET_WIDTH / numbers.ANIMATION_SCALE}px) / 2)`,
+      rotation: 35,
+      skew: 20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
@@ -62,7 +67,9 @@ const CARET_POSITION_STYLES = new Map([
       xAlignment: 'right',
       yAxisPx: '0',
       xAxisPx: `${numbers.CARET_INDENTATION}px`,
-      rotation: '-45deg'
+      rotation: -35,
+      skew: -20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
@@ -71,16 +78,21 @@ const CARET_POSITION_STYLES = new Map([
       xAlignment: 'right',
       yAxisPx: `${numbers.CARET_INDENTATION}px`,
       xAxisPx: '0',
-      rotation: '-45deg'
+      rotation: -55,
+      skew: 20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
     PositionWithCaret.CENTER_SIDE_START, {
       yAlignment: 'top',
       xAlignment: 'right',
-      yAxisPx: `calc((${RICH_TOOLTIP_HEIGHT} - ${CARET_DIAGONAL}px) / 2)`,
+      yAxisPx: `calc((${RICH_TOOLTIP_HEIGHT} - ${
+          CARET_WIDTH / numbers.ANIMATION_SCALE}px) / 2)`,
       xAxisPx: '0',
-      rotation: '-45deg'
+      rotation: -55,
+      skew: 20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
@@ -89,7 +101,9 @@ const CARET_POSITION_STYLES = new Map([
       xAlignment: 'right',
       yAxisPx: `${numbers.CARET_INDENTATION}px`,
       xAxisPx: '0',
-      rotation: '45deg'
+      rotation: 55,
+      skew: -20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
@@ -98,16 +112,21 @@ const CARET_POSITION_STYLES = new Map([
       xAlignment: 'left',
       yAxisPx: `${numbers.CARET_INDENTATION}px`,
       xAxisPx: '0',
-      rotation: '45deg'
+      rotation: 55,
+      skew: -20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
     PositionWithCaret.CENTER_SIDE_END, {
       yAlignment: 'top',
       xAlignment: 'left',
-      yAxisPx: `calc((${RICH_TOOLTIP_HEIGHT} - ${CARET_DIAGONAL}px) / 2)`,
+      yAxisPx: `calc((${RICH_TOOLTIP_HEIGHT} - ${
+          CARET_WIDTH / numbers.ANIMATION_SCALE}px) / 2)`,
       xAxisPx: '0',
-      rotation: '45deg'
+      rotation: 55,
+      skew: -20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
@@ -116,7 +135,9 @@ const CARET_POSITION_STYLES = new Map([
       xAlignment: 'left',
       yAxisPx: `${numbers.CARET_INDENTATION}px`,
       xAxisPx: '0',
-      rotation: '-45deg'
+      rotation: -55,
+      skew: 20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
@@ -125,7 +146,9 @@ const CARET_POSITION_STYLES = new Map([
       xAlignment: 'left',
       yAxisPx: '0',
       xAxisPx: `${numbers.CARET_INDENTATION}px`,
-      rotation: '-45deg'
+      rotation: -35,
+      skew: -20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
@@ -133,8 +156,11 @@ const CARET_POSITION_STYLES = new Map([
       yAlignment: 'top',
       xAlignment: 'left',
       yAxisPx: '0',
-      xAxisPx: `calc((${RICH_TOOLTIP_WIDTH} - ${CARET_DIAGONAL}px) / 2)`,
-      rotation: '-45deg'
+      xAxisPx: `calc((${RICH_TOOLTIP_WIDTH} - ${
+          CARET_WIDTH / numbers.ANIMATION_SCALE}px) / 2)`,
+      rotation: -35,
+      skew: -20,
+      scaleX: 0.9396926207859084,
     }
   ],
   [
@@ -143,7 +169,9 @@ const CARET_POSITION_STYLES = new Map([
       xAlignment: 'right',
       yAxisPx: '0',
       xAxisPx: `${numbers.CARET_INDENTATION}px`,
-      rotation: '45deg'
+      rotation: 35,
+      skew: 20,
+      scaleX: 0.9396926207859084,
     }
   ]
 ]);
@@ -259,7 +287,7 @@ describe('MDCTooltipFoundation', () => {
       'registerWindowEventHandler',
       'deregisterWindowEventHandler',
       'notifyHidden',
-      'getTooltipCaretSize',
+      'getTooltipCaretBoundingRect',
       'setTooltipCaretStyle',
       'clearTooltipCaretStyles',
     ]);
@@ -2156,8 +2184,8 @@ describe('MDCTooltipFoundation', () => {
           RICH_TOOLTIP_WIDTH);
       mockAdapter.getComputedStyleProperty.withArgs('height').and.returnValue(
           RICH_TOOLTIP_HEIGHT);
-      mockAdapter.getTooltipCaretSize.and.returnValue(
-          {width: CARET_SIZE, height: CARET_SIZE});
+      mockAdapter.getTooltipCaretBoundingRect.and.returnValue(
+          {width: CARET_WIDTH, height: CARET_HEIGHT});
 
       foundation.setTooltipPosition({withCaretPos: pos});
       foundation.show();
@@ -2168,7 +2196,10 @@ describe('MDCTooltipFoundation', () => {
       expect(mockAdapter.setTooltipCaretStyle)
           .toHaveBeenCalledWith(styleValues.xAlignment, styleValues.xAxisPx);
       expect(mockAdapter.setTooltipCaretStyle)
-          .toHaveBeenCalledWith('transform', `rotate(${styleValues.rotation})`);
+          .toHaveBeenCalledWith(
+              'transform',
+              `rotate(${styleValues.rotation}deg) skewY(${
+                  styleValues.skew}deg) scaleX(${styleValues.scaleX})`);
       expect(mockAdapter.setTooltipCaretStyle)
           .toHaveBeenCalledWith(
               'transform-origin',
@@ -2179,16 +2210,15 @@ describe('MDCTooltipFoundation', () => {
   it('properly calculates tooltip with caret position (ABOVE_START)', () => {
     const anchorBoundingRect =
         {top: 200, bottom: 235, left: 350, right: 400, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const parentBoundingRect = {top: 5, left: 0};
     const tooltipSize = {width: 40, height: 30};
-    const expectedTooltipTop = (anchorBoundingRect.top -
-                                (numbers.BOUNDED_ANCHOR_GAP +
-                                 tooltipSize.height + CARET_DIAGONAL / 2)) -
+    const expectedTooltipTop =
+        (anchorBoundingRect.top -
+         (numbers.BOUNDED_ANCHOR_GAP + tooltipSize.height + CARET_HEIGHT / 2)) -
         parentBoundingRect.top;
     const expectedTooltipLeft =
         (anchorBoundingRect.left + anchorBoundingRect.width / 2 -
-         (numbers.CARET_INDENTATION + CARET_DIAGONAL / 2)) -
+         (numbers.CARET_INDENTATION + CARET_WIDTH / 2)) -
         parentBoundingRect.left;
     const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
         MDCTooltipFoundation, {hasCaret: true});
@@ -2197,9 +2227,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
-
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
     foundation.show();
 
     expect(mockAdapter.setStyleProperty)
@@ -2209,14 +2240,12 @@ describe('MDCTooltipFoundation', () => {
   });
 
   it('properly calculates tooltip with caret position (ABOVE_CENTER)', () => {
-    const anchorBoundingRect =
-        {top: 200, bottom: 235, left: 20, right: 70, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const anchorBoundingRect = {top: 200, left: 10, width: 50, height: 35};
+    const parentBoundingRect = {top: 5, left: 0};
     const tooltipSize = {width: 40, height: 30};
-    const expectedTooltipTop = (anchorBoundingRect.top -
-                                (numbers.BOUNDED_ANCHOR_GAP +
-                                 tooltipSize.height + CARET_DIAGONAL / 2)) -
+    const expectedTooltipTop =
+        (anchorBoundingRect.top -
+         (numbers.BOUNDED_ANCHOR_GAP + tooltipSize.height + CARET_HEIGHT / 2)) -
         parentBoundingRect.top;
     const expectedTooltipLeft =
         (anchorBoundingRect.left + anchorBoundingRect.width / 2 -
@@ -2229,9 +2258,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
-
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
     foundation.show();
 
     expect(mockAdapter.setStyleProperty)
@@ -2241,18 +2271,16 @@ describe('MDCTooltipFoundation', () => {
   });
 
   it('properly calculates tooltip with caret position (ABOVE_END)', () => {
-    const anchorBoundingRect =
-        {top: 200, bottom: 235, left: 0, right: 50, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const anchorBoundingRect = {top: 200, left: 0, width: 50, height: 35};
+    const parentBoundingRect = {top: 5, left: 0};
     const tooltipSize = {width: 40, height: 30};
-    const expectedTooltipTop = (anchorBoundingRect.top -
-                                (numbers.BOUNDED_ANCHOR_GAP +
-                                 tooltipSize.height + CARET_DIAGONAL / 2)) -
+    const expectedTooltipTop =
+        (anchorBoundingRect.top -
+         (numbers.BOUNDED_ANCHOR_GAP + tooltipSize.height + CARET_HEIGHT / 2)) -
         parentBoundingRect.top;
     const expectedTooltipLeft =
         (anchorBoundingRect.left + anchorBoundingRect.width / 2 -
-         (tooltipSize.width - numbers.CARET_INDENTATION - CARET_DIAGONAL / 2)) -
+         (tooltipSize.width - numbers.CARET_INDENTATION - CARET_WIDTH / 2)) -
         parentBoundingRect.left;
     const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
         MDCTooltipFoundation, {hasCaret: true});
@@ -2261,9 +2289,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
-
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
     foundation.show();
 
     expect(mockAdapter.setStyleProperty)
@@ -2273,18 +2302,15 @@ describe('MDCTooltipFoundation', () => {
   });
 
   it('properly calculates tooltip with caret position (BELOW_START)', () => {
-    const anchorBoundingRect =
-        {top: 0, bottom: 35, left: 40, right: 90, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const anchorBoundingRect = {bottom: 35, left: 40, width: 50, height: 35};
+    const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
     const tooltipSize = {width: 40, height: 30};
-    const expectedTooltipTop =
-        (anchorBoundingRect.bottom + numbers.BOUNDED_ANCHOR_GAP +
-         CARET_DIAGONAL / 2) -
+    const expectedTooltipTop = (anchorBoundingRect.bottom +
+                                numbers.BOUNDED_ANCHOR_GAP + CARET_HEIGHT / 2) -
         parentBoundingRect.top;
     const expectedTooltipLeft =
         (anchorBoundingRect.left + anchorBoundingRect.width / 2 -
-         (numbers.CARET_INDENTATION + CARET_DIAGONAL / 2)) -
+         (numbers.CARET_INDENTATION + CARET_WIDTH / 2)) -
         parentBoundingRect.left;
     const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
         MDCTooltipFoundation, {hasCaret: true});
@@ -2293,9 +2319,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
-
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
     foundation.show();
 
     expect(mockAdapter.setStyleProperty)
@@ -2305,14 +2332,11 @@ describe('MDCTooltipFoundation', () => {
   });
 
   it('properly calculates tooltip with caret position (BELOW_CENTER)', () => {
-    const anchorBoundingRect =
-        {top: 0, bottom: 35, left: 20, right: 55, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const anchorBoundingRect = {bottom: 35, left: 10, width: 50, height: 35};
+    const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
     const tooltipSize = {width: 40, height: 30};
-    const expectedTooltipTop =
-        (anchorBoundingRect.bottom + numbers.BOUNDED_ANCHOR_GAP +
-         CARET_DIAGONAL / 2) -
+    const expectedTooltipTop = (anchorBoundingRect.bottom +
+                                numbers.BOUNDED_ANCHOR_GAP + CARET_HEIGHT / 2) -
         parentBoundingRect.top;
     const expectedTooltipLeft =
         (anchorBoundingRect.left + anchorBoundingRect.width / 2 -
@@ -2325,9 +2349,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
-
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
     foundation.show();
 
     expect(mockAdapter.setStyleProperty)
@@ -2337,18 +2362,15 @@ describe('MDCTooltipFoundation', () => {
   });
 
   it('properly calculates tooltip with caret position (BELOW_END)', () => {
-    const anchorBoundingRect =
-        {top: 0, bottom: 35, left: 0, right: 35, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const anchorBoundingRect = {bottom: 35, left: 0, width: 50, height: 35};
+    const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
     const tooltipSize = {width: 40, height: 30};
-    const expectedTooltipTop =
-        (anchorBoundingRect.bottom + numbers.BOUNDED_ANCHOR_GAP +
-         CARET_DIAGONAL / 2) -
+    const expectedTooltipTop = (anchorBoundingRect.bottom +
+                                numbers.BOUNDED_ANCHOR_GAP + CARET_HEIGHT / 2) -
         parentBoundingRect.top;
     const expectedTooltipLeft =
         (anchorBoundingRect.left + anchorBoundingRect.width / 2 -
-         (tooltipSize.width - numbers.CARET_INDENTATION - CARET_DIAGONAL / 2)) -
+         (tooltipSize.width - numbers.CARET_INDENTATION - CARET_WIDTH / 2)) -
         parentBoundingRect.left;
     const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
         MDCTooltipFoundation, {hasCaret: true});
@@ -2357,8 +2379,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
 
     foundation.show();
 
@@ -2371,18 +2395,16 @@ describe('MDCTooltipFoundation', () => {
   it('properly calculates tooltip with caret position (TOP_SIDE_START)', () => {
     const anchorBoundingRect =
         {top: 50, bottom: 85, left: 350, right: 400, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
     const tooltipSize = {width: 40, height: 50};
 
     const expectedTooltipTop =
         (anchorBoundingRect.top + anchorBoundingRect.height / 2 -
-         (numbers.CARET_INDENTATION + CARET_DIAGONAL / 2)) -
+         (numbers.CARET_INDENTATION + CARET_WIDTH / 2)) -
         parentBoundingRect.top;
     const expectedTooltipLeft =
         (anchorBoundingRect.left -
-         (tooltipSize.width + numbers.BOUNDED_ANCHOR_GAP +
-          CARET_DIAGONAL / 2)) -
+         (tooltipSize.width + numbers.BOUNDED_ANCHOR_GAP + CARET_HEIGHT / 2)) -
         parentBoundingRect.left;
     const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
         MDCTooltipFoundation, {hasCaret: true});
@@ -2391,9 +2413,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
-
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
     foundation.show();
 
     expect(mockAdapter.setStyleProperty)
@@ -2404,10 +2427,8 @@ describe('MDCTooltipFoundation', () => {
 
   it('properly calculates tooltip with caret position (CENTER_SIDE_START)',
      () => {
-       const anchorBoundingRect =
-           {top: 25, bottom: 55, left: 350, right: 400, width: 50, height: 35};
-       const parentBoundingRect =
-           {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+       const anchorBoundingRect = {top: 25, left: 350, width: 50, height: 35};
+       const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
        const tooltipSize = {width: 40, height: 50};
 
        const expectedTooltipTop =
@@ -2417,7 +2438,7 @@ describe('MDCTooltipFoundation', () => {
        const expectedTooltipLeft =
            (anchorBoundingRect.left -
             (tooltipSize.width + numbers.BOUNDED_ANCHOR_GAP +
-             CARET_DIAGONAL / 2)) -
+             CARET_HEIGHT / 2)) -
            parentBoundingRect.left;
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {hasCaret: true});
@@ -2426,9 +2447,10 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
        mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-       mockAdapter.getTooltipCaretSize.and.returnValue(
-           {width: CARET_SIZE, height: CARET_SIZE});
-
+       mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+         width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+         height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+       });
        foundation.show();
 
        expect(mockAdapter.setStyleProperty)
@@ -2439,21 +2461,19 @@ describe('MDCTooltipFoundation', () => {
 
   it('properly calculates tooltip with caret position (BOTTOM_SIDE_START)',
      () => {
-       const anchorBoundingRect =
-           {top: 20, bottom: 55, left: 350, right: 400, width: 50, height: 35};
-       const parentBoundingRect =
-           {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+       const anchorBoundingRect = {top: 20, left: 350, width: 50, height: 35};
+       const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
        const tooltipSize = {width: 40, height: 60};
 
        const expectedTooltipTop =
            (anchorBoundingRect.top + anchorBoundingRect.height / 2 -
             (tooltipSize.height - numbers.CARET_INDENTATION -
-             CARET_DIAGONAL / 2)) -
+             CARET_WIDTH / 2)) -
            parentBoundingRect.top;
        const expectedTooltipLeft =
            (anchorBoundingRect.left -
             (tooltipSize.width + numbers.BOUNDED_ANCHOR_GAP +
-             CARET_DIAGONAL / 2)) -
+             CARET_HEIGHT / 2)) -
            parentBoundingRect.left;
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {hasCaret: true});
@@ -2462,9 +2482,10 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
        mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-       mockAdapter.getTooltipCaretSize.and.returnValue(
-           {width: CARET_SIZE, height: CARET_SIZE});
-
+       mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+         width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+         height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+       });
        foundation.show();
 
        expect(mockAdapter.setStyleProperty)
@@ -2474,19 +2495,17 @@ describe('MDCTooltipFoundation', () => {
      });
 
   it('properly calculates tooltip with caret position (TOP_SIDE_END)', () => {
-    const anchorBoundingRect =
-        {top: 50, bottom: 85, left: 0, right: 35, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const anchorBoundingRect = {top: 50, right: 35, width: 50, height: 35};
+    const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
     const tooltipSize = {width: 40, height: 60};
 
     const expectedTooltipTop =
         (anchorBoundingRect.top + anchorBoundingRect.height / 2 -
-         (numbers.CARET_INDENTATION + CARET_DIAGONAL / 2)) -
+         (numbers.CARET_INDENTATION + CARET_WIDTH / 2)) -
         parentBoundingRect.top;
     const expectedTooltipLeft =
         (anchorBoundingRect.right + numbers.BOUNDED_ANCHOR_GAP +
-         CARET_DIAGONAL / 2) -
+         CARET_HEIGHT / 2) -
         parentBoundingRect.left;
     const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
         MDCTooltipFoundation, {hasCaret: true});
@@ -2495,9 +2514,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
-
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
     foundation.show();
 
     expect(mockAdapter.setStyleProperty)
@@ -2508,10 +2528,8 @@ describe('MDCTooltipFoundation', () => {
 
   it('properly calculates tooltip with caret position (CENTER_SIDE_END)',
      () => {
-       const anchorBoundingRect =
-           {top: 22, bottom: 57, left: 0, right: 35, width: 50, height: 35};
-       const parentBoundingRect =
-           {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+       const anchorBoundingRect = {top: 22, right: 35, width: 50, height: 35};
+       const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
        const tooltipSize = {width: 40, height: 60};
 
        const expectedTooltipTop =
@@ -2520,7 +2538,7 @@ describe('MDCTooltipFoundation', () => {
            parentBoundingRect.top;
        const expectedTooltipLeft =
            (anchorBoundingRect.right + numbers.BOUNDED_ANCHOR_GAP +
-            CARET_DIAGONAL / 2) -
+            CARET_HEIGHT / 2) -
            parentBoundingRect.left;
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {hasCaret: true});
@@ -2534,8 +2552,10 @@ describe('MDCTooltipFoundation', () => {
            RICH_TOOLTIP_WIDTH);
        mockAdapter.getComputedStyleProperty.withArgs('height').and.returnValue(
            RICH_TOOLTIP_HEIGHT);
-       mockAdapter.getTooltipCaretSize.and.returnValue(
-           {width: CARET_SIZE, height: CARET_SIZE});
+       mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+         width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+         height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+       });
 
        foundation.show();
 
@@ -2547,20 +2567,18 @@ describe('MDCTooltipFoundation', () => {
 
   it('properly calculates tooltip with caret position (BOTTOM_SIDE_END)',
      () => {
-       const anchorBoundingRect =
-           {top: 20, bottom: 55, left: 0, right: 35, width: 50, height: 35};
-       const parentBoundingRect =
-           {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+       const anchorBoundingRect = {top: 20, right: 35, width: 50, height: 35};
+       const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
        const tooltipSize = {width: 40, height: 60};
 
        const expectedTooltipTop =
            (anchorBoundingRect.top + anchorBoundingRect.height / 2 -
             (tooltipSize.height - numbers.CARET_INDENTATION -
-             CARET_DIAGONAL / 2)) -
+             CARET_WIDTH / 2)) -
            parentBoundingRect.top;
        const expectedTooltipLeft =
            (anchorBoundingRect.right + numbers.BOUNDED_ANCHOR_GAP +
-            CARET_DIAGONAL / 2) -
+            CARET_HEIGHT / 2) -
            parentBoundingRect.left;
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {hasCaret: true});
@@ -2569,8 +2587,10 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
        mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-       mockAdapter.getTooltipCaretSize.and.returnValue(
-           {width: CARET_SIZE, height: CARET_SIZE});
+       mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+         width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+         height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+       });
 
        foundation.show();
 
@@ -2581,16 +2601,13 @@ describe('MDCTooltipFoundation', () => {
      });
 
   it('properly calculates tooltip with caret SIDE_END position in RTL', () => {
-    const anchorBoundingRect =
-        {top: 200, bottom: 235, left: 350, right: 400, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const anchorBoundingRect = {top: 200, left: 350, width: 50, height: 35};
+    const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
     const tooltipSize = {width: 40, height: 30};
 
     const expectedTooltipLeft =
         (anchorBoundingRect.left -
-         (tooltipSize.width + numbers.BOUNDED_ANCHOR_GAP +
-          CARET_DIAGONAL / 2)) -
+         (tooltipSize.width + numbers.BOUNDED_ANCHOR_GAP + CARET_HEIGHT / 2)) -
         parentBoundingRect.left;
     const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
         MDCTooltipFoundation, {hasCaret: true});
@@ -2600,8 +2617,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
     mockAdapter.isRTL.and.returnValue(true);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
 
     foundation.setTooltipPosition(
         {withCaretPos: PositionWithCaret.BOTTOM_SIDE_END});
@@ -2613,21 +2632,13 @@ describe('MDCTooltipFoundation', () => {
 
   it('properly calculates tooltip with caret SIDE_START position in RTL',
      () => {
-       const anchorBoundingRect = {
-         top: 200,
-         bottom: 235,
-         left: 350,
-         right: 400,
-         width: 50,
-         height: 35
-       };
-       const parentBoundingRect =
-           {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+       const anchorBoundingRect = {top: 200, right: 400, width: 50, height: 35};
+       const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
        const tooltipSize = {width: 40, height: 30};
 
        const expectedTooltipLeft =
            (anchorBoundingRect.right + numbers.BOUNDED_ANCHOR_GAP +
-            CARET_DIAGONAL / 2) -
+            CARET_HEIGHT / 2) -
            parentBoundingRect.left;
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {hasCaret: true});
@@ -2637,8 +2648,10 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
        mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
        mockAdapter.isRTL.and.returnValue(true);
-       mockAdapter.getTooltipCaretSize.and.returnValue(
-           {width: CARET_SIZE, height: CARET_SIZE});
+       mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+         width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+         height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+       });
 
        foundation.setTooltipPosition(
            {withCaretPos: PositionWithCaret.BOTTOM_SIDE_START});
@@ -2649,15 +2662,13 @@ describe('MDCTooltipFoundation', () => {
      });
 
   it('properly calculates tooltip with caret START position in RTL', () => {
-    const anchorBoundingRect =
-        {top: 200, bottom: 235, left: 350, right: 400, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const anchorBoundingRect = {top: 200, left: 350, width: 50, height: 35};
+    const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
     const tooltipSize = {width: 40, height: 30};
 
     const expectedTooltipLeft =
         (anchorBoundingRect.left + anchorBoundingRect.width / 2 -
-         (tooltipSize.width - numbers.CARET_INDENTATION - CARET_DIAGONAL / 2)) -
+         (tooltipSize.width - numbers.CARET_INDENTATION - CARET_WIDTH / 2)) -
         parentBoundingRect.left;
     const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
         MDCTooltipFoundation, {hasCaret: true});
@@ -2667,8 +2678,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
     mockAdapter.isRTL.and.returnValue(true);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
 
     foundation.setTooltipPosition(
         {withCaretPos: PositionWithCaret.ABOVE_START});
@@ -2679,14 +2692,12 @@ describe('MDCTooltipFoundation', () => {
   });
 
   it('properly calculates tooltip with caret END position in RTL', () => {
-    const anchorBoundingRect =
-        {top: 200, bottom: 235, left: 350, right: 400, width: 50, height: 35};
-    const parentBoundingRect =
-        {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+    const anchorBoundingRect = {top: 200, left: 350, width: 50, height: 35};
+    const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
     const tooltipSize = {width: 40, height: 30};
     const expectedTooltipLeft =
         (anchorBoundingRect.left + anchorBoundingRect.width / 2 -
-         (numbers.CARET_INDENTATION + CARET_DIAGONAL / 2)) -
+         (numbers.CARET_INDENTATION + CARET_WIDTH / 2)) -
         parentBoundingRect.left;
     const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
         MDCTooltipFoundation, {hasCaret: true});
@@ -2696,8 +2707,10 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
     mockAdapter.isRTL.and.returnValue(true);
-    mockAdapter.getTooltipCaretSize.and.returnValue(
-        {width: CARET_SIZE, height: CARET_SIZE});
+    mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+      width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+      height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+    });
 
     foundation.setTooltipPosition({withCaretPos: PositionWithCaret.ABOVE_END});
     foundation.show();
@@ -2708,26 +2721,18 @@ describe('MDCTooltipFoundation', () => {
 
   it('allows users to specify the position for tooltips with carets (TOP_SIDE_START instead of ABOVE_START)',
      () => {
-       const anchorBoundingRect = {
-         top: 200,
-         bottom: 235,
-         left: 350,
-         right: 400,
-         width: 50,
-         height: 35
-       };
-       const parentBoundingRect =
-           {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+       const anchorBoundingRect = {top: 200, left: 350, width: 50, height: 35};
+       const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
        const tooltipSize = {width: 40, height: 30};
 
        const expectedTooltipTop =
            (anchorBoundingRect.top + anchorBoundingRect.height / 2 -
-            (numbers.CARET_INDENTATION + CARET_DIAGONAL / 2)) -
+            (numbers.CARET_INDENTATION + CARET_WIDTH / 2)) -
            parentBoundingRect.top;
        const expectedTooltipLeft =
            (anchorBoundingRect.left -
             (tooltipSize.width + numbers.BOUNDED_ANCHOR_GAP +
-             CARET_DIAGONAL / 2)) -
+             CARET_HEIGHT / 2)) -
            parentBoundingRect.left;
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {hasCaret: true});
@@ -2736,8 +2741,10 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
        mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-       mockAdapter.getTooltipCaretSize.and.returnValue(
-           {width: CARET_SIZE, height: CARET_SIZE});
+       mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+         width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+         height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+       });
 
        foundation.setTooltipPosition(
            {withCaretPos: PositionWithCaret.TOP_SIDE_START});
@@ -2751,14 +2758,12 @@ describe('MDCTooltipFoundation', () => {
 
   it('ignores user specification if positioning violates threshold for tooltips with caret (BELOW alignment instead of ABOVE)',
      () => {
-       const anchorBoundingRect =
-           {top: 0, bottom: 35, left: 40, right: 90, width: 50, height: 35};
-       const parentBoundingRect =
-           {top: 5, bottom: 35, left: 0, right: 50, width: 50, height: 30};
+       const anchorBoundingRect = {bottom: 35, left: 40, width: 50, height: 35};
+       const parentBoundingRect = {top: 5, left: 0, width: 50, height: 30};
        const tooltipSize = {width: 40, height: 30};
        const expectedTooltipTop =
            (anchorBoundingRect.bottom + numbers.BOUNDED_ANCHOR_GAP +
-            CARET_DIAGONAL / 2) -
+            CARET_HEIGHT / 2) -
            parentBoundingRect.top;
        const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
            MDCTooltipFoundation, {hasCaret: true});
@@ -2767,8 +2772,10 @@ describe('MDCTooltipFoundation', () => {
        mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
        mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
-       mockAdapter.getTooltipCaretSize.and.returnValue(
-           {width: CARET_SIZE, height: CARET_SIZE});
+       mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+         width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+         height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+       });
 
        foundation.setTooltipPosition(
            {withCaretPos: PositionWithCaret.ABOVE_START});

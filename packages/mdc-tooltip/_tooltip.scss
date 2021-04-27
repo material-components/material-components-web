@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern --
 // Internal styling for Tooltip MDC component.
 
+@use 'sass:math';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl' as rtl;
@@ -41,6 +42,9 @@ $_min-height: 24px;
 // LINT.ThenChange(constants.ts:tooltip-dimensions)
 $_label-type-scale: caption;
 $_line-height: 16px;
+// LINT.IfChange(tooltip-anim-scale)
+$_animation-scale: 0.8;
+// LINT.ThenChange(constants.ts:tooltip-anim-scale);
 
 // Rich Tooltip variables
 $_rich_corner_radius: 4px;
@@ -215,7 +219,7 @@ $_caret-size: 24px;
   .mdc-tooltip__surface-animation {
     @include feature-targeting.targets($feat-structure) {
       opacity: 0;
-      transform: scale(0.8);
+      transform: scale($_animation-scale);
       will-change: transform, opacity;
     }
 
@@ -240,6 +244,10 @@ $_caret-size: 24px;
       position: absolute;
       height: $_caret-size;
       width: $_caret-size;
+      // We override this transform in MDCTooltipFoundation, however these
+      // styles must be present before the override happens in order to
+      // calculate the correct boundingClientRect (with the transforms applied).
+      transform: rotate(35deg) skewY(20deg) scaleX(math.cos(20deg));
     }
   }
 

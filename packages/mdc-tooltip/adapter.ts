@@ -184,9 +184,9 @@ export interface MDCTooltipAdapter {
   notifyHidden(): void;
 
   /**
-   * @return the width and height of the tooltip caret element if it exists.
+   * @return the ClientRect for the caret element.
    */
-  getTooltipCaretSize(): {width: number, height: number}|null;
+  getTooltipCaretBoundingRect(): ClientRect|null;
 
   /**
    * Sets the property value of the given style property on both the caret-top
