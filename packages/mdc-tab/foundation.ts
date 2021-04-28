@@ -54,7 +54,7 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
-  private focusOnActivate_ = true;
+  private focusOnActivate = true;
 
   constructor(adapter?: Partial<MDCTabAdapter>) {
     super({...MDCTabFoundation.defaultAdapter, ...adapter});
@@ -74,7 +74,7 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
    * Sets whether the tab should focus itself when activated
    */
   setFocusOnActivate(focusOnActivate: boolean) {
-    this.focusOnActivate_ = focusOnActivate;
+    this.focusOnActivate = focusOnActivate;
   }
 
   /**
@@ -85,7 +85,7 @@ export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
     this.adapter.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter.setAttr(strings.TABINDEX, '0');
     this.adapter.activateIndicator(previousIndicatorClientRect);
-    if (this.focusOnActivate_) {
+    if (this.focusOnActivate) {
       this.adapter.focus();
     }
   }

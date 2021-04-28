@@ -38,39 +38,56 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
     return new MDCTabScroller(root);
   }
 
-  private content_!: HTMLElement; // assigned in initialize()
-  private area_!: HTMLElement; // assigned in initialize()
-  private handleInteraction_!: SpecificEventListener<InteractionEventType>; // assigned in initialSyncWithDOM()
-  private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
+  private content!: HTMLElement;  // assigned in initialize()
+  private area!: HTMLElement;     // assigned in initialize()
+  private handleInteraction!:
+      SpecificEventListener<InteractionEventType>;  // assigned in
+                                                    // initialSyncWithDOM()
+  private handleTransitionEnd!:
+      SpecificEventListener<'transitionend'>;  // assigned in
+                                               // initialSyncWithDOM()
 
   initialize() {
-    this.area_ = this.root.querySelector<HTMLElement>(
+    this.area = this.root.querySelector<HTMLElement>(
         MDCTabScrollerFoundation.strings.AREA_SELECTOR)!;
-    this.content_ = this.root.querySelector<HTMLElement>(
+    this.content = this.root.querySelector<HTMLElement>(
         MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)!;
   }
 
   initialSyncWithDOM() {
-    this.handleInteraction_ = () => this.foundation.handleInteraction();
-    this.handleTransitionEnd_ = (evt) => this.foundation.handleTransitionEnd(evt);
+    this.handleInteraction = () => {
+      this.foundation.handleInteraction();
+    };
+    this.handleTransitionEnd = (evt) => {
+      this.foundation.handleTransitionEnd(evt);
+    };
 
-    this.area_.addEventListener('wheel', this.handleInteraction_, applyPassive());
-    this.area_.addEventListener('touchstart', this.handleInteraction_, applyPassive());
-    this.area_.addEventListener('pointerdown', this.handleInteraction_, applyPassive());
-    this.area_.addEventListener('mousedown', this.handleInteraction_, applyPassive());
-    this.area_.addEventListener('keydown', this.handleInteraction_, applyPassive());
-    this.content_.addEventListener('transitionend', this.handleTransitionEnd_);
+    this.area.addEventListener('wheel', this.handleInteraction, applyPassive());
+    this.area.addEventListener(
+        'touchstart', this.handleInteraction, applyPassive());
+    this.area.addEventListener(
+        'pointerdown', this.handleInteraction, applyPassive());
+    this.area.addEventListener(
+        'mousedown', this.handleInteraction, applyPassive());
+    this.area.addEventListener(
+        'keydown', this.handleInteraction, applyPassive());
+    this.content.addEventListener('transitionend', this.handleTransitionEnd);
   }
 
   destroy() {
     super.destroy();
 
-    this.area_.removeEventListener('wheel', this.handleInteraction_, applyPassive());
-    this.area_.removeEventListener('touchstart', this.handleInteraction_, applyPassive());
-    this.area_.removeEventListener('pointerdown', this.handleInteraction_, applyPassive());
-    this.area_.removeEventListener('mousedown', this.handleInteraction_, applyPassive());
-    this.area_.removeEventListener('keydown', this.handleInteraction_, applyPassive());
-    this.content_.removeEventListener('transitionend', this.handleTransitionEnd_);
+    this.area.removeEventListener(
+        'wheel', this.handleInteraction, applyPassive());
+    this.area.removeEventListener(
+        'touchstart', this.handleInteraction, applyPassive());
+    this.area.removeEventListener(
+        'pointerdown', this.handleInteraction, applyPassive());
+    this.area.removeEventListener(
+        'mousedown', this.handleInteraction, applyPassive());
+    this.area.removeEventListener(
+        'keydown', this.handleInteraction, applyPassive());
+    this.content.removeEventListener('transitionend', this.handleTransitionEnd);
   }
 
   getDefaultFoundation() {
@@ -80,22 +97,30 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
     const adapter: MDCTabScrollerAdapter = {
       eventTargetMatchesSelector: (evtTarget, selector) =>
           matches(evtTarget as Element, selector),
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
-      addScrollAreaClass: (className) => this.area_.classList.add(className),
-      setScrollAreaStyleProperty: (prop, value) =>
-          this.area_.style.setProperty(prop, value),
-      setScrollContentStyleProperty: (prop, value) =>
-          this.content_.style.setProperty(prop, value),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
+      addScrollAreaClass: (className) => {
+        this.area.classList.add(className);
+      },
+      setScrollAreaStyleProperty: (prop, value) => {
+        this.area.style.setProperty(prop, value);
+      },
+      setScrollContentStyleProperty: (prop, value) => {
+        this.content.style.setProperty(prop, value);
+      },
       getScrollContentStyleValue: (propName) =>
-          window.getComputedStyle(this.content_).getPropertyValue(propName),
-      setScrollAreaScrollLeft: (scrollX) => this.area_.scrollLeft = scrollX,
-      getScrollAreaScrollLeft: () => this.area_.scrollLeft,
-      getScrollContentOffsetWidth: () => this.content_.offsetWidth,
-      getScrollAreaOffsetWidth: () => this.area_.offsetWidth,
-      computeScrollAreaClientRect: () => this.area_.getBoundingClientRect(),
+          window.getComputedStyle(this.content).getPropertyValue(propName),
+      setScrollAreaScrollLeft: (scrollX) => this.area.scrollLeft = scrollX,
+      getScrollAreaScrollLeft: () => this.area.scrollLeft,
+      getScrollContentOffsetWidth: () => this.content.offsetWidth,
+      getScrollAreaOffsetWidth: () => this.area.offsetWidth,
+      computeScrollAreaClientRect: () => this.area.getBoundingClientRect(),
       computeScrollContentClientRect: () =>
-          this.content_.getBoundingClientRect(),
+          this.content.getBoundingClientRect(),
       computeHorizontalScrollbarHeight: () =>
           util.computeHorizontalScrollbarHeight(document),
     };
@@ -114,7 +139,7 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
    * Returns the width of the scroll content
    */
   getScrollContentWidth(): number {
-    return this.content_.offsetWidth;
+    return this.content.offsetWidth;
   }
 
   /**

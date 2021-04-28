@@ -86,17 +86,17 @@ describe('MDCTabBar', () => {
     const root = getFixture();
     const component = new MDCTabBar(
         root, undefined, () => new FakeTab(), () => new FakeTabScroller());
-    expect((component as any).tabList_.length).toEqual(3);
-    expect((component as any).tabList_[0]).toEqual(jasmine.any(FakeTab));
-    expect((component as any).tabList_[1]).toEqual(jasmine.any(FakeTab));
-    expect((component as any).tabList_[2]).toEqual(jasmine.any(FakeTab));
+    expect((component as any).tabList.length).toEqual(3);
+    expect((component as any).tabList[0]).toEqual(jasmine.any(FakeTab));
+    expect((component as any).tabList[1]).toEqual(jasmine.any(FakeTab));
+    expect((component as any).tabList[2]).toEqual(jasmine.any(FakeTab));
   });
 
   it('#constructor instantiates child tab scroller component', () => {
     const root = getFixture();
     const component = new MDCTabBar(
         root, undefined, () => new FakeTab(), () => new FakeTabScroller());
-    expect((component as any).tabScroller_)
+    expect((component as any).tabScroller)
         .toEqual(jasmine.any(FakeTabScroller));
   });
 
@@ -105,9 +105,9 @@ describe('MDCTabBar', () => {
     const component = new MDCTabBar(
         root, undefined, () => new FakeTab(), () => new FakeTabScroller());
     component.destroy();
-    expect((component as any).tabList_[0].destroy).toHaveBeenCalled();
-    expect((component as any).tabList_[1].destroy).toHaveBeenCalled();
-    expect((component as any).tabList_[2].destroy).toHaveBeenCalled();
+    expect((component as any).tabList[0].destroy).toHaveBeenCalled();
+    expect((component as any).tabList[1].destroy).toHaveBeenCalled();
+    expect((component as any).tabList[2].destroy).toHaveBeenCalled();
   });
 
   function setupTest() {
@@ -130,12 +130,12 @@ describe('MDCTabBar', () => {
 
     component.focusOnActivate = false;
     (component as any)
-        .tabList_.forEach(
+        .tabList.forEach(
             (tab: MDCTab) => expect(tab.focusOnActivate).toBe(false));
 
     component.focusOnActivate = true;
     (component as any)
-        .tabList_.forEach(
+        .tabList.forEach(
             (tab: MDCTab) => expect(tab.focusOnActivate).toBe(true));
   });
 
@@ -155,14 +155,14 @@ describe('MDCTabBar', () => {
   it('#adapter.scrollTo calls scrollTo of the child tab scroller', () => {
     const {component} = setupTest();
     (component.getDefaultFoundation() as any).adapter.scrollTo(123);
-    expect((component as any).tabScroller_.scrollTo).toHaveBeenCalledWith(123);
+    expect((component as any).tabScroller.scrollTo).toHaveBeenCalledWith(123);
   });
 
   it('#adapter.incrementScroll calls incrementScroll of the child tab scroller',
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any).adapter.incrementScroll(123);
-       expect((component as any).tabScroller_.incrementScroll)
+       expect((component as any).tabScroller.incrementScroll)
            .toHaveBeenCalledWith(123);
      });
 
@@ -170,7 +170,7 @@ describe('MDCTabBar', () => {
      () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any).adapter.getScrollPosition();
-       expect((component as any).tabScroller_.getScrollPosition)
+       expect((component as any).tabScroller.getScrollPosition)
            .toHaveBeenCalledTimes(1);
      });
 
@@ -179,7 +179,7 @@ describe('MDCTabBar', () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
            .adapter.getScrollContentWidth();
-       expect((component as any).tabScroller_.getScrollContentWidth)
+       expect((component as any).tabScroller.getScrollContentWidth)
            .toHaveBeenCalledTimes(1);
      });
 
@@ -207,8 +207,8 @@ describe('MDCTabBar', () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
            .adapter.activateTabAtIndex(2, {});
-       expect((component as any).tabList_[2].activate).toHaveBeenCalledWith({});
-       expect((component as any).tabList_[2].activate).toHaveBeenCalledTimes(1);
+       expect((component as any).tabList[2].activate).toHaveBeenCalledWith({});
+       expect((component as any).tabList[2].activate).toHaveBeenCalledTimes(1);
      });
 
   it('#adapter.deactivateTabAtIndex calls deactivate on the tab at the index',
@@ -216,7 +216,7 @@ describe('MDCTabBar', () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
            .adapter.deactivateTabAtIndex(1);
-       expect((component as any).tabList_[1].deactivate)
+       expect((component as any).tabList[1].deactivate)
            .toHaveBeenCalledTimes(1);
      });
 
@@ -225,7 +225,7 @@ describe('MDCTabBar', () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
            .adapter.getTabIndicatorClientRectAtIndex(0);
-       expect((component as any).tabList_[0].computeIndicatorClientRect)
+       expect((component as any).tabList[0].computeIndicatorClientRect)
            .toHaveBeenCalledTimes(1);
      });
 
@@ -234,14 +234,14 @@ describe('MDCTabBar', () => {
        const {component} = setupTest();
        (component.getDefaultFoundation() as any)
            .adapter.getTabDimensionsAtIndex(0);
-       expect((component as any).tabList_[0].computeDimensions)
+       expect((component as any).tabList[0].computeDimensions)
            .toHaveBeenCalledTimes(1);
      });
 
   it('#adapter.getPreviousActiveTabIndex returns the index of the active tab',
      () => {
        const {component} = setupTest();
-       (component as any).tabList_[1].active = true;
+       (component as any).tabList[1].active = true;
        expect(
            (component.getDefaultFoundation() as any)
                .adapter.getPreviousActiveTabIndex() === 1)
@@ -250,7 +250,7 @@ describe('MDCTabBar', () => {
 
   it('#adapter.getIndexOfTabById returns the index of the given tab', () => {
     const {component} = setupTest();
-    const tab = (component as any).tabList_[2];
+    const tab = (component as any).tabList[2];
     expect(
         (component.getDefaultFoundation() as any)
             .adapter.getIndexOfTabById(tab.id) === 2)

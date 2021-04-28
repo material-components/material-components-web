@@ -35,10 +35,10 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     return new MDCTabIndicator(root);
   }
 
-  private content_!: HTMLElement; // assigned in initialize()
+  private content!: HTMLElement;  // assigned in initialize()
 
   initialize() {
-    this.content_ = this.root.querySelector<HTMLElement>(
+    this.content = this.root.querySelector<HTMLElement>(
         MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
   }
 
@@ -53,9 +53,10 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     const adapter: MDCTabIndicatorAdapter = {
       addClass: (className) => this.root.classList.add(className),
       removeClass: (className) => this.root.classList.remove(className),
-      computeContentClientRect: () => this.content_.getBoundingClientRect(),
-      setContentStyleProperty: (prop, value) =>
-          this.content_.style.setProperty(prop, value),
+      computeContentClientRect: () => this.content.getBoundingClientRect(),
+      setContentStyleProperty: (prop, value) => {
+        this.content.style.setProperty(prop, value);
+      },
     };
     // tslint:enable:object-literal-sort-keys
 

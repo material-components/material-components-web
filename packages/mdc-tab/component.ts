@@ -40,10 +40,11 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
 
   id!: string; // assigned in initialize();
 
-  private ripple_!: MDCRipple; // assigned in initialize();
-  private tabIndicator_!: MDCTabIndicator; // assigned in initialize();
-  private content_!: HTMLElement; // assigned in initialize();
-  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialize();
+  private ripple!: MDCRipple;              // assigned in initialize();
+  private tabIndicator!: MDCTabIndicator;  // assigned in initialize();
+  private content!: HTMLElement;           // assigned in initialize();
+  private handleClick!:
+      SpecificEventListener<'click'>;  // assigned in initialize();
 
   initialize(
       rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
@@ -52,23 +53,25 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
     this.id = this.root.id;
     const rippleFoundation =
         new MDCRippleFoundation(MDCRipple.createAdapter(this));
-    this.ripple_ = rippleFactory(this.root, rippleFoundation);
+    this.ripple = rippleFactory(this.root, rippleFoundation);
 
     const tabIndicatorElement = this.root.querySelector(
         MDCTabFoundation.strings.TAB_INDICATOR_SELECTOR)!;
-    this.tabIndicator_ = tabIndicatorFactory(tabIndicatorElement);
-    this.content_ = this.root.querySelector<HTMLElement>(
+    this.tabIndicator = tabIndicatorFactory(tabIndicatorElement);
+    this.content = this.root.querySelector<HTMLElement>(
         MDCTabFoundation.strings.CONTENT_SELECTOR)!;
   }
 
   initialSyncWithDOM() {
-    this.handleClick_ = () => this.foundation.handleClick();
-    this.listen('click', this.handleClick_);
+    this.handleClick = () => {
+      this.foundation.handleClick();
+    };
+    this.listen('click', this.handleClick);
   }
 
   destroy() {
-    this.unlisten('click', this.handleClick_);
-    this.ripple_.destroy();
+    this.unlisten('click', this.handleClick);
+    this.ripple.destroy();
     super.destroy();
   }
 
@@ -81,16 +84,19 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
       addClass: (className) => this.root.classList.add(className),
       removeClass: (className) => this.root.classList.remove(className),
       hasClass: (className) => this.root.classList.contains(className),
-      activateIndicator: (previousIndicatorClientRect) =>
-          this.tabIndicator_.activate(previousIndicatorClientRect),
-      deactivateIndicator: () => this.tabIndicator_.deactivate(),
+      activateIndicator: (previousIndicatorClientRect) => {
+        this.tabIndicator.activate(previousIndicatorClientRect);
+      },
+      deactivateIndicator: () => {
+        this.tabIndicator.deactivate();
+      },
       notifyInteracted: () => this.emit<MDCTabInteractionEventDetail>(
           MDCTabFoundation.strings.INTERACTED_EVENT, {tabId: this.id},
           true /* bubble */),
       getOffsetLeft: () => (this.root as HTMLElement).offsetLeft,
       getOffsetWidth: () => (this.root as HTMLElement).offsetWidth,
-      getContentOffsetLeft: () => this.content_.offsetLeft,
-      getContentOffsetWidth: () => this.content_.offsetWidth,
+      getContentOffsetLeft: () => this.content.offsetLeft,
+      getContentOffsetWidth: () => this.content.offsetWidth,
       focus: () => (this.root as HTMLElement).focus(),
     };
     // tslint:enable:object-literal-sort-keys
@@ -126,7 +132,7 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
    * Returns the indicator's client rect
    */
   computeIndicatorClientRect(): ClientRect {
-    return this.tabIndicator_.computeContentClientRect();
+    return this.tabIndicator.computeContentClientRect();
   }
 
   computeDimensions(): MDCTabDimensions {
