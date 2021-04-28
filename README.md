@@ -17,13 +17,13 @@ Material Components for the web is the successor to [Material Design Lite](https
 
 ## Important links
 
-- [Getting Started Guide](g3doc/getting-started.md)
-- [Demos](https://material-components.github.io/material-components-web-catalog) (external site)
-- [Material on other frameworks](g3doc/framework-wrappers.md)
-- [Examples using Material Web](g3doc/examples.md)
+- [Getting Started Guide](docs/getting-started.md)
+- [Demos](https://material-components.github.io/material-components-web-catalog)
+- [Material on other frameworks](docs/framework-wrappers.md)
+- [Examples using Material Web](docs/examples.md)
 - [Contributing](CONTRIBUTING.md)
 - [Material Design Guidelines](https://material.io/design) (external site)
-- [Supported browsers](g3doc/supported-browsers.md)
+- [Supported browsers](docs/supported-browsers.md)
 - [All Components](packages/)
 - [Changelog](./CHANGELOG.md)
 
