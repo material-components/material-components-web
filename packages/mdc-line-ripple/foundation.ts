@@ -47,22 +47,24 @@ export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter>
     // tslint:enable:object-literal-sort-keys
   }
 
-  private readonly transitionEndHandler_: SpecificEventListener<'transitionend'>;
+  private readonly transitionEndHandler: SpecificEventListener<'transitionend'>;
 
   constructor(adapter?: Partial<MDCLineRippleAdapter>) {
     super({...MDCLineRippleFoundation.defaultAdapter, ...adapter});
 
-    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
+    this.transitionEndHandler = (evt) => {
+      this.handleTransitionEnd(evt);
+    };
   }
 
   init() {
     this.adapter.registerEventHandler(
-        'transitionend', this.transitionEndHandler_);
+        'transitionend', this.transitionEndHandler);
   }
 
   destroy() {
     this.adapter.deregisterEventHandler(
-        'transitionend', this.transitionEndHandler_);
+        'transitionend', this.transitionEndHandler);
   }
 
   activate() {
