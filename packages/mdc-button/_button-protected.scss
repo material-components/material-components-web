@@ -23,8 +23,7 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
-@use '@material/elevation/functions' as elevation-functions;
-@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
 @use './button-base';
 @use './button-protected-theme';
@@ -69,22 +68,22 @@
 @mixin raised($query) {
   $feat-animation: feature-targeting.create-target($query, animation);
 
-  @include elevation-mixins.elevation(2, $query: $query);
+  @include elevation-theme.elevation(2, $query: $query);
 
   &:hover,
   &:focus {
-    @include elevation-mixins.elevation(4, $query: $query);
+    @include elevation-theme.elevation(4, $query: $query);
   }
 
   &:active {
-    @include elevation-mixins.elevation(8, $query: $query);
+    @include elevation-theme.elevation(8, $query: $query);
   }
 
   &:disabled {
-    @include elevation-mixins.elevation(0, $query: $query);
+    @include elevation-theme.elevation(0, $query: $query);
   }
 
   @include feature-targeting.targets($feat-animation) {
-    transition: elevation-functions.transition-value();
+    transition: elevation-theme.transition-value();
   }
 }
