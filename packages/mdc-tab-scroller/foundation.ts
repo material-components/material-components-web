@@ -216,7 +216,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
    * @param scrollX The distance to scroll
    */
   private clampScrollValue(scrollX: number): number {
-    const edges = this.calculateScrollEdges_();
+    const edges = this.calculateScrollEdges();
     return Math.min(Math.max(edges.left, scrollX), edges.right);
   }
 
@@ -225,7 +225,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
     return this.getRTLScroller().getScrollPositionRTL(translateX);
   }
 
-  private calculateScrollEdges_(): MDCTabScrollerHorizontalEdges {
+  private calculateScrollEdges(): MDCTabScrollerHorizontalEdges {
     const contentWidth = this.adapter.getScrollContentOffsetWidth();
     const rootWidth = this.adapter.getScrollAreaOffsetWidth();
     return {
