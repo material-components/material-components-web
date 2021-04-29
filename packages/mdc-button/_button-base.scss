@@ -167,6 +167,7 @@
   $icon-size: typography.px-to-rem(18px);
 
   display: inline-block;
+  position: relative;
   font-size: $icon-size;
   height: $icon-size;
   vertical-align: top;
