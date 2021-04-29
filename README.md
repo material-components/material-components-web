@@ -18,7 +18,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 ## Important links
 
 - [Getting Started Guide](docs/getting-started.md)
-- [Demos](https://material-components.github.io/material-components-web-catalog)
+- [Demos](https://material-components.github.io/material-components-web-catalog) (external site)
 - [Material on other frameworks](docs/framework-wrappers.md)
 - [Examples using Material Web](docs/examples.md)
 - [Contributing](CONTRIBUTING.md)
