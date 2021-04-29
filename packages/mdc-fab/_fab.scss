@@ -128,7 +128,12 @@
       $query: $query,
       $ripple-target: fab-theme.$ripple-target
     );
-    @include fab-theme.ripple-color(on-secondary, $query: $query);
+    // Set `$opacity-map` to null to apply default opacity-map.
+    @include fab-theme.ripple-color(
+      on-secondary,
+      $opacity-map: null,
+      $query: $query
+    );
 
     #{fab-theme.$ripple-target} {
       @include ripple.target-common($query: $query);
