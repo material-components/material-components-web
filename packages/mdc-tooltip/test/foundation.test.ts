@@ -2784,4 +2784,35 @@ describe('MDCTooltipFoundation', () => {
        expect(mockAdapter.setStyleProperty)
            .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
      });
+
+  it('handles positioning for tooltip with caret when all possible positions are invalid',
+     () => {
+       const anchorBoundingRect = {top: -135, left: -40, width: 50, height: 35};
+       const parentBoundingRect = {top: 0, left: 0, width: 50, height: 30};
+       const tooltipSize = {width: 40, height: 30};
+       const expectedTooltipTop =
+           numbers.MIN_VIEWPORT_TOOLTIP_THRESHOLD + CARET_HEIGHT / 2;
+       const expectedTooltipLeft =
+           numbers.MIN_VIEWPORT_TOOLTIP_THRESHOLD + CARET_HEIGHT / 2;
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {hasCaret: true});
+       mockAdapter.getViewportWidth.and.returnValue(50);
+       mockAdapter.getViewportHeight.and.returnValue(50);
+       mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+       mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+       mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
+       mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+         width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+         height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+       });
+
+       foundation.setTooltipPosition(
+           {withCaretPos: PositionWithCaret.ABOVE_START});
+       foundation.show();
+
+       expect(mockAdapter.setStyleProperty)
+           .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
+       expect(mockAdapter.setStyleProperty)
+           .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
+     });
 });
