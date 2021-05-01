@@ -100,8 +100,26 @@
 /// Note: Material theme key Strings (e.g. `primary`) are not supported as
 /// replacement values.
 ///
-/// @param {String} $property - The name of the CSS property.
+/// A CSS custom property declaration may be emitted by providing a custom
+/// property Map to `$property`. The fallback value (or `$value` if provided)
+/// will be used as the declaration value.
+///
+/// @example - scss
+///   .foo {
+///     @include theme.property(custom-properties.create(foo, teal));
+///     @include theme.property(custom-properties.create(bar, teal), blue);
+///   }
+///
+/// @example - css
+///   .foo {
+///     --mdc-foo: teal;
+///     --mdc-bar: blue;
+///   }
+///
+/// @param {String | Map} $property - The name of the CSS property. May also be
+///     a custom property Map to emit a custom propery declaration.
 /// @param {String | Number | Color | List | Map} $value - The property's value.
+///     This parameter may be omitted if `$property` is a custom property Map.
 /// @param {Map} $gss - Optional Map of GSS annotations to set.
 /// @param {Map} $replace - An optional Map of replacement key/value pairs if
 ///     the `$value` is a string.
@@ -109,13 +127,30 @@
 ///     to false.
 @mixin property(
   $property,
-  $value,
+  $value: null,
   $gss: (),
   $replace: null,
   $important: false
 ) {
-  @if custom-properties.is-custom-prop($value) {
+  @if custom-properties.is-custom-prop($property) {
+    // $property is a custom property Map
+    //   --mdc-foo: value;
+    @if $value {
+      $property: custom-properties.set-fallback(
+        $property,
+        $value,
+        $shallow: true
+      );
+    }
+
+    @include custom-properties.declaration(
+      $property,
+      $gss: $gss,
+      $important: $important
+    );
+  } @else if custom-properties.is-custom-prop($value) {
     // $value is a custom property Map
+    //   property: var(--mdc-foo, fallback);
     @include custom-properties.declaration(
       $property,
       $value,
@@ -124,6 +159,7 @@
     );
   } @else if keys.is-key($value) {
     // $value is a key String
+    //   property: key;
     $custom-prop: keys.create-custom-property($value);
 
     @if theme-color.is-theme-key($value) {
@@ -155,6 +191,7 @@
     );
   } @else {
     // $value is a standard CSS value
+    //   property: value;
     $fallback: null;
     @if $replace {
       // If any replacements are null, treat the entire value as null (do not
