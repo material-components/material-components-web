@@ -93,9 +93,10 @@ export interface MDCListAdapter {
   notifyAction(index: number): void;
 
   /**
+   * @param focusedElement the element which will be focused.
    * @return true when the current focused element is inside list root.
    */
-  isFocusInsideList(): boolean;
+  isFocusInsideList(focusedElement: HTMLElement): boolean;
 
   /**
    * @return the primary text content of the list item at index.
