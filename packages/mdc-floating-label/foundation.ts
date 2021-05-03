@@ -46,20 +46,25 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
     // tslint:enable:object-literal-sort-keys
   }
 
-  private readonly shakeAnimationEndHandler_: SpecificEventListener<'animationend'>;
+  private readonly shakeAnimationEndHandler:
+      SpecificEventListener<'animationend'>;
 
   constructor(adapter?: Partial<MDCFloatingLabelAdapter>) {
     super({...MDCFloatingLabelFoundation.defaultAdapter, ...adapter});
 
-    this.shakeAnimationEndHandler_ = () => this.handleShakeAnimationEnd_();
+    this.shakeAnimationEndHandler = () => {
+      this.handleShakeAnimationEnd();
+    };
   }
 
   init() {
-    this.adapter.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+    this.adapter.registerInteractionHandler(
+        'animationend', this.shakeAnimationEndHandler);
   }
 
   destroy() {
-    this.adapter.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+    this.adapter.deregisterInteractionHandler(
+        'animationend', this.shakeAnimationEndHandler);
   }
 
   /**
@@ -109,7 +114,7 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
     }
   }
 
-  private handleShakeAnimationEnd_() {
+  private handleShakeAnimationEnd() {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     this.adapter.removeClass(LABEL_SHAKE);
   }

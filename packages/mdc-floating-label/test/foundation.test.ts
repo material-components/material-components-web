@@ -106,9 +106,9 @@ describe('MDCFloatingLabelFoundation', () => {
            .toHaveBeenCalledWith(cssClasses.LABEL_SHAKE);
      });
 
-  it('#handleShakeAnimationEnd_ should remove LABEL_SHAKE class', () => {
+  it('#handleShakeAnimationEnd should remove LABEL_SHAKE class', () => {
     const {foundation, mockAdapter} = setupTest();
-    (foundation as any).handleShakeAnimationEnd_();
+    (foundation as any).handleShakeAnimationEnd();
     expect(mockAdapter.removeClass)
         .toHaveBeenCalledWith(cssClasses.LABEL_SHAKE);
   });
