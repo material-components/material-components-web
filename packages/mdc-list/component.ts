@@ -379,7 +379,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    */
   private handleFocusInEvent(evt: FocusEvent) {
     const index = this.getListItemIndex(evt.target as Element);
-    this.foundation.handleFocusIn(evt, index);
+    this.foundation.handleFocusIn(index);
   }
 
   /**
@@ -388,7 +388,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    */
   private handleFocusOutEvent(evt: FocusEvent) {
     const index = this.getListItemIndex(evt.target as Element);
-    this.foundation.handleFocusOut(evt, index);
+    this.foundation.handleFocusOut(index);
   }
 
   /**
