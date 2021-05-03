@@ -34,10 +34,10 @@ export class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation>
     return new MDCNotchedOutline(root);
   }
 
-  private notchElement_!: HTMLElement; // assigned in initialSyncWithDOM()
+  private notchElement!: HTMLElement;  // assigned in initialSyncWithDOM()
 
   initialSyncWithDOM() {
-    this.notchElement_ =
+    this.notchElement =
         this.root.querySelector<HTMLElement>(strings.NOTCH_ELEMENT_SELECTOR)!;
 
     const label = this.root.querySelector<HTMLElement>(
@@ -75,10 +75,12 @@ export class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation>
     const adapter: MDCNotchedOutlineAdapter = {
       addClass: (className) => this.root.classList.add(className),
       removeClass: (className) => this.root.classList.remove(className),
-      setNotchWidthProperty: (width) =>
-          this.notchElement_.style.setProperty('width', width + 'px'),
-      removeNotchWidthProperty: () =>
-          this.notchElement_.style.removeProperty('width'),
+      setNotchWidthProperty: (width) => {
+        this.notchElement.style.setProperty('width', width.toString() + 'px');
+      },
+      removeNotchWidthProperty: () => {
+        this.notchElement.style.removeProperty('width');
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCNotchedOutlineFoundation(adapter);
