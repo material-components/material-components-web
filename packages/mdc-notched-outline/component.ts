@@ -76,7 +76,7 @@ export class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation>
       addClass: (className) => this.root.classList.add(className),
       removeClass: (className) => this.root.classList.remove(className),
       setNotchWidthProperty: (width) => {
-        this.notchElement.style.setProperty('width', width.toString() + 'px');
+        this.notchElement.style.setProperty('width', width + 'px');
       },
       removeNotchWidthProperty: () => {
         this.notchElement.style.removeProperty('width');
