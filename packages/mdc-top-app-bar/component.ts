@@ -36,77 +36,90 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     return new MDCTopAppBar(root);
   }
 
-  private handleNavigationClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
-  private handleWindowResize_!: SpecificEventListener<'resize'>; // assigned in initialSyncWithDOM()
-  private handleTargetScroll_!: SpecificEventListener<'scroll'>; // assigned in initialSyncWithDOM()
-  private navIcon_!: Element | null;
-  private iconRipples_!: MDCRipple[];
-  private scrollTarget_!: EventTarget;
+  private handleNavigationClick!:
+      SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
+  private handleWindowResize!:
+      SpecificEventListener<'resize'>;  // assigned in initialSyncWithDOM()
+  private handleTargetScroll!:
+      SpecificEventListener<'scroll'>;  // assigned in initialSyncWithDOM()
+  private navIcon!: Element|null;
+  private iconRipples!: MDCRipple[];
+  private scrollTarget!: EventTarget;
 
   initialize(rippleFactory: MDCRippleFactory = (el) => MDCRipple.attachTo(el)) {
-    this.navIcon_ = this.root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
+    this.navIcon = this.root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
 
     // Get all icons in the toolbar and instantiate the ripples
     const icons: Element[] =
         [].slice.call(this.root.querySelectorAll(strings.ACTION_ITEM_SELECTOR));
-    if (this.navIcon_) {
-      icons.push(this.navIcon_);
+    if (this.navIcon) {
+      icons.push(this.navIcon);
     }
 
-    this.iconRipples_ = icons.map((icon) => {
+    this.iconRipples = icons.map((icon) => {
       const ripple = rippleFactory(icon);
       ripple.unbounded = true;
       return ripple;
     });
 
-    this.scrollTarget_ = window;
+    this.scrollTarget = window;
   }
 
   initialSyncWithDOM() {
-    this.handleNavigationClick_ =
+    this.handleNavigationClick =
         this.foundation.handleNavigationClick.bind(this.foundation);
-    this.handleWindowResize_ =
+    this.handleWindowResize =
         this.foundation.handleWindowResize.bind(this.foundation);
-    this.handleTargetScroll_ =
+    this.handleTargetScroll =
         this.foundation.handleTargetScroll.bind(this.foundation);
 
-    this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
+    this.scrollTarget.addEventListener(
+        'scroll', this.handleTargetScroll as EventListener);
 
-    if (this.navIcon_) {
-      this.navIcon_.addEventListener('click', this.handleNavigationClick_ as EventListener);
+    if (this.navIcon) {
+      this.navIcon.addEventListener(
+          'click', this.handleNavigationClick as EventListener);
     }
 
     const isFixed = this.root.classList.contains(cssClasses.FIXED_CLASS);
     const isShort = this.root.classList.contains(cssClasses.SHORT_CLASS);
     if (!isShort && !isFixed) {
-      window.addEventListener('resize', this.handleWindowResize_ as EventListener);
+      window.addEventListener(
+          'resize', this.handleWindowResize as EventListener);
     }
   }
 
   destroy() {
-    this.iconRipples_.forEach((iconRipple) => iconRipple.destroy());
-    this.scrollTarget_.removeEventListener('scroll', this.handleTargetScroll_ as EventListener);
-    if (this.navIcon_) {
-      this.navIcon_.removeEventListener('click', this.handleNavigationClick_ as EventListener);
+    for (const iconRipple of this.iconRipples) {
+      iconRipple.destroy();
+    }
+    this.scrollTarget.removeEventListener(
+        'scroll', this.handleTargetScroll as EventListener);
+    if (this.navIcon) {
+      this.navIcon.removeEventListener(
+          'click', this.handleNavigationClick as EventListener);
     }
     const isFixed = this.root.classList.contains(cssClasses.FIXED_CLASS);
     const isShort = this.root.classList.contains(cssClasses.SHORT_CLASS);
     if (!isShort && !isFixed) {
-      window.removeEventListener('resize', this.handleWindowResize_ as EventListener);
+      window.removeEventListener(
+          'resize', this.handleWindowResize as EventListener);
     }
     super.destroy();
   }
 
   setScrollTarget(target: EventTarget) {
     // Remove scroll handler from the previous scroll target
-    this.scrollTarget_.removeEventListener('scroll', this.handleTargetScroll_ as EventListener);
+    this.scrollTarget.removeEventListener(
+        'scroll', this.handleTargetScroll as EventListener);
 
-    this.scrollTarget_ = target;
+    this.scrollTarget = target;
 
     // Initialize scroll handler on the new scroll target
-    this.handleTargetScroll_ =
+    this.handleTargetScroll =
         this.foundation.handleTargetScroll.bind(this.foundation);
-    this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
+    this.scrollTarget.addEventListener(
+        'scroll', this.handleTargetScroll as EventListener);
   }
 
   getDefaultFoundation() {
@@ -123,8 +136,8 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
       notifyNavigationIconClicked: () =>
           this.emit(strings.NAVIGATION_EVENT, {}),
       getViewportScrollY: () => {
-        const win = this.scrollTarget_ as Window;
-        const el = this.scrollTarget_ as Element;
+        const win = this.scrollTarget as Window;
+        const el = this.scrollTarget as Element;
         return win.pageYOffset !== undefined ? win.pageYOffset : el.scrollTop;
       },
       getTotalActionItems: () =>
