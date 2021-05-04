@@ -40,8 +40,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     return numbers;
   }
 
-  private closeAnimationEndTimerId_ = 0;
-  private defaultFocusState_ = DefaultFocusState.LIST_ROOT;
+  private closeAnimationEndTimerId = 0;
+  private defaultFocusState = DefaultFocusState.LIST_ROOT;
 
   /**
    * @see {@link MDCMenuAdapter} for typing information on parameters and return types.
@@ -71,8 +71,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   }
 
   destroy() {
-    if (this.closeAnimationEndTimerId_) {
-      clearTimeout(this.closeAnimationEndTimerId_);
+    if (this.closeAnimationEndTimerId) {
+      clearTimeout(this.closeAnimationEndTimerId);
     }
 
     this.adapter.closeSurface();
@@ -97,7 +97,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.adapter.closeSurface();
 
     // Wait for the menu to close before adding/removing classes that affect styles.
-    this.closeAnimationEndTimerId_ = setTimeout(() => {
+    this.closeAnimationEndTimerId = setTimeout(() => {
       // Recompute the index in case the menu contents have changed.
       const recomputedIndex = this.adapter.getElementIndex(listItem);
       if (recomputedIndex >= 0 &&
@@ -108,7 +108,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   }
 
   handleMenuSurfaceOpened() {
-    switch (this.defaultFocusState_) {
+    switch (this.defaultFocusState) {
       case DefaultFocusState.FIRST_ITEM:
         this.adapter.focusItemAtIndex(0);
         break;
@@ -130,7 +130,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
    * default.
    */
   setDefaultFocusState(focusState: DefaultFocusState) {
-    this.defaultFocusState_ = focusState;
+    this.defaultFocusState = focusState;
   }
 
   /**
@@ -138,7 +138,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
    * @param index Index of list item within the menu.
    */
   setSelectedIndex(index: number) {
-    this.validatedIndex_(index);
+    this.validatedIndex(index);
 
     if (!this.adapter.isSelectableItemAtIndex(index)) {
       throw new Error('MDCMenuFoundation: No selection group at specified index.');
@@ -165,7 +165,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
    * @param isEnabled The desired enabled state of the menu item.
    */
   setEnabled(index: number, isEnabled: boolean): void {
-    this.validatedIndex_(index);
+    this.validatedIndex(index);
 
     if (isEnabled) {
       this.adapter.removeClassFromElementAtIndex(
@@ -180,7 +180,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     }
   }
 
-  private validatedIndex_(index: number): void {
+  private validatedIndex(index: number): void {
     const menuSize = this.adapter.getMenuItemCount();
     const isIndexInRange = index >= 0 && index < menuSize;
 

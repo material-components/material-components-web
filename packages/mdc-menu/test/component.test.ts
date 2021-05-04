@@ -114,7 +114,7 @@ function getFixtureWithMultipleSelectionGroups(open = false) {
 
 class FakeList {
   destroy: jasmine.Spy = jasmine.createSpy('.destroy');
-  itemsContainer: jasmine.Spy = jasmine.createSpy('.root_');
+  itemsContainer: jasmine.Spy = jasmine.createSpy('.root');
   layout: jasmine.Spy = jasmine.createSpy('layout');
   wrapFocus: boolean = true;
   typeaheadInProgress: boolean = false;
@@ -420,7 +420,7 @@ describe('MDCMenu', () => {
 
     document.body.appendChild(root);
     (component as any)
-        .list_.foundation.handleKeydown(
+        .list.foundation.handleKeydown(
             fakeEnterKeyEvent, /* isRootListItem */ true,
             /* listItemIndex */ 0);
     document.body.removeChild(root);
