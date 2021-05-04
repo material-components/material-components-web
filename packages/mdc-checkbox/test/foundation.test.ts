@@ -352,22 +352,22 @@ describe('MDCCheckboxFoundation', () => {
     const {ANIM_UNCHECKED_CHECKED} = cssClasses;
     const {mockAdapter, foundation} = setupTest();
 
-    (foundation as any).enableAnimationEndHandler_ = true;
-    (foundation as any).currentAnimationClass_ = ANIM_UNCHECKED_CHECKED;
+    (foundation as any).enableAnimationEndHandler = true;
+    (foundation as any).currentAnimationClass = ANIM_UNCHECKED_CHECKED;
     expect(mockAdapter.removeClass).not.toHaveBeenCalled();
 
     foundation.handleAnimationEnd();
 
     jasmine.clock().tick(numbers.ANIM_END_LATCH_MS);
     expect(mockAdapter.removeClass).toHaveBeenCalledTimes(1);
-    expect((foundation as any).enableAnimationEndHandler_).toBe(false);
+    expect((foundation as any).enableAnimationEndHandler).toBe(false);
   });
 
   it('animation end is debounced if event is called twice', () => {
     const {ANIM_UNCHECKED_CHECKED} = cssClasses;
     const {mockAdapter, foundation} = setupChangeHandlerTest();
-    (foundation as any).enableAnimationEndHandler_ = true;
-    (foundation as any).currentAnimationClass_ = ANIM_UNCHECKED_CHECKED;
+    (foundation as any).enableAnimationEndHandler = true;
+    (foundation as any).currentAnimationClass = ANIM_UNCHECKED_CHECKED;
 
     foundation.handleAnimationEnd();
 
