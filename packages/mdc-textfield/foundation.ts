@@ -49,13 +49,13 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     return numbers;
   }
 
-  private get shouldAlwaysFloat_(): boolean {
+  private get shouldAlwaysFloat(): boolean {
     const type = this.getNativeInput().type;
     return ALWAYS_FLOAT_TYPES.indexOf(type) >= 0;
   }
 
   get shouldFloat(): boolean {
-    return this.shouldAlwaysFloat_ || this.isFocused || !!this.getValue() ||
+    return this.shouldAlwaysFloat || this.isFocused || !!this.getValue() ||
         this.isBadInput();
   }
 
