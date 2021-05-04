@@ -31,9 +31,6 @@ import {MDCSegmentedButtonAdapter} from './adapter';
 import {events, selectors} from './constants';
 import {MDCSegmentedButtonFoundation} from './foundation';
 
-// TODO(b/152410470): Remove trailing underscores from private properties
-// tslint:disable:strip-private-property-underscore
-
 export class MDCSegmentedButton extends
     MDCComponent<MDCSegmentedButtonFoundation> {
   static attachTo(root: Element): MDCSegmentedButton {
@@ -41,10 +38,10 @@ export class MDCSegmentedButton extends
   }
 
   get segments(): ReadonlyArray<MDCSegmentedButtonSegment> {
-    return this.segments_.slice();
+    return this.segmentsList.slice();
   }
 
-  private segments_!: MDCSegmentedButtonSegment[];  // assigned in initialize
+  private segmentsList!: MDCSegmentedButtonSegment[];  // assigned in initialize
   private segmentFactory!:
       (el: Element) => MDCSegmentedButtonSegment;  // assigned in initialize
   private handleSelected!:
@@ -55,7 +52,7 @@ export class MDCSegmentedButton extends
       segmentFactory: MDCSegmentedButtonSegmentFactory = (el) =>
           new MDCSegmentedButtonSegment(el)) {
     this.segmentFactory = segmentFactory;
-    this.segments_ = this.instantiateSegments(this.segmentFactory);
+    this.segmentsList = this.instantiateSegments(this.segmentFactory);
   }
 
   /**
@@ -76,15 +73,16 @@ export class MDCSegmentedButton extends
     this.listen(events.SELECTED, this.handleSelected);
 
     const isSingleSelect = this.foundation.isSingleSelect();
-    this.segments_.forEach((segment, index: number) => {
-      segment.setIndex(index);
+    for (let i = 0; i < this.segmentsList.length; i++) {
+      const segment = this.segmentsList[i];
+      segment.setIndex(i);
       segment.setIsSingleSelect(isSingleSelect);
-    });
+    }
 
     const selectedSegments =
-        this.segments_.filter((segment) => segment.isSelected());
-    if (isSingleSelect && selectedSegments.length == 0 &&
-        this.segments_.length > 0) {
+        this.segmentsList.filter((segment) => segment.isSelected());
+    if (isSingleSelect && selectedSegments.length === 0 &&
+        this.segmentsList.length > 0) {
       throw new Error(
           'No segment selected in singleSelect mdc-segmented-button');
     } else if (isSingleSelect && selectedSegments.length > 1) {
@@ -94,9 +92,9 @@ export class MDCSegmentedButton extends
   }
 
   destroy() {
-    this.segments_.forEach((segment) => {
+    for (const segment of this.segmentsList) {
       segment.destroy();
-    });
+    }
 
     this.unlisten(events.SELECTED, this.handleSelected);
 
@@ -113,18 +111,18 @@ export class MDCSegmentedButton extends
       },
       selectSegment: (indexOrSegmentId) => {
         const segmentDetail = this.mappedSegments().find(
-            (_segmentDetail) => _segmentDetail.index === indexOrSegmentId ||
-                _segmentDetail.segmentId === indexOrSegmentId);
+            (detail) => detail.index === indexOrSegmentId ||
+                detail.segmentId === indexOrSegmentId);
         if (segmentDetail) {
-          this.segments_[segmentDetail.index].setSelected();
+          this.segmentsList[segmentDetail.index].setSelected();
         }
       },
       unselectSegment: (indexOrSegmentId) => {
         const segmentDetail = this.mappedSegments().find(
-            (_segmentDetail) => _segmentDetail.index === indexOrSegmentId ||
-                _segmentDetail.segmentId === indexOrSegmentId);
+            (detail) => detail.index === indexOrSegmentId ||
+                detail.segmentId === indexOrSegmentId);
         if (segmentDetail) {
-          this.segments_[segmentDetail.index].setUnselected();
+          this.segmentsList[segmentDetail.index].setUnselected();
         }
       },
       notifySelectedChange: (detail) => {
@@ -177,7 +175,7 @@ export class MDCSegmentedButton extends
    * @return Returns child segments mapped to readonly SegmentDetail list
    */
   private mappedSegments(): readonly SegmentDetail[] {
-    return this.segments_.map(
+    return this.segmentsList.map(
         (segment: MDCSegmentedButtonSegment, index: number) => {
           return {
             index,
