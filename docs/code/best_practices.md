@@ -36,10 +36,10 @@ TODO: Add more notes about how to isolate subsystems from component specifics
 * Feel free to use the `!` when you run into the error `<PROPERTY_NAME> has no initializer and is not definitely assigned in the constructor.`. ie.
 
 ```
-private progress_!: number; // Assigned in init
+private progress!: number; // Assigned in init
 
 init() {
-  this.progress_ = 0;
+  this.progress = 0;
 }
 ```
 
@@ -86,7 +86,7 @@ copied over to the adapter API documentation in our README. This will facilitate
 to potentially automate the generation of our adapter API docs.
 _Note that this replaces the inline comments present in the methods within `defaultAdapter`_.
 
- ```ts
+```ts
 // adapter.ts
 export interface MDCComponentAdapter {
   /**
@@ -131,10 +131,9 @@ import MDCComponentFoundation from './foundation';
 export class MDCAwesomeComponent extends MDCComponent<MDCComponentFoundation> {
   getDefaultFoundation(): MDCComponentFoundation {
     return new MDCComponentFoundation({
-      addClass: (className: string) => this.root_.classList.add(className),
-      removeClass: (className: string) => this.root_.classList.remove(className),
+      addClass: (className: string) => this.root.classList.add(className),
+      removeClass: (className: string) => this.root.classList.remove(className),
     });
   }
 }
 ```
-

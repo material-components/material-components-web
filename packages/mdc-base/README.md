@@ -85,15 +85,15 @@ export default class MyFoundation extends MDCFoundation {
   constructor(adapter) {
     super({...MyFoundation.defaultAdapter, ...adapter});
     const {TOGGLED} = MyFoundation.cssClasses;
-    this.clickHandler_ = () => this.adapter_.toggleClass(TOGGLED);
+    this.clickHandler = () => this.adapter.toggleClass(TOGGLED);
   }
 
   init() {
-    this.adapter_.registerBtnClickHandler(this.clickHandler_);
+    this.adapter.registerBtnClickHandler(this.clickHandler);
   }
 
   destroy() {
-    this.adapter_.deregisterBtnClickHandler(this.clickHandler_);
+    this.adapter.deregisterBtnClickHandler(this.clickHandler);
   }
 }
 ```
@@ -157,8 +157,8 @@ export class MyComponent extends MDCComponent {
 
 | property | description |
 | --- | --- |
-| `root_` | The root element passed into the constructor as the first argument. |
-| `foundation_` | The foundation class for this component. This is either passed in as an optional second argument to the constructor, or assigned the result of calling `getDefaultFoundation()` |
+| `root` | The root element passed into the constructor as the first argument. |
+| `foundation` | The foundation class for this component. This is either passed in as an optional second argument to the constructor, or assigned the result of calling `getDefaultFoundation()` |
 
 #### Methods
 
@@ -170,8 +170,8 @@ export class MyComponent extends MDCComponent {
 | `getDefaultFoundation()` | Returns an instance of a foundation class properly configured for the component. Called when no foundation instance is given within the constructor. Subclasses **must** implement this method. |
 | `initialSyncWithDOM()` | Called within the constructor. Subclasses may override this method if they wish to perform initial synchronization of state with the host DOM element. For example, a slider may want to check if its host element contains a pre-set value, and adjust its internal state accordingly. Note that the same caveats apply to this method as to foundation class lifecycle methods. Defaults to a no-op. |
 | `destroy()` | Subclasses may override this method if they wish to perform any additional cleanup work when a component is destroyed. For example, a component may want to deregister a window resize listener. |
-| `listen(type: string, handler: EventListener)` | Adds an event listener to the component's root node for the given `type`. Note that this is simply a proxy to `this.root_.addEventListener`. |
-| `unlisten(type: string, handler: EventListener)` | Removes an event listener from the component's root node. Note that this is simply a proxy to `this.root_.removeEventListener`. |
+| `listen(type: string, handler: EventListener)` | Adds an event listener to the component's root node for the given `type`. Note that this is simply a proxy to `this.root.addEventListener`. |
+| `unlisten(type: string, handler: EventListener)` | Removes an event listener from the component's root node. Note that this is simply a proxy to `this.root.removeEventListener`. |
 | `emit(type: string, data: Object, shouldBubble: boolean = false)` | Dispatches a custom event of type `type` with detail `data` from the component's root node. It also takes an optional shouldBubble argument to specify if the event should bubble. This is the preferred way of dispatching events within our vanilla components. |
 
 #### Static Methods
@@ -195,13 +195,13 @@ dependency.
 ```js
 class MyComponent extends MDCComponent {
   initialize(childComponent = null) {
-    this.child_ = childComponent ?
-      childComponent : new ChildComponent(this.root_.querySelector('.child'));
+    this.child = childComponent ?
+      childComponent : new ChildComponent(this.root.querySelector('.child'));
   }
 
   getDefaultFoundation() {
     return new MyComponentFoundation({
-      doSomethingWithChildComponent: () => this.child_.doSomething(),
+      doSomethingWithChildComponent: () => this.child.doSomething(),
       // ...
     });
   }
@@ -233,7 +233,7 @@ class MyComponent {
   // ...
   getDefaultFoundation() {
     return new MyComponentFoundation({
-      toggleClass: className => util.toggleClass(this.root_, className),
+      toggleClass: className => util.toggleClass(this.root, className),
       // ...
     });
   }

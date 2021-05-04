@@ -38,8 +38,9 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
   constructor(
       public root: Element, foundation?: FoundationType, ...args: unknown[]) {
     this.initialize(...args);
-    // Note that we initialize foundation here and not within the constructor's default param so that
-    // this.root_ is defined and can be used within the foundation class.
+    // Note that we initialize foundation here and not within the constructor's
+    // default param so that this.root is defined and can be used within the
+    // foundation class.
     this.foundation =
         foundation === undefined ? this.getDefaultFoundation() : foundation;
     this.foundation.init();

@@ -30,14 +30,6 @@ class FakeComponent extends MDCComponent<MDCFoundation> {
   initializeComesBeforeFoundation!: boolean;
   synced!: boolean;
 
-  get _root() {
-    return this.root;
-  }
-
-  get _foundation() {
-    return this.foundation;
-  }
-
   getDefaultFoundation() {
     const defaultFoundation = {
       isDefaultFoundation: true,
@@ -65,11 +57,11 @@ describe('MDCComponent', () => {
        expect(b instanceof MDCComponent).toBeTruthy();
      });
 
-  it('takes a root node constructor param and assigns it to the "root_" property',
+  it('takes a root node constructor param and assigns it to the "root" property',
      () => {
        const root = document.createElement('div');
        const f = new FakeComponent(root);
-       expect(f._root).toEqual(root);
+       expect(f['root']).toEqual(root);
      });
 
   it('takes an optional foundation constructor param and assigns it to the "foundation" property',
@@ -77,14 +69,14 @@ describe('MDCComponent', () => {
        const root = document.createElement('div');
        const foundation = {init: () => {}} as any;
        const f = new FakeComponent(root, foundation);
-       expect(f._foundation).toEqual(foundation);
+       expect(f['foundation']).toEqual(foundation);
      });
 
   it('assigns the result of "getDefaultFoundation()" to "foundation" by default',
      () => {
        const root = document.createElement('div');
        const f = new FakeComponent(root);
-       expect((f._foundation as any).isDefaultFoundation).toBeTruthy();
+       expect((f['foundation'] as any).isDefaultFoundation).toBeTruthy();
      });
 
   it('calls the foundation\'s init() method within the constructor', () => {
@@ -161,8 +153,8 @@ describe('MDCComponent', () => {
     const f = new FakeComponent(root);
     const handler = jasmine.createSpy('eventHandler');
     let evt: any = null;
-    handler.withArgs(jasmine.any(Object)).and.callFake((evt_: any) => {
-      evt = evt_;
+    handler.withArgs(jasmine.any(Object)).and.callFake((e: any) => {
+      evt = e;
     });
     const data = {evtData: true};
     const type = 'customeventtype';
@@ -184,8 +176,8 @@ describe('MDCComponent', () => {
        const f = new FakeComponent(root);
        const handler = jasmine.createSpy('eventHandler');
        let evt: any = null;
-       handler.withArgs(jasmine.any(Object)).and.callFake((evt_: any) => {
-         evt = evt_;
+       handler.withArgs(jasmine.any(Object)).and.callFake((e: any) => {
+         evt = e;
        });
        const data = {evtData: true};
        const type = 'customeventtype';
@@ -208,10 +200,10 @@ describe('MDCComponent', () => {
        // tslint:enable:no-unnecessary-type-assertion
      });
 
-  it('(regression) ensures that this.root_ is available for use within getDefaultFoundation()',
+  it('(regression) ensures that this.root is available for use within getDefaultFoundation()',
      () => {
        const root = document.createElement('div');
        const f = new FakeComponent(root);
-       expect((f._foundation as any).rootElementAtTimeOfCall).toEqual(root);
+       expect((f['foundation'] as any).rootElementAtTimeOfCall).toEqual(root);
      });
 });
