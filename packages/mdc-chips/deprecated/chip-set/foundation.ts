@@ -56,7 +56,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * The ids of the selected chips in the set. Only used for choice chip set or filter chip set.
    */
-  private selectedChipIds_: string[] = [];
+  private selectedChipIds: string[] = [];
 
   constructor(adapter?: Partial<MDCChipSetAdapter>) {
     super({...MDCChipSetFoundation.defaultAdapter, ...adapter});
@@ -66,7 +66,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    * Returns an array of the IDs of all selected chips.
    */
   getSelectedChipIds(): ReadonlyArray<string> {
-    return this.selectedChipIds_.slice();
+    return this.selectedChipIds.slice();
   }
 
   /**
@@ -74,7 +74,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    * Does not notify clients of the updated selection state.
    */
   select(chipId: string) {
-    this.select_(chipId, false);
+    this.selectImpl(chipId, false);
   }
 
   /**
@@ -82,10 +82,10 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    */
   handleChipInteraction({chipId}: MDCChipInteractionEventDetail) {
     const index = this.adapter.getIndexOfChipById(chipId);
-    this.removeFocusFromChipsExcept_(index);
+    this.removeFocusFromChipsExcept(index);
     if (this.adapter.hasClass(cssClasses.CHOICE) ||
         this.adapter.hasClass(cssClasses.FILTER)) {
-      this.toggleSelect_(chipId);
+      this.toggleSelect(chipId);
     }
   }
 
@@ -99,11 +99,11 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       return;
     }
 
-    const chipIsSelected = this.selectedChipIds_.indexOf(chipId) >= 0;
+    const chipIsSelected = this.selectedChipIds.indexOf(chipId) >= 0;
     if (selected && !chipIsSelected) {
       this.select(chipId);
     } else if (!selected && chipIsSelected) {
-      this.deselect_(chipId);
+      this.deselectImpl(chipId);
     }
   }
 
@@ -116,14 +116,14 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     }
 
     const index = this.adapter.getIndexOfChipById(chipId);
-    this.deselectAndNotifyClients_(chipId);
+    this.deselectAndNotifyClients(chipId);
     this.adapter.removeChipAtIndex(index);
     const maxIndex = this.adapter.getChipListCount() - 1;
     if (maxIndex < 0) {
       return;
     }
     const nextIndex = Math.min(index, maxIndex);
-    this.removeFocusFromChipsExcept_(nextIndex);
+    this.removeFocusFromChipsExcept(nextIndex);
     // After removing a chip, we should focus the trailing action for the next chip.
     this.adapter.focusChipTrailingActionAtIndex(nextIndex);
   }
@@ -165,11 +165,11 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       return;
     }
 
-    this.removeFocusFromChipsExcept_(index);
-    this.focusChipAction_(index, key, source);
+    this.removeFocusFromChipsExcept(index);
+    this.focusChipAction(index, key, source);
   }
 
-  private focusChipAction_(index: number, key: string, source: EventSource) {
+  private focusChipAction(index: number, key: string, source: EventSource) {
     const shouldJumpChips = jumpChipKeys.has(key);
     if (shouldJumpChips && source === EventSource.PRIMARY) {
       return this.adapter.focusChipPrimaryActionAtIndex(index);
@@ -179,7 +179,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       return this.adapter.focusChipTrailingActionAtIndex(index);
     }
 
-    const dir = this.getDirection_(key);
+    const dir = this.getDirection(key);
     if (dir === Direction.LEFT) {
       return this.adapter.focusChipTrailingActionAtIndex(index);
     }
@@ -189,7 +189,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     }
   }
 
-  private getDirection_(key: string): Direction {
+  private getDirection(key: string): Direction {
     const isRTL = this.adapter.isRTL();
     const isLeftKey = key === chipStrings.ARROW_LEFT_KEY ||
         key === chipStrings.IE_ARROW_LEFT_KEY;
@@ -205,10 +205,10 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Deselects the chip with the given id and optionally notifies clients.
    */
-  private deselect_(chipId: string, shouldNotifyClients = false) {
-    const index = this.selectedChipIds_.indexOf(chipId);
+  private deselectImpl(chipId: string, shouldNotifyClients = false) {
+    const index = this.selectedChipIds.indexOf(chipId);
     if (index >= 0) {
-      this.selectedChipIds_.splice(index, 1);
+      this.selectedChipIds.splice(index, 1);
       const chipIndex = this.adapter.getIndexOfChipById(chipId);
       this.adapter.selectChipAtIndex(
           chipIndex, /** isSelected */ false, shouldNotifyClients);
@@ -218,22 +218,22 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Deselects the chip with the given id and notifies clients.
    */
-  private deselectAndNotifyClients_(chipId: string) {
-    this.deselect_(chipId, true);
+  private deselectAndNotifyClients(chipId: string) {
+    this.deselectImpl(chipId, true);
   }
 
   /**
    * Toggles selection of the chip with the given id.
    */
-  private toggleSelect_(chipId: string) {
-    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
-      this.deselectAndNotifyClients_(chipId);
+  private toggleSelect(chipId: string) {
+    if (this.selectedChipIds.indexOf(chipId) >= 0) {
+      this.deselectAndNotifyClients(chipId);
     } else {
-      this.selectAndNotifyClients_(chipId);
+      this.selectAndNotifyClients(chipId);
     }
   }
 
-  private removeFocusFromChipsExcept_(index: number) {
+  private removeFocusFromChipsExcept(index: number) {
     const chipCount = this.adapter.getChipListCount();
     for (let i = 0; i < chipCount; i++) {
       if (i !== index) {
@@ -242,26 +242,26 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     }
   }
 
-  private selectAndNotifyClients_(chipId: string) {
-    this.select_(chipId, true);
+  private selectAndNotifyClients(chipId: string) {
+    this.selectImpl(chipId, true);
   }
 
-  private select_(chipId: string, shouldNotifyClients: boolean) {
-    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
+  private selectImpl(chipId: string, shouldNotifyClients: boolean) {
+    if (this.selectedChipIds.indexOf(chipId) >= 0) {
       return;
     }
 
     if (this.adapter.hasClass(cssClasses.CHOICE) &&
-        this.selectedChipIds_.length > 0) {
-      const previouslySelectedChip = this.selectedChipIds_[0];
+        this.selectedChipIds.length > 0) {
+      const previouslySelectedChip = this.selectedChipIds[0];
       const previouslySelectedIndex =
           this.adapter.getIndexOfChipById(previouslySelectedChip);
-      this.selectedChipIds_ = [];
+      this.selectedChipIds = [];
       this.adapter.selectChipAtIndex(
           previouslySelectedIndex, /** isSelected */ false,
           shouldNotifyClients);
     }
-    this.selectedChipIds_.push(chipId);
+    this.selectedChipIds.push(chipId);
     const index = this.adapter.getIndexOfChipById(chipId);
     this.adapter.selectChipAtIndex(
         index, /** isSelected */ true, shouldNotifyClients);

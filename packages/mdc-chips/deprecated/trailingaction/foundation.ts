@@ -55,8 +55,8 @@ export class MDCChipTrailingActionFoundation extends
   handleKeydown(evt: KeyboardEvent) {
     evt.stopPropagation();
     const key = normalizeKey(evt);
-    if (this.shouldNotifyInteractionFromKey_(key)) {
-      const trigger = this.getTriggerFromKey_(key);
+    if (this.shouldNotifyInteractionFromKey(key)) {
+      const trigger = this.getTriggerFromKey(key);
       this.adapter.notifyInteraction(trigger);
       return;
     }
@@ -80,14 +80,14 @@ export class MDCChipTrailingActionFoundation extends
     return this.adapter.getAttribute(strings.ARIA_HIDDEN) !== 'true';
   }
 
-  private shouldNotifyInteractionFromKey_(key: string): boolean {
+  private shouldNotifyInteractionFromKey(key: string): boolean {
     const isFromActionKey = key === KEY.ENTER || key === KEY.SPACEBAR;
     const isFromDeleteKey = key === KEY.BACKSPACE || key === KEY.DELETE;
 
     return isFromActionKey || isFromDeleteKey;
   }
 
-  private getTriggerFromKey_(key: string): InteractionTrigger {
+  private getTriggerFromKey(key: string): InteractionTrigger {
     if (key === KEY.SPACEBAR) {
       return InteractionTrigger.SPACEBAR_KEY;
     }
