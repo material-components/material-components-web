@@ -61,24 +61,24 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     }
   }
 
-  private previousFocus_?: Element|null;
-  private scrim_!: HTMLElement|null;  // assigned in initialSyncWithDOM()
-  private list_?: MDCList;            // assigned in initialize()
+  private previousFocus?: Element|null;
+  private scrim!: HTMLElement|null;  // assigned in initialSyncWithDOM()
+  private innerList?: MDCList;       // assigned in initialize()
 
-  private focusTrap_?: FocusTrap;  // assigned in initialSyncWithDOM()
-  private focusTrapFactory_!:
+  private focusTrap?: FocusTrap;  // assigned in initialSyncWithDOM()
+  private focusTrapFactory!:
       MDCDrawerFocusTrapFactory;  // assigned in initialize()
 
-  private handleScrimClick_?:
+  private handleScrimClick?:
       SpecificEventListener<'click'>;  // initialized in initialSyncWithDOM()
-  private handleKeydown_!:
+  private handleKeydown!:
       SpecificEventListener<'keydown'>;  // initialized in initialSyncWithDOM()
-  private handleTransitionEnd_!:
+  private handleTransitionEnd!:
       SpecificEventListener<'transitionend'>;  // initialized in
                                                // initialSyncWithDOM()
 
   get list(): MDCList|undefined {
-    return this.list_;
+    return this.innerList;
   }
 
   initialize(
@@ -87,47 +87,49 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   ) {
     const listEl = this.root.querySelector(strings.LIST_SELECTOR);
     if (listEl) {
-      this.list_ = listFactory(listEl);
-      this.list_.wrapFocus = true;
+      this.innerList = listFactory(listEl);
+      this.innerList.wrapFocus = true;
     }
-    this.focusTrapFactory_ = focusTrapFactory;
+    this.focusTrapFactory = focusTrapFactory;
   }
 
   initialSyncWithDOM() {
     const {MODAL} = cssClasses;
     const {SCRIM_SELECTOR} = strings;
 
-    this.scrim_ = (this.root.parentNode as Element)
-                      .querySelector<HTMLElement>(SCRIM_SELECTOR);
+    this.scrim = (this.root.parentNode as Element)
+                     .querySelector<HTMLElement>(SCRIM_SELECTOR);
 
-    if (this.scrim_ && this.root.classList.contains(MODAL)) {
-      this.handleScrimClick_ = () =>
+    if (this.scrim && this.root.classList.contains(MODAL)) {
+      this.handleScrimClick = () =>
           (this.foundation as MDCModalDrawerFoundation).handleScrimClick();
-      this.scrim_.addEventListener('click', this.handleScrimClick_);
-      this.focusTrap_ = util.createFocusTrapInstance(
-          this.root as HTMLElement, this.focusTrapFactory_);
+      this.scrim.addEventListener('click', this.handleScrimClick);
+      this.focusTrap = util.createFocusTrapInstance(
+          this.root as HTMLElement, this.focusTrapFactory);
     }
 
-    this.handleKeydown_ = (evt) => this.foundation.handleKeydown(evt);
-    this.handleTransitionEnd_ = (evt) =>
-        this.foundation.handleTransitionEnd(evt);
-
-    this.listen('keydown', this.handleKeydown_);
-    this.listen('transitionend', this.handleTransitionEnd_);
+    this.handleKeydown = (evt) => {
+      this.foundation.handleKeydown(evt);
+    };
+    this.handleTransitionEnd = (evt) => {
+      this.foundation.handleTransitionEnd(evt);
+    };
+    this.listen('keydown', this.handleKeydown);
+    this.listen('transitionend', this.handleTransitionEnd);
   }
 
   destroy() {
-    this.unlisten('keydown', this.handleKeydown_);
-    this.unlisten('transitionend', this.handleTransitionEnd_);
+    this.unlisten('keydown', this.handleKeydown);
+    this.unlisten('transitionend', this.handleTransitionEnd);
 
-    if (this.list_) {
-      this.list_.destroy();
+    if (this.innerList) {
+      this.innerList.destroy();
     }
 
     const {MODAL} = cssClasses;
-    if (this.scrim_ && this.handleScrimClick_ &&
+    if (this.scrim && this.handleScrimClick &&
         this.root.classList.contains(MODAL)) {
-      this.scrim_.removeEventListener('click', this.handleScrimClick_);
+      this.scrim.removeEventListener('click', this.handleScrimClick);
       // Ensure drawer is closed to hide scrim and release focus
       this.open = false;
     }
@@ -139,14 +141,20 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     // methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCDrawerAdapter = {
-      addClass: (className) => this.root.classList.add(className),
-      removeClass: (className) => this.root.classList.remove(className),
+      addClass: (className) => {
+        this.root.classList.add(className);
+      },
+      removeClass: (className) => {
+        this.root.classList.remove(className);
+      },
       hasClass: (className) => this.root.classList.contains(className),
       elementHasClass: (element, className) =>
           element.classList.contains(className),
-      saveFocus: () => this.previousFocus_ = document.activeElement,
+      saveFocus: () => {
+        this.previousFocus = document.activeElement;
+      },
       restoreFocus: () => {
-        const previousFocus = this.previousFocus_ as HTMLOrSVGElement | null;
+        const previousFocus = this.previousFocus as HTMLOrSVGElement | null;
         if (previousFocus && previousFocus.focus &&
             this.root.contains(document.activeElement)) {
           previousFocus.focus();
@@ -159,12 +167,18 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
           activeNavItemEl.focus();
         }
       },
-      notifyClose: () =>
-          this.emit(strings.CLOSE_EVENT, {}, true /* shouldBubble */),
-      notifyOpen: () =>
-          this.emit(strings.OPEN_EVENT, {}, true /* shouldBubble */),
-      trapFocus: () => this.focusTrap_!.trapFocus(),
-      releaseFocus: () => this.focusTrap_!.releaseFocus(),
+      notifyClose: () => {
+        this.emit(strings.CLOSE_EVENT, {}, true /* shouldBubble */);
+      },
+      notifyOpen: () => {
+        this.emit(strings.OPEN_EVENT, {}, true /* shouldBubble */);
+      },
+      trapFocus: () => {
+        this.focusTrap!.trapFocus();
+      },
+      releaseFocus: () => {
+        this.focusTrap!.releaseFocus();
+      },
     };
     // tslint:enable:object-literal-sort-keys
 
