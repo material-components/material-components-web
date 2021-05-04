@@ -554,7 +554,7 @@ describe('MDCTextFieldFoundation', () => {
 
   it('#destroy removes event listeners', () => {
     const {foundation, mockAdapter} = setupTest();
-    foundation['validationObserver_'] = new MutationObserver(() => {});
+    foundation['validationObserver'] = new MutationObserver(() => {});
     foundation.destroy();
 
     expect(mockAdapter.deregisterInputInteractionHandler)
@@ -572,7 +572,7 @@ describe('MDCTextFieldFoundation', () => {
     expect(mockAdapter.deregisterTextFieldInteractionHandler)
         .toHaveBeenCalledWith('keydown', jasmine.any(Function));
     expect(mockAdapter.deregisterValidationAttributeChangeHandler)
-        .toHaveBeenCalledWith(foundation['validationObserver_']);
+        .toHaveBeenCalledWith(foundation['validationObserver']);
   });
 
   it('#init floats label if the input contains a value', () => {
@@ -1097,11 +1097,11 @@ describe('MDCTextFieldFoundation', () => {
       value: '',
     } as MDCTextFieldNativeInputElement);
     foundation.init();
-    expect(foundation['receivedUserInput_']).toEqual(false);
+    expect(foundation['receivedUserInput']).toEqual(false);
     if (keydown !== undefined) {
       keydown();
     }
-    expect(foundation['receivedUserInput_']).toEqual(true);
+    expect(foundation['receivedUserInput']).toEqual(true);
   });
 
   it('on click does not set receivedUserInput if input is disabled', () => {
@@ -1124,11 +1124,11 @@ describe('MDCTextFieldFoundation', () => {
           }
         });
     foundation.init();
-    expect(foundation['receivedUserInput_']).toEqual(false);
+    expect(foundation['receivedUserInput']).toEqual(false);
     if (click !== undefined) {
       click(mockEvt);
     }
-    expect(foundation['receivedUserInput_']).toEqual(false);
+    expect(foundation['receivedUserInput']).toEqual(false);
   });
 
   it('mousedown on the input sets the line ripple origin', () => {
@@ -1197,7 +1197,7 @@ describe('MDCTextFieldFoundation', () => {
         .toHaveBeenCalledWith(clientX - clientRectLeft);
   });
 
-  it('on validation attribute change calls styleValidity_', () => {
+  it('on validation attribute change calls styleValidity', () => {
     const {foundation, mockAdapter, helperText} =
         setupTest({useHelperText: true});
     let attributeChange: Function|undefined;
@@ -1220,7 +1220,7 @@ describe('MDCTextFieldFoundation', () => {
         .not.toHaveBeenCalledWith(cssClasses.DISABLED);
   });
 
-  it('should not call styleValidity_ on non-whitelisted attribute change',
+  it('should not call styleValidity on non-whitelisted attribute change',
      () => {
        const {foundation, mockAdapter, helperText} =
            setupTest({useHelperText: true});

@@ -127,14 +127,14 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
     }
 
     if (!helperTextIsPersistent && !validationMsgNeedsDisplay) {
-      this.hide_();
+      this.hide();
     }
   }
 
   /**
    * Hides the help text from screen readers.
    */
-  private hide_() {
+  private hide() {
     this.adapter.setAttr(strings.ARIA_HIDDEN, 'true');
   }
 }

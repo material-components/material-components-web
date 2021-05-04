@@ -111,7 +111,7 @@ describe('MDCTextField', () => {
   class FakeRipple {
     readonly destroy: jasmine.Spy;
 
-    constructor(readonly root_: HTMLElement) {
+    constructor(readonly root: HTMLElement) {
       this.destroy = jasmine.createSpy('.destroy');
     }
   }
@@ -209,7 +209,7 @@ describe('MDCTextField', () => {
      () => {
        const root = getFixture();
        const component = new MDCTextField(root);
-       expect(component['lineRipple_']).toEqual(jasmine.any(MDCLineRipple));
+       expect(component['lineRipple']).toEqual(jasmine.any(MDCLineRipple));
      });
 
   it('#constructor instantiates a helper text if present', () => {
@@ -218,7 +218,7 @@ describe('MDCTextField', () => {
     document.body.appendChild(root);
     document.body.appendChild(helperText);
     const component = new MDCTextField(root);
-    expect(component['helperText_'])
+    expect(component['helperText'])
         .toEqual(jasmine.any(MDCTextFieldHelperText));
     document.body.removeChild(root);
     document.body.removeChild(helperText);
@@ -231,7 +231,7 @@ describe('MDCTextField', () => {
     root.querySelector('input')!.maxLength = 12;
     document.body.appendChild(characterCounter);
     const component = new MDCTextField(root);
-    expect(component['characterCounter_'])
+    expect(component['characterCounter'])
         .toEqual(jasmine.any(MDCTextFieldCharacterCounter));
     document.body.removeChild(root);
     document.body.removeChild(characterCounter);
@@ -241,8 +241,8 @@ describe('MDCTextField', () => {
      () => {
        const root = getFixture();
        const component = new MDCTextField(root);
-       expect(component['leadingIcon_']).toEqual(jasmine.any(MDCTextFieldIcon));
-       expect(component['trailingIcon_']).toEqual(null);
+       expect(component['leadingIcon']).toEqual(jasmine.any(MDCTextFieldIcon));
+       expect(component['trailingIcon']).toEqual(null);
      });
 
   it('#constructor instantiates an icon for both icon elements if present',
@@ -257,9 +257,8 @@ describe('MDCTextField', () => {
        wrapper.removeChild(el);
        root.appendChild(el);
        const component = new MDCTextField(root);
-       expect(component['leadingIcon_']).toEqual(jasmine.any(MDCTextFieldIcon));
-       expect(component['trailingIcon_'])
-           .toEqual(jasmine.any(MDCTextFieldIcon));
+       expect(component['leadingIcon']).toEqual(jasmine.any(MDCTextFieldIcon));
+       expect(component['trailingIcon']).toEqual(jasmine.any(MDCTextFieldIcon));
      });
 
   it('#constructor instantiates a trailing icon if the icon is present', () => {
@@ -274,15 +273,15 @@ describe('MDCTextField', () => {
     root.classList.add('mdc-text-field--with-trailing-icon');
     root.classList.remove('mdc-text-field--with-leading-icon');
     const component = new MDCTextField(root);
-    expect(component['leadingIcon_']).toEqual(null);
-    expect(component['trailingIcon_']).toEqual(jasmine.any(MDCTextFieldIcon));
+    expect(component['leadingIcon']).toEqual(null);
+    expect(component['trailingIcon']).toEqual(jasmine.any(MDCTextFieldIcon));
   });
 
   it('#constructor instantiates a label on the `.mdc-floating-label` element if present',
      () => {
        const root = getFixture();
        const component = new MDCTextField(root);
-       expect(component['label_']).toEqual(jasmine.any(MDCFloatingLabel));
+       expect(component['label']).toEqual(jasmine.any(MDCFloatingLabel));
      });
 
   it('#constructor instantiates an outline on the `.mdc-notched-outline` element if present',
@@ -295,7 +294,7 @@ describe('MDCTextField', () => {
        const root = getFixture();
        root.appendChild(child);
        const component = new MDCTextField(root);
-       expect(component['outline_']).toEqual(jasmine.any(MDCNotchedOutline));
+       expect(component['outline']).toEqual(jasmine.any(MDCNotchedOutline));
      });
 
   it('#constructor handles undefined optional sub-elements gracefully', () => {
@@ -489,13 +488,13 @@ describe('MDCTextField', () => {
     // The non-null assertion is deemed unnecessary, but without it tests on
     // GitHub side fail to compile with error `Object is possibly 'null'`
     // tslint:disable:no-unnecessary-type-assertion
-    component['leadingIcon_']!.destroy =
+    component['leadingIcon']!.destroy =
         jasmine.createSpy('leadingIcon_.destroy');
-    component['trailingIcon_']!.destroy =
+    component['trailingIcon']!.destroy =
         jasmine.createSpy('trailingIcon_.destroy');
     component.destroy();
-    expect(component['leadingIcon_']!.destroy).toHaveBeenCalled();
-    expect(component['trailingIcon_']!.destroy).toHaveBeenCalled();
+    expect(component['leadingIcon']!.destroy).toHaveBeenCalled();
+    expect(component['trailingIcon']!.destroy).toHaveBeenCalled();
     // tslint:enable:no-unnecessary-type-assertion
   });
 
@@ -732,7 +731,7 @@ describe('MDCTextField', () => {
     const component = new MDCTextField(root);
     document.body.appendChild(root);
     root.click();
-    const input = (component as any).input_ as HTMLInputElement;
+    const input = (component as any).input as HTMLInputElement;
     expect(document.activeElement).toBe(input, 'input should be focused');
     input.blur();
     expect(document.activeElement).not.toBe(input, 'ensure input was blurred');

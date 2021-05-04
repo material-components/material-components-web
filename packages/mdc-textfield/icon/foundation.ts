@@ -56,31 +56,35 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
     // tslint:enable:object-literal-sort-keys
   }
 
-  private savedTabIndex_: string | null = null;
-  private readonly interactionHandler_: SpecificEventListener<InteractionEventType>;
+  private savedTabIndex: string|null = null;
+  private readonly interactionHandler:
+      SpecificEventListener<InteractionEventType>;
 
   constructor(adapter?: Partial<MDCTextFieldIconAdapter>) {
     super({...MDCTextFieldIconFoundation.defaultAdapter, ...adapter});
 
-    this.interactionHandler_ = (evt) => this.handleInteraction(evt);
+    this.interactionHandler = (evt) => {
+      this.handleInteraction(evt);
+    };
   }
 
   init() {
-    this.savedTabIndex_ = this.adapter.getAttr('tabindex');
+    this.savedTabIndex = this.adapter.getAttr('tabindex');
 
-    INTERACTION_EVENTS.forEach((evtType) => {
-      this.adapter.registerInteractionHandler(evtType, this.interactionHandler_);
-    });
+    for (const evtType of INTERACTION_EVENTS) {
+      this.adapter.registerInteractionHandler(evtType, this.interactionHandler);
+    }
   }
 
   destroy() {
-    INTERACTION_EVENTS.forEach((evtType) => {
-      this.adapter.deregisterInteractionHandler(evtType, this.interactionHandler_);
-    });
+    for (const evtType of INTERACTION_EVENTS) {
+      this.adapter.deregisterInteractionHandler(
+          evtType, this.interactionHandler);
+    }
   }
 
   setDisabled(disabled: boolean) {
-    if (!this.savedTabIndex_) {
+    if (!this.savedTabIndex) {
       return;
     }
 
@@ -88,7 +92,7 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
       this.adapter.setAttr('tabindex', '-1');
       this.adapter.removeAttr('role');
     } else {
-      this.adapter.setAttr('tabindex', this.savedTabIndex_);
+      this.adapter.setAttr('tabindex', this.savedTabIndex);
       this.adapter.setAttr('role', strings.ICON_ROLE);
     }
   }
