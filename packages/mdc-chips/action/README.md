@@ -115,7 +115,16 @@ All Sass mixins for actions are provided by the chip Sass.
 
 ### `MDCChipAction` methods
 
-The `MDCChipAction` is exposed only to be called by the parent `MDCChip`. Users should not interact with the `MDCChipAction` component nor rely on any exposed APIs or events.
+The `MDCChipAction` is exposed only to be called by the parent [`MDCChip`](../chip). Users should not interact with the `MDCChipAction` component nor rely on any exposed APIs or events.
+
+### `MDCChipAction` events
+
+These events are only emitted for consumption by the parent [`MDCChip`](../chip). Non-wrapping clients **should not** listen to these events.
+
+Event name | Detail | Description
+--- | --- | ---
+`MDCChipAction:interaction` | `MDCChipActionInteractionEventDetail` | Consumed in the parent chip `handleActionInteraction` method.
+`MDCChipAction:navigation` | `MDCChipActionNavigationEventDetail` | Consumed in the parent chip `handleActionNavigation` method.
 
 ### `MDCChipActionAdapter`
 
@@ -160,16 +169,7 @@ function init(root: HTMLElement, adapter: MDCChipTrailingActionAdapter): MDCChip
 }
 ```
 
-### `MDCChipAction` events
-
-These events are only emitted for consumption by the [parent chip](../chip). Non-wrapping clients **should not** listen to these events.
-
-Event name | Detail | Description
---- | --- | ---
-`MDCChipAction:interaction` | `MDCChipActionInteractionEventDetail` | Consumed in the parent chip `handleActionInteraction` method.
-`MDCChipAction:navigation` | `MDCChipActionNavigationEventDetail` | Consumed in the parent chip `handleActionNavigation` method.
-
 
 ### Usage within frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a chp action for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a chip action for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).

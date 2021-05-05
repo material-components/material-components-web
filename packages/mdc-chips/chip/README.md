@@ -9,7 +9,7 @@ path: /catalog/chips/chip/
 
 # Chip
 
-Chips represent logical groups of [actions](../action).
+Chips represent logical groups of [actions](../action) contained inside a [chip set](../chipset).
 
 ## Basic usage
 
@@ -177,7 +177,7 @@ CSS Class | Description
 
 ### Sass mixins
 
-Access to theme mixins require importing the chip theme style module.
+Access to theme mixins require importing the chips theme style module.
 
 ```scss
 @use "@material/chips";
@@ -217,7 +217,17 @@ Mixin | Description
 
 ### `MDCChip` methods
 
-The `MDCChip` is exposed only to be called by the parent `MDCChipSet`. Users should not interact with the `MDCChip` component nor rely on any exposed APIs or events.
+The `MDCChip` is exposed only to be called by the parent [`MDCChipSet`](../chipset). Users should not interact with the `MDCChip` component nor rely on any exposed APIs or events.
+
+### `MDCChip` events
+
+These events are only emitted for consumption by the parent [`MDCChipSet`](../chipset). Non-wrapping clients **should not** listen to these events.
+
+Event name | Detail | Description
+--- | --- | ---
+`MDCChip:animation` | `MDCChipAnimationEventDetail` | Consumed in the parent chip set `handleChipAnimation` method.
+`MDCChip:interaction` | `MDCChipInteractionEventDetail` | Consumed in the parent chip set `handleChipInteraction` method.
+`MDCChip:navigation` | `MDCChipNavigationEventDetail` | Consumed in the parent chip set `handleChipNavigation` method.
 
 ### `MDCChipAdapter`
 
@@ -260,16 +270,6 @@ Method Signature | Description
 `setActionSelected(action: ActionType, isSelected: boolean): void` | Sets the selected state of the given action.
 `startAnimation(animation: Animation): void` | Starts the given animation on the chip.
 
-### `MDCChip` events
-
-These events are only emitted for consumption by the parent chip set. Non-wrapping clients **should not** listen to these events.
-
-Event name | Detail | Description
---- | --- | ---
-`MDCChip:animation` | `MDCChipAnimationEventDetail` | Consumed in the parent chip set `handleChipAnimation` method.
-`MDCChip:interaction` | `MDCChipInteractionEventDetail` | Consumed in the parent chip set `handleChipInteraction` method.
-`MDCChip:navigation` | `MDCChipNavigationEventDetail` | Consumed in the parent chip set `handleChipNavigation` method.
-
 ### Usage within frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a chp action for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a chip for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).

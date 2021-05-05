@@ -21,8 +21,10 @@
  * THE SOFTWARE.
  */
 
+export * from './chip-set/index';
+
 /**
- * Backwards compatibility for Angular Material.
+ * Backwards compatibility for existing clients.
  */
 import * as deprecated from './deprecated/index';
 export {
