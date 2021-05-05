@@ -827,10 +827,15 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     const xOptions = this.calculateXWithCaretDistanceOptions(
         anchorRect, tooltipSize.width, {caretWidth, caretHeight});
 
-    const validOptions =
+    let positionOptions =
         this.validateTooltipWithCaretDistances(yOptions, xOptions);
+    if (positionOptions.size < 1) {
+      positionOptions = this.generateBackupPositionOption(
+          anchorRect, tooltipSize, {caretWidth, caretHeight});
+    }
+
     const {position, xDistance, yDistance} =
-        this.determineTooltipWithCaretDistance(validOptions);
+        this.determineTooltipWithCaretDistance(positionOptions);
 
     // After determining the position of the tooltip relative to the anchor,
     // place the caret in the corresponding position and retrieve the necessary
@@ -993,6 +998,46 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   /**
+   * Method for generating a horizontal and vertical position for the tooltip if
+   * all other calculated values are considered invalid. This would only happen
+   * in situations of very small viewports/large tooltips.
+   */
+  private generateBackupPositionOption(
+      anchorRect: ClientRect, tooltipSize: {width: number, height: number},
+      caretSize: {caretHeight: number, caretWidth: number}) {
+    const isLTR = !this.adapter.isRTL();
+    let xDistance: number;
+    let xPos: XPositionWithCaret;
+    if (anchorRect.left < 0) {
+      xDistance = this.minViewportTooltipThreshold + caretSize.caretHeight;
+      xPos = isLTR ? XPositionWithCaret.END : XPositionWithCaret.START;
+    } else {
+      const viewportWidth = this.adapter.getViewportWidth();
+      xDistance = viewportWidth -
+          (tooltipSize.width + this.minViewportTooltipThreshold +
+           caretSize.caretHeight);
+      xPos = isLTR ? XPositionWithCaret.START : XPositionWithCaret.END;
+    }
+
+    let yDistance: number;
+    let yPos: YPositionWithCaret;
+    if (anchorRect.top < 0) {
+      yDistance = this.minViewportTooltipThreshold + caretSize.caretHeight;
+      yPos = YPositionWithCaret.BELOW;
+    } else {
+      const viewportHeight = this.adapter.getViewportHeight();
+      yDistance = viewportHeight -
+          (tooltipSize.height + this.minViewportTooltipThreshold +
+           caretSize.caretHeight);
+      yPos = YPositionWithCaret.ABOVE;
+    }
+
+    const caretPositionName = this.caretPositionOptionsMapping(xPos, yPos);
+    return new Map<PositionWithCaret, {xDistance: number, yDistance: number}>(
+        [[caretPositionName, {xDistance, yDistance}]]);
+  }
+
+  /**
    * Given a list of valid position options for a rich tooltip with caret,
    * returns the option that should be used.
    */
@@ -1017,23 +1062,15 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       PositionWithCaret.BELOW_CENTER, PositionWithCaret.BELOW_END
     ];
 
-    const validPosition = orderPref.find((pos) => options.has(pos));
-    if (validPosition) {
-      const pos = options.get(validPosition)!;
-      return {
-        position: validPosition,
-        xDistance: pos.xDistance,
-        yDistance: pos.yDistance,
-      };
-    }
-
-    // TODO(b/182906431): Handle situation where there is no valid tooltip
-    // position from the provided map of options.
-    const backUp = options.keys().next().value;
+    // Before calling this method we check whether or not the "options" param
+    // is empty and invoke a different method. We, therefore, can be certain
+    // that "validPosition" will always be defined.
+    const validPosition = orderPref.find((pos) => options.has(pos))!;
+    const pos = options.get(validPosition)!;
     return {
-      position: backUp,
-      xDistance: options.get(backUp)!.xDistance,
-      yDistance: options.get(backUp)!.yDistance,
+      position: validPosition,
+      xDistance: pos.xDistance,
+      yDistance: pos.yDistance,
     };
   }
 
