@@ -21,10 +21,13 @@
  * THE SOFTWARE.
  */
 
+import {DATA_MDC_DOM_ANNOUNCE} from '../../../mdc-dom/announce';
 import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {ActionType} from '../../action/constants';
+import {Animation, CssClasses, Events} from '../../chip/constants';
+import {MDCChipAnimationEventDetail} from '../../chip/types';
 import {MDCChipSet, MDCChipSetFoundation} from '../index';
 
 interface ActionOptions {
@@ -148,6 +151,12 @@ describe('MDCChipSet', () => {
       key: 'ArrowLeft',
     }));
     expect(mockFoundation.handleChipNavigation).toHaveBeenCalled();
+
+    emitEvent(root.querySelector('#c0')!, Events.ANIMATION, {
+      bubbles: true,
+      cancelable: false,
+    });
+    expect(mockFoundation.handleChipAnimation).toHaveBeenCalled();
     component.destroy();
   });
 
@@ -171,6 +180,12 @@ describe('MDCChipSet', () => {
       key: 'ArrowLeft',
     }));
     expect(mockFoundation.handleChipNavigation).not.toHaveBeenCalled();
+
+    emitEvent(root.querySelector('#c0')!, Events.ANIMATION, {
+      bubbles: true,
+      cancelable: false,
+    });
+    expect(mockFoundation.handleChipAnimation).not.toHaveBeenCalled();
   });
 
   it('#getChipIndexByID() returns the index of the chip when it exists', () => {
@@ -470,5 +485,77 @@ describe('MDCChipSet', () => {
     expect(root.querySelector('#c1 .mdc-evolution-chip__action--trailing')!
                .getAttribute('tabindex'))
         .toBe('-1');
+  });
+
+  fit('announces chip addition when enter animation is complete' +
+          ' and addition announcement is present',
+      () => {
+        const {root} = setupTest({
+          chips: [
+            multiActionInputChip('c0'),
+            multiActionInputChip('c1'),
+          ],
+          isMultiselectable: false,
+        });
+
+        const detail: MDCChipAnimationEventDetail = {
+          isComplete: true,
+          addedAnnouncement: 'Added a chip',
+          animation: Animation.ENTER,
+          chipID: 'c0',
+        };
+
+        emitEvent(root.querySelector('#c0')!, Events.ANIMATION, {
+          bubbles: true,
+          cancelable: false,
+          detail,
+        });
+
+        // Tick clock forward to account for setTimeout inside "announce".
+        jasmine.clock().tick(1);
+        const liveRegion =
+            document.querySelector(`[${DATA_MDC_DOM_ANNOUNCE}="true"]`)!;
+        expect(liveRegion.textContent).toEqual('Added a chip');
+        // Clean up the live region.
+        liveRegion.parentNode!.removeChild(liveRegion);
+      });
+
+  it('removes the chip from the DOM when removal animation is complete', () => {
+    const {component, root} = setupTest({
+      chips: [
+        multiActionInputChip('c0'),
+        multiActionInputChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
+
+    const detail: MDCChipAnimationEventDetail = {
+      isComplete: true,
+      removedAnnouncement: 'Removed a chip',
+      animation: Animation.EXIT,
+      chipID: 'c0',
+    };
+
+    emitEvent(root.querySelector('#c0')!, Events.ANIMATION, {
+      bubbles: true,
+      cancelable: false,
+      detail,
+    });
+
+    expect(component.getChipIndexByID('c0')).toBe(-1);
+  });
+
+  it('animates chip addition', () => {
+    const {component, root} = setupTest({
+      chips: [
+        multiActionInputChip('c0'),
+        multiActionInputChip('c1'),
+      ],
+      isMultiselectable: false,
+    });
+
+    const chip0 = root.querySelector('#c0')!;
+    component.addChip(0);
+    expect(chip0.classList.contains(CssClasses.ENTER)).toBeTrue();
   });
 });

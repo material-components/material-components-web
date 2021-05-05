@@ -28,6 +28,7 @@ import {MDCChipAction, MDCChipActionFactory} from '../action/component';
 import {ActionType, Events, FocusBehavior} from '../action/constants';
 
 import {MDCChipAdapter} from './adapter';
+import {Animation} from './constants';
 import {MDCChipFoundation} from './foundation';
 import {ActionInteractionEvent, ActionNavigationEvent} from './types';
 
@@ -167,6 +168,14 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
     return new MDCChipFoundation(adapter);
   }
 
+  /** Exposed to be called by the parent chip set. */
+  remove() {
+    const parent = this.root.parentNode;
+    if (parent !== null) {
+      parent.removeChild(this.root);
+    }
+  }
+
   /** Returns the ActionTypes for the encapsulated actions. */
   getActions(): ActionType[] {
     return this.foundation.getActions();
@@ -208,5 +217,10 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
   /** Sets the selected state of the action. */
   setActionSelected(action: ActionType, isSelected: boolean) {
     this.foundation.setActionSelected(action, isSelected);
+  }
+
+  /** Starts the animation on the chip. */
+  startAnimation(animation: Animation) {
+    this.foundation.startAnimation(animation);
   }
 }

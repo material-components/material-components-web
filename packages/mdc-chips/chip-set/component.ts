@@ -23,6 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener} from '@material/base/types';
+import {announce} from '@material/dom/announce';
 
 import {ActionType} from '../action/constants';
 import {MDCChip, MDCChipFactory} from '../chip/component';
@@ -31,7 +32,7 @@ import {Events} from '../chip/constants';
 import {MDCChipSetAdapter} from './adapter';
 import {CssClasses} from './constants';
 import {MDCChipSetFoundation} from './foundation';
-import {ChipInteractionEvent, ChipNavigationEvent} from './types';
+import {ChipAnimationEvent, ChipInteractionEvent, ChipNavigationEvent} from './types';
 
 /**
  * MDCChip provides component encapsulation of the foundation implementation.
@@ -42,6 +43,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   }
 
   // Below properties are all assigned in #initialize()
+  private handleChipAnimation!: CustomEventListener<ChipAnimationEvent>;
   private handleChipInteraction!: CustomEventListener<ChipInteractionEvent>;
   private handleChipNavigation!: CustomEventListener<ChipNavigationEvent>;
   private chips!: MDCChip[];
@@ -56,6 +58,10 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   }
 
   initialSyncWithDOM() {
+    this.handleChipAnimation = (event) => {
+      this.foundation.handleChipAnimation(event);
+    };
+
     this.handleChipInteraction = (event) => {
       this.foundation.handleChipInteraction(event);
     };
@@ -64,11 +70,13 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       this.foundation.handleChipNavigation(event);
     };
 
+    this.listen(Events.ANIMATION, this.handleChipAnimation);
     this.listen(Events.INTERACTION, this.handleChipInteraction);
     this.listen(Events.NAVIGATION, this.handleChipNavigation);
   }
 
   destroy() {
+    this.unlisten(Events.ANIMATION, this.handleChipAnimation);
     this.unlisten(Events.INTERACTION, this.handleChipInteraction);
     this.unlisten(Events.NAVIGATION, this.handleChipNavigation);
     super.destroy();
@@ -79,8 +87,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {
-      // TODO(b/169284745): Implement and test
-      announceMessage: () => {},
+      announceMessage: (message) => {
+        announce(message);
+      },
       emitEvent: (eventName, eventDetail) => {
         this.emit(eventName, eventDetail, true /* shouldBubble */);
       },
@@ -108,8 +117,12 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
         if (!this.isIndexValid(index)) return false;
         return this.chips[index].isActionSelected(action);
       },
-      // TODO(b/169284745): Implement and test
-      removeChipAtIndex: () => {},
+      removeChipAtIndex: (index) => {
+        if (!this.isIndexValid(index)) return;
+        this.chips[index].destroy();
+        this.chips[index].remove();
+        this.chips.splice(index, 1);
+      },
       setChipFocusAtIndex: (index, action, focus) => {
         if (!this.isIndexValid(index)) return;
         this.chips[index].setActionFocus(action, focus);
@@ -118,8 +131,10 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
         if (!this.isIndexValid(index)) return;
         this.chips[index].setActionSelected(action, selected);
       },
-      // TODO(b/169284745): Implement and test
-      startChipAnimationAtIndex: () => {},
+      startChipAnimationAtIndex: (index, animation) => {
+        if (!this.isIndexValid(index)) return;
+        this.chips[index].startAnimation(animation);
+      },
     };
 
     // Default to the primary foundation
@@ -153,6 +168,11 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   /** Returns the selection state of the chip. */
   isChipSelected(index: number, action: ActionType) {
     return this.foundation.isChipSelected(index, action);
+  }
+
+  /** Animates the chip addition at the given index. */
+  addChip(index: number) {
+    this.foundation.addChip(index);
   }
 
   /** Removes the chip at the given index. */
