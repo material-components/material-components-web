@@ -44,7 +44,7 @@ const chipset = new MDCChipSet(document.querySelector('.mdc-evolution-chip-set')
 
 ## Chips
 
-Chips are comprised of [chip sets](./chipset) which are comprised of [chip](./chip) instances which are in turn comprised of [actions](./action). See the readme for each subcomponent for more detail.
+Chips are comprised of [chip sets](./chip-set) which are comprised of [chip](./chip) instances which are in turn comprised of [actions](./action). See the readme for each subcomponent for more detail.
 
 ### Basic action chip set example
 
@@ -75,7 +75,7 @@ Chips are comprised of [chip sets](./chipset) which are comprised of [chip](./ch
 
 See the readme of each subcomponent for more detail.
 
-- [Chip set API](./chipset#api)
+- [Chip set API](./chip-set#api)
 - [Chip API](./chip#api)
 - [Action API](./action#api)
 

@@ -9,7 +9,7 @@ path: /catalog/chips/chip/
 
 # Chip
 
-Chips represent logical groups of [actions](../action) contained inside a [chip set](../chipset).
+Chips represent logical groups of [actions](../action) contained inside a [chip set](../chip-set).
 
 ## Basic usage
 
@@ -217,11 +217,11 @@ Mixin | Description
 
 ### `MDCChip` methods
 
-The `MDCChip` is exposed only to be called by the parent [`MDCChipSet`](../chipset). Users should not interact with the `MDCChip` component nor rely on any exposed APIs or events.
+The `MDCChip` is exposed only to be called by the parent [`MDCChipSet`](../chip-set). Users should not interact with the `MDCChip` component nor rely on any exposed APIs or events.
 
 ### `MDCChip` events
 
-These events are only emitted for consumption by the parent [`MDCChipSet`](../chipset). Non-wrapping clients **should not** listen to these events.
+These events are only emitted for consumption by the parent [`MDCChipSet`](../chip-set). Non-wrapping clients **should not** listen to these events.
 
 Event name | Detail | Description
 --- | --- | ---
