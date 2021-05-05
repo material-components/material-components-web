@@ -20,6 +20,10 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// Internal styling for Tooltip MDC component.
+
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
@@ -189,29 +193,27 @@ $z-index: 1;
 }
 
 ///
-/// Sets the banner content to centered instead of leading.
+/// Sets the banner content to stacked layout.
 ///
-@mixin mobile-stacked($query: feature-targeting.all()) {
+@mixin layout-stacked($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @media (max-width: $mobile-breakpoint) {
-      .mdc-banner__content {
-        flex-wrap: wrap;
-      }
+    .mdc-banner__content {
+      flex-wrap: wrap;
+    }
 
-      .mdc-banner__graphic {
-        margin-bottom: 12px;
-      }
+    .mdc-banner__graphic {
+      margin-bottom: 12px;
+    }
 
-      .mdc-banner__text {
-        @include rtl-mixins.reflexive-property(margin, 16px, 8px);
-        padding-bottom: 4px;
-      }
+    .mdc-banner__text {
+      @include rtl-mixins.reflexive-property(margin, 16px, 8px);
+      padding-bottom: 4px;
+    }
 
-      .mdc-banner__actions {
-        margin-left: auto;
-      }
+    .mdc-banner__actions {
+      margin-left: auto;
     }
   }
 }

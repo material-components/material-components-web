@@ -183,11 +183,11 @@ On mobile view, banners with long text should have their action(s) be positioned
 </div>
 ```
 
-Alternatively, you can call the `mobile-stacked` mixin from Sass:
+Alternatively, banner can be in stacked layout regardless of mobile-breakpoint, with the `layout-stacked` mixin from Sass:
 
 ```scss
 .my-banner {
-  @include banner.mobile-stacked;
+  @include banner-theme.layout-stacked;
 }
 ```
 

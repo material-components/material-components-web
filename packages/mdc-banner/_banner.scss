@@ -20,6 +20,10 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// Internal styling for Tooltip MDC component.
+
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/typography/typography';
 @use '@material/button/button-theme';
@@ -91,7 +95,9 @@ $_exit-duration: 250ms;
     }
 
     &.mdc-banner--mobile-stacked {
-      @include banner-theme.mobile-stacked($query: $query);
+      @media (max-width: banner-theme.$mobile-breakpoint) {
+        @include banner-theme.layout-stacked($query: $query);
+      }
     }
   }
 
