@@ -77,22 +77,24 @@ $_active-selector: '&:active:active';
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  @if not custom-properties.is-custom-prop($color) {
-    $color: custom-properties.create(
-      --mdc-ripple-color,
-      theme-color.get-custom-property($color)
-    );
-  }
+  @if $color {
+    @if not custom-properties.is-custom-prop($color) {
+      $color: custom-properties.create(
+        ripple-color,
+        theme-color.get-custom-property($color)
+      );
+    }
 
-  #{$ripple-target}::before,
-  #{$ripple-target}::after {
-    @include feature-targeting.targets($feat-color) {
-      @if color.alpha(theme-color.prop-value($color)) > 0 {
-        @include theme.property(background-color, $color);
-      } @else {
-        // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
-        // This avoids unnecessary transitions and overflow.
-        content: none;
+    #{$ripple-target}::before,
+    #{$ripple-target}::after {
+      @include feature-targeting.targets($feat-color) {
+        @if color.alpha(theme-color.prop-value($color)) > 0 {
+          @include theme.property(background-color, $color);
+        } @else {
+          // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
+          // This avoids unnecessary transitions and overflow.
+          content: none;
+        }
       }
     }
   }
@@ -144,16 +146,17 @@ $_active-selector: '&:active:active';
 ) {
   $feat-color: feature-targeting.create-target($query, color);
 
+  @if $opacity and not custom-properties.is-custom-prop($opacity) {
+    $opacity: custom-properties.create(ripple-hover-opacity, $opacity);
+  }
+
   // Background wash styles, for both CSS-only and upgraded stateful surfaces
   &:hover,
   &.mdc-ripple-surface--hover {
     #{$ripple-target}::before {
       // Opacity falls under color because the chosen opacity is color-dependent in typical usage
       @include feature-targeting.targets($feat-color) {
-        @include theme.property(
-          opacity,
-          custom-properties.create(--mdc-ripple-hover-opacity, $opacity)
-        );
+        @include theme.property(opacity, $opacity);
       }
     }
   }
@@ -204,16 +207,19 @@ $_active-selector: '&:active:active';
   // Opacity falls under color because the chosen opacity is color-dependent in typical usage
   $feat-color: feature-targeting.create-target($query, color);
 
-  // Note that this duration is only effective on focus, not blur
-  @include feature-targeting.targets($feat-animation) {
-    transition-duration: 75ms;
-  }
+  @if $opacity {
+    @if not custom-properties.is-custom-prop($opacity) {
+      $opacity: custom-properties.create(ripple-focus-opacity, $opacity);
+    }
 
-  @include feature-targeting.targets($feat-color) {
-    @include theme.property(
-      opacity,
-      custom-properties.create(--mdc-ripple-focus-opacity, $opacity)
-    );
+    // Note that this duration is only effective on focus, not blur
+    @include feature-targeting.targets($feat-animation) {
+      transition-duration: 75ms;
+    }
+
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(opacity, $opacity);
+    }
   }
 }
 
@@ -227,34 +233,39 @@ $_active-selector: '&:active:active';
 
   // Styles for non-upgraded (CSS-only) stateful surfaces
 
-  &:not(.mdc-ripple-upgraded) {
-    // Apply press additively by using the ::after pseudo-element
-    #{$ripple-target}::after {
-      @include feature-targeting.targets($feat-animation) {
-        transition: opacity $fade-out-duration linear;
-      }
+  @if $opacity {
+    @if not custom-properties.is-custom-prop($opacity) {
+      $opacity: custom-properties.create(ripple-press-opacity, $opacity);
     }
 
-    &:active {
+    &:not(.mdc-ripple-upgraded) {
+      // Apply press additively by using the ::after pseudo-element
       #{$ripple-target}::after {
         @include feature-targeting.targets($feat-animation) {
-          transition-duration: $fade-in-duration;
+          transition: opacity $fade-out-duration linear;
         }
+      }
 
-        // Opacity falls under color because the chosen opacity is color-dependent in typical usage
-        @include feature-targeting.targets($feat-color) {
-          @include theme.property(
-            opacity,
-            custom-properties.create(--mdc-ripple-press-opacity, $opacity)
-          );
+      &:active {
+        #{$ripple-target}::after {
+          @include feature-targeting.targets($feat-animation) {
+            transition-duration: $fade-in-duration;
+          }
+
+          // Opacity falls under color because the chosen opacity is color-dependent in typical usage
+          @include feature-targeting.targets($feat-color) {
+            @include theme.property(opacity, $opacity);
+          }
         }
       }
     }
-  }
 
-  &.mdc-ripple-upgraded {
-    @include feature-targeting.targets($feat-color) {
-      --mdc-ripple-fg-opacity: var(--mdc-ripple-press-opacity, #{$opacity});
+    &.mdc-ripple-upgraded {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(
+          custom-properties.create(ripple-fg-opacity, $opacity)
+        );
+      }
     }
   }
 }
