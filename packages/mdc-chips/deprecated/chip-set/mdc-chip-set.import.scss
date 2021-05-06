@@ -1,7 +1,6 @@
 @forward "../../animation/variables" as mdc-animation-*;
 @forward "../../ripple/variables" as mdc-* hide $mdc-dark-ink-opacities, $mdc-fade-in-duration, $mdc-fade-out-duration, $mdc-light-ink-opacities, $mdc-pressed-dark-ink-opacity, $mdc-pressed-light-ink-opacity, $mdc-translate-duration;
 @forward "../../ripple/variables" as mdc-ripple-* hide $mdc-ripple-states-wash-duration;
-@forward "../../theme/constants" as mdc-theme-*;
 @forward "../../theme/variables" as mdc-theme-*;
 @forward "../../density/variables" as mdc-density-*;
 @forward "../../checkbox/variables" as mdc-checkbox-*;
