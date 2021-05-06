@@ -15,6 +15,11 @@
 @use '@material/theme/theme-color';
 @use './evolution-variables' as variables;
 
+@mixin core-styles($query: feature-targeting.all()) {
+  @include without-ripple($query);
+  @include with-ripple($query);
+}
+
 @mixin without-ripple($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
