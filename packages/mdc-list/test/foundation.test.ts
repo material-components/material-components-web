@@ -182,8 +182,8 @@ describe('MDCListFoundation', () => {
            .toHaveBeenCalledWith(2, 'tabindex', '0');
      });
 
-  it('#handleFocusOut sets tabindex=0 to previously focused item when focus' +
-         'leaves list that has no selection',
+  it('#handleFocusOut sets tabindex=0 to first item when focus leaves list ' +
+         'that has no selection',
      () => {
        const {foundation, mockAdapter} = setupTest();
 
@@ -195,7 +195,7 @@ describe('MDCListFoundation', () => {
        foundation.handleFocusOut(3);
        jasmine.clock().tick(1);
        expect(mockAdapter.setAttributeForElementIndex)
-           .toHaveBeenCalledWith(3, 'tabindex', '0');
+           .toHaveBeenCalledWith(0, 'tabindex', '0');
      });
 
   it('#handleFocusOut does not set tabindex=0 to selected list item when focus moves to next list item.',

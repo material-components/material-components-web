@@ -253,7 +253,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     const isEnter = normalizeKey(event) === 'Enter';
     const isSpace = normalizeKey(event) === 'Spacebar';
 
-    // Have to check both upper and lower case, because having caps lock on affects the value.
+    // Have to check both upper and lower case, because having caps lock on
+    // affects the value.
     const isLetterA = event.key === 'A' || event.key === 'a';
 
     if (this.adapter.isRootFocused()) {
@@ -584,18 +585,25 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private getFirstSelectedOrFocusedItemIndex(): number {
-    let targetIndex = this.focusedItemIndex >= 0 ? this.focusedItemIndex : 0;
-    if (this.isSelectableList()) {
-      if (typeof this.selectedIndex === 'number' &&
-          this.selectedIndex !== numbers.UNSET_INDEX) {
-        targetIndex = this.selectedIndex;
-      } else if (
-          isNumberArray(this.selectedIndex) && this.selectedIndex.length > 0) {
-        targetIndex = this.selectedIndex.reduce(
-            (currentIndex, minIndex) => Math.min(currentIndex, minIndex));
-      }
+    // Action lists retain focus on the most recently focused item.
+    if (!this.isSelectableList()) {
+      return Math.max(this.focusedItemIndex, 0);
     }
-    return targetIndex;
+
+    // Single-selection lists focus the selected item.
+    if (typeof this.selectedIndex === 'number' &&
+        this.selectedIndex !== numbers.UNSET_INDEX) {
+      return this.selectedIndex;
+    }
+
+    // Multiple-selection lists focus the first selected item.
+    if (isNumberArray(this.selectedIndex) && this.selectedIndex.length > 0) {
+      return this.selectedIndex.reduce(
+          (minIndex, currentIndex) => Math.min(minIndex, currentIndex));
+    }
+
+    // Selection lists without a selection focus the first item.
+    return 0;
   }
 
   private isIndexValid(index: MDCListIndex) {
@@ -683,7 +691,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       // Otherwise select all enabled options.
       const allIndexes: number[] = [];
       for (let i = 0; i < count; i++) {
-        if (!this.adapter.listItemAtIndexHasClass(i, cssClasses.LIST_ITEM_DISABLED_CLASS) ||
+        if (!this.adapter.listItemAtIndexHasClass(
+                i, cssClasses.LIST_ITEM_DISABLED_CLASS) ||
             currentlySelectedIndexes.indexOf(i) > -1) {
           allIndexes.push(i);
         }
