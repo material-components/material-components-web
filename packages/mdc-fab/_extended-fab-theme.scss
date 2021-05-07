@@ -79,8 +79,10 @@ $_extended-light-theme: (
   pressed-container-elevation: null,
   pressed-icon-color: null,
   pressed-label-text-color: null,
-  pressed-ripple-color: theme-color.$primary,
+  pressed-ripple-color: null,
   pressed-ripple-opacity: null,
+  pressed-state-layer-color: theme-color.$primary,
+  pressed-state-layer-opacity: null,
 );
 
 @mixin theme($theme) {

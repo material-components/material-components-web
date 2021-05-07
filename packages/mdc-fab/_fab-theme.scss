@@ -67,8 +67,10 @@ $_light-theme: (
   lowered-pressed-container-elevation: null,
   pressed-container-elevation: null,
   pressed-icon-color: null,
-  pressed-ripple-color: theme-color.$primary,
+  pressed-ripple-color: null,
   pressed-ripple-opacity: null,
+  pressed-state-layer-color: theme-color.$primary,
+  pressed-state-layer-opacity: null,
 );
 
 @mixin theme($theme) {
@@ -106,7 +108,7 @@ $_light-theme: (
   $opacity-map: (
     hover: map.get($theme, hover-state-layer-opacity),
     focus: map.get($theme, focus-state-layer-opacity),
-    press: map.get($theme, pressed-ripple-opacity),
+    press: map.get($theme, pressed-state-layer-opacity),
   );
   $hover-state-layer-color: map.get($theme, hover-state-layer-color);
   @if $hover-state-layer-color {
