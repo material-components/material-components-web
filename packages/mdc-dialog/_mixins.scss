@@ -205,12 +205,13 @@
   .mdc-dialog--fullscreen {
     .mdc-dialog__header {
       @include feature-targeting.targets($feat-structure) {
+        align-items: baseline;
+        border-bottom: 1px solid transparent;
         display: inline-flex;
+        justify-content: space-between;
         padding: 0 variables.$header-side-padding
           variables.$title-bottom-padding;
-        border-bottom: 1px solid transparent;
-        justify-content: space-between;
-        align-items: baseline;
+        z-index: 1;
 
         @include _modal-header(
           $close-icon-padding: variables.$close-icon-padding
