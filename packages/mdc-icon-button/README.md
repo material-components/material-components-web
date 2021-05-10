@@ -68,6 +68,24 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 
 **Note**: IE11 will not center the icon properly if there is a newline or space after the material icon text.
 
+### Making icon buttons accessible
+
+Material Design spec advises that touch targets should be at least 48 x 48 px.
+To meet this requirement, add the following to your button:
+
+```html
+<div class="mdc-touch-target-wrapper">
+  <button class="mdc-icon-button mdc-icon-button--touch material-icons">
+    <div class="mdc-icon-button__ripple"></div>
+    favorite
+    <div class="mdc-icon-button__touch"></div>
+  </button>
+</div>
+```
+**Note: The outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).**
+
+**Note**: IE11 will not center the icon properly if there is a newline or space after the material icon text.
+
 ## Icon button toggle
 
 The icon button can be used to toggle between an on and off icon.

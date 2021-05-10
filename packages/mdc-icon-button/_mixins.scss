@@ -30,6 +30,7 @@
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl;
 @use '@material/theme/theme';
+@use '@material/touch-target/mixins' as touch-target-mixins;
 @use './variables';
 
 $ripple-target: '.mdc-icon-button__ripple';
@@ -46,6 +47,13 @@ $ripple-target: '.mdc-icon-button__ripple';
   .mdc-icon-button {
     @include base_($query: $query);
     @include density(0, $query: $query);
+
+    .mdc-icon-button__touch {
+      @include touch-target-mixins.touch-target(
+        $set-width: true,
+        $query: $query
+      );
+    }
   }
 
   .mdc-icon-button__icon {
@@ -74,6 +82,13 @@ $ripple-target: '.mdc-icon-button__ripple';
         }
       }
     }
+  }
+
+  .mdc-icon-button--touch {
+    @include touch-target-mixins.margin(
+      $component-height: variables.$size,
+      $query: $query
+    );
   }
   // postcss-bem-linter: end
 }
