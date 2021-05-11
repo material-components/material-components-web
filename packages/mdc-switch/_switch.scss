@@ -26,6 +26,7 @@
 @use '@material/animation/animation';
 @use '@material/elevation/elevation';
 @use '@material/ripple/ripple';
+@use '@material/rtl/rtl';
 @use '@material/theme/gss';
 
 $animation-duration: 75ms;
@@ -149,6 +150,9 @@ $track-height: 14px;
 @mixin track-off() {
   &::after {
     transform: translateX(-100%);
+    @include rtl.rtl {
+      transform: translateX(100%);
+    }
   }
 }
 
@@ -165,13 +169,23 @@ $track-height: 14px;
   width: 100%;
 }
 
+// Absolute values for the track to position the handle
+$_handle-track-left: translateX(0);
+// IE11 has a bug with calc() inside translateX(), so we use 2 translates.
+$_handle-track-right: translateX(100%) translateX(#{-$handle-size});
+
 @mixin handle-track-on() {
-  // IE11 has a bug with calc() inside translateX()
-  transform: translateX(100%) translateX(#{-$handle-size});
+  transform: $_handle-track-right;
+  @include rtl.rtl {
+    transform: $_handle-track-left;
+  }
 }
 
 @mixin handle-track-off() {
-  transform: translateX(0);
+  transform: $_handle-track-left;
+  @include rtl.rtl {
+    transform: $_handle-track-right;
+  }
 }
 
 @mixin handle() {
@@ -196,6 +210,7 @@ $track-height: 14px;
     @include gss.annotate($noflip: true);
     left: 0;
     position: absolute;
+    top: 0; // IE11 fix
     transition: animation.standard(background-color, $animation-duration),
       animation.standard(border-color, $animation-duration);
   }
@@ -232,11 +247,16 @@ $track-height: 14px;
 }
 
 @mixin icon() {
+  bottom: 0;
   @include gss.annotate($noflip: true);
-  left: 50%;
+  left: 0;
+  // IE11 needs top/right/bottom/left + margin instead of translate(-50%, -50%)
+  // because of SVG centering issues
+  margin: auto;
   position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  @include gss.annotate($noflip: true);
+  right: 0;
+  top: 0;
 }
 
 @mixin icon-hidden() {
