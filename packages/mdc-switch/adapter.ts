@@ -69,11 +69,6 @@ export interface MDCSwitchRenderAdapter extends MDCSwitchAdapter {
    */
   addClass(className: CssClasses): void;
   /**
-   * Retrieves the `aria-checked` attribute of the root element.
-   * @return the `aria-checked` value.
-   */
-  getAriaChecked(): string|null;
-  /**
    * Returns whether or not the root element has a class.
    * @param className The class to check.
    * @return true if the root element has the class, or false if not.

@@ -112,7 +112,7 @@ export class MDCSwitchRenderFoundation extends MDCSwitchFoundation {
     // Turn off observers while setting state
     this.setObserversEnabled(this.adapter.state, false);
 
-    this.adapter.state.selected = this.adapter.getAriaChecked() === 'true';
+    this.adapter.state.selected = this.adapter.hasClass(CssClasses.SELECTED);
     // Ensure aria-checked is set if attribute is not present
     this.onSelectedChange();
     this.adapter.state.disabled = this.adapter.isDisabled();
@@ -134,6 +134,8 @@ export class MDCSwitchRenderFoundation extends MDCSwitchFoundation {
 
   protected onSelectedChange() {
     this.adapter.setAriaChecked(String(this.adapter.state.selected));
+    this.toggleClass(this.adapter.state.selected, CssClasses.SELECTED);
+    this.toggleClass(!this.adapter.state.selected, CssClasses.UNSELECTED);
   }
 
   private toggleClass(addClass: boolean, className: CssClasses) {

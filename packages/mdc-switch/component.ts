@@ -89,7 +89,6 @@ export class MDCSwitch extends
       addClass: className => {
         this.root.classList.add(className)
       },
-      getAriaChecked: () => this.root.getAttribute('aria-checked'),
       hasClass: className => this.root.classList.contains(className),
       isDisabled: () => this.root.disabled,
       removeClass: className => {

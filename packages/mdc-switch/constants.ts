@@ -26,6 +26,8 @@
  */
 export enum CssClasses {
   PROCESSING = 'mdc-switch--processing',
+  SELECTED = 'mdc-switch--selected',
+  UNSELECTED = 'mdc-switch--unselected',
 }
 
 /**

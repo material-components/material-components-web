@@ -63,8 +63,8 @@ $_selectors: (
   focus: ':focus',
   hover: ':hover',
   pressed: ':active',
-  selected: '[aria-checked="true"]',
-  unselected: '[aria-checked="false"]',
+  selected: '.mdc-switch--selected',
+  unselected: '.mdc-switch--unselected',
 );
 
 $light-theme: (

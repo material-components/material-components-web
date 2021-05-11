@@ -98,7 +98,6 @@ describe('MDCSwitchRenderFoundation', () => {
     return setUpFoundationTest(MDCSwitchRenderFoundation, {
       state: {disabled: false, processing: false, selected: false},
       addClass: () => {},
-      getAriaChecked: () => 'false',
       hasClass: () => false,
       isDisabled: () => false,
       removeClass: () => false,
@@ -107,37 +106,24 @@ describe('MDCSwitchRenderFoundation', () => {
     });
   }
 
-  it('#initFromDOM() sets selected to true if aria-checked is "true"', () => {
+  it('#initFromDOM() sets selected if adapter has class', () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getAriaChecked.and.returnValue('true');
+    // TODO(b/183749291): remove explicit arg type when Jasmine is updated
+    mockAdapter.hasClass.and.callFake(
+        (name: CssClasses) => name === CssClasses.SELECTED);
     foundation.init();
     foundation.initFromDOM();
     expect(mockAdapter.state.selected).toBe(true);
   });
 
-  it('#initFromDOM() sets selected to false if aria-checked is "false"', () => {
-    const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getAriaChecked.and.returnValue('false');
-    foundation.init();
-    foundation.initFromDOM();
-    expect(mockAdapter.state.selected).toBe(false);
-  });
-
-  it('#initFromDOM() sets selected to true if aria-checked is null', () => {
-    const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getAriaChecked.and.returnValue(null);
-    foundation.init();
-    foundation.initFromDOM();
-    expect(mockAdapter.state.selected).toBe(false);
-  });
-
-  it('#initFromDOM() sets aria-checked if it does not exist', () => {
-    const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getAriaChecked.and.returnValue(null);
-    foundation.init();
-    foundation.initFromDOM();
-    expect(mockAdapter.setAriaChecked).toHaveBeenCalledWith('false');
-  });
+  it('#initFromDOM() ensures aria-checked is set in case it does not exist',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.init();
+       foundation.initFromDOM();
+       // Default selected is false, aria-checked should be false
+       expect(mockAdapter.setAriaChecked).toHaveBeenCalledWith('false');
+     });
 
   it('#initFromDOM() sets disabled from adapter.isDisabled', () => {
     const {foundation, mockAdapter} = setupTest();

@@ -125,16 +125,6 @@ describe('MDCSwitch', () => {
     expect(Array.from(root.classList)).toContain(CssClasses.PROCESSING);
   });
 
-  it('adapter.getAriaChecked() returns root aria-checked attribute', () => {
-    const {root, adapter} = setupTest();
-    root.setAttribute('aria-checked', 'true');
-    expect(adapter.getAriaChecked()).toBe('true');
-    root.setAttribute('aria-checked', 'false');
-    expect(adapter.getAriaChecked()).toBe('false');
-    root.removeAttribute('aria-checked');
-    expect(adapter.getAriaChecked()).toBe(null);
-  });
-
   it('adapter.hasClass() checks classes on root', () => {
     const {root, adapter} = setupTest();
     expect(adapter.hasClass(CssClasses.PROCESSING))
