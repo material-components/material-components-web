@@ -20,8 +20,617 @@
 // THE SOFTWARE.
 //
 
-$light-theme: ();
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:color';
+@use 'sass:map';
+@use '@material/elevation/elevation-theme';
+@use '@material/ripple/ripple-theme';
+@use '@material/theme/color-palette';
+@use '@material/theme/custom-properties';
+@use '@material/theme/keys';
+@use '@material/theme/state';
+@use '@material/theme/theme-color';
+@use '@material/theme/theme';
+@use '@material/shape/shape';
+@use './switch';
+
+$_hairline: color-palette.$grey-300;
+$_inverse-primary: color.scale(
+  theme-color.prop-value(primary),
+  $lightness: 75%
+);
+
+$_on-surface: color-palette.$grey-800;
+$_on-surface-variant: color-palette.$grey-700;
+$_on-surface-state-content: color-palette.$grey-900;
+$_primary-state-content: color.scale(
+  theme-color.prop-value(primary),
+  $blackness: 50%
+);
+
+$_selectors: (
+  disabled: ':disabled',
+  focus: ':focus',
+  hover: ':hover',
+  pressed: ':active',
+  selected: '[aria-checked="true"]',
+  unselected: '[aria-checked="false"]',
+);
+
+$light-theme: (
+  disabled-handle-elevation: 0,
+  disabled-handle-opacity: 0.38,
+  disabled-handle-overlay-color: transparent,
+  disabled-handle-overlay-opacity: 0,
+  disabled-selected-handle-color: $_on-surface,
+  disabled-selected-icon-color: on-primary,
+  disabled-selected-icon-opacity: 0.38,
+  disabled-selected-track-color: $_on-surface,
+  disabled-track-opacity: 0.12,
+  disabled-unselected-handle-color: $_on-surface,
+  disabled-unselected-icon-color: on-primary,
+  disabled-unselected-icon-opacity: 0.38,
+  disabled-unselected-track-color: $_on-surface,
+  handle-elevation: 1,
+  handle-overlay-color: transparent,
+  handle-overlay-opacity: 0,
+  handle-shadow-color: elevation-theme.$baseline-color,
+  handle-shape: switch.$handle-size / 2,
+  handle-surface-color: surface,
+  selected-focus-handle-color: $_primary-state-content,
+  selected-focus-state-layer-color: primary,
+  selected-focus-state-layer-opacity: 0.12,
+  selected-focus-track-color: $_inverse-primary,
+  selected-handle-color: primary,
+  selected-hover-handle-color: $_primary-state-content,
+  selected-hover-state-layer-color: primary,
+  selected-hover-state-layer-opacity: 0.04,
+  selected-hover-track-color: $_inverse-primary,
+  selected-icon-color: on-primary,
+  selected-icon-size: 18px,
+  selected-pressed-handle-color: $_primary-state-content,
+  selected-pressed-state-layer-color: primary,
+  selected-pressed-state-layer-opacity: 0.1,
+  selected-pressed-track-color: $_inverse-primary,
+  selected-track-color: $_inverse-primary,
+  track-shape: switch.$track-height / 2,
+  unselected-focus-handle-color: $_on-surface-state-content,
+  unselected-focus-state-layer-color: $_on-surface,
+  unselected-focus-state-layer-opacity: 0.12,
+  unselected-focus-track-color: $_hairline,
+  unselected-handle-color: $_on-surface-variant,
+  unselected-hover-handle-color: $_on-surface-state-content,
+  unselected-hover-state-layer-color: $_on-surface,
+  unselected-hover-state-layer-opacity: 0.04,
+  unselected-hover-track-color: $_hairline,
+  unselected-icon-color: on-primary,
+  unselected-icon-size: 18px,
+  unselected-pressed-handle-color: $_on-surface-state-content,
+  unselected-pressed-state-layer-color: $_on-surface,
+  unselected-pressed-state-layer-opacity: 0.1,
+  unselected-pressed-track-color: $_hairline,
+  unselected-track-color: $_hairline,
+);
+
+$forced-colors-theme: (
+  disabled-handle-opacity: 1,
+  disabled-selected-icon-color: GrayText,
+  disabled-selected-icon-opacity: 1,
+  disabled-track-opacity: 1,
+  disabled-unselected-icon-color: GrayText,
+  disabled-unselected-icon-opacity: 1,
+);
 
 @mixin theme($theme) {
-  // TODO(b/185410690)
+  @include theme.validate-keys($light-theme, $theme);
+
+  $theme: keys.create-theme-properties($theme, switch);
+
+  @include _selected-handle-color(
+    (
+      default: map.get($theme, selected-handle-color),
+      disabled: map.get($theme, disabled-selected-handle-color),
+      focus: map.get($theme, selected-focus-handle-color),
+      hover: map.get($theme, selected-hover-handle-color),
+      pressed: map.get($theme, selected-pressed-handle-color),
+    )
+  );
+
+  @include _unselected-handle-color(
+    (
+      default: map.get($theme, unselected-handle-color),
+      disabled: map.get($theme, disabled-unselected-handle-color),
+      focus: map.get($theme, unselected-focus-handle-color),
+      hover: map.get($theme, unselected-hover-handle-color),
+      pressed: map.get($theme, unselected-pressed-handle-color),
+    )
+  );
+
+  @include _handle-surface-color(map.get($theme, handle-surface-color));
+
+  @include _handle-elevation(
+    (
+      default: map.get($theme, handle-elevation),
+      disabled: map.get($theme, disabled-handle-elevation),
+    ),
+    (
+      default: map.get($theme, handle-shadow-color),
+      disabled: map.get($theme, handle-shadow-color),
+    )
+  );
+
+  @include _handle-opacity(
+    (
+      disabled: map.get($theme, disabled-handle-opacity),
+    )
+  );
+
+  @include _handle-overlay-color(
+    (
+      default: map.get($theme, handle-overlay-color),
+      disabled: map.get($theme, disabled-handle-overlay-color),
+    )
+  );
+
+  @include _handle-overlay-opacity(
+    (
+      default: map.get($theme, handle-overlay-opacity),
+      disabled: map.get($theme, disabled-handle-overlay-opacity),
+    )
+  );
+
+  @include _handle-shape(map.get($theme, handle-shape));
+
+  @include _selected-icon-color(
+    (
+      default: map.get($theme, selected-icon-color),
+      disabled: map.get($theme, disabled-selected-icon-color),
+    )
+  );
+
+  @include _unselected-icon-color(
+    (
+      default: map.get($theme, unselected-icon-color),
+      disabled: map.get($theme, disabled-unselected-icon-color),
+    )
+  );
+
+  @include _selected-icon-opacity(
+    (
+      disabled: map.get($theme, disabled-selected-icon-opacity),
+    )
+  );
+
+  @include _unselected-icon-opacity(
+    (
+      disabled: map.get($theme, disabled-unselected-icon-opacity),
+    )
+  );
+
+  @include _selected-icon-size(map.get($theme, selected-icon-size));
+  @include _unselected-icon-size(map.get($theme, unselected-icon-size));
+
+  @include _selected-ripple-color(
+    (
+      focus: map.get($theme, selected-focus-state-layer-color),
+      hover: map.get($theme, selected-hover-state-layer-color),
+      pressed: map.get($theme, selected-pressed-state-layer-color),
+    )
+  );
+
+  @include _unselected-ripple-color(
+    (
+      focus: map.get($theme, unselected-focus-state-layer-color),
+      hover: map.get($theme, unselected-hover-state-layer-color),
+      pressed: map.get($theme, unselected-pressed-state-layer-color),
+    )
+  );
+
+  @include _selected-ripple-opacity(
+    (
+      focus: map.get($theme, selected-focus-state-layer-opacity),
+      hover: map.get($theme, selected-hover-state-layer-opacity),
+      pressed: map.get($theme, selected-pressed-state-layer-opacity),
+    )
+  );
+
+  @include _unselected-ripple-opacity(
+    (
+      focus: map.get($theme, unselected-focus-state-layer-opacity),
+      hover: map.get($theme, unselected-hover-state-layer-opacity),
+      pressed: map.get($theme, unselected-pressed-state-layer-opacity),
+    )
+  );
+
+  @include _track-selected-color(
+    (
+      default: map.get($theme, selected-track-color),
+      disabled: map.get($theme, disabled-selected-track-color),
+      focus: map.get($theme, selected-focus-track-color),
+      hover: map.get($theme, selected-hover-track-color),
+      pressed: map.get($theme, selected-pressed-track-color),
+    )
+  );
+
+  @include _track-unselected-color(
+    (
+      default: map.get($theme, unselected-track-color),
+      disabled: map.get($theme, disabled-unselected-track-color),
+      focus: map.get($theme, unselected-focus-track-color),
+      hover: map.get($theme, unselected-hover-track-color),
+      pressed: map.get($theme, unselected-pressed-track-color),
+    )
+  );
+
+  @include _track-opacity(
+    (
+      disabled: map.get($theme, disabled-track-opacity),
+    )
+  );
+
+  @include _track-shape(map.get($theme, track-shape));
+}
+
+@mixin _handle-color($colors) {
+  @include state.default($_selectors) {
+    @include _set-handle-color(state.get-default-state($colors));
+  }
+
+  @include state.hover($_selectors) {
+    @include _set-handle-color(state.get-hover-state($colors));
+  }
+
+  @include state.focus($_selectors) {
+    @include _set-handle-color(state.get-focus-state($colors));
+  }
+
+  @include state.pressed($_selectors) {
+    @include _set-handle-color(state.get-pressed-state($colors));
+  }
+
+  @include state.disabled($_selectors) {
+    @include _set-handle-color(state.get-disabled-state($colors));
+  }
+}
+
+@mixin _set-handle-color($color) {
+  .mdc-switch__handle {
+    &::after {
+      @include theme.property(background, $color);
+    }
+  }
+}
+
+@mixin _selected-handle-color($colors) {
+  @include state.selected($_selectors) {
+    @include _handle-color($colors);
+  }
+}
+
+@mixin _unselected-handle-color($colors) {
+  @include state.unselected($_selectors) {
+    @include _handle-color($colors);
+  }
+}
+
+@mixin _handle-surface-color($color) {
+  .mdc-switch__handle {
+    // Sets the surface color for the handle. This is used so that when an
+    // opacity is applied to the "main" handle color, it will not bleed through
+    // and appear transparent on top of the track.
+    &::before {
+      @include theme.property(background, $color);
+    }
+  }
+}
+
+@mixin _handle-elevation($elevations, $shadow-colors) {
+  @include state.default($_selectors) {
+    @include _set-handle-elevation(
+      state.get-default-state($elevations),
+      state.get-default-state($shadow-colors)
+    );
+  }
+
+  @include state.disabled($_selectors) {
+    @include _set-handle-elevation(
+      state.get-disabled-state($elevations),
+      state.get-disabled-state($shadow-colors)
+    );
+  }
+}
+
+@mixin _set-handle-elevation($elevation, $shadow-color) {
+  // TODO: Support independent custom properties
+  @if $elevation or $shadow-color {
+    @if not $elevation or not $shadow-color {
+      @error 'Both elevation and shadow color must be specified';
+    }
+
+    $dp-value: custom-properties.get-fallback($elevation);
+    $shadow-color: custom-properties.get-fallback($shadow-color);
+
+    $elevation: custom-properties.set-fallback(
+      $elevation,
+      elevation-theme.elevation-box-shadow($dp-value, $shadow-color)
+    );
+
+    .mdc-switch__shadow {
+      @include theme.property(box-shadow, $elevation);
+    }
+  }
+}
+
+@mixin _handle-opacity($opacities) {
+  @include state.disabled($_selectors) {
+    @include _set-handle-opacity(state.get-disabled-state($opacities));
+  }
+}
+
+@mixin _set-handle-opacity($opacity) {
+  .mdc-switch__handle {
+    // Only apply to the ::after pseudo element, which is the handle's "main"
+    // color. The ::before pseudo element is the surface color, which prevents
+    // the handle from bleeding through on the track.
+    &::after {
+      @include theme.property(opacity, $opacity);
+    }
+  }
+}
+
+@mixin _handle-overlay-color($colors) {
+  @include state.default($_selectors) {
+    @include _set-handle-overlay-color(state.get-default-state($colors));
+  }
+
+  @include state.disabled($_selectors) {
+    @include _set-handle-overlay-color(state.get-disabled-state($colors));
+  }
+}
+
+@mixin _set-handle-overlay-color($color) {
+  .mdc-elevation-overlay {
+    @include elevation-theme.overlay-fill-color($color);
+  }
+}
+
+@mixin _handle-overlay-opacity($opacities) {
+  @include state.default($_selectors) {
+    @include elevation-theme.overlay-opacity(
+      state.get-default-state($opacities)
+    );
+  }
+
+  @include state.disabled($_selectors) {
+    @include elevation-theme.overlay-opacity(
+      state.get-disabled-state($opacities)
+    );
+  }
+}
+
+@mixin _handle-shape($shape) {
+  .mdc-switch__handle {
+    @include shape.radius($shape);
+  }
+}
+
+@mixin _icon-color($colors) {
+  @include state.default($_selectors) {
+    @include _set-icon-color(state.get-default-state($colors));
+  }
+
+  @include state.disabled($_selectors) {
+    @include _set-icon-color(state.get-disabled-state($colors));
+  }
+}
+
+@mixin _set-icon-color($color) {
+  .mdc-switch__icon {
+    @include theme.property(fill, $color);
+  }
+}
+
+@mixin _selected-icon-color($colors) {
+  @include state.selected($_selectors) {
+    @include _icon-color($colors);
+  }
+}
+
+@mixin _unselected-icon-color($colors) {
+  @include state.unselected($_selectors) {
+    @include _icon-color($colors);
+  }
+}
+
+@mixin _icon-opacity($opacities) {
+  @include state.disabled($_selectors) {
+    @include _set-icon-opacity(state.get-disabled-state($opacities));
+  }
+}
+
+@mixin _set-icon-opacity($opacity) {
+  .mdc-switch__icons {
+    @include theme.property(opacity, $opacity);
+  }
+}
+
+@mixin _selected-icon-opacity($opacities) {
+  @include state.selected($_selectors) {
+    @include _icon-opacity($opacities);
+  }
+}
+
+@mixin _unselected-icon-opacity($opacities) {
+  @include state.unselected($_selectors) {
+    @include _icon-opacity($opacities);
+  }
+}
+
+@mixin _icon-size($size) {
+  .mdc-switch__icon {
+    @include theme.property(width, $size);
+    @include theme.property(height, $size);
+  }
+}
+
+@mixin _selected-icon-size($size) {
+  @include state.selected($_selectors) {
+    @include _icon-size($size);
+  }
+}
+
+@mixin _unselected-icon-size($size) {
+  @include state.unselected($_selectors) {
+    @include _icon-size($size);
+  }
+}
+
+@mixin _ripple-color($colors) {
+  @include state.independent-elements(pressed) {
+    @include state.hover($_selectors) {
+      @include ripple-theme.states-base-color(
+        state.get-hover-state($colors),
+        $ripple-target: switch.$ripple-target
+      );
+    }
+
+    @include state.focus($_selectors) {
+      @include ripple-theme.states-base-color(
+        state.get-focus-state($colors),
+        $ripple-target: switch.$ripple-target
+      );
+    }
+
+    @include state.pressed($_selectors) {
+      @include ripple-theme.states-base-color(
+        state.get-pressed-state($colors),
+        $ripple-target: switch.$ripple-target
+      );
+    }
+  }
+}
+
+@mixin _selected-ripple-color($colors) {
+  @include state.selected($_selectors) {
+    @include _ripple-color($colors);
+  }
+}
+
+@mixin _unselected-ripple-color($colors) {
+  @include state.unselected($_selectors) {
+    @include _ripple-color($colors);
+  }
+}
+
+@mixin _ripple-opacity($opacities) {
+  @include state.independent-elements(pressed) {
+    @include state.hover($_selectors) {
+      @include ripple-theme.states-hover-opacity(
+        state.get-hover-state($opacities),
+        $ripple-target: switch.$ripple-target
+      );
+    }
+
+    @include state.focus($_selectors) {
+      @include ripple-theme.states-focus-opacity(
+        state.get-focus-state($opacities),
+        $ripple-target: switch.$ripple-target
+      );
+    }
+
+    @include state.pressed($_selectors) {
+      @include ripple-theme.states-press-opacity(
+        state.get-pressed-state($opacities),
+        $ripple-target: switch.$ripple-target
+      );
+    }
+  }
+}
+
+@mixin _selected-ripple-opacity($opacities) {
+  @include state.selected($_selectors) {
+    @include _ripple-opacity($opacities);
+  }
+}
+
+@mixin _unselected-ripple-opacity($opacities) {
+  @include state.unselected($_selectors) {
+    @include _ripple-opacity($opacities);
+  }
+}
+
+@mixin _track-selected-color($colors) {
+  @include state.default($_selectors) {
+    @include _set-track-selected-color(state.get-default-state($colors));
+  }
+
+  @include state.hover($_selectors) {
+    @include _set-track-selected-color(state.get-hover-state($colors));
+  }
+
+  @include state.focus($_selectors) {
+    @include _set-track-selected-color(state.get-focus-state($colors));
+  }
+
+  @include state.pressed($_selectors) {
+    @include _set-track-selected-color(state.get-pressed-state($colors));
+  }
+
+  @include state.disabled($_selectors) {
+    @include _set-track-selected-color(state.get-disabled-state($colors));
+  }
+}
+
+@mixin _set-track-selected-color($color) {
+  .mdc-switch__track::after {
+    @include theme.property(background, $color);
+  }
+}
+
+@mixin _track-unselected-color($colors) {
+  @include state.default($_selectors) {
+    @include _set-track-unselected-color(state.get-default-state($colors));
+  }
+
+  @include state.hover($_selectors) {
+    @include _set-track-unselected-color(state.get-hover-state($colors));
+  }
+
+  @include state.focus($_selectors) {
+    @include _set-track-unselected-color(state.get-focus-state($colors));
+  }
+
+  @include state.pressed($_selectors) {
+    @include _set-track-unselected-color(state.get-pressed-state($colors));
+  }
+
+  @include state.disabled($_selectors) {
+    @include _set-track-unselected-color(state.get-disabled-state($colors));
+  }
+}
+
+@mixin _set-track-unselected-color($color) {
+  .mdc-switch__track::before {
+    @include theme.property(background, $color);
+  }
+}
+
+@mixin _track-opacity($opacities) {
+  @include state.disabled($_selectors) {
+    @include _set-track-opacity(state.get-disabled-state($opacities));
+  }
+}
+
+@mixin _set-track-opacity($opacity) {
+  .mdc-switch__track {
+    @include theme.property(opacity, $opacity);
+  }
+}
+
+@mixin _track-shape($shape) {
+  .mdc-switch__track {
+    @include shape.radius($shape);
+  }
 }

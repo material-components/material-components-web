@@ -20,6 +20,238 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/animation/animation';
+@use '@material/elevation/elevation';
+@use '@material/ripple/ripple';
+@use '@material/theme/gss';
+
+$animation-duration: 75ms;
+$handle-size: 20px;
+$icon-exit-duration: 0.4 * $animation-duration;
+$icon-enter-duration: $animation-duration - $icon-exit-duration;
+$ripple-size: 48px;
+$ripple-target: '.mdc-switch__ripple';
+$track-height: 14px;
+
 @mixin static-styles() {
-  // TODO(b/185410690)
+  @include static-styles-without-ripple();
+
+  .mdc-switch {
+    @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
+    @include ripple.surface($ripple-target: $ripple-target);
+    @include ripple.radius-unbounded($ripple-target: $ripple-target);
+  }
+}
+
+@mixin static-styles-without-ripple() {
+  @include elevation.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  .mdc-switch {
+    @include root;
+  }
+
+  .mdc-switch__track {
+    @include track;
+    @include track-off;
+
+    .mdc-switch[aria-checked='true'] & {
+      @include track-on;
+    }
+  }
+
+  .mdc-switch__handle-track {
+    @include handle-track;
+    @include handle-track-off;
+
+    .mdc-switch[aria-checked='true'] & {
+      @include handle-track-on;
+    }
+  }
+
+  .mdc-switch__handle {
+    @include handle;
+  }
+
+  .mdc-switch__shadow {
+    @include shadow;
+  }
+
+  .mdc-switch__ripple {
+    @include ripple;
+
+    .mdc-switch:disabled & {
+      @include ripple-disabled;
+    }
+  }
+
+  .mdc-switch__icons {
+    @include icons;
+  }
+
+  .mdc-switch__icon {
+    @include icon;
+    @include icon-hidden;
+  }
+
+  .mdc-switch[aria-checked='true'] .mdc-switch__icon--on,
+  .mdc-switch[aria-checked='false'] .mdc-switch__icon--off {
+    @include icon-visible;
+  }
+}
+
+@mixin root() {
+  background: none;
+  border: none;
+  display: inline-flex;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 0;
+  position: relative;
+}
+
+@mixin disabled() {
+  pointer-events: none;
+}
+
+@mixin track() {
+  height: $track-height;
+  overflow: hidden;
+  position: relative;
+  width: 36px;
+
+  &::before,
+  &::after {
+    border: 1px solid transparent; // high contrast mode
+    border-radius: inherit;
+    box-sizing: border-box;
+    content: '';
+    height: 100%;
+    @include gss.annotate($noflip: true);
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+
+  &::after {
+    transition: animation.standard(transform, $animation-duration);
+  }
+}
+
+@mixin track-on() {
+  &::after {
+    transform: translateX(0);
+  }
+}
+
+@mixin track-off() {
+  &::after {
+    transform: translateX(-100%);
+  }
+}
+
+@mixin handle-track() {
+  height: 100%;
+  @include gss.annotate($noflip: true);
+  left: 0;
+  // The handle track is used to move the handle across the width of the switch
+  // and may overflow the bounds of the component. It should not be used for
+  // pointer events.
+  pointer-events: none;
+  position: absolute;
+  transition: animation.standard(transform, $animation-duration);
+  width: 100%;
+}
+
+@mixin handle-track-on() {
+  // IE11 has a bug with calc() inside translateX()
+  transform: translateX(100%) translateX(#{-$handle-size});
+}
+
+@mixin handle-track-off() {
+  transform: translateX(0);
+}
+
+@mixin handle() {
+  display: flex;
+  height: $handle-size;
+  @include gss.annotate($noflip: true);
+  left: 0;
+  pointer-events: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: $handle-size;
+
+  &::before,
+  &::after {
+    border: 1px solid transparent; // high contrast mode
+    border-radius: inherit;
+    box-sizing: border-box;
+    content: '';
+    width: 100%;
+    height: 100%;
+    @include gss.annotate($noflip: true);
+    left: 0;
+    position: absolute;
+    transition: animation.standard(background-color, $animation-duration),
+      animation.standard(border-color, $animation-duration);
+  }
+}
+
+@mixin shadow() {
+  border-radius: inherit;
+  bottom: 0;
+  @include gss.annotate($noflip: true);
+  left: 0;
+  position: absolute;
+  @include gss.annotate($noflip: true);
+  right: 0;
+  top: 0;
+}
+
+@mixin ripple() {
+  height: $ripple-size;
+  @include gss.annotate($noflip: true);
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: $ripple-size;
+}
+
+@mixin ripple-disabled {
+  display: none;
+}
+
+@mixin icons() {
+  height: 100%;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+@mixin icon() {
+  @include gss.annotate($noflip: true);
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin icon-hidden() {
+  opacity: 0;
+  transition: animation.exit-permanent(opacity, $icon-exit-duration);
+}
+
+@mixin icon-visible() {
+  opacity: 1;
+  transition: animation.enter(
+    opacity,
+    $icon-enter-duration,
+    $delay: $icon-exit-duration
+  );
 }

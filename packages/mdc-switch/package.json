@@ -26,6 +26,7 @@
     "@material/feature-targeting": "^11.0.0",
     "@material/ripple": "^11.0.0",
     "@material/rtl": "^11.0.0",
+    "@material/shape": "^11.0.0",
     "@material/theme": "^11.0.0",
     "tslib": "^2.1.0"
   },

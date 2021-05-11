@@ -22,14 +22,21 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCRippleAdapter} from '@material/ripple/adapter';
+import {MDCRipple} from '@material/ripple/component';
+import {MDCRippleFoundation} from '@material/ripple/foundation';
+import {MDCRippleCapableSurface} from '@material/ripple/types';
+
 import {MDCSwitchRenderAdapter, MDCSwitchState} from './adapter';
+import {Selectors} from './constants';
 import {MDCSwitchRenderFoundation} from './foundation';
 
 /**
  * `MDCSwitch` provides a component implementation of a Material Design switch.
  */
 export class MDCSwitch extends
-    MDCComponent<MDCSwitchRenderFoundation> implements MDCSwitchState {
+    MDCComponent<MDCSwitchRenderFoundation> implements MDCSwitchState,
+                                                       MDCRippleCapableSurface {
   /**
    * Creates a new `MDCSwitch` and attaches it to the given root element.
    * @param root The root to attach to.
@@ -43,18 +50,33 @@ export class MDCSwitch extends
   processing!: boolean;
   selected!: boolean;
 
+  ripple!: MDCRipple;
+
+  private rippleElement!: Element;
+
   constructor(
       public root: HTMLButtonElement, foundation?: MDCSwitchRenderFoundation) {
     super(root, foundation);
   }
 
+  initialize() {
+    this.ripple = new MDCRipple(this.root, this.createRippleFoundation());
+  }
+
   initialSyncWithDOM() {
+    const rippleElement = this.root.querySelector(Selectors.RIPPLE);
+    if (!rippleElement) {
+      throw new Error(`Switch ${Selectors.RIPPLE} element is required.`);
+    }
+
+    this.rippleElement = rippleElement;
     this.root.addEventListener('click', this.foundation.handleClick);
     this.foundation.initFromDOM();
   }
 
   destroy() {
     super.destroy();
+    this.ripple.destroy();
     this.root.removeEventListener('click', this.foundation.handleClick);
   }
 
@@ -79,6 +101,18 @@ export class MDCSwitch extends
         this.root.disabled = disabled;
       },
       state: this,
+    };
+  }
+
+  protected createRippleFoundation() {
+    return new MDCRippleFoundation(this.createRippleAdapter());
+  }
+
+  protected createRippleAdapter(): MDCRippleAdapter {
+    return {
+      ...MDCRipple.createAdapter(this),
+      computeBoundingRect: () => this.rippleElement.getBoundingClientRect(),
+      isUnbounded: () => true,
     };
   }
 }

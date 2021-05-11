@@ -35,6 +35,9 @@ function getFixture() {
       <div class="mdc-switch__track"></div>
       <div class="mdc-switch__handle-track">
         <div class="mdc-switch__handle">
+          <div class="mdc-switch__shadow">
+            <div class="mdc-elevation-overlay"></div>
+          </div>
           <div class="mdc-switch__ripple"></div>
           <div class="mdc-switch__handle">
             <div class="mdc-switch__icons">

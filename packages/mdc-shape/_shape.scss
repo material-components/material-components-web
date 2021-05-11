@@ -112,6 +112,10 @@ $category-keywords: (
 /// @return {Number | Map | List} the resolved radius value. May be a number,
 ///     a custom property Map, or a List if $radius was a List.
 @function resolve-radius($radius, $component-height: null) {
+  @if $radius == null {
+    @return null;
+  }
+
   @if meta.type-of($radius) == 'list' {
     // $radius is a List
     @if list.length($radius) > 4 or list.length($radius) < 1 {

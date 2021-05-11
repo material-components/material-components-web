@@ -23,6 +23,7 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use '@material/dom/dom';
 @use './switch-theme';
 @use './switch';
 
@@ -30,4 +31,10 @@
 
 .mdc-switch {
   @include switch-theme.theme(switch-theme.$light-theme);
+}
+
+@include dom.ie-high-contrast-mode {
+  .mdc-switch {
+    @include switch-theme.theme(switch-theme.$forced-colors-theme);
+  }
 }
