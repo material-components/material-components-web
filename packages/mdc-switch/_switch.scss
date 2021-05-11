@@ -32,7 +32,6 @@ $animation-duration: 75ms;
 $handle-size: 20px;
 $icon-exit-duration: 0.4 * $animation-duration;
 $icon-enter-duration: $animation-duration - $icon-exit-duration;
-$ripple-size: 48px;
 $ripple-target: '.mdc-switch__ripple';
 $track-height: 14px;
 
@@ -214,13 +213,11 @@ $track-height: 14px;
 }
 
 @mixin ripple() {
-  height: $ripple-size;
   @include gss.annotate($noflip: true);
   left: 50%;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: $ripple-size;
 }
 
 @mixin ripple-disabled {

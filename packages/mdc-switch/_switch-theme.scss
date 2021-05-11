@@ -25,6 +25,7 @@
 
 @use 'sass:color';
 @use 'sass:map';
+@use '@material/density/density';
 @use '@material/elevation/elevation-theme';
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/color-palette';
@@ -36,6 +37,13 @@
 @use '@material/shape/shape';
 @use './switch';
 
+$_density-config: (
+  size: (
+    minimum: 36px,
+    default: 48px,
+    maximum: 48px,
+  ),
+);
 $_hairline: color-palette.$grey-300;
 $_inverse-primary: color.scale(
   theme-color.prop-value(primary),
@@ -60,6 +68,8 @@ $_selectors: (
 );
 
 $light-theme: (
+  // TODO: token is needed for density
+  density: 0,
   disabled-handle-elevation: 0,
   disabled-handle-opacity: 0.38,
   disabled-handle-overlay-color: transparent,
@@ -111,7 +121,7 @@ $light-theme: (
   unselected-pressed-state-layer-color: $_on-surface,
   unselected-pressed-state-layer-opacity: 0.1,
   unselected-pressed-track-color: $_hairline,
-  unselected-track-color: $_hairline,
+  unselected-track-color: $_hairline
 );
 
 $forced-colors-theme: (
@@ -127,6 +137,8 @@ $forced-colors-theme: (
   @include theme.validate-keys($light-theme, $theme);
 
   $theme: keys.create-theme-properties($theme, switch);
+
+  @include _density(map.get($theme, density));
 
   @include _selected-handle-color(
     (
@@ -271,6 +283,22 @@ $forced-colors-theme: (
   );
 
   @include _track-shape(map.get($theme, track-shape));
+}
+
+@mixin _density($density) {
+  // TODO: support custom properties
+  @if $density {
+    $size: density.prop-value(
+      $density-config: $_density-config,
+      $density-scale: custom-properties.get-fallback($density),
+      $property-name: size,
+    );
+
+    .mdc-switch__ripple {
+      @include theme.property(height, $size);
+      @include theme.property(width, $size);
+    }
+  }
 }
 
 @mixin _handle-color($colors) {
