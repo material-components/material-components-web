@@ -262,8 +262,15 @@ function installObserver<T extends object, K extends keyof T>(
     return targetObservers;
   }
 
-  // Retrieve the original descriptor from the target...
-  const descriptor = getDescriptor(target, property);
+  // Retrieve (or create if it's a plain property) the original descriptor from
+  // the target...
+  const descriptor = getDescriptor(target, property) || {
+    configurable: true,
+    enumerable: true,
+    value: target[property],
+    writable: true
+  };
+
   // ...and create a copy that will be used for the observer.
   const observedDescriptor = {...descriptor};
   let {get: descGet, set: descSet} = descriptor;
@@ -314,25 +321,34 @@ function installObserver<T extends object, K extends keyof T>(
   return targetObservers;
 }
 
-function getDescriptor<T extends object, K extends keyof T>(
+/**
+ * Retrieves the descriptor for a property from the provided target. This
+ * function will walk up the target's prototype chain to search for the
+ * descriptor.
+ *
+ * @template T The target type.
+ * @template K The property type.
+ * @param {T} target - The target to retrieve a descriptor from.
+ * @param {K} property - The name of the property to retrieve a descriptor for.
+ * @return the descriptor, or undefined if it does not exist. Keep in mind that
+ *     plain properties may not have a descriptor defined.
+ */
+export function getDescriptor<T extends object, K extends keyof T>(
     target: T, property: K) {
-  let descriptor = Object.getOwnPropertyDescriptor(target, property);
-  if (descriptor) {
-    return descriptor;
+  let descriptorTarget: object|null = target;
+  let descriptor: PropertyDescriptor|undefined;
+  while (descriptorTarget) {
+    descriptor = Object.getOwnPropertyDescriptor(descriptorTarget, property);
+    if (descriptor) {
+      break;
+    }
+
+    // Walk up the instance's prototype chain in case the property is declared
+    // on a superclass.
+    descriptorTarget = Object.getPrototypeOf(descriptorTarget);
   }
 
-  const prototype = Object.getPrototypeOf(target);
-  descriptor = Object.getOwnPropertyDescriptor(prototype, property);
-  if (descriptor) {
-    return descriptor;
-  }
-
-  return {
-    configurable: true,
-    enumerable: true,
-    value: undefined,
-    writable: true
-  };
+  return descriptor;
 }
 
 /**

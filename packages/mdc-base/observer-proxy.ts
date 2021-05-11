@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCObserver, Observer, ObserverRecord} from './observer';
+import {getDescriptor, MDCObserver, Observer, ObserverRecord} from './observer';
 import {Constructor} from './types';
 
 /**
@@ -178,7 +178,7 @@ function installObserver<T extends object>(target: T): TargetObservers<T> {
   const existingKeyValues = new Map<keyof T, T[keyof T]>();
   const keys = Object.getOwnPropertyNames(target) as Array<keyof T>;
   for (const key of keys) {
-    const descriptor = Object.getOwnPropertyDescriptor(target, key);
+    const descriptor = getDescriptor(target, key);
     if (descriptor && descriptor.writable) {
       existingKeyValues.set(key, descriptor.value);
       delete target[key];
@@ -187,13 +187,15 @@ function installObserver<T extends object>(target: T): TargetObservers<T> {
 
   const proxy =
       new Proxy<T>(Object.create(prototype), {
-        get(target, key) {
-          return Reflect.get(target, key);
+        get(target, key, receiver) {
+          return Reflect.get(target, key, receiver);
         },
-        set(target, key, newValue) {
+        set(target, key, newValue, receiver) {
           const isTargetObserversKey = key === isTargetObservers ||
               key === isEnabled || key === getObservers;
-          const previous = Reflect.get(target, key);
+          const previous = Reflect.get(target, key, receiver);
+          // Do not use receiver when setting the target's key. We do not want
+          // to change whatever the target's inherent receiver is.
           Reflect.set(target, key, newValue);
           if (!isTargetObserversKey && proxy[isEnabled] &&
               newValue !== previous) {
