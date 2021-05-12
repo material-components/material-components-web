@@ -1,3 +1,6 @@
+// Must come first for configuration of deprecation
+@forward "mdc-switch";
+
 @forward "@material/density/variables" as mdc-density-*;
 @forward "@material/base/mixins" as mdc-base-*;
 @forward "@material/feature-targeting/variables" as mdc-feature-*;
@@ -25,4 +28,3 @@
 @forward "@material/animation/functions" as mdc-animation-*;
 @forward "@material/ripple/functions" as mdc-*;
 @forward "functions" as mdc-switch-*;
-@forward "mdc-switch";

@@ -34,6 +34,9 @@
 @use './variables';
 @use '@material/dom/mixins' as dom-mixins;
 
+// Temporary suffix to add to shared selectors between versions for migration
+$deprecated-suffix: '-deprecated' !default;
+
 //
 // Public
 //
@@ -53,7 +56,7 @@
 
   @include density(variables.$density-scale, $query: $query);
 
-  .mdc-switch {
+  .mdc-switch#{$deprecated-suffix} {
     @include feature-targeting.targets($feat-structure) {
       @include base_;
     }
@@ -79,7 +82,7 @@
     }
   }
 
-  .mdc-switch__track {
+  .mdc-switch__track#{$deprecated-suffix} {
     @include track_($query);
   }
 
@@ -93,7 +96,7 @@
 
   .mdc-switch--checked {
     @include feature-targeting.targets($feat-structure) {
-      .mdc-switch__track {
+      .mdc-switch__track#{$deprecated-suffix} {
         @include track-checked_;
       }
 
@@ -129,7 +132,7 @@
 @mixin ripple($query: feature-targeting.all()) {
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
-  .mdc-switch {
+  .mdc-switch#{$deprecated-suffix} {
     @include toggled-off-ripple-color(
       variables.$toggled-off-ripple-color,
       $query
@@ -162,7 +165,7 @@
 @mixin toggled-on-track-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  &.mdc-switch--checked .mdc-switch__track {
+  &.mdc-switch--checked .mdc-switch__track#{$deprecated-suffix} {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
     }
@@ -189,7 +192,7 @@
 @mixin toggled-off-track-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  &:not(.mdc-switch--checked) .mdc-switch__track {
+  &:not(.mdc-switch--checked) .mdc-switch__track#{$deprecated-suffix} {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
     }
@@ -274,7 +277,7 @@
   $query: feature-targeting.all()
 ) {
   // Ensure sufficient specificity to override base state opacities
-  &.mdc-switch .mdc-switch__thumb-underlay {
+  &.mdc-switch#{$deprecated-suffix} .mdc-switch__thumb-underlay {
     @include ripple-theme.states-opacities($opacity-map, $query: $query);
   }
 }
