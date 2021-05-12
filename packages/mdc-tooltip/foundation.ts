@@ -523,7 +523,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         HAS_WINDOW ? getCorrectPropertyName(window, 'transform') : 'transform';
     this.adapter.setSurfaceStyleProperty(
         `${transformProperty}-origin`,
-        `${yTransformOrigin} ${xTransformOrigin}`);
+        `${xTransformOrigin} ${yTransformOrigin}`);
     this.adapter.setStyleProperty('top', `${top}px`);
     this.adapter.setStyleProperty('left', `${left}px`);
   }
@@ -550,7 +550,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         HAS_WINDOW ? getCorrectPropertyName(window, 'transform') : 'transform';
     this.adapter.setSurfaceStyleProperty(
         `${transformProperty}-origin`,
-        `${yTransformOrigin} ${xTransformOrigin}`);
+        `${xTransformOrigin} ${yTransformOrigin}`);
     // A rich tooltip has `absolute` positioning and is placed as a sibling to
     // the anchor element. Its positioning is calculated with respect to the
     // parent element, and so the values need to be adjusted against the parent
@@ -1163,7 +1163,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         `rotate(${values.rotation}deg) skewY(${values.skew}deg) scaleX(${
             scaleX})`);
     this.adapter.setTooltipCaretStyle(
-        'transform-origin', `${values.yAlignment} ${values.xAlignment}`);
+        'transform-origin', `${values.xAlignment} ${values.yAlignment}`);
     return {yTransformOrigin: values.yAxisPx, xTransformOrigin: values.xAxisPx};
   }
 
