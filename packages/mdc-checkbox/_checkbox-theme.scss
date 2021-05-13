@@ -33,9 +33,10 @@
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/color-custom-properties';
 @use '@material/theme/custom-properties';
+@use '@material/theme/keys';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
-@use '@material/touch-target/variables' as touch-target-variables;
+@use '@material/touch-target/touch-target';
 @use './checkbox-custom-properties';
 
 $baseline-theme-color: secondary !default;
@@ -67,8 +68,106 @@ $density-config: (
 
 $ripple-target: '.mdc-checkbox__ripple';
 
-/// Material baseline light theme configuration of checkbox.
-/// See https://material.io/components/selection-controls for spec.
+// TODO(b/178230502): Density related keys does not exist in tokens. Including
+//     `state-layer-size` and `touch-target-size`
+// TODO(b/187852988): `selected-checkmark-color` does not exist in tokens.
+$_light-theme: (
+  disabled-selected-icon-color: null,
+  disabled-selected-icon-opacity: null,
+  disabled-unselected-icon-color: null,
+  disabled-unselected-icon-opacity: null,
+  selected-checkmark-color: $mark-color,
+  selected-focus-icon-color: $baseline-theme-color,
+  selected-focus-state-layer-color: theme-color.$on-surface,
+  selected-focus-state-layer-opacity: 0.12,
+  selected-hover-icon-color: $baseline-theme-color,
+  selected-hover-state-layer-color: $baseline-theme-color,
+  selected-hover-state-layer-opacity:
+    map.get(ripple-theme.$dark-ink-opacities, hover),
+  selected-icon-color: $baseline-theme-color,
+  selected-pressed-icon-color: $baseline-theme-color,
+  selected-pressed-state-layer-color: theme-color.$on-surface,
+  selected-pressed-state-layer-opacity:
+    map.get(ripple-theme.$dark-ink-opacities, pressed),
+  state-layer-size: $ripple-size,
+  touch-target-size: touch-target.$height,
+  unselected-focus-icon-color: $baseline-theme-color,
+  unselected-focus-state-layer-color: theme-color.$on-surface,
+  unselected-focus-state-layer-opacity:
+    map.get(ripple-theme.$dark-ink-opacities, focus),
+  unselected-hover-icon-color: $baseline-theme-color,
+  unselected-hover-state-layer-color: theme-color.$on-surface,
+  unselected-hover-state-layer-opacity:
+    map.get(ripple-theme.$dark-ink-opacities, hover),
+  unselected-icon-color: $border-color,
+  unselected-pressed-icon-color: null,
+  unselected-pressed-state-layer-color: theme-color.$on-surface,
+  unselected-pressed-state-layer-opacity:
+    map.get(ripple-theme.$dark-ink-opacities, pressed),
+);
+
+@mixin theme-styles($theme) {
+  @include theme.validate-keys($_light-theme, $theme);
+  $theme: keys.create-theme-properties($theme, $prefix: 'checkbox');
+
+  @include disabled-container-colors(
+    $unmarked-stroke-color: map.get($theme, disabled-unselected-icon-color),
+    $marked-fill-color: map.get($theme, disabled-selected-icon-color)
+  );
+
+  @include ink-color(map.get($theme, selected-checkmark-color));
+  @include disabled-ink-color(map.get($theme, selected-checkmark-color));
+
+  @include _icon-color(
+    map.get($theme, unselected-icon-color),
+    map.get($theme, selected-icon-color)
+  );
+
+  &:hover {
+    @include _icon-color(
+      map.get($theme, unselected-hover-icon-color),
+      map.get($theme, selected-hover-icon-color)
+    );
+  }
+
+  @include ripple-theme.focus() {
+    @include _icon-color(
+      map.get($theme, unselected-focus-icon-color),
+      map.get($theme, selected-focus-icon-color)
+    );
+  }
+
+  @include ripple-theme.active() {
+    @include _icon-color(
+      map.get($theme, unselected-pressed-icon-color),
+      map.get($theme, selected-pressed-icon-color)
+    );
+  }
+
+  @include ripple-color(
+    $color: map.get($theme, unselected-hover-state-layer-color),
+    $opacity-map: (
+      hover: map.get($theme, unselected-hover-state-layer-opacity),
+      focus: map.get($theme, unselected-focus-state-layer-opacity),
+      press: map.get($theme, unselected-pressed-state-layer-opacity),
+    )
+  );
+
+  @include focus-indicator-color(
+    $color: map.get($theme, selected-hover-state-layer-color),
+    $opacity-map: (
+      hover: map.get($theme, selected-hover-state-layer-opacity),
+      focus: map.get($theme, selected-focus-state-layer-opacity),
+      press: map.get($theme, selected-pressed-state-layer-opacity),
+    )
+  );
+
+  @include ripple-size(
+    map.get($theme, state-layer-size),
+    $touch-target-size: map.get($theme, touch-target-size)
+  );
+}
+
 $light-theme: (
   density-scale: 0,
   checkmark-color: $mark-color,
@@ -212,11 +311,12 @@ $light-theme: (
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  $checkbox-padding: ($ripple-size - $icon-size) / 2;
-  $ripple-size: custom-properties.create(
-    checkbox-custom-properties.$ripple-size,
-    $ripple-size
-  );
+  @if $ripple-size and not custom-properties.is-custom-prop($ripple-size) {
+    $ripple-size: custom-properties.create(
+      checkbox-custom-properties.$ripple-size,
+      $ripple-size
+    );
+  }
   $checkbox-padding: calc((_ripple-size - _icon-size) / 2);
   $replace: (
     _ripple-size: $ripple-size,
@@ -250,6 +350,54 @@ $light-theme: (
   );
 }
 
+/// Sets the touch target size and appropriate margin to accommodate the
+/// touch target.
+/// @param {Number} $touch-target-size Size of touch target (Native input) in `px`.
+/// @param {Number} $ripple-size Size of ripple in `px`.
+@mixin touch-target(
+  $touch-target-size,
+  $ripple-size,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  &.mdc-checkbox--touch {
+    $margin: calc((_touch-target-size - _ripple-size) / 2);
+    $replace: (
+      _touch-target-size: $touch-target-size,
+      _ripple-size: $ripple-size,
+    );
+
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(margin, $margin, $replace: $replace);
+    }
+
+    $offset: calc((_ripple-size - _touch-target-size) / 2);
+
+    @include feature-targeting.targets($feat-structure) {
+      .mdc-checkbox__native-control {
+        @include theme.property(top, $offset, $replace: $replace);
+        @include theme.property(right, $offset, $replace: $replace);
+        @include theme.property(left, $offset, $replace: $replace);
+        @include theme.property(width, $touch-target-size);
+        @include theme.property(height, $touch-target-size);
+      }
+    }
+  }
+}
+
+@mixin _icon-color($unselected-color, $selected-color) {
+  @if $unselected-color and $selected-color {
+    @include container-colors(
+      $unmarked-stroke-color: $unselected-color,
+      $marked-stroke-color: $selected-color,
+      $marked-fill-color: $selected-color
+    );
+  } @else if $unselected-color or $selected-color {
+    @error 'Both unselected and selected icon colors should be provided.';
+  }
+}
+
 ///
 /// Sets stroke & fill colors for both marked and unmarked state of enabled checkbox.
 /// Set $generate-keyframes to false to prevent the mixin from generating @keyframes
@@ -271,7 +419,10 @@ $light-theme: (
   $feat-color: feature-targeting.create-target($query, color);
 
   // Unchecked colors
-  @if (not custom-properties.is-custom-prop($unmarked-stroke-color)) {
+  @if (
+    $unmarked-stroke-color and not
+      custom-properties.is-custom-prop($unmarked-stroke-color)
+  ) {
     $unmarked-stroke-color: custom-properties.create(
       checkbox-custom-properties.$unchecked-color,
       theme-color.prop-value($unmarked-stroke-color)
@@ -287,7 +438,10 @@ $light-theme: (
   }
 
   // Checked colors
-  @if (not custom-properties.is-custom-prop($marked-stroke-color)) {
+  @if (
+    $marked-stroke-color and not
+      custom-properties.is-custom-prop($marked-stroke-color)
+  ) {
     $marked-stroke-color: custom-properties.create(
       checkbox-custom-properties.$checked-color,
       custom-properties.create(
@@ -296,7 +450,10 @@ $light-theme: (
       )
     );
   }
-  @if (not custom-properties.is-custom-prop($marked-fill-color)) {
+  @if (
+    $marked-fill-color and not
+      custom-properties.is-custom-prop($marked-fill-color)
+  ) {
     $marked-fill-color: custom-properties.create(
       checkbox-custom-properties.$checked-color,
       custom-properties.create(
@@ -314,7 +471,12 @@ $light-theme: (
     );
   }
 
-  @if $generate-keyframes {
+  @if $generate-keyframes and
+    $unmarked-stroke-color and
+    $marked-stroke-color and
+    $unmarked-fill-color and
+    $marked-fill-color
+  {
     $uid: theme-color.color-hash($unmarked-stroke-color) +
       theme-color.color-hash($marked-stroke-color) +
       theme-color.color-hash($unmarked-fill-color) +
@@ -372,7 +534,10 @@ $light-theme: (
   $marked-fill-color: $disabled-color,
   $query: feature-targeting.all()
 ) {
-  @if (not custom-properties.is-custom-prop($unmarked-stroke-color)) {
+  @if (
+    $unmarked-stroke-color and not
+      custom-properties.is-custom-prop($unmarked-stroke-color)
+  ) {
     $unmarked-stroke-color: custom-properties.create(
       checkbox-custom-properties.$disabled-color,
       theme-color.prop-value($unmarked-stroke-color)
@@ -387,7 +552,10 @@ $light-theme: (
     );
   }
 
-  @if (not custom-properties.is-custom-prop($marked-fill-color)) {
+  @if (
+    $marked-fill-color and not
+      custom-properties.is-custom-prop($marked-fill-color)
+  ) {
     $marked-fill-color: custom-properties.create(
       checkbox-custom-properties.$disabled-color,
       theme-color.prop-value($marked-fill-color)
@@ -408,7 +576,7 @@ $light-theme: (
 /// @param {Color} $color - The desired ink color in enabled state
 ///
 @mixin ink-color($color, $query: feature-targeting.all()) {
-  @if (not custom-properties.is-custom-prop($color)) {
+  @if ($color and not custom-properties.is-custom-prop($color)) {
     $color: custom-properties.create(
       checkbox-custom-properties.$ink-color,
       $color
@@ -425,7 +593,7 @@ $light-theme: (
 /// @param {Color} $color - The desired ink color in disabled state
 ///
 @mixin disabled-ink-color($color, $query: feature-targeting.all()) {
-  @if (not custom-properties.is-custom-prop($color)) {
+  @if ($color and not custom-properties.is-custom-prop($color)) {
     $color: custom-properties.create(
       checkbox-custom-properties.$ink-color,
       $color
@@ -474,40 +642,6 @@ $light-theme: (
       $query: $query,
       $ripple-target: $ripple-target
     );
-  }
-}
-
-/// Sets the touch target size and appropriate margin to accommodate the
-/// touch target.
-/// @param {Number} $touch-target-size Size of touch target (Native input) in `px`.
-/// @param {Number} $ripple-size Size of ripple in `px`.
-@mixin touch-target(
-  $touch-target-size,
-  $ripple-size,
-  $query: feature-targeting.all()
-) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  $margin: calc((_touch-target-size - _ripple-size) / 2);
-  $replace: (
-    _touch-target-size: $touch-target-size,
-    _ripple-size: $ripple-size,
-  );
-
-  @include feature-targeting.targets($feat-structure) {
-    @include theme.property(margin, $margin, $replace: $replace);
-  }
-
-  $offset: calc((_ripple-size - _touch-target-size) / 2);
-
-  @include feature-targeting.targets($feat-structure) {
-    .mdc-checkbox__native-control {
-      @include theme.property(top, $offset, $replace: $replace);
-      @include theme.property(right, $offset, $replace: $replace);
-      @include theme.property(left, $offset, $replace: $replace);
-      @include theme.property(width, $touch-target-size);
-      @include theme.property(height, $touch-target-size);
-    }
   }
 }
 
