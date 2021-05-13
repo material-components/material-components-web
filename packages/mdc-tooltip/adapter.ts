@@ -69,9 +69,10 @@ export interface MDCTooltipAdapter {
 
   /**
    * Sets the property value of the given style property on the tooltip's
-   * surface element (indicated by the "mdc-tooltip__surface" class).
+   * surface-animation element (indicated by the
+   * "mdc-tooltip__surface-animation" class).
    */
-  setSurfaceStyleProperty(propertyName: string, value: string): void;
+  setSurfaceAnimationStyleProperty(propertyName: string, value: string): void;
 
   /**
    * @return the width of the viewport.

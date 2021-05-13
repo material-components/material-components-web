@@ -47,6 +47,8 @@ const CARET_POSITION_STYLES = new Map([
       rotation: 35,
       skew: 20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin: `${numbers.CARET_INDENTATION}px`,
+      yTransformOrigin: RICH_TOOLTIP_HEIGHT,
     }
   ],
   [
@@ -59,6 +61,10 @@ const CARET_POSITION_STYLES = new Map([
       rotation: 35,
       skew: 20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin: `calc((${RICH_TOOLTIP_WIDTH} - ${
+          CARET_WIDTH / numbers.ANIMATION_SCALE}px) / 2)`,
+      yTransformOrigin: RICH_TOOLTIP_HEIGHT,
+
     }
   ],
   [
@@ -70,6 +76,9 @@ const CARET_POSITION_STYLES = new Map([
       rotation: -35,
       skew: -20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin:
+          `calc(${RICH_TOOLTIP_WIDTH} - ${numbers.CARET_INDENTATION}px)`,
+      yTransformOrigin: RICH_TOOLTIP_HEIGHT,
     }
   ],
   [
@@ -81,6 +90,9 @@ const CARET_POSITION_STYLES = new Map([
       rotation: -55,
       skew: 20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin: RICH_TOOLTIP_WIDTH,
+      yTransformOrigin: `${numbers.CARET_INDENTATION}px`,
+
     }
   ],
   [
@@ -93,6 +105,9 @@ const CARET_POSITION_STYLES = new Map([
       rotation: -55,
       skew: 20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin: RICH_TOOLTIP_WIDTH,
+      yTransformOrigin: `calc((${RICH_TOOLTIP_HEIGHT} - ${
+          CARET_WIDTH / numbers.ANIMATION_SCALE}px) / 2)`,
     }
   ],
   [
@@ -104,6 +119,9 @@ const CARET_POSITION_STYLES = new Map([
       rotation: 55,
       skew: -20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin: RICH_TOOLTIP_WIDTH,
+      yTransformOrigin:
+          `calc(${RICH_TOOLTIP_HEIGHT} - ${numbers.CARET_INDENTATION}px)`,
     }
   ],
   [
@@ -115,6 +133,9 @@ const CARET_POSITION_STYLES = new Map([
       rotation: 55,
       skew: -20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin: 0,
+      yTransformOrigin: `${numbers.CARET_INDENTATION}px`,
+
     }
   ],
   [
@@ -127,6 +148,10 @@ const CARET_POSITION_STYLES = new Map([
       rotation: 55,
       skew: -20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin: 0,
+      yTransformOrigin: `calc((${RICH_TOOLTIP_HEIGHT} - ${
+          CARET_WIDTH / numbers.ANIMATION_SCALE}px) / 2)`,
+
     }
   ],
   [
@@ -138,6 +163,10 @@ const CARET_POSITION_STYLES = new Map([
       rotation: -55,
       skew: 20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin: 0,
+      yTransformOrigin:
+          `calc(${RICH_TOOLTIP_HEIGHT} - ${numbers.CARET_INDENTATION}px)`,
+
     }
   ],
   [
@@ -149,6 +178,9 @@ const CARET_POSITION_STYLES = new Map([
       rotation: -35,
       skew: -20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin: `${numbers.CARET_INDENTATION}px`,
+      yTransformOrigin: 0,
+
     }
   ],
   [
@@ -161,6 +193,10 @@ const CARET_POSITION_STYLES = new Map([
       rotation: -35,
       skew: -20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin: `calc((${RICH_TOOLTIP_WIDTH} - ${
+          CARET_WIDTH / numbers.ANIMATION_SCALE}px) / 2)`,
+      yTransformOrigin: 0,
+
     }
   ],
   [
@@ -172,6 +208,9 @@ const CARET_POSITION_STYLES = new Map([
       rotation: 35,
       skew: 20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin:
+          `calc(${RICH_TOOLTIP_WIDTH} - ${numbers.CARET_INDENTATION}px)`,
+      yTransformOrigin: 0,
     }
   ]
 ]);
@@ -185,6 +224,10 @@ const CARET_POSITION_STYLES_RTL = new Map([
       rotation: 35,
       skew: 20,
       scaleX: 0.9396926207859084,
+      xTransformOrigin:
+          `calc(${RICH_TOOLTIP_WIDTH} - ${numbers.CARET_INDENTATION}px)`,
+      yTransformOrigin: 0,
+
     }
   ],
 ]);
@@ -279,7 +322,7 @@ describe('MDCTooltipFoundation', () => {
       'removeClass',
       'getComputedStyleProperty',
       'setStyleProperty',
-      'setSurfaceStyleProperty',
+      'setSurfaceAnimationStyleProperty',
       'getViewportWidth',
       'getViewportHeight',
       'getTooltipSize',
@@ -1341,7 +1384,7 @@ describe('MDCTooltipFoundation', () => {
     });
     mockAdapter.getTooltipSize.and.returnValue({width: 100, height: 30});
     foundation.show();
-    expect(mockAdapter.setSurfaceStyleProperty)
+    expect(mockAdapter.setSurfaceAnimationStyleProperty)
         .toHaveBeenCalledWith('transform-origin', 'left top');
   });
 
@@ -1374,7 +1417,7 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
 
     foundation.show();
-    expect(mockAdapter.setSurfaceStyleProperty)
+    expect(mockAdapter.setSurfaceAnimationStyleProperty)
         .toHaveBeenCalledWith('transform-origin', 'right top');
   });
 
@@ -1407,7 +1450,7 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
 
     foundation.show();
-    expect(mockAdapter.setSurfaceStyleProperty)
+    expect(mockAdapter.setSurfaceAnimationStyleProperty)
         .toHaveBeenCalledWith('transform-origin', 'center top');
   });
 
@@ -1481,7 +1524,7 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
 
     foundation.show();
-    expect(mockAdapter.setSurfaceStyleProperty)
+    expect(mockAdapter.setSurfaceAnimationStyleProperty)
         .toHaveBeenCalledWith('transform-origin', 'right top');
   });
 
@@ -1520,7 +1563,7 @@ describe('MDCTooltipFoundation', () => {
     mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
 
     foundation.show();
-    expect(mockAdapter.setSurfaceStyleProperty)
+    expect(mockAdapter.setSurfaceAnimationStyleProperty)
         .toHaveBeenCalledWith('transform-origin', 'left top');
   });
 
@@ -1704,7 +1747,7 @@ describe('MDCTooltipFoundation', () => {
 
     foundation.setTooltipPosition({xPos: XPosition.START});
     foundation.show();
-    expect(mockAdapter.setSurfaceStyleProperty)
+    expect(mockAdapter.setSurfaceAnimationStyleProperty)
         .toHaveBeenCalledWith('transform-origin', 'right top');
   });
 
@@ -1741,7 +1784,7 @@ describe('MDCTooltipFoundation', () => {
 
     foundation.setTooltipPosition({xPos: XPosition.END});
     foundation.show();
-    expect(mockAdapter.setSurfaceStyleProperty)
+    expect(mockAdapter.setSurfaceAnimationStyleProperty)
         .toHaveBeenCalledWith('transform-origin', 'left top');
   });
 
@@ -1820,7 +1863,7 @@ describe('MDCTooltipFoundation', () => {
 
     foundation.setTooltipPosition({yPos: YPosition.ABOVE});
     foundation.show();
-    expect(mockAdapter.setSurfaceStyleProperty)
+    expect(mockAdapter.setSurfaceAnimationStyleProperty)
         .toHaveBeenCalledWith('transform-origin', 'left bottom');
   });
 
@@ -2217,6 +2260,11 @@ describe('MDCTooltipFoundation', () => {
           .toHaveBeenCalledWith(
               'transform-origin',
               `${styleValues.xAlignment} ${styleValues.yAlignment}`);
+      expect(mockAdapter.setSurfaceAnimationStyleProperty)
+          .toHaveBeenCalledWith(
+              'transform-origin',
+              `${styleValues.xTransformOrigin} ${
+                  styleValues.yTransformOrigin}`);
     });
   }
 
@@ -2956,5 +3004,10 @@ describe('MDCTooltipFoundation', () => {
            .toHaveBeenCalledWith(
                'transform-origin',
                `${styleValues.xAlignment} ${styleValues.yAlignment}`);
+       expect(mockAdapter.setSurfaceAnimationStyleProperty)
+           .toHaveBeenCalledWith(
+               'transform-origin',
+               `${styleValues.xTransformOrigin} ${
+                   styleValues.yTransformOrigin}`);
      });
 });

@@ -58,7 +58,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       removeClass: () => undefined,
       getComputedStyleProperty: () => '',
       setStyleProperty: () => undefined,
-      setSurfaceStyleProperty: () => undefined,
+      setSurfaceAnimationStyleProperty: () => undefined,
       getViewportWidth: () => 0,
       getViewportHeight: () => 0,
       getTooltipSize: () => ({width: 0, height: 0}),
@@ -521,7 +521,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     const transformProperty =
         HAS_WINDOW ? getCorrectPropertyName(window, 'transform') : 'transform';
-    this.adapter.setSurfaceStyleProperty(
+    this.adapter.setSurfaceAnimationStyleProperty(
         `${transformProperty}-origin`,
         `${xTransformOrigin} ${yTransformOrigin}`);
     this.adapter.setStyleProperty('top', `${top}px`);
@@ -548,7 +548,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     const transformProperty =
         HAS_WINDOW ? getCorrectPropertyName(window, 'transform') : 'transform';
-    this.adapter.setSurfaceStyleProperty(
+    this.adapter.setSurfaceAnimationStyleProperty(
         `${transformProperty}-origin`,
         `${xTransformOrigin} ${yTransformOrigin}`);
     // A rich tooltip has `absolute` positioning and is placed as a sibling to
@@ -1164,7 +1164,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
             scaleX})`);
     this.adapter.setTooltipCaretStyle(
         'transform-origin', `${values.xAlignment} ${values.yAlignment}`);
-    return {yTransformOrigin: values.yAxisPx, xTransformOrigin: values.xAxisPx};
+    return {
+      yTransformOrigin: values.yTransformOrigin,
+      xTransformOrigin: values.xTransformOrigin
+    };
   }
 
   /**
@@ -1187,6 +1190,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         `calc((${tooltipHeight} - ${caretSize.caretWidth}px) / 2)`;
     const flushWithEdge = '0';
     const indentedFromEdge = `${numbers.CARET_INDENTATION}px`;
+    const indentedFromWidth = `calc(${tooltipWidth} - ${indentedFromEdge})`;
+    const indentedFromHeight = `calc(${tooltipHeight} - ${indentedFromEdge})`;
     const verticalRotation = 35;
     const horizontalRotation = Math.abs(90 - verticalRotation);
     const skewDeg = 20;
@@ -1200,6 +1205,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: midpointWidth,
           rotation: -1 * verticalRotation,
           skew: -1 * skewDeg,
+          xTransformOrigin: midpointWidth,
+          yTransformOrigin: flushWithEdge,
         };
       case PositionWithCaret.BELOW_END:
         return {
@@ -1209,6 +1216,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: indentedFromEdge,
           rotation: isLTR ? verticalRotation : -1 * verticalRotation,
           skew: isLTR ? skewDeg : -1 * skewDeg,
+          xTransformOrigin: isLTR ? indentedFromWidth : indentedFromEdge,
+          yTransformOrigin: flushWithEdge,
         };
       case PositionWithCaret.BELOW_START:
         return {
@@ -1218,6 +1227,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: indentedFromEdge,
           rotation: isLTR ? -1 * verticalRotation : verticalRotation,
           skew: isLTR ? -1 * skewDeg : skewDeg,
+          xTransformOrigin: isLTR ? indentedFromEdge : indentedFromWidth,
+          yTransformOrigin: flushWithEdge,
         };
 
       case PositionWithCaret.TOP_SIDE_END:
@@ -1228,6 +1239,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: flushWithEdge,
           rotation: isLTR ? horizontalRotation : -1 * horizontalRotation,
           skew: isLTR ? -1 * skewDeg : skewDeg,
+          xTransformOrigin: isLTR ? flushWithEdge : tooltipWidth,
+          yTransformOrigin: indentedFromEdge,
         };
       case PositionWithCaret.CENTER_SIDE_END:
         return {
@@ -1237,6 +1250,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: flushWithEdge,
           rotation: isLTR ? horizontalRotation : -1 * horizontalRotation,
           skew: isLTR ? -1 * skewDeg : skewDeg,
+          xTransformOrigin: isLTR ? flushWithEdge : tooltipWidth,
+          yTransformOrigin: midpointHeight,
         };
       case PositionWithCaret.BOTTOM_SIDE_END:
         return {
@@ -1246,6 +1261,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: flushWithEdge,
           rotation: isLTR ? -1 * horizontalRotation : horizontalRotation,
           skew: isLTR ? skewDeg : -1 * skewDeg,
+          xTransformOrigin: isLTR ? flushWithEdge : tooltipWidth,
+          yTransformOrigin: indentedFromHeight,
         };
 
       case PositionWithCaret.TOP_SIDE_START:
@@ -1256,6 +1273,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: flushWithEdge,
           rotation: isLTR ? -1 * horizontalRotation : horizontalRotation,
           skew: isLTR ? skewDeg : -1 * skewDeg,
+          xTransformOrigin: isLTR ? tooltipWidth : flushWithEdge,
+          yTransformOrigin: indentedFromEdge,
         };
       case PositionWithCaret.CENTER_SIDE_START:
         return {
@@ -1265,6 +1284,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: flushWithEdge,
           rotation: isLTR ? -1 * horizontalRotation : horizontalRotation,
           skew: isLTR ? skewDeg : -1 * skewDeg,
+          xTransformOrigin: isLTR ? tooltipWidth : flushWithEdge,
+          yTransformOrigin: midpointHeight,
         };
       case PositionWithCaret.BOTTOM_SIDE_START:
         return {
@@ -1274,6 +1295,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: flushWithEdge,
           rotation: isLTR ? horizontalRotation : -1 * horizontalRotation,
           skew: isLTR ? -1 * skewDeg : skewDeg,
+          xTransformOrigin: isLTR ? tooltipWidth : flushWithEdge,
+          yTransformOrigin: indentedFromHeight,
         };
 
       case PositionWithCaret.ABOVE_CENTER:
@@ -1284,6 +1307,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: midpointWidth,
           rotation: verticalRotation,
           skew: skewDeg,
+          xTransformOrigin: midpointWidth,
+          yTransformOrigin: tooltipHeight,
         };
       case PositionWithCaret.ABOVE_END:
         return {
@@ -1293,6 +1318,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: indentedFromEdge,
           rotation: isLTR ? -1 * verticalRotation : verticalRotation,
           skew: isLTR ? -1 * skewDeg : skewDeg,
+          xTransformOrigin: isLTR ? indentedFromWidth : indentedFromEdge,
+          yTransformOrigin: tooltipHeight,
         };
       default:
       case PositionWithCaret.ABOVE_START:
@@ -1303,6 +1330,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           xAxisPx: indentedFromEdge,
           rotation: isLTR ? verticalRotation : -1 * verticalRotation,
           skew: isLTR ? skewDeg : -1 * skewDeg,
+          xTransformOrigin: isLTR ? indentedFromEdge : indentedFromWidth,
+          yTransformOrigin: tooltipHeight,
         };
     }
   }

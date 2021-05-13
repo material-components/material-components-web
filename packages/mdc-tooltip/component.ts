@@ -191,9 +191,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       setStyleProperty: (propertyName, value) => {
         (this.root as HTMLElement).style.setProperty(propertyName, value);
       },
-      setSurfaceStyleProperty: (propertyName, value) => {
-        const surface =
-            this.root.querySelector<HTMLElement>(`.${CssClasses.SURFACE}`);
+      setSurfaceAnimationStyleProperty: (propertyName, value) => {
+        const surface = this.root.querySelector<HTMLElement>(
+            `.${CssClasses.SURFACE_ANIMATION}`);
         surface?.style.setProperty(propertyName, value);
       },
       getViewportWidth: () => window.innerWidth,

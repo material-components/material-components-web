@@ -30,6 +30,7 @@ enum CssClasses {
   HIDE_TRANSITION = 'mdc-tooltip--hide-transition',
   MULTILINE_TOOLTIP = 'mdc-tooltip--multiline',
   SURFACE = 'mdc-tooltip__surface',
+  SURFACE_ANIMATION = 'mdc-tooltip__surface-animation',
   TOOLTIP_CARET_TOP = 'mdc-tooltip__caret-surface-top',
   TOOLTIP_CARET_BOTTOM = 'mdc-tooltip__caret-surface-bottom',
 }
