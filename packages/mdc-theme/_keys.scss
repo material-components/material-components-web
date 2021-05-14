@@ -452,6 +452,14 @@ $_options: ();
   @return custom-properties.set-fallback($prop, resolve($key, $deep: true));
 }
 
+@mixin declare-custom-properties($theme, $prefix: null) {
+  $theme: create-theme-properties($theme, $prefix);
+
+  @each $key, $custom-prop in $theme {
+    @include custom-properties.declaration($custom-prop);
+  }
+}
+
 /// Creates a custom property varname for a key. This function will add a key's
 /// option's `custom-property-prefix` if it exists.
 ///
