@@ -149,8 +149,8 @@ Material Design spec advises that touch targets should be at least 48 x 48 px. T
 ```html
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-segmented-button__segment mdc-segmented-button--touch">
+    <div class="mdc-segmented-button__touch"></div>
     <div class="mdc-segmented-button__label">Sample Text</div>
-    <div class="mdc-segmented-button__touch">
   </button>
 </div>
 ```
