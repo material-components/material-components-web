@@ -184,13 +184,19 @@
 
   .mdc-list-item__secondary-text {
     @include typography.typography(body2, $query);
-    // TODO (b/168048902): disable this for three-line (multi-line) lists.
     @include typography.overflow-ellipsis($query);
     @include typography.text-baseline(
       $top: 20px,
       $display: block,
       $query: $query
     );
+
+    .mdc-list-item--with-three-lines & {
+      @include feature-targeting.targets($feat-structure) {
+        white-space: normal;
+        line-height: 20px;
+      }
+    }
   }
 
   .mdc-list-item__overline-text {
