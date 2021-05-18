@@ -606,13 +606,14 @@ $error-color: error !default;
 
   .mdc-select__anchor {
     @include feature-targeting.targets($feat-structure) {
+      align-items: baseline;
+      display: flex;
       height: $new-height;
     }
 
     // Filled variant is aligned to baseline...
-    @include typography-mixins.baseline(
-      $top: $filled-baseline-top,
-      $display: flex,
+    @include typography-mixins.baseline-top(
+      $filled-baseline-top,
       $query: $query
     );
     // ...unless it is too small to display a label

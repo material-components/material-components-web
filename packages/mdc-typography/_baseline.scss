@@ -1,0 +1,170 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:map';
+@use '@material/theme/custom-properties';
+@use '@material/theme/theme';
+
+/// Emits static styles to add a baseline strut from a container's text to the
+/// top edge of the container.
+///
+/// @example - scss
+///   .container {
+///     display: flex;
+///     align-items: baseline;
+///     @include baseline.top-static-styles;
+///     @include baseline.theme-styles((top: 24px));
+///   }
+///
+/// Top baseline styles only work with flex, inline-flex, block, and
+/// inline-block display types.
+///
+/// If the container is a flexbox container, set `align-items` to `baseline`.
+@mixin top-static-styles() {
+  &::before {
+    @include _strut-static-styles;
+
+    vertical-align: 0;
+  }
+}
+
+/// Emits static styles to add a baseline strut from a container's text to the
+/// bottom edge of the container.
+///
+/// @example - scss
+///   .container {
+///     display: block;
+///     @include baseline.bottom-static-styles;
+///     @include baseline.theme-styles((bottom: 8px));
+///   }
+///
+/// Bottom baseline styles only work with block and inline-block display types.
+///
+/// A flexbox container can not directly use a bottom baseline strut. Instead,
+/// add a child with its own bottom baseline to the container.
+///
+/// @example - html
+///   <div class="flex-container">
+///     Flex container with baseline bottom
+///     <div class="baseline-bottom"></div>
+///   </div>
+///
+/// @example - scss
+///   .flex-container {
+///     display: flex;
+///     align-items: baseline;
+///
+///     .baseline-bottom {
+///       @include baseline.bottom-static-styles;
+///       @include baseline.theme-styles((bottom: 8px));
+///     }
+///   }
+@mixin bottom-static-styles() {
+  &::after {
+    @include _strut-static-styles;
+  }
+}
+
+/// Creates a baseline strut. A baseline strut needs a height, and
+/// vertical-align for bottom struts, to work.
+///
+/// @link go/css-baseline for more details on how this hack works.
+@mixin _strut-static-styles() {
+  display: inline-block;
+  width: 0;
+  content: '';
+}
+
+/// Emits static styles for text that has a baseline and needs to position
+/// itself relative to the baseline of other text.
+///
+/// @example - html
+///   <h1 class="baseline-bottom">Title</h1>
+///   <p class="baseline-top">Lorem ipsum...</p>
+///
+/// @example - scss
+///   $distance-between-baselines: 16px;
+///
+///   .baseline-bottom {
+///     @include baseline.bottom-static-styles;
+///     @include baseline.text-static-styles;
+///     @include baseline.theme-styles((bottom: $distance-between-baselines));
+///     @include baseline.text-theme-styles((bottom: $distance-between-baselines));
+///   }
+///
+///   .baseline-top {
+///     @include baseline.top-static-styles;
+///     @include baseline.text-static-styles;
+///     @include baseline.theme-styles((top: $distance-between-baselines));
+///     @include baseline.text-theme-styles((top: $distance-between-baselines));
+///   }
+///
+/// When stacking text by baseline, make sure the text's bottom baseline is the
+/// same as the following text's top baseline.
+///
+/// @link go/css-baseline for more details and examples.
+///
+/// Note: `text-*` baseline mixins are not required for text that wants to
+/// position itself solely by its baseline to the edge of a container. It is
+/// only required when positioning text to the baseline of other text.
+@mixin text-static-styles() {
+  margin-top: 0;
+}
+
+$no-baseline-theme: (
+  top: 0,
+  bottom: 0,
+);
+
+/// Emits themable styles for a container's top and/or bottom baseline struts.
+@mixin theme-styles($theme) {
+  &::before {
+    @include theme.property(height, map.get($theme, top));
+  }
+
+  &::after {
+    $bottom: map.get($theme, bottom);
+    @include theme.property(height, $bottom);
+    // IE11 doesn't support calc() with vertical-align, so we need to add a
+    // custom fallback or avoid emitting calc() entirely.
+    @if custom-properties.is-custom-prop($bottom) {
+      @include theme.property(
+        vertical-align,
+        calc(-1 * bottom),
+        $replace: (bottom: $bottom),
+        $fallback: -1 * custom-properties.get-fallback($bottom)
+      );
+    } @else if $bottom {
+      vertical-align: -1 * $bottom;
+    }
+  }
+}
+
+/// Emits themable styles for text's top and/or bottom baseline struts. This
+/// should be combined on top of `theme-styles()` for a text element.
+@mixin text-theme-styles($theme) {
+  @include theme.property(
+    margin-bottom,
+    calc(-1 * bottom),
+    $replace: (bottom: map.get($theme, bottom))
+  );
+}

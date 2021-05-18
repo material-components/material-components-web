@@ -128,6 +128,7 @@
 @mixin property(
   $property,
   $value: null,
+  $fallback: null,
   $gss: (),
   $replace: null,
   $important: false
@@ -145,6 +146,7 @@
 
     @include custom-properties.declaration(
       $property,
+      $fallback: $fallback,
       $gss: $gss,
       $important: $important
     );
@@ -154,6 +156,7 @@
     @include custom-properties.declaration(
       $property,
       $value,
+      $fallback: $fallback,
       $gss: $gss,
       $important: $important
     );
@@ -186,13 +189,13 @@
     @include custom-properties.declaration(
       $property,
       $custom-prop,
+      $fallback: $fallback,
       $gss: $gss,
       $important: $important
     );
   } @else {
     // $value is a standard CSS value
     //   property: value;
-    $fallback: null;
     @if $replace {
       // If any replacements are null, treat the entire value as null (do not
       // emit anything).
@@ -203,6 +206,7 @@
       }
     }
 
+    $needs-fallback: false;
     @if $replace and $value {
       @if meta.type-of($replace) != 'map' {
         @error 'mdc-theme: Invalid replacement #{$replace}. Must be a Map.';
@@ -210,7 +214,6 @@
 
       $replace-map-fallback: ();
       $replace-map-value: ();
-      $needs-fallback: false;
       @each $name, $replacement in $replace {
         @if custom-properties.is-custom-prop($replacement) {
           $replace-value: custom-properties.get-declaration-value($replacement);
@@ -242,18 +245,22 @@
       }
 
       @if meta.type-of($value) == 'string' {
-        @if $needs-fallback {
+        @if $needs-fallback and not $fallback {
           $fallback: replace.replace-string($value, $replace-map-fallback);
         }
         $value: replace.replace-string($value, $replace-map-value);
       } @else if meta.type-of($value) == 'list' {
-        @if $needs-fallback {
+        @if $needs-fallback and not $fallback {
           $fallback: replace.replace-list($value, $replace-map-fallback);
         }
         $value: replace.replace-list($value, $replace-map-value);
       } @else {
         @error 'mdc-theme: Invalid replacement value #{$value}. $replace may only be used with string or list values.';
       }
+    }
+
+    @if not $needs-fallback {
+      $fallback: null;
     }
 
     @include css.declaration(

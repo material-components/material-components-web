@@ -7,7 +7,6 @@
     @include typography.base($query: $query);
     @include typography.typography(button, $query: $query);
     @include typography.overflow-ellipsis($query: $query);
-    @include typography.baseline($top: 0, $bottom: 0, $query: $query);
     @include typography.text-baseline($top: 0, $bottom: 0, $query: $query);
   }
 }

@@ -289,11 +289,19 @@ $_varname-prefix: 'mdc';
 ///
 /// @param {String} $property - The CSS property of the declaration or the
 ///     custom property Map to emit.
-/// @param {Map} $custom-prop - A custom property Map for the property's value.
-///     Optional if $property is the custom property Map to emit.
-/// @param {Map} $gss - An optional Map of GSS annotations to add.
-/// @param {Bool} $important - If true, add `!important` to the declaration.
-@mixin declaration($property, $custom-prop: null, $gss: (), $important: false) {
+/// @param {Map} $custom-prop [null] - A custom property Map for the property's
+///     value. Optional if $property is the custom property Map to emit.
+/// @param {*} $fallback [null] - An optional fallback value to override the
+///     emitted declaration fallback.
+/// @param {Map} $gss [()] - An optional Map of GSS annotations to add.
+/// @param {Bool} $important [false] - If true, add `!important` to the declaration.
+@mixin declaration(
+  $property,
+  $custom-prop: null,
+  $fallback: null,
+  $gss: (),
+  $important: false
+) {
   @if $property {
     $value: null;
     $fallback-value: null;
@@ -318,7 +326,7 @@ $_varname-prefix: 'mdc';
     @include css.declaration(
       $property,
       $value,
-      $fallback-value: $fallback-value,
+      $fallback-value: if($fallback, $fallback, $fallback-value),
       $gss: $gss,
       $important: $important
     );

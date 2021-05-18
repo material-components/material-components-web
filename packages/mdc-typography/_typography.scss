@@ -30,6 +30,7 @@
 @use '@material/theme/custom-properties';
 @use '@material/theme/keys';
 @use '@material/theme/theme';
+@use './baseline';
 
 /// @deprecated Avoid calling this function directly. Instead, configure the
 /// `$styles-<style>` variable Maps.
@@ -328,54 +329,8 @@ $_styles-copy: $styles;
   }
 }
 
-/// Sets a container's baseline that text content will align to.
+/// @deprecated Use baseline.* individual mixins instead.
 ///
-/// If the `$display` is set to a flexbox display, only `$top` baseline may be
-/// set. A separate element must be added as a child of the container with a
-/// `$bottom` baseline.
-///
-/// @param {Number} $top - the distance from the top of the container to the
-///     text's baseline.
-/// @param {Number} $bottom - the distance from the text's baseline to the
-///     bottom of the container.
-/// @param {String} $display - the display type of the container. May be `flex`,
-///     `inline-flex`, `block`, or `inline-block`.
-@mixin baseline(
-  $top: 0,
-  $bottom: 0,
-  $display: block,
-  $query: feature-targeting.all()
-) {
-  $validDisplayTypes: (flex, inline-flex, block, inline-block);
-
-  @if list.index($validDisplayTypes, $display) == null {
-    @error "mdc-typography: invalid display specified! #{$display} must be one of #{$validDisplayTypes}";
-  }
-
-  $isFlexbox: $display == 'flex' or $display == 'inline-flex';
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    display: $display;
-
-    @if $isFlexbox {
-      align-items: baseline;
-    }
-  }
-
-  @if $top > 0 {
-    @include baseline-top($top, $query: $query);
-  }
-
-  @if $bottom > 0 {
-    @if $isFlexbox {
-      @error "mdc-typography: invalid baseline with display type. #{$display} cannot specifiy $bottom. Add a separate child element with its own $bottom.";
-    }
-
-    @include baseline-bottom($bottom, $query: $query);
-  }
-}
-
 /// Sets the baseline of flow text content.
 ///
 /// Separate `$top` and `$bottom` baselines may be specified. You should ensure
@@ -409,27 +364,36 @@ $_styles-copy: $styles;
     @error "mdc-typography: invalid display specified! #{$display} must be one of #{$validDisplayTypes}";
   }
 
-  $feat-structure: feature-targeting.create-target($query, structure);
+  @if $top > 0 {
+    @include baseline-top($top, $query: $query);
+  }
 
-  @include baseline(
-    $display: $display,
-    $top: $top,
-    $bottom: $bottom,
-    $query: $query
-  );
+  @if $bottom > 0 {
+    @include baseline-bottom($bottom, $query: $query);
+  }
+
+  $feat-structure: feature-targeting.create-target($query, structure);
   @include feature-targeting.targets($feat-structure) {
+    display: $display;
+
     @if $top > 0 {
-      margin-top: 0;
+      @include baseline.text-static-styles();
       /* @alternate */
       line-height: #{$lineHeight};
     }
 
     @if $bottom > 0 {
-      margin-bottom: -1 * $bottom;
+      @include baseline.text-theme-styles(
+        (
+          bottom: $bottom,
+        )
+      );
     }
   }
 }
 
+/// @deprecated Use baseline.top-static-styles and baseline.theme-styles
+///
 /// Creates a baseline strut from the top of a container. This mixin is for
 /// advanced users, prefer `baseline()`.
 ///
@@ -438,15 +402,18 @@ $_styles-copy: $styles;
 @mixin baseline-top($distance, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  &::before {
-    @include feature-targeting.targets($feat-structure) {
-      @include baseline-strut_($distance);
-
-      vertical-align: 0;
-    }
+  @include feature-targeting.targets($feat-structure) {
+    @include baseline.top-static-styles;
+    @include baseline.theme-styles(
+      (
+        top: $distance,
+      )
+    );
   }
 }
 
+/// @deprecated Use baseline.bottom-static-styles and baseline.theme-styles
+///
 /// Creates a baseline strut from the baseline to the bottom of a container.
 /// This mixin is for advanced users, prefer `baseline()`.
 ///
@@ -455,12 +422,13 @@ $_styles-copy: $styles;
 @mixin baseline-bottom($distance, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  &::after {
-    @include feature-targeting.targets($feat-structure) {
-      @include baseline-strut_($distance);
-
-      vertical-align: -1 * $distance;
-    }
+  @include feature-targeting.targets($feat-structure) {
+    @include baseline.bottom-static-styles;
+    @include baseline.theme-styles(
+      (
+        bottom: $distance,
+      )
+    );
   }
 }
 
@@ -476,13 +444,6 @@ $_styles-copy: $styles;
       content: '\200b';
     }
   }
-}
-
-@mixin baseline-strut_($distance) {
-  display: inline-block;
-  width: 0;
-  height: $distance;
-  content: '';
 }
 
 @function get-font($typography) {
