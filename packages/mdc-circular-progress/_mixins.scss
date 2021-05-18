@@ -54,6 +54,7 @@
       position: relative;
       /* @noflip */
       direction: ltr;
+      line-height: 0;
     }
 
     @include feature-targeting.targets($feat-animation) {
