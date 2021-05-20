@@ -28,10 +28,11 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/css';
 @use '@material/theme/custom-properties';
+@use '@material/theme/keys';
 @use '@material/theme/replace';
 @use '@material/theme/state';
-@use '@material/theme/theme-color';
 @use '@material/theme/theme';
+@use '@material/theme/theme-color';
 @use './fab-custom-properties';
 @use 'sass:math';
 @use 'sass:list';
@@ -73,8 +74,27 @@ $_light-theme: (
   pressed-state-layer-opacity: null,
 );
 
-@mixin theme($theme) {
+$custom-property-prefix: 'fab';
+
+@mixin theme-declare-custom-properties($theme) {
   @include theme.validate-keys($_light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme) {
+  @include theme.validate-keys($_light-theme, $theme);
+
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+  @include theme($theme);
+}
+
+@mixin theme($theme) {
   @include base-theme($theme);
 
   $shape-radius: map.get($theme, container-shape);
@@ -169,9 +189,9 @@ $_light-theme: (
 
   .mdc-fab__icon {
     @include feature-targeting.targets($feat-structure) {
-      width: $width;
-      height: $height;
-      font-size: $height;
+      @include theme.property('width', $width);
+      @include theme.property('height', $height);
+      @include theme.property('font-size', $height);
     }
   }
 }
@@ -191,11 +211,11 @@ $_light-theme: (
 }
 
 @mixin _container-height($height) {
-  height: $height;
+  @include theme.property('height', $height);
 }
 
 @mixin _container-width($width) {
-  width: $width;
+  @include theme.property('width', $width);
 }
 
 @mixin _icon-color($color-or-map) {

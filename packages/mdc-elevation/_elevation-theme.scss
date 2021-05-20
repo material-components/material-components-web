@@ -219,7 +219,7 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
 
   @include feature-targeting.targets($feat-color) {
     /* @alternate */
-    box-shadow: $box-shadow;
+    @include theme.property('box-shadow', $box-shadow);
   }
 }
 
