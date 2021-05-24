@@ -153,11 +153,11 @@
   .mdc-checkbox--touch {
     @include checkbox-theme.touch-target(
       custom-properties.create(
-        checkbox-custom-properties.$touch-target-size,
+        checkbox-state-layer-size,
         touch-target-variables.$height
       ),
       custom-properties.create(
-        checkbox-custom-properties.$ripple-size,
+        checkbox-state-layer-size,
         checkbox-theme.$ripple-size
       ),
       $query: $query

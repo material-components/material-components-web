@@ -36,6 +36,7 @@
 @use '@material/theme/keys';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/theme/shadow-dom';
 @use '@material/touch-target/touch-target';
 @use './checkbox-custom-properties';
 
@@ -67,14 +68,16 @@ $density-config: (
 ) !default;
 
 $ripple-target: '.mdc-checkbox__ripple';
+$custom-property-prefix: 'checkbox';
 
-// TODO(b/178230502): Density related keys does not exist in tokens. Including
-//     `state-layer-size` and `touch-target-size`
+// TODO(b/188417756): State layer (ripple) size token is missing including
+//     `state-layer-size`.
 // TODO(b/187852988): `selected-checkmark-color` does not exist in tokens.
-$_light-theme: (
-  disabled-selected-icon-color: null,
+// TODO(b/187335657): Rename to `$light-theme` after removing existing one.
+$m2-theme: (
+  disabled-selected-icon-color: $disabled-color,
   disabled-selected-icon-opacity: null,
-  disabled-unselected-icon-color: null,
+  disabled-unselected-icon-color: $disabled-color,
   disabled-unselected-icon-opacity: null,
   selected-checkmark-color: $mark-color,
   selected-focus-icon-color: $baseline-theme-color,
@@ -90,7 +93,6 @@ $_light-theme: (
   selected-pressed-state-layer-opacity:
     map.get(ripple-theme.$dark-ink-opacities, pressed),
   state-layer-size: $ripple-size,
-  touch-target-size: touch-target.$height,
   unselected-focus-icon-color: $baseline-theme-color,
   unselected-focus-state-layer-color: theme-color.$on-surface,
   unselected-focus-state-layer-opacity:
@@ -100,15 +102,27 @@ $_light-theme: (
   unselected-hover-state-layer-opacity:
     map.get(ripple-theme.$dark-ink-opacities, hover),
   unselected-icon-color: $border-color,
-  unselected-pressed-icon-color: null,
+  unselected-pressed-icon-color: $border-color,
   unselected-pressed-state-layer-color: theme-color.$on-surface,
   unselected-pressed-state-layer-opacity:
     map.get(ripple-theme.$dark-ink-opacities, pressed),
 );
 
+// TODO(b/187335657): Rename to `theme()` after deprecating current `theme()`.
+@mixin theme-declare-custom-properties($theme) {
+  @include theme.validate-keys($m2-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
 @mixin theme-styles($theme) {
-  @include theme.validate-keys($_light-theme, $theme);
-  $theme: keys.create-theme-properties($theme, $prefix: 'checkbox');
+  @include theme.validate-keys($m2-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
 
   @include disabled-container-colors(
     $unmarked-stroke-color: map.get($theme, disabled-unselected-icon-color),
@@ -162,9 +176,11 @@ $_light-theme: (
     )
   );
 
-  @include ripple-size(
+  @include ripple-size(map.get($theme, state-layer-size));
+  // Set touch target to ripple size.
+  @include touch-target(
     map.get($theme, state-layer-size),
-    $touch-target-size: map.get($theme, touch-target-size)
+    map.get($theme, state-layer-size)
   );
 }
 
@@ -297,18 +313,13 @@ $light-theme: (
   $size: get-ripple-size($density-scale);
 
   @include ripple-size($size, $query: $query);
+  @include touch-target($size, $ripple-size: $size, $query: $query);
 }
 
 /// Sets ripple size of checkbox and optionally set touch target size which can
 /// be more than the size of ripple.
 /// @param {Number} $ripple-size - Visual ripple size of checkbox.
-/// @param {Number} $touch-target-size [null] - Touch target size that is
-///   visually hidden. Defaults to the size of provided `$ripple-size`.
-@mixin ripple-size(
-  $ripple-size,
-  $touch-target-size: null,
-  $query: feature-targeting.all()
-) {
+@mixin ripple-size($ripple-size, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @if $ripple-size and not custom-properties.is-custom-prop($ripple-size) {
@@ -333,21 +344,6 @@ $light-theme: (
       @include theme.property(left, $checkbox-padding, $replace: $replace);
     }
   }
-
-  @if ($touch-target-size) {
-    $touch-target-size: custom-properties.create(
-      checkbox-custom-properties.$touch-target-size,
-      $touch-target-size
-    );
-  } @else {
-    $touch-target-size: $ripple-size;
-  }
-
-  @include touch-target(
-    $touch-target-size: $touch-target-size,
-    $ripple-size: $ripple-size,
-    $query: $query
-  );
 }
 
 /// Sets the touch target size and appropriate margin to accommodate the
@@ -361,25 +357,34 @@ $light-theme: (
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  $margin: calc((_touch-target-size - _ripple-size) / 2);
-  $replace: (
-    _touch-target-size: $touch-target-size,
-    _ripple-size: $ripple-size,
-  );
+  @if $touch-target-size {
+    @if not custom-properties.is-custom-prop($touch-target-size) {
+      $touch-target-size: custom-properties.create(
+        checkbox-custom-properties.$touch-target-size,
+        $touch-target-size
+      );
+    }
 
-  @include feature-targeting.targets($feat-structure) {
-    @include theme.property(margin, $margin, $replace: $replace);
-  }
+    $margin: calc((_touch-target-size - _ripple-size) / 2);
+    $replace: (
+      _touch-target-size: $touch-target-size,
+      _ripple-size: $ripple-size,
+    );
 
-  $offset: calc((_ripple-size - _touch-target-size) / 2);
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(margin, $margin, $replace: $replace);
+    }
 
-  @include feature-targeting.targets($feat-structure) {
-    .mdc-checkbox__native-control {
-      @include theme.property(top, $offset, $replace: $replace);
-      @include theme.property(right, $offset, $replace: $replace);
-      @include theme.property(left, $offset, $replace: $replace);
-      @include theme.property(width, $touch-target-size);
-      @include theme.property(height, $touch-target-size);
+    $offset: calc((_ripple-size - _touch-target-size) / 2);
+
+    @include feature-targeting.targets($feat-structure) {
+      .mdc-checkbox__native-control {
+        @include theme.property(top, $offset, $replace: $replace);
+        @include theme.property(right, $offset, $replace: $replace);
+        @include theme.property(left, $offset, $replace: $replace);
+        @include theme.property(width, $touch-target-size);
+        @include theme.property(height, $touch-target-size);
+      }
     }
   }
 }

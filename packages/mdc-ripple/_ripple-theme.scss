@@ -33,6 +33,7 @@
 @use '@material/theme/custom-properties';
 @use '@material/theme/theme';
 @use '@material/theme/keys';
+@use '@material/theme/shadow-dom';
 @use '@material/theme/theme-color';
 
 $fade-in-duration: 75ms !default;
@@ -83,6 +84,12 @@ $light-theme: (
 @mixin theme($theme) {
   @include theme.validate-keys($theme, $light-theme);
   @include keys.declare-custom-properties($theme, $prefix: 'ripple');
+
+  @if shadow-dom.$css-selector-fallback-declarations {
+    .mdc-ripple-surface {
+      @include theme-styles($theme);
+    }
+  }
 }
 
 @mixin theme-styles($theme) {
