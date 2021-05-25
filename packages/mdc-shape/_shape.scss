@@ -98,17 +98,30 @@ $category-keywords: (
 ///
 /// $radius may be a single value or a list of 1 to 4 values.
 ///
-/// Examples:
+/// @example - scss
+///   resolve-radius(small); // (varname: --mdc-shape-small, fallback: 4px)
+///   resolve-radius((varname: --custom-shape, fallback: small));
+///     // (
+///     //   varname: --custom-shape,
+///     //   fallback: (varname: --mdc-shape-small, fallback: 4px)
+///     // )
+///   resolve-radius(8px); // 8px
+///   resolve-radius(50%, $component-height: 36px); // 16px
 ///
-/// shape.resolve-radius(small) => (varname: --mdc-shape-small, fallback: 4px)
-/// shape.resolve-radius((varname: --custom-shape, fallback: small)) =>
-///     (varname: --custom-shape, fallback: (varname: --mdc-shape-small, fallback: 4px))
-/// shape.resolve-radius(8px) => 8px
-/// shape.resolve-radius(50%, $component-height: 36px) => 16px
+///   $shape: (
+///     family: 'rounded',
+///     radius: (
+///       8px,
+///       8px,
+///       8px,
+///       8px,
+///     ),
+///   );
+///   resolve-radius($shape); // 8px
 ///
 /// @param {String | Number | Map | List} $radius - the radius shape category or
-///     radius value to resolve. May be a number, custom property Map, or a List
-///     of those values.
+///     radius value to resolve. May be a number, custom property Map, shape
+///     Map, or a List of those values.
 /// @return {Number | Map | List} the resolved radius value. May be a number,
 ///     a custom property Map, or a List if $radius was a List.
 @function resolve-radius($radius, $component-height: null) {
@@ -146,6 +159,22 @@ $category-keywords: (
       $component-height: $component-height
     );
     @return custom-properties.set-fallback($radius, $fallback, $shallow: true);
+  } @else if meta.type-of($radius) == 'map' {
+    // $radius is a shape Map
+    $family: map.get($radius, family);
+    @if custom-properties.is-custom-prop($family) {
+      // Shape Map may have been passed through keys.create-custom-properties()
+      $family: custom-properties.get-fallback($family);
+    }
+
+    @if $family != 'rounded' {
+      @error 'mdc-shape: Invalid shape family: "#{$family}". Only "rounded" is supported.';
+    }
+
+    @return resolve-radius(
+      map.get($radius, radius),
+      $component-height: $component-height
+    );
   } @else {
     // $radius is a value
     @if meta.type-of($radius) != 'number' {
