@@ -295,9 +295,14 @@ $light-theme: (
 
     &.mdc-ripple-upgraded {
       @include feature-targeting.targets($feat-color) {
-        @include theme.property(
-          custom-properties.create(ripple-fg-opacity, $opacity)
-        );
+        // Upgraded ripple should always emit custom property, regardless of
+        // configuration, since ripple itself feature detects custom property
+        // support at runtime.
+        @include custom-properties.configure($emit-custom-properties: true) {
+          @include theme.property(
+            custom-properties.create(ripple-fg-opacity, $opacity)
+          );
+        }
       }
     }
   }
