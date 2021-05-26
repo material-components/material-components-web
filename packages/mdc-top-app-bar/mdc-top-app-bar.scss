@@ -36,7 +36,7 @@
   @include mixins.icon-ink-color(on-primary);
 
   display: flex;
-  position: fixed;
+  position: static;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
