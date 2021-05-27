@@ -30,6 +30,7 @@
 @use '@material/theme/custom-properties';
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/css';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 
@@ -218,8 +219,24 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
-    /* @alternate */
-    @include theme.property('box-shadow', $box-shadow);
+    @if custom-properties.is-custom-prop($box-shadow) {
+      // TODO(b/185188458): Use theme.property() once resolved.
+      $fallback: custom-properties.get-fallback($box-shadow);
+      box-shadow: $fallback;
+      box-shadow: custom-properties.create-var(
+        custom-properties.create(
+          custom-properties.get-varname($box-shadow),
+          custom-properties.create(elevation-box-shadow-for-gss, none)
+        )
+      );
+      @include css.declaration(
+        custom-properties.create-varname(elevation-box-shadow-for-gss),
+        $fallback
+      );
+    } @else {
+      /* @alternate */
+      box-shadow: $box-shadow;
+    }
   }
 }
 
