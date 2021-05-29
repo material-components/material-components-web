@@ -310,11 +310,14 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
 3. Add the `babel-loader` object to the rules array after the `sass-loader` object:
    ```js
    {
-     test: /\.js$/,
-     loader: 'babel-loader',
-     options: {
-       presets: ['@babel/preset-env'],
-     },
+       test: /\.m?js$/,
+       exclude: /node_modules/,
+       use: {
+         loader: "babel-loader",
+         options: {
+           presets: ['@babel/preset-env']
+         }
+       }
    }
    ```
 
@@ -367,11 +370,14 @@ module.exports = {
         ],
       },
       {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env'],
-        },
+         test: /\.m?js$/,
+         exclude: /node_modules/,
+         use: {
+           loader: "babel-loader",
+           options: {
+             presets: ['@babel/preset-env']
+           }
+         }
       }
     ],
   },
