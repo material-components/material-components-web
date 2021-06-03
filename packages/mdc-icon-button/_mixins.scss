@@ -130,7 +130,7 @@ $ripple-target: '.mdc-icon-button__ripple';
   @include feature-targeting.targets($feat-structure) {
     width: $size;
     height: $size;
-    padding: ($size - variables.$icon-size) / 2;
+    padding: math.div($size - variables.$icon-size, 2);
   }
 }
 
@@ -148,7 +148,7 @@ $ripple-target: '.mdc-icon-button__ripple';
 @mixin icon-size(
   $width,
   $height: $width,
-  $padding: math.max($width, $height) / 2,
+  $padding: math.div(math.max($width, $height), 2),
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);

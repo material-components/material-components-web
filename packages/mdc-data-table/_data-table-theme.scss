@@ -24,6 +24,7 @@
 // NOTE: We disable `selector-class-pattern` above to allow using `mdc-` class
 // selectors.
 
+@use 'sass:math';
 @use 'sass:list';
 @use 'sass:meta';
 @use '@material/animation/functions';
@@ -405,7 +406,7 @@ $pagination-rows-per-page-select-height: 36px;
         );
       }
       $leading-padding: $leading-padding -
-        ($checkbox-touch-size - $checkbox-icon-size) / 2;
+        math.div($checkbox-touch-size - $checkbox-icon-size, 2);
       @include rtl-mixins.reflexive-property(padding, $leading-padding, 0);
     }
   }

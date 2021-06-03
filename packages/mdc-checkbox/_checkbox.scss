@@ -496,7 +496,7 @@
     width: 100%;
     height: 0;
     transform: scaleX(0) rotate(0deg);
-    border-width: math.floor(checkbox-theme.$mark-stroke-size) / 2;
+    border-width: math.div(math.floor(checkbox-theme.$mark-stroke-size), 2);
     border-style: solid;
     opacity: 0;
   }

@@ -23,6 +23,7 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use '@material/animation/animation';
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/elevation/mixins' as elevation-mixins;
@@ -65,7 +66,7 @@ $_track-inactive-height: 4px;
     @include feature-targeting.targets($feat-structure) {
       cursor: pointer;
       height: $_thumb-ripple-size;
-      margin: 0 ($_thumb-ripple-size / 2);
+      margin: 0 math.div($_thumb-ripple-size, 2);
       position: relative;
       touch-action: pan-y;
     }
@@ -153,7 +154,7 @@ $_track-inactive-height: 4px;
       border-radius: 3px;
       height: $_track-active-height;
       overflow: hidden;
-      top: ($_track-inactive-height - $_track-active-height) / 2;
+      top: math.div($_track-inactive-height - $_track-active-height, 2);
     }
   }
 
@@ -219,7 +220,7 @@ $_track-inactive-height: 4px;
       display: flex;
       height: $_thumb-ripple-size;
       /* @noflip */
-      left: -$_thumb-ripple-size / 2;
+      left: math.div(-$_thumb-ripple-size, 2);
       outline: none;
       position: absolute;
       user-select: none;
@@ -252,7 +253,7 @@ $_track-inactive-height: 4px;
 
     @include feature-targeting.targets($feat-structure) {
       // Use border rather than background-color to fill thumb, for HCM.
-      border: $_thumb-size / 2 solid;
+      border: math.div($_thumb-size, 2) solid;
       border-radius: 50%;
       box-sizing: border-box;
       height: $_thumb-size;
@@ -326,7 +327,7 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__value-indicator-container {
     @include feature-targeting.targets($feat-structure) {
-      bottom: $_thumb-ripple-size / 2 + $_thumb-size / 2 +
+      bottom: math.div($_thumb-ripple-size, 2) + math.div($_thumb-size, 2) +
         $_value-indicator-caret-width + 4px;
       /* @noflip */
       left: 50%;

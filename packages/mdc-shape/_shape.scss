@@ -243,8 +243,8 @@ $category-keywords: (
 /// @return {Number} the resolved radius as a number.
 @function _resolve-radius-percentage($percentage, $component-height) {
   // Converts the percentage to number without unit. Example: 50% => 50.
-  $percentage: $percentage / ($percentage * 0 + 1);
-  @return $component-height * ($percentage / 100);
+  $percentage: math.div($percentage, $percentage * 0 + 1);
+  @return $component-height * math.div($percentage, 100);
 }
 
 @mixin radius(

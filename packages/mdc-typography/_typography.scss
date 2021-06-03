@@ -23,6 +23,7 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:string';
@@ -69,11 +70,11 @@
 }
 
 @function get-letter-spacing_($tracking, $font-size) {
-  @return $tracking / ($font-size * 16) * 1em;
+  @return math.div($tracking, $font-size * 16) * 1em;
 }
 
 @function px-to-rem($px) {
-  @return $px / 16px * 1rem;
+  @return math.div($px, 16px) * 1rem;
 }
 
 $font-family: string.unquote('Roboto, sans-serif') !default;
