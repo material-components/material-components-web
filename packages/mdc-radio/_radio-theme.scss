@@ -84,6 +84,14 @@ $light-theme: (
   unselected-pressed-state-layer-opacity: 0.1,
 );
 
+@mixin theme-declare-custom-properties($theme) {
+  @include theme.validate-keys($light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
 @mixin theme-styles($theme) {
   @include theme.validate-keys($light-theme, $theme);
 
