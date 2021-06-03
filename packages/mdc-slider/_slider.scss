@@ -240,10 +240,6 @@ $_track-inactive-height: 4px;
         border-width: 1px;
         box-sizing: content-box;
       }
-
-      @include feature-targeting.targets($feat-color) {
-        border-color: #fff;
-      }
     }
   }
 
