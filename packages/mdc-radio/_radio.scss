@@ -33,7 +33,7 @@
 @use '@material/touch-target/variables' as touch-target-variables;
 @use './radio-theme';
 
-$ripple-target: '.mdc-radio__ripple';
+$ripple-target: radio-theme.$ripple-target;
 
 ///
 /// Radio core styles.
