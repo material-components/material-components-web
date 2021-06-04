@@ -2,6 +2,7 @@
 // stylelint-disable selector-class-pattern --
 // NOTE: this is the implementation of the aforementioned classes.
 
+@use 'sass:math';
 @use 'sass:list';
 @use 'sass:map';
 @use '@material/theme/theme';
@@ -567,7 +568,7 @@
     @return $offset;
   }
   $overflow: $actual - $available;
-  @return $offset - $overflow / if($symmetric, 2, 1);
+  @return $offset - math.div($overflow, if($symmetric, 2, 1));
 }
 
 @mixin one-line-item-height($height, $query: feature-targeting.all()) {

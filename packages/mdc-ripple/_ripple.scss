@@ -23,6 +23,7 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use 'sass:color';
 @use 'sass:map';
 @use '@material/animation/functions' as functions2;
@@ -253,9 +254,9 @@
   #{$ripple-target}::before,
   #{$ripple-target}::after {
     @include feature-targeting.targets($feat-struture) {
-      top: calc(50% - #{$radius / 2});
+      top: calc(50% - #{math.div($radius, 2)});
       /* @noflip */
-      left: calc(50% - #{$radius / 2});
+      left: calc(50% - #{math.div($radius, 2)});
       width: $radius;
       height: $radius;
     }
@@ -265,9 +266,9 @@
     #{$ripple-target}::before,
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-struture) {
-        top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
+        top: var(--mdc-ripple-top, calc(50% - #{math.div($radius, 2)}));
         /* @noflip */
-        left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
+        left: var(--mdc-ripple-left, calc(50% - #{math.div($radius, 2)}));
         width: var(--mdc-ripple-fg-size, $radius);
         height: var(--mdc-ripple-fg-size, $radius);
       }

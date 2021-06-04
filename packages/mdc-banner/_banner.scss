@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern --
 // Internal styling for Tooltip MDC component.
 
+@use 'sass:math';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/typography/typography';
 @use '@material/button/button-theme';
@@ -36,7 +37,7 @@ $_min-width: 344px;
 $_max-width: 720px;
 // Minimum banner height minus standard text height, divided by 2 for both top
 // and bottom padding. This is used to support two/three line banners.
-$_text-padding-top-bottom: ((52px - 20px) / 2);
+$_text-padding-top-bottom: math.div(52px - 20px, 2);
 
 $_enter-duration: 300ms;
 $_exit-duration: 250ms;

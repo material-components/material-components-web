@@ -681,8 +681,10 @@
 // Applied to dialogs that have buttons with an increased touch target.
 @mixin with-touch-target($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  $touch-target-margin: (touch-target-variables.$height - button-theme.$height) /
-    2;
+  $touch-target-margin: math.div(
+    touch-target-variables.$height - button-theme.$height,
+    2
+  );
   $vertical-padding: math.max(
     0,
     variables.$actions-padding - $touch-target-margin

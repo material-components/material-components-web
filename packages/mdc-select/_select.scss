@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern --
 // NOTE: this is the implementation of the aforementioned classes.
 
+@use 'sass:math';
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/floating-label/mixins' as floating-label-mixins;
@@ -250,8 +251,8 @@
     $svg-natural-height: 5px;
 
     @include feature-targeting.targets($feat-structure) {
-      width: $svg-natural-width / select-icon-theme.$icon-size * 100%;
-      height: $svg-natural-height / select-icon-theme.$icon-size * 100%;
+      width: math.div($svg-natural-width, select-icon-theme.$icon-size) * 100%;
+      height: math.div($svg-natural-height, select-icon-theme.$icon-size) * 100%;
     }
   }
 }

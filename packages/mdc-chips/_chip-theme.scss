@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern --
 // Internal styling for Chip MDC component.
 
+@use 'sass:math';
 @use 'sass:color';
 @use '@material/density/density';
 @use '@material/feature-targeting/feature-targeting';
@@ -46,7 +47,7 @@ $density-config: (
     minimum: $minimum-height,
   ),
 );
-$radius: $height / 2;
+$radius: math.div($height, 2);
 $type-scale: body2;
 $container-color: color.mix(
   theme-color.prop-value(on-surface),
