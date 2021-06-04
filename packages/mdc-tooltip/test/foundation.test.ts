@@ -3044,4 +3044,35 @@ describe('MDCTooltipFoundation', () => {
                `${styleValues.xTransformOrigin} ${
                    styleValues.yTransformOrigin}`);
      });
+
+  it(`#setShowDelay allows users to configure the delay prior to showing a tooltip`,
+     () => {
+       const extraDelayMs = 20;
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       foundation.setShowDelay(numbers.SHOW_DELAY_MS + extraDelayMs);
+       foundation.handleAnchorMouseEnter();
+       expect((foundation as any).showTimeout).not.toEqual(null);
+
+       jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+       expect((foundation as any).showTimeout).not.toEqual(null);
+       jasmine.clock().tick(extraDelayMs);
+       expectTooltipToHaveBeenShown(foundation, mockAdapter);
+     });
+
+  it(`#setHideDelay allows users to configure the delay prior to hiding a tooltip`,
+     () => {
+       const extraDelayMs = 20;
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       foundation.setHideDelay(numbers.HIDE_DELAY_MS + extraDelayMs);
+       foundation.show();
+       foundation.handleAnchorMouseLeave();
+       expect((foundation as any).hideTimeout).not.toEqual(null);
+
+       jasmine.clock().tick(numbers.HIDE_DELAY_MS);
+       expect((foundation as any).hideTimeout).not.toEqual(null);
+       jasmine.clock().tick(extraDelayMs);
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
+     });
 });
