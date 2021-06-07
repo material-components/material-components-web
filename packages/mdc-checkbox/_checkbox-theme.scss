@@ -47,7 +47,7 @@ $disabled-color: rgba(theme-color.prop-value(on-surface), 0.38) !default;
 
 $ripple-size: 40px !default;
 $icon-size: 18px !default;
-$mark-stroke-size: 2 / 15 * $icon-size !default;
+$mark-stroke-size: math.div(2, 15) * $icon-size !default;
 $border-width: 2px !default;
 $transition-duration: 90ms !default;
 $item-spacing: 4px !default;

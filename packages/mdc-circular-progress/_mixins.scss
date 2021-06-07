@@ -23,6 +23,7 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use '@material/animation/functions' as animation-functions;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/gss';
@@ -235,8 +236,10 @@
 
   .mdc-circular-progress__indeterminate-container {
     @include feature-targeting.targets($feat-animation) {
-      $duration: 360deg * variables.$arc-time /
-        (variables.$arc-start-rotation-interval + (360 - variables.$arc-size));
+      $duration: math.div(
+        360deg * variables.$arc-time,
+        variables.$arc-start-rotation-interval + (360 - variables.$arc-size)
+      );
 
       animation: mdc-circular-progress-container-rotate $duration linear
         infinite;

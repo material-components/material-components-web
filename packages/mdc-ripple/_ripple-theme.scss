@@ -447,6 +447,12 @@ $light-theme: (
   }
 }
 
+@mixin hover() {
+  #{$_hover-selector} {
+    @content;
+  }
+}
+
 // Selector for focus state. Using ':not(.mdc-ripple-upgraded)' to continue
 // applying focus styles on JS-disabled components, and control focus
 // on JS-enabled components with '.mdc-ripple-upgraded--background-focused'.

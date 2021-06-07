@@ -23,6 +23,7 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use 'sass:list';
 @use 'sass:meta';
 @use '@material/feature-targeting/feature-targeting';
@@ -475,7 +476,7 @@
       height: calc(48px - 2 * #{variables.$list-item-spacing});
       // To accomodate margin conflict.
       margin: (variables.$list-item-spacing * 2) 8px;
-      padding: 0 variables.$surface-padding / 2;
+      padding: 0 math.div(variables.$surface-padding, 2);
     }
   }
 

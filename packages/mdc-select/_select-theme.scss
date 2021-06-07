@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern --
 // NOTE: this is the implementation of the aforementioned classes.
 
+@use 'sass:math';
 @use 'sass:color';
 @use 'sass:list';
 @use 'sass:meta';
@@ -50,8 +51,8 @@
 $ripple-target: '.mdc-select__ripple';
 
 @function get-outlined-label-position-y($select-anchor-height) {
-  @return $select-anchor-height / 2 +
-    notched-outline-variables.$label-box-height / 2;
+  @return math.div($select-anchor-height, 2) +
+    math.div(notched-outline-variables.$label-box-height, 2);
 }
 
 $arrow-padding: 52px !default;

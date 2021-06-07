@@ -18,6 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+@use 'sass:math';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
@@ -191,9 +192,9 @@
     @include feature-targeting.targets($feat-structure) {
       // Subtract extra fraction from each item's width to ensure correct wrapping in IE/Edge which round differently
       width: calc(
-        100% / #{$column-count} - #{$gutter-size + 1 / $column-count}
+        100% / #{$column-count} - #{$gutter-size + math.div(1, $column-count)}
       );
-      margin: $gutter-size / 2;
+      margin: math.div($gutter-size, 2);
     }
   }
 }

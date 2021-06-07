@@ -390,7 +390,7 @@ $ripple-target: '.mdc-card__ripple';
   &::before {
     @include feature-targeting.targets($feat-structure) {
       // This clever trick brought to you by: http://www.mademyday.de/css-height-equals-width-with-pure-css.html
-      margin-top: math.percentage($y / $x);
+      margin-top: math.percentage(math.div($y, $x));
     }
   }
 }

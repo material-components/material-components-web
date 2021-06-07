@@ -30,11 +30,9 @@
 @use '@material/theme/gss';
 
 $animation-duration: 75ms;
-$handle-size: 20px;
 $icon-exit-duration: 0.4 * $animation-duration;
 $icon-enter-duration: $animation-duration - $icon-exit-duration;
 $ripple-target: '.mdc-switch__ripple';
-$track-height: 14px;
 
 @mixin static-styles() {
   @include static-styles-without-ripple();
@@ -118,10 +116,8 @@ $track-height: 14px;
 }
 
 @mixin track() {
-  height: $track-height;
   overflow: hidden;
   position: relative;
-  width: 36px;
 
   &::before,
   &::after {
@@ -158,46 +154,36 @@ $track-height: 14px;
 
 @mixin handle-track() {
   height: 100%;
-  @include gss.annotate($noflip: true);
-  left: 0;
   // The handle track is used to move the handle across the width of the switch
   // and may overflow the bounds of the component. It should not be used for
   // pointer events.
   pointer-events: none;
   position: absolute;
   transition: animation.standard(transform, $animation-duration);
-  width: 100%;
+  // IE11 needs explicit left/right
+  @include rtl.reflexive(left, 0, right, auto);
 }
 
-// Absolute values for the track to position the handle
-$_handle-track-left: translateX(0);
-// IE11 has a bug with calc() inside translateX(), so we use 2 translates.
-$_handle-track-right: translateX(100%) translateX(#{-$handle-size});
-
 @mixin handle-track-on() {
-  transform: $_handle-track-right;
+  transform: translateX(100%);
+
   @include rtl.rtl {
-    transform: $_handle-track-left;
+    transform: translateX(-100%);
   }
 }
 
 @mixin handle-track-off() {
-  transform: $_handle-track-left;
-  @include rtl.rtl {
-    transform: $_handle-track-right;
-  }
+  transform: translateX(0);
 }
 
 @mixin handle() {
   display: flex;
-  height: $handle-size;
-  @include gss.annotate($noflip: true);
-  left: 0;
   pointer-events: auto;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: $handle-size;
+  // IE11 needs explicit left/right
+  @include rtl.reflexive(left, 0, right, auto);
 
   &::before,
   &::after {

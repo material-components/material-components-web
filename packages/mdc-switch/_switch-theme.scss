@@ -84,11 +84,13 @@ $light-theme: (
   disabled-unselected-icon-opacity: 0.38,
   disabled-unselected-track-color: $_on-surface,
   handle-elevation: 1,
+  handle-height: 20px,
   handle-overlay-color: transparent,
   handle-overlay-opacity: 0,
   handle-shadow-color: elevation-theme.$baseline-color,
-  handle-shape: switch.$handle-size / 2,
+  handle-shape: 10px,
   handle-surface-color: surface,
+  handle-width: 20px,
   selected-focus-handle-color: $_primary-state-content,
   selected-focus-state-layer-color: primary,
   selected-focus-state-layer-opacity: 0.12,
@@ -105,7 +107,9 @@ $light-theme: (
   selected-pressed-state-layer-opacity: 0.1,
   selected-pressed-track-color: $_inverse-primary,
   selected-track-color: $_inverse-primary,
-  track-shape: switch.$track-height / 2,
+  track-height: 14px,
+  track-shape: 7px,
+  track-width: 36px,
   unselected-focus-handle-color: $_on-surface-state-content,
   unselected-focus-state-layer-color: $_on-surface,
   unselected-focus-state-layer-opacity: 0.12,
@@ -173,6 +177,7 @@ $forced-colors-theme: (
     )
   );
 
+  @include _handle-height(map.get($theme, handle-height));
   @include _handle-opacity(
     (
       disabled: map.get($theme, disabled-handle-opacity),
@@ -194,6 +199,7 @@ $forced-colors-theme: (
   );
 
   @include _handle-shape(map.get($theme, handle-shape));
+  @include _handle-width(map.get($theme, handle-width));
 
   @include _selected-icon-color(
     (
@@ -256,6 +262,13 @@ $forced-colors-theme: (
     )
   );
 
+  @include _track-height(map.get($theme, track-height));
+  @include _track-opacity(
+    (
+      disabled: map.get($theme, disabled-track-opacity),
+    )
+  );
+
   @include _track-selected-color(
     (
       default: map.get($theme, selected-track-color),
@@ -276,13 +289,8 @@ $forced-colors-theme: (
     )
   );
 
-  @include _track-opacity(
-    (
-      disabled: map.get($theme, disabled-track-opacity),
-    )
-  );
-
   @include _track-shape(map.get($theme, track-shape));
+  @include _track-width(map.get($theme, track-width));
 }
 
 @mixin _density($density) {
@@ -391,6 +399,12 @@ $forced-colors-theme: (
   }
 }
 
+@mixin _handle-height($height) {
+  .mdc-switch__handle {
+    @include theme.property(height, $height);
+  }
+}
+
 @mixin _handle-opacity($opacities) {
   @include state.disabled($_selectors) {
     @include _set-handle-opacity(state.get-disabled-state($opacities));
@@ -441,6 +455,20 @@ $forced-colors-theme: (
 @mixin _handle-shape($shape) {
   .mdc-switch__handle {
     @include shape.radius($shape);
+  }
+}
+
+@mixin _handle-width($width) {
+  .mdc-switch__handle {
+    @include theme.property(width, $width);
+  }
+
+  .mdc-switch__handle-track {
+    @include theme.property(
+      width,
+      calc(100% - width),
+      $replace: (width: $width)
+    );
   }
 }
 
@@ -589,6 +617,24 @@ $forced-colors-theme: (
   }
 }
 
+@mixin _track-height($height) {
+  .mdc-switch__track {
+    @include theme.property(height, $height);
+  }
+}
+
+@mixin _track-opacity($opacities) {
+  @include state.disabled($_selectors) {
+    @include _set-track-opacity(state.get-disabled-state($opacities));
+  }
+}
+
+@mixin _set-track-opacity($opacity) {
+  .mdc-switch__track {
+    @include theme.property(opacity, $opacity);
+  }
+}
+
 @mixin _track-selected-color($colors) {
   @include state.default($_selectors) {
     @include _set-track-selected-color(state.get-default-state($colors));
@@ -645,20 +691,14 @@ $forced-colors-theme: (
   }
 }
 
-@mixin _track-opacity($opacities) {
-  @include state.disabled($_selectors) {
-    @include _set-track-opacity(state.get-disabled-state($opacities));
-  }
-}
-
-@mixin _set-track-opacity($opacity) {
-  .mdc-switch__track {
-    @include theme.property(opacity, $opacity);
-  }
-}
-
 @mixin _track-shape($shape) {
   .mdc-switch__track {
     @include shape.radius($shape);
+  }
+}
+
+@mixin _track-width($width) {
+  .mdc-switch__track {
+    @include theme.property(width, $width);
   }
 }

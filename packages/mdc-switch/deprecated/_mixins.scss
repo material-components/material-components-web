@@ -23,6 +23,7 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use '@material/density/functions' as density-functions;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
@@ -238,8 +239,8 @@ $deprecated-suffix: '-deprecated' !default;
 
   // Position for the tap target that contains the thumb to align the thumb
   // correctly offset from the track.
-  $tap-target-initial-position: -$ripple-size / 2 + variables.$thumb-diameter /
-    2;
+  $tap-target-initial-position: math.div(-$ripple-size, 2) +
+    math.div(variables.$thumb-diameter, 2);
   // Value to cover the whole switch area (including the ripple) with the
   // native control.
   $native-control-width: variables.$track-width +
@@ -253,7 +254,7 @@ $deprecated-suffix: '-deprecated' !default;
       );
 
       // Ensures the knob is centered on the track.
-      top: -(($ripple-size - variables.$track-height) / 2);
+      top: -(math.div($ripple-size - variables.$track-height, 2));
       width: $ripple-size;
       height: $ripple-size;
     }
@@ -303,7 +304,7 @@ $deprecated-suffix: '-deprecated' !default;
     width: variables.$track-width;
     height: variables.$track-height;
     border: 1px solid transparent;
-    border-radius: variables.$track-height / 2;
+    border-radius: math.div(variables.$track-height, 2);
     opacity: 0.38;
   }
 
@@ -353,7 +354,7 @@ $deprecated-suffix: '-deprecated' !default;
     box-sizing: border-box;
     width: variables.$thumb-diameter;
     height: variables.$thumb-diameter;
-    border: variables.$thumb-diameter / 2 solid;
+    border: math.div(variables.$thumb-diameter, 2) solid;
     border-radius: 50%;
     // Allow events to go through to the native control, necessary for IE and Edge.
     pointer-events: none;

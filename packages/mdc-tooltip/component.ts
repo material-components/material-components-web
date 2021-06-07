@@ -140,6 +140,14 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     this.foundation.setAnchorBoundaryType(type);
   }
 
+  setShowDelay(delayMs: number) {
+    this.foundation.setShowDelay(delayMs);
+  }
+
+  setHideDelay(delayMs: number) {
+    this.foundation.setHideDelay(delayMs);
+  }
+
   hide() {
     this.foundation.hide();
   }

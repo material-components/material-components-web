@@ -100,8 +100,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   // Minimum threshold distance needed between the tooltip and the viewport.
   private readonly minViewportTooltipThreshold =
       numbers.MIN_VIEWPORT_TOOLTIP_THRESHOLD;
-  private readonly hideDelayMs = numbers.HIDE_DELAY_MS;
-  private readonly showDelayMs = numbers.SHOW_DELAY_MS;
+  private hideDelayMs = numbers.HIDE_DELAY_MS;
+  private showDelayMs = numbers.SHOW_DELAY_MS;
 
   private anchorRect: ClientRect|null = null;
   private parentRect: ClientRect|null = null;
@@ -503,6 +503,14 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     } else {
       this.anchorGap = numbers.BOUNDED_ANCHOR_GAP;
     }
+  }
+
+  setShowDelay(delayMs: number) {
+    this.showDelayMs = delayMs;
+  }
+
+  setHideDelay(delayMs: number) {
+    this.hideDelayMs = delayMs;
   }
 
   private parseShowTooltipOptions(): ShowTooltipOptions {
