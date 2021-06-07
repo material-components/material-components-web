@@ -67,12 +67,15 @@
   }
 }
 
+/// Selects for `forced-colors` high contrast mode.
 ///
-/// Selects for high-contrast mode. Currently this only detects high-contrast
-/// mode in IE and Edge.
+/// While in `forced-colors` mode, only system colors should be used.
 ///
-@mixin ie-high-contrast-mode {
-  @media screen and (-ms-high-contrast: active) {
+/// @link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#system_colors
+/// @link https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors
+/// @content styles to emit in `forced-colors` mode
+@mixin forced-colors-mode {
+  @media screen and (forced-colors: active), (-ms-high-contrast: active) {
     @content;
   }
 }

@@ -93,7 +93,7 @@
     );
 
     // High-contrast mode support
-    @include dom-mixins.ie-high-contrast-mode() {
+    @include dom-mixins.forced-colors-mode() {
       $gray-text: (
         disabled: GrayText,
       );

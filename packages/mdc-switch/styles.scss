@@ -33,7 +33,7 @@
   @include switch-theme.theme(switch-theme.$light-theme);
 }
 
-@include dom.ie-high-contrast-mode {
+@include dom.forced-colors-mode {
   .mdc-switch {
     @include switch-theme.theme(switch-theme.$forced-colors-theme);
   }

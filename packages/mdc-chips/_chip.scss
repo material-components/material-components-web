@@ -418,7 +418,7 @@
 @mixin _high-contrast-mode($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include dom.ie-high-contrast-mode {
+  @include dom.forced-colors-mode {
     @include chip-theme.outline-color(
       (
         disabled: GrayText,

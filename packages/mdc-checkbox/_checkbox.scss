@@ -28,6 +28,7 @@
 @use '@material/animation/functions' as functions2;
 @use '@material/animation/variables' as animation-variables;
 @use '@material/density/functions' as density-functions;
+@use '@material/dom/dom';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
@@ -77,7 +78,7 @@
     }
   }
 
-  @media screen and (-ms-high-contrast: active) {
+  @include dom.forced-colors-mode {
     @include checkbox-theme.disabled-container-colors(
       $unmarked-stroke-color: GrayText,
       $unmarked-fill-color: transparent,

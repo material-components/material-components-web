@@ -1185,7 +1185,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-color: feature-targeting.create-target($query, color);
 
-  @include dom-mixins.ie-high-contrast-mode {
+  @include dom-mixins.forced-colors-mode {
     .mdc-list-divider::after {
       @include feature-targeting.targets($feat-structure) {
         content: '';

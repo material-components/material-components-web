@@ -29,6 +29,7 @@
 @use 'sass:meta';
 @use '@material/animation/animation';
 @use '@material/density/functions' as density-functions;
+@use '@material/dom/dom';
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/floating-label/variables' as floating-label-variables;
 @use '@material/line-ripple/mixins' as line-ripple-mixins;
@@ -1633,7 +1634,7 @@
     $query: $query
   );
 
-  @media screen and (-ms-high-contrast: active) {
+  @include dom.forced-colors-mode {
     @include placeholder-color_(GrayText, $query: $query);
     @include label-ink-color_(GrayText, $query: $query);
     @include helper-text-mixins.helper-text-color_(GrayText, $query: $query);

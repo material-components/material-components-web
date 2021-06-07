@@ -150,8 +150,8 @@
         text-align: right;
       }
 
-      @include dom.ie-high-contrast-mode {
-        // Colored outline is used for IE11 HCM instead of transparent border
+      @include dom.forced-colors-mode {
+        // Colored outline is used for HCM instead of transparent border
         // below to prevent scrolling content overflow.
         outline: 2px solid windowText;
       }

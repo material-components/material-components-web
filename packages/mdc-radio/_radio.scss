@@ -250,7 +250,7 @@ $ripple-target: radio-theme.$ripple-target;
     );
     @include radio-theme.density(radio-theme.$density-scale, $query: $query);
 
-    @include dom.ie-high-contrast-mode {
+    @include dom.forced-colors-mode {
       @include radio-theme.disabled-unchecked-stroke-color(
         GrayText,
         $query: $query
