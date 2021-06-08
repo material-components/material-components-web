@@ -176,7 +176,7 @@ $pagination-rows-per-page-select-height: 36px;
     @include select-theme.outline-color($color, $query: $query);
   }
 
-  .mdc-data-table__row,
+  .mdc-data-table__cell,
   .mdc-data-table__pagination {
     @include feature-targeting.targets($feat-color) {
       border-top-color: $color;
@@ -189,12 +189,12 @@ $pagination-rows-per-page-select-height: 36px;
 
   .mdc-data-table__header-cell:after {
     @include feature-targeting.targets($feat-structure) {
-      border-bottom-style: solid;
       border-bottom-width: $size;
+      border-bottom-style: solid;
     }
   }
 
-  .mdc-data-table__row,
+  .mdc-data-table__cell,
   .mdc-data-table__pagination {
     @include feature-targeting.targets($feat-structure) {
       border-top-width: $size;

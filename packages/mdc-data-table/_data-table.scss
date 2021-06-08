@@ -186,7 +186,7 @@
 
   @include data-table-header-cell.header-cell-sticky($query: $query);
 
-  .mdc-data-table__row:first-child {
+  .mdc-data-table__row:first-child .mdc-data-table__cell {
     @include feature-targeting.targets($feat-structure) {
       border-top: 0;
     }
