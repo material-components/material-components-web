@@ -132,7 +132,7 @@ $light-theme: (
       map.get($theme, selected-hover-state-layer-opacity)
     );
   }
-  @include _selected-icon-color(map.get($theme, selected-hover-icon-color));
+  @include _selected-icon-color(map.get($theme, selected-icon-color));
   @include ripple-theme.active() {
     @include _selected-icon-color(map.get($theme, selected-pressed-icon-color));
     @include _selected-state-layer-color(
@@ -166,7 +166,7 @@ $light-theme: (
       map.get($theme, unselected-hover-state-layer-opacity)
     );
   }
-  @include _unselected-icon-color(map.get($theme, unselected-hover-icon-color));
+  @include _unselected-icon-color(map.get($theme, unselected-icon-color));
   @include ripple-theme.active() {
     @include _unselected-icon-color(
       map.get($theme, unselected-pressed-icon-color)
