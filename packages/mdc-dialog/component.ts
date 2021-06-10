@@ -68,10 +68,10 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   }
 
   private buttonRipples!: MDCRipple[];       // assigned in initialize()
-  private buttons!: HTMLElement[];           // assigned in initialize()
+  private buttons!: HTMLButtonElement[];     // assigned in initialize()
   private container!: HTMLElement;           // assigned in initialize()
   private content!: HTMLElement|null;        // assigned in initialize()
-  private defaultButton!: HTMLElement|null;  // assigned in initialize()
+  private defaultButton!: HTMLButtonElement|null;  // assigned in initialize()
 
   private focusTrap!: FocusTrap;  // assigned in initialSyncWithDOM()
   private focusTrapFactory!:
@@ -98,8 +98,8 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.content =
         this.root.querySelector<HTMLElement>(strings.CONTENT_SELECTOR);
     this.buttons = [].slice.call(
-        this.root.querySelectorAll<HTMLElement>(strings.BUTTON_SELECTOR));
-    this.defaultButton = this.root.querySelector<HTMLElement>(
+        this.root.querySelectorAll<HTMLButtonElement>(strings.BUTTON_SELECTOR));
+    this.defaultButton = this.root.querySelector<HTMLButtonElement>(
         `[${strings.BUTTON_DEFAULT_ATTRIBUTE}]`);
     this.focusTrapFactory = focusTrapFactory;
     this.buttonRipples = [];
@@ -166,7 +166,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       addClass: (className) => this.root.classList.add(className),
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons),
       clickDefaultButton: () => {
-        if (this.defaultButton) {
+        if (this.defaultButton && !this.defaultButton.disabled) {
           this.defaultButton.click();
         }
       },
