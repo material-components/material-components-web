@@ -30,6 +30,7 @@
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl;
 @use '@material/theme/theme';
+@use '@material/touch-target/mixins' as touch-target-mixins;
 @use './variables';
 
 $ripple-target: '.mdc-icon-button__ripple';
@@ -46,6 +47,13 @@ $ripple-target: '.mdc-icon-button__ripple';
   .mdc-icon-button {
     @include base_($query: $query);
     @include density(0, $query: $query);
+
+    .mdc-icon-button__touch {
+      @include touch-target-mixins.touch-target(
+        $set-width: true,
+        $query: $query
+      );
+    }
   }
 
   .mdc-icon-button__icon {
@@ -74,6 +82,13 @@ $ripple-target: '.mdc-icon-button__ripple';
         }
       }
     }
+  }
+
+  .mdc-icon-button--touch {
+    @include touch-target-mixins.margin(
+      $component-height: variables.$size,
+      $query: $query
+    );
   }
   // postcss-bem-linter: end
 }
@@ -116,6 +131,12 @@ $ripple-target: '.mdc-icon-button__ripple';
   );
 
   @include size($size, $query: $query);
+
+  &.mdc-icon-button--touch {
+    @if $density-scale != 0 {
+      @include _touch-target-reset($query: $query);
+    }
+  }
 }
 
 ///
@@ -131,6 +152,27 @@ $ripple-target: '.mdc-icon-button__ripple';
     width: $size;
     height: $size;
     padding: math.div($size - variables.$icon-size, 2);
+  }
+}
+
+///
+/// Resets touch target-related styles. This is called from the density mixin to
+/// automatically remove the increased touch target, since dense components
+/// don't have the same default a11y requirements.
+/// @access private
+///
+@mixin _touch-target-reset($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .mdc-icon-button__touch {
+    @include feature-targeting.targets($feat-structure) {
+      display: none;
+    }
   }
 }
 

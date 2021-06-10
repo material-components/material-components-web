@@ -26,6 +26,7 @@
     "@material/ripple": "^11.0.0",
     "@material/rtl": "^11.0.0",
     "@material/theme": "^11.0.0",
+    "@material/touch-target": "^11.0.0",
     "tslib": "^2.1.0"
   },
   "publishConfig": {
