@@ -58,7 +58,6 @@ $width: $height !default;
   @include feature-targeting.targets($feat-structure) {
     position: absolute;
     top: 50%;
-    right: 0;
     height: $height;
   }
 
@@ -72,6 +71,7 @@ $width: $height !default;
   } @else {
     @include feature-targeting.targets($feat-structure) {
       left: 0;
+      right: 0;
       transform: translateY(-50%);
     }
   }
