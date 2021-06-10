@@ -132,7 +132,7 @@
 
     &__secondary-bar {
       @include feature-targeting.targets($feat-structure) {
-        visibility: hidden;
+        display: none;
       }
     }
 
@@ -237,7 +237,7 @@
     .mdc-linear-progress__secondary-bar {
       @include feature-targeting.targets($feat-structure) {
         left: -54.888891%;
-        visibility: visible;
+        display: block;
       }
     }
 
