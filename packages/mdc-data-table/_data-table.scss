@@ -151,7 +151,7 @@
       min-width: 100%; // Makes table full-width of its container (Firefox / IE11)
       border: 0;
       white-space: nowrap;
-      border-collapse: collapse;
+      border-spacing: 0;
       /**
        * With table-layout:fixed, table and column widths are defined by the width
        * of the first row of cells. Cells in subsequent rows do not affect column
