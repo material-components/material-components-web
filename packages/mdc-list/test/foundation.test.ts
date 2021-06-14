@@ -234,6 +234,13 @@ describe('MDCListFoundation', () => {
            .toHaveBeenCalledWith(2, 'tabindex', '0');
      });
 
+  it('#getFocusedItemIndex returns currently focused item', () => {
+    const {foundation} = setupTest();
+    expect(foundation.getFocusedItemIndex()).toBe(-1);
+    foundation.handleFocusIn(2);
+    expect(foundation.getFocusedItemIndex()).toBe(2);
+  });
+
   it('#handleKeydown does nothing if key received on root element and not used for navigation',
      () => {
        const {foundation, mockAdapter} = setupTest();

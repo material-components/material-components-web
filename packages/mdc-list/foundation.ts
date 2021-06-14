@@ -108,6 +108,11 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
   }
 
+  /** @return The index of the item that was last focused. */
+  getFocusedItemIndex() {
+    return this.focusedItemIndex;
+  }
+
   /**
    * Sets the private wrapFocus variable.
    */
@@ -194,7 +199,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     return this.selectedIndex;
   }
 
-  setSelectedIndex(index: MDCListIndex) {
+  setSelectedIndex(index: MDCListIndex, {forceUpdate}: {forceUpdate?:
+                                                            boolean} = {}) {
     if (!this.isIndexValid(index)) {
       return;
     }
@@ -204,7 +210,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     } else if (this.isRadioList) {
       this.setRadioAtIndex(index as number);
     } else {
-      this.setSingleSelectionAtIndex(index as number);
+      this.setSingleSelectionAtIndex(index as number, {forceUpdate});
     }
   }
 
@@ -451,9 +457,10 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
   }
 
-
-  private setSingleSelectionAtIndex(index: number) {
-    if (this.selectedIndex === index) {
+  private setSingleSelectionAtIndex(index: number, {forceUpdate}: {
+    forceUpdate?: boolean
+  } = {}) {
+    if (this.selectedIndex === index && !forceUpdate) {
       return;
     }
 
