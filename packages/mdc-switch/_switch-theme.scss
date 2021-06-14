@@ -26,11 +26,13 @@
 @use 'sass:color';
 @use 'sass:map';
 @use '@material/density/density';
+@use '@material/dom/dom';
 @use '@material/elevation/elevation-theme';
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/color-palette';
 @use '@material/theme/custom-properties';
 @use '@material/theme/keys';
+@use '@material/theme/shadow-dom';
 @use '@material/theme/state';
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
@@ -147,6 +149,22 @@ $forced-colors-theme: (
 }
 
 @mixin theme($theme) {
+  @include theme.validate-keys($light-theme, $theme);
+
+  // TODO(b/185172301): replace with improved feature targeting
+  // IE11 Fallback
+  @if shadow-dom.$css-selector-fallback-declarations {
+    @include custom-properties.configure($emit-custom-properties: false) {
+      @include dom.ie11-support {
+        @include theme-styles($theme);
+      }
+    }
+  }
+
+  @include keys.declare-custom-properties($theme, switch);
+}
+
+@mixin theme-styles($theme) {
   @include theme.validate-keys($light-theme, $theme);
 
   $theme: keys.create-theme-properties($theme, switch);
@@ -371,7 +389,6 @@ $forced-colors-theme: (
 }
 
 @mixin _set-handle-elevation($elevation, $shadow-color) {
-  // TODO: Support independent custom properties
   @if $elevation or $shadow-color {
     @if not $elevation or not $shadow-color {
       @error 'Both elevation and shadow color must be specified';

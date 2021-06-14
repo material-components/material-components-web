@@ -67,6 +67,15 @@
   }
 }
 
+/// Selects for IE11 support.
+///
+/// @content styles to emit for IE11 support
+@mixin ie11-support {
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    @content;
+  }
+}
+
 /// Selects for `forced-colors` high contrast mode.
 ///
 /// While in `forced-colors` mode, only system colors should be used.

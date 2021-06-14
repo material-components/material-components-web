@@ -30,11 +30,11 @@
 @include switch.static-styles();
 
 .mdc-switch {
-  @include switch-theme.theme(switch-theme.$light-theme);
+  @include switch-theme.theme-styles(switch-theme.$light-theme);
 }
 
 @include dom.forced-colors-mode {
   .mdc-switch {
-    @include switch-theme.theme(switch-theme.$forced-colors-theme);
+    @include switch-theme.theme-styles(switch-theme.$forced-colors-theme);
   }
 }
