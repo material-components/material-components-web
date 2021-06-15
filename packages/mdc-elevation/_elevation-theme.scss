@@ -170,6 +170,30 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
   @return #{$overlay-property} #{$duration} #{$easing};
 }
 
+///
+/// Creates a box-shadow from the Material elevation system.
+/// @param {Number} $level - the level of the Material elevation system.
+/// @param {String} $color - the color of the shadow.
+/// @param {Number} $opacity-boost [0] - optional opacity boost for the shadow.
+/// @return {List} the complete box shadow.
+///
+@function _box-shadow($level, $color, $opacity-boost: 0) {
+  $color: theme-color.prop-value($color);
+  $umbra-z-value: map.get($umbra-map, $level);
+  $penumbra-z-value: map.get($penumbra-map, $level);
+  $ambient-z-value: map.get($ambient-map, $level);
+
+  $umbra-color: rgba($color, $umbra-opacity + $opacity-boost);
+  $penumbra-color: rgba($color, $penumbra-opacity + $opacity-boost);
+  $ambient-color: rgba($color, $ambient-opacity + $opacity-boost);
+
+  @return (
+    #{'#{$umbra-z-value} #{$umbra-color}'},
+    #{'#{$penumbra-z-value} #{$penumbra-color}'},
+    #{$ambient-z-value} $ambient-color
+  );
+}
+
 // Returns the correct box-shadow specified by $z-value.
 // The $z-value must be between 0 and 24.
 // If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
@@ -187,23 +211,27 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
     @error "$z-value must be between 0 and 24, but received '#{$z-value}'";
   }
 
-  $color: theme-color.prop-value($color);
+  @return _box-shadow($z-value, $color, $opacity-boost);
+}
 
-  $umbra-z-value: map.get($umbra-map, $z-value);
-  $penumbra-z-value: map.get($penumbra-map, $z-value);
-  $ambient-z-value: map.get($ambient-map, $z-value);
+///
+/// Returns a shadow or null if params are invalid.
+/// @param {Number} $level - the level of the Material elevation system.
+/// @param {String} $color - the color of the shadow.
+/// @return {List|null} the complete box shadow or null.
+///
+@function _shadow($level, $color) {
+  @if $level < 0 or $level > 24 {
+    @warn "$level must be between 0 and 24; received '#{$level}'";
+    @return null;
+  }
 
-  $umbra-color: rgba($color, $umbra-opacity + $opacity-boost);
-  $penumbra-color: rgba($color, $penumbra-opacity + $opacity-boost);
-  $ambient-color: rgba($color, $ambient-opacity + $opacity-boost);
+  @if $color == null {
+    @warn "no $color provided; received '#{$color}'";
+    @return null;
+  }
 
-  $box-shadow: (
-    #{'#{$umbra-z-value} #{$umbra-color}'},
-    #{'#{$penumbra-z-value} #{$penumbra-color}'},
-    #{$ambient-z-value} $ambient-color
-  );
-
-  @return $box-shadow;
+  @return _box-shadow($level, $color);
 }
 
 @function get-elevation($level) {
@@ -333,4 +361,52 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
   );
 
   @include shadow($box-shadow, $query: $query);
+}
+
+///
+/// Represents the configurable values of the elevation theme.
+///
+$_theme-values: (
+  shadow: null,
+  overlay-opacity: null,
+  overlay-color: null,
+);
+
+///
+/// Applies the shadow theme with the given $resolver function.
+/// @param {Function} $resolver - a function that returns a valid theme config.
+///   @see resolver for an example and expected arguments and return value.
+/// Accepts the following optional keyword args:
+/// @param {Number} $level - the level in the elevation system.
+/// @param {String} $shadow-color - the color used for the shadow.
+///
+@mixin with-resolver($resolver, $query: feature-targeting.all(), $args...) {
+  @if $resolver {
+    @include theme(meta.call($resolver, $args...), $query: $query);
+  }
+}
+
+///
+/// Applies the given theme.
+/// @param {Map} $theme - @see $_theme-values for accepted theme properties.
+///
+@mixin theme($theme: (), $query: feature-targeting.all()) {
+  @include theme.validate-keys($_theme-values, $theme);
+  @include shadow(map.get($theme, shadow), $query: $query);
+  @include overlay-opacity(map.get($theme, overlay-opacity), $query: $query);
+  @include overlay-fill-color(map.get($theme, overlay-color), $query: $query);
+}
+
+///
+/// Transforms the following optional parameters into a theme config.
+/// @param {Number} $level - the level of the elevation system in Material.
+/// @param {String} $shadow-color - the color to be used by the shadow.
+/// @return {Map} @see $_theme-values for accepted theme properties.
+///
+@function resolver($args...) {
+  $opts: meta.keywords($args);
+  $level: map.get($opts, level);
+  $shadow-color: map.get($opts, shadow-color);
+
+  @return (shadow: _shadow($level, $shadow-color));
 }
