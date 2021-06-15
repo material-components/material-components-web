@@ -77,6 +77,10 @@ $ripple-target: '.mdc-switch__ripple';
     @include shadow;
   }
 
+  .mdc-elevation-overlay {
+    @include overlay;
+  }
+
   .mdc-switch__ripple {
     @include ripple;
 
@@ -199,6 +203,11 @@ $ripple-target: '.mdc-switch__ripple';
     top: 0; // IE11 fix
     transition: animation.standard(background-color, $animation-duration),
       animation.standard(border-color, $animation-duration);
+    // Move the handle background colors beneath the shadow overlay color,
+    // rather than move the overlay on top of the handle with a positive
+    // z-index, which would require moving all other content on top of the
+    // overlay with an even greater z-index.
+    z-index: -1;
   }
 }
 
@@ -208,6 +217,15 @@ $ripple-target: '.mdc-switch__ripple';
   @include gss.annotate($noflip: true);
   left: 0;
   position: absolute;
+  @include gss.annotate($noflip: true);
+  right: 0;
+  top: 0;
+}
+
+@mixin overlay() {
+  bottom: 0;
+  @include gss.annotate($noflip: true);
+  left: 0;
   @include gss.annotate($noflip: true);
   right: 0;
   top: 0;

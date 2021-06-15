@@ -41,7 +41,7 @@
 
 $_density-config: (
   size: (
-    minimum: 36px,
+    minimum: 28px,
     default: 48px,
     maximum: 48px,
   ),
@@ -72,7 +72,6 @@ $_selectors: (
 $light-theme: (
   disabled-handle-elevation: 0,
   disabled-handle-opacity: 0.38,
-  disabled-handle-overlay-color: transparent,
   disabled-handle-overlay-opacity: 0,
   disabled-selected-handle-color: $_on-surface,
   disabled-selected-icon-color: on-primary,
@@ -209,13 +208,7 @@ $forced-colors-theme: (
     )
   );
 
-  @include _handle-overlay-color(
-    (
-      default: map.get($theme, handle-overlay-color),
-      disabled: map.get($theme, disabled-handle-overlay-color),
-    )
-  );
-
+  @include _handle-overlay-color(map.get($theme, handle-overlay-color));
   @include _handle-overlay-opacity(
     (
       default: map.get($theme, handle-overlay-opacity),
@@ -431,17 +424,7 @@ $forced-colors-theme: (
   }
 }
 
-@mixin _handle-overlay-color($colors) {
-  @include state.default($_selectors) {
-    @include _set-handle-overlay-color(state.get-default-state($colors));
-  }
-
-  @include state.disabled($_selectors) {
-    @include _set-handle-overlay-color(state.get-disabled-state($colors));
-  }
-}
-
-@mixin _set-handle-overlay-color($color) {
+@mixin _handle-overlay-color($color) {
   .mdc-elevation-overlay {
     @include elevation-theme.overlay-fill-color($color);
   }
