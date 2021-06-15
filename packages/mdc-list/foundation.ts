@@ -108,7 +108,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
   }
 
-  /** @return The index of the item that was last focused. */
+  /** Returns the index of the item that was last focused. */
   getFocusedItemIndex() {
     return this.focusedItemIndex;
   }
