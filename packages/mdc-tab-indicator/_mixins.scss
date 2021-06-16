@@ -26,14 +26,23 @@
 @use '@material/animation/variables';
 @use '@material/theme/theme';
 @use '@material/feature-targeting/feature-targeting';
-@mixin core-styles($query: feature-targeting.all()) {
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
-  // postcss-bem-linter: define tab-indicator
-
   .mdc-tab-indicator {
-    @include base_($query);
+    @include feature-targeting.targets($feat-structure) {
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
   }
 
   .mdc-tab-indicator__content {
@@ -92,6 +101,19 @@
       transition-delay: 100ms;
     }
   }
+}
+
+@mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  // postcss-bem-linter: define tab-indicator
+
+  .mdc-tab-indicator {
+    @include base_($query);
+  }
+
+  @include static-styles($query: $query);
 
   // postcss-bem-linter: end
 }
@@ -167,16 +189,4 @@
   @include icon-color(secondary, $query);
   @include underline-height(2px, $query);
   @include icon-height(34px, $query);
-
-  @include feature-targeting.targets($feat-structure) {
-    display: flex;
-    position: absolute;
-    top: 0;
-    left: 0;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-  }
 }

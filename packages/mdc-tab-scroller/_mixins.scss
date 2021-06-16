@@ -48,6 +48,10 @@
   }
 }
 
+@mixin static-styles($query: feature-targeting.all()) {
+  @include core-styles($query: $query);
+}
+
 @mixin core-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);

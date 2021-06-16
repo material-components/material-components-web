@@ -39,16 +39,38 @@
   @include ripple($query);
 }
 
-// This API is intended for use by frameworks that may want to separate the ripple-related styles
-// from the other tah styles. It is recommended that most users use `mdc-tab-core-styles` instead.
-@mixin without-ripple($query: feature-targeting.all()) {
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
-  // postcss-bem-linter: define tab
-
   .mdc-tab {
-    @include base_($query);
+    @include min-width(variables.$min-width, $query);
+    @include horizontal-padding(variables.$horizontal-padding, $query);
+
+    @include feature-targeting.targets($feat-structure) {
+      display: flex;
+      flex: 1 0 auto;
+      justify-content: center;
+      box-sizing: border-box;
+      // Explicitly setting margin to 0 is to override safari default margin for button elements.
+      margin: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      border: none;
+      outline: none;
+      background: none;
+      text-align: center;
+      white-space: nowrap;
+      cursor: pointer;
+      -webkit-appearance: none;
+      z-index: 1;
+
+      // Firefox still draws a dotted border around focused buttons unless specifically overridden.
+      &::-moz-focus-inner {
+        padding: 0;
+        border: 0;
+      }
+    }
   }
 
   .mdc-tab--min-width {
@@ -58,7 +80,13 @@
   }
 
   .mdc-tab__content {
-    @include content_($query);
+    @include feature-targeting.targets($feat-structure) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: inherit;
+      pointer-events: none;
+    }
   }
 
   .mdc-tab__text-label {
@@ -83,9 +111,6 @@
     }
 
     @include feature-targeting.targets($feat-structure) {
-      width: variables.$icon-size;
-      height: variables.$icon-size;
-      font-size: variables.$icon-size;
       z-index: 2;
     }
   }
@@ -95,7 +120,12 @@
   }
 
   .mdc-tab--active {
-    @include active_($query);
+    .mdc-tab__text-label,
+    .mdc-tab__icon {
+      @include feature-targeting.targets($feat-animation) {
+        transition-delay: 100ms;
+      }
+    }
   }
 
   .mdc-tab:not(.mdc-tab--stacked) .mdc-tab__icon + .mdc-tab__text-label {
@@ -103,7 +133,37 @@
       @include rtl-mixins.reflexive-box(padding, left, 8px);
     }
   }
+}
 
+// This API is intended for use by frameworks that may want to separate the ripple-related styles
+// from the other tah styles. It is recommended that most users use `mdc-tab-core-styles` instead.
+@mixin without-ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  // postcss-bem-linter: define tab
+
+  .mdc-tab {
+    @include base_($query);
+  }
+
+  .mdc-tab__content {
+    @include content_($query);
+  }
+
+  .mdc-tab__icon {
+    @include feature-targeting.targets($feat-structure) {
+      width: variables.$icon-size;
+      height: variables.$icon-size;
+      font-size: variables.$icon-size;
+    }
+  }
+
+  .mdc-tab--active {
+    @include active_($query);
+  }
+
+  @include static-styles($query: $query);
   // postcss-bem-linter: end
 }
 
@@ -243,34 +303,7 @@
   @include typography.typography(button, $query);
   @include text-label-color(variables.$text-label-color-default, $query);
   @include icon-color(variables.$icon-color-default, $query);
-  @include horizontal-padding(variables.$horizontal-padding, $query);
-  @include min-width(variables.$min-width, $query);
   @include tab-indicator-mixins.surface($query);
-
-  @include feature-targeting.targets($feat-structure) {
-    display: flex;
-    flex: 1 0 auto;
-    justify-content: center;
-    box-sizing: border-box;
-    // Explicitly setting margin to 0 is to override safari default margin for button elements.
-    margin: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    border: none;
-    outline: none;
-    background: none;
-    text-align: center;
-    white-space: nowrap;
-    cursor: pointer;
-    -webkit-appearance: none;
-    z-index: 1;
-
-    // Firefox still draws a dotted border around focused buttons unless specifically overridden.
-    &::-moz-focus-inner {
-      padding: 0;
-      border: 0;
-    }
-  }
 }
 
 @mixin ripple_($query: feature-targeting.all()) {
@@ -311,14 +344,6 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include tab-indicator-mixins.surface($query);
-
-  @include feature-targeting.targets($feat-structure) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: inherit;
-    pointer-events: none;
-  }
 }
 
 @mixin stacked_($query: feature-targeting.all()) {
@@ -343,11 +368,4 @@
 
   @include text-label-color(variables.$text-label-color-active, $query);
   @include icon-color(variables.$icon-color-active, $query);
-
-  .mdc-tab__text-label,
-  .mdc-tab__icon {
-    @include feature-targeting.targets($feat-animation) {
-      transition-delay: 100ms;
-    }
-  }
 }
