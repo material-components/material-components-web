@@ -161,20 +161,21 @@
     }
   }
 
-  // stylelint-disable-next-line selector-max-type
-  &--open {
-    @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
   &--animating-open {
     @include feature-targeting.targets($feat-structure) {
       display: inline-block;
       transform: scale(0.8);
       opacity: 0;
+    }
+  }
+
+  // Render this after `--animating-open` to override `opacity` & `transform`
+  // CSS properties.
+  &--open {
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-block;
+      transform: scale(1);
+      opacity: 1;
     }
   }
 
