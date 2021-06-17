@@ -75,12 +75,14 @@ const CSS_EXCLUDES = new Set([
   'progress-indicator',
   'rtl',
   'shape',
+  'tokens',
   'touch-target',
 ]);
 
 const JS_EXCLUDES = new Set([
   'animation',
   'progress-indicator',
+  'tokens',
   'chips', // Temporarily added during deprecation migration.
 ]);
 
@@ -145,7 +147,8 @@ function checkJSDependencyAddedInWebpackConfig() {
   assert.notEqual(typeof jsconfig.entry[nameCamel], 'undefined',
     'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' javascript dependency is not added to webpack ' +
     'configuration. Please add ' + nameCamel + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s js-components ' +
-    'entry before commit.');
+    'entry before commit. If package @material/' + name + ' has no exported JS, add "' + name + '" to ' +
+    'the JS_EXCLUDES set in this file.');
 }
 
 function checkCSSDependencyAddedInWebpackConfig() {
@@ -161,7 +164,8 @@ function checkCSSDependencyAddedInWebpackConfig() {
   assert.notEqual(typeof cssconfig.entry[nameMDC], 'undefined',
     'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' css dependency not added to webpack ' +
     'configuration. Please add ' + name + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s css ' +
-    'entry before commit.');
+    'entry before commit. If package @material/' + name + ' exports no concrete Sass, add ' +
+    '"' + name + '" to the CSS_EXCLUDES set in this file.');
 }
 
 function checkDependencyAddedInMDCPackage() {
