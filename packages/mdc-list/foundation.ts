@@ -113,23 +113,20 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     return this.focusedItemIndex;
   }
 
-  /**
-   * Sets the private wrapFocus variable.
-   */
+  /** Toggles focus wrapping with keyboard navigation. */
   setWrapFocus(value: boolean) {
     this.wrapFocus = value;
   }
 
   /**
-   * Sets the isVertical private variable.
+   * Toggles orientation direction for keyboard navigation (true for vertical,
+   * false for horizontal).
    */
   setVerticalOrientation(value: boolean) {
     this.isVertical = value;
   }
 
-  /**
-   * Sets the isSingleSelectionList private variable.
-   */
+  /** Toggles single-selection behavior. */
   setSingleSelection(value: boolean) {
     this.isSingleSelectionList = value;
     if (value) {
@@ -181,15 +178,14 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         typeahead.isTypingInProgress(this.typeaheadState);
   }
 
-  /**
-   * Sets the useActivatedClass private variable.
-   */
+  /** Toggle use of the "activated" CSS class. */
   setUseActivatedClass(useActivated: boolean) {
     this.useActivatedClass = useActivated;
   }
 
   /**
-   * Sets the useSelectedAttr private variable.
+   * Toggles use of the selected attribute (true for aria-selected, false for
+   * aria-checked).
    */
   setUseSelectedAttribute(useSelected: boolean) {
     this.useSelectedAttr = useSelected;
