@@ -57,13 +57,14 @@ export abstract class MDCChipActionFoundation extends
   }
 
   handleClick() {
-    // Early exit for cases where the click comes from a source other than the
-    // user's pointer (i.e. programmatic click from AT).
-    if (this.isDisabled()) return;
+    // Early exit if the action is in a non-interactive state.
+    if (!this.isInteractive()) return;
     this.emitInteraction(InteractionTrigger.CLICK);
   }
 
   handleKeydown(event: KeyboardEvent) {
+    // Early exit if the action is in a non-interactive state.
+    if (!this.isInteractive()) return;
     const key = normalizeKey(event);
     if (this.shouldNotifyInteractionFromKey(key)) {
       event.preventDefault();
@@ -131,7 +132,7 @@ export abstract class MDCChipActionFoundation extends
   }
 
   isFocusable() {
-    if (this.isDisabled()) {
+    if (!this.isInteractive()) {
       return false;
     }
 
@@ -153,6 +154,14 @@ export abstract class MDCChipActionFoundation extends
 
   isSelected(): boolean {
     return this.adapter.getAttribute(Attributes.ARIA_SELECTED) === 'true';
+  }
+
+  isInteractive(): boolean {
+    return !this.isDisabled() && !this.isPresentational();
+  }
+
+  private isPresentational(): boolean {
+    return this.adapter.getAttribute(Attributes.ROLE) === 'presentation';
   }
 
   private emitInteraction(trigger: InteractionTrigger) {

@@ -159,6 +159,12 @@
     }
   }
 
+  .mdc-evolution-chip__action--presentational {
+    @include feature-targeting.targets($feat-structure) {
+      cursor: auto;
+    }
+  }
+
   .mdc-evolution-chip--disabled,
   .mdc-evolution-chip__action:disabled {
     @include feature-targeting.targets($feat-structure) {

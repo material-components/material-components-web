@@ -142,6 +142,13 @@ describe('MDCChipActionFoundation', () => {
       expect(foundation.isFocusable()).toBe(false);
     });
 
+    it('#isFocusable returns false if role="presentation"', () => {
+      const {foundation, mockAdapter} = setupTest();
+      mockAdapter.getAttribute.withArgs(Attributes.ROLE)
+          .and.returnValue('presentation');
+      expect(foundation.isFocusable()).toBe(false);
+    });
+
     it('#isSelected returns true if aria-checked == true', () => {
       const {foundation, mockAdapter} = setupTest();
       mockAdapter.getAttribute.withArgs(Attributes.ARIA_SELECTED)
@@ -165,6 +172,15 @@ describe('MDCChipActionFoundation', () => {
       expect(mockAdapter.emitEvent).not.toHaveBeenCalled();
     });
 
+    it(`#handleClick does not emit ${Events.INTERACTION} when presentational`,
+       () => {
+         const {foundation, mockAdapter} = setupTest();
+         mockAdapter.getAttribute.withArgs(Attributes.ROLE)
+             .and.returnValue('presentation');
+         foundation.handleClick();
+         expect(mockAdapter.emitEvent).not.toHaveBeenCalled();
+       });
+
     it(`#handleClick emits ${Events.INTERACTION} with detail`, () => {
       const {foundation, mockAdapter} = setupTest();
       mockAdapter.getElementID.and.returnValue('foo');
@@ -175,6 +191,29 @@ describe('MDCChipActionFoundation', () => {
         trigger: InteractionTrigger.CLICK,
       });
     });
+
+    const keys = [
+      'Enter',
+      'Spacebar',
+    ];
+
+    for (const key of keys) {
+      it(`#handleKeydown("${key}") does not emit when disabled`, () => {
+        const {foundation, mockAdapter} = setupTest();
+        mockAdapter.getAttribute.withArgs(Attributes.ARIA_DISABLED)
+            .and.returnValue('true');
+        foundation.handleKeydown({key} as KeyboardEvent);
+        expect(mockAdapter.emitEvent).not.toHaveBeenCalled();
+      });
+
+      it(`#handleKeydown("${key}") does not emit when presentational`, () => {
+        const {foundation, mockAdapter} = setupTest();
+        mockAdapter.getAttribute.withArgs(Attributes.ROLE)
+            .and.returnValue('presentation');
+        foundation.handleKeydown({key} as KeyboardEvent);
+        expect(mockAdapter.emitEvent).not.toHaveBeenCalled();
+      });
+    }
   });
 
   describe('[non-deletable]', () => {
