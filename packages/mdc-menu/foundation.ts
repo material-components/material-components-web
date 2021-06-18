@@ -42,6 +42,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
   private closeAnimationEndTimerId = 0;
   private defaultFocusState = DefaultFocusState.LIST_ROOT;
+  private selectedIndex = -1;
 
   /**
    * @see {@link MDCMenuAdapter} for typing information on parameters and return types.
@@ -133,6 +134,11 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.defaultFocusState = focusState;
   }
 
+  /** @return Index of the currently selected list item within the menu. */
+  getSelectedIndex() {
+    return this.selectedIndex;
+  }
+
   /**
    * Selects the list item at `index` within the menu.
    * @param index Index of list item within the menu.
@@ -157,6 +163,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
         index, cssClasses.MENU_SELECTED_LIST_ITEM);
     this.adapter.addAttributeToElementAtIndex(
         index, strings.ARIA_CHECKED_ATTR, 'true');
+
+    this.selectedIndex = index;
   }
 
   /**
