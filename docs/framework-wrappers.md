@@ -12,6 +12,7 @@ Material Components for the web are architected to be adaptable to various major
 
   - [Material Web Components](https://github.com/material-components/material-components-web-components): MDC Web integration for Web Components (using [vanilla components](./integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
   - [Material Components for React](https://github.com/material-components/material-components-web-react): MDC Web integration for React (using [foundations/adapters](./integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters)). *Please note that this project is no longer under active development.*
+ - [Material Components for jQuery](https://www.tronic247.com/material/) MDC Web integration for jQuery
   - Additional third-party integrations
     - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
     - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc) (using [foundations/adapters](./integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
