@@ -146,6 +146,12 @@
   }
 }
 
+@mixin underline-shape($radius) {
+  .mdc-tab-indicator__content--underline {
+    @include theme.property('border-radius', $radius);
+  }
+}
+
 @mixin underline-top-corner-radius($radius, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 

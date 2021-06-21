@@ -22,9 +22,13 @@
     "@material/animation": "^11.0.0",
     "@material/base": "^11.0.0",
     "@material/density": "^11.0.0",
+    "@material/elevation": "^11.0.0",
     "@material/feature-targeting": "^11.0.0",
     "@material/tab": "^11.0.0",
+    "@material/tab-indicator": "^11.0.0",
     "@material/tab-scroller": "^11.0.0",
+    "@material/theme": "^11.0.0",
+    "@material/typography": "^11.0.0",
     "tslib": "^2.1.0"
   },
   "publishConfig": {

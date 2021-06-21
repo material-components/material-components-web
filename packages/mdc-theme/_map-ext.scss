@@ -60,3 +60,26 @@
 
   @return ($map1, $map2);
 }
+
+/// Picks provided keys from a Map.
+///
+/// @example - scss
+///   $map: (
+///     focus: blue,
+///     focus-within: blue,
+///     hover: teal,
+///     active: green,
+///   );
+///
+///   pick($map, hover, active);
+///   // (hover: teal, active: green),
+///
+///   pick($map, (hover, active)...);
+///   // (hover: teal, active: green),
+///
+/// @param {Map} $map - The Map to pick.
+/// @param {String...} $keys - Keys to pick from the Map.
+/// @return {List} Map with only the keys provided.
+@function pick($map, $keys...) {
+  @return list.nth(split($map, $keys...), 2);
+}

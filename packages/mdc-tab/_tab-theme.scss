@@ -1,0 +1,468 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:map';
+@use '@material/elevation/elevation-theme';
+@use '@material/ripple/ripple-theme';
+@use '@material/theme/state';
+@use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/typography/typography';
+
+$light-theme: (
+  active-focus-state-layer-color: theme-color.$primary,
+  active-focus-state-layer-opacity: 0.12,
+  active-hover-state-layer-color: theme-color.$primary,
+  active-hover-state-layer-opacity: 0.04,
+  active-pressed-state-layer-color: theme-color.$primary,
+  active-pressed-state-layer-opacity: 0.1,
+  container-color: theme-color.$surface,
+  container-elevation: elevation-theme.get-elevation(0),
+  container-height: 48px,
+  container-shape: 0,
+  inactive-focus-state-layer-color: theme-color.$on-surface,
+  inactive-focus-state-layer-opacity: 0.12,
+  inactive-hover-state-layer-color: theme-color.$on-surface,
+  inactive-hover-state-layer-opacity: 0.04,
+  inactive-pressed-state-layer-color: theme-color.$on-surface,
+  inactive-pressed-state-layer-opacity: 0.1,
+  with-icon-active-focus-icon-color: theme-color.$primary,
+  with-icon-active-hover-icon-color: theme-color.$primary,
+  with-icon-active-icon-color: theme-color.$primary,
+  with-icon-active-pressed-icon-color: theme-color.$primary,
+  with-icon-and-label-text-container-height: 64px,
+  with-icon-icon-size: 24px,
+  with-icon-inactive-focus-icon-color: theme-color.$on-surface,
+  with-icon-inactive-hover-icon-color: theme-color.$on-surface,
+  with-icon-inactive-icon-color: theme-color.$on-surface,
+  with-icon-inactive-pressed-icon-color: theme-color.$on-surface,
+  with-label-text-active-focus-label-text-color: theme-color.$primary,
+  with-label-text-active-hover-label-text-color: theme-color.$primary,
+  with-label-text-active-label-text-color: theme-color.$primary,
+  with-label-text-active-pressed-label-text-color: theme-color.$primary,
+  with-label-text-inactive-focus-label-text-color: theme-color.$on-surface,
+  with-label-text-inactive-hover-label-text-color: theme-color.$on-surface,
+  with-label-text-inactive-label-text-color: theme-color.$on-surface,
+  with-label-text-inactive-pressed-label-text-color: theme-color.$on-surface,
+  with-label-text-label-text-font-family: typography.get-font(subhead2),
+  with-label-text-label-text-font-size: typography.get-size(subhead2),
+  with-label-text-label-text-letter-spacing: typography.get-tracking(subhead2),
+  with-label-text-label-text-line-height: typography.get-line-height(subhead2),
+  with-label-text-label-text-weight: typography.get-weight(subhead2),
+);
+
+$_ripple-target: '.mdc-tab__ripple';
+
+@mixin theme-styles($theme) {
+  @include theme.validate-keys($light-theme, $theme);
+
+  // TODO(b/191298796): Use independent state layer color mixins when available.
+  @include _active-state-layer-color(
+    map.get($theme, active-hover-state-layer-color) or
+      map.get($theme, active-focus-state-layer-color) or
+      map.get($theme, active-pressed-state-layer-color)
+  );
+  @include _active-state-layer-opacity(
+    (
+      hover: map.get($theme, active-hover-state-layer-opacity),
+      focus: map.get($theme, active-focus-state-layer-opacity),
+      pressed: map.get($theme, active-pressed-state-layer-opacity),
+    )
+  );
+
+  // TODO(b/191298796): Use independent state layer color mixins when available.
+  @include _inactive-state-layer-color(
+    map.get($theme, inactive-hover-state-layer-color) or
+      map.get($theme, inactive-focus-state-layer-color) or
+      map.get($theme, inactive-pressed-state-layer-color)
+  );
+  @include _inactive-state-layer-opacity(
+    (
+      hover: map.get($theme, inactive-hover-state-layer-opacity),
+      focus: map.get($theme, inactive-focus-state-layer-opacity),
+      pressed: map.get($theme, inactive-pressed-state-layer-opacity),
+    )
+  );
+
+  @include _container-color(map.get($theme, container-color));
+  @include _container-elevation(map.get($theme, container-elevation));
+  @include _container-height(map.get($theme, container-height));
+  @include _container-shape(map.get($theme, container-shape));
+
+  @include _with-icon-and-label-text-container-height(
+    map.get($theme, with-icon-and-label-text-container-height)
+  );
+  @include _icon-size(map.get($theme, with-icon-icon-size));
+
+  @include _active-icon-color(
+    (
+      default: map.get($theme, with-icon-active-icon-color),
+      hover: map.get($theme, with-icon-active-hover-icon-color),
+      focus: map.get($theme, with-icon-active-focus-icon-color),
+      pressed: map.get($theme, with-icon-active-pressed-icon-color),
+    )
+  );
+
+  @include _inactive-icon-color(
+    (
+      default: map.get($theme, with-icon-inactive-icon-color),
+      hover: map.get($theme, with-icon-inactive-hover-icon-color),
+      focus: map.get($theme, with-icon-inactive-focus-icon-color),
+      pressed: map.get($theme, with-icon-inactive-pressed-icon-color),
+    )
+  );
+
+  @include _active-label-text-color(
+    (
+      default: map.get($theme, with-label-text-active-label-text-color),
+      hover: map.get($theme, with-label-text-active-hover-label-text-color),
+      focus: map.get($theme, with-label-text-active-focus-label-text-color),
+      pressed: map.get($theme, with-label-text-active-pressed-label-text-color),
+    )
+  );
+
+  @include _inactive-label-text-color(
+    (
+      default: map.get($theme, with-label-text-inactive-label-text-color),
+      hover: map.get($theme, with-label-text-inactive-hover-label-text-color),
+      focus: map.get($theme, with-label-text-inactive-focus-label-text-color),
+      pressed:
+        map.get($theme, with-label-text-inactive-pressed-label-text-color),
+    )
+  );
+
+  @include _label-text-font-family(
+    map.get($theme, with-label-text-label-text-font-family)
+  );
+  @include _label-text-font-size(
+    map.get($theme, with-label-text-label-text-font-size)
+  );
+  @include _label-text-letter-spacing(
+    map.get($theme, with-label-text-label-text-letter-spacing)
+  );
+  @include _label-text-line-height(
+    map.get($theme, with-label-text-label-text-line-height)
+  );
+  @include _label-text-weight(
+    map.get($theme, with-label-text-label-text-weight)
+  );
+}
+
+@mixin _icon-color($color) {
+  .mdc-tab__icon {
+    @include theme.property(color, $color);
+
+    fill: currentColor;
+  }
+}
+
+@mixin _active-icon-color($color-or-map) {
+  &:not(:disabled) {
+    @include _set-active-icon-color(state.get-default-state($color-or-map));
+
+    &:hover {
+      @include _set-active-icon-color(state.get-hover-state($color-or-map));
+    }
+    &:focus {
+      @include _set-active-icon-color(state.get-focus-state($color-or-map));
+    }
+    &:active {
+      @include _set-active-icon-color(state.get-pressed-state($color-or-map));
+    }
+  }
+
+  &:disabled {
+    @include _set-active-icon-color(state.get-disabled-state($color-or-map));
+  }
+}
+
+@mixin _set-active-icon-color($color) {
+  @include _is-active() {
+    @include _icon-color($color);
+  }
+}
+
+@mixin _inactive-icon-color($color-or-map) {
+  &:not(:disabled) {
+    @include _set-inactive-icon-color(state.get-default-state($color-or-map));
+
+    &:hover {
+      @include _set-inactive-icon-color(state.get-hover-state($color-or-map));
+    }
+    &:focus {
+      @include _set-inactive-icon-color(state.get-focus-state($color-or-map));
+    }
+    &:active {
+      @include _set-inactive-icon-color(state.get-pressed-state($color-or-map));
+    }
+  }
+
+  &:disabled {
+    @include _set-inactive-icon-color(state.get-disabled-state($color-or-map));
+  }
+}
+
+@mixin _set-inactive-icon-color($color) {
+  @include _is-inactive() {
+    @include _icon-color($color);
+  }
+}
+
+@mixin _label-text-color($color) {
+  .mdc-tab__text-label {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _active-label-text-color($color-or-map) {
+  &:not(:disabled) {
+    @include _set-active-label-text-color(
+      state.get-default-state($color-or-map)
+    );
+
+    &:hover {
+      @include _set-active-label-text-color(
+        state.get-hover-state($color-or-map)
+      );
+    }
+    &:focus {
+      @include _set-active-label-text-color(
+        state.get-focus-state($color-or-map)
+      );
+    }
+    &:active {
+      @include _set-active-label-text-color(
+        state.get-pressed-state($color-or-map)
+      );
+    }
+  }
+
+  &:disabled {
+    @include _set-active-label-text-color(
+      state.get-disabled-state($color-or-map)
+    );
+  }
+}
+
+@mixin _set-active-label-text-color($color) {
+  @include _is-active() {
+    @include _label-text-color($color);
+  }
+}
+
+@mixin _inactive-label-text-color($color-or-map) {
+  &:not(:disabled) {
+    @include _set-inactive-label-text-color(
+      state.get-default-state($color-or-map)
+    );
+
+    &:hover {
+      @include _set-inactive-label-text-color(
+        state.get-hover-state($color-or-map)
+      );
+    }
+    &:focus {
+      @include _set-inactive-label-text-color(
+        state.get-focus-state($color-or-map)
+      );
+    }
+    &:active {
+      @include _set-inactive-label-text-color(
+        state.get-pressed-state($color-or-map)
+      );
+    }
+  }
+
+  &:disabled {
+    @include _set-inactive-label-text-color(
+      state.get-disabled-state($color-or-map)
+    );
+  }
+}
+
+@mixin _set-inactive-label-text-color($color) {
+  @include _is-inactive() {
+    @include _label-text-color($color);
+  }
+}
+
+@mixin _container-color($color) {
+  @include theme.property(background-color, $color);
+}
+
+@mixin _active-state-layer-color($color) {
+  @include _is-active() {
+    @include _state-layer-color($color);
+  }
+}
+
+@mixin _inactive-state-layer-color($color) {
+  @include _is-inactive() {
+    @include _state-layer-color($color);
+  }
+}
+
+@mixin _active-state-layer-opacity($opacity-or-map) {
+  @include _is-active() {
+    @include _hover-state-layer-opacity(state.get-hover-state($opacity-or-map));
+    @include _focus-state-layer-opacity(state.get-focus-state($opacity-or-map));
+    @include _pressed-state-layer-opacity(
+      state.get-pressed-state($opacity-or-map)
+    );
+  }
+}
+
+@mixin _inactive-state-layer-opacity($opacity-or-map) {
+  @include _is-inactive() {
+    @include _hover-state-layer-opacity(state.get-hover-state($opacity-or-map));
+    @include _focus-state-layer-opacity(state.get-focus-state($opacity-or-map));
+    @include _pressed-state-layer-opacity(
+      state.get-pressed-state($opacity-or-map)
+    );
+  }
+}
+
+@mixin _hover-state-layer-opacity($opacity) {
+  @include ripple-theme.states-hover-opacity(
+    $opacity,
+    $ripple-target: $_ripple-target
+  );
+}
+
+@mixin _focus-state-layer-opacity($opacity) {
+  @include ripple-theme.states-focus-opacity(
+    $opacity,
+    $ripple-target: $_ripple-target
+  );
+}
+
+@mixin _pressed-state-layer-opacity($opacity) {
+  @include ripple-theme.states-press-opacity(
+    $opacity,
+    $ripple-target: $_ripple-target
+  );
+}
+
+@mixin _state-layer-color($color) {
+  @include ripple-theme.states-base-color(
+    $color,
+    $ripple-target: $_ripple-target
+  );
+}
+
+@mixin _focus-state-layer-opacity($opacity) {
+  @include ripple-theme.states-focus-opacity(
+    $opacity,
+    $ripple-target: $_ripple-target
+  );
+}
+
+@mixin _pressed-state-layer-opacity($opacity) {
+  @include ripple-theme.states-press-opacity(
+    $opacity,
+    $ripple-target: $_ripple-target
+  );
+}
+
+@mixin _container-elevation($elevation) {
+  // TODO(b/188905911): Use elevation's theme() mixin.
+  @if $elevation and map.get($elevation, box-shadow) {
+    @include elevation-theme.shadow(map.get($elevation, box-shadow));
+  }
+
+  @if $elevation and map.get($elevation, overlay-opacity) {
+    @include elevation-theme.overlay-opacity(
+      map.get($elevation, overlay-opacity)
+    );
+  }
+}
+
+@mixin _container-shape($shape-radius) {
+  @include theme.property(border-radius, $shape-radius);
+}
+
+@mixin _icon-size($size) {
+  @include theme.property('width', $size);
+  @include theme.property('height', $size);
+  @include theme.property('font-size', $size);
+}
+
+@mixin _label-text-font-family($font-family) {
+  .mdc-tab__text-label {
+    @include theme.property('font-family', $font-family);
+  }
+}
+
+@mixin _label-text-font-size($font-size) {
+  .mdc-tab__text-label {
+    @include theme.property('font-size', $font-size);
+  }
+}
+
+@mixin _label-text-letter-spacing($letter-spacing) {
+  .mdc-tab__text-label {
+    @include theme.property('letter-spacing', $letter-spacing);
+  }
+}
+
+@mixin _label-text-line-height($line-height) {
+  .mdc-tab__text-label {
+    @include theme.property('line-height', $line-height);
+  }
+}
+
+@mixin _label-text-weight($weight) {
+  .mdc-tab__text-label {
+    @include theme.property('font-weight', $weight);
+  }
+}
+
+@mixin _height($height) {
+  @include theme.property(height, $height);
+}
+
+@mixin _container-height($height) {
+  &:not(.mdc-tab--stacked) {
+    @include _height($height);
+  }
+}
+
+@mixin _with-icon-and-label-text-container-height($height) {
+  &.mdc-tab--stacked {
+    @include _height($height);
+  }
+}
+
+@mixin _is-active() {
+  &.mdc-tab--active {
+    @content;
+  }
+}
+
+@mixin _is-inactive() {
+  &:not(.mdc-tab--active) {
+    @content;
+  }
+}
