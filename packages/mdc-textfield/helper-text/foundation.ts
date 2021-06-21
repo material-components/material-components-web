@@ -121,7 +121,13 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
 
     if (validationMsgNeedsDisplay) {
       this.showToScreenReader();
-      this.adapter.setAttr(strings.ROLE, 'alert');
+      // If role is already alert, refresh it to trigger another announcement
+      // from screenreader.
+      if (this.adapter.getAttr(strings.ROLE) === 'alert') {
+        this.refreshAlertRole();
+      } else {
+        this.adapter.setAttr(strings.ROLE, 'alert');
+      }
     } else {
       this.adapter.removeAttr(strings.ROLE);
     }
@@ -136,6 +142,13 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
    */
   private hide() {
     this.adapter.setAttr(strings.ARIA_HIDDEN, 'true');
+  }
+
+  private refreshAlertRole() {
+    this.adapter.removeAttr(strings.ROLE);
+    requestAnimationFrame(() => {
+      this.adapter.setAttr(strings.ROLE, 'alert');
+    });
   }
 }
 
