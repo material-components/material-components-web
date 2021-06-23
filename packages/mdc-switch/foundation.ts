@@ -21,14 +21,11 @@
  * THE SOFTWARE.
  */
 
-import {MDCFoundation} from '@material/base/foundation';
-import {mdcObserver} from '@material/base/observer';
+import {MDCObserverFoundation} from '@material/base/observer-foundation';
+
 import {MDCSwitchAdapter, MDCSwitchRenderAdapter} from './adapter';
 import {CssClasses} from './constants';
 
-const baseClass =
-    mdcObserver<MDCFoundation<MDCSwitchAdapter>, typeof MDCFoundation>(
-        MDCFoundation);
 /**
  * `MDCSwitchFoundation` provides a state-only foundation for a switch
  * component.
@@ -36,7 +33,8 @@ const baseClass =
  * State observers and event handler entrypoints update a component's adapter's
  * state with the logic needed for switch to function.
  */
-export class MDCSwitchFoundation extends baseClass {
+export class MDCSwitchFoundation extends
+    MDCObserverFoundation<MDCSwitchAdapter> {
   constructor(adapter: MDCSwitchAdapter) {
     super(adapter);
     this.handleClick = this.handleClick.bind(this);
@@ -50,13 +48,6 @@ export class MDCSwitchFoundation extends baseClass {
       disabled: this.stopProcessingIfDisabled,
       processing: this.stopProcessingIfDisabled,
     });
-  }
-
-  /**
-   * Cleans up the foundation and stops observing state changes.
-   */
-  destroy() {
-    this.unobserve();
   }
 
   /**

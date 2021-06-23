@@ -34,14 +34,6 @@ describe('MDCSwitchFoundation', () => {
         {state: {disabled: false, processing: false, selected: false}});
   }
 
-  it('#destroy() removes state observers', () => {
-    const {foundation} = setupTest();
-    foundation.init();
-    spyOn(foundation, 'unobserve').and.callThrough();
-    foundation.destroy();
-    expect(foundation.unobserve).toHaveBeenCalled();
-  });
-
   it('#handleClick() toggles selected', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.init();
