@@ -98,6 +98,7 @@ CSS Class | Description
 `mdc-evolution-chip__action` | Mandatory, for the action root.
 `mdc-evolution-chip__action--primary` | Mandatory, mutually exclusive with the `*--trailing` root class.
 `mdc-evolution-chip__action--trailing` | Mandatory, mutually exclusive with the `*--primary` root class.
+`mdc-evolution-chip__action--presentational` | Optional, used to indicate the action is presentational (not interactive).
 `mdc-evolution-chip__ripple` | Mandatory, used for the ripple.
 `mdc-evolution-chip__ripple--primary` | Mandatory for the ripple, mutually exclusive with the `*--trailing` ripple class.
 `mdc-evolution-chip__ripple--trailing` | Mandatory for the ripple, mutually exclusive with the `*--primary` ripple class.
