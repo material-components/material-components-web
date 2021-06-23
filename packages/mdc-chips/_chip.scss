@@ -476,7 +476,7 @@
     }
   }
 
-  .mdc-evolution-chip__action {
+  .mdc-evolution-chip__action:not(.mdc-evolution-chip__action--presentational) {
     @include ripple-theme.focus() {
       &:after {
         @include feature-targeting.targets($feat-structure) {
