@@ -167,16 +167,17 @@ $pagination-rows-per-page-select-height: 36px;
 @mixin divider-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-data-table__header-cell:after {
-    @include feature-targeting.targets($feat-color) {
-      border-bottom-color: $color;
-    }
-  }
   .mdc-data-table__pagination-rows-per-page-select {
     @include select-theme.outline-color($color, $query: $query);
   }
 
   .mdc-data-table__cell,
+  .mdc-data-table__header-cell {
+    @include feature-targeting.targets($feat-color) {
+      border-bottom-color: $color;
+    }
+  }
+
   .mdc-data-table__pagination {
     @include feature-targeting.targets($feat-color) {
       border-top-color: $color;
@@ -187,18 +188,24 @@ $pagination-rows-per-page-select-height: 36px;
 @mixin divider-size($size, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-data-table__header-cell:after {
+  .mdc-data-table__cell,
+  .mdc-data-table__header-cell {
     @include feature-targeting.targets($feat-structure) {
       border-bottom-width: $size;
       border-bottom-style: solid;
     }
   }
 
-  .mdc-data-table__cell,
   .mdc-data-table__pagination {
     @include feature-targeting.targets($feat-structure) {
       border-top-width: $size;
       border-top-style: solid;
+    }
+  }
+
+  .mdc-data-table__row:last-child .mdc-data-table__cell {
+    @include feature-targeting.targets($feat-structure) {
+      border-bottom: none;
     }
   }
 }

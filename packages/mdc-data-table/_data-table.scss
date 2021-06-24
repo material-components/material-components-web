@@ -167,7 +167,7 @@
   @include data-table-progress-indicator.core-styles($query: $query);
 
   .mdc-data-table--sticky-header {
-    @include _sticky-header($query: $query);
+    @include data-table-header-cell.header-cell-sticky($query: $query);
   }
 
   @include data-table-pagination.core-styles($query: $query);
@@ -178,17 +178,4 @@
     data-table-theme.$checked-icon-color,
     $query: $query
   );
-}
-
-/// Sets styles required to support sticky header row.
-@mixin _sticky-header($query: $query) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include data-table-header-cell.header-cell-sticky($query: $query);
-
-  .mdc-data-table__row:first-child .mdc-data-table__cell {
-    @include feature-targeting.targets($feat-structure) {
-      border-top: 0;
-    }
-  }
 }

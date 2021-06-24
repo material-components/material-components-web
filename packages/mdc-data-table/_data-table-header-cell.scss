@@ -149,18 +149,4 @@
       z-index: 1;
     }
   }
-
-  // Use pseudo element to set border to bottom side of header cell.
-  // Applying `border-bottom` to header cell element does not work on vertical
-  // scroll for header row is sticky and table is set to
-  // `border-collapse: collapse`.
-  .mdc-data-table__header-cell:after {
-    @include feature-targeting.targets($feat-structure) {
-      bottom: 0;
-      content: '';
-      left: 0;
-      position: absolute;
-      width: 100%;
-    }
-  }
 }
