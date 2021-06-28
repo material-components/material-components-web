@@ -24,11 +24,16 @@
 // stylelint-disable selector-class-pattern --
 // Internal styling for Tooltip MDC component.
 
+@use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/typography/typography';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
 
 $fill-color: surface;
 $text-color: on-surface;
@@ -41,6 +46,74 @@ $secondary-action-text-color: primary;
 
 $mobile-breakpoint: 480px;
 $z-index: 1;
+
+$light-theme: (
+  action-focus-state-layer-color: null,
+  // how do I set primary-state-layer??
+  action-focus-state-layer-opacity: 0.12,
+  action-focus-label-text-color: null,
+  // how do I set primary-state-content??
+  action-hover-state-layer-color: null,
+  action-hover-state-layer-opacity: 0.04,
+  action-hover-label-text-color: null,
+  action-label-text-color: theme-color.$primary,
+  action-label-text-font: typography.get-font(button),
+  action-label-text-line-height: typography.get-line-height(button),
+  action-label-text-size: typography.get-size(button),
+  action-label-text-tracking: typography.get-tracking(button),
+  action-label-text-weight: typography.get-weight(button),
+  action-pressed-state-layer-color: null,
+  action-pressed-state-layer-opacity: null,
+  action-pressed-label-text-color: null,
+  container-color: theme-color.$surface,
+  // ignore elevation for now, since this isn't styled at all for GM/MDC
+  // container-elevation: elevation-theme.get-elevation(0),
+  // ignore shape for now, since this isn't styled at all for GM/MDC
+  // container-shape: null,
+  // mobile-with-single-line-container-height: 54px,
+  // mobile-with-two-lines-container-height: 112px,
+  // mobile-with-two-lines-with-image-container-height: 120px,
+  // desktop-with-single-line-container-height: 52px,
+  // desktop-with-two-lines-container-height: 72px,
+  // desktop-with-two-lines-with-image-container-height: 90px,
+  divider-color: $divider-color,
+  divider-height: 1px,
+  // currently no styling on this
+  supporting-text-color: theme-color.$on-surface,
+  supporting-text-font: typography.get-font(body2),
+  supporting-text-line-height: typography.get-line-height(body2),
+  supporting-text-size: typography.get-size(body2),
+  supporting-text-tracking: typography.get-tracking(body2),
+  supporting-text-weight: typography.get-weight(body2),
+  with-image-image-shape: $graphic-shape-radius,
+  with-image-image-size: null,
+);
+
+@mixin theme-styles($theme, $query: feature-targeting.all()) {
+  @include theme.validate-keys($light-theme, $theme);
+
+  @include text-color(map.get($theme, supporting-text-color), $query: $query);
+  @include _supporting-text-typography(
+    (
+      font: map.get($theme, supporting-text-font),
+      size: map.get($theme, supporting-text-size),
+      tracking: map.get($theme, supporting-text-tracking),
+      weight: map.get($theme, supporting-text-weight),
+      line-height: map.get($theme, supporting-text-line-height),
+    ),
+    $query: $query
+  );
+
+  @include graphic-shape-radius(
+    map.get($theme, with-image-image-shape),
+    $query: $query
+  );
+
+  .mdc-banner {
+    @include fill-color(map.get($theme, container-color), $query: $query);
+    @include divider-color(map.get($theme, divider-color), $query: $query);
+  }
+}
 
 ///
 /// Customizes fill color.
@@ -237,6 +310,46 @@ $z-index: 1;
   .mdc-banner__fixed {
     @include feature-targeting.targets($feat-structure) {
       width: $width;
+    }
+  }
+}
+
+@mixin _supporting-text-typography(
+  $typography-map,
+  $query: feature-targeting.all()
+) {
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  $font: map.get($typography-map, font);
+  $size: map.get($typography-map, size);
+  $tracking: map.get($typography-map, tracking);
+  $weight: map.get($typography-map, weight);
+  $line-height: map.get($typography-map, line-height);
+
+  .mdc-banner__text {
+    @include feature-targeting.targets($feat-typography) {
+      $is-size-px: meta.type-of($size) == 'number' and math.unit($size) == 'px';
+      @if $is-size-px {
+        $size-rem: typography.px-to-rem($size);
+        @include theme.property(font-size, $size-rem);
+      } @else {
+        @include theme.property(font-size, $size);
+      }
+
+      @if $tracking and $is-size-px {
+        @include theme.property(
+          letter-spacing,
+          math.div($tracking, $size) * 1em
+        );
+      } @else {
+        @include theme.property(letter-spacing, $tracking);
+      }
+
+      @include theme.property(font-family, $font);
+      @include theme.property(font-size, $size);
+      @include theme.property(letter-spacing, $tracking);
+      @include theme.property(font-weight, $weight);
+      @include theme.property(line-height, $line-height);
     }
   }
 }
