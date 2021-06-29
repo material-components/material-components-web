@@ -38,14 +38,14 @@ $ripple-target: '.mdc-switch__ripple';
   @include static-styles-without-ripple();
 
   .mdc-switch {
-    @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
+    @include ripple.common; // COPYBARA_COMMENT_THIS_LINE
     @include ripple.surface($ripple-target: $ripple-target);
     @include ripple.radius-unbounded($ripple-target: $ripple-target);
   }
 }
 
 @mixin static-styles-without-ripple() {
-  @include elevation.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include elevation.overlay-common; // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-switch {
     @include root;
