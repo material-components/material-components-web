@@ -66,32 +66,29 @@ $disabled-container-color: rgba(
   @include container-fill-color(
     (
       default: map.get($theme, container-color),
-      hover: map.get($theme, container-hover-color),
-      focus: map.get($theme, container-focus-color),
-      pressed: map.get($theme, container-pressed-color),
-      disabled: map.get($theme, container-disabled-color),
+      disabled: map.get($theme, disabled-container-color),
     ),
     $query: $query
   );
 
   @include ink-color(
     (
-      default: map.get($theme, label-color),
-      hover: map.get($theme, label-hover-color),
-      focus: map.get($theme, label-focus-color),
-      pressed: map.get($theme, label-pressed-color),
-      disabled: map.get($theme, label-disabled-color),
+      default: map.get($theme, label-text-color),
+      hover: map.get($theme, hover-label-text-color),
+      focus: map.get($theme, focus-label-text-color),
+      pressed: map.get($theme, pressed-label-text-color),
+      disabled: map.get($theme, disabled-label-text-color),
     ),
     $query: $query
   );
 
   @include icon-color(
     (
-      default: map.get($theme, icon-color),
-      hover: map.get($theme, icon-hover-color),
-      focus: map.get($theme, icon-focus-color),
-      pressed: map.get($theme, icon-pressed-color),
-      disabled: map.get($theme, icon-disabled-color),
+      default: map.get($theme, with-icon-icon-color),
+      hover: map.get($theme, with-icon-hover-icon-color),
+      focus: map.get($theme, with-icon-focus-icon-color),
+      pressed: map.get($theme, with-icon-pressed-icon-color),
+      disabled: map.get($theme, with-icon-disabled-icon-color),
     ),
     $query: $query
   );
@@ -111,7 +108,7 @@ $disabled-container-color: rgba(
     @include density($density-scale: $density, $query: $query);
   }
 
-  $shape: map.get($theme, shape);
+  $shape: map.get($theme, container-shape);
   @if $density == null {
     $density: $density-scale;
   }

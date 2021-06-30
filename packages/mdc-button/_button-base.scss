@@ -131,6 +131,7 @@
     // `hidden` in some cases, unless it's explicitly defined here.
     overflow: visible;
     vertical-align: middle;
+    background: transparent;
   }
 
   &::-moz-focus-inner {

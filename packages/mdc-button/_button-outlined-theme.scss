@@ -38,31 +38,25 @@ $outlined-border-width: 1px !default;
 $outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 
 $light-theme: (
-  container-color: transparent,
-  container-hover-color: null,
-  container-focus-color: null,
-  container-pressed-color: null,
   container-disabled-color: transparent,
+  container-shape: button-shared-theme.$shape-radius,
   density: button-shared-theme.$density-scale,
-  icon-color: null,
-  icon-hover-color: null,
-  icon-focus-color: null,
-  icon-pressed-color: null,
-  icon-disabled-color: null,
-  label-color: primary,
-  label-hover-color: null,
-  label-focus-color: null,
-  label-pressed-color: null,
-  label-disabled-color: button-shared-theme.$disabled-ink-color,
-  outline-width: $outlined-border-width,
+  disabled-label-text-color: button-shared-theme.$disabled-ink-color,
+  disabled-outline-color: button-shared-theme.$disabled-container-color,
+  focus-label-text-color: null,
+  focus-outline-color: null,
+  hover-label-text-color: null,
+  label-text-color: primary,
   outline-color: $outline-color,
-  outline-hover-color: null,
-  outline-focus-color: null,
-  outline-pressed-color: null,
-  outline-disabled-color: button-shared-theme.$disabled-container-color,
+  outline-width: $outlined-border-width,
+  pressed-label-text-color: null,
   ripple-color: primary,
   ripple-opacity: null,
-  shape: button-shared-theme.$shape-radius,
+  with-icon-icon-color: null,
+  with-icon-hover-icon-color: null,
+  with-icon-focus-icon-color: null,
+  with-icon-pressed-icon-color: null,
+  with-icon-disabled-icon-color: null,
 );
 
 /// Sets theme based on provided theme configuration.
@@ -74,10 +68,8 @@ $light-theme: (
   @include outline-color(
     (
       default: map.get($theme, outline-color),
-      hover: map.get($theme, outline-hover-color),
-      focus: map.get($theme, outline-focus-color),
-      pressed: map.get($theme, outline-pressed-color),
-      disabled: map.get($theme, outline-disabled-color),
+      disabled: map.get($theme, disabled-outline-color),
+      focus: map.get($theme, focus-outline-color),
     ),
     $query: $query
   );

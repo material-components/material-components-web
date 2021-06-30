@@ -25,25 +25,20 @@
 @use './button-shared-theme';
 
 $light-theme: (
-  container-color: transparent,
-  container-hover-color: null,
-  container-focus-color: null,
-  container-pressed-color: null,
-  container-disabled-color: transparent,
+  container-shape: button-shared-theme.$shape-radius,
   density: button-shared-theme.$density-scale,
-  icon-color: null,
-  icon-hover-color: null,
-  icon-focus-color: null,
-  icon-pressed-color: null,
-  icon-disabled-color: null,
-  label-color: primary,
-  label-hover-color: null,
-  label-focus-color: null,
-  label-pressed-color: null,
-  label-disabled-color: button-shared-theme.$disabled-ink-color,
+  disabled-label-text-color: button-shared-theme.$disabled-ink-color,
+  focus-label-text-color: null,
+  hover-label-text-color: null,
+  label-text-color: primary,
+  pressed-label-text-color: null,
   ripple-color: primary,
   ripple-opacity: null,
-  shape: button-shared-theme.$shape-radius,
+  with-icon-disabled-icon-color: null,
+  with-icon-focus-icon-color: null,
+  with-icon-hover-icon-color: null,
+  with-icon-icon-color: null,
+  with-icon-pressed-icon-color: null,
 );
 
 /// Sets theme based on provided theme configuration.
