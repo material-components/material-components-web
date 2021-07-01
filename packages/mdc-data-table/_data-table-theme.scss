@@ -368,8 +368,7 @@ $pagination-rows-per-page-select-height: 36px;
   .mdc-data-table__cell,
   .mdc-data-table__header-cell {
     @include feature-targeting.targets($feat-structure) {
-      padding-right: $trailing-padding;
-      padding-left: $leading-padding;
+      padding: 0 $trailing-padding 0 $leading-padding;
     }
   }
 
