@@ -36,6 +36,8 @@
 @use '@material/theme/shadow-dom';
 @use '@material/theme/theme-color';
 
+$custom-property-prefix: 'ripple';
+
 $fade-in-duration: 75ms !default;
 $fade-out-duration: 150ms !default;
 $translate-duration: 225ms !default;
@@ -82,8 +84,10 @@ $light-theme: (
 );
 
 @mixin theme($theme) {
-  @include theme.validate-keys($theme, $light-theme);
-  @include keys.declare-custom-properties($theme, $prefix: 'ripple');
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
 
   @if shadow-dom.$css-selector-fallback-declarations {
     .mdc-ripple-surface {
@@ -94,7 +98,10 @@ $light-theme: (
 
 @mixin theme-styles($theme) {
   @include theme.validate-keys($theme, $light-theme);
-  $theme: keys.create-theme-properties($theme, $prefix: 'ripple');
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
 
   // Use only hover state layer color, ignoring focus and pressed color.
   @include states-base-color(map.get($theme, hover-state-layer-color));
