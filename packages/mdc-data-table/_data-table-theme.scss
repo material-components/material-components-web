@@ -66,24 +66,24 @@ $shape-radius: medium !default;
 $stroke-size: 1px !default;
 $stroke-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 
-$cell-height: 52px !default;
-$header-cell-height: get-header-cell-height($cell-height) !default;
+$row-height: 52px !default;
+$header-row-height: get-header-row-height($row-height) !default;
 $cell-leading-padding: 16px !default;
 $cell-trailing-padding: 16px !default;
 
-$minimum-cell-height: 36px !default;
-$maximum-cell-height: $cell-height !default;
+$minimum-row-height: 36px !default;
+$maximum-row-height: $row-height !default;
 $default-density-scale: density-variables.$default-scale !default;
 $density-config: (
   height: (
-    maximum: $cell-height,
-    default: $cell-height,
-    minimum: $minimum-cell-height,
+    maximum: $row-height,
+    default: $row-height,
+    minimum: $minimum-row-height,
   ),
 );
 $pagination-rows-per-page-select-height: 36px;
 
-@function get-header-cell-height($height) {
+@function get-header-row-height($height) {
   @return $height + 4px;
 }
 
@@ -318,20 +318,20 @@ $pagination-rows-per-page-select-height: 36px;
   }
 }
 
-@mixin header-cell-height($height, $query: feature-targeting.all()) {
+@mixin header-row-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-data-table__header-cell {
+  .mdc-data-table__header-row {
     @include feature-targeting.targets($feat-structure) {
       height: $height;
     }
   }
 }
 
-@mixin cell-height($height, $query: feature-targeting.all()) {
+@mixin row-height($height, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-data-table__cell {
+  .mdc-data-table__row {
     @include feature-targeting.targets($feat-structure) {
       height: $height;
     }
@@ -452,8 +452,8 @@ $pagination-rows-per-page-select-height: 36px;
     $property-name: height,
   );
 
-  @include cell-height($height, $query: $query);
-  @include header-cell-height(get-header-cell-height($height), $query: $query);
+  @include row-height($height, $query: $query);
+  @include header-row-height(get-header-row-height($height), $query: $query);
 
   @if $row-checkbox-density-scale {
     @include checkbox-cell-padding(
