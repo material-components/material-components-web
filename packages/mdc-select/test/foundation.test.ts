@@ -928,6 +928,14 @@ describe('MDCSelectFoundation', () => {
        expect(foundation.isValid()).toBe(true);
      });
 
+  it('#getUseDefaultValidation returns correct value', () => {
+    const {foundation} = setupTest();
+    foundation.setUseDefaultValidation(true);
+    expect(foundation.getUseDefaultValidation()).toBeTrue();
+    foundation.setUseDefaultValidation(false);
+    expect(foundation.getUseDefaultValidation()).toBeFalse();
+  });
+
   it('#isValid returns false if using custom false validity', () => {
     const {foundation, mockAdapter} = setupTest();
     mockAdapter.hasClass.withArgs(cssClasses.REQUIRED).and.returnValue(false);

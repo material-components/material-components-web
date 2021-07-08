@@ -392,6 +392,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     }
   }
 
+  getUseDefaultValidation(): boolean {
+    return this.useDefaultValidation;
+  }
+
   setUseDefaultValidation(useDefaultValidation: boolean) {
     this.useDefaultValidation = useDefaultValidation;
   }
