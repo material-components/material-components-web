@@ -55,8 +55,12 @@
   $theme: map.merge(
     button-text-theme.$light-theme,
     (
-      ripple-color: null,
-      ripple-opacity: null,
+      focus-state-layer-color: null,
+      focus-state-layer-opacity: null,
+      hover-state-layer-color: null,
+      hover-state-layer-opacity: null,
+      pressed-state-layer-color: null,
+      pressed-state-layer-opacity: null,
     )
   );
 

@@ -63,6 +63,16 @@ $disabled-container-color: rgba(
 ) !default;
 
 @mixin theme($theme, $query: feature-targeting.all()) {
+  @include _label-text-typography(
+    (
+      family: map.get($theme, label-text-font),
+      size: map.get($theme, label-text-size),
+      tracking: map.get($theme, label-text-tracking),
+      weight: map.get($theme, label-text-weight),
+    ),
+    $query: $query
+  );
+
   @include container-fill-color(
     (
       default: map.get($theme, container-color),
@@ -93,15 +103,27 @@ $disabled-container-color: rgba(
     $query: $query
   );
 
-  $ripple-color: map.get($theme, ripple-color);
-  $ripple-opacity: map.get($theme, ripple-opacity);
-  @if $ripple-color {
-    @include ripple-states(
-      $color: $ripple-color,
-      $opacity-map: $ripple-opacity,
-      $query: $query
-    );
-  }
+  @include _states-colors(
+    (
+      focus: map.get($theme, focus-state-layer-color),
+      hover: map.get($theme, hover-state-layer-color),
+      pressed: map.get($theme, pressed-state-layer-color),
+    ),
+    $query: $query
+  );
+
+  $hover-state-layer-opacity: map.get($theme, hover-state-layer-opacity);
+  $focus-state-layer-opacity: map.get($theme, focus-state-layer-opacity);
+  $pressed-state-layer-opacity: map.get($theme, pressed-state-layer-opacity);
+  @include ripple-theme.states-opacities(
+    $opacity-map: (
+      focus: $focus-state-layer-opacity,
+      hover: $hover-state-layer-opacity,
+      press: $pressed-state-layer-opacity,
+    ),
+    $ripple-target: button-ripple.$ripple-target,
+    $query: $query
+  );
 
   $density: map.get($theme, density);
   @if $density != null {
@@ -179,9 +201,7 @@ $disabled-container-color: rgba(
       );
     }
 
-    // Increase active state specificity due to ripple-theme.focus().
-    &:active,
-    &:focus:active {
+    @include ripple-theme.active {
       @include _container-fill-color(
         state.get-pressed-state($color-or-map),
         $query: $query
@@ -239,9 +259,7 @@ $disabled-container-color: rgba(
       );
     }
 
-    // Increase active state specificity due to ripple-theme.focus().
-    &:active,
-    &:focus:active {
+    @include ripple-theme.active {
       @include _icon-color(
         state.get-pressed-state($color-or-map),
         $query: $query
@@ -291,9 +309,7 @@ $disabled-container-color: rgba(
       @include _ink-color(state.get-focus-state($color-or-map), $query: $query);
     }
 
-    // Increase active state specificity due to ripple-theme.focus().
-    &:active,
-    &:focus:active {
+    @include ripple-theme.active {
       @include _ink-color(
         state.get-pressed-state($color-or-map),
         $query: $query
@@ -519,6 +535,81 @@ $disabled-container-color: rgba(
   @if $color {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
+    }
+  }
+}
+
+@mixin _states-colors($color-map, $query: feature-targeting.all()) {
+  $hover: map.get($color-map, hover);
+  $focus: map.get($color-map, focus);
+  $pressed: map.get($color-map, pressed);
+
+  @if $hover != null and $hover == $focus and $focus == $pressed {
+    @include ripple-theme.states-base-color(
+      $color: $hover,
+      $ripple-target: button-ripple.$ripple-target,
+      $query: $query
+    );
+  } @else {
+    &:hover {
+      @if $hover != null {
+        @include ripple-theme.states-base-color(
+          $hover,
+          $ripple-target: button-ripple.$ripple-target,
+          $query: $query
+        );
+      }
+    }
+
+    @include ripple-theme.focus {
+      @if $focus != null {
+        @include ripple-theme.states-base-color(
+          $focus,
+          $ripple-target: button-ripple.$ripple-target,
+          $query: $query
+        );
+      }
+    }
+
+    @include ripple-theme.active {
+      @if $pressed != null {
+        @include ripple-theme.states-base-color(
+          $active,
+          $ripple-target: button-ripple.$ripple-target,
+          $query: $query
+        );
+      }
+    }
+  }
+}
+
+@mixin _label-text-typography(
+  $typography-map,
+  $query: feature-targeting.all()
+) {
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  $family: map.get($typography-map, family);
+  $size: map.get($typography-map, size);
+  $tracking: map.get($typography-map, tracking);
+  $weight: map.get($typography-map, weight);
+
+  @include feature-targeting.targets($feat-typography) {
+    .mdc-button__label {
+      @include theme.property(font-family, $family);
+
+      @if $size {
+        @include theme.property(font-size, typography.px-to-rem($size));
+      }
+
+      @if $tracking {
+        @include theme.property(
+          letter-spacing,
+          typography.px-to-rem($tracking)
+        );
+      }
+
+      @include theme.property(font-weight, $weight);
     }
   }
 }
