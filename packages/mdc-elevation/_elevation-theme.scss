@@ -221,7 +221,7 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
 /// @return {List|null} the complete box shadow or null.
 ///
 @function _shadow($level, $color) {
-  @if $level < 0 or $level > 24 {
+  @if $level == null or $level < 0 or $level > 24 {
     @warn "$level must be between 0 and 24; received '#{$level}'";
     @return null;
   }
@@ -236,6 +236,19 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
 
 @function get-elevation($level) {
   @return (box-shadow: elevation-box-shadow($level));
+}
+
+///
+/// Sets the shadow of the element.
+///
+/// @param {String} $box-shadow - The shadow to apply to the element.
+///
+@mixin _box-shadow($shadow, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include feature-targeting.targets($feat-color) {
+    @include theme.property(box-shadow, $shadow);
+  }
 }
 
 ///
@@ -329,6 +342,16 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
 }
 
 ///
+/// Applies the given color to the container of the overlay.
+/// @param {color} $color - the color of the overlay container
+///
+@mixin _overlay-container-color($color, $query: feature-targeting.all()) {
+  .mdc-elevation-overlay {
+    @include overlay-fill-color($color, $query: $query);
+  }
+}
+
+///
 /// Sets the elevation overlay opacity.
 /// Expected to be called from a parent element.
 ///
@@ -380,21 +403,32 @@ $_theme-values: (
 /// @param {Number} $level - the level in the elevation system.
 /// @param {String} $shadow-color - the color used for the shadow.
 ///
-@mixin with-resolver($resolver, $query: feature-targeting.all(), $args...) {
+@mixin with-resolver($resolver, $args...) {
   @if $resolver {
-    @include theme(meta.call($resolver, $args...), $query: $query);
+    @include _theme(meta.call($resolver, $args...));
   }
+}
+
+///
+/// Applies the given theme with validation.
+/// @param {Map} $theme - @see $_theme-values for accepted theme properties.
+///
+@mixin theme($theme: (), $query: feature-targeting.all()) {
+  @include theme.validate-keys($_theme-values, $theme);
+  @include _theme($theme, $query: $query);
 }
 
 ///
 /// Applies the given theme.
 /// @param {Map} $theme - @see $_theme-values for accepted theme properties.
 ///
-@mixin theme($theme: (), $query: feature-targeting.all()) {
-  @include theme.validate-keys($_theme-values, $theme);
-  @include shadow(map.get($theme, shadow), $query: $query);
+@mixin _theme($theme: (), $query: feature-targeting.all()) {
+  @include _box-shadow(map.get($theme, shadow), $query: $query);
   @include overlay-opacity(map.get($theme, overlay-opacity), $query: $query);
-  @include overlay-fill-color(map.get($theme, overlay-color), $query: $query);
+  @include _overlay-container-color(
+    map.get($theme, overlay-color),
+    $query: $query
+  );
 }
 
 ///
@@ -405,8 +439,11 @@ $_theme-values: (
 ///
 @function resolver($args...) {
   $opts: meta.keywords($args);
-  $level: map.get($opts, level);
+  $elevation: map.get($opts, elevation);
   $shadow-color: map.get($opts, shadow-color);
+  @if custom-properties.is-custom-prop($elevation) {
+    @return (shadow: $elevation);
+  }
 
-  @return (shadow: _shadow($level, $shadow-color));
+  @return (shadow: _shadow($elevation, $shadow-color));
 }
