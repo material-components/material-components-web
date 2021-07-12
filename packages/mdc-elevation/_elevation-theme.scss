@@ -217,10 +217,10 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
 ///
 /// Returns a shadow or null if params are invalid.
 /// @param {Number} $level - the level of the Material elevation system.
-/// @param {String} $color - the color of the shadow.
+/// @param {String} $color [#000] - the color of the shadow.
 /// @return {List|null} the complete box shadow or null.
 ///
-@function _shadow($level, $color) {
+@function _shadow($level, $color: #000) {
   @if $level == null or $level < 0 or $level > 24 {
     @warn "$level must be between 0 and 24; received '#{$level}'";
     @return null;
@@ -423,7 +423,7 @@ $_theme-values: (
 /// @param {Map} $theme - @see $_theme-values for accepted theme properties.
 ///
 @mixin _theme($theme: (), $query: feature-targeting.all()) {
-  @include _box-shadow(map.get($theme, shadow), $query: $query);
+  @include shadow(map.get($theme, shadow), $query: $query);
   @include overlay-opacity(map.get($theme, overlay-opacity), $query: $query);
   @include _overlay-container-color(
     map.get($theme, overlay-color),
@@ -442,8 +442,18 @@ $_theme-values: (
   $elevation: map.get($opts, elevation);
   $shadow-color: map.get($opts, shadow-color);
   @if custom-properties.is-custom-prop($elevation) {
-    @return (shadow: $elevation);
+    @return _resolve-custom-props($elevation, $shadow-color);
   }
 
   @return (shadow: _shadow($elevation, $shadow-color));
+}
+
+@function _resolve-custom-props($elevation, $shadow-color) {
+  $fallback-dp: custom-properties.get-fallback($elevation);
+  $fallback-shadow-color: custom-properties.get-fallback($shadow-color);
+  $shadow: custom-properties.set-fallback(
+    $elevation,
+    _shadow($fallback-dp, $fallback-shadow-color)
+  );
+  @return (shadow: $shadow);
 }
