@@ -24,6 +24,7 @@
     "@material/rtl": "^11.0.0",
     "@material/shape": "^11.0.0",
     "@material/theme": "^11.0.0",
+    "@material/tokens": "^11.0.0",
     "@material/touch-target": "^11.0.0",
     "@material/typography": "^11.0.0",
     "tslib": "^2.1.0"

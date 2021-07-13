@@ -36,6 +36,7 @@
 @use '@material/theme/state';
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
+@use '@material/tokens/resolvers';
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/typography/typography';
 @use './fab-theme';
@@ -49,9 +50,9 @@ $extended-height: 48px !default;
 
 $_extended-light-theme: (
   container-color: theme-color.$surface,
-  container-elevation: elevation-theme.get-elevation(3),
+  container-elevation: 3,
   container-height: 56px,
-  container-shadow-color: null,
+  container-shadow-color: black,
   container-shape: 50%,
   focus-container-elevation: null,
   focus-icon-color: null,
@@ -85,9 +86,9 @@ $_extended-light-theme: (
   pressed-state-layer-opacity: null,
 );
 
-@mixin theme($theme) {
+@mixin theme($theme, $resolvers: resolvers.$material) {
   @include theme.validate-keys($_extended-light-theme, $theme);
-  @include fab-theme.base-theme($theme);
+  @include fab-theme.base-theme($theme, $resolvers: $resolvers);
   $container-shape: map.get($theme, container-shape);
   @if $container-shape {
     @include extended-shape-radius($container-shape);
