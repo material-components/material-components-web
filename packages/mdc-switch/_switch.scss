@@ -135,20 +135,31 @@ $ripple-target: '.mdc-switch__ripple';
     position: absolute;
     width: 100%;
   }
-
-  &::after {
-    transition: animation.standard(transform, $animation-duration);
-  }
 }
 
 @mixin track-on() {
+  &::before {
+    transition: animation.exit-temporary(transform, $animation-duration);
+    transform: translateX(100%);
+    @include rtl.rtl {
+      transform: translateX(-100%);
+    }
+  }
+
   &::after {
+    transition: animation.enter(transform, $animation-duration);
     transform: translateX(0);
   }
 }
 
 @mixin track-off() {
+  &::before {
+    transition: animation.enter(transform, $animation-duration);
+    transform: translateX(0);
+  }
+
   &::after {
+    transition: animation.exit-temporary(transform, $animation-duration);
     transform: translateX(-100%);
     @include rtl.rtl {
       transform: translateX(100%);
