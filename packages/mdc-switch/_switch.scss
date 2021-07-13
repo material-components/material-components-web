@@ -237,6 +237,9 @@ $ripple-target: '.mdc-switch__ripple';
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
+  // Move ripple beneath shadow overlay and handle background colors (see
+  // handle() mixin for explanation).
+  z-index: -1;
 }
 
 @mixin ripple-disabled {
