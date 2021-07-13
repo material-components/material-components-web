@@ -110,6 +110,17 @@ $light-theme: (
   @include states-press-opacity(map.get($theme, pressed-state-layer-opacity));
 }
 
+@mixin ripple-mask($margin, $min-ratio) {
+  $radial-gradient: radial-gradient(
+    closest-side,
+    #fff max(calc(100% - #{$margin}), #{$min-ratio}),
+    #fff0 100%
+  );
+
+  -webkit-mask-image: $radial-gradient;
+  mask-image: $radial-gradient;
+}
+
 @mixin states-base-color(
   $color,
   $query: feature-targeting.all(),
@@ -123,6 +134,12 @@ $light-theme: (
         ripple-color,
         theme-color.get-custom-property($color)
       );
+    }
+
+    #{$ripple-target}::after {
+      @include feature-targeting.targets($feat-color) {
+        @include ripple-mask(70px, 65%);
+      }
     }
 
     #{$ripple-target}::before,

@@ -34,6 +34,7 @@ export const cssClasses = {
 
 export const strings = {
   VAR_FG_SCALE: '--mdc-ripple-fg-scale',
+  VAR_FG_EDGE_SCALE: '--mdc-ripple-fg-edge-scale',
   VAR_FG_SIZE: '--mdc-ripple-fg-size',
   VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end',
   VAR_FG_TRANSLATE_START: '--mdc-ripple-fg-translate-start',
@@ -42,9 +43,15 @@ export const strings = {
 };
 
 export const numbers = {
-  DEACTIVATION_TIMEOUT_MS: 225, // Corresponds to $mdc-ripple-translate-duration (i.e. activation animation duration)
-  FG_DEACTIVATION_MS: 150, // Corresponds to $mdc-ripple-fade-out-duration (i.e. deactivation animation duration)
+  DEACTIVATION_TIMEOUT_MS:
+      225,  // Corresponds to $mdc-ripple-translate-duration (i.e. activation
+            // animation duration)
+  FG_DEACTIVATION_MS: 150,  // Corresponds to $mdc-ripple-fade-out-duration
+                            // (i.e. deactivation animation duration)
   INITIAL_ORIGIN_SCALE: 0.6,
   PADDING: 10,
-  TAP_DELAY_MS: 300, // Delay between touch and simulated mouse events on touch devices
+  TAP_DELAY_MS:
+      300,  // Delay between touch and simulated mouse events on touch devices
+  SOFT_EDGE_MINIMUM_SIZE: 70,
+  SOFT_EDGE_CONTAINER_RATIO: 0.35
 };

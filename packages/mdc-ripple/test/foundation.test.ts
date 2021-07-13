@@ -359,10 +359,14 @@ describe('MDCRippleFoundation', () => {
         jasmine.clock().tick(1);
 
         const maxSize = Math.max(width, height);
+        const softEdgeSize = Math.max(
+            numbers.SOFT_EDGE_CONTAINER_RATIO * maxSize,
+            numbers.SOFT_EDGE_MINIMUM_SIZE);
+
         const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
         const surfaceDiameter =
             Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-        const maxRadius = surfaceDiameter + numbers.PADDING;
+        const maxRadius = surfaceDiameter + numbers.PADDING + softEdgeSize;
         const fgScale = `${maxRadius / initialSize}`;
 
         expect(adapter.updateCssVariable)
