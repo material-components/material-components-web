@@ -73,8 +73,7 @@ $custom-property-prefix: 'checkbox';
 // TODO(b/188417756): State layer (ripple) size token is missing including
 //     `state-layer-size`.
 // TODO(b/187852988): `selected-checkmark-color` does not exist in tokens.
-// TODO(b/187335657): Rename to `$light-theme` after removing existing one.
-$m2-theme: (
+$light-theme: (
   disabled-selected-icon-color: $disabled-color,
   disabled-selected-icon-opacity: null,
   disabled-unselected-icon-color: $disabled-color,
@@ -108,9 +107,8 @@ $m2-theme: (
     map.get(ripple-theme.$dark-ink-opacities, pressed),
 );
 
-// TODO(b/187335657): Rename to `theme()` after deprecating current `theme()`.
-@mixin theme-declare-custom-properties($theme) {
-  @include theme.validate-keys($m2-theme, $theme);
+@mixin theme($theme) {
+  @include theme.validate-keys($light-theme, $theme);
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $custom-property-prefix
@@ -118,7 +116,7 @@ $m2-theme: (
 }
 
 @mixin theme-styles($theme) {
-  @include theme.validate-keys($m2-theme, $theme);
+  @include theme.validate-keys($light-theme, $theme);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $custom-property-prefix
@@ -184,7 +182,7 @@ $m2-theme: (
   );
 }
 
-$light-theme: (
+$light-theme-deprecated: (
   density-scale: 0,
   checkmark-color: $mark-color,
   container-checked-color: $baseline-theme-color,
@@ -201,8 +199,8 @@ $light-theme: (
 /// Sets theme to checkbox based on provided theme configuration.
 /// Only emits theme related styles.
 /// @param {Map} $theme - Theme configuration to use for theming checkbox.
-@mixin theme($theme, $query: feature-targeting.all()) {
-  @include theme.validate-keys($light-theme, $theme);
+@mixin theme-deprecated($theme, $query: feature-targeting.all()) {
+  @include theme.validate-keys($light-theme-deprecated, $theme);
 
   $ripple-color: map.get($theme, ripple-color);
   $ripple-opacity: map.get($theme, ripple-opacity);

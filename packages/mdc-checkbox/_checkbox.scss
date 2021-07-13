@@ -207,7 +207,10 @@
 /// Checkbox styles that are customizable should go here.
 @mixin theme-styles($query: feature-targeting.all()) {
   .mdc-checkbox {
-    @include checkbox-theme.theme(checkbox-theme.$light-theme, $query: $query);
+    @include checkbox-theme.theme-deprecated(
+      checkbox-theme.$light-theme-deprecated,
+      $query: $query
+    );
   }
 }
 
