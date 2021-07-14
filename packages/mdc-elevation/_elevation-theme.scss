@@ -410,6 +410,25 @@ $_theme-values: (
 }
 
 ///
+/// Applies the shadow theme with the given $resolver function.
+///
+/// Note: if a custom property is provided as the shadow value, it *will not*
+/// be correctly rendered when compiled in GSS. See b/185188458 for additional
+/// context.
+///
+/// @param {Function} $resolver - a function that returns a valid theme config.
+///   @see resolver for an example and expected arguments and return value.
+/// Accepts the following optional keyword args:
+/// @param {Number} $level - the level in the elevation system.
+/// @param {String} $shadow-color - the color used for the shadow.
+///
+@mixin with-resolver-and-shadow-passthrough($resolver, $args...) {
+  @if $resolver {
+    @include _theme-with-shadow-passthrough(meta.call($resolver, $args...));
+  }
+}
+
+///
 /// Applies the given theme with validation.
 /// @param {Map} $theme - @see $_theme-values for accepted theme properties.
 ///
@@ -429,6 +448,17 @@ $_theme-values: (
     map.get($theme, overlay-color),
     $query: $query
   );
+}
+
+///
+/// Applies the given theme. Does *not* support custom properties shadows
+/// when compiled to GSS (see b/185188458 for more context).
+/// @param {Map} $theme - @see $_theme-values for accepted theme properties.
+///
+@mixin _theme-with-shadow-passthrough($theme: ()) {
+  @include _box-shadow(map.get($theme, shadow));
+  @include overlay-opacity(map.get($theme, overlay-opacity));
+  @include _overlay-container-color(map.get($theme, overlay-color));
 }
 
 ///

@@ -36,6 +36,7 @@
 @use '@material/theme/state';
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
+@use '@material/tokens/resolvers';
 @use '@material/shape/shape';
 @use './switch';
 
@@ -72,7 +73,6 @@ $_selectors: (
 $light-theme: (
   disabled-handle-elevation: 0,
   disabled-handle-opacity: 0.38,
-  disabled-handle-overlay-opacity: 0,
   disabled-selected-handle-color: $_on-surface,
   disabled-selected-icon-color: on-primary,
   disabled-selected-icon-opacity: 0.38,
@@ -84,8 +84,6 @@ $light-theme: (
   disabled-unselected-track-color: $_on-surface,
   handle-elevation: 1,
   handle-height: 20px,
-  handle-overlay-color: transparent,
-  handle-overlay-opacity: 0,
   handle-shadow-color: elevation-theme.$baseline-color,
   handle-shape: 10px,
   handle-surface-color: surface,
@@ -147,7 +145,7 @@ $forced-colors-theme: (
   @return (state-layer-size: $size);
 }
 
-@mixin theme($theme) {
+@mixin theme($theme, $resolvers: resolvers.$material) {
   @include theme.validate-keys($light-theme, $theme);
 
   // TODO(b/185172301): replace with improved feature targeting
@@ -155,7 +153,7 @@ $forced-colors-theme: (
   @if shadow-dom.$css-selector-fallback-declarations {
     @include custom-properties.configure($emit-custom-properties: false) {
       @include dom.ie11-support {
-        @include theme-styles($theme);
+        @include theme-styles($theme, $resolvers: $resolvers);
       }
     }
   }
@@ -163,7 +161,7 @@ $forced-colors-theme: (
   @include keys.declare-custom-properties($theme, switch);
 }
 
-@mixin theme-styles($theme) {
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-keys($light-theme, $theme);
 
   $theme: keys.create-theme-properties($theme, switch);
@@ -191,13 +189,11 @@ $forced-colors-theme: (
   @include _handle-surface-color(map.get($theme, handle-surface-color));
 
   @include _handle-elevation(
+    map.get($resolvers, elevation),
+    map.get($theme, handle-shadow-color),
     (
       default: map.get($theme, handle-elevation),
       disabled: map.get($theme, disabled-handle-elevation),
-    ),
-    (
-      default: map.get($theme, handle-shadow-color),
-      disabled: map.get($theme, handle-shadow-color),
     )
   );
 
@@ -205,14 +201,6 @@ $forced-colors-theme: (
   @include _handle-opacity(
     (
       disabled: map.get($theme, disabled-handle-opacity),
-    )
-  );
-
-  @include _handle-overlay-color(map.get($theme, handle-overlay-color));
-  @include _handle-overlay-opacity(
-    (
-      default: map.get($theme, handle-overlay-opacity),
-      disabled: map.get($theme, disabled-handle-overlay-opacity),
     )
   );
 
@@ -365,39 +353,30 @@ $forced-colors-theme: (
   }
 }
 
-@mixin _handle-elevation($elevations, $shadow-colors) {
+@mixin _handle-elevation($resolver, $shadow-color, $elevations) {
   @include state.default($_selectors) {
     @include _set-handle-elevation(
-      state.get-default-state($elevations),
-      state.get-default-state($shadow-colors)
+      $resolver,
+      $elevation: state.get-default-state($elevations),
+      $shadow-color: $shadow-color
     );
   }
 
   @include state.disabled($_selectors) {
     @include _set-handle-elevation(
-      state.get-disabled-state($elevations),
-      state.get-disabled-state($shadow-colors)
+      $resolver,
+      $elevation: state.get-disabled-state($elevations),
+      $shadow-color: $shadow-color
     );
   }
 }
 
-@mixin _set-handle-elevation($elevation, $shadow-color) {
-  @if $elevation or $shadow-color {
-    @if not $elevation or not $shadow-color {
-      @error 'Both elevation and shadow color must be specified';
-    }
-
-    $dp-value: custom-properties.get-fallback($elevation);
-    $shadow-color: custom-properties.get-fallback($shadow-color);
-
-    $elevation: custom-properties.set-fallback(
-      $elevation,
-      elevation-theme.elevation-box-shadow($dp-value, $shadow-color)
+@mixin _set-handle-elevation($resolver, $args...) {
+  .mdc-switch__shadow {
+    @include elevation-theme.with-resolver-and-shadow-passthrough(
+      $resolver,
+      $args...
     );
-
-    .mdc-switch__shadow {
-      @include theme.property(box-shadow, $elevation);
-    }
   }
 }
 
@@ -421,26 +400,6 @@ $forced-colors-theme: (
     &::after {
       @include theme.property(opacity, $opacity);
     }
-  }
-}
-
-@mixin _handle-overlay-color($color) {
-  .mdc-elevation-overlay {
-    @include elevation-theme.overlay-fill-color($color);
-  }
-}
-
-@mixin _handle-overlay-opacity($opacities) {
-  @include state.default($_selectors) {
-    @include elevation-theme.overlay-opacity(
-      state.get-default-state($opacities)
-    );
-  }
-
-  @include state.disabled($_selectors) {
-    @include elevation-theme.overlay-opacity(
-      state.get-disabled-state($opacities)
-    );
   }
 }
 
