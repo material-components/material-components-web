@@ -23,18 +23,28 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:map';
+@use 'sass:color';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/state';
 @use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/theme/tools';
+@use '@material/theme/keys';
+@use '@material/typography/typography';
+@use '@material/theme/shadow-dom';
+@use '@material/theme/custom-properties';
+@use '@material/tokens/resolvers';
+@use '@material/dom/dom';
 
 /// Default color for slider (track, thumb, ripple).
 $color: primary;
 $disabled-color: on-surface;
 
 // Thumb variables.
-$value-indicator-color: #000;
-$value-indicator-opacity: 0.6;
+$value-indicator-color: primary;
+$value-indicator-opacity: 1;
 $value-indicator-text-color: on-primary;
 
 // Track variables.
@@ -42,6 +52,283 @@ $track-inactive-opacity: 0.24;
 $tick-mark-active-color: on-primary;
 $tick-mark-inactive-color: primary;
 $tick-mark-opacity: 0.6;
+
+$custom-property-prefix: 'slider';
+$selectors: (
+  disabled: ':disabled',
+  focus: ':focus',
+  hover: ':hover',
+  pressed: ':active',
+);
+
+$_primary-custom-property: theme-color.get-custom-property(primary);
+$_secondary-variant: color.adjust(
+  custom-properties.get-fallback($_primary-custom-property),
+  $hue: 1,
+  $lightness: 41%,
+  $saturation: -13%
+);
+
+$_on-surface-custom-property: theme-color.get-custom-property(on-surface);
+$_on-surface-variant: color.adjust(
+  custom-properties.get-fallback($_on-surface-custom-property),
+  $lightness: 75%
+);
+
+$light-theme: (
+  // The track heights are not implemented because they are not tokenized yet
+  // TODO(b/194842815): Implement track heights
+  active-track-height: 6px,
+  active-track-shape: 3px,
+  inactive-track-height: 4px,
+  inactive-track-shape: 2px,
+  // track-elevation: gm.sys.elevation.level0,
+  // state-layer-size: 48px,
+  handle-height: 20px,
+  handle-width: 20px,
+  handle-shape: 10px,
+  // handle-elevation: gm.sys.elevation.level1,
+  // handle-shadow-color: gm.sys.color.shadow,
+  handle-color: primary,
+  with-overlap-handle-outline-color: on-primary,
+  with-overlap-handle-outline-width: 1px,
+  active-track-color: primary,
+  inactive-track-color: $_secondary-variant,
+  with-tick-marks-container-size: 2px,
+  with-tick-marks-container-shape: 1px,
+  with-tick-marks-active-container-color: on-primary,
+  with-tick-marks-active-container-opacity: 0.6,
+  with-tick-marks-inactive-container-color: primary,
+  with-tick-marks-inactive-container-opacity: 0.24,
+  with-value-label-container-height: 28px,
+  with-value-label-container-color: primary,
+  // with-value-label-container-elevation: gm.sys.elevation.level0,
+  with-value-label-label-text-font: subtitle2-font-family,
+  with-value-label-label-text-font-size: subtitle2-font-size,
+  with-value-label-label-text-line-height: subtitle2-line-height,
+  with-value-label-label-text-weight: subtitle2-font-weight,
+  with-value-label-label-text-tracking: subtitle2-letter-spacing,
+  with-value-label-label-text-color: on-primary,
+  disabled-handle-color: on-surface,
+  // disabled-handle-opacity: 0.24,
+  disabled-track-active-color: on-surface,
+  disabled-track-inactive-color: $_on-surface-variant,
+  // disabled-track-opacity: 0.12,
+  // TODO(b/194947126): not yet tokenized
+  with-tick-marks-disabled-active-container-color: on-primary,
+  with-tick-marks-disabled-active-container-opacity: 0.6,
+  with-tick-marks-disabled-inactive-container-color: on-surface,
+  with-tick-marks-disabled-inactive-container-opacity: 0.6,
+  hover-handle-color: primary,
+  hover-state-layer-color: primary,
+  hover-state-layer-opacity: 0.04,
+  focus-handle-color: primary,
+  focus-state-layer-color: primary,
+  focus-state-layer-opacity: 0.12,
+  pressed-handle-color: primary,
+  pressed-state-layer-color: primary,
+  pressed-state-layer-opacity: 0.12
+);
+
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-keys($light-theme, $theme);
+
+  // TODO(b/185172301): replace with improved feature targeting
+  // IE11 Fallback
+  @if shadow-dom.$css-selector-fallback-declarations {
+    @include custom-properties.configure($emit-custom-properties: false) {
+      @include dom.ie11-support {
+        @include theme-styles($theme, $resolvers: $resolvers);
+      }
+    }
+  }
+
+  @include keys.declare-custom-properties($theme, $custom-property-prefix);
+}
+
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-keys($light-theme, $theme);
+
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
+  .mdc-slider {
+    @include _track-structure(
+      map.get($theme, active-track-height),
+      map.get($theme, active-track-shape),
+      map.get($theme, inactive-track-height),
+      map.get($theme, inactive-track-shape)
+    );
+
+    @include _handle-structure(
+      map.get($theme, handle-height),
+      map.get($theme, handle-width),
+      map.get($theme, handle-shape)
+    );
+
+    @include thumb-color(
+      (
+        default: map.get($theme, handle-color),
+        hover: map.get($theme, hover-handle-color),
+        focus: map.get($theme, focus-handle-color),
+        pressed: map.get($theme, pressed-handle-color),
+        disabled: map.get($theme, disabled-handle-color),
+      ),
+      map.get($theme, with-overlap-handle-outline-color),
+      map.get($theme, with-overlap-handle-outline-width)
+    );
+
+    @include track-active-color(
+      (
+        default: map.get($theme, active-track-color),
+        disabled: map.get($theme, disabled-track-active-color),
+      )
+    );
+
+    @include track-inactive-color(
+      (
+        default: map.get($theme, inactive-track-color),
+        disabled: map.get($theme, disabled-track-inactive-color),
+      ),
+      $color-has-opacity: true
+    );
+
+    @include tick-mark-active-color(
+      (
+        default: map.get($theme, with-tick-marks-active-container-color),
+        disabled:
+          map.get($theme, with-tick-marks-disabled-active-container-color),
+      ),
+      (
+        default: map.get($theme, with-tick-marks-active-container-opacity),
+        disabled:
+          map.get($theme, with-tick-marks-disabled-active-container-opacity),
+      )
+    );
+
+    @include tick-mark-inactive-color(
+      (
+        default: map.get($theme, with-tick-marks-inactive-container-color),
+        disabled:
+          map.get($theme, with-tick-marks-disabled-inactive-container-color),
+      ),
+      (
+        default: map.get($theme, with-tick-marks-inactive-container-opacity),
+        disabled:
+          map.get($theme, with-tick-marks-disabled-inactive-container-opacity),
+      )
+    );
+
+    @include _value-label-container-height(
+      map.get($theme, with-value-label-container-height)
+    );
+
+    @include value-indicator-color(
+      map.get($theme, with-value-label-container-color),
+      1
+    );
+    @include _tick-mark-container(
+      map.get($theme, with-tick-marks-container-size),
+      map.get($theme, with-tick-marks-container-shape)
+    );
+  }
+
+  @include _value-label-typography(
+    map.get($theme, with-value-label-label-text-font),
+    map.get($theme, with-value-label-label-text-font-size),
+    map.get($theme, with-value-label-label-text-line-height),
+    map.get($theme, with-value-label-label-text-weight),
+    map.get($theme, with-value-label-label-text-tracking)
+  );
+
+  @include value-indicator-text-color(
+    map.get($theme, with-value-label-label-text-color)
+  );
+
+  .mdc-slider__thumb {
+    @include _ripple-color(
+      (
+        hover: map.get($theme, hover-state-layer-color),
+        focus: map.get($theme, focus-state-layer-color),
+        pressed: map.get($theme, pressed-state-layer-color),
+      )
+    );
+
+    @include _ripple-opacity(
+      (
+        hover: map.get($theme, hover-state-layer-opacity),
+        focus: map.get($theme, focus-state-layer-opacity),
+        pressed: map.get($theme, pressed-state-layer-opacity),
+      )
+    );
+  }
+}
+
+@mixin _track-structure(
+  $active-height,
+  $active-shape,
+  $inactive-height,
+  $inactive-shape,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  .mdc-slider__track,
+  .mdc-slider__track--inactive {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $inactive-height);
+      @include theme.property(border-radius, $inactive-shape);
+    }
+  }
+
+  .mdc-slider__track--active {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $active-height);
+      @include theme.property(border-radius, $active-shape);
+      @include theme.property(
+        top,
+        'calc((i-height - a-height) / 2)',
+        $replace: (i-height: $inactive-height, a-height: $active-height)
+      );
+    }
+  }
+
+  .mdc-slider__track--active_fill {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-top-width, $active-height);
+    }
+  }
+}
+
+@mixin _handle-structure(
+  $height,
+  $width,
+  $shape,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  .mdc-slider__thumb-knob {
+    @include feature-targeting.targets($feat-structure) {
+      $is-height-custom-prop: custom-properties.is-custom-prop($height);
+      $is-width-custom-prop: custom-properties.is-custom-prop($width);
+
+      @if $is-height-custom-prop or $is-width-custom-prop {
+        @include theme.property(
+          border,
+          calc(min(height, width) / 2) solid,
+          $replace: (height: $height, width: $width)
+        );
+      } @else {
+        @include theme.property(border, math.div(math.min($height, $width), 2));
+      }
+
+      @include theme.property(height, $height);
+      @include theme.property(width, $width);
+      @include theme.property(border-radius, $shape);
+    }
+  }
+}
 
 /// Customizes active track color, using a Color or state Map.
 /// - To set only the default color, provide a single Color.
@@ -52,22 +339,31 @@ $tick-mark-opacity: 0.6;
 ///   @include track-active-color(blue);
 ///   @include track-active-color((disabled: gray));
 ///
-/// @param {Color | Map} $color-or-map - The label's color or a state Map
-@mixin track-active-color($color-or-map, $query: feature-targeting.all()) {
+/// @param {Color | Map} $color-or-map      - The track's color or a state Map
+/// @param {Number | Map} $disabled-opacity - The track's disabled opacity or a state Map
+@mixin track-active-color(
+  $color-or-map,
+  $disabled-opacity: 0.24,
+  $query: feature-targeting.all()
+) {
   @include _set-track-active-color(
     state.get-default-state($color-or-map),
-    $query
+    $query: $query
   );
 
   $_disabled-color: state.get-disabled-state($color-or-map);
   @if $_disabled-color {
     &.mdc-slider--disabled {
-      @include _set-track-active-color($_disabled-color, $query);
+      @include _set-track-active-color(
+        $_disabled-color,
+        $disabled-opacity,
+        $query
+      );
     }
   }
 }
 
-@mixin _set-track-active-color($color, $query) {
+@mixin _set-track-active-color($color, $opacity: 1, $query) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__track--active_fill {
@@ -90,30 +386,43 @@ $tick-mark-opacity: 0.6;
 @mixin track-inactive-color(
   $color-or-map,
   $opacity: $track-inactive-opacity,
+  $color-has-opacity: false,
   $query: feature-targeting.all()
 ) {
   @include _set-track-inactive-color(
     state.get-default-state($color-or-map),
     $opacity,
+    $color-has-opacity,
     $query
   );
 
   $_disabled-color: state.get-disabled-state($color-or-map);
   @if $_disabled-color {
     &.mdc-slider--disabled {
-      @include _set-track-inactive-color($_disabled-color, $opacity, $query);
+      @include _set-track-inactive-color(
+        $_disabled-color,
+        $opacity,
+        $color-has-opacity,
+        $query
+      );
     }
   }
 }
 
-@mixin _set-track-inactive-color($color, $opacity, $query) {
+@mixin _set-track-inactive-color($color, $opacity, $color-has-opacity, $query) {
   $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-slider__track--inactive {
     @include feature-targeting.targets($feat-color) {
-      @include theme.property(background-color, $color);
+      @if $color-has-opacity {
+        @include theme.property(background-color, $color);
 
-      opacity: $opacity;
+        opacity: 1;
+      } @else {
+        @include theme.property(background-color, $color);
+
+        @include theme.property(opacity, $opacity);
+      }
     }
   }
 }
@@ -128,31 +437,95 @@ $tick-mark-opacity: 0.6;
 ///   @include thumb-color((disabled: gray));
 ///
 /// @param {Color | Map} $color-or-map - The label's color or a state Map
-@mixin thumb-color($color-or-map, $query: feature-targeting.all()) {
-  @include _set-thumb-color(state.get-default-state($color-or-map), $query);
+/// @param {Color} $overlap-handle-color - The thumb's border color when overlapping
+/// @param {Number} $overlap-handle-width - The thumb's border width with units when overlapping
+@mixin thumb-color(
+  $color-or-map,
+  $overlap-handle-color: #fff,
+  $overlap-handle-width: 1px,
+  $query: feature-targeting.all()
+) {
+  @include _set-thumb-color(
+    $color-or-map,
+    $overlap-handle-color,
+    $overlap-handle-width,
+    $query
+  );
 
   $_disabled-color: state.get-disabled-state($color-or-map);
   @if $_disabled-color {
     &.mdc-slider--disabled {
-      @include _set-thumb-color($_disabled-color, $query);
+      @include _set-thumb-color(
+        $_disabled-color,
+        $overlap-handle-color,
+        $overlap-handle-width,
+        $query
+      );
     }
   }
 }
 
-@mixin _set-thumb-color($color, $query) {
+@mixin _set-thumb-color(
+  $color-or-map,
+  $overlap-handle-color: #fff,
+  $overlap-handle-width: 1px,
+  $query
+) {
   $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-color) {
     .mdc-slider__thumb-knob {
-      @include theme.property(background-color, $color);
-      @include theme.property(border-color, $color);
+      @include theme.property(
+        background-color,
+        state.get-default-state($color-or-map)
+      );
+      @include theme.property(
+        border-color,
+        state.get-default-state($color-or-map)
+      );
+    }
+
+    .mdc-slider__thumb {
+      &:hover .mdc-slider__thumb-knob {
+        @include theme.property(
+          background-color,
+          state.get-hover-state($color-or-map)
+        );
+        @include theme.property(
+          border-color,
+          state.get-hover-state($color-or-map)
+        );
+      }
+
+      &:focus .mdc-slider__thumb-knob {
+        @include theme.property(
+          background-color,
+          state.get-focus-state($color-or-map)
+        );
+        @include theme.property(
+          border-color,
+          state.get-focus-state($color-or-map)
+        );
+      }
+
+      &:active .mdc-slider__thumb-knob {
+        @include theme.property(
+          background-color,
+          state.get-pressed-state($color-or-map)
+        );
+        @include theme.property(
+          border-color,
+          state.get-pressed-state($color-or-map)
+        );
+      }
     }
 
     .mdc-slider__thumb--top {
       .mdc-slider__thumb-knob,
       &.mdc-slider__thumb:hover .mdc-slider__thumb-knob,
       &.mdc-slider__thumb--focused .mdc-slider__thumb-knob {
-        border-color: #fff;
+        @include theme.property(border-color, $overlap-handle-color);
+        @include theme.property(border-width, $overlap-handle-width);
       }
     }
   }
@@ -178,7 +551,16 @@ $tick-mark-opacity: 0.6;
 
   .mdc-slider__thumb:hover,
   .mdc-slider__thumb--focused {
-    @include _set-thumb-color($color, $query);
+    @include _set-thumb-color($color, $query: $query);
+  }
+}
+
+@mixin _tick-mark-container($size, $shape) {
+  .mdc-slider__tick-mark--active,
+  .mdc-slider__tick-mark--inactive {
+    @include theme.property(border-radius, $shape);
+    @include theme.property(height, $size);
+    @include theme.property(width, $size);
   }
 }
 
@@ -191,22 +573,33 @@ $tick-mark-opacity: 0.6;
 ///   @include tick-mark-active-color(blue);
 ///   @include tick-mark-active-color((disabled: gray));
 ///
-/// @param {Color | Map} $color-or-map - The label's color or a state Map
+/// @param {Color | Map} $color-or-map - The tick-marks' color or a state Map
+/// @param {Number | Map} $opacity     - The tick-marks' opacity or a state Map
 @mixin tick-mark-active-color(
   $color-or-map,
   $opacity: $tick-mark-opacity,
+  $disabled-opacity: $opacity,
   $query: feature-targeting.all()
 ) {
   @include _set-tick-mark-active-color(
     state.get-default-state($color-or-map),
-    $opacity,
+    state.get-default-state($opacity),
     $query
   );
 
   $_disabled-color: state.get-disabled-state($color-or-map);
+  // backwards compat, default value is $opacity
+  $_disabled-opacity: tools.either(
+    state.get-disabled-state($opacity),
+    $opacity
+  );
   @if $_disabled-color {
     &.mdc-slider--disabled {
-      @include _set-tick-mark-active-color($_disabled-color, $opacity, $query);
+      @include _set-tick-mark-active-color(
+        $_disabled-color,
+        $_disabled-opacity,
+        $query
+      );
     }
   }
 }
@@ -218,7 +611,7 @@ $tick-mark-opacity: 0.6;
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
 
-      opacity: $opacity;
+      @include theme.property(opacity, $opacity);
     }
   }
 }
@@ -232,7 +625,8 @@ $tick-mark-opacity: 0.6;
 ///   @include tick-mark-inactive-color(blue);
 ///   @include tick-mark-inactive-color((disabled: gray));
 ///
-/// @param {Color | Map} $color-or-map - The label's color or a state Map
+/// @param {Color | Map} $color-or-map - The tick-marks' color or a state Map
+/// @param {Number | Map} $opacity      - The tick-marks' opacity or a state Map
 @mixin tick-mark-inactive-color(
   $color-or-map,
   $opacity: $tick-mark-opacity,
@@ -240,16 +634,21 @@ $tick-mark-opacity: 0.6;
 ) {
   @include _set-tick-mark-inactive-color(
     state.get-default-state($color-or-map),
-    $opacity,
+    state.get-default-state($opacity),
     $query
   );
 
   $_disabled-color: state.get-disabled-state($color-or-map);
+  // backwards compat, default value is $opacity
+  $_disabled-opacity: tools.either(
+    state.get-disabled-state($opacity),
+    $opacity
+  );
   @if $_disabled-color {
     &.mdc-slider--disabled {
       @include _set-tick-mark-inactive-color(
         $_disabled-color,
-        $opacity,
+        $_disabled-opacity,
         $query
       );
     }
@@ -263,8 +662,36 @@ $tick-mark-opacity: 0.6;
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
 
-      opacity: $opacity;
+      @include theme.property(opacity, $opacity);
     }
+  }
+}
+
+@mixin _value-label-container-height($height) {
+  .mdc-slider__value-indicator {
+    @include theme.property(height, $height);
+  }
+
+  .mdc-slider__thumb.mdc-slider__thumb--short-value
+    .mdc-slider__value-indicator {
+    @include theme.property(height, $height);
+    @include theme.property(width, $height);
+  }
+}
+
+@mixin _value-label-typography(
+  $font,
+  $font-size,
+  $line-height,
+  $text-weight,
+  $text-tracking
+) {
+  .mdc-slider__value-indicator {
+    @include theme.property(font-family, $font);
+    @include theme.property(font-size, $font-size);
+    @include theme.property(line-height, $line-height);
+    @include theme.property(font-weight, $text-weight);
+    @include theme.property(letter-spacing, $text-tracking);
   }
 }
 
@@ -285,7 +712,7 @@ $tick-mark-opacity: 0.6;
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
 
-      opacity: $opacity;
+      @include theme.property(opacity, $opacity);
     }
   }
 
@@ -309,5 +736,74 @@ $tick-mark-opacity: 0.6;
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
     }
+  }
+}
+
+@mixin _value-indicator-typography($typography-map) {
+  @include theme.property(font-family, map.get($typography-map, font));
+  @include theme.property(font-size, map.get($typography-map, size));
+  @include theme.property(font-weight, map.get($typography-map, weight));
+  @include theme.property(letter-spacing, map.get($typography-map, tracking));
+}
+
+@mixin _ripple-color($colors) {
+  @include state.independent-elements(pressed) {
+    @include state.hover($selectors) {
+      @include ripple-theme.states-base-color(
+        state.get-hover-state($colors),
+        $ripple-target: '&'
+      );
+    }
+
+    @include state.focus($selectors) {
+      @include ripple-theme.states-base-color(
+        state.get-focus-state($colors),
+        $ripple-target: '&'
+      );
+    }
+
+    @include state.pressed($selectors) {
+      @include ripple-theme.states-base-color(
+        state.get-pressed-state($colors),
+        $ripple-target: '&'
+      );
+    }
+  }
+}
+
+@mixin _ripple-opacity($opacities) {
+  @include state.independent-elements(pressed) {
+    @include state.hover($selectors) {
+      @include ripple-theme.states-hover-opacity(
+        state.get-hover-state($opacities),
+        $ripple-target: '&'
+      );
+    }
+
+    @include state.focus($selectors) {
+      @include ripple-theme.states-focus-opacity(
+        state.get-focus-state($opacities),
+        $ripple-target: '&'
+      );
+    }
+
+    @include state.pressed($selectors) {
+      @include ripple-theme.states-press-opacity(
+        state.get-pressed-state($opacities),
+        $ripple-target: '&'
+      );
+    }
+  }
+}
+
+@mixin _thumb-ripple-color($colors) {
+  .mdc-slider__thumb {
+    @include _ripple-color($colors);
+  }
+}
+
+@mixin _thumb-ripple-opacity($opacities) {
+  .mdc-slider__thumb {
+    @include _ripple-opacity($opacities);
   }
 }

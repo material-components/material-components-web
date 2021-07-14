@@ -39,6 +39,7 @@
 $_thumb-ripple-size: 48px;
 $_thumb-size: 20px;
 $_value-indicator-caret-width: 6px;
+$_value-indicator-height: 28px;
 
 // Track variables.
 $_track-active-height: 6px;
@@ -46,14 +47,22 @@ $_track-inactive-height: 4px;
 
 /// Core styles for slider component.
 @mixin core-styles($query: feature-targeting.all()) {
+  @include static-styles($query);
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   @include ripple($query: $query);
-  @include without-ripple($query: $query);
+  @include static-styles-without-ripple($query: $query);
 }
 
 // This API is intended for use by frameworks that may want to separate the
 // ripple-related styles from the other slider styles.
 // It is recommended that most users use `core-styles` instead.
 @mixin without-ripple($query: feature-targeting.all()) {
+  @include static-styles-without-ripple($query);
+}
+
+@mixin static-styles-without-ripple($query: feature-targeting.all()) {
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -340,12 +349,12 @@ $_track-inactive-height: 4px;
 
     @include feature-targeting.targets($feat-structure) {
       align-items: center;
-      border-radius: 4px;
       display: flex;
-      height: 32px;
-      padding: 0 12px;
       transform: scale(0);
       transform-origin: bottom;
+      border-radius: 16px;
+      height: $_value-indicator-height;
+      padding: 0 8px;
     }
 
     // Caret: https://css-tricks.com/snippets/css/css-triangle/
@@ -410,6 +419,57 @@ $_track-inactive-height: 4px;
     $color: slider-theme.$value-indicator-text-color,
     $query: $query
   );
+
+  // Narrow value indicator styles.
+  .mdc-slider__thumb.mdc-slider__thumb--short-value {
+    .mdc-slider__value-indicator-container {
+      @include feature-targeting.targets($feat-structure) {
+        bottom: 40px;
+        transform: rotate(-45deg);
+        transform-origin: bottom left;
+
+        // TODO(b/162227735): Remove when fixed and add @noflip to
+        // `transform-origin: bottom left;` rule.
+        // This is necessary since @noflip does not work on `transform-origin`,
+        // so we apply this such that in RTL, the rule is flipped to
+        // `transform-origin: bottom left`.
+        @include rtl-mixins.rtl {
+          transform-origin: bottom right;
+        }
+      }
+    }
+
+    .mdc-slider__value-indicator {
+      @include feature-targeting.targets($feat-structure) {
+        /* @noflip */
+        border-radius: 50% 50% 50% 0;
+        height: $_value-indicator-height;
+        justify-content: center;
+        padding: 0;
+        position: relative;
+        transform-origin: bottom left;
+        width: $_value-indicator-height;
+
+        @include rtl-mixins.rtl {
+          transform-origin: bottom right;
+        }
+      }
+    }
+
+    // Hide the caret.
+    .mdc-slider__value-indicator::before {
+      @include feature-targeting.targets($feat-structure) {
+        display: none;
+      }
+    }
+
+    // Straighten the text since we rotated the container.
+    .mdc-slider__value-indicator-text {
+      @include feature-targeting.targets($feat-structure) {
+        transform: rotate(45deg);
+      }
+    }
+  }
 }
 
 // Styles for slider in disabled state.
