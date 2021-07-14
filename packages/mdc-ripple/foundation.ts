@@ -46,6 +46,10 @@ interface Coordinates {
   top: number;
 }
 
+interface EventHandlerNonNull {
+  (event: Event): any;
+}
+
 type ActivationEventType = 'touchstart' | 'pointerdown' | 'mousedown' | 'keydown';
 type DeactivationEventType = 'touchend' | 'pointerup' | 'mouseup' | 'contextmenu';
 
