@@ -373,10 +373,7 @@ $forced-colors-theme: (
 
 @mixin _set-handle-elevation($resolver, $args...) {
   .mdc-switch__shadow {
-    @include elevation-theme.with-resolver-and-shadow-passthrough(
-      $resolver,
-      $args...
-    );
+    @include elevation-theme.with-resolver($resolver, $args...);
   }
 }
 
