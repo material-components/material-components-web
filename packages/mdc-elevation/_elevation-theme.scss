@@ -409,7 +409,7 @@ $_theme-values: (
 /// @param {Function} $resolver - a function that returns a valid theme config.
 ///   @see resolver for an example and expected arguments and return value.
 /// Accepts the following optional keyword args:
-/// @param {Number} $level - the level in the elevation system.
+/// @param {Number} $elevation - the level in the elevation system.
 /// @param {String} $shadow-color - the color used for the shadow.
 ///
 @mixin with-resolver($resolver, $args...) {
@@ -442,7 +442,7 @@ $_theme-values: (
 
 ///
 /// Transforms the following optional parameters into a theme config.
-/// @param {Number} $level - the level of the elevation system in Material.
+/// @param {Number} $elevation - the level of the elevation system in Material.
 /// @param {String} $shadow-color - the color to be used by the shadow.
 /// @return {Map} @see $_theme-values for accepted theme properties.
 ///
