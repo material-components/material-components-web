@@ -20,10 +20,13 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
 @use 'sass:map';
-@use '@material/theme/theme-color';
+@use '@material/theme/keys';
 @use '@material/theme/theme';
-@use './mixins' as tab-indicator;
+@use '@material/theme/theme-color';
 
 $light-theme: (
   active-indicator-color: theme-color.$primary,
@@ -35,17 +38,35 @@ $light-theme: (
     0,
   ),
 );
+$custom-property-prefix: 'tab';
+
+@mixin theme($theme) {
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
 
 @mixin theme-styles($theme) {
-  @include theme.validate-keys($light-theme, $theme);
+  @include _underline-color(map.get($theme, active-indicator-color));
+  @include _underline-height(map.get($theme, active-indicator-height));
+  @include _underline-shape(map.get($theme, active-indicator-shape));
+}
 
-  @include tab-indicator.underline-color(
-    map.get($theme, active-indicator-color)
-  );
-  @include tab-indicator.underline-height(
-    map.get($theme, active-indicator-height)
-  );
-  @include tab-indicator.underline-shape(
-    map.get($theme, active-indicator-shape)
-  );
+@mixin _underline-color($color) {
+  .mdc-tab-indicator__content--underline {
+    @include theme.property(border-color, $color);
+  }
+}
+
+@mixin _underline-height($height) {
+  .mdc-tab-indicator__content--underline {
+    @include theme.property(border-top-width, $height);
+  }
+}
+
+@mixin _underline-shape($radius) {
+  .mdc-tab-indicator__content--underline {
+    @include theme.property(border-radius, $radius);
+  }
 }

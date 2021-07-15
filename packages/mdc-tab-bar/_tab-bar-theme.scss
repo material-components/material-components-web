@@ -23,6 +23,7 @@
 @use 'sass:map';
 @use '@material/elevation/elevation-theme';
 @use '@material/tab/tab-theme';
+@use '@material/theme/keys';
 @use '@material/theme/map-ext';
 @use '@material/tab-indicator/tab-indicator-theme';
 @use '@material/theme/theme';
@@ -31,6 +32,8 @@
 
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
+
+$custom-property-prefix: 'tab-bar';
 
 // TODO: `divider-color` and `divider-height` are not supported by tabs.
 $light-theme: (
@@ -85,9 +88,15 @@ $light-theme: (
   with-label-text-label-text-weight: typography.get-weight(subhead2),
 );
 
-@mixin theme-styles($theme) {
+@mixin theme($theme) {
   @include theme.validate-keys($light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
 
+@mixin theme-styles($theme) {
   .mdc-tab {
     @include tab-theme.theme-styles(
       map-ext.pick($theme, map.keys(tab-theme.$light-theme)...)

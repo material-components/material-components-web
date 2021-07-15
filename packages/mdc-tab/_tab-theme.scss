@@ -26,6 +26,7 @@
 @use 'sass:map';
 @use '@material/elevation/elevation-theme';
 @use '@material/ripple/ripple-theme';
+@use '@material/theme/keys';
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
@@ -74,10 +75,16 @@ $light-theme: (
 );
 
 $_ripple-target: '.mdc-tab__ripple';
+$custom-property-prefix: 'tab';
+
+@mixin theme($theme) {
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
 
 @mixin theme-styles($theme) {
-  @include theme.validate-keys($light-theme, $theme);
-
   // TODO(b/191298796): Use independent state layer color mixins when available.
   @include _active-state-layer-color(
     map.get($theme, active-hover-state-layer-color) or

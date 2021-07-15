@@ -58,7 +58,6 @@
       padding-bottom: 0;
       border: none;
       outline: none;
-      background: none;
       text-align: center;
       white-space: nowrap;
       cursor: pointer;
@@ -161,6 +160,12 @@
 
   .mdc-tab--active {
     @include active_($query);
+  }
+
+  .mdc-tab {
+    @include feature-targeting.targets($feat-structure) {
+      background: none;
+    }
   }
 
   @include static-styles($query: $query);
