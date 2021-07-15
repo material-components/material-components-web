@@ -1066,6 +1066,7 @@ describe('MDCMenuSurfaceFoundation', () => {
         mockAdapter.isFocused.and.returnValue(true);
         foundation.setQuickOpen(true);
         foundation.close();
+        jasmine.clock().tick(numbers.TOUCH_EVENT_WAIT_MS);
         expect(mockAdapter.restoreFocus).toHaveBeenCalled();
       });
 
@@ -1078,6 +1079,7 @@ describe('MDCMenuSurfaceFoundation', () => {
             .and.returnValue(true);
         foundation.setQuickOpen(true);
         foundation.close();
+        jasmine.clock().tick(numbers.TOUCH_EVENT_WAIT_MS);
         expect(mockAdapter.restoreFocus).toHaveBeenCalled();
       });
 
@@ -1089,6 +1091,7 @@ describe('MDCMenuSurfaceFoundation', () => {
             .and.returnValue(false);
         foundation.setQuickOpen(true);
         foundation.close();
+        jasmine.clock().tick(numbers.TOUCH_EVENT_WAIT_MS);
         expect(mockAdapter.restoreFocus).not.toHaveBeenCalled();
       });
 
