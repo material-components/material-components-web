@@ -11,6 +11,7 @@
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/mixins' as dom-mixins;
+@use '@material/shape/mixins' as shape-mixins;
 @use '@material/typography/typography';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme-color';
@@ -789,11 +790,9 @@
 @mixin list-meta-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-list-item--with-trailing-meta {
-    .mdc-list-item__end {
-      @include feature-targeting.targets($feat-color) {
-        @include theme.property(color, $color);
-      }
+  .mdc-list-item__end {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
     }
   }
 }
@@ -830,6 +829,18 @@
   }
 }
 
+@mixin list-selected-meta-text-ink-color(
+  $color,
+  $query: feature-targeting.all()
+) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item--selected,
+  .mdc-list-item--activated {
+    @include list-meta-text-ink-color($color, $query);
+  }
+}
+
 @mixin list-disabled-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
@@ -862,6 +873,135 @@
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
     }
+  }
+}
+
+///
+/// Sets shape radius (rounded) to single line list variant.
+///
+/// @param {Number | List<Number>} $radius Radius size in `px` or percentage. It can be 4 value corner or single radius.
+///     Set to `50%` for rounded shape.
+/// @param {Boolean} $rtl-reflexive Set to true to flip border radius in RTL context. Defaults to `false`.
+/// @param {Number} $density-scale Density scale of single line list. Set this only when custom density is applied.
+///     Defaults to `$mdc-deprecated-list-single-line-density-scale`.
+///
+/// @access public
+///
+@mixin one-line-list-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: variables.$one-line-item-density-scale,
+  $query: feature-targeting.all()
+) {
+  .mdc-list-item--with-one-line {
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height:
+        density-functions.prop-value(
+          $density-config: variables.$one-line-item-density-config,
+          $density-scale: $density-scale,
+          $property-name: height
+        ),
+      $query: $query
+    );
+
+    &.mdc-list-item--with-leading-avatar,
+    &.mdc-list-item--with-leading-icon,
+    &.mdc-list-item--with-leading-thumbnail,
+    &.mdc-list-item--with-leading-checkbox,
+    &.mdc-list-item--with-leading-radio,
+    &.mdc-list-item--with-leading-switch {
+      @include shape-mixins.radius(
+        $radius,
+        $rtl-reflexive,
+        $component-height:
+          density-functions.prop-value(
+            $density-config: variables.$one-line-item-tall-density-config,
+            $density-scale: $density-scale,
+            $property-name: height
+          ),
+        $query: $query
+      );
+    }
+
+    &.mdc-list-item--with-leading-image,
+    &.mdc-list-item--with-leading-video {
+      @include shape-mixins.radius(
+        $radius,
+        $rtl-reflexive,
+        $component-height:
+          density-functions.prop-value(
+            $density-config: variables.$one-line-item-taller-density-config,
+            $density-scale: $density-scale,
+            $property-name: height
+          ),
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin two-line-list-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: variables.$two-line-item-density-scale,
+  $query: feature-targeting.all()
+) {
+  .mdc-list-item--with-two-lines {
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height:
+        density-functions.prop-value(
+          $density-config: variables.$two-line-item-density-config,
+          $density-scale: $density-scale,
+          $property-name: height
+        ),
+      $query: $query
+    );
+
+    &.mdc-list-item--with-leading-avatar,
+    &.mdc-list-item--with-leading-icon,
+    &.mdc-list-item--with-leading-thumbnail,
+    &.mdc-list-item--with-leading-checkbox,
+    &.mdc-list-item--with-leading-radio,
+    &.mdc-list-item--with-leading-switch,
+    &.mdc-list-item--with-leading-image,
+    &.mdc-list-item--with-leading-video {
+      @include shape-mixins.radius(
+        $radius,
+        $rtl-reflexive,
+        $component-height:
+          density-functions.prop-value(
+            $density-config: variables.$two-line-item-tall-density-config,
+            $density-scale: $density-scale,
+            $property-name: height
+          ),
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin three-line-list-radius(
+  $radius,
+  $rtl-reflexive: false,
+  $density-scale: variables.$three-line-item-density-scale,
+  $query: feature-targeting.all()
+) {
+  .mdc-list-item--with-three-lines {
+    @include shape-mixins.radius(
+      $radius,
+      $rtl-reflexive,
+      $component-height:
+        density-functions.prop-value(
+          $density-config: variables.$three-line-item-density-config,
+          $density-scale: $density-scale,
+          $property-name: height
+        ),
+      $query: $query
+    );
   }
 }
 
