@@ -153,7 +153,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   }
 
   isShown() {
-    this.foundation.isShown();
+    return this.foundation.isShown();
   }
 
   /**

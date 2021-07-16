@@ -223,6 +223,13 @@ describe('MDCTooltip', () => {
       component.destroy();
     });
 
+    it('#isShown returns false if the tooltip is not shown', () => {
+      const {mockFoundation, component} = setupTestWithMockFoundation(fixture);
+      mockFoundation.isShown.and.returnValue(false);
+      expect(component.isShown()).toBeFalse();
+      component.destroy();
+    });
+
     it('sets aria-hidden to false when showing tooltip on an anchor annotated with `aria-describedby`',
        () => {
          const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
