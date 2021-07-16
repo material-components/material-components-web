@@ -131,6 +131,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.isSingleSelectionList = value;
     if (value) {
       this.maybeInitializeSingleSelection();
+      this.selectedIndex = this.getSelectedIndexFromDOM();
     }
   }
 
@@ -139,6 +140,21 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * initializes the internal state to match the selected item.
    */
   private maybeInitializeSingleSelection() {
+    const selectedItemIndex = this.getSelectedIndexFromDOM();
+    if (selectedItemIndex === numbers.UNSET_INDEX) return;
+
+    const hasActivatedClass = this.adapter.listItemAtIndexHasClass(
+        selectedItemIndex, cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+    if (hasActivatedClass) {
+      this.setUseActivatedClass(true);
+    }
+    this.isSingleSelectionList = true;
+    this.selectedIndex = selectedItemIndex;
+  }
+
+  /** @return Index of the first selected item based on the DOM state. */
+  private getSelectedIndexFromDOM() {
+    let selectedIndex = numbers.UNSET_INDEX;
     const listItemsCount = this.adapter.getListItemCount();
     for (let i = 0; i < listItemsCount; i++) {
       const hasSelectedClass = this.adapter.listItemAtIndexHasClass(
@@ -149,14 +165,11 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         continue;
       }
 
-      if (hasActivatedClass) {
-        this.setUseActivatedClass(true);
-      }
-
-      this.isSingleSelectionList = true;
-      this.selectedIndex = i;
-      return;
+      selectedIndex = i;
+      break;
     }
+
+    return selectedIndex;
   }
 
   /**

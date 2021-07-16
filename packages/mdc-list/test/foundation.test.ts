@@ -1274,6 +1274,17 @@ describe('MDCListFoundation', () => {
            .toHaveBeenCalledWith(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS);
      });
 
+  it('#setSingleSelection=true resets selected index if there is no selected ' +
+         'item',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.getListItemCount.and.returnValue(3);
+
+       foundation.setSelectedIndex(2);
+       foundation.setSingleSelection(true);
+       expect(foundation.getSelectedIndex()).toEqual(numbers.UNSET_INDEX);
+     });
+
   it('#setUseActivatedClass causes setSelectedIndex to use the --activated class',
      () => {
        const {foundation, mockAdapter} = setupTest();
