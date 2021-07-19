@@ -33,6 +33,7 @@
 
   @include list-primary-text-ink-color(text-primary-on-background, $query);
   @include list-secondary-text-ink-color(text-secondary-on-background, $query);
+  @include list-overline-text-ink-color(text-hint-on-background, $query);
   @include list-icon-fill-color(transparent, $query);
   @include list-icon-ink-color(text-icon-on-background, $query);
   @include list-meta-text-ink-color(text-hint-on-background, $query);
@@ -199,16 +200,30 @@
         line-height: 20px;
       }
     }
+
+    .mdc-list-item--with-overline & {
+      @include feature-targeting.targets($feat-structure) {
+        white-space: nowrap;
+        line-height: auto;
+      }
+    }
   }
 
   .mdc-list-item__overline-text {
-    // TODO (b/168043604): fully style overline.
+    @include typography.typography(overline, $query);
     @include typography.overflow-ellipsis($query);
 
-    .mdc-list-item--with-two-lines &,
-    .mdc-list-item--with-three-lines & {
+    .mdc-list-item--with-two-lines & {
       @include typography.text-baseline(
         $top: 24px,
+        $bottom: 20px,
+        $query: $query
+      );
+    }
+
+    .mdc-list-item--with-three-lines & {
+      @include typography.text-baseline(
+        $top: 28px,
         $bottom: 20px,
         $query: $query
       );
@@ -219,6 +234,7 @@
     @include item-start-spacing(16px, $query: $query);
     @include item-start-size(40px, $query: $query);
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
+    @include _two-line-item-overline-baseline(28px, 20px, $query: $query);
     @include _two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _one-line-item-tall-density(
       variables.$one-line-item-density-scale,
@@ -244,6 +260,7 @@
       $query: $query
     );
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
+    @include _two-line-item-overline-baseline(28px, 20px, $query: $query);
     @include _two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _one-line-item-tall-density(
       variables.$one-line-item-density-scale,
@@ -259,6 +276,7 @@
     @include item-start-spacing(16px, $query: $query);
     @include item-start-size(40px, $query: $query);
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
+    @include _two-line-item-overline-baseline(28px, 20px, $query: $query);
     @include _two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _one-line-item-tall-density(
       variables.$one-line-item-density-scale,
@@ -274,6 +292,7 @@
     @include item-start-spacing(16px, $query: $query);
     @include item-start-size(56px, $query: $query);
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
+    @include _two-line-item-overline-baseline(28px, 20px, $query: $query);
     @include _two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _one-line-item-taller-density(
       variables.$one-line-item-density-scale,
@@ -294,6 +313,7 @@
     @include item-start-spacing($leading: 0, $trailing: 16px, $query: $query);
     @include item-start-size($width: 100px, $height: 56px, $query: $query);
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
+    @include _two-line-item-overline-baseline(28px, 20px, $query: $query);
     @include _two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _one-line-item-taller-density(
       variables.$one-line-item-density-scale,
@@ -318,6 +338,7 @@
       $query: $query
     );
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
+    @include _two-line-item-overline-baseline(28px, 20px, $query: $query);
     @include _two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _one-line-item-tall-density(
       variables.$one-line-item-density-scale,
@@ -342,6 +363,7 @@
       $query: $query
     );
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
+    @include _two-line-item-overline-baseline(28px, 20px, $query: $query);
     @include _two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _one-line-item-tall-density(
       variables.$one-line-item-density-scale,
@@ -362,6 +384,7 @@
       $query: $query
     );
     @include _two-line-item-primary-baseline(32px, 20px, $query: $query);
+    @include _two-line-item-overline-baseline(28px, 20px, $query: $query);
     @include _two-line-item-meta-baseline($top: 32px, $query: $query);
     @include _one-line-item-tall-density(
       variables.$one-line-item-density-scale,
@@ -426,6 +449,11 @@
       $offset: 16px,
       $query: $query
     );
+  }
+
+  .mdc-list-item--with-overline {
+    @include _two-line-item-primary-baseline(20px, 0px, $query: $query);
+    @include _three-line-item-primary-baseline(20px, 0px, $query: $query);
   }
 
   // This must be specified last to ensure that RTL padding takes priority over
@@ -787,6 +815,16 @@
   }
 }
 
+@mixin list-overline-text-ink-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-list-item__overline-text {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(color, $color);
+    }
+  }
+}
+
 @mixin list-meta-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
@@ -847,6 +885,7 @@
   .mdc-list-item--disabled {
     @include list-primary-text-ink-color($color, $query);
     @include list-secondary-text-ink-color($color, $query);
+    @include list-overline-text-ink-color($color, $query);
     @include _item-icon-ink-color($color, $query: $query);
     @include _item-meta-text-ink-color($color, $query);
   }
@@ -1236,6 +1275,54 @@
 ) {
   &.mdc-list-item--with-two-lines {
     .mdc-list-item__primary-text {
+      @include typography.text-baseline(
+        $top: $top,
+        $bottom: $bottom,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _three-line-item-primary-baseline(
+  $top,
+  $bottom,
+  $query: feature-targeting.all()
+) {
+  &.mdc-list-item--with-three-lines {
+    .mdc-list-item__primary-text {
+      @include typography.text-baseline(
+        $top: $top,
+        $bottom: $bottom,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _two-line-item-overline-baseline(
+  $top,
+  $bottom,
+  $query: feature-targeting.all()
+) {
+  &.mdc-list-item--with-two-lines {
+    .mdc-list-item__overline-text {
+      @include typography.text-baseline(
+        $top: $top,
+        $bottom: $bottom,
+        $query: $query
+      );
+    }
+  }
+}
+
+@mixin _three-line-item-overline-baseline(
+  $top,
+  $bottom,
+  $query: feature-targeting.all()
+) {
+  &.mdc-list-item--with-three-lines {
+    .mdc-list-item__overline-text {
       @include typography.text-baseline(
         $top: $top,
         $bottom: $bottom,
