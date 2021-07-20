@@ -22,17 +22,23 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
+@use '@material/tokens/resolvers';
 @use './button-shared-theme';
 
 $light-theme: (
   container-color: primary,
+  container-elevation: 2,
+  container-shadow-color: black,
   container-shape: button-shared-theme.$shape-radius,
   density: button-shared-theme.$density-scale,
   disabled-container-color: button-shared-theme.$disabled-container-color,
+  disabled-container-elevation: 0,
   disabled-label-text-color: button-shared-theme.$disabled-ink-color,
+  focus-container-elevation: 4,
   focus-label-text-color: null,
   focus-state-layer-color: on-primary,
   focus-state-layer-opacity: 0.24,
+  hover-container-elevation: 4,
   hover-label-text-color: null,
   hover-state-layer-color: on-primary,
   hover-state-layer-opacity: 0.08,
@@ -41,6 +47,7 @@ $light-theme: (
   label-text-size: null,
   label-text-tracking: null,
   label-text-weight: null,
+  pressed-container-elevation: 8,
   pressed-label-text-color: null,
   pressed-state-layer-color: on-primary,
   pressed-state-layer-opacity: 0.24,
@@ -54,7 +61,11 @@ $light-theme: (
 /// Sets theme based on provided theme configuration.
 /// Only emits theme related styles.
 /// @param {Map} $theme - Theme configuration to use.
-@mixin theme($theme, $query: feature-targeting.all()) {
+@mixin theme(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
   @include theme.validate-keys($light-theme, $theme);
-  @include button-shared-theme.theme($theme, $query: $query);
+  @include button-shared-theme.theme($theme, $resolver, $query: $query);
 }

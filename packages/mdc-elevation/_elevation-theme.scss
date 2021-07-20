@@ -412,9 +412,9 @@ $_theme-values: (
 /// @param {Number} $elevation - the level in the elevation system.
 /// @param {String} $shadow-color - the color used for the shadow.
 ///
-@mixin with-resolver($resolver, $args...) {
+@mixin with-resolver($resolver, $query: feature-targeting.all(), $args...) {
   @if $resolver {
-    @include _theme(meta.call($resolver, $args...));
+    @include _theme(meta.call($resolver, $args...), $query: $query);
   }
 }
 

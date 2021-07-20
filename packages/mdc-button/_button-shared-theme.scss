@@ -27,6 +27,7 @@
 @use '@material/density/functions' as density-functions;
 @use '@material/density/variables' as density-variables;
 @use '@material/dom/mixins' as dom-mixins;
+@use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
 @use '@material/shape/mixins' as shape-mixins;
@@ -62,7 +63,7 @@ $disabled-container-color: rgba(
   0.12
 ) !default;
 
-@mixin theme($theme, $query: feature-targeting.all()) {
+@mixin theme($theme, $resolver, $query: feature-targeting.all()) {
   @include _label-text-typography(
     (
       family: map.get($theme, label-text-font),
@@ -137,6 +138,19 @@ $disabled-container-color: rgba(
   @if $shape {
     @include shape-radius($shape, $density-scale: $density, $query: $query);
   }
+
+  @include _elevation(
+    $resolver,
+    $elevation-map: (
+      default: map.get($theme, container-elevation),
+      disabled: map.get($theme, disabled-container-elevation),
+      focus: map.get($theme, focus-container-elevation),
+      hover: map.get($theme, hover-container-elevation),
+      pressed: map.get($theme, pressed-container-elevation)
+    ),
+    $shadow-color: map.get($theme, container-shadow-color),
+    $query: $query
+  );
 }
 
 ///
@@ -610,6 +624,75 @@ $disabled-container-color: rgba(
       }
 
       @include theme.property(font-weight, $weight);
+    }
+  }
+}
+
+@mixin _elevation(
+  $resolver,
+  $elevation-map,
+  $shadow-color,
+  $query: feature-targeting.all()
+) {
+  $elevation-resolver: map.get($resolver, elevation);
+
+  @if $shadow-color {
+    $default: state.get-default-state($elevation-map);
+    @if $default != null {
+      @include elevation-theme.with-resolver(
+        $elevation-resolver,
+        $elevation: $default,
+        $shadow-color: $shadow-color,
+        $query: $query
+      );
+    }
+
+    $focus: state.get-focus-state($elevation-map);
+    @if $focus != null {
+      @include ripple-theme.focus {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $focus,
+          $shadow-color: $shadow-color,
+          $query: $query
+        );
+      }
+    }
+
+    $hover: state.get-hover-state($elevation-map);
+    @if $hover != null {
+      &:hover {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $hover,
+          $shadow-color: $shadow-color,
+          $query: $query
+        );
+      }
+    }
+
+    $pressed: state.get-pressed-state($elevation-map);
+    @if $pressed != null {
+      @include ripple-theme.active {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $pressed,
+          $shadow-color: $shadow-color,
+          $query: $query
+        );
+      }
+    }
+
+    $disabled: state.get-disabled-state($elevation-map);
+    @if $disabled != null {
+      &:disabled {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $disabled,
+          $shadow-color: $shadow-color,
+          $query: $query
+        );
+      }
     }
   }
 }

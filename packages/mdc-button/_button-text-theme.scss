@@ -22,6 +22,7 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
+@use '@material/tokens/resolvers';
 @use './button-shared-theme';
 
 $light-theme: (
@@ -52,7 +53,11 @@ $light-theme: (
 /// Sets theme based on provided theme configuration.
 /// Only emits theme related styles.
 /// @param {Map} $theme - Theme configuration to use.
-@mixin theme($theme, $query: feature-targeting.all()) {
+@mixin theme(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
   @include theme.validate-keys($light-theme, $theme);
-  @include button-shared-theme.theme($theme, $query: $query);
+  @include button-shared-theme.theme($theme, $resolver, $query: $query);
 }
