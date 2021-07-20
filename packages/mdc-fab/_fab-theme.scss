@@ -38,6 +38,7 @@
 @use 'sass:math';
 @use 'sass:list';
 @use 'sass:map';
+@use 'sass:meta';
 
 $height: 56px !default;
 $mini-height: 40px !default;
@@ -77,10 +78,17 @@ $_light-theme: (
 
 $custom-property-prefix: 'fab';
 
-@mixin theme-declare-custom-properties($theme) {
+///
+/// Applies the given theme as custom properties without any selectors.
+///
+@mixin theme-declare-custom-properties(
+  $theme,
+  $resolvers: resolvers.$material
+) {
   @include theme.validate-keys($_light-theme, $theme);
+  $resolved-theme: _resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties(
-    $theme,
+    $resolved-theme,
     $prefix: $custom-property-prefix
   );
 }
@@ -102,6 +110,55 @@ $custom-property-prefix: 'fab';
   @if $shape-radius {
     @include shape-radius($shape-radius);
   }
+}
+
+///
+/// Resolves the given theme with the given resolvers.
+///
+@function _resolve-theme($theme, $resolvers) {
+  $elevation-resolver: map.get($resolvers, elevation);
+  @return _resolve-theme-elevation-keys(
+    $theme,
+    $elevation-resolver,
+    (
+      container-elevation,
+      hover-container-elevation,
+      focus-container-elevation,
+      pressed-container-elevation,
+      disabled-container-elevation,
+      lowered-container-elevation,
+      lowered-focus-container-elevation,
+      lowered-hover-container-elevation,
+      lowered-pressed-container-elevation
+    )
+  );
+}
+
+///
+/// Returns the theme with the elevation keys resolved.
+///
+@function _resolve-theme-elevation-keys($theme, $resolver, $elevation-keys) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  // Shadow color is universal for the component.
+  $shadow-color: map.get($theme, container-shadow-color);
+
+  @each $key in $elevation-keys {
+    $elevation: map.get($theme, $key);
+    @if $elevation != null {
+      $resolved-value: meta.call(
+        $resolver,
+        $elevation: $elevation,
+        $shadow-color: $shadow-color
+      );
+      // Update the key with the resolved value.
+      $theme: map.set($theme, $key, $resolved-value);
+    }
+  }
+
+  @return $theme;
 }
 
 @mixin base-theme($theme, $resolvers: resolvers.$material) {
