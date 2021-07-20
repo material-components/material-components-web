@@ -441,19 +441,12 @@ CSS Class | Description
 --- | ---
 `mdc-list` | Mandatory, for the list element.
 `mdc-list--dense` | Optional, styles the density of the list, making it appear more compact.
-`mdc-list--textual-list` | Optional, configures lists that start with text
-(e.g., do not have a leading tile).
-`mdc-list--avatar-list` | Optional, configures the leading tile of each row to 
-display avatars.
-`mdc-list--icon-list` | Optional, configures the leading tile of each row to 
-display icons.
-`mdc-list--image-list` | Optional, configures the leading tile of each row to 
-display images.
-`mdc-list--thumbnail-list` | Optional, configures the leading tile of each row to
-display smaller images (this is analogous to an avatar list but the image will
-not be rounded).
-`mdc-list--video-list` | Optional, configures the leading tile of each row to 
-display videos.
+`mdc-list--textual-list` | Optional, configures lists that start with text (e.g., do not have a leading tile).
+`mdc-list--avatar-list` | Optional, configures the leading tile of each row to display avatars.
+`mdc-list--icon-list` | Optional, configures the leading tile of each row to display icons.
+`mdc-list--image-list` | Optional, configures the leading tile of each row to display images.
+`mdc-list--thumbnail-list` | Optional, configures the leading tile of each row to display smaller images (this is analogous to an avatar list but the image will not be rounded).
+`mdc-list--video-list` | Optional, configures the leading tile of each row to display videos.
 `mdc-list--two-line` | Optional, modifier to style list with two lines (primary and secondary lines).
 `mdc-list-item` | Mandatory, for the list item element.
 `mdc-list-item__text` |	Mandatory. Wrapper for list item text content (displayed as middle column of the list item).
@@ -462,26 +455,16 @@ display videos.
 `mdc-list-item--disabled` | Optional, styles the row in the disabled state.
 `mdc-list-item--selected` | Optional, styles the row in the selected* state.
 `mdc-list-item--activated` | Optional, styles the row in the activated* state.
-`mdc-list-item__graphic` | Optional, the first tile in the row (in LTR
-languages, the first column of the list item). Defaults to an icon, but renders
-as an avatar in an avatar list, or an image or video in the corresponding list.
-`mdc-list-item__meta`	| Optional, the last tile in the row (in LTR languages, 
-the last column of the list item). Typically small text, icon, or image.
+`mdc-list-item__graphic` | Optional, the first tile in the row (in LTR languages, the first column of the list item). Defaults to an icon, but renders as an avatar in an avatar list, or an image or video in the corresponding list.
+`mdc-list-item__meta`	| Optional, the last tile in the row (in LTR languages,  the last column of the list item). Typically small text, icon, or image.
 `mdc-list-group` | Optional, wrapper around two or more mdc-list elements to be grouped together.
 `mdc-list-group__subheader` |	Optional, heading text displayed above each list in a group.
 `mdc-list-divider` | Optional, for list divider element.
-`mdc-list-divider--padded` | Optional, leaves gaps on each side of divider to
-match padding of `list-item__meta`. Deprecated: use the more flexible "inset-" 
-classes, instead.
-`mdc-list-divider--inset` | Optional, increases the leading and trailing margins
-of the divider so that it doesn't intersect with an avatar. Deprecated: use the
-more flexible "inset-" classes instead.
-`mdc-list-divider--inset-leading` | Optional, increases the leading margin of
-the divider so that it does not intersect the graphics column.
-`mdc-list-divider--inset-trailing` | Optional, increases the trailing margin of
-the divider so that it coincides with the item's padding.
-`mdc-list-divider--inset-padding` | Optional, alters the inset to correspond to
-the item's padding rather than the leading graphics column.
+`mdc-list-divider--padded` | Optional, leaves gaps on each side of divider to match padding of `list-item__meta`. Deprecated: use the more flexible "inset-"  classes, instead.
+`mdc-list-divider--inset` | Optional, increases the leading and trailing margins of the divider so that it doesn't intersect with an avatar. Deprecated: use the more flexible "inset-" classes instead.
+`mdc-list-divider--inset-leading` | Optional, increases the leading margin of the divider so that it does not intersect the graphics column.
+`mdc-list-divider--inset-trailing` | Optional, increases the trailing margin of the divider so that it coincides with the item's padding.
+`mdc-list-divider--inset-padding` | Optional, alters the inset to correspond to the item's padding rather than the leading graphics column.
 
 **Note: The `mdc-list-divider` class can be used between list items *OR* between two lists (see respective examples under [List Dividers](#list-dividers)).**
 
@@ -509,12 +492,9 @@ Mixin | Description
 `list-item-padding($leading-padding)` | Sets the padding used by each list item.
 `list-item-height($height)` | Sets the height used by each list item.
 `icon-margin($margin)` | Sets the trailing margin used by icons.
-`divider-insets($leading-padding, $text-offset)` | Creates the full set of
-divider inset styles using the provided padding and text offset.
-`divider-insets($leading-padding, $text-offset)` | Sets a single divider's inset
-using the provided padding, text offset, and configuration.
-`graphic-size($leading-padding, $text-offset, $width, $height)` | Sets the size
-and trailing margin of a leading graphic.
+`divider-insets($leading-padding, $text-offset)` | Creates the full set of divider inset styles using the provided padding and text offset.
+`divider-insets($leading-padding, $text-offset)` | Sets a single divider's inset using the provided padding, text offset, and configuration.
+`graphic-size($leading-padding, $text-offset, $width, $height)` | Sets the size and trailing margin of a leading graphic.
 
 ## `MDCList` Properties and Methods
 
