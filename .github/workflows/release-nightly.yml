@@ -1,0 +1,50 @@
+name: MDC Release (Nightly)
+
+# This workflow creates a pre-release and publishes packages to NPM with nightly
+# if requested using Github label 'Publish to nightly'.
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  release-nightly:
+    if: ${{ github.event.label.name == 'Publish to nightly' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: git switch -c "pull-request"
+      - name: Fetch all tags
+        run: |
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+          registry-url: https://registry.npmjs.org/
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install dependencies
+        run: |
+          npm ci --ignore-scripts
+          npm run bootstrap
+      - name: Build packages
+        run: |
+          npm run dist
+          node scripts/cp-pkgs.js
+          node scripts/verify-pkg-main.js
+      - name: Create nightly release
+        run: |
+          npx lerna version premajor --no-git-tag-version --no-push --preid nightly.$(git rev-parse --short HEAD) --yes --exact
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "chore: Publish"
+      - name: Publish to NPM registry with nightly tag
+        run: npx lerna publish from-package --yes --dist-tag nightly
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
