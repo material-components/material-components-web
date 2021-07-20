@@ -64,7 +64,7 @@ information on how to import JavaScript.**
 ### Switch example
 
 ```html
-<button id="basic-switch" class="mdc-switch mdc-switch--unselected" role="switch" aria-checked="false">
+<button id="basic-switch" class="mdc-switch mdc-switch--unselected" type="button" role="switch" aria-checked="false">
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__handle-track">
     <div class="mdc-switch__handle">
@@ -103,7 +103,7 @@ This logic is handled by the `MDCSwitch.disabled` property, but you'll want to
 avoid a FOUC by initially adding this attribute.
 
 ```html
-<button id="disabled-switch" class="mdc-switch mdc-switch--unselected" role="switch" aria-checked="false" disabled>
+<button id="disabled-switch" class="mdc-switch mdc-switch--unselected" type="button" role="switch" aria-checked="false" disabled>
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__handle-track">
     <div class="mdc-switch__handle">
@@ -133,7 +133,7 @@ Add the `mdc-switch--selected` class and `aria-checked="true"` attribute to the
 this class and attribute.
 
 ```html
-<button id="selected-switch" class="mdc-switch mdc-switch--selected" role="switch" aria-checked="true">
+<button id="selected-switch" class="mdc-switch mdc-switch--selected" type="button" role="switch" aria-checked="true">
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__handle-track">
     <div class="mdc-switch__handle">
