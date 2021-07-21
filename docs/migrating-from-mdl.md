@@ -195,7 +195,7 @@ Aside from how the module is referenced, its usage otherwise remains the same. I
 constructor on the root node:
 
 ```js
-var textField = new mdc.textField.MDCTextField(document.querySelector('.mdc-text-field'));
+var textField = new mdc.textfield.MDCTextField(document.querySelector('.mdc-text-field'));
 ```
 
 ## Styling

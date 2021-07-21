@@ -143,10 +143,10 @@ function checkJSDependencyAddedInWebpackConfig() {
   const jsconfig = WEBPACK_CONFIG.find((value) => {
     return value.name === 'main-js-a-la-carte';
   });
-  const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
-  assert.notEqual(typeof jsconfig.entry[nameCamel], 'undefined',
+  const pkgName = CLI_PACKAGE_JSON.name.replace('@material/', '');
+  assert.notEqual(typeof jsconfig.entry[pkgName], 'undefined',
     'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' javascript dependency is not added to webpack ' +
-    'configuration. Please add ' + nameCamel + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s js-components ' +
+    'configuration. Please add ' + pkgName + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s js-components ' +
     'entry before commit. If package @material/' + name + ' has no exported JS, add "' + name + '" to ' +
     'the JS_EXCLUDES set in this file.');
 }

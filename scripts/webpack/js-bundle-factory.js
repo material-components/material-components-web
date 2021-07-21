@@ -63,7 +63,7 @@ class JsBundleFactory {
         fsDirAbsolutePath = undefined, // Required for building the npm distribution and writing output files to disk
         httpDirAbsolutePath = undefined, // Required for running the demo server
         filenamePattern = this.env_.isProd() ? '[name].min.js' : '[name].js',
-        library,
+        moduleName: {root, amd},
         globalObject = 'this',
       },
       plugins = [],
@@ -95,9 +95,17 @@ class JsBundleFactory {
       output: {
         path: fsDirAbsolutePath,
         publicPath: httpDirAbsolutePath,
-        filename: filenamePattern,
+        // Webpack does not allow us to set custom placeholders, so we need to use a function here to
+        // manually replace `[name]` with a camel-cased variant. e.g. `auto-init.js` should become `autoInit.js`.
+        // Unfortunately we cannot set the chunk names directly to a camel-cased variant because that would
+        // break the AMD module names then (which should match the NPM package names. e.g. `@material/auto-init`).
+        filename: ({chunk: {name}}) => filenamePattern.replace(/\[name]/g, toCamelCase(name)),
         libraryTarget: 'umd',
-        library,
+        library: {
+          root,
+          amd,
+        },
+        umdNamedDefine: true,
         globalObject,
       },
       resolve: {extensions},
@@ -147,7 +155,10 @@ class JsBundleFactory {
         fsDirAbsolutePath,
         httpDirAbsolutePath,
         filenamePattern: this.env_.isProd() ? 'material-components-web.min.js' : 'material-components-web.js',
-        library: 'mdc',
+        moduleName: {
+          amd: 'material-components-web',
+          root: ['mdc']
+        },
       },
       plugins,
     });
@@ -166,50 +177,61 @@ class JsBundleFactory {
     return this.createCustomJs({
       bundleName: 'main-js-a-la-carte',
       chunks: {
-        animation: getAbsolutePath('/packages/mdc-animation/index.ts'),
-        autoInit: getAbsolutePath('/packages/mdc-auto-init/index.ts'),
-        banner: getAbsolutePath('/packages/mdc-banner/index.ts'),
-        base: getAbsolutePath('/packages/mdc-base/index.ts'),
-        checkbox: getAbsolutePath('/packages/mdc-checkbox/index.ts'),
-        chips: getAbsolutePath('/packages/mdc-chips/index.ts'),
-        circularProgress: getAbsolutePath('packages/mdc-circular-progress/index.ts'),
-        dataTable: getAbsolutePath('/packages/mdc-data-table/index.ts'),
-        dialog: getAbsolutePath('/packages/mdc-dialog/index.ts'),
-        dom: getAbsolutePath('/packages/mdc-dom/index.ts'),
-        drawer: getAbsolutePath('/packages/mdc-drawer/index.ts'),
-        floatingLabel: getAbsolutePath('/packages/mdc-floating-label/index.ts'),
-        formField: getAbsolutePath('/packages/mdc-form-field/index.ts'),
-        iconButton: getAbsolutePath('/packages/mdc-icon-button/index.ts'),
-        list: getAbsolutePath('/packages/mdc-list/index.ts'),
-        lineRipple: getAbsolutePath('/packages/mdc-line-ripple/index.ts'),
-        linearProgress: getAbsolutePath('/packages/mdc-linear-progress/index.ts'),
-        menu: getAbsolutePath('/packages/mdc-menu/index.ts'),
-        menuSurface: getAbsolutePath('/packages/mdc-menu-surface/index.ts'),
-        notchedOutline: getAbsolutePath('/packages/mdc-notched-outline/index.ts'),
-        radio: getAbsolutePath('/packages/mdc-radio/index.ts'),
-        ripple: getAbsolutePath('/packages/mdc-ripple/index.ts'),
-        segmentedButton: getAbsolutePath('/packages/mdc-segmented-button/index.ts'),
-        select: getAbsolutePath('/packages/mdc-select/index.ts'),
-        slider: getAbsolutePath('/packages/mdc-slider/index.ts'),
-        snackbar: getAbsolutePath('/packages/mdc-snackbar/index.ts'),
-        switch: getAbsolutePath('/packages/mdc-switch/index.ts'),
-        tab: getAbsolutePath('/packages/mdc-tab/index.ts'),
-        tabBar: getAbsolutePath('/packages/mdc-tab-bar/index.ts'),
-        tabIndicator: getAbsolutePath('/packages/mdc-tab-indicator/index.ts'),
-        tabScroller: getAbsolutePath('/packages/mdc-tab-scroller/index.ts'),
-        textfield: getAbsolutePath('/packages/mdc-textfield/index.ts'),
-        tooltip: getAbsolutePath('/packages/mdc-tooltip/index.ts'),
-        topAppBar: getAbsolutePath('/packages/mdc-top-app-bar/index.ts'),
+        'animation': getAbsolutePath('/packages/mdc-animation/index.ts'),
+        'auto-init': getAbsolutePath('/packages/mdc-auto-init/index.ts'),
+        'banner': getAbsolutePath('/packages/mdc-banner/index.ts'),
+        'base': getAbsolutePath('/packages/mdc-base/index.ts'),
+        'checkbox': getAbsolutePath('/packages/mdc-checkbox/index.ts'),
+        'chips': getAbsolutePath('/packages/mdc-chips/index.ts'),
+        'circular-progress': getAbsolutePath('packages/mdc-circular-progress/index.ts'),
+        'data-table': getAbsolutePath('/packages/mdc-data-table/index.ts'),
+        'dialog': getAbsolutePath('/packages/mdc-dialog/index.ts'),
+        'dom': getAbsolutePath('/packages/mdc-dom/index.ts'),
+        'drawer': getAbsolutePath('/packages/mdc-drawer/index.ts'),
+        'floating-label': getAbsolutePath('/packages/mdc-floating-label/index.ts'),
+        'form-field': getAbsolutePath('/packages/mdc-form-field/index.ts'),
+        'icon-button': getAbsolutePath('/packages/mdc-icon-button/index.ts'),
+        'list': getAbsolutePath('/packages/mdc-list/index.ts'),
+        'line-ripple': getAbsolutePath('/packages/mdc-line-ripple/index.ts'),
+        'linear-progress': getAbsolutePath('/packages/mdc-linear-progress/index.ts'),
+        'menu': getAbsolutePath('/packages/mdc-menu/index.ts'),
+        'menu-surface': getAbsolutePath('/packages/mdc-menu-surface/index.ts'),
+        'notched-outline': getAbsolutePath('/packages/mdc-notched-outline/index.ts'),
+        'radio': getAbsolutePath('/packages/mdc-radio/index.ts'),
+        'ripple': getAbsolutePath('/packages/mdc-ripple/index.ts'),
+        'segmented-button': getAbsolutePath('/packages/mdc-segmented-button/index.ts'),
+        'select': getAbsolutePath('/packages/mdc-select/index.ts'),
+        'slider': getAbsolutePath('/packages/mdc-slider/index.ts'),
+        'snackbar': getAbsolutePath('/packages/mdc-snackbar/index.ts'),
+        'switch': getAbsolutePath('/packages/mdc-switch/index.ts'),
+        'tab': getAbsolutePath('/packages/mdc-tab/index.ts'),
+        'tab-bar': getAbsolutePath('/packages/mdc-tab-bar/index.ts'),
+        'tab-indicator': getAbsolutePath('/packages/mdc-tab-indicator/index.ts'),
+        'tab-scroller': getAbsolutePath('/packages/mdc-tab-scroller/index.ts'),
+        'textfield': getAbsolutePath('/packages/mdc-textfield/index.ts'),
+        'tooltip': getAbsolutePath('/packages/mdc-tooltip/index.ts'),
+        'top-app-bar': getAbsolutePath('/packages/mdc-top-app-bar/index.ts'),
       },
       output: {
         fsDirAbsolutePath,
         httpDirAbsolutePath,
         filenamePattern: this.env_.isProd() ? 'mdc.[name].min.js' : 'mdc.[name].js',
-        library: ['mdc', '[name]'],
+        moduleName: {
+          amd: '@material/[name]',
+          root: ['mdc', '[name]'],
+        },
       },
       plugins,
     });
   }
+}
+
+/**
+ * @param {string} dashedName A dash-separated package name. E.g., "mdc-linear-progress".
+ * @return {string} dashedName converted to camelCase. E.g., "mdcLinearProgress".
+ */
+ function toCamelCase(dashedName) {
+  return dashedName.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
 }
 
 module.exports = JsBundleFactory;
