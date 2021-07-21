@@ -102,6 +102,7 @@ $light-theme: (
     $prefix: $custom-property-prefix
   );
 
+  // TODO(b/191298796): Support states layer color for every interactive states.
   // Use only hover state layer color, ignoring focus and pressed color.
   @include states-base-color(map.get($theme, hover-state-layer-color));
   @include states-hover-opacity(map.get($theme, hover-state-layer-opacity));
