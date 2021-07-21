@@ -53,7 +53,7 @@
     // overrides apply.
     .mdc-button__icon {
       @include feature-targeting.targets($feat-structure) {
-        @include icon;
+        @include _icon-structure;
       }
     }
 
@@ -163,15 +163,23 @@
 }
 
 @mixin icon {
-  @include rtl.reflexive-box(margin, right, 8px);
+  @include _icon-structure;
+  @include _icon-size(18px);
+}
 
-  $icon-size: typography.px-to-rem(18px);
+@mixin _icon-structure {
+  @include rtl.reflexive-box(margin, right, 8px);
 
   display: inline-block;
   position: relative;
+  vertical-align: top;
+}
+
+@mixin _icon-size($size-px) {
+  $icon-size: typography.px-to-rem($size-px);
+
   font-size: $icon-size;
   height: $icon-size;
-  vertical-align: top;
   width: $icon-size;
 }
 
