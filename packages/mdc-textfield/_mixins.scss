@@ -1658,6 +1658,12 @@
         background-color: Window;
       }
     }
+
+    .mdc-floating-label {
+      @include feature-targeting.targets($feat-structure) {
+        z-index: 1;
+      }
+    }
   }
 
   @include feature-targeting.targets($feat-structure) {
