@@ -51,7 +51,7 @@
   // Intentionally left blank for future-proofing.
 }
 
-@mixin deprecated-theme-styles-without-ripple($query: feature-targeting.all()) {
+@mixin deprecated-theme-styles($query: feature-targeting.all()) {
   $theme: map.merge(
     button-text-theme.$light-theme,
     (
@@ -61,6 +61,11 @@
       hover-state-layer-opacity: null,
       pressed-state-layer-color: null,
       pressed-state-layer-opacity: null,
+      label-text-font: null,
+      label-text-size: null,
+      label-text-tracking: null,
+      label-text-transform: null,
+      label-text-weight: null,
     )
   );
 

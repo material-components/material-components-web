@@ -47,10 +47,7 @@
 }
 
 @mixin theme-styles($query: feature-targeting.all()) {
-  @include button-text.theme-styles(
-    button-text-theme.$light-theme,
-    $query: $query
-  );
+  @include button-text.theme-styles($query: $query);
   @include button-filled.theme-styles($query: $query);
   @include button-protected.theme-styles($query: $query);
   @include button-outlined.theme-styles($query: $query);
@@ -64,8 +61,10 @@
   @include button-outlined.static-styles($query: $query);
 }
 
+// Legacy mixins
+
 @mixin without-ripple($query: feature-targeting.all()) {
-  @include button-base.static-styles-without-ripple($query: $query);
+  @include button-base.deprecated-static-styles-without-ripple($query: $query);
   @include button-text.static-styles($query: $query);
   @include button-filled.static-styles($query: $query);
   @include button-protected.static-styles($query: $query);
@@ -74,11 +73,9 @@
 }
 
 @mixin _theme-styles-without-ripple($query: feature-targeting.all()) {
-  @include button-text.deprecated-theme-styles-without-ripple($query: $query);
-  @include button-filled.deprecated-theme-styles-without-ripple($query: $query);
-  @include button-outlined.deprecated-theme-styles-without-ripple(
-    $query: $query
-  );
+  @include button-text.deprecated-theme-styles($query: $query);
+  @include button-filled.deprecated-theme-styles($query: $query);
+  @include button-outlined.deprecated-theme-styles($query: $query);
   // Elevation has been recategorized into theme styles. Keeping old elevation
   // styles here for backwards compatibility.
   .mdc-button--raised {

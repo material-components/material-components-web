@@ -24,6 +24,8 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
 @use '@material/density/functions' as density-functions;
 @use '@material/density/variables' as density-variables;
 @use '@material/dom/mixins' as dom-mixins;
@@ -70,6 +72,7 @@ $disabled-container-color: rgba(
       size: map.get($theme, label-text-size),
       tracking: map.get($theme, label-text-tracking),
       weight: map.get($theme, label-text-weight),
+      transform: map.get($theme, label-text-transform),
     ),
     $query: $query
   );
@@ -625,24 +628,27 @@ $disabled-container-color: rgba(
   $size: map.get($typography-map, size);
   $tracking: map.get($typography-map, tracking);
   $weight: map.get($typography-map, weight);
+  $transform: map.get($typography-map, transform);
 
   @include feature-targeting.targets($feat-typography) {
-    .mdc-button__label {
-      @include theme.property(font-family, $family);
+    @include theme.property(font-family, $family);
 
-      @if $size {
-        @include theme.property(font-size, typography.px-to-rem($size));
-      }
-
-      @if $tracking {
-        @include theme.property(
-          letter-spacing,
-          typography.px-to-rem($tracking)
-        );
-      }
-
-      @include theme.property(font-weight, $weight);
+    $is-size-px: meta.type-of($size) == 'number' and math.unit($size) == 'px';
+    @if $is-size-px {
+      $size-rem: typography.px-to-rem($size);
+      @include theme.property(font-size, $size-rem);
+    } @else {
+      @include theme.property(font-size, $size);
     }
+
+    @if $tracking and $is-size-px {
+      @include theme.property(letter-spacing, math.div($tracking, $size) * 1em);
+    } @else {
+      @include theme.property(letter-spacing, $tracking);
+    }
+
+    @include theme.property(font-weight, $weight);
+    @include theme.property(text-transform, $transform);
   }
 }
 
