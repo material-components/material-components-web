@@ -27,7 +27,7 @@ import {getFixture} from '../../../testing/dom';
 import {createKeyboardEvent, emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {AnchorBoundaryType, CssClasses, numbers, XPosition, YPosition} from '../constants';
+import {AnchorBoundaryType, attributes, CssClasses, numbers, XPosition, YPosition} from '../constants';
 import {MDCTooltip, MDCTooltipFoundation} from '../index';
 
 function setupTestWithMockFoundation(fixture: HTMLElement) {
@@ -259,11 +259,13 @@ describe('MDCTooltip', () => {
          expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
        });
 
-    it('leaves aria-hidden as true when showing tooltip on an anchor annotated with `data-tooltip-id`',
+    it(`leaves aria-hidden as true when showing tooltip on an anchor annotated with "${
+           attributes.HIDDEN_FROM_SCREENREADER}"`,
        () => {
          document.body.removeChild(fixture);
          fixture = getFixture(`<div>
-        <button data-tooltip-id="tt0">
+        <button data-tooltip-id="tt0"
+                ${attributes.HIDDEN_FROM_SCREENREADER}="true">
           anchor
         </button>
         <div id="tt0"

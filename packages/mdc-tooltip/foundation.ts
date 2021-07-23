@@ -514,8 +514,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   private parseShowTooltipOptions(): ShowTooltipOptions {
-    const hideFromScreenreader =
-        Boolean(this.adapter.getAnchorAttribute('data-tooltip-id'));
+    const hideFromScreenreader = Boolean(
+        this.adapter.getAnchorAttribute(attributes.HIDDEN_FROM_SCREENREADER));
     return {hideFromScreenreader};
   }
 

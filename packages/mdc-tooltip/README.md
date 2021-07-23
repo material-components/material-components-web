@@ -9,35 +9,36 @@ path: /catalog/tooltips/
 
 # Tooltip
 
-Tooltips display informative text when users hover over, focus on, or tap an element.
+Tooltips display informative text when users hover over, focus on, or tap an
+element.
 
 **Contents**
 
-* [Using tooltips](#using-tooltips)
-* [Tooltips](#tooltips)
-* [API](#api)
-* [Usage within web frameworks](#usage-within-web-frameworks)
+*   [Using tooltips](#using-tooltips)
+*   [Tooltips](#tooltips)
+*   [API](#api)
+*   [Usage within web frameworks](#usage-within-web-frameworks)
 
 ## Using tooltips
 
-Plain tooltips, when activated, display a text label identifying an element, such as a
-description of its function. Tooltips should include only short, descriptive
-text and avoid restating visible UI text.
+Plain tooltips, when activated, display a text label identifying an element,
+such as a description of its function. Tooltips should include only short,
+descriptive text and avoid restating visible UI text.
 
 Common use cases include:
 
-* Displaying full text that has been truncated
-* Identifying a UI affordance
-* Describing differences between similar elements
-* Distinguishing actions with related iconography
+*   Displaying full text that has been truncated
+*   Identifying a UI affordance
+*   Describing differences between similar elements
+*   Distinguishing actions with related iconography
 
 Rich tooltips provide greater context and assistance for taking action through
 the additions of an optional title and buttons.
 
 Common use cases include:
 
-* Guidance on a particular section of the page or object
-* Providing informative and contextual actions
+*   Guidance on a particular section of the page or object
+*   Providing informative and contextual actions
 
 ### Installing tooltips
 
@@ -58,7 +59,8 @@ import {MDCTooltip} from '@material/tooltip';
 const tooltip = new MDCTooltip(document.querySelector('.mdc-tooltip'));
 ```
 
-> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+> See [Importing the JS component](../../docs/importing-js.md) for more
+> information on how to import JavaScript.
 
 ### Making tooltips accessible
 
@@ -82,10 +84,11 @@ visibility of the interactive rich tooltip.
 
 There are two types of tooltips:
 
- 1. [Plain Tooltips](#plain-tooltips)
- 1. [Rich Tooltips](#rich-tooltips)
+1.  [Plain Tooltips](#plain-tooltips)
+1.  [Rich Tooltips](#rich-tooltips)
 
 ### Plain tooltips
+
 ![Plain tooltip example](images/tooltip.png)
 
 #### Plain tooltip example
@@ -99,20 +102,22 @@ There are two types of tooltips:
 ```
 
 To ensure proper positioning of the tooltip, it's important that this tooltip
-element is an immediate child of the `<body>`, rather than nested underneath
-the anchor element or other elements.
+element is an immediate child of the `<body>`, rather than nested underneath the
+anchor element or other elements.
 
 ```html
 <a aria-describedby="tooltip-id" href="www.google.com"> Link </a>
 ```
 
-The `aria-describedby` attribute (which is given the `id` for the associated tooltip)
-designates an element as being the anchor element for a particular tooltip.
+The `aria-describedby` attribute (which is given the `id` for the associated
+tooltip) designates an element as being the anchor element for a particular
+tooltip.
 
 Other MDC components can be designated as anchor elements by adding this
 attribute.
 
 ### Rich tooltips
+
 ![Rich tooltip example](images/rich_tooltip.png)
 
 Rich tooltips have two variants: default and persistent.
@@ -124,18 +129,19 @@ element or the tooltip contents. If the user clicks within the contents of the
 tooltip, the tooltip will also be hidden.
 
 Persistent rich tooltips' visibility is toggled by clicks and enter/space bar
-keystrokes on their anchor element.
-When shown, they remain visible when users focus/hover over the contents of the
-rich tooltip, as well as when users hover outside of the anchor element or the
-tooltip contents. However, they become hidden when the users focus outside of
-the anchor element or the tooltip contents. If the user clicks within the
-contents of the tooltip, the tooltip remains shown. If the user clicks outside
-the contents of the tooltip, the tooltip will be hidden. It is recommended that
-persistent rich tooltips are not added to anchor elements that already have
-an click action; the click action for the anchor element should be used solely
-to toggle the visibility of the rich tooltip.
+keystrokes on their anchor element. When shown, they remain visible when users
+focus/hover over the contents of the rich tooltip, as well as when users hover
+outside of the anchor element or the tooltip contents. However, they become
+hidden when the users focus outside of the anchor element or the tooltip
+contents. If the user clicks within the contents of the tooltip, the tooltip
+remains shown. If the user clicks outside the contents of the tooltip, the
+tooltip will be hidden. It is recommended that persistent rich tooltips are not
+added to anchor elements that already have an click action; the click action for
+the anchor element should be used solely to toggle the visibility of the rich
+tooltip.
 
 #### Rich tooltip example
+
 Default rich tooltip without interactive content
 
 ```html
@@ -229,6 +235,7 @@ ensure that the tooltip is not hidden when clicked on.
   <span class="mdc-button__label">Button</span>
 </button>
 ```
+
 #### MDC Icon Button:
 
 ```html
@@ -238,16 +245,16 @@ ensure that the tooltip is not hidden when clicked on.
 If the information provided in the tooltip is duplicated from the anchor
 element's `aria-label`, the tooltip can be hidden from the screenreader by
 annotating the anchor element with `data-tooltip-id` instead of
-`aria-describedby`. Hiding the tooltip from the screenreader will prevent the
-same information from being announced twice (once from the `aria-label` and
-a second time from the tooltip). Note that rich tooltips with interactive
-content already use `data-tooltip-id` instead of `aria-describedby`, and so no
-change is necessary for this variant of tooltip.
+`aria-describedby`, and adding a `data-hide-tooltip-from-screenreader="true"`
+attribute. Hiding the tooltip from the screenreader will prevent the same
+information from being announced twice (once from the `aria-label` and a second
+time from the tooltip).
 
 ```html
 <button class="mdc-icon-button material-icons"
         aria-label="toggle favorite"
-        data-tooltip-id="tooltip-id">
+        data-tooltip-id="tooltip-id"
+        data-hide-tooltip-from-screenreader="true">
   favorite
 </button>
 
@@ -266,13 +273,15 @@ Plain tooltips appear directly below or above this anchor element and can be
 placed flush with either the end, center, or start of the anchor.
 
 ![End, center, and start alignment of tooltip on icon button in a LTR page](images/plain_tooltip_alignment.png)
-<p align="center"> *Plain tooltip aligned with the end, center, and start of an anchor element (in a LTR page flow).* </p>
+<p align="center"> *Plain tooltip aligned with the end, center, and start of an
+anchor element (in a LTR page flow).* </p>
 
 Rich tooltips appear directly below or above this anchor element, and can be
 placed at the corner of either the end or start of the anchor.
 
 ![End and start alignment of rich tooltip on button in a LTR page](images/rich_tooltip_alignment.png)
-<p align="center"> *Rich tooltip aligned with the end and start of an anchor element (in a LTR page flow).* </p>
+<p align="center"> *Rich tooltip aligned with the end and start of an anchor
+element (in a LTR page flow).* </p>
 
 A threshold distance of 32px is expected to be maintained between the tooltip
 and the viewport edge. A valid tooltip position is calculated based on which of
@@ -321,6 +330,12 @@ Method Signature | Description
 
 ### Usage Within Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Tooltip for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can
+create a Tooltip for your framework. Depending on your needs, you can use the
+_Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced
+Approach: Using Foundations and Adapters_. Please follow the instructions
+[here](../../docs/integrating-into-frameworks.md).
 
-See [MDCTooltipAdapter](./adapter.ts) and [MDCTooltipFoundation](./foundation.ts) for up-to-date code documentation of tooltip foundation APIs.
+See [MDCTooltipAdapter](./adapter.ts) and
+[MDCTooltipFoundation](./foundation.ts) for up-to-date code documentation of
+tooltip foundation APIs.
