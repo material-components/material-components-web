@@ -653,7 +653,5 @@ $forced-colors-theme: (
 }
 
 @mixin _track-width($width) {
-  .mdc-switch__track {
-    @include theme.property(width, $width);
-  }
+  @include theme.property(width, $width);
 }

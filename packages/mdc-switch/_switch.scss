@@ -105,6 +105,7 @@ $ripple-target: '.mdc-switch__ripple';
 }
 
 @mixin root() {
+  align-items: center;
   background: none;
   border: none;
   display: inline-flex;
@@ -122,6 +123,7 @@ $ripple-target: '.mdc-switch__ripple';
 @mixin track() {
   overflow: hidden;
   position: relative;
+  width: 100%;
 
   &::before,
   &::after {
@@ -174,6 +176,7 @@ $ripple-target: '.mdc-switch__ripple';
   // pointer events.
   pointer-events: none;
   position: absolute;
+  top: 0; // Needed for IE11
   transition: animation.standard(transform, $animation-duration);
   // IE11 needs explicit left/right
   @include rtl.reflexive(left, 0, right, auto);
