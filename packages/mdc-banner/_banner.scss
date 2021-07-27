@@ -63,6 +63,7 @@ $_exit-duration: 250ms;
   @include banner-theme.min-width($_min-width, $query: $query);
   @include banner-theme.max-width($_max-width, $query: $query);
   @include static-styles($query: $query);
+  @include banner-theme.theme-styles(banner-theme.$light-theme, $query: $query);
 
   .mdc-banner {
     @include banner-theme.fill-color(banner-theme.$fill-color, $query: $query);
@@ -70,10 +71,6 @@ $_exit-duration: 250ms;
       banner-theme.$divider-color,
       $query: $query
     );
-  }
-
-  .mdc-banner__text {
-    @include typography.typography($_text-type-scale, $query: $query);
   }
 
   .mdc-banner__primary-action {

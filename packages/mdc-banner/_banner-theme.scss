@@ -29,6 +29,8 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/typography/typography';
+@use 'sass:map';
 
 $fill-color: surface;
 $text-color: on-surface;
@@ -41,6 +43,31 @@ $secondary-action-text-color: primary;
 
 $mobile-breakpoint: 480px;
 $z-index: 1;
+
+$light-theme: (
+  supporting-text-color: theme-color.$on-surface,
+  supporting-text-font: typography.get-font(body2),
+  supporting-text-line-height: typography.get-line-height(body2),
+  supporting-text-size: typography.get-size(body2),
+  supporting-text-tracking: typography.get-tracking(body2),
+  supporting-text-weight: typography.get-weight(body2),
+);
+
+@mixin theme-styles($theme, $query: feature-targeting.all()) {
+  @include theme.validate-keys($light-theme, $theme);
+
+  @include text-color(map.get($theme, supporting-text-color), $query: $query);
+  @include _supporting-text-typography(
+    (
+      font: map.get($theme, supporting-text-font),
+      size: map.get($theme, supporting-text-size),
+      tracking: map.get($theme, supporting-text-tracking),
+      weight: map.get($theme, supporting-text-weight),
+      line-height: map.get($theme, supporting-text-line-height),
+    ),
+    $query: $query
+  );
+}
 
 ///
 /// Customizes fill color.
@@ -237,6 +264,29 @@ $z-index: 1;
   .mdc-banner__fixed {
     @include feature-targeting.targets($feat-structure) {
       width: $width;
+    }
+  }
+}
+
+@mixin _supporting-text-typography(
+  $typography-map,
+  $query: feature-targeting.all()
+) {
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  $font: map.get($typography-map, font);
+  $size: map.get($typography-map, size);
+  $tracking: map.get($typography-map, tracking);
+  $weight: map.get($typography-map, weight);
+  $line-height: map.get($typography-map, line-height);
+
+  .mdc-banner__text {
+    @include feature-targeting.targets($feat-typography) {
+      @include theme.property(letter-spacing, $tracking);
+      @include theme.property(font-size, $size);
+      @include theme.property(font-family, $font);
+      @include theme.property(font-weight, $weight);
+      @include theme.property(line-height, $line-height);
     }
   }
 }
