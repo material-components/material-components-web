@@ -109,6 +109,7 @@ $ripple-target: '.mdc-switch__ripple';
   background: none;
   border: none;
   display: inline-flex;
+  flex-shrink: 0; // Stop from collapsing in flex containers
   margin: 0;
   outline: none;
   overflow: visible;
