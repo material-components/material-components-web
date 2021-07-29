@@ -25,6 +25,7 @@
 
 @use 'sass:color';
 @use 'sass:map';
+@use 'sass:meta';
 @use '@material/density/density';
 @use '@material/dom/dom';
 @use '@material/elevation/elevation-theme';
@@ -158,7 +159,40 @@ $forced-colors-theme: (
     }
   }
 
+  $theme: _resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties($theme, switch);
+}
+
+@function _resolve-theme($theme, $resolvers) {
+  @return map.merge(
+    $theme,
+    _resolve-theme-handle-elevation(
+      $theme,
+      map.get($resolvers, elevation),
+      disabled-handle-elevation,
+      handle-elevation
+    )
+  );
+}
+
+@function _resolve-theme-handle-elevation($theme, $resolver, $keys...) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  @each $key in $keys {
+    // Resolve the value for each state key.
+    $resolved-value: meta.call(
+      $resolver,
+      $elevation: map.get($theme, $key),
+      $shadow-color: map.get($theme, handle-shadow-color)
+    );
+
+    // Update the theme with the resolved value.
+    $theme: map.set($theme, $key, $resolved-value);
+  }
+
+  @return $theme;
 }
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
