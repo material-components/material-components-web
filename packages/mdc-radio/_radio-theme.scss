@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:map';
 @use '@material/density/functions' as density-functions;
@@ -84,7 +84,7 @@ $light-theme: (
   unselected-pressed-state-layer-opacity: 0.1,
 );
 
-@mixin theme-declare-custom-properties($theme) {
+@mixin theme($theme) {
   @include theme.validate-keys($light-theme, $theme);
   @include keys.declare-custom-properties(
     $theme,
