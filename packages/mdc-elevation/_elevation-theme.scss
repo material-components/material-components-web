@@ -217,17 +217,25 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
 ///
 /// Returns a shadow or null if params are invalid.
 /// @param {Number} $level - the level of the Material elevation system.
-/// @param {String} $color [#000] - the color of the shadow.
+/// @param {String} $color - the color of the shadow.
 /// @return {List|null} the complete box shadow or null.
 ///
-@function _shadow($level, $color: #000) {
-  @if $level == null or $level < 0 or $level > 24 {
-    @warn "$level must be between 0 and 24; received '#{$level}'";
+@function _shadow($level, $color) {
+  @if $level == null and $color == null {
+    // Do not emit a warning if both are null, which means the user did not
+    // provide tokens.
     @return null;
   }
 
-  @if $color == null {
-    @warn "no $color provided; received '#{$color}'";
+  @if $level == null or $color == null {
+    // If one of the tokens is null, emit a warning: the user may not realize
+    // that both are required.
+    @warn "both $level and $color are required; received $level: '#{$level}', $color: '#{$color}'";
+    @return null;
+  }
+
+  @if $level < 0 or $level > 24 {
+    @warn "$level must be between 0 and 24; received '#{$level}'";
     @return null;
   }
 
