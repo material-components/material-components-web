@@ -497,7 +497,8 @@ describe('MDCTooltip', () => {
          emitEvent(anchorElem, 'focus');
          jasmine.clock().tick(numbers.SHOW_DELAY_MS);
          expect(anchorElem.getAttribute('aria-expanded')).toEqual('true');
-         tooltipElem.dispatchEvent(new FocusEvent('focusout'));
+         tooltipElem.dispatchEvent(
+             new FocusEvent('focusout', {relatedTarget: document.body}));
 
          expect(anchorElem.getAttribute('aria-expanded')).toEqual('false');
        });

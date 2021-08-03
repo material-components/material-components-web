@@ -1107,7 +1107,8 @@ describe('MDCTooltipFoundation', () => {
   it(`#handleTooltipMouseLeave hides plain tooltips after a ${
          numbers.HIDE_DELAY_MS}ms delay`,
      () => {
-       const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
 
        foundation.show();
        (foundation as any).handleTooltipMouseLeave();
@@ -1117,20 +1118,24 @@ describe('MDCTooltipFoundation', () => {
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
-  it('#handleTooltipMouseLeave clears any pending showTimeout for plain tooltips', () => {
-    const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
+  it('#handleTooltipMouseLeave clears any pending showTimeout for plain tooltips',
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
 
-    foundation.handleAnchorMouseEnter();
-    expect((foundation as any).showTimeout).not.toEqual(null);
-    (foundation as any).handleTooltipMouseLeave();
+       foundation.handleAnchorMouseEnter();
+       expect((foundation as any).showTimeout).not.toEqual(null);
+       (foundation as any).handleTooltipMouseLeave();
 
-    expect((foundation as any).showTimeout).toEqual(null);
-    jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-    expect(mockAdapter.setAttribute)
-        .not.toHaveBeenCalledWith('aria-hidden', 'false');
-    expect(mockAdapter.removeClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
-    expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.SHOWING);
-  });
+       expect((foundation as any).showTimeout).toEqual(null);
+       jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+       expect(mockAdapter.setAttribute)
+           .not.toHaveBeenCalledWith('aria-hidden', 'false');
+       expect(mockAdapter.removeClass)
+           .not.toHaveBeenCalledWith(CssClasses.HIDE);
+       expect(mockAdapter.addClass)
+           .not.toHaveBeenCalledWith(CssClasses.SHOWING);
+     });
 
   it(`#handleTooltipMouseEnter shows rich tooltips immediately`, () => {
     const {foundation, mockAdapter} =
@@ -1155,21 +1160,24 @@ describe('MDCTooltipFoundation', () => {
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
 
-  it('#handleTooltipMouseLeave clears any pending showTimeout for rich tooltips', () => {
-    const {foundation, mockAdapter} =
-        setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
+  it('#handleTooltipMouseLeave clears any pending showTimeout for rich tooltips',
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
 
-    foundation.handleAnchorMouseEnter();
-    expect((foundation as any).showTimeout).not.toEqual(null);
-    (foundation as any).handleTooltipMouseLeave();
+       foundation.handleAnchorMouseEnter();
+       expect((foundation as any).showTimeout).not.toEqual(null);
+       (foundation as any).handleTooltipMouseLeave();
 
-    expect((foundation as any).showTimeout).toEqual(null);
-    jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-    expect(mockAdapter.setAttribute)
-        .not.toHaveBeenCalledWith('aria-hidden', 'false');
-    expect(mockAdapter.removeClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
-    expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.SHOWING);
-  });
+       expect((foundation as any).showTimeout).toEqual(null);
+       jasmine.clock().tick(numbers.SHOW_DELAY_MS);
+       expect(mockAdapter.setAttribute)
+           .not.toHaveBeenCalledWith('aria-hidden', 'false');
+       expect(mockAdapter.removeClass)
+           .not.toHaveBeenCalledWith(CssClasses.HIDE);
+       expect(mockAdapter.addClass)
+           .not.toHaveBeenCalledWith(CssClasses.SHOWING);
+     });
 
   it('#handleRichTooltipFocusOut hides the tooltip immediately if there is no related target',
      () => {
@@ -1178,6 +1186,28 @@ describe('MDCTooltipFoundation', () => {
 
        foundation.show();
        (foundation as any).handleRichTooltipFocusOut({});
+
+       expectTooltipToHaveBeenHidden(foundation, mockAdapter);
+     });
+
+  it('#handleRichTooltipFocusOut leaves tooltip open if related target is null and tooltip is interactive',
+     () => {
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isInteractive: true});
+
+       foundation.show();
+       (foundation as any).handleRichTooltipFocusOut({relatedTarget: null});
+
+       expectTooltipNotToHaveBeenHidden(foundation, mockAdapter);
+     });
+
+  it('#handleRichTooltipFocusOut  hides the tooltip immediately if related target is null and tooltip is not interactive',
+     () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTestForRichTooltip(MDCTooltipFoundation);
+
+       foundation.show();
+       (foundation as any).handleRichTooltipFocusOut({relatedTarget: null});
 
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
