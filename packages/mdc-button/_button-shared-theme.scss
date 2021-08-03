@@ -632,21 +632,8 @@ $disabled-container-color: rgba(
 
   @include feature-targeting.targets($feat-typography) {
     @include theme.property(font-family, $family);
-
-    $is-size-px: meta.type-of($size) == 'number' and math.unit($size) == 'px';
-    @if $is-size-px {
-      $size-rem: typography.px-to-rem($size);
-      @include theme.property(font-size, $size-rem);
-    } @else {
-      @include theme.property(font-size, $size);
-    }
-
-    @if $tracking and $is-size-px {
-      @include theme.property(letter-spacing, math.div($tracking, $size) * 1em);
-    } @else {
-      @include theme.property(letter-spacing, $tracking);
-    }
-
+    @include theme.property(font-size, $size);
+    @include theme.property(letter-spacing, $tracking);
     @include theme.property(font-weight, $weight);
     @include theme.property(text-transform, $transform);
   }
