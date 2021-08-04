@@ -5,7 +5,6 @@
   "main": "dist/mdc.autoInit.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/mdc.autoInit.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",

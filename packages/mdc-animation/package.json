@@ -11,7 +11,6 @@
   "main": "dist/mdc.animation.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/mdc.animation.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git",
