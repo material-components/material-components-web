@@ -20,17 +20,24 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:map';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/tokens/resolvers';
+@use '@material/theme/keys';
 @use '@material/theme/theme';
 @use './button-shared-theme';
+
+$_custom-property-prefix: 'filled-button';
 
 $light-theme: (
   container-color: primary,
   container-elevation: 0,
+  container-height: button-shared-theme.$height,
   container-shadow-color: null,
   container-shape: button-shared-theme.$shape-radius,
-  density: button-shared-theme.$density-scale,
   disabled-container-color: button-shared-theme.$disabled-container-color,
   disabled-container-elevation: 0,
   disabled-label-text-color: button-shared-theme.$disabled-ink-color,
@@ -70,4 +77,56 @@ $light-theme: (
 ) {
   @include theme.validate-keys($light-theme, $theme);
   @include button-shared-theme.theme($theme, $resolver, $query: $query);
+}
+
+@mixin theme-styles(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
+  @include theme.validate-keys($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+
+  @include _unmapped-theme-styles($query: $query);
+  @include button-shared-theme.theme($theme, $resolver, $query: $query);
+}
+
+@mixin _unmapped-theme-styles($query) {
+  // TODO(b/179402677): move into theme config
+  @include button-shared-theme.horizontal-padding(
+    $padding: button-shared-theme.$contained-horizontal-padding,
+    $padding-icon: button-shared-theme.$contained-horizontal-padding-icon,
+    $query: $query
+  );
+}
+
+@mixin deprecated-theme-styles($query: feature-targeting.all()) {
+  .mdc-button--raised,
+  .mdc-button--unelevated {
+    $theme: map.merge(
+      $light-theme,
+      (
+        focus-state-layer-color: null,
+        focus-state-layer-opacity: null,
+        hover-state-layer-color: null,
+        hover-state-layer-opacity: null,
+        pressed-state-layer-color: null,
+        pressed-state-layer-opacity: null,
+        label-text-font: null,
+        label-text-size: null,
+        label-text-tracking: null,
+        label-text-transform: null,
+        label-text-weight: null,
+      )
+    );
+    @include _unmapped-theme-styles($query: $query);
+    @include button-shared-theme.theme(
+      $theme,
+      resolvers.$material,
+      $query: $query
+    );
+  }
 }

@@ -74,6 +74,16 @@
 }
 
 @function px-to-rem($px) {
+  @if custom-properties.is-custom-prop($px) {
+    @return custom-properties.set-fallback(
+      $px,
+      _px-to-rem(custom-properties.get-fallback($px))
+    );
+  }
+  @return _px-to-rem($px);
+}
+
+@function _px-to-rem($px) {
   @return math.div($px, 16px) * 1rem;
 }
 

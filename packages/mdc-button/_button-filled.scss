@@ -23,27 +23,25 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
-@use 'sass:map';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/tokens/resolvers';
 @use './button-base';
 @use './button-filled-theme';
 @use './button-shared-theme';
 
 @mixin styles(
   $theme: button-filled-theme.$light-theme,
+  $resolver: resolvers.$material,
   $query: feature-targeting.all()
 ) {
   @include button-base.static-styles($query: $query);
   @include static-styles($query: $query);
-  @include theme-styles($theme, $query: $query);
-}
-
-@mixin theme-styles(
-  $theme: button-filled-theme.$light-theme,
-  $query: feature-targeting.all()
-) {
   .mdc-button--unelevated {
-    @include _theme-styles($theme, $query: $query);
+    @include button-filled-theme.theme-styles(
+      $theme,
+      $resolver,
+      $query: $query
+    );
   }
 }
 
@@ -51,51 +49,16 @@
   // Intentionally left blank for future-proofing.
 }
 
-@mixin filled($query: feature-targeting.all()) {
-  @include _theme-styles(button-filled-theme.$light-theme, $query: $query);
-}
+// Legacy mixins
 
-@mixin _theme-styles($theme, $query: feature-targeting.all()) {
-  // TODO(b/179402677): move into theme config.
-  @include button-shared-theme.horizontal-padding(
-    $padding: button-shared-theme.$contained-horizontal-padding,
-    $padding-icon: button-shared-theme.$contained-horizontal-padding-icon,
+@mixin filled($query: feature-targeting.all()) {
+  @include button-filled-theme.theme-styles(
+    button-filled-theme.$light-theme,
     $query: $query
   );
-
-  @include button-filled-theme.theme($theme, $query: $query);
 }
 
 /// @deprecated Private style mixin for partners; not available for public use.
 @mixin deprecated-filled($query) {
   @include filled($query);
-}
-
-@mixin deprecated-theme-styles($query: feature-targeting.all()) {
-  .mdc-button--raised,
-  .mdc-button--unelevated {
-    // TODO(b/179402677): move into theme config.
-    @include button-shared-theme.horizontal-padding(
-      button-shared-theme.$contained-horizontal-padding,
-      $query: $query
-    );
-
-    $theme: map.merge(
-      button-filled-theme.$light-theme,
-      (
-        focus-state-layer-color: null,
-        focus-state-layer-opacity: null,
-        hover-state-layer-color: null,
-        hover-state-layer-opacity: null,
-        pressed-state-layer-color: null,
-        pressed-state-layer-opacity: null,
-        label-text-font: null,
-        label-text-size: null,
-        label-text-tracking: null,
-        label-text-transform: null,
-        label-text-weight: null,
-      )
-    );
-    @include button-filled-theme.theme($theme, $query: $query);
-  }
 }

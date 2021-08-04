@@ -21,7 +21,7 @@
 //
 
 @forward './button-base' show horizontal-padding;
-@forward './button-outlined-theme';
+@forward './button-outlined-theme' hide theme;
 @forward './button-ripple' show $ripple-target;
 @forward './button-shared-theme' hide theme;
 

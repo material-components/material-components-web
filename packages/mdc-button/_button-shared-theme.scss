@@ -33,6 +33,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
 @use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/custom-properties';
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
@@ -137,12 +138,30 @@ $disabled-container-color: rgba(
     @include density($density-scale: $density, $query: $query);
   }
 
-  $shape: map.get($theme, container-shape);
-  @if $density == null {
-    $density: $density-scale;
+  $container-height: map.get($theme, container-height);
+  @include height($container-height, $query: $query);
+
+  $container-height-value: if(
+    custom-properties.is-custom-prop($container-height),
+    custom-properties.get-fallback($container-height),
+    $container-height
+  );
+  @if $container-height-value != null and $container-height-value != $height {
+    @include _touch-target-reset($query: $query);
   }
+
+  $shape: map.get($theme, container-shape);
   @if $shape {
-    @include shape-radius($shape, $density-scale: $density, $query: $query);
+    $container-height: if(
+      $container-height != null,
+      $container-height,
+      $height
+    );
+    @include _shape-radius-with-height(
+      $shape,
+      $height: $container-height,
+      $query: $query
+    );
   }
 
   @include _elevation(
@@ -410,7 +429,7 @@ $disabled-container-color: rgba(
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    height: $height;
+    @include theme.property(height, $height);
   }
 }
 
@@ -426,6 +445,15 @@ $disabled-container-color: rgba(
     $property-name: height,
   );
 
+  @include _shape-radius-with-height($radius, $rtl-reflexive, $height, $query);
+}
+
+@mixin _shape-radius-with-height(
+  $radius,
+  $rtl-reflexive: false,
+  $height: $height,
+  $query: feature-targeting.all()
+) {
   @include shape-mixins.radius(
     $radius,
     $rtl-reflexive,
@@ -551,9 +579,9 @@ $disabled-container-color: rgba(
     $size-rem: typography.px-to-rem($size-px);
     .mdc-button__icon {
       @include feature-targeting.targets($feat-structure) {
-        font-size: $size-rem;
-        height: $size-rem;
-        width: $size-rem;
+        @include theme.property(font-size, $size-rem);
+        @include theme.property(width, $size-rem);
+        @include theme.property(height, $size-rem);
       }
     }
   }
@@ -576,45 +604,20 @@ $disabled-container-color: rgba(
 
 @mixin _states-colors($color-map, $query: feature-targeting.all()) {
   $hover: map.get($color-map, hover);
-  $focus: map.get($color-map, focus);
-  $pressed: map.get($color-map, pressed);
 
-  @if $hover != null and $hover == $focus and $focus == $pressed {
+  $hover-value: if(
+    custom-properties.is-custom-prop($hover),
+    custom-properties.get-fallback($hover),
+    $hover
+  );
+  // TODO(b/191298796): support focused & pressed key colors.
+
+  @if $hover-value != null {
     @include ripple-theme.states-base-color(
       $color: $hover,
       $ripple-target: button-ripple.$ripple-target,
       $query: $query
     );
-  } @else {
-    &:hover {
-      @if $hover != null {
-        @include ripple-theme.states-base-color(
-          $hover,
-          $ripple-target: button-ripple.$ripple-target,
-          $query: $query
-        );
-      }
-    }
-
-    @include ripple-theme.focus {
-      @if $focus != null {
-        @include ripple-theme.states-base-color(
-          $focus,
-          $ripple-target: button-ripple.$ripple-target,
-          $query: $query
-        );
-      }
-    }
-
-    @include ripple-theme.active {
-      @if $pressed != null {
-        @include ripple-theme.states-base-color(
-          $active,
-          $ripple-target: button-ripple.$ripple-target,
-          $query: $query
-        );
-      }
-    }
   }
 }
 
