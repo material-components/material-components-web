@@ -144,7 +144,7 @@ and `mdc-button--unelevated` is applied for a contained button flush with the su
 <img src="images/contained-icon-button.png" alt="Contained button with a bookmark icon">
 
 ```html
-<button class="mdc-button mdc-button--raised mdc-button--leading">
+<button class="mdc-button mdc-button--raised mdc-button--icon-leading">
   <span class="mdc-button__ripple"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true"
     >bookmark</i
