@@ -129,7 +129,7 @@ This area is used for showing rich media in cards, and optionally as a container
 and the [optional modifier classes](#css-classes).
 
 ```html
-<div class="my-card__media mdc-card__media mdc-card__media--16-9">
+<div class="my-card__media mdc-card__media--16-9">
   <div class="mdc-card__media-content">Title</div>
 </div>
 ```
