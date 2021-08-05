@@ -48,7 +48,12 @@
 }
 
 @mixin theme-styles($query: feature-targeting.all()) {
-  @include button-text.theme-styles($query: $query);
+  .mdc-button {
+    @include button-text-theme.theme-styles(
+      button-text-theme.$light-theme,
+      $query: $query
+    );
+  }
   .mdc-button--unelevated {
     @include button-filled-theme.theme-styles(
       button-filled-theme.$light-theme,
@@ -79,7 +84,7 @@
 }
 
 @mixin _theme-styles-without-ripple($query: feature-targeting.all()) {
-  @include button-text.deprecated-theme-styles($query: $query);
+  @include button-text-theme.deprecated-theme-styles($query: $query);
   @include button-filled-theme.deprecated-theme-styles($query: $query);
   @include button-outlined.deprecated-theme-styles($query: $query);
   // Elevation has been recategorized into theme styles. Keeping old elevation

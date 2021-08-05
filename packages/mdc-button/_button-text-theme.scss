@@ -20,14 +20,21 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:map';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/keys';
 @use '@material/theme/theme';
 @use '@material/tokens/resolvers';
 @use './button-shared-theme';
 
+$_custom-property-prefix: 'text-button';
+
 $light-theme: (
+  container-height: button-shared-theme.$height,
   container-shape: button-shared-theme.$shape-radius,
-  density: button-shared-theme.$density-scale,
   disabled-label-text-color: button-shared-theme.$disabled-ink-color,
   focus-label-text-color: null,
   focus-state-layer-color: primary,
@@ -62,4 +69,54 @@ $light-theme: (
 ) {
   @include theme.validate-keys($light-theme, $theme);
   @include button-shared-theme.theme($theme, $resolver, $query: $query);
+}
+
+@mixin theme-styles(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
+  @include theme.validate-keys($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+  @include button-shared-theme.theme($theme, $resolver, $query: $query);
+  @include _unmapped-theme-styles($query: $query);
+}
+
+@mixin _unmapped-theme-styles($query) {
+  // TODO(b/179402677): move this into theme config
+  @include button-shared-theme.horizontal-padding(
+    button-shared-theme.$horizontal-padding,
+    $query: $query
+  );
+}
+
+@mixin deprecated-theme-styles($query: feature-targeting.all()) {
+  $theme: map.merge(
+    $light-theme,
+    (
+      focus-state-layer-color: null,
+      focus-state-layer-opacity: null,
+      hover-state-layer-color: null,
+      hover-state-layer-opacity: null,
+      pressed-state-layer-color: null,
+      pressed-state-layer-opacity: null,
+      label-text-font: null,
+      label-text-size: null,
+      label-text-tracking: null,
+      label-text-transform: null,
+      label-text-weight: null,
+    )
+  );
+
+  .mdc-button {
+    @include button-shared-theme.theme(
+      $theme,
+      resolvers.$material,
+      $query: $query
+    );
+    @include _unmapped-theme-styles($query: $query);
+  }
 }
