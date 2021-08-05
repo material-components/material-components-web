@@ -109,6 +109,62 @@ $_track-inactive-height: 4px;
   }
 }
 
+@mixin static-styles($query: feature-targeting.all()) {
+  @include without-ripple($query);
+
+  .mdc-slider {
+    // GM value indicator
+    .mdc-slider__value-indicator {
+      border-radius: 16px;
+      height: 28px;
+      padding: 0 8px;
+    }
+
+    // Narrow value indicator styles.
+    .mdc-slider__thumb.mdc-slider__thumb--short-value {
+      .mdc-slider__value-indicator-container {
+        bottom: 40px;
+        transform: rotate(-45deg);
+        transform-origin: bottom left;
+
+        // TODO(b/162227735): Remove when fixed and add @noflip to
+        // `transform-origin: bottom left;` rule.
+        // This is necessary since @noflip does not work on `transform-origin`,
+        // so we apply this such that in RTL, the rule is flipped to
+        // `transform-origin: bottom left`.
+        @include rtl-mixins.rtl {
+          transform-origin: bottom right;
+        }
+      }
+
+      .mdc-slider__value-indicator {
+        /* @noflip */
+        border-radius: 50% 50% 50% 0;
+        height: 28px;
+        justify-content: center;
+        padding: 0;
+        position: relative;
+        transform-origin: bottom left;
+        width: 28px;
+
+        @include rtl-mixins.rtl {
+          transform-origin: bottom right;
+        }
+      }
+
+      // Hide the caret.
+      .mdc-slider__value-indicator::before {
+        display: none;
+      }
+
+      // Straighten the text since we rotated the container.
+      .mdc-slider__value-indicator-text {
+        transform: rotate(45deg);
+      }
+    }
+  }
+}
+
 // This API is intended for use by frameworks that may want to separate the
 // ripple-related styles from the other slider styles.
 // It is recommended that most users use `core-styles` instead.
