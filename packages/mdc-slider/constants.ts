@@ -34,6 +34,7 @@ export const cssClasses = {
   // Class added to the top thumb (for overlapping thumbs in range slider).
   THUMB_TOP: 'mdc-slider__thumb--top',
   THUMB_WITH_INDICATOR: 'mdc-slider__thumb--with-indicator',
+  THUMB_SHORT_VALUE: 'mdc-slider__thumb--short-value',
   TICK_MARKS: 'mdc-slider--tick-marks',
   TICK_MARKS_CONTAINER: 'mdc-slider__tick-marks',
   TICK_MARK_ACTIVE: 'mdc-slider__tick-mark--active',

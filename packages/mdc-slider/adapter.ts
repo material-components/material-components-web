@@ -171,7 +171,13 @@ export interface MDCSliderAdapter {
    * - If thumb is `Thumb.END`, updates value indicator on end thumb (or
    *   only thumb for single point slider).
    */
-  setValueIndicatorText(value: number, thumb: Thumb): void;
+  setValueIndicatorText(value: string, thumb: Thumb): void;
+
+  /**
+   * Returns a function that maps the slider value to a string to be displayed
+   * in the value indicator.
+   */
+  getValueToValueIndicatorTextFn(): ((value: number) => string)|null;
 
   /**
    * Returns a function that maps the slider value to the value of the

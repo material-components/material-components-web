@@ -158,6 +158,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       setTrackActiveStyleProperty: () => undefined,
       removeTrackActiveStyleProperty: () => undefined,
       setValueIndicatorText: () => undefined,
+      getValueToValueIndicatorTextFn: () => null,
       getValueToAriaValueTextFn: () => null,
       updateTickMarks: () => undefined,
       setPointerCapture: () => undefined,
@@ -693,13 +694,34 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private updateValueIndicatorUI(thumb?: Thumb) {
     if (!this.isDiscrete) return;
 
+    const actualThumb = thumb === Thumb.START ? Thumb.START : Thumb.END;
+    const valueToIndicatorText =
+        this.adapter.getValueToValueIndicatorTextFn() ?? ((value: number) => {
+          return `${value}`;
+        });
     const value =
         this.isRange && thumb === Thumb.START ? this.valueStart : this.value;
-    this.adapter.setValueIndicatorText(
-        value, thumb === Thumb.START ? Thumb.START : Thumb.END);
+    const strValue = valueToIndicatorText(value);
 
-    if (!thumb && this.isRange) {
-      this.adapter.setValueIndicatorText(this.valueStart, Thumb.START);
+    if (strValue.length <= 2) {
+      this.adapter.addThumbClass(cssClasses.THUMB_SHORT_VALUE, actualThumb);
+    } else {
+      this.adapter.removeThumbClass(cssClasses.THUMB_SHORT_VALUE, actualThumb);
+    }
+
+    this.adapter.setValueIndicatorText(strValue, actualThumb);
+
+    if (thumb || !this.isRange) {
+      return;
+    }
+
+    const valueStartStr = valueToIndicatorText(this.valueStart);
+    this.adapter.setValueIndicatorText(valueStartStr, Thumb.START);
+
+    if (valueStartStr.length <= 2) {
+      this.adapter.addThumbClass(cssClasses.THUMB_SHORT_VALUE, Thumb.START);
+    } else {
+      this.adapter.removeThumbClass(cssClasses.THUMB_SHORT_VALUE, Thumb.START);
     }
   }
 

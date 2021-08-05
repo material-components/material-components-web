@@ -41,16 +41,17 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     return new MDCSlider(root, undefined, options);
   }
 
-  root!: HTMLElement;                 // Assigned in MDCComponent constructor.
+  root!: HTMLElement;                   // Assigned in MDCComponent constructor.
   private inputs!: HTMLInputElement[];  // Assigned in #initialize.
-  private thumbs!: HTMLElement[];     // Assigned in #initialize.
-  private trackActive!: HTMLElement;  // Assigned in #initialize.
-  private ripples!: MDCRipple[];      // Assigned in #initialize.
+  private thumbs!: HTMLElement[];       // Assigned in #initialize.
+  private trackActive!: HTMLElement;    // Assigned in #initialize.
+  private ripples!: MDCRipple[];        // Assigned in #initialize.
 
   private skipInitialUIUpdate = false;
   // Function that maps a slider value to the value of the `aria-valuetext`
   // attribute on the thumb element.
   private valueToAriaValueTextFn: ((value: number) => string)|null = null;
+  private valueToValueIndicatorTextFn: ((value: number) => string)|null = null;
 
   getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same
@@ -109,12 +110,13 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       removeTrackActiveStyleProperty: (propertyName) => {
         this.trackActive.style.removeProperty(propertyName);
       },
-      setValueIndicatorText: (value: number, thumb: Thumb) => {
+      setValueIndicatorText: (value: string, thumb: Thumb) => {
         const valueIndicatorEl =
             this.getThumbEl(thumb).querySelector<HTMLElement>(
                 `.${cssClasses.VALUE_INDICATOR_TEXT}`);
         valueIndicatorEl!.textContent = String(value);
       },
+      getValueToValueIndicatorTextFn: () => this.valueToValueIndicatorTextFn,
       getValueToAriaValueTextFn: () => this.valueToAriaValueTextFn,
       updateTickMarks: (tickMarks: TickMark[]) => {
         let tickMarksContainer = this.root.querySelector<HTMLElement>(
@@ -253,6 +255,14 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
    */
   setValueToAriaValueTextFn(mapFn: ((value: number) => string)|null) {
     this.valueToAriaValueTextFn = mapFn;
+  }
+
+  /**
+   * Sets a function that maps the slider value to the value of the
+   * a string to be displayed in the value indicator.
+   */
+  setValueToValueIndicatorTextFn(mapFn: ((value: number) => string)|null) {
+    this.valueToValueIndicatorTextFn = mapFn;
   }
 
   private getThumbEl(thumb: Thumb) {
