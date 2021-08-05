@@ -26,6 +26,8 @@
 @use 'sass:map';
 @use 'sass:math';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/custom-properties';
+@use '@material/theme/keys';
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
@@ -38,10 +40,12 @@
 $outlined-border-width: 1px !default;
 $outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 
+$_custom-property-prefix: 'outlined-button';
+
 $light-theme: (
   container-disabled-color: transparent,
+  container-height: button-shared-theme.$height,
   container-shape: button-shared-theme.$shape-radius,
-  density: button-shared-theme.$density-scale,
   disabled-label-text-color: button-shared-theme.$disabled-ink-color,
   disabled-outline-color: button-shared-theme.$disabled-container-color,
   focus-label-text-color: null,
@@ -79,6 +83,23 @@ $light-theme: (
   $query: feature-targeting.all()
 ) {
   @include theme.validate-keys($light-theme, $theme);
+  @include _theme($theme, $resolver, $query: $query);
+}
+
+@mixin theme-styles(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
+  @include theme.validate-keys($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+  @include _theme($theme, $resolver, $query: $query);
+}
+
+@mixin _theme($theme, $resolver, $query) {
   @include button-shared-theme.theme($theme, $resolver, $query: $query);
   @include outline-color(
     (
@@ -89,6 +110,28 @@ $light-theme: (
     $query: $query
   );
   @include outline-width(map.get($theme, outline-width), $query: $query);
+}
+
+@mixin deprecated-theme-styles($query: feature-targeting.all()) {
+  .mdc-button--outlined {
+    $theme: map.merge(
+      $light-theme,
+      (
+        focus-state-layer-color: null,
+        focus-state-layer-opacity: null,
+        hover-state-layer-color: null,
+        hover-state-layer-opacity: null,
+        pressed-state-layer-color: null,
+        pressed-state-layer-opacity: null,
+        label-text-font: null,
+        label-text-size: null,
+        label-text-tracking: null,
+        label-text-transform: null,
+        label-text-weight: null,
+      )
+    );
+    @include _theme($theme, resolvers.$material, $query: $query);
+  }
 }
 
 ///
@@ -158,11 +201,18 @@ $light-theme: (
   $padding-icon: button-shared-theme.$contained-horizontal-padding-icon,
   $query: feature-targeting.all()
 ) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
   @if $outline-width != null {
-    $feat-structure: feature-targeting.create-target($query, structure);
+    $outline-width-value: if(
+      custom-properties.is-custom-prop($outline-width),
+      custom-properties.get-fallback($outline-width),
+      $outline-width
+    );
+    // TODO(b/194792044): uncouple padding from outline-width
     // Note: Adjust padding to maintain consistent width with non-outlined buttons
-    $padding-value: math.max($padding - $outline-width, 0);
-    $padding-icon-value: math.max($padding-icon - $outline-width, 0);
+    $padding-value: math.max($padding - $outline-width-value, 0);
+    $padding-icon-value: math.max($padding-icon - $outline-width-value, 0);
 
     @include button-shared-theme.horizontal-padding(
       $padding: $padding-value,
@@ -171,21 +221,36 @@ $light-theme: (
     );
 
     @include feature-targeting.targets($feat-structure) {
-      border-width: $outline-width;
+      @include theme.property(border-width, $outline-width);
     }
 
     #{button-ripple.$ripple-target} {
       @include feature-targeting.targets($feat-structure) {
-        top: -$outline-width;
-        left: -$outline-width;
-        border: $outline-width solid transparent;
+        @include theme.property(
+          top,
+          calc(-1 * outline-width),
+          $replace: (outline-width: $outline-width)
+        );
+        @include theme.property(
+          left,
+          calc(-1 * outline-width),
+          $replace: (outline-width: $outline-width)
+        );
+        @include theme.property(border-width, $outline-width);
       }
     }
-
     .mdc-button__touch {
       @include feature-targeting.targets($feat-structure) {
-        left: -$outline-width;
-        width: calc(100% + 2 * #{$outline-width});
+        @include theme.property(
+          left,
+          calc(-1 * outline-width),
+          $replace: (outline-width: $outline-width)
+        );
+        @include theme.property(
+          width,
+          calc(100% + 2 * outline-width),
+          $replace: (outline-width: $outline-width)
+        );
       }
     }
   }
