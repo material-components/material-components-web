@@ -24,13 +24,16 @@
 // stylelint-disable selector-class-pattern --
 // Internal styling for Tooltip MDC component.
 
+@use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
+@use '@material/button/button-text-theme';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
 @use '@material/typography/typography';
 @use 'sass:map';
+@use '@material/tokens/resolvers';
 
 $fill-color: surface;
 $text-color: on-surface;
@@ -45,15 +48,41 @@ $mobile-breakpoint: 480px;
 $z-index: 1;
 
 $light-theme: (
+  action-focus-state-layer-color: theme-color.$primary,
+  action-focus-state-layer-opacity: 0.12,
+  action-focus-label-text-color: theme-color.$on-primary,
+  action-hover-state-layer-color: theme-color.$primary,
+  action-hover-state-layer-opacity: 0.04,
+  action-hover-label-text-color: theme-color.$on-primary,
+  action-label-text-color: theme-color.$primary,
+  action-label-text-font: typography.get-font(button),
+  action-label-text-size: typography.get-size(button),
+  action-label-text-tracking: typography.get-tracking(button),
+  action-label-text-weight: typography.get-weight(button),
+  action-pressed-state-layer-color: theme-color.$primary,
+  action-pressed-state-layer-opacity: 0.1,
+  action-pressed-label-text-color: theme-color.$on-primary,
+  container-color: theme-color.$surface,
+  container-elevation: 0,
+  container-shadow-color: null,
+  container-shape: 0,
+  divider-color: $divider-color,
+  divider-height: 1px,
   supporting-text-color: theme-color.$on-surface,
   supporting-text-font: typography.get-font(body2),
   supporting-text-line-height: typography.get-line-height(body2),
   supporting-text-size: typography.get-size(body2),
   supporting-text-tracking: typography.get-tracking(body2),
   supporting-text-weight: typography.get-weight(body2),
+  with-image-image-shape: $graphic-shape-radius,
+  with-image-image-size: 40px,
 );
 
-@mixin theme-styles($theme, $query: feature-targeting.all()) {
+@mixin theme-styles(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
   @include theme.validate-keys($light-theme, $theme);
 
   @include text-color(map.get($theme, supporting-text-color), $query: $query);
@@ -67,6 +96,54 @@ $light-theme: (
     ),
     $query: $query
   );
+
+  @include graphic-shape-radius(
+    map.get($theme, with-image-image-shape),
+    $query: $query
+  );
+  @include _graphic-size(
+    map.get($theme, with-image-image-size),
+    $query: $query
+  );
+
+  @include fill-color(map.get($theme, container-color), $query: $query);
+  @include divider-color(map.get($theme, divider-color), $query: $query);
+  @include _divider-height(map.get($theme, divider-height), $query: $query);
+  @include _banner-shape(map.get($theme, container-shape), $query: $query);
+  @include _banner-elevation(
+    $resolver,
+    map.get($theme, container-elevation),
+    map.get($theme, container-shadow-color),
+    $query
+  );
+
+  .mdc-banner__primary-action,
+  .mdc-banner__secondary-action {
+    @include button-text-theme.theme(
+      (
+        focus-label-text-color: map.get($theme, action-focus-state-layer-color),
+        focus-state-layer-color: map.get($theme, action-focus-state-layer-color),
+        focus-state-layer-opacity:
+          map.get($theme, action-focus-state-layer-opacity),
+        hover-label-text-color: map.get($theme, action-hover-state-layer-color),
+        hover-state-layer-color: map.get($theme, action-hover-state-layer-color),
+        hover-state-layer-opacity:
+          map.get($theme, action-hover-state-layer-opacity),
+        label-text-color: map.get($theme, action-label-text-color),
+        label-text-font: map.get($theme, action-label-text-font),
+        label-text-size: map.get($theme, action-label-text-size),
+        label-text-tracking: map.get($theme, action-label-text-tracking),
+        label-text-weight: map.get($theme, action-label-text-weight),
+        pressed-label-text-color:
+          map.get($theme, action-pressed-state-layer-color),
+        pressed-state-layer-color:
+          map.get($theme, action-pressed-state-layer-color),
+        pressed-state-layer-opacity:
+          map.get($theme, action-pressed-state-layer-opacity),
+      ),
+      $query: $query
+    );
+  }
 }
 
 ///
@@ -118,6 +195,20 @@ $light-theme: (
   .mdc-banner__fixed {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(border-bottom-color, $color);
+    }
+  }
+}
+
+@mixin _divider-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    @include theme.property(border-bottom-width, $height);
+  }
+
+  .mdc-banner__fixed {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-bottom-width, $height);
     }
   }
 }
@@ -287,6 +378,36 @@ $light-theme: (
       @include theme.property(font-family, $font);
       @include theme.property(font-weight, $weight);
       @include theme.property(line-height, $line-height);
+    }
+  }
+}
+
+@mixin _banner-shape($shape, $query: feature-targeting.all()) {
+  @include shape-mixins.radius($shape, $query: $query);
+}
+
+@mixin _banner-elevation(
+  $resolver,
+  $elevation,
+  $shadow-color,
+  $query: feature-targeting.all()
+) {
+  $elevation-resolver: map.get($resolver, elevation);
+
+  @include elevation-theme.with-resolver(
+    $elevation-resolver,
+    $elevation: $elevation,
+    $shadow-color: $shadow-color,
+    $query: $query
+  );
+}
+
+@mixin _graphic-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  .mdc-banner__graphic {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $size);
+      @include theme.property(width, $size);
     }
   }
 }

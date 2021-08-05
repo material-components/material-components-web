@@ -47,7 +47,6 @@ $_exit-duration: 250ms;
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-animation: feature-targeting.create-target($query, animation);
 
-  @include banner-theme.text-color(banner-theme.$text-color, $query: $query);
   @include banner-theme.graphic-color(
     banner-theme.$graphic-color,
     $query: $query
@@ -56,43 +55,18 @@ $_exit-duration: 250ms;
     banner-theme.$graphic-background-color,
     $query: $query
   );
-  @include banner-theme.graphic-shape-radius(
-    banner-theme.$graphic-shape-radius,
-    $query: $query
-  );
   @include banner-theme.min-width($_min-width, $query: $query);
   @include banner-theme.max-width($_max-width, $query: $query);
   @include static-styles($query: $query);
-  @include banner-theme.theme-styles(banner-theme.$light-theme, $query: $query);
 
   .mdc-banner {
-    @include banner-theme.fill-color(banner-theme.$fill-color, $query: $query);
-    @include banner-theme.divider-color(
-      banner-theme.$divider-color,
-      $query: $query
-    );
-  }
-
-  .mdc-banner__primary-action {
-    @include button-theme.ink-color(
-      banner-theme.$primary-action-text-color,
-      $query: $query
-    );
-    @include ripple-theme.states(
-      banner-theme.$primary-action-text-color,
+    @include banner-theme.theme-styles(
+      banner-theme.$light-theme,
       $query: $query
     );
   }
 
   .mdc-banner__secondary-action {
-    @include button-theme.ink-color(
-      banner-theme.$secondary-action-text-color,
-      $query: $query
-    );
-    @include ripple-theme.states(
-      banner-theme.$secondary-action-text-color,
-      $query: $query
-    );
     @include feature-targeting.targets($feat-structure) {
       @include rtl-mixins.reflexive-property(margin, 0, 8px);
     }
@@ -121,7 +95,6 @@ $_exit-duration: 250ms;
       }
 
       border-bottom-style: solid;
-      border-bottom-width: 1px;
       box-sizing: border-box;
       display: none;
       flex-shrink: 0;
@@ -180,7 +153,6 @@ $_exit-duration: 250ms;
   .mdc-banner__fixed {
     @include feature-targeting.targets($feat-structure) {
       border-bottom-style: solid;
-      border-bottom-width: 1px;
       box-sizing: border-box;
       height: inherit;
       position: fixed;
@@ -210,11 +182,9 @@ $_exit-duration: 250ms;
       @include rtl-mixins.reflexive-property(margin, 16px, 0);
 
       flex-shrink: 0;
-      height: 40px;
       margin-top: 16px;
       margin-bottom: 16px;
       text-align: center;
-      width: 40px;
     }
   }
 
