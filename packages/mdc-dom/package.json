@@ -6,7 +6,6 @@
   "main": "dist/mdc.dom.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/mdc.dom.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git",

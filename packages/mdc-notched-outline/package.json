@@ -12,7 +12,6 @@
   "main": "dist/mdc.notchedOutline.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/mdc.notchedOutline.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/material-components/material-components-web.git",
