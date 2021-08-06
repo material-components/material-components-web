@@ -33,6 +33,7 @@
 @use './button-outlined';
 @use './button-outlined-theme';
 @use './button-protected';
+@use './button-protected-theme';
 @use './button-ripple';
 @use './button-text';
 @use './button-text-theme';
@@ -60,7 +61,12 @@
       $query: $query
     );
   }
-  @include button-protected.theme-styles($query: $query);
+  .mdc-button--raised {
+    @include button-protected-theme.theme-styles(
+      button-protected-theme.$light-theme,
+      $query: $query
+    );
+  }
   .mdc-button--outlined {
     @include button-outlined-theme.theme-styles(
       button-outlined-theme.$light-theme,

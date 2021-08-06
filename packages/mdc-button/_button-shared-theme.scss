@@ -133,11 +133,6 @@ $disabled-container-color: rgba(
     $query: $query
   );
 
-  $density: map.get($theme, density);
-  @if $density != null {
-    @include density($density-scale: $density, $query: $query);
-  }
-
   $container-height: map.get($theme, container-height);
   @include height($container-height, $query: $query);
 
