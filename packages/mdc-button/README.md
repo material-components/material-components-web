@@ -132,6 +132,7 @@ To meet this requirement, add the following to your button:
 
 ```html
 <button class="mdc-button mdc-button--raised">
+  <span class="mdc-button__ripple"></span>
   <span class="mdc-button__label">Contained Button</span>
 </button>
 ```
