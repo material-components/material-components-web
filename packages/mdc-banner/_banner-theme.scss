@@ -24,6 +24,8 @@
 // stylelint-disable selector-class-pattern --
 // Internal styling for Tooltip MDC component.
 
+@use 'sass:map';
+@use 'sass:meta';
 @use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/mixins' as rtl-mixins;
@@ -31,8 +33,8 @@
 @use '@material/button/button-text-theme';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/theme/keys';
 @use '@material/typography/typography';
-@use 'sass:map';
 @use '@material/tokens/resolvers';
 
 $fill-color: surface;
@@ -77,6 +79,44 @@ $light-theme: (
   with-image-image-shape: $graphic-shape-radius,
   with-image-image-size: 40px,
 );
+
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-keys($light-theme, $theme);
+
+  $theme: _resolve-theme($theme, $resolvers);
+  @include keys.declare-custom-properties($theme, banner);
+}
+
+@function _resolve-theme($theme, $resolvers) {
+  @return map.merge(
+    $theme,
+    _resolve-theme-elevation(
+      $theme,
+      map.get($resolvers, elevation),
+      container-elevation
+    )
+  );
+}
+
+@function _resolve-theme-elevation($theme, $resolver, $keys...) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  @each $key in $keys {
+    // Resolve the value for each state key.
+    $resolved-value: meta.call(
+      $resolver,
+      $elevation: map.get($theme, $key),
+      $shadow-color: map.get($theme, container-shadow-color)
+    );
+
+    // Update the theme with the resolved value.
+    $theme: map.set($theme, $key, $resolved-value);
+  }
+
+  @return $theme;
+}
 
 @mixin theme-styles(
   $theme,
