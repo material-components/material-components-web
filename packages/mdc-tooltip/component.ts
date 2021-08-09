@@ -185,6 +185,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       setAttribute: (attr, value) => {
         this.root.setAttribute(attr, value);
       },
+      removeAttribute: (attr) => {
+        this.root.removeAttribute(attr);
+      },
       addClass: (className) => {
         this.root.classList.add(className);
       },

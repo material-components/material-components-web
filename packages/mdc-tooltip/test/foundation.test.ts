@@ -246,7 +246,6 @@ function expectTooltipToHaveBeenShown(
         .toHaveBeenCalledWith('aria-expanded', 'true');
   }
 
-  expect(mockAdapter.setAttribute).toHaveBeenCalledWith('aria-hidden', 'false');
   expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.HIDE);
   expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.SHOWING);
 }
@@ -317,6 +316,7 @@ describe('MDCTooltipFoundation', () => {
     verifyDefaultAdapter(MDCTooltipFoundation, [
       'getAttribute',
       'setAttribute',
+      'removeAttribute',
       'addClass',
       'hasClass',
       'removeClass',
@@ -396,8 +396,6 @@ describe('MDCTooltipFoundation', () => {
   it('#show modifies tooltip element so it is shown', () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
     foundation.show();
-    expect(mockAdapter.setAttribute)
-        .toHaveBeenCalledWith('aria-hidden', 'false');
     expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.SHOWING);
   });
 
@@ -423,23 +421,9 @@ describe('MDCTooltipFoundation', () => {
            .toHaveBeenCalledWith('aria-expanded', 'true');
      });
 
-  it('#show leaves aria-hidden="true" attribute on tooltips intended to be hidden from screenreader',
-     () => {
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.getAnchorAttribute.and.returnValue('id');
-
-       foundation.show();
-       expect(mockAdapter.setAttribute)
-           .not.toHaveBeenCalledWith('aria-hidden', 'false');
-       expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.SHOWING);
-     });
-
   it('#show adds SHOWN and SHOWN_TRANSITION class after rAF', () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
     foundation.show();
-    expect(mockAdapter.setAttribute)
-        .toHaveBeenCalledWith('aria-hidden', 'false');
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.SHOWN);
     expect(mockAdapter.addClass)
         .not.toHaveBeenCalledWith(CssClasses.SHOWING_TRANSITION);
@@ -582,8 +566,6 @@ describe('MDCTooltipFoundation', () => {
     foundation.show();
     foundation.hide();
 
-    expect(mockAdapter.setAttribute)
-        .toHaveBeenCalledWith('aria-hidden', 'false');
     expect(mockAdapter.addClass).toHaveBeenCalledWith(CssClasses.HIDE);
     expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.SHOWN);
   });
@@ -592,7 +574,6 @@ describe('MDCTooltipFoundation', () => {
     const {foundation, mockAdapter} = setUpFoundationTest(MDCTooltipFoundation);
     foundation.show();
     foundation.show();
-    expect(mockAdapter.setAttribute).toHaveBeenCalledTimes(1);
     expect(mockAdapter.addClass).toHaveBeenCalledTimes(1);
   });
 
@@ -1067,8 +1048,8 @@ describe('MDCTooltipFoundation', () => {
        expect((foundation as any).showTimeout).toEqual(null);
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
 
-       expect(mockAdapter.setAttribute)
-           .not.toHaveBeenCalledWith('aria-hidden', 'false');
+       expect(mockAdapter.removeAttribute)
+           .not.toHaveBeenCalledWith('aria-hidden');
        expect(mockAdapter.removeClass)
            .not.toHaveBeenCalledWith(CssClasses.HIDE);
        expect(mockAdapter.addClass)
@@ -1129,8 +1110,8 @@ describe('MDCTooltipFoundation', () => {
 
        expect((foundation as any).showTimeout).toEqual(null);
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-       expect(mockAdapter.setAttribute)
-           .not.toHaveBeenCalledWith('aria-hidden', 'false');
+       expect(mockAdapter.removeAttribute)
+           .not.toHaveBeenCalledWith('aria-hidden');
        expect(mockAdapter.removeClass)
            .not.toHaveBeenCalledWith(CssClasses.HIDE);
        expect(mockAdapter.addClass)
@@ -1171,8 +1152,8 @@ describe('MDCTooltipFoundation', () => {
 
        expect((foundation as any).showTimeout).toEqual(null);
        jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-       expect(mockAdapter.setAttribute)
-           .not.toHaveBeenCalledWith('aria-hidden', 'false');
+       expect(mockAdapter.removeAttribute)
+           .not.toHaveBeenCalledWith('aria-hidden');
        expect(mockAdapter.removeClass)
            .not.toHaveBeenCalledWith(CssClasses.HIDE);
        expect(mockAdapter.addClass)
@@ -1268,9 +1249,6 @@ describe('MDCTooltipFoundation', () => {
        jasmine.clock().tick(numbers.HIDE_DELAY_MS / 2);
        foundation.handleAnchorFocus({relatedTarget: null} as FocusEvent);
 
-       expect(mockAdapter.setAttribute)
-           .toHaveBeenCalledWith('aria-hidden', 'false');
-       expect(mockAdapter.setAttribute).toHaveBeenCalledTimes(1);
        expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.HIDE);
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(CssClasses.SHOWING_TRANSITION);
@@ -1295,9 +1273,6 @@ describe('MDCTooltipFoundation', () => {
        jasmine.clock().tick(numbers.HIDE_DELAY_MS / 2);
        foundation.handleAnchorMouseEnter();
 
-       expect(mockAdapter.setAttribute)
-           .toHaveBeenCalledWith('aria-hidden', 'false');
-       expect(mockAdapter.setAttribute).toHaveBeenCalledTimes(1);
        expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.HIDE);
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(CssClasses.SHOWING_TRANSITION);
@@ -1319,8 +1294,7 @@ describe('MDCTooltipFoundation', () => {
     expect((foundation as any).showTimeout).toEqual(null);
 
     jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-    expect(mockAdapter.setAttribute)
-        .not.toHaveBeenCalledWith('aria-hidden', 'false');
+    expect(mockAdapter.removeAttribute).not.toHaveBeenCalledWith('aria-hidden');
     expect(mockAdapter.removeClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.SHOWING);
   });
@@ -1347,8 +1321,7 @@ describe('MDCTooltipFoundation', () => {
     expect((foundation as any).showTimeout).toEqual(null);
 
     jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-    expect(mockAdapter.setAttribute)
-        .not.toHaveBeenCalledWith('aria-hidden', 'false');
+    expect(mockAdapter.removeAttribute).not.toHaveBeenCalledWith('aria-hidden');
     expect(mockAdapter.removeClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.SHOWING);
   });
@@ -1383,8 +1356,7 @@ describe('MDCTooltipFoundation', () => {
     expect((foundation as any).showTimeout).toEqual(null);
 
     jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-    expect(mockAdapter.setAttribute)
-        .not.toHaveBeenCalledWith('aria-hidden', 'false');
+    expect(mockAdapter.removeAttribute).not.toHaveBeenCalledWith('aria-hidden');
     expect(mockAdapter.removeClass).not.toHaveBeenCalledWith(CssClasses.HIDE);
     expect(mockAdapter.addClass).not.toHaveBeenCalledWith(CssClasses.SHOWING);
   });

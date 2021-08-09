@@ -245,16 +245,14 @@ ensure that the tooltip is not hidden when clicked on.
 If the information provided in the tooltip is duplicated from the anchor
 element's `aria-label`, the tooltip can be hidden from the screenreader by
 annotating the anchor element with `data-tooltip-id` instead of
-`aria-describedby`, and adding a `data-hide-tooltip-from-screenreader="true"`
-attribute. Hiding the tooltip from the screenreader will prevent the same
-information from being announced twice (once from the `aria-label` and a second
-time from the tooltip).
+`aria-describedby`. Hiding the tooltip from the screenreader will prevent the
+same information from being announced twice (once from the `aria-label` and a
+second time from the tooltip).
 
 ```html
 <button class="mdc-icon-button material-icons"
         aria-label="toggle favorite"
-        data-tooltip-id="tooltip-id"
-        data-hide-tooltip-from-screenreader="true">
+        data-tooltip-id="tooltip-id">
   favorite
 </button>
 

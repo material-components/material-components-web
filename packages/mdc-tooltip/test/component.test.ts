@@ -27,7 +27,7 @@ import {getFixture} from '../../../testing/dom';
 import {createKeyboardEvent, emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {AnchorBoundaryType, attributes, CssClasses, numbers, XPosition, YPosition} from '../constants';
+import {AnchorBoundaryType, CssClasses, numbers, XPosition, YPosition} from '../constants';
 import {MDCTooltip, MDCTooltipFoundation} from '../index';
 
 function setupTestWithMockFoundation(fixture: HTMLElement) {
@@ -52,7 +52,7 @@ describe('MDCTooltip', () => {
         <button aria-describedby="tt0">
           anchor
         </button>
-        <div id="tt0" class="mdc-tooltip" aria-role="tooltip" aria-hidden="true">
+        <div id="tt0" class="mdc-tooltip" aria-role="tooltip">
           <div class="mdc-tooltip__surface">
             demo tooltip
           </div>
@@ -230,64 +230,6 @@ describe('MDCTooltip', () => {
       component.destroy();
     });
 
-    it('sets aria-hidden to false when showing tooltip on an anchor annotated with `aria-describedby`',
-       () => {
-         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
-         const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
-         MDCTooltip.attachTo(tooltipElem);
-
-         emitEvent(anchorElem, 'mouseenter');
-         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
-       });
-
-    // This test accounts for rapid anchor mouseenter/leave.
-    it('sets aria-hidden to false when going from anchor leave to anchor enter',
-       () => {
-         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
-         const anchorElem =
-             fixture.querySelector<HTMLElement>('[aria-describedby]')!;
-         MDCTooltip.attachTo(tooltipElem);
-
-         emitEvent(anchorElem, 'mouseleave');
-         jasmine.clock().tick(numbers.HIDE_DELAY_MS / 2);
-         emitEvent(anchorElem, 'mouseenter');
-         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-         jasmine.clock().tick(numbers.HIDE_DELAY_MS / 2);
-
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
-       });
-
-    it(`leaves aria-hidden as true when showing tooltip on an anchor annotated with "${
-           attributes.HIDDEN_FROM_SCREENREADER}"`,
-       () => {
-         document.body.removeChild(fixture);
-         fixture = getFixture(`<div>
-        <button data-tooltip-id="tt0"
-                ${attributes.HIDDEN_FROM_SCREENREADER}="true">
-          anchor
-        </button>
-        <div id="tt0"
-             class="mdc-tooltip"
-             aria-role="tooltip"
-             aria-hidden="true">
-          <div class="mdc-tooltip__surface">
-            demo tooltip
-          </div>
-        </div>
-      </div>`);
-         document.body.appendChild(fixture);
-         const tooltipElem = fixture.querySelector<HTMLElement>('#tt0')!;
-         const anchorElem =
-             fixture.querySelector<HTMLElement>('[data-tooltip-id]')!;
-         MDCTooltip.attachTo(tooltipElem);
-
-         emitEvent(anchorElem, 'mouseenter');
-         jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('true');
-       });
-
     it('detects tooltip labels that span multiple lines', () => {
       document.body.removeChild(fixture);
       fixture = getFixture(`<div>
@@ -296,8 +238,7 @@ describe('MDCTooltip', () => {
         </button>
         <div id="tt0"
              class="mdc-tooltip"
-             aria-role="tooltip"
-             aria-hidden="true">
+             aria-role="tooltip">
           <div class="mdc-tooltip__surface">
             this is as long tooltip label that will overflow the maximum width
             and will create a multi-line tooltip label
@@ -620,7 +561,7 @@ describe('MDCTooltip', () => {
 
          emitEvent(anchorElem, 'click');
 
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
        });
 
     it('set aria-hidden to true on tooltip when anchor clicked while tooltip is shown',
@@ -631,7 +572,7 @@ describe('MDCTooltip', () => {
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'click');
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
          emitEvent(anchorElem, 'click');
 
          expect(tooltipElem.getAttribute('aria-hidden')).toEqual('true');
@@ -645,7 +586,7 @@ describe('MDCTooltip', () => {
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'click');
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
          emitEvent(document.body, 'click');
 
          expect(tooltipElem.getAttribute('aria-hidden')).toEqual('true');
@@ -659,10 +600,10 @@ describe('MDCTooltip', () => {
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'click');
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
          emitEvent(tooltipElem, 'click');
 
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
        });
 
     it('aria-hidden remains false on tooltip when mouseleave anchor while tooltip is shown',
@@ -673,10 +614,10 @@ describe('MDCTooltip', () => {
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'click');
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
          emitEvent(anchorElem, 'mouseleave');
 
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
        });
 
     it('aria-hidden remains false on tooltip when mouseleave tooltip while tooltip is shown',
@@ -687,10 +628,10 @@ describe('MDCTooltip', () => {
          MDCTooltip.attachTo(tooltipElem);
 
          emitEvent(anchorElem, 'click');
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
          emitEvent(tooltipElem, 'mouseleave');
 
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
        });
 
     it('aria-hidden becomes true on tooltip when anchor blurs and non-tooltip element is focused',
@@ -707,7 +648,7 @@ describe('MDCTooltip', () => {
 
          emitEvent(anchorElem, 'click');
          jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
          anchorElem.dispatchEvent(
              new FocusEvent('blur', {relatedTarget: document.body}));
 
@@ -728,11 +669,11 @@ describe('MDCTooltip', () => {
 
          emitEvent(anchorElem, 'click');
          jasmine.clock().tick(numbers.SHOW_DELAY_MS);
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
          anchorElem.dispatchEvent(
              new FocusEvent('blur', {relatedTarget: tooltipElem}));
 
-         expect(tooltipElem.getAttribute('aria-hidden')).toEqual('false');
+         expect(tooltipElem.hasAttribute('aria-hidden')).toBeFalse();
        });
   });
 });

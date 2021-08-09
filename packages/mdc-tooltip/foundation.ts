@@ -29,7 +29,6 @@ import {KEY, normalizeKey} from '@material/dom/keyboard';
 
 import {MDCTooltipAdapter} from './adapter';
 import {AnchorBoundaryType, attributes, CssClasses, numbers, PositionWithCaret, strings, XPosition, XPositionWithCaret, YPosition, YPositionWithCaret} from './constants';
-import {ShowTooltipOptions} from './types';
 
 const {
   RICH,
@@ -53,6 +52,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     return {
       getAttribute: () => null,
       setAttribute: () => undefined,
+      removeAttribute: () => undefined,
       addClass: () => undefined,
       hasClass: () => false,
       removeClass: () => undefined,
@@ -375,10 +375,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     }
 
     this.tooltipShown = true;
-    const showTooltipOptions = this.parseShowTooltipOptions();
-    if (!showTooltipOptions.hideFromScreenreader) {
-      this.adapter.setAttribute('aria-hidden', 'false');
-    }
+    this.adapter.removeAttribute('aria-hidden');
 
     if (this.richTooltip) {
       if (this.interactiveTooltip) {
@@ -532,12 +529,6 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
   setHideDelay(delayMs: number) {
     this.hideDelayMs = delayMs;
-  }
-
-  private parseShowTooltipOptions(): ShowTooltipOptions {
-    const hideFromScreenreader = Boolean(
-        this.adapter.getAnchorAttribute(attributes.HIDDEN_FROM_SCREENREADER));
-    return {hideFromScreenreader};
   }
 
   private isTooltipMultiline() {

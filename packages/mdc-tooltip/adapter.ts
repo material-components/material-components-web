@@ -22,6 +22,7 @@
  */
 
 import {EventType, SpecificEventListener} from '@material/base/types';
+
 import {CssClasses} from './constants';
 
 /**
@@ -41,6 +42,11 @@ export interface MDCTooltipAdapter {
    * Sets an attribute on the root element.
    */
   setAttribute(attr: string, value: string): void;
+
+  /**
+   * Removes an attribute on the root element.
+   */
+  removeAttribute(attr: string): void;
 
   /**
    * Adds a class onto the root element.
