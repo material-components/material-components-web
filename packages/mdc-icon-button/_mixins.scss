@@ -58,7 +58,7 @@ $ripple-target: '.mdc-icon-button__ripple';
 
   .mdc-icon-button__icon {
     @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
+      display: inline-flex;
     }
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
@@ -272,7 +272,8 @@ $ripple-target: '.mdc-icon-button__ripple';
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    display: inline-block;
+    align-items: center;
+    display: inline-flex;
     position: relative;
     box-sizing: border-box;
     border: none;
