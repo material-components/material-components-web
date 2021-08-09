@@ -1,0 +1,165 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern
+
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple';
+@use '@material/ripple/ripple-theme';
+@use '@material/touch-target/mixins' as touch-target-mixins;
+@use './icon-button-theme';
+
+@mixin core-styles($query: feature-targeting.all()) {
+  @include without-ripple($query);
+  @include ripple($query);
+}
+
+@mixin without-ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  // postcss-bem-linter: define icon-button
+  .mdc-icon-button {
+    @include base_($query: $query);
+    @include icon-button-theme.density(0, $query: $query);
+
+    .mdc-icon-button__touch {
+      @include touch-target-mixins.touch-target(
+        $set-width: true,
+        $query: $query
+      );
+    }
+  }
+
+  .mdc-icon-button__icon {
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-block;
+    }
+
+    // stylelint-disable-next-line plugin/selector-bem-pattern
+    &.mdc-icon-button__icon--on {
+      @include feature-targeting.targets($feat-structure) {
+        display: none;
+      }
+    }
+  }
+
+  .mdc-icon-button--on {
+    .mdc-icon-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        display: none;
+      }
+
+      // stylelint-disable-next-line plugin/selector-bem-pattern
+      &.mdc-icon-button__icon--on {
+        @include feature-targeting.targets($feat-structure) {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .mdc-icon-button--touch {
+    @include touch-target-mixins.margin(
+      $component-height: icon-button-theme.$size,
+      $query: $query
+    );
+  }
+  // postcss-bem-linter: end
+}
+
+@mixin ripple($query: feature-targeting.all()) {
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  .mdc-icon-button {
+    @include ripple.surface(
+      $query: $query,
+      $ripple-target: icon-button-theme.$ripple-target
+    );
+    @include ripple.radius-unbounded(
+      $query: $query,
+      $ripple-target: icon-button-theme.$ripple-target
+    );
+    @include ripple-theme.states(
+      $query: $query,
+      $ripple-target: icon-button-theme.$ripple-target
+    );
+
+    .mdc-icon-button__ripple {
+      $feat-structure: feature-targeting.create-target($query, structure);
+      @include feature-targeting.targets($feat-structure) {
+        pointer-events: none;
+        z-index: 1;
+      }
+    }
+  }
+}
+
+@mixin base_($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    fill: currentColor;
+    color: inherit;
+    font-size: icon-button-theme.$icon-size;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  // stylelint-disable-next-line selector-max-type
+  svg,
+  img {
+    @include feature-targeting.targets($feat-structure) {
+      width: icon-button-theme.$icon-size;
+      height: icon-button-theme.$icon-size;
+    }
+  }
+
+  @include icon-button-theme.disabled-ink-color(
+    text-disabled-on-light,
+    $query: $query
+  );
+
+  @include if-disabled_ {
+    @include feature-targeting.targets($feat-structure) {
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+}
+
+///
+/// Helps style the icon button in its disabled state.
+/// @access private
+///
+@mixin if-disabled_ {
+  &:disabled {
+    @content;
+  }
+}

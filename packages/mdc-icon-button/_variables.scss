@@ -20,18 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use '@material/density/variables';
-
-$icon-size: 24px !default;
-
-$size: 48px !default;
-$minimum-height: 28px !default;
-$maximum-height: $size !default;
-$density-scale: variables.$default-scale !default;
-$density-config: (
-  size: (
-    default: $size,
-    maximum: $maximum-height,
-    minimum: $minimum-height,
-  ),
-) !default;
+/// @deprecated Import './icon-button-theme' module instead.
+@forward './icon-button-theme' show $icon-size, $size, $minimum-height, $maximum-height, $density-scale, $density-config;
