@@ -26,6 +26,7 @@
 @use 'sass:selector';
 @use 'sass:string';
 @use './custom-properties';
+@use './selector-ext';
 
 /// List of all valid states. When adding new state functions, add the name of
 /// the state to this List.
@@ -570,7 +571,7 @@ $_valid-states: (
   }
 
   @if $disabled and not $enabled {
-    @return map.set($selectors, enabled, string.unquote(':not(#{$disabled})'));
+    @return map.set($selectors, enabled, selector-ext.negate($disabled));
   }
 
   @return $selectors;
@@ -725,11 +726,11 @@ $_dependent-state-groups: ((hover, focus, pressed), ());
 /// @param {String} $selector - The main selector to target.
 /// @param {String...} $dependents - Additional group dependents of the main
 ///     selector. They will be added as `:not()` selectors.
-/// @return {String} A new independent selector.
+/// @return {List} A new independent selector in selector value format.
 @function _create-independent-selector($selector, $dependents...) {
   @each $dependent in $dependents {
     @if $dependent {
-      $selector: string.unquote('#{$selector}:not(#{$dependent})');
+      $selector: selector.append($selector, selector-ext.negate($dependent));
     }
   }
 

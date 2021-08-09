@@ -28,6 +28,81 @@
 // A collection of extensions to the sass:selector module
 // https://sass-lang.com/documentation/modules/selector
 
+/// Recursively negates and flattens a compound selector.
+///
+/// This is useful for IE11 support when appending two selectors when the second
+/// selector may have another nested `:not()`, since IE11 does not supported
+/// complex selector lists within `:not()`.
+///
+/// @example - scss
+///   $selector1: '.foo';
+///   $selector2: '.bar:not(.baz)';
+///
+///   #{selector.append($selector1, ':not(#{$selector2})'} {
+///     /* Modern browsers */
+///   }
+///
+///   #{selector.append($selector1, negate($selector2)} {
+///     /* IE11 support */
+///   }
+///
+/// @example - css
+///   .foo:not(.bar:not(.baz)) {
+///     /* Modern browsers */
+///   }
+///
+///   .foo:not(.bar), .foo.baz {
+///     /* IE11 support */
+///   }
+///
+/// @param {String} $compound-selector - A compound selector to negate.
+/// @return {List} The negated selector in selector value format.
+@function negate($compound-selector) {
+  $result: null;
+  @each $simple-selector in selector.simple-selectors($compound-selector) {
+    $to-append: null;
+    @if string.index($simple-selector, ':not(') == 1 {
+      $inside-not: string.slice($simple-selector, 6, -2);
+      $inside-not-simple-selectors: selector.simple-selectors($inside-not);
+      $inside-not-result: null;
+
+      @each $inside-not-simple-selector
+        in selector.simple-selectors($inside-not)
+      {
+        @if $inside-not-result == null {
+          // Skip the first simple selector, which has already been negated by
+          // removing :not() when parsing $inside-not.
+          $inside-not-result: selector.parse($inside-not-simple-selector);
+        } @else {
+          // Flatten nested :not()s ".foo:not(.bar:not(.baz))" (IE11 support)
+          @if string.index($inside-not-simple-selector, ':not(') == 1 {
+            $inside-not-result: list.join(
+              $inside-not-result,
+              _negate($inside-not-simple-selector)
+            );
+          } @else {
+            $inside-not-result: selector.append(
+              $inside-not-result,
+              $inside-not-simple-selector
+            );
+          }
+        }
+      }
+
+      $result: if(
+        $result,
+        list.join($result, $inside-not-result),
+        $inside-not-result
+      );
+    } @else {
+      $to-append: string.unquote(':not(#{$simple-selector})');
+      $result: if($result, selector.append($result, $to-append), $to-append);
+    }
+  }
+
+  @return $result;
+}
+
 /// Identical to `selector.append()`, but adheres strictly to CSS compound
 /// selector order.
 ///
