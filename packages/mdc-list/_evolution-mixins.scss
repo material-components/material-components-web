@@ -22,7 +22,7 @@
   @include with-ripple($query);
 }
 
-@mixin without-ripple($query: feature-targeting.all()) {
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
@@ -541,6 +541,10 @@
       }
     }
   }
+}
+
+@mixin without-ripple($query: feature-targeting.all()) {
+  @include static-styles($query: $query);
 }
 
 @mixin with-ripple($query: feature-targeting.all()) {
