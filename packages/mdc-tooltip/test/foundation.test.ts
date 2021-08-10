@@ -346,6 +346,7 @@ describe('MDCTooltipFoundation', () => {
       'getTooltipCaretBoundingRect',
       'setTooltipCaretStyle',
       'clearTooltipCaretStyles',
+      'getActiveElement',
     ]);
   });
 
@@ -727,9 +728,7 @@ describe('MDCTooltipFoundation', () => {
      () => {
        const {foundation, mockAdapter} =
            setUpFoundationTest(MDCTooltipFoundation);
-       if (document.activeElement instanceof HTMLElement) {
-         document.activeElement.blur();
-       }
+       mockAdapter.getActiveElement.and.returnValue(null);
 
        foundation.handleKeydown(
            {type: 'keydown', key: 'Escape'} as KeyboardEvent);
@@ -754,12 +753,16 @@ describe('MDCTooltipFoundation', () => {
      () => {
        const {foundation, mockAdapter} =
            setUpFoundationTest(MDCTooltipFoundation);
+       const activeElement = document.createElement('div');
+       mockAdapter.getActiveElement.and.returnValue(activeElement);
        mockAdapter.tooltipContainsElement.and.returnValue(true);
 
        document.body.focus();
        foundation.handleKeydown(
            {type: 'keydown', key: 'Escape'} as KeyboardEvent);
 
+       expect(mockAdapter.tooltipContainsElement)
+           .toHaveBeenCalledWith(activeElement);
        expect(mockAdapter.focusAnchorElement).toHaveBeenCalled();
      });
 

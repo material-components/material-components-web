@@ -205,4 +205,9 @@ export interface MDCTooltipAdapter {
    * Clears all inline styles set on the caret-top and caret-bottom elements.
    */
   clearTooltipCaretStyles(): void;
+
+  /**
+   * @return the active element of the document that owns the tooltip.
+   */
+  getActiveElement(): Element|null;
 }

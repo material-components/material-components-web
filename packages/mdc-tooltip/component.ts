@@ -301,6 +301,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
         topCaret.removeAttribute('style');
         bottomCaret.removeAttribute('style');
       },
+      getActiveElement: () => {
+        return document.activeElement;
+      },
     };
 
     //tslint:enable:object-literal-sort-keys
