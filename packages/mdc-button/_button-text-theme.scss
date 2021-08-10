@@ -64,6 +64,10 @@ $light-theme: (
 /// @param {Map} $theme - Theme configuration to use.
 @mixin theme($theme, $resolver: resolvers.$material) {
   @include theme.validate-keys($light-theme, $theme);
+  $theme: button-shared-theme.resolve-theme-elevation-keys(
+    $theme,
+    $resolver: $resolver
+  );
   @include keys.declare-custom-properties($theme, $_custom-property-prefix);
 }
 

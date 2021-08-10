@@ -173,6 +173,36 @@ $disabled-container-color: rgba(
   );
 }
 
+@function resolve-theme-elevation-keys($theme, $resolver) {
+  $elevation-resolver: map.get($resolver, elevation);
+  $shadow-color: map.get($theme, container-shadow-color);
+  @if $elevation-resolver == null or $shadow-color == null {
+    @return $theme;
+  }
+
+  $elevation-keys: (
+    container-elevation,
+    hover-container-elevation,
+    focus-container-elevation,
+    pressed-container-elevation,
+    disabled-container-elevation
+  );
+
+  @each $key in $elevation-keys {
+    $elevation: map.get($theme, $key);
+    @if $elevation != null {
+      $resolved-value: meta.call(
+        $resolver,
+        $elevation: $elevation,
+        $shadow-color: $shadow-color
+      );
+      // Update the key with the resolved value.
+      $theme: map.set($theme, $key, $resolved-value);
+    }
+  }
+  @return $theme;
+}
+
 ///
 /// Sets ripple color for button.
 ///
