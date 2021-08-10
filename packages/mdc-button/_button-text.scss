@@ -41,5 +41,11 @@
 }
 
 @mixin static-styles($query: feature-targeting.all()) {
-  // Intentionally left blank for future-proofing.
+  .mdc-button {
+    // TODO(b/179402677): move this into theme config
+    @include button-shared-theme.horizontal-padding(
+      button-shared-theme.$horizontal-padding,
+      $query: $query
+    );
+  }
 }

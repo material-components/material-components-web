@@ -159,7 +159,7 @@ $light-theme: (
 
   .mdc-banner__primary-action,
   .mdc-banner__secondary-action {
-    @include button-text-theme.theme(
+    @include button-text-theme.theme-styles(
       (
         focus-label-text-color: map.get($theme, action-focus-state-layer-color),
         focus-state-layer-color: map.get($theme, action-focus-state-layer-color),

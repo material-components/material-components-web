@@ -48,6 +48,12 @@
 @mixin static-styles($query: feature-targeting.all()) {
   .mdc-button--raised {
     @include _raised-transition($query);
+    // TODO(b/179402677): move into theme config
+    @include button-shared-theme.horizontal-padding(
+      $padding: button-shared-theme.$contained-horizontal-padding,
+      $padding-icon: button-shared-theme.$contained-horizontal-padding-icon,
+      $query: $query
+    );
   }
 }
 

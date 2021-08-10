@@ -46,12 +46,25 @@
 }
 
 @mixin static-styles($query: feature-targeting.all()) {
-  // Intentionally left blank for future-proofing.
+  .mdc-button--unelevated {
+    // TODO(b/179402677): move into theme config
+    @include button-shared-theme.horizontal-padding(
+      $padding: button-shared-theme.$contained-horizontal-padding,
+      $padding-icon: button-shared-theme.$contained-horizontal-padding-icon,
+      $query: $query
+    );
+  }
 }
 
 // Legacy mixins
 
 @mixin filled($query: feature-targeting.all()) {
+  // TODO(b/179402677): move into theme config
+  @include button-shared-theme.horizontal-padding(
+    $padding: button-shared-theme.$contained-horizontal-padding,
+    $padding-icon: button-shared-theme.$contained-horizontal-padding-icon,
+    $query: $query
+  );
   @include button-filled-theme.theme-styles(
     button-filled-theme.$light-theme,
     $query: $query

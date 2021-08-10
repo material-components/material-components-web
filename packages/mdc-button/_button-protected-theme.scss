@@ -66,13 +66,9 @@ $light-theme: (
 /// Sets theme based on provided theme configuration.
 /// Only emits theme related styles.
 /// @param {Map} $theme - Theme configuration to use.
-@mixin theme(
-  $theme,
-  $resolver: resolvers.$material,
-  $query: feature-targeting.all()
-) {
+@mixin theme($theme, $resolver: resolvers.$material) {
   @include theme.validate-keys($light-theme, $theme);
-  @include button-shared-theme.theme($theme, $resolver, $query: $query);
+  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
 }
 
 @mixin theme-styles(
@@ -86,15 +82,5 @@ $light-theme: (
     $theme,
     $prefix: $_custom-property-prefix
   );
-  @include _unmapped-theme-styles($query);
   @include button-shared-theme.theme($theme, $resolver, $query: $query);
-}
-
-@mixin _unmapped-theme-styles($query) {
-  // TODO(b/179402677): move into theme config.
-  @include button-shared-theme.horizontal-padding(
-    $padding: button-shared-theme.$contained-horizontal-padding,
-    $padding-icon: button-shared-theme.$contained-horizontal-padding-icon,
-    $query: $query
-  );
 }
