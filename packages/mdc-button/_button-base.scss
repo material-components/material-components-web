@@ -29,13 +29,11 @@
 @use '@material/rtl/rtl';
 @use '@material/touch-target/touch-target';
 @use '@material/typography/typography';
-@use './button-ripple';
 @use './button-shared-theme';
 
 @mixin static-styles($query: feature-targeting.all()) {
   @include _static-styles-base($query: $query);
   @include _typography-styles($query: $query);
-  @include button-ripple.static-styles($query: $query);
 }
 
 @mixin _static-styles-base($query: feature-targeting.all()) {

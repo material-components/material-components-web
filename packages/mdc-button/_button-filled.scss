@@ -27,6 +27,7 @@
 @use '@material/tokens/resolvers';
 @use './button-base';
 @use './button-filled-theme';
+@use './button-ripple';
 @use './button-shared-theme';
 
 @mixin styles(
@@ -46,6 +47,11 @@
 }
 
 @mixin static-styles($query: feature-targeting.all()) {
+  @include static-styles-without-ripple($query: $query);
+  @include button-ripple.static-styles($query: $query);
+}
+
+@mixin static-styles-without-ripple($query: feature-targeting.all()) {
   .mdc-button--unelevated {
     // TODO(b/179402677): move into theme config
     @include button-shared-theme.horizontal-padding(

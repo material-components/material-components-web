@@ -43,6 +43,11 @@
 }
 
 @mixin static-styles($query: feature-targeting.all()) {
+  @include static-styles-without-ripple($query: $query);
+  @include button-ripple.static-styles($query: $query);
+}
+
+@mixin static-styles-without-ripple($query: feature-targeting.all()) {
   .mdc-button--outlined {
     @include _static-styles($query: $query);
   }
