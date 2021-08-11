@@ -60,6 +60,10 @@
         variables.$ink-color,
         $query
       );
+    }
+
+    .mdc-deprecated-list,
+    .mdc-list {
       @include elevation-mixins.overlay-surface-position($query: $query);
       @include elevation-mixins.overlay-dimensions(100%, $query: $query);
     }
