@@ -11,6 +11,14 @@ path: /catalog/input-controls/select-menus/
 MDC Select provides Material Design single-option select menus, using the MDC menu.
 The Select component is fully accessible, and supports RTL rendering.
 
+## Important Changes
+
+Select is currently being updated to use the new List implementation. For now,
+please continue to use the old implementation (`mdc-deprecated-list` and
+associated DOM/classes) instead of the new one (`mdc-list`).
+
+See the [List documentation](../mdc-list/README.md) for more information.
+
 ## Design & API Documentation
 
 <ul class="icon-list">
@@ -78,25 +86,25 @@ The following example applies ARIA attributes that provide the semantic structur
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
-    <ul class="mdc-list" role="listbox" aria-label="Food picker listbox">
-      <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="" role="option">
-        <span class="mdc-list-item__ripple"></span>
+    <ul class="mdc-deprecated-list" role="listbox" aria-label="Food picker listbox">
+      <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" aria-selected="true" data-value="" role="option">
+        <span class="mdc-deprecated-list-item__ripple"></span>
       </li>
-      <li class="mdc-list-item" aria-selected="false" data-value="grains" role="option">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">
+      <li class="mdc-deprecated-list-item" aria-selected="false" data-value="grains" role="option">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">
           Bread, Cereal, Rice, and Pasta
         </span>
       </li>
-      <li class="mdc-list-item mdc-list-item--disabled" aria-selected="false" data-value="vegetables" aria-disabled="true" role="option">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">
+      <li class="mdc-deprecated-list-item mdc-deprecated-list-item--disabled" aria-selected="false" data-value="vegetables" aria-disabled="true" role="option">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">
           Vegetables
         </span>
       </li>
-      <li class="mdc-list-item" aria-selected="false" data-value="fruit" role="option">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">
+      <li class="mdc-deprecated-list-item" aria-selected="false" data-value="fruit" role="option">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">
           Fruit
         </span>
       </li>
@@ -214,7 +222,7 @@ value with that of the hidden input.
 
 #### Select with pre-selected option
 
-To indicate a select component that has a pre-selected value, use the `mdc-list-item--selected` class
+To indicate a select component that has a pre-selected value, use the `mdc-deprecated-list-item--selected` class
 to set the selected item. The select also needs the text from the selected element copied to the
 `mdc-select__selected-text` element.
 
@@ -248,21 +256,21 @@ to set the selected item. The select also needs the text from the selected eleme
   </div>
 
   <div class="mdc-select__menu demo-width-class mdc-menu mdc-menu-surface">
-    <ul class="mdc-list">
-      <li class="mdc-list-item" data-value="">
-        <span class="mdc-list-item__ripple"></span>
+    <ul class="mdc-deprecated-list">
+      <li class="mdc-deprecated-list-item" data-value="">
+        <span class="mdc-deprecated-list-item__ripple"></span>
       </li>
-      <li class="mdc-list-item" data-value="grains">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+      <li class="mdc-deprecated-list-item" data-value="grains">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">Bread, Cereal, Rice, and Pasta</span>
       </li>
-      <li class="mdc-list-item mdc-list-item--selected" data-value="vegetables" aria-selected="true">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">Vegetables</span>
+      <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" data-value="vegetables" aria-selected="true">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">Vegetables</span>
       </li>
-      <li class="mdc-list-item" data-value="fruit">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">Fruit</span>
+      <li class="mdc-deprecated-list-item" data-value="fruit">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">Fruit</span>
       </li>
     </ul>
   </div>
@@ -272,11 +280,11 @@ to set the selected item. The select also needs the text from the selected eleme
 #### Using the floating label as the placeholder
 
 Leave the `mdc-select__selected-text` element empty and don't specify an element as selected.
-If leaving the field empty should be a valid option, include an `mdc-list-item` element at the beginning of
+If leaving the field empty should be a valid option, include an `mdc-deprecated-list-item` element at the beginning of
 the list with an empty `data-value` attribute.
 
 ```html
-<li class="mdc-list-item mdc-list-item--selected" aria-selected="true" role="option" data-value=""></li>
+<li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" aria-selected="true" role="option" data-value=""></li>
 ```
 
 #### Required select
@@ -366,7 +374,7 @@ be `"true"`, and set the disabled attribute any hidden input element.
 
 #### Disabled options
 
-Add the `mdc-list-item--disabled` class to list items that are disabled.
+Add the `mdc-deprecated-list-item--disabled` class to list items that are disabled.
 Disabled list items are removed from the list items index and are ignored entirely. You cannot
 programmatically select a disabled list item.
 
@@ -377,21 +385,21 @@ programmatically select a disabled list item.
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-    <ul class="mdc-list">
-      <li class="mdc-list-item" data-value="">
-        <span class="mdc-list-item__ripple"></span>
+    <ul class="mdc-deprecated-list">
+      <li class="mdc-deprecated-list-item" data-value="">
+        <span class="mdc-deprecated-list-item__ripple"></span>
       </li>
-      <li class="mdc-list-item" data-value="grains">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+      <li class="mdc-deprecated-list-item" data-value="grains">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">Bread, Cereal, Rice, and Pasta</span>
       </li>
-      <li class="mdc-list-item mdc-list-item--selected mdc-list-item--disabled" data-value="vegetables">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">Vegetables</span>
+      <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected mdc-deprecated-list-item--disabled" data-value="vegetables">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">Vegetables</span>
       </li>
-      <li class="mdc-list-item" data-value="fruit">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">Fruit</span>
+      <li class="mdc-deprecated-list-item" data-value="fruit">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">Fruit</span>
       </li>
     </ul>
   </div>
@@ -446,21 +454,21 @@ structure.
   </div>
 
   <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
-    <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true">
-        <span class="mdc-list-item__ripple"></span>
+    <ul class="mdc-deprecated-list">
+      <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" data-value="" aria-selected="true">
+        <span class="mdc-deprecated-list-item__ripple"></span>
       </li>
-      <li class="mdc-list-item" data-value="grains">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+      <li class="mdc-deprecated-list-item" data-value="grains">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">Bread, Cereal, Rice, and Pasta</span>
       </li>
-      <li class="mdc-list-item" data-value="vegetables">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">Vegetables</span>
+      <li class="mdc-deprecated-list-item" data-value="vegetables">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">Vegetables</span>
       </li>
-      <li class="mdc-list-item" data-value="fruit">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__text">Fruit</span>
+      <li class="mdc-deprecated-list-item" data-value="fruit">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__text">Fruit</span>
       </li>
     </ul>
   </div>

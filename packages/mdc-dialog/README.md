@@ -60,7 +60,7 @@ For example, to instantiate an MDC List inside of a simple or confirmation dialo
 
 ```js
 import {MDCList} from '@material/list';
-const list = new MDCList(document.querySelector('.mdc-dialog .mdc-list'));
+const list = new MDCList(document.querySelector('.mdc-dialog .mdc-deprecated-list'));
 
 dialog.listen('MDCDialog:opened', () => {
   list.layout();
@@ -150,12 +150,12 @@ As simple dialogs are interruptive, they should be used sparingly. Alternatively
      -->Choose a Ringtone<!--
    --></h2>
       <div class="mdc-dialog__content" id="my-dialog-content">
-        <ul class="mdc-list mdc-list--avatar-list">
-          <li class="mdc-list-item" tabindex="0" data-mdc-dialog-action="none">
-            <span class="mdc-list-item__text">None</span>
+        <ul class="mdc-deprecated-list mdc-deprecated-list--avatar-list">
+          <li class="mdc-deprecated-list-item" tabindex="0" data-mdc-dialog-action="none">
+            <span class="mdc-deprecated-list-item__text">None</span>
           </li>
-          <li class="mdc-list-item" data-mdc-dialog-action="callisto">
-            <span class="mdc-list-item__text">Callisto</span>
+          <li class="mdc-deprecated-list-item" data-mdc-dialog-action="callisto">
+            <span class="mdc-deprecated-list-item__text">Callisto</span>
           </li>
           <!-- ... -->
         </ul>
@@ -166,7 +166,7 @@ As simple dialogs are interruptive, they should be used sparingly. Alternatively
 </div>
 ```
 
-**Note: Note the inclusion of the `mdc-list--avatar-list` class, which aligns with the Simple Dialog spec.**
+**Note: Note the inclusion of the `mdc-deprecated-list--avatar-list` class, which aligns with the Simple Dialog spec.**
 
 ## Confirmation dialog
 
@@ -191,9 +191,9 @@ If the user confirms a choice, it’s carried out. Otherwise, the user can dismi
      -->Choose a Ringtone<!--
    --></h2>
       <div class="mdc-dialog__content" id="my-dialog-content">
-        <ul class="mdc-list">
-          <li class="mdc-list-item" tabindex="0">
-            <span class="mdc-list-item__graphic">
+        <ul class="mdc-deprecated-list">
+          <li class="mdc-deprecated-list-item" tabindex="0">
+            <span class="mdc-deprecated-list-item__graphic">
               <div class="mdc-radio">
                 <input class="mdc-radio__native-control"
                        type="radio"
@@ -208,7 +208,7 @@ If the user confirms a choice, it’s carried out. Otherwise, the user can dismi
             </span>
             <label id="test-dialog-baseline-confirmation-radio-1-label"
                    for="test-dialog-baseline-confirmation-radio-1"
-                   class="mdc-list-item__text">None</label>
+                   class="mdc-deprecated-list-item__text">None</label>
           </li>
           <!-- ... -->
         </ul>
