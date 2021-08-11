@@ -18,6 +18,22 @@ There are three list types:
 
 ![Composite image of the three list types](images/lists-types.png)
 
+## List is being updated
+
+List is currently being updated to better match the Material spec. As a result,
+there are two versions of List available: the deprecated old version
+(documented below) and the new, future-proof version (documented [here](https://github.com/material-components/material-components-web/files/6955906/New.List.Public.Documentation.PUBLIC.DRAFT.pdf)).
+
+Components that require a List (e.g., Menu, Select, Navigation Drawer) still use
+the deprecated version. Otherwise, we encourage you to use the new version in
+your projects.
+
+Note that both new and old versions share the same JavaScript component and 
+imports. *However, there are differences in class names and DOM structure:* the
+old version uses class names with a `mdc-deprecated-list` prefix (e.g.,
+`mdc-deprecated-list-item`) whereas the new version uses the typical `mdc-list`
+prefix (e.g., `mdc-list-item`).
+
 ## Using lists
 
 ### Installation
@@ -31,7 +47,7 @@ npm install @material/list
 ```scss
 @use "@material/list";
 
-@include list.core-styles;
+@include list.deprecated-core-styles;
 ```
 
 ### JavaScript
@@ -41,7 +57,7 @@ MDC List includes an optional JavaScript component which can be used for keyboar
 ```js
 import {MDCList} from '@material/list';
 
-const list = new MDCList(document.querySelector('.mdc-list'));
+const list = new MDCList(document.querySelector('.mdc-deprecated-list'));
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
@@ -98,18 +114,18 @@ Single-line list items contain a maximum of one line of text.
 ### Single-line list example
 
 ```html
-<ul class="mdc-list">
-  <li class="mdc-list-item" tabindex="0">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+<ul class="mdc-deprecated-list">
+  <li class="mdc-deprecated-list-item" tabindex="0">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
 </ul>
 ```
@@ -120,30 +136,30 @@ Two-line list items contain a maximum of two lines of text.
 
 ### Two-line list example
 
-Use the `mdc-list--two-line` combined with some extra markup around the
+Use the `mdc-deprecated-list--two-line` combined with some extra markup around the
 text to style a two-line list.
 
 ```html
-<ul class="mdc-list mdc-list--two-line">
-  <li class="mdc-list-item" tabindex="0">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">
-      <span class="mdc-list-item__primary-text">Two-line item</span>
-      <span class="mdc-list-item__secondary-text">Secondary text</span>
+<ul class="mdc-deprecated-list mdc-deprecated-list--two-line">
+  <li class="mdc-deprecated-list-item" tabindex="0">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">
+      <span class="mdc-deprecated-list-item__primary-text">Two-line item</span>
+      <span class="mdc-deprecated-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">
-      <span class="mdc-list-item__primary-text">Two-line item</span>
-      <span class="mdc-list-item__secondary-text">Secondary text</span>
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">
+      <span class="mdc-deprecated-list-item__primary-text">Two-line item</span>
+      <span class="mdc-deprecated-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">
-      <span class="mdc-list-item__primary-text">Two-line item</span>
-      <span class="mdc-list-item__secondary-text">Secondary text</span>
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">
+      <span class="mdc-deprecated-list-item__primary-text">Two-line item</span>
+      <span class="mdc-deprecated-list-item__secondary-text">Secondary text</span>
     </span>
   </li>
 </ul>
@@ -161,38 +177,38 @@ MDC Web does not currently support three-line lists.
 
 ### List Groups
 
-Multiple related lists can be grouped together using the `mdc-list-group` class on a containing element.
+Multiple related lists can be grouped together using the `mdc-deprecated-list-group` class on a containing element.
 
 ```html
-<div class="mdc-list-group">
-  <h3 class="mdc-list-group__subheader">List 1</h3>
-  <ul class="mdc-list">
-    <li class="mdc-list-item" tabindex="0">
-      <span class="mdc-list-item__ripple"></span>
-      <span class="mdc-list-item__text">line item</span>
+<div class="mdc-deprecated-list-group">
+  <h3 class="mdc-deprecated-list-group__subheader">List 1</h3>
+  <ul class="mdc-deprecated-list">
+    <li class="mdc-deprecated-list-item" tabindex="0">
+      <span class="mdc-deprecated-list-item__ripple"></span>
+      <span class="mdc-deprecated-list-item__text">line item</span>
     </li>
-    <li class="mdc-list-item">
-      <span class="mdc-list-item__ripple"></span>
-      <span class="mdc-list-item__text">line item</span>
+    <li class="mdc-deprecated-list-item">
+      <span class="mdc-deprecated-list-item__ripple"></span>
+      <span class="mdc-deprecated-list-item__text">line item</span>
     </li>
-    <li class="mdc-list-item">
-      <span class="mdc-list-item__ripple"></span>
-      <span class="mdc-list-item__text">line item</span>
+    <li class="mdc-deprecated-list-item">
+      <span class="mdc-deprecated-list-item__ripple"></span>
+      <span class="mdc-deprecated-list-item__text">line item</span>
     </li>
   </ul>
-  <h3 class="mdc-list-group__subheader">List 2</h3>
-  <ul class="mdc-list">
-    <li class="mdc-list-item">
-      <span class="mdc-list-item__ripple"></span>
-      <span class="mdc-list-item__text">line item</span>
+  <h3 class="mdc-deprecated-list-group__subheader">List 2</h3>
+  <ul class="mdc-deprecated-list">
+    <li class="mdc-deprecated-list-item">
+      <span class="mdc-deprecated-list-item__ripple"></span>
+      <span class="mdc-deprecated-list-item__text">line item</span>
     </li>
-    <li class="mdc-list-item">
-      <span class="mdc-list-item__ripple"></span>
-      <span class="mdc-list-item__text">line item</span>
+    <li class="mdc-deprecated-list-item">
+      <span class="mdc-deprecated-list-item__ripple"></span>
+      <span class="mdc-deprecated-list-item__text">line item</span>
     </li>
-    <li class="mdc-list-item">
-      <span class="mdc-list-item__ripple"></span>
-      <span class="mdc-list-item__text">line item</span>
+    <li class="mdc-deprecated-list-item">
+      <span class="mdc-deprecated-list-item__ripple"></span>
+      <span class="mdc-deprecated-list-item__text">line item</span>
     </li>
   </ul>
 </div>
@@ -200,26 +216,26 @@ Multiple related lists can be grouped together using the `mdc-list-group` class 
 
 ### List Dividers
 
-MDC List contains an `mdc-list-divider` class which can be used as full-width or inset subdivisions either within lists themselves, or standalone between related groups of content.
+MDC List contains an `mdc-deprecated-list-divider` class which can be used as full-width or inset subdivisions either within lists themselves, or standalone between related groups of content.
 
 ```html
-<ul class="mdc-list">
-  <li class="mdc-list-item" tabindex="0">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Item 1 - Division 1</span>
+<ul class="mdc-deprecated-list">
+  <li class="mdc-deprecated-list-item" tabindex="0">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Item 1 - Division 1</span>
   </li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Item 2 - Division 1</span>
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Item 2 - Division 1</span>
   </li>
-  <li role="separator" class="mdc-list-divider"></li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Item 1 - Division 2</span>
+  <li role="separator" class="mdc-deprecated-list-divider"></li>
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Item 1 - Division 2</span>
   </li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Item 2 - Division 2</span>
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Item 2 - Division 2</span>
   </li>
 </ul>
 ```
@@ -229,21 +245,21 @@ MDC List contains an `mdc-list-divider` class which can be used as full-width or
 OR
 
 ```html
-<ul class="mdc-list">
-  <li class="mdc-list-item" tabindex="0">
-    <span class="mdc-list-item__text">Item 1 - List 1</span>
+<ul class="mdc-deprecated-list">
+  <li class="mdc-deprecated-list-item" tabindex="0">
+    <span class="mdc-deprecated-list-item__text">Item 1 - List 1</span>
   </li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__text">Item 2 - List 1</span>
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__text">Item 2 - List 1</span>
   </li>
 </ul>
-<hr class="mdc-list-divider">
-<ul class="mdc-list">
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__text">Item 1 - List 2</span>
+<hr class="mdc-deprecated-list-divider">
+<ul class="mdc-deprecated-list">
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__text">Item 1 - List 2</span>
   </li>
-  <li class="mdc-list-item">
-    <span class="mdc-list-item__text">Item 2 - List 2</span>
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__text">Item 2 - List 2</span>
   </li>
 </ul>
 ```
@@ -254,18 +270,18 @@ MDC List can handle selecting/deselecting list elements based on click or keyboa
 single list item to become selected and any other previously selected element to become deselected.
 
 ```html
-<ul id="my-list" class="mdc-list" role="listbox">
-  <li class="mdc-list-item" role="option" tabindex="0">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+<ul id="my-list" class="mdc-deprecated-list" role="listbox">
+  <li class="mdc-deprecated-list-item" role="option" tabindex="0">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item" role="option">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+  <li class="mdc-deprecated-list-item" role="option">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item" role="option">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+  <li class="mdc-deprecated-list-item" role="option">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
 </ul>
 ```
@@ -278,19 +294,19 @@ list.singleSelection = true;
 #### Pre-selected list item
 
 When rendering the list with a pre-selected list item, the list item that needs to be selected should contain
-the `mdc-list-item--selected` or `mdc-list-item--activated` class before creating the list. Please see
+the `mdc-deprecated-list-item--selected` or `mdc-deprecated-list-item--activated` class before creating the list. Please see
 [Accessibility](#Accessibility) section for appropriate aria attributes.
 
 ```html
-<ul id="my-list" class="mdc-list" role="listbox">
-  <li class="mdc-list-item" role="option" aria-selected="false">
-    <span class="mdc-list-item__text">Single-line item</span>
+<ul id="my-list" class="mdc-deprecated-list" role="listbox">
+  <li class="mdc-deprecated-list-item" role="option" aria-selected="false">
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item mdc-list-item--selected" role="option" aria-selected="true" tabindex="0">
-    <span class="mdc-list-item__text">Single-line item</span>
+  <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" role="option" aria-selected="true" tabindex="0">
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item" role="option" aria-selected="false">
-    <span class="mdc-list-item__text">Single-line item</span>
+  <li class="mdc-deprecated-list-item" role="option" aria-selected="false">
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
 </ul>
 ```
@@ -305,10 +321,10 @@ list.singleSelection = true;
 When rendering list radio group with pre-selected radio button the selected list item should contain `aria-checked` set to `true` and the native radio input element contains `checked` attribute, all other list items should have `aria-checked` set to `false`. The list root contains `role="radiogroup"` whereas each list item within radio group contains `role="radio"`.
 
 ```html
-<ul class="mdc-list" role="radiogroup">
-  <li class="mdc-list-item" role="radio" aria-checked="false">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__graphic">
+<ul class="mdc-deprecated-list" role="radiogroup">
+  <li class="mdc-deprecated-list-item" role="radio" aria-checked="false">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
               type="radio"
@@ -321,11 +337,11 @@ When rendering list radio group with pre-selected radio button the selected list
         </div>
       </div>
     </span>
-    <label class="mdc-list-item__text" for="demo-list-radio-item-1">Option 1</label>
+    <label class="mdc-deprecated-list-item__text" for="demo-list-radio-item-1">Option 1</label>
   </li>
-  <li class="mdc-list-item" role="radio" aria-checked="true" tabindex="0">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__graphic">
+  <li class="mdc-deprecated-list-item" role="radio" aria-checked="true" tabindex="0">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
               type="radio"
@@ -339,11 +355,11 @@ When rendering list radio group with pre-selected radio button the selected list
         </div>
       </div>
     </span>
-    <label class="mdc-list-item__text" for="demo-list-radio-item-2">Option 2</label>
+    <label class="mdc-deprecated-list-item__text" for="demo-list-radio-item-2">Option 2</label>
   </li>
-  <li class="mdc-list-item" role="radio" aria-checked="false">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__graphic">
+  <li class="mdc-deprecated-list-item" role="radio" aria-checked="false">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
               type="radio"
@@ -356,7 +372,7 @@ When rendering list radio group with pre-selected radio button the selected list
         </div>
       </div>
     </span>
-    <label class="mdc-list-item__text" for="demo-list-radio-item-3">Option 3</label>
+    <label class="mdc-deprecated-list-item__text" for="demo-list-radio-item-3">Option 3</label>
   </li>
 </ul>
 ```
@@ -366,10 +382,10 @@ When rendering list radio group with pre-selected radio button the selected list
 When rendering list with checkbox items all pre-selected list items should contain `aria-checked` set to `true` and the native checkbox input element should contain `checked` attribute, all other list items should have `aria-checked` set to `false`. Each list item in checkbox list contains `role="checkbox"` attribute and the list root should contain `role="group"` and `aria-label` attributes.
 
 ```html
-<ul class="mdc-list" role="group" aria-label="List with checkbox items">
-  <li class="mdc-list-item" role="checkbox" aria-checked="false">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__graphic">
+<ul class="mdc-deprecated-list" role="group" aria-label="List with checkbox items">
+  <li class="mdc-deprecated-list-item" role="checkbox" aria-checked="false">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__graphic">
       <div class="mdc-checkbox">
         <input type="checkbox"
                 class="mdc-checkbox__native-control"
@@ -385,11 +401,11 @@ When rendering list with checkbox items all pre-selected list items should conta
         </div>
       </div>
     </span>
-    <label class="mdc-list-item__text" for="demo-list-checkbox-item-1">Option 1</label>
+    <label class="mdc-deprecated-list-item__text" for="demo-list-checkbox-item-1">Option 1</label>
   </li>
-  <li class="mdc-list-item" role="checkbox" aria-checked="true" tabindex="0">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__graphic">
+  <li class="mdc-deprecated-list-item" role="checkbox" aria-checked="true" tabindex="0">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__graphic">
         <div class="mdc-checkbox">
             <input type="checkbox"
                     class="mdc-checkbox__native-control"
@@ -406,11 +422,11 @@ When rendering list with checkbox items all pre-selected list items should conta
             </div>
           </div>
     </span>
-    <label class="mdc-list-item__text" for="demo-list-checkbox-item-2">Option 2</label>
+    <label class="mdc-deprecated-list-item__text" for="demo-list-checkbox-item-2">Option 2</label>
   </li>
-  <li class="mdc-list-item" role="checkbox" aria-checked="false">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__graphic">
+  <li class="mdc-deprecated-list-item" role="checkbox" aria-checked="false">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__graphic">
         <div class="mdc-checkbox">
             <input type="checkbox"
                     class="mdc-checkbox__native-control"
@@ -426,7 +442,7 @@ When rendering list with checkbox items all pre-selected list items should conta
             </div>
           </div>
     </span>
-    <label class="mdc-list-item__text" for="demo-list-checkbox-item-3">Option 3</label>
+    <label class="mdc-deprecated-list-item__text" for="demo-list-checkbox-item-3">Option 3</label>
   </li>
 </ul>
 ```
@@ -439,81 +455,81 @@ The `selectedIndex` (that proxies foundation's `setSelectedState()`) accepts lis
 
 CSS Class | Description
 --- | ---
-`mdc-list` | Mandatory, for the list element.
-`mdc-list--dense` | Optional, styles the density of the list, making it appear more compact.
-`mdc-list--textual-list` | Optional, configures lists that start with text
+`mdc-deprecated-list` | Mandatory, for the list element.
+`mdc-deprecated-list--dense` | Optional, styles the density of the list, making it appear more compact.
+`mdc-deprecated-list--textual-list` | Optional, configures lists that start with text
 (e.g., do not have a leading tile).
-`mdc-list--avatar-list` | Optional, configures the leading tile of each row to 
+`mdc-deprecated-list--avatar-list` | Optional, configures the leading tile of each row to 
 display avatars.
-`mdc-list--icon-list` | Optional, configures the leading tile of each row to 
+`mdc-deprecated-list--icon-list` | Optional, configures the leading tile of each row to 
 display icons.
-`mdc-list--image-list` | Optional, configures the leading tile of each row to 
+`mdc-deprecated-list--image-list` | Optional, configures the leading tile of each row to 
 display images.
-`mdc-list--thumbnail-list` | Optional, configures the leading tile of each row to
+`mdc-deprecated-list--thumbnail-list` | Optional, configures the leading tile of each row to
 display smaller images (this is analogous to an avatar list but the image will
 not be rounded).
-`mdc-list--video-list` | Optional, configures the leading tile of each row to 
+`mdc-deprecated-list--video-list` | Optional, configures the leading tile of each row to 
 display videos.
-`mdc-list--two-line` | Optional, modifier to style list with two lines (primary and secondary lines).
-`mdc-list-item` | Mandatory, for the list item element.
-`mdc-list-item__text` |	Mandatory. Wrapper for list item text content (displayed as middle column of the list item).
-`mdc-list-item__primary-text` | Optional, primary text for the list item. Should be the child of `mdc-list-item__text`.
-`mdc-list-item__secondary-text` | Optional, secondary text for the list item. Displayed below the primary text. Should be the child of `mdc-list-item__text`.
-`mdc-list-item--disabled` | Optional, styles the row in the disabled state.
-`mdc-list-item--selected` | Optional, styles the row in the selected* state.
-`mdc-list-item--activated` | Optional, styles the row in the activated* state.
-`mdc-list-item__graphic` | Optional, the first tile in the row (in LTR
+`mdc-deprecated-list--two-line` | Optional, modifier to style list with two lines (primary and secondary lines).
+`mdc-deprecated-list-item` | Mandatory, for the list item element.
+`mdc-deprecated-list-item__text` |	Mandatory. Wrapper for list item text content (displayed as middle column of the list item).
+`mdc-deprecated-list-item__primary-text` | Optional, primary text for the list item. Should be the child of `mdc-deprecated-list-item__text`.
+`mdc-deprecated-list-item__secondary-text` | Optional, secondary text for the list item. Displayed below the primary text. Should be the child of `mdc-deprecated-list-item__text`.
+`mdc-deprecated-list-item--disabled` | Optional, styles the row in the disabled state.
+`mdc-deprecated-list-item--selected` | Optional, styles the row in the selected* state.
+`mdc-deprecated-list-item--activated` | Optional, styles the row in the activated* state.
+`mdc-deprecated-list-item__graphic` | Optional, the first tile in the row (in LTR
 languages, the first column of the list item). Defaults to an icon, but renders
 as an avatar in an avatar list, or an image or video in the corresponding list.
-`mdc-list-item__meta`	| Optional, the last tile in the row (in LTR languages, 
+`mdc-deprecated-list-item__meta`	| Optional, the last tile in the row (in LTR languages, 
 the last column of the list item). Typically small text, icon, or image.
-`mdc-list-group` | Optional, wrapper around two or more mdc-list elements to be grouped together.
-`mdc-list-group__subheader` |	Optional, heading text displayed above each list in a group.
-`mdc-list-divider` | Optional, for list divider element.
-`mdc-list-divider--padded` | Optional, leaves gaps on each side of divider to
+`mdc-deprecated-list-group` | Optional, wrapper around two or more mdc-deprecated-list elements to be grouped together.
+`mdc-deprecated-list-group__subheader` |	Optional, heading text displayed above each list in a group.
+`mdc-deprecated-list-divider` | Optional, for list divider element.
+`mdc-deprecated-list-divider--padded` | Optional, leaves gaps on each side of divider to
 match padding of `list-item__meta`. Deprecated: use the more flexible "inset-" 
 classes, instead.
-`mdc-list-divider--inset` | Optional, increases the leading and trailing margins
+`mdc-deprecated-list-divider--inset` | Optional, increases the leading and trailing margins
 of the divider so that it doesn't intersect with an avatar. Deprecated: use the
 more flexible "inset-" classes instead.
-`mdc-list-divider--inset-leading` | Optional, increases the leading margin of
+`mdc-deprecated-list-divider--inset-leading` | Optional, increases the leading margin of
 the divider so that it does not intersect the graphics column.
-`mdc-list-divider--inset-trailing` | Optional, increases the trailing margin of
+`mdc-deprecated-list-divider--inset-trailing` | Optional, increases the trailing margin of
 the divider so that it coincides with the item's padding.
-`mdc-list-divider--inset-padding` | Optional, alters the inset to correspond to
+`mdc-deprecated-list-divider--inset-padding` | Optional, alters the inset to correspond to
 the item's padding rather than the leading graphics column.
 
-**Note: The `mdc-list-divider` class can be used between list items *OR* between two lists (see respective examples under [List Dividers](#list-dividers)).**
+**Note: The `mdc-deprecated-list-divider` class can be used between list items *OR* between two lists (see respective examples under [List Dividers](#list-dividers)).**
 
 **Note: In Material Design, the selected and activated states apply in different, mutually-exclusive situations:**
-* *Selected* state should be applied on the `.mdc-list-item` when it is likely to frequently change due to user choice. E.g., selecting one or more photos to share in Google Photos.
+* *Selected* state should be applied on the `.mdc-deprecated-list-item` when it is likely to frequently change due to user choice. E.g., selecting one or more photos to share in Google Photos.
 * *Activated* state is more permanent than selected state, and will **NOT** change soon relative to the lifetime of the page. Common examples are navigation components such as the list within a navigation drawer.
 
 ### Sass Mixins
 
 Mixin | Description
 --- | ---
-`item-primary-text-ink-color($color)` | Sets the ink color of the primary text of the list item.
-`item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text of the list item.
-`item-graphic-fill-color($color)` | Sets background ink color of the graphic element within list item.
-`item-graphic-ink-color($color)` | Sets ink color of the graphic element within list item.
-`item-meta-ink-color($color)` | Sets ink color of the meta element within list item.
-`single-line-shape-radius($radius, $rtl-reflexive, $density-scale)` | Sets the rounded shape to list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false. Set `$density-scale` only when custom density is applied, defaults to `$mdc-list-single-line-density-scale`.
-`divider-color($color)` | Sets divider ink color.
-`group-subheader-ink-color($color)` | Sets ink color of subheader text within list group.
-`item-selected-text-color($color)` | Sets the color of the text when the list item is selected/activated.
-`item-disabled-text-color($color)` | Sets the color of the text when the list item is disabled.
-`item-disabled-text-opacity($opacity)` | Sets the opacity of the text when the list item is disabled.
-`single-line-density($density-scale)` | Sets density scale to single line list variant. Supported density scales are `-4`, `-3`, `-2`, `-1` and  `0`.
-`single-line-height($height)` | Sets height to single line list variant.
-`list-item-padding($leading-padding)` | Sets the padding used by each list item.
-`list-item-height($height)` | Sets the height used by each list item.
-`icon-margin($margin)` | Sets the trailing margin used by icons.
-`divider-insets($leading-padding, $text-offset)` | Creates the full set of
+`deprecated-item-primary-text-ink-color($color)` | Sets the ink color of the primary text of the list item.
+`deprecated-item-secondary-text-ink-color($color)` | Sets the ink color of the secondary text of the list item.
+`deprecated-item-graphic-fill-color($color)` | Sets background ink color of the graphic element within list item.
+`deprecated-item-graphic-ink-color($color)` | Sets ink color of the graphic element within list item.
+`deprecated-item-meta-ink-color($color)` | Sets ink color of the meta element within list item.
+`deprecated-single-line-shape-radius($radius, $rtl-reflexive, $density-scale)` | Sets the rounded shape to list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false. Set `$density-scale` only when custom density is applied, defaults to `$mdc-deprecated-list-single-line-density-scale`.
+`deprecated-divider-color($color)` | Sets divider ink color.
+`deprecated-group-subheader-ink-color($color)` | Sets ink color of subheader text within list group.
+`deprecated-item-selected-text-color($color)` | Sets the color of the text when the list item is selected/activated.
+`deprecated-item-disabled-text-color($color)` | Sets the color of the text when the list item is disabled.
+`deprecated-item-disabled-text-opacity($opacity)` | Sets the opacity of the text when the list item is disabled.
+`deprecated-single-line-density($density-scale)` | Sets density scale to single line list variant. Supported density scales are `-4`, `-3`, `-2`, `-1` and  `0`.
+`deprecated-single-line-height($height)` | Sets height to single line list variant.
+`deprecated-list-item-padding($leading-padding)` | Sets the padding used by each list item.
+`deprecated-list-item-height($height)` | Sets the height used by each list item.
+`deprecated-icon-margin($margin)` | Sets the trailing margin used by icons.
+`deprecated-divider-insets($leading-padding, $text-offset)` | Creates the full set of
 divider inset styles using the provided padding and text offset.
-`divider-insets($leading-padding, $text-offset)` | Sets a single divider's inset
+`deprecated-divider-insets($leading-padding, $text-offset)` | Sets a single divider's inset
 using the provided padding, text offset, and configuration.
-`graphic-size($leading-padding, $text-offset, $width, $height)` | Sets the size
+`deprecated-graphic-size($leading-padding, $text-offset, $width, $height)` | Sets the size
 and trailing margin of a leading graphic.
 
 ## `MDCList` Properties and Methods
@@ -559,19 +575,19 @@ skip over the entire list. If the list items contain sub-elements that are focus
 these should also receive `tabIndex="-1"`.
 
 ```html
-<ul id="my-list" class="mdc-list">
-  <li class="mdc-list-item" tabindex="0">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+<ul id="my-list" class="mdc-deprecated-list">
+  <li class="mdc-deprecated-list-item" tabindex="0">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
     <button tabindex="-1"></button>
   </li>
-  <li class="mdc-list-item" tabindex="-1">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+  <li class="mdc-deprecated-list-item" tabindex="-1">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item" tabindex="-1">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+  <li class="mdc-deprecated-list-item" tabindex="-1">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
 </ul>
 ```
@@ -579,25 +595,25 @@ these should also receive `tabIndex="-1"`.
 #### Setup in `singleSelection()`
 
 When implementing a component that will use the single selection variant, the HTML should be modified to include
-the `mdc-list-item--selected` or `mdc-list-item--activated` class name,
+the `mdc-deprecated-list-item--selected` or `mdc-deprecated-list-item--activated` class name,
 and the `tabindex` of the selected element should be `0`. The first list item should have the `tabindex` updated
 to `-1`. The foundation method `setSelectedIndex()` should be called with the initially selected element immediately
 after the foundation is instantiated. Please see [Accessibility](#Accessibility) section for appropriate aria attributes.
 
 ```html
-<ul id="my-list" class="mdc-list">
-  <li class="mdc-list-item" tabindex="-1">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+<ul id="my-list" class="mdc-deprecated-list">
+  <li class="mdc-deprecated-list-item" tabindex="-1">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
     <button tabindex="-1"></button>
     </li>
-  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" tabindex="0">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+  <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" aria-selected="true" tabindex="0">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item" tabindex="-1">
-    <span class="mdc-list-item__ripple"></span>
-    <span class="mdc-list-item__text">Single-line item</span>
+  <li class="mdc-deprecated-list-item" tabindex="-1">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
   </li>
 </ul>
 ```
@@ -606,7 +622,7 @@ after the foundation is instantiated. Please see [Accessibility](#Accessibility)
 
 Method Signature | Description
 --- | ---
-`getListItemCount() => Number` | Returns the total number of list items (elements with `mdc-list-item` class) that are direct children of the `root_` element.
+`getListItemCount() => Number` | Returns the total number of list items (elements with `mdc-deprecated-list-item` class) that are direct children of the `root_` element.
 `getFocusedElementIndex() => Number` | Returns the `index` value of the currently focused element.
 `getAttributeForElementIndex(index: number, attribute: string) => string | null` | Returns the attribute value of list item at given `index`.
 `setAttributeForElementIndex(index: Number, attr: String, value: String) => void` | Sets the `attr` attribute to `value` for the list item at `index`.
@@ -633,7 +649,7 @@ Method Signature | Description
 `setSingleSelection(value: Boolean) => void` | Sets the list to be a selection list. Enables the `enter` and `space` keys for selecting/deselecting a list item.
 `getSelectedIndex() => MDCListIndex` | Gets the current selection state by returning selected index or list of indexes for checkbox based list. See [types.ts](./types.ts) for `MDCListIndex` type definition.
 `setSelectedIndex(index: MDCListIndex) => void` | Sets the selection state to given index or list of indexes if it is checkbox based list. See [types.ts](./types.ts) for `MDCListIndex` type definition.
-`setUseActivatedClass(useActivated: boolean) => void` | Sets the selection logic to apply/remove the `mdc-list-item--activated` class.
+`setUseActivatedClass(useActivated: boolean) => void` | Sets the selection logic to apply/remove the `mdc-deprecated-list-item--activated` class.
 `handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all button and anchor elements when a list item receives focus.
 `handleFocusOut(evt: Event) => void` | Handles the changing of `tabindex` to `-1` for all button and anchor elements when a list item loses focus.
 `handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered.
