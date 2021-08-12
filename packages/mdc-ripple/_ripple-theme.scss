@@ -122,6 +122,45 @@ $light-theme: (
   );
 }
 
+@function ripple-mask-gradient($margin, $min-ratio) {
+  @return radial-gradient(
+    closest-side,
+    #fff max(calc(100% - #{$margin}), #{$min-ratio}),
+    #fff0 100%
+  );
+}
+
+@mixin mask-image($value) {
+  -webkit-mask-image: $value;
+  mask-image: $value;
+}
+
+@mixin ripple-mask($margin, $min-ratio) {
+  @include mask-image(ripple-mask-gradient($margin, $min-ratio));
+}
+
+@mixin m3($content-root-selector: ':root') {
+  @include base-mixins.emit-once('mdc-ripple/m3/properties') {
+    #{$content-root-selector} {
+      --mdc-ripple-mask-image: #{ripple-mask-gradient(70px, 65%)};
+      --mdc-ripple-fg-effective-scale: var(--mdc-ripple-fg-edge-scale);
+    }
+  }
+
+  @include base-mixins.emit-once('mdc-ripple/m3/animation') {
+    $ripple-mask-keyframes: 0% 70px 65%, 70% 70px 65%, 80% 40px 85%,
+      90% 10px 95%, 100% 0px 100%;
+
+    @keyframes mdc-unbounded-ripple-fg-mask-in {
+      @each $frame, $margin, $min-ratio in $ripple-mask-keyframes {
+        #{$frame} {
+          @include ripple-mask($margin, $min-ratio);
+        }
+      }
+    }
+  }
+}
+
 @mixin states-base-color(
   $color,
   $query: feature-targeting.all(),

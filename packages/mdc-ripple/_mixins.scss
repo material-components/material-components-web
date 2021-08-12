@@ -23,4 +23,4 @@
 /// @deprecated Import '_ripple.scss' or '_ripple-theme.scss' Sass modules
 /// instead.
 @forward './ripple' show core-styles, surface-styles, unbounded-styles, common, surface, radius-bounded, radius-unbounded, target-common;
-@forward './ripple-theme' show states-base-color, states-opacities, states-hover-opacity, states-focus-opacity, states-focus-opacity-properties_, states-press-opacity, states, states-activated, states-selected, states-interactions_, target-selector;
+@forward './ripple-theme' show m3, states-base-color, states-opacities, states-hover-opacity, states-focus-opacity, states-focus-opacity-properties_, states-press-opacity, states, states-activated, states-selected, states-interactions_, target-selector;

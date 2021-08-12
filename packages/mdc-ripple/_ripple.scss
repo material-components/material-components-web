@@ -109,12 +109,14 @@
 ) {
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
+  $feat-color: feature-targeting.create-target($query, color);
 
   @include feature-targeting.targets($feat-structure) {
     --mdc-ripple-fg-size: 0;
     --mdc-ripple-left: 0;
     --mdc-ripple-top: 0;
     --mdc-ripple-fg-scale: 1;
+    --mdc-ripple-fg-edge-scale: 1;
     --mdc-ripple-fg-translate-end: 0;
     --mdc-ripple-fg-translate-start: 0;
 
@@ -189,10 +191,30 @@
         left: var(--mdc-ripple-left, 0);
       }
     }
+
+    &.mdc-ripple-upgraded--foreground-activation {
+      #{$ripple-target}::after {
+        @include feature-targeting.targets($feat-animation) {
+          // stylelint-disable no-unknown-animations --
+          // We only define mdc-unbounded-ripple-fg-mask-in for Material You
+          // in order to save bytes
+          animation: mdc-ripple-fg-radius-in ripple-theme.$translate-duration
+              forwards,
+            mdc-ripple-fg-opacity-in ripple-theme.$fade-in-duration forwards,
+            mdc-unbounded-ripple-fg-mask-in ripple-theme.$translate-duration
+              forwards;
+          // stylelint-enable no-unknown-animations
+        }
+      }
+    }
   }
 
   &.mdc-ripple-upgraded--foreground-activation {
     #{$ripple-target}::after {
+      @include feature-targeting.targets($feat-color) {
+        @include ripple-theme.mask-image(var(--mdc-ripple-mask-image, none));
+      }
+
       @include feature-targeting.targets($feat-animation) {
         animation: mdc-ripple-fg-radius-in ripple-theme.$translate-duration
             forwards,
@@ -210,7 +232,9 @@
       @include feature-targeting.targets($feat-structure) {
         // Retain transform from mdc-ripple-fg-radius-in activation
         transform: translate(var(--mdc-ripple-fg-translate-end, 0))
-          scale(var(--mdc-ripple-fg-scale, 1));
+          scale(
+            var(--mdc-ripple-fg-effective-scale, var(--mdc-ripple-fg-scale, 1))
+          );
       }
     }
   }
@@ -313,7 +337,9 @@
 
     to {
       transform: translate(var(--mdc-ripple-fg-translate-end, 0))
-        scale(var(--mdc-ripple-fg-scale, 1));
+        scale(
+          var(--mdc-ripple-fg-effective-scale, var(--mdc-ripple-fg-scale, 1))
+        );
     }
   }
 
