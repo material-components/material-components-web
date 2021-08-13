@@ -108,7 +108,7 @@ $light-theme: (
 );
 
 @mixin theme($theme) {
-  @include theme.validate-keys($light-theme, $theme);
+  @include theme.validate-theme($light-theme, $theme);
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $custom-property-prefix
@@ -116,7 +116,7 @@ $light-theme: (
 }
 
 @mixin theme-styles($theme) {
-  @include theme.validate-keys($light-theme, $theme);
+  @include theme.validate-theme($light-theme, $theme);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $custom-property-prefix
@@ -200,7 +200,7 @@ $light-theme-deprecated: (
 /// Only emits theme related styles.
 /// @param {Map} $theme - Theme configuration to use for theming checkbox.
 @mixin theme-deprecated($theme, $query: feature-targeting.all()) {
-  @include theme.validate-keys($light-theme-deprecated, $theme);
+  @include theme.validate-theme($light-theme-deprecated, $theme);
 
   $ripple-color: map.get($theme, ripple-color);
   $ripple-opacity: map.get($theme, ripple-opacity);

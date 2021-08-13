@@ -431,7 +431,7 @@ $_theme-values: (
 /// @param {Map} $theme - @see $_theme-values for accepted theme properties.
 ///
 @mixin theme($theme: (), $query: feature-targeting.all()) {
-  @include theme.validate-keys($_theme-values, $theme);
+  @include theme.validate-theme($_theme-values, $theme);
   @include _theme($theme, $query: $query);
 }
 

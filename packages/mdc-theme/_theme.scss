@@ -271,21 +271,22 @@
   @include property($property, $style, $important: $important);
 }
 
-/// Validates keys in provided theme configuration by comparing with original
-/// theme configuration.
+/// Validates theme configuration by comparing with original theme
+/// configuration.
 /// Use this in component's `theme()` mixin implementation to validate if
-/// provided theme configuration has supported theme configuration keys.
+/// provided theme configuration has supported theme configuration keys and has
+/// supported theme values.
 /// @param {Map} $origin-theme - Original theme configuration in Sass map format
 ///     that has all supported keys.
 /// @param {Map} $custom-theme - Provided theme configuration in Sass map format
 ///     that should be validated against `$origin-theme`.
 /// @examples
 ///     @mixin theme($theme) {
-///       @include theme.validate-keys($light-theme, $theme);
+///       @include theme.validate-theme($light-theme, $theme);
 ///
 ///       // ...
 ///     }
-@mixin validate-keys($origin-theme, $custom-theme, $test-only: false) {
+@mixin validate-theme($origin-theme, $custom-theme, $test-only: false) {
   $origin-keys: map.keys($origin-theme);
   $unsupported-keys: ();
   $unsupported-custom-prop-keys: ();

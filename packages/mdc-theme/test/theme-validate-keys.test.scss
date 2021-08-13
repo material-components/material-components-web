@@ -11,7 +11,7 @@ $origin-theme: (
 );
 
 // Should validate when subset of keys are provided.
-@include theme.validate-keys(
+@include theme.validate-theme(
   $origin-theme,
   (
     two: '22',
@@ -20,10 +20,10 @@ $origin-theme: (
 );
 
 // Should validate when theme configuration is empty.
-@include theme.validate-keys($origin-theme, ());
+@include theme.validate-theme($origin-theme, ());
 
 // Should validate when nested theme keys are provided.
-@include theme.validate-keys(
+@include theme.validate-theme(
   $origin-theme,
   (
     four: (
@@ -35,7 +35,7 @@ $origin-theme: (
 
 // Should throw error when unsupported key (i.e., foobar) is provided.
 .test {
-  @include theme.validate-keys(
+  @include theme.validate-theme(
     $origin-theme,
     (
       foobar: 66px,
@@ -46,7 +46,7 @@ $origin-theme: (
 
 // Should throw error when custom properties are provided
 .no-custom-props {
-  @include theme.validate-keys(
+  @include theme.validate-theme(
     $origin-theme,
     (
       one: var(--one),

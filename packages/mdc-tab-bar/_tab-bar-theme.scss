@@ -89,7 +89,7 @@ $light-theme: (
 );
 
 @mixin theme($theme) {
-  @include theme.validate-keys($light-theme, $theme);
+  @include theme.validate-theme($light-theme, $theme);
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $custom-property-prefix

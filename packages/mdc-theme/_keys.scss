@@ -392,7 +392,6 @@ $_options: ();
 ///   );
 ///
 ///   @mixin theme($theme) {
-///     @include theme.validate-keys($light-theme, $theme);
 ///     $theme: keys.create-theme-properties($theme, button-filled);
 ///     /*(
 ///       label-color: (

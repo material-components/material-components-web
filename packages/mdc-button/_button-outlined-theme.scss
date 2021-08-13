@@ -78,7 +78,7 @@ $light-theme: (
 /// Only emits theme related styles.
 /// @param {Map} $theme - Theme configuration to use.
 @mixin theme($theme, $resolver: resolvers.$material) {
-  @include theme.validate-keys($light-theme, $theme);
+  @include theme.validate-theme($light-theme, $theme);
   $theme: button-shared-theme.resolve-theme-elevation-keys(
     $theme,
     $resolver: $resolver
@@ -91,7 +91,7 @@ $light-theme: (
   $resolver: resolvers.$material,
   $query: feature-targeting.all()
 ) {
-  @include theme.validate-keys($light-theme, $theme);
+  @include theme.validate-theme($light-theme, $theme);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $_custom-property-prefix
