@@ -85,6 +85,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
       setTooltipCaretStyle: () => undefined,
       clearTooltipCaretStyles: () => undefined,
+      getActiveElement: () => null,
     };
   }
 
@@ -284,9 +285,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // Hide the tooltip immediately on ESC key.
     const key = normalizeKey(evt);
     if (key === KEY.ESCAPE) {
+      const activeElement = this.adapter.getActiveElement();
       const tooltipContainsActiveElement =
-          document.activeElement instanceof HTMLElement &&
-          this.adapter.tooltipContainsElement(document.activeElement);
+          activeElement instanceof HTMLElement &&
+          this.adapter.tooltipContainsElement(activeElement);
       if (tooltipContainsActiveElement) {
         this.adapter.focusAnchorElement();
       }
