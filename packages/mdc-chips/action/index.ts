@@ -23,7 +23,13 @@
 
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';
 export * from './primary-foundation';
 export * from './trailing-foundation';
+export * from './types';
+export {
+  CssClasses as ChipActionCssClasses,
+  Events as ChipActionEvents,
+  FocusBehavior as ChipActionFocusBehavior,
+  Attributes as ChipActionAttributes,
+} from './constants';

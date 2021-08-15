@@ -23,5 +23,11 @@
 
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';
+export * from './types';
+export {
+  CssClasses as ChipCssClasses,
+  Events as ChipEvents,
+  Attributes as ChipAttributes,
+  Animation as ChipAnimation,
+} from './constants';

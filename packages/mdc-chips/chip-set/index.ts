@@ -23,5 +23,10 @@
 
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';
+export * from './types';
+export {
+  Attributes as ChipSetAttributes,
+  CssClasses as ChipSetCssClasses,
+  Events as ChipSetEvents,
+} from './constants';

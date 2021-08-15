@@ -22,6 +22,8 @@
  */
 
 export * from './chip-set/index';
+export * from './chip/index';
+export * from './action/index';
 
 /**
  * Backwards compatibility for existing clients.
