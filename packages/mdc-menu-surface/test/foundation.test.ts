@@ -22,8 +22,7 @@
  */
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
-import {setUpFoundationTest} from '../../../testing/helpers/setup';
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {Corner, cssClasses, numbers, strings} from '../constants';
 import {MDCMenuSurfaceFoundation} from '../foundation';
 
@@ -857,6 +856,13 @@ describe('MDCMenuSurfaceFoundation', () => {
             .toHaveBeenCalledWith({right: 7, top: 5});
         expect(mockAdapter.setTransformOrigin)
             .toHaveBeenCalledWith('right top');
+      });
+
+  testFoundation(
+      'Should return the correct fixed position status', ({foundation}) => {
+        expect(foundation.isFixed()).toBeFalse();
+        foundation.setFixedPosition(true);
+        expect(foundation.isFixed()).toBeTrue();
       });
 
   testFoundation(
