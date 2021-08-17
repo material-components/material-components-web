@@ -271,11 +271,9 @@
   @include property($property, $style, $important: $important);
 }
 
-/// Validates theme configuration by comparing with original theme
-/// configuration.
-/// Use this in component's `theme()` mixin implementation to validate if
-/// provided theme configuration has supported theme configuration keys and has
-/// supported theme values.
+/// Validates theme configuration keys by comparing it with original theme
+/// configuration, also validates theme values to see if it has any unsupported
+/// value formats.
 /// @param {Map} $origin-theme - Original theme configuration in Sass map format
 ///     that has all supported keys.
 /// @param {Map} $custom-theme - Provided theme configuration in Sass map format
@@ -287,24 +285,29 @@
 ///       // ...
 ///     }
 @mixin validate-theme($origin-theme, $custom-theme, $test-only: false) {
+  @include validate-theme-keys(
+    $origin-theme,
+    $custom-theme,
+    $test-only: $test-only
+  );
+  @include _validate-theme-values($custom-theme, $test-only: $test-only);
+}
+
+/// Validates theme configuration keys by comparing it with original theme
+/// configuration.
+/// @see Use `validate-theme()` to validate both theme keys and theme values.
+/// @param {Map} $origin-theme - Original theme configuration in Sass map format
+///     that has all supported keys.
+/// @param {Map} $custom-theme - Provided theme configuration in Sass map format
+///     that should be validated against `$origin-theme`.
+@mixin validate-theme-keys($origin-theme, $custom-theme, $test-only: false) {
   $origin-keys: map.keys($origin-theme);
   $unsupported-keys: ();
-  $unsupported-custom-prop-keys: ();
 
   @each $key, $value in $custom-theme {
     @if (not list.index($origin-keys, $key)) {
       $unsupported-keys: list.append(
         $unsupported-keys,
-        $key,
-        $separator: comma
-      );
-    }
-
-    $is-prop: custom-properties.is-custom-prop($value) or
-      custom-properties.is-custom-prop-string($value);
-    @if $is-prop {
-      $unsupported-custom-prop-keys: list.append(
-        $unsupported-custom-prop-keys,
         $key,
         $separator: comma
       );
@@ -318,6 +321,27 @@
       content: $error-message;
     } @else {
       @error $error-message;
+    }
+  }
+}
+
+/// Validates theme configuration values to see if it has any unsupported value
+/// formats.
+/// @see Use `validate-theme()` to validate both theme keys and theme values.
+/// @param {Map} $custom-theme - Provided theme configuration in Sass map format
+///     that needs to be validated.
+@mixin _validate-theme-values($custom-theme, $test-only: false) {
+  $unsupported-custom-prop-keys: ();
+
+  @each $key, $value in $custom-theme {
+    $is-prop: custom-properties.is-custom-prop($value) or
+      custom-properties.is-custom-prop-string($value);
+    @if $is-prop {
+      $unsupported-custom-prop-keys: list.append(
+        $unsupported-custom-prop-keys,
+        $key,
+        $separator: comma
+      );
     }
   }
 
