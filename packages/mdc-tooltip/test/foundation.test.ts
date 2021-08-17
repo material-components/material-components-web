@@ -2151,7 +2151,7 @@ describe('MDCTooltipFoundation', () => {
     };
 
     mockAdapter.getAnchorBoundingRect.and.returnValue(newAnchorBoundingRect);
-    emitEvent(window, 'scroll');
+    emitEvent(window, 'resize');
     jasmine.clock().tick(1);
 
     expect(mockAdapter.setStyleProperty)
@@ -2165,7 +2165,8 @@ describe('MDCTooltipFoundation', () => {
     const scrollableAncestor = document.createElement('div');
     scrollableAncestor.setAttribute('id', 'scrollable');
     document.body.appendChild(scrollableAncestor);
-    const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
+    const {foundation} = setUpFoundationTestForRichTooltip(
+        MDCTooltipFoundation, {isPersistent: true});
 
     (foundation as any).repositionTooltipOnAnchorMove =
         jasmine.createSpy('repositionTooltipOnAnchorMove');
@@ -2187,7 +2188,8 @@ describe('MDCTooltipFoundation', () => {
     const scrollableAncestor = document.createElement('div');
     scrollableAncestor.setAttribute('id', 'scrollable');
     document.body.appendChild(scrollableAncestor);
-    const {foundation} = setUpFoundationTest(MDCTooltipFoundation);
+    const {foundation} = setUpFoundationTestForRichTooltip(
+        MDCTooltipFoundation, {isPersistent: true});
 
     (foundation as any).repositionTooltipOnAnchorMove =
         jasmine.createSpy('repositionTooltipOnAnchorMove');
@@ -2211,54 +2213,68 @@ describe('MDCTooltipFoundation', () => {
 
   it('recalculates position of tooltip if user specified ancestor is scrolled',
      () => {
-       const anchorBoundingRect =
-           {top: 0, bottom: 35, left: 0, right: 200, width: 200, height: 35};
-       const expectedTooltipTop =
-           anchorBoundingRect.height + numbers.BOUNDED_ANCHOR_GAP;
-       const expectedTooltipLeft = 80;
+       const anchorBoundingRect = {top: 0, bottom: 35, left: 200, right: 250};
+       const parentBoundingRect = {top: 5, bottom: 35, left: 100, right: 150};
        const tooltipSize = {width: 40, height: 30};
 
        const scrollableAncestor = document.createElement('div');
        scrollableAncestor.setAttribute('id', 'scrollable');
        document.body.appendChild(scrollableAncestor);
 
-       const {foundation, mockAdapter} =
-           setUpFoundationTest(MDCTooltipFoundation);
-       mockAdapter.getViewportWidth.and.returnValue(500);
-       mockAdapter.getViewportHeight.and.returnValue(500);
+       const expectedTooltipTop = anchorBoundingRect.bottom +
+           numbers.BOUNDED_ANCHOR_GAP - parentBoundingRect.top;
+       const expectedTooltipLeft =
+           anchorBoundingRect.right - parentBoundingRect.left;
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {isPersistent: true});
+       mockAdapter.getViewportWidth.and.returnValue(300);
+       mockAdapter.getViewportHeight.and.returnValue(150);
        mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+       mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
        mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
 
        foundation.attachScrollHandler((evt, handler) => {
          scrollableAncestor.addEventListener(evt, handler);
        });
        foundation.show();
+
        expect(mockAdapter.setStyleProperty)
            .toHaveBeenCalledWith('top', `${expectedTooltipTop}px`);
        expect(mockAdapter.setStyleProperty)
            .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
 
-       const yPositionDiff = 50;
+       // "Scroll" tooltip to the bottom of the page -- tooltip position flips
+       // from BELOW to ABOVE
+       const yPositionDiff = 150;
        const xPositionDiff = 20;
        const newAnchorBoundingRect = {
          top: anchorBoundingRect.top + yPositionDiff,
          bottom: anchorBoundingRect.bottom + yPositionDiff,
          left: anchorBoundingRect.left + xPositionDiff,
          right: anchorBoundingRect.right + xPositionDiff,
-         width: anchorBoundingRect.width,
-         height: anchorBoundingRect.height,
+       };
+
+       const newParentBoundingRect = {
+         top: parentBoundingRect.top + yPositionDiff,
+         bottom: parentBoundingRect.bottom + yPositionDiff,
+         left: parentBoundingRect.left + xPositionDiff,
+         right: parentBoundingRect.right + xPositionDiff,
        };
 
        mockAdapter.getAnchorBoundingRect.and.returnValue(newAnchorBoundingRect);
+       mockAdapter.getParentBoundingRect.and.returnValue(newParentBoundingRect);
        emitEvent(scrollableAncestor, 'scroll');
        jasmine.clock().tick(1);
 
+       const newExpectedTooltipTop =
+           (newAnchorBoundingRect.top -
+            (numbers.BOUNDED_ANCHOR_GAP + tooltipSize.height)) -
+           newParentBoundingRect.top;
+
        expect(mockAdapter.setStyleProperty)
-           .toHaveBeenCalledWith(
-               'top', `${expectedTooltipTop + yPositionDiff}px`);
+           .toHaveBeenCalledWith('top', `${newExpectedTooltipTop}px`);
        expect(mockAdapter.setStyleProperty)
-           .toHaveBeenCalledWith(
-               'left', `${expectedTooltipLeft + xPositionDiff}px`);
+           .toHaveBeenCalledWith('left', `${expectedTooltipLeft}px`);
      });
 
   for (const pos of CARET_POSITION_STYLES.keys()) {
