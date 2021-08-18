@@ -233,6 +233,14 @@
   @include rtl.reflexive-property(margin, 8px, -4px);
 }
 
+@mixin raised-transition($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-animation) {
+    transition: elevation-theme.transition-value();
+  }
+}
+
 /// @deprecated Private style mixin for partners; not available for public use.
 @mixin deprecated-icon {
   @include icon;

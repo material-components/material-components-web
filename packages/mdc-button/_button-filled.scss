@@ -53,6 +53,7 @@
 
 @mixin static-styles-without-ripple($query: feature-targeting.all()) {
   .mdc-button--unelevated {
+    @include button-base.raised-transition($query: $query);
     // TODO(b/179402677): move into theme config
     @include button-shared-theme.horizontal-padding(
       $padding: button-shared-theme.$contained-horizontal-padding,

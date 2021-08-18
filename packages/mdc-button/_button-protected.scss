@@ -53,7 +53,7 @@
 
 @mixin static-styles-without-ripple($query: feature-targeting.all()) {
   .mdc-button--raised {
-    @include _raised-transition($query);
+    @include button-base.raised-transition($query);
     // TODO(b/179402677): move into theme config
     @include button-shared-theme.horizontal-padding(
       $padding: button-shared-theme.$contained-horizontal-padding,
@@ -84,13 +84,5 @@
     @include elevation-theme.elevation(0, $query: $query);
   }
 
-  @include _raised-transition($query);
-}
-
-@mixin _raised-transition($query: feature-targeting.all()) {
-  $feat-animation: feature-targeting.create-target($query, animation);
-
-  @include feature-targeting.targets($feat-animation) {
-    transition: elevation-theme.transition-value();
-  }
+  @include button-base.raised-transition($query);
 }
