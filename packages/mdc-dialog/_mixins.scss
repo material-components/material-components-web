@@ -41,7 +41,7 @@
 @use '@material/icon-button/mixins' as iconbutton-mixins;
 @use './variables';
 
-@mixin core-styles($query: feature-targeting.all()) {
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
 
@@ -65,20 +65,11 @@
   }
 
   .mdc-dialog {
-    @include container-fill-color(surface, $query: $query);
-    @include scrim-color(variables.$scrim-color, $query: $query);
-    @include title-ink-color(variables.$title-ink-color, $query: $query);
-    @include content-ink-color(variables.$content-ink-color, $query: $query);
-    @include scroll-divider-color(
-      variables.$scroll-divider-color,
-      $query: $query
-    );
     // Note: the top padding is only 20px for dialogs without titles; see below for override.
     @include content-padding(20px, 24px, 20px, 24px, $query: $query);
     @include min-width(variables.$min-width, $query: $query);
     @include max-width(variables.$max-width, variables.$margin, $query: $query);
     @include max-height(null, variables.$margin, $query: $query);
-    @include shape-radius(variables.$shape-radius, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
@@ -131,7 +122,6 @@
   .mdc-dialog__surface {
     @include elevation-mixins.overlay-surface-position($query: $query);
     @include elevation-mixins.overlay-dimensions(100%, $query: $query);
-    @include elevation-mixins.elevation(24, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
       display: flex;
@@ -171,13 +161,6 @@
   }
 
   .mdc-dialog__title {
-    @include typography.text-baseline(
-      $top: 40px,
-      $display: block,
-      $query: $query
-    );
-    @include typography.typography(headline6, $query: $query);
-
     @include feature-targeting.targets($feat-structure) {
       position: relative;
       flex-shrink: 0;
@@ -254,8 +237,6 @@
   }
 
   .mdc-dialog__content {
-    @include typography.typography(body1, $query: $query);
-
     @include feature-targeting.targets($feat-structure) {
       flex-grow: 1;
       box-sizing: border-box;
@@ -474,6 +455,39 @@
       overflow: hidden;
     }
   }
+}
+
+@mixin core-styles($query: feature-targeting.all()) {
+  .mdc-dialog {
+    @include container-fill-color(surface, $query: $query);
+    @include scrim-color(variables.$scrim-color, $query: $query);
+    @include title-ink-color(variables.$title-ink-color, $query: $query);
+    @include content-ink-color(variables.$content-ink-color, $query: $query);
+    @include scroll-divider-color(
+      variables.$scroll-divider-color,
+      $query: $query
+    );
+    @include shape-radius(variables.$shape-radius, $query: $query);
+  }
+
+  .mdc-dialog__surface {
+    @include elevation-mixins.elevation(24, $query: $query);
+  }
+
+  .mdc-dialog__title {
+    @include typography.text-baseline(
+      $top: 40px,
+      $display: block,
+      $query: $query
+    );
+    @include typography.typography(headline6, $query: $query);
+  }
+
+  .mdc-dialog__content {
+    @include typography.typography(body1, $query: $query);
+  }
+
+  @include static-styles($query: $query);
 }
 
 @mixin container-fill-color($color, $query: feature-targeting.all()) {
