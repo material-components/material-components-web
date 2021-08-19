@@ -29,7 +29,7 @@
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/mixins' as dom;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/icon-button/mixins' as icon-button-mixins;
+@use '@material/icon-button/icon-button-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/typography/typography';
 @use './data-table-theme';
@@ -76,7 +76,7 @@
   }
 
   .mdc-data-table__sort-icon-button {
-    @include icon-button-mixins.density(
+    @include icon-button-theme.density(
       $density-scale: data-table-theme.$sort-icon-density-scale,
       $query: $query
     );

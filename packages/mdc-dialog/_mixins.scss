@@ -38,7 +38,7 @@
 @use '@material/touch-target/variables' as touch-target-variables;
 @use '@material/typography/typography';
 @use './dialog-custom-properties';
-@use '@material/icon-button/mixins' as iconbutton-mixins;
+@use '@material/icon-button/icon-button-theme';
 @use './variables';
 
 @mixin static-styles($query: feature-targeting.all()) {
@@ -548,7 +548,7 @@
   }
 
   .mdc-dialog__close {
-    @include iconbutton-mixins.ink_color($color: $color, $query: $query);
+    @include icon-button-theme.ink_color($color: $color, $query: $query);
   }
 }
 

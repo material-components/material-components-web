@@ -23,7 +23,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/animation/functions' as animation-functions;
 @use '@material/button/button-theme';
-@use '@material/icon-button/mixins' as icon-button-mixins;
+@use '@material/icon-button/icon-button-theme';
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/dom/mixins' as dom-mixins;
@@ -190,7 +190,7 @@
   }
 
   .mdc-snackbar__dismiss {
-    @include icon-button-mixins.ink-color(
+    @include icon-button-theme.ink-color(
       variables.$dismiss-ink-color,
       $query: $query
     );
@@ -199,7 +199,7 @@
   // Two selectors are needed to increase specificity above `.material-icons`.
   // stylelint-disable-next-line selector-class-pattern
   .mdc-snackbar__dismiss.mdc-snackbar__dismiss {
-    @include icon-button-mixins.size(
+    @include icon-button-theme.size(
       variables.$dismiss-button-size,
       $query: $query
     );
