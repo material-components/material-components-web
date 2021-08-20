@@ -56,6 +56,15 @@
       }
     }
 
+    .mdc-button__label {
+      @include feature-targeting.targets($feat-structure) {
+        // Necessary such that label is stacked on top of ripple
+        // (since ripple is a positioned element, non-positioned elements
+        // appear under it).
+        position: relative;
+      }
+    }
+
     .mdc-button__touch {
       @include touch-target.touch-target($query: $query);
     }
