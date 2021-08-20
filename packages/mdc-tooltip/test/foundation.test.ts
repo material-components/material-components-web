@@ -1773,7 +1773,7 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('left', `50px`);
   });
 
-  it('properly calculates \"right top\" transform origin in RTL', () => {
+  it('properly calculates "right top" transform origin in RTL', () => {
     const anchorBoundingRect =
         {top: 0, bottom: 35, left: 0, right: 100, width: 100, height: 35};
     const tooltipSize = {width: 50, height: 30};
@@ -1810,7 +1810,7 @@ describe('MDCTooltipFoundation', () => {
     expect(mockAdapter.setStyleProperty).toHaveBeenCalledWith('left', `32px`);
   });
 
-  it('properly calculates \"left top\" transform origin in RTL', () => {
+  it('properly calculates "left top" transform origin in RTL', () => {
     const anchorBoundingRect =
         {top: 0, bottom: 35, left: 32, right: 132, width: 100, height: 35};
     const tooltipSize = {width: 50, height: 30};
