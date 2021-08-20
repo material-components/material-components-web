@@ -34,19 +34,40 @@
   @include ripple($query);
 }
 
-@mixin without-ripple($query: feature-targeting.all()) {
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   // postcss-bem-linter: define icon-button
   .mdc-icon-button {
-    @include base_($query: $query);
-    @include icon-button-theme.density(0, $query: $query);
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-block;
+      position: relative;
+      box-sizing: border-box;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      fill: currentColor;
+      color: inherit;
+      font-size: icon-button-theme.$icon-size;
+      text-decoration: none;
+      cursor: pointer;
+      user-select: none;
+    }
 
-    .mdc-icon-button__touch {
-      @include touch-target-mixins.touch-target(
-        $set-width: true,
-        $query: $query
-      );
+    // stylelint-disable-next-line selector-max-type
+    svg,
+    img {
+      @include feature-targeting.targets($feat-structure) {
+        width: icon-button-theme.$icon-size;
+        height: icon-button-theme.$icon-size;
+      }
+    }
+
+    @include if-disabled_ {
+      @include feature-targeting.targets($feat-structure) {
+        cursor: default;
+        pointer-events: none;
+      }
     }
   }
 
@@ -77,6 +98,27 @@
       }
     }
   }
+  // postcss-bem-linter: end
+}
+
+@mixin without-ripple($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-icon-button {
+    @include icon-button-theme.density(0, $query: $query);
+
+    @include icon-button-theme.disabled-ink-color(
+      text-disabled-on-light,
+      $query: $query
+    );
+
+    .mdc-icon-button__touch {
+      @include touch-target-mixins.touch-target(
+        $set-width: true,
+        $query: $query
+      );
+    }
+  }
 
   .mdc-icon-button--touch {
     @include touch-target-mixins.margin(
@@ -84,7 +126,8 @@
       $query: $query
     );
   }
-  // postcss-bem-linter: end
+
+  @include static-styles($query: $query);
 }
 
 @mixin ripple($query: feature-targeting.all()) {
@@ -110,46 +153,6 @@
         pointer-events: none;
         z-index: 1;
       }
-    }
-  }
-}
-
-@mixin base_($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    display: inline-block;
-    position: relative;
-    box-sizing: border-box;
-    border: none;
-    outline: none;
-    background-color: transparent;
-    fill: currentColor;
-    color: inherit;
-    font-size: icon-button-theme.$icon-size;
-    text-decoration: none;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  // stylelint-disable-next-line selector-max-type
-  svg,
-  img {
-    @include feature-targeting.targets($feat-structure) {
-      width: icon-button-theme.$icon-size;
-      height: icon-button-theme.$icon-size;
-    }
-  }
-
-  @include icon-button-theme.disabled-ink-color(
-    text-disabled-on-light,
-    $query: $query
-  );
-
-  @include if-disabled_ {
-    @include feature-targeting.targets($feat-structure) {
-      cursor: default;
-      pointer-events: none;
     }
   }
 }
