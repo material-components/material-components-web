@@ -161,6 +161,12 @@
   }
 
   .mdc-dialog__title {
+    @include typography.text-baseline(
+      $top: 40px,
+      $display: block,
+      $lineHeight: null,
+      $query: $query
+    );
     @include feature-targeting.targets($feat-structure) {
       position: relative;
       flex-shrink: 0;
@@ -458,6 +464,8 @@
 }
 
 @mixin core-styles($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
   .mdc-dialog {
     @include container-fill-color(surface, $query: $query);
     @include scrim-color(variables.$scrim-color, $query: $query);
@@ -475,16 +483,18 @@
   }
 
   .mdc-dialog__title {
-    @include typography.text-baseline(
-      $top: 40px,
-      $display: block,
-      $query: $query
-    );
     @include typography.typography(headline6, $query: $query);
   }
 
   .mdc-dialog__content {
     @include typography.typography(body1, $query: $query);
+  }
+
+  // For go/soy-checks/rewrite-css
+  .mdc-dialog__title-icon {
+    @include feature-targeting.targets($feat-structure) {
+      /** Hook for theming API. */
+    }
   }
 
   @include static-styles($query: $query);

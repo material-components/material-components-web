@@ -81,6 +81,15 @@ $light-theme: (
     $theme,
     $prefix: $_custom-property-prefix
   );
+  @include theme-styles-internal($theme, $resolver: $resolver, $query: $query);
+}
+
+@mixin theme-styles-internal(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
+  @include theme.validate-theme-keys($light-theme, $theme);
   @include button-shared-theme.theme($theme, $resolver, $query: $query);
 }
 
