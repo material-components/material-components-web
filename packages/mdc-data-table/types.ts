@@ -25,7 +25,7 @@ import {SortValue} from './constants';
 
 export interface MDCDataTableRowSelectionChangedEventDetail {
   rowIndex: number;
-  rowId: string | null;
+  rowId: string|null;
   selected: boolean;
 }
 
@@ -50,6 +50,17 @@ export interface SortActionEventDetail {
   headerCell: HTMLElement;
   sortValue: SortValue;
 }
+
+/**
+ * Event data used for data table row click action.
+ */
+export interface RowClickEventData {
+  rowId: string|null;
+  row: HTMLElement;
+}
+
+export interface RowClickEventDetail extends RowClickEventData {}
+;
 
 /**
  * Styles used to dynamically set dimensions of progress indicator based on

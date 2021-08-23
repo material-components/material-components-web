@@ -44,6 +44,7 @@ describe('MDCDataTableFoundation', () => {
       'isCheckboxAtRowIndexChecked',
       'isHeaderRowCheckboxChecked',
       'isRowsSelectable',
+      'notifyRowClick',
       'notifyRowSelectionChanged',
       'notifySelectedAll',
       'notifySortAction',
@@ -287,6 +288,15 @@ describe('MDCDataTableFoundation', () => {
            .toHaveBeenCalledTimes(5);
        expect(mockAdapter.notifyUnselectedAll).toHaveBeenCalledTimes(1);
      });
+
+  it('Should trigger an event when clicked on data row', () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    const mockDataRowEl = document.createElement('tr');
+    foundation.handleRowClick({rowId: '1231', row: mockDataRowEl});
+    expect(mockAdapter.notifyRowClick)
+        .toHaveBeenCalledWith({rowId: '1231', row: mockDataRowEl});
+  });
 
   it('#handleRowCheckboxChange does not do anything when target row is not found',
      () => {
