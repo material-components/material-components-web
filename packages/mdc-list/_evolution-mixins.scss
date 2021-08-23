@@ -31,6 +31,7 @@
   // Items
   //
 
+  @include list-primary-text-typography(subtitle1, $query);
   @include list-primary-text-ink-color(text-primary-on-background, $query);
   @include list-secondary-text-ink-color(text-secondary-on-background, $query);
   @include list-overline-text-ink-color(text-hint-on-background, $query);
@@ -172,7 +173,6 @@
   }
 
   .mdc-list-item__primary-text {
-    @include typography.typography(subtitle1, $query);
     @include typography.overflow-ellipsis($query);
 
     .mdc-list-item--with-two-lines &,
@@ -802,6 +802,15 @@
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
     }
+  }
+}
+
+@mixin list-primary-text-typography(
+  $typography,
+  $query: feature-targeting.all()
+) {
+  .mdc-list-item__primary-text {
+    @include typography.typography($typography, $query);
   }
 }
 
