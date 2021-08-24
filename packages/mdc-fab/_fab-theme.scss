@@ -83,7 +83,7 @@ $custom-property-prefix: 'fab';
 ///
 @mixin theme($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme($_light-theme, $theme);
-  $resolved-theme: _resolve-theme($theme, $resolvers);
+  $resolved-theme: resolve-theme($theme, $resolvers);
   @include keys.declare-custom-properties(
     $resolved-theme,
     $prefix: $custom-property-prefix
@@ -108,7 +108,7 @@ $custom-property-prefix: 'fab';
 ///
 /// Resolves the given theme with the given resolvers.
 ///
-@function _resolve-theme($theme, $resolvers) {
+@function resolve-theme($theme, $resolvers) {
   $elevation-resolver: map.get($resolvers, elevation);
   @return _resolve-theme-elevation-keys(
     $theme,
