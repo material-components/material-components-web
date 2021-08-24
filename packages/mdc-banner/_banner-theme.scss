@@ -57,10 +57,11 @@ $light-theme: (
   action-hover-state-layer-opacity: 0.04,
   action-hover-label-text-color: theme-color.$on-primary,
   action-label-text-color: theme-color.$primary,
-  action-label-text-font: typography.get-font(button),
-  action-label-text-size: typography.get-size(button),
-  action-label-text-tracking: typography.get-tracking(button),
-  action-label-text-weight: typography.get-weight(button),
+  // TODO(b/197004146): Support action label typography.
+  action-label-text-font: null,
+  action-label-text-size: null,
+  action-label-text-tracking: null,
+  action-label-text-weight: null,
   action-pressed-state-layer-color: theme-color.$primary,
   action-pressed-state-layer-opacity: 0.1,
   action-pressed-label-text-color: theme-color.$on-primary,
@@ -157,8 +158,7 @@ $light-theme: (
     $query
   );
 
-  .mdc-banner__primary-action,
-  .mdc-banner__secondary-action {
+  .mdc-button {
     @include button-text-theme.theme-styles(
       (
         focus-label-text-color: map.get($theme, action-focus-label-text-color),
