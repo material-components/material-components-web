@@ -49,6 +49,10 @@ $ripple-target: '.mdc-switch__ripple';
 
   .mdc-switch {
     @include root;
+
+    &:disabled {
+      @include disabled;
+    }
   }
 
   .mdc-switch__track {
@@ -108,6 +112,7 @@ $ripple-target: '.mdc-switch__ripple';
   align-items: center;
   background: none;
   border: none;
+  cursor: pointer;
   display: inline-flex;
   flex-shrink: 0; // Stop from collapsing in flex containers
   margin: 0;
@@ -118,6 +123,7 @@ $ripple-target: '.mdc-switch__ripple';
 }
 
 @mixin disabled() {
+  cursor: default;
   pointer-events: none;
 }
 
