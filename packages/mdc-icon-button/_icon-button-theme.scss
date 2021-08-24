@@ -25,6 +25,7 @@
 
 @use 'sass:math';
 @use 'sass:map';
+@use 'sass:meta';
 @use '@material/density/functions' as density-functions;
 @use '@material/density/variables' as density-variables;
 @use '@material/elevation/elevation-theme';
@@ -81,10 +82,23 @@ $light-theme: (
   pressed-state-layer-opacity: 0.1,
 );
 
+@mixin theme($theme, $resolver: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+
+  $theme: _resolve-theme($theme, $resolver: $resolver);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+}
+
 @mixin theme-styles($theme, $resolver: resolvers.$material) {
   @include theme.validate-theme($light-theme, $theme);
 
-  $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
 
   // Container styles
   @include _container-color-with-map(
@@ -462,4 +476,42 @@ $light-theme: (
   &:disabled {
     @content;
   }
+}
+
+@function _resolve-theme($theme, $resolver) {
+  @return map.merge(
+    $theme,
+    _resolve-theme-elevation(
+      $theme,
+      map.get($resolver, elevation),
+      container-elevation,
+      disabled-container-elevation,
+      focus-container-elevation,
+      hover-container-elevation,
+      pressed-container-elevation
+    )
+  );
+}
+
+@function _resolve-theme-elevation($theme, $resolver, $keys...) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  @each $key in $keys {
+    // Resolve the value for each state key.
+    $resolved-value: map.get(
+      meta.call(
+        $resolver,
+        $elevation: map.get($theme, $key),
+        $shadow-color: map.get($theme, container-shadow-color)
+      ),
+      shadow
+    );
+
+    // Update the theme with the resolved value.
+    $theme: map.set($theme, $key, $resolved-value);
+  }
+
+  @return $theme;
 }
