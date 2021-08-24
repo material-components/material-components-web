@@ -24,12 +24,18 @@
 // stylelint-disable selector-class-pattern
 
 @use 'sass:math';
+@use 'sass:map';
 @use '@material/density/functions' as density-functions;
 @use '@material/density/variables' as density-variables;
+@use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/mixins' as rtl;
+@use '@material/theme/keys';
+@use '@material/theme/state';
 @use '@material/theme/theme';
+@use '@material/theme/theme-color';
+@use '@material/tokens/resolvers';
 
 $ripple-target: '.mdc-icon-button__ripple';
 
@@ -37,6 +43,7 @@ $icon-size: 24px !default;
 $size: 48px !default;
 $minimum-height: 28px !default;
 $maximum-height: $size !default;
+$container-shape: 50%;
 $density-scale: density-variables.$default-scale !default;
 $density-config: (
   size: (
@@ -45,6 +52,91 @@ $density-config: (
     minimum: $minimum-height,
   ),
 ) !default;
+
+$_custom-property-prefix: 'icon-button';
+
+$light-theme: (
+  container-color: transparent,
+  container-elevation: 0,
+  container-height: $size,
+  container-shadow-color: null,
+  container-shape: $container-shape,
+  container-width: $size,
+  disabled-container-color: transparent,
+  disabled-container-elevation: 0,
+  disabled-icon-color: null,
+  icon-color: null,
+  icon-size: $icon-size,
+  focus-container-elevation: 0,
+  focus-icon-color: null,
+  focus-state-layer-color: theme-color.$on-surface,
+  focus-state-layer-opacity: 0.12,
+  hover-container-elevation: 0,
+  hover-icon-color: null,
+  hover-state-layer-color: theme-color.$on-surface,
+  hover-state-layer-opacity: 0.04,
+  pressed-container-elevation: 0,
+  pressed-icon-color: null,
+  pressed-state-layer-color: theme-color.$on-surface,
+  pressed-state-layer-opacity: 0.1,
+);
+
+@mixin theme-styles($theme, $resolver: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+
+  $theme: keys.create-theme-properties($theme, $_custom-property-prefix);
+
+  // Container styles
+  @include _container-color-with-map(
+    (
+      default: map.get($theme, container-color),
+      disabled: map.get($theme, disabled-container-color),
+    )
+  );
+  @include _container-size(
+    $width: map.get($theme, container-width),
+    $height: map.get($theme, container-height)
+  );
+  @include _container-shape(
+    $shape: map.get($theme, container-shape) or $container-shape
+  );
+  @include _container-elevation(
+    $resolver,
+    $elevation-map: (
+      default: map.get($theme, container-elevation),
+      disabled: map.get($theme, disabled-container-elevation),
+      focus: map.get($theme, focus-container-elevation),
+      hover: map.get($theme, hover-container-elevation),
+      pressed: map.get($theme, pressed-container-elevation)
+    ),
+    $shadow-color: map.get($theme, container-shadow-color)
+  );
+
+  // Icon styles
+  @include _icon-size(map.get($theme, icon-size));
+  @include _icon-color-with-map(
+    (
+      default: map.get($theme, icon-color),
+      disabled: map.get($theme, disabled-icon-color),
+      focus: map.get($theme, focus-icon-color),
+      hover: map.get($theme, hover-icon-color),
+      pressed: map.get($theme, pressed-icon-color),
+    )
+  );
+
+  // States styles
+  @include ripple-theme.theme-styles(
+    (
+      focus-state-layer-color: map.get($theme, focus-state-layer-color),
+      focus-state-layer-opacity: map.get($theme, focus-state-layer-opacity),
+      hover-state-layer-color: map.get($theme, hover-state-layer-color),
+      hover-state-layer-opacity: map.get($theme, hover-state-layer-opacity),
+      pressed-state-layer-color: map.get($theme, pressed-state-layer-color),
+      pressed-state-layer-opacity: map.get($theme, pressed-state-layer-opacity),
+    ),
+    $ripple-target: $ripple-target
+  );
+}
 
 ///
 /// Sets the density scale for icon button.
@@ -207,6 +299,158 @@ $density-config: (
 
   @include feature-targeting.targets($feat-color) {
     @include theme.property(color, $color);
+  }
+}
+
+///
+/// Sets the container fill color to the given color.
+/// @param {map} $color-map - The desired container fill color,
+///     specified as a map of colors with states {default, disabled} as keys.
+/// @access private
+///
+@mixin _container-color-with-map($color-map) {
+  $default: state.get-default-state($color-map);
+  @if $default {
+    @include _container-color($color: $default);
+  }
+
+  $disabled: state.get-disabled-state($color-map);
+  @if $disabled {
+    &:disabled {
+      @include _container-color($color: $disabled);
+    }
+  }
+}
+
+@mixin _container-color($color) {
+  @include theme.property(background-color, $color);
+}
+
+@mixin _container-size($width, $height) {
+  @include theme.property(height, $height);
+  @include theme.property(width, $width);
+}
+
+@mixin _container-shape($shape) {
+  @include theme.property(border-radius, $shape);
+}
+
+@mixin _container-elevation($resolver, $shadow-color, $elevation-map) {
+  $elevation-resolver: map.get($resolver, elevation);
+
+  @if $shadow-color {
+    $default: state.get-default-state($elevation-map);
+    @if $default != null {
+      @include elevation-theme.with-resolver(
+        $elevation-resolver,
+        $elevation: $default,
+        $shadow-color: $shadow-color
+      );
+    }
+
+    $disabled: state.get-disabled-state($elevation-map);
+    @if $disabled != null {
+      &:disabled {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $disabled,
+          $shadow-color: $shadow-color
+        );
+      }
+    }
+
+    $focus: state.get-focus-state($elevation-map);
+    @if $focus != null {
+      @include ripple-theme.focus {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $focus,
+          $shadow-color: $shadow-color
+        );
+      }
+    }
+
+    $hover: state.get-hover-state($elevation-map);
+    @if $hover != null {
+      &:hover {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $hover,
+          $shadow-color: $shadow-color
+        );
+      }
+    }
+
+    $pressed: state.get-pressed-state($elevation-map);
+    @if $pressed != null {
+      @include ripple-theme.active {
+        @include elevation-theme.with-resolver(
+          $elevation-resolver,
+          $elevation: $pressed,
+          $shadow-color: $shadow-color
+        );
+      }
+    }
+  }
+}
+
+@mixin _icon-size($size) {
+  @include theme.property(font-size, $size);
+
+  svg,
+  img {
+    @include theme.property(width, $size);
+    @include theme.property(height, $size);
+  }
+}
+
+///
+/// Sets the icon color to the given color.
+/// @param {map} $color-map - The desired icon color, specified as a map of
+///     colors with states {default, disabled, focus, hover, pressed} as keys.
+/// @access private
+///
+@mixin _icon-color-with-map($color-map) {
+  @include ink-color_(state.get-default-state($color-map));
+
+  $disabled: state.get-disabled-state($color-map);
+  @if $disabled {
+    &:disabled {
+      @include ink-color_($disabled);
+    }
+  }
+
+  $focus: state.get-focus-state($color-map);
+  @if $focus {
+    @include ripple-theme.focus {
+      @include ink-color_($focus);
+    }
+  }
+
+  $hover: state.get-hover-state($color-map);
+  @if $hover {
+    &:hover {
+      @include ink-color_($hover);
+    }
+  }
+
+  $pressed: state.get-pressed-state($color-map);
+  @if $pressed {
+    @include ripple-theme.active {
+      @include ink-color_($pressed);
+    }
+  }
+}
+
+@mixin _states-colors($color-map) {
+  // TODO(b/191298796): support focused & pressed key colors.
+
+  $hover: map.get($color-map, hover);
+  @if $hover {
+    @include ripple-theme.states-base-color(
+      $color: $hover,
+      $ripple-target: $ripple-target
+    );
   }
 }
 

@@ -96,7 +96,7 @@ $light-theme: (
   }
 }
 
-@mixin theme-styles($theme) {
+@mixin theme-styles($theme, $ripple-target: '&') {
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $custom-property-prefix
@@ -104,10 +104,22 @@ $light-theme: (
 
   // TODO(b/191298796): Support states layer color for every interactive states.
   // Use only hover state layer color, ignoring focus and pressed color.
-  @include states-base-color(map.get($theme, hover-state-layer-color));
-  @include states-hover-opacity(map.get($theme, hover-state-layer-opacity));
-  @include states-focus-opacity(map.get($theme, focus-state-layer-opacity));
-  @include states-press-opacity(map.get($theme, pressed-state-layer-opacity));
+  @include states-base-color(
+    map.get($theme, hover-state-layer-color),
+    $ripple-target: $ripple-target
+  );
+  @include states-hover-opacity(
+    map.get($theme, hover-state-layer-opacity),
+    $ripple-target: $ripple-target
+  );
+  @include states-focus-opacity(
+    map.get($theme, focus-state-layer-opacity),
+    $ripple-target: $ripple-target
+  );
+  @include states-press-opacity(
+    map.get($theme, pressed-state-layer-opacity),
+    $ripple-target: $ripple-target
+  );
 }
 
 @mixin states-base-color(
