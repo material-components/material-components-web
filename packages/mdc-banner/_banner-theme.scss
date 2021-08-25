@@ -52,10 +52,10 @@ $z-index: 1;
 $light-theme: (
   action-focus-state-layer-color: theme-color.$primary,
   action-focus-state-layer-opacity: 0.12,
-  action-focus-label-text-color: theme-color.$on-primary,
+  action-focus-label-text-color: null,
   action-hover-state-layer-color: theme-color.$primary,
   action-hover-state-layer-opacity: 0.04,
-  action-hover-label-text-color: theme-color.$on-primary,
+  action-hover-label-text-color: null,
   action-label-text-color: theme-color.$primary,
   // TODO(b/197004146): Support action label typography.
   action-label-text-font: null,
@@ -64,7 +64,7 @@ $light-theme: (
   action-label-text-weight: null,
   action-pressed-state-layer-color: theme-color.$primary,
   action-pressed-state-layer-opacity: 0.1,
-  action-pressed-label-text-color: theme-color.$on-primary,
+  action-pressed-label-text-color: null,
   container-color: theme-color.$surface,
   container-elevation: 0,
   container-shadow-color: null,
