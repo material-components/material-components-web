@@ -136,6 +136,8 @@ $forced-colors-theme: (
   disabled-track-opacity: 1,
   disabled-unselected-icon-color: GrayText,
   disabled-unselected-icon-opacity: 1,
+  selected-icon-color: ButtonText,
+  unselected-icon-color: ButtonText,
 );
 
 @function density($density-scale) {
