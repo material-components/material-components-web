@@ -35,6 +35,7 @@
 @use '@material/floating-label/variables' as floating-label-variables;
 @use '@material/line-ripple/mixins' as line-ripple-mixins;
 @use '@material/list/mixins' as list-mixins;
+@use '@material/list/evolution-mixins' as list-evolution-mixins;
 @use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/notched-outline/variables' as notched-outline-variables;
 @use '@material/rtl/mixins' as rtl-mixins;
@@ -508,10 +509,7 @@ $error-color: error !default;
     $minimum-height-for-filled-label: $minimum-height-for-filled-label,
     $query: $query
   );
-  @include list-mixins.deprecated-single-line-density(
-    $density-scale,
-    $query: $query
-  );
+  @include _list-density($density-scale, $query: $query);
 }
 
 ///
@@ -538,10 +536,7 @@ $error-color: error !default;
     $minimum-height-for-filled-label: $minimum-height-for-filled-label,
     $query: $query
   );
-  @include list-mixins.deprecated-single-line-density(
-    $density-scale,
-    $query: $query
-  );
+  @include _list-density($density-scale, $query: $query);
 }
 
 ///
@@ -558,10 +553,7 @@ $error-color: error !default;
   );
 
   @include outlined-height($height, $query: $query);
-  @include list-mixins.deprecated-single-line-density(
-    $density-scale,
-    $query: $query
-  );
+  @include _list-density($density-scale, $query: $query);
 }
 
 ///
@@ -581,10 +573,27 @@ $error-color: error !default;
   );
 
   @include outlined-with-leading-icon-height($height, $query: $query);
+  @include _list-density($density-scale, $query: $query);
+}
+
+@mixin _list-density($density-scale, $query) {
   @include list-mixins.deprecated-single-line-density(
     $density-scale,
     $query: $query
   );
+  .mdc-select__one-line-option {
+    @include list-evolution-mixins.one-line-item-density(
+      $density-scale,
+      $exclude-variants: true,
+      $query: $query
+    );
+  }
+  .mdc-select__two-line-option {
+    @include list-evolution-mixins.two-line-item-density(
+      $density-scale,
+      $query: $query
+    );
+  }
 }
 
 ///
@@ -692,6 +701,12 @@ $error-color: error !default;
       width: select-icon-theme.$dense-icon-size;
       height: select-icon-theme.$dense-icon-size;
     }
+
+    @include list-evolution-mixins.item-start-size(
+      $width: select-icon-theme.$dense-icon-size + 12px,
+      $height: select-icon-theme.$dense-icon-size,
+      $query: $query
+    );
 
     .mdc-select__anchor {
       @include leading-icon-floating-label-position(
@@ -803,6 +818,12 @@ $error-color: error !default;
       width: select-icon-theme.$dense-icon-size;
       height: select-icon-theme.$dense-icon-size;
     }
+
+    @include list-evolution-mixins.item-start-size(
+      $width: select-icon-theme.$dense-icon-size + 12px,
+      $height: select-icon-theme.$dense-icon-size,
+      $query: $query
+    );
 
     @include select-icon-theme.size(
       select-icon-theme.$dense-icon-size,

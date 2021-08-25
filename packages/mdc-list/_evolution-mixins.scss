@@ -1076,21 +1076,27 @@
 
 // The public density mixins apply the appropriate density styles regardless of
 // the item's start contents.
-@mixin one-line-item-density($density-scale, $query: feature-targeting.all()) {
+@mixin one-line-item-density(
+  $density-scale,
+  $exclude-variants: false,
+  $query: feature-targeting.all()
+) {
   @include _one-line-item-density($density-scale, $query: $query);
 
-  &.mdc-list-item--with-leading-avatar,
-  &.mdc-list-item--with-leading-icon,
-  &.mdc-list-item--with-leading-thumbnail,
-  &.mdc-list-item--with-leading-checkbox,
-  &.mdc-list-item--with-leading-radio,
-  &.mdc-list-item--with-leading-switch {
-    @include _one-line-item-tall-density($density-scale, $query: $query);
-  }
+  @if not $exclude-variants {
+    &.mdc-list-item--with-leading-avatar,
+    &.mdc-list-item--with-leading-icon,
+    &.mdc-list-item--with-leading-thumbnail,
+    &.mdc-list-item--with-leading-checkbox,
+    &.mdc-list-item--with-leading-radio,
+    &.mdc-list-item--with-leading-switch {
+      @include _one-line-item-tall-density($density-scale, $query: $query);
+    }
 
-  &.mdc-list-item--with-leading-image,
-  &.mdc-list-item--with-leading-video {
-    @include _one-line-item-taller-density($density-scale, $query: $query);
+    &.mdc-list-item--with-leading-image,
+    &.mdc-list-item--with-leading-video {
+      @include _one-line-item-taller-density($density-scale, $query: $query);
+    }
   }
 }
 
