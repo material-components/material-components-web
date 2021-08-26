@@ -568,11 +568,11 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    */
   private handleDragStart(
       event: PointerEvent|MouseEvent|TouchEvent, value: number, thumb: Thumb) {
+    this.adapter.emitDragStartEvent(value, thumb);
+
     this.adapter.focusInput(thumb);
     // Prevent the input (that we just focused) from losing focus.
     event.preventDefault();
-
-    this.adapter.emitDragStartEvent(value, thumb);
   }
 
   /**
