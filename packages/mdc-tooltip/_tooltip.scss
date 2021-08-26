@@ -32,8 +32,8 @@
 @use './tooltip-theme';
 @use '@material/typography/typography';
 
-$_padding-x: 4px;
-$_padding-y: 8px;
+$_padding-y: 4px;
+$_padding-x: 8px;
 $_min-width: 40px;
 $_max-height: 40vh;
 //LINT.IfChange(tooltip-dimensions)
@@ -49,8 +49,10 @@ $_animation-scale: 0.8;
 // Rich Tooltip variables
 $_rich_corner_radius: 4px;
 $_rich_line-height: 20px;
+$_rich_title_baseline: 28px;
 $_rich_max-width: 320px;
 $_content-margin-x: 8px;
+$_content-margin-y: 8px;
 $_content-type-scale: body2;
 $_title-type-scale: subtitle2;
 $_caret-size: 24px;
@@ -141,7 +143,7 @@ $_caret-size: 24px;
 
     @include feature-targeting.targets($feat-structure) {
       line-height: $_line-height;
-      padding: $_padding-x $_padding-y;
+      padding: $_padding-y $_padding-x;
       min-width: $_min-width;
       max-width: $_max-width;
       min-height: $_min-height;
@@ -179,12 +181,12 @@ $_caret-size: 24px;
     }
 
     .mdc-tooltip__title {
-      @include typography.text-baseline($top: 28px, $query: $query);
-      @include typography.typography(
-        $_title-type-scale,
-        $exclude-props: (line-height),
+      @include typography.text-baseline(
+        $top: $_rich_title_baseline - $_padding-y,
+        $lineHeight: $_rich_line-height,
         $query: $query
       );
+      @include typography.typography($_title-type-scale, $query: $query);
       @include feature-targeting.targets($feat-structure) {
         margin: 0 $_content-margin-x;
       }
@@ -192,14 +194,10 @@ $_caret-size: 24px;
 
     .mdc-tooltip__content {
       @include typography.text-baseline($top: 24px, $query: $query);
-      @include typography.typography(
-        $_content-type-scale,
-        $exclude-props: (line-height),
-        $query: $query
-      );
+      @include typography.typography($_content-type-scale, $query: $query);
       @include feature-targeting.targets($feat-structure) {
         max-width: calc(100% - 2 * #{$_content-margin-x});
-        margin: 0 $_content-margin-x 16px $_content-margin-x;
+        margin: 0 $_content-margin-x $_content-margin-y $_content-margin-x;
         /* @noflip */
         text-align: left;
         @include rtl.rtl {
