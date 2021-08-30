@@ -51,8 +51,7 @@ $_rich_corner_radius: 4px;
 $_rich_line-height: 20px;
 $_rich_title_baseline: 28px;
 $_rich_max-width: 320px;
-$_content-margin-x: 8px;
-$_content-margin-y: 8px;
+$_content-margin: 8px;
 $_content-type-scale: body2;
 $_title-type-scale: subtitle2;
 $_caret-size: 24px;
@@ -188,16 +187,15 @@ $_caret-size: 24px;
       );
       @include typography.typography($_title-type-scale, $query: $query);
       @include feature-targeting.targets($feat-structure) {
-        margin: 0 $_content-margin-x;
+        margin: 0 $_content-margin;
       }
     }
 
     .mdc-tooltip__content {
-      @include typography.text-baseline($top: 24px, $query: $query);
       @include typography.typography($_content-type-scale, $query: $query);
       @include feature-targeting.targets($feat-structure) {
-        max-width: calc(100% - 2 * #{$_content-margin-x});
-        margin: 0 $_content-margin-x $_content-margin-y $_content-margin-x;
+        max-width: calc(100% - 2 * #{$_content-margin});
+        margin: $_content-margin;
         /* @noflip */
         text-align: left;
         @include rtl.rtl {
