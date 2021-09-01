@@ -30,17 +30,22 @@
 @use '@material/density/variables' as density-variables;
 @use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/rtl';
 @use '@material/theme/keys';
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/touch-target/mixins' as touch-target-mixins;
 
 $ripple-target: '.mdc-icon-button__ripple';
 
+$_icon-button-default-size: 48px;
+$_icon-button-max-ripple-size: 40px;
+
 $icon-size: 24px !default;
-$size: 48px !default;
+$size: $_icon-button-default-size !default;
 $minimum-height: 28px !default;
 $maximum-height: $size !default;
 $container-shape: 50%;
@@ -131,9 +136,30 @@ $light-theme: (
 
   @include size($size, $query: $query);
 
-  &.mdc-icon-button--touch {
-    @if $density-scale != 0 {
-      @include _touch-target-reset($query: $query);
+  &:not(.mdc-icon-button--increased-size) {
+    // Icon button ripple size if capped at 40px for icon buttons with densities
+    // -1 and 0 (icon buttons with sizes 44x44 and 48x48px).
+    // See http://b/192353968 for more info.
+    @if $density-scale > -2 {
+      @include ripple.radius-unbounded(
+        $radius: $_icon-button-max-ripple-size,
+        $query: $query,
+        $ripple-target: $ripple-target
+      );
+    } @else {
+      @include ripple.radius-unbounded(
+        $query: $query,
+        $ripple-target: $ripple-target
+      );
+    }
+
+    .mdc-icon-button__touch {
+      @include touch-target-mixins.touch-target(
+        $set-width: true,
+        $query: $query,
+        $height: $size,
+        $width: $size
+      );
     }
   }
 }
@@ -152,25 +178,15 @@ $light-theme: (
     height: $size;
     padding: math.div($size - $icon-size, 2);
   }
-}
 
-///
-/// Resets touch target-related styles. This is called from the density mixin to
-/// automatically remove the increased touch target, since dense components
-/// don't have the same default a11y requirements.
-/// @access private
-///
-@mixin _touch-target-reset($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-structure) {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-
-  .mdc-icon-button__touch {
-    @include feature-targeting.targets($feat-structure) {
-      display: none;
+  &:not(.mdc-icon-button--increased-size) {
+    // If icon button size is larger than default 48x48px, there is no cap on
+    // the ripple size.
+    @if $size > $_icon-button-default-size {
+      @include ripple.radius-unbounded(
+        $query: $query,
+        $ripple-target: $ripple-target
+      );
     }
   }
 }
@@ -194,9 +210,12 @@ $light-theme: (
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
+  $button-width: $width + $padding * 2;
+  $button-height: $height + $padding * 2;
+
   @include feature-targeting.targets($feat-structure) {
-    width: $width + $padding * 2;
-    height: $height + $padding * 2;
+    width: $button-width;
+    height: $button-height;
     padding: $padding;
     font-size: math.max($width, $height);
   }
@@ -208,6 +227,13 @@ $light-theme: (
       width: $width;
       height: $height;
     }
+  }
+
+  &:not(.mdc-icon-button--increased-size) {
+    @include ripple.radius-unbounded(
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
   }
 }
 

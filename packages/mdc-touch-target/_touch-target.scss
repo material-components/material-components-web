@@ -53,7 +53,14 @@ $width: $height !default;
 /// height ($mdc-touch-target-height).
 /// @param {Boolean} $set-width [false] - Sets the inner element width to the
 ///     minimum touch target width ($mdc-touch-target-width).
-@mixin touch-target($set-width: false, $query: feature-targeting.all()) {
+/// @param $height [$mdc-touch-target-height] - Touch target height.
+/// @param $width [$mdc-touch-target-width] - Touch target width.
+@mixin touch-target(
+  $set-width: false,
+  $query: feature-targeting.all(),
+  $height: $height,
+  $width: $width
+) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
