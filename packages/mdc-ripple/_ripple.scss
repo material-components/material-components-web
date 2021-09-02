@@ -31,6 +31,7 @@
 @use '@material/base/mixins' as base-mixins;
 @use '@material/theme/custom-properties';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
 @use '@material/theme/theme';
 @use './ripple-theme';
 
@@ -173,7 +174,7 @@
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-structure) {
         top: 0;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: 0;
         transform: scale(0);
         transform-origin: center center;
@@ -185,7 +186,7 @@
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-structure) {
         top: var(--mdc-ripple-top, 0);
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: var(--mdc-ripple-left, 0);
       }
     }
@@ -227,7 +228,7 @@
   #{$ripple-target}::after {
     @include feature-targeting.targets($feat-struture) {
       top: calc(50% - #{$radius});
-      /* @noflip */
+      @include rtl.ignore-next-line();
       left: calc(50% - #{$radius});
       width: $radius * 2;
       height: $radius * 2;
@@ -255,7 +256,7 @@
   #{$ripple-target}::after {
     @include feature-targeting.targets($feat-struture) {
       top: calc(50% - #{math.div($radius, 2)});
-      /* @noflip */
+      @include rtl.ignore-next-line();
       left: calc(50% - #{math.div($radius, 2)});
       width: $radius;
       height: $radius;
@@ -267,7 +268,7 @@
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-struture) {
         top: var(--mdc-ripple-top, calc(50% - #{math.div($radius, 2)}));
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: var(--mdc-ripple-left, calc(50% - #{math.div($radius, 2)}));
         width: var(--mdc-ripple-fg-size, $radius);
         height: var(--mdc-ripple-fg-size, $radius);

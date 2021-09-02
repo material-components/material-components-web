@@ -28,7 +28,7 @@
 @use 'sass:meta';
 @use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/button/button-text-theme';
 @use '@material/theme/theme';
@@ -366,7 +366,7 @@ $light-theme: (
     }
 
     .mdc-banner__text {
-      @include rtl-mixins.reflexive-property(margin, 16px, 8px);
+      @include rtl.reflexive-property(margin, 16px, 8px);
       padding-bottom: 4px;
     }
 

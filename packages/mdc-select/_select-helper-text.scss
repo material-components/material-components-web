@@ -22,7 +22,7 @@
 
 @use '@material/animation/variables';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/typography/mixins' as typography-mixins;
 
 @mixin helper-text-core-styles($query: feature-targeting.all()) {
@@ -32,7 +32,7 @@
   .mdc-select-helper-text {
     @include feature-targeting.targets($feat-structure) {
       margin: 0;
-      @include rtl-mixins.reflexive-property(margin, 16px, 16px);
+      @include rtl.reflexive-property(margin, 16px, 16px);
     }
     @include typography-mixins.typography(caption, $query: $query);
     @include typography-mixins.text-baseline(16px, $query: $query);

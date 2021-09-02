@@ -30,7 +30,7 @@
 @use '@material/dom/dom';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/custom-properties';
 @use '@material/theme/theme';
@@ -135,8 +135,8 @@
       // IE 11: Otherwise, scrolling content in `mdc-dialog__content` overflows.
       overflow-y: auto;
 
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         text-align: right;
       }
 
@@ -174,8 +174,8 @@
       margin: 0 0 1px;
       padding: 0 24px variables.$title-bottom-padding;
 
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         text-align: right;
       }
     }
@@ -329,22 +329,22 @@
 
   .mdc-dialog__button {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, left, 8px);
+      @include rtl.reflexive-box(margin, left, 8px);
     }
 
     &:first-child {
       @include feature-targeting.targets($feat-structure) {
-        @include rtl-mixins.reflexive-box(margin, left, 0);
+        @include rtl.reflexive-box(margin, left, 0);
       }
     }
 
     @include feature-targeting.targets($feat-structure) {
       max-width: 100%; // Prevent long text from overflowing parent element in IE 11
-      /* @noflip */
+      @include rtl.ignore-next-line();
       text-align: right;
 
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         text-align: left;
       }
     }

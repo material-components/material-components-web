@@ -279,11 +279,11 @@
 
   .mdc-linear-progress__bar {
     @include feature-targeting.targets($feat-structure) {
-      /* @noflip */
+      @include rtl.ignore-next-line();
       right: 0;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       -webkit-transform-origin: center right;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       transform-origin: center right;
     }
   }
@@ -315,18 +315,18 @@
   &.mdc-linear-progress--indeterminate {
     .mdc-linear-progress__primary-bar {
       @include feature-targeting.targets($feat-structure) {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         right: -145.166611%;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: auto;
       }
     }
 
     .mdc-linear-progress__secondary-bar {
       @include feature-targeting.targets($feat-structure) {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         right: -54.888891%;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: auto;
       }
     }

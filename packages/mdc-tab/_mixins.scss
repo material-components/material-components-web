@@ -28,7 +28,7 @@
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/theme';
 @use '@material/typography/typography';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/tab-indicator/mixins' as tab-indicator-mixins;
 @use './variables';
 
@@ -129,7 +129,7 @@
 
   .mdc-tab:not(.mdc-tab--stacked) .mdc-tab__icon + .mdc-tab__text-label {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(padding, left, 8px);
+      @include rtl.reflexive-box(padding, left, 8px);
     }
   }
 }

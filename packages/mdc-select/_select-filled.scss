@@ -22,7 +22,7 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/menu-surface/mixins' as menu-surface-mixins;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use './select-icon-theme';
 @use './select-theme';
 
@@ -71,7 +71,7 @@
 
     .mdc-floating-label {
       @include feature-targeting.targets($feat-structure) {
-        @include rtl-mixins.reflexive-position(
+        @include rtl.reflexive-position(
           left,
           select-theme.$outline-label-offset
         );

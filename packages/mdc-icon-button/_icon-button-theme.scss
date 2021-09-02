@@ -31,7 +31,7 @@
 @use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl;
+@use '@material/rtl/rtl';
 @use '@material/theme/keys';
 @use '@material/theme/state';
 @use '@material/theme/theme';
@@ -269,7 +269,7 @@ $light-theme: (
   .mdc-button__icon {
     @include rtl.rtl {
       @include feature-targeting.targets($feat-structure) {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         transform: rotate(180deg);
       }
     }

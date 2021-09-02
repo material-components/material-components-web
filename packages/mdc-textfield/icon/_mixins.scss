@@ -24,7 +24,7 @@
 // stylelint-disable selector-class-pattern
 
 @use 'sass:math';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/theme/theme';
 @use '@material/feature-targeting/feature-targeting';
 @use './variables';
@@ -128,7 +128,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(
+    @include rtl.reflexive-property(
       margin,
       variables.$leading-icon-padding-left,
       variables.$leading-icon-padding-right
@@ -145,7 +145,7 @@
     $right-margin: variables.$trailing-icon-padding-right - $padding;
 
     padding: $padding;
-    @include rtl-mixins.reflexive-property(margin, $left-margin, $right-margin);
+    @include rtl.reflexive-property(margin, $left-margin, $right-margin);
   }
 }
 

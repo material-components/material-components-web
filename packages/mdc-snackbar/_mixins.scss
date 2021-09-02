@@ -25,7 +25,7 @@
 @use '@material/button/button-theme';
 @use '@material/icon-button/icon-button-theme';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/typography/typography';
 @use '@material/elevation/mixins' as elevation-mixins;
@@ -104,7 +104,7 @@
     }
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, 0, variables.$padding);
+      @include rtl.reflexive-property(padding, 0, variables.$padding);
 
       display: flex;
       align-items: center;
@@ -148,7 +148,7 @@
     @include typography.typography(variables.$label-type-scale, $query: $query);
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, 16px, variables.$padding);
+      @include rtl.reflexive-property(padding, 16px, variables.$padding);
 
       width: 100%;
       flex-grow: 1;
@@ -210,7 +210,7 @@
 
   .mdc-snackbar__action + .mdc-snackbar__dismiss {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(margin, variables.$padding, 0);
+      @include rtl.reflexive-property(margin, variables.$padding, 0);
     }
   }
   // postcss-bem-linter: end
@@ -311,7 +311,7 @@
 
   .mdc-snackbar__label {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(padding, 16px, 8px);
+      @include rtl.reflexive-property(padding, 16px, 8px);
       padding-bottom: 12px;
     }
   }

@@ -30,7 +30,7 @@
 @use '@material/dom/mixins' as dom;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/icon-button/icon-button-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/typography/typography';
 @use './data-table-theme';
 @use './data-table-cell';
@@ -48,11 +48,11 @@
       overflow: hidden;
       outline: none;
 
-      /* @noflip */
+      @include rtl.ignore-next-line();
       text-align: left;
 
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         text-align: right;
       }
     }
@@ -68,8 +68,8 @@
     }
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         text-align: left;
       }
     }
@@ -87,12 +87,12 @@
     }
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, left, 4px);
+      @include rtl.reflexive-box(margin, left, 4px);
     }
 
     .mdc-data-table__header-cell--numeric & {
       @include feature-targeting.targets($feat-structure) {
-        @include rtl-mixins.reflexive-box(margin, right, 4px);
+        @include rtl.reflexive-box(margin, right, 4px);
       }
     }
 

@@ -34,7 +34,7 @@
 @use '@material/elevation/mixins';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/icon-button/icon-button-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/select/select-theme';
 @use '@material/shape/functions' as shape-functions;
 @use '@material/shape/mixins' as shape-mixins;
@@ -274,7 +274,7 @@ $pagination-rows-per-page-select-height: 36px;
     @include feature-targeting.targets($feat-structure) {
       @include theme.property(border-top-left-radius, $top-left-radius);
 
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         @include theme.property(
           border-top-right-radius,
           if($rtl-reflexive, $top-left-radius, $top-right-radius)
@@ -289,7 +289,7 @@ $pagination-rows-per-page-select-height: 36px;
     @include feature-targeting.targets($feat-structure) {
       @include theme.property(border-top-right-radius, $top-right-radius);
 
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         @include theme.property(
           border-top-left-radius,
           if($rtl-reflexive, $top-right-radius, $top-left-radius)
@@ -413,7 +413,7 @@ $pagination-rows-per-page-select-height: 36px;
       }
       $leading-padding: $leading-padding -
         math.div($checkbox-touch-size - $checkbox-icon-size, 2);
-      @include rtl-mixins.reflexive-property(padding, $leading-padding, 0);
+      @include rtl.reflexive-property(padding, $leading-padding, 0);
     }
   }
 }

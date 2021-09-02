@@ -26,6 +26,7 @@
 @use 'sass:math';
 @use '@material/base/mixins' as base-mixins;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
 
 $height: 48px !default;
 $width: $height !default;
@@ -63,7 +64,7 @@ $width: $height !default;
 
   @if $set-width {
     @include feature-targeting.targets($feat-structure) {
-      /* @noflip */
+      @include rtl.ignore-next-line();
       left: 50%;
       width: $width;
       transform: translate(-50%, -50%);

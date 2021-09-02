@@ -24,7 +24,7 @@
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/notched-outline/variables' as notched-outline-variables;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use './select-icon-theme';
 @use './select-theme';
 
@@ -112,7 +112,7 @@
       @include feature-targeting.targets($feat-structure) {
         line-height: 1.15rem;
 
-        @include rtl-mixins.reflexive-position(
+        @include rtl.reflexive-position(
           left,
           notched-outline-variables.$padding
         );

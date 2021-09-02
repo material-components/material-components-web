@@ -26,7 +26,7 @@
 
 @use 'sass:list';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/typography/typography';
 
 @mixin core-styles($query: feature-targeting.all()) {
@@ -43,8 +43,8 @@
       text-align: left;
       text-overflow: ellipsis;
 
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         text-align: right;
       }
     }
@@ -56,8 +56,8 @@
     }
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         text-align: left;
       }
     }

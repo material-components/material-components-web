@@ -48,7 +48,7 @@
 @use 'icon/mixins' as icon-mixins;
 @use 'icon/variables' as icon-variables;
 @use './variables';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 
 @mixin core-styles($query: feature-targeting.all()) {
   @include ripple($query);
@@ -763,7 +763,7 @@
   }
 
   $keyframe-suffix-rtl: #{$keyframe-suffix}-rtl;
-  @include rtl-mixins.rtl {
+  @include rtl.rtl {
     @include floating-label-mixins.shake-animation(
       $keyframe-suffix,
       $query: $query
@@ -1119,7 +1119,7 @@
     &.mdc-text-field--with-leading-icon {
       @if ($top-right-is-custom-prop) {
         @include feature-targeting.targets($feat-structure) {
-          /* @noflip */
+          @include rtl.ignore-next-line();
           padding-left: 0;
         }
         @include _apply-outline-shape-padding(
@@ -1128,14 +1128,14 @@
           $query: $query
         );
 
-        @include rtl-mixins.rtl {
+        @include rtl.rtl {
           @include _apply-outline-shape-padding(
             padding-left,
             $top-right-radius,
             $query: $query
           );
           @include feature-targeting.targets($feat-structure) {
-            /* @noflip */
+            @include rtl.ignore-next-line();
             padding-right: 0;
           }
         }
@@ -1157,13 +1157,13 @@
           $query: $query
         );
         @include feature-targeting.targets($feat-structure) {
-          /* @noflip */
+          @include rtl.ignore-next-line();
           padding-right: 0;
         }
 
-        @include rtl-mixins.rtl {
+        @include rtl.rtl {
           @include feature-targeting.targets($feat-structure) {
-            /* @noflip */
+            @include rtl.ignore-next-line();
             padding-left: 0;
           }
           @include _apply-outline-shape-padding(
@@ -1226,7 +1226,7 @@
     // Normally base horizontal padding doesn't need RTL, but if the values
     // are different or they are two different custom properties, they need to
     // be reversed.
-    @include rtl-mixins.rtl {
+    @include rtl.rtl {
       @include _apply-outline-shape-padding(
         padding-right,
         $top-left-radius,
@@ -1269,7 +1269,7 @@
         $value: $padding-px + notched-outline-variables.$padding;
       }
 
-      /* @noflip */
+      @include rtl.ignore-next-line();
       #{$property}: $value;
       @if ($padding-is-custom-prop) {
         // Add an alternate GSS tag b/c this was an IE11 fallback and we're
@@ -1290,7 +1290,7 @@
         // A max() function makes this runtime dynamic. The padding will be
         // whichever is greater: the default horizontal padding, or the calculated
         // custom property plus extra padding.
-        /* @noflip */
+        @include rtl.ignore-next-line();
         #{$property}: max(#{variables.$padding-horizontal}, #{$value});
       }
     }
@@ -1410,11 +1410,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(
-      padding,
-      0,
-      variables.$padding-horizontal
-    );
+    @include rtl.reflexive-property(padding, 0, variables.$padding-horizontal);
   }
 }
 
@@ -1422,11 +1418,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-property(
-      padding,
-      variables.$padding-horizontal,
-      0
-    );
+    @include rtl.reflexive-property(padding, variables.$padding-horizontal, 0);
   }
 }
 
@@ -1434,9 +1426,9 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    /* @noflip */
+    @include rtl.ignore-next-line();
     padding-left: 0;
-    /* @noflip */
+    @include rtl.ignore-next-line();
     padding-right: 0;
   }
 }
@@ -1493,7 +1485,7 @@
 
   .mdc-floating-label {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, variables.$label-offset);
+      @include rtl.reflexive-position(left, variables.$label-offset);
     }
   }
 
@@ -1577,10 +1569,7 @@
 
   .mdc-floating-label {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(
-        left,
-        notched-outline-variables.$padding
-      );
+      @include rtl.reflexive-position(left, notched-outline-variables.$padding);
     }
   }
 }
@@ -1768,7 +1757,7 @@
   .mdc-floating-label {
     @include _truncate-floating-label-max-width($icon-padding, $query: $query);
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, $icon-padding);
+      @include rtl.reflexive-position(left, $icon-padding);
     }
   }
 
@@ -1828,7 +1817,7 @@
 
   .mdc-floating-label {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, $left-spacing);
+      @include rtl.reflexive-position(left, $left-spacing);
     }
   }
 
@@ -2001,7 +1990,7 @@
   @include feature-targeting.targets($feat-structure) {
     transform: translateX($x) translateY($y);
 
-    @include rtl-mixins.rtl {
+    @include rtl.rtl {
       // Flip the horizontal shifting direction for RTL
       transform: translateX(-1 * $x) translateY($y);
     }
@@ -2018,7 +2007,7 @@
   @include feature-targeting.targets($feat-structure) {
     transform: translateX($x) translateY($y);
 
-    @include rtl-mixins.rtl {
+    @include rtl.rtl {
       // Flip the horizontal shifting direction for RTL
       transform: translateX(-1 * $x) translateY($y);
     }
@@ -2303,11 +2292,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-box(
-      padding,
-      right,
-      variables.$prefix-padding
-    );
+    @include rtl.reflexive-box(padding, right, variables.$prefix-padding);
   }
 }
 
@@ -2315,7 +2300,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-box(
+    @include rtl.reflexive-box(
       padding,
       right,
       variables.$prefix-end-aligned-padding
@@ -2327,7 +2312,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-box(padding, left, variables.$suffix-padding);
+    @include rtl.reflexive-box(padding, left, variables.$suffix-padding);
   }
 }
 
@@ -2335,7 +2320,7 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.reflexive-box(
+    @include rtl.reflexive-box(
       padding,
       left,
       variables.$suffix-end-aligned-padding
@@ -2350,13 +2335,13 @@
   .mdc-text-field__input {
     @include feature-targeting.targets($feat-structure) {
       // IE11 does not support text-align: end
-      /* @noflip */
+      @include rtl.ignore-next-line();
       text-align: right;
     }
 
-    @include rtl-mixins.rtl {
+    @include rtl.rtl {
       @include feature-targeting.targets($feat-structure) {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         text-align: left;
       }
     }
@@ -2369,24 +2354,24 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.rtl {
+    @include rtl.rtl {
       .mdc-text-field__input,
       .mdc-text-field__affix {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         direction: ltr;
       }
 
       .mdc-text-field__affix--prefix {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         padding-left: 0;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         padding-right: variables.$prefix-padding;
       }
 
       .mdc-text-field__affix--suffix {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         padding-left: variables.$suffix-padding;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         padding-right: 0;
       }
 
@@ -2422,22 +2407,22 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @include rtl-mixins.rtl {
+    @include rtl.rtl {
       .mdc-text-field__input {
         // IE11 does not support text-align: end, so we need to duplicate
         // the LTR end-aligned style here.
-        /* @noflip */
+        @include rtl.ignore-next-line();
         text-align: right;
       }
 
       .mdc-text-field__affix--prefix {
         // padding-left: 0 provided by _ltr-text mixin
-        /* @noflip */
+        @include rtl.ignore-next-line();
         padding-right: variables.$prefix-end-aligned-padding;
       }
 
       .mdc-text-field__affix--suffix {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         padding-left: variables.$suffix-end-aligned-padding;
         // padding-right: 0 provided by _ltr-text mixin
       }

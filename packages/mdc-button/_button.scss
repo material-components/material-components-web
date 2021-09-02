@@ -24,7 +24,7 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/typography/typography';
 @use './button-base';

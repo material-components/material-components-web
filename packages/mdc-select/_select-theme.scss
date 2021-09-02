@@ -38,7 +38,7 @@
 @use '@material/list/evolution-mixins' as list-evolution-mixins;
 @use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/notched-outline/variables' as notched-outline-variables;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/shape/functions' as shape-functions;
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/custom-properties';
@@ -441,9 +441,9 @@ $error-color: error !default;
         $query: $query
       );
 
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         @include feature-targeting.targets($feat-structure) {
-          /* @noflip */
+          @include rtl.ignore-next-line();
           padding-left: 0;
         }
         @include _apply-outline-shape-padding(
@@ -463,9 +463,9 @@ $error-color: error !default;
         $query: $query
       );
 
-      @include rtl-mixins.rtl {
+      @include rtl.rtl {
         @include feature-targeting.targets($feat-structure) {
-          /* @noflip */
+          @include rtl.ignore-next-line();
           margin-left: 0;
         }
         @include _apply-outline-shape-padding(
@@ -870,7 +870,7 @@ $error-color: error !default;
         $value: $padding-px + notched-outline-variables.$padding;
       }
 
-      /* @noflip */
+      @include rtl.ignore-next-line();
       #{$property}: $value;
       @include gss.annotate(
         (
@@ -891,7 +891,7 @@ $error-color: error !default;
         // A max() function makes this runtime dynamic. The padding will be
         // whichever is greater: the default horizontal padding, or the
         // calculated custom property plus extra padding.
-        /* @noflip */
+        @include rtl.ignore-next-line();
         #{$property}: max(#{$anchor-padding-left}, #{$value});
       }
     }
@@ -957,7 +957,7 @@ $error-color: error !default;
 
   .mdc-floating-label {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, $icon-total-width);
+      @include rtl.reflexive-position(left, $icon-total-width);
     }
   }
 }
@@ -986,7 +986,7 @@ $error-color: error !default;
   // Resting label position
   .mdc-floating-label {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(left, $resting-position-x);
+      @include rtl.reflexive-position(left, $resting-position-x);
     }
   }
 
@@ -1012,7 +1012,7 @@ $error-color: error !default;
   }
 
   $keyframe-suffix-rtl: #{$keyframe-suffix}-rtl;
-  @include rtl-mixins.rtl {
+  @include rtl.rtl {
     @include floating-label-mixins.shake-animation(
       $keyframe-suffix,
       $query: $query

@@ -29,7 +29,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/theme/theme';
 @use './functions';
 @use './variables';
@@ -248,10 +248,7 @@ $deprecated-suffix: '-deprecated' !default;
 
   .mdc-switch__thumb-underlay {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(
-        left,
-        $tap-target-initial-position
-      );
+      @include rtl.reflexive-position(left, $tap-target-initial-position);
 
       // Ensures the knob is centered on the track.
       top: -(math.div($ripple-size - variables.$track-height, 2));
@@ -334,7 +331,7 @@ $deprecated-suffix: '-deprecated' !default;
 }
 
 @mixin native-control_ {
-  @include rtl-mixins.reflexive-position(left, 0);
+  @include rtl.reflexive-position(left, 0);
 
   position: absolute;
   top: 0;
@@ -371,7 +368,7 @@ $deprecated-suffix: '-deprecated' !default;
 @mixin thumb-underlay-checked_ {
   transform: translateX(variables.$thumb-active-margin);
 
-  @include rtl-mixins.rtl {
+  @include rtl.rtl {
     transform: translateX(-(variables.$thumb-active-margin));
   }
 }
@@ -380,7 +377,7 @@ $deprecated-suffix: '-deprecated' !default;
   // Translate the native control the opposite direction so that the tap target stays the same.
   transform: translateX(-(variables.$thumb-active-margin));
 
-  @include rtl-mixins.rtl {
+  @include rtl.rtl {
     transform: translateX(variables.$thumb-active-margin);
   }
 }

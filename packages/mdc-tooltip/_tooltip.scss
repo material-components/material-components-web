@@ -122,7 +122,7 @@ $_caret-size: 24px;
         // Moves the rich tooltip out of the viewport/parent element initially
         // so that the initial width is not affected and a 'correct' width can
         // be used to calculate the position of the tooltip.
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: -$_rich_max_width;
         position: absolute;
       }
@@ -170,10 +170,10 @@ $_caret-size: 24px;
 
     .mdc-tooltip--multiline & {
       @include feature-targeting.targets($feat-structure) {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         text-align: left;
         @include rtl.rtl {
-          /* @noflip */
+          @include rtl.ignore-next-line();
           text-align: right;
         }
       }
@@ -196,10 +196,10 @@ $_caret-size: 24px;
       @include feature-targeting.targets($feat-structure) {
         max-width: calc(100% - 2 * #{$_content-margin});
         margin: $_content-margin;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         text-align: left;
         @include rtl.rtl {
-          /* @noflip */
+          @include rtl.ignore-next-line();
           text-align: right;
         }
       }

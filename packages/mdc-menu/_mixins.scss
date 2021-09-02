@@ -26,7 +26,7 @@
 @use 'sass:math';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/list/mixins' as list-mixins;
 @use '@material/list/variables' as list-variables;
 @use '@material/ripple/ripple';
@@ -105,7 +105,7 @@
 
     .mdc-deprecated-list-item {
       @include feature-targeting.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(
+        @include rtl.reflexive-property(
           padding,
           56px,
           list-variables.$deprecated-side-padding
@@ -116,7 +116,7 @@
     // Extra specificity required to override `display` property on `mdc-deprecated-list-item__graphic`.
     .mdc-menu__selection-group-icon {
       @include feature-targeting.targets($feat-structure) {
-        @include rtl-mixins.reflexive-position(left, 16px);
+        @include rtl.reflexive-position(left, 16px);
 
         display: none;
         position: absolute;

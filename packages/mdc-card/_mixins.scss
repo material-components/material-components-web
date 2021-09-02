@@ -28,7 +28,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
 @use './variables';
@@ -222,7 +222,7 @@ $ripple-target: '.mdc-card__ripple';
 
   .mdc-card__action-buttons + .mdc-card__action-icons {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, left, 16px);
+      @include rtl.reflexive-box(margin, left, 16px);
     }
   }
 
@@ -252,14 +252,14 @@ $ripple-target: '.mdc-card__ripple';
 
   .mdc-card__action--button {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-box(margin, right, 8px);
+      @include rtl.reflexive-box(margin, right, 8px);
 
       padding: 0 8px;
     }
 
     &:last-child {
       @include feature-targeting.targets($feat-structure) {
-        @include rtl-mixins.reflexive-box(margin, right, 0);
+        @include rtl.reflexive-box(margin, right, 0);
       }
     }
   }
@@ -272,13 +272,13 @@ $ripple-target: '.mdc-card__ripple';
       max-height: none;
       margin: 0;
       padding: 8px 16px;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       text-align: left;
     }
 
-    @include rtl-mixins.rtl {
+    @include rtl.rtl {
       @include feature-targeting.targets($feat-structure) {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         text-align: right;
       }
     }

@@ -26,8 +26,9 @@
 @use 'sass:list';
 @use 'sass:meta';
 @use 'sass:selector';
-@use '@material/theme/theme';
+@use '@material/theme/gss';
 @use '@material/theme/selector-ext';
+@use '@material/theme/theme';
 
 $include: true !default;
 
@@ -327,6 +328,17 @@ $include: true !default;
       @include _property($right-property, $left-value, $replace: $left-replace);
     }
   }
+}
+
+///
+/// Adds RTL ignore annotation when `$mdc-rtl-include` is true.
+///
+@mixin ignore-next-line() {
+  @include gss.annotate(
+    (
+      noflip: $include,
+    )
+  );
 }
 
 ///

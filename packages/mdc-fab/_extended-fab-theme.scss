@@ -27,7 +27,7 @@
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
 @use '@material/theme/css';
@@ -189,7 +189,7 @@ $custom-property-prefix: 'extended-fab';
     $end: calc(icon - label);
   }
 
-  @include rtl-mixins.reflexive-property(
+  @include rtl.reflexive-property(
     margin,
     $start,
     $end,

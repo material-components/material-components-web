@@ -24,7 +24,7 @@
 // stylelint-disable selector-class-pattern
 
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/theme/theme';
 @use '@material/typography/typography';
 @use './variables';
@@ -49,12 +49,8 @@
     // stylelint-disable-next-line selector-max-type
     > label {
       @include feature-targeting.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(margin, 0, auto);
-        @include rtl-mixins.reflexive-property(
-          padding,
-          variables.$item-spacing,
-          0
-        );
+        @include rtl.reflexive-property(margin, 0, auto);
+        @include rtl.reflexive-property(padding, variables.$item-spacing, 0);
 
         order: 0;
       }
@@ -75,12 +71,8 @@
     // stylelint-disable-next-line selector-max-type
     > label {
       @include feature-targeting.targets($feat-structure) {
-        @include rtl-mixins.reflexive-property(margin, auto, 0);
-        @include rtl-mixins.reflexive-property(
-          padding,
-          0,
-          variables.$item-spacing
-        );
+        @include rtl.reflexive-property(margin, auto, 0);
+        @include rtl.reflexive-property(padding, 0, variables.$item-spacing);
 
         order: -1;
       }
@@ -97,7 +89,7 @@
       @include feature-targeting.targets($feat-structure) {
         margin: 0;
 
-        @include rtl-mixins.rtl {
+        @include rtl.rtl {
           // RTL needed for specificity
           margin: 0;
         }

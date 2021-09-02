@@ -26,6 +26,7 @@
 @use 'sass:math';
 @use '@material/animation/functions' as animation-functions;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/rtl/rtl';
 @use '@material/theme/gss';
 @use '@material/theme/theme';
 @use './variables';
@@ -53,7 +54,7 @@
     @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
       position: relative;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       direction: ltr;
       line-height: 0;
     }
@@ -108,7 +109,7 @@
     @include feature-targeting.targets($feat-structure) {
       position: absolute;
       top: 0;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       left: 47.5%;
       box-sizing: border-box;
       width: 5%;
@@ -118,7 +119,7 @@
 
     .mdc-circular-progress__indeterminate-circle-graphic {
       @include feature-targeting.targets($feat-structure) {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: -900%;
         width: 2000%;
         transform: rotate(180deg);
@@ -145,7 +146,7 @@
   .mdc-circular-progress__circle-right {
     .mdc-circular-progress__indeterminate-circle-graphic {
       @include feature-targeting.targets($feat-structure) {
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: -100%;
       }
     }
