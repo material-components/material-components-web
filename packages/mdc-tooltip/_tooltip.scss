@@ -212,6 +212,12 @@ $_caret-size: 24px;
     }
   }
 
+  .mdc-tooltip--rich-actions {
+    @include feature-targeting.targets($feat-structure) {
+      z-index: 1;
+    }
+  }
+
   .mdc-tooltip__surface-animation {
     @include feature-targeting.targets($feat-structure) {
       opacity: 0;
