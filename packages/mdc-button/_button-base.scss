@@ -82,24 +82,6 @@
     }
   }
 
-  // TODO: figure out the correct place for this rule.
-  .mdc-button--raised,
-  .mdc-button--unelevated,
-  .mdc-button--outlined {
-    .mdc-button__icon {
-      @include feature-targeting.targets($feat-structure) {
-        // Icons inside contained buttons have different styles due to increased button padding
-        @include icon-contained;
-      }
-    }
-
-    .mdc-button__label + .mdc-button__icon {
-      @include feature-targeting.targets($feat-structure) {
-        @include icon-contained-trailing;
-      }
-    }
-  }
-
   .mdc-button--touch {
     // Touch target doesn't change with height. It simply gets removed if
     // density (height) changes. Therefore, it is a static style.

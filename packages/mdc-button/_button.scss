@@ -113,4 +113,22 @@
 // @deprecated - use styles() instead.
 @mixin core-styles($query: feature-targeting.all()) {
   @include styles($query: $query);
+  // TODO: remove this rule since padding now takes care of icon margins.
+  $feat-structure: feature-targeting.create-target($query, structure);
+  .mdc-button--raised,
+  .mdc-button--unelevated,
+  .mdc-button--outlined {
+    .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        // Icons inside contained buttons have different styles due to increased button padding
+        @include button-base.icon-contained;
+      }
+    }
+
+    .mdc-button__label + .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        @include button-base.icon-contained-trailing;
+      }
+    }
+  }
 }
