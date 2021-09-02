@@ -1203,6 +1203,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
             scaleX})`);
     this.adapter.setTooltipCaretStyle(
         'transform-origin', `${values.xAlignment} ${values.yAlignment}`);
+    for (const corner of values.caretCorners) {
+      this.adapter.setTooltipCaretStyle(corner, '0');
+    }
     return {
       yTransformOrigin: values.yTransformOrigin,
       xTransformOrigin: values.xTransformOrigin
@@ -1215,7 +1218,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
    */
   private calculateCaretPositionOnTooltip(
       tooltipPos: PositionWithCaret,
-      caretSize: {caretWidth: number, caretHeight: number}) {
+      caretSize: {caretWidth: number, caretHeight: number}): CaretPosOnTooltip
+      |undefined {
     const isLTR = !this.adapter.isRTL();
     const tooltipWidth = this.adapter.getComputedStyleProperty('width');
     const tooltipHeight = this.adapter.getComputedStyleProperty('height');
@@ -1233,6 +1237,10 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     const indentedFromHeight = `calc(${tooltipHeight} - ${indentedFromEdge})`;
     const verticalRotation = 35;
     const horizontalRotation = Math.abs(90 - verticalRotation);
+    const bottomRightTopLeftBorderRadius =
+        ['border-bottom-right-radius', 'border-top-left-radius'];
+    const bottomLeftTopRightBorderRadius =
+        ['border-bottom-left-radius', 'border-top-right-radius'];
     const skewDeg = 20;
 
     switch (tooltipPos) {
@@ -1246,6 +1254,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: -1 * skewDeg,
           xTransformOrigin: midpointWidth,
           yTransformOrigin: flushWithEdge,
+          caretCorners: bottomRightTopLeftBorderRadius,
         };
       case PositionWithCaret.BELOW_END:
         return {
@@ -1257,6 +1266,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: isLTR ? skewDeg : -1 * skewDeg,
           xTransformOrigin: isLTR ? indentedFromWidth : indentedFromEdge,
           yTransformOrigin: flushWithEdge,
+          caretCorners: isLTR ? bottomLeftTopRightBorderRadius :
+                                bottomRightTopLeftBorderRadius,
         };
       case PositionWithCaret.BELOW_START:
         return {
@@ -1268,6 +1279,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: isLTR ? -1 * skewDeg : skewDeg,
           xTransformOrigin: isLTR ? indentedFromEdge : indentedFromWidth,
           yTransformOrigin: flushWithEdge,
+          caretCorners: isLTR ? bottomRightTopLeftBorderRadius :
+                                bottomLeftTopRightBorderRadius,
         };
 
       case PositionWithCaret.TOP_SIDE_END:
@@ -1280,6 +1293,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: isLTR ? -1 * skewDeg : skewDeg,
           xTransformOrigin: isLTR ? flushWithEdge : tooltipWidth,
           yTransformOrigin: indentedFromEdge,
+          caretCorners: isLTR ? bottomRightTopLeftBorderRadius :
+                                bottomLeftTopRightBorderRadius,
         };
       case PositionWithCaret.CENTER_SIDE_END:
         return {
@@ -1291,6 +1306,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: isLTR ? -1 * skewDeg : skewDeg,
           xTransformOrigin: isLTR ? flushWithEdge : tooltipWidth,
           yTransformOrigin: midpointHeight,
+          caretCorners: isLTR ? bottomRightTopLeftBorderRadius :
+                                bottomLeftTopRightBorderRadius,
         };
       case PositionWithCaret.BOTTOM_SIDE_END:
         return {
@@ -1302,6 +1319,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: isLTR ? skewDeg : -1 * skewDeg,
           xTransformOrigin: isLTR ? flushWithEdge : tooltipWidth,
           yTransformOrigin: indentedFromHeight,
+          caretCorners: isLTR ? bottomLeftTopRightBorderRadius :
+                                bottomRightTopLeftBorderRadius,
         };
 
       case PositionWithCaret.TOP_SIDE_START:
@@ -1314,6 +1333,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: isLTR ? skewDeg : -1 * skewDeg,
           xTransformOrigin: isLTR ? tooltipWidth : flushWithEdge,
           yTransformOrigin: indentedFromEdge,
+          caretCorners: isLTR ? bottomLeftTopRightBorderRadius :
+                                bottomRightTopLeftBorderRadius,
         };
       case PositionWithCaret.CENTER_SIDE_START:
         return {
@@ -1325,6 +1346,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: isLTR ? skewDeg : -1 * skewDeg,
           xTransformOrigin: isLTR ? tooltipWidth : flushWithEdge,
           yTransformOrigin: midpointHeight,
+          caretCorners: isLTR ? bottomLeftTopRightBorderRadius :
+                                bottomRightTopLeftBorderRadius,
         };
       case PositionWithCaret.BOTTOM_SIDE_START:
         return {
@@ -1336,6 +1359,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: isLTR ? -1 * skewDeg : skewDeg,
           xTransformOrigin: isLTR ? tooltipWidth : flushWithEdge,
           yTransformOrigin: indentedFromHeight,
+          caretCorners: isLTR ? bottomRightTopLeftBorderRadius :
+                                bottomLeftTopRightBorderRadius,
         };
 
       case PositionWithCaret.ABOVE_CENTER:
@@ -1348,6 +1373,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: skewDeg,
           xTransformOrigin: midpointWidth,
           yTransformOrigin: tooltipHeight,
+          caretCorners: bottomLeftTopRightBorderRadius,
         };
       case PositionWithCaret.ABOVE_END:
         return {
@@ -1359,6 +1385,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: isLTR ? -1 * skewDeg : skewDeg,
           xTransformOrigin: isLTR ? indentedFromWidth : indentedFromEdge,
           yTransformOrigin: tooltipHeight,
+          caretCorners: isLTR ? bottomRightTopLeftBorderRadius :
+                                bottomLeftTopRightBorderRadius,
         };
       default:
       case PositionWithCaret.ABOVE_START:
@@ -1371,6 +1399,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
           skew: isLTR ? skewDeg : -1 * skewDeg,
           xTransformOrigin: isLTR ? indentedFromEdge : indentedFromWidth,
           yTransformOrigin: tooltipHeight,
+          caretCorners: isLTR ? bottomLeftTopRightBorderRadius :
+                                bottomRightTopLeftBorderRadius,
         };
     }
   }
@@ -1460,6 +1490,36 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
 
     this.animFrame.cancelAll();
   }
+}
+
+interface CaretPosOnTooltip {
+  // Either 'top' or 'bottom', indicating which should be used with the yAxisPx
+  // value to position the caret.
+  yAlignment: string;
+  // Either 'left' or 'right', indicating which should be used with the xAxisPx
+  // value to position the caret.
+  xAlignment: string;
+  // Indicates the vertical px alignment of the caret.
+  yAxisPx: string;
+  // Indicates the horizontal px alignment of the caret.
+  xAxisPx: string;
+  // Value (in degrees) by which the caret will be rotated.
+  rotation: number;
+  // Value (in degrees) by which the caret will be skewed.
+  skew: number;
+  // The x-axis of the transform-origin property for the whole tooltip. This
+  // ensures that, during the opening animation of the tooltip, it expands from
+  // the caret.
+  xTransformOrigin: string;
+  // The y-axis of the transform-origin property for the whole tooltip. This
+  // ensures that, during the opening animation of the tooltip, it expands from
+  // the caret.
+  yTransformOrigin: string;
+  // List of border-radius properites (e.g. border-radius-top-left, etc) that
+  // indicate which corners of the caret element should have a border-radius of
+  // 0. Certain corners use a 0 border radius to ensure a clean junction between
+  // the tooltip and the caret.
+  caretCorners: Array<string>;
 }
 
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
