@@ -29,7 +29,7 @@ import {MDCFloatingLabelFoundation} from './foundation';
 export type MDCFloatingLabelFactory = (el: Element, foundation?: MDCFloatingLabelFoundation) => MDCFloatingLabel;
 
 export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
-  static attachTo(root: Element): MDCFloatingLabel {
+  static override attachTo(root: Element): MDCFloatingLabel {
     return new MDCFloatingLabel(root);
   }
 
@@ -61,7 +61,7 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
     return this.foundation.getWidth();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

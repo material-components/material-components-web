@@ -29,15 +29,15 @@ import {cssClasses, strings} from './constants';
 export class MDCCircularProgressFoundation extends
     MDCFoundation<MDCCircularProgressAdapter> implements
         MDCProgressIndicatorFoundation {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCCircularProgressAdapter {
+  static override get defaultAdapter(): MDCCircularProgressAdapter {
     return {
       addClass: () => undefined,
       getDeterminateCircleAttribute: () => null,
@@ -58,7 +58,7 @@ export class MDCCircularProgressFoundation extends
     super({...MDCCircularProgressFoundation.defaultAdapter, ...adapter});
   }
 
-  init() {
+  override init() {
     this.closed = this.adapter.hasClass(cssClasses.CLOSED_CLASS);
     this.determinate = !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
     this.progress = 0;

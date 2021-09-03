@@ -29,7 +29,7 @@ import {WithMDCResizeObserver} from './types';
 
 export class MDCLinearProgress extends
     MDCComponent<MDCLinearProgressFoundation> implements MDCProgressIndicator {
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCLinearProgress(root);
   }
 
@@ -53,13 +53,13 @@ export class MDCLinearProgress extends
     this.foundation.close();
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.root.addEventListener('transitionend', () => {
       this.foundation.handleTransitionEnd();
     });
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

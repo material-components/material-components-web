@@ -36,7 +36,7 @@ const {CHIP_SELECTOR} = MDCChipSetFoundation.strings;
 let idCounter = 0;
 
 export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCChipSet(root);
   }
 
@@ -65,12 +65,12 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   /**
    * @param chipFactory A function which creates a new MDCChip.
    */
-  initialize(chipFactory: MDCChipFactory = (el) => new MDCChip(el)) {
+  override initialize(chipFactory: MDCChipFactory = (el) => new MDCChip(el)) {
     this.chipFactory = chipFactory;
     this.chipsList = this.instantiateChips(this.chipFactory);
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     for (const chip of this.chipsList) {
       if (chip.id && chip.selected) {
         this.foundation.select(chip.id);
@@ -91,7 +91,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.listen(NAVIGATION_EVENT, this.handleChipNavigation);
   }
 
-  destroy() {
+  override destroy() {
     for (const chip of this.chipsList) {
       chip.destroy();
     }
@@ -112,7 +112,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.chipsList.push(this.chipFactory(chipEl));
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {

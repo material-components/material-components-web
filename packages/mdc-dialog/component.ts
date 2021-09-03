@@ -63,7 +63,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.foundation.setAutoStackButtons(autoStack);
   }
 
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCDialog(root);
   }
 
@@ -86,8 +86,9 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private handleOpening!: EventListener;  // assigned in initialSyncWithDOM()
   private handleClosing!: () => void;     // assigned in initialSyncWithDOM()
 
-  initialize(
-      focusTrapFactory: MDCDialogFocusTrapFactory = (el, focusOptions) => new FocusTrap(el, focusOptions),
+  override initialize(
+      focusTrapFactory: MDCDialogFocusTrapFactory = (el, focusOptions) =>
+          new FocusTrap(el, focusOptions),
   ) {
     const container =
         this.root.querySelector<HTMLElement>(strings.CONTAINER_SELECTOR);
@@ -109,7 +110,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     }
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.focusTrap = util.createFocusTrapInstance(
         this.container, this.focusTrapFactory,
         this.getInitialFocusEl() || undefined);
@@ -133,7 +134,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.listen(strings.CLOSING_EVENT, this.handleClosing);
   }
 
-  destroy() {
+  override destroy() {
     this.unlisten('click', this.handleClick);
     this.unlisten('keydown', this.handleKeydown);
     this.unlisten(strings.OPENING_EVENT, this.handleOpening);
@@ -158,7 +159,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.foundation.close(action);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCDialogAdapter = {

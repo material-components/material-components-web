@@ -27,14 +27,14 @@ import {MDCFloatingLabelAdapter} from './adapter';
 import {cssClasses} from './constants';
 
 export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
   /**
    * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCFloatingLabelAdapter {
+  static override get defaultAdapter(): MDCFloatingLabelAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -57,12 +57,12 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
     };
   }
 
-  init() {
+  override init() {
     this.adapter.registerInteractionHandler(
         'animationend', this.shakeAnimationEndHandler);
   }
 
-  destroy() {
+  override destroy() {
     this.adapter.deregisterInteractionHandler(
         'animationend', this.shakeAnimationEndHandler);
   }

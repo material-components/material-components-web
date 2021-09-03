@@ -30,15 +30,15 @@ import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get defaultAdapter(): MDCChipSetAdapter {
+  static override get defaultAdapter(): MDCChipSetAdapter {
     return {
       announceMessage: () => undefined,
       focusChipPrimaryActionAtIndex: () => undefined,

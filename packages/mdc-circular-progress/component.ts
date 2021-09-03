@@ -31,12 +31,12 @@ export class MDCCircularProgress extends
         MDCProgressIndicator {
   private determinateCircle!: HTMLElement;
 
-  initialize() {
+  override initialize() {
     this.determinateCircle = this.root.querySelector<HTMLElement>(
         MDCCircularProgressFoundation.strings.DETERMINATE_CIRCLE_SELECTOR)!;
   }
 
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCCircularProgress(root);
   }
 
@@ -79,7 +79,7 @@ export class MDCCircularProgress extends
     this.foundation.close();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

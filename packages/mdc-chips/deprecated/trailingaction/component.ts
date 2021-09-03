@@ -46,7 +46,7 @@ export class MDCChipTrailingAction extends
     return this.rippleSurface;
   }
 
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCChipTrailingAction(root);
   }
 
@@ -56,7 +56,7 @@ export class MDCChipTrailingAction extends
   private handleKeydown!:
       SpecificEventListener<'keydown'>;  // assigned in initialSyncWithDOM()
 
-  initialize(
+  override initialize(
       rippleFactory: MDCRippleFactory = (el, foundation) =>
           new MDCRipple(el, foundation)) {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
@@ -67,7 +67,7 @@ export class MDCChipTrailingAction extends
         rippleFactory(this.root, new MDCRippleFoundation(rippleAdapter));
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleClick = (evt: MouseEvent) => {
       this.foundation.handleClick(evt);
     };
@@ -79,14 +79,14 @@ export class MDCChipTrailingAction extends
     this.listen('keydown', this.handleKeydown);
   }
 
-  destroy() {
+  override destroy() {
     this.rippleSurface.destroy();
     this.unlisten('click', this.handleClick);
     this.unlisten('keydown', this.handleKeydown);
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

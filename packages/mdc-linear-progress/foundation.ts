@@ -32,15 +32,15 @@ import {MDCResizeObserver} from './types';
 export class MDCLinearProgressFoundation extends
     MDCFoundation<MDCLinearProgressAdapter> implements
         MDCProgressIndicatorFoundation {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCLinearProgressAdapter {
+  static override get defaultAdapter(): MDCLinearProgressAdapter {
     return {
       addClass: () => undefined,
       attachResizeObserver: () => null,
@@ -65,7 +65,7 @@ export class MDCLinearProgressFoundation extends
     super({...MDCLinearProgressFoundation.defaultAdapter, ...adapter});
   }
 
-  init() {
+  override init() {
     this.determinate = !this.adapter.hasClass(cssClasses.INDETERMINATE_CLASS);
     this.adapter.addClass(cssClasses.ANIMATION_READY_CLASS);
     this.progress = 0;
@@ -168,7 +168,7 @@ export class MDCLinearProgressFoundation extends
     }
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
 
     if (this.observer) {

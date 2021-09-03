@@ -35,19 +35,19 @@ enum AnimationKeys {
 }
 
 export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCDialogAdapter {
+  static override get defaultAdapter(): MDCDialogAdapter {
     return {
       addBodyClass: () => undefined,
       addClass: () => undefined,
@@ -109,14 +109,14 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     };
   }
 
-  init() {
+  override init() {
     if (this.adapter.hasClass(cssClasses.STACKED)) {
       this.setAutoStackButtons(false);
     }
     this.isFullscreen = this.adapter.hasClass(cssClasses.FULLSCREEN);
   }
 
-  destroy() {
+  override destroy() {
     if (this.animationTimer) {
       clearTimeout(this.animationTimer);
       this.handleAnimationTimerEnd();

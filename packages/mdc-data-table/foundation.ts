@@ -32,7 +32,7 @@ import {RowClickEventData, SortActionEventData} from './types';
  * logic requiring DOM manipulation are delegated to adapter methods.
  */
 export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
-  static get defaultAdapter(): MDCDataTableAdapter {
+  static override get defaultAdapter(): MDCDataTableAdapter {
     return {
       addClass: () => undefined,
       addClassAtRowIndex: () => undefined,

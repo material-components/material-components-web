@@ -27,14 +27,14 @@ import {MDCLineRippleAdapter} from './adapter';
 import {cssClasses} from './constants';
 
 export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
   /**
    * See {@link MDCLineRippleAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCLineRippleAdapter {
+  static override get defaultAdapter(): MDCLineRippleAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -57,12 +57,12 @@ export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter>
     };
   }
 
-  init() {
+  override init() {
     this.adapter.registerEventHandler(
         'transitionend', this.transitionEndHandler);
   }
 
-  destroy() {
+  override destroy() {
     this.adapter.deregisterEventHandler(
         'transitionend', this.transitionEndHandler);
   }

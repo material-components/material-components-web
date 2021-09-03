@@ -35,19 +35,19 @@ function isNumberArray(selectedIndex: MDCListIndex): selectedIndex is number[] {
 }
 
 export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCListAdapter {
+  static override get defaultAdapter(): MDCListAdapter {
     return {
       addClassForElementIndex: () => undefined,
       focusItemAtIndex: () => undefined,

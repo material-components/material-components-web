@@ -29,11 +29,11 @@ import {InteractionTrigger, strings} from './constants';
 
 export class MDCChipTrailingActionFoundation extends
     MDCFoundation<MDCChipTrailingActionAdapter> {
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCChipTrailingActionAdapter {
+  static override get defaultAdapter(): MDCChipTrailingActionAdapter {
     return {
       focus: () => undefined,
       getAttribute: () => null,
