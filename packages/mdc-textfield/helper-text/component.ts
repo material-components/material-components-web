@@ -29,7 +29,7 @@ export type MDCTextFieldHelperTextFactory =
     (el: Element, foundation?: MDCTextFieldHelperTextFoundation) => MDCTextFieldHelperText;
 
 export class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextFoundation> {
-  static attachTo(root: Element): MDCTextFieldHelperText {
+  static override attachTo(root: Element): MDCTextFieldHelperText {
     return new MDCTextFieldHelperText(root);
   }
 
@@ -38,7 +38,7 @@ export class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextF
     return this.foundation;
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

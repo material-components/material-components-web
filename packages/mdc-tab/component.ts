@@ -34,7 +34,7 @@ import {MDCTabDimensions, MDCTabInteractionEventDetail} from './types';
 export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) => MDCTab;
 
 export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleCapableSurface {
-  static attachTo(root: Element): MDCTab {
+  static override attachTo(root: Element): MDCTab {
     return new MDCTab(root);
   }
 
@@ -46,9 +46,11 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
   private handleClick!:
       SpecificEventListener<'click'>;  // assigned in initialize();
 
-  initialize(
-      rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-      tabIndicatorFactory: MDCTabIndicatorFactory = (el) => new MDCTabIndicator(el),
+  override initialize(
+      rippleFactory:
+          MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
+      tabIndicatorFactory:
+          MDCTabIndicatorFactory = (el) => new MDCTabIndicator(el),
   ) {
     this.id = this.root.id;
     const rippleFoundation =
@@ -62,20 +64,20 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
         MDCTabFoundation.strings.CONTENT_SELECTOR)!;
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleClick = () => {
       this.foundation.handleClick();
     };
     this.listen('click', this.handleClick);
   }
 
-  destroy() {
+  override destroy() {
     this.unlisten('click', this.handleClick);
     this.ripple.destroy();
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

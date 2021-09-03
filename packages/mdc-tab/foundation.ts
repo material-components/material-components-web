@@ -27,15 +27,15 @@ import {cssClasses, strings} from './constants';
 import {MDCTabDimensions} from './types';
 
 export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCTabAdapter {
+  static override get defaultAdapter(): MDCTabAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,

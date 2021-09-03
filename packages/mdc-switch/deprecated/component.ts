@@ -33,7 +33,7 @@ import {MDCSwitchAdapter} from './adapter';
 import {MDCSwitchFoundation} from './foundation';
 
 export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCRippleCapableSurface {
-  static attachTo(root: HTMLElement) {
+  static override attachTo(root: HTMLElement) {
     return new MDCSwitch(root);
   }
 
@@ -42,13 +42,13 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
   // Initialized in `initialSyncWithDOM`.
   private changeHandler!: EventListener;
 
-  destroy() {
+  override destroy() {
     super.destroy();
     this.rippleSurface.destroy();
     this.nativeControl.removeEventListener('change', this.changeHandler);
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.changeHandler = (...args) => {
       this.foundation.handleChange(...args);
     };
@@ -60,7 +60,7 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
     this.checked = this.checked;
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSwitchAdapter = {

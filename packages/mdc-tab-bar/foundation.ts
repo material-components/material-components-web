@@ -45,15 +45,15 @@ KEYCODE_MAP.set(numbers.ENTER_KEYCODE, strings.ENTER_KEY);
 KEYCODE_MAP.set(numbers.SPACE_KEYCODE, strings.SPACE_KEY);
 
 export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCTabBarAdapter {
+  static override get defaultAdapter(): MDCTabBarAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       scrollTo: () => undefined,

@@ -32,7 +32,7 @@ import {MDCShortTopAppBarFoundation} from './short/foundation';
 import {MDCTopAppBarFoundation} from './standard/foundation';
 
 export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
-  static attachTo(root: Element): MDCTopAppBar {
+  static override attachTo(root: Element): MDCTopAppBar {
     return new MDCTopAppBar(root);
   }
 
@@ -46,7 +46,8 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   private iconRipples!: MDCRipple[];
   private scrollTarget!: EventTarget;
 
-  initialize(rippleFactory: MDCRippleFactory = (el) => MDCRipple.attachTo(el)) {
+  override initialize(
+      rippleFactory: MDCRippleFactory = (el) => MDCRipple.attachTo(el)) {
     this.navIcon = this.root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
 
     // Get all icons in the toolbar and instantiate the ripples
@@ -65,7 +66,7 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     this.scrollTarget = window;
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleNavigationClick =
         this.foundation.handleNavigationClick.bind(this.foundation);
     this.handleWindowResize =
@@ -89,7 +90,7 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     }
   }
 
-  destroy() {
+  override destroy() {
     for (const iconRipple of this.iconRipples) {
       iconRipple.destroy();
     }
@@ -122,7 +123,7 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
         'scroll', this.handleTargetScroll as EventListener);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

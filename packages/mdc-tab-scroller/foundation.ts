@@ -31,15 +31,15 @@ import {MDCTabScrollerRTL} from './rtl-scroller';
 import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './types';
 
 export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCTabScrollerAdapter {
+  static override get defaultAdapter(): MDCTabScrollerAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       eventTargetMatchesSelector: () => false,
@@ -75,7 +75,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
     super({...MDCTabScrollerFoundation.defaultAdapter, ...adapter});
   }
 
-  init() {
+  override init() {
     // Compute horizontal scrollbar height on scroller with overflow initially hidden, then update overflow to scroll
     // and immediately adjust bottom margin to avoid the scrollbar initially appearing before JS runs.
     const horizontalScrollbarHeight =

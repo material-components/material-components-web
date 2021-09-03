@@ -29,7 +29,7 @@ import {AnchorBoundaryType, CssClasses, events, PositionWithCaret, XPosition, YP
 import {MDCTooltipFoundation} from './foundation';
 
 export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCTooltip(root);
   }
 
@@ -45,7 +45,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   private handleTouchstart!: SpecificEventListener<'touchstart'>;
   private handleTouchend!: SpecificEventListener<'touchend'>;
 
-  initialize() {
+  override initialize() {
     const tooltipId = this.root.getAttribute('id');
     if (!tooltipId) {
       throw new Error('MDCTooltip: Tooltip component must have an id.');
@@ -62,7 +62,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     this.anchorElem = anchorElem;
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.isTooltipRich = this.foundation.isRich();
     this.isTooltipPersistent = this.foundation.isPersistent();
 
@@ -108,7 +108,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     this.listen('transitionend', this.handleTransitionEnd);
   }
 
-  destroy() {
+  override destroy() {
     if (this.anchorElem) {
       if (this.isTooltipRich && this.isTooltipPersistent) {
         this.anchorElem.removeEventListener('click', this.handleClick);
@@ -179,7 +179,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     this.foundation.removeScrollHandler(removeEventHandlerFn);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     const adapter: MDCTooltipAdapter = {
       getAttribute: (attr) => this.root.getAttribute(attr),
       setAttribute: (attr, value) => {

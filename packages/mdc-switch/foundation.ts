@@ -43,7 +43,7 @@ export class MDCSwitchFoundation extends
   /**
    * Initializes the foundation and starts observing state changes.
    */
-  init() {
+  override init() {
     this.observe(this.adapter.state, {
       disabled: this.stopProcessingIfDisabled,
       processing: this.stopProcessingIfDisabled,
@@ -79,12 +79,12 @@ export class MDCSwitchFoundation extends
  * render adapter to keep the component's DOM updated with the state.
  */
 export class MDCSwitchRenderFoundation extends MDCSwitchFoundation {
-  protected adapter!: MDCSwitchRenderAdapter;
+  protected override adapter!: MDCSwitchRenderAdapter;
 
   /**
    * Initializes the foundation and starts observing state changes.
    */
-  init() {
+  override init() {
     super.init();
     this.observe(this.adapter.state, {
       disabled: this.onDisabledChange,

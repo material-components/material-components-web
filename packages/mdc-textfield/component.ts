@@ -43,7 +43,7 @@ import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon/component';
 import {MDCTextFieldFoundationMap} from './types';
 
 export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements MDCRippleCapableSurface {
-  static attachTo(root: Element): MDCTextField {
+  static override attachTo(root: Element): MDCTextField {
     return new MDCTextField(root);
   }
 
@@ -64,14 +64,18 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   private prefix!: Element|null;                     // assigned in initialize()
   private suffix!: Element|null;                     // assigned in initialize()
 
-  initialize(
-      rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
+  override initialize(
+      rippleFactory:
+          MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
       lineRippleFactory: MDCLineRippleFactory = (el) => new MDCLineRipple(el),
-      helperTextFactory: MDCTextFieldHelperTextFactory = (el) => new MDCTextFieldHelperText(el),
-      characterCounterFactory: MDCTextFieldCharacterCounterFactory = (el) => new MDCTextFieldCharacterCounter(el),
+      helperTextFactory: MDCTextFieldHelperTextFactory = (el) =>
+          new MDCTextFieldHelperText(el),
+      characterCounterFactory: MDCTextFieldCharacterCounterFactory = (el) =>
+          new MDCTextFieldCharacterCounter(el),
       iconFactory: MDCTextFieldIconFactory = (el) => new MDCTextFieldIcon(el),
       labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
-      outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
+      outlineFactory:
+          MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
   ) {
     this.input =
         this.root.querySelector<HTMLInputElement>(strings.INPUT_SELECTOR)!;
@@ -121,7 +125,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     this.ripple = this.createRipple(rippleFactory);
   }
 
-  destroy() {
+  override destroy() {
     if (this.ripple) {
       this.ripple.destroy();
     }
@@ -153,7 +157,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
    * Initializes the Text Field's internal state based on the environment's
    * state.
    */
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.disabled = this.input.disabled;
   }
 
@@ -362,7 +366,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     this.foundation.notchOutline(openNotch);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

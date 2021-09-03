@@ -26,18 +26,18 @@ import {MDCTextFieldHelperTextAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextFieldHelperTextAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /**
    * See {@link MDCTextFieldHelperTextAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCTextFieldHelperTextAdapter {
+  static override get defaultAdapter(): MDCTextFieldHelperTextAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,

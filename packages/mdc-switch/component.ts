@@ -42,7 +42,7 @@ export class MDCSwitch extends
    * @param root The root to attach to.
    * @return the new component instance.
    */
-  static attachTo(root: HTMLButtonElement) {
+  static override attachTo(root: HTMLButtonElement) {
     return new MDCSwitch(root);
   }
 
@@ -55,15 +55,16 @@ export class MDCSwitch extends
   private rippleElement!: Element;
 
   constructor(
-      public root: HTMLButtonElement, foundation?: MDCSwitchRenderFoundation) {
+      public override root: HTMLButtonElement,
+      foundation?: MDCSwitchRenderFoundation) {
     super(root, foundation);
   }
 
-  initialize() {
+  override initialize() {
     this.ripple = new MDCRipple(this.root, this.createRippleFoundation());
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     const rippleElement = this.root.querySelector(Selectors.RIPPLE);
     if (!rippleElement) {
       throw new Error(`Switch ${Selectors.RIPPLE} element is required.`);
@@ -74,13 +75,13 @@ export class MDCSwitch extends
     this.foundation.initFromDOM();
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
     this.ripple.destroy();
     this.root.removeEventListener('click', this.foundation.handleClick);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     return new MDCSwitchRenderFoundation(this.createAdapter());
   }
 

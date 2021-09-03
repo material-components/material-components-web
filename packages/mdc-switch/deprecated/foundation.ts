@@ -27,17 +27,17 @@ import {cssClasses, strings} from './constants';
 
 export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   /** The string constants used by the switch. */
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /** The CSS classes used by the switch. */
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
   /** The default Adapter for the switch. */
-  static get defaultAdapter(): MDCSwitchAdapter {
+  static override get defaultAdapter(): MDCSwitchAdapter {
     return {
       addClass: () => undefined,
       removeClass: () => undefined,

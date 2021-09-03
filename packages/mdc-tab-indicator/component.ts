@@ -31,13 +31,13 @@ import {MDCSlidingTabIndicatorFoundation} from './sliding-foundation';
 export type MDCTabIndicatorFactory = (el: Element, foundation?: MDCTabIndicatorFoundation) => MDCTabIndicator;
 
 export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
-  static attachTo(root: Element): MDCTabIndicator {
+  static override attachTo(root: Element): MDCTabIndicator {
     return new MDCTabIndicator(root);
   }
 
   private content!: HTMLElement;  // assigned in initialize()
 
-  initialize() {
+  override initialize() {
     this.content = this.root.querySelector<HTMLElement>(
         MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
   }
@@ -46,7 +46,7 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     return this.foundation.computeContentClientRect();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

@@ -36,7 +36,7 @@ const {strings} = MDCTabBarFoundation;
 let tabIdCounter = 0;
 
 export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
-  static attachTo(root: Element): MDCTabBar {
+  static override attachTo(root: Element): MDCTabBar {
     return new MDCTabBar(root);
   }
 
@@ -58,15 +58,16 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
     this.foundation.setUseAutomaticActivation(useAutomaticActivation);
   }
 
-  initialize(
+  override initialize(
       tabFactory: MDCTabFactory = (el) => new MDCTab(el),
-      tabScrollerFactory: MDCTabScrollerFactory = (el) => new MDCTabScroller(el),
+      tabScrollerFactory:
+          MDCTabScrollerFactory = (el) => new MDCTabScroller(el),
   ) {
     this.tabList = this.instantiateTabs(tabFactory);
     this.tabScroller = this.instantiatetabScroller(tabScrollerFactory);
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleTabInteraction = (evt) => {
       this.foundation.handleTabInteraction(evt);
     };
@@ -86,7 +87,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
     }
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
     this.unlisten(
         MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction);
@@ -100,7 +101,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
     }
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

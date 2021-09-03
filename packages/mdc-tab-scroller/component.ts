@@ -34,7 +34,7 @@ type InteractionEventType = 'wheel' | 'touchstart' | 'pointerdown' | 'mousedown'
 export type MDCTabScrollerFactory = (el: Element, foundation?: MDCTabScrollerFoundation) => MDCTabScroller;
 
 export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
-  static attachTo(root: Element): MDCTabScroller {
+  static override attachTo(root: Element): MDCTabScroller {
     return new MDCTabScroller(root);
   }
 
@@ -47,14 +47,14 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
       SpecificEventListener<'transitionend'>;  // assigned in
                                                // initialSyncWithDOM()
 
-  initialize() {
+  override initialize() {
     this.area = this.root.querySelector<HTMLElement>(
         MDCTabScrollerFoundation.strings.AREA_SELECTOR)!;
     this.content = this.root.querySelector<HTMLElement>(
         MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)!;
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleInteraction = () => {
       this.foundation.handleInteraction();
     };
@@ -74,7 +74,7 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
     this.content.addEventListener('transitionend', this.handleTransitionEnd);
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
 
     this.area.removeEventListener(
@@ -90,7 +90,7 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
     this.content.removeEventListener('transitionend', this.handleTransitionEnd);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

@@ -31,18 +31,18 @@ type InteractionEventType = 'click' | 'keydown';
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
 export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> {
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
   /**
    * See {@link MDCTextFieldIconAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCTextFieldIconAdapter {
+  static override get defaultAdapter(): MDCTextFieldIconAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getAttr: () => null,
@@ -68,7 +68,7 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
     };
   }
 
-  init() {
+  override init() {
     this.savedTabIndex = this.adapter.getAttr('tabindex');
 
     for (const evtType of INTERACTION_EVENTS) {
@@ -76,7 +76,7 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
     }
   }
 
-  destroy() {
+  override destroy() {
     for (const evtType of INTERACTION_EVENTS) {
       this.adapter.deregisterInteractionHandler(
           evtType, this.interactionHandler);

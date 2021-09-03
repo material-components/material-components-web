@@ -48,7 +48,7 @@ enum AnimationKeys {
 const HAS_WINDOW = typeof window !== 'undefined';
 
 export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
-  static get defaultAdapter(): MDCTooltipAdapter {
+  static override get defaultAdapter(): MDCTooltipAdapter {
     return {
       getAttribute: () => null,
       setAttribute: () => undefined,
@@ -162,7 +162,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     };
   }
 
-  init() {
+  override init() {
     this.richTooltip = this.adapter.hasClass(RICH);
     this.persistentTooltip =
         this.adapter.getAttribute(attributes.PERSISTENT) === 'true';
@@ -1446,7 +1446,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
 
-  destroy() {
+  override destroy() {
     if (this.frameId) {
       cancelAnimationFrame(this.frameId);
       this.frameId = null;

@@ -37,15 +37,15 @@ const POINTERDOWN_EVENTS: PointerDownEventType[] = ['mousedown', 'touchstart'];
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
 export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
@@ -67,7 +67,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * See {@link MDCTextFieldAdapter} for typing information on parameters and
    * return types.
    */
-  static get defaultAdapter(): MDCTextFieldAdapter {
+  static override get defaultAdapter(): MDCTextFieldAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -155,7 +155,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     };
   }
 
-  init() {
+  override init() {
     if (this.adapter.hasLabel() && this.getNativeInput().required) {
       this.adapter.setLabelRequired(true);
     }
@@ -187,7 +187,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.setcharacterCounter(this.getValue().length);
   }
 
-  destroy() {
+  override destroy() {
     this.adapter.deregisterInputInteractionHandler(
         'focus', this.inputFocusHandler);
     this.adapter.deregisterInputInteractionHandler(
