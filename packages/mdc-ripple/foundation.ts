@@ -67,19 +67,19 @@ const POINTER_DEACTIVATION_EVENT_TYPES: DeactivationEventType[] = [
 let activatedTargets: Array<EventTarget | null> = [];
 
 export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCRippleAdapter {
+  static override get defaultAdapter(): MDCRippleAdapter {
     return {
       addClass: () => undefined,
       browserSupportsCssVars: () => true,
@@ -146,7 +146,7 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     };
   }
 
-  init() {
+  override init() {
     const supportsPressRipple = this.supportsPressRipple();
 
     this.registerRootHandlers(supportsPressRipple);
@@ -164,7 +164,7 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     }
   }
 
-  destroy() {
+  override destroy() {
     if (this.supportsPressRipple()) {
       if (this.activationTimer) {
         clearTimeout(this.activationTimer);

@@ -36,7 +36,7 @@ const {
 } = strings;
 
 export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCSnackbar(root);
   }
 
@@ -51,11 +51,12 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   private handleSurfaceClick!:
       SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
 
-  initialize(announcerFactory: MDCSnackbarAnnouncerFactory = () => util.announce) {
+  override initialize(
+      announcerFactory: MDCSnackbarAnnouncerFactory = () => util.announce) {
     this.announce = announcerFactory();
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.surfaceEl = this.root.querySelector(SURFACE_SELECTOR)!;
     this.labelEl = this.root.querySelector(LABEL_SELECTOR)!;
     this.actionEl = this.root.querySelector(ACTION_SELECTOR)!;
@@ -76,7 +77,7 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     this.registerSurfaceClickHandler(this.handleSurfaceClick);
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
     this.deregisterKeyDownHandler(this.handleKeyDown);
     this.deregisterSurfaceClickHandler(this.handleSurfaceClick);
@@ -95,7 +96,7 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     this.foundation.close(reason);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSnackbarAdapter = {

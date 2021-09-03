@@ -29,19 +29,19 @@ const {OPENING, OPEN, CLOSING} = cssClasses;
 const {REASON_ACTION, REASON_DISMISS} = strings;
 
 export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCSnackbarAdapter {
+  static override get defaultAdapter(): MDCSnackbarAdapter {
     return {
       addClass: () => undefined,
       announce: () => undefined,
@@ -64,7 +64,7 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     super({...MDCSnackbarFoundation.defaultAdapter, ...adapter});
   }
 
-  destroy() {
+  override destroy() {
     this.clearAutoDismissTimer();
     cancelAnimationFrame(this.animationFrame);
     this.animationFrame = 0;

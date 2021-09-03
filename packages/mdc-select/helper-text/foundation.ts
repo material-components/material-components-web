@@ -26,18 +26,18 @@ import {MDCSelectHelperTextAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelperTextAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /**
    * See {@link MDCSelectHelperTextAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCSelectHelperTextAdapter {
+  static override get defaultAdapter(): MDCSelectHelperTextAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,

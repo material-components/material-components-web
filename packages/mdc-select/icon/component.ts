@@ -28,7 +28,7 @@ import {MDCSelectIconFoundation} from './foundation';
 export type MDCSelectIconFactory = (el: Element, foundation?: MDCSelectIconFoundation) => MDCSelectIcon;
 
 export class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
-  static attachTo(root: Element): MDCSelectIcon {
+  static override attachTo(root: Element): MDCSelectIcon {
     return new MDCSelectIcon(root);
   }
 
@@ -37,7 +37,7 @@ export class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
     return this.foundation;
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

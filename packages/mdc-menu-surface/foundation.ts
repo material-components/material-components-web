@@ -38,15 +38,15 @@ interface AutoLayoutMeasurements {
 
 export class MDCMenuSurfaceFoundation extends
     MDCFoundation<MDCMenuSurfaceAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
@@ -57,7 +57,7 @@ export class MDCMenuSurfaceFoundation extends
   /**
    * @see {@link MDCMenuSurfaceAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCMenuSurfaceAdapter {
+  static override get defaultAdapter(): MDCMenuSurfaceAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -128,7 +128,7 @@ export class MDCMenuSurfaceFoundation extends
     super({...MDCMenuSurfaceFoundation.defaultAdapter, ...adapter});
   }
 
-  init() {
+  override init() {
     const {ROOT, OPEN} = MDCMenuSurfaceFoundation.cssClasses;
 
     if (!this.adapter.hasClass(ROOT)) {
@@ -140,7 +140,7 @@ export class MDCMenuSurfaceFoundation extends
     }
   }
 
-  destroy() {
+  override destroy() {
     clearTimeout(this.openAnimationEndTimerId);
     clearTimeout(this.closeAnimationEndTimerId);
     // Cancel any currently running animations.

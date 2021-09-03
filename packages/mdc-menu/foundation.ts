@@ -28,15 +28,15 @@ import {MDCMenuAdapter} from './adapter';
 import {cssClasses, DefaultFocusState, numbers, strings} from './constants';
 
 export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
@@ -47,7 +47,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   /**
    * @see {@link MDCMenuAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCMenuAdapter {
+  static override get defaultAdapter(): MDCMenuAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClassToElementAtIndex: () => undefined,
@@ -71,7 +71,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     super({...MDCMenuFoundation.defaultAdapter, ...adapter});
   }
 
-  destroy() {
+  override destroy() {
     if (this.closeAnimationEndTimerId) {
       clearTimeout(this.closeAnimationEndTimerId);
     }

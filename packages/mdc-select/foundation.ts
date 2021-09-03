@@ -32,22 +32,22 @@ import {MDCSelectIconFoundation} from './icon/foundation';
 import {MDCSelectFoundationMap} from './types';
 
 export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /**
    * See {@link MDCSelectAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCSelectAdapter {
+  static override get defaultAdapter(): MDCSelectAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -443,7 +443,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     return this.adapter.getSelectAnchorAttr('aria-required') === 'true';
   }
 
-  init() {
+  override init() {
     const anchorEl = this.adapter.getAnchorElement();
     if (anchorEl) {
       this.adapter.setMenuAnchorElement(anchorEl);

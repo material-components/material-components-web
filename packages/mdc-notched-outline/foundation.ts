@@ -26,22 +26,22 @@ import {MDCNotchedOutlineAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
 export class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutlineAdapter> {
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
   /**
    * See {@link MDCNotchedOutlineAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCNotchedOutlineAdapter {
+  static override get defaultAdapter(): MDCNotchedOutlineAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,

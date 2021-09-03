@@ -31,7 +31,7 @@ import {MDCRadioAdapter} from './adapter';
 import {MDCRadioFoundation} from './foundation';
 
 export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRippleCapableSurface {
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCRadio(root);
   }
 
@@ -65,12 +65,12 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
 
   private readonly rippleSurface: MDCRipple = this.createRipple();
 
-  destroy() {
+  override destroy() {
     this.rippleSurface.destroy();
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCRadioAdapter = {

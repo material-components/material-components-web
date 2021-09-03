@@ -33,7 +33,7 @@ import {MDCSegmentedButtonFoundation} from './foundation';
 
 export class MDCSegmentedButton extends
     MDCComponent<MDCSegmentedButtonFoundation> {
-  static attachTo(root: Element): MDCSegmentedButton {
+  static override attachTo(root: Element): MDCSegmentedButton {
     return new MDCSegmentedButton(root);
   }
 
@@ -48,7 +48,7 @@ export class MDCSegmentedButton extends
       CustomEventListener<MDCSegmentedButtonEvent>;  // assigned in
                                                      // initialSyncWithDOM
 
-  initialize(
+  override initialize(
       segmentFactory: MDCSegmentedButtonSegmentFactory = (el) =>
           new MDCSegmentedButtonSegment(el)) {
     this.segmentFactory = segmentFactory;
@@ -66,7 +66,7 @@ export class MDCSegmentedButton extends
     return segmentElements.map((el: Element) => segmentFactory(el));
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleSelected = (event) => {
       this.foundation.handleSelected(event.detail);
     };
@@ -91,7 +91,7 @@ export class MDCSegmentedButton extends
     }
   }
 
-  destroy() {
+  override destroy() {
     for (const segment of this.segmentsList) {
       segment.destroy();
     }
@@ -101,7 +101,7 @@ export class MDCSegmentedButton extends
     super.destroy();
   }
 
-  getDefaultFoundation(): MDCSegmentedButtonFoundation {
+  override getDefaultFoundation(): MDCSegmentedButtonFoundation {
     const adapter: MDCSegmentedButtonAdapter = {
       hasClass: (className) => {
         return this.root.classList.contains(className);

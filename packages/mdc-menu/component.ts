@@ -40,7 +40,7 @@ import {MDCMenuItemComponentEventDetail} from './types';
 export type MDCMenuFactory = (el: Element, foundation?: MDCMenuFoundation) => MDCMenu;
 
 export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCMenu(root);
   }
 
@@ -59,14 +59,15 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   private handleMenuSurfaceOpened!:
       EventListener;  // assigned in initialSyncWithDOM()
 
-  initialize(
-      menuSurfaceFactory: MDCMenuSurfaceFactory = (el) => new MDCMenuSurface(el),
+  override initialize(
+      menuSurfaceFactory:
+          MDCMenuSurfaceFactory = (el) => new MDCMenuSurface(el),
       listFactory: MDCListFactory = (el) => new MDCList(el)) {
     this.menuSurfaceFactory = menuSurfaceFactory;
     this.listFactory = listFactory;
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.menuSurface = this.menuSurfaceFactory(this.root);
 
     const list = this.root.querySelector(strings.LIST_SELECTOR);
@@ -94,7 +95,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.listen(MDCListFoundation.strings.ACTION_EVENT, this.handleItemAction);
   }
 
-  destroy() {
+  override destroy() {
     if (this.list) {
       this.list.destroy();
     }
@@ -305,7 +306,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.menuSurface.anchorElement = element;
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

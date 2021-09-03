@@ -31,14 +31,14 @@ type InteractionEventType = 'click' | 'keydown';
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
 export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /**
    * See {@link MDCSelectIconAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCSelectIconAdapter {
+  static override get defaultAdapter(): MDCSelectIconAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getAttr: () => null,
@@ -66,7 +66,7 @@ export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter>
     };
   }
 
-  init() {
+  override init() {
     this.savedTabIndex = this.adapter.getAttr('tabindex');
 
     for (const evtType of INTERACTION_EVENTS) {
@@ -74,7 +74,7 @@ export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter>
     }
   }
 
-  destroy() {
+  override destroy() {
     for (const evtType of INTERACTION_EVENTS) {
       this.adapter.deregisterInteractionHandler(
           evtType, this.interactionHandler);

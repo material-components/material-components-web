@@ -130,7 +130,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.animFrame = new AnimationFrame();
   }
 
-  static get defaultAdapter(): MDCSliderAdapter {
+  static override get defaultAdapter(): MDCSliderAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same
     // order as the adapter interface.
     return {
@@ -179,7 +179,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
-  init() {
+  override init() {
     this.isDisabled = this.adapter.hasClass(cssClasses.DISABLED);
     this.isDiscrete = this.adapter.hasClass(cssClasses.DISCRETE);
     this.hasTickMarks = this.adapter.hasClass(cssClasses.TICK_MARKS);
@@ -247,7 +247,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.registerEventHandlers();
   }
 
-  destroy() {
+  override destroy() {
     this.deregisterEventHandlers();
   }
 

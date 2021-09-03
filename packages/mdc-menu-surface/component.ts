@@ -34,7 +34,7 @@ type RegisterFunction = () => void;
 export type MDCMenuSurfaceFactory = (el: Element, foundation?: MDCMenuSurfaceFoundation) => MDCMenuSurface;
 
 export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
-  static attachTo(root: Element): MDCMenuSurface {
+  static override attachTo(root: Element): MDCMenuSurface {
     return new MDCMenuSurface(root);
   }
 
@@ -52,7 +52,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   private deregisterBodyClickListener!:
       RegisterFunction;  // assigned in initialSyncWithDOM()
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     const parentEl = this.root.parentElement;
     this.anchorElement = parentEl && parentEl.classList.contains(cssClasses.ANCHOR) ? parentEl : null;
 
@@ -83,7 +83,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.listen(strings.CLOSED_EVENT, this.deregisterBodyClickListener);
   }
 
-  destroy() {
+  override destroy() {
     this.unlisten('keydown', this.handleKeydown);
     this.unlisten(strings.OPENED_EVENT, this.registerBodyClickListener);
     this.unlisten(strings.CLOSED_EVENT, this.deregisterBodyClickListener);
@@ -144,7 +144,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.foundation.setAnchorMargin(margin);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

@@ -32,7 +32,9 @@ import * as util from './util';
 export type MDCRippleFactory = (el: Element, foundation?: MDCRippleFoundation) => MDCRipple;
 
 export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCRippleCapableSurface {
-  static attachTo(root: Element, opts: MDCRippleAttachOpts = {isUnbounded: undefined}): MDCRipple {
+  static override attachTo(root: Element, opts: MDCRippleAttachOpts = {
+    isUnbounded: undefined
+  }): MDCRipple {
     const ripple = new MDCRipple(root);
     // Only override unbounded behavior if option is explicitly specified
     if (opts.isUnbounded !== undefined) {
@@ -99,11 +101,11 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
     this.foundation.layout();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     return new MDCRippleFoundation(MDCRipple.createAdapter(this));
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     const root = this.root as HTMLElement;
     this.isUnbounded = 'mdcRippleIsUnbounded' in root.dataset;
   }

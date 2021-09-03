@@ -30,13 +30,13 @@ import {MDCNotchedOutlineFoundation} from './foundation';
 export type MDCNotchedOutlineFactory = (el: Element, foundation?: MDCNotchedOutlineFoundation) => MDCNotchedOutline;
 
 export class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation> {
-  static attachTo(root: Element): MDCNotchedOutline {
+  static override attachTo(root: Element): MDCNotchedOutline {
     return new MDCNotchedOutline(root);
   }
 
   private notchElement!: HTMLElement;  // assigned in initialSyncWithDOM()
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.notchElement =
         this.root.querySelector<HTMLElement>(strings.NOTCH_ELEMENT_SELECTOR)!;
 
@@ -68,7 +68,7 @@ export class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation>
     this.foundation.closeNotch();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
