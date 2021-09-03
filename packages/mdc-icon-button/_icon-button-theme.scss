@@ -36,7 +36,6 @@
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
-@use '@material/tokens/resolvers';
 
 $ripple-target: '.mdc-icon-button__ripple';
 
@@ -57,42 +56,32 @@ $density-config: (
 $_custom-property-prefix: 'icon-button';
 
 $light-theme: (
-  container-color: transparent,
-  container-elevation: 0,
-  container-height: $size,
-  container-shadow-color: null,
-  container-shape: $container-shape,
-  container-width: $size,
-  disabled-container-color: transparent,
-  disabled-container-elevation: 0,
-  disabled-icon-color: null,
-  icon-color: null,
+  disabled-icon-color: theme-color.$on-surface,
+  disabled-icon-opacity: 0.38,
+  icon-color: theme-color.$primary,
   icon-size: $icon-size,
-  focus-container-elevation: 0,
-  focus-icon-color: null,
-  focus-state-layer-color: theme-color.$on-surface,
+  focus-icon-color: theme-color.$primary,
+  focus-state-layer-color: theme-color.$primary,
   focus-state-layer-opacity: 0.12,
-  hover-container-elevation: 0,
-  hover-icon-color: null,
-  hover-state-layer-color: theme-color.$on-surface,
-  hover-state-layer-opacity: 0.04,
-  pressed-container-elevation: 0,
-  pressed-icon-color: null,
-  pressed-state-layer-color: theme-color.$on-surface,
-  pressed-state-layer-opacity: 0.1,
+  hover-icon-color: theme-color.$primary,
+  hover-state-layer-color: theme-color.$primary,
+  hover-state-layer-opacity: 0.08,
+  pressed-icon-color: theme-color.$primary,
+  pressed-state-layer-color: theme-color.$primary,
+  pressed-state-layer-opacity: 0.12,
+  state-layer-size: $size,
 );
 
-@mixin theme($theme, $resolver: resolvers.$material) {
+@mixin theme($theme) {
   @include theme.validate-theme($light-theme, $theme);
 
-  $theme: _resolve-theme($theme, $resolver: $resolver);
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $_custom-property-prefix
   );
 }
 
-@mixin theme-styles($theme, $resolver: resolvers.$material) {
+@mixin theme-styles($theme) {
   @include theme.validate-theme($light-theme, $theme);
 
   $theme: keys.create-theme-properties(
@@ -100,34 +89,9 @@ $light-theme: (
     $prefix: $_custom-property-prefix
   );
 
-  // Container styles
-  @include _container-color-with-map(
-    (
-      default: map.get($theme, container-color),
-      disabled: map.get($theme, disabled-container-color),
-    )
-  );
-  @include _container-size(
-    $width: map.get($theme, container-width),
-    $height: map.get($theme, container-height)
-  );
-  @include _container-shape(
-    $shape: map.get($theme, container-shape) or $container-shape
-  );
-  @include _container-elevation(
-    $resolver,
-    $elevation-map: (
-      default: map.get($theme, container-elevation),
-      disabled: map.get($theme, disabled-container-elevation),
-      focus: map.get($theme, focus-container-elevation),
-      hover: map.get($theme, hover-container-elevation),
-      pressed: map.get($theme, pressed-container-elevation)
-    ),
-    $shadow-color: map.get($theme, container-shadow-color)
-  );
-
-  // Icon styles
+  @include _state-layer-size($size: map.get($theme, state-layer-size));
   @include _icon-size(map.get($theme, icon-size));
+  @include _disabled-icon-opacity(map.get($theme, disabled-icon-opacity));
   @include _icon-color-with-map(
     (
       default: map.get($theme, icon-color),
@@ -316,96 +280,9 @@ $light-theme: (
   }
 }
 
-///
-/// Sets the container fill color to the given color.
-/// @param {map} $color-map - The desired container fill color,
-///     specified as a map of colors with states {default, disabled} as keys.
-/// @access private
-///
-@mixin _container-color-with-map($color-map) {
-  $default: state.get-default-state($color-map);
-  @if $default {
-    @include _container-color($color: $default);
-  }
-
-  $disabled: state.get-disabled-state($color-map);
-  @if $disabled {
-    &:disabled {
-      @include _container-color($color: $disabled);
-    }
-  }
-}
-
-@mixin _container-color($color) {
-  @include theme.property(background-color, $color);
-}
-
-@mixin _container-size($width, $height) {
-  @include theme.property(height, $height);
-  @include theme.property(width, $width);
-}
-
-@mixin _container-shape($shape) {
-  @include theme.property(border-radius, $shape);
-}
-
-@mixin _container-elevation($resolver, $shadow-color, $elevation-map) {
-  $elevation-resolver: map.get($resolver, elevation);
-
-  @if $shadow-color {
-    $default: state.get-default-state($elevation-map);
-    @if $default != null {
-      @include elevation-theme.with-resolver(
-        $elevation-resolver,
-        $elevation: $default,
-        $shadow-color: $shadow-color
-      );
-    }
-
-    $disabled: state.get-disabled-state($elevation-map);
-    @if $disabled != null {
-      &:disabled {
-        @include elevation-theme.with-resolver(
-          $elevation-resolver,
-          $elevation: $disabled,
-          $shadow-color: $shadow-color
-        );
-      }
-    }
-
-    $focus: state.get-focus-state($elevation-map);
-    @if $focus != null {
-      @include ripple-theme.focus {
-        @include elevation-theme.with-resolver(
-          $elevation-resolver,
-          $elevation: $focus,
-          $shadow-color: $shadow-color
-        );
-      }
-    }
-
-    $hover: state.get-hover-state($elevation-map);
-    @if $hover != null {
-      &:hover {
-        @include elevation-theme.with-resolver(
-          $elevation-resolver,
-          $elevation: $hover,
-          $shadow-color: $shadow-color
-        );
-      }
-    }
-
-    $pressed: state.get-pressed-state($elevation-map);
-    @if $pressed != null {
-      @include ripple-theme.active {
-        @include elevation-theme.with-resolver(
-          $elevation-resolver,
-          $elevation: $pressed,
-          $shadow-color: $shadow-color
-        );
-      }
-    }
-  }
+@mixin _state-layer-size($size) {
+  @include theme.property(height, $size);
+  @include theme.property(width, $size);
 }
 
 @mixin _icon-size($size) {
@@ -415,6 +292,16 @@ $light-theme: (
   img {
     @include theme.property(width, $size);
     @include theme.property(height, $size);
+  }
+}
+
+///
+/// Sets the icon opacity to the given opacity.
+/// @access private
+///
+@mixin _disabled-icon-opacity($opacity) {
+  &:disabled {
+    @include theme.property(opacity, $opacity);
   }
 }
 
@@ -476,42 +363,4 @@ $light-theme: (
   &:disabled {
     @content;
   }
-}
-
-@function _resolve-theme($theme, $resolver) {
-  @return map.merge(
-    $theme,
-    _resolve-theme-elevation(
-      $theme,
-      map.get($resolver, elevation),
-      container-elevation,
-      disabled-container-elevation,
-      focus-container-elevation,
-      hover-container-elevation,
-      pressed-container-elevation
-    )
-  );
-}
-
-@function _resolve-theme-elevation($theme, $resolver, $keys...) {
-  @if $resolver == null {
-    @return $theme;
-  }
-
-  @each $key in $keys {
-    // Resolve the value for each state key.
-    $resolved-value: map.get(
-      meta.call(
-        $resolver,
-        $elevation: map.get($theme, $key),
-        $shadow-color: map.get($theme, container-shadow-color)
-      ),
-      shadow
-    );
-
-    // Update the theme with the resolved value.
-    $theme: map.set($theme, $key, $resolved-value);
-  }
-
-  @return $theme;
 }
