@@ -28,15 +28,16 @@ import {MDCObserverFoundation} from '../observer-foundation';
 
 describe('MDCObserverFoundation', () => {
   class TestMDCObserverFoundation extends MDCObserverFoundation<{}> {
-    observe<T extends object>(target: T, observers: ObserverRecord<T, this>) {
+    override observe<T extends object>(
+        target: T, observers: ObserverRecord<T, this>) {
       return super.observe(target, observers);
     }
 
-    setObserversEnabled(target: object, enabled: boolean) {
+    override setObserversEnabled(target: object, enabled: boolean) {
       super.setObserversEnabled(target, enabled);
     }
 
-    unobserve() {
+    override unobserve() {
       super.unobserve();
     }
   }

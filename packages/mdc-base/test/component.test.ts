@@ -30,7 +30,7 @@ class FakeComponent extends MDCComponent<MDCFoundation> {
   initializeComesBeforeFoundation!: boolean;
   synced!: boolean;
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     const defaultFoundation = {
       isDefaultFoundation: true,
       init: jasmine.createSpy('init'),
@@ -39,12 +39,12 @@ class FakeComponent extends MDCComponent<MDCFoundation> {
     return defaultFoundation;
   }
 
-  initialize(...args: unknown[]) {
+  override initialize(...args: unknown[]) {
     this.initializeArgs = args;
     this.initializeComesBeforeFoundation = !this.foundation;
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.synced = true;
   }
 }

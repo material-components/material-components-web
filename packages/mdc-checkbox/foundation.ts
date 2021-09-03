@@ -26,19 +26,19 @@ import {MDCCheckboxAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
 export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCCheckboxAdapter {
+  static override get defaultAdapter(): MDCCheckboxAdapter {
     return {
       addClass: () => undefined,
       forceLayout: () => undefined,
@@ -62,13 +62,13 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     super({...MDCCheckboxFoundation.defaultAdapter, ...adapter});
   }
 
-  init() {
+  override init() {
     this.currentCheckState = this.determineCheckState();
     this.updateAriaChecked();
     this.adapter.addClass(cssClasses.UPGRADED);
   }
 
-  destroy() {
+  override destroy() {
     clearTimeout(this.animEndLatchTimer);
   }
 

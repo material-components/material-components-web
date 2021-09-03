@@ -44,7 +44,7 @@ const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 export type MDCCheckboxFactory = (el: Element, foundation?: MDCCheckboxFoundation) => MDCCheckbox;
 
 export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCRippleCapableSurface {
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCCheckbox(root);
   }
 
@@ -89,7 +89,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
   private handleAnimationEnd!:
       EventListener;  // assigned in initialSyncWithDOM()
 
-  initialize() {
+  override initialize() {
     const {DATA_INDETERMINATE_ATTR} = strings;
     this.getNativeControl().indeterminate =
         this.getNativeControl().getAttribute(DATA_INDETERMINATE_ATTR) ===
@@ -97,7 +97,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
     this.getNativeControl().removeAttribute(DATA_INDETERMINATE_ATTR);
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleChange = () => {
       this.foundation.handleChange();
     };
@@ -110,7 +110,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
     this.installPropertyChangeHooks();
   }
 
-  destroy() {
+  override destroy() {
     this.rippleSurface.destroy();
     this.getNativeControl().removeEventListener('change', this.handleChange);
     this.unlisten(
@@ -119,7 +119,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCCheckboxAdapter = {

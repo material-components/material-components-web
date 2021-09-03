@@ -52,7 +52,7 @@ enum AnimationKeys {
  * MDCChipFoundation provides a foundation for all chips.
  */
 export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
-  static get defaultAdapter(): MDCChipAdapter {
+  static override get defaultAdapter(): MDCChipAdapter {
     return {
       addClass: () => undefined,
       emitEvent: () => undefined,
@@ -81,7 +81,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.animFrame = new AnimationFrame();
   }
 
-  destroy() {
+  override destroy() {
     this.animFrame.cancelAll();
   }
 

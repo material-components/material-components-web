@@ -38,7 +38,7 @@ const {cssClasses, strings} = MDCDismissibleDrawerFoundation;
  * @events `MDCDrawer:opened {}` Emits when the navigation drawer has opened.
  */
 export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
-  static attachTo(root: Element): MDCDrawer {
+  static override attachTo(root: Element): MDCDrawer {
     return new MDCDrawer(root);
   }
 
@@ -81,7 +81,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     return this.innerList;
   }
 
-  initialize(
+  override initialize(
       focusTrapFactory: MDCDrawerFocusTrapFactory = (el) => new FocusTrap(el),
       listFactory: MDCListFactory = (el) => new MDCList(el),
   ) {
@@ -93,7 +93,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     this.focusTrapFactory = focusTrapFactory;
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     const {MODAL} = cssClasses;
     const {SCRIM_SELECTOR} = strings;
 
@@ -118,7 +118,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     this.listen('transitionend', this.handleTransitionEnd);
   }
 
-  destroy() {
+  override destroy() {
     this.unlisten('keydown', this.handleKeydown);
     this.unlisten('transitionend', this.handleTransitionEnd);
 
@@ -135,7 +135,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     }
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

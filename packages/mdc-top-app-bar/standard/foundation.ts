@@ -77,7 +77,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
     this.topAppBarHeight = this.adapter.getTopAppBarHeight();
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
     this.adapter.setStyle('top', '');
   }
@@ -86,7 +86,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * Scroll handler for the default scroll behavior of the top app bar.
    * @override
    */
-  handleTargetScroll() {
+  override handleTargetScroll() {
     const currentScrollPosition = Math.max(this.adapter.getViewportScrollY(), 0);
     const diff = currentScrollPosition - this.lastScrollPosition;
     this.lastScrollPosition = currentScrollPosition;
@@ -111,7 +111,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * Top app bar resize handler that throttle/debounce functions that execute updates.
    * @override
    */
-  handleWindowResize() {
+  override handleWindowResize() {
     // Throttle resize events 10 p/s
     if (!this.resizeThrottleId) {
       this.resizeThrottleId = setTimeout(() => {

@@ -43,7 +43,7 @@ export type MDCChipFactory = (el: Element, foundation?: MDCChipFoundation) =>
  * MDCChip provides component encapsulation of the foundation implementation.
  */
 export class MDCChip extends MDCComponent<MDCChipFoundation> {
-  static attachTo(root: Element): MDCChip {
+  static override attachTo(root: Element): MDCChip {
     return new MDCChip(root);
   }
 
@@ -54,7 +54,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
   private handleActionNavigation!: CustomEventListener<ActionNavigationEvent>;
   private actions!: Map<ActionType, MDCChipAction>;
 
-  initialize(
+  override initialize(
       actionFactory:
           MDCChipActionFactory = (el: Element) => new MDCChipAction(el)) {
     this.actions = new Map();
@@ -65,7 +65,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
     }
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleActionInteraction = (event) => {
       this.foundation.handleActionInteraction(event);
     };
@@ -78,13 +78,13 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
     this.listen(Events.NAVIGATION, this.handleActionNavigation);
   }
 
-  destroy() {
+  override destroy() {
     this.unlisten(Events.INTERACTION, this.handleActionInteraction);
     this.unlisten(Events.NAVIGATION, this.handleActionNavigation);
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

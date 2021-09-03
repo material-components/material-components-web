@@ -32,7 +32,7 @@ export class MDCObserverFoundation<Adapter> extends MDCFoundation<Adapter> {
     super(adapter);
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
     this.unobserve();
   }

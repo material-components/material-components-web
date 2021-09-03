@@ -26,15 +26,15 @@ import {MDCDrawerAdapter} from '../adapter';
 import {cssClasses, strings} from '../constants';
 
 export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get defaultAdapter(): MDCDrawerAdapter {
+  static override get defaultAdapter(): MDCDrawerAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -59,7 +59,7 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
     super({...MDCDismissibleDrawerFoundation.defaultAdapter, ...adapter});
   }
 
-  destroy() {
+  override destroy() {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
     }

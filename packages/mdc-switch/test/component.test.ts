@@ -59,21 +59,21 @@ function getFixture() {
 }
 
 class MockMDCSwitch extends MDCSwitch {
-  static attachTo(root: HTMLButtonElement) {
+  static override attachTo(root: HTMLButtonElement) {
     return new MockMDCSwitch(root);
   }
 
   adapter!: jasmine.SpyObj<MDCSwitchRenderAdapter>;
-  foundation!: jasmine.SpyObj<MDCSwitchRenderFoundation>;
+  override foundation!: jasmine.SpyObj<MDCSwitchRenderFoundation>;
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     const foundation = spyOnAllPrototypeFunctions(super.getDefaultFoundation())
                            .and.callThrough();
     this.foundation = this.foundation || foundation;
     return foundation;
   }
 
-  protected createAdapter() {
+  protected override createAdapter() {
     const adapter = spyOnAllFunctions(super.createAdapter()).and.callThrough();
     this.adapter = this.adapter || adapter;
     return adapter;

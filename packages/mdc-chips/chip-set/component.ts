@@ -38,7 +38,7 @@ import {ChipAnimationEvent, ChipInteractionEvent, ChipNavigationEvent} from './t
  * MDCChip provides component encapsulation of the foundation implementation.
  */
 export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
-  static attachTo(root: Element): MDCChipSet {
+  static override attachTo(root: Element): MDCChipSet {
     return new MDCChipSet(root);
   }
 
@@ -48,7 +48,8 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   private handleChipNavigation!: CustomEventListener<ChipNavigationEvent>;
   private chips!: MDCChip[];
 
-  initialize(chipFactory: MDCChipFactory = (el: Element) => new MDCChip(el)) {
+  override initialize(
+      chipFactory: MDCChipFactory = (el: Element) => new MDCChip(el)) {
     this.chips = [];
     const chipEls = this.root.querySelectorAll(`.${CssClasses.CHIP}`);
     for (let i = 0; i < chipEls.length; i++) {
@@ -57,7 +58,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     }
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleChipAnimation = (event) => {
       this.foundation.handleChipAnimation(event);
     };
@@ -75,14 +76,14 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.listen(Events.NAVIGATION, this.handleChipNavigation);
   }
 
-  destroy() {
+  override destroy() {
     this.unlisten(Events.ANIMATION, this.handleChipAnimation);
     this.unlisten(Events.INTERACTION, this.handleChipInteraction);
     this.unlisten(Events.NAVIGATION, this.handleChipNavigation);
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

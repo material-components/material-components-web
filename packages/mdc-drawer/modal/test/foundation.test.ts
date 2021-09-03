@@ -26,11 +26,11 @@ import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../../testing/
 import {MDCModalDrawerFoundation} from '../foundation';
 
 class MDCModalDrawerFoundationTest extends MDCModalDrawerFoundation {
-  opened() {
+  override opened() {
     super.opened();
   }
 
-  closed() {
+  override closed() {
     super.closed();
   }
 }

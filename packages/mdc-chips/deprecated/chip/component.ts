@@ -83,7 +83,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     return this.root.id;
   }
 
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCChip(root);
   }
 
@@ -112,7 +112,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
   private handleFocusOut!:
       SpecificEventListener<'focusout'>;  // assigned in initialSyncWIthDOM()
 
-  initialize(
+  override initialize(
       rippleFactory:
           MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
       trailingActionFactory:
@@ -140,7 +140,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
         rippleFactory(this.root, new MDCRippleFoundation(rippleAdapter));
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     // Custom events
     this.handleTrailingActionInteraction = () => {
       this.foundation.handleTrailingActionInteraction();
@@ -183,7 +183,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     }
   }
 
-  destroy() {
+  override destroy() {
     this.rippleSurface.destroy();
 
     this.unlisten('transitionend', this.handleTransitionEnd);
@@ -211,7 +211,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     this.foundation.beginExit();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipAdapter = {

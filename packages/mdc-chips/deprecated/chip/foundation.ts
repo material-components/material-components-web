@@ -43,15 +43,15 @@ enum FocusBehavior {
 }
 
 export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get defaultAdapter(): MDCChipAdapter {
+  static override get defaultAdapter(): MDCChipAdapter {
     return {
       addClass: () => undefined,
       addClassToLeadingIcon: () => undefined,
