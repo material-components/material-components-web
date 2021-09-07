@@ -149,9 +149,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       isInputFocused: () => false,
       getThumbKnobWidth: () => 0,
       getThumbBoundingClientRect: () =>
-          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       getBoundingClientRect: () =>
-          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       isRTL: () => false,
       setThumbStyleProperty: () => undefined,
       removeThumbStyleProperty: () => undefined,

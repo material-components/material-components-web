@@ -53,8 +53,10 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
       getScrollAreaScrollLeft: () => 0,
       getScrollContentOffsetWidth: () => 0,
       getScrollAreaOffsetWidth: () => 0,
-      computeScrollAreaClientRect: () => ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
-      computeScrollContentClientRect: () => ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+      computeScrollAreaClientRect: () =>
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
+      computeScrollContentClientRect: () =>
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       computeHorizontalScrollbarHeight: () => 0,
     };
     // tslint:enable:object-literal-sort-keys

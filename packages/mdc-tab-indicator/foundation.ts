@@ -39,7 +39,8 @@ export abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndi
     return {
       addClass: () => undefined,
       removeClass: () => undefined,
-      computeContentClientRect: () => ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+      computeContentClientRect: () =>
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       setContentStyleProperty: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys

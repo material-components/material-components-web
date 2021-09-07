@@ -377,20 +377,20 @@ export class MDCMenuSurfaceFoundation extends
         left: this.position.x,
         width: 0,
         height: 0,
-      };
+      } as any;
       // tslint:enable:object-literal-sort-keys
     }
 
     return {
-      anchorSize: anchorRect,
+      anchorSize: anchorRect!,
       bodySize,
       surfaceSize: this.dimensions,
       viewportDistance: {
         // tslint:disable:object-literal-sort-keys Positional properties are more readable when they're grouped together
-        top: anchorRect.top,
-        right: viewportSize.width - anchorRect.right,
-        bottom: viewportSize.height - anchorRect.bottom,
-        left: anchorRect.left,
+        top: anchorRect!.top,
+        right: viewportSize.width - anchorRect!.right,
+        bottom: viewportSize.height - anchorRect!.bottom,
+        left: anchorRect!.left,
         // tslint:enable:object-literal-sort-keys
       },
       viewportSize,

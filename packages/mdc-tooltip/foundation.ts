@@ -63,9 +63,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       getViewportHeight: () => 0,
       getTooltipSize: () => ({width: 0, height: 0}),
       getAnchorBoundingRect: () =>
-          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       getParentBoundingRect: () =>
-          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       getAnchorAttribute: () => null,
       setAnchorAttribute: () => null,
       isRTL: () => false,
@@ -82,7 +82,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       deregisterWindowEventHandler: () => undefined,
       notifyHidden: () => undefined,
       getTooltipCaretBoundingRect: () =>
-          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       setTooltipCaretStyle: () => undefined,
       clearTooltipCaretStyles: () => undefined,
       getActiveElement: () => null,

@@ -35,7 +35,7 @@ const emptyClientRect = {
   right: 0,
   top: 0,
   width: 0,
-};
+} as any;
 
 enum FocusBehavior {
   SHOULD_FOCUS,
@@ -153,7 +153,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
           right: rootRect.right,
           top: rootRect.top,
           width: rootRect.width + checkmarkRect.height,
-        };
+        } as any;
       }
     }
 

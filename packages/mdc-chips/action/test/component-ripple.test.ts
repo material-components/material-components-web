@@ -33,7 +33,7 @@ describe('ripple', () => {
         left: 10,
         bottom: 42,
         right: 110,
-      };
+      } as any;
 
       expect(computePrimaryActionRippleClientRect(rect, '')).toEqual(rect);
     });
@@ -47,7 +47,7 @@ describe('ripple', () => {
            left: 10,
            bottom: 42,
            right: 110,
-         };
+         } as any;
 
          expect(computePrimaryActionRippleClientRect(rect, 'xyz'))
              .toEqual(rect);
@@ -61,7 +61,7 @@ describe('ripple', () => {
         left: 10,
         bottom: 42,
         right: 110,
-      };
+      } as any;
 
       expect(computePrimaryActionRippleClientRect(rect, '20YYpx'))
           .toEqual(rect);
@@ -75,7 +75,7 @@ describe('ripple', () => {
         left: 10,
         bottom: 42,
         right: 110,
-      };
+      } as any;
 
       expect(computePrimaryActionRippleClientRect(rect, '20px')).toEqual({
         ...rect,
