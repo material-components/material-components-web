@@ -44,32 +44,32 @@ const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 export type MDCCheckboxFactory = (el: Element, foundation?: MDCCheckboxFoundation) => MDCCheckbox;
 
 export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCRippleCapableSurface {
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCCheckbox(root);
   }
 
   get ripple(): MDCRipple {
-    return this.ripple_;
+    return this.rippleSurface;
   }
 
   get checked(): boolean {
-    return this.nativeControl_.checked;
+    return this.getNativeControl().checked;
   }
 
   set checked(checked: boolean) {
-    this.nativeControl_.checked = checked;
+    this.getNativeControl().checked = checked;
   }
 
   get indeterminate(): boolean {
-    return this.nativeControl_.indeterminate;
+    return this.getNativeControl().indeterminate;
   }
 
   set indeterminate(indeterminate: boolean) {
-    this.nativeControl_.indeterminate = indeterminate;
+    this.getNativeControl().indeterminate = indeterminate;
   }
 
   get disabled(): boolean {
-    return this.nativeControl_.disabled;
+    return this.getNativeControl().disabled;
   }
 
   set disabled(disabled: boolean) {
@@ -77,47 +77,55 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
   }
 
   get value(): string {
-    return this.nativeControl_.value;
+    return this.getNativeControl().value;
   }
 
   set value(value: string) {
-    this.nativeControl_.value = value;
+    this.getNativeControl().value = value;
   }
 
-  private readonly ripple_: MDCRipple = this.createRipple_();
-  private handleChange_!: EventListener; // assigned in initialSyncWithDOM()
-  private handleAnimationEnd_!: EventListener; // assigned in initialSyncWithDOM()
+  private readonly rippleSurface: MDCRipple = this.createRipple();
+  private handleChange!: EventListener;  // assigned in initialSyncWithDOM()
+  private handleAnimationEnd!:
+      EventListener;  // assigned in initialSyncWithDOM()
 
-  initialize() {
+  override initialize() {
     const {DATA_INDETERMINATE_ATTR} = strings;
-    this.nativeControl_.indeterminate =
-        this.nativeControl_.getAttribute(DATA_INDETERMINATE_ATTR) === 'true';
-    this.nativeControl_.removeAttribute(DATA_INDETERMINATE_ATTR);
+    this.getNativeControl().indeterminate =
+        this.getNativeControl().getAttribute(DATA_INDETERMINATE_ATTR) ===
+        'true';
+    this.getNativeControl().removeAttribute(DATA_INDETERMINATE_ATTR);
   }
 
-  initialSyncWithDOM() {
-    this.handleChange_ = () => this.foundation.handleChange();
-    this.handleAnimationEnd_ = () => this.foundation.handleAnimationEnd();
-    this.nativeControl_.addEventListener('change', this.handleChange_);
-    this.listen(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
-    this.installPropertyChangeHooks_();
+  override initialSyncWithDOM() {
+    this.handleChange = () => {
+      this.foundation.handleChange();
+    };
+    this.handleAnimationEnd = () => {
+      this.foundation.handleAnimationEnd();
+    };
+    this.getNativeControl().addEventListener('change', this.handleChange);
+    this.listen(
+        getCorrectEventName(window, 'animationend'), this.handleAnimationEnd);
+    this.installPropertyChangeHooks();
   }
 
-  destroy() {
-    this.ripple_.destroy();
-    this.nativeControl_.removeEventListener('change', this.handleChange_);
-    this.unlisten(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
-    this.uninstallPropertyChangeHooks_();
+  override destroy() {
+    this.rippleSurface.destroy();
+    this.getNativeControl().removeEventListener('change', this.handleChange);
+    this.unlisten(
+        getCorrectEventName(window, 'animationend'), this.handleAnimationEnd);
+    this.uninstallPropertyChangeHooks();
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCCheckboxAdapter = {
       addClass: (className) => this.root.classList.add(className),
       forceLayout: () => (this.root as HTMLElement).offsetWidth,
-      hasNativeControl: () => !!this.nativeControl_,
+      hasNativeControl: () => !!this.getNativeControl(),
       isAttachedToDOM: () => Boolean(this.root.parentNode),
       isChecked: () => this.checked,
       isIndeterminate: () => this.indeterminate,
@@ -125,38 +133,42 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
         this.root.classList.remove(className);
       },
       removeNativeControlAttr: (attr) => {
-        this.nativeControl_.removeAttribute(attr);
+        this.getNativeControl().removeAttribute(attr);
       },
       setNativeControlAttr: (attr, value) => {
-        this.nativeControl_.setAttribute(attr, value);
+        this.getNativeControl().setAttribute(attr, value);
       },
       setNativeControlDisabled: (disabled) => {
-        this.nativeControl_.disabled = disabled;
+        this.getNativeControl().disabled = disabled;
       },
     };
     return new MDCCheckboxFoundation(adapter);
   }
 
-  private createRipple_(): MDCRipple {
+  private createRipple(): MDCRipple {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
-      deregisterInteractionHandler: (evtType, handler) => this.nativeControl_.removeEventListener(
-        evtType, handler, applyPassive()),
-      isSurfaceActive: () => matches(this.nativeControl_, ':active'),
+      deregisterInteractionHandler: (evtType, handler) => {
+        this.getNativeControl().removeEventListener(
+            evtType, handler, applyPassive());
+      },
+      isSurfaceActive: () => matches(this.getNativeControl(), ':active'),
       isUnbounded: () => true,
-      registerInteractionHandler: (evtType, handler) => this.nativeControl_.addEventListener(
-        evtType, handler, applyPassive()),
+      registerInteractionHandler: (evtType, handler) => {
+        this.getNativeControl().addEventListener(
+            evtType, handler, applyPassive());
+      },
     };
     return new MDCRipple(this.root, new MDCRippleFoundation(adapter));
   }
 
-  private installPropertyChangeHooks_() {
-    const nativeCb = this.nativeControl_;
+  private installPropertyChangeHooks() {
+    const nativeCb = this.getNativeControl();
     const cbProto = Object.getPrototypeOf(nativeCb);
 
-    CB_PROTO_PROPS.forEach((controlState) => {
+    for (const controlState of CB_PROTO_PROPS) {
       const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
       // We have to check for this descriptor, since some browsers (Safari) don't support its return.
       // See: https://bugs.webkit.org/show_bug.cgi?id=49739
@@ -177,23 +189,23 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
         },
       };
       Object.defineProperty(nativeCb, controlState, nativeCbDesc);
-    });
+    }
   }
 
-  private uninstallPropertyChangeHooks_() {
-    const nativeCb = this.nativeControl_;
+  private uninstallPropertyChangeHooks() {
+    const nativeCb = this.getNativeControl();
     const cbProto = Object.getPrototypeOf(nativeCb);
 
-    CB_PROTO_PROPS.forEach((controlState) => {
+    for (const controlState of CB_PROTO_PROPS) {
       const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
       if (!validDescriptor(desc)) {
         return;
       }
       Object.defineProperty(nativeCb, controlState, desc);
-    });
+    }
   }
 
-  private get nativeControl_(): HTMLInputElement {
+  private getNativeControl(): HTMLInputElement {
     const {NATIVE_CONTROL_SELECTOR} = strings;
     const el =
         this.root.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);

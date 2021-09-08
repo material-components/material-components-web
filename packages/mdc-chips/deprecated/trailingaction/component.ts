@@ -43,50 +43,50 @@ export class MDCChipTrailingAction extends
     MDCComponent<MDCChipTrailingActionFoundation> implements
         MDCRippleCapableSurface {
   get ripple(): MDCRipple {
-    return this.ripple_;
+    return this.rippleSurface;
   }
 
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCChipTrailingAction(root);
   }
 
-  private ripple_!: MDCRipple;  // assigned in initialize()
-  private handleClick_!:
+  private rippleSurface!: MDCRipple;  // assigned in initialize()
+  private handleClick!:
       SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
-  private handleKeydown_!:
+  private handleKeydown!:
       SpecificEventListener<'keydown'>;  // assigned in initialSyncWithDOM()
 
-  initialize(
+  override initialize(
       rippleFactory: MDCRippleFactory = (el, foundation) =>
           new MDCRipple(el, foundation)) {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.
     const rippleAdapter: MDCRippleAdapter = MDCRipple.createAdapter(this);
-    this.ripple_ =
+    this.rippleSurface =
         rippleFactory(this.root, new MDCRippleFoundation(rippleAdapter));
   }
 
-  initialSyncWithDOM() {
-    this.handleClick_ = (evt: MouseEvent) => {
+  override initialSyncWithDOM() {
+    this.handleClick = (evt: MouseEvent) => {
       this.foundation.handleClick(evt);
     };
-    this.handleKeydown_ = (evt: KeyboardEvent) => {
+    this.handleKeydown = (evt: KeyboardEvent) => {
       this.foundation.handleKeydown(evt);
     };
 
-    this.listen('click', this.handleClick_);
-    this.listen('keydown', this.handleKeydown_);
+    this.listen('click', this.handleClick);
+    this.listen('keydown', this.handleKeydown);
   }
 
-  destroy() {
-    this.ripple_.destroy();
-    this.unlisten('click', this.handleClick_);
-    this.unlisten('keydown', this.handleKeydown_);
+  override destroy() {
+    this.rippleSurface.destroy();
+    this.unlisten('click', this.handleClick);
+    this.unlisten('keydown', this.handleKeydown);
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

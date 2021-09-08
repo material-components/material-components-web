@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@use 'sass:math';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
 
@@ -68,8 +69,8 @@ $space-between-chips: 8px;
     @include feature-targeting.targets($feat-structure) {
       // Set top and bottom to half the vertical space since there's no
       // well supported method for vertical wrapping gaps.
-      margin-top: $space / 2;
-      margin-bottom: $space / 2;
+      margin-top: math.div($space, 2);
+      margin-bottom: math.div($space, 2);
     }
   }
 }

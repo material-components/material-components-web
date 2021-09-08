@@ -22,13 +22,12 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use '@material/animation/functions' as animation-functions;
-@use '@material/elevation/mixins' as elevation-mixins;
-@use '@material/elevation/variables' as elevation-variables;
+@use '@material/elevation/elevation-theme';
+@use '@material/elevation/elevation';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
 @use '@material/theme/css';
@@ -50,20 +49,15 @@
   @include ripple($query);
 }
 
-@mixin without-ripple($query: feature-targeting.all()) {
+@mixin static-styles($query: feature-targeting.all()) {
   // postcss-bem-linter: define fab
 
   @include touch-target-mixins.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
   // prettier-ignore
-  @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
+  @include elevation.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
 
   .mdc-fab {
     @include base_($query: $query);
-    @include fab-theme.container-color(secondary, $query: $query);
-    @include fab-theme.icon-size(24px, $query: $query);
-    @include fab-theme.ink-color(on-secondary, $query: $query);
-    @include fab-theme.shape-radius(fab-theme.$shape-radius, $query: $query);
-    @include elevation-mixins.elevation(6, $query: $query);
   }
 
   .mdc-fab--mini {
@@ -114,6 +108,18 @@
   // postcss-bem-linter: end
 }
 
+@mixin without-ripple($query: feature-targeting.all()) {
+  @include static-styles($query: $query);
+
+  .mdc-fab {
+    @include fab-theme.container-color(secondary, $query: $query);
+    @include fab-theme.icon-size(24px, $query: $query);
+    @include fab-theme.ink-color(on-secondary, $query: $query);
+    @include fab-theme.shape-radius(fab-theme.$shape-radius, $query: $query);
+    @include elevation-theme.elevation(6, $query: $query);
+  }
+}
+
 @mixin ripple($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
@@ -128,7 +134,12 @@
       $query: $query,
       $ripple-target: fab-theme.$ripple-target
     );
-    @include fab-theme.ripple-color(on-secondary, $query: $query);
+    // Set `$opacity-map` to null to apply default opacity-map.
+    @include fab-theme.ripple-color(
+      on-secondary,
+      $opacity-map: null,
+      $query: $query
+    );
 
     #{fab-theme.$ripple-target} {
       @include ripple.target-common($query: $query);
@@ -148,8 +159,8 @@ $icon-enter-delay_: 90ms;
 $icon-enter-duration_: 180ms;
 
 @mixin base_($query: feature-targeting.all()) {
-  @include elevation-mixins.overlay-surface-position($query: $query);
-  @include elevation-mixins.overlay-dimensions(100%, $query: $query);
+  @include elevation-theme.overlay-surface-position($query: $query);
+  @include elevation-theme.overlay-dimensions(100%, $query: $query);
 
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -176,8 +187,8 @@ $icon-enter-duration_: 180ms;
   }
 
   @include feature-targeting.targets($feat-animation) {
-    transition: box-shadow elevation-variables.$transition-duration
-        elevation-variables.$transition-timing-function,
+    transition: box-shadow elevation-theme.$transition-duration
+        elevation-theme.$transition-timing-function,
       opacity 15ms linear 30ms,
       animation-functions.enter(
         transform,
@@ -193,17 +204,17 @@ $icon-enter-duration_: 180ms;
   }
 
   &:hover {
-    @include elevation-mixins.elevation(8, $query: $query);
+    @include elevation-theme.elevation(8, $query: $query);
   }
 
   @include ripple-theme.focus() {
-    @include elevation-mixins.elevation(8, $query: $query);
+    @include elevation-theme.elevation(8, $query: $query);
   }
 
   // Increase active state specificity due to ripple-theme.focus().
   &:active,
   &:focus:active {
-    @include elevation-mixins.elevation(12, $query: $query);
+    @include elevation-theme.elevation(12, $query: $query);
   }
 
   &:active,

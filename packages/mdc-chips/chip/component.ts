@@ -28,6 +28,7 @@ import {MDCChipAction, MDCChipActionFactory} from '../action/component';
 import {ActionType, Events, FocusBehavior} from '../action/constants';
 
 import {MDCChipAdapter} from './adapter';
+import {Animation} from './constants';
 import {MDCChipFoundation} from './foundation';
 import {ActionInteractionEvent, ActionNavigationEvent} from './types';
 
@@ -42,7 +43,7 @@ export type MDCChipFactory = (el: Element, foundation?: MDCChipFoundation) =>
  * MDCChip provides component encapsulation of the foundation implementation.
  */
 export class MDCChip extends MDCComponent<MDCChipFoundation> {
-  static attachTo(root: Element): MDCChip {
+  static override attachTo(root: Element): MDCChip {
     return new MDCChip(root);
   }
 
@@ -53,7 +54,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
   private handleActionNavigation!: CustomEventListener<ActionNavigationEvent>;
   private actions!: Map<ActionType, MDCChipAction>;
 
-  initialize(
+  override initialize(
       actionFactory:
           MDCChipActionFactory = (el: Element) => new MDCChipAction(el)) {
     this.actions = new Map();
@@ -64,7 +65,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
     }
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleActionInteraction = (event) => {
       this.foundation.handleActionInteraction(event);
     };
@@ -77,13 +78,13 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
     this.listen(Events.NAVIGATION, this.handleActionNavigation);
   }
 
-  destroy() {
+  override destroy() {
     this.unlisten(Events.INTERACTION, this.handleActionInteraction);
     this.unlisten(Events.NAVIGATION, this.handleActionNavigation);
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.
@@ -167,6 +168,14 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
     return new MDCChipFoundation(adapter);
   }
 
+  /** Exposed to be called by the parent chip set. */
+  remove() {
+    const parent = this.root.parentNode;
+    if (parent !== null) {
+      parent.removeChild(this.root);
+    }
+  }
+
   /** Returns the ActionTypes for the encapsulated actions. */
   getActions(): ActionType[] {
     return this.foundation.getActions();
@@ -208,5 +217,10 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
   /** Sets the selected state of the action. */
   setActionSelected(action: ActionType, isSelected: boolean) {
     this.foundation.setActionSelected(action, isSelected);
+  }
+
+  /** Starts the animation on the chip. */
+  startAnimation(animation: Animation) {
+    this.foundation.startAnimation(animation);
   }
 }

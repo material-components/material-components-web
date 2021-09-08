@@ -49,6 +49,7 @@ $ripple-target: '.mdc-button__ripple';
         width: 100%;
         height: 100%;
         overflow: hidden;
+        z-index: 0;
       }
     }
 

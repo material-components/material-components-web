@@ -1,0 +1,10 @@
+@use 'sass:meta';
+@use '@material/elevation/elevation-theme';
+
+@function _material-elevation($args...) {
+  @return elevation-theme.resolver($args...);
+}
+
+$material: (
+  elevation: meta.get-function(_material-elevation),
+);

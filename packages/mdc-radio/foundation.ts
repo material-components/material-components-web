@@ -26,15 +26,15 @@ import {MDCRadioAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 export class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCRadioAdapter {
+  static override get defaultAdapter(): MDCRadioAdapter {
     return {
       addClass: () => undefined,
       removeClass: () => undefined,

@@ -51,7 +51,7 @@ export class MDCSegmentedButtonSegment extends
     return this.rippleComponent;
   }
 
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCSegmentedButtonSegment(root);
   }
 
@@ -61,7 +61,7 @@ export class MDCSegmentedButtonSegment extends
   private handleClick!:
       SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM
 
-  initialize(
+  override initialize(
       rippleFactory: MDCRippleFactory = (el, foundation) =>
           new MDCRipple(el, foundation)) {
     const rippleAdapter: MDCRippleAdapter = {
@@ -72,7 +72,7 @@ export class MDCSegmentedButtonSegment extends
         rippleFactory(this.root, new MDCRippleFoundation(rippleAdapter));
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleClick = () => {
       this.foundation.handleClick();
     };
@@ -80,7 +80,7 @@ export class MDCSegmentedButtonSegment extends
     this.listen(events.CLICK, this.handleClick);
   }
 
-  destroy() {
+  override destroy() {
     this.ripple.destroy();
 
     this.unlisten(events.CLICK, this.handleClick);
@@ -88,7 +88,7 @@ export class MDCSegmentedButtonSegment extends
     super.destroy();
   }
 
-  getDefaultFoundation(): MDCSegmentedButtonSegmentFoundation {
+  override getDefaultFoundation(): MDCSegmentedButtonSegmentFoundation {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

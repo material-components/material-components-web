@@ -31,8 +31,7 @@
 @use '@material/dom/mixins' as dom;
 @use '@material/elevation/mixins';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/icon-button/mixins' as icon-button-mixins;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
@@ -151,7 +150,7 @@
       min-width: 100%; // Makes table full-width of its container (Firefox / IE11)
       border: 0;
       white-space: nowrap;
-      border-collapse: collapse;
+      border-spacing: 0;
       /**
        * With table-layout:fixed, table and column widths are defined by the width
        * of the first row of cells. Cells in subsequent rows do not affect column
@@ -167,7 +166,7 @@
   @include data-table-progress-indicator.core-styles($query: $query);
 
   .mdc-data-table--sticky-header {
-    @include _sticky-header($query: $query);
+    @include data-table-header-cell.header-cell-sticky($query: $query);
   }
 
   @include data-table-pagination.core-styles($query: $query);
@@ -178,17 +177,4 @@
     data-table-theme.$checked-icon-color,
     $query: $query
   );
-}
-
-/// Sets styles required to support sticky header row.
-@mixin _sticky-header($query: $query) {
-  $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include data-table-header-cell.header-cell-sticky($query: $query);
-
-  .mdc-data-table__row:first-child {
-    @include feature-targeting.targets($feat-structure) {
-      border-top: 0;
-    }
-  }
 }

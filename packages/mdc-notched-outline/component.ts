@@ -30,14 +30,14 @@ import {MDCNotchedOutlineFoundation} from './foundation';
 export type MDCNotchedOutlineFactory = (el: Element, foundation?: MDCNotchedOutlineFoundation) => MDCNotchedOutline;
 
 export class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation> {
-  static attachTo(root: Element): MDCNotchedOutline {
+  static override attachTo(root: Element): MDCNotchedOutline {
     return new MDCNotchedOutline(root);
   }
 
-  private notchElement_!: HTMLElement; // assigned in initialSyncWithDOM()
+  private notchElement!: HTMLElement;  // assigned in initialSyncWithDOM()
 
-  initialSyncWithDOM() {
-    this.notchElement_ =
+  override initialSyncWithDOM() {
+    this.notchElement =
         this.root.querySelector<HTMLElement>(strings.NOTCH_ELEMENT_SELECTOR)!;
 
     const label = this.root.querySelector<HTMLElement>(
@@ -68,17 +68,19 @@ export class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation>
     this.foundation.closeNotch();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCNotchedOutlineAdapter = {
       addClass: (className) => this.root.classList.add(className),
       removeClass: (className) => this.root.classList.remove(className),
-      setNotchWidthProperty: (width) =>
-          this.notchElement_.style.setProperty('width', width + 'px'),
-      removeNotchWidthProperty: () =>
-          this.notchElement_.style.removeProperty('width'),
+      setNotchWidthProperty: (width) => {
+        this.notchElement.style.setProperty('width', width + 'px');
+      },
+      removeNotchWidthProperty: () => {
+        this.notchElement.style.removeProperty('width');
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCNotchedOutlineFoundation(adapter);

@@ -28,7 +28,7 @@ import {MDCLineRippleFoundation} from './foundation';
 export type MDCLineRippleFactory = (el: Element, foundation?: MDCLineRippleFoundation) => MDCLineRipple;
 
 export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
-  static attachTo(root: Element): MDCLineRipple {
+  static override attachTo(root: Element): MDCLineRipple {
     return new MDCLineRipple(root);
   }
 
@@ -54,7 +54,7 @@ export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
     this.foundation.setRippleCenter(xCoordinate);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

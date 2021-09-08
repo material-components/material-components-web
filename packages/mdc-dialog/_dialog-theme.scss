@@ -1,0 +1,255 @@
+//
+// Copyright 2021 Google Inc-
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software-
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT- IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE-
+//
+
+// Selector '-mdc-*' should only be used in this project-
+// stylelint-disable selector-class-pattern --
+// Internal styling for Dialog MDC component-
+
+@use 'sass:map';
+@use 'sass:meta';
+@use '@material/elevation/elevation-theme';
+@use '@material/shape/shape';
+@use '@material/theme/keys';
+@use '@material/theme/theme';
+@use '@material/tokens/resolvers';
+@use '@material/button/button-text-theme';
+
+$light-theme: (
+  container-color: null,
+  container-elevation: null,
+  container-shadow-color: null,
+  container-shape: null,
+  with-divider-divider-color: null,
+  with-divider-divider-height: null,
+  with-icon-icon-size: null,
+  with-icon-icon-color: null,
+  subhead-font: null,
+  subhead-line-height: null,
+  subhead-size: null,
+  subhead-weight: null,
+  subhead-tracking: null,
+  subhead-color: null,
+  supporting-text-font: null,
+  supporting-text-line-height: null,
+  supporting-text-size: null,
+  supporting-text-weight: null,
+  supporting-text-tracking: null,
+  supporting-text-color: null,
+  action-label-text-font: null,
+  action-label-text-line-height: null,
+  action-label-text-size: null,
+  action-label-text-weight: null,
+  action-label-text-tracking: null,
+  action-label-text-color: null,
+  action-hover-state-layer-color: null,
+  action-hover-state-layer-opacity: null,
+  action-hover-label-text-color: null,
+  action-focus-state-layer-color: null,
+  action-focus-state-layer-opacity: null,
+  action-focus-label-text-color: null,
+  action-pressed-state-layer-color: null,
+  action-pressed-state-layer-opacity: null,
+  action-pressed-label-text-color: null,
+);
+
+$custom-property-prefix: 'dialog';
+
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+  $theme: _resolve-elevation($theme, map.get($resolvers, elevation));
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
+  @include _container-color(map.get($theme, container-color));
+  @include _container-elevation(
+    map.get($resolvers, elevation),
+    map.get($theme, container-elevation),
+    map.get($theme, container-shadow-color)
+  );
+  @include _container-shape(map.get($theme, container-shape));
+  @include _divider-color(map.get($theme, with-divider-divider-color));
+  @include _divider-height(map.get($theme, with-divider-divider-height));
+  @include _icon-size(map.get($theme, with-icon-icon-size));
+  @include _icon-color(map.get($theme, with-icon-icon-color));
+  @include _subhead-typography(
+    (
+      font: map.get($theme, subhead-font),
+      line-height: map.get($theme, subhead-line-height),
+      size: map.get($theme, subhead-size),
+      weight: map.get($theme, subhead-weight),
+      tracking: map.get($theme, subhead-tracking),
+    )
+  );
+  @include _subhead-color(map.get($theme, subhead-color));
+  @include _supporting-text-typography(
+    (
+      font: map.get($theme, supporting-text-font),
+      line-height: map.get($theme, supporting-text-line-height),
+      size: map.get($theme, supporting-text-size),
+      weight: map.get($theme, supporting-text-weight),
+      tracking: map.get($theme, supporting-text-tracking),
+    )
+  );
+  @include _supporting-text-color(map.get($theme, supporting-text-color));
+
+  .mdc-dialog__actions .mdc-button {
+    @include button-text-theme.theme-styles-internal(
+      (
+        focus-label-text-color: map.get($theme, action-focus-label-text-color),
+        focus-state-layer-color: map.get($theme, action-focus-state-layer-color),
+        focus-state-layer-opacity:
+          map.get($theme, action-focus-state-layer-opacity),
+        hover-label-text-color: map.get($theme, action-hover-text-color),
+        hover-state-layer-color: map.get($theme, action-hover-state-layer-color),
+        hover-state-layer-opacity:
+          map.get($theme, action-hover-state-layer-opacity),
+        label-text-color: map.get($theme, action-label-text-color),
+        label-text-font: map.get($theme, action-label-text-font),
+        label-text-size: map.get($theme, action-label-text-size),
+        label-text-tracking: map.get($theme, action-label-text-tracking),
+        label-text-weight: map.get($theme, action-label-text-weight),
+        pressed-label-text-color:
+          map.get($theme, action-pressed-label-text-color),
+        pressed-state-layer-color:
+          map.get($theme, action-pressed-state-layer-color),
+        pressed-state-layer-opacity:
+          map.get($theme, action-pressed-state-layer-opacity),
+      )
+    );
+  }
+}
+
+@mixin _container-color($color) {
+  .mdc-dialog__surface {
+    @include theme.property(background-color, $color);
+  }
+}
+
+@mixin _container-elevation($elevation-resolver, $elevation, $shadow-color) {
+  .mdc-dialog__surface {
+    @include elevation-theme.with-resolver(
+      $elevation-resolver,
+      $elevation: $elevation,
+      $shadow-color: $shadow-color
+    );
+  }
+}
+
+@mixin _container-shape($radius) {
+  .mdc-dialog__surface {
+    @include shape.radius($radius);
+  }
+}
+
+@mixin _divider-color($color) {
+  &.mdc-dialog--scrollable .mdc-dialog__title,
+  &.mdc-dialog--scrollable .mdc-dialog__actions,
+  &.mdc-dialog--scrollable.mdc-dialog-scroll-divider-footer
+    .mdc-dialog__actions {
+    @include theme.property(border-color, $color);
+  }
+
+  &.mdc-dialog--scrollable .mdc-dialog__title {
+    @include theme.property(border-bottom-color, $color);
+  }
+}
+
+@mixin _divider-height($height) {
+  .mdc-dialog__actions {
+    @include theme.property(border-top-width, $height);
+  }
+
+  &.mdc-dialog--scrollable .mdc-dialog__title {
+    @include theme.property(border-bottom-width, $height);
+  }
+}
+
+@mixin _icon-size($size) {
+  .mdc-dialog__title-icon {
+    @include theme.property(height, $size);
+    @include theme.property(width, $size);
+    @include theme.property(font-size, $size);
+  }
+}
+
+@mixin _icon-color($color) {
+  .mdc-dialog__title-icon {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _subhead-typography($typography) {
+  .mdc-dialog__title {
+    @include theme.property(font-family, map.get($typography, font));
+    @include theme.property(line-height, map.get($typography, line-height));
+    @include theme.property(font-size, map.get($typography, size));
+    @include theme.property(font-weight, map.get($typography, weight));
+    @include theme.property(letter-spacing, map.get($typography, tracking));
+  }
+}
+
+@mixin _subhead-color($color) {
+  .mdc-dialog__title {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _supporting-text-typography($typography) {
+  .mdc-dialog__content {
+    @include theme.property(font-family, map.get($typography, font));
+    @include theme.property(line-height, map.get($typography, line-height));
+    @include theme.property(font-size, map.get($typography, size));
+    @include theme.property(font-weight, map.get($typography, weight));
+    @include theme.property(letter-spacing, map.get($typography, tracking));
+  }
+}
+
+@mixin _supporting-text-color($color) {
+  .mdc-dialog__content {
+    @include theme.property(color, $color);
+  }
+}
+
+@function _resolve-elevation($theme, $elevation-resolver) {
+  @if map.get($theme, container-elevation) and
+    map.get($theme, container-shadow-color)
+  {
+    $resolved-value: meta.call(
+      $elevation-resolver,
+      $elevation: map.get($theme, container-elevation),
+      $shadow-color: map.get($theme, container-shadow-color)
+    );
+    $theme: map.set($theme, container-elevation, $resolved-value);
+  }
+
+  @return $theme;
+}

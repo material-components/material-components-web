@@ -1,0 +1,302 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/animation/animation';
+@use '@material/elevation/elevation';
+@use '@material/ripple/ripple';
+@use '@material/rtl/rtl';
+@use '@material/theme/gss';
+
+$animation-duration: 75ms;
+$icon-exit-duration: 0.4 * $animation-duration;
+$icon-enter-duration: $animation-duration - $icon-exit-duration;
+$ripple-target: '.mdc-switch__ripple';
+
+@mixin static-styles() {
+  @include static-styles-without-ripple();
+
+  .mdc-switch {
+    @include ripple.common; // COPYBARA_COMMENT_THIS_LINE
+    @include ripple.surface($ripple-target: $ripple-target);
+    @include ripple.radius-unbounded($ripple-target: $ripple-target);
+  }
+}
+
+@mixin static-styles-without-ripple() {
+  @include elevation.overlay-common; // COPYBARA_COMMENT_THIS_LINE
+
+  .mdc-switch {
+    @include root;
+
+    &:disabled {
+      @include disabled;
+    }
+  }
+
+  .mdc-switch__track {
+    @include track;
+    @include track-off;
+
+    .mdc-switch--selected & {
+      @include track-on;
+    }
+  }
+
+  .mdc-switch__handle-track {
+    @include handle-track;
+    @include handle-track-off;
+
+    .mdc-switch--selected & {
+      @include handle-track-on;
+    }
+  }
+
+  .mdc-switch__handle {
+    @include handle;
+  }
+
+  .mdc-switch__shadow {
+    @include shadow;
+  }
+
+  .mdc-elevation-overlay {
+    @include overlay;
+  }
+
+  .mdc-switch__ripple {
+    @include ripple;
+
+    .mdc-switch:disabled & {
+      @include ripple-disabled;
+    }
+  }
+
+  .mdc-switch__icons {
+    @include icons;
+  }
+
+  .mdc-switch__icon {
+    @include icon;
+    @include icon-hidden;
+  }
+
+  .mdc-switch--selected .mdc-switch__icon--on,
+  .mdc-switch--unselected .mdc-switch__icon--off {
+    @include icon-visible;
+  }
+}
+
+@mixin root() {
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0; // Stop from collapsing in flex containers
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 0;
+  position: relative;
+}
+
+@mixin disabled() {
+  cursor: default;
+  pointer-events: none;
+}
+
+@mixin track() {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    border: 1px solid transparent; // high contrast mode
+    border-radius: inherit;
+    box-sizing: border-box;
+    content: '';
+    height: 100%;
+    @include gss.annotate($noflip: true);
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+}
+
+@mixin track-on() {
+  &::before {
+    transition: animation.exit-temporary(transform, $animation-duration);
+    transform: translateX(100%);
+    @include rtl.rtl {
+      transform: translateX(-100%);
+    }
+  }
+
+  &::after {
+    transition: animation.enter(transform, $animation-duration);
+    transform: translateX(0);
+  }
+}
+
+@mixin track-off() {
+  &::before {
+    transition: animation.enter(transform, $animation-duration);
+    transform: translateX(0);
+  }
+
+  &::after {
+    transition: animation.exit-temporary(transform, $animation-duration);
+    transform: translateX(-100%);
+    @include rtl.rtl {
+      transform: translateX(100%);
+    }
+  }
+}
+
+@mixin handle-track() {
+  height: 100%;
+  // The handle track is used to move the handle across the width of the switch
+  // and may overflow the bounds of the component. It should not be used for
+  // pointer events.
+  pointer-events: none;
+  position: absolute;
+  top: 0; // Needed for IE11
+  transition: animation.standard(transform, $animation-duration);
+  // IE11 needs explicit left/right
+  @include rtl.reflexive(left, 0, right, auto);
+}
+
+@mixin handle-track-on() {
+  transform: translateX(100%);
+
+  @include rtl.rtl {
+    transform: translateX(-100%);
+  }
+}
+
+@mixin handle-track-off() {
+  transform: translateX(0);
+}
+
+@mixin handle() {
+  display: flex;
+  pointer-events: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  // IE11 needs explicit left/right
+  @include rtl.reflexive(left, 0, right, auto);
+
+  &::before,
+  &::after {
+    border: 1px solid transparent; // high contrast mode
+    border-radius: inherit;
+    box-sizing: border-box;
+    content: '';
+    width: 100%;
+    height: 100%;
+    @include gss.annotate($noflip: true);
+    left: 0;
+    position: absolute;
+    top: 0; // IE11 fix
+    transition: animation.standard(background-color, $animation-duration),
+      animation.standard(border-color, $animation-duration);
+    // Move the handle background colors beneath the shadow overlay color,
+    // rather than move the overlay on top of the handle with a positive
+    // z-index, which would require moving all other content on top of the
+    // overlay with an even greater z-index.
+    z-index: -1;
+  }
+}
+
+@mixin shadow() {
+  border-radius: inherit;
+  bottom: 0;
+  @include gss.annotate($noflip: true);
+  left: 0;
+  position: absolute;
+  @include gss.annotate($noflip: true);
+  right: 0;
+  top: 0;
+}
+
+@mixin overlay() {
+  bottom: 0;
+  @include gss.annotate($noflip: true);
+  left: 0;
+  @include gss.annotate($noflip: true);
+  right: 0;
+  top: 0;
+}
+
+@mixin ripple() {
+  @include gss.annotate($noflip: true);
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  // Move ripple beneath shadow overlay and handle background colors (see
+  // handle() mixin for explanation).
+  z-index: -1;
+}
+
+@mixin ripple-disabled {
+  display: none;
+}
+
+@mixin icons() {
+  height: 100%;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+@mixin icon() {
+  bottom: 0;
+  @include gss.annotate($noflip: true);
+  left: 0;
+  // IE11 needs top/right/bottom/left + margin instead of translate(-50%, -50%)
+  // because of SVG centering issues
+  margin: auto;
+  position: absolute;
+  @include gss.annotate($noflip: true);
+  right: 0;
+  top: 0;
+}
+
+@mixin icon-hidden() {
+  opacity: 0;
+  transition: animation.exit-permanent(opacity, $icon-exit-duration);
+}
+
+@mixin icon-visible() {
+  opacity: 1;
+  transition: animation.enter(
+    opacity,
+    $icon-enter-duration,
+    $delay: $icon-exit-duration
+  );
+}

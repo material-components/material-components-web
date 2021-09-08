@@ -23,6 +23,7 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use 'sass:color';
 @use '@material/density/variables' as density-variables;
 @use '@material/floating-label/variables' as floating-label-variables;
@@ -36,8 +37,8 @@
 ///     wrap label in a child element to apply `transitionY(-50%)` to automatically offset based on box height.
 ///
 @function get-outlined-label-position-y($text-field-height) {
-  @return $text-field-height / 2 + notched-outline-variables.$label-box-height /
-    2;
+  @return math.div($text-field-height, 2) +
+    math.div(notched-outline-variables.$label-box-height, 2);
 }
 
 $error: error !default;

@@ -30,23 +30,6 @@ jobs:
           key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
       - run: npm ci --ignore-scripts
       - run: npm run bootstrap
-  lint:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10
-      - uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            packages/*/node_modules
-            !packages/*/node_modules/@material
-          key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
-      - run: npm run link
-      - run: npm run lint
   conventional-commit-check:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

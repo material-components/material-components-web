@@ -24,7 +24,7 @@
 // stylelint-disable selector-class-pattern
 
 @use '@material/theme/theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/typography/typography';
 
@@ -41,8 +41,8 @@
 
     @include feature-targeting.targets($feat-structure) {
       // Keep flex item align to trailing side on absence of helper text.
-      @include rtl-mixins.reflexive-box(margin, left, auto);
-      @include rtl-mixins.reflexive-box(padding, left, 16px);
+      @include rtl.reflexive-box(margin, left, auto);
+      @include rtl.reflexive-box(padding, left, 16px);
 
       white-space: nowrap;
     }
@@ -83,7 +83,7 @@
 
   .mdc-text-field-character-counter {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(right, $xOffset);
+      @include rtl.reflexive-position(right, $xOffset);
       position: absolute;
       bottom: $yOffset;
     }

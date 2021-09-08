@@ -302,10 +302,6 @@ $_varname-prefix: 'mdc';
         $custom-prop: $property;
         $property: get-varname($custom-prop);
         $value: get-fallback($custom-prop, $shallow: true);
-        @if not $value {
-          @error 'Custom property #{get-varname($property)} does not have a fallback value to emit for a CSS declaration.';
-        }
-
         @if is-custom-prop($value) {
           $value: create-var($value);
         }

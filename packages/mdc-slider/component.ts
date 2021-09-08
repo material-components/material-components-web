@@ -36,12 +36,13 @@ import {MDCSliderChangeEventDetail, Thumb, TickMark} from './types';
 
 /** Vanilla JS implementation of slider component. */
 export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
-  static attachTo(root: Element, options: {skipInitialUIUpdate?:
-                                               boolean} = {}) {
+  static override attachTo(root: Element, options: {
+    skipInitialUIUpdate?: boolean
+  } = {}) {
     return new MDCSlider(root, undefined, options);
   }
 
-  root!: HTMLElement;                 // Assigned in MDCComponent constructor.
+  override root!: HTMLElement;          // Assigned in MDCComponent constructor.
   private inputs!: HTMLInputElement[];  // Assigned in #initialize.
   private thumbs!: HTMLElement[];     // Assigned in #initialize.
   private trackActive!: HTMLElement;  // Assigned in #initialize.
@@ -52,7 +53,7 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   // attribute on the thumb element.
   private valueToAriaValueTextFn: ((value: number) => string)|null = null;
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same
     // order as the adapter interface.
     const adapter: MDCSliderAdapter = {
@@ -196,7 +197,8 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
    *   syncing with the DOM. This should be enabled when the slider position
    *   is set before component initialization.
    */
-  initialize({skipInitialUIUpdate}: {skipInitialUIUpdate?: boolean} = {}) {
+  override initialize({skipInitialUIUpdate}: {skipInitialUIUpdate?:
+                                                  boolean} = {}) {
     this.inputs =
         [].slice.call(this.root.querySelectorAll(`.${cssClasses.INPUT}`)) as
         HTMLInputElement[];
@@ -212,7 +214,7 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     }
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.foundation.layout({skipUpdateUI: this.skipInitialUIUpdate});
   }
 

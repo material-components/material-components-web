@@ -31,52 +31,53 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   /**
    * Indicates if the top app bar was docked in the previous scroll handler iteration.
    */
-  private wasDocked_ = true;
+  private wasDocked = true;
 
   /**
    * Indicates if the top app bar is docked in the fully shown position.
    */
-  private isDockedShowing_ = true;
+  private isDockedShowing = true;
 
   /**
    * Variable for current scroll position of the top app bar
    */
-  private currentAppBarOffsetTop_ = 0;
+  private currentAppBarOffsetTop = 0;
 
   /**
    * Used to prevent the top app bar from being scrolled out of view during resize events
    */
-  private isCurrentlyBeingResized_ = false;
+  private isCurrentlyBeingResized = false;
 
   /**
    * The timeout that's used to throttle the resize events
    */
-  private resizeThrottleId_ = INITIAL_VALUE;
+  private resizeThrottleId = INITIAL_VALUE;
 
   /**
    * Used for diffs of current scroll position vs previous scroll position
    */
-  private lastScrollPosition_: number;
+  private lastScrollPosition: number;
 
   /**
    * Used to verify when the top app bar is completely showing or completely hidden
    */
-  private topAppBarHeight_: number;
+  private topAppBarHeight: number;
 
   /**
-   * The timeout that's used to debounce toggling the isCurrentlyBeingResized_ variable after a resize
+   * The timeout that's used to debounce toggling the isCurrentlyBeingResized
+   * variable after a resize
    */
-  private resizeDebounceId_ = INITIAL_VALUE;
+  private resizeDebounceId = INITIAL_VALUE;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
     super(adapter);
 
-    this.lastScrollPosition_ = this.adapter.getViewportScrollY();
-    this.topAppBarHeight_ = this.adapter.getTopAppBarHeight();
+    this.lastScrollPosition = this.adapter.getViewportScrollY();
+    this.topAppBarHeight = this.adapter.getTopAppBarHeight();
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
     this.adapter.setStyle('top', '');
   }
@@ -85,23 +86,24 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * Scroll handler for the default scroll behavior of the top app bar.
    * @override
    */
-  handleTargetScroll() {
+  override handleTargetScroll() {
     const currentScrollPosition = Math.max(this.adapter.getViewportScrollY(), 0);
-    const diff = currentScrollPosition - this.lastScrollPosition_;
-    this.lastScrollPosition_ = currentScrollPosition;
+    const diff = currentScrollPosition - this.lastScrollPosition;
+    this.lastScrollPosition = currentScrollPosition;
 
-    // If the window is being resized the lastScrollPosition_ needs to be updated but the
-    // current scroll of the top app bar should stay in the same position.
-    if (!this.isCurrentlyBeingResized_) {
-      this.currentAppBarOffsetTop_ -= diff;
+    // If the window is being resized the lastScrollPosition needs to be updated
+    // but the current scroll of the top app bar should stay in the same
+    // position.
+    if (!this.isCurrentlyBeingResized) {
+      this.currentAppBarOffsetTop -= diff;
 
-      if (this.currentAppBarOffsetTop_ > 0) {
-        this.currentAppBarOffsetTop_ = 0;
-      } else if (Math.abs(this.currentAppBarOffsetTop_) > this.topAppBarHeight_) {
-        this.currentAppBarOffsetTop_ = -this.topAppBarHeight_;
+      if (this.currentAppBarOffsetTop > 0) {
+        this.currentAppBarOffsetTop = 0;
+      } else if (Math.abs(this.currentAppBarOffsetTop) > this.topAppBarHeight) {
+        this.currentAppBarOffsetTop = -this.topAppBarHeight;
       }
 
-      this.moveTopAppBar_();
+      this.moveTopAppBar();
     }
   }
 
@@ -109,47 +111,48 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * Top app bar resize handler that throttle/debounce functions that execute updates.
    * @override
    */
-  handleWindowResize() {
+  override handleWindowResize() {
     // Throttle resize events 10 p/s
-    if (!this.resizeThrottleId_) {
-      this.resizeThrottleId_ = setTimeout(() => {
-        this.resizeThrottleId_ = INITIAL_VALUE;
-        this.throttledResizeHandler_();
+    if (!this.resizeThrottleId) {
+      this.resizeThrottleId = setTimeout(() => {
+        this.resizeThrottleId = INITIAL_VALUE;
+        this.throttledResizeHandler();
       }, numbers.DEBOUNCE_THROTTLE_RESIZE_TIME_MS);
     }
 
-    this.isCurrentlyBeingResized_ = true;
+    this.isCurrentlyBeingResized = true;
 
-    if (this.resizeDebounceId_) {
-      clearTimeout(this.resizeDebounceId_);
+    if (this.resizeDebounceId) {
+      clearTimeout(this.resizeDebounceId);
     }
 
-    this.resizeDebounceId_ = setTimeout(() => {
+    this.resizeDebounceId = setTimeout(() => {
       this.handleTargetScroll();
-      this.isCurrentlyBeingResized_ = false;
-      this.resizeDebounceId_ = INITIAL_VALUE;
+      this.isCurrentlyBeingResized = false;
+      this.resizeDebounceId = INITIAL_VALUE;
     }, numbers.DEBOUNCE_THROTTLE_RESIZE_TIME_MS);
   }
 
   /**
    * Function to determine if the DOM needs to update.
    */
-  private checkForUpdate_(): boolean {
-    const offscreenBoundaryTop = -this.topAppBarHeight_;
-    const hasAnyPixelsOffscreen = this.currentAppBarOffsetTop_ < 0;
-    const hasAnyPixelsOnscreen = this.currentAppBarOffsetTop_ > offscreenBoundaryTop;
+  private checkForUpdate(): boolean {
+    const offscreenBoundaryTop = -this.topAppBarHeight;
+    const hasAnyPixelsOffscreen = this.currentAppBarOffsetTop < 0;
+    const hasAnyPixelsOnscreen =
+        this.currentAppBarOffsetTop > offscreenBoundaryTop;
     const partiallyShowing = hasAnyPixelsOffscreen && hasAnyPixelsOnscreen;
 
     // If it's partially showing, it can't be docked.
     if (partiallyShowing) {
-      this.wasDocked_ = false;
+      this.wasDocked = false;
     } else {
       // Not previously docked and not partially showing, it's now docked.
-      if (!this.wasDocked_) {
-        this.wasDocked_ = true;
+      if (!this.wasDocked) {
+        this.wasDocked = true;
         return true;
-      } else if (this.isDockedShowing_ !== hasAnyPixelsOnscreen) {
-        this.isDockedShowing_ = hasAnyPixelsOnscreen;
+      } else if (this.isDockedShowing !== hasAnyPixelsOnscreen) {
+        this.isDockedShowing = hasAnyPixelsOnscreen;
         return true;
       }
     }
@@ -160,12 +163,12 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   /**
    * Function to move the top app bar if needed.
    */
-  private moveTopAppBar_() {
-    if (this.checkForUpdate_()) {
+  private moveTopAppBar() {
+    if (this.checkForUpdate()) {
       // Once the top app bar is fully hidden we use the max potential top app bar height as our offset
       // so the top app bar doesn't show if the window resizes and the new height > the old height.
-      let offset = this.currentAppBarOffsetTop_;
-      if (Math.abs(offset) >= this.topAppBarHeight_) {
+      let offset = this.currentAppBarOffsetTop;
+      if (Math.abs(offset) >= this.topAppBarHeight) {
         offset = -numbers.MAX_TOP_APP_BAR_HEIGHT;
       }
 
@@ -177,16 +180,16 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * Throttled function that updates the top app bar scrolled values if the
    * top app bar height changes.
    */
-  private throttledResizeHandler_() {
+  private throttledResizeHandler() {
     const currentHeight = this.adapter.getTopAppBarHeight();
-    if (this.topAppBarHeight_ !== currentHeight) {
-      this.wasDocked_ = false;
+    if (this.topAppBarHeight !== currentHeight) {
+      this.wasDocked = false;
 
       // Since the top app bar has a different height depending on the screen width, this
       // will ensure that the top app bar remains in the correct location if
       // completely hidden and a resize makes the top app bar a different height.
-      this.currentAppBarOffsetTop_ -= this.topAppBarHeight_ - currentHeight;
-      this.topAppBarHeight_ = currentHeight;
+      this.currentAppBarOffsetTop -= this.topAppBarHeight - currentHeight;
+      this.topAppBarHeight = currentHeight;
     }
     this.handleTargetScroll();
   }

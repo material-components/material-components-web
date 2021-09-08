@@ -23,45 +23,31 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
-@use 'sass:map';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/tokens/resolvers';
+@use './button-ripple';
 @use './button-shared-theme';
 @use './button-text-theme';
 
-@mixin styles($theme: button-text-theme.$light-theme, $query: $query) {
-  @include button-base.static-styles($query: $query);
-  @include static-styles($query: $query);
-  @include theme-styles($theme, $query: $query);
-}
-
-@mixin theme-styles(
+@mixin styles(
   $theme: button-text-theme.$light-theme,
+  $resolver: resolvers.$material,
   $query: feature-targeting.all()
 ) {
+  @include button-base.static-styles($query: $query);
+  @include static-styles($query: $query);
   .mdc-button {
-    @include button-text-theme.theme($theme, $query: $query);
-    // TODO(b/179402677): move this into theme config
-    @include button-shared-theme.horizontal-padding(
-      button-shared-theme.$horizontal-padding,
-      $query: $query
-    );
+    @include button-text-theme.theme-styles($theme, $query: $query);
   }
 }
 
 @mixin static-styles($query: feature-targeting.all()) {
-  // Intentionally left blank for future-proofing.
+  @include static-styles-without-ripple($query: $query);
+  @include button-ripple.static-styles($query: $query);
 }
 
-@mixin deprecated-theme-styles-without-ripple($query: feature-targeting.all()) {
-  $theme: map.merge(
-    button-text-theme.$light-theme,
-    (
-      ripple-color: null,
-      ripple-opacity: null,
-    )
-  );
-
+@mixin static-styles-without-ripple($query: feature-targeting.all()) {
   .mdc-button {
-    @include button-text-theme.theme($theme, $query: $query);
     // TODO(b/179402677): move this into theme config
     @include button-shared-theme.horizontal-padding(
       button-shared-theme.$horizontal-padding,

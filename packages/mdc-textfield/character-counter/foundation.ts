@@ -26,18 +26,18 @@ import {MDCTextFieldCharacterCounterAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 export class MDCTextFieldCharacterCounterFoundation extends MDCFoundation<MDCTextFieldCharacterCounterAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /**
    * See {@link MDCTextFieldCharacterCounterAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCTextFieldCharacterCounterAdapter {
+  static override get defaultAdapter(): MDCTextFieldCharacterCounterAdapter {
     return {
       setContent: () => undefined,
     };

@@ -29,15 +29,14 @@
 @use '@material/rtl/rtl';
 @use '@material/touch-target/touch-target';
 @use '@material/typography/typography';
-@use './button-ripple';
 @use './button-shared-theme';
 
 @mixin static-styles($query: feature-targeting.all()) {
-  @include static-styles-without-ripple($query: $query);
-  @include button-ripple.static-styles($query: $query);
+  @include _static-styles-base($query: $query);
+  @include _typography-styles($query: $query);
 }
 
-@mixin static-styles-without-ripple($query: feature-targeting.all()) {
+@mixin _static-styles-base($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include touch-target.wrapper($query); // COPYBARA_COMMENT_THIS_LINE
@@ -46,14 +45,23 @@
 
   // postcss-bem-linter: define button
   .mdc-button {
-    @include base($query);
+    @include _root-structure($query);
     // The icon CSS class overrides styles defined in the .material-icons CSS
     // class, which is loaded separately so the order of CSS definitions is not
     // guaranteed. Therefore, increase specifity by nesting this class to ensure
     // overrides apply.
     .mdc-button__icon {
       @include feature-targeting.targets($feat-structure) {
-        @include icon;
+        @include _icon-structure;
+      }
+    }
+
+    .mdc-button__label {
+      @include feature-targeting.targets($feat-structure) {
+        // Necessary such that label is stacked on top of ripple
+        // (since ripple is a positioned element, non-positioned elements
+        // appear under it).
+        position: relative;
       }
     }
 
@@ -74,24 +82,6 @@
     }
   }
 
-  // TODO: figure out the correct place for this rule.
-  .mdc-button--raised,
-  .mdc-button--unelevated,
-  .mdc-button--outlined {
-    .mdc-button__icon {
-      @include feature-targeting.targets($feat-structure) {
-        // Icons inside contained buttons have different styles due to increased button padding
-        @include icon-contained;
-      }
-    }
-
-    .mdc-button__label + .mdc-button__icon {
-      @include feature-targeting.targets($feat-structure) {
-        @include icon-contained-trailing;
-      }
-    }
-  }
-
   .mdc-button--touch {
     // Touch target doesn't change with height. It simply gets removed if
     // density (height) changes. Therefore, it is a static style.
@@ -103,14 +93,49 @@
   // postcss-bem-linter: end
 }
 
+@mixin _typography-styles($query) {
+  .mdc-button {
+    // Exclude properties declared in theme styles.
+    @include typography.typography(
+      button,
+      $exclude-props: (
+        font-size,
+        line-height,
+        font-weight,
+        letter-spacing,
+        text-transform
+      ),
+      $query: $query
+    );
+  }
+}
+
+/// @deprecated Contains typography declarations now part of theme-styles.
+@mixin deprecated-static-styles-without-ripple(
+  $query: feature-targeting.all()
+) {
+  @include _deprecated-typography-styles($query: $query);
+  @include _static-styles-base($query: $query);
+}
+
+@mixin _deprecated-typography-styles($query) {
+  .mdc-button {
+    @include typography.typography(button, $query);
+  }
+}
+
 @mixin deprecated-base($query) {
   @include base($query);
 }
 
 @mixin base($query) {
+  @include typography.typography(button, $query);
+  @include _root-structure($query: $query);
+}
+
+@mixin _root-structure($query) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  @include typography.typography(button, $query);
   @include elevation-theme.overlay-surface-position($query: $query);
   @include elevation-theme.overlay-dimensions(100%, $query: $query);
 
@@ -131,6 +156,7 @@
     // `hidden` in some cases, unless it's explicitly defined here.
     overflow: visible;
     vertical-align: middle;
+    background: transparent;
   }
 
   &::-moz-focus-inner {
@@ -162,14 +188,23 @@
 }
 
 @mixin icon {
+  @include _icon-structure;
+  @include _icon-size(18px);
+}
+
+@mixin _icon-structure {
   @include rtl.reflexive-box(margin, right, 8px);
 
-  $icon-size: typography.px-to-rem(18px);
-
   display: inline-block;
+  position: relative;
+  vertical-align: top;
+}
+
+@mixin _icon-size($size-px) {
+  $icon-size: typography.px-to-rem($size-px);
+
   font-size: $icon-size;
   height: $icon-size;
-  vertical-align: top;
   width: $icon-size;
 }
 
@@ -187,6 +222,14 @@
 
 @mixin icon-contained-trailing {
   @include rtl.reflexive-property(margin, 8px, -4px);
+}
+
+@mixin raised-transition($query: feature-targeting.all()) {
+  $feat-animation: feature-targeting.create-target($query, animation);
+
+  @include feature-targeting.targets($feat-animation) {
+    transition: elevation-theme.transition-value();
+  }
 }
 
 /// @deprecated Private style mixin for partners; not available for public use.

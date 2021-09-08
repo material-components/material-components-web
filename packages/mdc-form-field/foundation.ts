@@ -26,15 +26,15 @@ import {MDCFormFieldAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 export class MDCFormFieldFoundation extends MDCFoundation<MDCFormFieldAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCFormFieldAdapter {
+  static override get defaultAdapter(): MDCFormFieldAdapter {
     return {
       activateInputRipple: () => undefined,
       deactivateInputRipple: () => undefined,
@@ -53,11 +53,11 @@ export class MDCFormFieldFoundation extends MDCFoundation<MDCFormFieldAdapter> {
     };
   }
 
-  init() {
+  override init() {
     this.adapter.registerInteractionHandler('click', this.click);
   }
 
-  destroy() {
+  override destroy() {
     this.adapter.deregisterInteractionHandler('click', this.click);
   }
 

@@ -28,7 +28,7 @@ import {MDCTextFieldIconFoundation} from './foundation';
 export type MDCTextFieldIconFactory = (el: Element, foundation?: MDCTextFieldIconFoundation) => MDCTextFieldIcon;
 
 export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
-  static attachTo(root: Element): MDCTextFieldIcon {
+  static override attachTo(root: Element): MDCTextFieldIcon {
     return new MDCTextFieldIcon(root);
   }
 
@@ -37,7 +37,7 @@ export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
     return this.foundation;
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.

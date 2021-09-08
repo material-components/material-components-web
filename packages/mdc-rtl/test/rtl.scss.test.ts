@@ -21,9 +21,19 @@
  * THE SOFTWARE.
  */
 
-/**
- * Available options for how the tooltip element should be shown.
- */
-export interface ShowTooltipOptions {
-  readonly hideFromScreenreader: boolean;
-}
+import * as fs from 'fs';
+import * as path from 'path';
+
+describe('rtl.test.scss', () => {
+  let css = '';
+
+  beforeAll(() => {
+    const filePath = path.join(__dirname, 'rtl.test.css');
+    css = fs.readFileSync(filePath, 'utf8').trim();
+  });
+
+  it('should not add [dir=rtl] after pseudo element', () => {
+    expect(css).not.toContain('.test-pseudo-element::before[dir=rtl]');
+    expect(css).toContain('.test-pseudo-element[dir=rtl]::before');
+  });
+});

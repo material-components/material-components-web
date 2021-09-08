@@ -28,19 +28,19 @@ import {MDCTopAppBarBaseFoundation} from '../foundation';
 export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   // Public visibility for backward compatibility.
   get isCollapsed(): boolean {
-    return this.isCollapsed_;
+    return this.collapsed;
   }
 
-  private isCollapsed_ = false;
+  private collapsed = false;
 
-  private isAlwaysCollapsed_ = false;
+  private isAlwaysCollapsed = false;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
     super(adapter);
   }
 
-  init() {
+  override init() {
     super.init();
 
     if (this.adapter.getTotalActionItems() > 0) {
@@ -58,52 +58,52 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * @param value When `true`, bar will always be collapsed. When `false`, bar may collapse or expand based on scroll.
    */
   setAlwaysCollapsed(value: boolean) {
-    this.isAlwaysCollapsed_ = !!value;
-    if (this.isAlwaysCollapsed_) {
-      this.collapse_();
+    this.isAlwaysCollapsed = !!value;
+    if (this.isAlwaysCollapsed) {
+      this.collapse();
     } else {
-      // let maybeCollapseBar_ determine if the bar should be collapsed
-      this.maybeCollapseBar_();
+      // let maybeCollapseBar determine if the bar should be collapsed
+      this.maybeCollapseBar();
     }
   }
 
   getAlwaysCollapsed() {
-    return this.isAlwaysCollapsed_;
+    return this.isAlwaysCollapsed;
   }
 
   /**
    * Scroll handler for applying/removing the collapsed modifier class on the short top app bar.
    * @override
    */
-  handleTargetScroll() {
-    this.maybeCollapseBar_();
+  override handleTargetScroll() {
+    this.maybeCollapseBar();
   }
 
-  private maybeCollapseBar_() {
-    if (this.isAlwaysCollapsed_) {
+  private maybeCollapseBar() {
+    if (this.isAlwaysCollapsed) {
       return;
     }
     const currentScroll = this.adapter.getViewportScrollY();
 
     if (currentScroll <= 0) {
-      if (this.isCollapsed_) {
-        this.uncollapse_();
+      if (this.collapsed) {
+        this.uncollapse();
       }
     } else {
-      if (!this.isCollapsed_) {
-        this.collapse_();
+      if (!this.collapsed) {
+        this.collapse();
       }
     }
   }
 
-  private uncollapse_() {
+  private uncollapse() {
     this.adapter.removeClass(cssClasses.SHORT_COLLAPSED_CLASS);
-    this.isCollapsed_ = false;
+    this.collapsed = false;
   }
 
-  private collapse_() {
+  private collapse() {
     this.adapter.addClass(cssClasses.SHORT_COLLAPSED_CLASS);
-    this.isCollapsed_ = true;
+    this.collapsed = true;
   }
 }
 

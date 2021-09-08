@@ -23,21 +23,21 @@
 
 @use '@material/animation/functions' as animation-functions;
 @use '@material/elevation/elevation-theme';
-@use '@material/elevation/mixins' as elevation-mixins;
-@use '@material/elevation/variables' as elevation-variables;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/shape/functions' as shape-functions;
 @use '@material/theme/css';
 @use '@material/theme/custom-properties';
+@use '@material/theme/keys';
 @use '@material/theme/replace';
 @use '@material/theme/state';
 @use '@material/theme/theme-color';
 @use '@material/theme/theme';
+@use '@material/tokens/resolvers';
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/typography/typography';
 @use './fab-theme';
@@ -51,38 +51,65 @@ $extended-height: 48px !default;
 
 $_extended-light-theme: (
   container-color: theme-color.$surface,
-  container-shape: 50%,
+  container-elevation: 3,
   container-height: 56px,
-  container-elevation: elevation-theme.get-elevation(3),
-  icon-size: 36px,
-  icon-color: null,
-  label-text-font: typography.get-font(button),
-  label-text-size: typography.get-size(button),
-  label-text-weight: typography.get-weight(button),
-  label-text-tracking: typography.get-tracking(button),
-  label-text-color: theme-color.$on-surface,
-  hover-container-elevation: null,
-  hover-state-layer-color: theme-color.$primary,
-  hover-state-layer-opacity: null,
-  hover-icon-color: null,
-  hover-label-text-color: null,
+  container-shadow-color: black,
+  container-shape: 50%,
   focus-container-elevation: null,
-  focus-state-layer-color: theme-color.$primary,
-  focus-state-layer-opacity: null,
-  focus-outline-color: null,
-  focus-outline-width: null,
   focus-icon-color: null,
   focus-label-text-color: null,
+  focus-outline-color: null,
+  focus-outline-width: null,
+  focus-state-layer-color: theme-color.$primary,
+  focus-state-layer-opacity: null,
+  hover-container-elevation: null,
+  hover-icon-color: null,
+  hover-label-text-color: null,
+  hover-state-layer-color: theme-color.$primary,
+  hover-state-layer-opacity: null,
+  icon-color: null,
+  icon-size: 36px,
+  label-text-color: theme-color.$on-surface,
+  label-text-font: typography.get-font(button),
+  label-text-size: typography.get-size(button),
+  label-text-tracking: typography.get-tracking(button),
+  label-text-weight: typography.get-weight(button),
+  lowered-container-elevation: null,
+  lowered-focus-container-elevation: null,
+  lowered-hover-container-elevation: null,
+  lowered-pressed-container-elevation: null,
   pressed-container-elevation: null,
-  pressed-ripple-color: theme-color.$primary,
-  pressed-ripple-opacity: null,
   pressed-icon-color: null,
   pressed-label-text-color: null,
+  pressed-ripple-color: null,
+  pressed-ripple-opacity: null,
+  pressed-state-layer-color: theme-color.$primary,
+  pressed-state-layer-opacity: null,
 );
 
-@mixin theme($theme) {
-  @include theme.validate-keys($_extended-light-theme, $theme);
-  @include fab-theme.base-theme($theme);
+$custom-property-prefix: 'extended-fab';
+
+///
+/// Applies the given theme as custom properties without any selectors.
+///
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($_extended-light-theme, $theme);
+  $resolved-theme: fab-theme.resolve-theme($theme, $resolvers);
+  @include keys.declare-custom-properties(
+    $resolved-theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($_extended-light-theme, $theme);
+
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
+  @include fab-theme.base-theme-styles($theme, $resolvers: $resolvers);
   $container-shape: map.get($theme, container-shape);
   @if $container-shape {
     @include extended-shape-radius($container-shape);
@@ -162,7 +189,7 @@ $_extended-light-theme: (
     $end: calc(icon - label);
   }
 
-  @include rtl-mixins.reflexive-property(
+  @include rtl.reflexive-property(
     margin,
     $start,
     $end,
@@ -236,8 +263,8 @@ $_extended-light-theme: (
 }
 
 @mixin _label-typography($typography-map) {
-  font-family: map.get($typography-map, font);
-  font-size: map.get($typography-map, size);
-  font-weight: map.get($typography-map, weight);
-  letter-spacing: map.get($typography-map, tracking);
+  @include theme.property(font-family, map.get($typography-map, font));
+  @include theme.property(font-size, map.get($typography-map, size));
+  @include theme.property(font-weight, map.get($typography-map, weight));
+  @include theme.property(letter-spacing, map.get($typography-map, tracking));
 }

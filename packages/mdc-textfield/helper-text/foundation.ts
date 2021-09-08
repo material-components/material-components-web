@@ -26,18 +26,18 @@ import {MDCTextFieldHelperTextAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextFieldHelperTextAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /**
    * See {@link MDCTextFieldHelperTextAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCTextFieldHelperTextAdapter {
+  static override get defaultAdapter(): MDCTextFieldHelperTextAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -121,21 +121,34 @@ export class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextField
 
     if (validationMsgNeedsDisplay) {
       this.showToScreenReader();
-      this.adapter.setAttr(strings.ROLE, 'alert');
+      // If role is already alert, refresh it to trigger another announcement
+      // from screenreader.
+      if (this.adapter.getAttr(strings.ROLE) === 'alert') {
+        this.refreshAlertRole();
+      } else {
+        this.adapter.setAttr(strings.ROLE, 'alert');
+      }
     } else {
       this.adapter.removeAttr(strings.ROLE);
     }
 
     if (!helperTextIsPersistent && !validationMsgNeedsDisplay) {
-      this.hide_();
+      this.hide();
     }
   }
 
   /**
    * Hides the help text from screen readers.
    */
-  private hide_() {
+  private hide() {
     this.adapter.setAttr(strings.ARIA_HIDDEN, 'true');
+  }
+
+  private refreshAlertRole() {
+    this.adapter.removeAttr(strings.ROLE);
+    requestAnimationFrame(() => {
+      this.adapter.setAttr(strings.ROLE, 'alert');
+    });
   }
 }
 

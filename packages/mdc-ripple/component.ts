@@ -32,7 +32,9 @@ import * as util from './util';
 export type MDCRippleFactory = (el: Element, foundation?: MDCRippleFoundation) => MDCRipple;
 
 export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCRippleCapableSurface {
-  static attachTo(root: Element, opts: MDCRippleAttachOpts = {isUnbounded: undefined}): MDCRipple {
+  static override attachTo(root: Element, opts: MDCRippleAttachOpts = {
+    isUnbounded: undefined
+  }): MDCRipple {
     const ripple = new MDCRipple(root);
     // Only override unbounded behavior if option is explicitly specified
     if (opts.isUnbounded !== undefined) {
@@ -76,15 +78,15 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
 
   disabled = false;
 
-  private unbounded_?: boolean;
+  private isUnbounded?: boolean;
 
   get unbounded(): boolean {
-    return Boolean(this.unbounded_);
+    return Boolean(this.isUnbounded);
   }
 
   set unbounded(unbounded: boolean) {
-    this.unbounded_ = Boolean(unbounded);
-    this.setUnbounded_();
+    this.isUnbounded = Boolean(unbounded);
+    this.setUnbounded();
   }
 
   activate() {
@@ -99,13 +101,13 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
     this.foundation.layout();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     return new MDCRippleFoundation(MDCRipple.createAdapter(this));
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     const root = this.root as HTMLElement;
-    this.unbounded = 'mdcRippleIsUnbounded' in root.dataset;
+    this.isUnbounded = 'mdcRippleIsUnbounded' in root.dataset;
   }
 
   /**
@@ -114,7 +116,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
    * By accessing the protected property inside a method, we solve that problem.
    * That's why this function exists.
    */
-  private setUnbounded_() {
-    this.foundation.setUnbounded(Boolean(this.unbounded_));
+  private setUnbounded() {
+    this.foundation.setUnbounded(Boolean(this.isUnbounded));
   }
 }

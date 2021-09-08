@@ -47,7 +47,7 @@ Leading icons can be applied to default or `mdc-select--outlined` Selects. To ad
 
 ### Leading icon
 
-> **NOTE:** when using leading icons in select anchor, also include an empty `<span class="mdc-list-item__graphic"></span>` in each list item.
+> **NOTE:** when using leading icons in select anchor, also include an empty `<span class="mdc-deprecated-list-item__graphic"></span>` in each list item.
 
 In filled select:
 
@@ -60,21 +60,21 @@ In filled select:
     ...
   </div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
-    <ul class="mdc-list" role="listbox">
-      <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" role="option" data-value="grains">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__graphic"></span>
-        <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+    <ul class="mdc-deprecated-list" role="listbox">
+      <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" aria-selected="true" role="option" data-value="grains">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__graphic"></span>
+        <span class="mdc-deprecated-list-item__text">Bread, Cereal, Rice, and Pasta</span>
       </li>
-      <li class="mdc-list-item" role="option" data-value="vegetables">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__graphic"></span>
-        <span class="mdc-list-item__text">Vegetables</span>
+      <li class="mdc-deprecated-list-item" role="option" data-value="vegetables">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__graphic"></span>
+        <span class="mdc-deprecated-list-item__text">Vegetables</span>
       </li>
-      <li class="mdc-list-item" role="option" data-value="fruit">
-        <span class="mdc-list-item__ripple"></span>
-        <span class="mdc-list-item__graphic"></span>
-        <span class="mdc-list-item__text">Fruit</span>
+      <li class="mdc-deprecated-list-item" role="option" data-value="fruit">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <span class="mdc-deprecated-list-item__graphic"></span>
+        <span class="mdc-deprecated-list-item__text">Fruit</span>
       </li>
     </ul>
 </div>

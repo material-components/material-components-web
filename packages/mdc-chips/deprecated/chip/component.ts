@@ -76,55 +76,58 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
   }
 
   get ripple(): MDCRipple {
-    return this.ripple_;
+    return this.rippleSurface;
   }
 
   get id(): string {
     return this.root.id;
   }
 
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCChip(root);
   }
 
-  private leadingIcon_!: Element | null; // assigned in initialize()
-  private checkmark_!: Element | null; // assigned in initialize()
-  private primaryAction_!: Element|null;            // assigned in initialize()
-  private trailingAction_!: MDCChipTrailingAction|
-      null;                    // assigned in initialize()
-  private ripple_!: MDCRipple; // assigned in initialize()
+  private leadingIcon!: Element|null;    // assigned in initialize()
+  private checkmark!: Element|null;      // assigned in initialize()
+  private primaryAction!: Element|null;  // assigned in initialize()
+  private trailingAction!: MDCChipTrailingAction|
+      null;                           // assigned in initialize()
+  private rippleSurface!: MDCRipple;  // assigned in initialize()
 
-  private handleTrailingActionInteraction_!: CustomEventListener<
+  private handleTrailingActionInteraction!: CustomEventListener<
       MDCChipTrailingActionInteractionEvent>;  // assigned in
                                                // initialSyncWithDOM()
-  private handleTrailingActionNavigation_!: CustomEventListener<
+  private handleTrailingActionNavigation!: CustomEventListener<
       MDCChipTrailingActionNavigationEvent>;  // assigned in
                                               // initialSyncWithDOM()
-  private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
-  private handleClick_!:
+  private handleTransitionEnd!:
+      SpecificEventListener<'transitionend'>;  // assigned in
+                                               // initialSyncWithDOM()
+  private handleClick!:
       SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
-  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
-  private handleFocusIn_!:
+  private handleKeydown!:
+      SpecificEventListener<'keydown'>;  // assigned in initialSyncWithDOM()
+  private handleFocusIn!:
       SpecificEventListener<'focusin'>;  // assigned in initialSyncWIthDOM()
-  private handleFocusOut_!:
+  private handleFocusOut!:
       SpecificEventListener<'focusout'>;  // assigned in initialSyncWIthDOM()
 
-  initialize(
+  override initialize(
       rippleFactory:
           MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
       trailingActionFactory:
           MDCChipTrailingActionFactory = (el) => new MDCChipTrailingAction(el),
   ) {
-    this.leadingIcon_ = this.root.querySelector(strings.LEADING_ICON_SELECTOR);
-    this.checkmark_ = this.root.querySelector(strings.CHECKMARK_SELECTOR);
-    this.primaryAction_ =
+    this.leadingIcon = this.root.querySelector(strings.LEADING_ICON_SELECTOR);
+    this.checkmark = this.root.querySelector(strings.CHECKMARK_SELECTOR);
+    this.primaryAction =
         this.root.querySelector(strings.PRIMARY_ACTION_SELECTOR);
 
     const trailingActionEl =
         this.root.querySelector(strings.TRAILING_ACTION_SELECTOR);
 
     if (trailingActionEl) {
-      this.trailingAction_ = trailingActionFactory(trailingActionEl);
+      this.trailingAction = trailingActionFactory(trailingActionEl);
     }
 
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
@@ -133,69 +136,69 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
       ...MDCRipple.createAdapter(this),
       computeBoundingRect: () => this.foundation.getDimensions(),
     };
-    this.ripple_ =
+    this.rippleSurface =
         rippleFactory(this.root, new MDCRippleFoundation(rippleAdapter));
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     // Custom events
-    this.handleTrailingActionInteraction_ = () => {
+    this.handleTrailingActionInteraction = () => {
       this.foundation.handleTrailingActionInteraction();
     };
-    this.handleTrailingActionNavigation_ =
+    this.handleTrailingActionNavigation =
         (evt: MDCChipTrailingActionNavigationEvent) => {
           this.foundation.handleTrailingActionNavigation(evt);
         };
     // Native events
-    this.handleClick_ = () => {
+    this.handleClick = () => {
       this.foundation.handleClick();
     };
-    this.handleKeydown_ = (evt: KeyboardEvent) => {
+    this.handleKeydown = (evt: KeyboardEvent) => {
       this.foundation.handleKeydown(evt);
     };
-    this.handleTransitionEnd_ = (evt: TransitionEvent) => {
+    this.handleTransitionEnd = (evt: TransitionEvent) => {
       this.foundation.handleTransitionEnd(evt);
     };
-    this.handleFocusIn_ = (evt: FocusEvent) => {
+    this.handleFocusIn = (evt: FocusEvent) => {
       this.foundation.handleFocusIn(evt);
     };
-    this.handleFocusOut_ = (evt: FocusEvent) => {
+    this.handleFocusOut = (evt: FocusEvent) => {
       this.foundation.handleFocusOut(evt);
     };
 
 
-    this.listen('transitionend', this.handleTransitionEnd_);
-    this.listen('click', this.handleClick_);
-    this.listen('keydown', this.handleKeydown_);
-    this.listen('focusin', this.handleFocusIn_);
-    this.listen('focusout', this.handleFocusOut_);
+    this.listen('transitionend', this.handleTransitionEnd);
+    this.listen('click', this.handleClick);
+    this.listen('keydown', this.handleKeydown);
+    this.listen('focusin', this.handleFocusIn);
+    this.listen('focusout', this.handleFocusOut);
 
-    if (this.trailingAction_) {
+    if (this.trailingAction) {
       this.listen(
           trailingActionStrings.INTERACTION_EVENT,
-          this.handleTrailingActionInteraction_);
+          this.handleTrailingActionInteraction);
       this.listen(
           trailingActionStrings.NAVIGATION_EVENT,
-          this.handleTrailingActionNavigation_);
+          this.handleTrailingActionNavigation);
     }
   }
 
-  destroy() {
-    this.ripple_.destroy();
+  override destroy() {
+    this.rippleSurface.destroy();
 
-    this.unlisten('transitionend', this.handleTransitionEnd_);
-    this.unlisten('keydown', this.handleKeydown_);
-    this.unlisten('click', this.handleClick_);
-    this.unlisten('focusin', this.handleFocusIn_);
-    this.unlisten('focusout', this.handleFocusOut_);
+    this.unlisten('transitionend', this.handleTransitionEnd);
+    this.unlisten('keydown', this.handleKeydown);
+    this.unlisten('click', this.handleClick);
+    this.unlisten('focusin', this.handleFocusIn);
+    this.unlisten('focusout', this.handleFocusOut);
 
-    if (this.trailingAction_) {
+    if (this.trailingAction) {
       this.unlisten(
           trailingActionStrings.INTERACTION_EVENT,
-          this.handleTrailingActionInteraction_);
+          this.handleTrailingActionInteraction);
       this.unlisten(
           trailingActionStrings.NAVIGATION_EVENT,
-          this.handleTrailingActionNavigation_);
+          this.handleTrailingActionNavigation);
     }
 
     super.destroy();
@@ -208,41 +211,41 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     this.foundation.beginExit();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipAdapter = {
       addClass: (className) => this.root.classList.add(className),
       addClassToLeadingIcon: (className) => {
-        if (this.leadingIcon_) {
-          this.leadingIcon_.classList.add(className);
+        if (this.leadingIcon) {
+          this.leadingIcon.classList.add(className);
         }
       },
       eventTargetHasClass: (target, className) =>
           target ? (target as Element).classList.contains(className) : false,
       focusPrimaryAction: () => {
-        if (this.primaryAction_) {
-          (this.primaryAction_ as HTMLElement).focus();
+        if (this.primaryAction) {
+          (this.primaryAction as HTMLElement).focus();
         }
       },
       focusTrailingAction: () => {
-        if (this.trailingAction_) {
-          this.trailingAction_.focus();
+        if (this.trailingAction) {
+          this.trailingAction.focus();
         }
       },
       getAttribute: (attr) => this.root.getAttribute(attr),
       getCheckmarkBoundingClientRect: () =>
-          this.checkmark_ ? this.checkmark_.getBoundingClientRect() : null,
+          this.checkmark ? this.checkmark.getBoundingClientRect() : null,
       getComputedStyleValue: (propertyName) =>
           window.getComputedStyle(this.root).getPropertyValue(propertyName),
       getRootBoundingClientRect: () => this.root.getBoundingClientRect(),
       hasClass: (className) => this.root.classList.contains(className),
-      hasLeadingIcon: () => !!this.leadingIcon_,
+      hasLeadingIcon: () => !!this.leadingIcon,
       isRTL: () => window.getComputedStyle(this.root).getPropertyValue(
                        'direction') === 'rtl',
       isTrailingActionNavigable: () => {
-        if (this.trailingAction_) {
-          return this.trailingAction_.isNavigable();
+        if (this.trailingAction) {
+          return this.trailingAction.isNavigable();
         }
         return false;
       },
@@ -271,18 +274,18 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
       notifyEditFinish: () => { /* Not Implemented. */ },
       removeClass: (className) => this.root.classList.remove(className),
       removeClassFromLeadingIcon: (className) => {
-        if (this.leadingIcon_) {
-          this.leadingIcon_.classList.remove(className);
+        if (this.leadingIcon) {
+          this.leadingIcon.classList.remove(className);
         }
       },
       removeTrailingActionFocus: () => {
-        if (this.trailingAction_) {
-          this.trailingAction_.removeFocus();
+        if (this.trailingAction) {
+          this.trailingAction.removeFocus();
         }
       },
       setPrimaryActionAttr: (attr, value) => {
-        if (this.primaryAction_) {
-          this.primaryAction_.setAttribute(attr, value);
+        if (this.primaryAction) {
+          this.primaryAction.setAttribute(attr, value);
         }
       },
       setStyleProperty: (propertyName, value) =>

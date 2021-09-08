@@ -23,16 +23,20 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use '@material/density/functions' as density-functions;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/theme/theme';
 @use './functions';
 @use './variables';
 @use '@material/dom/mixins' as dom-mixins;
+
+// Temporary suffix to add to shared selectors between versions for migration
+$deprecated-suffix: '-deprecated' !default;
 
 //
 // Public
@@ -53,7 +57,7 @@
 
   @include density(variables.$density-scale, $query: $query);
 
-  .mdc-switch {
+  .mdc-switch#{$deprecated-suffix} {
     @include feature-targeting.targets($feat-structure) {
       @include base_;
     }
@@ -79,7 +83,7 @@
     }
   }
 
-  .mdc-switch__track {
+  .mdc-switch__track#{$deprecated-suffix} {
     @include track_($query);
   }
 
@@ -93,7 +97,7 @@
 
   .mdc-switch--checked {
     @include feature-targeting.targets($feat-structure) {
-      .mdc-switch__track {
+      .mdc-switch__track#{$deprecated-suffix} {
         @include track-checked_;
       }
 
@@ -129,7 +133,7 @@
 @mixin ripple($query: feature-targeting.all()) {
   @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
 
-  .mdc-switch {
+  .mdc-switch#{$deprecated-suffix} {
     @include toggled-off-ripple-color(
       variables.$toggled-off-ripple-color,
       $query
@@ -162,7 +166,7 @@
 @mixin toggled-on-track-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  &.mdc-switch--checked .mdc-switch__track {
+  &.mdc-switch--checked .mdc-switch__track#{$deprecated-suffix} {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
     }
@@ -189,7 +193,7 @@
 @mixin toggled-off-track-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  &:not(.mdc-switch--checked) .mdc-switch__track {
+  &:not(.mdc-switch--checked) .mdc-switch__track#{$deprecated-suffix} {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
     }
@@ -235,8 +239,8 @@
 
   // Position for the tap target that contains the thumb to align the thumb
   // correctly offset from the track.
-  $tap-target-initial-position: -$ripple-size / 2 + variables.$thumb-diameter /
-    2;
+  $tap-target-initial-position: math.div(-$ripple-size, 2) +
+    math.div(variables.$thumb-diameter, 2);
   // Value to cover the whole switch area (including the ripple) with the
   // native control.
   $native-control-width: variables.$track-width +
@@ -244,13 +248,10 @@
 
   .mdc-switch__thumb-underlay {
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-position(
-        left,
-        $tap-target-initial-position
-      );
+      @include rtl.reflexive-position(left, $tap-target-initial-position);
 
       // Ensures the knob is centered on the track.
-      top: -(($ripple-size - variables.$track-height) / 2);
+      top: -(math.div($ripple-size - variables.$track-height, 2));
       width: $ripple-size;
       height: $ripple-size;
     }
@@ -274,7 +275,7 @@
   $query: feature-targeting.all()
 ) {
   // Ensure sufficient specificity to override base state opacities
-  &.mdc-switch .mdc-switch__thumb-underlay {
+  &.mdc-switch#{$deprecated-suffix} .mdc-switch__thumb-underlay {
     @include ripple-theme.states-opacities($opacity-map, $query: $query);
   }
 }
@@ -300,7 +301,7 @@
     width: variables.$track-width;
     height: variables.$track-height;
     border: 1px solid transparent;
-    border-radius: variables.$track-height / 2;
+    border-radius: math.div(variables.$track-height, 2);
     opacity: 0.38;
   }
 
@@ -330,7 +331,7 @@
 }
 
 @mixin native-control_ {
-  @include rtl-mixins.reflexive-position(left, 0);
+  @include rtl.reflexive-position(left, 0);
 
   position: absolute;
   top: 0;
@@ -350,7 +351,7 @@
     box-sizing: border-box;
     width: variables.$thumb-diameter;
     height: variables.$thumb-diameter;
-    border: variables.$thumb-diameter / 2 solid;
+    border: math.div(variables.$thumb-diameter, 2) solid;
     border-radius: 50%;
     // Allow events to go through to the native control, necessary for IE and Edge.
     pointer-events: none;
@@ -367,7 +368,7 @@
 @mixin thumb-underlay-checked_ {
   transform: translateX(variables.$thumb-active-margin);
 
-  @include rtl-mixins.rtl {
+  @include rtl.rtl {
     transform: translateX(-(variables.$thumb-active-margin));
   }
 }
@@ -376,7 +377,7 @@
   // Translate the native control the opposite direction so that the tap target stays the same.
   transform: translateX(-(variables.$thumb-active-margin));
 
-  @include rtl-mixins.rtl {
+  @include rtl.rtl {
     transform: translateX(variables.$thumb-active-margin);
   }
 }

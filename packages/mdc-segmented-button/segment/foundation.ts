@@ -33,11 +33,11 @@ const emptyClientRect = {
   right: 0,
   top: 0,
   width: 0,
-};
+} as any;
 
 export class MDCSegmentedButtonSegmentFoundation extends
     MDCFoundation<MDCSegmentedButtonSegmentAdapter> {
-  static get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
+  static override get defaultAdapter(): MDCSegmentedButtonSegmentAdapter {
     return {
       isSingleSelect: () => false, getAttr: () => '', setAttr: () => undefined,
                       addClass: () => undefined, removeClass: () => undefined,

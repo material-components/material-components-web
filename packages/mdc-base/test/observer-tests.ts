@@ -234,6 +234,36 @@ export function createObserverTests(
       expect(observerTwo).toHaveBeenCalledTimes(2);
       expect(observerTwo).toHaveBeenCalledWith('anotherValue', 'newValue');
     });
+
+    it('should observe superclass properties', () => {
+      const superClassGetter = jasmine.createSpy('superClassGetter');
+      const superClassSetter = jasmine.createSpy('superClassSetter');
+      class SuperClass {
+        privateProp = false;
+        get prop() {
+          superClassGetter();
+          return this.privateProp;
+        }
+        set prop(prop: boolean) {
+          this.privateProp = prop;
+          superClassSetter();
+        }
+      }
+
+      class SubClass extends SuperClass {}
+
+      const state = new SubClass();
+      const observer = jasmine.createSpy('observer');
+      observeProperty(state, 'prop', observer);
+      state.prop = true;
+      expect(observer).toHaveBeenCalledTimes(1);
+      expect(observer).toHaveBeenCalledWith(true, false);
+      // SuperClass getter/setter functionality should be preserved
+      expect(superClassSetter).toHaveBeenCalledTimes(1);
+      superClassGetter.calls.reset();
+      expect(state.prop).toBe(true);
+      expect(superClassGetter).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe(`${testPrefix}setObserversEnabled()`, () => {

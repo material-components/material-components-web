@@ -459,7 +459,7 @@ describe('MDCList', () => {
     const listElementItem =
         root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
     listElementItem.dispatchEvent(event);
-    expect(mockFoundation.handleFocusIn).toHaveBeenCalledWith(event, 0);
+    expect(mockFoundation.handleFocusIn).toHaveBeenCalledWith(0);
     expect(mockFoundation.handleFocusIn).toHaveBeenCalledTimes(1);
     document.body.removeChild(root);
   });
@@ -473,7 +473,7 @@ describe('MDCList', () => {
     const listElementItem =
         root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
     listElementItem.dispatchEvent(event);
-    expect(mockFoundation.handleFocusIn).not.toHaveBeenCalledWith(event, 0);
+    expect(mockFoundation.handleFocusIn).not.toHaveBeenCalledWith(0);
     document.body.removeChild(root);
   });
 
@@ -485,7 +485,7 @@ describe('MDCList', () => {
     const listElementItem =
         root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
     listElementItem.dispatchEvent(event);
-    expect(mockFoundation.handleFocusOut).toHaveBeenCalledWith(event, 0);
+    expect(mockFoundation.handleFocusOut).toHaveBeenCalledWith(0);
     expect(mockFoundation.handleFocusOut).toHaveBeenCalledTimes(1);
     document.body.removeChild(root);
   });
@@ -499,7 +499,7 @@ describe('MDCList', () => {
     const listElementItem =
         root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
     listElementItem.dispatchEvent(event);
-    expect(mockFoundation.handleFocusOut).not.toHaveBeenCalledWith(event, 0);
+    expect(mockFoundation.handleFocusOut).not.toHaveBeenCalledWith(0);
     document.body.removeChild(root);
   });
 

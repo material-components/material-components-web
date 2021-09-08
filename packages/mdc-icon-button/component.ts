@@ -31,7 +31,7 @@ import {MDCIconButtonToggleEventDetail} from './types';
 const {strings} = MDCIconButtonToggleFoundation;
 
 export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
-  static attachTo(root: HTMLElement) {
+  static override attachTo(root: HTMLElement) {
     return new MDCIconButtonToggle(root);
   }
 
@@ -39,20 +39,20 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
   private handleClick!:
       SpecificEventListener<'click'>;  // assigned in initialSyncWithDOM()
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleClick = () => {
       this.foundation.handleClick();
     };
     this.listen('click', this.handleClick);
   }
 
-  destroy() {
+  override destroy() {
     this.unlisten('click', this.handleClick);
     this.ripple.destroy();
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCIconButtonToggleAdapter = {

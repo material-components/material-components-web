@@ -33,11 +33,11 @@ export interface MDCObserver {
    * property names and observer functions.
    *
    * @template T The target type.
-   * @param {T} target - The target to observe.
-   * @param {ObserverRecord<T>} observers - An object whose keys are target
-   *     properties and values are observer functions that are called when the
-   *     associated property changes.
-   * @return {Function} A cleanup function that can be called to unobserve the
+   * @param target - The target to observe.
+   * @param observers - An object whose keys are target properties and values
+   *     are observer functions that are called when the associated property
+   *     changes.
+   * @return A cleanup function that can be called to unobserve the
    *     target.
    */
   observe<T extends object>(target: T, observers: ObserverRecord<T, this>):
@@ -47,8 +47,8 @@ export interface MDCObserver {
    * Enables or disables all observers for the provided target. Disabling
    * observers will prevent them from being called until they are re-enabled.
    *
-   * @param {object} target - The target to enable or disable observers for.
-   * @param {Boolean} enabled - Whether or not observers should be called.
+   * @param target - The target to enable or disable observers for.
+   * @param enabled - Whether or not observers should be called.
    */
   setObserversEnabled(target: object, enabled: boolean): void;
 
@@ -64,8 +64,8 @@ export interface MDCObserver {
  * @template T The observed target type.
  * @template K The observed property.
  * @template This The `this` context of the observer function.
- * @param {T[K]} current - The current value of the property.
- * @param {T[K]} previous - The previous value of the property.
+ * @param current - The current value of the property.
+ * @param previous - The previous value of the property.
  */
 export type Observer<T extends object, K extends keyof T = keyof T,
                                                  This = unknown> =
@@ -85,19 +85,21 @@ export type ObserverRecord<T extends object, This = unknown> = {
 /**
  * Mixin to add `MDCObserver` functionality.
  *
- * @return {Constructor<MDCObserver>} A class with `MDCObserver` functionality.
+ * @deprecated Prefer MDCObserverFoundation for stricter closure compliance.
+ * @return A class with `MDCObserver` functionality.
  */
 export function mdcObserver(): Constructor<MDCObserver>;
 
 /**
  * Mixin to add `MDCObserver` functionality to a base class.
  *
+ * @deprecated Prefer MDCObserverFoundation for stricter closure compliance.
  * @template T Base class instance type. Specify this generic if the base class
  *     itself has generics that cannot be inferred.
  * @template C Base class constructor type.
- * @param {C} baseClass - Base class.
- * @return {Constructor<MDCObserver> & C} A class that extends the optional base
- *     class with `MDCObserver` functionality.
+ * @param baseClass - Base class.
+ * @return A class that extends the optional base class with `MDCObserver`
+ *     functionality.
  */
 export function mdcObserver<T, C extends Constructor<T>>(baseClass: C):
     Constructor<MDCObserver>&Constructor<T>&C;
@@ -105,10 +107,11 @@ export function mdcObserver<T, C extends Constructor<T>>(baseClass: C):
 /**
  * Mixin to add `MDCObserver` functionality to an optional base class.
  *
+ * @deprecated Prefer MDCObserverFoundation for stricter closure compliance.
  * @template C Optional base class constructor type.
- * @param {C} baseClass - Optional base class.
- * @return {Constructor<MDCObserver> & C} A class that extends the optional base
- *     class with `MDCObserver` functionality.
+ * @param baseClass - Optional base class.
+ * @return A class that extends the optional base class with `MDCObserver`
+ *     functionality.
  */
 export function mdcObserver<C extends Constructor>(
     baseClass: C = class {} as C) {
@@ -177,7 +180,7 @@ interface TargetObservers<T extends object> {
    * Retrieves all observers for a given target property.
    *
    * @template K The target property key.
-   * @param {K} key - The property to retrieve observers for.
+   * @param key - The property to retrieve observers for.
    * @return An array of observers for the provided target property.
    */
   getObservers<K extends keyof T>(key: K): Array<Observer<T, K>>;
@@ -200,12 +203,12 @@ interface TargetObservers<T extends object> {
  *
  * @template T The observed target type.
  * @template K The observed property.
- * @param {T} target - The target to observe.
- * @param {K} property - The property of the target to observe.
- * @param {Observer<T, K>} - An observer function to invoke each time the
- *     property changes.
- * @return {Function} A cleanup function that will stop observing changes for
- *     the provided `Observer`.
+ * @param target - The target to observe.
+ * @param property - The property of the target to observe.
+ * @param observer - An observer function to invoke each time the property
+ *     changes.
+ * @return A cleanup function that will stop observing changes for the provided
+ *     `Observer`.
  */
 export function observeProperty<T extends object, K extends keyof T>(
     target: T, property: K, observer: Observer<T, K>) {
@@ -232,10 +235,9 @@ const allTargetObservers = new WeakMap<object, TargetObservers<any>>();
  *
  * @template T The observed target type.
  * @template K The observed property to create a getter/setter for.
- * @param {T} target - The target to observe.
- * @param {K} property - The property to create a getter/setter for, if needed.
- * @return {TargetObservers<T>} The installed `TargetObservers` for the provided
- *     target.
+ * @param target - The target to observe.
+ * @param property - The property to create a getter/setter for, if needed.
+ * @return The installed `TargetObservers` for the provided target.
  */
 function installObserver<T extends object, K extends keyof T>(
     target: T, property: K): TargetObservers<T> {
@@ -262,8 +264,15 @@ function installObserver<T extends object, K extends keyof T>(
     return targetObservers;
   }
 
-  // Retrieve the original descriptor from the target...
-  const descriptor = getDescriptor(target, property);
+  // Retrieve (or create if it's a plain property) the original descriptor from
+  // the target...
+  const descriptor = getDescriptor(target, property) || {
+    configurable: true,
+    enumerable: true,
+    value: target[property],
+    writable: true
+  };
+
   // ...and create a copy that will be used for the observer.
   const observedDescriptor = {...descriptor};
   let {get: descGet, set: descSet} = descriptor;
@@ -276,31 +285,29 @@ function installObserver<T extends object, K extends keyof T>(
     delete observedDescriptor.writable;
 
     // Set up a simple getter...
-    let value = descriptor.value;
-    descGet = function(this: T) {
-      return value;
-    };
+    let value = descriptor.value as T[K];
+    descGet = () => value;
 
     // ...and setter (if the original property was writable).
     if (descriptor.writable) {
-      descSet = function(this: T, newValue: T[K]) {
+      descSet = (newValue) => {
         value = newValue;
       };
     }
   }
 
   if (descGet) {
-    const getter = descGet;
     observedDescriptor.get = function(this: T) {
-      return getter.call(this);
+      // `this as T` needed for closure conformance
+      return descGet!.call(this as T);
     };
   }
 
   if (descSet) {
-    const setter = descSet;
     observedDescriptor.set = function(this: T, newValue: T[K]) {
-      const previous = descGet ? descGet.call(this) : newValue;
-      setter.call(this, newValue);
+      // `thus as T` needed for closure conformance
+      const previous = descGet ? descGet.call(this as T) : newValue;
+      descSet!.call(this as T, newValue);
       if (targetObservers.isEnabled && (!descGet || newValue !== previous)) {
         for (const observer of targetObservers.getObservers(property)) {
           observer(newValue, previous);
@@ -314,25 +321,34 @@ function installObserver<T extends object, K extends keyof T>(
   return targetObservers;
 }
 
-function getDescriptor<T extends object, K extends keyof T>(
+/**
+ * Retrieves the descriptor for a property from the provided target. This
+ * function will walk up the target's prototype chain to search for the
+ * descriptor.
+ *
+ * @template T The target type.
+ * @template K The property type.
+ * @param target - The target to retrieve a descriptor from.
+ * @param property - The name of the property to retrieve a descriptor for.
+ * @return the descriptor, or undefined if it does not exist. Keep in mind that
+ *     plain properties may not have a descriptor defined.
+ */
+export function getDescriptor<T extends object, K extends keyof T>(
     target: T, property: K) {
-  let descriptor = Object.getOwnPropertyDescriptor(target, property);
-  if (descriptor) {
-    return descriptor;
+  let descriptorTarget: object|null = target;
+  let descriptor: TypedPropertyDescriptor<T[K]>|undefined;
+  while (descriptorTarget) {
+    descriptor = Object.getOwnPropertyDescriptor(descriptorTarget, property);
+    if (descriptor) {
+      break;
+    }
+
+    // Walk up the instance's prototype chain in case the property is declared
+    // on a superclass.
+    descriptorTarget = Object.getPrototypeOf(descriptorTarget);
   }
 
-  const prototype = Object.getPrototypeOf(target);
-  descriptor = Object.getOwnPropertyDescriptor(prototype, property);
-  if (descriptor) {
-    return descriptor;
-  }
-
-  return {
-    configurable: true,
-    enumerable: true,
-    value: undefined,
-    writable: true
-  };
+  return descriptor;
 }
 
 /**
@@ -340,8 +356,8 @@ function getDescriptor<T extends object, K extends keyof T>(
  * properties will not call any observers when disabled.
  *
  * @template T The observed target type.
- * @param {T} target - The target to enable or disable observers for.
- * @param {Boolean} enabled - True to enable or false to disable observers.
+ * @param target - The target to enable or disable observers for.
+ * @param enabled - True to enable or false to disable observers.
  */
 export function setObserversEnabled<T extends object>(
     target: T, enabled: boolean) {

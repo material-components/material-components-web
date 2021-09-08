@@ -392,7 +392,6 @@ $_options: ();
 ///   );
 ///
 ///   @mixin theme($theme) {
-///     @include theme.validate-keys($light-theme, $theme);
 ///     $theme: keys.create-theme-properties($theme, button-filled);
 ///     /*(
 ///       label-color: (
@@ -414,16 +413,28 @@ $_options: ();
   $theme-with-props: ();
   @each $name, $value in $theme {
     @if $value != null {
-      $key: combine($prefix, $name);
       @if is-key($value) {
         $value: create-custom-property($value);
       }
 
-      $theme-with-props: map.set(
-        $theme-with-props,
-        $name,
-        custom-properties.create(_create-varname($key), $value)
-      );
+      $key: combine($prefix, $name);
+
+      @if _is-map($value) {
+        @each $k, $v in $value {
+          $theme-with-props: map.set(
+            $theme-with-props,
+            $name,
+            $k,
+            custom-properties.create(_create-varname(combine($key, $k)), $v)
+          );
+        }
+      } @else {
+        $theme-with-props: map.set(
+          $theme-with-props,
+          $name,
+          custom-properties.create(_create-varname($key), $value)
+        );
+      }
     }
   }
 
@@ -450,6 +461,20 @@ $_options: ();
   }
 
   @return custom-properties.set-fallback($prop, resolve($key, $deep: true));
+}
+
+@mixin declare-custom-properties($theme, $prefix: null) {
+  $theme: create-theme-properties($theme, $prefix);
+
+  @each $key, $value in $theme {
+    @if _is-map($value) {
+      @each $k, $v in $value {
+        @include custom-properties.declaration($v);
+      }
+    } @else {
+      @include custom-properties.declaration($value);
+    }
+  }
 }
 
 /// Creates a custom property varname for a key. This function will add a key's
@@ -491,4 +516,9 @@ $_options: ();
   }
 
   @return $key;
+}
+
+@function _is-map($map) {
+  @return meta.type-of($map) == 'map' and not
+    custom-properties.is-custom-prop($map);
 }

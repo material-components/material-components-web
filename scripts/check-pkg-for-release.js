@@ -35,9 +35,9 @@ const path = require('path');
 const childProcess = require('child_process');
 
 const {default: traverse} = require('babel-traverse');
-const parser = require('@babel/parser');
 const camelCase = require('camel-case');
 const recast = require('recast');
+const typescriptParser = require('recast/parsers/typescript');
 
 const CLI_PACKAGE_JSON_RELATIVE_PATH = process.argv[2];
 if (!CLI_PACKAGE_JSON_RELATIVE_PATH) {
@@ -75,12 +75,14 @@ const CSS_EXCLUDES = new Set([
   'progress-indicator',
   'rtl',
   'shape',
+  'tokens',
   'touch-target',
 ]);
 
 const JS_EXCLUDES = new Set([
   'animation',
   'progress-indicator',
+  'tokens',
   'chips', // Temporarily added during deprecation migration.
 ]);
 
@@ -141,11 +143,12 @@ function checkJSDependencyAddedInWebpackConfig() {
   const jsconfig = WEBPACK_CONFIG.find((value) => {
     return value.name === 'main-js-a-la-carte';
   });
-  const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
-  assert.notEqual(typeof jsconfig.entry[nameCamel], 'undefined',
+  const pkgName = CLI_PACKAGE_JSON.name.replace('@material/', '');
+  assert.notEqual(typeof jsconfig.entry[pkgName], 'undefined',
     'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' javascript dependency is not added to webpack ' +
-    'configuration. Please add ' + nameCamel + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s js-components ' +
-    'entry before commit.');
+    'configuration. Please add ' + pkgName + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s js-components ' +
+    'entry before commit. If package @material/' + name + ' has no exported JS, add "' + name + '" to ' +
+    'the JS_EXCLUDES set in this file.');
 }
 
 function checkCSSDependencyAddedInWebpackConfig() {
@@ -161,7 +164,8 @@ function checkCSSDependencyAddedInWebpackConfig() {
   assert.notEqual(typeof cssconfig.entry[nameMDC], 'undefined',
     'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' css dependency not added to webpack ' +
     'configuration. Please add ' + name + ' to ' + WEBPACK_CONFIG_RELATIVE_PATH + '\'s css ' +
-    'entry before commit.');
+    'entry before commit. If package @material/' + name + ' exports no concrete Sass, add ' +
+    '"' + name + '" to the CSS_EXCLUDES set in this file.');
 }
 
 function checkDependencyAddedInMDCPackage() {
@@ -209,11 +213,7 @@ function checkJSDependencyAddedInMDCPackage() {
 
   const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
   const src = fs.readFileSync(path.join(process.env.PWD, MASTER_TS_RELATIVE_PATH), 'utf8');
-  const ast = recast.parse(src, {
-    parser: {
-      parse: (code) => parser.parse(code, {sourceType: 'module'}),
-    },
-  });
+  const ast = recast.parse(src, {parser: typescriptParser});
   assert(checkComponentImportedAddedInMDCPackage(ast), 'FAILURE: Component ' +
     CLI_PACKAGE_JSON.name + ' is not being imported in MDC Web. ' + 'Please add ' + nameCamel +
     ' to '+ MASTER_TS_RELATIVE_PATH + ' import rule before commit.');
@@ -256,11 +256,30 @@ function checkAutoInitAddedInMDCPackage(ast) {
       const callee = node.expression.callee;
       const args = node.expression.arguments;
       if (callee.object.name === 'autoInit' && callee.property.name === 'register') {
-        const expression = args.find((value) => {
-          return value.type === 'MemberExpression';
-        });
-        if (expression.object.name === nameCamel) {
-          autoInitedCount++;
+        for (let value of args) {
+          // When searching for a MemberExpression, if a typescript "as a"
+          // expression is found, recursively search its expression, since TS
+          // may define something "as a" multiple times.
+          //
+          // Example: object.foo as unknown as any as Interface
+          while (value.type === 'TSAsExpression') {
+            value = value.expression;
+          }
+
+          // For the given ExpressionStatement node whose callee name is
+          // "autoInit" and call property name is "register":
+          //
+          // autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
+          //
+          // We are searching the arguments provided to the expression to find
+          // the object with the package name ("checkbox" in the example).
+          // These node expression types which access an object's members are
+          // called MemberExpressions. The name of the object should be the
+          // package name.
+          if (value.type === 'MemberExpression' && value.object.name === nameCamel) {
+            autoInitedCount++;
+            break;
+          }
         }
       }
     },

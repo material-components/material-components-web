@@ -54,11 +54,25 @@ const numbers = {
   /** Total duration of menu-surface close animation. */
   TRANSITION_CLOSE_DURATION: 75,
 
-  /** Margin left to the edge of the viewport when menu-surface is at maximum possible height. Also used as a viewport margin. */
+  /**
+   * Margin left to the edge of the viewport when menu-surface is at maximum
+   * possible height. Also used as a viewport margin.
+   */
   MARGIN_TO_EDGE: 32,
 
-  /** Ratio of anchor width to menu-surface width for switching from corner positioning to center positioning. */
+  /**
+   * Ratio of anchor width to menu-surface width for switching from corner
+   * positioning to center positioning.
+   */
   ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO: 0.67,
+
+  /**
+   * Amount of time to wait before restoring focus when closing the menu
+   * surface. This is important because if a touch event triggered the menu
+   * close, and the subsequent mouse event occurs after focus is restored, then
+   * the restored focus would be lost.
+   */
+  TOUCH_EVENT_WAIT_MS: 30,
 };
 
 /**

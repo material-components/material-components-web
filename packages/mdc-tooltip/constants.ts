@@ -30,6 +30,7 @@ enum CssClasses {
   HIDE_TRANSITION = 'mdc-tooltip--hide-transition',
   MULTILINE_TOOLTIP = 'mdc-tooltip--multiline',
   SURFACE = 'mdc-tooltip__surface',
+  SURFACE_ANIMATION = 'mdc-tooltip__surface-animation',
   TOOLTIP_CARET_TOP = 'mdc-tooltip__caret-surface-top',
   TOOLTIP_CARET_BOTTOM = 'mdc-tooltip__caret-surface-bottom',
 }
@@ -45,6 +46,9 @@ const numbers = {
   MAX_WIDTH: 200,
   // LINT.ThenChange(_tooltip.scss:tooltip-dimensions)
   CARET_INDENTATION: 24,
+  // LINT.IfChange(tooltip-anim-scale)
+  ANIMATION_SCALE: 0.8,
+  // LINT.ThenChange(_tooltip.scss:tooltip-anim-scale)
 };
 
 const attributes = {

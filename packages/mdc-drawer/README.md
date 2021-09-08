@@ -31,6 +31,14 @@ A navigation drawer is recommended for:
 * Apps with two or more levels of navigation hierarchy
 * Quick navigation between unrelated destinations
 
+### Important Changes
+
+Drawer is currently being updated to use the new List implementation. For now,
+please continue to use the old implementation (`mdc-deprecated-list` and
+associated DOM/classes) instead of the new one (`mdc-list`).
+
+See the [List documentation](../mdc-list/README.md) for more information.
+
 ### Installation
 
 ```
@@ -55,7 +63,7 @@ For permanently visible drawer, the list must be instantiated for appropriate ke
 
 ```js
 import {MDCList} from "@material/list";
-const list = MDCList.attachTo(document.querySelector('.mdc-list'));
+const list = MDCList.attachTo(document.querySelector('.mdc-deprecated-list'));
 list.wrapFocus = true;
 ```
 
@@ -89,7 +97,7 @@ It is recommended to shift focus to the first focusable element in the main cont
 Restore focus to the first focusable element when a list item is activated or after the drawer closes. Do not close the drawer upon item activation, since it should be up to the user when to show/hide the dismissible drawer.
 
 ```js
-const listEl = document.querySelector('.mdc-drawer .mdc-list');
+const listEl = document.querySelector('.mdc-drawer .mdc-deprecated-list');
 const mainContentEl = document.querySelector('.main-content');
 
 listEl.addEventListener('click', (event) => {
@@ -106,7 +114,7 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 Close the drawer when an item is activated in order to dismiss the modal as soon as the user performs an action. Only restore focus to the first focusable element in the main content after the drawer is closed, since it's being closed automatically.
 
 ```js
-const listEl = document.querySelector('.mdc-drawer .mdc-list');
+const listEl = document.querySelector('.mdc-drawer .mdc-deprecated-list');
 const mainContentEl = document.querySelector('.main-content');
 
 listEl.addEventListener('click', (event) => {
@@ -131,21 +139,21 @@ There are three types of navigation drawers: [standard (1)](#standard-navigation
 ```html
 <aside class="mdc-drawer">
   <div class="mdc-drawer__content">
-    <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-        <span class="mdc-list-item__text">Inbox</span>
+    <nav class="mdc-deprecated-list">
+      <a class="mdc-deprecated-list-item mdc-deprecated-list-item--activated" href="#" aria-current="page">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">inbox</i>
+        <span class="mdc-deprecated-list-item__text">Inbox</span>
       </a>
-      <a class="mdc-list-item" href="#">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__text">Outgoing</span>
+      <a class="mdc-deprecated-list-item" href="#">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">send</i>
+        <span class="mdc-deprecated-list-item__text">Outgoing</span>
       </a>
-      <a class="mdc-list-item" href="#">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-        <span class="mdc-list-item__text">Drafts</span>
+      <a class="mdc-deprecated-list-item" href="#">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">drafts</i>
+        <span class="mdc-deprecated-list-item__text">Drafts</span>
       </a>
     </nav>
   </div>
@@ -161,21 +169,21 @@ There are three types of navigation drawers: [standard (1)](#standard-navigation
 <body>
   <aside class="mdc-drawer mdc-drawer--modal">
     <div class="mdc-drawer__content">
-      <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page" tabindex="0">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-          <span class="mdc-list-item__text">Inbox</span>
+      <nav class="mdc-deprecated-list">
+        <a class="mdc-deprecated-list-item mdc-deprecated-list-item--activated" href="#" aria-current="page" tabindex="0">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">inbox</i>
+          <span class="mdc-deprecated-list-item__text">Inbox</span>
         </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-          <span class="mdc-list-item__text">Outgoing</span>
+        <a class="mdc-deprecated-list-item" href="#">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">send</i>
+          <span class="mdc-deprecated-list-item__text">Outgoing</span>
         </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-          <span class="mdc-list-item__text">Drafts</span>
+        <a class="mdc-deprecated-list-item" href="#">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">drafts</i>
+          <span class="mdc-deprecated-list-item__text">Drafts</span>
         </a>
       </nav>
     </div>
@@ -201,44 +209,44 @@ MDC Web does not currently support bottom navigation drawers.
 ```html
 <aside class="mdc-drawer">
   <div class="mdc-drawer__content">
-    <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-        <span class="mdc-list-item__text">Inbox</span>
+    <nav class="mdc-deprecated-list">
+      <a class="mdc-deprecated-list-item mdc-deprecated-list-item--activated" href="#" aria-current="page">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">inbox</i>
+        <span class="mdc-deprecated-list-item__text">Inbox</span>
       </a>
-      <a class="mdc-list-item" href="#">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
-        <span class="mdc-list-item__text">Star</span>
+      <a class="mdc-deprecated-list-item" href="#">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">star</i>
+        <span class="mdc-deprecated-list-item__text">Star</span>
       </a>
-      <a class="mdc-list-item" href="#">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__text">Sent Mail</span>
+      <a class="mdc-deprecated-list-item" href="#">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">send</i>
+        <span class="mdc-deprecated-list-item__text">Sent Mail</span>
       </a>
-      <a class="mdc-list-item" href="#">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-        <span class="mdc-list-item__text">Drafts</span>
+      <a class="mdc-deprecated-list-item" href="#">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">drafts</i>
+        <span class="mdc-deprecated-list-item__text">Drafts</span>
       </a>
 
-      <hr class="mdc-list-divider">
-      <h6 class="mdc-list-group__subheader">Labels</h6>
-      <a class="mdc-list-item" href="#">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__text">Family</span>
+      <hr class="mdc-deprecated-list-divider">
+      <h6 class="mdc-deprecated-list-group__subheader">Labels</h6>
+      <a class="mdc-deprecated-list-item" href="#">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">bookmark</i>
+        <span class="mdc-deprecated-list-item__text">Family</span>
       </a>
-      <a class="mdc-list-item" href="#">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__text">Friends</span>
+      <a class="mdc-deprecated-list-item" href="#">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">bookmark</i>
+        <span class="mdc-deprecated-list-item__text">Friends</span>
       </a>
-      <a class="mdc-list-item" href="#">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__text">Work</span>
+      <a class="mdc-deprecated-list-item" href="#">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">bookmark</i>
+        <span class="mdc-deprecated-list-item__text">Work</span>
       </a>
     </nav>
   </div>
@@ -256,21 +264,21 @@ Drawers can contain a header element which will not scroll with the rest of the 
     <h6 class="mdc-drawer__subtitle">email@material.io</h6>
   </div>
   <div class="mdc-drawer__content">
-    <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-        <span class="mdc-list-item__text">Inbox</span>
+    <nav class="mdc-deprecated-list">
+      <a class="mdc-deprecated-list-item mdc-deprecated-list-item--activated" href="#" aria-current="page">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">inbox</i>
+        <span class="mdc-deprecated-list-item__text">Inbox</span>
       </a>
-      <a class="mdc-list-item" href="#">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__text">Outgoing</span>
+      <a class="mdc-deprecated-list-item" href="#">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">send</i>
+        <span class="mdc-deprecated-list-item__text">Outgoing</span>
       </a>
-      <a class="mdc-list-item" href="#">
-        <span class="mdc-list-item__ripple"></span>
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-        <span class="mdc-list-item__text">Drafts</span>
+      <a class="mdc-deprecated-list-item" href="#">
+        <span class="mdc-deprecated-list-item__ripple"></span>
+        <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">drafts</i>
+        <span class="mdc-deprecated-list-item__text">Drafts</span>
       </a>
     </nav>
   </div>
@@ -285,21 +293,21 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 <body>
   <aside class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
-      <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-          <span class="mdc-list-item__text">Inbox</span>
+      <nav class="mdc-deprecated-list">
+        <a class="mdc-deprecated-list-item mdc-deprecated-list-item--activated" href="#" aria-current="page">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">inbox</i>
+          <span class="mdc-deprecated-list-item__text">Inbox</span>
         </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-          <span class="mdc-list-item__text">Outgoing</span>
+        <a class="mdc-deprecated-list-item" href="#">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">send</i>
+          <span class="mdc-deprecated-list-item__text">Outgoing</span>
         </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-          <span class="mdc-list-item__text">Drafts</span>
+        <a class="mdc-deprecated-list-item" href="#">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">drafts</i>
+          <span class="mdc-deprecated-list-item__text">Drafts</span>
         </a>
       </nav>
     </div>
@@ -325,21 +333,21 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
 <body>
   <aside class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
-      <div class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-          <span class="mdc-list-item__text">Inbox</span>
+      <div class="mdc-deprecated-list">
+        <a class="mdc-deprecated-list-item mdc-deprecated-list-item--activated" href="#" aria-current="page">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">inbox</i>
+          <span class="mdc-deprecated-list-item__text">Inbox</span>
         </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-          <span class="mdc-list-item__text">Outgoing</span>
+        <a class="mdc-deprecated-list-item" href="#">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">send</i>
+          <span class="mdc-deprecated-list-item__text">Outgoing</span>
         </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-          <span class="mdc-list-item__text">Drafts</span>
+        <a class="mdc-deprecated-list-item" href="#">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">drafts</i>
+          <span class="mdc-deprecated-list-item__text">Drafts</span>
         </a>
       </div>
     </div>
@@ -380,21 +388,21 @@ In cases where the drawer appears below the top app bar you will want to follow 
   </header>
   <aside class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
     <div class="mdc-drawer__content">
-      <div class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-          <span class="mdc-list-item__text">Inbox</span>
+      <div class="mdc-deprecated-list">
+        <a class="mdc-deprecated-list-item mdc-deprecated-list-item--activated" href="#" aria-current="page">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">inbox</i>
+          <span class="mdc-deprecated-list-item__text">Inbox</span>
         </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-          <span class="mdc-list-item__text">Outgoing</span>
+        <a class="mdc-deprecated-list-item" href="#">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">send</i>
+          <span class="mdc-deprecated-list-item__text">Outgoing</span>
         </a>
-        <a class="mdc-list-item" href="#">
-          <span class="mdc-list-item__ripple"></span>
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-          <span class="mdc-list-item__text">Drafts</span>
+        <a class="mdc-deprecated-list-item" href="#">
+          <span class="mdc-deprecated-list-item__ripple"></span>
+          <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">drafts</i>
+          <span class="mdc-deprecated-list-item__text">Drafts</span>
         </a>
       </div>
     </div>

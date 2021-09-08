@@ -250,7 +250,7 @@ describe('MDCDismissibleDrawerFoundation', () => {
        expect(mockAdapter.notifyClose).toHaveBeenCalledTimes(1);
      });
 
-  it(`#handleTransitionEnd doesn\'t remove open class after opening,
+  it(`#handleTransitionEnd doesn't remove open class after opening,
     focuses on active navigation item and calls notifyOpen`,
      () => {
        const {foundation, mockAdapter} = setupTest();

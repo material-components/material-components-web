@@ -28,24 +28,24 @@ export class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
   /**
    * State variable for the previous scroll iteration top app bar state
    */
-  private wasScrolled_ = false;
+  private wasScrolled = false;
 
   /**
    * Scroll handler for applying/removing the modifier class on the fixed top app bar.
    * @override
    */
-  handleTargetScroll() {
+  override handleTargetScroll() {
     const currentScroll = this.adapter.getViewportScrollY();
 
     if (currentScroll <= 0) {
-      if (this.wasScrolled_) {
+      if (this.wasScrolled) {
         this.adapter.removeClass(cssClasses.FIXED_SCROLLED_CLASS);
-        this.wasScrolled_ = false;
+        this.wasScrolled = false;
       }
     } else {
-      if (!this.wasScrolled_) {
+      if (!this.wasScrolled) {
         this.adapter.addClass(cssClasses.FIXED_SCROLLED_CLASS);
-        this.wasScrolled_ = true;
+        this.wasScrolled = true;
       }
     }
   }

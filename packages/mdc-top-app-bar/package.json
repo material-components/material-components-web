@@ -1,12 +1,11 @@
 {
   "name": "@material/top-app-bar",
-  "version": "11.0.0",
+  "version": "12.0.0",
   "description": "The Material Components for the web top app bar component",
   "license": "MIT",
   "main": "dist/mdc.topAppBar.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/mdc.topAppBar.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git",
@@ -20,14 +19,14 @@
     "topappbar"
   ],
   "dependencies": {
-    "@material/animation": "^11.0.0",
-    "@material/base": "^11.0.0",
-    "@material/elevation": "^11.0.0",
-    "@material/ripple": "^11.0.0",
-    "@material/rtl": "^11.0.0",
-    "@material/shape": "^11.0.0",
-    "@material/theme": "^11.0.0",
-    "@material/typography": "^11.0.0",
+    "@material/animation": "^12.0.0",
+    "@material/base": "^12.0.0",
+    "@material/elevation": "^12.0.0",
+    "@material/ripple": "^12.0.0",
+    "@material/rtl": "^12.0.0",
+    "@material/shape": "^12.0.0",
+    "@material/theme": "^12.0.0",
+    "@material/typography": "^12.0.0",
     "tslib": "^2.1.0"
   },
   "publishConfig": {

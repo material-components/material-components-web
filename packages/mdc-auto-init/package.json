@@ -1,11 +1,10 @@
 {
   "name": "@material/auto-init",
   "description": "Declarative, easy-to-use auto-initialization for Material Components for the web",
-  "version": "11.0.0",
+  "version": "12.0.0",
   "main": "dist/mdc.autoInit.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/mdc.autoInit.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -13,7 +12,7 @@
     "directory": "packages/mdc-auto-init"
   },
   "dependencies": {
-    "@material/base": "^11.0.0",
+    "@material/base": "^12.0.0",
     "tslib": "^2.1.0"
   }
 }

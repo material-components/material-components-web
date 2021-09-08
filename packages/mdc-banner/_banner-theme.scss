@@ -20,11 +20,22 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// Internal styling for Tooltip MDC component.
+
+@use 'sass:map';
+@use 'sass:meta';
+@use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/shape/mixins' as shape-mixins;
+@use '@material/button/button-text-theme';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/theme/keys';
+@use '@material/typography/typography';
+@use '@material/tokens/resolvers';
 
 $fill-color: surface;
 $text-color: on-surface;
@@ -37,6 +48,143 @@ $secondary-action-text-color: primary;
 
 $mobile-breakpoint: 480px;
 $z-index: 1;
+
+$light-theme: (
+  action-focus-state-layer-color: theme-color.$primary,
+  action-focus-state-layer-opacity: 0.12,
+  action-focus-label-text-color: null,
+  action-hover-state-layer-color: theme-color.$primary,
+  action-hover-state-layer-opacity: 0.04,
+  action-hover-label-text-color: null,
+  action-label-text-color: theme-color.$primary,
+  // TODO(b/197004146): Support action label typography.
+  action-label-text-font: null,
+  action-label-text-size: null,
+  action-label-text-tracking: null,
+  action-label-text-weight: null,
+  action-pressed-state-layer-color: theme-color.$primary,
+  action-pressed-state-layer-opacity: 0.1,
+  action-pressed-label-text-color: null,
+  container-color: theme-color.$surface,
+  container-elevation: 0,
+  container-shadow-color: null,
+  container-shape: 0,
+  divider-color: $divider-color,
+  divider-height: 1px,
+  supporting-text-color: theme-color.$on-surface,
+  supporting-text-font: typography.get-font(body2),
+  supporting-text-line-height: typography.get-line-height(body2),
+  supporting-text-size: typography.get-size(body2),
+  supporting-text-tracking: typography.get-tracking(body2),
+  supporting-text-weight: typography.get-weight(body2),
+  with-image-image-shape: $graphic-shape-radius,
+  with-image-image-size: 40px,
+);
+
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+
+  $theme: _resolve-theme($theme, $resolvers);
+  @include keys.declare-custom-properties($theme, banner);
+}
+
+@function _resolve-theme($theme, $resolvers) {
+  @return map.merge(
+    $theme,
+    _resolve-theme-elevation(
+      $theme,
+      map.get($resolvers, elevation),
+      container-elevation
+    )
+  );
+}
+
+@function _resolve-theme-elevation($theme, $resolver, $keys...) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  @each $key in $keys {
+    // Resolve the value for each state key.
+    $resolved-value: meta.call(
+      $resolver,
+      $elevation: map.get($theme, $key),
+      $shadow-color: map.get($theme, container-shadow-color)
+    );
+
+    // Update the theme with the resolved value.
+    $theme: map.set($theme, $key, $resolved-value);
+  }
+
+  @return $theme;
+}
+
+@mixin theme-styles(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
+  @include theme.validate-theme($light-theme, $theme);
+
+  @include text-color(map.get($theme, supporting-text-color), $query: $query);
+  @include _supporting-text-typography(
+    (
+      font: map.get($theme, supporting-text-font),
+      size: map.get($theme, supporting-text-size),
+      tracking: map.get($theme, supporting-text-tracking),
+      weight: map.get($theme, supporting-text-weight),
+      line-height: map.get($theme, supporting-text-line-height),
+    ),
+    $query: $query
+  );
+
+  @include graphic-shape-radius(
+    map.get($theme, with-image-image-shape),
+    $query: $query
+  );
+  @include _graphic-size(
+    map.get($theme, with-image-image-size),
+    $query: $query
+  );
+
+  @include fill-color(map.get($theme, container-color), $query: $query);
+  @include divider-color(map.get($theme, divider-color), $query: $query);
+  @include _divider-height(map.get($theme, divider-height), $query: $query);
+  @include _banner-shape(map.get($theme, container-shape), $query: $query);
+  @include _banner-elevation(
+    $resolver,
+    map.get($theme, container-elevation),
+    map.get($theme, container-shadow-color),
+    $query
+  );
+
+  .mdc-button {
+    @include button-text-theme.theme-styles(
+      (
+        focus-label-text-color: map.get($theme, action-focus-label-text-color),
+        focus-state-layer-color: map.get($theme, action-focus-state-layer-color),
+        focus-state-layer-opacity:
+          map.get($theme, action-focus-state-layer-opacity),
+        hover-label-text-color: map.get($theme, action-hover-label-text-color),
+        hover-state-layer-color: map.get($theme, action-hover-state-layer-color),
+        hover-state-layer-opacity:
+          map.get($theme, action-hover-state-layer-opacity),
+        label-text-color: map.get($theme, action-label-text-color),
+        label-text-font: map.get($theme, action-label-text-font),
+        label-text-size: map.get($theme, action-label-text-size),
+        label-text-tracking: map.get($theme, action-label-text-tracking),
+        label-text-weight: map.get($theme, action-label-text-weight),
+        pressed-label-text-color:
+          map.get($theme, action-pressed-label-text-color),
+        pressed-state-layer-color:
+          map.get($theme, action-pressed-state-layer-color),
+        pressed-state-layer-opacity:
+          map.get($theme, action-pressed-state-layer-opacity),
+      ),
+      $query: $query
+    );
+  }
+}
 
 ///
 /// Customizes fill color.
@@ -87,6 +235,20 @@ $z-index: 1;
   .mdc-banner__fixed {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(border-bottom-color, $color);
+    }
+  }
+}
+
+@mixin _divider-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    @include theme.property(border-bottom-width, $height);
+  }
+
+  .mdc-banner__fixed {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-bottom-width, $height);
     }
   }
 }
@@ -189,29 +351,27 @@ $z-index: 1;
 }
 
 ///
-/// Sets the banner content to centered instead of leading.
+/// Sets the banner content to stacked layout.
 ///
-@mixin mobile-stacked($query: feature-targeting.all()) {
+@mixin layout-stacked($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    @media (max-width: $mobile-breakpoint) {
-      .mdc-banner__content {
-        flex-wrap: wrap;
-      }
+    .mdc-banner__content {
+      flex-wrap: wrap;
+    }
 
-      .mdc-banner__graphic {
-        margin-bottom: 12px;
-      }
+    .mdc-banner__graphic {
+      margin-bottom: 12px;
+    }
 
-      .mdc-banner__text {
-        @include rtl-mixins.reflexive-property(margin, 16px, 8px);
-        padding-bottom: 4px;
-      }
+    .mdc-banner__text {
+      @include rtl.reflexive-property(margin, 16px, 8px);
+      padding-bottom: 4px;
+    }
 
-      .mdc-banner__actions {
-        margin-left: auto;
-      }
+    .mdc-banner__actions {
+      margin-left: auto;
     }
   }
 }
@@ -235,6 +395,59 @@ $z-index: 1;
   .mdc-banner__fixed {
     @include feature-targeting.targets($feat-structure) {
       width: $width;
+    }
+  }
+}
+
+@mixin _supporting-text-typography(
+  $typography-map,
+  $query: feature-targeting.all()
+) {
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  $font: map.get($typography-map, font);
+  $size: map.get($typography-map, size);
+  $tracking: map.get($typography-map, tracking);
+  $weight: map.get($typography-map, weight);
+  $line-height: map.get($typography-map, line-height);
+
+  .mdc-banner__text {
+    @include feature-targeting.targets($feat-typography) {
+      @include theme.property(letter-spacing, $tracking);
+      @include theme.property(font-size, $size);
+      @include theme.property(font-family, $font);
+      @include theme.property(font-weight, $weight);
+      @include theme.property(line-height, $line-height);
+    }
+  }
+}
+
+@mixin _banner-shape($shape, $query: feature-targeting.all()) {
+  @include shape-mixins.radius($shape, $query: $query);
+}
+
+@mixin _banner-elevation(
+  $resolver,
+  $elevation,
+  $shadow-color,
+  $query: feature-targeting.all()
+) {
+  $elevation-resolver: map.get($resolver, elevation);
+
+  @include elevation-theme.with-resolver(
+    $elevation-resolver,
+    $elevation: $elevation,
+    $shadow-color: $shadow-color,
+    $query: $query
+  );
+}
+
+@mixin _graphic-size($size, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  .mdc-banner__graphic {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $size);
+      @include theme.property(width, $size);
     }
   }
 }

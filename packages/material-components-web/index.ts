@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import autoInit from '@material/auto-init/index';
+import autoInit, {MDCAttachable} from '@material/auto-init/index';
 import * as banner from '@material/banner/index';
 import * as base from '@material/base/index';
 import * as checkbox from '@material/checkbox/index';
@@ -79,7 +79,8 @@ autoInit.register('MDCSegmentedButton', segmentedButton.MDCSegmentedButton);
 autoInit.register('MDCSelect', select.MDCSelect);
 autoInit.register('MDCSlider', slider.MDCSlider);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
-autoInit.register('MDCSwitch', switchControl.MDCSwitch);
+autoInit.register(
+    'MDCSwitch', switchControl.MDCSwitch as unknown as MDCAttachable);
 autoInit.register('MDCTabBar', tabBar.MDCTabBar);
 autoInit.register('MDCTextField', textField.MDCTextField);
 autoInit.register('MDCTooltip', tooltip.MDCTooltip);

@@ -313,15 +313,15 @@ user change the rows per page (page size) and navigate between data table pages.
           </div>
 
           <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth" role="listbox">
-            <ul class="mdc-list">
-              <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" role="option" data-value="10">
-                <span class="mdc-list-item__text">10</span>
+            <ul class="mdc-deprecated-list">
+              <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" aria-selected="true" role="option" data-value="10">
+                <span class="mdc-deprecated-list-item__text">10</span>
               </li>
-              <li class="mdc-list-item" role="option" data-value="25">
-                <span class="mdc-list-item__text">25</span>
+              <li class="mdc-deprecated-list-item" role="option" data-value="25">
+                <span class="mdc-deprecated-list-item__text">25</span>
               </li>
-              <li class="mdc-list-item" role="option" data-value="100">
-                <span class="mdc-list-item__text">100</span>
+              <li class="mdc-deprecated-list-item" role="option" data-value="100">
+                <span class="mdc-deprecated-list-item__text">100</span>
               </li>
             </ul>
           </div>

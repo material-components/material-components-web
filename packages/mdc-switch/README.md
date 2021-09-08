@@ -8,26 +8,28 @@ path: /catalog/input-controls/switches/
 
 # Selection controls: switches
 
-[Selection controls](https://material.io/components/selection-controls#usage) allow the user to select options.
+[Selection controls](https://material.io/components/selection-controls#usage)
+allow the user to select options.
 
-Switches toggle the state of a single setting on or off. They are the preferred way to adjust settings on mobile.
+Switches toggle the state of a single setting on or off. They are the preferred
+way to adjust settings on mobile.
 
 ![Switch hero example for menu options](images/switch-hero.png)
 
 **Contents**
 
-* [Using switches](#using-switches)
-* [Switches](#switches)
-* [Other variants](#other-variants)
-* [API](#api)
-* [Usage within web frameworks](#usage-within-web-frameworks)
+*   [Using switches](#using-switches)
+*   [Switches](#switches)
+*   [Other variants](#other-variants)
+*   [API](#api)
+*   [Usage within web frameworks](#usage-within-web-frameworks)
 
 ## Using switches
 
 Use switches to:
 
-* Toggle a single item on or off, on mobile and tablet
-* Immediately activate or deactivate something
+*   Toggle a single item on or off, on mobile and tablet
+*   Immediately activate or deactivate something
 
 ### Installing switches
 
@@ -38,143 +40,180 @@ npm install @material/switch
 ### Styles
 
 ```scss
-@use "@material/switch";
-
-@include switch.core-styles;
+@use '@material/switch/styles';
 ```
 
 ### JavaScript instantiation
 
-The switch requires JavaScript to function, so it is necessary to instantiate `MDCSwitch` on the `mdc-switch` element.
+The switch requires JavaScript to function, so it is necessary to instantiate
+`MDCSwitch` on the `mdc-switch` element.
 
 ```js
 import {MDCSwitch} from '@material/switch';
 
-const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
+for (const el of document.querySelectorAll('.mdc-switch')) {
+  const switchControl = new MDCSwitch(el);
+}
 ```
 
-**Note: See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.**
+**Note: See [Importing the JS component](../../docs/importing-js.md) for more
+information on how to import JavaScript.**
 
 ## Switches
 
 ### Switch example
 
 ```html
-<div class="mdc-switch">
+<button id="basic-switch" class="mdc-switch mdc-switch--unselected" type="button" role="switch" aria-checked="false">
   <div class="mdc-switch__track"></div>
-  <div class="mdc-switch__thumb-underlay">
-    <div class="mdc-switch__thumb"></div>
-    <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="false">
+  <div class="mdc-switch__handle-track">
+    <div class="mdc-switch__handle">
+      <div class="mdc-switch__shadow">
+        <div class="mdc-elevation-overlay"></div>
+      </div>
+      <div class="mdc-switch__ripple"></div>
+      <div class="mdc-switch__icons">
+        <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24">
+          <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" />
+        </svg>
+        <svg class="mdc-switch__icon mdc-switch__icon--off" viewBox="0 0 24 24">
+          <path d="M20 13H4v-2h16v2z" />
+        </svg>
+      </div>
+    </div>
   </div>
-</div>
+</button>
 <label for="basic-switch">off/on</label>
 ```
 
 ### Switch states
 
-Switches can be on or off. Switches have enabled, hover, focused, and pressed states.
+Switches can be on or off. Switches have enabled, hover, focused, and pressed
+states.
 
-![Switch states in a table. Columns are enabled, disabled, hover, focused, pressed. Rows are on or off.](images/switch-states.png)
+![Switch states in a table. Columns are enabled, disabled, hover, focused,
+pressed. Rows are on or off.](images/switch-states.png)
 
 ## Other variants
 
 ### Initially disabled switch
 
-Add the `mdc-switch--disabled` class to the `mdc-switch` element, and the `disabled` attribute to the `mdc-switch__native-control` element to disable the switch. This logic is handled by the `MDCSwitchFoundation.setDisabled` method, but you'll want to avoid a FOUC by initially adding this class and attribute.
+Add the `disabled` attribute to the `mdc-switch` element to disable the switch.
+This logic is handled by the `MDCSwitch.disabled` property, but you'll want to
+avoid a FOUC by initially adding this attribute.
 
 ```html
-<div class="mdc-switch mdc-switch--disabled">
+<button id="disabled-switch" class="mdc-switch mdc-switch--unselected" type="button" role="switch" aria-checked="false" disabled>
   <div class="mdc-switch__track"></div>
-  <div class="mdc-switch__thumb-underlay">
-    <div class="mdc-switch__thumb"></div>
-    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="false" disabled>
+  <div class="mdc-switch__handle-track">
+    <div class="mdc-switch__handle">
+      <div class="mdc-switch__shadow">
+        <div class="mdc-elevation-overlay"></div>
+      </div>
+      <div class="mdc-switch__ripple"></div>
+      <div class="mdc-switch__icons">
+        <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24">
+          <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" />
+        </svg>
+        <svg class="mdc-switch__icon mdc-switch__icon--off" viewBox="0 0 24 24">
+          <path d="M20 13H4v-2h16v2z" />
+        </svg>
+      </div>
+    </div>
   </div>
-</div>
-<label for="another-basic-switch">off/on</label>
+</button>
+<label for="disabled-switch">off/on</label>
 ```
 
 ### Initially "on" switch
 
-Add the `mdc-switch--checked` class to the `mdc-switch` element, and the `checked` attribute to the `mdc-switch__native-control` element to toggle the switch to "on". This logic is handled by the `MDCSwitchFoundation.setChecked` method, but you'll want to avoid a FOUC by initially adding this class and attribute.
+Add the `mdc-switch--selected` class and `aria-checked="true"` attribute to the
+`mdc-switch` element to toggle the switch to "on". This logic is handled by the
+`MDCSwitch.selected` method, but you'll want to avoid a FOUC by initially adding
+this class and attribute.
 
 ```html
-<div class="mdc-switch mdc-switch--checked">
+<button id="selected-switch" class="mdc-switch mdc-switch--selected" type="button" role="switch" aria-checked="true">
   <div class="mdc-switch__track"></div>
-  <div class="mdc-switch__thumb-underlay">
-    <div class="mdc-switch__thumb"></div>
-    <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" aria-checked="true" checked>
+  <div class="mdc-switch__handle-track">
+    <div class="mdc-switch__handle">
+      <div class="mdc-switch__shadow">
+        <div class="mdc-elevation-overlay"></div>
+      </div>
+      <div class="mdc-switch__ripple"></div>
+      <div class="mdc-switch__icons">
+        <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24">
+          <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" />
+        </svg>
+        <svg class="mdc-switch__icon mdc-switch__icon--off" viewBox="0 0 24 24">
+          <path d="M20 13H4v-2h16v2z" />
+        </svg>
+      </div>
+    </div>
   </div>
-</div>
-<label for="another-basic-switch">off/on</label>
+</button>
+<label for="selected-switch">off/on</label>
 ```
 
 ## API
 
 ### CSS classes
 
-CSS Class | Description
---- | ---
-`mdc-switch` | Mandatory, for the parent element.
-`mdc-switch--disabled` | Optional, styles the switch as disabled
-`mdc-switch--checked` | Optional, styles the switch as checked ("on")
-`mdc-switch__track` | Mandatory, for the track element.
-`mdc-switch__thumb-underlay` | Mandatory, for the ripple effect.
-`mdc-switch__thumb` | Mandatory, for the thumb element.
-`mdc-switch__native-control` | Mandatory, for the hidden input checkbox.
+| CSS Class                  | Description                                    |
+| -------------------------- | ---------------------------------------------- |
+| `mdc-switch`               | Mandatory, for the parent element.             |
+| `mdc-switch--unselected`   | Optional, styles the switch as unselected ("off") |
+| `mdc-switch--selected`     | Optional, styles the switch as selected ("on") |
+| `mdc-switch__track`        | Mandatory, for the track element.              |
+| `mdc-switch__handle-track` | Mandatory, for the handle's track element.     |
+| `mdc-switch__handle`       | Mandatory, for the handle element.             |
+| `mdc-switch__shadow`       | Mandatory, for the shadow effect.              |
+| `mdc-elevation-overlay`    | Mandatory, for the shadow effect's overlay in dark mode. |
+| `mdc-switch__ripple`       | Mandatory, for the ripple effect.              |
+| `mdc-switch__icons`        | Mandatory, for the icons.                      |
+| `mdc-switch__icon`         | Mandatory, for the icon elements.              |
+| `mdc-switch__icon--on`     | Mandatory, for the on icon.                    |
+| `mdc-switch__icon--off`    | Mandatory, for the off icon.                   |
 
-### Sass mixins
+### Theme mixin
 
-MDC Switch uses [MDC Theme](../mdc-theme)'s `secondary` color by default for the checked (toggled on) state.
-Use the following mixins to customize _enabled_ switches. It is not currently possible to customize the color of a
- _disabled_ switch. Disabled switches use the same colors as enabled switches, but with a different opacity value.
+The switch may be customized using the `theme()` mixin and providing an
+[MDC Theme](../mdc-theme) string (such as `primary`) or other values to the
+theme keys.
 
-Mixin | Description
---- | ---
-`toggled-on-color($color)` | Sets the base color of the track, thumb, and ripple when the switch is toggled on.
-`toggled-off-color($color)` | Sets the base color of the track, thumb, and ripple when the switch is toggled off.
-`toggled-on-track-color($color)` | Sets color of the track when the switch is toggled on.
-`toggled-off-track-color($color)` | Sets color of the track when the switch is toggled off.
-`toggled-on-thumb-color($color)` | Sets color of the thumb when the switch is toggled on.
-`toggled-off-thumb-color($color)` | Sets color of the thumb when the switch is toggled off.
-`toggled-on-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled on.
-`toggled-off-ripple-color($color)` | Sets the color of the ripple surrounding the thumb when the switch is toggled off.
-`ripple-size($ripple-size)` | Sets the ripple size of the switch.
-`density($density-scale)` | Sets density scale for switch. Supported density scales are `-5`, `-4`, `-3`, `-2`, `-1`, and `0` (default).
-`ripple-states-opacity($opacity-map)` | Sets the opacity of the ripple surrounding the thumb in any of the `hover`, `focus`, or `press` states. The `opacity-map` can specify any of these states as keys. States not specified in the map resort to default opacity values.
+```scss
+@use '@material/switch';
+@use '@material/theme/color-palette';
+@use '@material/theme/shadow-dom';
 
-### `MDCSwitch` properties and methods
+// Include for IE11 support
+// @include shadow-dom.enable-css-selector-fallback-declarations(true);
 
-Property | Value Type | Description
---- | --- | ---
-`checked` | Boolean | Setter/getter for the switch's checked state
-`disabled` | Boolean | Setter/getter for the switch's disabled state
+.my-switch {
+  @include switch.theme((
+    selected-handle-color: color-palette.$teal-600,
+    selected-track-color: color-palette.$teal-300,
+  ));
+}
+```
+
+View the [theme file](_switch-theme.scss) for available keys and built-in
+themes.
+
+### `MDCSwitch` properties
+
+| Property   | Value Type | Description                                        |
+| ---------- | ---------- | -------------------------------------------------- |
+| `disabled` | Boolean    | Indicates whether or not the switch is disabled.   |
+| `selected` | Boolean    | If true, the switch is on. If false, the switch is off. |
 
 ## Usage within web frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Switch for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can
+create a switch for your framework. Depending on your needs, you can use the
+_Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced
+Approach: Using Foundations and Adapters_. Please follow the instructions
+[here](../../docs/integrating-into-frameworks.md).
 
-### `MDCSwitchAdapter`
-
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `setNativeControlChecked(checked: boolean)` | Sets the checked state of the native control. |
-| `setNativeControlDisabled(disabled: boolean)` | Sets the disabled state of the native control. |
-| `setNativeControlAttr(attr: string, value: string)` | Sets an HTML attribute to the given value on the native input element. |
-
-### `MDCSwitchFoundation`
-
-| Method Signature | Description |
-| --- | --- |
-| `setChecked(checked: boolean) => void` | Sets the checked value of the native control and updates styling to reflect the checked state. |
-| `setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control and updates styling to reflect the disabled state. |
-| `handleChange(evt: Event) => void` | Handles a change event from the native control. |
-
-### `MDCSwitchFoundation` event handlers
-
-If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [`MDCSwitch`](component.ts) component's `initialSyncWithDOM` method.
-
-| Event | Element Selector | Foundation Handler |
-| --- | --- | --- |
-| `change` | `.mdc-switch__native-control` | `handleChange()` |
+See [MDCSwitchAdapter](./adapter.ts) and [MDCSwitchFoundation](./foundation.ts)
+for up-to-date code documentation of switch's foundation API.

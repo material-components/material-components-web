@@ -382,6 +382,21 @@ describe('MDCMenuFoundation', () => {
        expect(mockAdapter.focusListRoot).not.toHaveBeenCalled();
      });
 
+  it('#getSelectedIndex returns correct index', () => {
+    const {foundation, mockAdapter} = setupTest();
+    mockAdapter.isSelectableItemAtIndex.withArgs(1).and.returnValue(true);
+    const listItemEl = document.createElement('div');
+    mockAdapter.elementContainsClass
+        .withArgs(listItemEl, cssClasses.MENU_SELECTION_GROUP)
+        .and.returnValue(true);
+    mockAdapter.getSelectedSiblingOfItemAtIndex.withArgs(1).and.returnValue(-1);
+    mockAdapter.getMenuItemCount.and.returnValue(2);
+
+    expect(foundation.getSelectedIndex()).not.toBe(1);
+    foundation.setSelectedIndex(1);
+    expect(foundation.getSelectedIndex()).toBe(1);
+  });
+
   it('setSelectedIndex calls addClass and addAttribute only', () => {
     const {foundation, mockAdapter} = setupTest();
     const listItemEl = document.createElement('div');

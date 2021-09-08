@@ -24,7 +24,7 @@
 import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {ActionType, FocusBehavior} from '../../action/constants';
-import {Animation, Events, MDCChip} from '../index';
+import {Animation, CssClasses, Events, MDCChip} from '../index';
 
 interface ActionOptions {
   readonly isFocusable: boolean;
@@ -263,5 +263,15 @@ describe('MDCChipAction', () => {
       animationName: Animation.EXIT,
     });
     expect(root.style.getPropertyValue('width')).toBe(`${width}px`);
+  });
+
+  it(`#startAnimation() starts the animation`, () => {
+    const {component, root} = setupTest({
+      primary: {isFocusable: true, isSelectable: true, isDisabled: false},
+      id: 'c0',
+    });
+
+    component.startAnimation(Animation.ENTER);
+    expect(root.classList.contains(CssClasses.ENTER)).toBeTrue();
   });
 });

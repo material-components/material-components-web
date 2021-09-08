@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple} from '../../mdc-ripple/component';
 import {emitEvent} from '../../../testing/dom/events';
 import {createMockFoundation} from '../../../testing/helpers/foundation';
 import {strings} from '../constants';
@@ -140,9 +139,9 @@ describe('MDCTopAppBar', () => {
   it('destroy destroys icon ripples', () => {
     const {component} = setupTest();
     component.destroy();
-    (component as any).iconRipples_.forEach((icon: MDCRipple) => {
+    for (const icon of (component as any).iconRipples) {
       expect(icon.destroy).toHaveBeenCalled();
-    });
+    }
   });
 
   it('destroy destroys scroll event handler', () => {
@@ -175,11 +174,11 @@ describe('MDCTopAppBar', () => {
        const fakeTarget2 = document.createElement('div');
 
        component.setScrollTarget(fakeTarget1);
-       expect((component as any).scrollTarget_).toEqual(fakeTarget1);
+       expect((component as any).scrollTarget).toEqual(fakeTarget1);
 
        component.setScrollTarget(fakeTarget2);
 
-       expect((component as any).scrollTarget_).toEqual(fakeTarget2);
+       expect((component as any).scrollTarget).toEqual(fakeTarget2);
      });
 
   it('getDefaultFoundation returns the appropriate foundation for default',
@@ -278,7 +277,7 @@ describe('MDCTopAppBar', () => {
         .toEqual(window.pageYOffset);
   });
 
-  it('adapter#getViewportScrollY returns scroll distance when scrollTarget_ is not window',
+  it('adapter#getViewportScrollY returns scroll distance when scrollTarget is not window',
      () => {
        const {component} = setupTest();
        const mockContent = {addEventListener: () => {}, scrollTop: 20} as any;

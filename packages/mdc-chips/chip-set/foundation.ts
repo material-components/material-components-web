@@ -45,7 +45,7 @@ enum Operator {
  * MDCChipSetFoundation provides a foundation for all chips.
  */
 export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
-  static get defaultAdapter(): MDCChipSetAdapter {
+  static override get defaultAdapter(): MDCChipSetAdapter {
     return {
       announceMessage: () => undefined,
       emitEvent: () => undefined,

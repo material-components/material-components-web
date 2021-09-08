@@ -90,7 +90,9 @@ globSync('packages/*/package.json').forEach((jsonPath) => {
   }
   verifyPath(packageJson, jsonPath, 'main');
   verifyPath(packageJson, jsonPath, 'module');
-  verifyPath(packageJson, jsonPath, 'types');
+  if (jsonPath.includes('material-components-web')) {
+    verifyPath(packageJson, jsonPath, 'types');
+  }
 });
 
 if (invalidMains > 0 || invalidModules > 0 || invalidTypes > 0) {

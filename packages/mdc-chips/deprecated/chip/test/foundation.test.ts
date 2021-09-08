@@ -474,7 +474,7 @@ describe('MDCChipFoundation', () => {
 
   it(`#handleTrailingActionInteraction does not add ${
          cssClasses.CHIP_EXIT} class on click in trailing icon ` +
-         'if shouldRemoveOnTrailingIconClick_ is false',
+         'if shouldRemoveOnTrailingIconClick is false',
      () => {
        const {foundation, mockAdapter} = setupTest();
 

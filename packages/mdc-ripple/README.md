@@ -233,7 +233,7 @@ class MyMDCComponent extends MDCComponent {
     super(...arguments);
     const foundation = new MDCRippleFoundation({
       ...MDCRipple.createAdapter(this),
-      isSurfaceActive: () => this.isActive_, /* Custom functionality */
+      isSurfaceActive: () => this.isActive, /* Custom functionality */
     });
     this.ripple = new MDCRipple(this.root, foundation);
   }

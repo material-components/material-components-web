@@ -31,18 +31,18 @@ type InteractionEventType = 'click' | 'keydown';
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
 export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> {
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
   /**
    * See {@link MDCTextFieldIconAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCTextFieldIconAdapter {
+  static override get defaultAdapter(): MDCTextFieldIconAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getAttr: () => null,
@@ -56,31 +56,35 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
     // tslint:enable:object-literal-sort-keys
   }
 
-  private savedTabIndex_: string | null = null;
-  private readonly interactionHandler_: SpecificEventListener<InteractionEventType>;
+  private savedTabIndex: string|null = null;
+  private readonly interactionHandler:
+      SpecificEventListener<InteractionEventType>;
 
   constructor(adapter?: Partial<MDCTextFieldIconAdapter>) {
     super({...MDCTextFieldIconFoundation.defaultAdapter, ...adapter});
 
-    this.interactionHandler_ = (evt) => this.handleInteraction(evt);
+    this.interactionHandler = (evt) => {
+      this.handleInteraction(evt);
+    };
   }
 
-  init() {
-    this.savedTabIndex_ = this.adapter.getAttr('tabindex');
+  override init() {
+    this.savedTabIndex = this.adapter.getAttr('tabindex');
 
-    INTERACTION_EVENTS.forEach((evtType) => {
-      this.adapter.registerInteractionHandler(evtType, this.interactionHandler_);
-    });
+    for (const evtType of INTERACTION_EVENTS) {
+      this.adapter.registerInteractionHandler(evtType, this.interactionHandler);
+    }
   }
 
-  destroy() {
-    INTERACTION_EVENTS.forEach((evtType) => {
-      this.adapter.deregisterInteractionHandler(evtType, this.interactionHandler_);
-    });
+  override destroy() {
+    for (const evtType of INTERACTION_EVENTS) {
+      this.adapter.deregisterInteractionHandler(
+          evtType, this.interactionHandler);
+    }
   }
 
   setDisabled(disabled: boolean) {
-    if (!this.savedTabIndex_) {
+    if (!this.savedTabIndex) {
       return;
     }
 
@@ -88,7 +92,7 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
       this.adapter.setAttr('tabindex', '-1');
       this.adapter.removeAttr('role');
     } else {
-      this.adapter.setAttr('tabindex', this.savedTabIndex_);
+      this.adapter.setAttr('tabindex', this.savedTabIndex);
       this.adapter.setAttr('role', strings.ICON_ROLE);
     }
   }

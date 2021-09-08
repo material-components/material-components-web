@@ -26,20 +26,21 @@ import {MDCTabIndicatorAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 export abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndicatorAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get defaultAdapter(): MDCTabIndicatorAdapter {
+  static override get defaultAdapter(): MDCTabIndicatorAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
       removeClass: () => undefined,
-      computeContentClientRect: () => ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+      computeContentClientRect: () =>
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       setContentStyleProperty: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys

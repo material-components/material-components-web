@@ -25,6 +25,9 @@
 
 @use 'sass:list';
 @use 'sass:meta';
+@use 'sass:selector';
+@use '@material/theme/gss';
+@use '@material/theme/selector-ext';
 @use '@material/theme/theme';
 
 $include: true !default;
@@ -70,9 +73,17 @@ $include: true !default;
 /// @content Content to be styled in an RTL context.
 @mixin rtl() {
   @if ($include) {
-    [dir='rtl'] &,
-    &[dir='rtl'] {
-      @content;
+    $dir-rtl: '[dir=rtl]';
+
+    $rtl-selectors: list.join(
+      selector.nest($dir-rtl, &),
+      selector-ext.append-strict(&, $dir-rtl)
+    );
+
+    @at-root {
+      #{$rtl-selectors} {
+        @content;
+      }
     }
   }
 }
@@ -292,15 +303,42 @@ $include: true !default;
     @if $left-replace == null and $right-replace == null {
       @error 'mdc-rtl: $replace may only be used with strings but neither left nor right values are strings.';
     }
+
+    // If any replacements are null, treat the entire value as null (do not
+    // emit anything).
+    @each $name, $replacement in $replace {
+      @if $replacement == null {
+        $left-value: null;
+        $right-value: null;
+      }
+    }
   }
 
-  @include _property($left-property, $left-value, $replace: $left-replace);
-  @include _property($right-property, $right-value, $replace: $right-replace);
+  // Do not emit if either value are null
+  @if $left-value and $right-value {
+    @include _property($left-property, $left-value, $replace: $left-replace);
+    @include _property($right-property, $right-value, $replace: $right-replace);
 
-  @include rtl {
-    @include _property($left-property, $right-value, $replace: $right-replace);
-    @include _property($right-property, $left-value, $replace: $left-replace);
+    @include rtl {
+      @include _property(
+        $left-property,
+        $right-value,
+        $replace: $right-replace
+      );
+      @include _property($right-property, $left-value, $replace: $left-replace);
+    }
   }
+}
+
+///
+/// Adds RTL ignore annotation when `$mdc-rtl-include` is true.
+///
+@mixin ignore-next-line() {
+  @include gss.annotate(
+    (
+      noflip: $include,
+    )
+  );
 }
 
 ///

@@ -27,15 +27,15 @@ import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './types';
 export class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
   getScrollPositionRTL(): number {
     const currentScrollLeft = this.adapter.getScrollAreaScrollLeft();
-    const {right} = this.calculateScrollEdges_();
+    const {right} = this.calculateScrollEdges();
     // Scroll values on most browsers are ints instead of floats so we round
     return Math.round(right - currentScrollLeft);
   }
 
   scrollToRTL(scrollX: number): MDCTabScrollerAnimation {
-    const edges = this.calculateScrollEdges_();
+    const edges = this.calculateScrollEdges();
     const currentScrollLeft = this.adapter.getScrollAreaScrollLeft();
-    const clampedScrollLeft = this.clampScrollValue_(edges.right - scrollX);
+    const clampedScrollLeft = this.clampScrollValue(edges.right - scrollX);
     return {
       finalScrollPosition: clampedScrollLeft,
       scrollDelta: clampedScrollLeft - currentScrollLeft,
@@ -44,7 +44,8 @@ export class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
 
   incrementScrollRTL(scrollX: number): MDCTabScrollerAnimation {
     const currentScrollLeft = this.adapter.getScrollAreaScrollLeft();
-    const clampedScrollLeft = this.clampScrollValue_(currentScrollLeft - scrollX);
+    const clampedScrollLeft =
+        this.clampScrollValue(currentScrollLeft - scrollX);
     return {
       finalScrollPosition: clampedScrollLeft,
       scrollDelta: clampedScrollLeft - currentScrollLeft,
@@ -55,7 +56,7 @@ export class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
     return scrollX;
   }
 
-  private calculateScrollEdges_(): MDCTabScrollerHorizontalEdges {
+  private calculateScrollEdges(): MDCTabScrollerHorizontalEdges {
     const contentWidth = this.adapter.getScrollContentOffsetWidth();
     const rootWidth = this.adapter.getScrollAreaOffsetWidth();
     return {
@@ -64,8 +65,8 @@ export class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
     };
   }
 
-  private clampScrollValue_(scrollX: number): number {
-    const edges = this.calculateScrollEdges_();
+  private clampScrollValue(scrollX: number): number {
+    const edges = this.calculateScrollEdges();
     return Math.min(Math.max(edges.left, scrollX), edges.right);
   }
 }

@@ -31,7 +31,7 @@ export interface MDCFormFieldInput {
 }
 
 export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
-  static attachTo(root: HTMLElement) {
+  static override attachTo(root: HTMLElement) {
     return new MDCFormField(root);
   }
 
@@ -42,7 +42,7 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
     return this.root.querySelector(LABEL_SELECTOR);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCFormFieldAdapter = {

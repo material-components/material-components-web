@@ -56,6 +56,53 @@ describe('MDCSliderFoundation', () => {
       expect(foundation.getStep()).toBe(5);
     });
 
+    it('min can be updated after initialization', () => {
+      const {foundation} = setUpAndInit({min: -20, max: 20, value: 0});
+      expect(foundation.getMin()).toBe(-20);
+      expect(foundation.getMax()).toBe(20);
+
+      foundation.setMin(10);
+      expect(foundation.getMin()).toBe(10);
+    });
+
+    it('max can be updated after initialization', () => {
+      const {foundation} = setUpAndInit({min: -20, max: 20, value: 0});
+      expect(foundation.getMin()).toBe(-20);
+      expect(foundation.getMax()).toBe(20);
+
+      foundation.setMax(30);
+      expect(foundation.getMax()).toBe(30);
+    });
+
+    it('hasTickMarks can be updated after initialization', () => {
+      const {foundation} =
+          setUpAndInit({min: 0, max: 100, value: 50, hasTickMarks: false}) as
+          unknown as {foundation: WithHasTickMarksAndDiscrete};
+      expect(foundation.hasTickMarks).toBe(false);
+
+      foundation.setHasTickMarks(true);
+      expect(foundation.hasTickMarks).toBe(true);
+    });
+
+    it('step can be updated after initialization', () => {
+      const {foundation} = setUpAndInit(
+          {min: 0, max: 100, value: 50, step: 10, isDiscrete: true});
+      expect(foundation.getStep()).toBe(10);
+
+      foundation.setStep(20);
+      expect(foundation.getStep()).toBe(20);
+    });
+
+    it('isDiscrete can be updated after initialization', () => {
+      const {foundation} =
+          setUpAndInit({min: 0, max: 100, value: 50, isDiscrete: false}) as
+          unknown as {foundation: WithHasTickMarksAndDiscrete};
+      expect(foundation.isDiscrete).toBe(false);
+
+      foundation.setIsDiscrete(true);
+      expect(foundation.isDiscrete).toBe(true);
+    });
+
     it('throws error if attribute value is null', () => {
       const {foundation, mockAdapter} = setUpTest();
       mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MIN, Thumb.END)
@@ -1448,4 +1495,11 @@ function setUpAndInit({
   jasmine.clock().tick(1);  // Tick for RAF from UI update.
 
   return {foundation, mockAdapter};
+}
+
+interface WithHasTickMarksAndDiscrete {
+  hasTickMarks: boolean;
+  setHasTickMarks(hasTickMarks: boolean): void;
+  isDiscrete: boolean;
+  setIsDiscrete(hasTickMarks: boolean): void;
 }

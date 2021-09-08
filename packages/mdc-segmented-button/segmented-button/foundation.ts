@@ -30,7 +30,7 @@ import {cssClasses} from './constants';
 
 export class MDCSegmentedButtonFoundation extends
     MDCFoundation<MDCSegmentedButtonAdapter> {
-  static get defaultAdapter(): MDCSegmentedButtonAdapter {
+  static override get defaultAdapter(): MDCSegmentedButtonAdapter {
     return {
       hasClass: () => false, getSegments: () => [],
                 selectSegment: () => undefined,

@@ -27,14 +27,14 @@ import {MDCFloatingLabelAdapter} from './adapter';
 import {cssClasses} from './constants';
 
 export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
   /**
    * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter(): MDCFloatingLabelAdapter {
+  static override get defaultAdapter(): MDCFloatingLabelAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
@@ -46,20 +46,25 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
     // tslint:enable:object-literal-sort-keys
   }
 
-  private readonly shakeAnimationEndHandler_: SpecificEventListener<'animationend'>;
+  private readonly shakeAnimationEndHandler:
+      SpecificEventListener<'animationend'>;
 
   constructor(adapter?: Partial<MDCFloatingLabelAdapter>) {
     super({...MDCFloatingLabelFoundation.defaultAdapter, ...adapter});
 
-    this.shakeAnimationEndHandler_ = () => this.handleShakeAnimationEnd_();
+    this.shakeAnimationEndHandler = () => {
+      this.handleShakeAnimationEnd();
+    };
   }
 
-  init() {
-    this.adapter.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+  override init() {
+    this.adapter.registerInteractionHandler(
+        'animationend', this.shakeAnimationEndHandler);
   }
 
-  destroy() {
-    this.adapter.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+  override destroy() {
+    this.adapter.deregisterInteractionHandler(
+        'animationend', this.shakeAnimationEndHandler);
   }
 
   /**
@@ -109,7 +114,7 @@ export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAd
     }
   }
 
-  private handleShakeAnimationEnd_() {
+  private handleShakeAnimationEnd() {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     this.adapter.removeClass(LABEL_SHAKE);
   }

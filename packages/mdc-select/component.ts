@@ -41,7 +41,7 @@ import {MDCSelectIcon, MDCSelectIconFactory} from './icon/component';
 import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
 export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
-  static attachTo(root: Element): MDCSelect {
+  static override attachTo(root: Element): MDCSelect {
     return new MDCSelect(root);
   }
 
@@ -71,13 +71,15 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private handleMenuClosing!: EventListener;
   private handleMenuItemAction!: CustomEventListener<MDCMenuItemEvent>;
 
-  initialize(
+  override initialize(
       labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
       lineRippleFactory: MDCLineRippleFactory = (el) => new MDCLineRipple(el),
-      outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
+      outlineFactory:
+          MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
       menuFactory: MDCMenuFactory = (el) => new MDCMenu(el),
       iconFactory: MDCSelectIconFactory = (el) => new MDCSelectIcon(el),
-      helperTextFactory: MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
+      helperTextFactory:
+          MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
   ) {
     this.selectAnchor =
         this.root.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
@@ -128,7 +130,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
    * Initializes the select's event listeners and internal state based
    * on the environment's state.
    */
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleFocus = () => {
       this.foundation.handleFocus();
     };
@@ -186,7 +188,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     }
   }
 
-  destroy() {
+  override destroy() {
     this.selectAnchor.removeEventListener('focus', this.handleFocus);
     this.selectAnchor.removeEventListener('blur', this.handleBlur);
     this.selectAnchor.removeEventListener('keydown', this.handleKeydown);
@@ -333,7 +335,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     }
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSelectAdapter = {

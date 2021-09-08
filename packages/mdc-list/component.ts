@@ -73,7 +73,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     this.foundation.setSelectedIndex(index);
   }
 
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCList(root);
   }
 
@@ -91,7 +91,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   private isEvolutionEnabled!: boolean;
   private isInteractive!: boolean;
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.isEvolutionEnabled =
         evolutionAttribute in (this.root as HTMLElement).dataset;
 
@@ -121,7 +121,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     this.ensureFocusable();
   }
 
-  destroy() {
+  override destroy() {
     this.unlisten('keydown', this.handleKeydown);
     this.unlisten('click', this.handleClick);
     this.unlisten('focusin', this.focusInEventListener);
@@ -235,7 +235,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
         nextChar, startingIndex, /** skipFocus */ true);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.
@@ -379,7 +379,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    */
   private handleFocusInEvent(evt: FocusEvent) {
     const index = this.getListItemIndex(evt.target as Element);
-    this.foundation.handleFocusIn(evt, index);
+    this.foundation.handleFocusIn(index);
   }
 
   /**
@@ -388,7 +388,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    */
   private handleFocusOutEvent(evt: FocusEvent) {
     const index = this.getListItemIndex(evt.target as Element);
-    this.foundation.handleFocusOut(evt, index);
+    this.foundation.handleFocusOut(index);
   }
 
   /**

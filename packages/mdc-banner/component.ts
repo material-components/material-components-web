@@ -32,11 +32,11 @@ import {MDCBannerFoundation} from './foundation';
 
 /** Vanilla JS implementation of banner component. */
 export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCBanner(root);
   }
 
-  root!: HTMLElement;  // Assigned in MDCComponent constructor.
+  override root!: HTMLElement;  // Assigned in MDCComponent constructor.
   private handleContentClick!:
       SpecificEventListener<'click'>;            // Assigned in #initialize.
   private primaryActionEl!: HTMLElement;         // Assigned in #initialize.
@@ -47,7 +47,7 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
   private focusTrapFactory!:
       MDCBannerFocusTrapFactory;  // assigned in initialize()
 
-  initialize(
+  override initialize(
       focusTrapFactory: MDCBannerFocusTrapFactory = (el, focusOptions) =>
           new FocusTrap(el, focusOptions),
   ) {
@@ -69,13 +69,13 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
     };
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.registerContentClickHandler(this.handleContentClick);
     this.focusTrap = this.focusTrapFactory(
         this.root, {initialFocusEl: this.primaryActionEl});
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
     this.deregisterContentClickHandler(this.handleContentClick);
   }
@@ -105,7 +105,7 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
     this.foundation.close(reason);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

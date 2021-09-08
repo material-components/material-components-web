@@ -379,7 +379,7 @@ describe('MDCDialogFoundation', () => {
            .toHaveBeenCalledWith('scroll', jasmine.any(Function));
      });
 
-  it('#open hides the scrim if \"isAboveFullscreenDialog" is true', () => {
+  it('#open hides the scrim if "isAboveFullscreenDialog" is true', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.open({isAboveFullscreenDialog: true});
 

@@ -80,7 +80,9 @@
     @error "Invalid style specified! Choose one of #{map.keys(variables.$columns)}";
   }
 
-  $percent: math.percentage($span / map.get(variables.$columns, $size));
+  $percent: math.percentage(
+    math.div($span, map.get(variables.$columns, $size))
+  );
 
   @if $percent > 100% {
     $percent: 100%;
@@ -121,7 +123,7 @@
   display: flex;
   flex-flow: row wrap;
   align-items: stretch;
-  margin: -$gutter / 2;
+  margin: math.div(-$gutter, 2);
   // stylelint-disable-next-line declaration-block-no-duplicate-properties
   margin: calc(var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2 * -1);
 
@@ -146,7 +148,7 @@
   @include cell-span_($size, $default-span, $gutter);
 
   box-sizing: border-box;
-  margin: $gutter / 2;
+  margin: math.div($gutter, 2);
   // stylelint-disable-next-line declaration-block-no-duplicate-properties
   margin: calc(var(--mdc-layout-grid-gutter-#{$size}, #{$gutter}) / 2);
 

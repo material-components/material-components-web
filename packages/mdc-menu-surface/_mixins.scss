@@ -29,7 +29,7 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/animation/variables' as animation-variables;
 @use '@material/elevation/mixins' as elevation-mixins;
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use './variables';
 @use './menu-surface-custom-properties';
 
@@ -49,11 +49,7 @@
     @include shape-radius(variables.$shape-radius, false, $query);
 
     @include feature-targeting.targets($feat-structure) {
-      @include rtl-mixins.reflexive-property(
-        transform-origin,
-        top left,
-        top right
-      );
+      @include rtl.reflexive-property(transform-origin, top left, top right);
     }
   }
 
@@ -161,20 +157,21 @@
     }
   }
 
-  // stylelint-disable-next-line selector-max-type
-  &--open {
-    @include feature-targeting.targets($feat-structure) {
-      display: inline-block;
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
   &--animating-open {
     @include feature-targeting.targets($feat-structure) {
       display: inline-block;
       transform: scale(0.8);
       opacity: 0;
+    }
+  }
+
+  // Render this after `--animating-open` to override `opacity` & `transform`
+  // CSS properties.
+  &--open {
+    @include feature-targeting.targets($feat-structure) {
+      display: inline-block;
+      transform: scale(1);
+      opacity: 1;
     }
   }
 

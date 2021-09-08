@@ -46,10 +46,21 @@ describe('announce', () => {
   });
 
   it('creates an aria-live="assertive" region if specified', () => {
-    announce('Bar', AnnouncerPriority.ASSERTIVE);
+    announce('Bar', {priority: AnnouncerPriority.ASSERTIVE});
     jasmine.clock().tick(1);
     const liveRegion = document.querySelector(LIVE_REGION_SELECTOR);
     expect(liveRegion!.textContent).toEqual('Bar');
+  });
+
+  it('uses the provided ownerDocument for announcements', () => {
+    const ownerDocument = document.implementation.createHTMLDocument('Title');
+    announce('custom ownerDocument', {ownerDocument});
+    const globalDocumentLiveRegion =
+        document.querySelector(LIVE_REGION_SELECTOR);
+    expect(globalDocumentLiveRegion).toBeNull();
+    const ownerDocumentLiveRegion =
+        ownerDocument.querySelector(LIVE_REGION_SELECTOR);
+    expect(ownerDocumentLiveRegion).toBeDefined();
   });
 
   it('sets live region content after a timeout', () => {
@@ -60,21 +71,41 @@ describe('announce', () => {
     expect(liveRegion!.textContent).toEqual('Baz');
   });
 
-  it('reuses same polite live region on successive calls', () => {
+  it('reuses same polite live region on successive calls per document', () => {
+    const secondDocument = document.implementation.createHTMLDocument('Title');
     announce('aaa');
+    announce('aaa', {ownerDocument: secondDocument});
     announce('bbb');
+    announce('bbb', {ownerDocument: secondDocument});
     announce('ccc');
-    const liveRegions = document.querySelectorAll(LIVE_REGION_SELECTOR);
-    expect(liveRegions.length).toEqual(1);
+    announce('ccc', {ownerDocument: secondDocument});
+
+    const globalDocumentLiveRegions =
+        document.querySelectorAll(LIVE_REGION_SELECTOR);
+    expect(globalDocumentLiveRegions.length).toEqual(1);
+    const secondDocumentLiveRegions =
+        secondDocument.querySelectorAll(LIVE_REGION_SELECTOR);
+    expect(secondDocumentLiveRegions.length).toEqual(1);
   });
 
-  it('reuses same assertive live region on successive calls', () => {
-    announce('aaa', AnnouncerPriority.ASSERTIVE);
-    announce('bbb', AnnouncerPriority.ASSERTIVE);
-    announce('ccc', AnnouncerPriority.ASSERTIVE);
-    const liveRegions = document.querySelectorAll(LIVE_REGION_SELECTOR);
-    expect(liveRegions.length).toEqual(1);
-  });
+  it('reuses same assertive live region on successive calls per document',
+     () => {
+       const secondDocument =
+           document.implementation.createHTMLDocument('Title');
+       announce('aaa', {priority: AnnouncerPriority.ASSERTIVE});
+       announce('aaa', {priority: AnnouncerPriority.ASSERTIVE, ownerDocument: secondDocument});
+       announce('bbb', {priority: AnnouncerPriority.ASSERTIVE});
+       announce('bbb', {priority: AnnouncerPriority.ASSERTIVE, ownerDocument: secondDocument});
+       announce('ccc', {priority: AnnouncerPriority.ASSERTIVE});
+       announce('ccc', {priority: AnnouncerPriority.ASSERTIVE, ownerDocument: secondDocument});
+
+       const globalDocumentLiveRegions =
+           document.querySelectorAll(LIVE_REGION_SELECTOR);
+       expect(globalDocumentLiveRegions.length).toEqual(1);
+       const secondDocumentLiveRegions =
+           secondDocument.querySelectorAll(LIVE_REGION_SELECTOR);
+       expect(secondDocumentLiveRegions.length).toEqual(1);
+     });
 
   it('sets the latest message during immediate successive', () => {
     announce('1');

@@ -34,45 +34,50 @@ import {MDCTabDimensions, MDCTabInteractionEventDetail} from './types';
 export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) => MDCTab;
 
 export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleCapableSurface {
-  static attachTo(root: Element): MDCTab {
+  static override attachTo(root: Element): MDCTab {
     return new MDCTab(root);
   }
 
   id!: string; // assigned in initialize();
 
-  private ripple_!: MDCRipple; // assigned in initialize();
-  private tabIndicator_!: MDCTabIndicator; // assigned in initialize();
-  private content_!: HTMLElement; // assigned in initialize();
-  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialize();
+  private ripple!: MDCRipple;              // assigned in initialize();
+  private tabIndicator!: MDCTabIndicator;  // assigned in initialize();
+  private content!: HTMLElement;           // assigned in initialize();
+  private handleClick!:
+      SpecificEventListener<'click'>;  // assigned in initialize();
 
-  initialize(
-      rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-      tabIndicatorFactory: MDCTabIndicatorFactory = (el) => new MDCTabIndicator(el),
+  override initialize(
+      rippleFactory:
+          MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
+      tabIndicatorFactory:
+          MDCTabIndicatorFactory = (el) => new MDCTabIndicator(el),
   ) {
     this.id = this.root.id;
     const rippleFoundation =
         new MDCRippleFoundation(MDCRipple.createAdapter(this));
-    this.ripple_ = rippleFactory(this.root, rippleFoundation);
+    this.ripple = rippleFactory(this.root, rippleFoundation);
 
     const tabIndicatorElement = this.root.querySelector(
         MDCTabFoundation.strings.TAB_INDICATOR_SELECTOR)!;
-    this.tabIndicator_ = tabIndicatorFactory(tabIndicatorElement);
-    this.content_ = this.root.querySelector<HTMLElement>(
+    this.tabIndicator = tabIndicatorFactory(tabIndicatorElement);
+    this.content = this.root.querySelector<HTMLElement>(
         MDCTabFoundation.strings.CONTENT_SELECTOR)!;
   }
 
-  initialSyncWithDOM() {
-    this.handleClick_ = () => this.foundation.handleClick();
-    this.listen('click', this.handleClick_);
+  override initialSyncWithDOM() {
+    this.handleClick = () => {
+      this.foundation.handleClick();
+    };
+    this.listen('click', this.handleClick);
   }
 
-  destroy() {
-    this.unlisten('click', this.handleClick_);
-    this.ripple_.destroy();
+  override destroy() {
+    this.unlisten('click', this.handleClick);
+    this.ripple.destroy();
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
@@ -81,16 +86,19 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
       addClass: (className) => this.root.classList.add(className),
       removeClass: (className) => this.root.classList.remove(className),
       hasClass: (className) => this.root.classList.contains(className),
-      activateIndicator: (previousIndicatorClientRect) =>
-          this.tabIndicator_.activate(previousIndicatorClientRect),
-      deactivateIndicator: () => this.tabIndicator_.deactivate(),
+      activateIndicator: (previousIndicatorClientRect) => {
+        this.tabIndicator.activate(previousIndicatorClientRect);
+      },
+      deactivateIndicator: () => {
+        this.tabIndicator.deactivate();
+      },
       notifyInteracted: () => this.emit<MDCTabInteractionEventDetail>(
           MDCTabFoundation.strings.INTERACTED_EVENT, {tabId: this.id},
           true /* bubble */),
       getOffsetLeft: () => (this.root as HTMLElement).offsetLeft,
       getOffsetWidth: () => (this.root as HTMLElement).offsetWidth,
-      getContentOffsetLeft: () => this.content_.offsetLeft,
-      getContentOffsetWidth: () => this.content_.offsetWidth,
+      getContentOffsetLeft: () => this.content.offsetLeft,
+      getContentOffsetWidth: () => this.content.offsetWidth,
       focus: () => (this.root as HTMLElement).focus(),
     };
     // tslint:enable:object-literal-sort-keys
@@ -126,7 +134,7 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
    * Returns the indicator's client rect
    */
   computeIndicatorClientRect(): ClientRect {
-    return this.tabIndicator_.computeContentClientRect();
+    return this.tabIndicator.computeContentClientRect();
   }
 
   computeDimensions(): MDCTabDimensions {

@@ -36,102 +36,125 @@ const {strings} = MDCTabBarFoundation;
 let tabIdCounter = 0;
 
 export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
-  static attachTo(root: Element): MDCTabBar {
+  static override attachTo(root: Element): MDCTabBar {
     return new MDCTabBar(root);
   }
 
-  private tabList_!: MDCTab[]; // assigned in initialize()
-  private tabScroller_!: MDCTabScroller | null; // assigned in initialize()
-  private handleTabInteraction_!: CustomEventListener<MDCTabInteractionEvent>; // assigned in initialSyncWithDOM()
-  private handleKeyDown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
+  private tabList!: MDCTab[];                 // assigned in initialize()
+  private tabScroller!: MDCTabScroller|null;  // assigned in initialize()
+  private handleTabInteraction!:
+      CustomEventListener<MDCTabInteractionEvent>;  // assigned in
+                                                    // initialSyncWithDOM()
+  private handleKeyDown!:
+      SpecificEventListener<'keydown'>;  // assigned in initialSyncWithDOM()
 
   set focusOnActivate(focusOnActivate: boolean) {
-    this.tabList_.forEach((tab) => tab.focusOnActivate = focusOnActivate);
+    for (const tab of this.tabList) {
+      tab.focusOnActivate = focusOnActivate;
+    }
   }
 
   set useAutomaticActivation(useAutomaticActivation: boolean) {
     this.foundation.setUseAutomaticActivation(useAutomaticActivation);
   }
 
-  initialize(
+  override initialize(
       tabFactory: MDCTabFactory = (el) => new MDCTab(el),
-      tabScrollerFactory: MDCTabScrollerFactory = (el) => new MDCTabScroller(el),
+      tabScrollerFactory:
+          MDCTabScrollerFactory = (el) => new MDCTabScroller(el),
   ) {
-    this.tabList_ = this.instantiateTabs_(tabFactory);
-    this.tabScroller_ = this.instantiateTabScroller_(tabScrollerFactory);
+    this.tabList = this.instantiateTabs(tabFactory);
+    this.tabScroller = this.instantiatetabScroller(tabScrollerFactory);
   }
 
-  initialSyncWithDOM() {
-    this.handleTabInteraction_ = (evt) =>
-        this.foundation.handleTabInteraction(evt);
-    this.handleKeyDown_ = (evt) => this.foundation.handleKeyDown(evt);
+  override initialSyncWithDOM() {
+    this.handleTabInteraction = (evt) => {
+      this.foundation.handleTabInteraction(evt);
+    };
+    this.handleKeyDown = (evt) => {
+      this.foundation.handleKeyDown(evt);
+    };
 
-    this.listen(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
-    this.listen('keydown', this.handleKeyDown_);
+    this.listen(
+        MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction);
+    this.listen('keydown', this.handleKeyDown);
 
-    for (let i = 0; i < this.tabList_.length; i++) {
-      if (this.tabList_[i].active) {
+    for (let i = 0; i < this.tabList.length; i++) {
+      if (this.tabList[i].active) {
         this.scrollIntoView(i);
         break;
       }
     }
   }
 
-  destroy() {
+  override destroy() {
     super.destroy();
-    this.unlisten(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
-    this.unlisten('keydown', this.handleKeyDown_);
-    this.tabList_.forEach((tab) => tab.destroy());
+    this.unlisten(
+        MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction);
+    this.unlisten('keydown', this.handleKeyDown);
+    for (const tab of this.tabList) {
+      tab.destroy();
+    }
 
-    if (this.tabScroller_) {
-      this.tabScroller_.destroy();
+    if (this.tabScroller) {
+      this.tabScroller.destroy();
     }
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTabBarAdapter = {
-      scrollTo: (scrollX) => this.tabScroller_!.scrollTo(scrollX),
-      incrementScroll: (scrollXIncrement) =>
-          this.tabScroller_!.incrementScroll(scrollXIncrement),
-      getScrollPosition: () => this.tabScroller_!.getScrollPosition(),
-      getScrollContentWidth: () => this.tabScroller_!.getScrollContentWidth(),
+      scrollTo: (scrollX) => {
+        this.tabScroller!.scrollTo(scrollX);
+      },
+      incrementScroll: (scrollXIncrement) => {
+        this.tabScroller!.incrementScroll(scrollXIncrement);
+      },
+      getScrollPosition: () => this.tabScroller!.getScrollPosition(),
+      getScrollContentWidth: () => this.tabScroller!.getScrollContentWidth(),
       getOffsetWidth: () => (this.root as HTMLElement).offsetWidth,
       isRTL: () => window.getComputedStyle(this.root).getPropertyValue(
                        'direction') === 'rtl',
-      setActiveTab: (index) => this.foundation.activateTab(index),
-      activateTabAtIndex: (index, clientRect) =>
-          this.tabList_[index].activate(clientRect),
-      deactivateTabAtIndex: (index) => this.tabList_[index].deactivate(),
-      focusTabAtIndex: (index) => this.tabList_[index].focus(),
+      setActiveTab: (index) => {
+        this.foundation.activateTab(index);
+      },
+      activateTabAtIndex: (index, clientRect) => {
+        this.tabList[index].activate(clientRect);
+      },
+      deactivateTabAtIndex: (index) => {
+        this.tabList[index].deactivate();
+      },
+      focusTabAtIndex: (index) => {
+        this.tabList[index].focus();
+      },
       getTabIndicatorClientRectAtIndex: (index) =>
-          this.tabList_[index].computeIndicatorClientRect(),
+          this.tabList[index].computeIndicatorClientRect(),
       getTabDimensionsAtIndex: (index) =>
-          this.tabList_[index].computeDimensions(),
+          this.tabList[index].computeDimensions(),
       getPreviousActiveTabIndex: () => {
-        for (let i = 0; i < this.tabList_.length; i++) {
-          if (this.tabList_[i].active) {
+        for (let i = 0; i < this.tabList.length; i++) {
+          if (this.tabList[i].active) {
             return i;
           }
         }
         return -1;
       },
       getFocusedTabIndex: () => {
-        const tabElements = this.getTabElements_();
+        const tabElements = this.getTabElements();
         const activeElement = document.activeElement!;
         return tabElements.indexOf(activeElement);
       },
       getIndexOfTabById: (id) => {
-        for (let i = 0; i < this.tabList_.length; i++) {
-          if (this.tabList_[i].id === id) {
+        for (let i = 0; i < this.tabList.length; i++) {
+          if (this.tabList[i].id === id) {
             return i;
           }
         }
         return -1;
       },
-      getTabListLength: () => this.tabList_.length,
+      getTabListLength: () => this.tabList.length,
       notifyTabActivated: (index) => this.emit<MDCTabBarActivatedEventDetail>(
           strings.TAB_ACTIVATED_EVENT, {index}, true),
     };
@@ -158,15 +181,15 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   /**
    * Returns all the tab elements in a nice clean array
    */
-  private getTabElements_(): Element[] {
+  private getTabElements(): Element[] {
     return [].slice.call(this.root.querySelectorAll(strings.TAB_SELECTOR));
   }
 
   /**
    * Instantiates tab components on all child tab elements
    */
-  private instantiateTabs_(tabFactory: MDCTabFactory) {
-    return this.getTabElements_().map((el) => {
+  private instantiateTabs(tabFactory: MDCTabFactory) {
+    return this.getTabElements().map((el) => {
       el.id = el.id || `mdc-tab-${++tabIdCounter}`;
       return tabFactory(el);
     });
@@ -175,7 +198,8 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   /**
    * Instantiates tab scroller component on the child tab scroller element
    */
-  private instantiateTabScroller_(tabScrollerFactory: MDCTabScrollerFactory): MDCTabScroller | null {
+  private instantiatetabScroller(tabScrollerFactory: MDCTabScrollerFactory):
+      MDCTabScroller|null {
     const tabScrollerElement =
         this.root.querySelector(strings.TAB_SCROLLER_SELECTOR);
     if (tabScrollerElement) {

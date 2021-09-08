@@ -21,25 +21,27 @@
  * THE SOFTWARE.
  */
 
-import {MDCObserver, Observer, ObserverRecord} from './observer';
+import {getDescriptor, MDCObserver, Observer, ObserverRecord} from './observer';
 import {Constructor} from './types';
 
 /**
  * Mixin to add `MDCObserver` functionality.
  *
- * @return {Constructor<MDCObserver>} A class with `MDCObserver` functionality.
+ * @deprecated Prefer MDCObserverFoundation for stricter closure compliance.
+ * @return A class with `MDCObserver` functionality.
  */
 export function mdcObserver(): Constructor<MDCObserver>;
 
 /**
  * Mixin to add `MDCObserver` functionality to a base class.
  *
+ * @deprecated Prefer MDCObserverFoundation for stricter closure compliance.
  * @template T Base class instance type. Specify this generic if the base class
  *     itself has generics that cannot be inferred.
  * @template C Base class constructor type.
- * @param {C} baseClass - Base class.
- * @return {Constructor<MDCObserver> & C} A class that extends the optional base
- *     class with `MDCObserver` functionality.
+ * @param baseClass - Base class.
+ * @return A class that extends the optional base class with `MDCObserver`
+ *     functionality.
  */
 export function mdcObserver<T, C extends Constructor<T>>(baseClass: C):
     Constructor<MDCObserver>&Constructor<T>&C;
@@ -47,10 +49,11 @@ export function mdcObserver<T, C extends Constructor<T>>(baseClass: C):
 /**
  * Mixin to add `MDCObserver` functionality to an optional base class.
  *
+ * @deprecated Prefer MDCObserverFoundation for stricter closure compliance.
  * @template C Optional base class constructor type.
- * @param {C} baseClass - Optional base class.
- * @return {Constructor<MDCObserver> & C} A class that extends the optional base
- *     class with `MDCObserver` functionality.
+ * @param baseClass - Optional base class.
+ * @return A class that extends the optional base class with `MDCObserver`
+ *     functionality.
  */
 export function mdcObserver<C extends Constructor>(
     baseClass: C = class {} as C) {
@@ -120,7 +123,7 @@ interface TargetObservers<T extends object> {
    * Retrieves all observers for a given target property.
    *
    * @template K The target property key.
-   * @param {K} key - The property to retrieve observers for.
+   * @param key - The property to retrieve observers for.
    * @return An array of observers for the provided target property.
    */
   [getObservers]: <K extends keyof T>(key: K) => Array<Observer<T, K>>;
@@ -136,12 +139,12 @@ interface TargetObservers<T extends object> {
  *
  * @template T The observed target type.
  * @template K The observed property.
- * @param {T} target - The target to observe.
- * @param {K} property - The property of the target to observe.
- * @param {Observer<T, K>} - An observer function to invoke each time the
- *     property changes.
- * @return {Function} A cleanup function that will stop observing changes for
- *     the provided `Observer`.
+ * @param target - The target to observe.
+ * @param property - The property of the target to observe.
+ * @param observer - An observer function to invoke each time the property
+ *     changes.
+ * @return A cleanup function that will stop observing changes for the provided
+ *     `Observer`.
  */
 export function observeProperty<T extends object, K extends keyof T>(
     target: T, property: K, observer: Observer<T, K>) {
@@ -161,9 +164,8 @@ export function observeProperty<T extends object, K extends keyof T>(
  * prototype.
  *
  * @template T The observed target type.
- * @param {T} target - The target to observe.
- * @return {TargetObservers<T>} The installed `TargetObservers` for the provided
- *     target.
+ * @param target - The target to observe.
+ * @return The installed `TargetObservers` for the provided target.
  */
 function installObserver<T extends object>(target: T): TargetObservers<T> {
   const prototype = Object.getPrototypeOf(target);
@@ -178,22 +180,24 @@ function installObserver<T extends object>(target: T): TargetObservers<T> {
   const existingKeyValues = new Map<keyof T, T[keyof T]>();
   const keys = Object.getOwnPropertyNames(target) as Array<keyof T>;
   for (const key of keys) {
-    const descriptor = Object.getOwnPropertyDescriptor(target, key);
+    const descriptor = getDescriptor(target, key);
     if (descriptor && descriptor.writable) {
-      existingKeyValues.set(key, descriptor.value);
+      existingKeyValues.set(key, descriptor.value as T[keyof T]);
       delete target[key];
     }
   }
 
   const proxy =
       new Proxy<T>(Object.create(prototype), {
-        get(target, key) {
-          return Reflect.get(target, key);
+        get(target, key, receiver) {
+          return Reflect.get(target, key, receiver);
         },
-        set(target, key, newValue) {
+        set(target, key, newValue, receiver) {
           const isTargetObserversKey = key === isTargetObservers ||
               key === isEnabled || key === getObservers;
-          const previous = Reflect.get(target, key);
+          const previous = Reflect.get(target, key, receiver);
+          // Do not use receiver when setting the target's key. We do not want
+          // to change whatever the target's inherent receiver is.
           Reflect.set(target, key, newValue);
           if (!isTargetObserversKey && proxy[isEnabled] &&
               newValue !== previous) {
@@ -232,8 +236,8 @@ function installObserver<T extends object>(target: T): TargetObservers<T> {
  * properties will not call any observers when disabled.
  *
  * @template T The observed target type.
- * @param {T} target - The target to enable or disable observers for.
- * @param {Boolean} enabled - True to enable or false to disable observers.
+ * @param target - The target to enable or disable observers for.
+ * @param enabled - True to enable or false to disable observers.
  */
 export function setObserversEnabled<T extends object>(
     target: T, enabled: boolean) {

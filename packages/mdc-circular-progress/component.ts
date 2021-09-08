@@ -29,14 +29,14 @@ import {MDCCircularProgressFoundation} from './foundation';
 export class MDCCircularProgress extends
     MDCComponent<MDCCircularProgressFoundation> implements
         MDCProgressIndicator {
-  private determinateCircle_!: HTMLElement;
+  private determinateCircle!: HTMLElement;
 
-  initialize() {
-    this.determinateCircle_ = this.root.querySelector<HTMLElement>(
+  override initialize() {
+    this.determinateCircle = this.root.querySelector<HTMLElement>(
         MDCCircularProgressFoundation.strings.DETERMINATE_CIRCLE_SELECTOR)!;
   }
 
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCCircularProgress(root);
   }
 
@@ -79,22 +79,29 @@ export class MDCCircularProgress extends
     this.foundation.close();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCCircularProgressAdapter = {
-      addClass: (className: string) => this.root.classList.add(className),
+      addClass: (className: string) => {
+        this.root.classList.add(className);
+      },
       getDeterminateCircleAttribute: (attributeName: string) =>
-          this.determinateCircle_.getAttribute(attributeName),
+          this.determinateCircle.getAttribute(attributeName),
       hasClass: (className: string) => this.root.classList.contains(className),
-      removeClass: (className: string) => this.root.classList.remove(className),
-      removeAttribute: (attributeName: string) =>
-          this.root.removeAttribute(attributeName),
-      setAttribute: (attributeName: string, value: string) =>
-          this.root.setAttribute(attributeName, value),
-      setDeterminateCircleAttribute: (attributeName: string, value: string) =>
-          this.determinateCircle_.setAttribute(attributeName, value),
+      removeClass: (className: string) => {
+        this.root.classList.remove(className);
+      },
+      removeAttribute: (attributeName: string) => {
+        this.root.removeAttribute(attributeName);
+      },
+      setAttribute: (attributeName: string, value: string) => {
+        this.root.setAttribute(attributeName, value);
+      },
+      setDeterminateCircleAttribute: (attributeName: string, value: string) => {
+        this.determinateCircle.setAttribute(attributeName, value);
+      },
     };
     return new MDCCircularProgressFoundation(adapter);
   }

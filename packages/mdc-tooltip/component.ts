@@ -29,7 +29,7 @@ import {AnchorBoundaryType, CssClasses, events, PositionWithCaret, XPosition, YP
 import {MDCTooltipFoundation} from './foundation';
 
 export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
-  static attachTo(root: Element) {
+  static override attachTo(root: Element) {
     return new MDCTooltip(root);
   }
 
@@ -45,7 +45,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
   private handleTouchstart!: SpecificEventListener<'touchstart'>;
   private handleTouchend!: SpecificEventListener<'touchend'>;
 
-  initialize() {
+  override initialize() {
     const tooltipId = this.root.getAttribute('id');
     if (!tooltipId) {
       throw new Error('MDCTooltip: Tooltip component must have an id.');
@@ -62,7 +62,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     this.anchorElem = anchorElem;
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.isTooltipRich = this.foundation.isRich();
     this.isTooltipPersistent = this.foundation.isPersistent();
 
@@ -108,7 +108,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     this.listen('transitionend', this.handleTransitionEnd);
   }
 
-  destroy() {
+  override destroy() {
     if (this.anchorElem) {
       if (this.isTooltipRich && this.isTooltipPersistent) {
         this.anchorElem.removeEventListener('click', this.handleClick);
@@ -140,12 +140,20 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     this.foundation.setAnchorBoundaryType(type);
   }
 
+  setShowDelay(delayMs: number) {
+    this.foundation.setShowDelay(delayMs);
+  }
+
+  setHideDelay(delayMs: number) {
+    this.foundation.setHideDelay(delayMs);
+  }
+
   hide() {
     this.foundation.hide();
   }
 
   isShown() {
-    this.foundation.isShown();
+    return this.foundation.isShown();
   }
 
   /**
@@ -171,11 +179,14 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
     this.foundation.removeScrollHandler(removeEventHandlerFn);
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     const adapter: MDCTooltipAdapter = {
       getAttribute: (attr) => this.root.getAttribute(attr),
       setAttribute: (attr, value) => {
         this.root.setAttribute(attr, value);
+      },
+      removeAttribute: (attr) => {
+        this.root.removeAttribute(attr);
       },
       addClass: (className) => {
         this.root.classList.add(className);
@@ -191,9 +202,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       setStyleProperty: (propertyName, value) => {
         (this.root as HTMLElement).style.setProperty(propertyName, value);
       },
-      setSurfaceStyleProperty: (propertyName, value) => {
-        const surface =
-            this.root.querySelector<HTMLElement>(`.${CssClasses.SURFACE}`);
+      setSurfaceAnimationStyleProperty: (propertyName, value) => {
+        const surface = this.root.querySelector<HTMLElement>(
+            `.${CssClasses.SURFACE_ANIMATION}`);
         surface?.style.setProperty(propertyName, value);
       },
       getViewportWidth: () => window.innerWidth,
@@ -240,7 +251,7 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
         this.anchorElem?.addEventListener(evt, handler);
       },
       deregisterAnchorEventHandler: (evt, handler) => {
-        this.anchorElem?.addEventListener(evt, handler);
+        this.anchorElem?.removeEventListener(evt, handler);
       },
       registerDocumentEventHandler: (evt, handler) => {
         document.body.addEventListener(evt, handler);
@@ -257,14 +268,13 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       notifyHidden: () => {
         this.emit(events.HIDDEN, {});
       },
-      getTooltipCaretSize: () => {
+      getTooltipCaretBoundingRect: () => {
         const caret = this.root.querySelector<HTMLElement>(
             `.${CssClasses.TOOLTIP_CARET_TOP}`);
         if (!caret) {
           return null;
         }
-
-        return {width: caret.offsetWidth, height: caret.offsetHeight};
+        return caret.getBoundingClientRect();
       },
       setTooltipCaretStyle: (propertyName, value) => {
         const topCaret = this.root.querySelector<HTMLElement>(
@@ -290,6 +300,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
         }
         topCaret.removeAttribute('style');
         bottomCaret.removeAttribute('style');
+      },
+      getActiveElement: () => {
+        return document.activeElement;
       },
     };
 

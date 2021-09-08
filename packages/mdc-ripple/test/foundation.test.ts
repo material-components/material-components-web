@@ -228,11 +228,11 @@ describe('MDCRippleFoundation', () => {
           cssClasses.FG_ACTIVATION} if activation is interrupted`,
       ({adapter,
         foundation}: {adapter: any, foundation: MDCRippleFoundation}) => {
-        foundation['activationTimer_'] = 1;
+        foundation['activationTimer'] = 1;
         foundation.destroy();
         jasmine.clock().tick(1);
 
-        expect(foundation['activationTimer_']).toEqual(0);
+        expect(foundation['activationTimer']).toEqual(0);
         expect(adapter.removeClass)
             .toHaveBeenCalledWith(cssClasses.FG_ACTIVATION);
       });
@@ -242,11 +242,11 @@ describe('MDCRippleFoundation', () => {
           cssClasses.FG_DEACTIVATION} if deactivation is interrupted`,
       ({adapter,
         foundation}: {adapter: any, foundation: MDCRippleFoundation}) => {
-        foundation['fgDeactivationRemovalTimer_'] = 1;
+        foundation['fgDeactivationRemovalTimer'] = 1;
         foundation.destroy();
         jasmine.clock().tick(1);
 
-        expect(foundation['fgDeactivationRemovalTimer_']).toEqual(0);
+        expect(foundation['fgDeactivationRemovalTimer']).toEqual(0);
         expect(adapter.removeClass)
             .toHaveBeenCalledWith(cssClasses.FG_DEACTIVATION);
       });
@@ -257,7 +257,7 @@ describe('MDCRippleFoundation', () => {
         foundation}: {adapter: any, foundation: MDCRippleFoundation}) => {
         const cssVars =
             Object.keys(strings)
-                .filter((s) => s.indexOf('VAR_') === 0)
+                .filter((s) => s.indexOf('VAR') === 0)
                 .map((s) => (strings as {[key: string]: string})[s]);
         foundation.destroy();
         jasmine.clock().tick(1);
@@ -272,11 +272,11 @@ describe('MDCRippleFoundation', () => {
         foundation.init();
         jasmine.clock().tick(1);
 
-        foundation['activationTimer_'] = 1;
+        foundation['activationTimer'] = 1;
         foundation.destroy();
         jasmine.clock().tick(1);
 
-        expect(foundation['activationTimer_']).toEqual(0);
+        expect(foundation['activationTimer']).toEqual(0);
       });
 
   testFoundation(

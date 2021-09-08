@@ -33,7 +33,7 @@ const {OPENING, OPEN, CLOSING} = cssClasses;
  * banner.
  */
 export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
-  static get defaultAdapter(): MDCBannerAdapter {
+  static override get defaultAdapter(): MDCBannerAdapter {
     return {
       addClass: () => undefined,
       getContentHeight: () => 0,
@@ -60,7 +60,7 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
     super({...MDCBannerFoundation.defaultAdapter, ...adapter});
   }
 
-  destroy() {
+  override destroy() {
     cancelAnimationFrame(this.animationFrame);
     this.animationFrame = 0;
     clearTimeout(this.animationTimer);

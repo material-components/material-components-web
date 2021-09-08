@@ -222,13 +222,12 @@ interface RenderComponentProps {
 }
 
 function renderComponent(props: RenderComponentProps): HTMLElement {
-  const headerRowContent = (props.withoutRowSelection ? ''
-      : mdcDataTableHeaderCellTemplate({
-          content: mdcCheckboxTemplate({
-            classNames: cssClasses.HEADER_ROW_CHECKBOX,
-          }),
-        })
-      ) +
+  const headerRowContent =
+      (props.withoutRowSelection ? '' : mdcDataTableHeaderCellTemplate({
+        content: mdcCheckboxTemplate({
+          classNames: cssClasses.HEADER_ROW_CHECKBOX,
+        }),
+      })) +
       props.data.headers
           .map((header: DataTableHeader) => mdcDataTableHeaderCellTemplate({
                  content: header.name,
@@ -513,6 +512,35 @@ describe('MDCDataTable', () => {
     expect(handler).toHaveBeenCalledWith(jasmine.anything());
 
     component.unlisten(events.UNSELECTED_ALL, handler);
+    component.destroy();
+  });
+
+  it('Should trigger row click event when clicked on data row', () => {
+    const {component} = setupTest();
+
+    const handler = jasmine.createSpy('mockRowClickListener');
+    component.listen(events.ROW_CLICK, handler);
+    (component.getRows()[1] as HTMLElement).click();
+    expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({
+      detail: {
+        rowId: 'u1',
+        row: component.getRows()[1],
+      }
+    }));
+
+    component.unlisten(events.ROW_CLICK, handler);
+    component.destroy();
+  });
+
+  it('Should not trigger row click event when clicked on header cell', () => {
+    const {component, root} = setupTest();
+
+    const handler = jasmine.createSpy('mockRowClickListener');
+    component.listen(events.ROW_CLICK, handler);
+    root.querySelector<HTMLElement>('th')!.click();
+    expect(handler).not.toHaveBeenCalled();
+
+    component.unlisten(events.ROW_CLICK, handler);
     component.destroy();
   });
 

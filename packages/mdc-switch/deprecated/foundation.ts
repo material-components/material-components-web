@@ -27,17 +27,17 @@ import {cssClasses, strings} from './constants';
 
 export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   /** The string constants used by the switch. */
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
   /** The CSS classes used by the switch. */
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
   /** The default Adapter for the switch. */
-  static get defaultAdapter(): MDCSwitchAdapter {
+  static override get defaultAdapter(): MDCSwitchAdapter {
     return {
       addClass: () => undefined,
       removeClass: () => undefined,
@@ -54,8 +54,8 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   /** Sets the checked state of the switch. */
   setChecked(checked: boolean) {
     this.adapter.setNativeControlChecked(checked);
-    this.updateAriaChecked_(checked);
-    this.updateCheckedStyling_(checked);
+    this.updateAriaChecked(checked);
+    this.updateCheckedStyling(checked);
   }
 
   /** Sets the disabled state of the switch. */
@@ -71,12 +71,12 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   /** Handles the change event for the switch native control. */
   handleChange(evt: Event) {
     const nativeControl = evt.target as HTMLInputElement;
-    this.updateAriaChecked_(nativeControl.checked);
-    this.updateCheckedStyling_(nativeControl.checked);
+    this.updateAriaChecked(nativeControl.checked);
+    this.updateCheckedStyling(nativeControl.checked);
   }
 
   /** Updates the styling of the switch based on its checked state. */
-  private updateCheckedStyling_(checked: boolean) {
+  private updateCheckedStyling(checked: boolean) {
     if (checked) {
       this.adapter.addClass(cssClasses.CHECKED);
     } else {
@@ -84,7 +84,7 @@ export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
     }
   }
 
-  private updateAriaChecked_(checked: boolean) {
+  private updateAriaChecked(checked: boolean) {
     this.adapter.setNativeControlAttr(
         strings.ARIA_CHECKED_ATTR, `${!!checked}`);
   }

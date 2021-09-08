@@ -22,6 +22,7 @@
  */
 
 import {EventType, SpecificEventListener} from '@material/base/types';
+
 import {CssClasses} from './constants';
 
 /**
@@ -41,6 +42,11 @@ export interface MDCTooltipAdapter {
    * Sets an attribute on the root element.
    */
   setAttribute(attr: string, value: string): void;
+
+  /**
+   * Removes an attribute on the root element.
+   */
+  removeAttribute(attr: string): void;
 
   /**
    * Adds a class onto the root element.
@@ -69,9 +75,10 @@ export interface MDCTooltipAdapter {
 
   /**
    * Sets the property value of the given style property on the tooltip's
-   * surface element (indicated by the "mdc-tooltip__surface" class).
+   * surface-animation element (indicated by the
+   * "mdc-tooltip__surface-animation" class).
    */
-  setSurfaceStyleProperty(propertyName: string, value: string): void;
+  setSurfaceAnimationStyleProperty(propertyName: string, value: string): void;
 
   /**
    * @return the width of the viewport.
@@ -184,9 +191,9 @@ export interface MDCTooltipAdapter {
   notifyHidden(): void;
 
   /**
-   * @return the width and height of the tooltip caret element if it exists.
+   * @return the ClientRect for the caret element.
    */
-  getTooltipCaretSize(): {width: number, height: number}|null;
+  getTooltipCaretBoundingRect(): ClientRect|null;
 
   /**
    * Sets the property value of the given style property on both the caret-top
@@ -198,4 +205,9 @@ export interface MDCTooltipAdapter {
    * Clears all inline styles set on the caret-top and caret-bottom elements.
    */
   clearTooltipCaretStyles(): void;
+
+  /**
+   * @return the active element of the document that owns the tooltip.
+   */
+  getActiveElement(): Element|null;
 }

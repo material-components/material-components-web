@@ -62,6 +62,36 @@ $_host: ':host';
 $_host-parens: ':host(';
 $_end-parens: ')';
 
+/// @deprecated - Use selector-ext.append-strict() instead:
+///
+/// @example - scss
+///   :host([outlined]), :host, :host button {
+///     @include selector-ext.append-strict(&, ':hover') {
+///       --my-custom-prop: blue;
+///     }
+///   }
+///
+/// @example - css
+///   :host([outlined]:hover), :host(:hover), :host button:hover {
+///     --my-custom-prop: blue;
+///   }
+///
+/// @example - scss
+///   :host([outlined]), :host, :host button {
+///     @at-root {
+///       #{selector-ext.append-strict(&, ':hover')},
+///       & {
+///         --my-custom-prop: blue;
+///       }
+///     }
+///   }
+///
+/// @example - css
+///   :host([outlined]:hover), :host(:hover), :host button:hover,
+///   :host([outlined]), :host, :host button {
+///     --my-custom-prop: blue;
+///   }
+///
 /// Given one or more selectors, this mixin will fix any invalid `:host` parent
 /// nesting by adding parentheses or inserting the nested selector into the
 /// parent `:host()` selector's parentheses. The content block provided to

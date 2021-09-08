@@ -60,7 +60,7 @@ The `announce` utility file contains a single helper method for announcing a mes
 
 Method Signature | Description
 --- | ---
-`announce(message: string, priority?: AnnouncerPriority) => void` | Announces the message via an `aria-live` region with the given priority (defaults to polite)
+`announce(message: string, options?: AnnouncerMessageOptions) => void` | Announces the message via an `aria-live` region with the given options. `AnnouncerMessageOptions.priority` defaults to polite and `AnnouncerMessageOptions.ownerDocument` defaults to the global document.
 <!-- TODO(b/148462294): Remove once only exported members are required in docs `say()` --> <!-- | --> <!-- DO NOT USE -->
 
 ## Keyboard

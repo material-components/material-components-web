@@ -25,14 +25,14 @@ import {MDCFoundation} from '@material/base/foundation';
 
 import {MDCDataTableAdapter} from './adapter';
 import {cssClasses, SortValue, strings} from './constants';
-import {SortActionEventData} from './types';
+import {RowClickEventData, SortActionEventData} from './types';
 
 /**
  * The Foundation of data table component containing pure business logic, any
  * logic requiring DOM manipulation are delegated to adapter methods.
  */
 export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
-  static get defaultAdapter(): MDCDataTableAdapter {
+  static override get defaultAdapter(): MDCDataTableAdapter {
     return {
       addClass: () => undefined,
       addClassAtRowIndex: () => undefined,
@@ -53,6 +53,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       notifySelectedAll: () => undefined,
       notifySortAction: () => undefined,
       notifyUnselectedAll: () => undefined,
+      notifyRowClick: () => undefined,
       registerHeaderRowCheckbox: () => undefined,
       registerRowCheckboxes: () => undefined,
       removeClass: () => undefined,
@@ -74,8 +75,9 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   }
 
   /**
-   * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
-   * Use this if registering checkbox is synchronous.
+   * Re-initializes header row checkbox and row checkboxes when selectable rows
+   * are added or removed from table. Use this if registering checkbox is
+   * synchronous.
    */
   layout() {
     if (this.adapter.isRowsSelectable()) {
@@ -87,8 +89,9 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   }
 
   /**
-   * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
-   * Use this if registering checkbox is asynchronous.
+   * Re-initializes header row checkbox and row checkboxes when selectable rows
+   * are added or removed from table. Use this if registering checkbox is
+   * asynchronous.
    */
   async layoutAsync(): Promise<void> {
     if (this.adapter.isRowsSelectable()) {
@@ -254,6 +257,16 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       columnIndex,
       headerCell,
       sortValue,
+    });
+  }
+
+  /**
+   * Handles data table row click event.
+   */
+  handleRowClick({rowId, row}: RowClickEventData) {
+    this.adapter.notifyRowClick({
+      rowId,
+      row,
     });
   }
 

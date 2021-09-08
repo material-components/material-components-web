@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern --
 // Internal styling for Chip MDC component.
 
+@use 'sass:math';
 @use 'sass:color';
 @use '@material/density/density';
 @use '@material/feature-targeting/feature-targeting';
@@ -46,7 +47,7 @@ $density-config: (
     minimum: $minimum-height,
   ),
 );
-$radius: $height / 2;
+$radius: math.div($height, 2);
 $type-scale: body2;
 $container-color: color.mix(
   theme-color.prop-value(on-surface),
@@ -321,7 +322,7 @@ $filter-selected-container-color: color.mix(
 @mixin _focus-outline-color($color, $query) {
   $feat-color: feature-targeting.create-target($query, color);
 
-  .mdc-evolution-chip__action--primary {
+  .mdc-evolution-chip__action--primary:not(.mdc-evolution-chip__action--presentational) {
     @include ripple-theme.focus() {
       &:before {
         @include feature-targeting.targets($feat-color) {
@@ -412,11 +413,11 @@ $filter-selected-container-color: color.mix(
 ///
 @mixin text-label-color($color-or-map, $query: feature-targeting.all()) {
   @include _text-label-color(state.get-default-state($color-or-map), $query);
-  .mdc-evolution-chip__action--primary:hover {
+  .mdc-evolution-chip__action--primary:not(.mdc-evolution-chip__action--presentational):hover {
     @include _text-label-color(state.get-hover-state($color-or-map), $query);
   }
 
-  .mdc-evolution-chip__action--primary {
+  .mdc-evolution-chip__action--primary:not(.mdc-evolution-chip__action--presentational) {
     @include ripple-theme.focus() {
       @include _text-label-color(state.get-focus-state($color-or-map), $query);
     }
@@ -511,11 +512,11 @@ $filter-selected-container-color: color.mix(
 @mixin icon-color($color-or-map, $query: feature-targeting.all()) {
   @include _icon-color(state.get-default-state($color-or-map), $query);
 
-  .mdc-evolution-chip__action--primary:hover {
+  .mdc-evolution-chip__action--primary:not(.mdc-evolution-chip__action--presentational):hover {
     @include _icon-color(state.get-hover-state($color-or-map), $query);
   }
 
-  .mdc-evolution-chip__action--primary {
+  .mdc-evolution-chip__action--primary:not(.mdc-evolution-chip__action--presentational) {
     @include ripple-theme.focus() {
       @include _icon-color(state.get-focus-state($color-or-map), $query);
     }
@@ -556,14 +557,14 @@ $filter-selected-container-color: color.mix(
     $query
   );
 
-  .mdc-evolution-chip__action--primary:hover {
+  .mdc-evolution-chip__action--primary:not(.mdc-evolution-chip__action--presentational):hover {
     @include _icon-container-color(
       state.get-hover-state($color-or-map),
       $query
     );
   }
 
-  .mdc-evolution-chip__action--primary {
+  .mdc-evolution-chip__action--primary:not(.mdc-evolution-chip__action--presentational) {
     @include ripple-theme.focus() {
       @include _icon-container-color(
         state.get-focus-state($color-or-map),
@@ -710,7 +711,7 @@ $filter-selected-container-color: color.mix(
 @mixin checkmark-color($color-or-map, $query: feature-targeting.all()) {
   @include _checkmark-color(state.get-default-state($color-or-map), $query);
 
-  .mdc-evolution-chip__action--primary:hover {
+  .mdc-evolution-chip__action--primary:not(.mdc-evolution-chip__action--presentational):hover {
     @include _checkmark-color(state.get-hover-state($color-or-map), $query);
   }
 

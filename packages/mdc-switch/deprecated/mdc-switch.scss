@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@use './mixins';
+@use './mixins' with ($deprecated-suffix: '');
 @include mixins.core-styles;

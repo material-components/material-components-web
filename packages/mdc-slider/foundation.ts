@@ -54,8 +54,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   // initialization) have been removed.
   private initialStylesRemoved = false;
 
-  private min!: number;       // Assigned in init()
-  private max!: number;       // Assigned in init()
+  private min!: number;  // Assigned in init()
+  private max!: number;  // Assigned in init()
   // If `isRange`, this is the value of Thumb.START. Otherwise, defaults to min.
   private valueStart!: number;  // Assigned in init()
   // If `isRange`, this it the value of Thumb.END. Otherwise, it is the
@@ -130,7 +130,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.animFrame = new AnimationFrame();
   }
 
-  static get defaultAdapter(): MDCSliderAdapter {
+  static override get defaultAdapter(): MDCSliderAdapter {
     // tslint:disable:object-literal-sort-keys Methods should be in the same
     // order as the adapter interface.
     return {
@@ -149,9 +149,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       isInputFocused: () => false,
       getThumbKnobWidth: () => 0,
       getThumbBoundingClientRect: () =>
-          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       getBoundingClientRect: () =>
-          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+          ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       isRTL: () => false,
       setThumbStyleProperty: () => undefined,
       removeThumbStyleProperty: () => undefined,
@@ -179,7 +179,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
-  init() {
+  override init() {
     this.isDisabled = this.adapter.hasClass(cssClasses.DISABLED);
     this.isDiscrete = this.adapter.hasClass(cssClasses.DISCRETE);
     this.hasTickMarks = this.adapter.hasClass(cssClasses.TICK_MARKS);
@@ -247,8 +247,21 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.registerEventHandlers();
   }
 
-  destroy() {
+  override destroy() {
     this.deregisterEventHandlers();
+  }
+
+  setMin(value: number) {
+    this.min = value;
+    if (!this.isRange) {
+      this.valueStart = value;
+    }
+    this.updateUI();
+  }
+
+  setMax(value: number) {
+    this.max = value;
+    this.updateUI();
   }
 
   getMin() {
@@ -309,8 +322,26 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.updateValue(valueStart, Thumb.START);
   }
 
+  setStep(value: number) {
+    this.step = value;
+    this.numDecimalPlaces = getNumDecimalPlaces(value);
+
+    this.updateUI();
+  }
+
+  setIsDiscrete(value: boolean) {
+    this.isDiscrete = value;
+    this.updateValueIndicatorUI();
+    this.updateTickMarksUI();
+  }
+
   getStep() {
     return this.step;
+  }
+
+  setHasTickMarks(value: boolean) {
+    this.hasTickMarks = value;
+    this.updateTickMarksUI();
   }
 
   getDisabled() {
@@ -537,11 +568,11 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    */
   private handleDragStart(
       event: PointerEvent|MouseEvent|TouchEvent, value: number, thumb: Thumb) {
+    this.adapter.emitDragStartEvent(value, thumb);
+
     this.adapter.focusInput(thumb);
     // Prevent the input (that we just focused) from losing focus.
     event.preventDefault();
-
-    this.adapter.emitDragStartEvent(value, thumb);
   }
 
   /**

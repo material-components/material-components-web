@@ -20,16 +20,20 @@
 // THE SOFTWARE.
 //
 
-@use '@material/elevation/mixins' as elevation-mixins;
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
 @use '@material/feature-targeting/feature-targeting';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/touch-target/mixins' as touch-target-mixins;
 @use '@material/typography/typography';
 @use './button-base';
 @use './button-filled';
+@use './button-filled-theme';
 @use './button-outlined';
 @use './button-outlined-theme';
 @use './button-protected';
+@use './button-protected-theme';
 @use './button-ripple';
 @use './button-text';
 @use './button-text-theme';
@@ -45,41 +49,86 @@
 }
 
 @mixin theme-styles($query: feature-targeting.all()) {
-  @include button-text.theme-styles(
-    button-text-theme.$light-theme,
-    $query: $query
-  );
-  @include button-filled.theme-styles($query: $query);
-  @include button-protected.theme-styles($query: $query);
-  @include button-outlined.theme-styles($query: $query);
+  .mdc-button {
+    @include button-text-theme.theme-styles(
+      button-text-theme.$light-theme,
+      $query: $query
+    );
+  }
+  .mdc-button--unelevated {
+    @include button-filled-theme.theme-styles(
+      button-filled-theme.$light-theme,
+      $query: $query
+    );
+  }
+  .mdc-button--raised {
+    @include button-protected-theme.theme-styles(
+      button-protected-theme.$light-theme,
+      $query: $query
+    );
+  }
+  .mdc-button--outlined {
+    @include button-outlined-theme.theme-styles(
+      button-outlined-theme.$light-theme,
+      $query: $query
+    );
+  }
 }
 
 @mixin static-styles($query: feature-targeting.all()) {
-  @include button-base.static-styles($query: $query);
-  @include button-text.static-styles($query: $query);
-  @include button-filled.static-styles($query: $query);
-  @include button-protected.static-styles($query: $query);
-  @include button-outlined.static-styles($query: $query);
+  @include static-styles-without-ripple($query: $query);
+  @include button-ripple.static-styles($query: $query);
 }
 
+@mixin static-styles-without-ripple($query: feature-targeting.all()) {
+  @include button-base.static-styles($query: $query);
+  @include button-text.static-styles-without-ripple($query: $query);
+  @include button-filled.static-styles-without-ripple($query: $query);
+  @include button-protected.static-styles-without-ripple($query: $query);
+  @include button-outlined.static-styles-without-ripple($query: $query);
+}
+
+// Legacy mixins
+
 @mixin without-ripple($query: feature-targeting.all()) {
-  @include button-base.static-styles-without-ripple($query: $query);
-  @include button-text.static-styles($query: $query);
-  @include button-filled.static-styles($query: $query);
-  @include button-protected.static-styles($query: $query);
-  @include button-outlined.static-styles($query: $query);
+  @include button-base.deprecated-static-styles-without-ripple($query: $query);
+  @include button-text.static-styles-without-ripple($query: $query);
+  @include button-filled.static-styles-without-ripple($query: $query);
+  @include button-protected.static-styles-without-ripple($query: $query);
+  @include button-outlined.static-styles-without-ripple($query: $query);
   @include _theme-styles-without-ripple($query: $query);
 }
 
 @mixin _theme-styles-without-ripple($query: feature-targeting.all()) {
-  @include button-text.deprecated-theme-styles-without-ripple($query: $query);
-  @include button-filled.deprecated-theme-styles-without-ripple($query: $query);
-  @include button-outlined.deprecated-theme-styles-without-ripple(
-    $query: $query
-  );
+  @include button-text-theme.deprecated-theme-styles($query: $query);
+  @include button-filled-theme.deprecated-theme-styles($query: $query);
+  @include button-outlined-theme.deprecated-theme-styles($query: $query);
+  // Elevation has been recategorized into theme styles. Keeping old elevation
+  // styles here for backwards compatibility.
+  .mdc-button--raised {
+    @include button-protected.raised($query: $query);
+  }
 }
 
 // @deprecated - use styles() instead.
 @mixin core-styles($query: feature-targeting.all()) {
   @include styles($query: $query);
+  // TODO: remove this rule since padding now takes care of icon margins.
+  $feat-structure: feature-targeting.create-target($query, structure);
+  .mdc-button--raised,
+  .mdc-button--unelevated,
+  .mdc-button--outlined {
+    .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        // Icons inside contained buttons have different styles due to increased button padding
+        @include button-base.icon-contained;
+      }
+    }
+
+    .mdc-button__label + .mdc-button__icon {
+      @include feature-targeting.targets($feat-structure) {
+        @include button-base.icon-contained-trailing;
+      }
+    }
+  }
 }

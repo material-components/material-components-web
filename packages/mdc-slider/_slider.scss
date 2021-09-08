@@ -23,13 +23,14 @@
 // Selector '.mdc-*' should only be used in this project.
 // stylelint-disable selector-class-pattern
 
+@use 'sass:math';
 @use '@material/animation/animation';
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
-@use '@material/rtl/mixins' as rtl-mixins;
+@use '@material/rtl/rtl';
 @use '@material/theme/theme-color';
 @use '@material/typography/typography';
 @use './slider-theme';
@@ -65,7 +66,7 @@ $_track-inactive-height: 4px;
     @include feature-targeting.targets($feat-structure) {
       cursor: pointer;
       height: $_thumb-ripple-size;
-      margin: 0 ($_thumb-ripple-size / 2);
+      margin: 0 math.div($_thumb-ripple-size, 2);
       position: relative;
       touch-action: pan-y;
     }
@@ -153,7 +154,7 @@ $_track-inactive-height: 4px;
       border-radius: 3px;
       height: $_track-active-height;
       overflow: hidden;
-      top: ($_track-inactive-height - $_track-active-height) / 2;
+      top: math.div($_track-inactive-height - $_track-active-height, 2);
     }
   }
 
@@ -165,15 +166,15 @@ $_track-inactive-height: 4px;
       height: 100%;
       width: 100%;
       position: relative;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       -webkit-transform-origin: left;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       transform-origin: left;
 
-      @include rtl-mixins.rtl {
-        /* @noflip */
+      @include rtl.rtl {
+        @include rtl.ignore-next-line();
         -webkit-transform-origin: right;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         transform-origin: right;
       }
     }
@@ -218,8 +219,8 @@ $_track-inactive-height: 4px;
     @include feature-targeting.targets($feat-structure) {
       display: flex;
       height: $_thumb-ripple-size;
-      /* @noflip */
-      left: -$_thumb-ripple-size / 2;
+      @include rtl.ignore-next-line();
+      left: math.div(-$_thumb-ripple-size, 2);
       outline: none;
       position: absolute;
       user-select: none;
@@ -236,12 +237,9 @@ $_track-inactive-height: 4px;
     &--top.mdc-slider__thumb:hover .mdc-slider__thumb-knob,
     &--top.mdc-slider__thumb--focused .mdc-slider__thumb-knob {
       @include feature-targeting.targets($feat-structure) {
-        border: 1px solid;
+        border-style: solid;
+        border-width: 1px;
         box-sizing: content-box;
-      }
-
-      @include feature-targeting.targets($feat-color) {
-        border-color: #fff;
       }
     }
   }
@@ -251,11 +249,11 @@ $_track-inactive-height: 4px;
 
     @include feature-targeting.targets($feat-structure) {
       // Use border rather than background-color to fill thumb, for HCM.
-      border: $_thumb-size / 2 solid;
+      border: math.div($_thumb-size, 2) solid;
       border-radius: 50%;
       box-sizing: border-box;
       height: $_thumb-size;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       left: 50%;
       position: absolute;
       top: 50%;
@@ -325,9 +323,9 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__value-indicator-container {
     @include feature-targeting.targets($feat-structure) {
-      bottom: $_thumb-ripple-size / 2 + $_thumb-size / 2 +
+      bottom: math.div($_thumb-ripple-size, 2) + math.div($_thumb-size, 2) +
         $_value-indicator-caret-width + 4px;
-      /* @noflip */
+      @include rtl.ignore-next-line();
       left: 50%;
       pointer-events: none;
       position: absolute;
@@ -359,7 +357,7 @@ $_track-inactive-height: 4px;
         bottom: -$_value-indicator-caret-width + 1;
         content: '';
         height: 0;
-        /* @noflip */
+        @include rtl.ignore-next-line();
         left: 50%;
         position: absolute;
         transform: translateX(-50%);

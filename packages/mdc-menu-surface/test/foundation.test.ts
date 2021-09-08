@@ -22,8 +22,7 @@
  */
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
-import {setUpFoundationTest} from '../../../testing/helpers/setup';
-import {setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
+import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
 import {Corner, cssClasses, numbers, strings} from '../constants';
 import {MDCMenuSurfaceFoundation} from '../foundation';
 
@@ -860,6 +859,13 @@ describe('MDCMenuSurfaceFoundation', () => {
       });
 
   testFoundation(
+      'Should return the correct fixed position status', ({foundation}) => {
+        expect(foundation.isFixed()).toBeFalse();
+        foundation.setFixedPosition(true);
+        expect(foundation.isFixed()).toBeTrue();
+      });
+
+  testFoundation(
       '#open from close to bottom of viewport, menu should autoposition to open upwards',
       ({foundation, mockAdapter}) => {
         initAnchorLayout(mockAdapter, closeToBottom);
@@ -1066,6 +1072,7 @@ describe('MDCMenuSurfaceFoundation', () => {
         mockAdapter.isFocused.and.returnValue(true);
         foundation.setQuickOpen(true);
         foundation.close();
+        jasmine.clock().tick(numbers.TOUCH_EVENT_WAIT_MS);
         expect(mockAdapter.restoreFocus).toHaveBeenCalled();
       });
 
@@ -1078,6 +1085,7 @@ describe('MDCMenuSurfaceFoundation', () => {
             .and.returnValue(true);
         foundation.setQuickOpen(true);
         foundation.close();
+        jasmine.clock().tick(numbers.TOUCH_EVENT_WAIT_MS);
         expect(mockAdapter.restoreFocus).toHaveBeenCalled();
       });
 
@@ -1089,6 +1097,7 @@ describe('MDCMenuSurfaceFoundation', () => {
             .and.returnValue(false);
         foundation.setQuickOpen(true);
         foundation.close();
+        jasmine.clock().tick(numbers.TOUCH_EVENT_WAIT_MS);
         expect(mockAdapter.restoreFocus).not.toHaveBeenCalled();
       });
 

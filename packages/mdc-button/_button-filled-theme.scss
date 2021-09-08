@@ -20,36 +20,101 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use 'sass:map';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/tokens/resolvers';
+@use '@material/theme/keys';
 @use '@material/theme/theme';
 @use './button-shared-theme';
 
+$_custom-property-prefix: 'filled-button';
+
 $light-theme: (
   container-color: primary,
-  container-hover-color: null,
-  container-focus-color: null,
-  container-pressed-color: null,
-  container-disabled-color: button-shared-theme.$disabled-container-color,
-  density: button-shared-theme.$density-scale,
-  icon-color: null,
-  icon-hover-color: null,
-  icon-focus-color: null,
-  icon-pressed-color: null,
-  icon-disabled-color: null,
-  label-color: on-primary,
-  label-hover-color: null,
-  label-focus-color: null,
-  label-pressed-color: null,
-  label-disabled-color: button-shared-theme.$disabled-ink-color,
-  ripple-color: on-primary,
-  ripple-opacity: null,
-  shape: button-shared-theme.$shape-radius,
+  container-elevation: 0,
+  container-height: button-shared-theme.$height,
+  container-shadow-color: null,
+  container-shape: button-shared-theme.$shape-radius,
+  disabled-container-color: button-shared-theme.$disabled-container-color,
+  disabled-container-elevation: 0,
+  disabled-label-text-color: button-shared-theme.$disabled-ink-color,
+  focus-container-elevation: 0,
+  focus-label-text-color: null,
+  focus-state-layer-color: on-primary,
+  focus-state-layer-opacity: 0.24,
+  hover-container-elevation: 0,
+  hover-label-text-color: null,
+  hover-state-layer-color: on-primary,
+  hover-state-layer-opacity: 0.08,
+  label-text-color: on-primary,
+  label-text-font: button-font-family,
+  label-text-size: button-font-size,
+  label-text-tracking: button-letter-spacing,
+  label-text-transform: button-text-transform,
+  label-text-weight: button-font-weight,
+  pressed-container-elevation: 0,
+  pressed-label-text-color: null,
+  pressed-state-layer-color: on-primary,
+  pressed-state-layer-opacity: 0.24,
+  with-icon-disabled-icon-color: null,
+  with-icon-focus-icon-color: null,
+  with-icon-hover-icon-color: null,
+  with-icon-icon-color: null,
+  with-icon-icon-size: 18px,
+  with-icon-pressed-icon-color: null,
 );
 
 /// Sets theme based on provided theme configuration.
 /// Only emits theme related styles.
 /// @param {Map} $theme - Theme configuration to use.
-@mixin theme($theme, $query: feature-targeting.all()) {
-  @include theme.validate-keys($light-theme, $theme);
-  @include button-shared-theme.theme($theme, $query: $query);
+@mixin theme($theme, $resolver: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+  $theme: button-shared-theme.resolve-theme-elevation-keys(
+    $theme,
+    $resolver: $resolver
+  );
+  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+}
+
+@mixin theme-styles(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
+  @include theme.validate-theme($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+  @include button-shared-theme.theme($theme, $resolver, $query: $query);
+}
+
+@mixin deprecated-theme-styles($query: feature-targeting.all()) {
+  .mdc-button--raised,
+  .mdc-button--unelevated {
+    $theme: map.merge(
+      $light-theme,
+      (
+        focus-state-layer-color: null,
+        focus-state-layer-opacity: null,
+        hover-state-layer-color: null,
+        hover-state-layer-opacity: null,
+        pressed-state-layer-color: null,
+        pressed-state-layer-opacity: null,
+        label-text-font: null,
+        label-text-size: null,
+        label-text-tracking: null,
+        label-text-transform: null,
+        label-text-weight: null,
+      )
+    );
+    @include button-shared-theme.theme(
+      $theme,
+      resolvers.$material,
+      $query: $query
+    );
+  }
 }

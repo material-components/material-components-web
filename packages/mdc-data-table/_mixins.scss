@@ -20,5 +20,5 @@
 // THE SOFTWARE.
 //
 
-@forward './data-table-theme' show sort-icon-color, sort-icon-active-color, fill-color, header-row-fill-color, row-fill-color, selected-row-fill-color, checked-icon-color, divider-color, divider-size, row-hover-fill-color, header-row-text-color, row-text-color, shape-radius, stroke-size, stroke-color, header-cell-height, cell-height, cell-padding, column-widths, density;
+@forward './data-table-theme' show sort-icon-color, sort-icon-active-color, fill-color, header-row-fill-color, row-fill-color, selected-row-fill-color, checked-icon-color, divider-color, divider-size, row-hover-fill-color, header-row-text-color, row-text-color, shape-radius, stroke-size, stroke-color, header-row-height, row-height, cell-padding, column-widths, density;
 @forward './data-table' show core-styles, theme-baseline;

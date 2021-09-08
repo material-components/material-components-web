@@ -105,10 +105,8 @@ describe('MDCListFoundation', () => {
   it('#handleFocusIn switches list item button/a elements to tabindex=0',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const target = {classList: ['mdc-list-item']} as unknown;
-       const event = {target} as unknown as FocusEvent;
 
-       foundation.handleFocusIn(event, 1);
+       foundation.handleFocusIn(1);
 
        expect(mockAdapter.setTabIndexForListItemChildren)
            .toHaveBeenCalledWith(1, '0');
@@ -117,10 +115,8 @@ describe('MDCListFoundation', () => {
   it('#handleFocusOut switches list item button/a elements to tabindex=-1',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const target = {classList: ['mdc-list-item']} as unknown;
-       const event = {target} as unknown as FocusEvent;
 
-       foundation.handleFocusOut(event, 1);
+       foundation.handleFocusOut(1);
 
        expect(mockAdapter.setTabIndexForListItemChildren)
            .toHaveBeenCalledWith(1, '-1');
@@ -129,11 +125,8 @@ describe('MDCListFoundation', () => {
   it('#handleFocusIn switches list item button/a elements to tabindex=0 when target is child element',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const parentElement = {classList: ['mdc-list-item']};
-       const target = {classList: [], parentElement};
-       const event = {target} as unknown as FocusEvent;
 
-       foundation.handleFocusIn(event, 1);
+       foundation.handleFocusIn(1);
 
        expect(mockAdapter.setTabIndexForListItemChildren)
            .toHaveBeenCalledWith(1, '0');
@@ -142,11 +135,8 @@ describe('MDCListFoundation', () => {
   it('#handleFocusOut switches list item button/a elements to tabindex=-1 when target is child element',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const parentElement = {classList: ['mdc-list-item']};
-       const target = {classList: [], parentElement};
-       const event = {target} as unknown as FocusEvent;
 
-       foundation.handleFocusOut(event, 1);
+       foundation.handleFocusOut(1);
 
        expect(mockAdapter.setTabIndexForListItemChildren)
            .toHaveBeenCalledWith(1, '-1');
@@ -155,10 +145,8 @@ describe('MDCListFoundation', () => {
   it('#handleFocusIn does nothing if mdc-list-item is not on element or ancestor',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const target = {classList: ['']};
-       const event = {target} as unknown as FocusEvent;
 
-       foundation.handleFocusIn(event, -1);
+       foundation.handleFocusIn(-1);
 
        expect(mockAdapter.setTabIndexForListItemChildren)
            .not.toHaveBeenCalledWith(jasmine.anything(), jasmine.anything());
@@ -167,10 +155,8 @@ describe('MDCListFoundation', () => {
   it('#handleFocusOut does nothing if mdc-list-item is not on element or ancestor',
      () => {
        const {foundation, mockAdapter} = setupTest();
-       const target = {classList: ['']};
-       const event = {target} as unknown as FocusEvent;
 
-       foundation.handleFocusOut(event, -1);
+       foundation.handleFocusOut(-1);
 
        expect(mockAdapter.setTabIndexForListItemChildren)
            .not.toHaveBeenCalledWith(jasmine.anything(), jasmine.anything());
@@ -190,16 +176,14 @@ describe('MDCListFoundation', () => {
 
        foundation.setSelectedIndex(
            2);  // Selected index values may not be in sequence.
-       const target = {classList: ['']};
-       const event = {target} as unknown as FocusEvent;
-       foundation.handleFocusOut(event, 3);
+       foundation.handleFocusOut(3);
        jasmine.clock().tick(1);
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(2, 'tabindex', '0');
      });
 
-  it('#handleFocusOut sets tabindex=0 to previously focused item when focus' +
-         'leaves list that has no selection',
+  it('#handleFocusOut sets tabindex=0 to first item when focus leaves list ' +
+         'that has no selection',
      () => {
        const {foundation, mockAdapter} = setupTest();
 
@@ -208,12 +192,10 @@ describe('MDCListFoundation', () => {
        mockAdapter.getListItemCount.and.returnValue(4);
        mockAdapter.isFocusInsideList.and.returnValue(false);
 
-       const target = {classList: ['']};
-       const event = {target} as unknown as FocusEvent;
-       foundation.handleFocusOut(event, 3);
+       foundation.handleFocusOut(3);
        jasmine.clock().tick(1);
        expect(mockAdapter.setAttributeForElementIndex)
-           .toHaveBeenCalledWith(3, 'tabindex', '0');
+           .toHaveBeenCalledWith(0, 'tabindex', '0');
      });
 
   it('#handleFocusOut does not set tabindex=0 to selected list item when focus moves to next list item.',
@@ -227,9 +209,7 @@ describe('MDCListFoundation', () => {
        mockAdapter.isFocusInsideList.and.returnValue(true);
 
        foundation.setSelectedIndex(2);
-       const target = {classList: ['']};
-       const event = {target} as unknown as FocusEvent;
-       foundation.handleFocusOut(event, 3);
+       foundation.handleFocusOut(3);
        jasmine.clock().tick(1);
        expect(mockAdapter.setAttributeForElementIndex)
            .not.toHaveBeenCalledWith(2, 'tabindex', 0);
@@ -247,14 +227,19 @@ describe('MDCListFoundation', () => {
 
        foundation.setSelectedIndex(
            [3, 2]);  // Selected index values may not be in sequence.
-       const target = {classList: ['']};
-       const event = {target} as unknown as FocusEvent;
 
-       foundation.handleFocusOut(event, 2);
+       foundation.handleFocusOut(2);
        jasmine.clock().tick(1);
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(2, 'tabindex', '0');
      });
+
+  it('#getFocusedItemIndex returns currently focused item', () => {
+    const {foundation} = setupTest();
+    expect(foundation.getFocusedItemIndex()).toBe(-1);
+    foundation.handleFocusIn(2);
+    expect(foundation.getFocusedItemIndex()).toBe(2);
+  });
 
   it('#handleKeydown does nothing if key received on root element and not used for navigation',
      () => {
@@ -347,7 +332,7 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(1);
      });
 
-  it('#handleKeydown ArrowRight key does nothing if isVertical_ is true',
+  it('#handleKeydown ArrowRight key does nothing if isVertical is true',
      () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('preventDefault') as Function;
@@ -364,7 +349,7 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).not.toHaveBeenCalled();
      });
 
-  it('#handleKeydown ArrowLeft key does nothing if isVertical_ is true', () => {
+  it('#handleKeydown ArrowLeft key does nothing if isVertical is true', () => {
     const {foundation, mockAdapter} = setupTest();
     const preventDefault = jasmine.createSpy('preventDefault') as Function;
     const target = {tagName: 'li'} as unknown;
@@ -379,7 +364,7 @@ describe('MDCListFoundation', () => {
     expect(preventDefault).not.toHaveBeenCalled();
   });
 
-  it('#handleKeydown ArrowRight key causes the next item to gain focus if isVertical_ is false',
+  it('#handleKeydown ArrowRight key causes the next item to gain focus if isVertical is false',
      () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('preventDefault') as Function;
@@ -397,7 +382,7 @@ describe('MDCListFoundation', () => {
        expect(preventDefault).toHaveBeenCalledTimes(1);
      });
 
-  it('#handleKeydown ArrowLeft key causes the previous item to gain focus if isVertical_ is false',
+  it('#handleKeydown ArrowLeft key causes the previous item to gain focus if isVertical is false',
      () => {
        const {foundation, mockAdapter} = setupTest();
        const preventDefault = jasmine.createSpy('preventDefault') as Function;
@@ -1287,6 +1272,17 @@ describe('MDCListFoundation', () => {
        foundation.setSelectedIndex(1);
        expect(mockAdapter.addClassForElementIndex)
            .toHaveBeenCalledWith(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+     });
+
+  it('#setSingleSelection=true resets selected index if there is no selected ' +
+         'item',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       mockAdapter.getListItemCount.and.returnValue(3);
+
+       foundation.setSelectedIndex(2);
+       foundation.setSingleSelection(true);
+       expect(foundation.getSelectedIndex()).toEqual(numbers.UNSET_INDEX);
      });
 
   it('#setUseActivatedClass causes setSelectedIndex to use the --activated class',

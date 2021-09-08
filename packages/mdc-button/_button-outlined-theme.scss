@@ -26,9 +26,12 @@
 @use 'sass:map';
 @use 'sass:math';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/custom-properties';
+@use '@material/theme/keys';
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/tokens/resolvers';
 @use '@material/ripple/ripple-theme';
 @use './button-base';
 @use './button-shared-theme';
@@ -37,51 +40,99 @@
 $outlined-border-width: 1px !default;
 $outline-color: rgba(theme-color.prop-value(on-surface), 0.12) !default;
 
+$_custom-property-prefix: 'outlined-button';
+
 $light-theme: (
-  container-color: transparent,
-  container-hover-color: null,
-  container-focus-color: null,
-  container-pressed-color: null,
-  container-disabled-color: transparent,
-  density: button-shared-theme.$density-scale,
-  icon-color: null,
-  icon-hover-color: null,
-  icon-focus-color: null,
-  icon-pressed-color: null,
-  icon-disabled-color: null,
-  label-color: primary,
-  label-hover-color: null,
-  label-focus-color: null,
-  label-pressed-color: null,
-  label-disabled-color: button-shared-theme.$disabled-ink-color,
-  outline-width: $outlined-border-width,
+  container-height: button-shared-theme.$height,
+  container-shape: button-shared-theme.$shape-radius,
+  disabled-label-text-color: button-shared-theme.$disabled-ink-color,
+  disabled-outline-color: button-shared-theme.$disabled-container-color,
+  focus-label-text-color: null,
+  focus-outline-color: null,
+  focus-state-layer-color: primary,
+  focus-state-layer-opacity: 0.12,
+  hover-label-text-color: null,
+  hover-outline-color: null,
+  hover-state-layer-color: primary,
+  hover-state-layer-opacity: 0.04,
+  label-text-color: primary,
+  label-text-font: button-font-family,
+  label-text-size: button-font-size,
+  label-text-tracking: button-letter-spacing,
+  label-text-transform: button-text-transform,
+  label-text-weight: button-font-weight,
   outline-color: $outline-color,
-  outline-hover-color: null,
-  outline-focus-color: null,
-  outline-pressed-color: null,
-  outline-disabled-color: button-shared-theme.$disabled-container-color,
-  ripple-color: primary,
-  ripple-opacity: null,
-  shape: button-shared-theme.$shape-radius,
+  outline-width: $outlined-border-width,
+  pressed-label-text-color: null,
+  pressed-state-layer-color: primary,
+  pressed-state-layer-opacity: 0.12,
+  with-icon-icon-color: null,
+  with-icon-icon-size: 18px,
+  with-icon-hover-icon-color: null,
+  with-icon-focus-icon-color: null,
+  with-icon-pressed-icon-color: null,
+  with-icon-disabled-icon-color: null,
 );
 
 /// Sets theme based on provided theme configuration.
 /// Only emits theme related styles.
 /// @param {Map} $theme - Theme configuration to use.
-@mixin theme($theme, $query: feature-targeting.all()) {
-  @include theme.validate-keys($light-theme, $theme);
-  @include button-shared-theme.theme($theme, $query: $query);
+@mixin theme($theme, $resolver: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+  $theme: button-shared-theme.resolve-theme-elevation-keys(
+    $theme,
+    $resolver: $resolver
+  );
+  @include keys.declare-custom-properties($theme, $_custom-property-prefix);
+}
+
+@mixin theme-styles(
+  $theme,
+  $resolver: resolvers.$material,
+  $query: feature-targeting.all()
+) {
+  @include theme.validate-theme($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+  @include _theme($theme, $resolver, $query: $query);
+}
+
+@mixin _theme($theme, $resolver, $query) {
+  @include button-shared-theme.theme($theme, $resolver, $query: $query);
   @include outline-color(
     (
       default: map.get($theme, outline-color),
-      hover: map.get($theme, outline-hover-color),
-      focus: map.get($theme, outline-focus-color),
-      pressed: map.get($theme, outline-pressed-color),
-      disabled: map.get($theme, outline-disabled-color),
+      disabled: map.get($theme, disabled-outline-color),
+      focus: map.get($theme, focus-outline-color),
+      hover: map.get($theme, hover-outline-color),
     ),
     $query: $query
   );
   @include outline-width(map.get($theme, outline-width), $query: $query);
+}
+
+@mixin deprecated-theme-styles($query: feature-targeting.all()) {
+  .mdc-button--outlined {
+    $theme: map.merge(
+      $light-theme,
+      (
+        focus-state-layer-color: null,
+        focus-state-layer-opacity: null,
+        hover-state-layer-color: null,
+        hover-state-layer-opacity: null,
+        pressed-state-layer-color: null,
+        pressed-state-layer-opacity: null,
+        label-text-font: null,
+        label-text-size: null,
+        label-text-tracking: null,
+        label-text-transform: null,
+        label-text-weight: null,
+      )
+    );
+    @include _theme($theme, resolvers.$material, $query: $query);
+  }
 }
 
 ///
@@ -146,31 +197,61 @@ $light-theme: (
 @mixin outline-width(
   $outline-width,
   $padding: button-shared-theme.$contained-horizontal-padding,
+  // For a button with an icon, the padding on the side of the button with the
+  // icon.
+  $padding-icon: button-shared-theme.$contained-horizontal-padding-icon,
   $query: feature-targeting.all()
 ) {
-  @if $outline-width != null {
-    $feat-structure: feature-targeting.create-target($query, structure);
-    // Note: Adjust padding to maintain consistent width with non-outlined buttons
-    $padding-value: math.max($padding - $outline-width, 0);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
-    @include button-shared-theme.horizontal-padding($padding-value, $query);
+  @if $outline-width != null {
+    $outline-width-value: if(
+      custom-properties.is-custom-prop($outline-width),
+      custom-properties.get-fallback($outline-width),
+      $outline-width
+    );
+    // TODO(b/194792044): uncouple padding from outline-width
+    // Note: Adjust padding to maintain consistent width with non-outlined buttons
+    $padding-value: math.max($padding - $outline-width-value, 0);
+    $padding-icon-value: math.max($padding-icon - $outline-width-value, 0);
+
+    @include button-shared-theme.horizontal-padding(
+      $padding: $padding-value,
+      $padding-icon: $padding-icon-value,
+      $query: $query
+    );
 
     @include feature-targeting.targets($feat-structure) {
-      border-width: $outline-width;
+      @include theme.property(border-width, $outline-width);
     }
 
     #{button-ripple.$ripple-target} {
       @include feature-targeting.targets($feat-structure) {
-        top: -$outline-width;
-        left: -$outline-width;
-        border: $outline-width solid transparent;
+        @include theme.property(
+          top,
+          calc(-1 * outline-width),
+          $replace: (outline-width: $outline-width)
+        );
+        @include theme.property(
+          left,
+          calc(-1 * outline-width),
+          $replace: (outline-width: $outline-width)
+        );
+        @include theme.property(border-width, $outline-width);
       }
     }
-
     .mdc-button__touch {
       @include feature-targeting.targets($feat-structure) {
-        left: -$outline-width;
-        width: calc(100% + 2 * #{$outline-width});
+        @include theme.property(
+          left,
+          calc(-1 * outline-width),
+          $replace: (outline-width: $outline-width)
+        );
+        @include theme.property(
+          width,
+          calc(100% + 2 * outline-width),
+          $replace: (outline-width: $outline-width)
+        );
       }
     }
   }

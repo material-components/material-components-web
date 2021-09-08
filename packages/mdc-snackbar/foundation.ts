@@ -29,19 +29,19 @@ const {OPENING, OPEN, CLOSING} = cssClasses;
 const {REASON_ACTION, REASON_DISMISS} = strings;
 
 export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
-  static get cssClasses() {
+  static override get cssClasses() {
     return cssClasses;
   }
 
-  static get strings() {
+  static override get strings() {
     return strings;
   }
 
-  static get numbers() {
+  static override get numbers() {
     return numbers;
   }
 
-  static get defaultAdapter(): MDCSnackbarAdapter {
+  static override get defaultAdapter(): MDCSnackbarAdapter {
     return {
       addClass: () => undefined,
       announce: () => undefined,
@@ -53,46 +53,46 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     };
   }
 
-  private isOpen_ = false;
-  private animationFrame_ = 0;
-  private animationTimer_ = 0;
-  private autoDismissTimer_ = 0;
-  private autoDismissTimeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
-  private closeOnEscape_ = true;
+  private opened = false;
+  private animationFrame = 0;
+  private animationTimer = 0;
+  private autoDismissTimer = 0;
+  private autoDismissTimeoutMs = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
+  private closeOnEscape = true;
 
   constructor(adapter?: Partial<MDCSnackbarAdapter>) {
     super({...MDCSnackbarFoundation.defaultAdapter, ...adapter});
   }
 
-  destroy() {
-    this.clearAutoDismissTimer_();
-    cancelAnimationFrame(this.animationFrame_);
-    this.animationFrame_ = 0;
-    clearTimeout(this.animationTimer_);
-    this.animationTimer_ = 0;
+  override destroy() {
+    this.clearAutoDismissTimer();
+    cancelAnimationFrame(this.animationFrame);
+    this.animationFrame = 0;
+    clearTimeout(this.animationTimer);
+    this.animationTimer = 0;
     this.adapter.removeClass(OPENING);
     this.adapter.removeClass(OPEN);
     this.adapter.removeClass(CLOSING);
   }
 
   open() {
-    this.clearAutoDismissTimer_();
-    this.isOpen_ = true;
+    this.clearAutoDismissTimer();
+    this.opened = true;
     this.adapter.notifyOpening();
     this.adapter.removeClass(CLOSING);
     this.adapter.addClass(OPENING);
     this.adapter.announce();
 
     // Wait a frame once display is no longer "none", to establish basis for animation
-    this.runNextAnimationFrame_(() => {
+    this.runNextAnimationFrame(() => {
       this.adapter.addClass(OPEN);
 
-      this.animationTimer_ = setTimeout(() => {
+      this.animationTimer = setTimeout(() => {
         const timeoutMs = this.getTimeoutMs();
-        this.handleAnimationTimerEnd_();
+        this.handleAnimationTimerEnd();
         this.adapter.notifyOpened();
         if (timeoutMs !== numbers.INDETERMINATE) {
-          this.autoDismissTimer_ = setTimeout(() => {
+          this.autoDismissTimer = setTimeout(() => {
             this.close(REASON_DISMISS);
           }, timeoutMs);
         }
@@ -106,34 +106,34 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
    *     client-specific values may also be used if desired.
    */
   close(reason = '') {
-    if (!this.isOpen_) {
+    if (!this.opened) {
       // Avoid redundant close calls (and events), e.g. repeated interactions as the snackbar is animating closed
       return;
     }
 
-    cancelAnimationFrame(this.animationFrame_);
-    this.animationFrame_ = 0;
-    this.clearAutoDismissTimer_();
+    cancelAnimationFrame(this.animationFrame);
+    this.animationFrame = 0;
+    this.clearAutoDismissTimer();
 
-    this.isOpen_ = false;
+    this.opened = false;
     this.adapter.notifyClosing(reason);
     this.adapter.addClass(cssClasses.CLOSING);
     this.adapter.removeClass(cssClasses.OPEN);
     this.adapter.removeClass(cssClasses.OPENING);
 
-    clearTimeout(this.animationTimer_);
-    this.animationTimer_ = setTimeout(() => {
-      this.handleAnimationTimerEnd_();
+    clearTimeout(this.animationTimer);
+    this.animationTimer = setTimeout(() => {
+      this.handleAnimationTimerEnd();
       this.adapter.notifyClosed(reason);
     }, numbers.SNACKBAR_ANIMATION_CLOSE_TIME_MS);
   }
 
   isOpen(): boolean {
-    return this.isOpen_;
+    return this.opened;
   }
 
   getTimeoutMs(): number {
-    return this.autoDismissTimeoutMs_;
+    return this.autoDismissTimeoutMs;
   }
 
   setTimeoutMs(timeoutMs: number) {
@@ -143,7 +143,7 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     const indeterminateValue = numbers.INDETERMINATE;
 
     if (timeoutMs === numbers.INDETERMINATE || (timeoutMs <= maxValue && timeoutMs >= minValue)) {
-      this.autoDismissTimeoutMs_ = timeoutMs;
+      this.autoDismissTimeoutMs = timeoutMs;
     } else {
       throw new Error(`
         timeoutMs must be an integer in the range ${minValue}–${maxValue}
@@ -152,11 +152,11 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   }
 
   getCloseOnEscape(): boolean {
-    return this.closeOnEscape_;
+    return this.closeOnEscape;
   }
 
   setCloseOnEscape(closeOnEscape: boolean) {
-    this.closeOnEscape_ = closeOnEscape;
+    this.closeOnEscape = closeOnEscape;
   }
 
   handleKeyDown(evt: KeyboardEvent) {
@@ -174,13 +174,13 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     this.close(REASON_DISMISS);
   }
 
-  private clearAutoDismissTimer_() {
-    clearTimeout(this.autoDismissTimer_);
-    this.autoDismissTimer_ = 0;
+  private clearAutoDismissTimer() {
+    clearTimeout(this.autoDismissTimer);
+    this.autoDismissTimer = 0;
   }
 
-  private handleAnimationTimerEnd_() {
-    this.animationTimer_ = 0;
+  private handleAnimationTimerEnd() {
+    this.animationTimer = 0;
     this.adapter.removeClass(cssClasses.OPENING);
     this.adapter.removeClass(cssClasses.CLOSING);
   }
@@ -188,12 +188,12 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   /**
    * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
    */
-  private runNextAnimationFrame_(callback: () => void) {
-    cancelAnimationFrame(this.animationFrame_);
-    this.animationFrame_ = requestAnimationFrame(() => {
-      this.animationFrame_ = 0;
-      clearTimeout(this.animationTimer_);
-      this.animationTimer_ = setTimeout(callback, 0);
+  private runNextAnimationFrame(callback: () => void) {
+    cancelAnimationFrame(this.animationFrame);
+    this.animationFrame = requestAnimationFrame(() => {
+      this.animationFrame = 0;
+      clearTimeout(this.animationTimer);
+      this.animationTimer = setTimeout(callback, 0);
     });
   }
 }

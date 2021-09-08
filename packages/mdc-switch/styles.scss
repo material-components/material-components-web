@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2021 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,5 +20,21 @@
 // THE SOFTWARE.
 //
 
-@use './mixins';
-@include mixins.core-styles;
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/dom/dom';
+@use './switch-theme';
+@use './switch';
+
+@include switch.static-styles();
+
+.mdc-switch {
+  @include switch-theme.theme-styles(switch-theme.$light-theme);
+}
+
+@include dom.forced-colors-mode {
+  .mdc-switch {
+    @include switch-theme.theme-styles(switch-theme.$forced-colors-theme);
+  }
+}
