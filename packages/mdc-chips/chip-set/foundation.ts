@@ -28,7 +28,7 @@ import {MDCChipActionFocusBehavior, MDCChipActionType} from '../action/constants
 import {MDCChipAnimation} from '../chip/constants';
 
 import {MDCChipSetAdapter} from './adapter';
-import {Attributes, Events} from './constants';
+import {MDCChipSetAttributes, MDCChipSetEvents} from './constants';
 import {ChipAnimationEvent, ChipInteractionEvent, ChipNavigationEvent, MDCChipSetInteractionEventDetail, MDCChipSetRemovalEventDetail, MDCChipSetSelectionEventDetail} from './types';
 
 interface FocusAction {
@@ -103,7 +103,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
     this.focusChip(index, source, MDCChipActionFocusBehavior.FOCUSABLE);
     this.adapter.emitEvent<MDCChipSetInteractionEventDetail>(
-        Events.INTERACTION, {
+        MDCChipSetEvents.INTERACTION, {
           chipIndex: index,
           chipID,
         });
@@ -189,11 +189,12 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     // Early exit if the index is out of bounds
     if (index >= this.adapter.getChipCount() || index < 0) return;
     this.adapter.startChipAnimationAtIndex(index, MDCChipAnimation.EXIT);
-    this.adapter.emitEvent<MDCChipSetRemovalEventDetail>(Events.REMOVAL, {
-      chipID: this.adapter.getChipIdAtIndex(index),
-      chipIndex: index,
-      isComplete: false,
-    });
+    this.adapter.emitEvent<MDCChipSetRemovalEventDetail>(
+        MDCChipSetEvents.REMOVAL, {
+          chipID: this.adapter.getChipIdAtIndex(index),
+          chipIndex: index,
+          isComplete: false,
+        });
   }
 
   addChip(index: number) {
@@ -306,18 +307,19 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   }
 
   private supportsMultiSelect(): boolean {
-    return this.adapter.getAttribute(Attributes.ARIA_MULTISELECTABLE) ===
-        'true';
+    return this.adapter.getAttribute(
+               MDCChipSetAttributes.ARIA_MULTISELECTABLE) === 'true';
   }
 
   private setSelection(
       index: number, action: MDCChipActionType, isSelected: boolean) {
     this.adapter.setChipSelectedAtIndex(index, action, isSelected);
-    this.adapter.emitEvent<MDCChipSetSelectionEventDetail>(Events.SELECTION, {
-      chipID: this.adapter.getChipIdAtIndex(index),
-      chipIndex: index,
-      isSelected,
-    });
+    this.adapter.emitEvent<MDCChipSetSelectionEventDetail>(
+        MDCChipSetEvents.SELECTION, {
+          chipID: this.adapter.getChipIdAtIndex(index),
+          chipIndex: index,
+          isSelected,
+        });
     // Early exit if we support multi-selection
     if (this.supportsMultiSelect()) {
       return;
@@ -338,11 +340,12 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   private removeAfterAnimation(index: number, chipID: string) {
     this.adapter.removeChipAtIndex(index);
-    this.adapter.emitEvent<MDCChipSetRemovalEventDetail>(Events.REMOVAL, {
-      chipIndex: index,
-      isComplete: true,
-      chipID,
-    });
+    this.adapter.emitEvent<MDCChipSetRemovalEventDetail>(
+        MDCChipSetEvents.REMOVAL, {
+          chipIndex: index,
+          isComplete: true,
+          chipID,
+        });
 
     const chipCount = this.adapter.getChipCount();
     // Early exit if we have an empty chip set

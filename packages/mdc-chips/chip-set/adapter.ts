@@ -24,7 +24,7 @@
 import {MDCChipActionFocusBehavior, MDCChipActionType} from '../action/constants';
 import {MDCChipAnimation} from '../chip/constants';
 
-import {Attributes, Events} from './constants';
+import {MDCChipSetAttributes, MDCChipSetEvents} from './constants';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -38,10 +38,11 @@ export interface MDCChipSetAdapter {
   announceMessage(message: string): void;
 
   /** Emits the given event with the given detail. */
-  emitEvent<D extends object>(eventName: Events, eventDetail: D): void;
+  emitEvent<D extends object>(eventName: MDCChipSetEvents, eventDetail: D):
+      void;
 
   /** Returns the value for the given attribute, if it exists. */
-  getAttribute(attrName: Attributes): string|null;
+  getAttribute(attrName: MDCChipSetAttributes): string|null;
 
   /** Returns the actions provided by the child chip at the given index. */
   getChipActionsAtIndex(index: number): MDCChipActionType[];

@@ -22,23 +22,24 @@
  */
 
 /**
- * Events provides the named constants for strings used by the foundation.
+ * MDCChipSetAttributes provides the named constants for attributes used by the
+ * foundation.
  */
-export enum Attributes {
+export enum MDCChipSetAttributes {
   ARIA_MULTISELECTABLE = 'aria-multiselectable',
 }
 
 /**
- * CssClasses provides the named constants for class names.
+ * MDCChipSetCssClasses provides the named constants for class names.
  */
-export enum CssClasses {
+export enum MDCChipSetCssClasses {
   CHIP = 'mdc-evolution-chip',
 }
 
 /**
- * Events provides the constants for emitted events.
+ * MDCChipSetEvents provides the constants for emitted events.
  */
-export enum Events {
+export enum MDCChipSetEvents {
   INTERACTION = 'MDCChipSet:interaction',
   REMOVAL = 'MDCChipSet:removal',
   SELECTION = 'MDCChipSet:selection',

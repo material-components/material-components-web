@@ -30,7 +30,7 @@ import {MDCChip, MDCChipFactory} from '../chip/component';
 import {MDCChipEvents} from '../chip/constants';
 
 import {MDCChipSetAdapter} from './adapter';
-import {CssClasses} from './constants';
+import {MDCChipSetCssClasses} from './constants';
 import {MDCChipSetFoundation} from './foundation';
 import {ChipAnimationEvent, ChipInteractionEvent, ChipNavigationEvent} from './types';
 
@@ -51,7 +51,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   override initialize(
       chipFactory: MDCChipFactory = (el: Element) => new MDCChip(el)) {
     this.chips = [];
-    const chipEls = this.root.querySelectorAll(`.${CssClasses.CHIP}`);
+    const chipEls = this.root.querySelectorAll(`.${MDCChipSetCssClasses.CHIP}`);
     for (let i = 0; i < chipEls.length; i++) {
       const chip = chipFactory(chipEls[i]);
       this.chips.push(chip);

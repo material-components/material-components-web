@@ -24,7 +24,7 @@
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {MDCChipActionFocusBehavior, MDCChipActionType} from '../../action/constants';
 import {MDCChipAnimation} from '../../chip/constants';
-import {Attributes, Events} from '../constants';
+import {MDCChipSetAttributes, MDCChipSetEvents} from '../constants';
 import {MDCChipSetFoundation} from '../foundation';
 import {ChipAnimationEvent, ChipInteractionEvent, ChipNavigationEvent} from '../types';
 
@@ -142,8 +142,9 @@ describe('MDCChipSetFoundation', () => {
     mockAdapter.getChipCount.and.callFake(() => {
       return chips.length;
     });
-    mockAdapter.getAttribute.and.callFake((attr: Attributes) => {
-      if (attr === Attributes.ARIA_MULTISELECTABLE && supportsMultiSelection) {
+    mockAdapter.getAttribute.and.callFake((attr: MDCChipSetAttributes) => {
+      if (attr === MDCChipSetAttributes.ARIA_MULTISELECTABLE &&
+          supportsMultiSelection) {
         return 'true';
       }
       return null;
@@ -202,10 +203,11 @@ describe('MDCChipSetFoundation', () => {
       detail: {source: MDCChipActionType.PRIMARY, chipID: 'c0'},
     } as ChipInteractionEvent);
 
-    expect(mockAdapter.emitEvent).toHaveBeenCalledWith(Events.INTERACTION, {
-      chipID: 'c0',
-      chipIndex: 0,
-    });
+    expect(mockAdapter.emitEvent)
+        .toHaveBeenCalledWith(MDCChipSetEvents.INTERACTION, {
+          chipID: 'c0',
+          chipIndex: 0,
+        });
   });
 
   it(`#handleChipInteraction focuses the source chip action`, () => {
@@ -280,11 +282,12 @@ describe('MDCChipSetFoundation', () => {
          },
        } as ChipInteractionEvent);
 
-       expect(mockAdapter.emitEvent).toHaveBeenCalledWith(Events.SELECTION, {
-         chipID: 'c0',
-         chipIndex: 0,
-         isSelected: true,
-       });
+       expect(mockAdapter.emitEvent)
+           .toHaveBeenCalledWith(MDCChipSetEvents.SELECTION, {
+             chipID: 'c0',
+             chipIndex: 0,
+             isSelected: true,
+           });
      });
 
   it(`#handleChipInteraction selects the source chip when not multiselectable`,
@@ -442,11 +445,12 @@ describe('MDCChipSetFoundation', () => {
          },
        } as ChipInteractionEvent);
 
-       expect(mockAdapter.emitEvent).toHaveBeenCalledWith(Events.REMOVAL, {
-         chipID: 'c1',
-         chipIndex: 1,
-         isComplete: false,
-       });
+       expect(mockAdapter.emitEvent)
+           .toHaveBeenCalledWith(MDCChipSetEvents.REMOVAL, {
+             chipID: 'c1',
+             chipIndex: 1,
+             isComplete: false,
+           });
      });
 
   it(`#handleChipInteraction does not emit an interaction event when the source chip is removable`,
@@ -467,7 +471,8 @@ describe('MDCChipSetFoundation', () => {
        } as ChipInteractionEvent);
 
        expect(mockAdapter.emitEvent)
-           .not.toHaveBeenCalledWith(Events.INTERACTION, jasmine.anything());
+           .not.toHaveBeenCalledWith(
+               MDCChipSetEvents.INTERACTION, jasmine.anything());
      });
 
   it(`#handleChipInteraction does not change focus when the source chip is removable`,
@@ -550,11 +555,12 @@ describe('MDCChipSetFoundation', () => {
          },
        } as ChipAnimationEvent);
 
-       expect(mockAdapter.emitEvent).toHaveBeenCalledWith(Events.REMOVAL, {
-         chipID: 'c1',
-         chipIndex: 1,
-         isComplete: true,
-       });
+       expect(mockAdapter.emitEvent)
+           .toHaveBeenCalledWith(MDCChipSetEvents.REMOVAL, {
+             chipID: 'c1',
+             chipIndex: 1,
+             isComplete: true,
+           });
      });
 
   it(`#handleChipAnimation does not remove the source chip when the animation is incomplete`,
@@ -1387,11 +1393,12 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.setChipSelected(0, MDCChipActionType.PRIMARY, true);
 
-       expect(mockAdapter.emitEvent).toHaveBeenCalledWith(Events.SELECTION, {
-         chipID: 'c0',
-         chipIndex: 0,
-         isSelected: true,
-       });
+       expect(mockAdapter.emitEvent)
+           .toHaveBeenCalledWith(MDCChipSetEvents.SELECTION, {
+             chipID: 'c0',
+             chipIndex: 0,
+             isSelected: true,
+           });
      });
 
   it(`#setChipSelected selects the target chip when not multiselectable`,
@@ -1525,11 +1532,12 @@ describe('MDCChipSetFoundation', () => {
     });
     foundation.removeChip(1);
 
-    expect(mockAdapter.emitEvent).toHaveBeenCalledWith(Events.REMOVAL, {
-      chipID: 'c1',
-      chipIndex: 1,
-      isComplete: false,
-    });
+    expect(mockAdapter.emitEvent)
+        .toHaveBeenCalledWith(MDCChipSetEvents.REMOVAL, {
+          chipID: 'c1',
+          chipIndex: 1,
+          isComplete: false,
+        });
   });
 
   it(`#removeChip does nothing if the index is out of bounds`, () => {
