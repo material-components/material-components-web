@@ -129,7 +129,9 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
         }
 
         if (tickMarks.length !== tickMarksContainer.children.length) {
-          tickMarksContainer.innerHTML = '';
+          while (tickMarksContainer.firstChild) {
+            tickMarksContainer.removeChild(tickMarksContainer.firstChild);
+          }
           this.addTickMarks(tickMarksContainer, tickMarks);
         } else {
           this.updateTickMarks(tickMarksContainer, tickMarks);
