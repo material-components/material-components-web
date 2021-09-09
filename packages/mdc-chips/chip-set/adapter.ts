@@ -22,7 +22,7 @@
  */
 
 import {MDCChipActionFocusBehavior, MDCChipActionType} from '../action/constants';
-import {Animation} from '../chip/constants';
+import {MDCChipAnimation} from '../chip/constants';
 
 import {Attributes, Events} from './constants';
 
@@ -78,5 +78,5 @@ export interface MDCChipSetAdapter {
       index: number, actionType: MDCChipActionType, isSelected: boolean): void;
 
   /** Starts the chip animation at the given index. */
-  startChipAnimationAtIndex(index: number, animation: Animation): void;
+  startChipAnimationAtIndex(index: number, animation: MDCChipAnimation): void;
 }

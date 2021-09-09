@@ -23,7 +23,8 @@
 
 import {MDCChipActionType} from '../action/constants';
 import {MDCChipActionInteractionEventDetail, MDCChipActionNavigationEventDetail} from '../action/types';
-import {Animation} from './constants';
+
+import {MDCChipAnimation} from './constants';
 
 /** MDCChipInteractionEventDetail provides details for the interaction event. */
 export interface MDCChipInteractionEventDetail {
@@ -43,10 +44,12 @@ export interface MDCChipNavigationEventDetail {
   isRTL: boolean;
 }
 
-/** MDCChipAnimationEventDetail provides details for the animation event. */
+/**
+ * MDCChipAnimationEventDetail provides details for the animation event.
+ */
 export interface MDCChipAnimationEventDetail {
   chipID: string;
-  animation: Animation;
+  animation: MDCChipAnimation;
   isComplete: boolean;
   addedAnnouncement?: string;
   removedAnnouncement?: string;

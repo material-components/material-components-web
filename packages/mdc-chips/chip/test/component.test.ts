@@ -23,8 +23,8 @@
 
 import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
-import {MDCChipActionType, MDCChipActionFocusBehavior} from '../../action/constants';
-import {Animation, CssClasses, Events, MDCChip} from '../index';
+import {MDCChipActionFocusBehavior, MDCChipActionType} from '../../action/constants';
+import {MDCChip, MDCChipAnimation, MDCChipCssClasses, MDCChipEvents} from '../index';
 
 interface ActionOptions {
   readonly isFocusable: boolean;
@@ -90,19 +90,19 @@ describe('MDCChipAction', () => {
 
     const primaryActionEl = root.querySelector('.mdc-evolution-chip__action')!;
     const interactionHandler = jasmine.createSpy('emitInteractionHandler');
-    component.listen(Events.INTERACTION, interactionHandler);
+    component.listen(MDCChipEvents.INTERACTION, interactionHandler);
     emitEvent(primaryActionEl, 'click', {
       bubbles: true,
     });
-    component.unlisten(Events.INTERACTION, interactionHandler);
+    component.unlisten(MDCChipEvents.INTERACTION, interactionHandler);
     expect(interactionHandler).toHaveBeenCalled();
 
     const navigationHandler = jasmine.createSpy('emitNavigationHandler');
-    component.listen(Events.NAVIGATION, navigationHandler);
+    component.listen(MDCChipEvents.NAVIGATION, navigationHandler);
     primaryActionEl.dispatchEvent(createKeyboardEvent('keydown', {
       key: 'ArrowLeft',
     }));
-    component.unlisten(Events.NAVIGATION, navigationHandler);
+    component.unlisten(MDCChipEvents.NAVIGATION, navigationHandler);
     expect(navigationHandler).toHaveBeenCalled();
   });
 
@@ -116,19 +116,19 @@ describe('MDCChipAction', () => {
 
     const primaryActionEl = root.querySelector('.mdc-evolution-chip__action')!;
     const interactionHandler = jasmine.createSpy('emitInteractionHandler');
-    component.listen(Events.INTERACTION, interactionHandler);
+    component.listen(MDCChipEvents.INTERACTION, interactionHandler);
     emitEvent(primaryActionEl, 'click', {
       bubbles: true,
     });
-    component.unlisten(Events.INTERACTION, interactionHandler);
+    component.unlisten(MDCChipEvents.INTERACTION, interactionHandler);
     expect(interactionHandler).not.toHaveBeenCalled();
 
     const navigationHandler = jasmine.createSpy('emitNavigationHandler');
-    component.listen(Events.NAVIGATION, navigationHandler);
+    component.listen(MDCChipEvents.NAVIGATION, navigationHandler);
     primaryActionEl.dispatchEvent(createKeyboardEvent('keydown', {
       key: 'ArrowLeft',
     }));
-    component.unlisten(Events.NAVIGATION, navigationHandler);
+    component.unlisten(MDCChipEvents.NAVIGATION, navigationHandler);
     expect(navigationHandler).not.toHaveBeenCalled();
   });
 
@@ -260,18 +260,18 @@ describe('MDCChipAction', () => {
     const width = root.offsetWidth;
     // tslint:disable-next-line:no-any
     (component as any).foundation.handleAnimationEnd({
-      animationName: Animation.EXIT,
+      animationName: MDCChipAnimation.EXIT,
     });
     expect(root.style.getPropertyValue('width')).toBe(`${width}px`);
   });
 
-  it(`#startAnimation() starts the animation`, () => {
+  it(`#startMDCChipAnimation() starts the animation`, () => {
     const {component, root} = setupTest({
       primary: {isFocusable: true, isSelectable: true, isDisabled: false},
       id: 'c0',
     });
 
-    component.startAnimation(Animation.ENTER);
-    expect(root.classList.contains(CssClasses.ENTER)).toBeTrue();
+    component.startAnimation(MDCChipAnimation.ENTER);
+    expect(root.classList.contains(MDCChipCssClasses.ENTER)).toBeTrue();
   });
 });

@@ -23,7 +23,7 @@
 
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
 import {MDCChipActionFocusBehavior, MDCChipActionType} from '../../action/constants';
-import {Animation} from '../../chip/constants';
+import {MDCChipAnimation} from '../../chip/constants';
 import {Attributes, Events} from '../constants';
 import {MDCChipSetFoundation} from '../foundation';
 import {ChipAnimationEvent, ChipInteractionEvent, ChipNavigationEvent} from '../types';
@@ -422,7 +422,7 @@ describe('MDCChipSetFoundation', () => {
        } as ChipInteractionEvent);
 
        expect(mockAdapter.startChipAnimationAtIndex)
-           .toHaveBeenCalledWith(1, Animation.EXIT);
+           .toHaveBeenCalledWith(1, MDCChipAnimation.EXIT);
      });
 
   it(`#handleChipInteraction emits a removal event when the source chip is removable`,
@@ -502,7 +502,7 @@ describe('MDCChipSetFoundation', () => {
     foundation.handleChipAnimation({
       detail: {
         chipID: 'c1',
-        animation: Animation.ENTER,
+        animation: MDCChipAnimation.ENTER,
         addedAnnouncement: 'Added foo',
         isComplete: true,
       },
@@ -524,7 +524,7 @@ describe('MDCChipSetFoundation', () => {
        foundation.handleChipAnimation({
          detail: {
            chipID: 'c1',
-           animation: Animation.EXIT,
+           animation: MDCChipAnimation.EXIT,
            isComplete: true,
          },
        } as ChipAnimationEvent);
@@ -545,7 +545,7 @@ describe('MDCChipSetFoundation', () => {
        foundation.handleChipAnimation({
          detail: {
            chipID: 'c1',
-           animation: Animation.EXIT,
+           animation: MDCChipAnimation.EXIT,
            isComplete: true,
          },
        } as ChipAnimationEvent);
@@ -570,7 +570,7 @@ describe('MDCChipSetFoundation', () => {
        foundation.handleChipAnimation({
          detail: {
            chipID: 'c1',
-           animation: Animation.EXIT,
+           animation: MDCChipAnimation.EXIT,
            isComplete: false,
          },
        } as ChipAnimationEvent);
@@ -591,7 +591,7 @@ describe('MDCChipSetFoundation', () => {
        foundation.handleChipAnimation({
          detail: {
            chipID: 'c1',
-           animation: Animation.ENTER,
+           animation: MDCChipAnimation.ENTER,
            isComplete: true,
          },
        } as ChipAnimationEvent);
@@ -612,7 +612,7 @@ describe('MDCChipSetFoundation', () => {
        foundation.handleChipAnimation({
          detail: {
            chipID: 'c1',
-           animation: Animation.EXIT,
+           animation: MDCChipAnimation.EXIT,
            isComplete: true,
          },
        } as ChipAnimationEvent);
@@ -638,7 +638,7 @@ describe('MDCChipSetFoundation', () => {
        foundation.handleChipAnimation({
          detail: {
            chipID: 'c4',
-           animation: Animation.EXIT,
+           animation: MDCChipAnimation.EXIT,
            isComplete: true,
          },
        } as ChipAnimationEvent);
@@ -664,7 +664,7 @@ describe('MDCChipSetFoundation', () => {
        foundation.handleChipAnimation({
          detail: {
            chipID: 'c0',
-           animation: Animation.EXIT,
+           animation: MDCChipAnimation.EXIT,
            isComplete: true,
          },
        } as ChipAnimationEvent);
@@ -688,7 +688,7 @@ describe('MDCChipSetFoundation', () => {
        foundation.handleChipAnimation({
          detail: {
            chipID: 'c1',
-           animation: Animation.EXIT,
+           animation: MDCChipAnimation.EXIT,
            removedAnnouncement: undefined,
            isComplete: true,
          },
@@ -712,7 +712,7 @@ describe('MDCChipSetFoundation', () => {
     foundation.handleChipAnimation({
       detail: {
         chipID: 'c1',
-        animation: Animation.EXIT,
+        animation: MDCChipAnimation.EXIT,
         removedAnnouncement: 'Removed foo',
         isComplete: true,
       },
@@ -1511,7 +1511,7 @@ describe('MDCChipSetFoundation', () => {
     foundation.removeChip(1);
 
     expect(mockAdapter.startChipAnimationAtIndex)
-        .toHaveBeenCalledWith(1, Animation.EXIT);
+        .toHaveBeenCalledWith(1, MDCChipAnimation.EXIT);
   });
 
   it(`#removeChip emits the removal event at the given index`, () => {
@@ -1560,7 +1560,7 @@ describe('MDCChipSetFoundation', () => {
     foundation.addChip(0);
 
     expect(mockAdapter.startChipAnimationAtIndex)
-        .toHaveBeenCalledWith(0, Animation.ENTER);
+        .toHaveBeenCalledWith(0, MDCChipAnimation.ENTER);
   });
 
   it(`#addChip does nothing if the index is out of bounds`, () => {

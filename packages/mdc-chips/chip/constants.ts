@@ -22,9 +22,9 @@
  */
 
 /**
- * CssClasses provides the named constants for class names.
+ * MDCChipCssClasses provides the named constants for class names.
  */
-export enum CssClasses {
+export enum MDCChipCssClasses {
   SELECTING = 'mdc-evolution-chip--selecting',
   DESELECTING = 'mdc-evolution-chip--deselecting',
   SELECTING_WITH_PRIMARY_ICON =
@@ -40,26 +40,27 @@ export enum CssClasses {
 }
 
 /**
- * Events provides the named constants for emitted events.
+ * MDCChipEvents provides the named constants for emitted events.
  */
-export enum Events {
+export enum MDCChipEvents {
   INTERACTION = 'MDCChip:interaction',
   NAVIGATION = 'MDCChip:navigation',
   ANIMATION = 'MDCChip:animation',
 }
 
 /**
- * Events provides the named constants for strings used by the foundation.
+ * MDCChipAttributes provides the named constants for strings used by the
+ * foundation.
  */
-export enum Attributes {
+export enum MDCChipAttributes {
   DATA_REMOVED_ANNOUNCEMENT = 'data-mdc-removed-announcement',
   DATA_ADDED_ANNOUNCEMENT = 'data-mdc-added-announcement',
 }
 
 /**
- * Animation provides the names of runnable animations.
+ * MDCChipAnimation provides the names of runnable animations.
  */
-export enum Animation {
+export enum MDCChipAnimation {
   ENTER = 'mdc-evolution-chip-enter',
   EXIT = 'mdc-evolution-chip-exit',
 }

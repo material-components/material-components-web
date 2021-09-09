@@ -27,7 +27,7 @@ import {announce} from '@material/dom/announce';
 
 import {MDCChipActionType} from '../action/constants';
 import {MDCChip, MDCChipFactory} from '../chip/component';
-import {Events} from '../chip/constants';
+import {MDCChipEvents} from '../chip/constants';
 
 import {MDCChipSetAdapter} from './adapter';
 import {CssClasses} from './constants';
@@ -71,15 +71,15 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       this.foundation.handleChipNavigation(event);
     };
 
-    this.listen(Events.ANIMATION, this.handleChipAnimation);
-    this.listen(Events.INTERACTION, this.handleChipInteraction);
-    this.listen(Events.NAVIGATION, this.handleChipNavigation);
+    this.listen(MDCChipEvents.ANIMATION, this.handleChipAnimation);
+    this.listen(MDCChipEvents.INTERACTION, this.handleChipInteraction);
+    this.listen(MDCChipEvents.NAVIGATION, this.handleChipNavigation);
   }
 
   override destroy() {
-    this.unlisten(Events.ANIMATION, this.handleChipAnimation);
-    this.unlisten(Events.INTERACTION, this.handleChipInteraction);
-    this.unlisten(Events.NAVIGATION, this.handleChipNavigation);
+    this.unlisten(MDCChipEvents.ANIMATION, this.handleChipAnimation);
+    this.unlisten(MDCChipEvents.INTERACTION, this.handleChipInteraction);
+    this.unlisten(MDCChipEvents.NAVIGATION, this.handleChipNavigation);
     super.destroy();
   }
 

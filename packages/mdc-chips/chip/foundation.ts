@@ -29,7 +29,7 @@ import {MDCChipActionFocusBehavior, MDCChipActionInteractionTrigger, MDCChipActi
 import {MDCChipActionInteractionEventDetail} from '../action/types';
 
 import {MDCChipAdapter} from './adapter';
-import {Animation, Attributes, CssClasses, Events} from './constants';
+import {MDCChipAnimation, MDCChipAttributes, MDCChipCssClasses, MDCChipEvents} from './constants';
 import {ActionInteractionEvent, ActionNavigationEvent, MDCChipAnimationEventDetail, MDCChipInteractionEventDetail, MDCChipNavigationEventDetail} from './types';
 
 interface Navigation {
@@ -96,9 +96,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
 
     if (isDisabled) {
-      this.adapter.addClass(CssClasses.DISABLED);
+      this.adapter.addClass(MDCChipCssClasses.DISABLED);
     } else {
-      this.adapter.removeClass(CssClasses.DISABLED);
+      this.adapter.removeClass(MDCChipCssClasses.DISABLED);
     }
   }
 
@@ -137,34 +137,35 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.animateSelection(isSelected);
   }
 
-  startAnimation(animation: Animation) {
-    if (animation === Animation.ENTER) {
-      this.adapter.addClass(CssClasses.ENTER);
+  startAnimation(animation: MDCChipAnimation) {
+    if (animation === MDCChipAnimation.ENTER) {
+      this.adapter.addClass(MDCChipCssClasses.ENTER);
       return;
     }
 
-    if (animation === Animation.EXIT) {
-      this.adapter.addClass(CssClasses.EXIT);
+    if (animation === MDCChipAnimation.EXIT) {
+      this.adapter.addClass(MDCChipCssClasses.EXIT);
       return;
     }
   }
 
   handleAnimationEnd(event: AnimationEvent) {
     const {animationName} = event;
-    if (animationName === Animation.ENTER) {
-      this.adapter.removeClass(CssClasses.ENTER);
-      this.adapter.emitEvent<MDCChipAnimationEventDetail>(Events.ANIMATION, {
-        chipID: this.getElementID(),
-        animation: Animation.ENTER,
-        addedAnnouncement: this.getAddedAnnouncement(),
-        isComplete: true,
-      });
+    if (animationName === MDCChipAnimation.ENTER) {
+      this.adapter.removeClass(MDCChipCssClasses.ENTER);
+      this.adapter.emitEvent<MDCChipAnimationEventDetail>(
+          MDCChipEvents.ANIMATION, {
+            chipID: this.getElementID(),
+            animation: MDCChipAnimation.ENTER,
+            addedAnnouncement: this.getAddedAnnouncement(),
+            isComplete: true,
+          });
       return;
     }
 
-    if (animationName === Animation.EXIT) {
-      this.adapter.removeClass(CssClasses.EXIT);
-      this.adapter.addClass(CssClasses.HIDDEN);
+    if (animationName === MDCChipAnimation.EXIT) {
+      this.adapter.removeClass(MDCChipCssClasses.EXIT);
+      this.adapter.addClass(MDCChipCssClasses.HIDDEN);
       const width = this.adapter.getOffsetWidth();
       this.adapter.setStyleProperty('width', `${width}px`);
       // Wait two frames so the width gets applied correctly.
@@ -177,14 +178,15 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   handleTransitionEnd() {
-    if (!this.adapter.hasClass(CssClasses.HIDDEN)) return;
+    if (!this.adapter.hasClass(MDCChipCssClasses.HIDDEN)) return;
 
-    this.adapter.emitEvent<MDCChipAnimationEventDetail>(Events.ANIMATION, {
-      chipID: this.getElementID(),
-      animation: Animation.EXIT,
-      removedAnnouncement: this.getRemovedAnnouncement(),
-      isComplete: true,
-    });
+    this.adapter.emitEvent<MDCChipAnimationEventDetail>(
+        MDCChipEvents.ANIMATION, {
+          chipID: this.getElementID(),
+          animation: MDCChipAnimation.EXIT,
+          removedAnnouncement: this.getRemovedAnnouncement(),
+          isComplete: true,
+        });
   }
 
   handleActionInteraction({detail}: ActionInteractionEvent) {
@@ -192,14 +194,15 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     const isSelectable = this.adapter.isActionSelectable(source);
     const isSelected = this.adapter.isActionSelected(source);
 
-    this.adapter.emitEvent<MDCChipInteractionEventDetail>(Events.INTERACTION, {
-      chipID: this.getElementID(),
-      shouldRemove: this.shouldRemove(detail),
-      actionID,
-      isSelectable,
-      isSelected,
-      source,
-    });
+    this.adapter.emitEvent<MDCChipInteractionEventDetail>(
+        MDCChipEvents.INTERACTION, {
+          chipID: this.getElementID(),
+          shouldRemove: this.shouldRemove(detail),
+          actionID,
+          isSelectable,
+          isSelected,
+          source,
+        });
   }
 
   handleActionNavigation({detail}: ActionNavigationEvent) {
@@ -227,12 +230,13 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       return;
     }
 
-    this.adapter.emitEvent<MDCChipNavigationEventDetail>(Events.NAVIGATION, {
-      chipID: this.getElementID(),
-      isRTL,
-      source,
-      key,
-    });
+    this.adapter.emitEvent<MDCChipNavigationEventDetail>(
+        MDCChipEvents.NAVIGATION, {
+          chipID: this.getElementID(),
+          isRTL,
+          source,
+          key,
+        });
   }
 
   private directionFromKey(key: string, isRTL: boolean): Direction {
@@ -267,12 +271,14 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   private getRemovedAnnouncement(): string|undefined {
-    const msg = this.adapter.getAttribute(Attributes.DATA_REMOVED_ANNOUNCEMENT);
+    const msg =
+        this.adapter.getAttribute(MDCChipAttributes.DATA_REMOVED_ANNOUNCEMENT);
     return msg || undefined;
   }
 
   private getAddedAnnouncement(): string|undefined {
-    const msg = this.adapter.getAttribute(Attributes.DATA_ADDED_ANNOUNCEMENT);
+    const msg =
+        this.adapter.getAttribute(MDCChipAttributes.DATA_ADDED_ANNOUNCEMENT);
     return msg || undefined;
   }
 
@@ -287,42 +293,42 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   private resetAnimationStyles() {
-    this.adapter.removeClass(CssClasses.SELECTING);
-    this.adapter.removeClass(CssClasses.DESELECTING);
-    this.adapter.removeClass(CssClasses.SELECTING_WITH_PRIMARY_ICON);
-    this.adapter.removeClass(CssClasses.DESELECTING_WITH_PRIMARY_ICON);
+    this.adapter.removeClass(MDCChipCssClasses.SELECTING);
+    this.adapter.removeClass(MDCChipCssClasses.DESELECTING);
+    this.adapter.removeClass(MDCChipCssClasses.SELECTING_WITH_PRIMARY_ICON);
+    this.adapter.removeClass(MDCChipCssClasses.DESELECTING_WITH_PRIMARY_ICON);
   }
 
   private updateSelectionStyles(isSelected: boolean) {
-    const hasIcon = this.adapter.hasClass(CssClasses.WITH_PRIMARY_ICON);
+    const hasIcon = this.adapter.hasClass(MDCChipCssClasses.WITH_PRIMARY_ICON);
     if (hasIcon && isSelected) {
-      this.adapter.addClass(CssClasses.SELECTING_WITH_PRIMARY_ICON);
+      this.adapter.addClass(MDCChipCssClasses.SELECTING_WITH_PRIMARY_ICON);
       this.animFrame.request(AnimationKeys.SELECTION, () => {
-        this.adapter.addClass(CssClasses.SELECTED);
+        this.adapter.addClass(MDCChipCssClasses.SELECTED);
       });
       return;
     }
 
     if (hasIcon && !isSelected) {
-      this.adapter.addClass(CssClasses.DESELECTING_WITH_PRIMARY_ICON);
+      this.adapter.addClass(MDCChipCssClasses.DESELECTING_WITH_PRIMARY_ICON);
       this.animFrame.request(AnimationKeys.SELECTION, () => {
-        this.adapter.removeClass(CssClasses.SELECTED);
+        this.adapter.removeClass(MDCChipCssClasses.SELECTED);
       });
       return;
     }
 
     if (isSelected) {
-      this.adapter.addClass(CssClasses.SELECTING);
+      this.adapter.addClass(MDCChipCssClasses.SELECTING);
       this.animFrame.request(AnimationKeys.SELECTION, () => {
-        this.adapter.addClass(CssClasses.SELECTED);
+        this.adapter.addClass(MDCChipCssClasses.SELECTED);
       });
       return;
     }
 
     if (!isSelected) {
-      this.adapter.addClass(CssClasses.DESELECTING);
+      this.adapter.addClass(MDCChipCssClasses.DESELECTING);
       this.animFrame.request(AnimationKeys.SELECTION, () => {
-        this.adapter.removeClass(CssClasses.SELECTED);
+        this.adapter.removeClass(MDCChipCssClasses.SELECTED);
       });
       return;
     }

@@ -219,7 +219,7 @@ Mixin | Description
 
 The `MDCChip` is exposed only to be called by the parent [`MDCChipSet`](../chip-set). Users should not interact with the `MDCChip` component nor rely on any exposed APIs or events.
 
-### `MDCChip` events
+### `MDCChipEvents`
 
 These events are only emitted for consumption by the parent [`MDCChipSet`](../chip-set). Non-wrapping clients **should not** listen to these events.
 
@@ -233,19 +233,19 @@ Event name | Detail | Description
 
 Method Signature | Description
 --- | ---
-`addClass(className: ClassName): void` | Adds the class name to the chip root.
-`emitEvent<D extends object>(eventName: Events, eventDetail: D): void` | Emits the given `eventName` with the given `eventDetail`.
+`addClass(className: MDCChipClassNames): void` | Adds the class name to the chip root.
+`emitEvent<D extends object>(eventName: MDCChipEvents, eventDetail: D): void` | Emits the given `eventName` with the given `eventDetail`.
 `getActions(): MDCChipActionType[]` | Returns the actions of the chip in [DOM order](https://developers.google.com/web/fundamentals/accessibility/focus/dom-order-matters).
-`getAttribute(attrName: Attributes): string\|null` | Returns the value of the attribute or `null` if it does not exist.
+`getAttribute(attrName: MDCChipAttributes): string\|null` | Returns the value of the attribute or `null` if it does not exist.
 `getElementID(): string` | Returns the [`id`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id) of the root element.
 `getOffsetWidth(): number` | Returns the [`offsetWidth`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetWidth) of the root element.
-`hasClass(className: CssClasses): boolean` | Returns `true` if the class exists on the root element, otherwise returns `false`.
+`hasClass(className: MDCChipCssClasses): boolean` | Returns `true` if the class exists on the root element, otherwise returns `false`.
 `isActionSelectable(action: MDCChipActionType): boolean` | Returns the seletability of the action with the given type.
 `isActionSelected(action: MDCChipActionType): boolean` | Returns the selected state of the action with the given type.
 `isActionFocusable(action: MDCChipActionType): boolean` | Returns the focusability of the action with the given type.
 `isActionDisabled(action: MDCChipActionType): boolean` | Returns the disabled state of the action with the given type.
 `isRTL(): boolean` | Returns `true` if the chip is rendered in an RTL context, otherwise returns `false`.
-`removeClass(className: CssClasses): void` | Remove the given class from the root.
+`removeClass(className: MDCChipCssClasses): void` | Remove the given class from the root.
 `setActionDisabled(action: MDCChipActionType, isDisabled: boolean): void` | Sets the disabled state of the action with the given type.
 `setActionFocus(action: MDCChipActionType, behavior: MDCChipActionFocusBehavior): void` | Sets the focus behavior of the action with the given type.
 `setActionSelected(action: MDCChipActionType, isSelected: boolean): void` | Sets the selected state of the action with the given type.

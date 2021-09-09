@@ -26,7 +26,7 @@ import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {MDCChipActionType} from '../../action/constants';
-import {Animation, CssClasses, Events} from '../../chip/constants';
+import {MDCChipAnimation, MDCChipCssClasses, MDCChipEvents} from '../../chip/constants';
 import {MDCChipAnimationEventDetail} from '../../chip/types';
 import {MDCChipSet, MDCChipSetFoundation} from '../index';
 
@@ -152,7 +152,7 @@ describe('MDCChipSet', () => {
     }));
     expect(mockFoundation.handleChipNavigation).toHaveBeenCalled();
 
-    emitEvent(root.querySelector('#c0')!, Events.ANIMATION, {
+    emitEvent(root.querySelector('#c0')!, MDCChipEvents.ANIMATION, {
       bubbles: true,
       cancelable: false,
     });
@@ -181,7 +181,7 @@ describe('MDCChipSet', () => {
     }));
     expect(mockFoundation.handleChipNavigation).not.toHaveBeenCalled();
 
-    emitEvent(root.querySelector('#c0')!, Events.ANIMATION, {
+    emitEvent(root.querySelector('#c0')!, MDCChipEvents.ANIMATION, {
       bubbles: true,
       cancelable: false,
     });
@@ -501,11 +501,11 @@ describe('MDCChipSet', () => {
         const detail: MDCChipAnimationEventDetail = {
           isComplete: true,
           addedAnnouncement: 'Added a chip',
-          animation: Animation.ENTER,
+          animation: MDCChipAnimation.ENTER,
           chipID: 'c0',
         };
 
-        emitEvent(root.querySelector('#c0')!, Events.ANIMATION, {
+        emitEvent(root.querySelector('#c0')!, MDCChipEvents.ANIMATION, {
           bubbles: true,
           cancelable: false,
           detail,
@@ -532,11 +532,11 @@ describe('MDCChipSet', () => {
     const detail: MDCChipAnimationEventDetail = {
       isComplete: true,
       removedAnnouncement: 'Removed a chip',
-      animation: Animation.EXIT,
+      animation: MDCChipAnimation.EXIT,
       chipID: 'c0',
     };
 
-    emitEvent(root.querySelector('#c0')!, Events.ANIMATION, {
+    emitEvent(root.querySelector('#c0')!, MDCChipEvents.ANIMATION, {
       bubbles: true,
       cancelable: false,
       detail,
@@ -556,6 +556,6 @@ describe('MDCChipSet', () => {
 
     const chip0 = root.querySelector('#c0')!;
     component.addChip(0);
-    expect(chip0.classList.contains(CssClasses.ENTER)).toBeTrue();
+    expect(chip0.classList.contains(MDCChipCssClasses.ENTER)).toBeTrue();
   });
 });

@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {KEY} from '@material/dom/keyboard';
 
 import {MDCChipActionFocusBehavior, MDCChipActionType} from '../action/constants';
-import {Animation} from '../chip/constants';
+import {MDCChipAnimation} from '../chip/constants';
 
 import {MDCChipSetAdapter} from './adapter';
 import {Attributes, Events} from './constants';
@@ -78,7 +78,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     } = detail;
     const index = this.adapter.getChipIndexById(chipID);
 
-    if (animation === Animation.EXIT && isComplete) {
+    if (animation === MDCChipAnimation.EXIT && isComplete) {
       if (removedAnnouncement) {
         this.adapter.announceMessage(removedAnnouncement);
       }
@@ -86,7 +86,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       return;
     }
 
-    if (animation === Animation.ENTER && isComplete && addedAnnouncement) {
+    if (animation === MDCChipAnimation.ENTER && isComplete && addedAnnouncement) {
       this.adapter.announceMessage(addedAnnouncement);
       return;
     }
@@ -188,7 +188,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   removeChip(index: number) {
     // Early exit if the index is out of bounds
     if (index >= this.adapter.getChipCount() || index < 0) return;
-    this.adapter.startChipAnimationAtIndex(index, Animation.EXIT);
+    this.adapter.startChipAnimationAtIndex(index, MDCChipAnimation.EXIT);
     this.adapter.emitEvent<MDCChipSetRemovalEventDetail>(Events.REMOVAL, {
       chipID: this.adapter.getChipIdAtIndex(index),
       chipIndex: index,
@@ -199,7 +199,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   addChip(index: number) {
     // Early exit if the index is out of bounds
     if (index >= this.adapter.getChipCount() || index < 0) return;
-    this.adapter.startChipAnimationAtIndex(index, Animation.ENTER);
+    this.adapter.startChipAnimationAtIndex(index, MDCChipAnimation.ENTER);
   }
 
   /**

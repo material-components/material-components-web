@@ -28,7 +28,7 @@ import {MDCChipAction, MDCChipActionFactory} from '../action/component';
 import {MDCChipActionEvents, MDCChipActionFocusBehavior, MDCChipActionType} from '../action/constants';
 
 import {MDCChipAdapter} from './adapter';
-import {Animation} from './constants';
+import {MDCChipAnimation} from './constants';
 import {MDCChipFoundation} from './foundation';
 import {ActionInteractionEvent, ActionNavigationEvent} from './types';
 
@@ -225,7 +225,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
   }
 
   /** Starts the animation on the chip. */
-  startAnimation(animation: Animation) {
+  startAnimation(animation: MDCChipAnimation) {
     this.foundation.startAnimation(animation);
   }
 }
