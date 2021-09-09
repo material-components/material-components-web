@@ -25,7 +25,7 @@ import {AnimationFrame} from '@material/animation/animationframe';
 import {MDCFoundation} from '@material/base/foundation';
 import {KEY} from '@material/dom/keyboard';
 
-import {ActionType, FocusBehavior, InteractionTrigger} from '../action/constants';
+import {MDCChipActionFocusBehavior, MDCChipActionInteractionTrigger, MDCChipActionType} from '../action/constants';
 import {MDCChipActionInteractionEventDetail} from '../action/types';
 
 import {MDCChipAdapter} from './adapter';
@@ -33,8 +33,8 @@ import {Animation, Attributes, CssClasses, Events} from './constants';
 import {ActionInteractionEvent, ActionNavigationEvent, MDCChipAnimationEventDetail, MDCChipInteractionEventDetail, MDCChipNavigationEventDetail} from './types';
 
 interface Navigation {
-  from: ActionType;
-  to: ActionType;
+  from: MDCChipActionType;
+  to: MDCChipActionType;
 }
 
 enum Direction {
@@ -112,27 +112,27 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return false;
   }
 
-  getActions(): ActionType[] {
+  getActions(): MDCChipActionType[] {
     return this.adapter.getActions();
   }
 
-  isActionFocusable(action: ActionType): boolean {
+  isActionFocusable(action: MDCChipActionType): boolean {
     return this.adapter.isActionFocusable(action);
   }
 
-  isActionSelectable(action: ActionType): boolean {
+  isActionSelectable(action: MDCChipActionType): boolean {
     return this.adapter.isActionSelectable(action);
   }
 
-  isActionSelected(action: ActionType): boolean {
+  isActionSelected(action: MDCChipActionType): boolean {
     return this.adapter.isActionSelected(action);
   }
 
-  setActionFocus(action: ActionType, focus: FocusBehavior) {
+  setActionFocus(action: MDCChipActionType, focus: MDCChipActionFocusBehavior) {
     this.adapter.setActionFocus(action, focus);
   }
 
-  setActionSelected(action: ActionType, isSelected: boolean) {
+  setActionSelected(action: MDCChipActionType, isSelected: boolean) {
     this.adapter.setActionSelected(action, isSelected);
     this.animateSelection(isSelected);
   }
@@ -206,24 +206,24 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     const {source, key} = detail;
     const isRTL = this.adapter.isRTL();
     const isTrailingActionFocusable =
-        this.adapter.isActionFocusable(ActionType.TRAILING);
+        this.adapter.isActionFocusable(MDCChipActionType.TRAILING);
     const isPrimaryActionFocusable =
-        this.adapter.isActionFocusable(ActionType.PRIMARY);
+        this.adapter.isActionFocusable(MDCChipActionType.PRIMARY);
     const dir = this.directionFromKey(key, isRTL);
 
-    const shouldNavigateToTrailing = source === ActionType.PRIMARY &&
+    const shouldNavigateToTrailing = source === MDCChipActionType.PRIMARY &&
         dir === Direction.RIGHT && isTrailingActionFocusable;
 
-    const shouldNavigateToPrimary = source === ActionType.TRAILING &&
+    const shouldNavigateToPrimary = source === MDCChipActionType.TRAILING &&
         dir === Direction.LEFT && isPrimaryActionFocusable;
 
     if (shouldNavigateToTrailing) {
-      this.navigateActions({from: source, to: ActionType.TRAILING});
+      this.navigateActions({from: source, to: MDCChipActionType.TRAILING});
       return;
     }
 
     if (shouldNavigateToPrimary) {
-      this.navigateActions({from: source, to: ActionType.PRIMARY});
+      this.navigateActions({from: source, to: MDCChipActionType.PRIMARY});
       return;
     }
 
@@ -250,18 +250,20 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   private navigateActions(nav: Navigation) {
-    this.adapter.setActionFocus(nav.from, FocusBehavior.NOT_FOCUSABLE);
-    this.adapter.setActionFocus(nav.to, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+    this.adapter.setActionFocus(
+        nav.from, MDCChipActionFocusBehavior.NOT_FOCUSABLE);
+    this.adapter.setActionFocus(
+        nav.to, MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
   }
 
   private shouldRemove({source, trigger}: MDCChipActionInteractionEventDetail):
       boolean {
-    if (trigger === InteractionTrigger.BACKSPACE_KEY ||
-        trigger === InteractionTrigger.DELETE_KEY) {
+    if (trigger === MDCChipActionInteractionTrigger.BACKSPACE_KEY ||
+        trigger === MDCChipActionInteractionTrigger.DELETE_KEY) {
       return true;
     }
 
-    return source === ActionType.TRAILING;
+    return source === MDCChipActionType.TRAILING;
   }
 
   private getRemovedAnnouncement(): string|undefined {

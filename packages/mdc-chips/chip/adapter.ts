@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {ActionType, FocusBehavior} from '../action/constants';
+import {MDCChipActionType, MDCChipActionFocusBehavior} from '../action/constants';
 import {Attributes, CssClasses, Events} from './constants';
 
 /**
@@ -39,7 +39,7 @@ export interface MDCChipAdapter {
   emitEvent<D extends object>(eventName: Events, eventDetail: D): void;
 
   /** Returns the child actions provided by the chip. */
-  getActions(): ActionType[];
+  getActions(): MDCChipActionType[];
 
   /** Returns the value for the given attribute, if it exists. */
   getAttribute(attrName: Attributes): string|null;
@@ -54,16 +54,16 @@ export interface MDCChipAdapter {
   hasClass(className: CssClasses): boolean;
 
   /** Proxies to the MDCChipAction#isSelectable method. */
-  isActionSelectable(action: ActionType): boolean;
+  isActionSelectable(action: MDCChipActionType): boolean;
 
   /** Proxies to the MDCChipAction#isSelected method. */
-  isActionSelected(action: ActionType): boolean;
+  isActionSelected(action: MDCChipActionType): boolean;
 
   /** Proxies to the MDCChipAction#isFocusable method. */
-  isActionFocusable(action: ActionType): boolean;
+  isActionFocusable(action: MDCChipActionType): boolean;
 
   /** Proxies to the MDCChipAction#isDisabled method. */
-  isActionDisabled(action: ActionType): boolean;
+  isActionDisabled(action: MDCChipActionType): boolean;
 
   /** Returns true if the text direction is right-to-left. */
   isRTL(): boolean;
@@ -72,13 +72,13 @@ export interface MDCChipAdapter {
   removeClass(className: CssClasses): void;
 
   /** Proxies to the MDCChipAction#setDisabled method. */
-  setActionDisabled(action: ActionType, isDisabled: boolean): void;
+  setActionDisabled(action: MDCChipActionType, isDisabled: boolean): void;
 
   /** Proxies to the MDCChipAction#setFocus method. */
-  setActionFocus(action: ActionType, behavior: FocusBehavior): void;
+  setActionFocus(action: MDCChipActionType, behavior: MDCChipActionFocusBehavior): void;
 
   /** Proxies to the MDCChipAction#setSelected method. */
-  setActionSelected(action: ActionType, isSelected: boolean): void;
+  setActionSelected(action: MDCChipActionType, isSelected: boolean): void;
 
   /** Sets the style property to the given value. */
   setStyleProperty(property: string, value: string): void;

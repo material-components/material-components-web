@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {CustomEventListener} from '@material/base/types';
 
 import {MDCChipAction, MDCChipActionFactory} from '../action/component';
-import {ActionType, Events, FocusBehavior} from '../action/constants';
+import {MDCChipActionEvents, MDCChipActionFocusBehavior, MDCChipActionType} from '../action/constants';
 
 import {MDCChipAdapter} from './adapter';
 import {Animation} from './constants';
@@ -52,7 +52,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
   // Below properties are all assigned in #initialize()
   private handleActionInteraction!: CustomEventListener<ActionInteractionEvent>;
   private handleActionNavigation!: CustomEventListener<ActionNavigationEvent>;
-  private actions!: Map<ActionType, MDCChipAction>;
+  private actions!: Map<MDCChipActionType, MDCChipAction>;
 
   override initialize(
       actionFactory:
@@ -74,13 +74,14 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
       this.foundation.handleActionNavigation(event);
     };
 
-    this.listen(Events.INTERACTION, this.handleActionInteraction);
-    this.listen(Events.NAVIGATION, this.handleActionNavigation);
+    this.listen(MDCChipActionEvents.INTERACTION, this.handleActionInteraction);
+    this.listen(MDCChipActionEvents.NAVIGATION, this.handleActionNavigation);
   }
 
   override destroy() {
-    this.unlisten(Events.INTERACTION, this.handleActionInteraction);
-    this.unlisten(Events.NAVIGATION, this.handleActionNavigation);
+    this.unlisten(
+        MDCChipActionEvents.INTERACTION, this.handleActionInteraction);
+    this.unlisten(MDCChipActionEvents.NAVIGATION, this.handleActionNavigation);
     super.destroy();
   }
 
@@ -96,7 +97,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
         this.emit(eventName, eventDetail, true /* shouldBubble */);
       },
       getActions: () => {
-        const actions: ActionType[] = [];
+        const actions: MDCChipActionType[] = [];
         for (const [key] of this.actions) {
           actions.push(key);
         }
@@ -108,28 +109,28 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
         return this.rootHTML.offsetWidth;
       },
       hasClass: (className) => this.root.classList.contains(className),
-      isActionSelectable: (actionType: ActionType) => {
+      isActionSelectable: (actionType: MDCChipActionType) => {
         const action = this.actions.get(actionType);
         if (action) {
           return action.isSelectable();
         }
         return false;
       },
-      isActionSelected: (actionType: ActionType) => {
+      isActionSelected: (actionType: MDCChipActionType) => {
         const action = this.actions.get(actionType);
         if (action) {
           return action.isSelected();
         }
         return false;
       },
-      isActionFocusable: (actionType: ActionType) => {
+      isActionFocusable: (actionType: MDCChipActionType) => {
         const action = this.actions.get(actionType);
         if (action) {
           return action.isFocusable();
         }
         return false;
       },
-      isActionDisabled: (actionType: ActionType) => {
+      isActionDisabled: (actionType: MDCChipActionType) => {
         const action = this.actions.get(actionType);
         if (action) {
           return action.isDisabled();
@@ -141,24 +142,28 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
       removeClass: (className) => {
         this.root.classList.remove(className);
       },
-      setActionDisabled: (actionType: ActionType, isDisabled: boolean) => {
-        const action = this.actions.get(actionType);
-        if (action) {
-          action.setDisabled(isDisabled);
-        }
-      },
-      setActionFocus: (actionType: ActionType, behavior: FocusBehavior) => {
-        const action = this.actions.get(actionType);
-        if (action) {
-          action.setFocus(behavior);
-        }
-      },
-      setActionSelected: (actionType: ActionType, isSelected: boolean) => {
-        const action = this.actions.get(actionType);
-        if (action) {
-          action.setSelected(isSelected);
-        }
-      },
+      setActionDisabled:
+          (actionType: MDCChipActionType, isDisabled: boolean) => {
+            const action = this.actions.get(actionType);
+            if (action) {
+              action.setDisabled(isDisabled);
+            }
+          },
+      setActionFocus:
+          (actionType: MDCChipActionType,
+           behavior: MDCChipActionFocusBehavior) => {
+            const action = this.actions.get(actionType);
+            if (action) {
+              action.setFocus(behavior);
+            }
+          },
+      setActionSelected:
+          (actionType: MDCChipActionType, isSelected: boolean) => {
+            const action = this.actions.get(actionType);
+            if (action) {
+              action.setSelected(isSelected);
+            }
+          },
       setStyleProperty: (prop: string, value: string) => {
         this.rootHTML.style.setProperty(prop, value);
       },
@@ -176,8 +181,8 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
     }
   }
 
-  /** Returns the ActionTypes for the encapsulated actions. */
-  getActions(): ActionType[] {
+  /** Returns the MDCChipActionTypes for the encapsulated actions. */
+  getActions(): MDCChipActionType[] {
     return this.foundation.getActions();
   }
 
@@ -195,27 +200,27 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
   }
 
   /** Returns the focusability of the action. */
-  isActionFocusable(action: ActionType): boolean {
+  isActionFocusable(action: MDCChipActionType): boolean {
     return this.foundation.isActionFocusable(action);
   }
 
   /** Returns the selectability of the action. */
-  isActionSelectable(action: ActionType): boolean {
+  isActionSelectable(action: MDCChipActionType): boolean {
     return this.foundation.isActionSelectable(action);
   }
 
   /** Returns the selected state of the action. */
-  isActionSelected(action: ActionType): boolean {
+  isActionSelected(action: MDCChipActionType): boolean {
     return this.foundation.isActionSelected(action);
   }
 
   /** Sets the focus behavior of the action. */
-  setActionFocus(action: ActionType, focus: FocusBehavior) {
+  setActionFocus(action: MDCChipActionType, focus: MDCChipActionFocusBehavior) {
     this.foundation.setActionFocus(action, focus);
   }
 
   /** Sets the selected state of the action. */
-  setActionSelected(action: ActionType, isSelected: boolean) {
+  setActionSelected(action: MDCChipActionType, isSelected: boolean) {
     this.foundation.setActionSelected(action, isSelected);
   }
 

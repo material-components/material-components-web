@@ -22,12 +22,12 @@
  */
 
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
-import {ActionType, Attributes, Events, FocusBehavior, InteractionTrigger} from '../constants';
+import {MDCChipActionAttributes, MDCChipActionEvents, MDCChipActionFocusBehavior, MDCChipActionInteractionTrigger, MDCChipActionType} from '../constants';
 import {MDCChipActionFoundation} from '../foundation';
 
 class SelectableMDCChipActionFoundation extends MDCChipActionFoundation {
   actionType() {
-    return ActionType.UNSPECIFIED;
+    return MDCChipActionType.UNSPECIFIED;
   }
 
   isSelectable() {
@@ -41,7 +41,7 @@ class SelectableMDCChipActionFoundation extends MDCChipActionFoundation {
 
 class NonselectableMDCChipActionFoundation extends MDCChipActionFoundation {
   actionType() {
-    return ActionType.UNSPECIFIED;
+    return MDCChipActionType.UNSPECIFIED;
   }
 
   isSelectable() {
@@ -56,7 +56,7 @@ class NonselectableMDCChipActionFoundation extends MDCChipActionFoundation {
 class SelectableDeletableMDCChipActionFoundation extends
     MDCChipActionFoundation {
   actionType() {
-    return ActionType.UNSPECIFIED;
+    return MDCChipActionType.UNSPECIFIED;
   }
 
   isSelectable() {
@@ -76,105 +76,118 @@ describe('MDCChipActionFoundation', () => {
       return {foundation, mockAdapter};
     };
 
-    it(`#actionType returns "${ActionType.UNSPECIFIED}"`, () => {
+    it(`#actionType returns "${MDCChipActionType.UNSPECIFIED}"`, () => {
       const {foundation} = setupTest();
-      expect(foundation.actionType()).toBe(ActionType.UNSPECIFIED);
+      expect(foundation.actionType()).toBe(MDCChipActionType.UNSPECIFIED);
     });
 
     it('#setFocus() does nothing when aria-hidden == true', () => {
       const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getAttribute.withArgs(Attributes.ARIA_HIDDEN)
+      mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.ARIA_HIDDEN)
           .and.returnValue('true');
-      foundation.setFocus(FocusBehavior.FOCUSABLE_AND_FOCUSED);
-      foundation.setFocus(FocusBehavior.FOCUSABLE);
-      foundation.setFocus(FocusBehavior.NOT_FOCUSABLE);
+      foundation.setFocus(MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
+      foundation.setFocus(MDCChipActionFocusBehavior.FOCUSABLE);
+      foundation.setFocus(MDCChipActionFocusBehavior.NOT_FOCUSABLE);
       expect(mockAdapter.setAttribute).not.toHaveBeenCalled();
       expect(mockAdapter.focus).not.toHaveBeenCalled();
     });
 
-    it(`#setFocus(${FocusBehavior.FOCUSABLE_AND_FOCUSED}) sets tabindex="0"` +
+    it(`#setFocus(${
+           MDCChipActionFocusBehavior
+               .FOCUSABLE_AND_FOCUSED}) sets tabindex="0"` +
            ` and focuses the root`,
        () => {
          const {foundation, mockAdapter} = setupTest();
-         foundation.setFocus(FocusBehavior.FOCUSABLE_AND_FOCUSED);
+         foundation.setFocus(MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
          expect(mockAdapter.setAttribute).toHaveBeenCalledWith('tabindex', '0');
          expect(mockAdapter.focus).toHaveBeenCalled();
        });
 
-    it(`#setFocus(${FocusBehavior.FOCUSABLE}) sets tabindex="0"`, () => {
-      const {foundation, mockAdapter} = setupTest();
-      foundation.setFocus(FocusBehavior.FOCUSABLE);
-      expect(mockAdapter.setAttribute).toHaveBeenCalledWith('tabindex', '0');
-      expect(mockAdapter.focus).not.toHaveBeenCalled();
-    });
+    it(`#setFocus(${MDCChipActionFocusBehavior.FOCUSABLE}) sets tabindex="0"`,
+       () => {
+         const {foundation, mockAdapter} = setupTest();
+         foundation.setFocus(MDCChipActionFocusBehavior.FOCUSABLE);
+         expect(mockAdapter.setAttribute).toHaveBeenCalledWith('tabindex', '0');
+         expect(mockAdapter.focus).not.toHaveBeenCalled();
+       });
 
-    it(`#setFocused(${FocusBehavior.NOT_FOCUSABLE}) sets tabindex="-1"`, () => {
-      const {foundation, mockAdapter} = setupTest();
-      foundation.setFocus(FocusBehavior.NOT_FOCUSABLE);
-      expect(mockAdapter.setAttribute).toHaveBeenCalledWith('tabindex', '-1');
-    });
+    it(`#setFocused(${
+           MDCChipActionFocusBehavior.NOT_FOCUSABLE}) sets tabindex="-1"`,
+       () => {
+         const {foundation, mockAdapter} = setupTest();
+         foundation.setFocus(MDCChipActionFocusBehavior.NOT_FOCUSABLE);
+         expect(mockAdapter.setAttribute)
+             .toHaveBeenCalledWith('tabindex', '-1');
+       });
 
     it('#isFocusable returns true if aria-hidden != true', () => {
       const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getAttribute.withArgs(Attributes.ARIA_HIDDEN)
+      mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.ARIA_HIDDEN)
           .and.returnValue(null);
       expect(foundation.isFocusable()).toBe(true);
     });
 
     it('#isFocusable returns false if aria-hidden == true', () => {
       const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getAttribute.withArgs(Attributes.ARIA_HIDDEN)
+      mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.ARIA_HIDDEN)
           .and.returnValue('true');
       expect(foundation.isFocusable()).toBe(false);
     });
 
     it('#isFocusable returns true if aria-disabled != true', () => {
       const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getAttribute.withArgs(Attributes.ARIA_DISABLED)
+      mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.ARIA_DISABLED)
           .and.returnValue('false');
       expect(foundation.isFocusable()).toBe(true);
     });
 
     it('#isFocusable returns false if aria-disabled == true', () => {
       const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getAttribute.withArgs(Attributes.ARIA_DISABLED)
+      mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.ARIA_DISABLED)
           .and.returnValue('true');
       expect(foundation.isFocusable()).toBe(false);
     });
 
     it('#isSelected returns true if aria-checked == true', () => {
       const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getAttribute.withArgs(Attributes.ARIA_SELECTED)
+      mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.ARIA_SELECTED)
           .and.returnValue('true');
       expect(foundation.isSelected()).toBe(true);
     });
 
-    it(`#isSelected returns false if ${Attributes.ARIA_SELECTED} != true`,
+    it(`#isSelected returns false if ${
+           MDCChipActionAttributes.ARIA_SELECTED} != true`,
        () => {
          const {foundation, mockAdapter} = setupTest();
-         mockAdapter.getAttribute.withArgs(Attributes.ARIA_SELECTED)
+         mockAdapter.getAttribute
+             .withArgs(MDCChipActionAttributes.ARIA_SELECTED)
              .and.returnValue('false');
          expect(foundation.isSelected()).toBe(false);
        });
 
-    it(`#handleClick does not emit ${Events.INTERACTION} when disabled`, () => {
-      const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getAttribute.withArgs(Attributes.ARIA_DISABLED)
-          .and.returnValue('true');
-      foundation.handleClick();
-      expect(mockAdapter.emitEvent).not.toHaveBeenCalled();
-    });
+    it(`#handleClick does not emit ${
+           MDCChipActionEvents.INTERACTION} when disabled`,
+       () => {
+         const {foundation, mockAdapter} = setupTest();
+         mockAdapter.getAttribute
+             .withArgs(MDCChipActionAttributes.ARIA_DISABLED)
+             .and.returnValue('true');
+         foundation.handleClick();
+         expect(mockAdapter.emitEvent).not.toHaveBeenCalled();
+       });
 
-    it(`#handleClick emits ${Events.INTERACTION} with detail`, () => {
-      const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getElementID.and.returnValue('foo');
-      foundation.handleClick();
-      expect(mockAdapter.emitEvent).toHaveBeenCalledWith(Events.INTERACTION, {
-        actionID: 'foo',
-        source: ActionType.UNSPECIFIED,
-        trigger: InteractionTrigger.CLICK,
-      });
-    });
+    it(`#handleClick emits ${MDCChipActionEvents.INTERACTION} with detail`,
+       () => {
+         const {foundation, mockAdapter} = setupTest();
+         mockAdapter.getElementID.and.returnValue('foo');
+         foundation.handleClick();
+         expect(mockAdapter.emitEvent)
+             .toHaveBeenCalledWith(MDCChipActionEvents.INTERACTION, {
+               actionID: 'foo',
+               source: MDCChipActionType.UNSPECIFIED,
+               trigger: MDCChipActionInteractionTrigger.CLICK,
+             });
+       });
   });
 
   describe('[non-deletable]', () => {
@@ -185,12 +198,13 @@ describe('MDCChipActionFoundation', () => {
     };
 
     const emittingKeys = [
-      {key: 'Enter', trigger: InteractionTrigger.ENTER_KEY},
-      {key: 'Spacebar', trigger: InteractionTrigger.SPACEBAR_KEY},
+      {key: 'Enter', trigger: MDCChipActionInteractionTrigger.ENTER_KEY},
+      {key: 'Spacebar', trigger: MDCChipActionInteractionTrigger.SPACEBAR_KEY},
     ];
 
     for (const {key, trigger} of emittingKeys) {
-      it(`#handleKeydown(${key}) emits ${Events.INTERACTION} with detail`,
+      it(`#handleKeydown(${key}) emits ${
+             MDCChipActionEvents.INTERACTION} with detail`,
          () => {
            const {foundation, mockAdapter} = setupTest();
            const evt = {
@@ -199,9 +213,9 @@ describe('MDCChipActionFoundation', () => {
            } as KeyboardEvent;
            foundation.handleKeydown(evt);
            expect(mockAdapter.emitEvent)
-               .toHaveBeenCalledWith(Events.INTERACTION, {
+               .toHaveBeenCalledWith(MDCChipActionEvents.INTERACTION, {
                  actionID: '',
-                 source: ActionType.UNSPECIFIED,
+                 source: MDCChipActionType.UNSPECIFIED,
                  trigger,
                });
            expect(evt.preventDefault).toHaveBeenCalled();
@@ -214,11 +228,13 @@ describe('MDCChipActionFoundation', () => {
     ];
 
     for (const key of nonemittingKeys) {
-      it(`#handleKeydown(${key}) does not emit ${Events.INTERACTION}`, () => {
-        const {foundation, mockAdapter} = setupTest();
-        foundation.handleKeydown({key} as KeyboardEvent);
-        expect(mockAdapter.emitEvent).not.toHaveBeenCalled();
-      });
+      it(`#handleKeydown(${key}) does not emit ${
+             MDCChipActionEvents.INTERACTION}`,
+         () => {
+           const {foundation, mockAdapter} = setupTest();
+           foundation.handleKeydown({key} as KeyboardEvent);
+           expect(mockAdapter.emitEvent).not.toHaveBeenCalled();
+         });
     }
   });
 
@@ -230,14 +246,18 @@ describe('MDCChipActionFoundation', () => {
     };
 
     const emittingKeys = [
-      {key: 'Enter', trigger: InteractionTrigger.ENTER_KEY},
-      {key: 'Spacebar', trigger: InteractionTrigger.SPACEBAR_KEY},
-      {key: 'Backspace', trigger: InteractionTrigger.BACKSPACE_KEY},
-      {key: 'Delete', trigger: InteractionTrigger.DELETE_KEY},
+      {key: 'Enter', trigger: MDCChipActionInteractionTrigger.ENTER_KEY},
+      {key: 'Spacebar', trigger: MDCChipActionInteractionTrigger.SPACEBAR_KEY},
+      {
+        key: 'Backspace',
+        trigger: MDCChipActionInteractionTrigger.BACKSPACE_KEY
+      },
+      {key: 'Delete', trigger: MDCChipActionInteractionTrigger.DELETE_KEY},
     ];
 
     for (const {key, trigger} of emittingKeys) {
-      it(`#handleKeydown(${key}) emits ${Events.INTERACTION} with detail`,
+      it(`#handleKeydown(${key}) emits ${
+             MDCChipActionEvents.INTERACTION} with detail`,
          () => {
            const {foundation, mockAdapter} = setupTest();
            const evt = {
@@ -246,9 +266,9 @@ describe('MDCChipActionFoundation', () => {
            } as KeyboardEvent;
            foundation.handleKeydown(evt);
            expect(mockAdapter.emitEvent)
-               .toHaveBeenCalledWith(Events.INTERACTION, {
+               .toHaveBeenCalledWith(MDCChipActionEvents.INTERACTION, {
                  actionID: '',
-                 source: ActionType.UNSPECIFIED,
+                 source: MDCChipActionType.UNSPECIFIED,
                  trigger,
                });
            expect(evt.preventDefault).toHaveBeenCalled();
@@ -263,51 +283,60 @@ describe('MDCChipActionFoundation', () => {
       return {foundation, mockAdapter};
     };
 
-    it(`#setSelected(true) sets ${Attributes.ARIA_SELECTED} to true`, () => {
-      const {foundation, mockAdapter} = setupTest();
-      foundation.setSelected(true);
-      expect(mockAdapter.setAttribute)
-          .toHaveBeenCalledWith(Attributes.ARIA_SELECTED, 'true');
-    });
+    it(`#setSelected(true) sets ${
+           MDCChipActionAttributes.ARIA_SELECTED} to true`,
+       () => {
+         const {foundation, mockAdapter} = setupTest();
+         foundation.setSelected(true);
+         expect(mockAdapter.setAttribute)
+             .toHaveBeenCalledWith(
+                 MDCChipActionAttributes.ARIA_SELECTED, 'true');
+       });
 
-    it(`#setSelected(false) sets ${Attributes.ARIA_SELECTED} to false`, () => {
-      const {foundation, mockAdapter} = setupTest();
-      foundation.setSelected(false);
-      expect(mockAdapter.setAttribute)
-          .toHaveBeenCalledWith(Attributes.ARIA_SELECTED, 'false');
-    });
+    it(`#setSelected(false) sets ${
+           MDCChipActionAttributes.ARIA_SELECTED} to false`,
+       () => {
+         const {foundation, mockAdapter} = setupTest();
+         foundation.setSelected(false);
+         expect(mockAdapter.setAttribute)
+             .toHaveBeenCalledWith(
+                 MDCChipActionAttributes.ARIA_SELECTED, 'false');
+       });
 
-    it(`#setDisabled(true) sets ${Attributes.ARIA_DISABLED} to true`, () => {
-      const {foundation, mockAdapter} = setupTest();
-      foundation.setDisabled(true);
-      expect(mockAdapter.setAttribute)
-          .toHaveBeenCalledWith(Attributes.ARIA_DISABLED, 'true');
-    });
+    it(`#setDisabled(true) sets ${
+           MDCChipActionAttributes.ARIA_DISABLED} to true`,
+       () => {
+         const {foundation, mockAdapter} = setupTest();
+         foundation.setDisabled(true);
+         expect(mockAdapter.setAttribute)
+             .toHaveBeenCalledWith(
+                 MDCChipActionAttributes.ARIA_DISABLED, 'true');
+       });
 
     it(`#setDisabled(false) sets aria-hidden="false"`, () => {
       const {foundation, mockAdapter} = setupTest();
       foundation.setDisabled(false);
       expect(mockAdapter.setAttribute)
-          .toHaveBeenCalledWith(Attributes.ARIA_DISABLED, 'false');
+          .toHaveBeenCalledWith(MDCChipActionAttributes.ARIA_DISABLED, 'false');
     });
 
     it(`#setDisabled(true) sets aria-hidden="true"`, () => {
       const {foundation, mockAdapter} = setupTest();
       foundation.setDisabled(true);
       expect(mockAdapter.setAttribute)
-          .toHaveBeenCalledWith(Attributes.ARIA_DISABLED, 'true');
+          .toHaveBeenCalledWith(MDCChipActionAttributes.ARIA_DISABLED, 'true');
     });
 
     it(`#isDisabled() return true when aria-hidden="true"`, () => {
       const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getAttribute.withArgs(Attributes.ARIA_DISABLED)
+      mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.ARIA_DISABLED)
           .and.returnValue('true');
       expect(foundation.isDisabled()).toBeTrue();
     });
 
     it(`#isDisabled() return false when aria-hidden="false"`, () => {
       const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getAttribute.withArgs(Attributes.ARIA_DISABLED)
+      mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.ARIA_DISABLED)
           .and.returnValue('false');
       expect(foundation.isDisabled()).toBeFalse();
     });
@@ -320,7 +349,8 @@ describe('MDCChipActionFoundation', () => {
       return {foundation, mockAdapter};
     };
 
-    it(`#setSelected(true|false) does not set ${Attributes.ARIA_SELECTED}`,
+    it(`#setSelected(true|false) does not set ${
+           MDCChipActionAttributes.ARIA_SELECTED}`,
        () => {
          const {foundation, mockAdapter} = setupTest();
          foundation.setSelected(true);
@@ -332,19 +362,19 @@ describe('MDCChipActionFoundation', () => {
       const {foundation, mockAdapter} = setupTest();
       foundation.setDisabled(false);
       expect(mockAdapter.removeAttribute)
-          .toHaveBeenCalledWith(Attributes.DISABLED);
+          .toHaveBeenCalledWith(MDCChipActionAttributes.DISABLED);
     });
 
     it(`#setDisabled(true) sets disabled="true"`, () => {
       const {foundation, mockAdapter} = setupTest();
       foundation.setDisabled(true);
       expect(mockAdapter.setAttribute)
-          .toHaveBeenCalledWith(Attributes.DISABLED, 'true');
+          .toHaveBeenCalledWith(MDCChipActionAttributes.DISABLED, 'true');
     });
 
     it(`#isDisabled() return true when the disabled attribute exists`, () => {
       const {foundation, mockAdapter} = setupTest();
-      mockAdapter.getAttribute.withArgs(Attributes.DISABLED)
+      mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.DISABLED)
           .and.returnValue('');
       expect(foundation.isDisabled()).toBeTrue();
     });
@@ -352,7 +382,7 @@ describe('MDCChipActionFoundation', () => {
     it(`#isDisabled() return false when the disabled attribute is absent`,
        () => {
          const {foundation, mockAdapter} = setupTest();
-         mockAdapter.getAttribute.withArgs(Attributes.DISABLED)
+         mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.DISABLED)
              .and.returnValue(null);
          expect(foundation.isDisabled()).toBeFalse();
        });

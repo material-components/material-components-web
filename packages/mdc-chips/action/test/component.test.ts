@@ -23,7 +23,7 @@
 
 
 import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
-import {ActionType, Attributes, Events, FocusBehavior, MDCChipAction} from '../index';
+import {MDCChipAction, MDCChipActionAttributes, MDCChipActionEvents, MDCChipActionFocusBehavior, MDCChipActionType} from '../index';
 
 interface TestOptions {
   readonly isDisabled?: boolean;
@@ -108,7 +108,7 @@ describe('MDCChipAction', () => {
     expect(component.isDisabled()).toBeFalse();
   });
 
-  it(`#setFocus(${FocusBehavior.FOCUSABLE_AND_FOCUSED}) gives` +
+  it(`#setFocus(${MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED}) gives` +
          ` focus to the root`,
      () => {
        const {component, root} = setupTest({
@@ -116,31 +116,31 @@ describe('MDCChipAction', () => {
        });
 
        document.body.appendChild(root);
-       component.setFocus(FocusBehavior.FOCUSABLE_AND_FOCUSED);
+       component.setFocus(MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
        expect(root.getAttribute('tabindex')).toBe('0');
        expect(document.activeElement).toBe(root);
        document.body.removeChild(root);
      });
 
-  it(`#setFocus(${FocusBehavior.FOCUSABLE}) makes the` +
+  it(`#setFocus(${MDCChipActionFocusBehavior.FOCUSABLE}) makes the` +
          ` root focusable`,
      () => {
        const {component, root} = setupTest({
          isFocusable: true,
        });
 
-       component.setFocus(FocusBehavior.FOCUSABLE);
+       component.setFocus(MDCChipActionFocusBehavior.FOCUSABLE);
        expect(root.getAttribute('tabindex')).toBe('0');
      });
 
-  it(`#setFocus(${FocusBehavior.NOT_FOCUSABLE}) makes the` +
+  it(`#setFocus(${MDCChipActionFocusBehavior.NOT_FOCUSABLE}) makes the` +
          ` root unfocusable`,
      () => {
        const {component, root} = setupTest({
          isFocusable: true,
        });
 
-       component.setFocus(FocusBehavior.NOT_FOCUSABLE);
+       component.setFocus(MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(root.getAttribute('tabindex')).toBe('-1');
      });
 
@@ -165,7 +165,8 @@ describe('MDCChipAction', () => {
     });
 
     component.setSelected(true);
-    expect(root.getAttribute(Attributes.ARIA_SELECTED)).toBe('true');
+    expect(root.getAttribute(MDCChipActionAttributes.ARIA_SELECTED))
+        .toBe('true');
   });
 
   it('#setSelected(false) updates the selected state when selectable', () => {
@@ -175,7 +176,8 @@ describe('MDCChipAction', () => {
     });
 
     component.setSelected(false);
-    expect(root.getAttribute(Attributes.ARIA_SELECTED)).toBe('false');
+    expect(root.getAttribute(MDCChipActionAttributes.ARIA_SELECTED))
+        .toBe('false');
   });
 
   it('#isSelected() returns true when selected', () => {
@@ -215,66 +217,70 @@ describe('MDCChipAction', () => {
     expect(component.isSelectable()).toBe(false);
   });
 
-  it(`#actionType() returns ${ActionType.TRAILING} for trailing action`, () => {
-    const {component} = setupTest({
-      isTrailing: true,
-      isFocusable: true,
-    });
+  it(`#actionType() returns ${MDCChipActionType.TRAILING} for trailing action`,
+     () => {
+       const {component} = setupTest({
+         isTrailing: true,
+         isFocusable: true,
+       });
 
-    expect(component.actionType()).toBe(ActionType.TRAILING);
-  });
+       expect(component.actionType()).toBe(MDCChipActionType.TRAILING);
+     });
 
-  it(`#actionType() returns ${ActionType.PRIMARY} for primary action`, () => {
-    const {component} = setupTest({
-      isFocusable: true,
-    });
+  it(`#actionType() returns ${MDCChipActionType.PRIMARY} for primary action`,
+     () => {
+       const {component} = setupTest({
+         isFocusable: true,
+       });
 
-    expect(component.actionType()).toBe(ActionType.PRIMARY);
-  });
+       expect(component.actionType()).toBe(MDCChipActionType.PRIMARY);
+     });
 
-  it(`click on root emits ${Events.INTERACTION}`, () => {
+  it(`click on root emits ${MDCChipActionEvents.INTERACTION}`, () => {
     const {root, component} = setupTest();
 
     const handler = jasmine.createSpy('emitInteractionHandler');
-    component.listen(Events.INTERACTION, handler);
+    component.listen(MDCChipActionEvents.INTERACTION, handler);
     emitEvent(root, 'click', {bubbles: true});
-    component.unlisten(Events.INTERACTION, handler);
+    component.unlisten(MDCChipActionEvents.INTERACTION, handler);
     expect(handler).toHaveBeenCalled();
   });
 
-  it(`click on root does not emit ${Events.INTERACTION} when disabled`, () => {
-    const {root, component} = setupTest({
-      isDisabled: true,
-    });
+  it(`click on root does not emit ${
+         MDCChipActionEvents.INTERACTION} when disabled`,
+     () => {
+       const {root, component} = setupTest({
+         isDisabled: true,
+       });
 
-    const handler = jasmine.createSpy('emitInteractionHandler');
-    component.listen(Events.INTERACTION, handler);
-    emitEvent(root, 'click', {bubbles: true});
-    component.unlisten(Events.INTERACTION, handler);
-    expect(handler).not.toHaveBeenCalled();
-  });
+       const handler = jasmine.createSpy('emitInteractionHandler');
+       component.listen(MDCChipActionEvents.INTERACTION, handler);
+       emitEvent(root, 'click', {bubbles: true});
+       component.unlisten(MDCChipActionEvents.INTERACTION, handler);
+       expect(handler).not.toHaveBeenCalled();
+     });
 
-  it(`keydown on root emits ${Events.INTERACTION}`, () => {
+  it(`keydown on root emits ${MDCChipActionEvents.INTERACTION}`, () => {
     const {root, component} = setupTest();
 
     const handler = jasmine.createSpy('emitInteractionHandler');
-    component.listen(Events.INTERACTION, handler);
+    component.listen(MDCChipActionEvents.INTERACTION, handler);
     root.dispatchEvent(createKeyboardEvent('keydown', {
       key: 'Enter',
     }));
-    component.unlisten(Events.INTERACTION, handler);
+    component.unlisten(MDCChipActionEvents.INTERACTION, handler);
     expect(handler).toHaveBeenCalled();
   });
 
-  it(`keydown on root emits ${Events.NAVIGATION}`, () => {
+  it(`keydown on root emits ${MDCChipActionEvents.NAVIGATION}`, () => {
     const {root, component} = setupTest();
 
     const handler = jasmine.createSpy('emitInteractionHandler');
-    component.listen(Events.NAVIGATION, handler);
+    component.listen(MDCChipActionEvents.NAVIGATION, handler);
     root.dispatchEvent(createKeyboardEvent('keydown', {
       key: 'ArrowLeft',
     }));
-    component.unlisten(Events.NAVIGATION, handler);
+    component.unlisten(MDCChipActionEvents.NAVIGATION, handler);
     expect(handler).toHaveBeenCalled();
   });
 
@@ -283,8 +289,8 @@ describe('MDCChipAction', () => {
     component.destroy();
 
     const handler = jasmine.createSpy('handler');
-    component.listen(Events.INTERACTION, handler);
-    component.listen(Events.NAVIGATION, handler);
+    component.listen(MDCChipActionEvents.INTERACTION, handler);
+    component.listen(MDCChipActionEvents.NAVIGATION, handler);
     emitEvent(root, 'click', {bubbles: true});
     root.dispatchEvent(createKeyboardEvent('keydown', {
       key: 'Spacebar',

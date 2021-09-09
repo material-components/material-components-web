@@ -25,7 +25,7 @@ import {DATA_MDC_DOM_ANNOUNCE} from '../../../mdc-dom/announce';
 import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {createMockFoundation} from '../../../../testing/helpers/foundation';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
-import {ActionType} from '../../action/constants';
+import {MDCChipActionType} from '../../action/constants';
 import {Animation, CssClasses, Events} from '../../chip/constants';
 import {MDCChipAnimationEventDetail} from '../../chip/types';
 import {MDCChipSet, MDCChipSetFoundation} from '../index';
@@ -264,7 +264,7 @@ describe('MDCChipSet', () => {
       isMultiselectable: true,
     });
 
-    component.setChipSelected(1, ActionType.PRIMARY, true);
+    component.setChipSelected(1, MDCChipActionType.PRIMARY, true);
 
     expect(root.querySelector('#c1 .mdc-evolution-chip__action')!.getAttribute(
                'aria-selected'))
@@ -281,7 +281,7 @@ describe('MDCChipSet', () => {
       isMultiselectable: true,
     });
 
-    expect(component.isChipSelected(0, ActionType.PRIMARY)).toBe(true);
+    expect(component.isChipSelected(0, MDCChipActionType.PRIMARY)).toBe(true);
   });
 
   it('#isChipSelected() returns false if the chip is not selected', () => {
@@ -294,7 +294,7 @@ describe('MDCChipSet', () => {
       isMultiselectable: true,
     });
 
-    expect(component.isChipSelected(1, ActionType.PRIMARY)).toBe(false);
+    expect(component.isChipSelected(1, MDCChipActionType.PRIMARY)).toBe(false);
   });
 
   it('#removeChip() proxies to the foundation', () => {

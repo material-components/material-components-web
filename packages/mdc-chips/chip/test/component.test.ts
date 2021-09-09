@@ -23,7 +23,7 @@
 
 import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
-import {ActionType, FocusBehavior} from '../../action/constants';
+import {MDCChipActionType, MDCChipActionFocusBehavior} from '../../action/constants';
 import {Animation, CssClasses, Events, MDCChip} from '../index';
 
 interface ActionOptions {
@@ -140,7 +140,7 @@ describe('MDCChipAction', () => {
     });
 
     expect(component.getActions()).toEqual([
-      ActionType.PRIMARY, ActionType.TRAILING
+      MDCChipActionType.PRIMARY, MDCChipActionType.TRAILING
     ]);
   });
 
@@ -161,7 +161,7 @@ describe('MDCChipAction', () => {
       id: 'c0',
     });
 
-    expect(component.isActionFocusable(ActionType.PRIMARY)).toBe(true);
+    expect(component.isActionFocusable(MDCChipActionType.PRIMARY)).toBe(true);
   });
 
   it(`#isActionSelectable() returns true when configured`, () => {
@@ -171,7 +171,7 @@ describe('MDCChipAction', () => {
       id: 'c0',
     });
 
-    expect(component.isActionSelectable(ActionType.PRIMARY)).toBe(true);
+    expect(component.isActionSelectable(MDCChipActionType.PRIMARY)).toBe(true);
   });
 
   it(`#isActionSelected() returns true when configured`, () => {
@@ -181,8 +181,8 @@ describe('MDCChipAction', () => {
       id: 'c0',
     });
 
-    component.setActionSelected(ActionType.PRIMARY, true);
-    expect(component.isActionSelected(ActionType.PRIMARY)).toBe(true);
+    component.setActionSelected(MDCChipActionType.PRIMARY, true);
+    expect(component.isActionSelected(MDCChipActionType.PRIMARY)).toBe(true);
   });
 
   it(`#setActionFocus() updates the focus when configured`, () => {
@@ -191,7 +191,7 @@ describe('MDCChipAction', () => {
       id: 'c0',
     });
 
-    component.setActionFocus(ActionType.PRIMARY, FocusBehavior.FOCUSABLE);
+    component.setActionFocus(MDCChipActionType.PRIMARY, MDCChipActionFocusBehavior.FOCUSABLE);
     expect(root.querySelector('.mdc-evolution-chip__action')!.getAttribute(
                'tabindex'))
         .toBe('0');
@@ -203,7 +203,7 @@ describe('MDCChipAction', () => {
       id: 'c0',
     });
 
-    component.setActionSelected(ActionType.PRIMARY, true);
+    component.setActionSelected(MDCChipActionType.PRIMARY, true);
     expect(root.querySelector('.mdc-evolution-chip__action')!.getAttribute(
                'aria-selected'))
         .toBe('true');

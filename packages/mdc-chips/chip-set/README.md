@@ -85,11 +85,11 @@ Method Signature | Description
 `getChipIndexByID(chipID: string): number` | Returns the index of the chip with the given `id`.
 `getChipIdAtIndex(index: number): string` | Returns the `id` of the chip at the given index.
 `getSelectedChipIndexes(): ReadonlySet<number>` | Returns the indexes of the selcted chips (if any). Only supported for [listbox chip sets](#listbox-chip-sets).
-`setChipSelected(index: number, action: ActionType, isSelected: boolean): void` | Sets the chip to be selected at the given index. Only supported for [listbox chip sets](#listbox-chip-sets).
-`isChipSelected(index: number, action: ActionType): boolean` | Returns the selected state of the chip at the given index. Only supported for [listbox chip sets](#listbox-chip-sets).
+`setChipSelected(index: number, action: MDCChipActionType, isSelected: boolean): void` | Sets the chip to be selected at the given index. Only supported for [listbox chip sets](#listbox-chip-sets).
+`isChipSelected(index: number, action: MDCChipActionType): boolean` | Returns the selected state of the chip at the given index. Only supported for [listbox chip sets](#listbox-chip-sets).
 `removeChip(index: number): boolean` | Returns the selected state of the chip at the given index. Only supported for [listbox chip sets](#listbox-chip-sets).
 
-### `MDCChipSet` events
+### `MDCChipSetEvents`
 
 Event name | Detail | Description
 --- | --- | ---
@@ -104,16 +104,16 @@ Method Signature | Description
 `announceMessage(message: string): void` | Announces the message to screen readers via an [`aria-live` region](https://www.w3.org/TR/wai-aria-1.1/#aria-live).
 `emitEvent<D extends object>(eventName: Events, eventDetail: D): void` | Emits the given `eventName` with the given `eventDetail`.
 `getAttribute(attrName: Attributes): string\|null` | Returns the value for the given if attribute or `null` if it does not exist.
-`getChipActionsAtIndex(index: number): ActionType[]` | Returns the actions provided by the child chip at the given index.
+`getChipActionsAtIndex(index: number): MDCChipActionType[]` | Returns the actions provided by the child chip at the given index.
 `getChipCount(): number` | Returns the number of child chips.
 `getChipIdAtIndex(index: number): string` | Returns the ID of the chip at the given index.
 `getChipIndexById(chipID: string): number` | Returns the index of the child chip with the matching ID.
-`isChipFocusableAtIndex(index: number, actionType: ActionType): boolean` | Proxies to the `MDCChip#isActionFocusable` method.
-`isChipSelectableAtIndex(index: number, actionType: ActionType): boolean` | Proxies to the `MDCChip#isActionSelectable` method.
-`isChipSelectedAtIndex(index: number, actionType: ActionType): boolean` | Proxies to the `MDCChip#isActionSelected` method.
+`isChipFocusableAtIndex(index: number, actionType: MDCChipSetEvents): boolean` | Proxies to the `MDCChip#isActionFocusable` method.
+`isChipSelectableAtIndex(index: number, actionType: MDCChipSetEvents): boolean` | Proxies to the `MDCChip#isActionSelectable` method.
+`isChipSelectedAtIndex(index: number, actionType: MDCChipSetEvents): boolean` | Proxies to the `MDCChip#isActionSelected` method.
 `removeChipAtIndex(index: number): void` | Removes the chip at the given index.
-`setChipFocusAtIndex(index: number, action: ActionType, focus: FocusBehavior): void` | Proxies to the `MDCChip#setActionFocus` method.
-`setChipSelectedAtIndex(index: number, actionType: ActionType, isSelected: boolean): void` | Proxies to the `MDCChip#setActionSelected` method.
+`setChipFocusAtIndex(index: number, action: MDCChipSetEvents, focus: FocusBehavior): void` | Proxies to the `MDCChip#setActionFocus` method.
+`setChipSelectedAtIndex(index: number, actionType: MDCChipSetEvents, isSelected: boolean): void` | Proxies to the `MDCChip#setActionSelected` method.
 `startChipAnimationAtIndex(index: number, animation: Animation): void` | Starts the chip animation at the given index.
 
 ### `MDCChipSetFoundation`
@@ -124,8 +124,8 @@ Method Signature | Description
 `handleChipInteraction(event: ChipInteractionEvent): void` | Handles the chip interaction event.
 `handleChipNavigation(event: ChipNavigationEvent): void` | Handles the chip navigation event.
 `getSelectedChipIndexes(): ReadonlySet<number>` | Returns the unique selected indexes of the chips (if any).
-`setChipSelected(index: number, action: ActionType, isSelected: boolean): void` | Sets the selected state of the chip at the given index and action.
-`isChipSelected(index: number, action: ActionType): boolean` | Returns the selected state of the chip at the given index and action.
+`setChipSelected(index: number, action: MDCChipSetEvents, isSelected: boolean): void` | Sets the selected state of the chip at the given index and action.
+`isChipSelected(index: number, action: MDCChipSetEvents): boolean` | Returns the selected state of the chip at the given index and action.
 `removeChip(index: number): void` | Removes the chip at the given index.
 `addChip(index: number): void` | Animates the addition of the chip at the given index.
 

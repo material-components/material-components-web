@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {ActionType} from './constants';
+import {MDCChipActionType} from './constants';
 import {MDCChipActionFoundation} from './foundation';
 
 /**
@@ -34,7 +34,7 @@ export class MDCChipTrailingActionFoundation extends MDCChipActionFoundation {
   }
 
   actionType() {
-    return ActionType.TRAILING;
+    return MDCChipActionType.TRAILING;
   }
 
   protected shouldEmitInteractionOnRemoveKey() {

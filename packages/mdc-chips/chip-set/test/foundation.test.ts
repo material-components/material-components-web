@@ -22,14 +22,14 @@
  */
 
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
-import {ActionType, FocusBehavior} from '../../action/constants';
+import {MDCChipActionFocusBehavior, MDCChipActionType} from '../../action/constants';
 import {Animation} from '../../chip/constants';
 import {Attributes, Events} from '../constants';
 import {MDCChipSetFoundation} from '../foundation';
 import {ChipAnimationEvent, ChipInteractionEvent, ChipNavigationEvent} from '../types';
 
 interface FakeAction {
-  type: ActionType;
+  type: MDCChipActionType;
   isSelectable: boolean;
   isSelected: boolean;
   isFocusable: boolean;
@@ -44,13 +44,13 @@ function fakeMultiActionChip(id: string): FakeChip {
   return {
     actions: [
       {
-        type: ActionType.PRIMARY,
+        type: MDCChipActionType.PRIMARY,
         isSelectable: false,
         isSelected: false,
         isFocusable: true
       },
       {
-        type: ActionType.TRAILING,
+        type: MDCChipActionType.TRAILING,
         isSelectable: false,
         isSelected: false,
         isFocusable: true
@@ -64,13 +64,13 @@ function fakeSingleActionChip(id: string): FakeChip {
   return {
     actions: [
       {
-        type: ActionType.PRIMARY,
+        type: MDCChipActionType.PRIMARY,
         isSelectable: false,
         isSelected: false,
         isFocusable: true
       },
       {
-        type: ActionType.TRAILING,
+        type: MDCChipActionType.TRAILING,
         isSelectable: false,
         isSelected: false,
         isFocusable: false
@@ -84,13 +84,13 @@ function fakeDisabledMultiActionChip(id: string): FakeChip {
   return {
     actions: [
       {
-        type: ActionType.PRIMARY,
+        type: MDCChipActionType.PRIMARY,
         isSelectable: false,
         isSelected: false,
         isFocusable: false
       },
       {
-        type: ActionType.TRAILING,
+        type: MDCChipActionType.TRAILING,
         isSelectable: false,
         isSelected: false,
         isFocusable: false
@@ -103,7 +103,7 @@ function fakeDisabledMultiActionChip(id: string): FakeChip {
 function fakeSelectableChip(id: string, isSelected: boolean = false): FakeChip {
   return {
     actions: [{
-      type: ActionType.PRIMARY,
+      type: MDCChipActionType.PRIMARY,
       isSelectable: true,
       isFocusable: true,
       isSelected
@@ -149,7 +149,7 @@ describe('MDCChipSetFoundation', () => {
       return null;
     });
     mockAdapter.isChipSelectableAtIndex.and.callFake(
-        (index: number, action: ActionType) => {
+        (index: number, action: MDCChipActionType) => {
           if (index < 0 || index >= chips.length) {
             return false;
           }
@@ -160,7 +160,7 @@ describe('MDCChipSetFoundation', () => {
           return actions[0].isSelectable;
         });
     mockAdapter.isChipSelectedAtIndex.and.callFake(
-        (index: number, action: ActionType) => {
+        (index: number, action: MDCChipActionType) => {
           if (index < 0 || index >= chips.length) {
             return false;
           }
@@ -171,7 +171,7 @@ describe('MDCChipSetFoundation', () => {
           return actions[0].isSelected;
         });
     mockAdapter.isChipFocusableAtIndex.and.callFake(
-        (index: number, action: ActionType) => {
+        (index: number, action: MDCChipActionType) => {
           if (index < 0 || index >= chips.length) {
             return false;
           }
@@ -199,7 +199,7 @@ describe('MDCChipSetFoundation', () => {
       supportsMultiSelection: false,
     });
     foundation.handleChipInteraction({
-      detail: {source: ActionType.PRIMARY, chipID: 'c0'},
+      detail: {source: MDCChipActionType.PRIMARY, chipID: 'c0'},
     } as ChipInteractionEvent);
 
     expect(mockAdapter.emitEvent).toHaveBeenCalledWith(Events.INTERACTION, {
@@ -218,11 +218,12 @@ describe('MDCChipSetFoundation', () => {
       supportsMultiSelection: false,
     });
     foundation.handleChipInteraction({
-      detail: {source: ActionType.PRIMARY, chipID: 'c0'},
+      detail: {source: MDCChipActionType.PRIMARY, chipID: 'c0'},
     } as ChipInteractionEvent);
 
     expect(mockAdapter.setChipFocusAtIndex)
-        .toHaveBeenCalledWith(0, ActionType.PRIMARY, FocusBehavior.FOCUSABLE);
+        .toHaveBeenCalledWith(
+            0, MDCChipActionType.PRIMARY, MDCChipActionFocusBehavior.FOCUSABLE);
   });
 
   it(`#handleChipInteraction unfocuses all other chip actions`, () => {
@@ -235,24 +236,29 @@ describe('MDCChipSetFoundation', () => {
       supportsMultiSelection: false,
     });
     foundation.handleChipInteraction({
-      detail: {source: ActionType.PRIMARY, chipID: 'c0'},
+      detail: {source: MDCChipActionType.PRIMARY, chipID: 'c0'},
     } as ChipInteractionEvent);
 
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            0, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            0, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            2, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            2, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
   });
 
   it(`#handleChipInteraction emits a selection event when the chip is selectable`,
@@ -267,7 +273,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipInteraction({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c0',
            isSelectable: true,
            isSelected: false
@@ -293,7 +299,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipInteraction({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c0',
            isSelectable: true,
            isSelected: false
@@ -301,7 +307,7 @@ describe('MDCChipSetFoundation', () => {
        } as ChipInteractionEvent);
 
        expect(mockAdapter.setChipSelectedAtIndex)
-           .toHaveBeenCalledWith(0, ActionType.PRIMARY, true);
+           .toHaveBeenCalledWith(0, MDCChipActionType.PRIMARY, true);
      });
 
   it(`#handleChipInteraction unselects other chips when not multiselectable`,
@@ -316,7 +322,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipInteraction({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c0',
            isSelectable: true,
            isSelected: false
@@ -324,9 +330,9 @@ describe('MDCChipSetFoundation', () => {
        } as ChipInteractionEvent);
 
        expect(mockAdapter.setChipSelectedAtIndex)
-           .toHaveBeenCalledWith(1, ActionType.PRIMARY, false);
+           .toHaveBeenCalledWith(1, MDCChipActionType.PRIMARY, false);
        expect(mockAdapter.setChipSelectedAtIndex)
-           .toHaveBeenCalledWith(2, ActionType.PRIMARY, false);
+           .toHaveBeenCalledWith(2, MDCChipActionType.PRIMARY, false);
      });
 
   it(`#handleChipInteraction only selects the source chip when multiselectable`,
@@ -341,7 +347,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipInteraction({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c0',
            isSelectable: true,
            isSelected: false
@@ -364,7 +370,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipInteraction({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c0',
            isSelectable: true,
            isSelected: false
@@ -372,7 +378,7 @@ describe('MDCChipSetFoundation', () => {
        } as ChipInteractionEvent);
 
        expect(mockAdapter.setChipSelectedAtIndex)
-           .toHaveBeenCalledWith(0, ActionType.PRIMARY, true);
+           .toHaveBeenCalledWith(0, MDCChipActionType.PRIMARY, true);
      });
 
   it(`#handleChipInteraction does not unselect other chips when multiselectable`,
@@ -387,7 +393,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipInteraction({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c0',
            isSelectable: true,
            isSelected: false
@@ -613,7 +619,8 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               1, ActionType.TRAILING, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               1, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipAnimation focuses the nearest focusable chip (0), avoiding disabled chips`,
@@ -638,7 +645,8 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.TRAILING, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               0, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipAnimation focuses the nearest focusable chip (3), avoiding disabled chips`,
@@ -663,7 +671,8 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               3, ActionType.TRAILING, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               3, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipAnimation focuses no chip when all remaining are disabled`,
@@ -724,7 +733,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.TRAILING,
+           source: MDCChipActionType.TRAILING,
            chipID: 'c0',
            key: 'ArrowRight',
            isRTL: false,
@@ -733,7 +742,8 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               1, ActionType.PRIMARY, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               1, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipNavigation unfocuses all other actions with ArrowRight`,
@@ -748,7 +758,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.TRAILING,
+           source: MDCChipActionType.TRAILING,
            chipID: 'c0',
            key: 'ArrowRight',
            isRTL: false,
@@ -757,19 +767,24 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+               0, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+               0, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               1, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+               1, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               2, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+               2, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               2, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+               2, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
      });
 
   it(`#handleChipNavigation focuses the next available action with ArrowLeft`,
@@ -784,7 +799,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c1',
            key: 'ArrowLeft',
            isRTL: false,
@@ -793,7 +808,8 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.TRAILING, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               0, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipNavigation unfocuses all other actions with ArrowLeft`, () => {
@@ -807,7 +823,7 @@ describe('MDCChipSetFoundation', () => {
     });
     foundation.handleChipNavigation({
       detail: {
-        source: ActionType.PRIMARY,
+        source: MDCChipActionType.PRIMARY,
         chipID: 'c1',
         key: 'ArrowLeft',
         isRTL: false,
@@ -816,19 +832,24 @@ describe('MDCChipSetFoundation', () => {
 
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            0, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            0, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            2, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            2, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
   });
 
   it(`#handleChipNavigation focuses the next available action with ArrowRight in RTL`,
@@ -843,7 +864,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c1',
            key: 'ArrowRight',
            isRTL: true,
@@ -852,7 +873,8 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.TRAILING, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               0, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipNavigation unfocuses all other actions with ArrowRight in RTL`,
@@ -867,7 +889,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c1',
            key: 'ArrowRight',
            isRTL: true,
@@ -876,19 +898,24 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+               0, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               1, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+               1, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               1, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+               1, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               2, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+               2, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               2, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+               2, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
      });
 
   it(`#handleChipNavigation focuses the next available action with ArrowLeft in TRL`,
@@ -903,7 +930,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.TRAILING,
+           source: MDCChipActionType.TRAILING,
            chipID: 'c1',
            key: 'ArrowLeft',
            isRTL: true,
@@ -912,7 +939,8 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               2, ActionType.PRIMARY, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               2, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipNavigation unfocuses all other actions with ArrowLeft in RTL`,
@@ -927,7 +955,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.TRAILING,
+           source: MDCChipActionType.TRAILING,
            chipID: 'c1',
            key: 'ArrowLeft',
            isRTL: true,
@@ -936,19 +964,24 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+               0, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+               0, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               1, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+               1, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               1, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+               1, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               2, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+               2, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.NOT_FOCUSABLE);
      });
 
   it(`#handleChipNavigation does not focus unfocusable actions`, () => {
@@ -962,7 +995,7 @@ describe('MDCChipSetFoundation', () => {
     });
     foundation.handleChipNavigation({
       detail: {
-        source: ActionType.TRAILING,
+        source: MDCChipActionType.TRAILING,
         chipID: 'c0',
         key: 'ArrowRight',
         isRTL: false,
@@ -971,10 +1004,12 @@ describe('MDCChipSetFoundation', () => {
 
     expect(mockAdapter.setChipFocusAtIndex)
         .not.toHaveBeenCalledWith(
-            1, ActionType.PRIMARY, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+            1, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
     expect(mockAdapter.setChipFocusAtIndex)
         .not.toHaveBeenCalledWith(
-            1, ActionType.TRAILING, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+            1, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
   });
 
   it(`#handleChipNavigation focuses the next matching action with ArrowUp`,
@@ -989,7 +1024,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c1',
            key: 'ArrowUp',
            isRTL: false,
@@ -998,7 +1033,8 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.PRIMARY, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               0, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipNavigation unfocuses all other actions with ArrowUp`, () => {
@@ -1012,7 +1048,7 @@ describe('MDCChipSetFoundation', () => {
     });
     foundation.handleChipNavigation({
       detail: {
-        source: ActionType.PRIMARY,
+        source: MDCChipActionType.PRIMARY,
         chipID: 'c1',
         key: 'ArrowUp',
         isRTL: false,
@@ -1021,19 +1057,24 @@ describe('MDCChipSetFoundation', () => {
 
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            0, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            0, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            2, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            2, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
   });
 
   it(`#handleChipNavigation focuses the previous matching action with ArrowDown`,
@@ -1048,7 +1089,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c1',
            key: 'ArrowDown',
            isRTL: false,
@@ -1057,7 +1098,8 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               2, ActionType.PRIMARY, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               2, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipNavigation unfocuses all other actions with ArrowDown`, () => {
@@ -1071,7 +1113,7 @@ describe('MDCChipSetFoundation', () => {
     });
     foundation.handleChipNavigation({
       detail: {
-        source: ActionType.PRIMARY,
+        source: MDCChipActionType.PRIMARY,
         chipID: 'c1',
         key: 'ArrowDown',
         isRTL: false,
@@ -1080,19 +1122,24 @@ describe('MDCChipSetFoundation', () => {
 
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            0, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            0, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            0, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            0, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            2, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
   });
 
   it(`#handleChipNavigation focuses the first matching action with Home`,
@@ -1107,7 +1154,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.PRIMARY,
+           source: MDCChipActionType.PRIMARY,
            chipID: 'c2',
            key: 'Home',
            isRTL: false,
@@ -1116,7 +1163,8 @@ describe('MDCChipSetFoundation', () => {
 
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.PRIMARY, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               0, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipNavigation unfocuses all other actions with Home`, () => {
@@ -1130,7 +1178,7 @@ describe('MDCChipSetFoundation', () => {
     });
     foundation.handleChipNavigation({
       detail: {
-        source: ActionType.PRIMARY,
+        source: MDCChipActionType.PRIMARY,
         chipID: 'c2',
         key: 'Home',
         isRTL: false,
@@ -1139,19 +1187,24 @@ describe('MDCChipSetFoundation', () => {
 
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            0, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            0, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            2, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            2, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
   });
 
   it(`#handleChipNavigation focuses the first matching action with End`, () => {
@@ -1165,7 +1218,7 @@ describe('MDCChipSetFoundation', () => {
     });
     foundation.handleChipNavigation({
       detail: {
-        source: ActionType.PRIMARY,
+        source: MDCChipActionType.PRIMARY,
         chipID: 'c0',
         key: 'End',
         isRTL: false,
@@ -1174,7 +1227,8 @@ describe('MDCChipSetFoundation', () => {
 
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.PRIMARY, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+            2, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
   });
 
   it(`#handleChipNavigation unfocuses all other actions with End`, () => {
@@ -1188,7 +1242,7 @@ describe('MDCChipSetFoundation', () => {
     });
     foundation.handleChipNavigation({
       detail: {
-        source: ActionType.PRIMARY,
+        source: MDCChipActionType.PRIMARY,
         chipID: 'c0',
         key: 'End',
         isRTL: false,
@@ -1197,19 +1251,24 @@ describe('MDCChipSetFoundation', () => {
 
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            0, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            0, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            0, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            0, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            1, ActionType.PRIMARY, FocusBehavior.NOT_FOCUSABLE);
+            1, MDCChipActionType.PRIMARY,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
     expect(mockAdapter.setChipFocusAtIndex)
         .toHaveBeenCalledWith(
-            2, ActionType.TRAILING, FocusBehavior.NOT_FOCUSABLE);
+            2, MDCChipActionType.TRAILING,
+            MDCChipActionFocusBehavior.NOT_FOCUSABLE);
   });
 
   it(`#handleChipNavigation does not focus unfocusable actions with ArrowUp`,
@@ -1224,7 +1283,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.TRAILING,
+           source: MDCChipActionType.TRAILING,
            chipID: 'c1',
            key: 'ArrowUp',
            isRTL: false,
@@ -1234,7 +1293,8 @@ describe('MDCChipSetFoundation', () => {
        // Verify that the 0th index trailing action is not focused
        expect(mockAdapter.setChipFocusAtIndex)
            .not.toHaveBeenCalledWith(
-               0, ActionType.TRAILING, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               0, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipNavigation focuses the available focusable action with ArrowUp`,
@@ -1249,7 +1309,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.TRAILING,
+           source: MDCChipActionType.TRAILING,
            chipID: 'c1',
            key: 'ArrowUp',
            isRTL: false,
@@ -1259,7 +1319,8 @@ describe('MDCChipSetFoundation', () => {
        // Verify that the primary action is focused
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               0, ActionType.PRIMARY, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               0, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipNavigation does not focus unfocusable actions with ArrowDown`,
@@ -1274,7 +1335,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.TRAILING,
+           source: MDCChipActionType.TRAILING,
            chipID: 'c0',
            key: 'ArrowDown',
            isRTL: false,
@@ -1284,7 +1345,8 @@ describe('MDCChipSetFoundation', () => {
        // Verify that the 0th index trailing action is not focused
        expect(mockAdapter.setChipFocusAtIndex)
            .not.toHaveBeenCalledWith(
-               1, ActionType.TRAILING, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               1, MDCChipActionType.TRAILING,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#handleChipNavigation focuses the available focusable action with ArrowDown`,
@@ -1299,7 +1361,7 @@ describe('MDCChipSetFoundation', () => {
        });
        foundation.handleChipNavigation({
          detail: {
-           source: ActionType.TRAILING,
+           source: MDCChipActionType.TRAILING,
            chipID: 'c0',
            key: 'ArrowDown',
            isRTL: false,
@@ -1309,7 +1371,8 @@ describe('MDCChipSetFoundation', () => {
        // Verify that the primary action is focused
        expect(mockAdapter.setChipFocusAtIndex)
            .toHaveBeenCalledWith(
-               1, ActionType.PRIMARY, FocusBehavior.FOCUSABLE_AND_FOCUSED);
+               1, MDCChipActionType.PRIMARY,
+               MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED);
      });
 
   it(`#setChipSelected emits a selection event`,
@@ -1322,7 +1385,7 @@ describe('MDCChipSetFoundation', () => {
          ],
          supportsMultiSelection: false,
        });
-       foundation.setChipSelected(0, ActionType.PRIMARY, true);
+       foundation.setChipSelected(0, MDCChipActionType.PRIMARY, true);
 
        expect(mockAdapter.emitEvent).toHaveBeenCalledWith(Events.SELECTION, {
          chipID: 'c0',
@@ -1341,10 +1404,10 @@ describe('MDCChipSetFoundation', () => {
          ],
          supportsMultiSelection: false,
        });
-       foundation.setChipSelected(0, ActionType.PRIMARY, true);
+       foundation.setChipSelected(0, MDCChipActionType.PRIMARY, true);
 
        expect(mockAdapter.setChipSelectedAtIndex)
-           .toHaveBeenCalledWith(0, ActionType.PRIMARY, true);
+           .toHaveBeenCalledWith(0, MDCChipActionType.PRIMARY, true);
      });
 
   it(`#setChipSelected unselects other chips when not multiselectable`, () => {
@@ -1356,12 +1419,12 @@ describe('MDCChipSetFoundation', () => {
       ],
       supportsMultiSelection: false,
     });
-    foundation.setChipSelected(0, ActionType.PRIMARY, true);
+    foundation.setChipSelected(0, MDCChipActionType.PRIMARY, true);
 
     expect(mockAdapter.setChipSelectedAtIndex)
-        .toHaveBeenCalledWith(1, ActionType.PRIMARY, false);
+        .toHaveBeenCalledWith(1, MDCChipActionType.PRIMARY, false);
     expect(mockAdapter.setChipSelectedAtIndex)
-        .toHaveBeenCalledWith(2, ActionType.PRIMARY, false);
+        .toHaveBeenCalledWith(2, MDCChipActionType.PRIMARY, false);
   });
 
   it(`#setChipSelected selects the target chip when multiselectable`, () => {
@@ -1373,10 +1436,10 @@ describe('MDCChipSetFoundation', () => {
       ],
       supportsMultiSelection: true,
     });
-    foundation.setChipSelected(0, ActionType.PRIMARY, true);
+    foundation.setChipSelected(0, MDCChipActionType.PRIMARY, true);
 
     expect(mockAdapter.setChipSelectedAtIndex)
-        .toHaveBeenCalledWith(0, ActionType.PRIMARY, true);
+        .toHaveBeenCalledWith(0, MDCChipActionType.PRIMARY, true);
   });
 
   it(`#setChipSelected does not unselect other chips when multiselectable`,
@@ -1389,7 +1452,7 @@ describe('MDCChipSetFoundation', () => {
          ],
          supportsMultiSelection: true,
        });
-       foundation.setChipSelected(0, ActionType.PRIMARY, true);
+       foundation.setChipSelected(0, MDCChipActionType.PRIMARY, true);
 
        // Only expect it to be called once for the selection
        expect(mockAdapter.setChipSelectedAtIndex).toHaveBeenCalledTimes(1);
@@ -1405,7 +1468,7 @@ describe('MDCChipSetFoundation', () => {
       supportsMultiSelection: true,
     });
 
-    expect(foundation.isChipSelected(0, ActionType.PRIMARY)).toBe(true);
+    expect(foundation.isChipSelected(0, MDCChipActionType.PRIMARY)).toBe(true);
   });
 
   it(`#isChipSelected returns false if the chip is not selected`, () => {
@@ -1418,7 +1481,7 @@ describe('MDCChipSetFoundation', () => {
       supportsMultiSelection: true,
     });
 
-    expect(foundation.isChipSelected(1, ActionType.PRIMARY)).toBe(false);
+    expect(foundation.isChipSelected(1, MDCChipActionType.PRIMARY)).toBe(false);
   });
 
   it(`#getSelectedChipIndexes returns the selected chip indexes`, () => {

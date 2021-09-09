@@ -22,7 +22,7 @@
  */
 
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
-import {ActionType, Attributes} from '../constants';
+import {MDCChipActionAttributes, MDCChipActionType} from '../constants';
 import {MDCChipPrimaryActionFoundation} from '../primary-foundation';
 
 describe('MDCChipPrimaryActionFoundation', () => {
@@ -32,30 +32,30 @@ describe('MDCChipPrimaryActionFoundation', () => {
     return {foundation, mockAdapter};
   };
 
-  it(`#actionType returns "${ActionType.PRIMARY}"`, () => {
+  it(`#actionType returns "${MDCChipActionType.PRIMARY}"`, () => {
     const {foundation} = setupTest();
-    expect(foundation.actionType()).toBe(ActionType.PRIMARY);
+    expect(foundation.actionType()).toBe(MDCChipActionType.PRIMARY);
   });
 
   it(`#isSelectable returns true when role="option"`, () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getAttribute.withArgs(Attributes.ROLE)
+    mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.ROLE)
         .and.returnValue('option');
     expect(foundation.isSelectable()).toBe(true);
   });
 
   it(`#isSelectable returns false when role != "option"`, () => {
     const {foundation, mockAdapter} = setupTest();
-    mockAdapter.getAttribute.withArgs(Attributes.ROLE)
+    mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.ROLE)
         .and.returnValue('button');
     expect(foundation.isSelectable()).toBe(false);
   });
 
   it(`#shouldEmitInteractionOnRemoveKey() returns true if ${
-         Attributes.DATA_DELETABLE} == 'true'`,
+         MDCChipActionAttributes.DATA_DELETABLE} == 'true'`,
      () => {
        const {foundation, mockAdapter} = setupTest();
-       mockAdapter.getAttribute.withArgs(Attributes.DATA_DELETABLE)
+       mockAdapter.getAttribute.withArgs(MDCChipActionAttributes.DATA_DELETABLE)
            .and.returnValue('true');
        expect((foundation as any).shouldEmitInteractionOnRemoveKey())
            .toBe(true);

@@ -25,14 +25,14 @@ import {MDCFoundation} from '@material/base/foundation';
 import {isNavigationEvent, KEY, normalizeKey} from '@material/dom/keyboard';
 
 import {MDCChipActionAdapter} from './adapter';
-import {ActionType, Attributes, Events, FocusBehavior, InteractionTrigger} from './constants';
+import {MDCChipActionAttributes, MDCChipActionEvents, MDCChipActionFocusBehavior, MDCChipActionInteractionTrigger, MDCChipActionType} from './constants';
 import {MDCChipActionInteractionEventDetail, MDCChipActionNavigationEventDetail} from './types';
 
-const triggerMap = new Map<string, InteractionTrigger>();
-triggerMap.set(KEY.SPACEBAR, InteractionTrigger.SPACEBAR_KEY);
-triggerMap.set(KEY.ENTER, InteractionTrigger.ENTER_KEY);
-triggerMap.set(KEY.DELETE, InteractionTrigger.DELETE_KEY);
-triggerMap.set(KEY.BACKSPACE, InteractionTrigger.BACKSPACE_KEY);
+const triggerMap = new Map<string, MDCChipActionInteractionTrigger>();
+triggerMap.set(KEY.SPACEBAR, MDCChipActionInteractionTrigger.SPACEBAR_KEY);
+triggerMap.set(KEY.ENTER, MDCChipActionInteractionTrigger.ENTER_KEY);
+triggerMap.set(KEY.DELETE, MDCChipActionInteractionTrigger.DELETE_KEY);
+triggerMap.set(KEY.BACKSPACE, MDCChipActionInteractionTrigger.BACKSPACE_KEY);
 
 
 /**
@@ -41,7 +41,7 @@ triggerMap.set(KEY.BACKSPACE, InteractionTrigger.BACKSPACE_KEY);
  */
 export abstract class MDCChipActionFoundation extends
     MDCFoundation<MDCChipActionAdapter> {
-  static override get defaultAdapter(): MDCChipActionAdapter {
+  static get defaultAdapter(): MDCChipActionAdapter {
     return {
       emitEvent: () => undefined,
       focus: () => undefined,
@@ -60,7 +60,7 @@ export abstract class MDCChipActionFoundation extends
     // Early exit for cases where the click comes from a source other than the
     // user's pointer (i.e. programmatic click from AT).
     if (this.isDisabled()) return;
-    this.emitInteraction(InteractionTrigger.CLICK);
+    this.emitInteraction(MDCChipActionInteractionTrigger.CLICK);
   }
 
   handleKeydown(event: KeyboardEvent) {
@@ -81,51 +81,53 @@ export abstract class MDCChipActionFoundation extends
   setDisabled(isDisabled: boolean) {
     // Use `aria-disabled` for the selectable (listbox) disabled state
     if (this.isSelectable()) {
-      this.adapter.setAttribute(Attributes.ARIA_DISABLED, `${isDisabled}`);
+      this.adapter.setAttribute(
+          MDCChipActionAttributes.ARIA_DISABLED, `${isDisabled}`);
       return;
     }
 
     if (isDisabled) {
-      this.adapter.setAttribute(Attributes.DISABLED, 'true');
+      this.adapter.setAttribute(MDCChipActionAttributes.DISABLED, 'true');
     } else {
-      this.adapter.removeAttribute(Attributes.DISABLED);
+      this.adapter.removeAttribute(MDCChipActionAttributes.DISABLED);
     }
   }
 
   isDisabled(): boolean {
-    if (this.adapter.getAttribute(Attributes.ARIA_DISABLED) === 'true') {
+    if (this.adapter.getAttribute(MDCChipActionAttributes.ARIA_DISABLED) ===
+        'true') {
       return true;
     }
 
-    if (this.adapter.getAttribute(Attributes.DISABLED) !== null) {
+    if (this.adapter.getAttribute(MDCChipActionAttributes.DISABLED) !== null) {
       return true;
     }
 
     return false;
   }
 
-  setFocus(behavior: FocusBehavior) {
+  setFocus(behavior: MDCChipActionFocusBehavior) {
     // Early exit if not focusable
     if (!this.isFocusable()) {
       return;
     }
 
     // Add it to the tab order and give focus
-    if (behavior === FocusBehavior.FOCUSABLE_AND_FOCUSED) {
-      this.adapter.setAttribute(Attributes.TAB_INDEX, '0');
+    if (behavior === MDCChipActionFocusBehavior.FOCUSABLE_AND_FOCUSED) {
+      this.adapter.setAttribute(MDCChipActionAttributes.TAB_INDEX, '0');
       this.adapter.focus();
       return;
     }
 
     // Add to the tab order
-    if (behavior === FocusBehavior.FOCUSABLE) {
-      this.adapter.setAttribute(Attributes.TAB_INDEX, '0');
+    if (behavior === MDCChipActionFocusBehavior.FOCUSABLE) {
+      this.adapter.setAttribute(MDCChipActionAttributes.TAB_INDEX, '0');
       return;
     }
 
     // Remove it from the tab order
-    if (behavior === FocusBehavior.NOT_FOCUSABLE) {
-      this.adapter.setAttribute(Attributes.TAB_INDEX, '-1');
+    if (behavior === MDCChipActionFocusBehavior.NOT_FOCUSABLE) {
+      this.adapter.setAttribute(MDCChipActionAttributes.TAB_INDEX, '-1');
       return;
     }
   }
@@ -135,7 +137,8 @@ export abstract class MDCChipActionFoundation extends
       return false;
     }
 
-    if (this.adapter.getAttribute(Attributes.ARIA_HIDDEN) === 'true') {
+    if (this.adapter.getAttribute(MDCChipActionAttributes.ARIA_HIDDEN) ===
+        'true') {
       return false;
     }
 
@@ -148,16 +151,18 @@ export abstract class MDCChipActionFoundation extends
       return;
     }
 
-    this.adapter.setAttribute(Attributes.ARIA_SELECTED, `${isSelected}`);
+    this.adapter.setAttribute(
+        MDCChipActionAttributes.ARIA_SELECTED, `${isSelected}`);
   }
 
   isSelected(): boolean {
-    return this.adapter.getAttribute(Attributes.ARIA_SELECTED) === 'true';
+    return this.adapter.getAttribute(MDCChipActionAttributes.ARIA_SELECTED) ===
+        'true';
   }
 
-  private emitInteraction(trigger: InteractionTrigger) {
+  private emitInteraction(trigger: MDCChipActionInteractionTrigger) {
     this.adapter.emitEvent<MDCChipActionInteractionEventDetail>(
-        Events.INTERACTION, {
+        MDCChipActionEvents.INTERACTION, {
           actionID: this.adapter.getElementID(),
           source: this.actionType(),
           trigger,
@@ -166,7 +171,7 @@ export abstract class MDCChipActionFoundation extends
 
   private emitNavigation(key: string) {
     this.adapter.emitEvent<MDCChipActionNavigationEventDetail>(
-        Events.NAVIGATION, {
+        MDCChipActionEvents.NAVIGATION, {
           source: this.actionType(),
           key,
         });
@@ -187,17 +192,17 @@ export abstract class MDCChipActionFoundation extends
     return false;
   }
 
-  private getTriggerFromKey(key: string): InteractionTrigger {
+  private getTriggerFromKey(key: string): MDCChipActionInteractionTrigger {
     const trigger = triggerMap.get(key);
     if (trigger) {
       return trigger;
     }
 
     // Default case, should ideally never be returned
-    return InteractionTrigger.UNSPECIFIED;
+    return MDCChipActionInteractionTrigger.UNSPECIFIED;
   }
 
-  abstract actionType(): ActionType;
+  abstract actionType(): MDCChipActionType;
 
   abstract isSelectable(): boolean;
 

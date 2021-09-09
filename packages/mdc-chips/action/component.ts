@@ -31,7 +31,7 @@ import {MDCRippleCapableSurface} from '@material/ripple/types';
 
 import {MDCChipActionAdapter} from './adapter';
 import {computePrimaryActionRippleClientRect, GRAPHIC_SELECTED_WIDTH_STYLE_PROP} from './component-ripple';
-import {ActionType, CssClasses, FocusBehavior} from './constants';
+import {MDCChipActionCssClasses, MDCChipActionFocusBehavior, MDCChipActionType} from './constants';
 import {MDCChipActionFoundation} from './foundation';
 import {MDCChipPrimaryActionFoundation} from './primary-foundation';
 import {MDCChipTrailingActionFoundation} from './trailing-foundation';
@@ -49,7 +49,7 @@ export type MDCChipActionFactory =
  */
 export class MDCChipAction extends
     MDCComponent<MDCChipActionFoundation> implements MDCRippleCapableSurface {
-  static override attachTo(root: Element): MDCChipAction {
+  static attachTo(root: Element): MDCChipAction {
     return new MDCChipAction(root);
   }
 
@@ -65,7 +65,7 @@ export class MDCChipAction extends
     return this.rippleInstance;
   }
 
-  override initialize(
+  initialize(
       rippleFactory: MDCRippleFactory = (el, foundation) =>
           new MDCRipple(el, foundation)) {
     const rippleAdapter: MDCRippleAdapter = {
@@ -76,7 +76,7 @@ export class MDCChipAction extends
         rippleFactory(this.root, new MDCRippleFoundation(rippleAdapter));
   }
 
-  override initialSyncWithDOM() {
+  initialSyncWithDOM() {
     this.handleClick = () => {
       this.foundation.handleClick();
     };
@@ -89,14 +89,14 @@ export class MDCChipAction extends
     this.listen('keydown', this.handleKeydown);
   }
 
-  override destroy() {
+  destroy() {
     this.ripple.destroy();
     this.unlisten('click', this.handleClick);
     this.unlisten('keydown', this.handleKeydown);
     super.destroy();
   }
 
-  override getDefaultFoundation() {
+  getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.
@@ -117,7 +117,7 @@ export class MDCChipAction extends
       },
     };
 
-    if (this.root.classList.contains(CssClasses.TRAILING_ACTION)) {
+    if (this.root.classList.contains(MDCChipActionCssClasses.TRAILING_ACTION)) {
       return new MDCChipTrailingActionFoundation(adapter);
     }
 
@@ -133,7 +133,7 @@ export class MDCChipAction extends
     return this.foundation.isDisabled();
   }
 
-  setFocus(behavior: FocusBehavior) {
+  setFocus(behavior: MDCChipActionFocusBehavior) {
     this.foundation.setFocus(behavior);
   }
 
@@ -153,13 +153,14 @@ export class MDCChipAction extends
     return this.foundation.isSelectable();
   }
 
-  actionType(): ActionType {
+  actionType(): MDCChipActionType {
     return this.foundation.actionType();
   }
 
   private computeRippleClientRect(): ClientRect {
-    if (this.root.classList.contains(CssClasses.PRIMARY_ACTION)) {
-      const chipRoot = closest(this.root, `.${CssClasses.CHIP_ROOT}`);
+    if (this.root.classList.contains(MDCChipActionCssClasses.PRIMARY_ACTION)) {
+      const chipRoot =
+          closest(this.root, `.${MDCChipActionCssClasses.CHIP_ROOT}`);
       // Return the root client rect since it's better than nothing
       if (!chipRoot) return this.root.getBoundingClientRect();
       const graphicWidth = window.getComputedStyle(chipRoot).getPropertyValue(

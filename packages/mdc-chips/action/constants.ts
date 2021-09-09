@@ -22,19 +22,20 @@
  */
 
 /**
- * CssClasses provides the classes to be queried and manipulated on the root.
+ * MDCChipActionCssClasses provides the classes to be queried and manipulated on
+ * the root.
  */
-export enum CssClasses {
+export enum MDCChipActionCssClasses {
   PRIMARY_ACTION = 'mdc-evolution-chip__action--primary',
   TRAILING_ACTION = 'mdc-evolution-chip__action--trailing',
   CHIP_ROOT = 'mdc-evolution-chip',
 }
 
 /**
- * InteractionTrigger provides detail of the different triggers for action
- * interactions.
+ * MDCChipActionInteractionTrigger provides detail of the different triggers for
+ * action interactions.
  */
-export enum InteractionTrigger {
+export enum MDCChipActionInteractionTrigger {
   UNSPECIFIED,  // Default type
   CLICK,
   BACKSPACE_KEY,
@@ -44,35 +45,36 @@ export enum InteractionTrigger {
 }
 
 /**
- * ActionType provides the different types of available actions.
+ * MDCChipActionType provides the different types of available actions.
  */
-export enum ActionType {
+export enum MDCChipActionType {
   UNSPECIFIED,  // Default type
   PRIMARY,
   TRAILING,
 }
 
 /**
- * Events provides the different events emitted by the action.
+ * MDCChipActionEvents provides the different events emitted by the action.
  */
-export enum Events {
+export enum MDCChipActionEvents {
   INTERACTION = 'MDCChipAction:interaction',
   NAVIGATION = 'MDCChipAction:navigation',
 }
 
 /**
- * FocusBehavior provides configurations for focusing or unfocusing an action.
+ * MDCChipActionFocusBehavior provides configurations for focusing or unfocusing
+ * an action.
  */
-export enum FocusBehavior {
+export enum MDCChipActionFocusBehavior {
   FOCUSABLE,
   FOCUSABLE_AND_FOCUSED,
   NOT_FOCUSABLE,
 }
 
 /**
- * Attributes provides the HTML attributes used by the foundation.
+ * MDCChipActionAttributes provides the HTML attributes used by the foundation.
  */
-export enum Attributes {
+export enum MDCChipActionAttributes {
   ARIA_DISABLED = 'aria-disabled',
   ARIA_HIDDEN = 'aria-hidden',
   ARIA_SELECTED = 'aria-selected',

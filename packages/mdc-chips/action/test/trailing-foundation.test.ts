@@ -22,7 +22,7 @@
  */
 
 import {setUpFoundationTest} from '../../../../testing/helpers/setup';
-import {ActionType} from '../constants';
+import {MDCChipActionType} from '../constants';
 import {MDCChipTrailingActionFoundation} from '../trailing-foundation';
 
 describe('MDCChipTrailingActionFoundation', () => {
@@ -32,9 +32,9 @@ describe('MDCChipTrailingActionFoundation', () => {
     return {foundation, mockAdapter};
   };
 
-  it(`#actionType returns "${ActionType.TRAILING}"`, () => {
+  it(`#actionType returns "${MDCChipActionType.TRAILING}"`, () => {
     const {foundation} = setupTest();
-    expect(foundation.actionType()).toBe(ActionType.TRAILING);
+    expect(foundation.actionType()).toBe(MDCChipActionType.TRAILING);
   });
 
   it(`#isSelectable returns false`, () => {

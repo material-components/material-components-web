@@ -235,20 +235,20 @@ Method Signature | Description
 --- | ---
 `addClass(className: ClassName): void` | Adds the class name to the chip root.
 `emitEvent<D extends object>(eventName: Events, eventDetail: D): void` | Emits the given `eventName` with the given `eventDetail`.
-`getActions(): ActionType[]` | Returns the actions of the chip in [DOM order](https://developers.google.com/web/fundamentals/accessibility/focus/dom-order-matters).
+`getActions(): MDCChipActionType[]` | Returns the actions of the chip in [DOM order](https://developers.google.com/web/fundamentals/accessibility/focus/dom-order-matters).
 `getAttribute(attrName: Attributes): string\|null` | Returns the value of the attribute or `null` if it does not exist.
 `getElementID(): string` | Returns the [`id`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id) of the root element.
 `getOffsetWidth(): number` | Returns the [`offsetWidth`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetWidth) of the root element.
 `hasClass(className: CssClasses): boolean` | Returns `true` if the class exists on the root element, otherwise returns `false`.
-`isActionSelectable(action: ActionType): boolean` | Returns the seletability of the action with the given type.
-`isActionSelected(action: ActionType): boolean` | Returns the selected state of the action with the given type.
-`isActionFocusable(action: ActionType): boolean` | Returns the focusability of the action with the given type.
-`isActionDisabled(action: ActionType): boolean` | Returns the disabled state of the action with the given type.
+`isActionSelectable(action: MDCChipActionType): boolean` | Returns the seletability of the action with the given type.
+`isActionSelected(action: MDCChipActionType): boolean` | Returns the selected state of the action with the given type.
+`isActionFocusable(action: MDCChipActionType): boolean` | Returns the focusability of the action with the given type.
+`isActionDisabled(action: MDCChipActionType): boolean` | Returns the disabled state of the action with the given type.
 `isRTL(): boolean` | Returns `true` if the chip is rendered in an RTL context, otherwise returns `false`.
 `removeClass(className: CssClasses): void` | Remove the given class from the root.
-`setActionDisabled(action: ActionType, isDisabled: boolean): void` | Sets the disabled state of the action with the given type.
-`setActionFocus(action: ActionType, behavior: FocusBehavior): void` | Sets the focus behavior of the action with the given type.
-`setActionSelected(action: ActionType, isSelected: boolean): void` | Sets the selected state of the action with the given type.
+`setActionDisabled(action: MDCChipActionType, isDisabled: boolean): void` | Sets the disabled state of the action with the given type.
+`setActionFocus(action: MDCChipActionType, behavior: MDCChipActionFocusBehavior): void` | Sets the focus behavior of the action with the given type.
+`setActionSelected(action: MDCChipActionType, isSelected: boolean): void` | Sets the selected state of the action with the given type.
 `setStyleProperty(property: string, value: string): void` | Sets the style property on the root to the given value.
 
 ### `MDCChipFoundation`
@@ -263,11 +263,11 @@ Method Signature | Description
 `setDisabled(isDisabled: boolean): void` | Sets the disabled state of the chip.
 `isDisabled(): boolean` | Returns the disabled state of the chip.
 `getActions(): ActionType[]` | Returns the actions of the chip.
-`isActionFocusable(action: ActionType): boolean` | Returns the focusability of the given action.
-`isActionSelectable(action: ActionType): boolean` | Returns the selectability of the given action.
-`isActionSelected(action: ActionType): boolean` | Returns the selected state of the given action.
-`setActionFocus(action: ActionType, focus: FocusBehavior): void` | Sets the focus behavior of the given action.
-`setActionSelected(action: ActionType, isSelected: boolean): void` | Sets the selected state of the given action.
+`isActionFocusable(action: MDCChipActionType): boolean` | Returns the focusability of the given action.
+`isActionSelectable(action: MDCChipActionType): boolean` | Returns the selectability of the given action.
+`isActionSelected(action: MDCChipActionType): boolean` | Returns the selected state of the given action.
+`setActionFocus(action: MDCChipActionType, focus: MDCChipActionFocusBehavior): void` | Sets the focus behavior of the given action.
+`setActionSelected(action: MDCChipActionType, isSelected: boolean): void` | Sets the selected state of the given action.
 `startAnimation(animation: Animation): void` | Starts the given animation on the chip.
 
 ### Usage within frameworks

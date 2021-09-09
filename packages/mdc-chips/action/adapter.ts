@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {Attributes, Events} from './constants';
+import {MDCChipActionAttributes, MDCChipActionEvents} from './constants';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -31,15 +31,15 @@ import {Attributes, Events} from './constants';
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCChipActionAdapter {
-  emitEvent<D extends object>(eventName: Events, eventDetail: D): void;
+  emitEvent<D extends object>(name: MDCChipActionEvents, detail: D): void;
 
   focus(): void;
 
-  getAttribute(attr: Attributes): string|null;
+  getAttribute(attr: MDCChipActionAttributes): string|null;
 
   getElementID(): string;
 
-  removeAttribute(attr: Attributes): void;
+  removeAttribute(attr: MDCChipActionAttributes): void;
 
-  setAttribute(attr: Attributes, value: string): void;
+  setAttribute(attr: MDCChipActionAttributes, value: string): void;
 }

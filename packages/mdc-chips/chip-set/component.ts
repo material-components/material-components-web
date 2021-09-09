@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {CustomEventListener} from '@material/base/types';
 import {announce} from '@material/dom/announce';
 
-import {ActionType} from '../action/constants';
+import {MDCChipActionType} from '../action/constants';
 import {MDCChip, MDCChipFactory} from '../chip/component';
 import {Events} from '../chip/constants';
 
@@ -162,12 +162,12 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   }
 
   /** Sets the selection state of the chip. */
-  setChipSelected(index: number, action: ActionType, isSelected: boolean) {
+  setChipSelected(index: number, action: MDCChipActionType, isSelected: boolean) {
     this.foundation.setChipSelected(index, action, isSelected);
   }
 
   /** Returns the selection state of the chip. */
-  isChipSelected(index: number, action: ActionType) {
+  isChipSelected(index: number, action: MDCChipActionType) {
     return this.foundation.isChipSelected(index, action);
   }
 

@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {ActionType, InteractionTrigger} from './constants';
+import {MDCChipActionInteractionTrigger, MDCChipActionType} from './constants';
 
 /**
  * MDCChipActionInteractionEventDetail provides the details for the interaction
@@ -29,8 +29,8 @@ import {ActionType, InteractionTrigger} from './constants';
  */
 export interface MDCChipActionInteractionEventDetail {
   actionID: string;
-  source: ActionType;
-  trigger: InteractionTrigger;
+  source: MDCChipActionType;
+  trigger: MDCChipActionInteractionTrigger;
 }
 
 /**
@@ -38,6 +38,6 @@ export interface MDCChipActionInteractionEventDetail {
  * event.
  */
 export interface MDCChipActionNavigationEventDetail {
-  source: ActionType;
+  source: MDCChipActionType;
   key: string;
 }

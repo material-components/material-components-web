@@ -118,7 +118,7 @@ All Sass mixins for actions are provided by the chip Sass.
 
 The `MDCChipAction` is exposed only to be called by the parent [`MDCChip`](../chip). Users should not interact with the `MDCChipAction` component nor rely on any exposed APIs or events.
 
-### `MDCChipAction` events
+### `MDCChipActionEvents`
 
 These events are only emitted for consumption by the parent [`MDCChip`](../chip). Non-wrapping clients **should not** listen to these events.
 
@@ -131,12 +131,12 @@ Event name | Detail | Description
 
 Method Signature | Description
 --- | ---
-`emitEvent<D extends object>(eventName: Events, eventDetail: D): void` | Emits the given `eventName` with the given `eventDetail`.
+`emitEvent<D extends object>(eventName: MDCChipActionEvents, eventDetail: D): void` | Emits the given `eventName` with the given `eventDetail`.
 `focus(): void` | Focuses the action root.
-`getAttribute(attr: Attributes): string\|null` | Returns the attribute on the action root or `null` if none exists.
+`getAttribute(attr: MDCChipActionAttributes): string\|null` | Returns the attribute on the action root or `null` if none exists.
 `getElementID(): string` | Returns the `[id](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id)` of the action root.
-`removeAttribute(attr: Attributes): void` | Removes the attribute from the action root.
-`setAttribute(attr: Attributes, value: string): void` | Sets the action root attribute to the given `value`
+`removeAttribute(attr: MDCChipActionAttributes): void` | Removes the attribute from the action root.
+`setAttribute(attr: MDCChipActionAttributes, value: string): void` | Sets the action root attribute to the given `value`
 
 ### `MDCChipActionFoundation`
 
@@ -148,11 +148,11 @@ Method Signature | Description
 `handleKeydown(event: KeyboardEvent): void` | Handles the [keydown](https://developer.mozilla.org/en-US/docs/Web/API/Element/keydown_event) event.
 `setDisabled(isDisabled: boolean): void` | Sets the disabled state.
 `isDisabled(): boolean` | Returns the disabled state.
-`setFocus(behavior: FocusBehavior): void` | Set the focus behavior.
+`setFocus(behavior: MDCChipActionFocusBehavior): void` | Set the focus behavior.
 `isFocusable(): boolean` | Returns whether the action if focusable.
 `setSelected(isSelected: boolean): void` | Sets the selected state.
 `isSelected(): boolean` | Returns the selected state.
-`abstract actionType(): ActionType` | Returns the type of the action.
+`abstract actionType(): MDCChipActionType` | Returns the type of the action.
 `abstract isSelectable(): boolean` | Returns whether the action is selectable.
 
 #### Subclasses

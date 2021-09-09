@@ -27,3 +27,4 @@ export * from './constants';
 export * from './foundation';
 export * from './primary-foundation';
 export * from './trailing-foundation';
+export * from './types';

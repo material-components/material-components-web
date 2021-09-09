@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {ActionType, Attributes} from './constants';
+import {MDCChipActionAttributes, MDCChipActionType} from './constants';
 import {MDCChipActionFoundation} from './foundation';
 
 /**
@@ -30,15 +30,16 @@ import {MDCChipActionFoundation} from './foundation';
  */
 export class MDCChipPrimaryActionFoundation extends MDCChipActionFoundation {
   isSelectable() {
-    return this.adapter.getAttribute(Attributes.ROLE) === 'option';
+    return this.adapter.getAttribute(MDCChipActionAttributes.ROLE) === 'option';
   }
 
   actionType() {
-    return ActionType.PRIMARY;
+    return MDCChipActionType.PRIMARY;
   }
 
   protected shouldEmitInteractionOnRemoveKey() {
-    return this.adapter.getAttribute(Attributes.DATA_DELETABLE) === 'true';
+    return this.adapter.getAttribute(MDCChipActionAttributes.DATA_DELETABLE) ===
+        'true';
   }
 }
 
