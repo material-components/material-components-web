@@ -54,7 +54,7 @@ npm install @material/drawer
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;
 @include drawer.modal-core-styles;
-@include list.core-styles;
+@include list.deprecated-core-styles;
 ```
 
 ### JavaScript instantiation
