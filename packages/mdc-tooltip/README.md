@@ -312,6 +312,7 @@ Mixin | Description
 `z-index($z-index)` | Sets the z-index of the tooltip.
 `show-transition($enter-duration)` | Sets the duration for the animation that shows the tooltip.
 `exit-transition($exit-duration)` | Sets the duration for the animation that hides the tooltip.
+`rich-max-height($max-height)` | Sets the max-height of a rich tooltip.
 
 ### `MDCTooltip` Methods
 

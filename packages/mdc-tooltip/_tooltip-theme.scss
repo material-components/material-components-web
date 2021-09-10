@@ -173,6 +173,20 @@ $z-index: 9;
   }
 }
 
+// Sets the max-height of the rich tooltip.
+// @param {Number} $max-height
+@mixin rich-max-height($max-height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  &.mdc-tooltip--rich {
+    .mdc-tooltip__surface {
+      @include feature-targeting.targets($feat-structure) {
+        @include theme.property(max-height, $max-height);
+      }
+    }
+  }
+}
+
 // Sets the z-index of the tooltip.
 // @param {Number} $z-index
 @mixin z-index($z-index, $query: feature-targeting.all()) {
