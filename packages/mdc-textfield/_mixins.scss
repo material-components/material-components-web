@@ -1988,10 +1988,12 @@
   $y: -1 * variables.$textarea-input-handle-margin;
 
   @include feature-targeting.targets($feat-structure) {
+    @include rtl.ignore-next-line();
     transform: translateX($x) translateY($y);
 
     @include rtl.rtl {
       // Flip the horizontal shifting direction for RTL
+      @include rtl.ignore-next-line();
       transform: translateX(-1 * $x) translateY($y);
     }
   }
@@ -2005,10 +2007,12 @@
   $y: variables.$textarea-input-handle-margin;
 
   @include feature-targeting.targets($feat-structure) {
+    @include rtl.ignore-next-line();
     transform: translateX($x) translateY($y);
 
     @include rtl.rtl {
       // Flip the horizontal shifting direction for RTL
+      @include rtl.ignore-next-line();
       transform: translateX(-1 * $x) translateY($y);
     }
   }

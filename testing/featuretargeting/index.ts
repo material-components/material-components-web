@@ -29,9 +29,14 @@ import * as fs from 'fs';
  * @param filePath File path of CSS files that you want to test.
  */
 export const expectStylesWithNoFeaturesToBeEmpty = (filePath: string) => {
-  it('Sass produces no CSS when we ask for no features in feature targeting',
+  it('Sass produces no CSS properties when we ask for no features in feature targeting',
      () => {
-       const css = fs.readFileSync(filePath, 'utf8').trim();
+       // RTL annotations are not feature targetted. Remove RTL annotations and
+       // empty RTL selectors from the CSS result.
+       const css = fs.readFileSync(filePath, 'utf8')
+                       .replace(/\/\*rtl:(begin|end):ignore\*\//g, '')
+                       .replace(/\[dir=rtl\].*\{\s+\}/g, '')
+                       .trim();
        expect(css).toEqual('');
      });
 };

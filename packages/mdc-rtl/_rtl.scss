@@ -82,7 +82,9 @@ $include: true !default;
 
     @at-root {
       #{$rtl-selectors} {
+        /*rtl:begin:ignore*/
         @content;
+        /*rtl:end:ignore*/
       }
     }
   }
