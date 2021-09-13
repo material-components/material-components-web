@@ -29,11 +29,11 @@
 @use 'sass:meta';
 @use '@material/animation/functions';
 @use '@material/checkbox/checkbox-theme';
-@use '@material/density/functions' as density-functions;
-@use '@material/density/variables' as density-variables;
+@use '@material/density/density';
 @use '@material/elevation/mixins';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/icon-button/icon-button-theme';
+@use '@material/list/evolution-mixins' as list-theme;
 @use '@material/rtl/rtl';
 @use '@material/select/select-theme';
 @use '@material/shape/functions' as shape-functions;
@@ -73,7 +73,7 @@ $cell-trailing-padding: 16px !default;
 
 $minimum-row-height: 36px !default;
 $maximum-row-height: $row-height !default;
-$default-density-scale: density-variables.$default-scale !default;
+$default-density-scale: density.$default-scale !default;
 $density-config: (
   height: (
     maximum: $row-height,
@@ -444,9 +444,10 @@ $pagination-rows-per-page-select-height: 36px;
 @mixin density(
   $density-scale,
   $row-checkbox-density-scale: null,
+  $pagination-select-density-scale: null,
   $query: feature-targeting.all()
 ) {
-  $height: density-functions.prop-value(
+  $height: density.prop-value(
     $density-config: $density-config,
     $density-scale: $density-scale,
     $property-name: height,
@@ -467,6 +468,24 @@ $pagination-rows-per-page-select-height: 36px;
       @include checkbox-theme.density($row-checkbox-density-scale);
     }
   }
+
+  @if $pagination-select-density-scale {
+    @include select-density($pagination-select-density-scale);
+  }
+}
+
+@mixin select-density($density-scale) {
+  @include select-theme.outlined-height(
+    select-theme.$height + density.$interval * $density-scale
+  );
+  .mdc-list-item {
+    @include list-theme.one-line-item-density(
+      $density-scale + 2,
+      $exclude-variants: true
+    );
+  }
+
+  margin: 0;
 }
 
 ///

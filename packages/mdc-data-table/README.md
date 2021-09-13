@@ -313,15 +313,27 @@ user change the rows per page (page size) and navigate between data table pages.
           </div>
 
           <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth" role="listbox">
-            <ul class="mdc-deprecated-list">
-              <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" aria-selected="true" role="option" data-value="10">
-                <span class="mdc-deprecated-list-item__text">10</span>
+            <ul class="mdc-list">
+              <li class="mdc-select__option mdc-select__one-line-option mdc-list-item mdc-list-item--selected mdc-list-item--with-one-line"
+                  aria-selected="true" role="option" data-value="10">
+                <span class="mdc-list-item__ripple"></span>
+                <span class="mdc-list-item__content">
+                  <span class="mdc-list-item__primary-text">10</span>
+                </span>
               </li>
-              <li class="mdc-deprecated-list-item" role="option" data-value="25">
-                <span class="mdc-deprecated-list-item__text">25</span>
+              <li class="mdc-select__option mdc-select__one-line-option mdc-list-item mdc-list-item--with-one-line"
+                  role="option" data-value="25">
+                <span class="mdc-list-item__ripple"></span>
+                <span class="mdc-list-item__content">
+                  <span class="mdc-list-item__primary-text">25</span>
+                </span>
               </li>
-              <li class="mdc-deprecated-list-item" role="option" data-value="100">
-                <span class="mdc-deprecated-list-item__text">100</span>
+              <li class="mdc-select__option mdc-select__one-line-option mdc-list-item mdc-list-item--with-one-line"
+                  role="option" data-value="100">
+                <span class="mdc-list-item__ripple"></span>
+                <span class="mdc-list-item__content">
+                  <span class="mdc-list-item__primary-text">100</span>
+                </span>
               </li>
             </ul>
           </div>

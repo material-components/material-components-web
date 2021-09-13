@@ -3,7 +3,7 @@
 @use '@material/rtl/mixins' as rtl;
 @use '@material/icon-button/icon-button-theme';
 @use '@material/select/select-theme';
-@use '@material/list/mixins' as list-theme;
+@use '@material/list/evolution-mixins' as list-theme;
 @use '@material/menu/mixins' as menu-theme;
 @use './data-table-theme';
 
@@ -93,8 +93,8 @@
       data-table-theme.$pagination-rows-per-page-select-height,
       $query: $query
     );
-    .mdc-deprecated-list-item {
-      @include list-theme.deprecated-single-line-height(
+    .mdc-list-item {
+      @include list-theme.one-line-item-height(
         data-table-theme.$pagination-rows-per-page-select-height,
         $query: $query
       );
