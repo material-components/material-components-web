@@ -326,7 +326,7 @@ $light-theme-deprecated: (
       $ripple-size
     );
   }
-  $checkbox-padding: calc((_ripple-size - _icon-size) / 2);
+  $checkbox-padding: 'calc((_ripple-size - _icon-size) / 2)';
   $replace: (
     _ripple-size: $ripple-size,
     _icon-size: $icon-size,
@@ -363,7 +363,7 @@ $light-theme-deprecated: (
       );
     }
 
-    $margin: calc((_touch-target-size - _ripple-size) / 2);
+    $margin: 'calc((_touch-target-size - _ripple-size) / 2)';
     $replace: (
       _touch-target-size: $touch-target-size,
       _ripple-size: $ripple-size,
@@ -373,7 +373,7 @@ $light-theme-deprecated: (
       @include theme.property(margin, $margin, $replace: $replace);
     }
 
-    $offset: calc((_ripple-size - _touch-target-size) / 2);
+    $offset: 'calc((_ripple-size - _touch-target-size) / 2)';
 
     @include feature-targeting.targets($feat-structure) {
       .mdc-checkbox__native-control {

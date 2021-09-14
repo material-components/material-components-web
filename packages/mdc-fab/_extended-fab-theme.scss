@@ -181,12 +181,12 @@ $custom-property-prefix: 'extended-fab';
   $label-padding,
   $is-icon-at-end: false
 ) {
-  $start: calc(icon - label);
+  $start: 'calc(icon - label)';
   $end: $icon-padding;
 
   @if $is-icon-at-end {
     $start: $icon-padding;
-    $end: calc(icon - label);
+    $end: 'calc(icon - label)';
   }
 
   @include rtl.reflexive-property(

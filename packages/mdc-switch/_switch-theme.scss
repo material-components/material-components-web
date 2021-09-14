@@ -452,7 +452,7 @@ $forced-colors-theme: (
   .mdc-switch__handle-track {
     @include theme.property(
       width,
-      calc(100% - width),
+      'calc(100% - width)',
       $replace: (width: $width)
     );
   }
