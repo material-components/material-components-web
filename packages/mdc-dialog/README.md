@@ -113,11 +113,11 @@ Alert dialogs interrupt users with urgent information, details, or actions.
       </div>
       <div class="mdc-dialog__actions">
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
-          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__ripple"></span>
           <span class="mdc-button__label">Cancel</span>
         </button>
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="discard">
-          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__ripple"></span>
           <span class="mdc-button__label">Discard</span>
         </button>
       </div>
@@ -215,11 +215,11 @@ If the user confirms a choice, it’s carried out. Otherwise, the user can dismi
       </div>
       <div class="mdc-dialog__actions">
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
-          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__ripple"></span>
           <span class="mdc-button__label">Cancel</span>
         </button>
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
-          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__ripple"></span>
           <span class="mdc-button__label">OK</span>
         </button>
       </div>
@@ -271,7 +271,7 @@ Full-screen dialogs group a series of tasks, such as creating a calendar entry w
       <div class="mdc-dialog__actions">
         <button type="button" class="mdc-button mdc-dialog__button"
                 data-mdc-dialog-action="ok">
-          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__ripple"></span>
           <span class="mdc-button__label">OK</span>
         </button>
       </div>
@@ -340,11 +340,11 @@ For example:
 ...
 <div class="mdc-dialog__actions">
   <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
-    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__ripple"></span>
     <span class="mdc-button__label">Cancel</span>
   </button>
   <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept" data-mdc-dialog-button-default>
-    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__ripple"></span>
     <span class="mdc-button__label">OK</span>
   </button>
 </div>

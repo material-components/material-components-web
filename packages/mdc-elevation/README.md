@@ -50,8 +50,8 @@ The elevation overlay should appear *above* the component container in the stack
 
 ```html
 <button class="mdc-button mdc-button--raised">
-  <div class="mdc-elevation-overlay"></div>
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-elevation-overlay"></span>
+  <span class="mdc-button__ripple"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
   <span class="mdc-button__label">Font Icon</span>
 </button>

@@ -40,7 +40,7 @@ npm install @material/snackbar
     </div>
     <div class="mdc-snackbar__actions" aria-atomic="true">
       <button type="button" class="mdc-button mdc-snackbar__action">
-        <div class="mdc-button__ripple"></div>
+        <span class="mdc-button__ripple"></span>
         <span class="mdc-button__label">Retry</span>
       </button>
     </div>

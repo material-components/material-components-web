@@ -41,7 +41,7 @@ For a given button component:
 
 ```html
 <button class="mdc-button">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
   <span class="mdc-button__label">My Inaccessible Button</span>
 </button>
 ```
@@ -51,8 +51,8 @@ You would add an increased touch target as follows:
 ```html
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-button mdc-button--touch">
-    <div class="mdc-button__ripple"></div>
-    <div class="mdc-button__touch"></div>
+    <span class="mdc-button__ripple"></span>
+    <span class="mdc-button__touch"></span>
     <span class="mdc-button__label">My Accessible Button</span>
   </button>
 </div>

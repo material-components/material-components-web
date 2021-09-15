@@ -59,7 +59,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 
 ```html
 <button class="mdc-icon-button material-icons">
-  <div class="mdc-icon-button__ripple"></div>
+  <span class="mdc-icon-button__ripple"></span>
   favorite
 </button>
 ```
@@ -76,9 +76,9 @@ To meet this requirement, add the following to your button:
 ```html
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-icon-button mdc-icon-button--touch material-icons">
-    <div class="mdc-icon-button__ripple"></div>
+    <span class="mdc-icon-button__ripple"></span>
     favorite
-    <div class="mdc-icon-button__touch"></div>
+    <span class="mdc-icon-button__touch"></span>
   </button>
 </div>
 ```
@@ -97,7 +97,7 @@ If the button should be initialized in the "on" state, then add the `mdc-icon-bu
    class="mdc-icon-button"
    aria-label="Add to favorites"
    aria-pressed="false">
-   <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__ripple"></span>
    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
    <i class="material-icons mdc-icon-button__icon">favorite_border</i>
 </button>
@@ -119,7 +119,7 @@ The icon button toggle can be used with SVGs.
    class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
    aria-pressed="true">
-   <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__ripple"></span>
    <svg class="mdc-icon-button__icon">
      ...
    </svg>
@@ -138,7 +138,7 @@ The icon button toggle can be used with `img` tags.
    class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
    aria-pressed="true">
-   <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__ripple"></span>
    <img src="" class="mdc-icon-button__icon"/>
    <img src="" class="mdc-icon-button__icon mdc-icon-button__icon--on"/>
 </button>
@@ -157,7 +157,7 @@ and `aria-data-label-off` (aria label in off state) attributes, and omit the
    aria-label="Add to favorites"
    data-aria-label-on="Remove from favorites"
    data-aria-label-off="Add to favorites">
-   <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__ripple"></span>
    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
    <i class="material-icons mdc-icon-button__icon">favorite_border</i>
 </button>

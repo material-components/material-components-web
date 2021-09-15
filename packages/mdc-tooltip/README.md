@@ -147,7 +147,7 @@ Default rich tooltip without interactive content
 ```html
 <div class="mdc-tooltip-wrapper--rich">
   <button class="mdc-button" aria-describedby="tt0">
-    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__ripple"></span>
     <span class="mdc-button__label">Button</span>
   </button>
   <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" role="tooltip">
@@ -171,7 +171,7 @@ Default rich tooltip with interactive content
 ```html
 <div class="mdc-tooltip-wrapper--rich">
   <button class="mdc-button" data-tooltip-id="tt0" aria-haspopup="dialog" aria-expanded="false">
-    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__ripple"></span>
     <span class="mdc-button__label">Button</span>
   </button>
   <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" role="dialog">
@@ -202,7 +202,7 @@ Persistent rich tooltip with interactive content
 ```html
 <div class="mdc-tooltip-wrapper--rich">
   <button class="mdc-button" data-tooltip-id="tt0" aria-haspopup="dialog" aria-expanded="false">
-    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__ripple"></span>
     <span class="mdc-button__label">Button</span>
   </button>
   <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" tabindex="-1" data-mdc-tooltip-persistent="true" role="dialog">
@@ -231,7 +231,7 @@ ensure that the tooltip is not hidden when clicked on.
 
 ```html
 <button class="mdc-button mdc-button--outlined" aria-describedby="tooltip-id">
-  <div class="mdc-button__ripple"></div>
+  <span class="mdc-button__ripple"></span>
   <span class="mdc-button__label">Button</span>
 </button>
 ```
