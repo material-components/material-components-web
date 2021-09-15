@@ -736,7 +736,8 @@
   $feat-structure: feature-targeting.create-target($query, structure);
   .mdc-dialog__surface {
     // Medium screens
-    @media (max-width: 960px) and (max-height: 1440px) {
+    // @media (max-width: 960px) and (max-height: 1440px) {
+    @media (max-width: 960px) {
       @include feature-targeting.targets($feat-structure) {
         max-height: 560px;
         max-width: 560px;
@@ -783,7 +784,8 @@
     }
 
     // X-Small Screens (vertical)
-    @media (max-width: 600px) and (max-height: 960px) {
+    // @media (max-width: 600px) and (max-height: 960px) {
+    @media (max-width: 600px) {
       @include feature-targeting.targets($feat-structure) {
         // Use 100% instead of vw/vh so the url bar is taken into account on
         // mobile.
@@ -800,7 +802,8 @@
     }
 
     // Large to X-Large screens
-    @media (min-width: 960px) and (min-height: 1440px) {
+    // @media (min-width: 960px), (min-height: 1440px) {
+    @media (min-width: 960px) {
       @include feature-targeting.targets($feat-structure) {
         $min-horizontal-margin: 200px;
         max-width: calc(100vw - #{$min-horizontal-margin * 2});
