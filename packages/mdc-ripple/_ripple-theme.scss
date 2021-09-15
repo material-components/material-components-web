@@ -96,6 +96,15 @@ $light-theme: (
   }
 }
 
+$_ripple-theme: (
+  hover-state-layer-color: null,
+  focus-state-layer-color: null,
+  pressed-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  focus-state-layer-opacity: null,
+  pressed-state-layer-opacity: null,
+);
+
 @mixin theme-styles($theme, $ripple-target: '&') {
   $theme: keys.create-theme-properties(
     $theme,
@@ -104,6 +113,12 @@ $light-theme: (
 
   // TODO(b/191298796): Support states layer color for every interactive states.
   // Use only hover state layer color, ignoring focus and pressed color.
+  @include internal-theme-styles($theme);
+}
+
+@mixin internal-theme-styles($theme, $ripple-target: '&') {
+  @include theme.validate-theme-keys($_ripple-theme, $theme);
+
   @include states-base-color(
     map.get($theme, hover-state-layer-color),
     $ripple-target: $ripple-target
@@ -482,8 +497,15 @@ $light-theme: (
 }
 
 // Selector for active state. Using `:active:active` to override focus styles.
-@mixin active() {
+@mixin pressed() {
   #{$_active-selector} {
+    @content;
+  }
+}
+
+// @deprecated Use `pressed()` mixin - renamed for consistency.
+@mixin active() {
+  @include pressed() {
     @content;
   }
 }

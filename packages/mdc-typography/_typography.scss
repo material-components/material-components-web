@@ -515,3 +515,21 @@ $_styles-copy: $styles;
 @function get-tracking($typography) {
   @return map.get($styles, $typography, letter-spacing);
 }
+
+$_typography-theme: (
+  font: null,
+  line-height: null,
+  size: null,
+  weight: null,
+  tracking: null,
+);
+
+@mixin theme-styles($theme) {
+  @include theme.validate-theme($_typography-theme, $theme);
+
+  @include theme.property(font-family, map.get($theme, font));
+  @include theme.property(line-height, map.get($theme, line-height));
+  @include theme.property(size, map.get($theme, font-size));
+  @include theme.property(weight, map.get($theme, font-weight));
+  @include theme.property(tracking, map.get($theme, letter-spacing));
+}
