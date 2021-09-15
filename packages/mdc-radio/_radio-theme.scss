@@ -374,7 +374,7 @@ $light-theme: (
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  $offset: calc((__ripple_size - __size) / 2);
+  $offset: 'calc((__ripple_size - __size) / 2)';
   $replace: (
     __ripple_size: $ripple-size,
     __size: $size,
@@ -426,14 +426,14 @@ $light-theme: (
   );
 
   @include feature-targeting.targets($feat-structure) {
-    $padding: calc((__size - __icon_size) / 2);
+    $padding: 'calc((__size - __icon_size) / 2)';
 
     @include theme.property('padding', $padding, $replace: $replace);
   }
 
   .mdc-radio__background::before {
     @include feature-targeting.targets($feat-structure) {
-      $padding-offset: calc(-1 * (__size - __icon_size) / 2);
+      $padding-offset: 'calc(-1 * (__size - __icon_size) / 2)';
 
       @include theme.property('top', $padding-offset, $replace: $replace);
       @include theme.property('left', $padding-offset, $replace: $replace);
