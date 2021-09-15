@@ -53,11 +53,26 @@
       user-select: none;
     }
 
+    .mdc-icon-button__touch {
+      @include touch-target-mixins.touch-target(
+        $set-width: true,
+        $query: $query
+      );
+    }
+
     @include if-disabled_ {
       @include feature-targeting.targets($feat-structure) {
         cursor: default;
         pointer-events: none;
       }
+    }
+  }
+
+  .mdc-icon-button--display-flex {
+    @include feature-targeting.targets($feat-structure) {
+      align-items: center;
+      display: inline-flex;
+      justify-content: center;
     }
   }
 
@@ -72,6 +87,13 @@
         display: none;
       }
     }
+  }
+
+  .mdc-icon-button--touch {
+    @include touch-target-mixins.margin(
+      $component-height: icon-button-theme.$size,
+      $query: $query
+    );
   }
 
   .mdc-icon-button--on {
@@ -106,13 +128,6 @@
       $query: $query
     );
 
-    .mdc-icon-button__touch {
-      @include touch-target-mixins.touch-target(
-        $set-width: true,
-        $query: $query
-      );
-    }
-
     svg,
     img {
       @include feature-targeting.targets($feat-structure) {
@@ -120,13 +135,6 @@
         height: icon-button-theme.$icon-size;
       }
     }
-  }
-
-  .mdc-icon-button--touch {
-    @include touch-target-mixins.margin(
-      $component-height: icon-button-theme.$size,
-      $query: $query
-    );
   }
 
   @include static-styles($query: $query);
