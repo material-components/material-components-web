@@ -384,15 +384,15 @@ $ripple-target: '.mdc-chip__ripple';
   @include fill-color($color, $query: $query);
 
   @if ($fill-tone == 'dark') {
-    @include ink-color(text-primary-on-dark, $query: $query);
-    @include selected-ink-color(text-primary-on-dark, $query: $query);
-    @include leading-icon-color(text-primary-on-dark, $query: $query);
-    @include trailing-icon-color(text-primary-on-dark, $query: $query);
+    @include ink-color(text-high-on-dark, $query: $query);
+    @include selected-ink-color(text-high-on-dark, $query: $query);
+    @include leading-icon-color(text-high-on-dark, $query: $query);
+    @include trailing-icon-color(text-high-on-dark, $query: $query);
   } @else {
-    @include ink-color(text-primary-on-light, $query: $query);
-    @include selected-ink-color(text-primary-on-light, $query: $query);
-    @include leading-icon-color(text-primary-on-light, $query: $query);
-    @include trailing-icon-color(text-primary-on-light, $query: $query);
+    @include ink-color(text-high-on-light, $query: $query);
+    @include selected-ink-color(text-high-on-light, $query: $query);
+    @include leading-icon-color(text-high-on-light, $query: $query);
+    @include trailing-icon-color(text-high-on-light, $query: $query);
   }
 }
 

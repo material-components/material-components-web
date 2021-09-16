@@ -66,14 +66,14 @@
     $query: $query
   );
   @include deprecated-item-secondary-text-ink-color(
-    text-secondary-on-background,
+    text-medium-on-background,
     $query
   );
   @include deprecated-item-graphic-fill-color(transparent, $query);
   @include deprecated-item-graphic-ink-color(text-icon-on-background, $query);
   @include deprecated-item-meta-ink-color(text-hint-on-background, $query);
   @include deprecated-group-subheader-ink-color(
-    text-primary-on-background,
+    text-high-on-background,
     $query
   );
   @include deprecated-item-disabled-text-opacity(
@@ -1093,7 +1093,7 @@
   }
 
   @include deprecated-item-primary-text-ink-color(
-    text-primary-on-background,
+    text-high-on-background,
     $query
   );
 }

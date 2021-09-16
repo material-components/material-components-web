@@ -142,15 +142,15 @@ $on-error: if(contrast-tone($error) == 'dark', #000, #fff) !default;
 
 $text-colors: (
   dark: (
-    primary: rgba(black, 0.87),
-    secondary: rgba(black, 0.54),
+    high: rgba(black, 0.87),
+    medium: rgba(black, 0.54),
     hint: rgba(black, 0.38),
     disabled: rgba(black, 0.38),
     icon: rgba(black, 0.38),
   ),
   light: (
-    primary: white,
-    secondary: rgba(white, 0.7),
+    high: white,
+    medium: rgba(white, 0.7),
     hint: rgba(white, 0.5),
     disabled: rgba(white, 0.5),
     icon: rgba(white, 0.5),
@@ -185,18 +185,18 @@ $property-values: (
   on-secondary: $on-secondary,
   on-surface: $on-surface,
   on-error: $on-error,
-  text-primary-on-background: ink-color-for-fill_(primary, $background),
-  text-secondary-on-background: ink-color-for-fill_(secondary, $background),
+  text-high-on-background: ink-color-for-fill_(high, $background),
+  text-medium-on-background: ink-color-for-fill_(medium, $background),
   text-hint-on-background: ink-color-for-fill_(hint, $background),
   text-disabled-on-background: ink-color-for-fill_(disabled, $background),
   text-icon-on-background: ink-color-for-fill_(icon, $background),
-  text-primary-on-light: ink-color-for-fill_(primary, light),
-  text-secondary-on-light: ink-color-for-fill_(secondary, light),
+  text-high-on-light: ink-color-for-fill_(high, light),
+  text-medium-on-light: ink-color-for-fill_(medium, light),
   text-hint-on-light: ink-color-for-fill_(hint, light),
   text-disabled-on-light: ink-color-for-fill_(disabled, light),
   text-icon-on-light: ink-color-for-fill_(icon, light),
-  text-primary-on-dark: ink-color-for-fill_(primary, dark),
-  text-secondary-on-dark: ink-color-for-fill_(secondary, dark),
+  text-high-on-dark: ink-color-for-fill_(high, dark),
+  text-medium-on-dark: ink-color-for-fill_(medium, dark),
   text-hint-on-dark: ink-color-for-fill_(hint, dark),
   text-disabled-on-dark: ink-color-for-fill_(disabled, dark),
   text-icon-on-dark: ink-color-for-fill_(icon, dark),
@@ -273,7 +273,7 @@ $_property-values-copy: $property-values;
 }
 
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
-@function accessible-ink-color($fill-color, $text-style: primary) {
+@function accessible-ink-color($fill-color, $text-style: high) {
   $fill-color-value: prop-value($fill-color);
   $color-map-for-tone: map.get($text-colors, contrast-tone($fill-color-value));
 

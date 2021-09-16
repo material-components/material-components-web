@@ -34,14 +34,14 @@
 
 $background-color: rgba(black, theme-color.text-emphasis(medium));
 $border-radius: small;
-$label-color: text-primary-on-dark;
+$label-color: text-high-on-dark;
 
 $enter-duration: 150ms;
 $exit-duration: 75ms;
 
 // Rich Tooltip variables
 $rich-background-color: theme-color.prop-value(surface);
-$rich-title-text-color: text-primary-on-light;
+$rich-title-text-color: text-high-on-light;
 $rich-content-text-color: rgba(black, theme-color.text-emphasis(medium));
 $rich-content-link-color: primary;
 

@@ -213,16 +213,16 @@ $custom-property-prefix: 'fab';
   $fill-tone: theme-color.tone($container-color);
 
   @if ($fill-tone == 'dark') {
-    @include ink-color(text-primary-on-dark, $query: $query);
+    @include ink-color(text-high-on-dark, $query: $query);
     @include ripple-theme.states(
-      text-primary-on-dark,
+      text-high-on-dark,
       $query: $query,
       $ripple-target: $ripple-target
     );
   } @else {
-    @include ink-color(text-primary-on-light, $query: $query);
+    @include ink-color(text-high-on-light, $query: $query);
     @include ripple-theme.states(
-      text-primary-on-light,
+      text-high-on-light,
       $query: $query,
       $ripple-target: $ripple-target
     );

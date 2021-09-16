@@ -31,8 +31,8 @@
   // Items
   //
 
-  @include list-primary-text-ink-color(text-primary-on-background, $query);
-  @include list-secondary-text-ink-color(text-secondary-on-background, $query);
+  @include list-primary-text-ink-color(text-high-on-background, $query);
+  @include list-secondary-text-ink-color(text-medium-on-background, $query);
   @include list-overline-text-ink-color(text-hint-on-background, $query);
   @include list-icon-fill-color(transparent, $query);
   @include list-icon-ink-color(text-icon-on-background, $query);
@@ -41,7 +41,7 @@
   @include list-disabled-ink-color(variables.$content-disabled-color, $query);
   @include list-selected-ink-color(variables.$content-selected-color, $query);
 
-  @include group-subheader-ink-color(text-primary-on-background, $query);
+  @include group-subheader-ink-color(text-high-on-background, $query);
 
   @include _high-contrast-mode($query);
 

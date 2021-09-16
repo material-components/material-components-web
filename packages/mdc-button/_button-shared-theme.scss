@@ -228,11 +228,11 @@ $disabled-container-color: rgba(
   @include container-fill-color($container-fill-color, $query);
 
   @if ($fill-tone == 'dark') {
-    @include ink-color(text-primary-on-dark, $query);
-    @include ripple-states($color: text-primary-on-dark, $query: $query);
+    @include ink-color(text-high-on-dark, $query);
+    @include ripple-states($color: text-high-on-dark, $query: $query);
   } @else {
-    @include ink-color(text-primary-on-light, $query);
-    @include ripple-states($color: text-primary-on-light, $query: $query);
+    @include ink-color(text-high-on-light, $query);
+    @include ripple-states($color: text-high-on-light, $query: $query);
   }
 }
 
