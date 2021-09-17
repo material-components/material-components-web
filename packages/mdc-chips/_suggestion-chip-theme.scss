@@ -1,0 +1,109 @@
+//
+// Copyright 2021 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@use 'sass:map';
+@use '@material/theme/theme';
+@use '@material/theme/keys';
+@use '@material/tokens/resolvers';
+@use './chip-theme';
+
+$_light-theme: (
+  container-shape: null,
+  container-height: null,
+  flat-container-elevation: null,
+  flat-outline-color: null,
+  flat-outline-width: null,
+  elevated-container-elevation: null,
+  elevated-container-color: null,
+  elevated-container-shadow-color: null,
+  label-text-font: null,
+  label-text-line-height: null,
+  label-text-size: null,
+  label-text-weight: null,
+  label-text-tracking: null,
+  label-text-color: null,
+  flat-disabled-outline-color: null,
+  flat-disabled-outline-opacity: null,
+  disabled-label-text-color: null,
+  disabled-label-text-opacity: null,
+  elevated-disabled-container-elevation: null,
+  elevated-disabled-container-color: null,
+  elevated-disabled-container-opacity: null,
+  hover-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  hover-label-text-color: null,
+  elevated-hover-container-elevation: null,
+  focus-state-layer-color: null,
+  focus-state-layer-opacity: null,
+  focus-label-text-color: null,
+  flat-focus-outline-color: null,
+  elevated-focus-container-elevation: null,
+  pressed-state-layer-color: null,
+  pressed-state-layer-opacity: null,
+  pressed-label-text-color: null,
+  elevated-pressed-container-elevation: null,
+);
+
+$_custom-property-prefix: 'suggestion-chip';
+
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($_light-theme, $theme);
+
+  // Resolve elevation.
+  @each $key
+    in (
+      flat-container-elevation,
+      elevated-container-elevation,
+      elevated-disabled-container-elevation,
+      elevated-hover-container-elevation,
+      elevated-focus-container-elevation,
+      elevated-pressed-container-elevation
+    )
+  {
+    $value: map.get($theme, $key);
+    @if $value {
+      $theme: map.set(
+        $theme,
+        $key,
+        meta.call(
+          $elevation-resolver: map.get($resolvers, elevation),
+          $elevation: $value,
+          $shadow-color: map.get($theme, elevated-container-shadow-color),
+        )
+      );
+    }
+  }
+
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+}
+
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($_light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+  @include chip-theme.theme-styles($theme, $resolvers: $resolvers);
+}

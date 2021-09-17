@@ -87,10 +87,14 @@ $filter-selected-container-color: color.mix(
 );
 
 $_light-theme: (
+  container-elevation: null,
   container-height: null,
+  container-shadow-color: null,
   container-shape: null,
   disabled-label-text-color: null,
   disabled-label-text-opacity: null,
+  disabled-outline-color: null,
+  disabled-outline-opacity: null,
   elevated-container-color: null,
   elevated-container-elevation: null,
   elevated-container-shadow-color: null,
@@ -126,6 +130,7 @@ $_light-theme: (
   flat-unselected-outline-width: null,
   flat-unselected-pressed-container-elevation: null,
   focus-label-text-color: null,
+  focus-outline-color: null,
   focus-state-layer-color: null,
   focus-state-layer-opacity: null,
   hover-label-text-color: null,
@@ -137,6 +142,8 @@ $_light-theme: (
   label-text-size: null,
   label-text-tracking: null,
   label-text-weight: null,
+  outline-color: null,
+  outline-width: null,
   pressed-label-text-color: null,
   pressed-state-layer-color: null,
   pressed-state-layer-opacity: null,
@@ -160,6 +167,9 @@ $_light-theme: (
   unselected-pressed-label-text-color: null,
   unselected-pressed-state-layer-color: null,
   unselected-pressed-state-layer-opacity: null,
+  with-avatar-avatar-shape: null,
+  with-avatar-avatar-size: null,
+  with-avatar-disabled-avatar-opacity: null,
   with-icon-disabled-icon-color: null,
   with-icon-disabled-icon-opacity: null,
   with-icon-focus-icon-color: null,
@@ -175,13 +185,34 @@ $_light-theme: (
   with-icon-unselected-hover-icon-color: null,
   with-icon-unselected-icon-color: null,
   with-icon-unselected-pressed-icon-color: null,
+  with-leading-icon-disabled-leading-icon-color: null,
+  with-leading-icon-disabled-leading-icon-opacity: null,
+  with-leading-icon-focus-leading-icon-color: null,
+  with-leading-icon-hover-leading-icon-color: null,
+  with-leading-icon-leading-icon-color: null,
+  with-leading-icon-leading-icon-size: null,
+  with-leading-icon-pressed-leading-icon-color: null,
+  with-trailing-icon-disabled-trailing-icon-color: null,
+  with-trailing-icon-disabled-trailing-icon-opacity: null,
+  with-trailing-icon-focus-trailing-icon-color: null,
+  with-trailing-icon-hover-trailing-icon-color: null,
+  with-trailing-icon-pressed-trailing-icon-color: null,
+  with-trailing-icon-trailing-icon-color: null,
+  with-trailing-icon-trailing-icon-size: null,
 );
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-keys($_light-theme, $theme);
 
-  @include shape-radius(map.get($theme, container-shape));
+  @include _container-shape(map.get($theme, container-shape));
+  @include _avatar-shape(map.get($theme, with-avatar-avatar-shape));
+  @include graphic-size(map.get($theme, with-avatar-avatar-size));
   @include height(map.get($theme, container-height));
+  @include _container-elevation(
+    map.get($resolvers, elevation),
+    $shadow-color: map.get($theme, container-shadow-color),
+    $map: (default: map.get($theme, container-elevation))
+  );
   @include _container-elevation(
     map.get($resolvers, elevation),
     $shadow-color: map.get($theme, elevated-container-shadow-color),
@@ -251,6 +282,7 @@ $_light-theme: (
       enabled: map.get($theme, flat-unselected-outline-color),
     )
   );
+  @include outline-width(map.get($theme, outline-width));
   @include outline-width(map.get($theme, flat-outline-width));
   @include _selected-outline-width(
     map.get($theme, flat-selected-outline-width)
@@ -342,6 +374,24 @@ $_light-theme: (
       hover: map.get($theme, with-icon-unselected-hover-icon-color),
       focus: map.get($theme, with-icon-unselected-focus-icon-color),
       pressed: map.get($theme, with-icon-unselected-pressed-icon-color),
+    )
+  );
+  @include icon-color(
+    (
+      disabled: map.get($theme, with-leading-icon-disabled-leading-icon-color),
+      focus: map.get($theme, with-leading-icon-focus-leading-icon-color),
+      hover: map.get($theme, with-leading-icon-hover-leading-icon-color),
+      enabled: map.get($theme, with-leading-icon-leading-icon-color),
+      pressed: map.get($theme, with-leading-icon-pressed-leading-icon-color),
+    )
+  );
+  @include trailing-action-color(
+    (
+      disabled: map.get($theme, with-trailing-icon-disabled-trailing-icon-color),
+      focus: map.get($theme, with-trailing-icon-focus-trailing-icon-color),
+      hover: map.get($theme, with-trailing-icon-hover-trailing-icon-color),
+      enabled: map.get($theme, with-trailing-icon-trailing-icon-color),
+      pressed: map.get($theme, with-trailing-icon-pressed-trailing-icon-color),
     )
   );
   @include _ripple-theme(
@@ -535,6 +585,25 @@ $_light-theme: (
 
   @include feature-targeting.targets($feat-structure) {
     @include theme.property(height, $height);
+  }
+}
+
+@mixin _container-shape($radius) {
+  @include shape.radius($radius);
+
+  #{$ripple-target} {
+    @include shape.radius($radius);
+  }
+
+  .mdc-evolution-chip__action--primary:before,
+  .mdc-evolution-chip__action--primary:after {
+    @include shape.radius($radius);
+  }
+}
+
+@mixin _avatar-shape($radius) {
+  .mdc-evolution-chip__icon--primary {
+    @include shape.radius($radius);
   }
 }
 
@@ -866,7 +935,9 @@ $_light-theme: (
   // computed based on the unselected bounding client react which will not have
   // enough horizontal space to account for the growth in width.
   &.mdc-evolution-chip--selectable:not(.mdc-evolution-chip--with-primary-icon) {
-    --mdc-chip-graphic-selected-width: #{$size};
+    @if $size {
+      --mdc-chip-graphic-selected-width: #{$size};
+    }
   }
 
   .mdc-evolution-chip__graphic {
@@ -1040,6 +1111,13 @@ $_light-theme: (
     $query
   );
 
+  @include _is-enabled() {
+    @include _trailing-action-color(
+      state.get-enabled-state($color-or-map),
+      $query
+    );
+  }
+
   .mdc-evolution-chip__action--trailing:hover {
     @include _trailing-action-color(
       state.get-hover-state($color-or-map),
@@ -1056,7 +1134,7 @@ $_light-theme: (
     }
   }
 
-  &.mdc-evolution-chip--disabled {
+  @include _is-disabled() {
     @include _trailing-action-color(
       state.get-disabled-state($color-or-map),
       $query
