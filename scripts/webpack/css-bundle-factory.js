@@ -220,7 +220,6 @@ class CssBundleFactory {
           sourceMap: true,
           includePaths: [getAbsolutePath('/packages/material-components-web/node_modules')],
           implementation: require('sass'),
-          fiber: require('fibers'),
         },
       },
     ];

@@ -157,7 +157,7 @@ class JsBundleFactory {
         filenamePattern: this.env_.isProd() ? 'material-components-web.min.js' : 'material-components-web.js',
         moduleName: {
           amd: 'material-components-web',
-          root: ['mdc']
+          root: ['mdc'],
         },
       },
       plugins,
@@ -230,7 +230,7 @@ class JsBundleFactory {
  * @param {string} dashedName A dash-separated package name. E.g., "mdc-linear-progress".
  * @return {string} dashedName converted to camelCase. E.g., "mdcLinearProgress".
  */
- function toCamelCase(dashedName) {
+function toCamelCase(dashedName) {
   return dashedName.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
 }
 
