@@ -862,7 +862,7 @@
   .mdc-dialog__title {
     @include theme.property(
       margin-left,
-      calc(title - 2 * close),
+      'calc(title - 2 * close)',
       $replace: (title: $title-side-padding, close: $close-icon-padding)
     );
   }
