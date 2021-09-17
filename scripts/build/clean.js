@@ -13,7 +13,10 @@ function main() {
   removeDirectory('.rewrite-tmp');
   removeFilesOfType('css');
   removeFilesOfType('js');
-  removeFilesOfType('d.ts');
+  removeFilesOfType('d.ts', [
+    // This file is hand-written.
+    'packages/mdc-base/externs.d.ts',
+  ]);
   removeFilesOfType('map');
 }
 
@@ -21,10 +24,10 @@ function removeDirectory(directory) {
   del.sync([directory]);
 }
 
-function removeFilesOfType(type) {
+function removeFilesOfType(type, extraIgnore = []) {
   const fileGlob = `packages/**/*.${type}`;
   const filePaths = globSync(fileGlob, {
-    ignore: ['**/node_modules/**'],
+    ignore: ['**/node_modules/**', ...extraIgnore],
   });
   filePaths.forEach((filePath) => {
     fs.unlink(filePath, (err) => {
