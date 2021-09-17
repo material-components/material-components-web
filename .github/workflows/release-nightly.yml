@@ -20,7 +20,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 14
           registry-url: https://registry.npmjs.org/
       - name: Cache dependencies
         uses: actions/cache@v2
