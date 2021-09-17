@@ -63,6 +63,21 @@ $_valid-states: (
   @return $state;
 }
 
+/// Retrieves the enabled state from the provided parameter. The parameter may
+/// be the state's default value or a state Map. A state Map has individual keys
+/// describing each state's value.
+///
+/// @example
+///   get-enabled-state(blue); // blue
+///   get-enabled-state((enabled: blue)); // blue
+///   get-enabled-state((hover: red)); // null
+///
+/// @param {*} $default-or-map - The state's default value or a state Map.
+/// @return The enabled state if present, or null.
+@function get-enabled-state($default-or-map) {
+  @return _get-state($default-or-map, enabled);
+}
+
 /// Retrieves the disabled state from the provided parameter. The parameter may
 /// be the state's default value or a state Map. A state Map has individual keys
 /// describing each state's value.
