@@ -84,6 +84,9 @@
 }
 
 @function _px-to-rem($px) {
+  @if $px == null {
+    @return null;
+  }
   @return math.div($px, 16px) * 1rem;
 }
 
