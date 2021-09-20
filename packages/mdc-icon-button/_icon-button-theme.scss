@@ -36,6 +36,7 @@
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/touch-target/mixins' as touch-target-mixins;
 
 $ripple-target: '.mdc-icon-button__ripple';
 
@@ -130,12 +131,6 @@ $light-theme: (
   );
 
   @include size($size, $query: $query);
-
-  &.mdc-icon-button--touch {
-    @if $density-scale != 0 {
-      @include _touch-target-reset($query: $query);
-    }
-  }
 }
 
 ///
@@ -152,26 +147,40 @@ $light-theme: (
     height: $size;
     padding: math.div($size - $icon-size, 2);
   }
-}
 
-///
-/// Resets touch target-related styles. This is called from the density mixin to
-/// automatically remove the increased touch target, since dense components
-/// don't have the same default a11y requirements.
-/// @access private
-///
-@mixin _touch-target-reset($query: feature-targeting.all()) {
-  $feat-structure: feature-targeting.create-target($query, structure);
+  &.mdc-icon-button--reduced-size {
+    $component-size: $size;
+    // Icon button ripple size is capped at 40px for icon buttons with densities
+    // -1 and 0 (icon buttons with sizes 44x44 and 48x48px).
+    // See http://b/192353968 for more info.
+    @if $size >= 40px and $size <= 48px {
+      $component-size: 40px;
+    }
 
-  @include feature-targeting.targets($feat-structure) {
-    margin-top: 0;
-    margin-bottom: 0;
+    @include feature-targeting.targets($feat-structure) {
+      width: $component-size;
+      height: $component-size;
+      padding: math.div($component-size - $icon-size, 2);
+    }
+
+    &.mdc-icon-button--touch {
+      @include touch-target-mixins.margin(
+        $component-height: $component-size,
+        $component-width: $component-size,
+        $touch-target-height: $size,
+        $touch-target-width: $size,
+        $query: $query
+      );
+    }
   }
 
   .mdc-icon-button__touch {
-    @include feature-targeting.targets($feat-structure) {
-      display: none;
-    }
+    @include touch-target-mixins.touch-target(
+      $set-width: true,
+      $query: $query,
+      $height: $size,
+      $width: $size
+    );
   }
 }
 

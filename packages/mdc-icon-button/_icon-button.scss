@@ -51,6 +51,7 @@
       text-decoration: none;
       cursor: pointer;
       user-select: none;
+      overflow: visible; // Added to fix IE11 touch target tests.
     }
 
     .mdc-icon-button__touch {
