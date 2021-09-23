@@ -54,6 +54,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       removeClassFromElementAtIndex: () => undefined,
       addAttributeToElementAtIndex: () => undefined,
       removeAttributeFromElementAtIndex: () => undefined,
+      getAttributeFromElementAtIndex: () => null,
       elementContainsClass: () => false,
       closeSurface: () => undefined,
       getElementIndex: () => -1,
@@ -95,7 +96,9 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     }
 
     this.adapter.notifySelected({index});
-    this.adapter.closeSurface();
+    const skipRestoreFocus = this.adapter.getAttributeFromElementAtIndex(
+                                 index, strings.SKIP_RESTORE_FOCUS) === 'true';
+    this.adapter.closeSurface(skipRestoreFocus);
 
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId = setTimeout(() => {

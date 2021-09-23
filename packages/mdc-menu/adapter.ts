@@ -51,6 +51,12 @@ export interface MDCMenuAdapter {
   removeAttributeFromElementAtIndex(index: number, attr: string): void;
 
   /**
+   * @return the attribute string if present on an element at the index
+   * provided, null otherwise.
+   */
+  getAttributeFromElementAtIndex(index: number, attr: string): string|null;
+
+  /**
    * @return true if the element contains the className.
    */
   elementContainsClass(element: Element, className: string): boolean;

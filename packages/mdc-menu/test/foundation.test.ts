@@ -46,6 +46,7 @@ describe('MDCMenuFoundation', () => {
       'removeClassFromElementAtIndex',
       'addAttributeToElementAtIndex',
       'removeAttributeFromElementAtIndex',
+      'getAttributeFromElementAtIndex',
       'elementContainsClass',
       'closeSurface',
       'getElementIndex',
@@ -499,5 +500,24 @@ describe('MDCMenuFoundation', () => {
     foundation.handleItemAction(itemEl);
 
     expect(mockAdapter.closeSurface).toHaveBeenCalledTimes(1);
+    expect(mockAdapter.closeSurface).toHaveBeenCalledWith(false);
   });
+
+  it('closes the menu (with indication to not restore focus) on item action based on DOM attribute',
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       const itemEl = document.createElement('li');
+       mockAdapter.elementContainsClass
+           .withArgs(itemEl, listClasses.LIST_ITEM_CLASS)
+           .and.returnValue(true);
+       mockAdapter.getElementIndex.withArgs(itemEl).and.returnValue(0);
+       mockAdapter.getAttributeFromElementAtIndex
+           .withArgs(0, strings.SKIP_RESTORE_FOCUS)
+           .and.returnValue('true');
+
+       foundation.handleItemAction(itemEl);
+
+       expect(mockAdapter.closeSurface).toHaveBeenCalledTimes(1);
+       expect(mockAdapter.closeSurface).toHaveBeenCalledWith(true);
+     });
 });

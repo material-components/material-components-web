@@ -327,6 +327,10 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         const list = this.items;
         list[index].removeAttribute(attr);
       },
+      getAttributeFromElementAtIndex: (index, attr) => {
+        const list = this.items;
+        return list[index].getAttribute(attr);
+      },
       elementContainsClass: (element, className) =>
           element.classList.contains(className),
       closeSurface: (skipRestoreFocus: boolean) => {
