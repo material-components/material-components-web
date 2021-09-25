@@ -220,7 +220,7 @@ $_ripple-theme: (
   // Background wash styles, for both CSS-only and upgraded stateful surfaces
   &:hover,
   &.mdc-ripple-surface--hover {
-    #{$ripple-target}::before {
+    @include states-background-selector($ripple-target) {
       // Opacity falls under color because the chosen opacity is color-dependent in typical usage
       @include feature-targeting.targets($feat-color) {
         @include theme.property(opacity, $opacity);
@@ -247,7 +247,7 @@ $_ripple-theme: (
     // CSS-only selectors.
     &:not(.mdc-ripple-upgraded):focus,
     &:not(.mdc-ripple-upgraded):focus-within {
-      #{$ripple-target}::before {
+      @include states-background-selector($ripple-target) {
         @include states-focus-opacity-properties_(
           $opacity: $opacity,
           $query: $query
@@ -259,7 +259,7 @@ $_ripple-theme: (
     &.mdc-ripple-upgraded--background-focused,
     // CSS-only selectors.
     &:not(.mdc-ripple-upgraded):focus {
-      #{$ripple-target}::before {
+      @include states-background-selector($ripple-target) {
         @include states-focus-opacity-properties_(
           $opacity: $opacity,
           $query: $query
@@ -374,7 +374,7 @@ $_ripple-theme: (
   &--activated {
     // Stylelint seems to think that '&' qualifies as a type selector here?
     // stylelint-disable-next-line selector-max-type
-    #{$ripple-target}::before {
+    @include states-background-selector($ripple-target) {
       // Opacity falls under color because the chosen opacity is color-dependent.
       @include feature-targeting.targets($feat-color) {
         @include theme.property(
@@ -410,7 +410,7 @@ $_ripple-theme: (
 
   &--selected {
     // stylelint-disable-next-line selector-max-type
-    #{$ripple-target}::before {
+    @include states-background-selector($ripple-target) {
       // Opacity falls under color because the chosen opacity is color-dependent.
       @include feature-targeting.targets($feat-color) {
         @include theme.property(
@@ -550,4 +550,10 @@ $_ripple-theme: (
   }
 
   @return map.get($opacity-map, $state);
+}
+
+@mixin states-background-selector($ripple-target) {
+  #{$ripple-target}::before {
+    @content;
+  }
 }

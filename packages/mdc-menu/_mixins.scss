@@ -26,6 +26,7 @@
 @use 'sass:math';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple-theme';
 @use '@material/rtl/rtl';
 @use '@material/list/mixins' as list-mixins;
 @use '@material/list/variables' as list-variables;
@@ -54,6 +55,7 @@
       $query
     );
     @include min-width(variables.$min-width, $query: $query);
+    @include open-item-opacity(variables.$open-item-opacity, $query: $query);
     // Include mdc-deprecated-list selector to ensure list-inside-menu overrides default list styles
     .mdc-deprecated-list {
       @include list-mixins.deprecated-item-primary-text-ink-color(
@@ -132,6 +134,27 @@
   .mdc-menu-item--selected .mdc-menu__selection-group-icon {
     @include feature-targeting.targets($feat-structure) {
       display: inline;
+    }
+  }
+}
+
+@mixin open-item-opacity($opacity, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-menu-item--submenu-open {
+    @include ripple-theme.states-background-selector(
+      list-variables.$deprecated-ripple-target
+    ) {
+      @include feature-targeting.targets($feat-color) {
+        opacity: $opacity;
+      }
+    }
+    @include ripple-theme.states-background-selector(
+      list-variables.$deprecated-temporary-ripple-target
+    ) {
+      @include feature-targeting.targets($feat-color) {
+        opacity: $opacity;
+      }
     }
   }
 }
