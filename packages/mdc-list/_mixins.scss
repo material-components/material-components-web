@@ -97,6 +97,12 @@
     }
   }
 
+  .mdc-deprecated-list-item__wrapper {
+    @include feature-targeting.targets($feat-structure) {
+      display: block;
+    }
+  }
+
   .mdc-deprecated-list-item {
     @include feature-targeting.targets($feat-structure) {
       @include deprecated-item-base_;

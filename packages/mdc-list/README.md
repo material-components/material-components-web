@@ -449,6 +449,27 @@ When rendering list with checkbox items all pre-selected list items should conta
 
 The `selectedIndex` (that proxies foundation's `setSelectedState()`) accepts list of indexes in array format for list with checkbox items to set the selection state. It overwrites the current state with new selected state.
 
+### Multilevel list
+
+When rendering multilevel list (for example submenu), sublist should be rendered inside a wrapper `<li>` item. The rest of item layout should
+remain the same as all examples above. In this case `<li>` element should be marked with `role="presentation"`.
+
+```html
+<ul class="mdc-deprecated-list">
+  <li class="mdc-deprecated-list-item__wrapper" role="presentation">
+    <div class="mdc-deprecated-list-item" tabindex="0">
+      <span class="mdc-deprecated-list-item__ripple"></span>
+      <span class="mdc-deprecated-list-item__text">Single-line item</span>
+    </div>
+    <!-- Child list can be placed here. -->
+  </li>
+  <li class="mdc-deprecated-list-item">
+    <span class="mdc-deprecated-list-item__ripple"></span>
+    <span class="mdc-deprecated-list-item__text">Single-line item</span>
+  </li>
+</ul>
+```
+
 ## Style Customization
 
 ### CSS Classes

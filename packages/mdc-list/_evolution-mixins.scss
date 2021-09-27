@@ -49,6 +49,12 @@
     @include list-base($query: $query);
   }
 
+  .mdc-list-item__wrapper {
+    @include feature-targeting.targets($feat-structure) {
+      display: block;
+    }
+  }
+
   .mdc-list-item {
     @include item-base($query: $query);
 
