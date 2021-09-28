@@ -36,7 +36,7 @@ import {MDCDataTableRowSelectionChangedEventDetail, RowClickEventData} from './t
  * Implementation of `MDCDataTableFoundation`
  */
 export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
-  static attachTo(root: Element): MDCDataTable {
+  static override attachTo(root: Element): MDCDataTable {
     return new MDCDataTable(root);
   }
 
@@ -53,13 +53,13 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   private handleContentClick!:
       SpecificEventListener<'click'>;  // Assigned in `initialSyncWithDOM()`
 
-  initialize(
+  override initialize(
       checkboxFactory:
           MDCCheckboxFactory = (el: Element) => new MDCCheckbox(el)) {
     this.checkboxFactory = checkboxFactory;
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.headerRow =
         this.root.querySelector(`.${cssClasses.HEADER_ROW}`) as HTMLElement;
     this.handleHeaderRowCheckboxChange = () => {
@@ -148,7 +148,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     this.getLinearProgress().close();
   }
 
-  destroy() {
+  override destroy() {
     if (this.handleHeaderRowCheckboxChange) {
       this.headerRow.removeEventListener(
           'change', this.handleHeaderRowCheckboxChange);
@@ -173,7 +173,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     }
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

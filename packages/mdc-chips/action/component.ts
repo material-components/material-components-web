@@ -49,7 +49,7 @@ export type MDCChipActionFactory =
  */
 export class MDCChipAction extends
     MDCComponent<MDCChipActionFoundation> implements MDCRippleCapableSurface {
-  static attachTo(root: Element): MDCChipAction {
+  static override attachTo(root: Element): MDCChipAction {
     return new MDCChipAction(root);
   }
 
@@ -65,7 +65,7 @@ export class MDCChipAction extends
     return this.rippleInstance;
   }
 
-  initialize(
+  override initialize(
       rippleFactory: MDCRippleFactory = (el, foundation) =>
           new MDCRipple(el, foundation)) {
     const rippleAdapter: MDCRippleAdapter = {
@@ -76,7 +76,7 @@ export class MDCChipAction extends
         rippleFactory(this.root, new MDCRippleFoundation(rippleAdapter));
   }
 
-  initialSyncWithDOM() {
+  override initialSyncWithDOM() {
     this.handleClick = () => {
       this.foundation.handleClick();
     };
@@ -89,14 +89,14 @@ export class MDCChipAction extends
     this.listen('keydown', this.handleKeydown);
   }
 
-  destroy() {
+  override destroy() {
     this.ripple.destroy();
     this.unlisten('click', this.handleClick);
     this.unlisten('keydown', this.handleKeydown);
     super.destroy();
   }
 
-  getDefaultFoundation() {
+  override getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take
     // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
     // methods, we need a separate, strongly typed adapter variable.

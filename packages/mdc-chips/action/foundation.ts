@@ -41,7 +41,7 @@ triggerMap.set(KEY.BACKSPACE, MDCChipActionInteractionTrigger.BACKSPACE_KEY);
  */
 export abstract class MDCChipActionFoundation extends
     MDCFoundation<MDCChipActionAdapter> {
-  static get defaultAdapter(): MDCChipActionAdapter {
+  static override get defaultAdapter(): MDCChipActionAdapter {
     return {
       emitEvent: () => undefined,
       focus: () => undefined,
