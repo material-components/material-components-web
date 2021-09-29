@@ -745,7 +745,10 @@ $_dependent-state-groups: ((hover, focus, pressed), ());
 @function _create-independent-selector($selector, $dependents...) {
   @each $dependent in $dependents {
     @if $dependent {
-      $selector: selector.append($selector, selector-ext.negate($dependent));
+      $selector: selector-ext.append-strict(
+        $selector,
+        selector-ext.negate($dependent)
+      );
     }
   }
 
@@ -759,7 +762,7 @@ $_dependent-state-groups: ((hover, focus, pressed), ());
   }
 
   @at-root {
-    #{selector.append(&, map.get($selectors, $state))} {
+    #{selector-ext.append-strict(&, map.get($selectors, $state))} {
       @content;
     }
   }
