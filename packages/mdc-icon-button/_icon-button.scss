@@ -162,7 +162,7 @@
       $feat-structure: feature-targeting.create-target($query, structure);
       @include feature-targeting.targets($feat-structure) {
         pointer-events: none;
-        z-index: 1;
+        z-index: -1;
       }
     }
   }
