@@ -51,6 +51,7 @@
       text-decoration: none;
       cursor: pointer;
       user-select: none;
+      z-index: 0; // Added to render above the container in IE11 tests.
       overflow: visible; // Added to fix IE11 touch target tests.
     }
 
@@ -88,13 +89,6 @@
         display: none;
       }
     }
-  }
-
-  .mdc-icon-button--touch {
-    @include touch-target-mixins.margin(
-      $component-height: icon-button-theme.$size,
-      $query: $query
-    );
   }
 
   .mdc-icon-button--on {
@@ -161,7 +155,12 @@
     .mdc-icon-button__ripple {
       $feat-structure: feature-targeting.create-target($query, structure);
       @include feature-targeting.targets($feat-structure) {
+        height: 100%;
+        left: 0px;
         pointer-events: none;
+        position: absolute;
+        top: 0px;
+        width: 100%;
         z-index: -1;
       }
     }

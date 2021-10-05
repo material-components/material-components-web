@@ -149,21 +149,20 @@ $light-theme: (
   }
 
   &.mdc-icon-button--reduced-size {
-    $component-size: $size;
-    // Icon button ripple size is capped at 40px for icon buttons with densities
-    // -1 and 0 (icon buttons with sizes 44x44 and 48x48px).
-    // See http://b/192353968 for more info.
-    @if $size >= 40px and $size <= 48px {
-      $component-size: 40px;
-    }
+    .mdc-icon-button__ripple {
+      $component-size: $size;
+      // Icon button ripple size is capped at 40px for icon buttons with
+      // densities -1 and 0 (icon buttons with sizes 44x44 and 48x48px).
+      // See http://b/192353968 for more info.
+      @if $size >= 40px and $size <= 48px {
+        $component-size: 40px;
+      }
 
-    @include feature-targeting.targets($feat-structure) {
-      width: $component-size;
-      height: $component-size;
-      padding: math.div($component-size - $icon-size, 2);
-    }
+      @include feature-targeting.targets($feat-structure) {
+        width: $component-size;
+        height: $component-size;
+      }
 
-    &.mdc-icon-button--touch {
       @include touch-target-mixins.margin(
         $component-height: $component-size,
         $component-width: $component-size,
@@ -203,9 +202,12 @@ $light-theme: (
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
+  $component-width: $width + $padding * 2;
+  $component-height: $height + $padding * 2;
+
   @include feature-targeting.targets($feat-structure) {
-    width: $width + $padding * 2;
-    height: $height + $padding * 2;
+    width: $component-width;
+    height: $component-height;
     padding: $padding;
     font-size: math.max($width, $height);
   }
