@@ -449,7 +449,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * @param isEnabled Sets the list item to enabled or disabled.
    */
   setEnabled(itemIndex: number, isEnabled: boolean): void {
-    if (!this.isIndexValid(itemIndex)) {
+    if (!this.isIndexValid(itemIndex, false)) {
       return;
     }
 
@@ -622,9 +622,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     return 0;
   }
 
-  private isIndexValid(index: MDCListIndex) {
+  private isIndexValid(index: MDCListIndex, validateListType: boolean = true) {
     if (index instanceof Array) {
-      if (!this.isCheckboxList) {
+      if (!this.isCheckboxList && validateListType) {
         throw new Error(
             'MDCListFoundation: Array of index is only supported for checkbox based list');
       }
@@ -635,7 +635,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         return index.some((i) => this.isIndexInRange(i));
       }
     } else if (typeof index === 'number') {
-      if (this.isCheckboxList) {
+      if (this.isCheckboxList && validateListType) {
         throw new Error(
             `MDCListFoundation: Expected array of index for checkbox based list but got number: ${
                 index}`);
