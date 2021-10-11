@@ -41,7 +41,7 @@
 }
 
 @mixin without-ripple-styles($query: feature-targeting.all()) {
-  @include _static-styles($query);
+  @include static-styles($query);
   @include _theme-styles($query);
 }
 
@@ -100,7 +100,7 @@
   }
 }
 
-@mixin _static-styles($query: feature-targeting.all()) {
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);

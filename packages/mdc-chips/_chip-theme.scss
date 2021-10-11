@@ -98,6 +98,7 @@ $_light-theme: (
   elevated-container-color: null,
   elevated-container-elevation: null,
   elevated-container-shadow-color: null,
+  container-surface-tint-layer-color: null,
   elevated-disabled-container-color: null,
   elevated-disabled-container-elevation: null,
   elevated-disabled-container-opacity: null,
@@ -208,6 +209,9 @@ $_light-theme: (
   @include _avatar-shape(map.get($theme, with-avatar-avatar-shape));
   @include graphic-size(map.get($theme, with-avatar-avatar-size));
   @include height(map.get($theme, container-height));
+  @include elevation-theme.overlay-container-color(
+    map.get($theme, container-surface-tint-layer-color)
+  );
   @include _container-elevation(
     map.get($resolvers, elevation),
     $shadow-color: map.get($theme, container-shadow-color),
@@ -215,7 +219,7 @@ $_light-theme: (
   );
   @include _container-elevation(
     map.get($resolvers, elevation),
-    $shadow-color: map.get($theme, elevated-container-shadow-color),
+    $shadow-color: map.get($theme, flat-container-shadow-color),
     $map: (enabled: map.get($theme, flat-container-elevation))
   );
   @include _container-elevation(
@@ -936,7 +940,7 @@ $_light-theme: (
   // enough horizontal space to account for the growth in width.
   &.mdc-evolution-chip--selectable:not(.mdc-evolution-chip--with-primary-icon) {
     @if $size {
-      --mdc-chip-graphic-selected-width: #{$size};
+      @include theme.property(--mdc-chip-graphic-selected-width, $size);
     }
   }
 
@@ -1413,43 +1417,53 @@ $_light-theme: (
 
 @mixin _container-elevation($resolver, $shadow-color, $map) {
   @include _is-enabled() {
-    @include elevation-theme.with-resolver(
-      $resolver,
-      $elevation: state.get-enabled-state($map),
-      $shadow-color: $shadow-color
-    );
+    @if (state.get-enabled-state($map)) {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-enabled-state($map),
+        $shadow-color: $shadow-color
+      );
+    }
   }
 
   @include ripple-theme.hover() {
-    @include elevation-theme.with-resolver(
-      $resolver,
-      $elevation: state.get-hover-state($map),
-      $shadow-color: $shadow-color
-    );
+    @if state.get-hover-state($map) {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-hover-state($map),
+        $shadow-color: $shadow-color
+      );
+    }
   }
 
   @include ripple-theme.focus() {
-    @include elevation-theme.with-resolver(
-      $resolver,
-      $elevation: state.get-focus-state($map),
-      $shadow-color: $shadow-color
-    );
+    @if (state.get-focus-state($map)) {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-focus-state($map),
+        $shadow-color: $shadow-color
+      );
+    }
   }
 
   @include ripple-theme.pressed() {
-    @include elevation-theme.with-resolver(
-      $resolver,
-      $elevation: state.get-pressed-state($map),
-      $shadow-color: $shadow-color
-    );
+    @if (state.get-pressed-state($map)) {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-pressed-state($map),
+        $shadow-color: $shadow-color
+      );
+    }
   }
 
   @include _is-disabled() {
-    @include elevation-theme.with-resolver(
-      $resolver,
-      $elevation: state.get-disabled-state($map),
-      $shadow-color: $shadow-color
-    );
+    @if (state.get-disabled-state($map)) {
+      @include elevation-theme.with-resolver(
+        $resolver,
+        $elevation: state.get-disabled-state($map),
+        $shadow-color: $shadow-color
+      );
+    }
   }
 }
 

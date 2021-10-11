@@ -81,6 +81,7 @@ $_light-theme: (
   with-icon-unselected-focus-icon-color: null,
   with-icon-selected-focus-icon-color: null,
   elevated-focus-container-elevation: null,
+  elevated-pressed-container-elevation: null,
   flat-selected-focus-container-elevation: null,
   flat-unselected-focus-container-elevation: null,
   unselected-pressed-state-layer-color: null,
@@ -94,6 +95,7 @@ $_light-theme: (
   elevated-selected-container-elevation: null,
   flat-selected-pressed-container-elevation: null,
   flat-unselected-pressed-container-elevation: null,
+  container-surface-tint-layer-color: null,
 );
 
 $_custom-property-prefix: 'filter-chip';

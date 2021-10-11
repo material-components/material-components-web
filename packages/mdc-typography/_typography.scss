@@ -528,7 +528,7 @@ $_typography-theme: (
 );
 
 @mixin theme-styles($theme) {
-  @include theme.validate-theme($_typography-theme, $theme);
+  @include theme.validate-theme-keys($_typography-theme, $theme);
 
   @include theme.property(font-family, map.get($theme, font));
   @include theme.property(line-height, map.get($theme, line-height));

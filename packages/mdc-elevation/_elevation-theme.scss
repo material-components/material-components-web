@@ -363,7 +363,7 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
 /// Applies the given color to the container of the overlay.
 /// @param {color} $color - the color of the overlay container
 ///
-@mixin _overlay-container-color($color, $query: feature-targeting.all()) {
+@mixin overlay-container-color($color, $query: feature-targeting.all()) {
   .mdc-elevation-overlay {
     @include overlay-fill-color($color, $query: $query);
   }
@@ -443,7 +443,7 @@ $_theme-values: (
 @mixin _theme($theme: (), $query: feature-targeting.all()) {
   @include shadow(map.get($theme, shadow), $query: $query);
   @include overlay-opacity(map.get($theme, overlay-opacity), $query: $query);
-  @include _overlay-container-color(
+  @include overlay-container-color(
     map.get($theme, overlay-color),
     $query: $query
   );
