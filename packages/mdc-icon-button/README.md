@@ -75,7 +75,7 @@ To meet this requirement, add the following to your button:
 
 ```html
 <div class="mdc-touch-target-wrapper">
-  <button class="mdc-icon-button mdc-icon-button--touch material-icons">
+  <button class="mdc-icon-button material-icons">
     <div class="mdc-icon-button__ripple"></div>
     favorite
     <div class="mdc-icon-button__touch"></div>
