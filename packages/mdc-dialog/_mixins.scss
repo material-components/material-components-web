@@ -266,6 +266,14 @@
     }
   }
 
+  .mdc-dialog__title .mdc-dialog__close {
+    @include feature-targeting.targets($feat-structure) {
+      position: absolute;
+      top: 9px;
+      right: 12px;
+    }
+  }
+
   // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-dialog__title + .mdc-dialog__content,
   .mdc-dialog__header + .mdc-dialog__content {
