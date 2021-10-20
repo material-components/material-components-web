@@ -106,6 +106,17 @@
     }
   }
   // postcss-bem-linter: end
+
+  .mdc-icon-button__link {
+    @include feature-targeting.targets($feat-structure) {
+      height: 100%;
+      left: 0;
+      outline: none;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+  }
 }
 
 @mixin without-ripple($query: feature-targeting.all()) {
