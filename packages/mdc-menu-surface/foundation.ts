@@ -95,6 +95,7 @@ export class MDCMenuSurfaceFoundation extends
   private isHorizontallyCenteredOnViewport = false;
 
   private maxHeight = 0;
+  private openBottomBias = 0;
 
   private openAnimationEndTimerId = 0;
   private closeAnimationEndTimerId = 0;
@@ -213,6 +214,16 @@ export class MDCMenuSurfaceFoundation extends
    */
   setMaxHeight(maxHeight: number) {
     this.maxHeight = maxHeight;
+  }
+
+  /**
+   * Set to a positive integer to influence the menu to preferentially open
+   * below the anchor instead of above.
+   * @param bias A value of `x` simulates an extra `x` pixels of available space
+   *     below the menu during positioning calculations.
+   */
+  setOpenBottomBias(bias: number) {
+    this.openBottomBias = bias;
   }
 
   isOpen() {
@@ -428,7 +439,8 @@ export class MDCMenuSurfaceFoundation extends
     }
 
     const isAvailableBottom = availableBottom - surfaceSize.height > 0;
-    if (!isAvailableBottom && availableTop > availableBottom) {
+    if (!isAvailableBottom &&
+        availableTop > availableBottom + this.openBottomBias) {
       // Attach bottom side of surface to the anchor.
       corner = this.setBit(corner, CornerBit.BOTTOM);
     }
