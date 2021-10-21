@@ -48,6 +48,7 @@ export interface MDCMenuSurfaceAdapter {
   setPosition(position: Partial<MDCMenuDistance>): void;
   setMaxHeight(height: string): void;
   setTransformOrigin(origin: string): void;
+  getOwnerDocument?(): Document;
 
   /** Saves the element that was focused before the menu surface was opened. */
   saveFocus(): void;

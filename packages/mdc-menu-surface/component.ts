@@ -181,7 +181,6 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
           }
         }
       },
-
       getInnerDimensions: () => {
         return {
           width: (this.root as HTMLElement).offsetWidth,

@@ -635,8 +635,11 @@ export class MDCMenuSurfaceFoundation extends
    */
   private maybeRestoreFocus() {
     const isRootFocused = this.adapter.isFocused();
-    const childHasFocus = document.activeElement &&
-        this.adapter.isElementInContainer(document.activeElement);
+    const ownerDocument = this.adapter.getOwnerDocument ?
+        this.adapter.getOwnerDocument() :
+        document;
+    const childHasFocus = ownerDocument.activeElement &&
+        this.adapter.isElementInContainer(ownerDocument.activeElement);
     if (isRootFocused || childHasFocus) {
       // Wait before restoring focus when closing the menu surface. This is
       // important because if a touch event triggered the menu close, and the
