@@ -36,7 +36,7 @@
 $custom-property-prefix: 'tab-bar';
 
 // TODO: `divider-color` and `divider-height` are not supported by tabs.
-$light-theme: (
+$primary-navigation-tabs-light-theme: (
   active-focus-state-layer-color: theme-color.$primary,
   active-focus-state-layer-opacity: 0.12,
   active-hover-state-layer-color: theme-color.$primary,
@@ -88,18 +88,69 @@ $light-theme: (
   with-label-text-label-text-weight: typography.get-weight(subhead2),
 );
 
-@mixin theme($theme) {
-  @include theme.validate-theme($light-theme, $theme);
+// TODO: `divider-color` and `divider-height` are not supported by tabs.
+$secondary-navigation-tab-light-theme: (
+  active-indicator-color: null,
+  active-indicator-height: null,
+  active-label-text-color: null,
+  container-color: null,
+  container-elevation: null,
+  container-height: null,
+  container-shadow-color: null,
+  container-shape: null,
+  divider-color: null,
+  divider-height: null,
+  focus-label-text-color: null,
+  focus-state-layer-color: null,
+  focus-state-layer-opacity: null,
+  hover-label-text-color: null,
+  hover-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  inactive-label-text-color: null,
+  label-text-font-family: null,
+  label-text-font-size: null,
+  label-text-letter-spacing: null,
+  label-text-line-height: null,
+  label-text-weight: null,
+  pressed-label-text-color: null,
+  pressed-state-layer-color: null,
+  pressed-state-layer-opacity: null,
+);
+
+@mixin primary-navigation-tab-theme($theme) {
+  @include theme.validate-theme($primary-navigation-tabs-light-theme, $theme);
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $custom-property-prefix
   );
 }
 
-@mixin theme-styles($theme) {
+@mixin secondary-navigation-tab-theme($theme) {
+  @include theme.validate-theme($secondary-navigation-tab-light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@mixin primary-navigation-tab-theme-styles($theme) {
   .mdc-tab {
-    @include tab-theme.theme-styles(
-      map-ext.pick($theme, map.keys(tab-theme.$light-theme)...)
+    @include tab-theme.primary-navigation-tab-theme-styles(
+      map-ext.pick($theme, map.keys(tab-theme.$primary-light-theme)...)
+    );
+  }
+
+  .mdc-tab-indicator {
+    @include tab-indicator-theme.theme-styles(
+      map-ext.pick($theme, map.keys(tab-indicator-theme.$light-theme)...)
+    );
+  }
+}
+
+@mixin secondary-navigation-tab-theme-styles($theme) {
+  .mdc-tab {
+    @include tab-theme.secondary-navigation-tab-theme-styles(
+      map-ext.pick($theme, map.keys(tab-theme.$secondary-light-theme)...)
     );
   }
 

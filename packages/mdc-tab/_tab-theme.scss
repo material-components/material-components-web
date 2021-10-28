@@ -32,7 +32,7 @@
 @use '@material/theme/theme-color';
 @use '@material/typography/typography';
 
-$light-theme: (
+$primary-light-theme: (
   active-focus-state-layer-color: theme-color.$primary,
   active-focus-state-layer-opacity: 0.12,
   active-hover-state-layer-color: theme-color.$primary,
@@ -74,17 +74,47 @@ $light-theme: (
   with-label-text-label-text-weight: typography.get-weight(subhead2),
 );
 
+$secondary-light-theme: (
+  active-label-text-color: null,
+  container-color: null,
+  container-elevation: null,
+  container-height: null,
+  container-shadow-color: null,
+  container-shape: null,
+  focus-label-text-color: null,
+  focus-state-layer-color: null,
+  focus-state-layer-opacity: null,
+  hover-label-text-color: null,
+  hover-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  inactive-label-text-color: null,
+  label-text-font-family: null,
+  label-text-font-size: null,
+  label-text-letter-spacing: null,
+  label-text-line-height: null,
+  label-text-weight: null,
+  pressed-label-text-color: null,
+  pressed-state-layer-color: null,
+  pressed-state-layer-opacity: null,
+);
+
 $_ripple-target: '.mdc-tab__ripple';
 $custom-property-prefix: 'tab';
-
-@mixin theme($theme) {
+@mixin primary-navigation-tab-theme($theme) {
   @include keys.declare-custom-properties(
     $theme,
     $prefix: $custom-property-prefix
   );
 }
 
-@mixin theme-styles($theme) {
+@mixin secondary-navigation-tab-theme($theme) {
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
+@mixin primary-navigation-tab-theme-styles($theme) {
   // TODO(b/191298796): Use independent state layer color mixins when available.
   @include _active-state-layer-color(
     map.get($theme, active-hover-state-layer-color) or
@@ -175,6 +205,48 @@ $custom-property-prefix: 'tab';
   @include _label-text-weight(
     map.get($theme, with-label-text-label-text-weight)
   );
+}
+
+@mixin secondary-navigation-tab-theme-styles($theme) {
+  // TODO(b/191298796): Use independent state layer color mixins when available.
+  @include _active-state-layer-color(
+    map.get($theme, hover-state-layer-color) or
+      map.get($theme, focus-state-layer-color) or
+      map.get($theme, pressed-state-layer-color)
+  );
+  @include _active-state-layer-opacity(
+    (
+      hover: map.get($theme, hover-state-layer-opacity),
+      focus: map.get($theme, focus-state-layer-opacity),
+      pressed: map.get($theme, pressed-state-layer-opacity),
+    )
+  );
+
+  @include _container-color(map.get($theme, container-color));
+  @include _container-elevation(map.get($theme, container-elevation));
+  @include _container-height(map.get($theme, container-height));
+  @include _container-shape(map.get($theme, container-shape));
+
+  @include _active-label-text-color(
+    (
+      default: map.get($theme, active-label-text-color),
+      hover: map.get($theme, hover-label-text-color),
+      focus: map.get($theme, focus-label-text-color),
+      pressed: map.get($theme, pressed-label-text-color),
+    )
+  );
+
+  @include _inactive-label-text-color(
+    map.get($theme, inactive-label-text-color)
+  );
+
+  @include _label-text-font-family(map.get($theme, label-text-font-family));
+  @include _label-text-font-size(map.get($theme, label-text-font-size));
+  @include _label-text-letter-spacing(
+    map.get($theme, label-text-letter-spacing)
+  );
+  @include _label-text-line-height(map.get($theme, label-text-line-height));
+  @include _label-text-weight(map.get($theme, label-text-weight));
 }
 
 @mixin _icon-color($color) {
