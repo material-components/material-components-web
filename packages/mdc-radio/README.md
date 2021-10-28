@@ -14,7 +14,7 @@ Use radio buttons to:
 
 * Select a single option from a list
 * Expose all available options
-* If available options can be collapsed, consider using a dropdown menu instead, as it uses less space.
+* If available options can be collapsed, consider using a dropdown menu instead to use less space.
 
 ![Radio button hero example for menu options](images/radio-button-hero.png)
 
