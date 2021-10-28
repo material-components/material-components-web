@@ -248,7 +248,6 @@
       box-sizing: border-box;
       margin: 0;
       overflow: auto;
-      -webkit-overflow-scrolling: touch;
     }
 
     // The content element already has top/bottom padding, so we need to suppress margins on its first/last children.
