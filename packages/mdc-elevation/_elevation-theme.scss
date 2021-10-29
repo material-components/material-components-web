@@ -288,10 +288,10 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
         $fallback: null;
       }
 
-      @include css.declaration(box-shadow, $value, $fallback-value: $fallback);
       @include custom-properties.declaration(
         custom-properties.create(elevation-box-shadow-for-gss, $fallback)
       );
+      @include css.declaration(box-shadow, $value, $fallback-value: $fallback);
     } @else {
       /* @alternate */
       box-shadow: $box-shadow;
