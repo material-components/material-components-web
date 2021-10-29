@@ -55,7 +55,6 @@
     @include feature-targeting.targets($feat-structure) {
       position: relative;
       width: 100%;
-      height: variables.$height;
       transform: translateZ(0);
       // Create a border around the bar in Windows High Contrast Mode.
       outline: 1px solid transparent;
@@ -88,7 +87,7 @@
         animation: none;
         // border-top is used rather than background-color to ensure that the
         // bar is visible in Windows High Contrast Mode.
-        border-top: variables.$height solid;
+        border-top-style: solid;
       }
     }
 
@@ -104,7 +103,7 @@
     &__buffer-dots {
       @include feature-targeting.targets($feat-structure) {
         background-repeat: repeat-x;
-        background-size: 10px variables.$height;
+        // background-size: 10px variables.$height;
         flex: auto;
         transform: rotate(180deg);
       }
@@ -173,6 +172,7 @@
   @at-root {
     @include bar-color(primary, $query: $query);
     @include buffer-color(variables.$baseline-buffer-color, $query: $query);
+    @include track-height(variables.$height, $query: $query);
   }
 }
 
@@ -209,6 +209,27 @@
   .mdc-linear-progress__buffer-bar {
     @include feature-targeting.targets($feat-color) {
       background-color: $color-value-for-css;
+    }
+  }
+}
+
+@mixin track-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  .mdc-linear-progress {
+    @include feature-targeting.targets($feat-structure) {
+      height: $height;
+    }
+
+    &__bar-inner {
+      @include feature-targeting.targets($feat-structure) {
+        border-top-width: $height;
+      }
+    }
+
+    &__buffer-dots {
+      @include feature-targeting.targets($feat-structure) {
+        background-size: 10px $height;
+      }
     }
   }
 }
