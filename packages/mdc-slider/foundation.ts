@@ -1012,8 +1012,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
                 value}]`);
       }
 
-      const numStepsValueStartFromMin = (valueStart - min) / step;
-      const numStepsValueFromMin = (value - min) / step;
+      const numStepsValueStartFromMin = getNumStepsPrecise(valueStart, min, step);
+      const numStepsValueFromMin = getNumStepsPrecise(value, min, step);
       if ((numStepsValueStartFromMin % 1) !== 0 ||
           (numStepsValueFromMin % 1) !== 0) {
         throw new Error(
@@ -1028,7 +1028,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
             `Current value: ${value}`);
       }
 
-      const numStepsValueFromMin = (value - min) / step;
+      const numStepsValueFromMin = getNumStepsPrecise(value, min, step);
       if ((numStepsValueFromMin % 1) !== 0) {
         throw new Error(
             `MDCSliderFoundation: Slider value must be valid based on the ` +
@@ -1161,4 +1161,9 @@ function getNumDecimalPlaces(n: number): number {
   return Math.max(
       0,  // lower limit
       (fraction === '0' ? 0 : fraction.length) - Number(exponent));
+}
+
+// increased float precision arithmetic for slider value validation
+function getNumStepsPrecise(value: number, min: number, step: number): number {
+  return Math.round(((value * 1e6 - min * 1e6) / step * 1e6)) / 1e12;
 }
