@@ -84,6 +84,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
 
   /**
    * Scroll handler for the default scroll behavior of the top app bar.
+   * @override
    */
   override handleTargetScroll() {
     const currentScrollPosition = Math.max(this.adapter.getViewportScrollY(), 0);
@@ -108,6 +109,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
 
   /**
    * Top app bar resize handler that throttle/debounce functions that execute updates.
+   * @override
    */
   override handleWindowResize() {
     // Throttle resize events 10 p/s
