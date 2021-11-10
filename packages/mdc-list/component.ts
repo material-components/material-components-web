@@ -27,7 +27,7 @@ import {closest, matches} from '@material/dom/ponyfill';
 import {MDCListAdapter} from './adapter';
 import {cssClasses, deprecatedClassNameMap, evolutionAttribute, evolutionClassNameMap, numbers, strings} from './constants';
 import {MDCListFoundation} from './foundation';
-import { MDCListActionEventDetail, MDCListIndex, MDCListSelectionChangeDetail } from "./types";
+import {MDCListActionEventDetail, MDCListIndex, MDCListSelectionChangeDetail} from './types';
 
 export type MDCListFactory = (el: Element, foundation?: MDCListFoundation) =>
     MDCList;
