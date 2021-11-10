@@ -487,7 +487,7 @@ describe('MDCChipSet', () => {
         .toBe('-1');
   });
 
-  fit('announces chip addition when enter animation is complete' +
+  it('announces chip addition when enter animation is complete' +
           ' and addition announcement is present',
       () => {
         const {root} = setupTest({

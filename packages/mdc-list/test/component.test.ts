@@ -644,6 +644,19 @@ describe('MDCList', () => {
     expect(detail).toEqual({index: 3} as any);
   });
 
+  it('adapter#notifySelectionChange emits selection change event', () => {
+    const {component} = setupTest();
+
+    let detail = null;
+    const handler = (evt: any) => detail = evt.detail;
+
+    component.listen(strings.SELECTION_CHANGE_EVENT, handler);
+    (component.getDefaultFoundation() as any).adapter.notifySelectionChange([1, 2]);
+    component.unlisten(strings.SELECTION_CHANGE_EVENT, handler);
+
+    expect(detail).toEqual({changedIndices: [1, 2]} as any);
+  });
+
   it('adapter#isFocusInsideList returns true if focus is inside list root',
      () => {
        const {root, component} = setupTest();

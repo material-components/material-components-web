@@ -3,6 +3,15 @@
     "tslint:recommended",
     "gts/tslint.json"
   ],
+  "rules": {
+    "ban": [
+      true,
+      ["fit"],
+      ["fdescribe"],
+      ["xit"],
+      ["xdescribe"]
+    ]
+  },
   "linterOptions": {
     "exclude": [
       "node_modules/**/*.{j,t}s",

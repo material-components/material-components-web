@@ -27,7 +27,7 @@ import {closest, matches} from '@material/dom/ponyfill';
 import {MDCListAdapter} from './adapter';
 import {cssClasses, deprecatedClassNameMap, evolutionAttribute, evolutionClassNameMap, numbers, strings} from './constants';
 import {MDCListFoundation} from './foundation';
-import {MDCListActionEventDetail, MDCListIndex} from './types';
+import { MDCListActionEventDetail, MDCListIndex, MDCListSelectionChangeDetail } from "./types";
 
 export type MDCListFactory = (el: Element, foundation?: MDCListFoundation) =>
     MDCList;
@@ -284,6 +284,10 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       notifyAction: (index) => {
         this.emit<MDCListActionEventDetail>(
             strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
+      },
+      notifySelectionChange: (changedIndices: number[]) => {
+        this.emit<MDCListSelectionChangeDetail>(strings.SELECTION_CHANGE_EVENT,
+            {changedIndices}, /** shouldBubble */ true);
       },
       removeClassForElementIndex: (index, className) => {
         const element = this.listElements[index];

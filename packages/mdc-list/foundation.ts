@@ -34,6 +34,17 @@ function isNumberArray(selectedIndex: MDCListIndex): selectedIndex is number[] {
   return selectedIndex instanceof Array;
 }
 
+type SelectionUpdateOptions = {
+  /** Whether the update was triggered by an user interaction. */
+  isUserInteraction?: boolean;
+  /**
+   * Whether the UI should be updated regardless of whether the
+   * selection would be a noop according to the foundation state.
+   * https://github.com/material-components/material-components-web/commit/5d060518804437aa1ae3152562f1bb78b1af4aa6.
+   */
+  forceUpdate?: boolean;
+}
+
 export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   static override get strings() {
     return strings;
@@ -61,6 +72,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       isRootFocused: () => false,
       listItemAtIndexHasClass: () => false,
       notifyAction: () => undefined,
+      notifySelectionChange: () => {},
       removeClassForElementIndex: () => undefined,
       setAttributeForElementIndex: () => undefined,
       setCheckedCheckboxOrRadioAtIndex: () => undefined,
@@ -208,18 +220,17 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     return this.selectedIndex;
   }
 
-  setSelectedIndex(index: MDCListIndex, {forceUpdate}: {forceUpdate?:
-                                                            boolean} = {}) {
+  setSelectedIndex(index: MDCListIndex, options: SelectionUpdateOptions = {}) {
     if (!this.isIndexValid(index)) {
       return;
     }
 
     if (this.isCheckboxList) {
-      this.setCheckboxAtIndex(index as number[]);
+      this.setCheckboxAtIndex(index as number[], options);
     } else if (this.isRadioList) {
-      this.setRadioAtIndex(index as number);
+      this.setRadioAtIndex(index as number, options);
     } else {
-      this.setSingleSelectionAtIndex(index as number, {forceUpdate});
+      this.setSingleSelectionAtIndex(index as number, options);
     }
   }
 
@@ -327,10 +338,10 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       this.focusLastElement();
     } else if (isLetterA && event.ctrlKey && this.isCheckboxList) {
       event.preventDefault();
-      this.toggleAll(
+      this.checkboxListToggleAll(
           this.selectedIndex === numbers.UNSET_INDEX ?
               [] :
-              this.selectedIndex as number[]);
+              this.selectedIndex as number[], true);
     } else if (isEnter || isSpace) {
       if (isRootListItem) {
         // Return early if enter key is pressed on anchor element which triggers
@@ -348,7 +359,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
         if (!this.isTypeaheadInProgress()) {
           if (this.isSelectableList()) {
-            this.setSelectedIndexOnAction(currentIndex);
+            this.setSelectedIndexOnAction(currentIndex, false);
           }
           this.adapter.notifyAction(currentIndex);
         }
@@ -374,8 +385,15 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
   /**
    * Click handler for the list.
+   *
+   * @param index Index for the item that has been clicked.
+   * @param isCheckboxAlreadyUpdatedInAdapter Whether the checkbox for
+   *   the list item has already been updated in the adapter. This attribute
+   *   should be set to `true` when e.g. the click event directly landed on
+   *   the underlying native checkbox element which would cause the checked
+   *   state to be already toggled within `adapter.isCheckboxCheckedAtIndex`.
    */
-  handleClick(index: number, toggleCheckbox: boolean) {
+  handleClick(index: number, isCheckboxAlreadyUpdatedInAdapter: boolean) {
     if (index === numbers.UNSET_INDEX) {
       return;
     }
@@ -384,8 +402,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
             index, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
       return;
     }
+
     if (this.isSelectableList()) {
-      this.setSelectedIndexOnAction(index, toggleCheckbox);
+      this.setSelectedIndexOnAction(index, isCheckboxAlreadyUpdatedInAdapter);
     }
 
     this.adapter.notifyAction(index);
@@ -466,10 +485,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
   }
 
-  private setSingleSelectionAtIndex(index: number, {forceUpdate}: {
-    forceUpdate?: boolean
-  } = {}) {
-    if (this.selectedIndex === index && !forceUpdate) {
+  private setSingleSelectionAtIndex(index: number,
+                                    options: SelectionUpdateOptions = {}) {
+    if (this.selectedIndex === index && !options.forceUpdate) {
       return;
     }
 
@@ -490,6 +508,12 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
 
     this.selectedIndex = index;
+
+    // If the selected value has changed through user interaction,
+    // we want to notify the selection change to the adapter.
+    if (options.isUserInteraction && !options.forceUpdate) {
+      this.adapter.notifySelectionChange([index]);
+    }
   }
 
   /**
@@ -531,9 +555,14 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Toggles radio at give index. Radio doesn't change the checked state if it
    * is already checked.
    */
-  private setRadioAtIndex(index: number) {
+  private setRadioAtIndex(index: number,
+                          options: SelectionUpdateOptions = {}) {
     const selectionAttribute = this.getSelectionAttribute();
     this.adapter.setCheckedCheckboxOrRadioAtIndex(index, true);
+
+    if (this.selectedIndex === index && !options.forceUpdate) {
+      return;
+    }
 
     if (this.selectedIndex !== numbers.UNSET_INDEX) {
       this.adapter.setAttributeForElementIndex(
@@ -543,22 +572,48 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.adapter.setAttributeForElementIndex(index, selectionAttribute, 'true');
 
     this.selectedIndex = index;
+
+    // If the selected value has changed through user interaction,
+    // we want to notify the selection change to the adapter.
+    if (options.isUserInteraction && !options.forceUpdate) {
+      this.adapter.notifySelectionChange([index]);
+    }
   }
 
-  private setCheckboxAtIndex(index: number[]) {
+  private setCheckboxAtIndex(index: number[],
+                             options: SelectionUpdateOptions = {}) {
+    const currentIndex = this.selectedIndex;
+    // If this update is not triggered by an user interaction, we do not
+    // need to know about the currently selected indices and can avoid
+    // constructing the `Set` for performance reasons.
+    const currentlySelected = options.isUserInteraction
+      ? new Set(currentIndex === numbers.UNSET_INDEX ? [] : currentIndex as number[])
+      : null;
     const selectionAttribute = this.getSelectionAttribute();
+    const changedIndices = [];
+
     for (let i = 0; i < this.adapter.getListItemCount(); i++) {
-      let isChecked = false;
-      if (index.indexOf(i) >= 0) {
-        isChecked = true;
+      const previousIsChecked = currentlySelected?.has(i);
+      const newIsChecked = index.indexOf(i) >= 0;
+
+      // If the selection has changed for this item, we keep track of it
+      // so that we can notify the adapter.
+      if (newIsChecked !== previousIsChecked) {
+        changedIndices.push(i);
       }
 
-      this.adapter.setCheckedCheckboxOrRadioAtIndex(i, isChecked);
+      this.adapter.setCheckedCheckboxOrRadioAtIndex(i, newIsChecked);
       this.adapter.setAttributeForElementIndex(
-          i, selectionAttribute, isChecked ? 'true' : 'false');
+          i, selectionAttribute, newIsChecked ? 'true' : 'false');
     }
 
     this.selectedIndex = index;
+
+    // If the selected value has changed through user interaction,
+    // we want to notify the selection change to the adapter.
+    if (options.isUserInteraction && changedIndices.length) {
+      this.adapter.notifySelectionChange(changedIndices);
+    }
   }
 
   private setTabindexAtIndex(index: number) {
@@ -657,25 +712,33 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * toggleCheckbox value. User interaction should not toggle list item(s) when
    * disabled.
    */
-  private setSelectedIndexOnAction(index: number, toggleCheckbox = true) {
+  private setSelectedIndexOnAction(index: number, isCheckboxAlreadyUpdatedInAdapter: boolean) {
     if (this.isCheckboxList) {
-      this.toggleCheckboxAtIndex(index, toggleCheckbox);
+      this.toggleCheckboxAtIndex(index, isCheckboxAlreadyUpdatedInAdapter);
+      this.adapter.notifySelectionChange([index]);
     } else {
-      this.setSelectedIndex(index);
+      this.setSelectedIndex(index, {isUserInteraction: true});
     }
   }
 
-  private toggleCheckboxAtIndex(index: number, toggleCheckbox: boolean) {
+  private toggleCheckboxAtIndex(index: number, isCheckboxAlreadyUpdatedInAdapter: boolean) {
     const selectionAttribute = this.getSelectionAttribute();
-    let isChecked = this.adapter.isCheckboxCheckedAtIndex(index);
+    const adapterIsChecked = this.adapter.isCheckboxCheckedAtIndex(index);
 
-    if (toggleCheckbox) {
-      isChecked = !isChecked;
-      this.adapter.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
+    // By default the checked value from the adapter is toggled unless the
+    // checked state in the adapter has already been updated beforehand.
+    // This can be happen when the underlying native checkbox has already
+    // been updated through the native click event.
+    let newCheckedValue;
+    if (isCheckboxAlreadyUpdatedInAdapter) {
+      newCheckedValue = adapterIsChecked;
+    } else {
+      newCheckedValue = !adapterIsChecked;
+      this.adapter.setCheckedCheckboxOrRadioAtIndex(index, newCheckedValue)
     }
 
     this.adapter.setAttributeForElementIndex(
-        index, selectionAttribute, isChecked ? 'true' : 'false');
+        index, selectionAttribute, newCheckedValue ? 'true' : 'false');
 
     // If none of the checkbox items are selected and selectedIndex is not
     // initialized then provide a default value.
@@ -683,7 +746,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         [] :
         (this.selectedIndex as number[]).slice();
 
-    if (isChecked) {
+    if (newCheckedValue) {
       selectedIndexes.push(index);
     } else {
       selectedIndexes = selectedIndexes.filter((i) => i !== index);
@@ -697,12 +760,13 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.focusedItemIndex = index;
   }
 
-  private toggleAll(currentlySelectedIndexes: number[]) {
+  private checkboxListToggleAll(currentlySelectedIndexes: number[],
+                                isUserInteraction: boolean) {
     const count = this.adapter.getListItemCount();
 
     // If all items are selected, deselect everything.
     if (currentlySelectedIndexes.length === count) {
-      this.setCheckboxAtIndex([]);
+      this.setCheckboxAtIndex([], {isUserInteraction});
     } else {
       // Otherwise select all enabled options.
       const allIndexes: number[] = [];
@@ -713,7 +777,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
           allIndexes.push(i);
         }
       }
-      this.setCheckboxAtIndex(allIndexes);
+      this.setCheckboxAtIndex(allIndexes, {isUserInteraction});
     }
   }
 

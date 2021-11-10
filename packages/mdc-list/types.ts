@@ -32,6 +32,16 @@ export interface MDCListActionEvent extends Event {
   detail: MDCListActionEventDetail;
 }
 
+
+export interface MDCListSelectionChangeDetail {
+  /** Indices of the list items for which the selection changed. */
+  changedIndices: number[];
+}
+
+export interface MDCListSelectionChangeEvent extends Event {
+  detail: MDCListSelectionChangeDetail;
+}
+
 export type MDCListIndex = number | number[];
 
 /**
