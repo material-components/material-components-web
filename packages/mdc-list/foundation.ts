@@ -708,9 +708,14 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   /**
-   * Sets selected index on user action, toggles checkbox / radio based on
-   * toggleCheckbox value. User interaction should not toggle list item(s) when
-   * disabled.
+   * Sets selected index on user action, toggles checkboxes in checkbox lists
+   * by default, unless `isCheckboxAlreadyUpdatedInAdapter` is set to `true`.
+   *
+   * In cases where `isCheckboxAlreadyUpdatedInAdapter` is set to `true`, the
+   * UI is just updated to reflect the value returned by the adapter.
+   *
+   * When calling this, make sure user interaction does not toggle disabled
+   * list items.
    */
   private setSelectedIndexOnAction(index: number, isCheckboxAlreadyUpdatedInAdapter: boolean) {
     if (this.isCheckboxList) {
