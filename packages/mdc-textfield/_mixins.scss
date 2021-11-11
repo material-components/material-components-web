@@ -1317,6 +1317,21 @@
   }
 }
 
+///
+/// Sets custom font size of the input.
+///
+/// @param {number} $font-size - Overrides the font size.
+///
+@mixin input-font-size($font-size, $query: feature-targeting.all()) {
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  .mdc-text-field__input {
+    @include feature-targeting.targets($feat-typography) {
+      font-size: $font-size;
+    }
+  }
+}
+
 // Private mixins
 
 // Base shared styles
