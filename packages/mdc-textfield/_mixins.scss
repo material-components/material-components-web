@@ -1332,6 +1332,21 @@
   }
 }
 
+///
+/// Sets custom font family of the input.
+///
+/// @param {String} $font-family - Selected font family.
+///
+@mixin input-font-family($font-family, $query: feature-targeting.all()) {
+  $feat-typography: feature-targeting.create-target($query, typography);
+
+  .mdc-text-field__input {
+    @include feature-targeting.targets($feat-typography) {
+      font-family: $font-family;
+    }
+  }
+}
+
 // Private mixins
 
 // Base shared styles
