@@ -24,9 +24,7 @@ npm install @material/icon-button
 ### Styles
 
 ```scss
-@use "@material/icon-button";
-
-@include icon-button.core-styles;
+@use "@material/icon-button/styles";
 ```
 
 ### JavaScript instantiation
