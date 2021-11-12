@@ -514,7 +514,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 
   handlePointerdown(event: PointerEvent) {
-    if (event.pointerId) {
+    if (event.pointerId != null) {
       this.adapter.setPointerCapture(event.pointerId);
     }
     this.adapter.registerEventHandler('pointermove', this.moveListener);
