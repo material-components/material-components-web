@@ -1016,8 +1016,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
       const numStepsValueStartFromMin = (valueStart - min) / step;
       const numStepsValueFromMin = (value - min) / step;
-      if ((numStepsValueStartFromMin % 1) !== 0 ||
-          (numStepsValueFromMin % 1) !== 0) {
+      if (!Number.isInteger(parseFloat(numStepsValueStartFromMin.toFixed(6))) ||
+          !Number.isInteger(parseFloat(numStepsValueFromMin.toFixed(6)))) {
         throw new Error(
             `MDCSliderFoundation: Slider values must be valid based on the ` +
             `step value. Current values: [start value: ${valueStart}, ` +
@@ -1031,7 +1031,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       }
 
       const numStepsValueFromMin = (value - min) / step;
-      if ((numStepsValueFromMin % 1) !== 0) {
+      if (!Number.isInteger(parseFloat(numStepsValueFromMin.toFixed(6)))) {
         throw new Error(
             `MDCSliderFoundation: Slider value must be valid based on the ` +
             `step value. Current value: ${value}`);
