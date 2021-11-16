@@ -25,6 +25,7 @@
 @use '@material/elevation/elevation-theme';
 @use '@material/elevation/elevation';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/focus-ring/focus-ring';
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
@@ -104,7 +105,6 @@
   .mdc-fab--exited {
     @include exited_($query: $query);
   }
-
   // postcss-bem-linter: end
 }
 
@@ -209,6 +209,18 @@ $icon-enter-duration_: 180ms;
 
   @include ripple-theme.focus() {
     @include elevation-theme.elevation(8, $query: $query);
+  }
+
+  .mdc-fab__focus-ring {
+    @include feature-targeting.targets($feat-structure) {
+      position: absolute;
+    }
+  }
+
+  @include ripple-theme.focus() {
+    .mdc-fab__focus-ring {
+      @include focus-ring.focus-ring($query: $query);
+    }
   }
 
   // Increase active state specificity due to ripple-theme.focus().

@@ -20,6 +20,7 @@
     "@material/dom": "^13.0.0",
     "@material/elevation": "^13.0.0",
     "@material/feature-targeting": "^13.0.0",
+    "@material/focus-ring": "^13.0.0",
     "@material/ripple": "^13.0.0",
     "@material/rtl": "^13.0.0",
     "@material/shape": "^13.0.0",
