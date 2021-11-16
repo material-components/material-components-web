@@ -70,6 +70,7 @@ $container-outer-padding: 2px !default;
     $outer-ring-size: calc(100% + #{$outer-ring-width * 2});
   }
   @include feature-targeting.targets($feat-structure) {
+    pointer-events: none;
     border: $inner-ring-width solid $inner-ring-color;
     border-radius: $inner-ring-radius;
     position: absolute;
