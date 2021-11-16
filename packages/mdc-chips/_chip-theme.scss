@@ -599,8 +599,7 @@ $_light-theme: (
     @include shape.radius($radius);
   }
 
-  .mdc-evolution-chip__action--primary:before,
-  .mdc-evolution-chip__action--primary:after {
+  .mdc-evolution-chip__action--primary:before {
     @include shape.radius($radius);
   }
 }
@@ -644,8 +643,7 @@ $_light-theme: (
     );
   }
 
-  .mdc-evolution-chip__action--primary:before,
-  .mdc-evolution-chip__action--primary:after {
+  .mdc-evolution-chip__action--primary:before {
     @include shape.radius(
       $radius,
       $rtl-reflexive,
@@ -1086,9 +1084,7 @@ $_light-theme: (
 @mixin trailing-action-size($size, $query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  .mdc-evolution-chip__icon--trailing,
-  // :after pseudo-element is used for Windows high-contrast mode focus indicator
-  .mdc-evolution-chip__action--trailing:after {
+  .mdc-evolution-chip__icon--trailing {
     @include feature-targeting.targets($feat-structure) {
       @include theme.property(height, $size);
       @include theme.property(width, $size);
@@ -1343,13 +1339,6 @@ $_light-theme: (
       }
     }
 
-    // :after is used for high-contrast mode focus indicator
-    .mdc-evolution-chip__action--trailing:after {
-      @include feature-targeting.targets($feat-structure) {
-        @include rtl.reflexive-position(left, $trailing-action-leading);
-      }
-    }
-
     .mdc-evolution-chip__action--primary {
       @include feature-targeting.targets($feat-structure) {
         @include rtl.reflexive-property(padding, $primary-leading, 0);
@@ -1395,13 +1384,6 @@ $_light-theme: (
     }
 
     #{$ripple-target-trailing} {
-      @include feature-targeting.targets($feat-structure) {
-        @include rtl.reflexive-position(left, $trailing-action-leading);
-      }
-    }
-
-    // :after is used for high-contrast mode focus indicator
-    .mdc-evolution-chip__action--trailing:after {
       @include feature-targeting.targets($feat-structure) {
         @include rtl.reflexive-position(left, $trailing-action-leading);
       }

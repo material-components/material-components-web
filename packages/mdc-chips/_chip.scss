@@ -27,6 +27,7 @@
 @use '@material/animation/animation';
 @use '@material/dom/dom';
 @use '@material/elevation/elevation-theme';
+@use '@material/focus-ring/focus-ring';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
@@ -182,6 +183,7 @@
   .mdc-evolution-chip__action--trailing {
     @include feature-targeting.targets($feat-structure) {
       position: relative;
+      overflow: visible;
     }
   }
 
@@ -466,44 +468,31 @@
   /// Renders a transparent border on focus in Windows high-contrast mode.
   ///
 
-  .mdc-evolution-chip__action:after {
-    @include feature-targeting.targets($feat-structure) {
-      position: absolute;
-      content: '';
-      border: 0px solid transparent;
-      pointer-events: none;
-      box-sizing: border-box;
-      z-index: 1; // Position above touch target
-    }
+  .mdc-evolution-chip__focus-ring {
+    display: none;
   }
 
-  .mdc-evolution-chip__action:not(.mdc-evolution-chip__action--presentational) {
+  .mdc-evolution-chip__action--primary:not(.mdc-evolution-chip__action--presentational) {
     @include ripple-theme.focus() {
-      &:after {
-        @include feature-targeting.targets($feat-structure) {
-          border-width: 5px;
-          border-style: double;
-        }
+      .mdc-evolution-chip__focus-ring {
+        z-index: 1;
+        display: block;
+        @include focus-ring.focus-ring($query: $query);
       }
     }
   }
 
-  .mdc-evolution-chip__action--primary:after {
-    @include feature-targeting.targets($feat-structure) {
-      height: 100%;
-      width: 100%;
-      top: 50%;
-      @include rtl.ignore-next-line();
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
-
-  .mdc-evolution-chip__action--trailing:after {
-    @include feature-targeting.targets($feat-structure) {
-      top: 50%;
-      transform: translateY(-50%);
-      border-radius: 50%;
+  .mdc-evolution-chip__action--trailing:not(.mdc-evolution-chip__action--presentational) {
+    @include ripple-theme.focus() {
+      .mdc-evolution-chip__focus-ring {
+        z-index: 1;
+        display: block;
+        @include focus-ring.focus-ring(
+          $container-outer-padding-vertical: 2px,
+          $container-outer-padding-horizontal: -2px,
+          $query: $query
+        );
+      }
     }
   }
 }
