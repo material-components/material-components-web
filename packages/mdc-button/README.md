@@ -59,11 +59,14 @@ To meet this requirement, add the following to your button:
   <button class="mdc-button mdc-button--touch">
     <span class="mdc-button__ripple"></span>
     <span class="mdc-button__touch"></span>
+    <span class="mdc-button__focus-ring"></span>
     <span class="mdc-button__label">My Accessible Button</span>
   </button>
 </div>
 ```
 **Note: The outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).**
+
+The `mdc-button__focus-ring` element ensures that a focus indicator is displayed in high contrast mode around the active/focused button.
 
 ## Text button
 
@@ -76,6 +79,7 @@ To meet this requirement, add the following to your button:
 ```html
  <button class="mdc-button">
    <span class="mdc-button__ripple"></span>
+   <span class="mdc-button__focus-ring"></span>
    <span class="mdc-button__label">Text Button</span>
 </button>
 ```
@@ -87,6 +91,7 @@ To meet this requirement, add the following to your button:
 ```html
 <button class="mdc-button mdc-button--icon-leading">
   <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true"
     >bookmark</i
   >
@@ -106,6 +111,7 @@ To meet this requirement, add the following to your button:
 ```html
 <button class="mdc-button mdc-button--outlined">
   <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <span class="mdc-button__label">Outlined Button</span>
 </button>
 ```
@@ -117,6 +123,7 @@ To meet this requirement, add the following to your button:
 ```html
 <button class="mdc-button mdc-button--outlined mdc-button--icon-leading">
   <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">bookmark</i>
   <span class="mdc-button__label">Outlined Button plus Icon</span>
 </button>
@@ -133,6 +140,7 @@ To meet this requirement, add the following to your button:
 ```html
 <button class="mdc-button mdc-button--raised">
   <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <span class="mdc-button__label">Contained Button</span>
 </button>
 ```
@@ -147,6 +155,7 @@ and `mdc-button--unelevated` is applied for a contained button flush with the su
 ```html
 <button class="mdc-button mdc-button--raised mdc-button--icon-leading">
   <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true"
     >bookmark</i
   >
@@ -192,6 +201,7 @@ To add an icon, add an element with the `mdc-button__icon` class inside the butt
 ```html
 <button class="mdc-button">
   <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
   <span class="mdc-button__label">Button</span>
 </button>
@@ -202,6 +212,7 @@ It's also possible to use an SVG icon:
 ```html
 <button class="mdc-button">
   <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <svg class="mdc-button__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="...">
   ...
   </svg>
@@ -217,6 +228,7 @@ putting the icon markup _after_ the `mdc-button__label` element.
 ```html
 <button class="mdc-button mdc-button--icon-trailing">
   <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <span class="mdc-button__label">Button</span>
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
 </button>
@@ -232,6 +244,7 @@ Disabled buttons cannot be interacted with and have no visual interaction effect
 ```html
 <button class="mdc-button" disabled>
   <span class="mdc-button__ripple"></span>
+  <span class="mdc-button__focus-ring"></span>
   <span class="mdc-button__label">Button</span>
 </button>
 ```
@@ -301,6 +314,7 @@ CSS Class | Description
 `mdc-button--icon-trailing` | Optional. Styles a button with a trailing icon.
 `mdc-button__label` | Recommended.\* Indicates the element containing the button's text label.
 `mdc-button__icon` | Optional. Indicates the element containing the button's icon.
+`mdc-button__focus-ring` | Recommended. Indicates the element which shows the high contrast mode focus ring styling.
 
 **Note: The `mdc-button__label` element is required for buttons with a trailing icon, but it is currently optional for
  buttons with no icon or a leading icon. In the latter cases, it is acceptable for the text label to simply exist

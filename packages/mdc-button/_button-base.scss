@@ -26,8 +26,10 @@
 @use '@material/elevation/elevation';
 @use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/ripple/ripple-theme';
 @use '@material/rtl/rtl';
 @use '@material/touch-target/touch-target';
+@use '@material/focus-ring/focus-ring';
 @use '@material/typography/typography';
 @use './button-shared-theme';
 
@@ -62,6 +64,12 @@
         // (since ripple is a positioned element, non-positioned elements
         // appear under it).
         position: relative;
+      }
+    }
+
+    @include ripple-theme.focus {
+      .mdc-button__focus-ring {
+        @include focus-ring.focus-ring($query: $query);
       }
     }
 
