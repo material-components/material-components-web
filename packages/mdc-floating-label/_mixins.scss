@@ -141,7 +141,7 @@
     @keyframes mdc-floating-label-shake-float-above-#{$modifier} {
       0% {
         @include rtl.ignore-next-line();
-        transform: translateX(calc(0 - #{$positionX}))
+        transform: translateX(calc(0% - #{$positionX}))
           translateY(-#{$positionY}) scale(#{$scale});
       }
 
@@ -166,7 +166,7 @@
 
       100% {
         @include rtl.ignore-next-line();
-        transform: translateX(calc(0 - #{$positionX}))
+        transform: translateX(calc(0% - #{$positionX}))
           translateY(-#{$positionY}) scale(#{$scale});
       }
     }
