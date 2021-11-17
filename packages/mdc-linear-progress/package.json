@@ -19,6 +19,7 @@
   "dependencies": {
     "@material/animation": "^13.0.0",
     "@material/base": "^13.0.0",
+    "@material/dom": "^13.0.0",
     "@material/feature-targeting": "^13.0.0",
     "@material/progress-indicator": "^13.0.0",
     "@material/rtl": "^13.0.0",

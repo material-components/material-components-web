@@ -430,6 +430,15 @@
   @include dom.forced-colors-mode {
     @include chip-theme.outline-color(
       (
+        default: CanvasText,
+        disabled: GrayText,
+      ),
+      $query: $query
+    );
+
+    @include chip-theme.selected-outline-color(
+      (
+        default: CanvasText,
         disabled: GrayText,
       ),
       $query: $query

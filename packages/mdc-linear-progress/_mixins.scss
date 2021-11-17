@@ -25,6 +25,7 @@
 
 @use 'sass:string';
 @use '@material/animation/functions' as animation-functions;
+@use '@material/dom/dom';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
 @use '@material/theme/theme';
@@ -59,6 +60,10 @@
       // Create a border around the bar in Windows High Contrast Mode.
       outline: 1px solid transparent;
       overflow: hidden;
+
+      @include dom.forced-colors-mode($exclude-ie11: true) {
+        outline-color: CanvasText;
+      }
     }
 
     @include feature-targeting.targets($feat-animation) {

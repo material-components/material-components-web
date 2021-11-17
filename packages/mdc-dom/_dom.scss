@@ -47,6 +47,13 @@
     content: '';
     pointer-events: none;
   }
+
+  // Used to satisfy Firefox v94 which does not render transparent borders in HCM (b/206440838).
+  @include forced-colors-mode($exclude-ie11: true) {
+    @include feature-targeting.targets($feat-structure) {
+      border-color: CanvasText;
+    }
+  }
 }
 
 ///

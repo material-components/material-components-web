@@ -22,6 +22,7 @@
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl';
+@use '@material/dom/dom';
 
 $inner-ring-radius: 6px !default;
 $inner-ring-width: 2px !default;
@@ -81,6 +82,10 @@ $container-outer-padding: 2px !default;
     height: $container-size-vertical;
     width: $container-size-horizontal;
 
+    @include dom.forced-colors-mode($exclude-ie11: true) {
+      border-color: CanvasText;
+    }
+
     &::after {
       content: '';
       border: $outer-ring-width solid $outer-ring-color;
@@ -93,6 +98,10 @@ $container-outer-padding: 2px !default;
       transform: translate(-50%, -50%);
       height: $outer-ring-size;
       width: $outer-ring-size;
+
+      @include dom.forced-colors-mode($exclude-ie11: true) {
+        border-color: CanvasText;
+      }
     }
   }
 }

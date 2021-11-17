@@ -27,6 +27,7 @@
 @use 'sass:map';
 @use 'sass:math';
 @use 'sass:color';
+@use '@material/dom/dom';
 @use '@material/density/density';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/shape/shape';
@@ -748,6 +749,13 @@ $_light-theme: (
     @include feature-targeting.targets($feat-color) {
       @if $color {
         @include theme.property(border-color, $color);
+      }
+
+      // TODO(b/206694742): Find a better solution.
+      @if $color == transparent {
+        @include dom.forced-colors-mode($exclude-ie11: true) {
+          @include theme.property(border-color, CanvasText);
+        }
       }
     }
   }

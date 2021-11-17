@@ -26,6 +26,7 @@
 
 @use 'sass:math';
 @use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/dom/dom';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/rtl/rtl' as rtl;
 @use '@material/dom/mixins' as dom-mixins;
@@ -258,6 +259,11 @@ $_caret-size: 24px;
     @include feature-targeting.targets($feat-structure) {
       outline: 1px solid transparent;
       z-index: -1;
+
+      // Added for b/206440838.
+      @include dom.forced-colors-mode($exclude-ie11: true) {
+        outline-color: CanvasText;
+      }
     }
   }
 }
