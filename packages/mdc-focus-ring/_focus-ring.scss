@@ -74,10 +74,12 @@ $container-outer-padding: 2px !default;
     border: $inner-ring-width solid $inner-ring-color;
     border-radius: $inner-ring-radius;
     position: absolute;
-    top: 50%;
+    // Center using bottom/right rather than top/left due to IE11 bug:
+    // https://stackoverflow.com/questions/27000492/css3-transform-property-working-differently-in-internet-explorer
+    bottom: 50%;
     @include rtl.ignore-next-line();
-    left: 50%;
-    transform: translate(-50%, -50%);
+    right: 50%;
+    transform: translate(50%, 50%);
     height: $container-size-vertical;
     width: $container-size-horizontal;
 
@@ -87,10 +89,12 @@ $container-outer-padding: 2px !default;
       border-radius: $outer-ring-radius;
       display: block;
       position: absolute;
-      top: 50%;
+      // Center using bottom/right rather than top/left due to IE11 bug:
+      // https://stackoverflow.com/questions/27000492/css3-transform-property-working-differently-in-internet-explorer
+      bottom: 50%;
       @include rtl.ignore-next-line();
-      left: 50%;
-      transform: translate(-50%, -50%);
+      right: 50%;
+      transform: translate(50%, 50%);
       height: $outer-ring-size;
       width: $outer-ring-size;
     }
