@@ -202,6 +202,10 @@
           variables.$title-bottom-padding;
         z-index: 1;
 
+        @include dom.forced-colors-mode($exclude-ie11: true) {
+          border-bottom-color: CanvasText;
+        }
+
         @include _modal-header(
           $close-icon-padding: variables.$close-icon-padding
         );
@@ -238,6 +242,9 @@
       // border-top should be visible.
       @include feature-targeting.targets($feat-structure) {
         border-top: 1px solid transparent;
+        @include dom.forced-colors-mode($exclude-ie11: true) {
+          border-top-color: CanvasText;
+        }
       }
     }
   }
@@ -316,6 +323,9 @@
       margin: 0;
       padding: variables.$actions-padding;
       border-top: 1px solid transparent;
+      @include dom.forced-colors-mode($exclude-ie11: true) {
+        border-top-color: CanvasText;
+      }
     }
 
     .mdc-dialog--stacked & {
