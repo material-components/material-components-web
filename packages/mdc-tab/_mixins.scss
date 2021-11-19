@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern
 
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/focus-ring/focus-ring';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/theme';
@@ -309,6 +310,39 @@
   @include text-label-color(variables.$text-label-color-default, $query);
   @include icon-color(variables.$icon-color-default, $query);
   @include tab-indicator-mixins.surface($query);
+
+  @include ripple-theme.focus() {
+    &.mdc-tab--active .mdc-tab__focus-ring {
+      @include focus-ring.focus-ring(
+        $query: $query,
+        $inner-ring-radius: 8px,
+        $outer-ring-radius: 10px,
+        $container-outer-padding-vertical: -6px,
+        $container-outer-padding-horizontal: -4px
+      );
+
+      @include feature-targeting.targets($feat-structure) {
+        margin-top: -2px;
+        // Set z-index to +1 above the .mdc-tab
+        z-index: 2;
+      }
+    }
+
+    .mdc-tab__focus-ring {
+      @include focus-ring.focus-ring(
+        $query: $query,
+        $inner-ring-radius: 8px,
+        $outer-ring-radius: 10px,
+        $container-outer-padding-vertical: -4px,
+        $container-outer-padding-horizontal: -4px
+      );
+
+      @include feature-targeting.targets($feat-structure) {
+        // Set z-index to +1 above the .mdc-tab
+        z-index: 2;
+      }
+    }
+  }
 }
 
 @mixin ripple_($query: feature-targeting.all()) {

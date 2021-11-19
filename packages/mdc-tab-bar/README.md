@@ -47,6 +47,7 @@ npm install @material/tab-bar
             <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
           </span>
           <span class="mdc-tab__ripple"></span>
+          <div class="mdc-tab__focus-ring"></div>
         </button>
       </div>
     </div>

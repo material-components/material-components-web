@@ -43,8 +43,11 @@ npm install @material/tab
     <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
   </span>
   <span class="mdc-tab__ripple"></span>
+  <div class="mdc-tab__focus-ring"></div>
 </button>
 ```
+
+The `mdc-tab__focus-ring` element ensures that a focus indicator is displayed in high contrast mode around the active/focused tab.
 
 ### Styles
 
@@ -78,6 +81,7 @@ const tab = new MDCTab(document.querySelector('.mdc-tab'));
     <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
   </span>
   <span class="mdc-tab__ripple"></span>
+  <div class="mdc-tab__focus-ring"></div>
 </button>
 ```
 
@@ -96,6 +100,7 @@ set up to span only the content of the tab if it is instead placed _within_ the 
     </span>
   </span>
   <span class="mdc-tab__ripple"></span>
+  <div class="mdc-tab__focus-ring"></div>
 </button>
 ```
 
