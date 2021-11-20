@@ -44,7 +44,7 @@ describe('MDCSliderFoundation', () => {
           setUpAndInit({min: 0, max: 100, value: 33.3, step: 0.1});
       expect(foundation.getMin()).toBe(0);
       expect(foundation.getMax()).toBe(100);
-      expect(foundation.getValue()).toBe(50.5);
+      expect(foundation.getValue()).toBe(33.3);
     });
 
     it('range slider: sets min, max, value, valueStart based on aria attributes',
