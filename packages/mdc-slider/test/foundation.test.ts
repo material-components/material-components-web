@@ -39,6 +39,14 @@ describe('MDCSliderFoundation', () => {
       expect(foundation.getValue()).toBe(50.5);
     });
 
+    it('sets min, max, value based on aria attributes - tests for floating point rounding errors related to issue #7404', () => {
+      const {foundation} =
+          setUpAndInit({min: 0, max: 100, value: 33.3, step: 0.1});
+      expect(foundation.getMin()).toBe(0);
+      expect(foundation.getMax()).toBe(100);
+      expect(foundation.getValue()).toBe(50.5);
+    });
+
     it('range slider: sets min, max, value, valueStart based on aria attributes',
        () => {
          const {foundation} = setUpAndInit(
