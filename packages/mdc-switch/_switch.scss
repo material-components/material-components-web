@@ -24,6 +24,7 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use '@material/animation/animation';
+@use '@material/dom/dom';
 @use '@material/elevation/elevation';
 @use '@material/ripple/ripple';
 @use '@material/rtl/rtl';
@@ -143,6 +144,12 @@ $ripple-target: '.mdc-switch__ripple';
     left: 0;
     position: absolute;
     width: 100%;
+
+    // Added for Firefox 94 which broke transparent borders in Windows HCM.
+    // See https://bugzilla.mozilla.org/show_bug.cgi?id=1740924.
+    @include dom.forced-colors-mode($exclude-ie11: true) {
+      border-color: currentColor;
+    }
   }
 }
 
@@ -229,6 +236,12 @@ $ripple-target: '.mdc-switch__ripple';
     // z-index, which would require moving all other content on top of the
     // overlay with an even greater z-index.
     z-index: -1;
+
+    // Added for Firefox 94 which broke transparent borders in Windows HCM.
+    // See https://bugzilla.mozilla.org/show_bug.cgi?id=1740924.
+    @include dom.forced-colors-mode($exclude-ie11: true) {
+      border-color: currentColor;
+    }
   }
 }
 
