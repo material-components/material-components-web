@@ -22,6 +22,7 @@
     "@material/density": "^13.0.0",
     "@material/dom": "^13.0.0",
     "@material/feature-targeting": "^13.0.0",
+    "@material/focus-ring": "^13.0.0",
     "@material/ripple": "^13.0.0",
     "@material/theme": "^13.0.0",
     "@material/touch-target": "^13.0.0",

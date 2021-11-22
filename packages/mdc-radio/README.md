@@ -76,11 +76,14 @@ To meet this requirement, add the `mdc-radio--touch` class to your radio as foll
       <div class="mdc-radio__inner-circle"></div>
     </div>
     <div class="mdc-radio__ripple"></div>
+    <div class="mdc-radio__focus-ring"></div>
   </div>
 </div>
 ```
 
 Note that the outer  `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+
+The `mdc-radio__focus-ring` element ensures that a focus indicator is displayed in high contrast mode around the active/focused radio button.
 
 ## Radio buttons
 
@@ -97,6 +100,7 @@ We recommend using MDC Radio with [MDC Form Field](../mdc-form-field) for enhanc
       <div class="mdc-radio__inner-circle"></div>
     </div>
     <div class="mdc-radio__ripple"></div>
+    <div class="mdc-radio__focus-ring"></div>
   </div>
   <label for="radio-1">Radio 1</label>
 </div>
@@ -124,6 +128,7 @@ Disabled radio buttons cannot be interacted with and have no visual interaction 
       <div class="mdc-radio__inner-circle"></div>
     </div>
     <div class="mdc-radio__ripple"></div>
+    <div class="mdc-radio__focus-ring"></div>
   </div>
   <label for="radio-1">Radio 1</label>
 </div>
