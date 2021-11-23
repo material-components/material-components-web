@@ -185,6 +185,10 @@ describe('MDCSliderFoundation', () => {
     it('does not throw error with valid value and step < 1', () => {
       expect(() => setUpAndInit({value: 12, step: 0.2})).not.toThrow();
     });
+
+    it('does not throw error due to floating point rounding - related to issue #7404', () => {
+      expect(() => setUpAndInit({value: 33.3, min: 0, max: 100, step: 0.1})).not.toThrow();
+    });
   });
 
   describe('#layout', () => {
