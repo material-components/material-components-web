@@ -72,8 +72,9 @@ $custom-property-prefix: 'checkbox';
 
 // TODO(b/188417756): State layer (ripple) size token is missing including
 //     `state-layer-size`.
-// TODO(b/187852988): `selected-checkmark-color` does not exist in tokens.
+// TODO(b/188529841): `selected-checkmark-color` and `disabled-selected-checkmark-color` does not exist in tokens.
 $light-theme: (
+  disabled-selected-checkmark-color: $mark-color,
   disabled-selected-icon-color: $disabled-color,
   disabled-selected-icon-opacity: null,
   disabled-unselected-icon-color: $disabled-color,
@@ -107,6 +108,14 @@ $light-theme: (
     map.get(ripple-theme.$dark-ink-opacities, pressed),
 );
 
+$forced-colors-theme: (
+  disabled-selected-checkmark-color: ButtonFace,
+  disabled-selected-icon-color: GrayText,
+  disabled-selected-icon-opacity: 1,
+  disabled-unselected-icon-color: GrayText,
+  disabled-unselected-icon-opacity: 1,
+);
+
 @mixin theme($theme) {
   @include theme.validate-theme($light-theme, $theme);
   @include keys.declare-custom-properties(
@@ -128,7 +137,9 @@ $light-theme: (
   );
 
   @include ink-color(map.get($theme, selected-checkmark-color));
-  @include disabled-ink-color(map.get($theme, selected-checkmark-color));
+  @include disabled-ink-color(
+    map.get($theme, disabled-selected-checkmark-color)
+  );
 
   @include _icon-color(
     map.get($theme, unselected-icon-color),
@@ -545,6 +556,10 @@ $light-theme-deprecated: (
     );
   }
 
+  @if $unmarked-stroke-color == null {
+    $unmarked-fill-color: null;
+  }
+
   @include if-unmarked-disabled_ {
     @include container-colors_(
       $unmarked-stroke-color,
@@ -561,6 +576,18 @@ $light-theme-deprecated: (
       checkbox-custom-properties.$disabled-color,
       theme-color.prop-value($marked-fill-color)
     );
+  }
+
+  @if $marked-fill-color and
+    custom-properties.get-fallback($marked-fill-color) ==
+    GrayText
+  {
+    // Transparent appears white in HCM
+    $marked-stroke-color: GrayText;
+  }
+
+  @if $marked-fill-color == null {
+    $marked-stroke-color: null;
   }
 
   @include if-marked-disabled_ {

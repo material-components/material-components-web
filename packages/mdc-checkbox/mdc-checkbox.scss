@@ -20,5 +20,17 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/dom/dom';
+@use './checkbox-theme';
 @use './checkbox';
+
 @include checkbox.core-styles;
+
+.mdc-checkbox {
+  @include dom.forced-colors-mode {
+    @include checkbox-theme.theme-styles(checkbox-theme.$forced-colors-theme);
+  }
+}

@@ -79,15 +79,6 @@
   }
 
   @include dom.forced-colors-mode {
-    @include checkbox-theme.disabled-container-colors(
-      $unmarked-stroke-color: GrayText,
-      $unmarked-fill-color: transparent,
-      $marked-stroke-color: GrayText,
-      $marked-fill-color: transparent,
-      $query: $query
-    );
-    @include checkbox-theme.disabled-ink-color(GrayText, $query: $query);
-
     .mdc-checkbox__mixedmark {
       @include feature-targeting.targets($feat-structure) {
         margin: 0 1px; // Extra horizontal space around mixedmark symbol.
