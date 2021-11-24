@@ -470,6 +470,22 @@
       overflow: hidden;
     }
   }
+
+  .mdc-dialog--sheet {
+    .mdc-dialog__content {
+      @include feature-targeting.targets($feat-structure) {
+        padding: 0;
+      }
+    }
+
+    .mdc-dialog__close {
+      @include feature-targeting.targets($feat-structure) {
+        right: variables.$sheet-close-icon-right;
+        top: variables.$sheet-close-icon-top;
+        position: absolute;
+      }
+    }
+  }
 }
 
 @mixin core-styles($query: feature-targeting.all()) {

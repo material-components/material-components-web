@@ -285,6 +285,39 @@ Note: Full-screen dialogs are intended for mobile/small-screen devices. The
 dialog's size will adapt to the screen size, and so becomes modal if used on
 larger screen sizes.
 
+## Floating sheet
+
+Floating sheets are dialogs with a close icon button. Clicking the close icon
+button closes the sheet. Having the close icon button is mutually exclusive with
+having action bar buttons (e.g. cancel and OK buttons). The icon button is
+absolutely positioned. Sheet content has no default padding.
+
+### Sheet example
+
+```html
+<div class="mdc-dialog mdc-dialog--open test-dialog mdc-dialog--sheet"
+     aria-modal="true"
+     aria-labelledby="test-dialog__title--with-close-icon-button"
+     aria-describedby="test-dialog__content--with-close-icon-button"
+     id="test-dialog">
+  <div class="mdc-dialog__scrim" data-mdc-dialog-action="cancel"></div>
+  <div class="mdc-dialog__container">
+    <div class="mdc-dialog__surface">
+      <button class="mdc-icon-button material-icons mdc-dialog__close" data-mdc-dialog-action="close">
+        close
+      </button>
+      <div class="mdc-dialog__content test-dialog__content">
+        <div class="test-sheet__content">
+          <h3>Sheets</h3>
+          There are no action buttons. Any HTML content can go here. Title is also defined through content.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+```
+
 ## Additional Information
 
 ### Dialog actions
