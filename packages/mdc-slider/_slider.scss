@@ -31,6 +31,7 @@
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/rtl';
+@use '@material/theme/css';
 @use '@material/theme/theme-color';
 @use '@material/typography/typography';
 @use './slider-theme';
@@ -325,11 +326,24 @@ $_track-inactive-height: 4px;
     @include feature-targeting.targets($feat-structure) {
       bottom: math.div($_thumb-ripple-size, 2) + math.div($_thumb-size, 2) +
         $_value-indicator-caret-width + 4px;
-      @include rtl.ignore-next-line();
-      left: 50%;
+      @include css.declaration(
+        left,
+        var(--slider-value-indicator-container-left, 50%),
+        50%,
+        $gss: (noflip: true)
+      );
       pointer-events: none;
       position: absolute;
-      transform: translateX(-50%);
+      @include css.declaration(
+        right,
+        var(--slider-value-indicator-container-right),
+        $gss: (noflip: true)
+      );
+      @include css.declaration(
+        transform,
+        var(--slider-value-indicator-container-transform, translateX(-50%)),
+        translateX(-50%)
+      );
     }
   }
 
@@ -357,10 +371,23 @@ $_track-inactive-height: 4px;
         bottom: -$_value-indicator-caret-width + 1;
         content: '';
         height: 0;
-        @include rtl.ignore-next-line();
-        left: 50%;
+        @include css.declaration(
+          left,
+          var(--slider-value-indicator-caret-left, 50%),
+          50%,
+          $gss: (noflip: true)
+        );
         position: absolute;
-        transform: translateX(-50%);
+        @include css.declaration(
+          right,
+          var(--slider-value-indicator-caret-right),
+          $gss: (noflip: true)
+        );
+        @include css.declaration(
+          transform,
+          var(--slider-value-indicator-caret-transform, translateX(-50%)),
+          translateX(-50%)
+        );
         width: 0;
       }
     }

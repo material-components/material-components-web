@@ -585,8 +585,8 @@ describe('MDCSlider', () => {
 
          root.dispatchEvent(createEventFrom('pointer', 'down', {clientX: 30}));
          jasmine.clock().tick(1);  // Tick for RAF.
-         expect(thumb.style.transition).toMatch(/all/);
-         expect(trackActive.style.transition).toMatch(/all/);
+         expect(thumb.style.transition).toMatch(/none/);
+         expect(trackActive.style.transition).toMatch(/none/);
 
          jasmine.clock().tick(1);  // Tick for RAF.
          expect(thumb.style.transition).toBe('');

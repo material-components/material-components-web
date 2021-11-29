@@ -41,6 +41,7 @@ export const cssClasses = {
   TRACK: 'mdc-slider__track',
   // The active track fill element that will be scaled as the value changes.
   TRACK_ACTIVE: 'mdc-slider__track--active_fill',
+  VALUE_INDICATOR_CONTAINER: 'mdc-slider__value-indicator-container',
   VALUE_INDICATOR_TEXT: 'mdc-slider__value-indicator-text',
 };
 
@@ -72,4 +73,17 @@ export const attributes = {
 export const events = {
   CHANGE: 'MDCSlider:change',
   INPUT: 'MDCSlider:input',
+};
+
+/** Slider strings. */
+export const strings = {
+  VAR_VALUE_INDICATOR_CARET_LEFT: '--slider-value-indicator-caret-left',
+  VAR_VALUE_INDICATOR_CARET_RIGHT: '--slider-value-indicator-caret-right',
+  VAR_VALUE_INDICATOR_CARET_TRANSFORM:
+      '--slider-value-indicator-caret-transform',
+  VAR_VALUE_INDICATOR_CONTAINER_LEFT: '--slider-value-indicator-container-left',
+  VAR_VALUE_INDICATOR_CONTAINER_RIGHT:
+      '--slider-value-indicator-container-right',
+  VAR_VALUE_INDICATOR_CONTAINER_TRANSFORM:
+      '--slider-value-indicator-container-transform',
 };

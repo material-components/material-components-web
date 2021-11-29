@@ -97,6 +97,13 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       getThumbBoundingClientRect: (thumb: Thumb) =>
           this.getThumbEl(thumb).getBoundingClientRect(),
       getBoundingClientRect: () => this.root.getBoundingClientRect(),
+      getValueIndicatorContainerWidth: (thumb: Thumb) => {
+        return this.getThumbEl(thumb)
+            .querySelector<HTMLElement>(
+                `.${cssClasses.VALUE_INDICATOR_CONTAINER}`)!
+            .getBoundingClientRect()
+            .width;
+      },
       isRTL: () => getComputedStyle(this.root).direction === 'rtl',
       setThumbStyleProperty: (propertyName, value, thumb: Thumb) => {
         this.getThumbEl(thumb).style.setProperty(propertyName, value);

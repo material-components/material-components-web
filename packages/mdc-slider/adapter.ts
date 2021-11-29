@@ -131,6 +131,11 @@ export interface MDCSliderAdapter {
   getBoundingClientRect(): ClientRect;
 
   /**
+   * @return Returns the width of the given value indicator container.
+   */
+  getValueIndicatorContainerWidth(thumb: Thumb): number;
+
+  /**
    * @return Returns true if the root element is RTL, otherwise false
    */
   isRTL(): boolean;
