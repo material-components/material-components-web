@@ -343,15 +343,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       return;
     }
 
-    // Increment/decrement index as necessary and open menu.
-    if (arrowUp && this.getSelectedIndex() > 0) {
-      this.setSelectedIndex(this.getSelectedIndex() - 1);
-    } else if (
-        arrowDown &&
-        this.getSelectedIndex() < this.adapter.getMenuItemCount() - 1) {
-      this.setSelectedIndex(this.getSelectedIndex() + 1);
-    }
-
     this.openMenu();
     event.preventDefault();
   }
