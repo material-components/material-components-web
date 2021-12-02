@@ -71,10 +71,6 @@ $_track-inactive-height: 4px;
       touch-action: pan-y;
     }
 
-    &.mdc-slider--disabled {
-      @include _disabled($query: $query);
-    }
-
     &--discrete {
       .mdc-slider__thumb,
       .mdc-slider__track--active_fill {
@@ -92,6 +88,10 @@ $_track-inactive-height: 4px;
         }
       }
     }
+  }
+
+  .mdc-slider--disabled {
+    @include _disabled($query: $query);
   }
 
   .mdc-slider__input {
