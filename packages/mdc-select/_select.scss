@@ -228,6 +228,12 @@
 @mixin _list($query) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
+  @include dom-mixins.forced-colors-mode() {
+    .mdc-select__menu::before {
+      @include dom-mixins.transparent-border($query: $query);
+    }
+  }
+
   .mdc-select__menu .mdc-deprecated-list,
   .mdc-select__menu .mdc-list {
     @include select-icon-theme.icon-horizontal-margins(0, 0, $query: $query);
