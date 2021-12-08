@@ -683,7 +683,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     const valueToAriaValueTextFn = this.adapter.getValueToAriaValueTextFn();
     if (valueToAriaValueTextFn) {
       this.adapter.setInputAttribute(
-          attributes.ARIA_VALUETEXT, valueToAriaValueTextFn(value), thumb);
+          attributes.ARIA_VALUETEXT, valueToAriaValueTextFn(value, thumb),
+          thumb);
     }
   }
 
