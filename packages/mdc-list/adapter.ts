@@ -93,6 +93,15 @@ export interface MDCListAdapter {
   notifyAction(index: number): void;
 
   /**
+   * Notifies that items at the given indices have changed its
+   * selection state through user interaction (e.g. click).
+   *
+   * This is invoked only for changes caused by user interaction
+   * to match with the native `change` event semantics.
+   */
+  notifySelectionChange(changedIndices: number[]): void;
+
+  /**
    * @return true when the current focused element is inside list root.
    */
   isFocusInsideList(): boolean;

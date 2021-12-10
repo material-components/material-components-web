@@ -577,6 +577,7 @@ Method Signature | Description
 Event Name | `event.detail` | Description
 --- | --- | ---
 `MDCList:action` | `{index: number}` | Indicates that a list item with the specified index has been activated.
+`MDCList:selectionChange` | `{changedIndices: number[]}` | Emitted whenever the selection of list items has changed.
 
 ## Usage within Web Frameworks
 
@@ -656,6 +657,7 @@ Method Signature | Description
 `isCheckboxCheckedAtIndex(index: number) => boolean` | Returns true if checkbox inside a list item is checked.
 `setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean) => void` | Sets the checked status of checkbox or radio at given list item index.
 `notifyAction(index: number) => void` | Notifies user action on list item including keyboard and mouse actions.
+`notifySelectionChange(changedIndices: number[]) => void` | Notifies when the selection of list items has changed through user interaction. Selection could change upon on <kbd>SPACE</kbd>, a click on an item, or through key combinations like `CTRL + A`. 
 `isFocusInsideList() => boolean` | Returns true if the current focused element is inside list root.
 `isRootFocused() => boolean` | Returns true if root element is focused.
 `listItemAtIndexHasClass(index: number, className: string) => boolean` | Returns true if list item at `index` has class `className`.
