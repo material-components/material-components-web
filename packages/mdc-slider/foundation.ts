@@ -828,12 +828,12 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
             (isRtl && thumb !== Thumb.START);
         if (trackAnimatesFromRight) {
           this.adapter.setTrackActiveStyleProperty('transform-origin', 'right');
-          this.adapter.setTrackActiveStyleProperty('left', 'unset');
+          this.adapter.setTrackActiveStyleProperty('left', 'auto');
           this.adapter.setTrackActiveStyleProperty(
               'right', `${this.rect.width - thumbRightPos}px`);
         } else {
           this.adapter.setTrackActiveStyleProperty('transform-origin', 'left');
-          this.adapter.setTrackActiveStyleProperty('right', 'unset');
+          this.adapter.setTrackActiveStyleProperty('right', 'auto');
           this.adapter.setTrackActiveStyleProperty('left', `${thumbLeftPos}px`);
         }
         this.adapter.setTrackActiveStyleProperty(
