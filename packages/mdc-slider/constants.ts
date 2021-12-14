@@ -48,6 +48,8 @@ export const cssClasses = {
 export const numbers = {
   // Default step size.
   STEP_SIZE: 1,
+  // Default minimum difference between the start and end values.
+  MIN_RANGE: 0,
   // Minimum absolute difference between clientX of move event / down event
   // for which to update thumb, in the case of overlapping thumbs.
   // This is needed to reduce chances of choosing the thumb based on
@@ -63,6 +65,7 @@ export const attributes = {
   INPUT_MAX: 'max',
   INPUT_VALUE: 'value',
   INPUT_STEP: 'step',
+  DATA_MIN_RANGE: 'data-min-range',
 };
 
 /** Slider events. */

@@ -107,12 +107,16 @@ element.
 
 #### Continuous range slider
 
+Note: By default there's no minimum distance between the two thumbs. To specify
+one, provide a value for the `data-min-range` attribute on the root element and
+adjust the `min` and `max` attributes on the input elements accordingly.
+
 <img src="images/continuous-range-slider.png" alt="Continuous range slider with values of 30 and 70">
 
 ```html
-<div class="mdc-slider mdc-slider--range">
-  <input class="mdc-slider__input" type="range" min="0" max="70" value="30" name="rangeStart" aria-label="Continuous range slider demo">
-  <input class="mdc-slider__input" type="range" min="30" max="100" value="70" name="rangeEnd" aria-label="Continuous range slider demo">
+<div class="mdc-slider mdc-slider--range" data-min-range="10">
+  <input class="mdc-slider__input" type="range" min="0" max="60" value="30" name="rangeStart" aria-label="Continuous range slider demo">
+  <input class="mdc-slider__input" type="range" min="40" max="100" value="70" name="rangeEnd" aria-label="Continuous range slider demo">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">
@@ -318,12 +322,13 @@ Additionally, the MDCSlider component should be initialized with
 #### Range slider example
 
 This is an example of a range slider with internal values of
-`[min, max] = [0, 100]` and `[start, end] = [30, 70]`.
+`[min, max] = [0, 100]` and `[start, end] = [30, 70]`, and a minimum range of
+10.
 
 ```html
-<div class="mdc-slider mdc-slider--range">
-  <input class="mdc-slider__input" type="range" min="0" max="70" value="30" name="rangeStart" aria-label="Range slider demo">
-  <input class="mdc-slider__input" type="range" min="30" max="100" value="70" name="rangeEnd" aria-label="Range slider demo">
+<div class="mdc-slider mdc-slider--range" data-min-range="10">
+  <input class="mdc-slider__input" type="range" min="0" max="60" value="30" name="rangeStart" aria-label="Range slider demo">
+  <input class="mdc-slider__input" type="range" min="40" max="100" value="70" name="rangeEnd" aria-label="Range slider demo">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track--inactive"></div>
     <div class="mdc-slider__track--active">

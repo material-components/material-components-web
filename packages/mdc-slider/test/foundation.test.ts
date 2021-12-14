@@ -56,6 +56,13 @@ describe('MDCSliderFoundation', () => {
       expect(foundation.getStep()).toBe(5);
     });
 
+    it('range slider: sets min range based on data-min-range attribute', () => {
+      const {foundation} = setUpAndInit({minRange: 10, isRange: true});
+      foundation.init();
+
+      expect(foundation.getMinRange()).toBe(10);
+    });
+
     it('min can be updated after initialization', () => {
       const {foundation} = setUpAndInit({min: -20, max: 20, value: 0});
       expect(foundation.getMin()).toBe(-20);
@@ -72,6 +79,14 @@ describe('MDCSliderFoundation', () => {
 
       foundation.setMax(30);
       expect(foundation.getMax()).toBe(30);
+    });
+
+    it('min range can be updated after initialization', () => {
+      const {foundation} = setUpAndInit({isRange: true});
+      expect(foundation.getMinRange()).toBe(0);
+
+      foundation.setMinRange(10);
+      expect(foundation.getMinRange()).toBe(10);
     });
 
     it('hasTickMarks can be updated after initialization', () => {
@@ -180,6 +195,18 @@ describe('MDCSliderFoundation', () => {
     it('throws error if value is not divisible by step', () => {
       expect(() => setUpAndInit({value: 12, step: 5}))
           .toThrowError(/value must be valid based on the step value/);
+    });
+
+    it('throws error if minRange < 0', () => {
+      expect(() => setUpAndInit({minRange: -1, isRange: true}))
+          .toThrowError(/minimum range must be non-negative/);
+    });
+
+    it('throws error if valueStart + minRange > value', () => {
+      expect(
+          () => setUpAndInit(
+              {valueStart: 20, value: 30, minRange: 20, isRange: true}))
+          .toThrowError(/start value and end value must differ by at least 20/);
     });
 
     it('does not throw error with valid value and step < 1', () => {
@@ -662,6 +689,59 @@ describe('MDCSliderFoundation', () => {
              .toHaveBeenCalledWith('transform', `translateX(45px)`, Thumb.END);
        });
 
+    it('does not move the start thumb to be closer to the end thumb than minRange',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 45,
+           value: 53,
+           minRange: 5,
+           isRange: true,
+         });
+
+         // Down event on start thumb.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 45,
+         }));
+         // Move event to a clientX less than minRange from the end thumb.
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 50,
+         }));
+
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValueStart()).toBe(48);
+         expect(foundation.getValue()).toBe(53);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 'transform', `translateX(48px)`, Thumb.START);
+       });
+
+    it('does not move the end thumb to be closer to the start thumb than minRange',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           valueStart: 45,
+           value: 80,
+           minRange: 10,
+           isRange: true,
+         });
+
+         // Down event on end thumb.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 80,
+         }));
+         // Move event to a clientX less than minRange from the start thumb.
+         foundation.handleMove(createMouseEvent('mousemove', {
+           clientX: 50,
+         }));
+
+         jasmine.clock().tick(1);  // Tick for RAF.
+
+         expect(foundation.getValueStart()).toBe(45);
+         expect(foundation.getValue()).toBe(55);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith('transform', `translateX(55px)`, Thumb.END);
+       });
+
     it('does not update UI if start value is updated to the same value', () => {
       const {foundation, mockAdapter} = setUpAndInit({
         valueStart: 40,
@@ -767,15 +847,25 @@ describe('MDCSliderFoundation', () => {
 
     it('throws error if #setValue/setValueStart is set to invalid number',
        () => {
-         const {foundation} =
-             setUpAndInit({isRange: true, valueStart: 10, value: 50});
+         const {foundation} = setUpAndInit(
+             {isRange: true, valueStart: 10, value: 50, minRange: 10});
 
          expect(() => {
            foundation.setValueStart(51);
          }).toThrowError(/must be <= end thumb value/);
          expect(() => {
+           foundation.setValueStart(45);
+         })
+             .toThrowError(
+                 /must be <= end thumb value \(50\) - min range \(10\)/);
+         expect(() => {
            foundation.setValue(9);
          }).toThrowError(/must be >= start thumb value/);
+         expect(() => {
+           foundation.setValue(15);
+         })
+             .toThrowError(
+                 /must be >= start thumb value \(10\) \+ min range \(10\)/);
        });
 
     it('single point slider: #setValue updates value and UI', () => {
@@ -817,10 +907,41 @@ describe('MDCSliderFoundation', () => {
     });
   });
 
+  describe('#get/setMinRange', () => {
+    it('throws error if #get/setMinRange is invoked on single point slider',
+       () => {
+         const {foundation} = setUpAndInit();
+
+         expect(() => {
+           foundation.getMinRange();
+         }).toThrowError(/only applicable for range sliders/);
+         expect(() => {
+           foundation.setMinRange(10);
+         }).toThrowError(/only applicable for range sliders/);
+       });
+
+    it('throws error if #setMinRange is set to invalid number', () => {
+      const {foundation} = setUpAndInit(
+          {isRange: true, valueStart: 10, value: 50, minRange: 10});
+
+      expect(() => {
+        foundation.setMinRange(-10);
+      }).toThrowError(/must be non-negative/);
+      expect(() => {
+        foundation.setMinRange(45);
+      }).toThrowError(/must differ by at least 45/);
+    });
+  });
+
   describe('input synchronization: ', () => {
     it('updates input value attribute and property on value update', () => {
-      const {foundation, mockAdapter} = setUpAndInit(
-          {isDiscrete: true, valueStart: 10, value: 40, isRange: true});
+      const {foundation, mockAdapter} = setUpAndInit({
+        isDiscrete: true,
+        valueStart: 10,
+        value: 40,
+        minRange: 10,
+        isRange: true
+      });
 
       mockAdapter.getInputValue.withArgs(Thumb.START).and.returnValue(10);
       foundation.setValueStart(3);
@@ -829,7 +950,7 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.setInputValue).toHaveBeenCalledWith('3', Thumb.START);
       // The min attribute for end input should also be updated.
       expect(mockAdapter.setInputAttribute)
-          .toHaveBeenCalledWith(attributes.INPUT_MIN, '3', Thumb.END);
+          .toHaveBeenCalledWith(attributes.INPUT_MIN, '13', Thumb.END);
 
       mockAdapter.getInputValue.withArgs(Thumb.END).and.returnValue(40);
       foundation.setValue(30);
@@ -838,7 +959,7 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.setInputValue).toHaveBeenCalledWith('30', Thumb.END);
       // The max attribute for start input should also be updated.
       expect(mockAdapter.setInputAttribute)
-          .toHaveBeenCalledWith(attributes.INPUT_MAX, '30', Thumb.START);
+          .toHaveBeenCalledWith(attributes.INPUT_MAX, '20', Thumb.START);
     });
 
     it('updates values on input change', () => {
@@ -1412,6 +1533,7 @@ function setUpAndInit({
   valueStart,
   min,
   max,
+  minRange,
   rect,
   isDiscrete,
   isDisabled,
@@ -1424,6 +1546,7 @@ function setUpAndInit({
   valueStart?: number,
   min?: number,
   max?: number,
+  minRange?: number,
   rect?: Partial<ClientRect>,
   isDiscrete?: boolean,
   isDisabled?: boolean,
@@ -1449,6 +1572,9 @@ function setUpAndInit({
       );
   mockAdapter.getInputAttribute.withArgs(attributes.INPUT_MAX, Thumb.END)
       .and.returnValue(String(max !== undefined ? max : 100));
+
+  mockAdapter.getAttribute.withArgs(attributes.DATA_MIN_RANGE)
+      .and.returnValue(minRange !== undefined ? String(minRange) : null);
 
   valueStart = valueStart !== undefined ? valueStart : 20;
   value = value !== undefined ? value : 50;
