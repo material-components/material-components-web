@@ -28,6 +28,7 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/rtl';
+@use '@material/dom/dom';
 @use '@material/touch-target/touch-target';
 @use '@material/focus-ring/focus-ring';
 @use '@material/typography/typography';
@@ -67,9 +68,21 @@
       }
     }
 
+    .mdc-button__focus-ring {
+      @include feature-targeting.targets($feat-structure) {
+        display: none;
+      }
+    }
+
     @include ripple-theme.focus {
       .mdc-button__focus-ring {
-        @include focus-ring.focus-ring($query: $query);
+        @include dom.forced-colors-mode($exclude-ie11: true) {
+          @include focus-ring.focus-ring($query: $query);
+
+          @include feature-targeting.targets($feat-structure) {
+            display: block;
+          }
+        }
       }
     }
 
