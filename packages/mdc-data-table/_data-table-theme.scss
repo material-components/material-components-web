@@ -261,13 +261,20 @@ $pagination-rows-per-page-select-height: 36px;
 
   @include shape-mixins.radius($radius, $rtl-reflexive, $query: $query);
 
-  // Apply same border radius as parent to leading & trailing header cells.
-  // Header cells have explicite background color applied which requires border
-  // radius to take its parent rounded shape.
+  // Apply same border radius as parent to leading/trailing header cells,
+  // and leading/trailing cells of last row.
+  // Cells that have explicit background color applied require border
+  // radius to take the parents' rounded shape.
   $border-radius: shape-functions.unpack-radius($radius);
   $top-left-radius: shape-functions.resolve-radius(list.nth($border-radius, 1));
   $top-right-radius: shape-functions.resolve-radius(
     list.nth($border-radius, 2)
+  );
+  $bottom-right-radius: shape-functions.resolve-radius(
+    list.nth($border-radius, 3)
+  );
+  $bottom-left-radius: shape-functions.resolve-radius(
+    list.nth($border-radius, 4)
   );
 
   .mdc-data-table__header-cell:first-child {
@@ -296,6 +303,40 @@ $pagination-rows-per-page-select-height: 36px;
         );
 
         border-top-right-radius: 0;
+      }
+    }
+  }
+
+  &.mdc-data-table--without-footer
+    .mdc-data-table__row:last-child
+    .mdc-data-table__cell:first-child {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-bottom-left-radius, $bottom-left-radius);
+
+      @include rtl.rtl {
+        @include theme.property(
+          border-bottom-right-radius,
+          if($rtl-reflexive, $bottom-left-radius, $bottom-right-radius)
+        );
+
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+
+  &.mdc-data-table--without-footer
+    .mdc-data-table__row:last-child
+    .mdc-data-table__cell:last-child {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-bottom-right-radius, $bottom-right-radius);
+
+      @include rtl.rtl {
+        @include theme.property(
+          border-bottom-left-radius,
+          if($rtl-reflexive, $bottom-right-radius, $bottom-left-radius)
+        );
+
+        border-bottom-right-radius: 0;
       }
     }
   }
