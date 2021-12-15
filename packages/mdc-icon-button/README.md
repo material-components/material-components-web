@@ -57,7 +57,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 
 ```html
 <button class="mdc-icon-button material-icons">
-  <div class="mdc-icon-button__ripple"></div>
+  <span class="mdc-icon-button__ripple"></span>
   <span class="mdc-icon-button__focus-ring"></span>
   favorite
 </button>
@@ -75,10 +75,10 @@ To meet this requirement, add the following to your button:
 ```html
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-icon-button material-icons">
-    <div class="mdc-icon-button__ripple"></div>
+    <span class="mdc-icon-button__ripple"></span>
     <span class="mdc-icon-button__focus-ring"></span>
     favorite
-    <div class="mdc-icon-button__touch"></div>
+    <span class="mdc-icon-button__touch"></span>
   </button>
 </div>
 ```

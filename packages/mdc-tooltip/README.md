@@ -147,7 +147,7 @@ Default rich tooltip without interactive content
 ```html
 <div class="mdc-tooltip-wrapper--rich">
   <button class="mdc-button" aria-describedby="tt0">
-    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__ripple"></span>
     <span class="mdc-button__label">Button</span>
   </button>
   <div id="tt0" class="mdc-tooltip mdc-tooltip--rich" aria-hidden="true" role="tooltip">

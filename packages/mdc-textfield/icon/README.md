@@ -124,7 +124,7 @@ In text field:
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading">phone</i>
   <input class="mdc-text-field__input" type="text" aria-labelledby="my-label-id">
   <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" tabindex="0" role="button">event</i>
-  <div class="mdc-line-ripple"></div>
+  <span class="mdc-line-ripple"></span>
 </label>
 ```
 
