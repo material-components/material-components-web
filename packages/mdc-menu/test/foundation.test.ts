@@ -455,7 +455,7 @@ describe('MDCMenuFoundation', () => {
     const {foundation} = setupTest();
     try {
       foundation.setSelectedIndex(5);
-    } catch (e) {
+    } catch (e: any) {
       expect(e.message).toEqual(
           'MDCMenuFoundation: No list item at specified index.');
     }
