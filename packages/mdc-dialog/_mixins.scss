@@ -483,6 +483,11 @@
         right: variables.$sheet-close-icon-right;
         top: variables.$sheet-close-icon-top;
         position: absolute;
+        // Customers can create their stacking context in dialog content using
+        // any way of createing stacking context. For example with
+        //   position: relative;
+        //   z-index: 0;
+        z-index: 1;
       }
     }
   }
