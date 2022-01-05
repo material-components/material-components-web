@@ -244,11 +244,12 @@ describe('MDCSliderFoundation', () => {
              setUpAndInit({isRange: true, isDiscrete: true});
 
          expect(mockAdapter.setThumbStyleProperty)
-             .toHaveBeenCalledWith('transition', 'all 0s ease 0s', Thumb.END);
+             .toHaveBeenCalledWith('transition', 'none 0s ease 0s', Thumb.END);
          expect(mockAdapter.setThumbStyleProperty)
-             .toHaveBeenCalledWith('transition', 'all 0s ease 0s', Thumb.START);
+             .toHaveBeenCalledWith(
+                 'transition', 'none 0s ease 0s', Thumb.START);
          expect(mockAdapter.setTrackActiveStyleProperty)
-             .toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+             .toHaveBeenCalledWith('transition', 'none 0s ease 0s');
          jasmine.clock().tick(1);  // Tick for RAF.
          // Newly added inline styles should be removed in next frame.
          expect(mockAdapter.removeThumbStyleProperty)
@@ -265,12 +266,12 @@ describe('MDCSliderFoundation', () => {
          jasmine.clock().tick(1);  // Tick for RAF.
          expect(mockAdapter.setThumbStyleProperty)
              .not.toHaveBeenCalledWith(
-                 'transition', 'all 0s ease 0s', Thumb.END);
+                 'transition', 'none 0s ease 0s', Thumb.END);
          expect(mockAdapter.setThumbStyleProperty)
              .not.toHaveBeenCalledWith(
-                 'transition', 'all 0s ease 0s', Thumb.START);
+                 'transition', 'none 0s ease 0s', Thumb.START);
          expect(mockAdapter.setTrackActiveStyleProperty)
-             .not.toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+             .not.toHaveBeenCalledWith('transition', 'none 0s ease 0s');
        });
 
     it('initial layout does not reset thumb/track animations for continuous sliders',
@@ -278,12 +279,12 @@ describe('MDCSliderFoundation', () => {
          const {mockAdapter} = setUpAndInit({isRange: true, isDiscrete: false});
          expect(mockAdapter.setThumbStyleProperty)
              .not.toHaveBeenCalledWith(
-                 'transition', 'all 0s ease 0s', Thumb.END);
+                 'transition', 'none 0s ease 0s', Thumb.END);
          expect(mockAdapter.setThumbStyleProperty)
              .not.toHaveBeenCalledWith(
-                 'transition', 'all 0s ease 0s', Thumb.START);
+                 'transition', 'none 0s ease 0s', Thumb.START);
          expect(mockAdapter.setTrackActiveStyleProperty)
-             .not.toHaveBeenCalledWith('transition', 'all 0s ease 0s');
+             .not.toHaveBeenCalledWith('transition', 'none 0s ease 0s');
        });
 
     it('RTL: initial layout removes thumb styles', () => {
@@ -1093,6 +1094,132 @@ describe('MDCSliderFoundation', () => {
        });
   });
 
+  describe('value indicator alignment', () => {
+    it('does not align value indicator for continuous slider', () => {
+      const {mockAdapter} = setUpAndInit({
+        value: 50,
+      });
+
+      expect(mockAdapter.getValueIndicatorContainerWidth)
+          .not.toHaveBeenCalled();
+      expect(mockAdapter.setThumbStyleProperty)
+          .not.toHaveBeenCalledWith(
+              jasmine.stringMatching(/--slider-value-indicator.*/),
+              jasmine.any(String), jasmine.any(Number));
+    });
+
+    it('left aligns value indicator when close to the left edge', () => {
+      const {mockAdapter} = setUpAndInit({
+        value: 0,
+        isDiscrete: true,
+      });
+
+      expect(mockAdapter.getValueIndicatorContainerWidth)
+          .toHaveBeenCalledWith(Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-left', '5px', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-right', 'auto', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-transform', 'translateX(-50%)',
+              Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-left', '0', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-right', 'auto', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-transform', 'none',
+              Thumb.END);
+    });
+
+    it('right aligns value indicator when close to the right edge', () => {
+      const {mockAdapter} = setUpAndInit({
+        value: 100,
+        isDiscrete: true,
+      });
+
+      expect(mockAdapter.getValueIndicatorContainerWidth)
+          .toHaveBeenCalledWith(Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-left', 'auto', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-right', '5px', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-caret-transform', 'translateX(50%)',
+              Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-left', 'auto', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-right', '0', Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              '--slider-value-indicator-container-transform', 'none',
+              Thumb.END);
+    });
+
+    it('centers value indicator over the knob when far enough from both edges',
+       () => {
+         const {mockAdapter} = setUpAndInit({
+           value: 50,
+           isDiscrete: true,
+         });
+
+         expect(mockAdapter.getValueIndicatorContainerWidth)
+             .toHaveBeenCalledWith(Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-caret-left', '50%', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-caret-right', 'auto', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-caret-transform', 'translateX(-50%)',
+                 Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-container-left', '50%', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-container-right', 'auto', Thumb.END);
+         expect(mockAdapter.setThumbStyleProperty)
+             .toHaveBeenCalledWith(
+                 '--slider-value-indicator-container-transform',
+                 'translateX(-50%)', Thumb.END);
+       });
+
+    it('range slider: aligns both value indicators', () => {
+      const {mockAdapter} = setUpAndInit({
+        isRange: true,
+        isDiscrete: true,
+      });
+
+      expect(mockAdapter.getValueIndicatorContainerWidth)
+          .toHaveBeenCalledWith(Thumb.START);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              jasmine.stringMatching(/--slider-value-indicator.*/),
+              jasmine.any(String), Thumb.START);
+      expect(mockAdapter.getValueIndicatorContainerWidth)
+          .toHaveBeenCalledWith(Thumb.END);
+      expect(mockAdapter.setThumbStyleProperty)
+          .toHaveBeenCalledWith(
+              jasmine.stringMatching(/--slider-value-indicator.*/),
+              jasmine.any(String), Thumb.END);
+    });
+  });
+
   describe('tick marks', () => {
     it('single point slider: sets correct number of tick marks for value update',
        () => {
@@ -1603,22 +1730,30 @@ function setUpAndInit({
   });
   if (isRTL) {
     mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.END).and.returnValue(
-        {left: 100 - value - 5, right: 100 - value + 5});
+        {left: 100 - value - 5, right: 100 - value + 5, width: 10});
   } else {
     mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.END).and.returnValue(
-        {left: value - 5, right: value + 5});
+        {left: value - 5, right: value + 5, width: 10});
   }
   if (isRange) {
     if (isRTL) {
       mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.START)
-          .and.returnValue(
-              {left: 100 - valueStart - 5, right: 100 - valueStart + 5});
+          .and.returnValue({
+            left: 100 - valueStart - 5,
+            right: 100 - valueStart + 5,
+            width: 10
+          });
     } else {
       mockAdapter.getThumbBoundingClientRect.withArgs(Thumb.START)
-          .and.returnValue({left: valueStart - 5, right: valueStart + 5});
+          .and.returnValue(
+              {left: valueStart - 5, right: valueStart + 5, width: 10});
     }
     mockAdapter.getThumbKnobWidth.withArgs(Thumb.START).and.returnValue(10);
     mockAdapter.getThumbKnobWidth.withArgs(Thumb.END).and.returnValue(10);
+  }
+  if (isDiscrete) {
+    mockAdapter.getValueIndicatorContainerWidth.withArgs(Thumb.END)
+        .and.returnValue(30)
   }
 
   foundation.layout();

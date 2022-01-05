@@ -27,7 +27,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
 
 import {MDCSliderAdapter} from './adapter';
-import {attributes, cssClasses, numbers} from './constants';
+import {attributes, cssClasses, numbers, strings} from './constants';
 import {Thumb, TickMark} from './types';
 
 enum AnimationKeys {
@@ -149,6 +149,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       focusInput: () => undefined,
       isInputFocused: () => false,
       getThumbKnobWidth: () => 0,
+      getValueIndicatorContainerWidth: () => 0,
       getThumbBoundingClientRect: () =>
           ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       getBoundingClientRect: () =>
@@ -880,10 +881,12 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
         if (thumb === Thumb.START || !thumb || !this.initialStylesRemoved) {
           this.adapter.setThumbStyleProperty(
               transformProp, `translateX(${thumbStartPos}px)`, Thumb.START);
+          this.alignValueIndicator(Thumb.START, thumbStartPos);
         }
         if (thumb === Thumb.END || !thumb || !this.initialStylesRemoved) {
           this.adapter.setThumbStyleProperty(
               transformProp, `translateX(${thumbEndPos}px)`, Thumb.END);
+          this.alignValueIndicator(Thumb.END, thumbEndPos);
         }
 
         this.removeInitialStyles(isRtl);
@@ -894,11 +897,69 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
         const thumbStartPos = isRtl ? this.rect.width - rangePx : rangePx;
         this.adapter.setThumbStyleProperty(
             transformProp, `translateX(${thumbStartPos}px)`, Thumb.END);
+        this.alignValueIndicator(Thumb.END, thumbStartPos);
         this.adapter.setTrackActiveStyleProperty(
             transformProp, `scaleX(${pctComplete})`);
 
         this.removeInitialStyles(isRtl);
       });
+    }
+  }
+
+  /**
+   * Shifts the value indicator to either side if it would otherwise stick
+   * beyond the slider's length while keeping the caret above the knob.
+   */
+  private alignValueIndicator(thumb: Thumb, thumbPos: number) {
+    if (!this.isDiscrete) return;
+    const thumbHalfWidth =
+        this.adapter.getThumbBoundingClientRect(thumb).width / 2;
+    const containerWidth = this.adapter.getValueIndicatorContainerWidth(thumb);
+    const sliderWidth = this.adapter.getBoundingClientRect().width;
+    if (containerWidth / 2 > thumbPos + thumbHalfWidth) {
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CARET_LEFT, `${thumbHalfWidth}px`, thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CARET_RIGHT, 'auto', thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CARET_TRANSFORM, 'translateX(-50%)',
+          thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CONTAINER_LEFT, '0', thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CONTAINER_RIGHT, 'auto', thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CONTAINER_TRANSFORM, 'none', thumb);
+    } else if (containerWidth / 2 > sliderWidth - thumbPos + thumbHalfWidth) {
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CARET_LEFT, 'auto', thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CARET_RIGHT, `${thumbHalfWidth}px`,
+          thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CARET_TRANSFORM, 'translateX(50%)',
+          thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CONTAINER_LEFT, 'auto', thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CONTAINER_RIGHT, '0', thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CONTAINER_TRANSFORM, 'none', thumb);
+    } else {
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CARET_LEFT, '50%', thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CARET_RIGHT, 'auto', thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CARET_TRANSFORM, 'translateX(-50%)',
+          thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CONTAINER_LEFT, '50%', thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CONTAINER_RIGHT, 'auto', thumb);
+      this.adapter.setThumbStyleProperty(
+          strings.VAR_VALUE_INDICATOR_CONTAINER_TRANSFORM, 'translateX(-50%)',
+          thumb);
     }
   }
 
@@ -939,7 +1000,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     const transitionProp = HAS_WINDOW ?
         getCorrectPropertyName(window, 'transition') :
         'transition';
-    const transitionDefault = 'all 0s ease 0s';
+    const transitionDefault = 'none 0s ease 0s';
     this.adapter.setThumbStyleProperty(
         transitionProp, transitionDefault, Thumb.END);
     if (this.isRange) {
