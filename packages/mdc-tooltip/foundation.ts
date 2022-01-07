@@ -499,7 +499,11 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // will have the HIDE class (before calling the adapter removeClass method).
     // If tooltip is now hidden, send a notification that the animation has
     // completed and the tooltip is no longer visible.
-    if (isHidingTooltip) {
+    // We don't send a notification of the animation completing if a showTimeout
+    // value is set -- this happens when a user triggers a tooltip to be shown
+    // while that tooltip is fading. Once this hide transition is completed,
+    // that same tooltip will be re-shown.
+    if (isHidingTooltip && this.showTimeout === null) {
       this.adapter.notifyHidden();
     }
   }

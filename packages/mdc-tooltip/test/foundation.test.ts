@@ -3096,4 +3096,24 @@ describe('MDCTooltipFoundation', () => {
        jasmine.clock().tick(extraDelayMs);
        expectTooltipToHaveBeenHidden(foundation, mockAdapter);
      });
+
+  it('#handleTransitionEnd after #hide does NOT sends notification that tooltip has been hidden if showTimeout is set',
+     async () => {
+       const {foundation, mockAdapter} =
+           setUpFoundationTest(MDCTooltipFoundation);
+       mockAdapter.hasClass.and.returnValue(true);
+
+       foundation.show();
+       foundation.hide();
+       foundation.show();
+       foundation.handleTransitionEnd();
+
+       expect(mockAdapter.hasClass).toHaveBeenCalledWith(CssClasses.HIDE);
+       expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.SHOWING);
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(CssClasses.SHOWING_TRANSITION);
+       expect(mockAdapter.removeClass).toHaveBeenCalledWith(CssClasses.HIDE);
+       expect(mockAdapter.removeClass)
+           .toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
+     });
 });
