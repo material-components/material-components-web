@@ -184,9 +184,11 @@ Default rich tooltip with interactive content
           <a class="mdc-tooltip__content-link" href="google.com">link</a>
         </p>
         <div class="mdc-tooltip--rich-actions">
-           <button class="mdc-tooltip__action" aria-label="action">
-              action
-           </button>
+            <button class="mdc-button">
+              <div class="mdc-button__ripple"></div>
+              <span class="mdc-button__focus-ring"></span>
+              <span class="mdc-button__label">Action</span>
+            </button>
         </div>
      </div>
   </div>
@@ -215,9 +217,11 @@ Persistent rich tooltip with interactive content
           <a class="mdc-tooltip__content-link" href="google.com">link</a>
         </p>
         <div class="mdc-tooltip--rich-actions">
-           <button class="mdc-tooltip__action" aria-label="action">
-              action
-           </button>
+          <button class="mdc-button">
+            <div class="mdc-button__ripple"></div>
+            <span class="mdc-button__focus-ring"></span>
+            <span class="mdc-button__label">Action</span>
+          </button>
         </div>
      </div>
   </div>
