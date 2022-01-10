@@ -30,6 +30,7 @@
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/dom';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/focus-ring/focus-ring';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
 @use '@material/touch-target/mixins' as touch-target-mixins;
@@ -75,6 +76,16 @@
   .mdc-checkbox {
     @include feature-targeting.targets($feat-structure) {
       @include base_;
+    }
+
+    @include ripple-theme.focus {
+      .mdc-checkbox__focus-ring {
+        @include focus-ring.focus-ring(
+          $query: $query,
+          $container-outer-padding-vertical: 0,
+          $container-outer-padding-horizontal: 0
+        );
+      }
     }
   }
 

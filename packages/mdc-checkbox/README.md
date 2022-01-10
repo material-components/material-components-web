@@ -85,11 +85,14 @@ To meet this requirement, add the `mdc-checkbox--touch` class to your checkbox a
       <div class="mdc-checkbox__mixedmark"></div>
     </div>
     <div class="mdc-checkbox__ripple"></div>
+    <div class="mdc-checkbox__focus-ring"></div>
   </div>
 </div>
 ```
 
 Note that the outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).
+
+The `mdc-checkbox__focus-ring` element ensures that a focus indicator is displayed in high contrast mode around the active/focused checkbox.
 
 ## Checkboxes
 
@@ -113,6 +116,7 @@ We recommend using MDC Checkbox with [MDC Form Field](../mdc-form-field) for enh
       <div class="mdc-checkbox__mixedmark"></div>
     </div>
     <div class="mdc-checkbox__ripple"></div>
+    <div class="mdc-checkbox__focus-ring"></div>
   </div>
   <label for="checkbox-1">Checkbox 1</label>
 </div>
@@ -148,6 +152,7 @@ Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only 
     <div class="mdc-checkbox__mixedmark"></div>
   </div>
   <div class="mdc-checkbox__ripple"></div>
+  <div class="mdc-checkbox__focus-ring"></div>
 </div>
 <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
 ```
@@ -172,6 +177,7 @@ Note that `data-indeterminate="true"` is necessary on the input element for init
     <div class="mdc-checkbox__mixedmark"></div>
   </div>
   <div class="mdc-checkbox__ripple"></div>
+  <div class="mdc-checkbox__focus-ring"></div>
 </div>
 <label for="basic-indeterminate-checkbox" id="basic-indeterminate-checkbox-label">This is my indeterminate checkbox</label>
 ```
