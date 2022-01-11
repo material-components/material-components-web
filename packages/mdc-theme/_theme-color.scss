@@ -95,11 +95,20 @@
   @if custom-properties.is-custom-prop($color) {
     $color-value: custom-properties.get-fallback($color);
 
-    @if ($color-value) {
-      @return _get-hex-string($color-value);
-    } @else {
-      @return custom-properties.get-varname($color);
+    @if (custom-properties.is-custom-prop-string($color-value)) {
+      $varEndIndex: if(
+        string.index($color-value, ', '),
+        string.index($color-value, ', ') - 1,
+        -2
+      );
+      @return string.slice($color-value, 5, $varEndIndex);
     }
+
+    @if (meta.type-of($color-value) == 'color') {
+      @return _get-hex-string($color-value);
+    }
+
+    @return custom-properties.get-varname($color);
   }
 
   @if meta.type-of($color) == 'string' {

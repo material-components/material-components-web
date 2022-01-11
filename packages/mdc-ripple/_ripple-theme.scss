@@ -155,13 +155,7 @@ $_ripple-theme: (
     #{$ripple-target}::before,
     #{$ripple-target}::after {
       @include feature-targeting.targets($feat-color) {
-        @if color.alpha(theme-color.prop-value($color)) > 0 {
-          @include theme.property(background-color, $color);
-        } @else {
-          // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
-          // This avoids unnecessary transitions and overflow.
-          content: none;
-        }
+        @include theme.property(background-color, $color);
       }
     }
   }
