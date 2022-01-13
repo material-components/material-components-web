@@ -87,4 +87,5 @@ $light-theme: (
     $prefix: $_custom-property-prefix
   );
   @include button-shared-theme.theme($theme, $resolver, $query: $query);
+  @include button-shared-theme.high-contrast-outline($query);
 }

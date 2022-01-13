@@ -545,6 +545,87 @@ $disabled-container-color: rgba(
 }
 
 ///
+/// Set the button outline
+///
+@mixin outline-width(
+  $outline-width,
+  $padding: $contained-horizontal-padding,
+  // For a button with an icon, the padding on the side of the button with the
+  // icon.
+  $padding-icon: $contained-horizontal-padding-icon,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @if $outline-width != null {
+    $outline-width-value: if(
+      custom-properties.is-custom-prop($outline-width),
+      custom-properties.get-fallback($outline-width),
+      $outline-width
+    );
+    // TODO(b/194792044): uncouple padding from outline-width
+    // Note: Adjust padding to maintain consistent width with non-outlined buttons
+    $padding-value: math.max($padding - $outline-width-value, 0);
+    $padding-icon-value: math.max($padding-icon - $outline-width-value, 0);
+
+    @include horizontal-padding(
+      $padding: $padding-value,
+      $padding-icon: $padding-icon-value,
+      $query: $query
+    );
+
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(border-width, $outline-width);
+    }
+
+    #{button-ripple.$ripple-target} {
+      @include feature-targeting.targets($feat-structure) {
+        @include theme.property(
+          top,
+          'calc(-1 * outline-width)',
+          $replace: (outline-width: $outline-width)
+        );
+        @include theme.property(
+          left,
+          'calc(-1 * outline-width)',
+          $replace: (outline-width: $outline-width)
+        );
+        @include theme.property(border-width, $outline-width);
+      }
+    }
+    .mdc-button__touch {
+      @include feature-targeting.targets($feat-structure) {
+        @include theme.property(
+          left,
+          'calc(-1 * outline-width)',
+          $replace: (outline-width: $outline-width)
+        );
+        @include theme.property(
+          width,
+          'calc(100% + 2 * outline-width)',
+          $replace: (outline-width: $outline-width)
+        );
+      }
+    }
+  }
+}
+
+///
+/// Set an outline for high contrast mode.
+///
+@mixin high-contrast-outline($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include dom-mixins.forced-colors-mode() {
+    @include outline-width(1px, $query: $query);
+    @include feature-targeting.targets($feat-structure) {
+      border-color: CanvasText;
+      border-style: solid;
+    }
+  }
+}
+
+///
 /// Includes ad-hoc high contrast mode support.
 ///
 @mixin high-contrast-mode-shim($query: feature-targeting.all()) {
