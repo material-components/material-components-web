@@ -24,7 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 
 import {MDCBannerAdapter} from './adapter';
-import {CloseReason, cssClasses, numbers} from './constants';
+import {Action, CloseReason, cssClasses, numbers} from './constants';
 
 const {OPENING, OPEN, CLOSING} = cssClasses;
 
@@ -41,6 +41,7 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
       notifyClosing: () => undefined,
       notifyOpened: () => undefined,
       notifyOpening: () => undefined,
+      notifyActionClicked: () => undefined,
       releaseFocus: () => undefined,
       removeClass: () => undefined,
       setStyleProperty: () => undefined,
@@ -122,12 +123,21 @@ export class MDCBannerFoundation extends MDCFoundation<MDCBannerAdapter> {
     return this.isOpened;
   }
 
-  handlePrimaryActionClick() {
-    this.close(CloseReason.PRIMARY);
+  handlePrimaryActionClick(disableAutoClose: boolean = false) {
+    if (disableAutoClose) {
+      this.adapter.notifyActionClicked(Action.PRIMARY);
+    } else {
+      this.close(CloseReason.PRIMARY);
+    }
   }
 
-  handleSecondaryActionClick() {
-    this.close(CloseReason.SECONDARY);
+  handleSecondaryActionClick(disableAutoClose: boolean = false) {
+    if (disableAutoClose) {
+      this.adapter.notifyActionClicked(Action.SECONDARY);
+
+    } else {
+      this.close(CloseReason.SECONDARY);
+    }
   }
 
   layout() {

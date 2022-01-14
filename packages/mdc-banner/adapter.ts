@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {CloseReason} from './constants';
+import {Action, CloseReason} from './constants';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -60,6 +60,12 @@ export interface MDCBannerAdapter {
    * Broadcasts an event denoting that the banner has just started opening.
    */
   notifyOpening(): void;
+
+  /**
+   * Broadcasts an event denoting that a banner button was clicked without
+   * changing the banner state.
+   */
+  notifyActionClicked(action: Action): void;
 
   /**
    * Releases focus from banner and restores focus to the previously focused

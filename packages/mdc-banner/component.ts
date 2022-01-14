@@ -27,7 +27,7 @@ import {FocusTrap} from '@material/dom/focus-trap';
 import {closest} from '@material/dom/ponyfill';
 
 import {MDCBannerAdapter} from './adapter';
-import {CloseReason, events, MDCBannerCloseEventDetail, MDCBannerFocusTrapFactory, selectors} from './constants';
+import {CloseReason, events, MDCBannerActionEventDetail, MDCBannerCloseEventDetail, MDCBannerFocusTrapFactory, selectors} from './constants';
 import {MDCBannerFoundation} from './foundation';
 
 /** Vanilla JS implementation of banner component. */
@@ -127,6 +127,9 @@ export class MDCBanner extends MDCComponent<MDCBannerFoundation> {
       },
       notifyOpening: () => {
         this.emit(events.OPENING, {});
+      },
+      notifyActionClicked: (action) => {
+        this.emit<MDCBannerActionEventDetail>(events.ACTION_CLICKED, {action});
       },
       releaseFocus: () => {
         this.focusTrap.releaseFocus();

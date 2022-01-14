@@ -23,7 +23,7 @@
 
 import {verifyDefaultAdapter} from '../../../testing/helpers/foundation';
 import {setUpFoundationTest, setUpMdcTestEnvironment} from '../../../testing/helpers/setup';
-import {CloseReason, cssClasses, numbers} from '../constants';
+import {Action, CloseReason, cssClasses, numbers} from '../constants';
 import {MDCBannerFoundation} from '../foundation';
 
 describe('MDCBannerFoundation', () => {
@@ -37,6 +37,7 @@ describe('MDCBannerFoundation', () => {
       'notifyOpened',
       'notifyClosing',
       'notifyClosed',
+      'notifyActionClicked',
       'setStyleProperty',
       'removeClass',
       'trapFocus',
@@ -210,7 +211,7 @@ describe('MDCBannerFoundation', () => {
   });
 
   it(`#handlePrimaryActionClick closes the banner with reason "${
-         CloseReason.PRIMARY}"`,
+         CloseReason.PRIMARY}" if disableAutoClose is false`,
      () => {
        const {foundation} = setupTest();
        foundation.close = jasmine.createSpy('close');
@@ -221,8 +222,22 @@ describe('MDCBannerFoundation', () => {
        expect(foundation.close).toHaveBeenCalledWith(CloseReason.PRIMARY);
      });
 
+  it(`#handlePrimaryActionClick does not close the banner if disableAutoClose is
+     true, instead emits ActionClicked with action "${Action.PRIMARY}"`,
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.close = jasmine.createSpy('close');
+
+       foundation.open();
+       foundation.handlePrimaryActionClick(/** disableAutoClose= */ true);
+
+       expect(foundation.close).not.toHaveBeenCalled();
+       expect(mockAdapter.notifyActionClicked)
+           .toHaveBeenCalledWith(Action.PRIMARY);
+     });
+
   it(`#handleSecondaryActionClick closes the banner with reason "${
-         CloseReason.PRIMARY}"`,
+         CloseReason.SECONDARY}" if disableAutoClose is false`,
      () => {
        const {foundation} = setupTest();
        foundation.close = jasmine.createSpy('close');
@@ -231,5 +246,19 @@ describe('MDCBannerFoundation', () => {
        foundation.handleSecondaryActionClick();
 
        expect(foundation.close).toHaveBeenCalledWith(CloseReason.SECONDARY);
+     });
+
+  it(`#handleSecondaryActionClick does not close the banner if disableAutoClose
+     is true, instead emits ActionClicked with action "${Action.SECONDARY}"`,
+     () => {
+       const {foundation, mockAdapter} = setupTest();
+       foundation.close = jasmine.createSpy('close');
+
+       foundation.open();
+       foundation.handleSecondaryActionClick(/** disableAutoClose= */ true);
+
+       expect(foundation.close).not.toHaveBeenCalled();
+       expect(mockAdapter.notifyActionClicked)
+           .toHaveBeenCalledWith(Action.SECONDARY);
      });
 });
