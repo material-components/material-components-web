@@ -131,7 +131,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.shouldFocusPrimaryActionOnClick = shouldFocus;
   }
 
-  getDimensions(): ClientRect {
+  getDimensions(): DOMRect {
     const getRootRect = () => this.adapter.getRootBoundingClientRect();
     const getCheckmarkRect = () =>
         this.adapter.getCheckmarkBoundingClientRect();

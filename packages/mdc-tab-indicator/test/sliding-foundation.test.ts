@@ -37,7 +37,7 @@ describe('MDCSlidingTabIndicatorFoundation', () => {
     mockAdapter.computeContentClientRect.and.returnValue(
         {width: 100, left: 10});
 
-    foundation.activate({width: 90, left: 25} as ClientRect);
+    foundation.activate({width: 90, left: 25} as DOMRect);
     expect(mockAdapter.addClass).toHaveBeenCalledWith(cssClasses.ACTIVE);
   });
 
@@ -47,7 +47,7 @@ describe('MDCSlidingTabIndicatorFoundation', () => {
        mockAdapter.computeContentClientRect.and.returnValue(
            {width: 100, left: 10});
 
-       foundation.activate({width: 90, left: 25} as ClientRect);
+       foundation.activate({width: 90, left: 25} as DOMRect);
        expect(mockAdapter.addClass)
            .toHaveBeenCalledWith(cssClasses.NO_TRANSITION);
        expect(mockAdapter.setContentStyleProperty)

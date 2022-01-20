@@ -157,7 +157,7 @@ export class MDCChipAction extends
     return this.foundation.actionType();
   }
 
-  private computeRippleClientRect(): ClientRect {
+  private computeRippleClientRect(): DOMRect {
     if (this.root.classList.contains(MDCChipActionCssClasses.PRIMARY_ACTION)) {
       const chipRoot =
           closest(this.root, `.${MDCChipActionCssClasses.CHIP_ROOT}`);

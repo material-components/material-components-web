@@ -119,7 +119,7 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
   /**
    * Activates the tab
    */
-  activate(computeIndicatorClientRect?: ClientRect) {
+  activate(computeIndicatorClientRect?: DOMRect) {
     this.foundation.activate(computeIndicatorClientRect);
   }
 
@@ -133,7 +133,7 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
   /**
    * Returns the indicator's client rect
    */
-  computeIndicatorClientRect(): ClientRect {
+  computeIndicatorClientRect(): DOMRect {
     return this.tabIndicator.computeContentClientRect();
   }
 

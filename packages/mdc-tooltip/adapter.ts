@@ -96,14 +96,14 @@ export interface MDCTooltipAdapter {
   getTooltipSize(): {width: number, height: number};
 
   /**
-   * @return the ClientRect for the anchor element.
+   * @return the DOMRect for the anchor element.
    */
-  getAnchorBoundingRect(): ClientRect|null;
+  getAnchorBoundingRect(): DOMRect|null;
 
   /**
-   * @return the ClientRect for the parent of the tooltip element.
+   * @return the DOMRect for the parent of the tooltip element.
    */
-  getParentBoundingRect(): ClientRect|null;
+  getParentBoundingRect(): DOMRect|null;
 
   /**
    * @return the attribute string if present on the anchor element, null
@@ -191,9 +191,9 @@ export interface MDCTooltipAdapter {
   notifyHidden(): void;
 
   /**
-   * @return the ClientRect for the caret element.
+   * @return the DOMRect for the caret element.
    */
-  getTooltipCaretBoundingRect(): ClientRect|null;
+  getTooltipCaretBoundingRect(): DOMRect|null;
 
   /**
    * Sets the property value of the given style property on both the caret-top

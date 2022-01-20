@@ -116,13 +116,13 @@ describe('MDCTabIndicator', () => {
 
   it('#activate sliding indicator calls activate with passed args', () => {
     const {component, mockFoundation} = setupMockSlidingFoundationTest();
-    component.activate({width: 100, left: 0} as ClientRect);
+    component.activate({width: 100, left: 0} as DOMRect);
     expect(mockFoundation.activate).toHaveBeenCalledWith({width: 100, left: 0});
   });
 
   it('#activate icon indicator calls activate with passed args', () => {
     const {component, mockFoundation} = setupMockFadingFoundationTest();
-    component.activate({width: 1, left: 2} as ClientRect);
+    component.activate({width: 1, left: 2} as DOMRect);
     expect(mockFoundation.activate).toHaveBeenCalledWith({width: 1, left: 2});
   });
 

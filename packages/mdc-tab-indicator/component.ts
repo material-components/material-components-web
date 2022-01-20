@@ -42,7 +42,7 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
         MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
   }
 
-  computeContentClientRect(): ClientRect {
+  computeContentClientRect(): DOMRect {
     return this.foundation.computeContentClientRect();
   }
 
@@ -69,7 +69,7 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     return new MDCSlidingTabIndicatorFoundation(adapter);
   }
 
-  activate(previousIndicatorClientRect?: ClientRect) {
+  activate(previousIndicatorClientRect?: DOMRect) {
     this.foundation.activate(previousIndicatorClientRect);
   }
 

@@ -79,21 +79,21 @@ describe('MDCTabFoundation', () => {
 
   it('#activate activates the indicator', () => {
     const {foundation, mockAdapter} = setupTest();
-    foundation.activate({width: 100, left: 200} as ClientRect);
+    foundation.activate({width: 100, left: 200} as DOMRect);
     expect(mockAdapter.activateIndicator)
         .toHaveBeenCalledWith({width: 100, left: 200});
   });
 
   it('#activate focuses the root node by default', () => {
     const {foundation, mockAdapter} = setupTest();
-    foundation.activate({width: 100, left: 200} as ClientRect);
+    foundation.activate({width: 100, left: 200} as DOMRect);
     expect(mockAdapter.focus).toHaveBeenCalled();
   });
 
   it('#activate focuses the root node if focusOnActivate is true', () => {
     const {foundation, mockAdapter} = setupTest();
     foundation.setFocusOnActivate(true);
-    foundation.activate({width: 100, left: 200} as ClientRect);
+    foundation.activate({width: 100, left: 200} as DOMRect);
     expect(mockAdapter.focus).toHaveBeenCalled();
   });
 
@@ -101,7 +101,7 @@ describe('MDCTabFoundation', () => {
      () => {
        const {foundation, mockAdapter} = setupTest();
        foundation.setFocusOnActivate(false);
-       foundation.activate({width: 100, left: 200} as ClientRect);
+       foundation.activate({width: 100, left: 200} as DOMRect);
        expect(mockAdapter.focus).not.toHaveBeenCalled();
      });
 

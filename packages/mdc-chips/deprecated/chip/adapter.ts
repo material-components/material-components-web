@@ -121,12 +121,12 @@ export interface MDCChipAdapter {
   /**
    * @return The bounding client rect of the root element.
    */
-  getRootBoundingClientRect(): ClientRect;
+  getRootBoundingClientRect(): DOMRect;
 
   /**
    * @return The bounding client rect of the checkmark element or null if it doesn't exist.
    */
-  getCheckmarkBoundingClientRect(): ClientRect | null;
+  getCheckmarkBoundingClientRect(): DOMRect | null;
 
   /**
    * Sets the value of the attribute on the primary action content.

@@ -50,11 +50,11 @@ export abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndi
     super({...MDCTabIndicatorFoundation.defaultAdapter, ...adapter});
   }
 
-  computeContentClientRect(): ClientRect {
+  computeContentClientRect(): DOMRect {
     return this.adapter.computeContentClientRect();
   }
 
-  abstract activate(previousIndicatorClientRect?: ClientRect): void;
+  abstract activate(previousIndicatorClientRect?: DOMRect): void;
   abstract deactivate(): void;
 }
 

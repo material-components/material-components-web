@@ -210,9 +210,9 @@ describe('MDCTab', () => {
 
   it('#activate({ClientRect}) calls activate', () => {
     const {component, mockFoundation} = setupTest({useMockFoundation: true});
-    component.activate({width: 100, left: 200} as ClientRect);
+    component.activate({width: 100, left: 200} as DOMRect);
     expect(mockFoundation.activate)
-        .toHaveBeenCalledWith({width: 100, left: 200} as ClientRect);
+        .toHaveBeenCalledWith({width: 100, left: 200} as DOMRect);
   });
 
   it('#deactivate() calls deactivate', () => {

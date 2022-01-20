@@ -26,7 +26,7 @@
  * rect and the selected width graphic style property.
  */
 export function computePrimaryActionRippleClientRect(
-    clientRect: ClientRect, graphicSelectedWidthStyleValue: string): ClientRect {
+    clientRect: DOMRect, graphicSelectedWidthStyleValue: string): DOMRect {
   // parseInt is banned so we need to manually format and parse the string.
   const graphicWidth = Number(graphicSelectedWidthStyleValue.replace('px', ''));
   if (Number.isNaN(graphicWidth)) {

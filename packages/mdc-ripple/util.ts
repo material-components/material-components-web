@@ -57,7 +57,7 @@ export function supportsCssVariables(windowObj: typeof globalThis, forceRefresh 
   return supportsCssVars;
 }
 
-export function getNormalizedEventCoords(evt: Event | undefined, pageOffset: MDCRipplePoint, clientRect: ClientRect):
+export function getNormalizedEventCoords(evt: Event | undefined, pageOffset: MDCRipplePoint, clientRect: DOMRect):
     MDCRipplePoint {
   if (!evt) {
     return {x: 0, y: 0};

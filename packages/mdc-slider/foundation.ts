@@ -61,7 +61,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   // If `isRange`, this it the value of Thumb.END. Otherwise, it is the
   // value of the single thumb.
   private value!: number;     // Assigned in init()
-  private rect!: ClientRect;  // Assigned in layout() via init()
+  private rect!: DOMRect;  // Assigned in layout() via init()
 
   private isDisabled = false;
 

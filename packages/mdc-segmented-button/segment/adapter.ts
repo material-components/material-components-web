@@ -73,5 +73,5 @@ export interface MDCSegmentedButtonSegmentAdapter {
   /**
    * @return Returns bounding rectangle for ripple effect
    */
-  getRootBoundingClientRect(): ClientRect;
+  getRootBoundingClientRect(): DOMRect;
 }

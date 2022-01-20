@@ -98,12 +98,12 @@ export interface MDCTabScrollerAdapter {
   /**
    * Returns the bounding client rect of the scroll area element.
    */
-  computeScrollAreaClientRect(): ClientRect;
+  computeScrollAreaClientRect(): DOMRect;
 
   /**
    * Returns the bounding client rect of the scroll content element.
    */
-  computeScrollContentClientRect(): ClientRect;
+  computeScrollContentClientRect(): DOMRect;
 
   /**
    * Returns the height of the browser's horizontal scrollbars (in px).

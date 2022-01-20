@@ -41,7 +41,7 @@ export interface MDCMenuSurfaceAdapter {
   isRtl(): boolean;
 
   getInnerDimensions(): MDCMenuDimensions;
-  getAnchorDimensions(): ClientRect | null;
+  getAnchorDimensions(): DOMRect | null;
   getWindowDimensions(): MDCMenuDimensions;
   getBodyDimensions(): MDCMenuDimensions;
   getWindowScroll(): MDCMenuPoint;

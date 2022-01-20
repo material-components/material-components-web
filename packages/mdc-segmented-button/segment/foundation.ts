@@ -102,7 +102,7 @@ export class MDCSegmentedButtonSegmentFoundation extends
   /**
    * @return Returns bounding rectangle for ripple effect
    */
-  getDimensions(): ClientRect {
+  getDimensions(): DOMRect {
     return this.adapter.getRootBoundingClientRect();
   }
 

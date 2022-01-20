@@ -1495,7 +1495,7 @@ describe('MDCTooltipFoundation', () => {
 
   it('properly calculates tooltip position with an UNBOUNDED anchor', () => {
     const anchorBoundingRect =
-        {top: 0, bottom: 35, left: 0, width: 200, height: 35} as ClientRect;
+        {top: 0, bottom: 35, left: 0, width: 200, height: 35} as DOMRect;
     const expectedTooltipTop =
         anchorBoundingRect.height + numbers.UNBOUNDED_ANCHOR_GAP;
     const tooltipSize = {width: 40, height: 30};
@@ -1928,7 +1928,7 @@ describe('MDCTooltipFoundation', () => {
   it('positions tooltip within viewport if threshold cannot be maintained (y-axis)',
      () => {
        const anchorBoundingRect =
-           {top: 0, bottom: 30, left: 450, right: 500, width: 50} as ClientRect;
+           {top: 0, bottom: 30, left: 450, right: 500, width: 50} as DOMRect;
        const expectedTooltipTop =
            anchorBoundingRect.bottom + numbers.BOUNDED_ANCHOR_GAP;
        const tooltipSize = {width: 100, height: 30};
@@ -1948,7 +1948,7 @@ describe('MDCTooltipFoundation', () => {
      () => {
        const anchorBoundingRect =
            {top: 40, bottom: 70, left: 450, right: 500, width: 50} as
-           ClientRect;
+           DOMRect;
        const tooltipSize = {width: 100, height: 30};
        const expectedTooltipTop =
            anchorBoundingRect.bottom + numbers.BOUNDED_ANCHOR_GAP;
@@ -1969,7 +1969,7 @@ describe('MDCTooltipFoundation', () => {
      () => {
        const anchorBoundingRect =
            {top: 40, bottom: 70, left: 450, right: 500, width: 50} as
-           ClientRect;
+           DOMRect;
        const tooltipSize = {width: 100, height: 30};
        const expectedTooltipTop = anchorBoundingRect.top -
            (numbers.BOUNDED_ANCHOR_GAP + tooltipSize.height);

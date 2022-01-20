@@ -123,12 +123,12 @@ export interface MDCSliderAdapter {
   /**
    * @return Returns the bounding client rect of the given thumb.
    */
-  getThumbBoundingClientRect(thumb: Thumb): ClientRect;
+  getThumbBoundingClientRect(thumb: Thumb): DOMRect;
 
   /**
    * @return Returns the bounding client rect for the slider root element.
    */
-  getBoundingClientRect(): ClientRect;
+  getBoundingClientRect(): DOMRect;
 
   /**
    * @return Returns the width of the given value indicator container.

@@ -60,7 +60,7 @@ export interface MDCRippleAdapter {
 
   updateCssVariable(varName: string, value: string | null): void;
 
-  computeBoundingRect(): ClientRect;
+  computeBoundingRect(): DOMRect;
 
   getWindowPageOffset(): MDCRipplePoint;
 }
