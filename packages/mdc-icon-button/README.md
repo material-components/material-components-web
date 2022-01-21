@@ -58,6 +58,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ```html
 <button class="mdc-icon-button material-icons">
   <div class="mdc-icon-button__ripple"></div>
+  <span class="mdc-icon-button__focus-ring"></span>
   favorite
 </button>
 ```
@@ -75,12 +76,15 @@ To meet this requirement, add the following to your button:
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-icon-button material-icons">
     <div class="mdc-icon-button__ripple"></div>
+    <span class="mdc-icon-button__focus-ring"></span>
     favorite
     <div class="mdc-icon-button__touch"></div>
   </button>
 </div>
 ```
 **Note: The outer `mdc-touch-target-wrapper` element is only necessary if you want to avoid potentially overlapping touch targets on adjacent elements (due to collapsing margins).**
+
+The `mdc-icon-button__focus-ring` element ensures that a focus indicator is displayed in high contrast mode around the active/focused icon button.
 
 ## Icon button toggle
 
@@ -96,6 +100,7 @@ If the button should be initialized in the "on" state, then add the `mdc-icon-bu
    aria-label="Add to favorites"
    aria-pressed="false">
    <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__focus-ring"></span>
    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
    <i class="material-icons mdc-icon-button__icon">favorite_border</i>
 </button>
@@ -118,6 +123,7 @@ The icon button toggle can be used with SVGs.
    aria-label="Unstar this item"
    aria-pressed="true">
    <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__focus-ring"></span>
    <svg class="mdc-icon-button__icon">
      ...
    </svg>
@@ -137,6 +143,7 @@ The icon button toggle can be used with `img` tags.
    aria-label="Unstar this item"
    aria-pressed="true">
    <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__focus-ring"></span>
    <img src="" class="mdc-icon-button__icon"/>
    <img src="" class="mdc-icon-button__icon mdc-icon-button__icon--on"/>
 </button>
@@ -156,6 +163,7 @@ and `aria-data-label-off` (aria label in off state) attributes, and omit the
    data-aria-label-on="Remove from favorites"
    data-aria-label-off="Add to favorites">
    <div class="mdc-icon-button__ripple"></div>
+   <span class="mdc-icon-button__focus-ring"></span>
    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
    <i class="material-icons mdc-icon-button__icon">favorite_border</i>
 </button>
@@ -172,6 +180,7 @@ CSS Class | Description
 `mdc-icon-button--on` | This class is applied to the root element and is used to indicate if the icon button toggle is in the "on" state.
 `mdc-icon-button__icon` | This class is applied to each icon element for the icon button toggle.
 `mdc-icon-button__icon--on` | This class is applied to a icon element and is used to indicate the toggle button icon that is represents the "on" icon.
+`mdc-icon-button__focus-ring` | Recommended. Indicates the element which shows the high contrast mode focus ring styling.
 
 ### Sass mixins
 

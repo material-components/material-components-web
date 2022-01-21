@@ -30,6 +30,7 @@
 @use '@material/density/variables' as density-variables;
 @use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/focus-ring/focus-ring';
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/rtl';
 @use '@material/theme/keys';
@@ -169,6 +170,36 @@ $light-theme: (
         $touch-target-height: $size,
         $touch-target-width: $size,
         $query: $query
+      );
+    }
+  }
+
+  .mdc-icon-button__focus-ring {
+    @include feature-targeting.targets($feat-structure) {
+      display: none;
+    }
+  }
+
+  @include ripple-theme.focus {
+    .mdc-icon-button__focus-ring {
+      $component-size: $size;
+      // Icon button ripple size is capped at 40px for icon buttons with
+      // densities -1 and 0 (icon buttons with sizes 44x44 and 48x48px).
+      // See http://b/192353968 for more info.
+      @if $size >= 40px and $size <= 48px {
+        $component-size: 40px;
+      }
+
+      @include feature-targeting.targets($feat-structure) {
+        display: block;
+        max-width: $component-size;
+        max-height: $component-size;
+      }
+
+      @include focus-ring.focus-ring(
+        $query: $query,
+        $container-outer-padding-vertical: 0,
+        $container-outer-padding-horizontal: 0
       );
     }
   }
