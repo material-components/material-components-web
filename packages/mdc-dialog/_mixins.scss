@@ -471,13 +471,15 @@
     }
   }
 
-  .mdc-dialog--sheet {
+  .mdc-dialog--no-content-padding {
     .mdc-dialog__content {
       @include feature-targeting.targets($feat-structure) {
         padding: 0;
       }
     }
+  }
 
+  .mdc-dialog--sheet {
     .mdc-dialog__close {
       @include feature-targeting.targets($feat-structure) {
         right: variables.$sheet-close-icon-right;

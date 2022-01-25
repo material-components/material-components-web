@@ -290,12 +290,13 @@ larger screen sizes.
 Floating sheets are dialogs with a close icon button. Clicking the close icon
 button closes the sheet. Having the close icon button is mutually exclusive with
 having action bar buttons (e.g. cancel and OK buttons). The icon button is
-absolutely positioned. Sheet content has no default padding.
+absolutely positioned. Sheet content can have no default padding by using the
+`mdc-dialog--no-content-padding` class.
 
-### Sheet example
+### Floating sheet example
 
 ```html
-<div class="mdc-dialog mdc-dialog--open test-dialog mdc-dialog--sheet"
+<div class="mdc-dialog mdc-dialog--open test-dialog mdc-dialog--sheet mdc-dialog--no-content-padding"
      aria-modal="true"
      aria-labelledby="test-dialog__title--with-close-icon-button"
      aria-describedby="test-dialog__content--with-close-icon-button"
@@ -315,7 +316,6 @@ absolutely positioned. Sheet content has no default padding.
     </div>
   </div>
 </div>
-
 ```
 
 ## Additional Information
