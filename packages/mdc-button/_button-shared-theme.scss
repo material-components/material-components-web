@@ -546,6 +546,8 @@ $disabled-container-color: rgba(
 
 ///
 /// Includes ad-hoc high contrast mode support.
+/// @deprecated Tansparent borders are now default in HCM. For a focus ring use
+///     the focus-ring mixin.
 ///
 @mixin high-contrast-mode-shim($query: feature-targeting.all()) {
   &::before {

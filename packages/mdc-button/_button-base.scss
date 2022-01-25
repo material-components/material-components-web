@@ -89,6 +89,10 @@
     .mdc-button__touch {
       @include touch-target.touch-target($query: $query);
     }
+
+    &:not(.mdc-button--outlined)::before {
+      @include dom.transparent-border($query: $query);
+    }
   }
 
   .mdc-button__label + .mdc-button__icon {
