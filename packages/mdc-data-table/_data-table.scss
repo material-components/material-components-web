@@ -43,6 +43,24 @@
 @use './data-table-theme';
 
 @mixin core-styles($query: feature-targeting.all()) {
+  @include table-styles($query: $query);
+  @include data-table-theme.sort-icon-color(
+    data-table-theme.$sort-icon-color,
+    $query: $query
+  );
+  @include data-table-theme.sort-icon-active-color(
+    data-table-theme.$sort-icon-active-color,
+    $query: $query
+  );
+
+  @include data-table-progress-indicator.core-styles($query: $query);
+  @include data-table-pagination.core-styles($query: $query);
+}
+
+// This API includes only the table styles without the sorting, pagination and
+// loading styles. It is intended to be used by frameworks that only need the
+// table styles.
+@mixin table-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
   $feat-animation: feature-targeting.create-target($query, animation);
@@ -127,14 +145,6 @@
     $trailing-padding: data-table-theme.$cell-trailing-padding,
     $query: $query
   );
-  @include data-table-theme.sort-icon-color(
-    data-table-theme.$sort-icon-color,
-    $query: $query
-  );
-  @include data-table-theme.sort-icon-active-color(
-    data-table-theme.$sort-icon-active-color,
-    $query: $query
-  );
 
   .mdc-data-table__table-container {
     @include feature-targeting.targets($feat-structure) {
@@ -163,13 +173,10 @@
 
   @include data-table-cell.core-styles($query: $query);
   @include data-table-header-cell.core-styles($query: $query);
-  @include data-table-progress-indicator.core-styles($query: $query);
 
   .mdc-data-table--sticky-header {
     @include data-table-header-cell.header-cell-sticky($query: $query);
   }
-
-  @include data-table-pagination.core-styles($query: $query);
 }
 
 @mixin theme-baseline($query: feature-targeting.all()) {
