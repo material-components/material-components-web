@@ -114,8 +114,9 @@ mdcAutoInit.deregister = function(componentName: string) {
 
 /** @nocollapse */
 mdcAutoInit.deregisterAll = function() {
-  const keys = Object.keys(registry) as string[];
-  keys.forEach(this.deregister, this);
+  for (const componentName of Object.keys(registry)) {
+    mdcAutoInit.deregister(componentName);
+  }
 };
 
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
