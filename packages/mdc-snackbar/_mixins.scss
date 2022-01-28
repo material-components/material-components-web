@@ -186,7 +186,11 @@
       variables.$action-ink-color,
       $query: $query
     );
-    @include ripple-theme.states(variables.$action-ink-color, $query: $query);
+    @include ripple-theme.states(
+      variables.$action-ink-color,
+      $ripple-target: button-theme.$ripple-target,
+      $query: $query
+    );
   }
 
   .mdc-snackbar__dismiss {
