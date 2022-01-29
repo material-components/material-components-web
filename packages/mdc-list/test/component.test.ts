@@ -446,7 +446,7 @@ describe('MDCList', () => {
     const listElementItem =
         root.querySelector('.mdc-deprecated-list-item') as HTMLElement;
     listElementItem.dispatchEvent(event);
-    expect(mockFoundation.handleClick).toHaveBeenCalledWith(0, true);
+    expect(mockFoundation.handleClick).toHaveBeenCalledWith(0, true, jasmine.any(Event));
     expect(mockFoundation.handleClick).toHaveBeenCalledTimes(1);
     document.body.removeChild(root);
   });

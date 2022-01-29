@@ -45,6 +45,21 @@ type SelectionUpdateOptions = {
   forceUpdate?: boolean;
 }
 
+/** List of modifier keys to consider while handling keyboard events. */
+const handledModifierKeys = ['Alt', 'Control', 'Meta', 'Shift'] as const;
+
+/** Type representing a modifier key we handle. */
+type ModifierKey = NonNullable<(typeof handledModifierKeys)[number]>;
+
+/** Checks if the event has the given modifier keys. */
+function createModifierChecker(event?: KeyboardEvent|MouseEvent) {
+  const eventModifiers = new Set(
+      event ? handledModifierKeys.filter(m => event.getModifierState(m)) : []);
+  return (modifiers: ModifierKey[]) =>
+             modifiers.every(m => eventModifiers.has(m)) &&
+      modifiers.length === eventModifiers.size;
+}
+
 export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   static override get strings() {
     return strings;
@@ -84,6 +99,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private wrapFocus = false;
   private isVertical = true;
   private isSingleSelectionList = false;
+  private areDisabledItemsFocusable = true;
   private selectedIndex: MDCListIndex = numbers.UNSET_INDEX;
   private focusedItemIndex = numbers.UNSET_INDEX;
   private useActivatedClass = false;
@@ -91,6 +107,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private ariaCurrentAttrValue: string|null = null;
   private isCheckboxList = false;
   private isRadioList = false;
+  private lastSelectedIndex: number|null = null;
 
   private hasTypeahead = false;
   // Transiently holds current typeahead prefix from user.
@@ -145,6 +162,10 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       this.maybeInitializeSingleSelection();
       this.selectedIndex = this.getSelectedIndexFromDOM();
     }
+  }
+
+  setDisabledItemsFocusable(value: boolean) {
+    this.areDisabledItemsFocusable = value;
   }
 
   /**
@@ -265,6 +286,11 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }, 0);
   }
 
+  private isIndexDisabled(index: number) {
+    return this.adapter.listItemAtIndexHasClass(
+        index, cssClasses.LIST_ITEM_DISABLED_CLASS);
+  }
+
   /**
    * Key handler for the list.
    */
@@ -279,17 +305,39 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     const isEnter = normalizeKey(event) === 'Enter';
     const isSpace = normalizeKey(event) === 'Spacebar';
 
+    // The keys for forward and back differ based on list orientation.
+    const isForward =
+        (this.isVertical && isArrowDown) || (!this.isVertical && isArrowRight);
+    const isBack =
+        (this.isVertical && isArrowUp) || (!this.isVertical && isArrowLeft);
+
     // Have to check both upper and lower case, because having caps lock on
     // affects the value.
     const isLetterA = event.key === 'A' || event.key === 'a';
 
+    const eventHasModifiers = createModifierChecker(event);
+
     if (this.adapter.isRootFocused()) {
-      if (isArrowUp || isEnd) {
+      if ((isBack || isEnd) && eventHasModifiers([])) {
         event.preventDefault();
         this.focusLastElement();
-      } else if (isArrowDown || isHome) {
+      } else if ((isForward || isHome) && eventHasModifiers([])) {
         event.preventDefault();
         this.focusFirstElement();
+      } else if (
+          isBack && eventHasModifiers(['Shift']) && this.isCheckboxList) {
+        event.preventDefault();
+        const focusedIndex = this.focusLastElement();
+        if (focusedIndex !== -1) {
+          this.setSelectedIndexOnAction(focusedIndex, false);
+        }
+      } else if (
+          isForward && eventHasModifiers(['Shift']) && this.isCheckboxList) {
+        event.preventDefault();
+        const focusedIndex = this.focusFirstElement();
+        if (focusedIndex !== -1) {
+          this.setSelectedIndexOnAction(focusedIndex, false);
+        }
       }
 
       if (this.hasTypeahead) {
@@ -301,9 +349,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
           focusedItemIndex: -1,
           isTargetListItem: isRootListItem,
           sortedIndexByFirstChar: this.sortedIndexByFirstChar,
-          isItemAtIndexDisabled: (index) =>
-              this.adapter.listItemAtIndexHasClass(
-                  index, cssClasses.LIST_ITEM_DISABLED_CLASS),
+          isItemAtIndexDisabled: (index) => this.isIndexDisabled(index),
         };
 
         typeahead.handleKeydown(handleKeydownOpts, this.typeaheadState);
@@ -322,27 +368,59 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       }
     }
 
-    if ((this.isVertical && isArrowDown) ||
-        (!this.isVertical && isArrowRight)) {
+    if (isForward && eventHasModifiers([])) {
       preventDefaultEvent(event);
       this.focusNextElement(currentIndex);
-    } else if (
-        (this.isVertical && isArrowUp) || (!this.isVertical && isArrowLeft)) {
+    } else if (isBack && eventHasModifiers([])) {
       preventDefaultEvent(event);
       this.focusPrevElement(currentIndex);
-    } else if (isHome) {
+    } else if (
+        isForward && eventHasModifiers(['Shift']) && this.isCheckboxList) {
+      preventDefaultEvent(event);
+      const focusedIndex = this.focusNextElement(currentIndex);
+      if (focusedIndex !== -1) {
+        this.setSelectedIndexOnAction(focusedIndex, false);
+      }
+    } else if (isBack && eventHasModifiers(['Shift']) && this.isCheckboxList) {
+      preventDefaultEvent(event);
+      const focusedIndex = this.focusPrevElement(currentIndex);
+      if (focusedIndex !== -1) {
+        this.setSelectedIndexOnAction(focusedIndex, false);
+      }
+    } else if (isHome && eventHasModifiers([])) {
       preventDefaultEvent(event);
       this.focusFirstElement();
-    } else if (isEnd) {
+    } else if (isEnd && eventHasModifiers([])) {
       preventDefaultEvent(event);
       this.focusLastElement();
-    } else if (isLetterA && event.ctrlKey && this.isCheckboxList) {
+    } else if (
+        isHome && eventHasModifiers(['Control', 'Shift']) &&
+        this.isCheckboxList) {
+      preventDefaultEvent(event);
+      if (this.isIndexDisabled(currentIndex)) {
+        return;
+      }
+      this.focusFirstElement();
+      this.toggleCheckboxRange(0, currentIndex, currentIndex);
+    } else if (
+        isEnd && eventHasModifiers(['Control', 'Shift']) &&
+        this.isCheckboxList) {
+      preventDefaultEvent(event);
+      if (this.isIndexDisabled(currentIndex)) {
+        return;
+      }
+      this.focusLastElement();
+      this.toggleCheckboxRange(
+          currentIndex, this.adapter.getListItemCount() - 1, currentIndex);
+    } else if (
+        isLetterA && eventHasModifiers(['Control']) && this.isCheckboxList) {
       event.preventDefault();
       this.checkboxListToggleAll(
           this.selectedIndex === numbers.UNSET_INDEX ?
               [] :
-              this.selectedIndex as number[], true);
-    } else if (isEnter || isSpace) {
+              this.selectedIndex as number[],
+          true);
+    } else if ((isEnter || isSpace) && eventHasModifiers([])) {
       if (isRootListItem) {
         // Return early if enter key is pressed on anchor element which triggers
         // synthetic MouseEvent event.
@@ -352,8 +430,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         }
         preventDefaultEvent(event);
 
-        if (this.adapter.listItemAtIndexHasClass(
-                currentIndex, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
+        if (this.isIndexDisabled(currentIndex)) {
           return;
         }
 
@@ -364,19 +441,36 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
           this.adapter.notifyAction(currentIndex);
         }
       }
+    } else if (
+        (isEnter || isSpace) && eventHasModifiers(['Shift']) &&
+        this.isCheckboxList) {
+      // Return early if enter key is pressed on anchor element which triggers
+      // synthetic MouseEvent event.
+      const target = event.target as Element | null;
+      if (target && target.tagName === 'A' && isEnter) {
+        return;
+      }
+      preventDefaultEvent(event);
+
+      if (this.isIndexDisabled(currentIndex)) {
+        return;
+      }
+
+      if (!this.isTypeaheadInProgress()) {
+        this.toggleCheckboxRange(
+            this.lastSelectedIndex ?? currentIndex, currentIndex, currentIndex);
+        this.adapter.notifyAction(currentIndex);
+      }
     }
 
     if (this.hasTypeahead) {
       const handleKeydownOpts: typeahead.HandleKeydownOpts = {
         event,
-        focusItemAtIndex: (index) => {
-          this.focusItemAtIndex(index)
-        },
+        focusItemAtIndex: (index) => {this.focusItemAtIndex(index)},
         focusedItemIndex: this.focusedItemIndex,
         isTargetListItem: isRootListItem,
         sortedIndexByFirstChar: this.sortedIndexByFirstChar,
-        isItemAtIndexDisabled: (index) => this.adapter.listItemAtIndexHasClass(
-            index, cssClasses.LIST_ITEM_DISABLED_CLASS),
+        isItemAtIndexDisabled: (index) => this.isIndexDisabled(index),
       };
 
       typeahead.handleKeydown(handleKeydownOpts, this.typeaheadState);
@@ -393,21 +487,28 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    *   the underlying native checkbox element which would cause the checked
    *   state to be already toggled within `adapter.isCheckboxCheckedAtIndex`.
    */
-  handleClick(index: number, isCheckboxAlreadyUpdatedInAdapter: boolean) {
+  handleClick(
+      index: number, isCheckboxAlreadyUpdatedInAdapter: boolean,
+      event?: MouseEvent) {
+    const eventHasModifiers = createModifierChecker(event);
+
     if (index === numbers.UNSET_INDEX) {
       return;
     }
 
-    if (this.adapter.listItemAtIndexHasClass(
-            index, cssClasses.LIST_ITEM_DISABLED_CLASS)) {
+    if (this.isIndexDisabled(index)) {
       return;
     }
 
-    if (this.isSelectableList()) {
-      this.setSelectedIndexOnAction(index, isCheckboxAlreadyUpdatedInAdapter);
+    if (eventHasModifiers([])) {
+      if (this.isSelectableList()) {
+        this.setSelectedIndexOnAction(index, isCheckboxAlreadyUpdatedInAdapter);
+      }
+      this.adapter.notifyAction(index);
+    } else if (this.isCheckboxList && eventHasModifiers(['Shift'])) {
+      this.toggleCheckboxRange(this.lastSelectedIndex ?? index, index, index);
+      this.adapter.notifyAction(index);
     }
-
-    this.adapter.notifyAction(index);
   }
 
   /**
@@ -415,17 +516,26 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    */
   focusNextElement(index: number) {
     const count = this.adapter.getListItemCount();
-    let nextIndex = index + 1;
-    if (nextIndex >= count) {
-      if (this.wrapFocus) {
-        nextIndex = 0;
-      } else {
-        // Return early because last item is already focused.
-        return index;
-      }
-    }
-    this.focusItemAtIndex(nextIndex);
+    let nextIndex = index;
+    let firstChecked = null;
 
+    do {
+      nextIndex++;
+      if (nextIndex >= count) {
+        if (this.wrapFocus) {
+          nextIndex = 0;
+        } else {
+          // Return early because last item is already focused.
+          return index;
+        }
+      }
+      if (nextIndex === firstChecked) {
+        return -1;
+      }
+      firstChecked = firstChecked ?? nextIndex;
+    } while (!this.areDisabledItemsFocusable && this.isIndexDisabled(nextIndex));
+
+    this.focusItemAtIndex(nextIndex);
     return nextIndex;
   }
 
@@ -433,28 +543,40 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Focuses the previous element on the list.
    */
   focusPrevElement(index: number) {
-    let prevIndex = index - 1;
-    if (prevIndex < 0) {
-      if (this.wrapFocus) {
-        prevIndex = this.adapter.getListItemCount() - 1;
-      } else {
-        // Return early because first item is already focused.
-        return index;
+    const count = this.adapter.getListItemCount();
+    let prevIndex = index;
+    let firstChecked = null;
+
+    do {
+      prevIndex--;
+      if (prevIndex < 0) {
+        if (this.wrapFocus) {
+          prevIndex = count - 1;
+        } else {
+          // Return early because first item is already focused.
+          return index;
+        }
       }
-    }
+      if (prevIndex === firstChecked) {
+        return -1;
+      }
+      firstChecked = firstChecked ?? prevIndex;
+    } while (!this.areDisabledItemsFocusable && this.isIndexDisabled(prevIndex));
+
     this.focusItemAtIndex(prevIndex);
     return prevIndex;
   }
 
   focusFirstElement() {
-    this.focusItemAtIndex(0);
-    return 0;
+    // Pass -1 to `focusNextElement`, since it will incremement to 0 and focus
+    // the first element.
+    return this.focusNextElement(-1);
   }
 
   focusLastElement() {
-    const lastIndex = this.adapter.getListItemCount() - 1;
-    this.focusItemAtIndex(lastIndex);
-    return lastIndex;
+    // Pass the length of the list to `focusNextElement` since it will decrement
+    // to length - 1 and focus the last element.
+    return this.focusPrevElement(this.adapter.getListItemCount());
   }
 
   focusInitialElement() {
@@ -485,8 +607,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
   }
 
-  private setSingleSelectionAtIndex(index: number,
-                                    options: SelectionUpdateOptions = {}) {
+  private setSingleSelectionAtIndex(
+      index: number, options: SelectionUpdateOptions = {}) {
     if (this.selectedIndex === index && !options.forceUpdate) {
       return;
     }
@@ -555,8 +677,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Toggles radio at give index. Radio doesn't change the checked state if it
    * is already checked.
    */
-  private setRadioAtIndex(index: number,
-                          options: SelectionUpdateOptions = {}) {
+  private setRadioAtIndex(index: number, options: SelectionUpdateOptions = {}) {
     const selectionAttribute = this.getSelectionAttribute();
     this.adapter.setCheckedCheckboxOrRadioAtIndex(index, true);
 
@@ -580,15 +701,17 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
   }
 
-  private setCheckboxAtIndex(index: number[],
-                             options: SelectionUpdateOptions = {}) {
+  private setCheckboxAtIndex(
+      index: number[], options: SelectionUpdateOptions = {}) {
     const currentIndex = this.selectedIndex;
     // If this update is not triggered by a user interaction, we do not
     // need to know about the currently selected indices and can avoid
     // constructing the `Set` for performance reasons.
-    const currentlySelected = options.isUserInteraction
-      ? new Set(currentIndex === numbers.UNSET_INDEX ? [] : currentIndex as number[])
-      : null;
+    const currentlySelected = options.isUserInteraction ?
+        new Set(
+            currentIndex === numbers.UNSET_INDEX ? [] :
+                                                   currentIndex as number[]) :
+        null;
     const selectionAttribute = this.getSelectionAttribute();
     const changedIndices = [];
 
@@ -612,6 +735,58 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     // If the selected value has changed through user interaction,
     // we want to notify the selection change to the adapter.
     if (options.isUserInteraction && changedIndices.length) {
+      this.adapter.notifySelectionChange(changedIndices);
+    }
+  }
+
+  /**
+   * Toggles the state of all checkboxes in the given range (inclusive) based on
+   * the state of the checkbox at the `toggleIndex`. To determine whether to set
+   * the given range to checked or unchecked, read the value of the checkbox at
+   * the `toggleIndex` and negate it. Then apply that new checked state to all
+   * checkboxes in the range.
+   * @param fromIndex The start of the range of checkboxes to toggle
+   * @param toIndex The end of the range of checkboxes to toggle
+   * @param toggleIndex The index that will be used to determine the new state
+   *     of the given checkbox range.
+   */
+  private toggleCheckboxRange(
+      fromIndex: number, toIndex: number, toggleIndex: number) {
+    const currentlySelected = new Set(
+        this.selectedIndex === numbers.UNSET_INDEX ?
+            [] :
+            this.selectedIndex as number[]);
+    const newIsChecked = !currentlySelected?.has(toggleIndex);
+
+    const [startIndex, endIndex] = [fromIndex, toIndex].sort();
+    const selectionAttribute = this.getSelectionAttribute();
+    const changedIndices = [];
+
+    for (let i = startIndex; i <= endIndex; i++) {
+      if (this.isIndexDisabled(i)) {
+        continue;
+      }
+      const previousIsChecked = currentlySelected.has(i);
+
+      // If the selection has changed for this item, we keep track of it
+      // so that we can notify the adapter.
+      if (newIsChecked !== previousIsChecked) {
+        changedIndices.push(i);
+        this.adapter.setCheckedCheckboxOrRadioAtIndex(i, newIsChecked);
+        this.adapter.setAttributeForElementIndex(
+            i, selectionAttribute, `${newIsChecked}`);
+        if (newIsChecked) {
+          currentlySelected.add(i);
+        } else {
+          currentlySelected.delete(i);
+        }
+      }
+    }
+
+    // If the selected value has changed, update and notify the selection change
+    // to the adapter.
+    if (changedIndices.length) {
+      this.selectedIndex = [...currentlySelected];
       this.adapter.notifySelectionChange(changedIndices);
     }
   }
@@ -717,7 +892,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * When calling this, make sure user interaction does not toggle disabled
    * list items.
    */
-  private setSelectedIndexOnAction(index: number, isCheckboxAlreadyUpdatedInAdapter: boolean) {
+  private setSelectedIndexOnAction(
+      index: number, isCheckboxAlreadyUpdatedInAdapter: boolean) {
+    this.lastSelectedIndex = index;
     if (this.isCheckboxList) {
       this.toggleCheckboxAtIndex(index, isCheckboxAlreadyUpdatedInAdapter);
       this.adapter.notifySelectionChange([index]);
@@ -726,7 +903,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
   }
 
-  private toggleCheckboxAtIndex(index: number, isCheckboxAlreadyUpdatedInAdapter: boolean) {
+  private toggleCheckboxAtIndex(
+      index: number, isCheckboxAlreadyUpdatedInAdapter: boolean) {
     const selectionAttribute = this.getSelectionAttribute();
     const adapterIsChecked = this.adapter.isCheckboxCheckedAtIndex(index);
 
@@ -765,8 +943,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.focusedItemIndex = index;
   }
 
-  private checkboxListToggleAll(currentlySelectedIndexes: number[],
-                                isUserInteraction: boolean) {
+  private checkboxListToggleAll(
+      currentlySelectedIndexes: number[], isUserInteraction: boolean) {
     const count = this.adapter.getListItemCount();
 
     // If all items are selected, deselect everything.
@@ -776,8 +954,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       // Otherwise select all enabled options.
       const allIndexes: number[] = [];
       for (let i = 0; i < count; i++) {
-        if (!this.adapter.listItemAtIndexHasClass(
-                i, cssClasses.LIST_ITEM_DISABLED_CLASS) ||
+        if (!this.isIndexDisabled(i) ||
             currentlySelectedIndexes.indexOf(i) > -1) {
           allIndexes.push(i);
         }
@@ -809,8 +986,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       nextChar,
       sortedIndexByFirstChar: this.sortedIndexByFirstChar,
       skipFocus,
-      isItemAtIndexDisabled: (index) => this.adapter.listItemAtIndexHasClass(
-          index, cssClasses.LIST_ITEM_DISABLED_CLASS)
+      isItemAtIndexDisabled: (index) => this.isIndexDisabled(index)
     };
     return typeahead.matchItem(opts, this.typeaheadState);
   }

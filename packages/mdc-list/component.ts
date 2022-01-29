@@ -65,6 +65,10 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     this.foundation.setSingleSelection(isSingleSelectionList);
   }
 
+  set disabledItemsFocusable(areDisabledItemsFocusable: boolean) {
+    this.foundation.setDisabledItemsFocusable(areDisabledItemsFocusable);
+  }
+
   get selectedIndex(): MDCListIndex {
     return this.foundation.getSelectedIndex();
   }
@@ -419,6 +423,6 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     // Toggle the checkbox only if it's not the target of the event, or the
     // checkbox will have 2 change events.
     const toggleCheckbox = !matches(target, strings.CHECKBOX_RADIO_SELECTOR);
-    this.foundation.handleClick(index, toggleCheckbox);
+    this.foundation.handleClick(index, toggleCheckbox, evt);
   }
 }

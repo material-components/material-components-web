@@ -410,6 +410,7 @@ describe('MDCMenu', () => {
     const fakeEnterKeyEvent = {
       key: 'Enter',
       target: {tagName: 'div'},
+      getModifierState: () => false,
       preventDefault: () => undefined
     };
 

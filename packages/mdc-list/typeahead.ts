@@ -340,8 +340,8 @@ export function handleKeydown(opts: HandleKeydownOpts, state: TypeaheadState) {
   const isEnter = normalizeKey(event) === 'Enter';
   const isSpace = normalizeKey(event) === 'Spacebar';
 
-  if (event.ctrlKey || event.metaKey || isArrowLeft || isArrowUp ||
-      isArrowRight || isArrowDown || isHome || isEnd || isEnter) {
+  if (event.altKey || event.ctrlKey || event.metaKey || isArrowLeft ||
+      isArrowUp || isArrowRight || isArrowDown || isHome || isEnd || isEnter) {
     return -1;
   }
 
