@@ -336,7 +336,7 @@ $_track-inactive-height: 4px;
       position: absolute;
       @include css.declaration(
         right,
-        var(--slider-value-indicator-container-right),
+        var(--slider-value-indicator-container-right, auto),
         $gss: (noflip: true)
       );
       @include css.declaration(
@@ -380,7 +380,7 @@ $_track-inactive-height: 4px;
         position: absolute;
         @include css.declaration(
           right,
-          var(--slider-value-indicator-caret-right),
+          var(--slider-value-indicator-caret-right, auto),
           $gss: (noflip: true)
         );
         @include css.declaration(
