@@ -686,7 +686,12 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    *     updated for both thumbs based on current internal state.
    */
   private updateUI(thumb?: Thumb) {
-    this.updateThumbAndInputAttributes(thumb);
+    if (thumb) {
+      this.updateThumbAndInputAttributes(thumb);
+    } else {
+      this.updateThumbAndInputAttributes(Thumb.START);
+      this.updateThumbAndInputAttributes(Thumb.END);
+    }
     this.updateThumbAndTrackUI(thumb);
     this.updateValueIndicatorUI(thumb);
     this.updateTickMarksUI();

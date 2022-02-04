@@ -316,6 +316,34 @@ describe('MDCSliderFoundation', () => {
       expect(mockAdapter.setValueIndicatorText)
           .toHaveBeenCalledWith(5, Thumb.START);
     });
+
+    it('#layout with no thumbs updates both thumbs\' input attributes', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        isRange: true,
+        isDiscrete: true,
+        valueStart: 5,
+        value: 10,
+        minRange: 1
+      });
+      mockAdapter.getValueToAriaValueTextFn.and.returnValue(
+          (value: string) => `${value} value`);
+
+      foundation.layout();
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_VALUE, '5', Thumb.START);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_VALUE, '10', Thumb.END);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_MAX, '9', Thumb.START);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(attributes.INPUT_MIN, '6', Thumb.END);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(
+              attributes.ARIA_VALUETEXT, '5 value', Thumb.START);
+      expect(mockAdapter.setInputAttribute)
+          .toHaveBeenCalledWith(
+              attributes.ARIA_VALUETEXT, '10 value', Thumb.END);
+    });
   });
 
   describe('#destroy', () => {
