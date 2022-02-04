@@ -752,6 +752,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    */
   private toggleCheckboxRange(
       fromIndex: number, toIndex: number, toggleIndex: number) {
+    this.lastSelectedIndex = toggleIndex;
     const currentlySelected = new Set(
         this.selectedIndex === numbers.UNSET_INDEX ?
             [] :

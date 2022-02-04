@@ -1723,6 +1723,36 @@ describe('MDCListFoundation', () => {
        expect(mockAdapter.notifyAction).toHaveBeenCalled();
      });
 
+  it('#handleClick multiple clicks while shift is held should work', () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    mockAdapter.getListItemCount.and.returnValue(4);
+    mockAdapter.hasCheckboxAtIndex.withArgs(0).and.returnValue(true);
+    foundation.layout();
+
+    foundation.handleClick(
+        /*fakeIndex*/ 0, /*isCheckboxAlreadyUpdatedInAdapter*/ false,
+        /*fakeEvent*/ createMockMouseEvent(['Shift']));
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(0, true);
+    mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
+
+    foundation.handleClick(
+        /*fakeIndex*/ 3, /*isCheckboxAlreadyUpdatedInAdapter*/ false,
+        /*fakeEvent*/ createMockMouseEvent(['Shift']));
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(1, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(2, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(3, true);
+    mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
+
+    foundation.handleClick(
+        /*fakeIndex*/ 0, /*isCheckboxAlreadyUpdatedInAdapter*/ false,
+        /*fakeEvent*/ createMockMouseEvent(['Shift']));
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(0, false);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(1, false);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(2, false);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(3, false);
+  });
+
   it('#setSingleSelection true with --selected item initializes list state' +
          ' to correct selection',
      () => {
