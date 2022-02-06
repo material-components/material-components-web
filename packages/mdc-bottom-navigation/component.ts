@@ -39,7 +39,7 @@ export class MDCBottomNavigation extends MDCComponent<MDCBottomNavigationFoundat
 
   initialize(rippleFactory: MDCRippleFactory = (el) => MDCRipple.attachTo(el)) {
     this.ripples_ = Array.prototype.slice
-      .call(this.root_.querySelectorAll(strings.MENU_SELECTOR))
+      .call(this.root.querySelectorAll(strings.MENU_SELECTOR))
       .map((icon) => {
         const ripple = rippleFactory(icon);
         ripple.unbounded = true;
@@ -50,7 +50,7 @@ export class MDCBottomNavigation extends MDCComponent<MDCBottomNavigationFoundat
   }
 
   initialSyncWithDOM() {
-    this.handleTargetScroll_ = this.foundation_.handleTargetScroll.bind(this.foundation_);
+    this.handleTargetScroll_ = this.foundation.handleTargetScroll.bind(this.foundation);
     this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
   }
 
@@ -63,7 +63,7 @@ export class MDCBottomNavigation extends MDCComponent<MDCBottomNavigationFoundat
   setScrollTarget(target: EventTarget) {
     this.scrollTarget_.removeEventListener('scroll', this.handleTargetScroll_ as EventListener);
     this.scrollTarget_ = target;
-    this.handleTargetScroll_ = this.foundation_.handleTargetScroll.bind(this.foundation_);
+    this.handleTargetScroll_ = this.foundation.handleTargetScroll.bind(this.foundation);
     this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
   }
 
@@ -72,12 +72,12 @@ export class MDCBottomNavigation extends MDCComponent<MDCBottomNavigationFoundat
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCBottomNavigationAdapter = {
-      hasClass: (className) => this.root_.classList.contains(className),
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      setStyle: (property, value) => (this.root_ as HTMLElement).style.setProperty(property, value),
-      getHeight: () => this.root_.clientHeight,
-      getViewportScrollY: () => this.scrollTarget_ === window ? (this.scrollTarget_ as Window).pageYOffset :
+      hasClass: (className) => this.root.classList.contains(className),
+      addClass: (className) => this.root.classList.add(className),
+      removeClass: (className) => this.root.classList.remove(className),
+      setStyle: (property, value) => (this.root as HTMLElement).style.setProperty(property, value),
+      getHeight: () => this.root.clientHeight,
+      getViewportScrollY: () => this.scrollTarget_ === window ? (this.scrollTarget_ as Window).scrollY :
           (this.scrollTarget_ as Element).scrollTop,
     };
     // tslint:enable:object-literal-sort-keys

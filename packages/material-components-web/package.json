@@ -22,6 +22,7 @@
     "@material/banner": "^13.0.0",
     "@material/base": "^13.0.0",
     "@material/button": "^13.0.0",
+    "@material/bottom-navigation": "^13.0.0",
     "@material/card": "^13.0.0",
     "@material/checkbox": "^13.0.0",
     "@material/chips": "^13.0.0",

@@ -27,7 +27,7 @@ import {cssClasses} from './constants';
 
 export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNavigationAdapter> {
 
-  private lastScrollY_ = this.adapter_.getViewportScrollY();
+  private lastScrollY_ = this.adapter.getViewportScrollY();
 
   private currentPositionY_ = 0;
 
@@ -68,7 +68,7 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
    * Scroll handler for the default scroll behavior of the bottom navigation.
    */
   handleTargetScroll() {
-    const scrollY = this.adapter_.getViewportScrollY();
+    const scrollY = this.adapter.getViewportScrollY();
     const scrollDistance = scrollY - this.lastScrollY_;
 
     this.setCurrentPositionY_(this.currentPositionY_ + scrollDistance);
@@ -83,7 +83,7 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
    * Set currentPositionY_ between 0 to [height].
    */
   private setCurrentPositionY_(y: number) {
-    const height = this.adapter_.getHeight();
+    const height = this.adapter.getHeight();
     if (y < 0) {
       this.currentPositionY_ = 0;
     } else if (height < y) {
@@ -97,7 +97,7 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
    * Set animatingPositionY_ between 0 to [height].
    */
   private setAnimatingPositionY_(y: number) {
-    const height = this.adapter_.getHeight();
+    const height = this.adapter.getHeight();
     if (y < 0) {
       this.animatingPositionY_ = 0;
     } else if (height < y) {
@@ -128,7 +128,7 @@ export class MDCBottomNavigationFoundation extends MDCFoundation<MDCBottomNaviga
     } else {
       const moveY = this.getAccelerationAnimatingY_();
       this.setAnimatingPositionY_(moveY);
-      this.adapter_.setStyle(
+      this.adapter.setStyle(
           'transform',
           `translateY(${this.animatingPositionY_}px)`,
       );

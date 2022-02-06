@@ -180,6 +180,7 @@ class JsBundleFactory {
         'animation': getAbsolutePath('/packages/mdc-animation/index.ts'),
         'auto-init': getAbsolutePath('/packages/mdc-auto-init/index.ts'),
         'banner': getAbsolutePath('/packages/mdc-banner/index.ts'),
+        'bottom-navigation': getAbsolutePath('/packages/mdc-bottom-navigation/index.ts'),
         'base': getAbsolutePath('/packages/mdc-base/index.ts'),
         'checkbox': getAbsolutePath('/packages/mdc-checkbox/index.ts'),
         'chips': getAbsolutePath('/packages/mdc-chips/index.ts'),

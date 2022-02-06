@@ -24,6 +24,7 @@
 import autoInit from '@material/auto-init/index';
 import * as banner from '@material/banner/index';
 import * as base from '@material/base/index';
+import * as bottomNavigation from '@material/bottom-navigation/index';
 import * as checkbox from '@material/checkbox/index';
 import * as chips from '@material/chips/deprecated/index';
 import * as circularProgress from '@material/circular-progress/index';
@@ -57,6 +58,7 @@ import * as topAppBar from '@material/top-app-bar/index';
 
 // Register all components
 autoInit.register('MDCBanner', banner.MDCBanner);
+autoInit.register('MDCBottomNavigation', bottomNavigation.MDCBottomNavigation);
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCChip', chips.MDCChip);
 autoInit.register('MDCChipSet', chips.MDCChipSet);
@@ -90,6 +92,7 @@ export {
   autoInit,
   banner,
   base,
+  bottomNavigation,
   checkbox,
   chips,
   circularProgress,

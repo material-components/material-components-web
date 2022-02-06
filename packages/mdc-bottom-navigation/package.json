@@ -1,10 +1,27 @@
 {
-  "dependencies": {
-    "@material/base": "^3.1.0",
-    "@material/elevation": "^3.1.0",
-    "@material/feature-targeting": "^3.1.0",
-    "@material/ripple": "^3.1.0",
-    "@material/theme": "^3.1.0",
-    "tslib": "^1.10.0"
-  }
+    "name": "@material/bottom-navigation",
+    "description": "The Material Components for the bottom navigation component",
+    "version": "13.0.0",
+    "license": "MIT",
+    "keywords": [
+      "material components",
+      "material design",
+      "bottom-navigation"
+    ],
+    "main": "dist/mdc.bottomNavigation.js",
+    "module": "./index.js",
+    "sideEffects": false,
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/material-components/material-components-web.git",
+      "directory": "packages/mdc-bottom-navigation"
+    },
+    "dependencies": {
+      "@material/base": "^13.0.0",
+      "@material/elevation": "^13.0.0",
+      "@material/feature-targeting": "^13.0.0",
+      "@material/ripple": "^13.0.0",
+      "@material/theme": "^13.0.0",
+      "tslib": "^2.1.0"
+    }
 }

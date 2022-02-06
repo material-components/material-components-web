@@ -20,9 +20,9 @@
 // THE SOFTWARE.
 //
 
-@import "@material/elevation/mixins";
-@import "./mixins";
-@import "./variables";
+@import '@material/elevation/mixins';
+@import './mixins';
+@import './variables';
 @include mdc-bottom-navigation-menu-ripple;
 
 .mdc-bottom-navigation {
@@ -57,13 +57,13 @@
         /* stylelint-disable */
         min-width: (
           $mdc-bottom-navigation-menu-min-width -
-          $mdc-bottom-navigation-icon-width-height -
-          $mdc-bottom-navigation-menu-vertical-padding * 2
+            $mdc-bottom-navigation-icon-width-height -
+            $mdc-bottom-navigation-menu-vertical-padding * 2
         );
         max-width: (
           $mdc-bottom-navigation-menu-max-width -
-          $mdc-bottom-navigation-icon-width-height -
-          $mdc-bottom-navigation-menu-vertical-padding * 2
+            $mdc-bottom-navigation-icon-width-height -
+            $mdc-bottom-navigation-menu-vertical-padding * 2
         );
         /* stylelint-enable */
       }
@@ -74,7 +74,8 @@
     position: relative;
     height: $mdc-bottom-navigation-menu-height;
     margin: 0;
-    padding: $mdc-bottom-navigation-menu-horizontal-padding $mdc-bottom-navigation-menu-vertical-padding;
+    padding: $mdc-bottom-navigation-menu-horizontal-padding
+      $mdc-bottom-navigation-menu-vertical-padding;
     border: none;
     outline: none;
     background: none;
