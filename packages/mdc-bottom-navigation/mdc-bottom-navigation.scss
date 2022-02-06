@@ -1,0 +1,106 @@
+//
+// Copyright 2019 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@import "@material/elevation/mixins";
+@import "./mixins";
+@import "./variables";
+@include mdc-bottom-navigation-menu-ripple;
+
+.mdc-bottom-navigation {
+  @include mdc-elevation(4);
+  @include mdc-bottom-navigation-fill-color(primary);
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 4;
+
+  &__icon {
+    @include mdc-bottom-navigation-menu-icon-color(on-primary);
+
+    vertical-align: middle;
+  }
+
+  &__label {
+    @include mdc-bottom-navigation-menu-label-color(on-primary);
+
+    display: inline-block;
+    font-size: $mdc-bottom-navigation-label-font-size;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+
+    &--inline {
+      > .mdc-bottom-navigation__label {
+        /* stylelint-disable */
+        min-width: (
+          $mdc-bottom-navigation-menu-min-width -
+          $mdc-bottom-navigation-icon-width-height -
+          $mdc-bottom-navigation-menu-vertical-padding * 2
+        );
+        max-width: (
+          $mdc-bottom-navigation-menu-max-width -
+          $mdc-bottom-navigation-icon-width-height -
+          $mdc-bottom-navigation-menu-vertical-padding * 2
+        );
+        /* stylelint-enable */
+      }
+    }
+  }
+
+  &__menu {
+    position: relative;
+    height: $mdc-bottom-navigation-menu-height;
+    margin: 0;
+    padding: $mdc-bottom-navigation-menu-horizontal-padding $mdc-bottom-navigation-menu-vertical-padding;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    overflow: hidden;
+    vertical-align: top;
+
+    &:not(.mdc-bottom-navigation__menu--active) {
+      > .mdc-bottom-navigation__icon,
+      > .mdc-bottom-navigation__label {
+        opacity: $mdc-bottom-navigation-inactive-icon-opacity;
+      }
+    }
+
+    &:not(.mdc-bottom-navigation__label--inline) {
+      min-width: $mdc-bottom-navigation-menu-min-width;
+      max-width: $mdc-bottom-navigation-menu-max-width;
+
+      > .mdc-bottom-navigation__label {
+        width: 100%;
+      }
+
+      > .mdc-bottom-navigation__icon,
+      > .mdc-bottom-navigation__label {
+        vertical-align: top;
+      }
+    }
+  }
+}
