@@ -116,6 +116,11 @@ export interface MDCSliderAdapter {
   isInputFocused(thumb: Thumb): boolean;
 
   /**
+   * @return Returns true if focus styles should be hidden for pointer events.
+   */
+  shouldHideFocusStylesForPointerEvents?(): boolean;
+
+  /**
    * @return Returns the width of the given thumb knob.
    */
   getThumbKnobWidth(thumb: Thumb): number;

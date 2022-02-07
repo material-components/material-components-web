@@ -148,6 +148,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       removeInputAttribute: () => null,
       focusInput: () => undefined,
       isInputFocused: () => false,
+      shouldHideFocusStylesForPointerEvents: () => false,
       getThumbKnobWidth: () => 0,
       getValueIndicatorContainerWidth: () => 0,
       getThumbBoundingClientRect: () =>
@@ -485,6 +486,12 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   handleUp() {
     if (this.isDisabled || this.thumb === null) return;
 
+    // Remove the focused state and hide the value indicator(s) (if present)
+    // if focus state is meant to be hidden.
+    if (this.adapter.shouldHideFocusStylesForPointerEvents?.()) {
+      this.handleInputBlur(this.thumb);
+    }
+
     const oldValue = this.thumb === Thumb.START ?
         this.valueStartBeforeDownEvent :
         this.valueBeforeDownEvent;
@@ -512,9 +519,12 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    */
   handleThumbMouseleave() {
     if (!this.isDiscrete || !this.isRange) return;
-    if (this.adapter.isInputFocused(Thumb.START) ||
-        this.adapter.isInputFocused(Thumb.END)) {
-      // Leave value indicator shown if either input is focused.
+    if ((!this.adapter.shouldHideFocusStylesForPointerEvents?.() &&
+         (this.adapter.isInputFocused(Thumb.START) ||
+          this.adapter.isInputFocused(Thumb.END))) ||
+        this.thumb) {
+      // Leave value indicator shown if either input is focused or the thumb is
+      // being dragged.
       return;
     }
 
@@ -608,6 +618,16 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.adapter.emitDragStartEvent(value, thumb);
 
     this.adapter.focusInput(thumb);
+
+    // Restore focused state and show the value indicator(s) (if present)
+    // in case they were previously hidden on dragEnd.
+    // This is needed if the input is already focused, in which case
+    // #focusInput above wouldn't actually trigger #handleInputFocus,
+    // which is why we need to invoke it manually here.
+    if (this.adapter.shouldHideFocusStylesForPointerEvents?.()) {
+      this.handleInputFocus(thumb);
+    }
+
     // Prevent the input (that we just focused) from losing focus.
     event.preventDefault();
   }

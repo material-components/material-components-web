@@ -1549,6 +1549,117 @@ describe('MDCSliderFoundation', () => {
     });
   });
 
+  describe('hide focus setting', () => {
+    it('hides focus and value indicators after mouse interaction', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 0,
+        isDiscrete: true,
+        hideFocusStylesForPointerEvents: true,
+      });
+
+      // Mousedown on slider should focus the thumb and show the value
+      // indicator.
+      foundation.handleDown(createMouseEvent('mousedown', {
+        clientX: 20,
+      }));
+
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_FOCUSED, Thumb.END);
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+
+      // Mouseup should remove focus from the thumb and hide the value indicator
+      // that were added on mousedown.
+      foundation.handleUp();
+
+      expect(mockAdapter.removeThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_FOCUSED, Thumb.END);
+      expect(mockAdapter.removeThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+    });
+
+    it('keeps focus and value indicators on keyboard interaction', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 0,
+        isDiscrete: true,
+        hideFocusStylesForPointerEvents: true,
+      });
+
+      foundation.handleInputFocus(Thumb.END);
+
+      // Thumb should get visible focus and the value indicator should show up.
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_FOCUSED, Thumb.END);
+      expect(mockAdapter.addThumbClass)
+          .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+    });
+
+    it('range slider: hides value indicators on mouse leave even when focused',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           value: 100,
+           valueStart: 0,
+           isDiscrete: true,
+           isRange: true,
+           hideFocusStylesForPointerEvents: true,
+         });
+
+         mockAdapter.isInputFocused.withArgs(Thumb.START).and.returnValue(true);
+
+         foundation.handleThumbMouseenter();
+
+         // Mouseenter should still show the value indicators.
+         expect(mockAdapter.addThumbClass)
+             .toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.addThumbClass)
+             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+
+         foundation.handleThumbMouseleave();
+
+         // Mouseleave should hide value indicators even though one of the
+         // thumbs is focused.
+         expect(mockAdapter.removeThumbClass)
+             .toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.removeThumbClass)
+             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+       });
+
+    it('range slider: keeps value indicators on mouse leave while dragging',
+       () => {
+         const {foundation, mockAdapter} = setUpAndInit({
+           value: 100,
+           valueStart: 0,
+           isDiscrete: true,
+           isRange: true,
+           hideFocusStylesForPointerEvents: true,
+         });
+
+         foundation.handleThumbMouseenter();
+
+         // Mouseenter should still show the value indicators.
+         expect(mockAdapter.addThumbClass)
+             .toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.addThumbClass)
+             .toHaveBeenCalledWith(cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+
+         // Mouseleave should keep them while the thumb is being dragged.
+         foundation.handleDown(createMouseEvent('mousedown', {
+           clientX: 20,
+         }));
+         foundation.handleThumbMouseleave();
+
+         expect(mockAdapter.removeThumbClass)
+             .not.toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.START);
+         expect(mockAdapter.removeThumbClass)
+             .not.toHaveBeenCalledWith(
+                 cssClasses.THUMB_WITH_INDICATOR, Thumb.END);
+       });
+  });
+
   describe('events: ', () => {
     it('single point slider: fires `input` and `change` events for value changes',
        () => {
@@ -1696,6 +1807,7 @@ function setUpAndInit({
   hasTickMarks,
   isRange,
   isRTL,
+  hideFocusStylesForPointerEvents,
 }: {
   value?: number,
   valueStart?: number,
@@ -1709,6 +1821,7 @@ function setUpAndInit({
   hasTickMarks?: boolean,
   isRange?: boolean,
   isRTL?: boolean,
+  hideFocusStylesForPointerEvents?: boolean,
 } = {}) {
   const {foundation, mockAdapter} = setUpFoundationTest(MDCSliderFoundation);
   mockAdapter.hasClass.withArgs(cssClasses.DISCRETE)
@@ -1746,6 +1859,9 @@ function setUpAndInit({
   mockAdapter.getInputAttribute.withArgs(attributes.INPUT_STEP, Thumb.END)
       .and.returnValue(step || numbers.STEP_SIZE);
 
+  (mockAdapter.shouldHideFocusStylesForPointerEvents as jasmine.Spy)
+      .and.returnValue(hideFocusStylesForPointerEvents ?? false);
+
   foundation.init();
 
   if (isRTL) {
@@ -1781,7 +1897,7 @@ function setUpAndInit({
   }
   if (isDiscrete) {
     mockAdapter.getValueIndicatorContainerWidth.withArgs(Thumb.END)
-        .and.returnValue(30)
+        .and.returnValue(30);
   }
 
   foundation.layout();

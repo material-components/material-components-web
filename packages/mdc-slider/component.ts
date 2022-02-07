@@ -88,6 +88,7 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       },
       isInputFocused: (thumb: Thumb) =>
           this.getInput(thumb) === document.activeElement,
+      shouldHideFocusStylesForPointerEvents: () => false,
       getThumbKnobWidth: (thumb: Thumb) => {
         return this.getThumbEl(thumb)
             .querySelector<HTMLElement>(`.${cssClasses.THUMB_KNOB}`)!
