@@ -28,9 +28,9 @@ import {MDCChipAction, MDCChipActionFactory} from '../action/component';
 import {MDCChipActionEvents, MDCChipActionFocusBehavior, MDCChipActionType} from '../action/constants';
 
 import {MDCChipAdapter} from './adapter';
-import {MDCChipAnimation} from './constants';
+import {MDCChipAnimation, MDCChipAnimationEvents} from './constants';
 import {MDCChipFoundation} from './foundation';
-import {ActionInteractionEvent, ActionNavigationEvent} from './types';
+import {ActionAnimationEvent, ActionInteractionEvent, ActionNavigationEvent} from './types';
 
 /**
  * MDCChipFactory is used by the parent MDCChipSet component to initialize
@@ -52,6 +52,8 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
   // Below properties are all assigned in #initialize()
   private handleActionInteraction!: CustomEventListener<ActionInteractionEvent>;
   private handleActionNavigation!: CustomEventListener<ActionNavigationEvent>;
+  private handleAnimationEnd!: CustomEventListener<ActionAnimationEvent>;
+  private handleTransitionEnd!: CustomEventListener<ActionAnimationEvent>;
   private actions!: Map<MDCChipActionType, MDCChipAction>;
 
   override initialize(
@@ -76,12 +78,16 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> {
 
     this.listen(MDCChipActionEvents.INTERACTION, this.handleActionInteraction);
     this.listen(MDCChipActionEvents.NAVIGATION, this.handleActionNavigation);
+    this.listen(MDCChipAnimationEvents.ANIMATION_END, this.handleAnimationEnd);
+    this.listen(MDCChipAnimationEvents.TRANSITION_END, this.handleTransitionEnd);
   }
 
   override destroy() {
     this.unlisten(
         MDCChipActionEvents.INTERACTION, this.handleActionInteraction);
     this.unlisten(MDCChipActionEvents.NAVIGATION, this.handleActionNavigation);
+    this.unlisten(MDCChipAnimationEvents.ANIMATION_END, this.handleAnimationEnd);
+    this.unlisten(MDCChipAnimationEvents.TRANSITION_END, this.handleTransitionEnd);
     super.destroy();
   }
 

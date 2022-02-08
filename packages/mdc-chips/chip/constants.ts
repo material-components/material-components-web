@@ -49,6 +49,14 @@ export enum MDCChipEvents {
 }
 
 /**
+ * MDCChipAnimationEvents provides the named constants for emitted animation events.
+ */
+export enum MDCChipAnimationEvents {
+  ANIMATION_END = 'animationend',
+  TRANSITION_END = 'transitionend',
+}
+
+/**
  * MDCChipAttributes provides the named constants for strings used by the
  * foundation.
  */

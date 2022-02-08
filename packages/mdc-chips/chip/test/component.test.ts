@@ -24,6 +24,7 @@
 import {createKeyboardEvent, emitEvent} from '../../../../testing/dom/events';
 import {setUpMdcTestEnvironment} from '../../../../testing/helpers/setup';
 import {MDCChipActionFocusBehavior, MDCChipActionType} from '../../action/constants';
+import {MDCChipAnimationEvents} from '../constants';
 import {MDCChip, MDCChipAnimation, MDCChipCssClasses, MDCChipEvents} from '../index';
 
 interface ActionOptions {
@@ -104,6 +105,18 @@ describe('MDCChipAction', () => {
     }));
     component.unlisten(MDCChipEvents.NAVIGATION, navigationHandler);
     expect(navigationHandler).toHaveBeenCalled();
+
+    const animationEndHandler = jasmine.createSpy('emitAnimationEndHandler');
+    component.listen(MDCChipAnimationEvents.ANIMATION_END, animationEndHandler);
+    emitEvent(primaryActionEl, 'animationend', { bubbles: true });
+    component.unlisten(MDCChipAnimationEvents.ANIMATION_END, animationEndHandler);
+    expect(animationEndHandler).toHaveBeenCalled();
+
+    const transitionEndHandler = jasmine.createSpy('emitTransitionEndHandler');
+    component.listen(MDCChipAnimationEvents.TRANSITION_END, transitionEndHandler);
+    emitEvent(primaryActionEl, 'transitionend',  { bubbles: true });
+    component.unlisten(MDCChipAnimationEvents.TRANSITION_END, transitionEndHandler);
+    expect(transitionEndHandler).toHaveBeenCalled();
   });
 
   it('#destroy removes event handlers', () => {
@@ -130,6 +143,18 @@ describe('MDCChipAction', () => {
     }));
     component.unlisten(MDCChipEvents.NAVIGATION, navigationHandler);
     expect(navigationHandler).not.toHaveBeenCalled();
+
+    const animationEndHandler = jasmine.createSpy('emitAnimationEndHandler');
+    component.listen(MDCChipAnimationEvents.ANIMATION_END, animationEndHandler);
+    emitEvent(primaryActionEl, 'animationend');
+    component.unlisten(MDCChipAnimationEvents.ANIMATION_END, animationEndHandler);
+    expect(animationEndHandler).not.toHaveBeenCalled();
+
+    const transitionEndHandler = jasmine.createSpy('emitTransitionEndHandler');
+    component.listen(MDCChipAnimationEvents.TRANSITION_END, transitionEndHandler);
+    emitEvent(primaryActionEl, 'transitionend');
+    component.unlisten(MDCChipAnimationEvents.TRANSITION_END, transitionEndHandler);
+    expect(transitionEndHandler).not.toHaveBeenCalled();
   });
 
   it('#getActions() returns the included actions', () => {
