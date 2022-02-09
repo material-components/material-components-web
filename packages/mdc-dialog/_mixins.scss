@@ -24,6 +24,7 @@
 // stylelint-disable selector-class-pattern --
 // Internal styling for Dialog MDC component.
 
+@use 'sass:map';
 @use 'sass:math';
 @use '@material/animation/functions' as animation-functions;
 @use '@material/button/button-theme';
@@ -759,6 +760,59 @@
       .mdc-button__touch {
         top: -$touch-target-margin; // IE 11
         transform: none; // IE 11
+      }
+    }
+  }
+}
+
+/// Defines dialog position on the screen.
+/// Dialog position can be customised across both vertical and horizontal axis.
+/// If only one axis is specified dialog is centered across the second one.
+/// Only one value can be specified for each axis at the time. For example
+/// dialog can not have both $top and $bottom specified because it will conflict
+/// with size related mixins. Use `min-width`, `max-width` and `max-height`
+/// to control the dialog size.
+/// @param {Map} $position-map - Dialog position specified as map with keys
+///     {top, bottom, left, right}
+@mixin position($position-map, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+  $top: map.get($position-map, top);
+  $right: map.get($position-map, right);
+  $bottom: map.get($position-map, bottom);
+  $left: map.get($position-map, left);
+
+  @if ($top != null and $bottom != null) {
+    @error "Top and Botton properties can not be used simultaneously. Use " +
+           "`min-width`, `max-width` and `max-height` to control dialog size.";
+  }
+  @if ($right != null and $left != null) {
+    @error "Right and Left properties can not be used simultaneously. Use " +
+           "`min-width`, `max-width` and `max-height` to control dialog size.";
+  }
+
+  @include feature-targeting.targets($feat-structure) {
+    @if ($top != null) {
+      .mdc-dialog__container {
+        align-items: flex-start;
+        padding-top: $top;
+      }
+    }
+    @if ($bottom != null) {
+      .mdc-dialog__container {
+        align-items: flex-end;
+        padding-bottom: $bottom;
+      }
+    }
+    @if ($right != null) {
+      &.mdc-dialog {
+        justify-content: flex-end;
+        padding-right: $right;
+      }
+    }
+    @if ($left != null) {
+      &.mdc-dialog {
+        justify-content: flex-start;
+        padding-left: $left;
       }
     }
   }
