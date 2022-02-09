@@ -818,6 +818,20 @@
   }
 }
 
+/// Defines dialog base z-index.
+/// This mixin can be used to specify dialog base z-index to make it compatible
+/// with other frameworks used on the same page.
+/// @param {Number} $z-index - Dialog z-index value.
+@mixin z-index($z-index, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    &.mdc-dialog {
+      z-index: $z-index;
+    }
+  }
+}
+
 @mixin _fullscreen-dialog-size($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   .mdc-dialog__surface {
