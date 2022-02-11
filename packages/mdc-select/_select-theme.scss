@@ -887,7 +887,8 @@ $error-color: error !default;
         $value: calc(#{$value} + #{notched-outline-variables.$padding});
       }
 
-      @supports (top: max(0%)) {
+      // Interpolation is a workaround for sass/sass#3259.
+      @supports (top: max(#{0%})) {
         // A max() function makes this runtime dynamic. The padding will be
         // whichever is greater: the default horizontal padding, or the
         // calculated custom property plus extra padding.

@@ -216,7 +216,8 @@
         // the max of whichever is larger: the default leading width or the
         // value of the custom property.
         $var: custom-properties.create-var($top-left-radius);
-        @supports (top: max(0%)) {
+        // Interpolation is a workaround for sass/sass#3259.
+        @supports (top: max(#{0%})) {
           width: max(#{variables.$leading-width}, #{$var});
         }
       }
@@ -236,7 +237,8 @@
 
       @if ($top-left-is-custom-prop) {
         $var: custom-properties.create-var($top-left-radius);
-        @supports (top: max(0%)) {
+        // Interpolation is a workaround for sass/sass#3259.
+        @supports (top: max(#{0%})) {
           max-width: calc(100% - max(#{variables.$leading-width}, #{$var}) * 2);
         }
       }
