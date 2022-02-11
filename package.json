@@ -64,7 +64,7 @@
     "gts": "^1.1.2",
     "jasmine": "^3.5.0",
     "jasmine-core": "^3.5.0",
-    "karma": "^4.4.1",
+    "karma": "^6.3.14",
     "karma-babel-preprocessor": "^8.0.1",
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.0",
