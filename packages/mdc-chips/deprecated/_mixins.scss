@@ -31,6 +31,7 @@
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/density/functions' as density-functions;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/focus-ring/focus-ring';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/rtl';
@@ -727,6 +728,21 @@ $ripple-target: '.mdc-chip__ripple';
   .mdc-chip__touch {
     @include feature-targeting.targets($feat-structure) {
       display: none;
+    }
+  }
+}
+
+@mixin high-contrast-focus {
+  // High contrast mode focus for chips.
+  .mdc-chip__focus-ring {
+    display: none;
+  }
+
+  @include ripple-theme.focus() {
+    .mdc-chip__focus-ring {
+      z-index: 1;
+      display: block;
+      @include focus-ring.focus-ring();
     }
   }
 }
