@@ -832,6 +832,29 @@
   }
 }
 
+/// This mixin can be used to hide the fullscreen dialog header when the dialog
+/// is a standard modal and not yet fullscreen in X-small sizes.
+@mixin fullscreen-dialog-hide-modal-header($query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  // Non-fullscreen-dialog sizes
+  @media (min-width: 600px) {
+    &.mdc-dialog--fullscreen {
+      .mdc-dialog__header {
+        @include feature-targeting.targets($feat-structure) {
+          display: none;
+        }
+      }
+
+      .mdc-dialog__content {
+        @include feature-targeting.targets($feat-structure) {
+          padding-top: 24px;
+        }
+      }
+    }
+  }
+}
+
 @mixin _fullscreen-dialog-size($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   .mdc-dialog__surface {
