@@ -551,19 +551,6 @@ $disabled-container-color: rgba(
   &::before {
     @include dom-mixins.transparent-border($query: $query);
   }
-
-  // Link buttons apply focus to the contained link. Focus is indicated via the
-  // link since focus-within isn't supported by IE.
-  & .mdc-button__link:focus,
-  &:focus {
-    &::before {
-      @include dom-mixins.transparent-border(
-        $border-width: 5px,
-        $border-style: double,
-        $query: $query
-      );
-    }
-  }
 }
 
 ///

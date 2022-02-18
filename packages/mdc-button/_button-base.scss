@@ -68,21 +68,9 @@
       }
     }
 
-    .mdc-button__focus-ring {
-      @include feature-targeting.targets($feat-structure) {
-        display: none;
-      }
-    }
-
     @include ripple-theme.focus {
       .mdc-button__focus-ring {
-        @include dom.forced-colors-mode($exclude-ie11: true) {
-          @include focus-ring.focus-ring($query: $query);
-
-          @include feature-targeting.targets($feat-structure) {
-            display: block;
-          }
-        }
+        @include focus-ring.focus-ring($query: $query);
       }
     }
 
