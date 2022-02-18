@@ -74,6 +74,7 @@ $container-outer-padding: 2px !default;
     pointer-events: none;
     border: $inner-ring-width solid $inner-ring-color;
     border-radius: $inner-ring-radius;
+    box-sizing: content-box;
     position: absolute;
     top: 50%;
     @include rtl.ignore-next-line();
