@@ -347,7 +347,8 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
       throw new Error('`minRange` is only applicable for range sliders.');
     }
     if (value < 0) {
-      throw new Error('`minRange` must be non-negative.');
+      throw new Error('`minRange` must be non-negative. ' +
+          `Current value: ${value}`);
     }
     if (this.value - this.valueStart < value) {
       throw new Error(
@@ -1119,15 +1120,15 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     if (step <= 0) {
       throw new Error(
           `MDCSliderFoundation: step must be a positive number. ` +
-          `Current step: ${this.step}`);
+          `Current step: ${step}`);
     }
 
     if (this.isRange) {
       if (value < min || value > max || valueStart < min || valueStart > max) {
         throw new Error(
             `MDCSliderFoundation: values must be in [min, max] range. ` +
-            `Current values: [start value: ${valueStart}, end value: ${
-                value}]`);
+            `Current values: [start value: ${valueStart}, end value: ` +
+            `${value}, min: ${min}, max: ${max}]`);
       }
 
       if (valueStart > value) {
@@ -1156,21 +1157,21 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
           !Number.isInteger(parseFloat(numStepsValueFromMin.toFixed(6)))) {
         throw new Error(
             `MDCSliderFoundation: Slider values must be valid based on the ` +
-            `step value. Current values: [start value: ${valueStart}, ` +
-            `end value: ${value}]`);
+            `step value (${step}). Current values: [start value: ` +
+            `${valueStart}, end value: ${value}, min: ${min}]`);
       }
     } else {  // Single point slider.
       if (value < min || value > max) {
         throw new Error(
             `MDCSliderFoundation: value must be in [min, max] range. ` +
-            `Current value: ${value}`);
+            `Current values: [value: ${value}, min: ${min}, max: ${max}]`);
       }
 
       const numStepsValueFromMin = (value - min) / step;
       if (!Number.isInteger(parseFloat(numStepsValueFromMin.toFixed(6)))) {
         throw new Error(
             `MDCSliderFoundation: Slider value must be valid based on the ` +
-            `step value. Current value: ${value}`);
+            `step value (${step}). Current value: ${value}`);
       }
     }
   }
