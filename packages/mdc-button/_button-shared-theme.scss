@@ -31,6 +31,7 @@
 @use '@material/dom/mixins' as dom-mixins;
 @use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/focus-ring/focus-ring';
 @use '@material/ripple/ripple-theme';
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/custom-properties';
@@ -545,23 +546,28 @@ $disabled-container-color: rgba(
 }
 
 ///
-/// Includes ad-hoc high contrast mode support.
+/// Add a visible outline to the button in high contrast mode.
 ///
-@mixin high-contrast-mode-shim($query: feature-targeting.all()) {
+@mixin outline-hcm-shim($query: feature-targeting.all()) {
   &::before {
     @include dom-mixins.transparent-border($query: $query);
   }
+}
+
+///
+/// Includes ad-hoc high contrast mode support.
+/// @deprecated Use `outline-hcm-shim` for the outline button. The focus ring
+///     is provided by default.
+///
+@mixin high-contrast-mode-shim($query: feature-targeting.all()) {
+  @include outline-hcm-shim($query: $query);
 
   // Link buttons apply focus to the contained link. Focus is indicated via the
   // link since focus-within isn't supported by IE.
   & .mdc-button__link:focus,
   &:focus {
     &::before {
-      @include dom-mixins.transparent-border(
-        $border-width: 5px,
-        $border-style: double,
-        $query: $query
-      );
+      @include focus-ring.focus-ring($query: $query);
     }
   }
 }
