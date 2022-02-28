@@ -195,13 +195,20 @@ $_caret-size: 24px;
     .mdc-tooltip__content {
       @include typography.typography($_content-type-scale, $query: $query);
       @include feature-targeting.targets($feat-structure) {
-        max-width: calc(100% - 2 * #{$_content-margin});
+        max-width: calc(#{$_max-width} - (2 * #{$_content-margin}));
         margin: $_content-margin;
         @include rtl.ignore-next-line();
         text-align: left;
         @include rtl.rtl {
           @include rtl.ignore-next-line();
           text-align: right;
+        }
+      }
+
+      .mdc-tooltip--rich & {
+        @include feature-targeting.targets($feat-structure) {
+          max-width: calc(#{$_rich_max-width} - (2 * #{$_content-margin}));
+          align-self: stretch;
         }
       }
     }
