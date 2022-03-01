@@ -316,7 +316,7 @@ $_light-theme: (
       enabled: map.get($theme, elevated-unselected-container-color),
     )
   );
-  @include typography.theme-styles(
+  @include _label-text-typography(
     (
       font: map.get($theme, label-text-font),
       line-height: map.get($theme, label-text-line-height),
@@ -879,6 +879,12 @@ $_light-theme: (
 
   @include _is-disabled() {
     @include _text-label-color(state.get-disabled-state($color-or-map), $query);
+  }
+}
+
+@mixin _label-text-typography($typography-theme) {
+  .mdc-evolution-chip__text-label {
+    @include typography.theme-styles($typography-theme);
   }
 }
 
