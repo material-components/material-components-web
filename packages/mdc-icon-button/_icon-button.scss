@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
@@ -83,7 +83,6 @@
       display: inline-block;
     }
 
-    // stylelint-disable-next-line plugin/selector-bem-pattern
     &.mdc-icon-button__icon--on {
       @include feature-targeting.targets($feat-structure) {
         display: none;
@@ -97,7 +96,6 @@
         display: none;
       }
 
-      // stylelint-disable-next-line plugin/selector-bem-pattern
       &.mdc-icon-button__icon--on {
         @include feature-targeting.targets($feat-structure) {
           display: inline-block;

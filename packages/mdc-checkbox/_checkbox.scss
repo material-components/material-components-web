@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:map';
 @use 'sass:math';
@@ -280,7 +280,7 @@
 @mixin anim_ {
   $mdc-checkbox-indeterminate-change-duration_: 500ms;
 
-  // stylelint-disable selector-max-type
+  // stylelint-disable no-unknown-animations -- allow unknown animations
 
   &-unchecked-checked,
   &-unchecked-indeterminate,
@@ -349,14 +349,13 @@
 
   &-indeterminate-unchecked {
     .mdc-checkbox__mixedmark {
-      // stylelint-disable-next-line declaration-colon-space-after
       animation: mdc-checkbox-indeterminate-unchecked-mixedmark
         $mdc-checkbox-indeterminate-change-duration_ * 0.6 linear 0s;
       transition: none;
     }
   }
 
-  // stylelint-enable selector-max-type
+  // stylelint-enable no-unknown-animations
 }
 
 @mixin background_($query: feature-targeting.all()) {

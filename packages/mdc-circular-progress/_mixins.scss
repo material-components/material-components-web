@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:math';
 @use '@material/animation/functions' as animation-functions;
@@ -242,6 +242,7 @@
         variables.$arc-start-rotation-interval + (360 - variables.$arc-size)
       );
 
+      // stylelint-disable-next-line no-unknown-animations -- allow animations
       animation: mdc-circular-progress-container-rotate $duration linear
         infinite;
     }
@@ -279,6 +280,7 @@
           noflip: true,
         )
       );
+      // stylelint-disable-next-line no-unknown-animations -- allow animations
       animation: mdc-circular-progress-left-spin variables.$arc-time
         variables.$timing-function infinite both;
     }
@@ -292,6 +294,7 @@
           noflip: true,
         )
       );
+      // stylelint-disable-next-line no-unknown-animations -- allow animations
       animation: mdc-circular-progress-right-spin variables.$arc-time
         variables.$timing-function infinite both;
     }

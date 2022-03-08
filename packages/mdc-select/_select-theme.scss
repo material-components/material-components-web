@@ -327,7 +327,6 @@ $error-color: error !default;
       $query: $query
     );
 
-    // stylelint-disable-next-line selector-combinator-space-after
     &:not(.mdc-select--focused) .mdc-select__anchor:hover {
       @include _hover-outline-color(
         state.get-hover-state($color-or-map),

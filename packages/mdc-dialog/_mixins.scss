@@ -182,7 +182,6 @@
     }
   }
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-dialog--scrollable .mdc-dialog__title {
     @include feature-targeting.targets($feat-structure) {
       margin-bottom: 1px;
@@ -273,7 +272,6 @@
     }
   }
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-dialog__title + .mdc-dialog__content,
   .mdc-dialog__header + .mdc-dialog__content {
     @include feature-targeting.targets($feat-structure) {
@@ -283,7 +281,6 @@
     }
   }
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-dialog--scrollable .mdc-dialog__title + .mdc-dialog__content {
     @include feature-targeting.targets($feat-structure) {
       // Reduce and equalize vertical paddings when scrollable dividers are present
@@ -293,7 +290,6 @@
     }
   }
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-dialog__content .mdc-deprecated-list:first-child:last-child {
     @include feature-targeting.targets($feat-structure) {
       // Override default .mdc-deprecated-list padding for content consisting exclusively of a MDC List
@@ -301,7 +297,6 @@
     }
   }
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern, selector-max-specificity
   .mdc-dialog--scrollable
     .mdc-dialog__content
     .mdc-deprecated-list:first-child:last-child {

@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:math';
 @use 'sass:map';
@@ -243,7 +243,6 @@ $light-theme: (
     font-size: math.max($width, $height);
   }
 
-  // stylelint-disable-next-line selector-max-type
   svg,
   img {
     @include feature-targeting.targets($feat-structure) {

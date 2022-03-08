@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:math';
 @use '@material/animation/functions';
@@ -242,13 +242,9 @@ $ripple-target: '.mdc-chip__ripple';
         }
 
         .mdc-chip__checkmark-svg {
-          // stylelint-disable max-nesting-depth
-
           @include feature-targeting.targets($feat-animation) {
             transition: width 0ms;
           }
-
-          // stylelint-enable max-nesting-depth
         }
       }
     }

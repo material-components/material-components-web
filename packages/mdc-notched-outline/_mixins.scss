@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:list';
 @use '@material/theme/custom-properties';
@@ -287,7 +287,6 @@
       $query: $query
     );
 
-    // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {
       @include feature-targeting.targets($feat-structure) {
         font-size: 1rem;
@@ -337,7 +336,6 @@
       $query: $query
     );
 
-    // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {
       @include feature-targeting.targets($feat-structure) {
         font-size: 1rem;

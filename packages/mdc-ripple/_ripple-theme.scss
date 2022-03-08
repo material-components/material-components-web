@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:color';
 @use 'sass:map';
@@ -367,7 +367,6 @@ $_ripple-theme: (
 
   &--activated {
     // Stylelint seems to think that '&' qualifies as a type selector here?
-    // stylelint-disable-next-line selector-max-type
     @include states-background-selector($ripple-target) {
       // Opacity falls under color because the chosen opacity is color-dependent.
       @include feature-targeting.targets($feat-color) {
@@ -403,7 +402,6 @@ $_ripple-theme: (
   $selected-opacity: states-opacity($color, selected);
 
   &--selected {
-    // stylelint-disable-next-line selector-max-type
     @include states-background-selector($ripple-target) {
       // Opacity falls under color because the chosen opacity is color-dependent.
       @include feature-targeting.targets($feat-color) {

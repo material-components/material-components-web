@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/animation/variables' as animation-variables;
@@ -133,7 +133,6 @@
   }
 }
 
-// stylelint-disable-next-line plugin/selector-bem-pattern
 .mdc-top-app-bar--short-collapsed.mdc-top-app-bar--short-has-action-item {
   width: variables.$short-collapsed-width * 2;
 
@@ -176,7 +175,6 @@
   }
 }
 
-// stylelint-disable-next-line plugin/selector-bem-pattern
 .mdc-top-app-bar--fixed {
   transition: box-shadow 200ms linear;
 }
@@ -188,7 +186,6 @@
 }
 
 // Specific styles for dense and prominent styled top app bar
-// stylelint-disable plugin/selector-bem-pattern
 .mdc-top-app-bar--dense.mdc-top-app-bar--prominent {
   .mdc-top-app-bar__row {
     height: variables.$dense-row-height * 2;
@@ -204,7 +201,6 @@
     padding-bottom: variables.$dense-prominent-title-bottom-padding;
   }
 }
-// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-top-app-bar--fixed-adjust {
   padding-top: variables.$row-height;

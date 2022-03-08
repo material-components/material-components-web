@@ -20,8 +20,8 @@
 // THE SOFTWARE.
 //
 
+// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern
 
 @use 'sass:map';
 @use 'sass:math';
@@ -506,8 +506,6 @@ $light-theme-deprecated: (
       );
     }
 
-    // stylelint-disable max-nesting-depth
-
     #{$anim-selector} {
       &-unchecked-checked,
       &-unchecked-indeterminate {
@@ -527,8 +525,6 @@ $light-theme-deprecated: (
         }
       }
     }
-
-    // stylelint-enable max-nesting-depth
   }
 }
 
