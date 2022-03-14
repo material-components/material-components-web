@@ -107,6 +107,24 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
   }
 
   /**
+   * @return Whether the helper text acts as a validation message.
+   * By default, validation messages are hidden when the select is valid and
+   * visible when the select is invalid.
+   */
+  getIsValidation() {
+    return this.adapter.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+  }
+
+  /**
+   * @return Whether the validation helper text persists even if the input is
+   * valid. If it is, it will be displayed in the normal (grey) color.
+   */
+  getIsValidationMsgPersistent() {
+    return this.adapter.hasClass(
+        cssClasses.HELPER_TEXT_VALIDATION_MSG_PERSISTENT);
+  }
+
+  /**
    * When acting as a validation message, shows/hides the helper text and
    * triggers alerts as necessary based on the select's validity.
    */
