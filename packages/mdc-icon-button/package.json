@@ -21,6 +21,7 @@
   "dependencies": {
     "@material/base": "^13.0.0",
     "@material/density": "^13.0.0",
+    "@material/dom": "^13.0.0",
     "@material/elevation": "^13.0.0",
     "@material/feature-targeting": "^13.0.0",
     "@material/focus-ring": "^13.0.0",

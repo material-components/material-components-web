@@ -33,6 +33,7 @@
 @use '@material/focus-ring/focus-ring';
 @use '@material/ripple/ripple-theme';
 @use '@material/rtl/rtl';
+@use '@material/dom/dom';
 @use '@material/theme/keys';
 @use '@material/theme/state';
 @use '@material/theme/theme';
@@ -149,16 +150,40 @@ $light-theme: (
     padding: math.div($size - $icon-size, 2);
   }
 
-  &.mdc-icon-button--reduced-size {
-    .mdc-icon-button__ripple {
-      $component-size: $size;
-      // Icon button ripple size is capped at 40px for icon buttons with
-      // densities -1 and 0 (icon buttons with sizes 44x44 and 48x48px).
-      // See http://b/192353968 for more info.
-      @if $size >= 40px and $size <= 48px {
-        $component-size: 40px;
+  .mdc-icon-button__focus-ring {
+    @include feature-targeting.targets($feat-structure) {
+      display: none;
+    }
+  }
+
+  @include ripple-theme.focus {
+    .mdc-icon-button__focus-ring {
+      @include dom.forced-colors-mode($exclude-ie11: true) {
+        @include focus-ring.focus-ring(
+          $query: $query,
+          $container-outer-padding-vertical: 0,
+          $container-outer-padding-horizontal: 0
+        );
       }
 
+      @include feature-targeting.targets($feat-structure) {
+        display: block;
+        max-height: $size;
+        max-width: $size;
+      }
+    }
+  }
+
+  &.mdc-icon-button--reduced-size {
+    $component-size: $size;
+    // Icon button ripple size is capped at 40px for icon buttons with
+    // densities -1 and 0 (icon buttons with sizes 44x44 and 48x48px).
+    // See http://b/192353968 for more info.
+    @if $size >= 40px and $size <= 48px {
+      $component-size: 40px;
+    }
+
+    .mdc-icon-button__ripple {
       @include feature-targeting.targets($feat-structure) {
         width: $component-size;
         height: $component-size;
@@ -172,35 +197,14 @@ $light-theme: (
         $query: $query
       );
     }
-  }
 
-  .mdc-icon-button__focus-ring {
-    @include feature-targeting.targets($feat-structure) {
-      display: none;
-    }
-  }
-
-  @include ripple-theme.focus {
-    .mdc-icon-button__focus-ring {
-      $component-size: $size;
-      // Icon button ripple size is capped at 40px for icon buttons with
-      // densities -1 and 0 (icon buttons with sizes 44x44 and 48x48px).
-      // See http://b/192353968 for more info.
-      @if $size >= 40px and $size <= 48px {
-        $component-size: 40px;
+    @include ripple-theme.focus {
+      .mdc-icon-button__focus-ring {
+        @include feature-targeting.targets($feat-structure) {
+          max-height: $component-size;
+          max-width: $component-size;
+        }
       }
-
-      @include feature-targeting.targets($feat-structure) {
-        display: block;
-        max-width: $component-size;
-        max-height: $component-size;
-      }
-
-      @include focus-ring.focus-ring(
-        $query: $query,
-        $container-outer-padding-vertical: 0,
-        $container-outer-padding-horizontal: 0
-      );
     }
   }
 
