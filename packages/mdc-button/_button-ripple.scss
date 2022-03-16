@@ -39,27 +39,20 @@ $ripple-target: '.mdc-button__ripple';
       $query: $query,
       $ripple-target: $ripple-target
     );
+  }
 
-    #{$ripple-target} {
-      @include feature-targeting.targets($feat-structure) {
-        position: absolute;
-        // Ripple needs content-box as the box sizing and box-sizing: border-box
-        // is often set as a default, so we override that here.
-        box-sizing: content-box;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        z-index: 0;
-      }
-    }
-
-    // Ripple targets inside outlined buttons set their own `top`/`left`,
-    // depending on the border width.
-    &:not(.mdc-button--outlined) #{$ripple-target} {
-      @include feature-targeting.targets($feat-structure) {
-        top: 0;
-        left: 0;
-      }
+  #{$ripple-target} {
+    @include feature-targeting.targets($feat-structure) {
+      position: absolute;
+      // Ripple needs content-box as the box sizing and box-sizing: border-box
+      // is often set as a default, so we override that here.
+      box-sizing: content-box;
+      overflow: hidden;
+      z-index: 0;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
     }
   }
 }

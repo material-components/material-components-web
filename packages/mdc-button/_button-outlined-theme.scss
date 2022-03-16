@@ -227,16 +227,10 @@ $light-theme: (
 
     #{button-ripple.$ripple-target} {
       @include feature-targeting.targets($feat-structure) {
-        @include theme.property(
-          top,
-          'calc(-1 * outline-width)',
-          $replace: (outline-width: $outline-width)
-        );
-        @include theme.property(
-          left,
-          'calc(-1 * outline-width)',
-          $replace: (outline-width: $outline-width)
-        );
+        @include theme.property(top, -1 * $outline-width-value);
+        @include theme.property(left, -1 * $outline-width-value);
+        @include theme.property(bottom, -1 * $outline-width-value);
+        @include theme.property(right, -1 * $outline-width-value);
         @include theme.property(border-width, $outline-width);
       }
     }
