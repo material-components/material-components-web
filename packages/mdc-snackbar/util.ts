@@ -67,7 +67,7 @@ function announce(ariaEl: Element, labelEl: Element = ariaEl) {
   //       - IE 11
   //   * ChromeVox 53
   labelEl.textContent = '';
-  labelEl.innerHTML = '<span style="display: inline-block; width: 0; height: 1px;">&nbsp;</span>';
+  // labelEl.innerHTML = '<span style="display: inline-block; width: 0; height: 1px;">&nbsp;</span>';
 
   // Prevent visual jank by temporarily displaying the label text in the ::before pseudo-element.
   // CSS generated content is normally announced by screen readers
