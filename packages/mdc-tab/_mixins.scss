@@ -315,8 +315,7 @@
     &.mdc-tab--active .mdc-tab__focus-ring {
       @include focus-ring.focus-ring(
         $query: $query,
-        $inner-ring-radius: 8px,
-        $outer-ring-radius: 10px,
+        $ring-radius: 10px,
         $container-outer-padding-vertical: -6px,
         $container-outer-padding-horizontal: -4px
       );
@@ -331,8 +330,7 @@
     .mdc-tab__focus-ring {
       @include focus-ring.focus-ring(
         $query: $query,
-        $inner-ring-radius: 8px,
-        $outer-ring-radius: 10px,
+        $ring-radius: 10px,
         $container-outer-padding-vertical: -4px,
         $container-outer-padding-horizontal: -4px
       );

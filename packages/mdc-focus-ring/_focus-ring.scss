@@ -24,30 +24,27 @@
 @use '@material/rtl/rtl';
 @use '@material/dom/dom';
 
-$inner-ring-radius: 6px !default;
+$ring-radius: 8px !default;
 $inner-ring-width: 2px !default;
 $inner-ring-color: transparent !default;
-$outer-ring-radius: 8px !default;
 $outer-ring-width: 2px !default;
 $outer-ring-color: transparent !default;
 $container-outer-padding: 2px !default;
 
 /// Styles applied to the component's inner focus ring element.
 ///
-/// @param $inner-ring-radius [$inner-ring-radius] - Inner focus ring radius.
+/// @param $ring-radius [$ring-radius] - Focus ring radius.
 /// @param $inner-ring-width [$inner-ring-width] - Inner focus ring width.
 /// @param $inner-ring-color [$inner-ring-color] - Inner focus ring color.
-/// @param $outer-ring-radius [$outer-ring-radius] - Outer focus ring radius.
 /// @param $outer-ring-width [$outer-ring-width] - Outer focus ring width.
 /// @param $outer-ring-color [$outer-ring-color] - Outer focus ring color.
 /// @param $container-outer-padding [$container-outer-padding] - The distance
 ///     between the focus ring and the container.
 @mixin focus-ring(
   $query: feature-targeting.all(),
-  $inner-ring-radius: $inner-ring-radius,
+  $ring-radius: $ring-radius,
   $inner-ring-width: $inner-ring-width,
   $inner-ring-color: $inner-ring-color,
-  $outer-ring-radius: $outer-ring-radius,
   $outer-ring-width: $outer-ring-width,
   $outer-ring-color: $outer-ring-color,
   $container-outer-padding-vertical: $container-outer-padding,
@@ -73,7 +70,7 @@ $container-outer-padding: 2px !default;
   @include feature-targeting.targets($feat-structure) {
     pointer-events: none;
     border: $inner-ring-width solid $inner-ring-color;
-    border-radius: $inner-ring-radius;
+    border-radius: $ring-radius - $outer-ring-width;
     box-sizing: content-box;
     position: absolute;
     top: 50%;
@@ -91,7 +88,7 @@ $container-outer-padding: 2px !default;
     &::after {
       content: '';
       border: $outer-ring-width solid $outer-ring-color;
-      border-radius: $outer-ring-radius;
+      border-radius: $ring-radius;
       display: block;
       position: absolute;
       top: 50%;
