@@ -532,7 +532,7 @@ $_typography-theme: (
 
   @include theme.property(font-family, map.get($theme, font));
   @include theme.property(line-height, map.get($theme, line-height));
-  @include theme.property(size, map.get($theme, font-size));
-  @include theme.property(weight, map.get($theme, font-weight));
-  @include theme.property(tracking, map.get($theme, letter-spacing));
+  @include theme.property(font-size, map.get($theme, size));
+  @include theme.property(font-weight, map.get($theme, weight));
+  @include theme.property(letter-spacing, map.get($theme, tracking));
 }
