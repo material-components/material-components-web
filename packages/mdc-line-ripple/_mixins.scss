@@ -46,8 +46,9 @@
         content: '';
       }
 
+      @include height(1px);
+
       &::before {
-        border-bottom-width: 1px;
         z-index: 1;
       }
 
@@ -78,6 +79,12 @@
     @include feature-targeting.targets($feat-structure) {
       opacity: 0;
     }
+  }
+}
+
+@mixin height($height) {
+  &::before {
+    border-bottom-width: $height;
   }
 }
 

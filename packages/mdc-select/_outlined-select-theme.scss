@@ -20,6 +20,10 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// NOTE: this is the implementation of the aforementioned classes.
+
 @use 'sass:map';
 @use '@material/theme/theme';
 @use '@material/tokens/resolvers';
@@ -48,6 +52,8 @@ $_light-theme: (
   menu-list-item-with-trailing-icon-trailing-icon-color: null,
   menu-list-item-with-trailing-icon-trailing-icon-size: null,
   text-field-caret-color: null,
+  text-field-hover-caret-color: null,
+  text-field-focus-caret-color: null,
   text-field-container-color: null,
   text-field-container-height: null,
   text-field-container-shape: null,
@@ -64,6 +70,8 @@ $_light-theme: (
   text-field-disabled-supporting-text-opacity: null,
   text-field-disabled-trailing-icon-color: null,
   text-field-disabled-trailing-icon-opacity: null,
+  text-field-error-caret-color: null,
+  text-field-error-hover-caret-color: null,
   text-field-error-focus-caret-color: null,
   text-field-error-focus-input-text-color: null,
   text-field-error-focus-label-text-color: null,
@@ -132,4 +140,20 @@ $_light-theme: (
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme($_light-theme, $theme);
   @include select-theme.theme-styles($theme, $resolvers: $resolvers);
+  @if map.get($theme, text-field-container-height) {
+    @include select-theme.outlined-height(
+      map.get($theme, text-field-container-height)
+    );
+    &.mdc-select--with-leading-icon {
+      @include select-theme.outlined-with-leading-icon-height(
+        map.get($theme, text-field-container-height)
+      );
+    }
+  }
+  @if map.get($theme, text-field-container-shape) {
+    @include select-theme.outline-shape-radius(
+      map.get($theme, text-field-container-shape),
+      $height: map.get($theme, text-field-container-height)
+    );
+  }
 }
