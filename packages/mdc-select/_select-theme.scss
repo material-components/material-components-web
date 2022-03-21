@@ -32,12 +32,14 @@
 @use '@material/tokens/resolvers';
 @use '@material/density/functions' as density-functions;
 @use '@material/density/variables' as density-variables;
+@use '@material/elevation/elevation-theme';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/floating-label/variables' as floating-label-variables;
 @use '@material/line-ripple/mixins' as line-ripple-mixins;
 @use '@material/list/mixins' as list-mixins;
 @use '@material/list/evolution-mixins' as list-evolution-mixins;
+@use '@material/menu-surface/mixins' as menu-surface-mixins;
 @use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/notched-outline/variables' as notched-outline-variables;
 @use '@material/rtl/rtl';
@@ -50,7 +52,9 @@
 @use '@material/theme/theme';
 @use '@material/theme/variables' as theme-variables;
 @use '@material/typography/mixins' as typography-mixins;
+@use '@material/typography/typography';
 @use './select-icon-theme';
+@use './select-helper-text-theme';
 
 $ripple-target: '.mdc-select__ripple';
 
@@ -163,13 +167,25 @@ $icon-inactive-fade-in-duration: 0.5 * $dropdown-transition-duration !default;
 $error-color: error !default;
 
 $_light-theme: (
-  menu-cascading-menu-indicator-icon-color: null,
-  menu-cascading-menu-indicator-icon-size: null,
+  // Implement `menu-cascading-menu-indicator-icon-color` when select supports.
+  // Implement `menu-cascading-menu-indicator-icon-size` when select supports.
+  // Implement `menu-container-surface-tint-layer-color` when select supports.
+  // Implement `text-field-disabled-trailing-icon-color` when select supports.
+  // Implement `text-field-hover-trailing-icon-color` when select supports.
+  // Implement `text-field-focus-trailing-icon-color` when select supports.
+  // Implement `text-field-error-trailing-icon-color` when select supports.
+  // Implement `text-field-error-hover-trailing-icon-color` when select supports.
+  // Implement `text-field-error-focus-trailing-icon-color` when select supports.
+  // Implement `text-field-trailing-icon-color` when select supports.
+  // Implement `text-field-trailing-icon-size` when select supports.
+  // Implement `text-field-error-hover-state-layer-color` when select supports.
+  // Implement `text-field-error-hover-state-layer-opacity` when select supports.
+  // Implement `text-field-hover-state-layer-color` when select supports.
+  // Implement `text-field-hover-state-layer-opacity` when select supports.
   menu-container-color: null,
   menu-container-elevation: null,
   menu-container-shadow-color: null,
   menu-container-shape: null,
-  menu-container-surface-tint-layer-color: null,
   menu-divider-color: null,
   menu-divider-height: null,
   menu-list-item-container-height: null,
@@ -187,6 +203,10 @@ $_light-theme: (
   text-field-active-indicator-color: null,
   text-field-active-indicator-height: null,
   text-field-caret-color: null,
+  // Token key `text-field-hover-caret-color` not available on DSDB.
+  text-field-hover-caret-color: null,
+  // Token key `text-field-focus-caret-color` not available on DSDB.
+  text-field-focus-caret-color: null,
   text-field-container-color: null,
   text-field-container-height: null,
   text-field-container-shape: null,
@@ -206,32 +226,30 @@ $_light-theme: (
   text-field-disabled-outline-width: null,
   text-field-disabled-supporting-text-color: null,
   text-field-disabled-supporting-text-opacity: null,
-  text-field-disabled-trailing-icon-color: null,
   text-field-disabled-trailing-icon-opacity: null,
   text-field-error-active-indicator-color: null,
   text-field-error-focus-active-indicator-color: null,
+  // Token key `text-field-error-caret-color` not available on DSDB.
+  text-field-error-caret-color: null,
+  // Token key `text-field-error-hover-caret-color` not available on DSDB.
+  text-field-error-hover-caret-color: null,
   text-field-error-focus-caret-color: null,
   text-field-error-focus-input-text-color: null,
   text-field-error-focus-label-text-color: null,
   text-field-error-focus-leading-icon-color: null,
   text-field-error-focus-outline-color: null,
   text-field-error-focus-supporting-text-color: null,
-  text-field-error-focus-trailing-icon-color: null,
   text-field-error-hover-active-indicator-color: null,
   text-field-error-hover-input-text-color: null,
   text-field-error-hover-label-text-color: null,
   text-field-error-hover-leading-icon-color: null,
   text-field-error-hover-outline-color: null,
-  text-field-error-hover-state-layer-color: null,
-  text-field-error-hover-state-layer-opacity: null,
   text-field-error-hover-supporting-text-color: null,
-  text-field-error-hover-trailing-icon-color: null,
   text-field-error-input-text-color: null,
   text-field-error-label-text-color: null,
   text-field-error-leading-icon-color: null,
   text-field-error-outline-color: null,
   text-field-error-supporting-text-color: null,
-  text-field-error-trailing-icon-color: null,
   text-field-focus-active-indicator-color: null,
   text-field-focus-active-indicator-height: null,
   text-field-focus-input-text-color: null,
@@ -240,7 +258,6 @@ $_light-theme: (
   text-field-focus-outline-color: null,
   text-field-focus-outline-width: null,
   text-field-focus-supporting-text-color: null,
-  text-field-focus-trailing-icon-color: null,
   text-field-hover-active-indicator-color: null,
   text-field-hover-active-indicator-height: null,
   text-field-hover-input-text-color: null,
@@ -248,10 +265,7 @@ $_light-theme: (
   text-field-hover-leading-icon-color: null,
   text-field-hover-outline-color: null,
   text-field-hover-outline-width: null,
-  text-field-hover-state-layer-color: null,
-  text-field-hover-state-layer-opacity: null,
   text-field-hover-supporting-text-color: null,
-  text-field-hover-trailing-icon-color: null,
   text-field-input-text-color: null,
   text-field-input-text-font: null,
   text-field-input-text-line-height: null,
@@ -275,17 +289,397 @@ $_light-theme: (
   text-field-supporting-text-line-height: null,
   text-field-supporting-text-size: null,
   text-field-supporting-text-tracking: null,
-  text-field-supporting-text-weight: null,
-  text-field-trailing-icon-color: null,
-  text-field-trailing-icon-size: null,
+  text-field-supporting-text-weight: null
 );
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-keys($_light-theme, $theme);
 
-  @include container-fill-color(map.get($theme, text-field-container-color));
-  @include filled-height(map.get($theme, text-field-container-height));
-  @include outline-color(map.get($theme, text-field-outline-color));
+  @include container-fill-color(
+    (
+      default: map.get($theme, text-field-container-color),
+      disabled: map.get($theme, text-field-disabled-container-color),
+    )
+  );
+  @include outline-color(
+    (
+      default: map.get($theme, text-field-outline-color),
+      hover: map.get($theme, text-field-hover-outline-color),
+      focus: map.get($theme, text-field-focus-outline-color),
+      disabled: map.get($theme, text-field-disabled-outline-color),
+    )
+  );
+  @include _error-outline-color(
+    (
+      default: map.get($theme, text-field-error-outline-color),
+      hover: map.get($theme, text-field-error-hover-outline-color),
+      focus: map.get($theme, text-field-error-focus-outline-color),
+    )
+  );
+  @include outline-width(
+    (
+      default: map.get($theme, text-field-outline-width),
+      hover: map.get($theme, text-field-hover-outline-width),
+      focus: map.get($theme, text-field-focus-outline-width),
+    )
+  );
+  @include _menu-container-color(map.get($theme, menu-container-color));
+  @include _menu-container-elevation(
+    map.get($resolvers, elevation),
+    $shadow-color: map.get($theme, menu-container-shadow-color),
+    $elevation: map.get($theme, menu-container-elevation)
+  );
+  @include _menu-container-shape(map.get($theme, menu-container-shape));
+  @include _menu-divider-color(map.get($theme, menu-divider-color));
+  @include _menu-divider-height(map.get($theme, menu-divider-height));
+  @include _menu-list-item-container-height(
+    map.get($theme, menu-list-item-container-height)
+  );
+  @include _menu-list-item-label-text-color(
+    map.get($theme, menu-list-item-label-text-color)
+  );
+  @include _menu-list-item-label-text-typography(
+    (
+      font: map.get($theme, menu-list-item-label-text-font),
+      line-height: map.get($theme, menu-list-item-label-text-line-height),
+      size: map.get($theme, menu-list-item-label-text-size),
+      tracking: map.get($theme, menu-list-item-label-text-tracking),
+      weight: map.get($theme, menu-list-item-label-text-weight),
+    )
+  );
+  @include _menu-list-item-selected-container-color(
+    map.get($theme, menu-list-item-selected-container-color)
+  );
+  @include _menu-list-item-with-leading-icon-leading-icon-color(
+    map.get($theme, menu-list-item-with-leading-icon-leading-icon-color)
+  );
+  @include _menu-list-item-with-leading-icon-leading-icon-size(
+    map.get($theme, menu-list-item-with-leading-icon-leading-icon-size)
+  );
+  // TODO: Create new mixin for trailing icon theming when select supports it.
+  @include _menu-list-item-with-leading-icon-leading-icon-color(
+    map.get($theme, menu-list-item-with-trailing-icon-trailing-icon-color)
+  );
+  @include _menu-list-item-with-leading-icon-leading-icon-size(
+    map.get($theme, menu-list-item-with-trailing-icon-trailing-icon-size)
+  );
+  @include bottom-line-color(
+    (
+      default: map.get($theme, text-field-active-indicator-color),
+      hover: map.get($theme, text-field-hover-active-indicator-color),
+      focus: map.get($theme, text-field-focus-active-indicator-color),
+      disabled: map.get($theme, text-field-disabled-indicator-color),
+    )
+  );
+  @include _text-field-error-active-indicator-color(
+    (
+      default: map.get($theme, text-field-error-active-indicator-color),
+      hover: map.get($theme, text-field-error-hover-active-indicator-color),
+      focus: map.get($theme, text-field-error-focus-active-indicator-color),
+    )
+  );
+  @include _text-field-active-indicator-height(
+    map.get($theme, text-field-active-indicator-height)
+  );
+  @include _text-field-caret-color(
+    (
+      default: map.get($theme, text-field-caret-color),
+      hover: map.get($theme, text-field-hover-caret-color),
+      focus: map.get($theme, text-field-focus-caret-color),
+    )
+  );
+  @include _text-field-error-caret-color(
+    (
+      default: map.get($theme, text-field-error-caret-color),
+      hover: map.get($theme, text-field-error-hover-caret-color),
+      focus: map.get($theme, text-field-error-focus-caret-color),
+    )
+  );
+  @include ink-color(
+    (
+      default: map.get($theme, text-field-input-text-color),
+      hover: map.get($theme, text-field-hover-input-text-color),
+      focus: map.get($theme, text-field-focus-input-text-color),
+      disabled: map.get($theme, text-field-disabled-input-text-color),
+    )
+  );
+  @include _error-input-text-color(
+    (
+      default: map.get($theme, text-field-error-input-text-color),
+      hover: map.get($theme, text-field-error-hover-input-text-color),
+      focus: map.get($theme, text-field-error-focus-input-text-color),
+    )
+  );
+  @include label-color(
+    (
+      default: map.get($theme, text-field-label-text-color),
+      hover: map.get($theme, text-field-hover-label-text-color),
+      focus: map.get($theme, text-field-focus-label-text-color),
+      disabled: map.get($theme, text-field-disabled-label-text-color),
+    )
+  );
+  @include label-floating-color(
+    (
+      default: map.get($theme, text-field-label-text-color),
+      hover: map.get($theme, text-field-hover-label-text-color),
+      focus: map.get($theme, text-field-focus-label-text-color),
+      disabled: map.get($theme, text-field-disabled-label-text-color),
+    )
+  );
+  @include _error-label-text-color(
+    (
+      default: map.get($theme, text-field-error-label-text-color),
+      hover: map.get($theme, text-field-error-hover-label-text-color),
+      focus: map.get($theme, text-field-error-focus-label-text-color),
+    )
+  );
+  @include _text-field-leading-icon-color(
+    (
+      default: map.get($theme, text-field-leading-icon-color),
+      hover: map.get($theme, text-field-hover-leading-icon-color),
+      focus: map.get($theme, text-field-focus-leading-icon-color),
+      disabled: map.get($theme, text-field-disabled-leading-icon-color),
+    )
+  );
+  @include _error-text-field-leading-icon-color(
+    (
+      default: map.get($theme, text-field-error-leading-icon-color),
+      hover: map.get($theme, text-field-error-hover-leading-icon-color),
+      focus: map.get($theme, text-field-error-focus-leading-icon-color),
+    )
+  );
+  @include select-helper-text-theme.helper-text-color(
+    (
+      default: map.get($theme, text-field-supporting-text-color),
+      disabled: map.get($theme, text-field-disabled-supporting-text-color),
+    )
+  );
+  @include select-helper-text-theme.helper-text-validation-color(
+    map.get($theme, text-field-error-supporting-text-color)
+  );
+  @include _text-field-input-text-typography(
+    (
+      font: map.get($theme, text-field-input-text-font),
+      line-height: map.get($theme, text-field-input-text-line-height),
+      size: map.get($theme, text-field-input-text-size),
+      tracking: map.get($theme, text-field-input-text-tracking),
+      weight: map.get($theme, text-field-input-text-weight),
+    )
+  );
+  @include _text-field-label-text-typography(
+    (
+      font: map.get($theme, text-field-label-text-font),
+      line-height: map.get($theme, text-field-label-text-line-height),
+      size: map.get($theme, text-field-label-text-size),
+      tracking: map.get($theme, text-field-label-text-tracking),
+      weight: map.get($theme, text-field-label-text-weight),
+    )
+  );
+  @include _text-field-label-text-populated-typography(
+    (
+      line-height: map.get($theme, text-field-label-text-populated-line-height),
+      size: map.get($theme, text-field-label-text-populated-size),
+    )
+  );
+  @include _text-field-supporting-text-typography(
+    (
+      font: map.get($theme, text-field-supporting-text-font),
+      line-height: map.get($theme, text-field-supporting-text-line-height),
+      size: map.get($theme, text-field-supporting-text-size),
+      tracking: map.get($theme, text-field-supporting-text-tracking),
+      weight: map.get($theme, text-field-supporting-text-weight),
+    )
+  );
+}
+
+@mixin _text-field-supporting-text-typography($typography-theme) {
+  & + .mdc-select-helper-text {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _text-field-input-text-typography($typography-theme) {
+  .mdc-select__selected-text {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _text-field-label-text-populated-typography($typography-theme) {
+  .mdc-floating-label--float-above,
+  // Used for CSS specificity to match with selector used in `outlined-height()`.
+  &.mdc-select--with-leading-icon .mdc-select__anchor .mdc-notched-outline .mdc-floating-label.mdc-floating-label--float-above {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _text-field-label-text-typography($typography-theme) {
+  .mdc-floating-label {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _error-outline-color($color) {
+  &.mdc-select--invalid {
+    @include outline-color($color);
+  }
+}
+
+@mixin _error-text-field-leading-icon-color($color) {
+  &.mdc-select--invalid {
+    @include _text-field-leading-icon-color($color);
+  }
+}
+
+@mixin _text-field-leading-icon-color($color) {
+  @include _if-enabled {
+    @include _set-text-field-leading-icon-color(
+      state.get-default-state($color)
+    );
+
+    &:not(.mdc-select--focused):hover {
+      @include _set-text-field-leading-icon-color(
+        state.get-hover-state($color)
+      );
+    }
+
+    @include _if-focused {
+      @include _set-text-field-leading-icon-color(
+        state.get-focus-state($color)
+      );
+    }
+  }
+
+  @include _if-disabled {
+    @include _set-text-field-leading-icon-color(
+      state.get-disabled-state($color)
+    );
+  }
+}
+
+@mixin _set-text-field-leading-icon-color($color) {
+  .mdc-select__anchor .mdc-select__icon {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _error-label-text-color($color) {
+  &.mdc-select--invalid {
+    @include label-floating-color($color);
+  }
+}
+
+@mixin _error-input-text-color($color) {
+  &.mdc-select--invalid {
+    @include ink-color($color);
+  }
+}
+
+@mixin _text-field-caret-color($color) {
+  @include dropdown-icon-color($color);
+}
+
+@mixin _text-field-error-caret-color($color) {
+  &.mdc-select--invalid {
+    @include dropdown-icon-color($color);
+  }
+}
+
+@mixin _text-field-error-active-indicator-color($color) {
+  &.mdc-select--invalid {
+    @include bottom-line-color($color);
+  }
+}
+
+@mixin _text-field-active-indicator-height($height) {
+  .mdc-line-ripple {
+    @include line-ripple-mixins.height($height);
+  }
+}
+
+@mixin _menu-list-item-with-leading-icon-leading-icon-color($color) {
+  &:not(.mdc-select--disabled) .mdc-select__option .mdc-select__icon {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _menu-list-item-with-leading-icon-leading-icon-size($size) {
+  &:not(.mdc-select--disabled) .mdc-select__option .mdc-select__icon {
+    @include theme.property(font-size, $size);
+  }
+}
+
+@mixin _menu-list-item-selected-container-color($color) {
+  .mdc-select__option {
+    @include list-evolution-mixins.list-item-selected-container-color($color);
+  }
+}
+
+@mixin _menu-list-item-label-text-typography($typography-theme) {
+  .mdc-select__option {
+    @include list-evolution-mixins.list-primary-text-typography(
+      $typography-theme
+    );
+  }
+}
+
+@mixin _menu-list-item-label-text-color($color) {
+  .mdc-select__option {
+    @include list-evolution-mixins.list-primary-text-ink-color($color);
+  }
+}
+
+@mixin _menu-list-item-container-height($height) {
+  .mdc-select__option {
+    @include list-evolution-mixins.list-item-height($height);
+  }
+}
+
+@mixin _menu-divider-color($color) {
+  .mdc-select__list {
+    @include list-evolution-mixins.divider-color($color);
+  }
+}
+
+@mixin _menu-divider-height($height) {
+  .mdc-select__list {
+    @include list-evolution-mixins.divider-height($height);
+  }
+}
+
+@mixin _menu-container-color($color) {
+  .mdc-select__menu {
+    @include menu-surface-mixins.fill-color($color);
+  }
+}
+
+@mixin _menu-container-elevation($resolver, $shadow-color, $elevation) {
+  .mdc-select__menu {
+    @include elevation-theme.with-resolver(
+      $resolver,
+      $elevation: $elevation,
+      $shadow-color: $shadow-color
+    );
+  }
+}
+
+@mixin _menu-container-shape($shape) {
+  .mdc-select__menu {
+    @include menu-surface-mixins.shape-radius($shape);
+  }
+}
+
+@mixin menu-list-item-secondary-label-text-color($color) {
+  .mdc-select__list {
+    @include list-evolution-mixins.list-secondary-text-ink-color($color);
+  }
+}
+
+@mixin menu-list-item-secondary-label-text-typography($typography-theme) {
+  .mdc-select__list {
+    @include list-evolution-mixins.list-secondary-text-typography(
+      $typography-theme
+    );
+  }
 }
 
 /// Sets the min-width of the select.
@@ -479,6 +873,28 @@ $_light-theme: (
   }
 }
 
+@mixin outline-width($width) {
+  @include _if-enabled {
+    @include _outline-width(state.get-default-state($width));
+
+    &:not(.mdc-select--focused) .mdc-select__anchor:hover {
+      @include _outline-width(state.get-hover-state($width));
+    }
+
+    @include _if-focused {
+      .mdc-notched-outline {
+        @include _outline-width(state.get-focus-state($width));
+      }
+    }
+  }
+}
+
+@mixin _outline-width($width) {
+  @if $width {
+    @include notched-outline-mixins.stroke-width($width);
+  }
+}
+
 ///
 /// Sets the dropdown icon to the specified size.
 ///
@@ -525,15 +941,18 @@ $_light-theme: (
   $radius,
   $density-scale: $density-scale,
   $rtl-reflexive: false,
-  $query: feature-targeting.all()
+  $query: feature-targeting.all(),
+  $height: null
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  $height: density-functions.prop-value(
-    $density-config: $density-config,
-    $density-scale: $density-scale,
-    $property-name: height,
-  );
+  @if not $height {
+    $height: density-functions.prop-value(
+      $density-config: $density-config,
+      $density-scale: $density-scale,
+      $property-name: height,
+    );
+  }
 
   .mdc-notched-outline {
     @include notched-outline-mixins.shape-radius(

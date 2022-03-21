@@ -56,6 +56,8 @@ $_light-theme: (
   text-field-trailing-icon-color: null,
   text-field-trailing-icon-size: null,
   text-field-caret-color: null,
+  text-field-hover-caret-color: null,
+  text-field-focus-caret-color: null,
   menu-container-color: null,
   menu-container-elevation: null,
   menu-container-shadow-color: null,
@@ -120,6 +122,8 @@ $_light-theme: (
   text-field-error-focus-supporting-text-color: null,
   text-field-error-focus-leading-icon-color: null,
   text-field-error-focus-trailing-icon-color: null,
+  text-field-error-caret-color: null,
+  text-field-error-hover-caret-color: null,
   text-field-error-focus-caret-color: null,
   text-field-error-hover-active-indicator-color: null,
   text-field-error-hover-label-text-color: null,
@@ -134,4 +138,14 @@ $_light-theme: (
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme($_light-theme, $theme);
   @include select-theme.theme-styles($theme, $resolvers: $resolvers);
+  @if map.get($theme, text-field-container-height) {
+    @include select-theme.filled-height(
+      map.get($theme, text-field-container-height)
+    );
+  }
+  @if map.get($theme, text-field-container-shape) {
+    @include select-theme.filled-shape-radius(
+      map.get($theme, text-field-container-shape)
+    );
+  }
 }

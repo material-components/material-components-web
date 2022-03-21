@@ -509,10 +509,10 @@
   );
 
   @include divider-color($divider-color, $query: $query);
+  @include divider-height(1px, $query: $query);
 
   .mdc-list-divider {
     @include feature-targeting.targets($feat-structure) {
-      height: 1px;
       padding: 0;
 
       // Allows the use of padding to specify leading and trailing insets
@@ -629,6 +629,14 @@
     @include feature-targeting.targets($feat-structure) {
       height: $height;
     }
+  }
+}
+
+@mixin list-item-height($height) {
+  &.mdc-list-item--with-one-line,
+  &.mdc-list-item--with-two-lines,
+  &.mdc-list-item--with-three-lines {
+    height: $height;
   }
 }
 
@@ -801,6 +809,18 @@
   }
 }
 
+@mixin list-item-selected-container-color($color) {
+  &.mdc-list-item--selected {
+    @include theme.property(background-color, $color);
+  }
+}
+
+@mixin list-primary-text-typography($typography-theme) {
+  .mdc-list-item__primary-text {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
 @mixin list-primary-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
@@ -818,6 +838,12 @@
     @include feature-targeting.targets($feat-color) {
       @include theme.property(color, $color);
     }
+  }
+}
+
+@mixin list-secondary-text-typography($typography-theme) {
+  .mdc-list-item__secondary-text {
+    @include typography.theme-styles($typography-theme);
   }
 }
 
@@ -1056,6 +1082,16 @@
   .mdc-list-divider {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(background-color, $color);
+    }
+  }
+}
+
+@mixin divider-height($height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-list-divider {
+    @include feature-targeting.targets($feat-structure) {
+      @include theme.property(height, $height);
     }
   }
 }
