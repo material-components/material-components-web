@@ -416,6 +416,7 @@ $forced-colors-theme: (
 }
 
 @mixin _handle-height($height) {
+  .mdc-switch__focus-ring-wrapper,
   .mdc-switch__handle {
     @include theme.property(height, $height);
   }

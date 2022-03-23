@@ -82,9 +82,15 @@ information on how to import JavaScript.**
       </div>
     </div>
   </div>
+  <span class="mdc-switch__focus-ring-wrapper">
+    <div class="mdc-switch__focus-ring"></div>
+  </span>
 </button>
 <label for="basic-switch">off/on</label>
 ```
+
+The `mdc-switch__focus-ring` element ensures that a focus indicator is displayed
+in high contrast mode around the active/focused switch.
 
 ### Switch states
 
@@ -121,6 +127,9 @@ avoid a FOUC by initially adding this attribute.
       </div>
     </div>
   </div>
+  <span class="mdc-switch__focus-ring-wrapper">
+    <div class="mdc-switch__focus-ring"></div>
+  </span>
 </button>
 <label for="disabled-switch">off/on</label>
 ```
@@ -151,6 +160,9 @@ this class and attribute.
       </div>
     </div>
   </div>
+  <span class="mdc-switch__focus-ring-wrapper">
+    <div class="mdc-switch__focus-ring"></div>
+  </span>
 </button>
 <label for="selected-switch">off/on</label>
 ```

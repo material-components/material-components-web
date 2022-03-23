@@ -26,7 +26,9 @@
 @use '@material/animation/animation';
 @use '@material/dom/dom';
 @use '@material/elevation/elevation';
+@use '@material/ripple/ripple-theme';
 @use '@material/ripple/ripple';
+@use '@material/focus-ring/focus-ring';
 @use '@material/rtl/rtl';
 @use '@material/theme/gss';
 
@@ -42,6 +44,24 @@ $ripple-target: '.mdc-switch__ripple';
     @include ripple.common; // COPYBARA_COMMENT_THIS_LINE
     @include ripple.surface($ripple-target: $ripple-target);
     @include ripple.radius-unbounded($ripple-target: $ripple-target);
+
+    .mdc-switch__focus-ring-wrapper {
+      width: 100%;
+      position: absolute;
+      // IE11 hacks
+      top: 50%;
+      @include rtl.ignore-next-line();
+      left: 50%;
+      @include rtl.ignore-next-line();
+      transform: translate(-50%, -50%);
+      // end IE11 hacks
+    }
+
+    @include ripple-theme.focus {
+      .mdc-switch__focus-ring {
+        @include focus-ring.focus-ring();
+      }
+    }
   }
 }
 
