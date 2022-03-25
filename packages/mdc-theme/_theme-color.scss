@@ -63,6 +63,11 @@
     @return $color;
   }
 
+  @if meta.type-of($color) != 'color' {
+    @warn '#{$color} is not a color. Falling back to "dark" tone.';
+    @return 'dark';
+  }
+
   $minimumContrast: 3.1;
 
   $lightContrast: contrast($color, white);
@@ -329,7 +334,10 @@ $_property-values-copy: $property-values;
 ///   => #fff
 ///
 @function get-custom-property($color) {
+  $is-tokens-custom-prop: meta.type-of($color) == 'string' and
+    string.index($color, '--') != null;
   @if custom-properties.is-custom-prop($color) or
+    $is-tokens-custom-prop or
     is-valid-theme-prop-value_($color)
   {
     @return $color;
@@ -348,6 +356,6 @@ $_property-values-copy: $property-values;
 
     @return $custom-prop;
   } @else {
-    @error "Invalid theme property: '#{$style}'. Choose one of: #{get-theme-keys()}";
+    @error "Invalid theme property: '#{$color}'. Choose one of: #{get-theme-keys()}";
   }
 }

@@ -91,7 +91,7 @@ $light-theme: (
   $resolver: resolvers.$material,
   $query: feature-targeting.all()
 ) {
-  @include theme.validate-theme($light-theme, $theme);
+  @include theme.validate-theme-keys($light-theme, $theme);
   $theme: keys.create-theme-properties(
     $theme,
     $prefix: $_custom-property-prefix
