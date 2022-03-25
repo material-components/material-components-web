@@ -26,9 +26,9 @@
 
 @use 'sass:map';
 @use '@material/tokens/resolvers';
-@use '@material/feature-targeting/feature-targeting';
-@use '@material/theme/mixins' as theme-mixins;
+@use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/theme/theme';
+@use '@material/typography/typography';
 
 $_light-theme: (
   active-indicator-color: null,
@@ -56,6 +56,8 @@ $_light-theme: (
   disabled-trailing-icon-color: null,
   disabled-trailing-icon-opacity: null,
   error-active-indicator-color: null,
+  // Token key `error-caret-color` not available on DSDB.
+  error-caret-color: null,
   error-focus-active-indicator-color: null,
   error-focus-caret-color: null,
   error-focus-input-text-color: null,
@@ -65,6 +67,8 @@ $_light-theme: (
   error-focus-supporting-text-color: null,
   error-focus-trailing-icon-color: null,
   error-hover-active-indicator-color: null,
+  // Token key `error-hover-caret-color` not available on DSDB.
+  error-hover-caret-color: null,
   error-hover-input-text-color: null,
   error-hover-label-text-color: null,
   error-hover-leading-icon-color: null,
@@ -81,6 +85,8 @@ $_light-theme: (
   error-trailing-icon-color: null,
   focus-active-indicator-color: null,
   focus-active-indicator-height: null,
+  // Token key `focus-caret-color` not available on DSDB.
+  focus-caret-color: null,
   focus-input-text-color: null,
   focus-label-text-color: null,
   focus-leading-icon-color: null,
@@ -90,6 +96,8 @@ $_light-theme: (
   focus-trailing-icon-color: null,
   hover-active-indicator-color: null,
   hover-active-indicator-height: null,
+  // Token key `hover-caret-color` not available on DSDB.
+  hover-caret-color: null,
   hover-input-text-color: null,
   hover-label-text-color: null,
   hover-leading-icon-color: null,
@@ -133,6 +141,20 @@ $_light-theme: (
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-keys($_light-theme, $theme);
 
+  @include _caret-color(
+    (
+      default: map.get($theme, caret-color),
+      hover: map.get($theme, hover-caret-color),
+      focus: map.get($theme, focus-caret-color),
+    )
+  );
+  @include _error-caret-color(
+    (
+      default: map.get($theme, error-caret-color),
+      hover: map.get($theme, error-hover-caret-color),
+      focus: map.get($theme, error-focus-caret-color),
+    )
+  );
   @include _input-text-color(
     (
       default: map.get($theme, input-text-color),
@@ -141,67 +163,334 @@ $_light-theme: (
       disabled: map.get($theme, disabled-input-text-color),
     )
   );
+  @include _error-input-text-color(
+    (
+      default: map.get($theme, error-input-text-color),
+      hover: map.get($theme, error-hover-input-text-color),
+      focus: map.get($theme, error-focus-input-text-color),
+    )
+  );
+  @include _label-text-color(
+    (
+      default: map.get($theme, label-text-color),
+      hover: map.get($theme, hover-label-text-color),
+      focus: map.get($theme, focus-label-text-color),
+      disabled: map.get($theme, disabled-label-text-color),
+    )
+  );
+  @include _error-label-text-color(
+    (
+      default: map.get($theme, error-label-text-color),
+      hover: map.get($theme, error-hover-label-text-color),
+      focus: map.get($theme, error-focus-label-text-color),
+    )
+  );
+  @include _leading-icon-color(
+    (
+      default: map.get($theme, leading-icon-color),
+      hover: map.get($theme, hover-leading-icon-color),
+      focus: map.get($theme, focus-leading-icon-color),
+      disabled: map.get($theme, disabled-leading-icon-color),
+    )
+  );
+  @include _error-leading-icon-color(
+    (
+      default: map.get($theme, error-leading-icon-color),
+      hover: map.get($theme, error-hover-leading-icon-color),
+      focus: map.get($theme, error-focus-leading-icon-color),
+    )
+  );
+  @include _trailing-icon-color(
+    (
+      default: map.get($theme, trailing-icon-color),
+      hover: map.get($theme, hover-trailing-icon-color),
+      focus: map.get($theme, focus-trailing-icon-color),
+      disabled: map.get($theme, disabled-trailing-icon-color),
+    )
+  );
+  @include _error-trailing-icon-color(
+    (
+      default: map.get($theme, error-trailing-icon-color),
+      hover: map.get($theme, error-hover-trailing-icon-color),
+      focus: map.get($theme, error-focus-trailing-icon-color),
+    )
+  );
+  @include _supporting-text-color(
+    (
+      default: map.get($theme, supporting-text-color),
+      hover: map.get($theme, hover-supporting-text-color),
+      focus: map.get($theme, focus-supporting-text-color),
+      disabled: map.get($theme, disabled-supporting-text-color),
+    )
+  );
+  @include _error-supporting-text-color(
+    (
+      default: map.get($theme, error-supporting-text-color),
+      hover: map.get($theme, error-hover-supporting-text-color),
+      focus: map.get($theme, error-focus-supporting-text-color),
+    )
+  );
+  @include _input-text-typography(
+    (
+      font: map.get($theme, input-text-font),
+      line-height: map.get($theme, input-text-line-height),
+      size: map.get($theme, input-text-size),
+      tracking: map.get($theme, input-text-tracking),
+      weight: map.get($theme, input-text-weight),
+    )
+  );
+  @include _label-text-typography(
+    (
+      font: map.get($theme, label-text-font),
+      line-height: map.get($theme, label-text-line-height),
+      size: map.get($theme, label-text-size),
+      tracking: map.get($theme, label-text-tracking),
+      weight: map.get($theme, label-text-weight),
+    )
+  );
+  @include _label-text-populated-typography(
+    (
+      line-height: map.get($theme, label-text-populated-line-height),
+      size: map.get($theme, label-text-populated-size),
+    )
+  );
+  @include _supporting-text-typography(
+    (
+      font: map.get($theme, supporting-text-font),
+      line-height: map.get($theme, supporting-text-line-height),
+      size: map.get($theme, supporting-text-size),
+      tracking: map.get($theme, supporting-text-tracking),
+      weight: map.get($theme, supporting-text-weight),
+    )
+  );
 }
 
-@mixin _input-text-color($colors, $query: feature-targeting.all()) {
-  $feat-color: feature-targeting.create-target($query, color);
+@mixin _caret-color($colors) {
+  @include if-enabled {
+    @include _set-caret-color(map.get($colors, default));
 
-  @include _if-enabled {
-    @include _set-input-text-color(map.get($colors, default), $query: $query);
-  }
+    @include if-hovered {
+      @include _set-caret-color(map.get($colors, hover));
+    }
 
-  @include _if-hovered {
-    @include _set-input-text-color(map.get($colors, hover), $query: $query);
-  }
-
-  @include _if-focused {
-    @include _set-input-text-color(map.get($colors, focus), $query: $query);
-  }
-
-  @include _if-disabled {
-    @include _set-input-text-color(map.get($colors, disabled), $query: $query);
-  }
-}
-
-@mixin _set-input-text-color($color, $query: feature-targeting.all()) {
-  $feat-color: feature-targeting.create-target($query, color);
-
-  @if $color {
-    .mdc-text-field__input {
-      @include feature-targeting.targets($feat-color) {
-        @include theme-mixins.property(color, $color);
-      }
+    @include if-focused {
+      @include _set-caret-color(map.get($colors, focus));
     }
   }
 }
 
+@mixin _set-caret-color($color) {
+  .mdc-text-field__input {
+    caret-color: $color;
+  }
+}
+
+@mixin _error-caret-color($colors) {
+  &.mdc-text-field--invalid {
+    @include _caret-color($colors);
+  }
+}
+
+@mixin _input-text-color($colors) {
+  @include if-enabled {
+    @include _set-input-text-color(map.get($colors, default));
+
+    @include if-hovered {
+      @include _set-input-text-color(map.get($colors, hover));
+    }
+
+    @include if-focused {
+      @include _set-input-text-color(map.get($colors, focus));
+    }
+  }
+
+  @include if-disabled {
+    @include _set-input-text-color(map.get($colors, disabled));
+  }
+}
+
+@mixin _set-input-text-color($color) {
+  @if $color {
+    .mdc-text-field__input {
+      @include theme.property(color, $color);
+    }
+  }
+}
+
+@mixin _error-input-text-color($color) {
+  &.mdc-text-field--invalid {
+    @include _input-text-color($color);
+  }
+}
+
+@mixin _label-text-color($colors) {
+  @include if-enabled {
+    @include _set-label-text-color(map.get($colors, default));
+
+    @include if-focused {
+      @include _set-label-text-color(map.get($colors, focus));
+    }
+
+    @include if-hovered {
+      @include _set-label-text-color(map.get($colors, hover));
+    }
+  }
+
+  @include if-disabled {
+    @include _set-label-text-color(map.get($colors, disabled));
+  }
+}
+
+@mixin _set-label-text-color($color) {
+  .mdc-floating-label,
+  .mdc-floating-label--float-above {
+    @include floating-label-mixins.ink-color($color);
+  }
+}
+
+@mixin _error-label-text-color($color) {
+  &.mdc-text-field--invalid {
+    @include _label-text-color($color);
+  }
+}
+
+@mixin _leading-icon-color($colors) {
+  @include if-enabled {
+    @include _set-leading-icon-color(map.get($colors, default));
+
+    @include if-hovered {
+      @include _set-leading-icon-color(map.get($colors, hover));
+    }
+
+    @include if-focused {
+      @include _set-leading-icon-color(map.get($colors, focus));
+    }
+  }
+
+  @include if-disabled {
+    @include _set-leading-icon-color(map.get($colors, disabled));
+  }
+}
+
+@mixin _set-leading-icon-color($color) {
+  .mdc-text-field__icon--leading {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _error-leading-icon-color($color) {
+  &.mdc-text-field--invalid {
+    @include _leading-icon-color($color);
+  }
+}
+
+@mixin _trailing-icon-color($colors) {
+  @include if-enabled {
+    @include _set-trailing-icon-color(map.get($colors, default));
+
+    @include if-hovered {
+      @include _set-trailing-icon-color(map.get($colors, hover));
+    }
+
+    @include if-focused {
+      @include _set-trailing-icon-color(map.get($colors, focus));
+    }
+  }
+
+  @include if-disabled {
+    @include _set-trailing-icon-color(map.get($colors, disabled));
+  }
+}
+
+@mixin _set-trailing-icon-color($color) {
+  .mdc-text-field__icon--trailing {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _error-trailing-icon-color($color) {
+  &.mdc-text-field--invalid {
+    @include _trailing-icon-color($color);
+  }
+}
+
+@mixin _supporting-text-color($colors) {
+  @include if-enabled {
+    @include _set-supporting-text-color(map.get($colors, default));
+
+    @include if-hovered {
+      @include _set-supporting-text-color(map.get($colors, hover));
+    }
+
+    @include if-focused {
+      @include _set-supporting-text-color(map.get($colors, focus));
+    }
+  }
+
+  @include if-disabled {
+    @include _set-supporting-text-color(map.get($colors, disabled));
+  }
+}
+
+@mixin _error-supporting-text-color($color) {
+  &.mdc-text-field--invalid {
+    @include _supporting-text-color($color);
+  }
+}
+
+@mixin _set-supporting-text-color($color) {
+  & + .mdc-text-field-helper-text {
+    @include theme.property(color, $color);
+  }
+}
+
+@mixin _input-text-typography($typography-theme) {
+  .mdc-text-field__input {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _label-text-typography($typography-theme) {
+  .mdc-floating-label {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _label-text-populated-typography($typography-theme) {
+  .mdc-floating-label--float-above {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
+@mixin _supporting-text-typography($typography-theme) {
+  & + .mdc-text-field-helper-text {
+    @include typography.theme-styles($typography-theme);
+  }
+}
+
 /// Selector for hovered state
-/// @access private
-@mixin _if-hovered {
+@mixin if-hovered {
   &:not(.mdc-text-field--focused):hover {
     @content;
   }
 }
 
 /// Selector for focused state
-/// @access private
-@mixin _if-focused {
+@mixin if-focused {
   &.mdc-text-field--focused {
     @content;
   }
 }
 
 /// Selector for enabled state
-/// @access private
-@mixin _if-enabled {
+@mixin if-enabled {
   &:not(.mdc-text-field--disabled) {
     @content;
   }
 }
 
 /// Selector for disabled state
-/// @access private
-@mixin _if-disabled {
+@mixin if-disabled {
   &.mdc-text-field--disabled {
     @content;
   }

@@ -20,10 +20,16 @@
 // THE SOFTWARE.
 //
 
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// NOTE: this is the implementation of the aforementioned classes.
+
 @use 'sass:map';
+@use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/theme/theme';
 @use '@material/tokens/resolvers';
 @use './text-field-theme';
+@use './mixins';
 
 $_light-theme: (
   caret-color: null,
@@ -42,6 +48,7 @@ $_light-theme: (
   disabled-supporting-text-opacity: null,
   disabled-trailing-icon-color: null,
   disabled-trailing-icon-opacity: null,
+  error-caret-color: null,
   error-focus-caret-color: null,
   error-focus-input-text-color: null,
   error-focus-label-text-color: null,
@@ -49,6 +56,7 @@ $_light-theme: (
   error-focus-outline-color: null,
   error-focus-supporting-text-color: null,
   error-focus-trailing-icon-color: null,
+  error-hover-caret-color: null,
   error-hover-input-text-color: null,
   error-hover-label-text-color: null,
   error-hover-leading-icon-color: null,
@@ -61,6 +69,7 @@ $_light-theme: (
   error-outline-color: null,
   error-supporting-text-color: null,
   error-trailing-icon-color: null,
+  focus-caret-color: null,
   focus-input-text-color: null,
   focus-label-text-color: null,
   focus-leading-icon-color: null,
@@ -68,6 +77,7 @@ $_light-theme: (
   focus-outline-width: null,
   focus-supporting-text-color: null,
   focus-trailing-icon-color: null,
+  hover-caret-color: null,
   hover-input-text-color: null,
   hover-label-text-color: null,
   hover-leading-icon-color: null,
@@ -109,4 +119,90 @@ $_light-theme: (
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme($_light-theme, $theme);
   @include text-field-theme.theme-styles($theme, $resolvers: $resolvers);
+
+  @if map.get($theme, container-height) {
+    @include mixins.outlined-height(map.get($theme, container-height));
+
+    &.mdc-text-field--with-leading-icon {
+      @include mixins.outlined-with-leading-icon-height(
+        map.get($theme, container-height)
+      );
+    }
+  }
+  @if map.get($theme, container-shape) {
+    @include mixins.outline-shape-radius(map.get($theme, container-shape));
+  }
+
+  @include _outline-color(
+    (
+      default: map.get($theme, outline-color),
+      hover: map.get($theme, hover-outline-color),
+      focus: map.get($theme, focus-outline-color),
+      disabled: map.get($theme, disabled-outline-color),
+    )
+  );
+  @include _error-outline-color(
+    (
+      default: map.get($theme, error-outline-color),
+      hover: map.get($theme, error-hover-outline-color),
+      focus: map.get($theme, error-focus-outline-color),
+    )
+  );
+  @include _outline-width(
+    (
+      default: map.get($theme, outline-width),
+      hover: map.get($theme, hover-outline-width),
+      focus: map.get($theme, focus-outline-width),
+    )
+  );
+}
+
+@mixin _outline-color($colors) {
+  @include text-field-theme.if-enabled {
+    @include _set-outline-color(map.get($colors, default));
+
+    @include text-field-theme.if-hovered {
+      .mdc-notched-outline {
+        @include _set-outline-color(map.get($colors, hover));
+      }
+    }
+
+    @include text-field-theme.if-focused {
+      @include _set-outline-color(map.get($colors, focus));
+    }
+  }
+
+  @include text-field-theme.if-disabled {
+    @include _set-outline-color(map.get($colors, disabled));
+  }
+}
+
+@mixin _set-outline-color($color) {
+  @include notched-outline-mixins.color($color);
+}
+
+@mixin _error-outline-color($color) {
+  &.mdc-text-field--invalid {
+    @include _outline-color($color);
+  }
+}
+
+@mixin _outline-width($width) {
+  @include text-field-theme.if-enabled {
+    @include _set-outline-width(map.get($width, default));
+
+    @include text-field-theme.if-hovered {
+      @include _set-outline-width(map.get($width, hover));
+    }
+
+    @include text-field-theme.if-focused {
+      @include _set-outline-width(map.get($width, focus));
+    }
+  }
+}
+
+@mixin _set-outline-width($width) {
+  .mdc-notched-outline {
+    @include notched-outline-mixins.stroke-width($width);
+  }
 }
