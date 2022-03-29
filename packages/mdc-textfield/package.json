@@ -30,6 +30,7 @@
     "@material/rtl": "^13.0.0",
     "@material/shape": "^13.0.0",
     "@material/theme": "^13.0.0",
+    "@material/tokens": "^13.0.0",
     "@material/typography": "^13.0.0",
     "tslib": "^2.1.0"
   }

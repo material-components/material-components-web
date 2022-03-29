@@ -1,0 +1,208 @@
+//
+// Copyright 2022 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// NOTE: this is the implementation of the aforementioned classes.
+
+@use 'sass:map';
+@use '@material/tokens/resolvers';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/mixins' as theme-mixins;
+@use '@material/theme/theme';
+
+$_light-theme: (
+  active-indicator-color: null,
+  active-indicator-height: null,
+  caret-color: null,
+  container-color: null,
+  container-height: null,
+  container-shape: null,
+  disabled-active-indicator-color: null,
+  disabled-active-indicator-height: null,
+  disabled-active-indicator-opacity: null,
+  disabled-container-color: null,
+  disabled-container-opacity: null,
+  disabled-input-text-color: null,
+  disabled-input-text-opacity: null,
+  disabled-label-text-color: null,
+  disabled-label-text-opacity: null,
+  disabled-leading-icon-color: null,
+  disabled-leading-icon-opacity: null,
+  disabled-outline-color: null,
+  disabled-outline-opacity: null,
+  disabled-outline-width: null,
+  disabled-supporting-text-color: null,
+  disabled-supporting-text-opacity: null,
+  disabled-trailing-icon-color: null,
+  disabled-trailing-icon-opacity: null,
+  error-active-indicator-color: null,
+  error-focus-active-indicator-color: null,
+  error-focus-caret-color: null,
+  error-focus-input-text-color: null,
+  error-focus-label-text-color: null,
+  error-focus-leading-icon-color: null,
+  error-focus-outline-color: null,
+  error-focus-supporting-text-color: null,
+  error-focus-trailing-icon-color: null,
+  error-hover-active-indicator-color: null,
+  error-hover-input-text-color: null,
+  error-hover-label-text-color: null,
+  error-hover-leading-icon-color: null,
+  error-hover-outline-color: null,
+  error-hover-state-layer-color: null,
+  error-hover-state-layer-opacity: null,
+  error-hover-supporting-text-color: null,
+  error-hover-trailing-icon-color: null,
+  error-input-text-color: null,
+  error-label-text-color: null,
+  error-leading-icon-color: null,
+  error-outline-color: null,
+  error-supporting-text-color: null,
+  error-trailing-icon-color: null,
+  focus-active-indicator-color: null,
+  focus-active-indicator-height: null,
+  focus-input-text-color: null,
+  focus-label-text-color: null,
+  focus-leading-icon-color: null,
+  focus-outline-color: null,
+  focus-outline-width: null,
+  focus-supporting-text-color: null,
+  focus-trailing-icon-color: null,
+  hover-active-indicator-color: null,
+  hover-active-indicator-height: null,
+  hover-input-text-color: null,
+  hover-label-text-color: null,
+  hover-leading-icon-color: null,
+  hover-outline-color: null,
+  hover-outline-width: null,
+  hover-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  hover-supporting-text-color: null,
+  hover-trailing-icon-color: null,
+  input-text-color: null,
+  input-text-font: null,
+  input-text-line-height: null,
+  input-text-size: null,
+  input-text-tracking: null,
+  input-text-type: null,
+  input-text-weight: null,
+  label-text-color: null,
+  label-text-font: null,
+  label-text-line-height: null,
+  label-text-populated-line-height: null,
+  label-text-populated-size: null,
+  label-text-size: null,
+  label-text-tracking: null,
+  label-text-type: null,
+  label-text-weight: null,
+  leading-icon-color: null,
+  leading-icon-size: null,
+  outline-color: null,
+  outline-width: null,
+  supporting-text-color: null,
+  supporting-text-font: null,
+  supporting-text-line-height: null,
+  supporting-text-size: null,
+  supporting-text-tracking: null,
+  supporting-text-type: null,
+  supporting-text-weight: null,
+  trailing-icon-color: null,
+  trailing-icon-size: null,
+);
+
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme-keys($_light-theme, $theme);
+
+  @include _input-text-color(
+    (
+      default: map.get($theme, input-text-color),
+      hover: map.get($theme, hover-input-text-color),
+      focus: map.get($theme, focus-input-text-color),
+      disabled: map.get($theme, disabled-input-text-color),
+    )
+  );
+}
+
+@mixin _input-text-color($colors, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include _if-enabled {
+    @include _set-input-text-color(map.get($colors, default), $query: $query);
+  }
+
+  @include _if-hovered {
+    @include _set-input-text-color(map.get($colors, hover), $query: $query);
+  }
+
+  @include _if-focused {
+    @include _set-input-text-color(map.get($colors, focus), $query: $query);
+  }
+
+  @include _if-disabled {
+    @include _set-input-text-color(map.get($colors, disabled), $query: $query);
+  }
+}
+
+@mixin _set-input-text-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if $color {
+    .mdc-text-field__input {
+      @include feature-targeting.targets($feat-color) {
+        @include theme-mixins.property(color, $color);
+      }
+    }
+  }
+}
+
+/// Selector for hovered state
+/// @access private
+@mixin _if-hovered {
+  &:not(.mdc-text-field--focused):hover {
+    @content;
+  }
+}
+
+/// Selector for focused state
+/// @access private
+@mixin _if-focused {
+  &.mdc-text-field--focused {
+    @content;
+  }
+}
+
+/// Selector for enabled state
+/// @access private
+@mixin _if-enabled {
+  &:not(.mdc-text-field--disabled) {
+    @content;
+  }
+}
+
+/// Selector for disabled state
+/// @access private
+@mixin _if-disabled {
+  &.mdc-text-field--disabled {
+    @content;
+  }
+}
