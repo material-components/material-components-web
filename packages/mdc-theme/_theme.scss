@@ -331,9 +331,7 @@
   $unsupported-custom-prop-keys: ();
 
   @each $key, $value in $custom-theme {
-    $is-prop: custom-properties.is-custom-prop($value) or
-      custom-properties.is-custom-prop-string($value);
-    @if $is-prop {
+    @if custom-properties.is-custom-prop($value) {
       $unsupported-custom-prop-keys: list.append(
         $unsupported-custom-prop-keys,
         $key,

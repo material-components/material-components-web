@@ -33,6 +33,15 @@ $origin-theme: (
   )
 );
 
+// Should validate when custom property strings are provided.
+@include theme.validate-theme(
+  $origin-theme,
+  (
+    one: var(--one),
+    two: var(--two, 4px),
+  )
+);
+
 // Should throw error when unsupported key (i.e., foobar) is provided.
 .test {
   @include theme.validate-theme(
@@ -44,13 +53,11 @@ $origin-theme: (
   );
 }
 
-// Should throw error when custom properties are provided
+// Should throw error when custom properties are provided.
 .no-custom-props {
   @include theme.validate-theme(
     $origin-theme,
     (
-      one: var(--one),
-      two: var(--two, 4px),
       three: (
         varname: --three,
         fallback: teal,
