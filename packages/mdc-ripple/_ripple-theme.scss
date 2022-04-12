@@ -73,6 +73,7 @@ $pressed-light-ink-opacity: 0.32 !default;
 $_hover-selector: '&:hover';
 $_focus-selector: '&.mdc-ripple-upgraded--background-focused, &:not(.mdc-ripple-upgraded):focus';
 $_active-selector: '&:not(:disabled):active';
+$_background-focused-selector: '&.mdc-ripple-upgraded--background-focused';
 
 $light-theme: (
   focus-state-layer-color: theme-color.$on-surface,
@@ -498,6 +499,13 @@ $_ripple-theme: (
 // @deprecated Use `pressed()` mixin - renamed for consistency.
 @mixin active() {
   @include pressed() {
+    @content;
+  }
+}
+
+/// Selector for background focus
+@mixin background-focus() {
+  #{$_background-focused-selector} {
     @content;
   }
 }
