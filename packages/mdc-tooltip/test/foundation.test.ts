@@ -3066,6 +3066,30 @@ describe('MDCTooltipFoundation', () => {
                    styleValues.yTransformOrigin}`);
      });
 
+  it('handles positioning for tooltip with caret when only one dimension is within the viewport threshold (ABOVE_CENTER)',
+     () => {
+       const anchorBoundingRect = {top: 200, left: 10, width: 50, height: 35};
+       const parentBoundingRect = {top: 5, left: 0};
+       const tooltipSize = {width: 40, height: 30};
+       const {foundation, mockAdapter} = setUpFoundationTestForRichTooltip(
+           MDCTooltipFoundation, {hasCaret: true});
+       mockAdapter.getViewportWidth.and.returnValue(60);
+       mockAdapter.getViewportHeight.and.returnValue(800);
+       mockAdapter.getTooltipSize.and.returnValue(tooltipSize);
+       mockAdapter.getAnchorBoundingRect.and.returnValue(anchorBoundingRect);
+       mockAdapter.getParentBoundingRect.and.returnValue(parentBoundingRect);
+       mockAdapter.getTooltipCaretBoundingRect.and.returnValue({
+         width: CARET_WIDTH * numbers.ANIMATION_SCALE,
+         height: CARET_HEIGHT * numbers.ANIMATION_SCALE
+       });
+       foundation.show();
+
+       expect(mockAdapter.setStyleProperty)
+           .toHaveBeenCalledWith('top', '145px');
+       expect(mockAdapter.setStyleProperty)
+           .toHaveBeenCalledWith('left', '15px');
+     });
+
   it(`#setShowDelay allows users to configure the delay prior to showing a tooltip`,
      () => {
        const extraDelayMs = 20;

@@ -1016,6 +1016,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       ],
     ]);
 
+    // TODO(b/227383292): Handle instances where one direction can fit in
+    // in the viewport (whether honoring the threshold or not), and the
+    // other direction does not.
     for (const y of validMappings.keys()) {
       const yDistance = yOptions.get(y)!;
       if (this.yPositionHonorsViewportThreshold(yDistance)) {
@@ -1026,7 +1029,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
             posWithinThreshold.set(caretPositionName, {xDistance, yDistance});
           }
         }
-      } else if (this.yPositionDoesntCollideWithViewport(yDistance)) {
+      }
+
+      if (this.yPositionDoesntCollideWithViewport(yDistance)) {
         for (const x of validMappings.get(y)!) {
           const xDistance = xOptions.get(x)!;
           if (this.positionDoesntCollideWithViewport(xDistance)) {
