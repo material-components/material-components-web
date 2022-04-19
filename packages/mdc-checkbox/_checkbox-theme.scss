@@ -114,6 +114,7 @@ $forced-colors-theme: (
   disabled-selected-icon-opacity: 1,
   disabled-unselected-icon-color: GrayText,
   disabled-unselected-icon-opacity: 1,
+  selected-checkmark-color: ButtonText,
 );
 
 @mixin theme($theme) {
