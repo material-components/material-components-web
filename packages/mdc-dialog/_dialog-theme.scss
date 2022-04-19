@@ -69,6 +69,13 @@ $light-theme: (
   action-pressed-state-layer-color: null,
   action-pressed-state-layer-opacity: null,
   action-pressed-label-text-color: null,
+  // TODO(b/229523517): add headline token support to dialog
+  headline-color: null,
+  headline-font: null,
+  headline-line-height: null,
+  headline-size: null,
+  headline-tracking: null,
+  headline-weight: null,
 );
 
 $custom-property-prefix: 'dialog';
