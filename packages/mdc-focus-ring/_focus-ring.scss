@@ -24,31 +24,31 @@
 @use '@material/rtl/rtl';
 @use '@material/dom/dom';
 
-$ring-radius: 8px !default;
-$inner-ring-width: 2px !default;
-$inner-ring-color: transparent !default;
-$outer-ring-width: 2px !default;
-$outer-ring-color: transparent !default;
-$container-outer-padding: 2px !default;
+$ring-radius-default: 8px !default;
+$inner-ring-width-default: 2px !default;
+$inner-ring-color-default: transparent !default;
+$outer-ring-width-default: 2px !default;
+$outer-ring-color-default: transparent !default;
+$container-outer-padding-default: 2px !default;
 
 /// Styles applied to the component's inner focus ring element.
 ///
-/// @param $ring-radius [$ring-radius] - Focus ring radius.
-/// @param $inner-ring-width [$inner-ring-width] - Inner focus ring width.
-/// @param $inner-ring-color [$inner-ring-color] - Inner focus ring color.
-/// @param $outer-ring-width [$outer-ring-width] - Outer focus ring width.
-/// @param $outer-ring-color [$outer-ring-color] - Outer focus ring color.
-/// @param $container-outer-padding [$container-outer-padding] - The distance
-///     between the focus ring and the container.
+/// @param $ring-radius [$ring-radius-default] - Focus ring radius.
+/// @param $inner-ring-width [$inner-ring-width-default] - Inner focus ring width.
+/// @param $inner-ring-color [$inner-ring-color-default] - Inner focus ring color.
+/// @param $outer-ring-width [$outer-ring-width-default] - Outer focus ring width.
+/// @param $outer-ring-color [$outer-ring-color-default] - Outer focus ring color.
+/// @param $container-outer-padding [$container-outer-padding-default] - The
+///     distance between the focus ring and the container.
 @mixin focus-ring(
   $query: feature-targeting.all(),
-  $ring-radius: $ring-radius,
-  $inner-ring-width: $inner-ring-width,
-  $inner-ring-color: $inner-ring-color,
-  $outer-ring-width: $outer-ring-width,
-  $outer-ring-color: $outer-ring-color,
-  $container-outer-padding-vertical: $container-outer-padding,
-  $container-outer-padding-horizontal: $container-outer-padding
+  $ring-radius: $ring-radius-default,
+  $inner-ring-width: $inner-ring-width-default,
+  $inner-ring-color: $inner-ring-color-default,
+  $outer-ring-width: $outer-ring-width-default,
+  $outer-ring-color: $outer-ring-color-default,
+  $container-outer-padding-vertical: $container-outer-padding-default,
+  $container-outer-padding-horizontal: $container-outer-padding-default
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $container-size-vertical: 100%;
@@ -108,11 +108,11 @@ $container-outer-padding: 2px !default;
 
 /// Customizes the color of the button focus ring.
 ///
-/// @param $inner-ring-color [$inner-ring-color] - Inner focus ring color.
-/// @param $outer-ring-width [$outer-ring-width] - Outer focus ring width.
+/// @param $inner-ring-color [$inner-ring-color-default] - Inner focus ring color.
+/// @param $outer-ring-width [$outer-ring-width-default] - Outer focus ring width.
 @mixin focus-ring-color(
-  $inner-ring-color: $inner-ring-color,
-  $outer-ring-color: $outer-ring-color
+  $inner-ring-color: $inner-ring-color-default,
+  $outer-ring-color: $outer-ring-color-default
 ) {
   border-color: $inner-ring-color;
 
