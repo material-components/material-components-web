@@ -105,7 +105,6 @@ $container-outer-padding-default: 2px !default;
     }
   }
 }
-
 /// Customizes the color of the button focus ring.
 ///
 /// @param $inner-ring-color [$inner-ring-color-default] - Inner focus ring color.
@@ -118,5 +117,26 @@ $container-outer-padding-default: 2px !default;
 
   &::after {
     border-color: $outer-ring-color;
+  }
+}
+
+/// Customizes the border radius of the button focus ring.
+///
+/// @param {Number} $ring-radius - The border radius of the focus ring.
+/// @param {Number} $outer-ring-width [$outer-ring-width] - Width of the outer
+///     ring, required to compute the radius for the inner ring.
+@mixin focus-ring-radius(
+  $ring-radius,
+  $outer-ring-width: $outer-ring-width-default,
+  $query: feature-targeting.all()
+) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include feature-targeting.targets($feat-structure) {
+    border-radius: $ring-radius - $outer-ring-width;
+
+    &::after {
+      border-radius: $ring-radius;
+    }
   }
 }
