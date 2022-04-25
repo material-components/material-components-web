@@ -316,6 +316,15 @@ describe('MDCMenuSurface', () => {
     expect(handler).toHaveBeenCalled();
   });
 
+  it(`adapter#notifyOpening fires an ${strings.OPENING_EVENT} custom event`,
+     () => {
+       const {root, component} = setupTest();
+       const handler = jasmine.createSpy('notifyOpening handler');
+       root.addEventListener(strings.OPENING_EVENT, handler);
+       (component.getDefaultFoundation() as any).adapter.notifyOpening();
+       expect(handler).toHaveBeenCalled();
+     });
+
   it('adapter#restoreFocus restores focus saved by adapter#saveFocus', () => {
     const {root, component} = setupTest({open: true});
     const button = document.createElement('button');

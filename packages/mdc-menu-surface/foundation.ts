@@ -82,8 +82,9 @@ export class MDCMenuSurfaceFoundation extends
       restoreFocus: () => undefined,
 
       notifyClose: () => undefined,
-      notifyOpen: () => undefined,
       notifyClosing: () => undefined,
+      notifyOpen: () => undefined,
+      notifyOpening: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -238,6 +239,7 @@ export class MDCMenuSurfaceFoundation extends
       return;
     }
 
+    this.adapter.notifyOpening();
     this.adapter.saveFocus();
 
     if (this.isQuickOpen) {
