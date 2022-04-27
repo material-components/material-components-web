@@ -196,6 +196,7 @@ describe('MDCMenuSurfaceFoundation', () => {
       'notifyClose',
       'notifyClosing',
       'notifyOpen',
+      'notifyOpening',
       'isElementInContainer',
       'isRtl',
       'setTransformOrigin',
@@ -262,6 +263,13 @@ describe('MDCMenuSurfaceFoundation', () => {
         jasmine.clock().tick(1);  // Run to frame.
         expect(mockAdapter.removeClass)
             .toHaveBeenCalledWith(cssClasses.ANIMATING_OPEN);
+      });
+
+  testFoundation(
+      '#open emits the opening event at the beginning of the animation',
+      ({foundation, mockAdapter}) => {
+        foundation.open();
+        expect(mockAdapter.notifyOpening).toHaveBeenCalled();
       });
 
   testFoundation(
