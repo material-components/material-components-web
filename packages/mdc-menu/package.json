@@ -1,6 +1,6 @@
 {
   "name": "@material/menu",
-  "version": "13.0.0",
+  "version": "14.0.0",
   "description": "The Material Components for the web menu component",
   "license": "MIT",
   "keywords": [
@@ -17,15 +17,15 @@
     "directory": "packages/mdc-menu"
   },
   "dependencies": {
-    "@material/base": "^13.0.0",
-    "@material/dom": "^13.0.0",
-    "@material/elevation": "^13.0.0",
-    "@material/feature-targeting": "^13.0.0",
-    "@material/list": "^13.0.0",
-    "@material/menu-surface": "^13.0.0",
-    "@material/ripple": "^13.0.0",
-    "@material/rtl": "^13.0.0",
-    "@material/theme": "^13.0.0",
+    "@material/base": "^14.0.0",
+    "@material/dom": "^14.0.0",
+    "@material/elevation": "^14.0.0",
+    "@material/feature-targeting": "^14.0.0",
+    "@material/list": "^14.0.0",
+    "@material/menu-surface": "^14.0.0",
+    "@material/ripple": "^14.0.0",
+    "@material/rtl": "^14.0.0",
+    "@material/theme": "^14.0.0",
     "tslib": "^2.1.0"
   }
 }

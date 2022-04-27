@@ -3,6 +3,98 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.0.0](https://github.com/material-components/material-components-web/compare/v13.0.0...v14.0.0) (2022-04-27)
+
+
+### Bug Fixes
+
+* **button:** update HCM shim to use the existing focus-ring ([a657abb](https://github.com/material-components/material-components-web/commit/a657abb61a2c7d23c2bd92c3cbd54ed404d0bafe))
+* **checkbox:** Add explicit system color for checkmark in HCM. ([8c4da22](https://github.com/material-components/material-components-web/commit/8c4da223a7d35c4ca0a4f27534ecdb13087d0f1b))
+* **checkbox:** move forced-colors theme out of static styles ([bbd1126](https://github.com/material-components/material-components-web/commit/bbd11268f0ea4fd45205a642f1d26a4c4ff34e05))
+* **checkbox:** Update checkbox theme styles mixin to accept css vars ([c14e977](https://github.com/material-components/material-components-web/commit/c14e977ee36c26074b04dea5ce37e2300e9d3735))
+* **chips:** Fix typography selector in GMDC-Wiz chips theming ([43c7d87](https://github.com/material-components/material-components-web/commit/43c7d87dc0c928d74652ceaebebca51c69b6eaaf))
+* **datatable:** Adjust data table last row border-radius to support setting row background-color. ([ba78e87](https://github.com/material-components/material-components-web/commit/ba78e87246af31e1fe7dd03241a7565f2892fd64))
+* **dialog:** Render dividers in Firefox 94 on Windows HCM ([fae6c65](https://github.com/material-components/material-components-web/commit/fae6c652d7debc3e2875ab9049d806513ddc2421))
+* **dialog:** Set default z-index for close button in FloatingSheet dialog. ([3366a71](https://github.com/material-components/material-components-web/commit/3366a71d72f48e946a3f3b314b315395fafb3a1f))
+* **fab:** Add focus ring in HCM. ([d57ec74](https://github.com/material-components/material-components-web/commit/d57ec74c7e9afe5db07162202e6f05b28dd581db))
+* **focus-ring:** add 2d padding customizability, RTL bugfix ([f81fb1d](https://github.com/material-components/material-components-web/commit/f81fb1d232901c17d5794499c26e746ccab1af19))
+* **focus-ring:** box-sizing bugfix to content-box. If box-sizing border-box is inherited the ring spacing will collapse. ([e58552c](https://github.com/material-components/material-components-web/commit/e58552c6efa0442a36f441efe27cd01f3df2a524))
+* **focus-ring:** ignore pointer events ([3ef470e](https://github.com/material-components/material-components-web/commit/3ef470efe6f1d213935dca37ad213030cdd30d88))
+* **focus-ring:** RTL bugfix ([e00181e](https://github.com/material-components/material-components-web/commit/e00181e59cb1f29f4a8280f48b377a667a3e783b))
+* **iconbutton:** Fixed max width and height for high contrast mode focus ring on icon buttons. Display only in forced colors mode. ([cf42927](https://github.com/material-components/material-components-web/commit/cf429277817af685fd0b23a21a2e10ddabc4b9ef))
+* **iconbutton:** Set icon button ripple z-index to -1. ([586e740](https://github.com/material-components/material-components-web/commit/586e740ddcaa674c409d68ab5faf9ee8c61e2d91))
+* **list:** Improve a11y for multi-select lists ([9736ddc](https://github.com/material-components/material-components-web/commit/9736ddce9c12f5485e746984225919568541e88d))
+* **list:** Remove conflicting validation for checkbox list in setEnabled ([353ca7e](https://github.com/material-components/material-components-web/commit/353ca7e9f21b3589a17d25d8892198cba811dd13))
+* **list:** Update lastSelectedIndex when toggling a checkbox range ([dcba26f](https://github.com/material-components/material-components-web/commit/dcba26fe1028cf151ebf34c5947082a49cc85f10))
+* **menusurface:** Add a getOwnerDocument() method to MDCMenuSurfaceAdapter to provide a reference to the document that owns the menu surface DOM element. ([3486659](https://github.com/material-components/material-components-web/commit/348665978ce73694ad4518626dd70cdf5b984113))
+* **radio:** Fix disabled state in Firefox Windows high contrast mode ([23043ac](https://github.com/material-components/material-components-web/commit/23043acd0e5341729230cc6e1840460977056115))
+* **radio:** Modify theme styles Sass mixin validation to validate only keys ([390220e](https://github.com/material-components/material-components-web/commit/390220e422be57e8f38b74e04d8e8aba6082d333))
+* **select:** Add border to select menu in HCM. ([5d80969](https://github.com/material-components/material-components-web/commit/5d809696c6699bf9563e8faf8f79ff6ebd78febf))
+* **select:** revert down/up arrow on anchor changing selected index ([43d08ba](https://github.com/material-components/material-components-web/commit/43d08ba77e44dffbca99194ee18dbd202c8684f7))
+* **slider:** Fix bug where secondary click moves slider thumb. ([3ab9565](https://github.com/material-components/material-components-web/commit/3ab956515feb5c861498b156e68493e6f7f2a578))
+* **slider:** Fix IE11 bug - `unset` is unsupported in IE. ([f460e23](https://github.com/material-components/material-components-web/commit/f460e23dae619c6d09de114cc8c319972b7d1b10))
+* **slider:** In updateUI, fix behavior to match jsdoc claim that when thumb param is undefined it updates both thumbs. Input attributes were not being updated at all. ([cc4ed13](https://github.com/material-components/material-components-web/commit/cc4ed13ccda7b44edce0070edd6ee215e98cc792))
+* **slider:** Make the slider errors easier to debug by providing all relevant values in the error message. ([8687937](https://github.com/material-components/material-components-web/commit/868793776d9610ab068af706297a4f4599c7f6f1))
+* **snackbar:** address Trusted Types violation ([cbd9358](https://github.com/material-components/material-components-web/commit/cbd9358a61e7626ebc12af2cdd3dc465e11ce8bf))
+* **tooltip:** Adjusts logic in `validateTooltipWithCaretDistances` method. ([3e30054](https://github.com/material-components/material-components-web/commit/3e30054fb92c75b85d2f6186f4656d36ea05d6a1))
+* **typography:** Fixes typography `theme-styles` mixin... the value being retreived from the `$theme` map and css property name was swapped. The mixin would request `font-size`/`font-weight`/`letter-spacing` from the `$theme` map (which expects `size`/`weight`/`tracking`)... so these values would always be `null`. ([32b3913](https://github.com/material-components/material-components-web/commit/32b391398aa70f2fbb917cd4649b84d87876cd8e))
+* Remove /** [@override](https://github.com/override) */ tags from TypeScript code. ([c3cdff0](https://github.com/material-components/material-components-web/commit/c3cdff07b59adb0f44b40dbbca2cf05868138528))
+* Simplify MDCAttachable interface to be any object (Function) that has `attachTo`. ([05db65e](https://github.com/material-components/material-components-web/commit/05db65ec07db5a230e2ba1144000046b09d4c44b))
+* Snackbar action button ripple color is applied to the ripple element. ([4e66fb2](https://github.com/material-components/material-components-web/commit/4e66fb2e181b35ac47ae3a6863c101d3ff4f885e))
+* Work around bug in Sass ([037285f](https://github.com/material-components/material-components-web/commit/037285f9bda55dfb2e011f7d58338b29bfa37b6b)), closes [sass/sass#3259](https://github.com/sass/sass/issues/3259)
+* **switch:** Restore Firefox 94 HCM outlines ([39cf14b](https://github.com/material-components/material-components-web/commit/39cf14bc3b0ef053219328d36faaf2636e0f77f4))
+* **textfield:** Fix breaking tests due to no valid pointerId being associated with pointer events. ([15db4f1](https://github.com/material-components/material-components-web/commit/15db4f1641bd3657ed230afacb41da84fb1077bc))
+* **tooltip:** Only sends notification of a tooltip being hidden if `showTimeout` is not set (indicating that this tooltip is about to be re-shown). ([6ca8b8f](https://github.com/material-components/material-components-web/commit/6ca8b8f858f0d508a56cf09bcb4b11221f901acb))
+
+
+### Features
+
+* **banner:** Add disableAutoClose params for both banner actions to prevent the banner buttons from automatically closing the banner. Add adapter #notifyActionClicked method. ([b094eaa](https://github.com/material-components/material-components-web/commit/b094eaa4e7a69132eb09f7b9d6c1d429a3f702a0))
+* **chips:** add focus ring styles ([783f6fd](https://github.com/material-components/material-components-web/commit/783f6fd5a29a56f6c72917546b7426f196bf4cae))
+* **chips:** Added elevation tint layer color support in chips ([c78ff04](https://github.com/material-components/material-components-web/commit/c78ff042967de7cf823a9f9826f8f613be9e4846))
+* **data-table:** separate table structure into its own mixin ([9f9d928](https://github.com/material-components/material-components-web/commit/9f9d928b2c6701707c5e5d32414c0c4db6a4d564))
+* **dialog:** Add styling for floating sheets ([78305b6](https://github.com/material-components/material-components-web/commit/78305b6d547b07aa06db04ad47b765b8f92851fa))
+* **dialog:** Add styling for floating sheets with content padding ([3e20c1d](https://github.com/material-components/material-components-web/commit/3e20c1de85fd72ff5efb3107c442036fc6317b4a))
+* **Dialog:** Adds an API to hide the header for GMDC Fullscreen Dialog in non-fullscreen mode ([ab4aba1](https://github.com/material-components/material-components-web/commit/ab4aba1afaba8f75042ed774f9e618f811bec45e))
+* **Dialog:** Adds an API to set custom position for GMDC Dialog ([ea9b5b4](https://github.com/material-components/material-components-web/commit/ea9b5b463c694804f79deaf8125c73779d34f5ce))
+* **Dialog:** Adds an API to set custom z-index for GMDC Dialog ([96ea061](https://github.com/material-components/material-components-web/commit/96ea061c1787cc329e64e9054ba1402c442a15f0))
+* **focus-ring:** added a new mixin so we can override just the focus-ring color ([641ed08](https://github.com/material-components/material-components-web/commit/641ed08513037285879a13708b95661d69c2f8b0))
+* **focus-ring:** added a new mixin so we can override just the focus-ring radius ([7321d62](https://github.com/material-components/material-components-web/commit/7321d6254d63f701b2f381c9cf11eb0708b56a6e))
+* **iconbutton:** Add link icon button Sass. ([9803d2d](https://github.com/material-components/material-components-web/commit/9803d2dc1c88e44b43a56249916f474581f5382e))
+* **mdc-list:** introduce selection change event ([7d8ea46](https://github.com/material-components/material-components-web/commit/7d8ea4624e7dcdc5ce69edf1e747c77354457f42))
+* **menu:** allow preferentially opening surface below anchor ([261f2db](https://github.com/material-components/material-components-web/commit/261f2db59382d561d6c89a7c41dafb6daad5a717))
+* **MenuSurface:** Add opening event for menus. ([53b3cad](https://github.com/material-components/material-components-web/commit/53b3cad2f5ef4d0c9d5cf03c752f27035dd7c818))
+* **select:** Add theming mixin boilerplate code to select ([ae8a6a3](https://github.com/material-components/material-components-web/commit/ae8a6a3a3e650fd068461d1236c5173c8e0467c8))
+* **select:** Add validation getter methods. ([bdf1d37](https://github.com/material-components/material-components-web/commit/bdf1d3771cd5a3c5b23a5cea63d3eaf97ded257d))
+* **select:** Added theme mixins to MDC select ([dcfe49c](https://github.com/material-components/material-components-web/commit/dcfe49c98ac25f5f5d64db021219d8a6c1caf6de))
+* **slider:** Add `minRange` param to range sliders to request a minimum gap between the two thumbs. ([8fffcb5](https://github.com/material-components/material-components-web/commit/8fffcb5ddfb93f1459d62c67f4a051b035bf9940))
+* **slider:** Add an option to hide focus styles after pointer interaction. ([ec54d90](https://github.com/material-components/material-components-web/commit/ec54d904621360bcb27e6d3cd1f33112e2a54aac))
+* **slider:** Keep the slider value indicator within the bounds of the slider if possible. ([c047f7c](https://github.com/material-components/material-components-web/commit/c047f7c19a9452aaced85ce1608b0bc2a63db223))
+* **state:** make context aware ([b2fe352](https://github.com/material-components/material-components-web/commit/b2fe3528bc1603df715c833abb5d905080681102))
+* **switch:** Add high contrast mode focus ring to switch ([f31a833](https://github.com/material-components/material-components-web/commit/f31a833fae6f132318068f30a24a12c6c0cc192f))
+* **text-field:** Add theming mixin boilerplate code to text-field ([eb382f3](https://github.com/material-components/material-components-web/commit/eb382f31889be98f4eebea1670b78c7c10f7016b))
+* **text-field:** Added theme mixins to MDC text field ([344d528](https://github.com/material-components/material-components-web/commit/344d528233437e5f9ff960913957022f05bbdc04))
+* **textfield:** adding input-font-size mixin ([207230e](https://github.com/material-components/material-components-web/commit/207230eb81e8c10cd5f962725af8c0184b8f3b62))
+* **theme:** allow custom property strings in theme.validate-theme() ([4e372fb](https://github.com/material-components/material-components-web/commit/4e372fb4937f0fe71cce7c4c829b099f9f3dcf6b))
+* add new class and mixin for open state of a menu item ([9a02b6e](https://github.com/material-components/material-components-web/commit/9a02b6ef8e8f235c7bd07cd8c6ce9078a46dbb78))
+* Indicate which thumb `valueToAriaValueTextFn` and `valueToValueIndicatorTextFn` functions are called for. ([b6510c8](https://github.com/material-components/material-components-web/commit/b6510c8c1cc3a91937180f03418ea20a0cf2387b))
+* **textfield:** adding input-font-family mixin ([991fb99](https://github.com/material-components/material-components-web/commit/991fb99f715872b49c89c44a6c98e82b4507fd14))
+* Describe how to add child lists into a list item. ([758ce31](https://github.com/material-components/material-components-web/commit/758ce31d94d065b93d09db0016ec86b56d9197ec))
+
+
+### BREAKING CHANGES
+
+* **MenuSurface:** Adds #notifyOpening method to menu surface adapter.
+
+PiperOrigin-RevId: 444830518
+* **slider:** Adds #getValueIndicatorContainerWidth method to slider adapter.
+
+PiperOrigin-RevId: 419837612
+
+
+
+
+
 # [13.0.0](https://github.com/material-components/material-components-web/compare/v12.0.0...v13.0.0) (2021-09-24)
 
 
