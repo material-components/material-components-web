@@ -1,7 +1,7 @@
 [![Version](https://img.shields.io/npm/v/material-components-web.svg)](https://www.npmjs.com/package/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
 
-<!-- Test change -->
+<!-- Testing change -->
 # Material Components for the web
 
 Material Components for the web helps developers execute [Material Design](https://www.material.io).
