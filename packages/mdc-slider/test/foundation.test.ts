@@ -1661,6 +1661,19 @@ describe('MDCSliderFoundation', () => {
   });
 
   describe('events: ', () => {
+    it('does not handle secondary pointer events', () => {
+      const {foundation, mockAdapter} = setUpAndInit({
+        value: 50,
+      });
+      foundation.handlePointerdown(createMouseEvent('mouseEvent', {
+                                     button: 1,  // Non-primary
+                                     clientX: 20,
+                                   }) as PointerEvent);
+
+      expect(mockAdapter.emitInputEvent).not.toHaveBeenCalled();
+      expect(mockAdapter.emitChangeEvent).not.toHaveBeenCalled();
+    });
+
     it('single point slider: fires `input` and `change` events for value changes',
        () => {
          const {foundation, mockAdapter} = setUpAndInit({

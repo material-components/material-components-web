@@ -64,4 +64,7 @@ export interface MDCMenuSurfaceAdapter {
 
   /** Emits an event when the menu surface is opened. */
   notifyOpen(): void;
+
+  /** Emits an event when the menu surface is opening. */
+  notifyOpening(): void;
 }

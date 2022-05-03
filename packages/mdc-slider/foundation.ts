@@ -560,6 +560,9 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 
   handlePointerdown(event: PointerEvent) {
+    const isPrimaryButton = event.button === 0;
+    if (!isPrimaryButton) return;
+
     if (event.pointerId != null) {
       this.adapter.setPointerCapture(event.pointerId);
     }

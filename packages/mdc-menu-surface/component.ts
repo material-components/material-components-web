@@ -160,6 +160,8 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       },
       notifyOpen: () =>
           this.emit(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, {}),
+      notifyOpening: () =>
+          this.emit(MDCMenuSurfaceFoundation.strings.OPENING_EVENT, {}),
       isElementInContainer: (el) => this.root.contains(el),
       isRtl: () =>
           getComputedStyle(this.root).getPropertyValue('direction') === 'rtl',
