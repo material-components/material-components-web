@@ -1207,6 +1207,7 @@
 }
 
 @mixin _two-line-item-density($density-scale, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
   $height: density-functions.prop-value(
     $density-config: variables.$two-line-item-density-config,
     $density-scale: $density-scale,
@@ -1214,6 +1215,26 @@
   );
 
   @include two-line-item-height($height, $query: $query);
+
+  @if ($density-scale < 0) {
+    &.mdc-list-item--with-two-lines {
+      .mdc-list-item__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .mdc-list-item__primary-text,
+      .mdc-list-item__secondary-text {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        line-height: 1.4;
+        &::before,
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
 }
 
 @mixin _two-line-item-tall-density(
