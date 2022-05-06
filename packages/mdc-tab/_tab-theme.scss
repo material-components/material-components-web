@@ -67,8 +67,8 @@ $primary-light-theme: (
   with-label-text-inactive-hover-label-text-color: theme-color.$on-surface,
   with-label-text-inactive-label-text-color: theme-color.$on-surface,
   with-label-text-inactive-pressed-label-text-color: theme-color.$on-surface,
-  with-label-text-label-text-font: typography.get-font(subhead2),
-  with-label-text-label-text-size: typography.get-size(subhead2),
+  with-label-text-label-text-font-family: typography.get-font(subhead2),
+  with-label-text-label-text-font-size: typography.get-size(subhead2),
   with-label-text-label-text-letter-spacing: typography.get-tracking(subhead2),
   with-label-text-label-text-line-height: typography.get-line-height(subhead2),
   with-label-text-label-text-weight: typography.get-weight(subhead2),
@@ -88,8 +88,8 @@ $secondary-light-theme: (
   hover-state-layer-color: null,
   hover-state-layer-opacity: null,
   inactive-label-text-color: null,
-  label-text-font: null,
-  label-text-size: null,
+  label-text-font-family: null,
+  label-text-font-size: null,
   label-text-letter-spacing: null,
   label-text-line-height: null,
   label-text-weight: null,
@@ -191,10 +191,10 @@ $custom-property-prefix: 'tab';
   );
 
   @include _label-text-font-family(
-    map.get($theme, with-label-text-label-text-font)
+    map.get($theme, with-label-text-label-text-font-family)
   );
   @include _label-text-font-size(
-    map.get($theme, with-label-text-label-text-size)
+    map.get($theme, with-label-text-label-text-font-size)
   );
   @include _label-text-letter-spacing(
     map.get($theme, with-label-text-label-text-letter-spacing)
@@ -240,8 +240,8 @@ $custom-property-prefix: 'tab';
     map.get($theme, inactive-label-text-color)
   );
 
-  @include _label-text-font-family(map.get($theme, label-text-font));
-  @include _label-text-font-size(map.get($theme, label-text-size));
+  @include _label-text-font-family(map.get($theme, label-text-font-family));
+  @include _label-text-font-size(map.get($theme, label-text-font-size));
   @include _label-text-letter-spacing(
     map.get($theme, label-text-letter-spacing)
   );

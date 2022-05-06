@@ -1,7 +1,7 @@
 {
   "name": "@material/circular-progress",
   "description": "The Material Components for the web circular progress component",
-  "version": "14.0.0",
+  "version": "13.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -17,12 +17,12 @@
     "directory": "packages/mdc-circular-progress"
   },
   "dependencies": {
-    "@material/animation": "^14.0.0",
-    "@material/base": "^14.0.0",
-    "@material/feature-targeting": "^14.0.0",
-    "@material/progress-indicator": "^14.0.0",
-    "@material/rtl": "^14.0.0",
-    "@material/theme": "^14.0.0",
+    "@material/animation": "^13.0.0",
+    "@material/base": "^13.0.0",
+    "@material/feature-targeting": "^13.0.0",
+    "@material/progress-indicator": "^13.0.0",
+    "@material/rtl": "^13.0.0",
+    "@material/theme": "^13.0.0",
     "tslib": "^2.1.0"
   }
 }

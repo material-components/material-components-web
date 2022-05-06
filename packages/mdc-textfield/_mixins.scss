@@ -27,7 +27,6 @@
 @use 'sass:math';
 @use 'sass:list';
 @use 'sass:meta';
-@use 'sass:map';
 @use '@material/animation/animation';
 @use '@material/density/functions' as density-functions;
 @use '@material/dom/dom';
@@ -50,13 +49,6 @@
 @use 'icon/variables' as icon-variables;
 @use './variables';
 @use '@material/rtl/rtl';
-
-$_density-config: map.merge(
-  variables.$density-config,
-  (
-    minimum: math.min(variables.$minimum-height, 36px),
-  )
-);
 
 @mixin core-styles($query: feature-targeting.all()) {
   @include ripple($query);
@@ -351,7 +343,7 @@ $_density-config: map.merge(
   $query: feature-targeting.all()
 ) {
   $height: density-functions.prop-value(
-    $density-config: $_density-config,
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
@@ -375,7 +367,7 @@ $_density-config: map.merge(
 ///
 @mixin outlined-density($density-scale, $query: feature-targeting.all()) {
   $height: density-functions.prop-value(
-    $density-config: $_density-config,
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
@@ -398,7 +390,7 @@ $_density-config: map.merge(
   $query: feature-targeting.all()
 ) {
   $height: density-functions.prop-value(
-    $density-config: $_density-config,
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
@@ -422,7 +414,7 @@ $_density-config: map.merge(
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $textfield-height: density-functions.prop-value(
-    $density-config: $_density-config,
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
@@ -550,7 +542,7 @@ $_density-config: map.merge(
     $property-name: top,
   );
   $textfield-height: density-functions.prop-value(
-    $density-config: $_density-config,
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
@@ -806,7 +798,7 @@ $_density-config: map.merge(
   }
 
   $height: density-functions.prop-value(
-    $density-config: $_density-config,
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
@@ -1063,7 +1055,7 @@ $_density-config: map.merge(
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $height: density-functions.prop-value(
-    $density-config: $_density-config,
+    $density-config: variables.$density-config,
     $density-scale: $density-scale,
     $property-name: height,
   );
