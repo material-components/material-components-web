@@ -1,6 +1,6 @@
 {
   "name": "@material/image-list",
-  "version": "14.0.0",
+  "version": "13.0.0",
   "description": "The Material Components for the web image list component",
   "license": "MIT",
   "repository": {
@@ -15,10 +15,10 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "@material/feature-targeting": "^14.0.0",
-    "@material/shape": "^14.0.0",
-    "@material/theme": "^14.0.0",
-    "@material/typography": "^14.0.0",
+    "@material/feature-targeting": "^13.0.0",
+    "@material/shape": "^13.0.0",
+    "@material/theme": "^13.0.0",
+    "@material/typography": "^13.0.0",
     "tslib": "^2.1.0"
   },
   "publishConfig": {
