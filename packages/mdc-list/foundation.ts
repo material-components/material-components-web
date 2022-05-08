@@ -644,7 +644,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private setAriaForSingleSelectionAtIndex(index: number) {
     // Detect the presence of aria-current and get the value only during list
     // initialization when it is in unset state.
-    if (this.selectedIndex === numbers.UNSET_INDEX) {
+    if (this.selectedIndex === numbers.UNSET_INDEX &&
+        index !== numbers.UNSET_INDEX) {
       this.ariaCurrentAttrValue =
           this.adapter.getAttributeForElementIndex(index, strings.ARIA_CURRENT);
     }
@@ -793,7 +794,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private setTabindexAtIndex(index: number) {
-    if (this.focusedItemIndex === numbers.UNSET_INDEX && index !== 0) {
+    if (this.focusedItemIndex === numbers.UNSET_INDEX && index !== 0 &&
+        index !== numbers.UNSET_INDEX) {
       // If some list item was selected set first list item's tabindex to -1.
       // Generally, tabindex is set to 0 on first list item of list that has no
       // preselected items.
@@ -807,7 +809,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     // in selection menus that are not visible, programmatically setting an
     // option will not change focus but will change where tabindex should be 0.
     if (!(this.selectedIndex instanceof Array) &&
-        this.selectedIndex !== index) {
+        this.selectedIndex !== index &&
+        this.focusedItemIndex !== numbers.UNSET_INDEX) {
       this.adapter.setAttributeForElementIndex(
           this.selectedIndex, 'tabindex', '-1');
     }
