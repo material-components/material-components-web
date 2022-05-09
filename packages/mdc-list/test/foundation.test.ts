@@ -2489,6 +2489,24 @@ describe('MDCListFoundation', () => {
 
            expect(mockAdapter.notifySelectionChange).toHaveBeenCalledTimes(0);
          });
+
+      it('#setSelectedIndex does not delesect on empty list', () => {
+        const {foundation, mockAdapter} = setupTest();
+
+        mockAdapter.getListItemCount.and.returnValue(0);
+        foundation.setSingleSelection(true);
+
+        foundation.layout();
+        expect(foundation.getSelectedIndex()).toBe(-1);
+
+        foundation.setSelectedIndex(-1, {forceUpdate: true});
+        expect(mockAdapter.setAttributeForElementIndex)
+            .not.toHaveBeenCalledWith();
+        expect(mockAdapter.setAttributeForElementIndex)
+            .not.toHaveBeenCalledWith();
+        expect(mockAdapter.getAttributeForElementIndex).not.toHaveBeenCalled();
+        expect(mockAdapter.getAttributeForElementIndex).not.toHaveBeenCalled();
+      });
     });
   });
 
