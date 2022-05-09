@@ -223,3 +223,14 @@ $z-index: 9;
     }
   }
 }
+
+// Set the number of lines visible on a plain tooltip before being truncated.
+// @param {Number} $num-line-clamp
+@mixin line-clamp($num-line-clamp) {
+  .mdc-tooltip__surface {
+    display: -webkit-box;
+    -webkit-line-clamp: $num-line-clamp;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
