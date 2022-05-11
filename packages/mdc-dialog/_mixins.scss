@@ -590,6 +590,23 @@
   }
 }
 
+/// Defines the `display` property of the content element using a given query.
+/// This is useful if the content of the dialog needs to use a custom layout,
+/// for example one that consists of a fixed header and a fixed footer, with a
+/// scrollable list area in-between, which is sized to fill available space
+/// (see b/231813016).
+/// @param {string} $display - The `display` type to set.
+/// @param {string} $query Query.
+@mixin content-display($display, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-dialog__content {
+    @include feature-targeting.targets($feat-structure) {
+      display: $display;
+    }
+  }
+}
+
 @mixin content-padding(
   $padding-top,
   $padding-right,
