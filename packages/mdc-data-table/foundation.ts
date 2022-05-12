@@ -263,10 +263,15 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   /**
    * Handles data table row click event.
    */
-  handleRowClick({rowId, row}: RowClickEventData) {
+  handleRowClick({rowId, row, altKey, ctrlKey, metaKey, shiftKey}:
+                     RowClickEventData) {
     this.adapter.notifyRowClick({
       rowId,
       row,
+      altKey,
+      ctrlKey,
+      metaKey,
+      shiftKey,
     });
   }
 

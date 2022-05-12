@@ -84,6 +84,10 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
       this.foundation.handleRowClick({
         rowId: this.getRowIdByRowElement(dataRowEl),
         row: dataRowEl,
+        altKey: event.altKey,
+        ctrlKey: event.ctrlKey,
+        metaKey: event.metaKey,
+        shiftKey: event.shiftKey,
       });
     };
     this.content.addEventListener('click', this.handleContentClick);

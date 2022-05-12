@@ -57,10 +57,14 @@ export interface SortActionEventDetail {
 export interface RowClickEventData {
   rowId: string|null;
   row: HTMLElement;
+  altKey: boolean;
+  ctrlKey: boolean;
+  metaKey: boolean;
+  shiftKey: boolean;
 }
 
+/** Event details used for data table row click action. */
 export interface RowClickEventDetail extends RowClickEventData {}
-;
 
 /**
  * Styles used to dynamically set dimensions of progress indicator based on

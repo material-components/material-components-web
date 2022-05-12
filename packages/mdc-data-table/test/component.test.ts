@@ -22,6 +22,7 @@
  */
 
 import {html} from '../../../testing/dom';
+import {createMouseEvent} from '../../../testing/dom/events';
 import {MDCDataTable} from '../component';
 import {cssClasses, dataAttributes, events, selectors, SortValue, strings} from '../constants';
 
@@ -525,12 +526,47 @@ describe('MDCDataTable', () => {
       detail: {
         rowId: 'u1',
         row: component.getRows()[1],
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        shiftKey: false,
       }
     }));
 
     component.unlisten(events.ROW_CLICK, handler);
     component.destroy();
   });
+
+  it('Should trigger row click event with modifiers when clicked on data row',
+     () => {
+       const {component} = setupTest();
+
+       const handler = jasmine.createSpy('mockRowClickListener');
+       component.listen(events.ROW_CLICK, handler);
+       (component.getRows()[1] as HTMLElement)
+           .dispatchEvent(createMouseEvent('click', {
+             bubbles: true,
+             cancelable: true,
+             altKey: true,
+             ctrlKey: true,
+             metaKey: true,
+             shiftKey: true
+           }));
+
+       expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({
+         detail: {
+           rowId: 'u1',
+           row: component.getRows()[1],
+           altKey: true,
+           ctrlKey: true,
+           metaKey: true,
+           shiftKey: true,
+         }
+       }));
+
+       component.unlisten(events.ROW_CLICK, handler);
+       component.destroy();
+     });
 
   it('Should not trigger row click event when clicked on header cell', () => {
     const {component, root} = setupTest();

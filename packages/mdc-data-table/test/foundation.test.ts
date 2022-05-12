@@ -289,13 +289,26 @@ describe('MDCDataTableFoundation', () => {
        expect(mockAdapter.notifyUnselectedAll).toHaveBeenCalledTimes(1);
      });
 
-  it('Should trigger an event when clicked on data row', () => {
+  it('#handleRowClick should notify', () => {
     const {foundation, mockAdapter} = setupTest();
 
     const mockDataRowEl = document.createElement('tr');
-    foundation.handleRowClick({rowId: '1231', row: mockDataRowEl});
-    expect(mockAdapter.notifyRowClick)
-        .toHaveBeenCalledWith({rowId: '1231', row: mockDataRowEl});
+    foundation.handleRowClick({
+      rowId: '1231',
+      row: mockDataRowEl,
+      altKey: true,
+      ctrlKey: false,
+      metaKey: true,
+      shiftKey: false
+    });
+    expect(mockAdapter.notifyRowClick).toHaveBeenCalledWith({
+      rowId: '1231',
+      row: mockDataRowEl,
+      altKey: true,
+      ctrlKey: false,
+      metaKey: true,
+      shiftKey: false
+    });
   });
 
   it('#handleRowCheckboxChange does not do anything when target row is not found',
