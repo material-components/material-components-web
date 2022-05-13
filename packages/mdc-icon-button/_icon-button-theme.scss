@@ -261,12 +261,14 @@ $light-theme: (
 /// @param {Color} $color - The desired font and ripple color.
 ///
 @mixin ink-color($color, $query: feature-targeting.all()) {
-  @include ink-color_($color, $query: $query);
-  @include ripple-theme.states(
-    $color,
-    $query: $query,
-    $ripple-target: $ripple-target
-  );
+  @if $color {
+    @include ink-color_($color, $query: $query);
+    @include ripple-theme.states(
+      $color,
+      $query: $query,
+      $ripple-target: $ripple-target
+    );
+  }
 }
 
 ///
