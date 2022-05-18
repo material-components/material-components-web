@@ -107,7 +107,8 @@ export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAd
 
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
     const isEnterKey = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
-    if (evt.type === 'click' || isEnterKey) {
+    const isSpaceKey = (evt as KeyboardEvent).key === ' ';
+    if (evt.type === 'click' || isEnterKey || isSpaceKey) {
       evt.preventDefault();  // stop click from causing host label to focus
                              // input
       this.adapter.notifyIconAction();
