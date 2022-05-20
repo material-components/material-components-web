@@ -47,6 +47,13 @@ $two-line-item-tall-density-config: (
     minimum: 56px,
   ),
 ) !default;
+$two-line-item-taller-density-config: (
+  height: (
+    default: 88px,
+    maximum: 88px,
+    minimum: 72px,
+  ),
+) !default;
 $three-line-item-density-config: (
   height: (
     default: 88px,
