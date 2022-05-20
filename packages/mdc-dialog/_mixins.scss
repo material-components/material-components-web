@@ -674,28 +674,40 @@
   }
 }
 
-@mixin max-width($max-width, $margin, $query: feature-targeting.all()) {
+@mixin max-width-with-breakpoint(
+  $above-breakpoint-max-width,
+  $below-breakpoint-max-width,
+  $max-width-breakpoint,
+  $query: feature-targeting.all()
+) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  $max-size-calc-expr: calc(100vw - #{$margin * 2});
 
   .mdc-dialog__surface {
     @include feature-targeting.targets($feat-structure) {
-      @if $max-width {
-        $max-width-breakpoint: $max-width + ($margin * 2);
-
-        // Fit snugly within the viewport at smaller screen sizes.
-        @media (max-width: $max-width-breakpoint) {
-          max-width: $max-size-calc-expr;
-        }
-
-        // Once the screen gets big enough, apply a fixed maximum width.
-        @media (min-width: $max-width-breakpoint) {
-          max-width: $max-width;
-        }
-      } @else {
-        max-width: $max-size-calc-expr;
+      @media (max-width: $max-width-breakpoint) {
+        max-width: $below-breakpoint-max-width;
+      }
+      @media (min-width: $max-width-breakpoint) {
+        max-width: $above-breakpoint-max-width;
       }
     }
+  }
+}
+
+@mixin max-width($max-width, $margin, $query: feature-targeting.all()) {
+  $max-width-breakpoint: $max-width + ($margin * 2);
+  // Fit snugly within the viewport at smaller screen sizes.
+  $below-breakpoint-max-width: calc(100vw - #{$margin * 2});
+
+  @if $max-width {
+    @include max-width-with-breakpoint(
+      $max-width,
+      $below-breakpoint-max-width,
+      $max-width-breakpoint,
+      $query
+    );
+  } @else {
+    max-width: $below-breakpoint-max-width;
   }
 }
 
