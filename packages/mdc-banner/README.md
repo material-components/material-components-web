@@ -63,8 +63,8 @@ const banner = new MDCBanner(document.querySelector('.mdc-banner'));
     </div>
     <div class="mdc-banner__actions">
       <button type="button" class="mdc-button mdc-banner__primary-action">
-        <div class="mdc-button__ripple"></div>
-        <div class="mdc-button__label">Fix it</div>
+        <span class="mdc-button__ripple"></span>
+        <span class="mdc-button__label">Fix it</span>
       </button>
     </div>
   </div>
@@ -110,8 +110,8 @@ When used below top app bars, banners should remain fixed at the top of the scre
       </div>
       <div class="mdc-banner__actions">
         <button type="button" class="mdc-button mdc-banner__primary-action">
-          <div class="mdc-button__ripple"></div>
-          <div class="mdc-button__label">Fix it</div>
+          <span class="mdc-button__ripple"></span>
+          <span class="mdc-button__label">Fix it</span>
         </button>
       </div>
     </div>
@@ -136,8 +136,8 @@ Images can help communicate a banner’s message.
     </div>
     <div class="mdc-banner__actions">
       <button type="button" class="mdc-button mdc-banner__primary-action">
-        <div class="mdc-button__ripple"></div>
-        <div class="mdc-button__label">Fix it</div>
+        <span class="mdc-button__ripple"></span>
+        <span class="mdc-button__label">Fix it</span>
       </button>
     </div>
   </div>
@@ -160,12 +160,12 @@ Banners may have one or two low-emphasis text buttons.
     </div>
     <div class="mdc-banner__actions">
       <button type="button" class="mdc-button mdc-banner__secondary-action">
-        <div class="mdc-button__ripple"></div>
-        <div class="mdc-button__label">Learn more</div>
+        <span class="mdc-button__ripple"></span>
+        <span class="mdc-button__label">Learn more</span>
       </button>
       <button type="button" class="mdc-button mdc-banner__primary-action">
-        <div class="mdc-button__ripple"></div>
-        <div class="mdc-button__label">Fix it</div>
+        <span class="mdc-button__ripple"></span>
+        <span class="mdc-button__label">Fix it</span>
       </button>
     </div>
   </div>

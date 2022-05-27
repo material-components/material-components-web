@@ -72,10 +72,10 @@ Add the following to meet this requirement for mini FABs:
 ```html
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-fab mdc-fab--mini mdc-fab--touch">
-    <div class="mdc-fab__ripple"></div>
+    <span class="mdc-fab__ripple"></span>
     <div class="mdc-fab__focus-ring"></div>
     <span class="material-icons mdc-fab__icon">add</span>
-    <div class="mdc-fab__touch"></div>
+    <span class="mdc-fab__touch"></span>
   </button>
 </div>
 ```
@@ -88,10 +88,10 @@ following `mdc-fab__focus-ring` element:
 ```html
 <div class="mdc-touch-target-wrapper">
   <button class="mdc-fab mdc-fab--mini mdc-fab--touch">
-    <div class="mdc-fab__ripple"></div>
+    <span class="mdc-fab__ripple"></span>
     <div class="mdc-fab__focus-ring"></div>
     <span class="material-icons mdc-fab__icon">add</span>
-    <div class="mdc-fab__touch"></div>
+    <span class="mdc-fab__touch"></span>
   </button>
 </div>
 ```
@@ -104,7 +104,7 @@ Regular FABs are FABs that are not expanded and are a regular size.
 
 ```html
 <button class="mdc-fab" aria-label="Favorite">
-  <div class="mdc-fab__ripple"></div>
+  <span class="mdc-fab__ripple"></span>
   <span class="mdc-fab__icon material-icons">favorite</span>
 </button>
 ```
@@ -123,7 +123,7 @@ Mini FABs can also be used to create visual continuity with other screen element
 
 ```html
 <button class="mdc-fab mdc-fab--mini" aria-label="Favorite">
-  <div class="mdc-fab__ripple"></div>
+  <span class="mdc-fab__ripple"></span>
   <span class="mdc-fab__icon material-icons">favorite</span>
 </button>
 ```
@@ -136,7 +136,7 @@ The extended FAB is wider, and it includes a text label.
 
 ```html
 <button class="mdc-fab mdc-fab--extended">
-  <div class="mdc-fab__ripple"></div>
+  <span class="mdc-fab__ripple"></span>
   <span class="material-icons mdc-fab__icon">add</span>
   <span class="mdc-fab__label">Create</span>
 </button>
