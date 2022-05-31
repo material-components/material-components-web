@@ -333,8 +333,9 @@ $light-theme: (
 }
 
 @mixin _icon-size($size) {
-  @include theme.property(font-size, $size);
-
+  .mdc-button__icon {
+    @include theme.property(font-size, $size);
+  }
   svg,
   img {
     @include theme.property(width, $size);
