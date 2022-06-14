@@ -20,12 +20,16 @@
 // THE SOFTWARE.
 //
 
-// Selector '.mdc-*' should only be used in this project.
-// stylelint-disable selector-class-pattern --
+// stylelint-disable selector-class-pattern -- Selector '.mdc-*' should only be
+// used in this project.
+
 // NOTE: this is the implementation of the aforementioned classes.
 
+@use 'sass:map';
 @use '@material/tokens/resolvers';
 @use '@material/theme/theme';
+@use '@material/typography/typography';
+@use './evolution-mixins' as list;
 
 $_light-theme: (
   list-item-container-color: null,
@@ -90,15 +94,409 @@ $_light-theme: (
   list-item-hover-state-layer-color: null,
   list-item-hover-state-layer-opacity: null,
   list-item-hover-label-text-color: null,
-  list-item-hover-leading-icon-icon-color: null,
-  list-item-hover-trailing-icon-icon-color: null,
+  list-item-hover-leading-icon-color: null,
+  list-item-hover-trailing-icon-color: null,
 );
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-keys($_light-theme, $theme);
 
-  .mdc-list {
-    // TODO(b/200031158): Implement Theming API.
-    /** Style check */
+  @include _list-item-container-color(
+    map.get($theme, list-item-container-color)
+  );
+  @include _list-item-container-shape(
+    map.get($theme, list-item-container-shape)
+  );
+  @include _list-item-container-height(
+    map.get($theme, list-item-container-height)
+  );
+  @include _list-item-label-text-color(
+    map.get($theme, list-item-label-text-color)
+  );
+  @include _list-item-label-text-typography(
+    (
+      font: map.get($theme, list-item-label-text-font),
+      line-height: map.get($theme, list-item-label-text-line-height),
+      size: map.get($theme, list-item-label-text-size),
+      tracking: map.get($theme, list-item-label-text-tracking),
+      weight: map.get($theme, list-item-label-text-weight),
+    )
+  );
+  @include _list-item-supporting-text-color(
+    map.get($theme, list-item-supporting-text-color)
+  );
+  @include _list-item-supporting-text-typography(
+    (
+      font: map.get($theme, list-item-supporting-text-font),
+      line-height: map.get($theme, list-item-supporting-text-line-height),
+      size: map.get($theme, list-item-supporting-text-size),
+      tracking: map.get($theme, list-item-supporting-text-tracking),
+      weight: map.get($theme, list-item-supporting-text-weight),
+    )
+  );
+  @include _list-item-overline-color(map.get($theme, list-item-overline-color));
+  @include _list-item-overline-typography(
+    (
+      font: map.get($theme, list-item-overline-font),
+      line-height: map.get($theme, list-item-overline-line-height),
+      size: map.get($theme, list-item-overline-size),
+      tracking: map.get($theme, list-item-overline-tracking),
+      weight: map.get($theme, list-item-overline-weight),
+    )
+  );
+  @include _list-item-leading-icon-color(
+    map.get($theme, list-item-leading-icon-color)
+  );
+  @include _list-item-leading-icon-size(
+    map.get($theme, list-item-leading-icon-size)
+  );
+  @include _list-item-leading-video-shape(
+    map.get($theme, list-item-leading-video-shape)
+  );
+  @include _list-item-leading-video-height(
+    map.get($theme, list-item-leading-video-height)
+  );
+  @include _list-item-leading-video-width(
+    map.get($theme, list-item-leading-video-width)
+  );
+  @include _list-item-leading-avatar-color(
+    map.get($theme, list-item-leading-avatar-color)
+  );
+  @include _list-item-leading-avatar-shape(
+    map.get($theme, list-item-leading-avatar-shape)
+  );
+  @include _list-item-leading-avatar-size(
+    map.get($theme, list-item-leading-avatar-size)
+  );
+  @include _list-item-leading-image-width(
+    map.get($theme, list-item-leading-image-width)
+  );
+  @include _list-item-leading-image-height(
+    map.get($theme, list-item-leading-image-height)
+  );
+  @include _list-item-leading-image-shape(
+    map.get($theme, list-item-leading-image-shape)
+  );
+  @include _list-item-trailing-supporting-text-color(
+    map.get($theme, list-item-trailing-supporting-text-color)
+  );
+  @include _list-item-trailing-supporting-text-typography(
+    (
+      font: map.get($theme, list-item-trailing-supporting-text-font),
+      line-height:
+        map.get($theme, list-item-trailing-supporting-text-line-height),
+      size: map.get($theme, list-item-trailing-supporting-text-size),
+      tracking: map.get($theme, list-item-trailing-supporting-text-tracking),
+      weight: map.get($theme, list-item-trailing-supporting-text-weight),
+    )
+  );
+  @include _list-item-trailing-icon-color(
+    map.get($theme, list-item-trailing-icon-color)
+  );
+  @include _list-item-trailing-icon-size(
+    map.get($theme, list-item-trailing-icon-size)
+  );
+  @include _divider-color(map.get($theme, divider-color));
+  @include _divider-height(map.get($theme, divider-height));
+  @include _list-item-disabled-label-text-color(
+    map.get($theme, list-item-disabled-label-text-color)
+  );
+  @include _list-item-disabled-label-text-opacity(
+    map.get($theme, list-item-disabled-label-text-opacity)
+  );
+  @include _list-item-disabled-state-layer-color(
+    map.get($theme, list-item-disabled-state-layer-color)
+  );
+  @include _list-item-disabled-state-layer-opacity(
+    map.get($theme, list-item-disabled-state-layer-opacity)
+  );
+  @include _list-item-disabled-leading-icon-color(
+    map.get($theme, list-item-disabled-leading-icon-color)
+  );
+  @include _list-item-disabled-leading-icon-opacity(
+    map.get($theme, list-item-disabled-leading-icon-opacity)
+  );
+  @include _list-item-disabled-trailing-icon-color(
+    map.get($theme, list-item-disabled-trailing-icon-color)
+  );
+  @include _list-item-disabled-trailing-icon-opacity(
+    map.get($theme, list-item-disabled-trailing-icon-opacity)
+  );
+  @include _list-item-hover-state-layer-color(
+    map.get($theme, list-item-hover-state-layer-color)
+  );
+  @include _list-item-hover-state-layer-opacity(
+    map.get($theme, list-item-hover-state-layer-opacity)
+  );
+  @include _list-item-hover-label-text-color(
+    map.get($theme, list-item-hover-label-text-color)
+  );
+  @include _list-item-hover-leading-icon-color(
+    map.get($theme, list-item-hover-leading-icon-color)
+  );
+  @include _list-item-hover-trailing-icon-color(
+    map.get($theme, list-item-hover-trailing-icon-color)
+  );
+}
+
+@mixin _list-item-container-color($color) {
+  .mdc-list-item {
+    background-color: $color;
+  }
+}
+
+@mixin _list-item-container-shape($shape) {
+  @include list.one-line-list-radius($shape);
+  @include list.two-line-list-radius($shape);
+  @include list.three-line-list-radius($shape);
+}
+
+@mixin _list-item-container-height($height) {
+  .mdc-list-item {
+    @include list.list-item-height($height);
+  }
+}
+
+@mixin _list-item-label-text-color($color) {
+  @include list.list-primary-text-ink-color($color);
+}
+
+@mixin _list-item-label-text-typography($typography) {
+  .mdc-list-item__primary-text {
+    @include typography.theme-styles($typography);
+  }
+}
+
+@mixin _list-item-supporting-text-color($color) {
+  @include list.list-secondary-text-ink-color($color);
+}
+
+@mixin _list-item-supporting-text-typography($typography) {
+  .mdc-list-item__secondary-text {
+    @include typography.theme-styles($typography);
+  }
+}
+
+@mixin _list-item-overline-color($color) {
+  @include list.list-overline-text-ink-color($color);
+}
+
+@mixin _list-item-overline-typography($typography) {
+  .mdc-list-item__overline-text {
+    @include typography.theme-styles($typography);
+  }
+}
+
+@mixin _list-item-leading-icon-color($color) {
+  .mdc-list-item--with-leading-icon .mdc-list-item__start {
+    @include theme.property('color', $color);
+  }
+}
+
+@mixin _list-item-leading-icon-size($size) {
+  .mdc-list-item--with-leading-icon {
+    @include list.item-start-size($size);
+
+    .mdc-list-item__start > i {
+      @include theme.property('font-size', $size);
+    }
+  }
+}
+
+@mixin _list-item-leading-video-shape($shape) {
+  .mdc-list-item--with-leading-video .mdc-list-item__start {
+    @include theme.property('border-radius', $shape);
+
+    @if $shape {
+      overflow: hidden;
+    }
+  }
+}
+
+@mixin _list-item-leading-video-height($height) {
+  .mdc-list-item--with-leading-video .mdc-list-item__start {
+    @include theme.property('height', $height);
+  }
+}
+
+@mixin _list-item-leading-video-width($width) {
+  .mdc-list-item--with-leading-video .mdc-list-item__start {
+    @include theme.property('width', $width);
+  }
+}
+
+@mixin _list-item-leading-avatar-color($color) {
+  .mdc-list-item--with-leading-avatar .mdc-list-item__start > img {
+    @include theme.property('background-color', $color);
+  }
+}
+
+@mixin _list-item-leading-avatar-shape($shape) {
+  .mdc-list-item--with-leading-avatar .mdc-list-item__start > img {
+    @include theme.property('border-radius', $shape);
+  }
+}
+
+@mixin _list-item-leading-avatar-size($size) {
+  .mdc-list-item--with-leading-avatar {
+    @include list.item-start-size($size);
+  }
+}
+
+@mixin _list-item-leading-image-height($height) {
+  .mdc-list-item--with-leading-image .mdc-list-item__start {
+    @include theme.property('height', $height);
+  }
+}
+
+@mixin _list-item-leading-image-width($width) {
+  .mdc-list-item--with-leading-image .mdc-list-item__start {
+    @include theme.property('width', $width);
+  }
+}
+
+@mixin _list-item-leading-image-shape($shape) {
+  .mdc-list-item--with-leading-image .mdc-list-item__start > img {
+    @include theme.property('border-radius', $shape);
+  }
+
+  @if $shape {
+    overflow: hidden;
+  }
+}
+
+@mixin _list-item-trailing-supporting-text-color($color) {
+  .mdc-list-item {
+    @include list.item-meta-text-ink-color($color);
+  }
+}
+
+@mixin _list-item-trailing-supporting-text-typography($typography) {
+  .mdc-list-item--with-trailing-meta .mdc-list-item__end {
+    @include typography.theme-styles($typography);
+  }
+}
+
+@mixin _list-item-trailing-icon-color($color) {
+  .mdc-list-item--with-trailing-icon .mdc-list-item__end {
+    @include theme.property('color', $color);
+  }
+}
+
+@mixin _list-item-trailing-icon-size($size) {
+  .mdc-list-item--with-trailing-icon {
+    @include list.item-end-size($size);
+
+    .mdc-list-item__end > i {
+      @include theme.property('font-size', $size);
+    }
+  }
+}
+
+@mixin _divider-color($color) {
+  @include list.divider-color($color);
+}
+
+@mixin _divider-height($height) {
+  @include list.divider-height($height);
+}
+
+@mixin _list-item-disabled-label-text-color($color) {
+  .mdc-list-item--disabled {
+    @include list.list-primary-text-ink-color($color);
+  }
+}
+
+@mixin _list-item-disabled-label-text-opacity($opacity) {
+  // Reset opacity on the wrapper block elements and apply to specific inner
+  // block elements below.
+  @if $opacity {
+    @include list.list-disabled-opacity(1);
+  }
+
+  .mdc-list-item--disabled .mdc-list-item__primary-text {
+    @include theme.property('opacity', $opacity);
+  }
+}
+
+@mixin _list-item-disabled-state-layer-color($color) {
+  .mdc-list-item--disabled {
+    &:hover,
+    &:focus {
+      #{list.$ripple-target}::before {
+        @include theme.property('background-color', $color);
+      }
+    }
+  }
+}
+
+@mixin _list-item-disabled-state-layer-opacity($opacity) {
+  .mdc-list-item--disabled {
+    &:hover,
+    &:focus {
+      #{list.$ripple-target}::before {
+        @include theme.property('opacity', $opacity);
+      }
+    }
+  }
+}
+
+@mixin _list-item-disabled-leading-icon-color($color) {
+  .mdc-list-item--disabled.mdc-list-item--with-leading-icon
+    .mdc-list-item__start {
+    @include theme.property('color', $color);
+  }
+}
+
+@mixin _list-item-disabled-leading-icon-opacity($opacity) {
+  .mdc-list-item--disabled.mdc-list-item--with-leading-icon
+    .mdc-list-item__start {
+    @include theme.property('opacity', $opacity);
+  }
+}
+
+@mixin _list-item-disabled-trailing-icon-color($color) {
+  .mdc-list-item--disabled.mdc-list-item--with-trailing-icon
+    .mdc-list-item__end {
+    @include theme.property('color', $color);
+  }
+}
+
+@mixin _list-item-disabled-trailing-icon-opacity($opacity) {
+  .mdc-list-item--disabled.mdc-list-item--with-trailing-icon
+    .mdc-list-item__end {
+    @include theme.property('opacity', $opacity);
+  }
+}
+
+@mixin _list-item-hover-state-layer-color($color) {
+  .mdc-list-item:not(.mdc-list-item--disabled):hover
+    #{list.$ripple-target}::before {
+    @include theme.property('background-color', $color);
+  }
+}
+
+@mixin _list-item-hover-state-layer-opacity($opacity) {
+  .mdc-list-item:not(.mdc-list-item--disabled):hover
+    #{list.$ripple-target}::before {
+    @include theme.property('opacity', $opacity);
+  }
+}
+
+@mixin _list-item-hover-label-text-color($color) {
+  .mdc-list-item:hover {
+    @include list.list-primary-text-ink-color($color);
+  }
+}
+
+@mixin _list-item-hover-leading-icon-color($color) {
+  .mdc-list-item--with-leading-icon:hover .mdc-list-item__start {
+    @include theme.property('color', $color);
+  }
+}
+
+@mixin _list-item-hover-trailing-icon-color($color) {
+  .mdc-list-item--with-trailing-icon:hover .mdc-list-item__end {
+    @include theme.property('color', $color);
   }
 }

@@ -17,6 +17,8 @@
 @use '@material/theme/theme-color';
 @use './evolution-variables' as variables;
 
+$ripple-target: variables.$ripple-target;
+
 @mixin core-styles($query: feature-targeting.all()) {
   @include without-ripple($query);
   @include with-ripple($query);
@@ -919,7 +921,7 @@
     @include list-secondary-text-ink-color($color, $query);
     @include list-overline-text-ink-color($color, $query);
     @include _item-icon-ink-color($color, $query: $query);
-    @include _item-meta-text-ink-color($color, $query);
+    @include item-meta-text-ink-color($color, $query);
   }
 }
 
@@ -1439,7 +1441,7 @@
   }
 }
 
-@mixin _item-meta-text-ink-color($color, $query: feature-targeting.all()) {
+@mixin item-meta-text-ink-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
 
   &.mdc-list-item--with-trailing-meta {
