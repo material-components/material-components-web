@@ -70,12 +70,18 @@ enum XPosition {
   // Note: CENTER is not valid for rich tooltips.
   CENTER = 2,
   END = 3,
+  // SIDE_XXX positioning is only valid for plain tooltips.
+  SIDE_START = 4,
+  SIDE_END = 5,
 }
 
 enum YPosition {
   DETECTED = 0,
   ABOVE = 1,
   BELOW = 2,
+  // SIDE positioning is only valid for plain tooltips with either SIDE_START or
+  // SIDE_END x positioning.
+  SIDE = 3,
 }
 
 /**

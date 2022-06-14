@@ -414,7 +414,6 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     this.anchorRect = this.adapter.getAnchorBoundingRect();
     this.parentRect = this.adapter.getParentBoundingRect();
     this.richTooltip ? this.positionRichTooltip() : this.positionPlainTooltip();
-
     this.adapter.registerAnchorEventHandler('blur', this.anchorBlurHandler);
     this.adapter.registerDocumentEventHandler(
         'click', this.documentClickHandler);
@@ -640,12 +639,13 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
    * Returns the distance value and a string indicating the x-axis transform-
    * origin that should be used when animating the tooltip.
    */
-  private calculateXTooltipDistance(
-      anchorRect: DOMRect,
-      tooltipWidth: number): ({distance: number, xTransformOrigin: string}) {
+  private calculateXTooltipDistance(anchorRect: DOMRect, tooltipWidth: number):
+      ({distance: number, xTransformOrigin: string}) {
     const isLTR = !this.adapter.isRTL();
-    let startPos, endPos, centerPos: number|undefined;
-    let startTransformOrigin, endTransformOrigin: string;
+    let startPos: number|undefined, endPos: number|undefined,
+        centerPos: number|undefined, sideStartPos: number|undefined,
+        sideEndPos: number|undefined;
+    let startTransformOrigin: string, endTransformOrigin: string;
     if (this.richTooltip) {
       startPos = isLTR ? anchorRect.left - tooltipWidth : anchorRect.right;
       endPos = isLTR ? anchorRect.right : anchorRect.left - tooltipWidth;
@@ -657,27 +657,55 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       endPos = isLTR ? anchorRect.right - tooltipWidth : anchorRect.left;
       centerPos = anchorRect.left + (anchorRect.width - tooltipWidth) / 2;
 
+      const sideLeftAligned = anchorRect.left - (tooltipWidth + this.anchorGap);
+      const sideRightAligned = anchorRect.right + this.anchorGap;
+      sideStartPos = isLTR ? sideLeftAligned : sideRightAligned;
+      sideEndPos = isLTR ? sideRightAligned : sideLeftAligned;
+
       startTransformOrigin = isLTR ? strings.LEFT : strings.RIGHT;
       endTransformOrigin = isLTR ? strings.RIGHT : strings.LEFT;
+    }
+    // For plain tooltips, centerPos is defined
+    const plainTooltipPosOptions = [startPos, centerPos!, endPos];
+
+    // Side positioning should only be considered if it is specified by the
+    // client.
+    if (this.xTooltipPos === XPosition.SIDE_START) {
+      plainTooltipPosOptions.push(sideStartPos!);
+    } else if (this.xTooltipPos === XPosition.SIDE_END) {
+      plainTooltipPosOptions.push(sideEndPos!);
     }
 
     const positionOptions = this.richTooltip ?
         this.determineValidPositionOptions(startPos, endPos) :
-        // For plain tooltips, centerPos is defined
-        this.determineValidPositionOptions(centerPos!, startPos, endPos);
+        this.determineValidPositionOptions(...plainTooltipPosOptions);
 
     if (this.xTooltipPos === XPosition.START && positionOptions.has(startPos)) {
       return {distance: startPos, xTransformOrigin: startTransformOrigin};
-    }
-    if (this.xTooltipPos === XPosition.END && positionOptions.has(endPos)) {
+    } else if (
+        this.xTooltipPos === XPosition.END && positionOptions.has(endPos)) {
       return {distance: endPos, xTransformOrigin: endTransformOrigin};
-    }
-    if (this.xTooltipPos === XPosition.CENTER &&
+    } else if (
+        this.xTooltipPos === XPosition.CENTER &&
         positionOptions.has(centerPos)) {
       // This code path is only executed if calculating the distance for plain
       // tooltips. In this instance, centerPos will always be defined, so we can
       // safely assert that the returned value is non-null/undefined.
       return {distance: centerPos!, xTransformOrigin: strings.CENTER};
+    } else if (
+        this.xTooltipPos === XPosition.SIDE_START &&
+        positionOptions.has(sideStartPos)) {
+      // This code path is only executed if calculating the distance for plain
+      // tooltips. In this instance, sideStartPos will always be defined, so we
+      // can safely assert that the returned value is non-null/undefined.
+      return {distance: sideStartPos!, xTransformOrigin: endTransformOrigin};
+    } else if (
+        this.xTooltipPos === XPosition.SIDE_END &&
+        positionOptions.has(sideEndPos)) {
+      // This code path is only executed if calculating the distance for plain
+      // tooltips. In this instance, sideEndPos will always be defined, so we
+      // can safely assert that the returned value is non-null/undefined.
+      return {distance: sideEndPos!, xTransformOrigin: startTransformOrigin};
     }
 
     // If no user position is supplied, rich tooltips default to end pos, then
@@ -768,8 +796,15 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       anchorRect: DOMRect, tooltipHeight: number) {
     const belowYPos = anchorRect.bottom + this.anchorGap;
     const aboveYPos = anchorRect.top - (this.anchorGap + tooltipHeight);
-    const yPositionOptions =
-        this.determineValidYPositionOptions(aboveYPos, belowYPos);
+    const anchorMidpoint = anchorRect.top + anchorRect.height / 2;
+    const sideYPos = anchorMidpoint - (tooltipHeight / 2);
+    const posOptions = [aboveYPos, belowYPos];
+    if (this.yTooltipPos === YPosition.SIDE) {
+      // Side positioning should only be considered if it is specified by the
+      // client.
+      posOptions.push(sideYPos);
+    }
+    const yPositionOptions = this.determineValidYPositionOptions(...posOptions);
 
     if (this.yTooltipPos === YPosition.ABOVE &&
         yPositionOptions.has(aboveYPos)) {
@@ -778,6 +813,9 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
         this.yTooltipPos === YPosition.BELOW &&
         yPositionOptions.has(belowYPos)) {
       return {distance: belowYPos, yTransformOrigin: strings.TOP};
+    } else if (
+        this.yTooltipPos === YPosition.SIDE && yPositionOptions.has(sideYPos)) {
+      return {distance: sideYPos, yTransformOrigin: strings.CENTER};
     }
 
     if (yPositionOptions.has(belowYPos)) {
@@ -805,23 +843,16 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
    * position, if all possible alignments violate the threshold, then the
    * returned Set contains values that keep the tooltip within the viewport.
    */
-  private determineValidYPositionOptions(
-      aboveAnchorPos: number, belowAnchorPos: number) {
+  private determineValidYPositionOptions(...positions: number[]) {
     const posWithinThreshold = new Set();
     const posWithinViewport = new Set();
-
-    if (this.yPositionHonorsViewportThreshold(aboveAnchorPos)) {
-      posWithinThreshold.add(aboveAnchorPos);
-    } else if (this.yPositionDoesntCollideWithViewport(aboveAnchorPos)) {
-      posWithinViewport.add(aboveAnchorPos);
+    for (const position of positions) {
+      if (this.yPositionHonorsViewportThreshold(position)) {
+        posWithinThreshold.add(position);
+      } else if (this.yPositionDoesntCollideWithViewport(position)) {
+        posWithinViewport.add(position);
+      }
     }
-
-    if (this.yPositionHonorsViewportThreshold(belowAnchorPos)) {
-      posWithinThreshold.add(belowAnchorPos);
-    } else if (this.yPositionDoesntCollideWithViewport(belowAnchorPos)) {
-      posWithinViewport.add(belowAnchorPos);
-    }
-
     return posWithinThreshold.size ? posWithinThreshold : posWithinViewport;
   }
 
