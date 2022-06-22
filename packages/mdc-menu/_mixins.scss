@@ -24,6 +24,7 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use 'sass:math';
+@use '@material/dom/dom';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
@@ -56,6 +57,7 @@
     );
     @include min-width(variables.$min-width, $query: $query);
     @include open-item-opacity(variables.$open-item-opacity, $query: $query);
+
     // Include mdc-deprecated-list selector to ensure list-inside-menu overrides default list styles
     .mdc-deprecated-list {
       @include list-mixins.deprecated-item-primary-text-ink-color(
@@ -68,6 +70,10 @@
     .mdc-list {
       @include elevation-mixins.overlay-surface-position($query: $query);
       @include elevation-mixins.overlay-dimensions(100%, $query: $query);
+
+      &::before {
+        @include dom.transparent-border($query: $query);
+      }
     }
 
     .mdc-deprecated-list-divider {
