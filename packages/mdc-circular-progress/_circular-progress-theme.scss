@@ -23,8 +23,13 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use 'sass:map';
+@use 'sass:string';
+@use '@material/theme/color-palette';
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/keys';
 @use '@material/theme/theme';
+@use '@material/theme/theme-color';
 
 $color: primary !default;
 $track-color: transparent !default;
@@ -42,6 +47,60 @@ $shrink-time: 400ms !default;
 $arc-start-rotation-interval: 216deg !default;
 /// The timing function used for the core spinner animations.
 $timing-function: cubic-bezier(0.4, 0, 0.2, 1) !default;
+
+$custom-property-prefix: 'circular-progress';
+
+$light-theme: (
+  active-indicator-color: theme-color.$primary,
+  active-indicator-width: 4px,
+  four-color-active-indicator-four-color: color-palette.$cyan-400,
+  four-color-active-indicator-one-color: color-palette.$brown-400,
+  four-color-active-indicator-three-color: color-palette.$orange-400,
+  four-color-active-indicator-two-color: color-palette.$teal-400,
+  size: 48px,
+);
+
+@mixin theme-styles($theme) {
+  @include theme.validate-theme-keys($light-theme, $theme);
+
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
+  @include _active-indicator-color(map.get($theme, active-indicator-color));
+  @include _active-indicator-width(map.get($theme, active-indicator-width));
+  @include _four-color-active-indicator(
+    (
+      one-color: map.get($theme, four-color-active-indicator-one-color),
+      two-color: map.get($theme, four-color-active-indicator-two-color),
+      three-color: map.get($theme, four-color-active-indicator-three-color),
+      four-color: map.get($theme, four-color-active-indicator-four-color),
+    )
+  );
+  @include _size(map.get($theme, size));
+}
+
+@mixin _active-indicator-color($color) {
+  @include color($color);
+}
+
+@mixin _active-indicator-width($width) {
+  circle {
+    @include theme.property(stroke-width, $width);
+  }
+}
+
+@mixin _four-color-active-indicator($colors) {
+  .mdc-circular-progress--four-color {
+    @include indeterminate-colors($colors);
+  }
+}
+
+@mixin _size($size) {
+  @include theme.property(width, $size);
+  @include theme.property(height, $size);
+}
 
 /// Customizes the stroke-color of the indicator. Applies to the
 /// determinate variant, and also the indeterminate variant unless the
