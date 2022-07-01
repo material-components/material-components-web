@@ -1,0 +1,78 @@
+//
+// Copyright 2022 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// stylelint-disable selector-class-pattern --
+// Selector '.mdc-*' should only be used in this project.
+
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/theme/theme';
+
+/// Customizes the stroke-color of the indicator. Applies to the
+/// determinate variant, and also the indeterminate variant unless the
+/// four-color mixin is applied.
+/// @param {Color} $color - The desired stroke color.
+/// @see {mixin} indeterminate-colors
+@mixin color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-circular-progress__determinate-circle,
+  .mdc-circular-progress__indeterminate-circle-graphic {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(stroke, $color);
+    }
+  }
+}
+
+/// Customizes the track color of the indicator. Applies to the
+/// determinate variant only.
+/// @param {Color} $color - The desired track color.
+@mixin track-color($color, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  .mdc-circular-progress__determinate-track {
+    @include feature-targeting.targets($feat-color) {
+      @include theme.property(stroke, $color);
+    }
+  }
+}
+
+/// Applies four animated stroke-colors to the indeterminate indicator.
+/// Applicable to the indeterminate variant only and overrides any single color
+/// currently set.
+/// @param {List} $colors - A list of four desired colors.
+/// @see {mixin} color
+@mixin indeterminate-colors($colors, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @if length($colors) != 4 {
+    @error "`mdc-circular-progress-colors` accepts exactly 4 colors";
+  }
+
+  @for $i from 1 through 4 {
+    .mdc-circular-progress__color-#{$i}
+      .mdc-circular-progress__indeterminate-circle-graphic {
+      @include feature-targeting.targets($feat-color) {
+        @include theme.property(stroke, nth($colors, $i));
+      }
+    }
+  }
+}

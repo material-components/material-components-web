@@ -20,6 +20,5 @@
 // THE SOFTWARE.
 //
 
-/// @deprecated Import './circular-progress' or './circular-progress-theme' instead.
-@forward './circular-progress' show core-styles;
-@forward './circular-progress-theme' show color, track-color, indeterminate-colors;
+@use './circular-progress';
+@include circular-progress.core-styles;
