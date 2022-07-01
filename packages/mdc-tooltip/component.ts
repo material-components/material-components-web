@@ -268,6 +268,9 @@ export class MDCTooltip extends MDCComponent<MDCTooltipFoundation> {
       notifyHidden: () => {
         this.emit(events.HIDDEN, {});
       },
+      notifyShown: () => {
+        this.emit(events.SHOWN, {});
+      },
       getTooltipCaretBoundingRect: () => {
         const caret = this.root.querySelector<HTMLElement>(
             `.${CssClasses.TOOLTIP_CARET_TOP}`);

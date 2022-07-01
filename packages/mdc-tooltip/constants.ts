@@ -61,6 +61,7 @@ const attributes = {
 
 const events = {
   HIDDEN: 'MDCTooltip:hidden',
+  SHOWN: 'MDCTooltip:shown',
 };
 
 /** Enum for possible tooltip positioning relative to its anchor element. */

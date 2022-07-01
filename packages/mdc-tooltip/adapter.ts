@@ -191,6 +191,11 @@ export interface MDCTooltipAdapter {
   notifyHidden(): void;
 
   /**
+   * Notification that the tooltip element has been shown.
+   */
+  notifyShown(): void;
+
+  /**
    * @return the DOMRect for the caret element.
    */
   getTooltipCaretBoundingRect(): DOMRect|null;

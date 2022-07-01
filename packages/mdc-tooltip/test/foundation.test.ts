@@ -343,6 +343,7 @@ describe('MDCTooltipFoundation', () => {
       'registerWindowEventHandler',
       'deregisterWindowEventHandler',
       'notifyHidden',
+      'notifyShown',
       'getTooltipCaretBoundingRect',
       'setTooltipCaretStyle',
       'clearTooltipCaretStyles',
@@ -632,9 +633,10 @@ describe('MDCTooltipFoundation', () => {
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
        expect(mockAdapter.notifyHidden).toHaveBeenCalled();
+       expect(mockAdapter.notifyShown).not.toHaveBeenCalled();
      });
 
-  it('#handleTransitionEnd after #show does not send notification that tooltip has been hidden',
+  it('#handleTransitionEnd after #show sends notification that tooltip has been shown',
      () => {
        const {foundation, mockAdapter} =
            setUpFoundationTest(MDCTooltipFoundation);
@@ -648,6 +650,7 @@ describe('MDCTooltipFoundation', () => {
        expect(mockAdapter.removeClass)
            .toHaveBeenCalledWith(CssClasses.HIDE_TRANSITION);
        expect(mockAdapter.notifyHidden).not.toHaveBeenCalled();
+       expect(mockAdapter.notifyShown).toHaveBeenCalled();
      });
 
   it('clears any in-progress animations befores starting a show animation',

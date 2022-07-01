@@ -81,6 +81,7 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
       registerWindowEventHandler: () => undefined,
       deregisterWindowEventHandler: () => undefined,
       notifyHidden: () => undefined,
+      notifyShown: () => undefined,
       getTooltipCaretBoundingRect: () =>
           ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0} as any),
       setTooltipCaretStyle: () => undefined,
@@ -504,6 +505,8 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // that same tooltip will be re-shown.
     if (isHidingTooltip && this.showTimeout === null) {
       this.adapter.notifyHidden();
+    } else if (!isHidingTooltip) {
+      this.adapter.notifyShown();
     }
   }
 
