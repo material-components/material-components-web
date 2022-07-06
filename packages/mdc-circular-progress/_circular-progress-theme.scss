@@ -60,6 +60,14 @@ $light-theme: (
   size: 48px,
 );
 
+@mixin theme($theme) {
+  @include theme.validate-theme($light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
 @mixin theme-styles($theme) {
   @include theme.validate-theme-keys($light-theme, $theme);
 
@@ -72,10 +80,10 @@ $light-theme: (
   @include _active-indicator-width(map.get($theme, active-indicator-width));
   @include _four-color-active-indicator(
     (
-      one-color: map.get($theme, four-color-active-indicator-one-color),
-      two-color: map.get($theme, four-color-active-indicator-two-color),
-      three-color: map.get($theme, four-color-active-indicator-three-color),
-      four-color: map.get($theme, four-color-active-indicator-four-color),
+      map.get($theme, four-color-active-indicator-one-color),
+      map.get($theme, four-color-active-indicator-two-color),
+      map.get($theme, four-color-active-indicator-three-color),
+      map.get($theme, four-color-active-indicator-four-color)
     )
   );
   @include _size(map.get($theme, size));
@@ -98,8 +106,10 @@ $light-theme: (
 }
 
 @mixin _size($size) {
-  @include theme.property(width, $size);
-  @include theme.property(height, $size);
+  .mdc-circular-progress {
+    @include theme.property(width, $size, $important: true);
+    @include theme.property(height, $size, $important: true);
+  }
 }
 
 /// Customizes the stroke-color of the indicator. Applies to the
