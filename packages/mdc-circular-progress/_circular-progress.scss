@@ -29,17 +29,18 @@
 @use '@material/rtl/rtl';
 @use '@material/theme/gss';
 @use '@material/theme/theme';
-@use './variables';
-@use './keyframes';
 @use './circular-progress-theme';
 
 ///
 /// Circular progress core styles.
 ///
 @mixin core-styles($query: feature-targeting.all()) {
-  @include circular-progress-theme.color(variables.$color, $query);
+  @include circular-progress-theme.color(
+    circular-progress-theme.$color,
+    $query
+  );
   @include circular-progress-theme.track-color(
-    variables.$track-color,
+    circular-progress-theme.$track-color,
     $query: $query
   );
   @include static-styles($query);
@@ -50,14 +51,14 @@
   $feat-animation: feature-targeting.create-target($query, animation);
 
   @include feature-targeting.targets($feat-animation) {
-    @include keyframes.container-rotate-keyframes_;
-    @include keyframes.spinner-layer-rotate-keyframes_;
-    @include keyframes.color-1-fade-in-out-keyframes_;
-    @include keyframes.color-2-fade-in-out-keyframes_;
-    @include keyframes.color-3-fade-in-out-keyframes_;
-    @include keyframes.color-4-fade-in-out-keyframes_;
-    @include keyframes.left-spin-keyframes_;
-    @include keyframes.right-spin-keyframes_;
+    @include container-rotate-keyframes_;
+    @include spinner-layer-rotate-keyframes_;
+    @include color-1-fade-in-out-keyframes_;
+    @include color-2-fade-in-out-keyframes_;
+    @include color-3-fade-in-out-keyframes_;
+    @include color-4-fade-in-out-keyframes_;
+    @include left-spin-keyframes_;
+    @include right-spin-keyframes_;
   }
 
   .mdc-circular-progress {
@@ -195,18 +196,19 @@
   .mdc-circular-progress__indeterminate-container {
     @include feature-targeting.targets($feat-animation) {
       $duration: math.div(
-        360deg * variables.$arc-time,
-        variables.$arc-start-rotation-interval + (360 - variables.$arc-size)
+        360deg * circular-progress-theme.$arc-time,
+        circular-progress-theme.$arc-start-rotation-interval +
+          (360 - circular-progress-theme.$arc-size)
       );
 
-      // stylelint-disable-next-line no-unknown-animations -- allow animations
       animation: mdc-circular-progress-container-rotate $duration linear
         infinite;
     }
   }
 
   $spinner-rotate-animation: mdc-circular-progress-spinner-layer-rotate 4 *
-    variables.$arc-time variables.$timing-function infinite both;
+    circular-progress-theme.$arc-time circular-progress-theme.$timing-function
+    infinite both;
 
   .mdc-circular-progress__spinner-layer {
     @include feature-targeting.targets($feat-animation) {
@@ -217,8 +219,8 @@
   @for $i from 1 through 4 {
     $color-fade-in-out-animation: mdc-circular-progress-color-#{$i}-fade-in-out
       4 *
-      variables.$arc-time
-      variables.$timing-function
+      circular-progress-theme.$arc-time
+      circular-progress-theme.$timing-function
       infinite
       both;
 
@@ -237,9 +239,9 @@
           noflip: true,
         )
       );
-      // stylelint-disable-next-line no-unknown-animations -- allow animations
-      animation: mdc-circular-progress-left-spin variables.$arc-time
-        variables.$timing-function infinite both;
+      animation: mdc-circular-progress-left-spin
+        circular-progress-theme.$arc-time
+        circular-progress-theme.$timing-function infinite both;
     }
   }
 
@@ -251,9 +253,166 @@
           noflip: true,
         )
       );
-      // stylelint-disable-next-line no-unknown-animations -- allow animations
-      animation: mdc-circular-progress-right-spin variables.$arc-time
-        variables.$timing-function infinite both;
+      animation: mdc-circular-progress-right-spin
+        circular-progress-theme.$arc-time
+        circular-progress-theme.$timing-function infinite both;
+    }
+  }
+}
+
+/// Keyframes for the persistent rotation of the outermost container
+/// @access private
+@mixin container-rotate-keyframes_ {
+  @keyframes mdc-circular-progress-container-rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/// Keyframes for the rotation of the spinner layer
+/// @access private
+@mixin spinner-layer-rotate-keyframes_ {
+  @keyframes mdc-circular-progress-spinner-layer-rotate {
+    @for $i from 1 through 8 {
+      #{$i * 12.5}% {
+        transform: rotate($i * 0.5 * circular-progress-theme.$arc-size);
+      }
+    }
+  }
+}
+
+/// Keyframes for the fade-in and fade-out of the first color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
+@mixin color-1-fade-in-out-keyframes_ {
+  @keyframes mdc-circular-progress-color-1-fade-in-out {
+    from {
+      opacity: 0.99;
+    }
+    25% {
+      opacity: 0.99;
+    }
+    26% {
+      opacity: 0;
+    }
+    89% {
+      opacity: 0;
+    }
+    90% {
+      opacity: 0.99;
+    }
+    to {
+      opacity: 0.99;
+    }
+  }
+}
+
+/// Keyframes for the fade-in and fade-out of the second color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
+@mixin color-2-fade-in-out-keyframes_ {
+  @keyframes mdc-circular-progress-color-2-fade-in-out {
+    from {
+      opacity: 0;
+    }
+    15% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.99;
+    }
+    50% {
+      opacity: 0.99;
+    }
+    51% {
+      opacity: 0;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+/// Keyframes for the fade-in and fade-out of the third color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
+@mixin color-3-fade-in-out-keyframes_ {
+  @keyframes mdc-circular-progress-color-3-fade-in-out {
+    from {
+      opacity: 0;
+    }
+    40% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.99;
+    }
+    75% {
+      opacity: 0.99;
+    }
+    76% {
+      opacity: 0;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+/// Keyframes for the fade-in and fade-out of the fourth color.
+/// .99 opacity is used to force subpixel rendering.
+/// @access private
+@mixin color-4-fade-in-out-keyframes_ {
+  @keyframes mdc-circular-progress-color-4-fade-in-out {
+    from {
+      opacity: 0;
+    }
+    65% {
+      opacity: 0;
+    }
+    75% {
+      opacity: 0.99;
+    }
+    90% {
+      opacity: 0.99;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+/// Keyframes for the expansion and contraction of the arc for the
+/// left semi-circle.
+/// @access private
+@mixin left-spin-keyframes_ {
+  @keyframes mdc-circular-progress-left-spin {
+    from {
+      transform: rotate(265deg);
+    }
+    50% {
+      transform: rotate(130deg);
+    }
+    to {
+      transform: rotate(265deg);
+    }
+  }
+}
+
+/// Keyframes for the expansion and contraction of the arc for the
+/// right semi-circle.
+/// @access private
+@mixin right-spin-keyframes_ {
+  @keyframes mdc-circular-progress-right-spin {
+    from {
+      transform: rotate(-265deg);
+    }
+    50% {
+      transform: rotate(-130deg);
+    }
+    to {
+      transform: rotate(-265deg);
     }
   }
 }

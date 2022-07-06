@@ -26,6 +26,23 @@
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/theme/theme';
 
+$color: primary !default;
+$track-color: transparent !default;
+
+/// The rotation position of the arcs that corresponds to their fully contracted state
+$base-angle: 135deg !default;
+/// Amount of circle the arc takes up
+$arc-size: 270deg !default;
+/// Time it takes to expand and contract arc
+$arc-time: 1333ms !default;
+/// Time for inactive indicator to disappear
+$shrink-time: 400ms !default;
+/// How much the start location of the arc should rotate each time; 216 gives
+/// us a 5 pointed star shape (it's 360/5 * 3)
+$arc-start-rotation-interval: 216deg !default;
+/// The timing function used for the core spinner animations.
+$timing-function: cubic-bezier(0.4, 0, 0.2, 1) !default;
+
 /// Customizes the stroke-color of the indicator. Applies to the
 /// determinate variant, and also the indeterminate variant unless the
 /// four-color mixin is applied.
