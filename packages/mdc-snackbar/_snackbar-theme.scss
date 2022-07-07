@@ -112,6 +112,15 @@ $light-theme: (
   supporting-text-weight: typography.get-weight(body2),
 );
 
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($light-theme, $theme);
+  $theme: _resolve-theme($theme, $resolvers);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
 @mixin theme-styles($theme, $resolver: resolvers.$material) {
   @include theme.validate-theme-keys($light-theme, $theme);
 
