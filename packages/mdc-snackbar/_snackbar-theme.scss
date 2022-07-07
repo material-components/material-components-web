@@ -23,13 +23,21 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use '@material/button/button-text-theme';
+@use '@material/elevation/elevation-theme';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
+@use '@material/icon-button/icon-button-theme';
 @use '@material/rtl/rtl';
 @use '@material/shape/mixins' as shape-mixins;
+@use '@material/theme/keys';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/tokens/resolvers';
+@use '@material/typography/typography';
 @use 'sass:color';
+@use 'sass:map';
+@use 'sass:meta';
 
 $fill-color: color.mix(
   theme-color.prop-value(on-surface),
@@ -63,6 +71,152 @@ $z-index: 8 !default; // One above mdc-dialog
 // These variables need to be kept in sync with the values in constants.js.
 $enter-duration: 150ms !default;
 $exit-duration: 75ms !default;
+
+$custom-property-prefix: 'snackbar';
+
+$light-theme: (
+  action-focus-label-text-color: null,
+  action-focus-state-layer-color: null,
+  action-focus-state-layer-opacity: 0.12,
+  action-hover-label-text-color: null,
+  action-hover-state-layer-color: null,
+  action-hover-state-layer-opacity: 0.04,
+  action-label-text-color: null,
+  action-label-text-font: null,
+  action-label-text-size: null,
+  action-label-text-tracking: null,
+  action-label-text-weight: null,
+  action-pressed-label-text-color: null,
+  action-pressed-state-layer-color: null,
+  action-pressed-state-layer-opacity: 0.1,
+  container-color: nulll,
+  container-elevation: null,
+  container-shadow-color: null,
+  container-shape: null,
+  icon-color: null,
+  icon-focus-icon-color: null,
+  icon-focus-state-layer-color: null,
+  icon-focus-state-layer-opacity: 0.12,
+  icon-hover-icon-color: null,
+  icon-hover-state-layer-color: null,
+  icon-hover-state-layer-opacity: 0.04,
+  icon-pressed-icon-color: null,
+  icon-pressed-state-layer-color: null,
+  icon-pressed-state-layer-opacity: 0.1,
+  icon-size: 24px,
+  supporting-text-color: theme-color.$on-surface,
+  supporting-text-font: typography.get-font(body2),
+  supporting-text-line-height: typography.get-line-height(body2),
+  supporting-text-size: typography.get-size(body2),
+  supporting-text-tracking: typography.get-tracking(body2),
+  supporting-text-weight: typography.get-weight(body2),
+);
+
+@mixin theme-styles($theme, $resolver: resolvers.$material) {
+  @include theme.validate-theme-keys($light-theme, $theme);
+
+  .mdc-snackbar__action {
+    @include button-text-theme.theme-styles(
+      (
+        focus-label-text-color: map.get($theme, action-focus-label-text-color),
+        focus-state-layer-color: map.get($theme, action-focus-state-layer-color),
+        focus-state-layer-opacity:
+          map.get($theme, action-focus-state-layer-opacity),
+        hover-label-text-color: map.get($theme, action-hover-label-text-color),
+        hover-state-layer-color: map.get($theme, action-hover-state-layer-color),
+        hover-state-layer-opacity:
+          map.get($theme, action-hover-state-layer-opacity),
+        label-text-color: map.get($theme, action-label-text-color),
+        label-text-font: map.get($theme, action-label-text-font),
+        label-text-size: map.get($theme, action-label-text-size),
+        label-text-tracking: map.get($theme, action-label-text-tracking),
+        label-text-weight: map.get($theme, action-label-text-weight),
+        pressed-label-text-color:
+          map.get($theme, action-pressed-label-text-color),
+        pressed-state-layer-color:
+          map.get($theme, action-pressed-state-layer-color),
+        pressed-state-layer-opacity:
+          map.get($theme, action-pressed-state-layer-opacity),
+      )
+    );
+  }
+
+  .mdc-snackbar__dismiss {
+    @include icon-button-theme.theme-styles(
+      (
+        icon-size: map.get($theme, icon-size),
+        focus-icon-color: map.get($theme, icon-focus-icon-color),
+        focus-state-layer-color: map.get($theme, icon-focus-state-layer-color),
+        focus-state-layer-opacity:
+          map.get($theme, icon-focus-state-layer-opacity),
+        hover-icon-color: map.get($theme, icon-hover-icon-color),
+        hover-state-layer-color: map.get($theme, icon-hover-state-layer-color),
+        hover-state-layer-opacity:
+          map.get($theme, icon-hover-state-layer-opacity),
+        icon-color: map.get($theme, icon-color),
+        pressed-icon-color: map.get($theme, icon-pressed-icon-color),
+        pressed-state-layer-color:
+          map.get($theme, icon-pressed-state-layer-color),
+        pressed-state-layer-opacity:
+          map.get($theme, icon-pressed-state-layer-opacity),
+      )
+    );
+  }
+
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+
+  @include fill-color(map.get($theme, container-color));
+  @include shape-radius(map.get($theme, container-shape));
+  @include _container-elevation(
+    $resolver,
+    map.get($theme, container-elevation),
+    map.get($theme, container-shadow-color)
+  );
+  @include label-ink-color(map.get($theme, supporting-text-color));
+  @include _supporting-text-typography(
+    (
+      font: map.get($theme, supporting-text-font),
+      size: map.get($theme, supporting-text-size),
+      tracking: map.get($theme, supporting-text-tracking),
+      weight: map.get($theme, supporting-text-weight),
+      line-height: map.get($theme, supporting-text-line-height),
+    )
+  );
+}
+
+@function _resolve-theme($theme, $resolvers) {
+  @return map.merge(
+    $theme,
+    _resolve-theme-elevation(
+      $theme,
+      map.get($resolvers, elevation),
+      container-elevation
+    )
+  );
+}
+
+@function _resolve-theme-elevation($theme, $resolver, $keys...) {
+  @if $resolver == null {
+    @return $theme;
+  }
+
+  @each $key in $keys {
+    // Resolve the value for each state key.
+    $resolved-value: meta.call(
+      $resolver,
+      $elevation: map.get($theme, $key),
+      $shadow-color: map.get($theme, container-shadow-color)
+    );
+
+    // Update the theme with the resolved value.
+    $theme: map.set($theme, $key, $resolved-value);
+  }
+
+  @return $theme;
+}
 
 @mixin fill-color($color, $query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
@@ -176,5 +330,31 @@ $exit-duration: 75ms !default;
       align-self: flex-end;
       margin-bottom: $padding;
     }
+  }
+}
+
+@mixin _container-elevation($resolver, $elevation, $shadow-color) {
+  $elevation-resolver: map.get($resolver, elevation);
+
+  @include elevation-theme.with-resolver(
+    $elevation-resolver,
+    $elevation: $elevation,
+    $shadow-color: $shadow-color
+  );
+}
+
+@mixin _supporting-text-typography($typography-map) {
+  $font: map.get($typography-map, font);
+  $size: map.get($typography-map, size);
+  $tracking: map.get($typography-map, tracking);
+  $weight: map.get($typography-map, weight);
+  $line-height: map.get($typography-map, line-height);
+
+  .mdc-snackbar__label {
+    @include theme.property(letter-spacing, $tracking);
+    @include theme.property(font-size, $size);
+    @include theme.property(font-family, $font);
+    @include theme.property(font-weight, $weight);
+    @include theme.property(line-height, $line-height);
   }
 }
