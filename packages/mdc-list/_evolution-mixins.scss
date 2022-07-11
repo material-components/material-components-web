@@ -1218,7 +1218,7 @@ $ripple-target: variables.$ripple-target;
 
   @include two-line-item-height($height, $query: $query);
 
-  @if ($density-scale < 0) {
+  @if ($density-scale and $density-scale != 0) {
     &.mdc-list-item--with-two-lines {
       .mdc-list-item__content {
         display: flex;
