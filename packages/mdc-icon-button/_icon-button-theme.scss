@@ -147,7 +147,7 @@ $light-theme: (
   @include feature-targeting.targets($feat-structure) {
     width: $size;
     height: $size;
-    padding: math.div($size - $icon-size, 2);
+    padding: calc(($size - $icon-size) / 2);
   }
 
   .mdc-icon-button__focus-ring {
@@ -162,7 +162,7 @@ $light-theme: (
     // Icon button ripple size is capped at 40px for icon buttons with
     // densities -1 and 0 (icon buttons with sizes 44x44 and 48x48px).
     // See http://b/192353968 for more info.
-    @if $size >= 40px and $size <= 48px {
+    @if math.unit($size) == 'px' and ($size >= 40px and $size <= 48px) {
       $component-size: 40px;
     }
 
