@@ -205,6 +205,12 @@
       pointer-events: none;
     }
   }
+
+  &[hidden] {
+    @include feature-targeting.targets($feat-structure) {
+      display: none;
+    }
+  }
 }
 
 @mixin icon {

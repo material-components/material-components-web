@@ -80,6 +80,12 @@
         pointer-events: none;
       }
     }
+
+    &[hidden] {
+      @include feature-targeting.targets($feat-structure) {
+        display: none;
+      }
+    }
   }
 
   .mdc-icon-button--display-flex {
