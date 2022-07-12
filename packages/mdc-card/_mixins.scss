@@ -46,31 +46,17 @@ $ripple-target: '.mdc-card__ripple';
   @include ripple($query);
 }
 
-// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
-// card styles. It is recommended that most users use `mdc-card-core-styles` instead.
-@mixin without-ripple($query: feature-targeting.all()) {
-  // postcss-bem-linter: define card
-
-  $feat-color: feature-targeting.create-target($query, color);
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
-
-  // prettier-ignore
-  @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
+  $feat-color: feature-targeting.create-target($query, color);
 
   .mdc-card {
-    @include shape-radius(variables.$shape-radius, $query: $query);
-    @include fill-color(surface, $query);
-    @include elevation-mixins.overlay-surface-position($query: $query);
-    @include elevation-mixins.overlay-dimensions(100%, $query: $query);
-    @include elevation-mixins.elevation(1, $query: $query);
-
     @include feature-targeting.targets($feat-structure) {
       @include container-layout_;
     }
 
     // Transparent card border for high-contrast mode.
     &::after {
-      @include shape-radius(variables.$shape-radius, $query: $query);
       @include dom-mixins.transparent-border($query: $query);
       @include feature-targeting.targets($feat-structure) {
         pointer-events: none;
@@ -79,11 +65,8 @@ $ripple-target: '.mdc-card__ripple';
   }
 
   .mdc-card--outlined {
-    @include elevation-mixins.elevation(0, $query: $query);
-    @include outline(variables.$outline-color, $query: $query);
-
-    // Outlined card already displays border in high-contrast mode. Overwriting
-    // styles set above to remove a duplicate border.
+    // Outlined card already displays border in high-contrast mode.
+    // Overwriting styles set above to remove a duplicate border.
     &::after {
       @include feature-targeting.targets($feat-structure) {
         border: none;
@@ -304,7 +287,38 @@ $ripple-target: '.mdc-card__ripple';
       @include theme.property(color, variables.$action-icon-color);
     }
   }
+}
 
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// card styles. It is recommended that most users use `mdc-card-core-styles` instead.
+@mixin without-ripple($query: feature-targeting.all()) {
+  // postcss-bem-linter: define card
+
+  $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  // prettier-ignore
+  @include elevation-mixins.overlay-common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  .mdc-card {
+    @include shape-radius(variables.$shape-radius, $query: $query);
+    @include fill-color(surface, $query);
+    @include elevation-mixins.overlay-surface-position($query: $query);
+    @include elevation-mixins.overlay-dimensions(100%, $query: $query);
+    @include elevation-mixins.elevation(1, $query: $query);
+
+    // Transparent card border for high-contrast mode.
+    &::after {
+      @include shape-radius(variables.$shape-radius, $query: $query);
+    }
+  }
+
+  .mdc-card--outlined {
+    @include elevation-mixins.elevation(0, $query: $query);
+    @include outline(variables.$outline-color, $query: $query);
+  }
+
+  @include static-styles($query: $query);
   // postcss-bem-linter: end
 }
 
