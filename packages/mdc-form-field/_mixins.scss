@@ -42,6 +42,9 @@
 
     @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
+      &[hidden] {
+        display: none;
+      }
       align-items: center;
       vertical-align: middle;
     }
