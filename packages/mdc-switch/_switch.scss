@@ -141,6 +141,10 @@ $ripple-target: '.mdc-switch__ripple';
   overflow: visible;
   padding: 0;
   position: relative;
+
+  &[hidden] {
+    display: none;
+  }
 }
 
 @mixin disabled() {
