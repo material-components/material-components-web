@@ -140,6 +140,9 @@
     @include feature-targeting.targets($feat-structure) {
       display: inline-flex;
       position: relative; // Menu is absolutely positioned relative to this.
+      &[hidden] {
+        display: none;
+      }
     }
 
     &__dropdown-icon {
