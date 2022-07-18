@@ -184,6 +184,9 @@ $icon-enter-duration_: 180ms;
     // Even though `visible` is the default, IE 11 computes the property as
     // `hidden` in some cases, unless it's explicitly defined here.
     overflow: visible;
+    &[hidden] {
+      display: none;
+    }
   }
 
   @include feature-targeting.targets($feat-animation) {
