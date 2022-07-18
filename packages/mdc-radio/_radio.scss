@@ -60,6 +60,9 @@ $ripple-target: radio-theme.$ripple-target;
       cursor: pointer;
       /* @alternate */
       will-change: opacity, transform, border-color, color;
+      &[hidden] {
+        display: none;
+      }
     }
 
     // Container for radio circles and ripple.
