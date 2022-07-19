@@ -45,6 +45,7 @@ export class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldChara
       setContent: (content) => {
         this.root.textContent = content;
       },
+      setCounterValue: () => undefined,
     };
     return new MDCTextFieldCharacterCounterFoundation(adapter);
   }

@@ -33,4 +33,10 @@ export interface MDCTextFieldCharacterCounterAdapter {
    * Sets the text content of character counter element.
    */
   setContent(content: string): void;
+
+  /**
+   * Sets the max char length and char length of current value.
+   * Allows more flexible character counter text.
+   */
+  setCounterValue(currentLength: number, maxLength: number): void;
 }

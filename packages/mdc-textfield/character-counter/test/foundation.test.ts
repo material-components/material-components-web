@@ -38,6 +38,7 @@ describe('MDCTextFieldCharacterCounterFoundation', () => {
   it('defaultAdapter returns a complete adapter implementation', () => {
     verifyDefaultAdapter(MDCTextFieldCharacterCounterFoundation, [
       'setContent',
+      'setCounterValue',
     ]);
   });
 
