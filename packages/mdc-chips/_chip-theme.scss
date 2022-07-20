@@ -202,9 +202,23 @@ $_light-theme: (
   with-trailing-icon-trailing-icon-color: null,
   with-trailing-icon-trailing-icon-size: null,
 );
+$_custom-property-prefix: 'chip';
+
+@mixin theme($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme($_light-theme, $theme);
+  $theme: _resolve-theme($theme, $resolvers: $resolvers);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
+}
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
   @include theme.validate-theme-keys($_light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
 
   @include _container-shape(map.get($theme, container-shape));
   @include _avatar-shape(map.get($theme, with-avatar-avatar-shape));
@@ -439,6 +453,45 @@ $_light-theme: (
         map.get($theme, unselected-pressed-state-layer-opacity),
     )
   );
+}
+
+@function _resolve-theme($theme, $resolvers) {
+  $elevation-resolver: map.get($resolvers, elevation);
+  $shadow-color: map.get($theme, elevated-container-shadow-color);
+  @if $elevation-resolver == null or $shadow-color == null {
+    @return $theme;
+  }
+
+  $elevation-keys: (
+    container-elevation,
+    elevated-container-elevation,
+    elevated-disabled-container-elevation,
+    elevated-focus-container-elevation,
+    elevated-hover-container-elevation,
+    elevated-pressed-container-elevation,
+    elevated-selected-container-elevation,
+    flat-container-elevation,
+    flat-selected-focus-container-elevation,
+    flat-selected-hover-container-elevation,
+    flat-selected-pressed-container-elevation,
+    flat-unselected-focus-container-elevation,
+    flat-unselected-hover-container-elevation,
+    flat-unselected-pressed-container-elevation
+  );
+
+  @each $key in $elevation-keys {
+    $elevation: map.get($theme, $key);
+    @if $elevation != null {
+      $resolved-value: meta.call(
+        $resolvers,
+        $elevation: $elevation,
+        $shadow-color: $shadow-color
+      );
+      // Update the key with the resolved value.
+      $theme: map.set($theme, $key, $resolved-value);
+    }
+  }
+  @return $theme;
 }
 
 @mixin _ripple-theme($ripple-theme) {
