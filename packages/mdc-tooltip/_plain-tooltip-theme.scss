@@ -31,6 +31,7 @@
 @use './tooltip-theme';
 @use 'sass:map';
 
+$custom-property-prefix: 'plain-tooltip';
 $light-theme: (
   container-color: null,
   container-shape: null,
@@ -42,6 +43,14 @@ $light-theme: (
   supporting-text-type: null,
   supporting-text-weight: null,
 );
+
+@mixin theme($theme) {
+  @include theme.validate-theme($light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
 
 @mixin theme-styles($theme, $resolver: resolvers.$material) {
   @include theme.validate-theme-keys($light-theme, $theme);
