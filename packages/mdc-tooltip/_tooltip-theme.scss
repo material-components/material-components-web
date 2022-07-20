@@ -232,8 +232,8 @@ $z-index: 9;
 
 // Set the number of lines visible on a plain tooltip before being truncated.
 // @param {Number} $num-line-clamp
-@mixin line-clamp($num-line-clamp) {
-  .mdc-tooltip__surface {
+@mixin line-clamp($num-line-clamp, $tooltip-surface-color: $background-color) {
+  .mdc-tooltip__label {
     display: -webkit-box;
     -webkit-line-clamp: $num-line-clamp;
     -webkit-box-orient: vertical;

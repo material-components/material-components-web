@@ -96,7 +96,7 @@ There are two types of tooltips:
 ```html
 <div id="tooltip-id" class="mdc-tooltip" role="tooltip" aria-hidden="true">
   <div class="mdc-tooltip__surface mdc-tooltip__surface-animation">
-    lorem ipsum dolor
+    <span class="mdc-tooltip__label">lorem ipsum dolor<span>
   </div>
 </div>
 ```
@@ -262,7 +262,7 @@ second time from the tooltip).
 
 <div id="tooltip-id" class="mdc-tooltip" role="tooltip" aria-hidden="true">
   <div class="mdc-tooltip__surface mdc-tooltip__surface-animation">
-    toggle favorite
+    <span class="mdc-tooltip__label">toggle favorite</span>
   </div>
 </div>
 ```
