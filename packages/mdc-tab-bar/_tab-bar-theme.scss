@@ -30,8 +30,9 @@
 @use '@material/theme/theme-color';
 @use '@material/typography/typography';
 
-// stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// Internal styling for tabbar MDC component.
 
 $custom-property-prefix: 'tab-bar';
 
