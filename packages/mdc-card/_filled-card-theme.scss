@@ -53,6 +53,14 @@ $light-theme: (
   pressed-state-layer-opacity: null,
 );
 
+@mixin theme($theme) {
+  @include theme.validate-theme($light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
 @mixin theme-styles($theme, $resolver: resolvers.$material) {
   @include theme.validate-theme-keys($light-theme, $theme);
 
