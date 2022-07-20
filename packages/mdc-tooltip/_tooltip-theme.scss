@@ -121,23 +121,29 @@ $z-index: 9;
 // @param {Color | String} $content-link-color The color for a link in the
 //   content of rich tooltips.
 @mixin rich-text-ink-color(
-  $title-color,
-  $content-color,
-  $content-link-color,
+  $title-color: null,
+  $content-color: null,
+  $content-link-color: null,
   $query: feature-targeting.all()
 ) {
   $feat-color: feature-targeting.create-target($query, color);
   @include feature-targeting.targets($feat-color) {
-    .mdc-tooltip__title {
-      @include theme.property(color, $title-color);
+    @if $title-color {
+      .mdc-tooltip__title {
+        @include theme.property(color, $title-color);
+      }
     }
 
-    .mdc-tooltip__content {
-      @include theme.property(color, $content-color);
+    @if $content-color {
+      .mdc-tooltip__content {
+        @include theme.property(color, $content-color);
+      }
     }
 
-    .mdc-tooltip__content-link {
-      @include theme.property(color, $content-link-color);
+    @if $content-link-color {
+      .mdc-tooltip__content-link {
+        @include theme.property(color, $content-link-color);
+      }
     }
   }
 }

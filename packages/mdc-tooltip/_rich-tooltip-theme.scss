@@ -1,0 +1,136 @@
+//
+// Copyright 2022 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Selector '.mdc-*' should only be used in this project.
+// stylelint-disable selector-class-pattern --
+// Internal styling for Tooltip MDC component.
+
+@use '@material/button/button-text-theme';
+@use '@material/elevation/elevation-theme';
+@use '@material/theme/keys';
+@use '@material/theme/theme';
+@use '@material/tokens/resolvers';
+@use '@material/typography/typography';
+@use './tooltip-theme';
+@use 'sass:map';
+
+$light-theme: (
+  action-focus-label-text-color: null,
+  action-focus-state-layer-color: null,
+  action-focus-state-layer-opacity: null,
+  action-hover-label-text-color: null,
+  action-hover-state-layer-color: null,
+  action-hover-state-layer-opacity: null,
+  action-label-text-color: null,
+  action-label-text-font: null,
+  action-label-text-line-height: null,
+  action-label-text-size: null,
+  action-label-text-tracking: null,
+  action-label-text-type: null,
+  action-label-text-weight: null,
+  action-pressed-label-text-color: null,
+  action-pressed-state-layer-color: null,
+  action-pressed-state-layer-opacity: null,
+  container-color: null,
+  container-elevation: null,
+  container-shadow-color: null,
+  container-shape: null,
+  container-surface-tint-layer-color: null,
+  subhead-color: null,
+  subhead-font: null,
+  subhead-line-height: null,
+  subhead-size: null,
+  subhead-tracking: null,
+  subhead-type: null,
+  subhead-weight: null,
+  supporting-text-color: null,
+  supporting-text-font: null,
+  supporting-text-line-height: null,
+  supporting-text-size: null,
+  supporting-text-tracking: null,
+  supporting-text-type: null,
+  supporting-text-weight: null,
+);
+
+@mixin theme-styles($theme, $resolver: resolvers.$material) {
+  @include theme.validate-theme-keys($light-theme, $theme);
+
+  @include tooltip-theme.rich-fill-color(map.get($theme, container-color));
+  &.mdc-tooltip--rich {
+    @include tooltip-theme.shape-radius(map.get($theme, container-shape));
+  }
+  @include tooltip-theme.rich-text-ink-color(
+    $title-color: map.get($theme, subhead-color),
+    $content-color: map.get($theme, supporting-text-color)
+  );
+
+  .mdc-tooltip--rich-action {
+    @include button-text-theme.theme-styles(
+      (
+        focus-label-text-color: map.get($theme, action-focus-label-text-color),
+        focus-state-layer-color: map.get($theme, action-focus-state-layer-color),
+        focus-state-layer-opacity:
+          map.get($theme, action-focus-state-layer-opacity),
+        hover-label-text-color: map.get($theme, action-hover-label-text-color),
+        hover-state-layer-color: map.get($theme, action-hover-state-layer-color),
+        hover-state-layer-opacity:
+          map.get($theme, action-hover-state-layer-opacity),
+        label-text-color: map.get($theme, action-label-text-color),
+        label-text-font: map.get($theme, action-label-text-font),
+        label-text-size: map.get($theme, action-label-text-size),
+        label-text-tracking: map.get($theme, action-label-text-tracking),
+        label-text-weight: map.get($theme, action-label-text-weight),
+        pressed-label-text-color:
+          map.get($theme, action-pressed-label-text-color),
+        pressed-state-layer-color:
+          map.get($theme, action-pressed-state-layer-color),
+        pressed-state-layer-opacity:
+          map.get($theme, action-pressed-state-layer-opacity),
+      )
+    );
+  }
+  @include _container-elevation($resolver, $theme);
+
+  .mdc-tooltip__surface .mdc-tooltip__title {
+    @include typography.theme-styles(
+      (
+        font: map.get($theme, subhead-font),
+        line-height: map.get($theme, subhead-line-height),
+        size: map.get($theme, subhead-size),
+        weight: map.get($theme, subhead-weight),
+        tracking: map.get($theme, subhead-tracking),
+      )
+    );
+  }
+}
+
+@mixin _container-elevation($resolver, $theme) {
+  $elevation-resolver: map.get($resolver, elevation);
+  @include elevation-theme.overlay-container-color(
+    map.get($theme, container-surface-tint-layer-color)
+  );
+  @include elevation-theme.with-resolver(
+    $elevation-resolver,
+    $elevation: map.get($theme, conatiner-elevation),
+    $shadow-color: map.get($theme, container-shadow-color)
+  );
+}
