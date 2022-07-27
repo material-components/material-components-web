@@ -428,49 +428,72 @@
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include dom.forced-colors-mode {
-    @include chip-theme.outline-color(
-      (
-        default: CanvasText,
-        disabled: GrayText,
-      ),
-      $query: $query
-    );
+    &.mdc-evolution-chip {
+      @include chip-theme.outline-color(
+        (
+          default: CanvasText,
+          disabled: GrayText,
+        ),
+        $query: $query
+      );
 
-    @include chip-theme.selected-outline-color(
-      (
-        default: CanvasText,
-        disabled: GrayText,
-      ),
-      $query: $query
-    );
+      @include chip-theme.selected-outline-color(
+        (
+          default: CanvasText,
+          disabled: GrayText,
+        ),
+        $query: $query
+      );
 
-    @include chip-theme.text-label-color(
-      (
-        disabled: GrayText,
-      ),
-      $query: $query
-    );
+      @include chip-theme.text-label-color(
+        (
+          disabled: GrayText,
+        ),
+        $query: $query
+      );
 
-    @include chip-theme.icon-color(
-      (
-        disabled: GrayText,
-      ),
-      $query: $query
-    );
+      @include chip-theme.selected-text-label-color(
+        (
+          disabled: GrayText,
+        ),
+        $query: $query
+      );
 
-    @include chip-theme.checkmark-color(
-      (
-        disabled: GrayText,
-      ),
-      $query: $query
-    );
+      @include chip-theme.icon-color(
+        (
+          disabled: GrayText,
+        ),
+        $query: $query
+      );
 
-    @include chip-theme.trailing-action-color(
-      (
-        disabled: GrayText,
-      ),
-      $query: $query
-    );
+      @include chip-theme.checkmark-color(
+        (
+          disabled: GrayText,
+        ),
+        $query: $query
+      );
+
+      @include chip-theme.trailing-action-color(
+        (
+          disabled: GrayText,
+        ),
+        $query: $query
+      );
+
+      @include chip-theme.container-color(
+        (
+          disabled: Canvas,
+        ),
+        $query: $query
+      );
+
+      @include chip-theme.selected-container-color(
+        (
+          disabled: Canvas,
+        ),
+        $query: $query
+      );
+    }
   }
 
   ///
