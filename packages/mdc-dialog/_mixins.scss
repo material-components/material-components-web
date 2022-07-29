@@ -489,6 +489,19 @@
       }
     }
   }
+
+  .mdc-dialog__scrim--removed {
+    @include feature-targeting.targets($feat-structure) {
+      pointer-events: none;
+    }
+
+    .mdc-dialog__scrim,
+    .mdc-dialog__surface-scrim {
+      @include feature-targeting.targets($feat-structure) {
+        display: none;
+      }
+    }
+  }
 }
 
 @mixin core-styles($query: feature-targeting.all()) {

@@ -40,4 +40,7 @@ export interface DialogConfigOptions {
   // dialog opened on top of a full-screen dialog (the only time multiple
   // dialogs should be open on top of one another).
   isAboveFullscreenDialog?: boolean;
+  // Boolean indicating whether or not the dialog blocks background document
+  // scrolling.
+  isScrimless?: boolean;
 }

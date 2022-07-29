@@ -157,7 +157,9 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     // animation
     this.runNextAnimationFrame(() => {
       this.adapter.addClass(cssClasses.OPEN);
-      this.adapter.addBodyClass(cssClasses.SCROLL_LOCK);
+      if (!dialogOptions || !dialogOptions.isScrimless) {
+        this.adapter.addBodyClass(cssClasses.SCROLL_LOCK);
+      }
 
       this.layout();
 

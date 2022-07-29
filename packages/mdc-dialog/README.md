@@ -398,6 +398,7 @@ CSS Class | Description
 --- | ---
 `mdc-dialog` | Mandatory. The root DOM element containing the surface and the container.
 `mdc-dialog__scrim` | Mandatory. Semitransparent backdrop that displays behind a dialog.
+`mdc-dialog__scrim--removed` | Optional. Remove semitransparent backdrop behind dialog and allow pointer on a content behind a dialog.
 `mdc-dialog__container` | Mandatory. Wrapper element needed to ensure flexbox behavior in IE 11.
 `mdc-dialog__surface` | Mandatory. The bounding box for the dialog's content.
 `mdc-dialog__title` | Optional. Brief summary of the dialog's purpose.
