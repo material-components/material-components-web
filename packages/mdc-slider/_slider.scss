@@ -55,6 +55,89 @@ $_track-inactive-height: 4px;
 // ripple-related styles from the other slider styles.
 // It is recommended that most users use `core-styles` instead.
 @mixin without-ripple($query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+
+  @include static-styles($query: $query);
+
+  .mdc-slider {
+    @include slider-theme.track-active-color(
+      $color-or-map: (
+        default: slider-theme.$color,
+        disabled: slider-theme.$disabled-color,
+      ),
+      $query: $query
+    );
+
+    @include slider-theme.track-inactive-color(
+      $color-or-map: (
+        default: slider-theme.$color,
+        disabled: slider-theme.$disabled-color,
+      ),
+      $query: $query
+    );
+
+    @include slider-theme.thumb-color(
+      $color-or-map: (
+        default: slider-theme.$color,
+        disabled: slider-theme.$disabled-color,
+      ),
+      $query: $query
+    );
+
+    @include slider-theme.thumb-ripple-color(
+      $color: slider-theme.$color,
+      $query: $query
+    );
+
+    @include slider-theme.tick-mark-active-color(
+      $color-or-map: (
+        default: slider-theme.$tick-mark-active-color,
+        disabled: on-primary,
+      ),
+      $query: $query
+    );
+
+    @include slider-theme.tick-mark-inactive-color(
+      $color-or-map: (
+        default: slider-theme.$tick-mark-inactive-color,
+        disabled: slider-theme.$disabled-color,
+      ),
+      $query: $query
+    );
+
+    @include slider-theme.value-indicator-color(
+      $color: slider-theme.$value-indicator-color,
+      $opacity: slider-theme.$value-indicator-opacity,
+      $query: $query
+    );
+
+    @include slider-theme.value-indicator-text-color(
+      $color: slider-theme.$value-indicator-text-color,
+      $query: $query
+    );
+  }
+
+  .mdc-slider--disabled {
+    @include feature-targeting.targets($feat-color) {
+      opacity: 0.38;
+    }
+  }
+}
+
+// This API is intended for use by frameworks that may want to separate the
+// ripple-related styles from the other slider styles.
+// It is recommended that most users use `core-styles` instead.
+@mixin ripple($query: feature-targeting.all()) {
+  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
+
+  .mdc-slider__thumb {
+    @include ripple.surface($query: $query);
+    @include ripple.radius-unbounded($query: $query);
+    @include ripple-theme.states($color: slider-theme.$color, $query: $query);
+  }
+}
+
+@mixin static-styles($query: feature-targeting.all()) {
   $feat-animation: feature-targeting.create-target($query, animation);
   $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
@@ -110,19 +193,6 @@ $_track-inactive-height: 4px;
   }
 }
 
-// This API is intended for use by frameworks that may want to separate the
-// ripple-related styles from the other slider styles.
-// It is recommended that most users use `core-styles` instead.
-@mixin ripple($query: feature-targeting.all()) {
-  @include ripple.common($query); // COPYBARA_COMMENT_THIS_LINE
-
-  .mdc-slider__thumb {
-    @include ripple.surface($query: $query);
-    @include ripple.radius-unbounded($query: $query);
-    @include ripple-theme.states($color: slider-theme.$color, $query: $query);
-  }
-}
-
 @mixin _track($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
@@ -153,6 +223,7 @@ $_track-inactive-height: 4px;
       // such that the track grows/shrinks as needed, but the border-radius
       // is not affected by the scaling.
       border-radius: 3px;
+      //TODO(b/241274018): not static, move into themeable styles
       height: $_track-active-height;
       overflow: hidden;
       top: math.div($_track-inactive-height - $_track-active-height, 2);
@@ -193,21 +264,6 @@ $_track-inactive-height: 4px;
       top: 0;
     }
   }
-
-  @include slider-theme.track-active-color(
-    $color-or-map: (
-      default: slider-theme.$color,
-      disabled: slider-theme.$disabled-color,
-    ),
-    $query: $query
-  );
-  @include slider-theme.track-inactive-color(
-    $color-or-map: (
-      default: slider-theme.$color,
-      disabled: slider-theme.$disabled-color,
-    ),
-    $query: $query
-  );
 }
 
 @mixin _thumb($query: feature-targeting.all()) {
@@ -219,6 +275,7 @@ $_track-inactive-height: 4px;
   .mdc-slider__thumb {
     @include feature-targeting.targets($feat-structure) {
       display: flex;
+      //TODO(b/241274018): not static, move (+ width) to themeable styles
       height: $_thumb-ripple-size;
       @include rtl.ignore-next-line();
       left: math.div(-$_thumb-ripple-size, 2);
@@ -262,18 +319,6 @@ $_track-inactive-height: 4px;
       width: $_thumb-size;
     }
   }
-
-  @include slider-theme.thumb-color(
-    $color-or-map: (
-      default: slider-theme.$color,
-      disabled: slider-theme.$disabled-color,
-    ),
-    $query: $query
-  );
-  @include slider-theme.thumb-ripple-color(
-    $color: slider-theme.$color,
-    $query: $query
-  );
 }
 
 @mixin _tick-marks($query: feature-targeting.all()) {
@@ -297,25 +342,11 @@ $_track-inactive-height: 4px;
   .mdc-slider__tick-mark--inactive {
     @include feature-targeting.targets($feat-structure) {
       border-radius: 50%;
+      //TODO(b/241274018): not static, move (+ width) to themeable styles
       height: 2px;
       width: 2px;
     }
   }
-
-  @include slider-theme.tick-mark-active-color(
-    $color-or-map: (
-      default: slider-theme.$tick-mark-active-color,
-      disabled: on-primary,
-    ),
-    $query: $query
-  );
-  @include slider-theme.tick-mark-inactive-color(
-    $color-or-map: (
-      default: slider-theme.$tick-mark-inactive-color,
-      disabled: slider-theme.$disabled-color,
-    ),
-    $query: $query
-  );
 }
 
 @mixin _value-indicator($query: feature-targeting.all()) {
@@ -427,26 +458,11 @@ $_track-inactive-height: 4px;
   .mdc-slider__value-indicator-text {
     @include typography.typography(subtitle2, $query);
   }
-
-  @include slider-theme.value-indicator-color(
-    $color: slider-theme.$value-indicator-color,
-    $opacity: slider-theme.$value-indicator-opacity,
-    $query: $query
-  );
-  @include slider-theme.value-indicator-text-color(
-    $color: slider-theme.$value-indicator-text-color,
-    $query: $query
-  );
 }
 
 // Styles for slider in disabled state.
 @mixin _disabled($query: feature-targeting.all()) {
-  $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
-
-  @include feature-targeting.targets($feat-color) {
-    opacity: 0.38;
-  }
 
   @include feature-targeting.targets($feat-structure) {
     cursor: auto;
