@@ -82,6 +82,10 @@ $light-theme: (
 
 @mixin theme-styles($theme, $resolver: resolvers.$material) {
   @include theme.validate-theme-keys($light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
 
   @include tooltip-theme.rich-fill-color(map.get($theme, container-color));
   &.mdc-tooltip--rich {
