@@ -381,12 +381,12 @@ $ripple-target: '.mdc-card__ripple';
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    border-width: $thickness;
+    @include theme.property(border-width, $thickness);
     border-style: solid;
   }
 
   @include feature-targeting.targets($feat-color) {
-    border-color: theme-color.prop-value($color);
+    @include theme.property(border-color, $color);
   }
 }
 

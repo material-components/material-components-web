@@ -72,7 +72,10 @@ $light-theme: (
 
 @mixin theme-styles($theme, $resolver: resolvers.$material) {
   @include theme.validate-theme-keys($light-theme, $theme);
-
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
   @include _outline(
     $outline-width: map.get($theme, outline-width),
     $map: (
