@@ -56,6 +56,7 @@ $_track-inactive-height: 4px;
 // It is recommended that most users use `core-styles` instead.
 @mixin without-ripple($query: feature-targeting.all()) {
   $feat-color: feature-targeting.create-target($query, color);
+  $feat-structure: feature-targeting.create-target($query, structure);
 
   @include static-styles($query: $query);
 
@@ -115,6 +116,39 @@ $_track-inactive-height: 4px;
       $color: slider-theme.$value-indicator-text-color,
       $query: $query
     );
+
+    .mdc-slider__track {
+      @include feature-targeting.targets($feat-structure) {
+        height: $_track-inactive-height;
+      }
+    }
+
+    .mdc-slider__track--active {
+      @include feature-targeting.targets($feat-structure) {
+        height: $_track-active-height;
+      }
+    }
+
+    .mdc-slider__track--inactive {
+      @include feature-targeting.targets($feat-structure) {
+        height: $_track-inactive-height;
+      }
+    }
+
+    .mdc-slider__thumb {
+      @include feature-targeting.targets($feat-structure) {
+        height: $_thumb-ripple-size;
+        width: $_thumb-ripple-size;
+      }
+    }
+
+    .mdc-slider__tick-mark--active,
+    .mdc-slider__tick-mark--inactive {
+      @include feature-targeting.targets($feat-structure) {
+        height: 2px;
+        width: 2px;
+      }
+    }
   }
 
   .mdc-slider--disabled {
@@ -198,7 +232,6 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__track {
     @include feature-targeting.targets($feat-structure) {
-      height: $_track-inactive-height;
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -223,8 +256,6 @@ $_track-inactive-height: 4px;
       // such that the track grows/shrinks as needed, but the border-radius
       // is not affected by the scaling.
       border-radius: 3px;
-      //TODO(b/241274018): not static, move into themeable styles
-      height: $_track-active-height;
       overflow: hidden;
       top: math.div($_track-inactive-height - $_track-active-height, 2);
     }
@@ -259,7 +290,6 @@ $_track-inactive-height: 4px;
 
     @include feature-targeting.targets($feat-structure) {
       border-radius: 2px;
-      height: $_track-inactive-height;
       left: 0;
       top: 0;
     }
@@ -275,14 +305,11 @@ $_track-inactive-height: 4px;
   .mdc-slider__thumb {
     @include feature-targeting.targets($feat-structure) {
       display: flex;
-      //TODO(b/241274018): not static, move (+ width) to themeable styles
-      height: $_thumb-ripple-size;
       @include rtl.ignore-next-line();
       left: math.div(-$_thumb-ripple-size, 2);
       outline: none;
       position: absolute;
       user-select: none;
-      width: $_thumb-ripple-size;
     }
 
     &--top {
@@ -342,9 +369,6 @@ $_track-inactive-height: 4px;
   .mdc-slider__tick-mark--inactive {
     @include feature-targeting.targets($feat-structure) {
       border-radius: 50%;
-      //TODO(b/241274018): not static, move (+ width) to themeable styles
-      height: 2px;
-      width: 2px;
     }
   }
 }
