@@ -61,92 +61,15 @@ $_track-inactive-height: 4px;
   @include static-styles($query: $query);
 
   .mdc-slider {
-    @include slider-theme.track-active-color(
-      $color-or-map: (
-        default: slider-theme.$color,
-        disabled: slider-theme.$disabled-color,
-      ),
+    @include slider-theme.theme-styles(
+      slider-theme.$light-theme,
       $query: $query
     );
-
-    @include slider-theme.track-inactive-color(
-      $color-or-map: (
-        default: slider-theme.$color,
-        disabled: slider-theme.$disabled-color,
-      ),
-      $query: $query
-    );
-
-    @include slider-theme.thumb-color(
-      $color-or-map: (
-        default: slider-theme.$color,
-        disabled: slider-theme.$disabled-color,
-      ),
-      $query: $query
-    );
-
-    @include slider-theme.thumb-ripple-color(
-      $color: slider-theme.$color,
-      $query: $query
-    );
-
-    @include slider-theme.tick-mark-active-color(
-      $color-or-map: (
-        default: slider-theme.$tick-mark-active-color,
-        disabled: on-primary,
-      ),
-      $query: $query
-    );
-
-    @include slider-theme.tick-mark-inactive-color(
-      $color-or-map: (
-        default: slider-theme.$tick-mark-inactive-color,
-        disabled: slider-theme.$disabled-color,
-      ),
-      $query: $query
-    );
-
-    @include slider-theme.value-indicator-color(
-      $color: slider-theme.$value-indicator-color,
-      $opacity: slider-theme.$value-indicator-opacity,
-      $query: $query
-    );
-
-    @include slider-theme.value-indicator-text-color(
-      $color: slider-theme.$value-indicator-text-color,
-      $query: $query
-    );
-
-    .mdc-slider__track {
-      @include feature-targeting.targets($feat-structure) {
-        height: $_track-inactive-height;
-      }
-    }
-
-    .mdc-slider__track--active {
-      @include feature-targeting.targets($feat-structure) {
-        height: $_track-active-height;
-      }
-    }
-
-    .mdc-slider__track--inactive {
-      @include feature-targeting.targets($feat-structure) {
-        height: $_track-inactive-height;
-      }
-    }
 
     .mdc-slider__thumb {
       @include feature-targeting.targets($feat-structure) {
         height: $_thumb-ripple-size;
         width: $_thumb-ripple-size;
-      }
-    }
-
-    .mdc-slider__tick-mark--active,
-    .mdc-slider__tick-mark--inactive {
-      @include feature-targeting.targets($feat-structure) {
-        height: 2px;
-        width: 2px;
       }
     }
   }

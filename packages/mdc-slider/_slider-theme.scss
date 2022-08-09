@@ -23,6 +23,7 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use 'sass:map';
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/state';
@@ -42,6 +43,148 @@ $track-inactive-opacity: 0.24;
 $tick-mark-active-color: on-primary;
 $tick-mark-inactive-color: primary;
 $tick-mark-opacity: 0.6;
+
+$light-theme: (
+  active-track-color: $color,
+  active-track-height: 6px,
+  active-track-shape: null,
+  disabled-active-track-color: $disabled-color,
+  disabled-active-track-opacity: null,
+  disabled-handle-color: $disabled-color,
+  disabled-handle-elevation: null,
+  disabled-handle-opacity: null,
+  disabled-inactive-track-color: $disabled-color,
+  disabled-inactive-track-opacity: null,
+  focus-handle-color: null,
+  focus-state-layer-color: null,
+  focus-state-layer-opacity: null,
+  handle-color: $color,
+  handle-elevation: null,
+  handle-height: 20px,
+  handle-shadow-color: null,
+  handle-shape: null,
+  handle-width: 20px,
+  hover-handle-color: null,
+  hover-state-layer-color: null,
+  hover-state-layer-opacity: null,
+  inactive-track-color: $color,
+  inactive-track-height: 4px,
+  inactive-track-shape: null,
+  label-container-color: $value-indicator-color,
+  label-container-elevation: null,
+  label-container-height: null,
+  label-label-text-color: $value-indicator-text-color,
+  label-label-text-font: null,
+  label-label-text-font-size: null,
+  label-label-text-line-height: null,
+  label-label-text-size: null,
+  label-label-text-tracking: null,
+  label-label-text-type: null,
+  label-label-text-weight: null,
+  pressed-handle-color: null,
+  pressed-state-layer-color: null,
+  pressed-state-layer-opacity: null,
+  state-layer-size: null,
+  track-elevation: null,
+  with-overlap-handle-outline-color: null,
+  with-overlap-handle-outline-width: null,
+  with-tick-marks-active-container-color: $tick-mark-active-color,
+  with-tick-marks-active-container-opacity: $tick-mark-opacity,
+  with-tick-marks-container-shape: null,
+  with-tick-marks-container-size: 2px,
+  with-tick-marks-disabled-container-color: $disabled-color,
+  with-tick-marks-disabled-container-opacity: $tick-mark-opacity,
+  with-tick-marks-inactive-container-color: $tick-mark-inactive-color,
+  with-tick-marks-inactive-container-opacity: $tick-mark-opacity,
+);
+
+@mixin theme-styles($theme, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  @include theme.validate-theme-keys($light-theme, $theme);
+
+  @include thumb-color(
+    $color-or-map: (
+      default: map.get($theme, 'handle-color'),
+      disabled: map.get($theme, 'disabled-handle-color'),
+    ),
+    $query: $query
+  );
+
+  @include thumb-ripple-color(
+    $color: map.get($theme, 'handle-color'),
+    $query: $query
+  );
+
+  @include track-active-color(
+    $color-or-map: (
+      default: map.get($theme, 'active-track-color'),
+      disabled: map.get($theme, 'disabled-active-track-color'),
+    ),
+    $query: $query
+  );
+
+  @include track-inactive-color(
+    $color-or-map: (
+      default: map.get($theme, 'inactive-track-color'),
+      disabled: map.get($theme, 'disabled-inactive-track-color'),
+    ),
+    $query: $query
+  );
+
+  @include tick-mark-active-color(
+    $color-or-map: (
+      default: map.get($theme, 'with-tick-marks-active-container-color'),
+      disabled: map.get($theme, 'with-tick-marks-active-container-color'),
+    ),
+    $query: $query
+  );
+
+  @include tick-mark-inactive-color(
+    $color-or-map: (
+      default: map.get($theme, 'with-tick-marks-inactive-container-color'),
+      disabled: map.get($theme, 'with-tick-marks-disabled-container-color'),
+    ),
+    $query: $query
+  );
+
+  @include value-indicator-color(
+    $color: map.get($theme, 'label-container-color'),
+    $opacity: $value-indicator-opacity,
+    $query: $query
+  );
+
+  @include value-indicator-text-color(
+    $color: map.get($theme, 'label-label-text-color'),
+    $query: $query
+  );
+
+  .mdc-slider__track {
+    @include feature-targeting.targets($feat-structure) {
+      height: map.get($theme, 'inactive-track-height');
+    }
+  }
+
+  .mdc-slider__track--active {
+    @include feature-targeting.targets($feat-structure) {
+      height: map.get($theme, 'active-track-height');
+    }
+  }
+
+  .mdc-slider__track--inactive {
+    @include feature-targeting.targets($feat-structure) {
+      height: map.get($theme, 'inactive-track-height');
+    }
+  }
+
+  .mdc-slider__tick-mark--active,
+  .mdc-slider__tick-mark--inactive {
+    @include feature-targeting.targets($feat-structure) {
+      height: map.get($theme, 'with-tick-marks-container-size');
+      width: map.get($theme, 'with-tick-marks-container-size');
+    }
+  }
+}
 
 /// Customizes active track color, using a Color or state Map.
 /// - To set only the default color, provide a single Color.
