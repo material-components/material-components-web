@@ -108,22 +108,3 @@ jobs:
       - name: Run dependency tests
         run: |
           npm run test:dependency
-  sass-test:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            packages/*/node_modules
-            !packages/*/node_modules/@material
-          key: ${{ runner.os }}-lerna-${{ hashFiles('package-lock.json', 'packages/**/package.json') }}
-      - run: npm run link
-      - name: Run Sass tests
-        run: |
-          npm run test:sass
