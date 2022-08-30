@@ -1551,3 +1551,9 @@ $_custom-property-prefix: 'chip';
     @content;
   }
 }
+
+@mixin button-cursor($cursor) {
+  .mdc-evolution-chip__action {
+    cursor: $cursor;
+  }
+}
