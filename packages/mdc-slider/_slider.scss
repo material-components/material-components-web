@@ -55,7 +55,6 @@ $_track-inactive-height: 4px;
 // ripple-related styles from the other slider styles.
 // It is recommended that most users use `core-styles` instead.
 @mixin without-ripple($query: feature-targeting.all()) {
-  $feat-color: feature-targeting.create-target($query, color);
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include static-styles($query: $query);
@@ -71,12 +70,6 @@ $_track-inactive-height: 4px;
         height: $_thumb-ripple-size;
         width: $_thumb-ripple-size;
       }
-    }
-  }
-
-  .mdc-slider--disabled {
-    @include feature-targeting.targets($feat-color) {
-      opacity: 0.38;
     }
   }
 }
@@ -400,10 +393,6 @@ $_track-inactive-height: 4px;
         transition: none;
       }
     }
-  }
-
-  .mdc-slider__value-indicator-text {
-    @include typography.typography(subtitle2, $query);
   }
 }
 

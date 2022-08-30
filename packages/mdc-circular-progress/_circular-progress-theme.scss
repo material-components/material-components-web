@@ -30,6 +30,7 @@
 @use '@material/theme/keys';
 @use '@material/theme/theme';
 @use '@material/theme/theme-color';
+@use '@material/dom/dom';
 
 $color: primary !default;
 $track-color: transparent !default;
@@ -124,6 +125,10 @@ $light-theme: (
   .mdc-circular-progress__indeterminate-circle-graphic {
     @include feature-targeting.targets($feat-color) {
       @include theme.property(stroke, $color);
+
+      @include dom.forced-colors-mode {
+        @include theme.property(stroke, CanvasText);
+      }
     }
   }
 }
@@ -158,6 +163,10 @@ $light-theme: (
       .mdc-circular-progress__indeterminate-circle-graphic {
       @include feature-targeting.targets($feat-color) {
         @include theme.property(stroke, nth($colors, $i));
+
+        @include dom.forced-colors-mode {
+          @include theme.property(stroke, CanvasText);
+        }
       }
     }
   }

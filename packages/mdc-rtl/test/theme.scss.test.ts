@@ -29,28 +29,22 @@ describe('theme.test.scss', () => {
     const filePath = path.join(__dirname, 'theme.test.css');
     const css = fs.readFileSync(filePath, 'utf8').trim();
     expect(css).toEqual(`.test {
-  /* @noflip */
-  /*rtl:ignore*/
+  /* @noflip */ /*rtl:ignore*/
   margin-left: 0;
-  /* @noflip */
-  /*rtl:ignore*/
+  /* @noflip */ /*rtl:ignore*/
   margin-right: 8px;
   /* @alternate */
-  /* @noflip */
-  /*rtl:ignore*/
+  /* @noflip */ /*rtl:ignore*/
   margin-right: var(--margin-prop, 8px);
 }
 [dir=rtl] .test, .test[dir=rtl] {
   /*rtl:begin:ignore*/
-  /* @noflip */
-  /*rtl:ignore*/
+  /* @noflip */ /*rtl:ignore*/
   margin-left: 8px;
   /* @alternate */
-  /* @noflip */
-  /*rtl:ignore*/
+  /* @noflip */ /*rtl:ignore*/
   margin-left: var(--margin-prop, 8px);
-  /* @noflip */
-  /*rtl:ignore*/
+  /* @noflip */ /*rtl:ignore*/
   margin-right: 0;
   /*rtl:end:ignore*/
 }`);
