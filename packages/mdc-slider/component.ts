@@ -28,6 +28,8 @@ import {matches} from '@material/dom/ponyfill';
 import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
+import {safeAttrPrefix} from 'google3/javascript/typescript/safevalues/safe_attribute_builders';
+import {safeElement} from 'google3/javascript/typescript/safevalues/safedom/safedom';
 
 import {MDCSliderAdapter} from './adapter';
 import {cssClasses, events} from './constants';
@@ -78,7 +80,18 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       getInputAttribute: (attribute, thumb: Thumb) =>
           this.getInput(thumb).getAttribute(attribute),
       setInputAttribute: (attribute, value, thumb: Thumb) => {
-        this.getInput(thumb).setAttribute(attribute, value);
+        // Attributes are from attributes.ts, this cannot specified dynamically.
+        safeElement.setPrefixedAttribute(
+            [
+              safeAttrPrefix`aria-valuetext`,
+              safeAttrPrefix`disabled`,
+              safeAttrPrefix`min`,
+              safeAttrPrefix`max`,
+              safeAttrPrefix`value`,
+              safeAttrPrefix`step`,
+              safeAttrPrefix`data-min-range`,
+            ],
+            this.getInput(thumb), attribute, value);
       },
       removeInputAttribute: (attribute, thumb: Thumb) => {
         this.getInput(thumb).removeAttribute(attribute);
