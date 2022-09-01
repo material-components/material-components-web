@@ -41,6 +41,7 @@ export function closest(element: Element, selector: string): Element | null {
   return null;
 }
 
+/** Element.matches with support for webkit and IE. */
 export function matches(element: Element, selector: string): boolean {
   const nativeMatches = element.matches
       || element.webkitMatchesSelector
