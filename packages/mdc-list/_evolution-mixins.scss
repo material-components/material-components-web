@@ -812,7 +812,7 @@ $ripple-target: variables.$ripple-target;
 }
 
 @mixin list-item-selected-container-color($color) {
-  &.mdc-list-item--selected {
+  &.mdc-list-item.mdc-list-item--selected {
     @include theme.property(background-color, $color);
   }
 }
