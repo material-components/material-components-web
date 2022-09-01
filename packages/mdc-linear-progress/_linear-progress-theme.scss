@@ -41,6 +41,14 @@ $light-theme: (
   track-height: 4px,
 );
 
+@mixin theme($theme) {
+  @include theme.validate-theme($light-theme, $theme);
+  @include keys.declare-custom-properties(
+    $theme,
+    $prefix: $custom-property-prefix
+  );
+}
+
 @mixin theme-styles($theme) {
   @include theme.validate-theme-keys($light-theme, $theme);
 
