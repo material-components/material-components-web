@@ -249,6 +249,21 @@
     }
   }
 
+  // Needed so that close affordance is aligned as if there was a title.
+  .mdc-dialog--fullscreen--titleless {
+    .mdc-dialog__close {
+      @include feature-targeting.targets($feat-structure) {
+        margin-top: 4px;
+      }
+    }
+
+    &.mdc-dialog--scrollable .mdc-dialog__close {
+      @include feature-targeting.targets($feat-structure) {
+        margin-top: 0;
+      }
+    }
+  }
+
   .mdc-dialog__content {
     @include feature-targeting.targets($feat-structure) {
       flex-grow: 1;
