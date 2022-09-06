@@ -965,7 +965,6 @@ describe('MDCListFoundation', () => {
            .toHaveBeenCalledWith(0, strings.ARIA_SELECTED, 'true');
        expect(mockAdapter.setAttributeForElementIndex)
            .toHaveBeenCalledWith(0, 'tabindex', '0');
-       ;
      });
 
   it('#handleKeydown space key when singleSelection=true does not select an element is isRootListItem=false',
@@ -1733,24 +1732,32 @@ describe('MDCListFoundation', () => {
     foundation.handleClick(
         /*fakeIndex*/ 0, /*isCheckboxAlreadyUpdatedInAdapter*/ false,
         /*fakeEvent*/ createMockMouseEvent(['Shift']));
-    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(0, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+        .toHaveBeenCalledWith(0, true);
     mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
 
     foundation.handleClick(
         /*fakeIndex*/ 3, /*isCheckboxAlreadyUpdatedInAdapter*/ false,
         /*fakeEvent*/ createMockMouseEvent(['Shift']));
-    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(1, true);
-    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(2, true);
-    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(3, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+        .toHaveBeenCalledWith(1, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+        .toHaveBeenCalledWith(2, true);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+        .toHaveBeenCalledWith(3, true);
     mockAdapter.setCheckedCheckboxOrRadioAtIndex.calls.reset();
 
     foundation.handleClick(
         /*fakeIndex*/ 0, /*isCheckboxAlreadyUpdatedInAdapter*/ false,
         /*fakeEvent*/ createMockMouseEvent(['Shift']));
-    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(0, false);
-    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(1, false);
-    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(2, false);
-    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex).toHaveBeenCalledWith(3, false);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+        .toHaveBeenCalledWith(0, false);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+        .toHaveBeenCalledWith(1, false);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+        .toHaveBeenCalledWith(2, false);
+    expect(mockAdapter.setCheckedCheckboxOrRadioAtIndex)
+        .toHaveBeenCalledWith(3, false);
   });
 
   it('#setSingleSelection true with --selected item initializes list state' +
