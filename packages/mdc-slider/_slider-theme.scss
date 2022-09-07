@@ -24,6 +24,7 @@
 // Selector '.mdc-*' should only be used in this project.
 
 @use 'sass:map';
+@use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/state';
@@ -49,26 +50,26 @@ $tick-mark-opacity: 0.6;
 $light-theme: (
   active-track-color: $color,
   active-track-height: 6px,
-  active-track-shape: null,
+  active-track-shape: 9999px,
   disabled-active-track-color: $disabled-color,
   disabled-handle-color: $disabled-color,
   disabled-handle-elevation: null,
   disabled-inactive-track-color: $disabled-color,
-  focus-handle-color: null,
+  focus-handle-color: $color,
   focus-state-layer-color: null,
   focus-state-layer-opacity: null,
   handle-color: $color,
-  handle-elevation: null,
+  handle-elevation: 1,
   handle-height: 20px,
-  handle-shadow-color: null,
-  handle-shape: null,
+  handle-shadow-color: black,
+  handle-shape: 50%,
   handle-width: 20px,
-  hover-handle-color: null,
+  hover-handle-color: $color,
   hover-state-layer-color: null,
   hover-state-layer-opacity: null,
   inactive-track-color: $color,
   inactive-track-height: 4px,
-  inactive-track-shape: null,
+  inactive-track-shape: 9999px,
   label-container-color: $value-indicator-color,
   label-container-elevation: null,
   label-container-height: null,
@@ -85,11 +86,11 @@ $light-theme: (
   pressed-state-layer-opacity: null,
   state-layer-size: null,
   track-elevation: null,
-  with-overlap-handle-outline-color: null,
-  with-overlap-handle-outline-width: null,
+  with-overlap-handle-outline-color: #fff,
+  with-overlap-handle-outline-width: 1px,
   with-tick-marks-active-container-color: $tick-mark-active-color,
   with-tick-marks-active-container-opacity: $tick-mark-opacity,
-  with-tick-marks-container-shape: null,
+  with-tick-marks-container-shape: 50%,
   with-tick-marks-container-size: 2px,
   with-tick-marks-disabled-container-color: $disabled-color,
   with-tick-marks-inactive-container-color: $tick-mark-inactive-color,
@@ -189,6 +190,10 @@ $light-theme: (
 
   @include disabled-slider-opacity($disabled-slider-opacity, $feat-color);
   @include _value-indicator-typography($theme, $feat-typography);
+  @include _slider-shape($theme, $feat-structure);
+  @include _slider-elevation($theme, $query);
+  @include _thumb-activated-theme-color($theme, $query);
+  @include _thumb-overlap($theme, $query);
 }
 
 /// Customizes active track color, using a Color or state Map.
@@ -482,6 +487,112 @@ $light-theme: (
       @include theme.property(font-family, $font);
       @include theme.property(font-weight, $weight);
       @include theme.property(line-height, $line-height);
+    }
+  }
+}
+
+@mixin _slider-shape($theme, $query: feature-targeting.all()) {
+  $active-track-radius: map.get($theme, 'active-track-shape');
+  $inactive-track-radius: map.get($theme, 'inactive-track-shape');
+  $thumb-radius: map.get($theme, 'handle-shape');
+  $thumb-width: map.get($theme, 'handle-width');
+  $with-tick-marks-radius: map.get($theme, 'with-tick-marks-container-shape');
+
+  .mdc-slider__track--active {
+    @include feature-targeting.targets($query) {
+      @include theme.property(border-radius, $active-track-radius);
+    }
+  }
+
+  .mdc-slider__track--inactive {
+    @include feature-targeting.targets($query) {
+      @include theme.property(border-radius, $inactive-track-radius);
+    }
+  }
+
+  .mdc-slider__thumb-knob {
+    @include feature-targeting.targets($query) {
+      @include theme.property(border-radius, $thumb-radius);
+      @include theme.property(width, $thumb-width);
+    }
+  }
+
+  .mdc-slider__tick-mark--active,
+  .mdc-slider__tick-mark--inactive {
+    @include feature-targeting.targets($query) {
+      @include theme.property(border-radius, $with-tick-marks-radius);
+    }
+  }
+}
+
+@mixin _slider-elevation($theme, $query: feature-targeting.all()) {
+  $thumb-elevation: map.get($theme, 'handle-elevation');
+  $thumb-shadow-color: map.get($theme, 'handle-shadow-color');
+  $value-indicator-elevation: map.get($theme, 'label-container-elevation');
+  $track-elevation: map.get($theme, 'track-elevation');
+  $disabled-thumb-elevation: map.get($theme, 'disabled-handle-elevation');
+
+  .mdc-slider__thumb-knob {
+    @include elevation-mixins.elevation(
+      $z-value: $thumb-elevation,
+      $color: $thumb-shadow-color,
+      $query: $query
+    );
+  }
+  .mdc-slider__value-indicator {
+    @include elevation-mixins.elevation(
+      $z-value: $value-indicator-elevation,
+      $query: $query
+    );
+  }
+  .mdc-slider__track {
+    @include elevation-mixins.elevation(
+      $z-value: $track-elevation,
+      $query: $query
+    );
+  }
+
+  &.mdc-slider--disabled .mdc-slider__thumb-knob {
+    @include elevation-mixins.elevation(
+      $z-value: $disabled-thumb-elevation,
+      $query: $query
+    );
+  }
+}
+
+@mixin _thumb-activated-theme-color($theme, $query: feature-targeting.all()) {
+  $hover-color: map.get($theme, 'hover-handle-color');
+  $focus-color: map.get($theme, 'focus-handle-color');
+  $pressed-color: map.get($theme, 'pressed-handle-color');
+
+  .mdc-slider__thumb {
+    &:hover {
+      @include _set-thumb-color($hover-color, $query);
+    }
+
+    &--focused {
+      @include _set-thumb-color($focus-color, $query);
+    }
+
+    @include ripple-theme.pressed() {
+      @include _set-thumb-color($pressed-color, $query);
+    }
+  }
+}
+
+@mixin _thumb-overlap($theme, $query: feature-targeting.all()) {
+  $feat-color: feature-targeting.create-target($query, color);
+  $overlap-outline-color: map.get($theme, 'with-overlap-handle-outline-color');
+  $overlap-outline-width: map.get($theme, 'with-overlap-handle-outline-width');
+
+  @include feature-targeting.targets($feat-color) {
+    .mdc-slider__thumb--top {
+      .mdc-slider__thumb-knob,
+      &.mdc-slider__thumb:hover .mdc-slider__thumb-knob,
+      &.mdc-slider__thumb--focused .mdc-slider__thumb-knob {
+        border-color: $overlap-outline-color;
+        border-width: $overlap-outline-width;
+      }
     }
   }
 }

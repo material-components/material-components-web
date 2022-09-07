@@ -26,7 +26,6 @@
 @use 'sass:math';
 @use '@material/animation/animation';
 @use '@material/dom/mixins' as dom-mixins;
-@use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple';
 @use '@material/ripple/ripple-theme';
@@ -171,7 +170,6 @@ $_track-inactive-height: 4px;
       // transform: scale(...) to the inner `track--active_fill` element,
       // such that the track grows/shrinks as needed, but the border-radius
       // is not affected by the scaling.
-      border-radius: 3px;
       overflow: hidden;
       top: math.div($_track-inactive-height - $_track-active-height, 2);
     }
@@ -205,7 +203,6 @@ $_track-inactive-height: 4px;
     }
 
     @include feature-targeting.targets($feat-structure) {
-      border-radius: 2px;
       left: 0;
       top: 0;
     }
@@ -246,12 +243,9 @@ $_track-inactive-height: 4px;
   }
 
   .mdc-slider__thumb-knob {
-    @include elevation-mixins.elevation($z-value: 1, $query: $query);
-
     @include feature-targeting.targets($feat-structure) {
       // Use border rather than background-color to fill thumb, for HCM.
       border: math.div($_thumb-size, 2) solid;
-      border-radius: 50%;
       box-sizing: border-box;
       height: $_thumb-size;
       @include rtl.ignore-next-line();
@@ -278,13 +272,6 @@ $_track-inactive-height: 4px;
       padding: 0 1px;
       position: absolute;
       width: 100%;
-    }
-  }
-
-  .mdc-slider__tick-mark--active,
-  .mdc-slider__tick-mark--inactive {
-    @include feature-targeting.targets($feat-structure) {
-      border-radius: 50%;
     }
   }
 }
