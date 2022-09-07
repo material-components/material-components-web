@@ -204,6 +204,10 @@ $transition-timing-function: animation-variables.$standard-curve-timing-function
   $color: $baseline-color,
   $opacity-boost: 0
 ) {
+  @if $z-value == null {
+    @return null;
+  }
+
   @if meta.type-of($z-value) != number or not math.is-unitless($z-value) {
     @error "$z-value must be a unitless number, but received '#{$z-value}'";
   }
