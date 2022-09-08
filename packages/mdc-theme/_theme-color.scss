@@ -300,6 +300,10 @@ $_property-values-copy: $property-values;
 
 // NOTE: This function is depended upon by mdc-theme-prop-value (above) and thus must be defined in this file.
 @function is-valid-theme-prop-value_($style) {
+  @if $style == null {
+    @return false;
+  }
+
   @return meta.type-of($style) == 'color' or $style == 'currentColor' or
     str_slice($style, 1, 4) == 'var(' or $style == 'inherit' or $style ==
     'transparent' or

@@ -56,8 +56,6 @@ $light-theme: (
   disabled-handle-elevation: null,
   disabled-inactive-track-color: $disabled-color,
   focus-handle-color: $color,
-  focus-state-layer-color: null,
-  focus-state-layer-opacity: null,
   handle-color: $color,
   handle-elevation: 1,
   handle-height: 20px,
@@ -65,8 +63,6 @@ $light-theme: (
   handle-shape: 50%,
   handle-width: 20px,
   hover-handle-color: $color,
-  hover-state-layer-color: null,
-  hover-state-layer-opacity: null,
   inactive-track-color: $color,
   inactive-track-height: 4px,
   inactive-track-shape: 9999px,
@@ -82,9 +78,6 @@ $light-theme: (
   label-label-text-type: null,
   label-label-text-weight: typography.get-weight(subtitle2),
   pressed-handle-color: null,
-  pressed-state-layer-color: null,
-  pressed-state-layer-opacity: null,
-  state-layer-size: null,
   track-elevation: null,
   with-overlap-handle-outline-color: #fff,
   with-overlap-handle-outline-width: 1px,
@@ -496,6 +489,7 @@ $light-theme: (
   $inactive-track-radius: map.get($theme, 'inactive-track-shape');
   $thumb-radius: map.get($theme, 'handle-shape');
   $thumb-width: map.get($theme, 'handle-width');
+  $thumb-height: map.get($theme, 'handle-height');
   $with-tick-marks-radius: map.get($theme, 'with-tick-marks-container-shape');
 
   .mdc-slider__track--active {
@@ -514,6 +508,13 @@ $light-theme: (
     @include feature-targeting.targets($query) {
       @include theme.property(border-radius, $thumb-radius);
       @include theme.property(width, $thumb-width);
+      @include theme.property(height, $thumb-height);
+      @include theme.property(border-style, solid);
+      // Use border rather than background-color to fill thumb, for HCM.
+      @include theme.property(
+        border-width,
+        calc(#{$thumb-height} / 2) calc(#{$thumb-width} / 2)
+      );
     }
   }
 
