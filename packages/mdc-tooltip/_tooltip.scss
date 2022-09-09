@@ -65,7 +65,6 @@ $_caret-size: 24px;
     tooltip-theme.$word-break-ie11-fallback,
     $query: $query
   );
-  @include tooltip-theme.z-index(tooltip-theme.$z-index, $query: $query);
   @include tooltip-theme.show-transition(
     tooltip-theme.$enter-duration,
     $query: $query
@@ -79,6 +78,7 @@ $_caret-size: 24px;
     @include feature-targeting.targets($feat-structure) {
       position: fixed;
       display: none;
+      z-index: tooltip-theme.$z-index;
     }
   }
 

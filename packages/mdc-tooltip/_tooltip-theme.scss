@@ -199,7 +199,7 @@ $z-index: 9;
   $feat-structure: feature-targeting.create-target($query, structure);
 
   @include feature-targeting.targets($feat-structure) {
-    .mdc-tooltip {
+    &.mdc-tooltip {
       z-index: $z-index;
     }
   }
