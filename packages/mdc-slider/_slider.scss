@@ -244,16 +244,12 @@ $_track-inactive-height: 4px;
 
   .mdc-slider__thumb-knob {
     @include feature-targeting.targets($feat-structure) {
-      // Use border rather than background-color to fill thumb, for HCM.
-      border: math.div($_thumb-size, 2) solid;
       box-sizing: border-box;
-      height: $_thumb-size;
       @include rtl.ignore-next-line();
       left: 50%;
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: $_thumb-size;
     }
   }
 }
