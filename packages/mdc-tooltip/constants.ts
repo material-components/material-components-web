@@ -49,6 +49,9 @@ const numbers = {
   // LINT.IfChange(tooltip-anim-scale)
   ANIMATION_SCALE: 0.8,
   // LINT.ThenChange(_tooltip.scss:tooltip-anim-scale)
+  // LINT.IfChange(rich-tooltip-dimensions)
+  RICH_MAX_WIDTH: 320,
+  // LINT.ThenChange(_tooltip.scss:rich-tooltip-dimensions)
 };
 
 const attributes = {

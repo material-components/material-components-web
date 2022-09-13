@@ -577,6 +577,12 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
     // TODO(b/177686782): Remove width setting when max-content is used to style
     // the rich tooltip.
 
+    // Reset rich tooltip positioning/styling so we can get an accurate
+    // measurement of the rich tooltip width. Toolip has to be moved to the left
+    // to ensure that the parent component does not restrict the size of the
+    // tooltip. See b/245915536 for more info.
+    this.adapter.setStyleProperty('width', '');
+    this.adapter.setStyleProperty('left', `-${numbers.RICH_MAX_WIDTH}px`);
     // getComputedStyleProperty is used instead of getTooltipSize since
     // getTooltipSize returns the offSetWidth, which includes the border and
     // padding. What we need is the width of the tooltip without border and
@@ -607,18 +613,19 @@ export class MDCTooltipFoundation extends MDCFoundation<MDCTooltipAdapter> {
   }
 
   /**
-   * Calculates the position of the tooltip. A tooltip will be placed beneath
-   * the anchor element and aligned either with the 'start'/'end' edge of the
-   * anchor element or the 'center'.
+   * Calculates the position of the tooltip. A tooltip will be placed
+   * beneath the anchor element and aligned either with the 'start'/'end'
+   * edge of the anchor element or the 'center'.
    *
-   * Tooltip alignment is selected such that the tooltip maintains a threshold
-   * distance away from the viewport (defaulting to 'center' alignment). If the
-   * placement of the anchor prevents this threshold distance from being
-   * maintained, the tooltip is positioned so that it does not collide with the
-   * viewport.
+   * Tooltip alignment is selected such that the tooltip maintains a
+   * threshold distance away from the viewport (defaulting to 'center'
+   * alignment). If the placement of the anchor prevents this threshold
+   * distance from being maintained, the tooltip is positioned so that it
+   * does not collide with the viewport.
    *
-   * Users can specify an alignment, however, if this alignment results in the
-   * tooltip colliding with the viewport, this specification is overwritten.
+   * Users can specify an alignment, however, if this alignment results in
+   * the tooltip colliding with the viewport, this specification is
+   * overwritten.
    */
   private calculateTooltipStyles(anchorRect: DOMRect|null) {
     if (!anchorRect) {

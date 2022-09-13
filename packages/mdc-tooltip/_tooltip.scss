@@ -51,7 +51,9 @@ $_animation-scale: 0.8;
 $_rich_corner_radius: 4px;
 $_rich_line-height: 20px;
 $_rich_title_baseline: 28px;
+// LINT.IfChange(rich-tooltip-dimensions)
 $_rich_max-width: 320px;
+// LINT.ThenChange(constants.ts:rich-tooltip-dimensions)
 $_content-margin: 8px;
 $_content-type-scale: body2;
 $_title-type-scale: subtitle2;
