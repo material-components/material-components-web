@@ -59,6 +59,16 @@
       }
     }
 
+    .mdc-button__progress-indicator {
+      @include feature-targeting.targets($feat-structure) {
+        font-size: 0;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+      }
+    }
+
     .mdc-button__label {
       @include feature-targeting.targets($feat-structure) {
         // Necessary such that label is stacked on top of ripple
