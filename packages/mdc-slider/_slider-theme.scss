@@ -23,12 +23,14 @@
 // stylelint-disable selector-class-pattern --
 // Selector '.mdc-*' should only be used in this project.
 
+@use 'sass:color';
 @use 'sass:map';
 @use '@material/elevation/mixins' as elevation-mixins;
 @use '@material/feature-targeting/feature-targeting';
 @use '@material/ripple/ripple-theme';
 @use '@material/theme/state';
 @use '@material/theme/theme';
+@use '@material/theme/theme-color';
 @use '@material/typography/typography';
 
 /// Default color for slider (track, thumb, ripple).
@@ -66,7 +68,12 @@ $light-theme: (
   inactive-track-color: $color,
   inactive-track-height: 4px,
   inactive-track-shape: 9999px,
-  label-container-color: $value-indicator-color,
+  label-container-color:
+    color.mix(
+      $value-indicator-color,
+      theme-color.prop-value(on-primary),
+      $value-indicator-opacity * 100
+    ),
   label-container-elevation: null,
   label-container-height: null,
   label-label-text-color: $value-indicator-text-color,
@@ -146,7 +153,7 @@ $light-theme: (
 
   @include value-indicator-color(
     $color: map.get($theme, 'label-container-color'),
-    $opacity: $value-indicator-opacity,
+    $opacity: 1,
     $query: $query
   );
 
