@@ -47,6 +47,7 @@
 @use '@material/shape/mixins' as shape-mixins;
 @use '@material/theme/custom-properties';
 @use '@material/theme/gss';
+@use '@material/theme/keys';
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/variables' as theme-variables;
@@ -291,10 +292,14 @@ $_light-theme: (
   text-field-supporting-text-weight: null,
 );
 
-@mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  // TODO(b/251881053): Replace with `validate-theme`.
-  @include theme.validate-theme-styles($_light-theme, $theme);
+$_custom-property-prefix: 'select';
 
+@mixin theme-styles($theme, $resolvers: resolvers.$material) {
+  @include theme.validate-theme-styles($_light-theme, $theme);
+  $theme: keys.create-theme-properties(
+    $theme,
+    $prefix: $_custom-property-prefix
+  );
   @include container-fill-color(
     (
       default: map.get($theme, text-field-container-color),
