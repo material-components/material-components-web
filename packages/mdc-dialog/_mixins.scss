@@ -702,6 +702,16 @@
   }
 }
 
+@mixin min-height($min-height, $query: feature-targeting.all()) {
+  $feat-structure: feature-targeting.create-target($query, structure);
+
+  .mdc-dialog__surface {
+    @include feature-targeting.targets($feat-structure) {
+      min-height: $min-height;
+    }
+  }
+}
+
 @mixin max-width-with-breakpoint(
   $above-breakpoint-max-width,
   $below-breakpoint-max-width,
