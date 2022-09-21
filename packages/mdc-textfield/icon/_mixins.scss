@@ -70,14 +70,32 @@
 }
 
 ///
+/// Customizes the color for the leading icons in a disabled text-field.
+/// @param {Color} $color - The desired icon color.
+///
+@mixin disabled-leading-icon-color($color, $query: feature-targeting.all()) {
+  &.mdc-text-field--disabled {
+    @include leading-icon-color_($color, $query);
+  }
+}
+
+///
+/// Customizes the color for the trailing icons in a disabled text-field.
+/// @param {Color} $color - The desired icon color.
+///
+@mixin disabled-trailing-icon-color($color, $query: feature-targeting.all()) {
+  &.mdc-text-field--disabled {
+    @include trailing-icon-color_($color, $query);
+  }
+}
+
+///
 /// Customizes the color for the leading/trailing icons in a disabled text-field.
 /// @param {Color} $color - The desired icon color.
 ///
 @mixin disabled-icon-color($color, $query: feature-targeting.all()) {
-  &.mdc-text-field--disabled {
-    @include leading-icon-color_($color, $query);
-    @include trailing-icon-color_($color, $query);
-  }
+  @include disabled-leading-icon-color($color, $query);
+  @include disabled-trailing-icon-color($color, $query);
 }
 
 /// Sets the size of the leading and trailing icons.
