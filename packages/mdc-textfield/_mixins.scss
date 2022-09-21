@@ -658,12 +658,15 @@ $_density-config: map.merge(
   $query: feature-targeting.all()
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
-  @include feature-targeting.targets($feat-structure) {
-    height: $height;
-  }
 
-  @if $height < $minimum-height-for-filled-label {
-    @include _filled-no-label($query: $query);
+  &:not(.mdc-text-field--textarea) {
+    @include feature-targeting.targets($feat-structure) {
+      height: $height;
+    }
+
+    @if $height < $minimum-height-for-filled-label {
+      @include _filled-no-label($query: $query);
+    }
   }
 }
 
@@ -683,27 +686,29 @@ $_density-config: map.merge(
   $feat-structure: feature-targeting.create-target($query, structure);
   $positionY: variables.get-outlined-label-position-y($height);
 
-  // Floating label position
-  @include notched-outline-mixins.floating-label-float-position-absolute(
-    $positionY,
-    $query: $query
-  );
-
-  // Floating label animation
-  @include floating-label-mixins.shake-animation(
-    $keyframe-suffix,
-    $query: $query
-  );
-  @at-root {
-    @include floating-label-mixins.shake-keyframes(
-      $keyframe-suffix,
+  &:not(.mdc-text-field--textarea) {
+    // Floating label position
+    @include notched-outline-mixins.floating-label-float-position-absolute(
       $positionY,
       $query: $query
     );
-  }
 
-  @include feature-targeting.targets($feat-structure) {
-    height: $height;
+    // Floating label animation
+    @include floating-label-mixins.shake-animation(
+      $keyframe-suffix,
+      $query: $query
+    );
+    @at-root {
+      @include floating-label-mixins.shake-keyframes(
+        $keyframe-suffix,
+        $positionY,
+        $query: $query
+      );
+    }
+
+    @include feature-targeting.targets($feat-structure) {
+      height: $height;
+    }
   }
 }
 
@@ -722,19 +727,21 @@ $_density-config: map.merge(
 ) {
   $feat-structure: feature-targeting.create-target($query, structure);
 
-  // This extra specificity is needed because textfield applies the below mixin
-  // already to two selectors (outlined + with-leading-icon). To override
-  // them with a new label position and animation, another selector is needed.
-  &.mdc-text-field--outlined {
-    @include _outlined-with-leading-icon-floating-label-position-animation(
-      $height,
-      $keyframe-suffix,
-      $query
-    );
-  }
+  &:not(.mdc-text-field--textarea) {
+    // This extra specificity is needed because textfield applies the below mixin
+    // already to two selectors (outlined + with-leading-icon). To override
+    // them with a new label position and animation, another selector is needed.
+    &.mdc-text-field--outlined {
+      @include _outlined-with-leading-icon-floating-label-position-animation(
+        $height,
+        $keyframe-suffix,
+        $query
+      );
+    }
 
-  @include feature-targeting.targets($feat-structure) {
-    height: $height;
+    @include feature-targeting.targets($feat-structure) {
+      height: $height;
+    }
   }
 }
 
