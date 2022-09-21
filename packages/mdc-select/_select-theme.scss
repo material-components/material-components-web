@@ -29,7 +29,6 @@
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:meta';
-@use '@material/tokens/resolvers';
 @use '@material/density/functions' as density-functions;
 @use '@material/density/variables' as density-variables;
 @use '@material/elevation/elevation-theme';
@@ -37,8 +36,8 @@
 @use '@material/floating-label/mixins' as floating-label-mixins;
 @use '@material/floating-label/variables' as floating-label-variables;
 @use '@material/line-ripple/mixins' as line-ripple-mixins;
-@use '@material/list/mixins' as list-mixins;
 @use '@material/list/evolution-mixins' as list-evolution-mixins;
+@use '@material/list/mixins' as list-mixins;
 @use '@material/menu-surface/mixins' as menu-surface-mixins;
 @use '@material/notched-outline/mixins' as notched-outline-mixins;
 @use '@material/notched-outline/variables' as notched-outline-variables;
@@ -51,6 +50,7 @@
 @use '@material/theme/state';
 @use '@material/theme/theme';
 @use '@material/theme/variables' as theme-variables;
+@use '@material/tokens/resolvers';
 @use '@material/typography/mixins' as typography-mixins;
 @use '@material/typography/typography';
 @use './select-icon-theme';
