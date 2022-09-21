@@ -26,7 +26,6 @@
 
 @use 'sass:map';
 @use '@material/line-ripple/mixins' as line-ripple-mixins;
-@use '@material/ripple/ripple-theme';
 @use '@material/theme/theme';
 @use '@material/tokens/resolvers';
 @use './text-field-theme';
@@ -145,7 +144,7 @@ $_light-theme: (
       default: map.get($theme, active-indicator-color),
       hover: map.get($theme, hover-active-indicator-color),
       focus: map.get($theme, focus-active-indicator-color),
-      disabled: map.get($theme, disabled-active-indicator-color),
+      disabled: map.get($theme, disabled-indicator-color),
     )
   );
   @include _error-active-indicator-color(
@@ -156,16 +155,6 @@ $_light-theme: (
     )
   );
   @include _active-indicator-height(map.get($theme, active-indicator-height));
-  @include _hover-state-layer(
-    (
-      error-hover-state-layer-color:
-        map.get($theme, error-hover-state-layer-color),
-      error-hover-state-layer-opacity:
-        map.get($theme, error-hover-state-layer-opacity),
-      hover-state-layer-color: map.get($theme, hover-state-layer-color),
-      hover-state-layer-opacity: map.get($theme, hover-state-layer-opacity),
-    )
-  );
 }
 
 @mixin _container-color($colors) {
@@ -186,7 +175,7 @@ $_light-theme: (
   @include text-field-theme.if-enabled {
     @include _set-active-indicator-color(map.get($colors, default));
 
-    @include text-field-theme.if-hovered {
+    &:hover {
       @include _set-active-indicator-color(map.get($colors, hover));
     }
 
@@ -219,26 +208,5 @@ $_light-theme: (
 @mixin _active-indicator-height($height) {
   .mdc-line-ripple {
     @include line-ripple-mixins.height($height);
-  }
-}
-
-@mixin _hover-state-layer($colors) {
-  @include ripple-theme.theme-styles(
-    (
-      hover-state-layer-color: map.get($colors, hover-state-layer-color),
-      hover-state-layer-opacity: map.get($colors, hover-state-layer-opacity),
-    ),
-    $ripple-target: '.mdc-text-field__ripple'
-  );
-
-  &.mdc-text-field--invalid {
-    @include ripple-theme.theme-styles(
-      (
-        hover-state-layer-color: map.get($colors, error-hover-state-layer-color),
-        hover-state-layer-opacity:
-          map.get($colors, error-hover-state-layer-opacity),
-      ),
-      $ripple-target: '.mdc-text-field__ripple'
-    );
   }
 }
