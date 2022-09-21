@@ -457,7 +457,7 @@ $_light-theme: (
 }
 
 @mixin _label-text-populated-typography($typography-theme) {
-  .mdc-floating-label--float-above {
+  .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
     @include typography.theme-styles($typography-theme);
   }
 }
