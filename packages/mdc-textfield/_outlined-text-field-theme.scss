@@ -120,13 +120,15 @@ $_light-theme: (
   @include theme.validate-theme($_light-theme, $theme);
   @include text-field-theme.theme-styles($theme, $resolvers: $resolvers);
 
-  @if map.get($theme, container-height) {
-    @include mixins.outlined-height(map.get($theme, container-height));
+  &:not(.mdc-text-field--textarea) {
+    @if map.get($theme, container-height) {
+      @include mixins.outlined-height(map.get($theme, container-height));
 
-    &.mdc-text-field--with-leading-icon {
-      @include mixins.outlined-with-leading-icon-height(
-        map.get($theme, container-height)
-      );
+      &.mdc-text-field--with-leading-icon {
+        @include mixins.outlined-with-leading-icon-height(
+          map.get($theme, container-height)
+        );
+      }
     }
   }
   @if map.get($theme, container-shape) {
