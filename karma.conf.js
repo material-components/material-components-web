@@ -70,6 +70,11 @@ module.exports = function(config) {
     karmaTypescriptConfig: {
       exclude: EXCLUDE_FILES,
       tsconfig: './tsconfig-testing.json',
+      bundlerOptions: {
+        transforms: [
+          require("karma-typescript-es6-transform")()
+        ]
+      }
     },
     preprocessors: FILES_TO_USE.reduce((obj, file) => {
       obj[file] = 'karma-typescript';
