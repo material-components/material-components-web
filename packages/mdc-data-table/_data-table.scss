@@ -43,7 +43,7 @@
 @use './data-table-theme';
 
 @mixin core-styles($query: feature-targeting.all()) {
-  @include table-styles($query: $query);
+  @include without-ripple($query: $query);
   @include data-table-theme.sort-icon-color(
     data-table-theme.$sort-icon-color,
     $query: $query
@@ -60,7 +60,7 @@
 // This API includes only the table styles without the sorting, pagination and
 // loading styles. It is intended to be used by frameworks that only need the
 // table styles.
-@mixin table-styles($query: feature-targeting.all()) {
+@mixin without-ripple($query: feature-targeting.all()) {
   $feat-structure: feature-targeting.create-target($query, structure);
   $feat-typography: feature-targeting.create-target($query, typography);
   $feat-animation: feature-targeting.create-target($query, animation);
